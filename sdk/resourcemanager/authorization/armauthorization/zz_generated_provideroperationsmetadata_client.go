@@ -10,14 +10,14 @@ package armauthorization
 
 import (
 	"context"
-	"errors"
 	"fmt"
-	"net/http"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"strings"
 )
 
 // ProviderOperationsMetadataClient contains the methods for the ProviderOperationsMetadata group.
@@ -28,8 +28,15 @@ type ProviderOperationsMetadataClient struct {
 }
 
 // NewProviderOperationsMetadataClient creates a new instance of ProviderOperationsMetadataClient with the specified values.
-func NewProviderOperationsMetadataClient(con *arm.Connection) *ProviderOperationsMetadataClient {
-	return &ProviderOperationsMetadataClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewProviderOperationsMetadataClient(credential azcore.TokenCredential, options *arm.ClientOptions) *ProviderOperationsMetadataClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ProviderOperationsMetadataClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Gets provider operations metadata for the specified resource provider.
@@ -52,9 +59,6 @@ func (client *ProviderOperationsMetadataClient) Get(ctx context.Context, resourc
 // getCreateRequest creates the Get request.
 func (client *ProviderOperationsMetadataClient) getCreateRequest(ctx context.Context, resourceProviderNamespace string, options *ProviderOperationsMetadataGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Authorization/providerOperations/{resourceProviderNamespace}"
-	if resourceProviderNamespace == "" {
-		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", resourceProviderNamespace)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -74,7 +78,7 @@ func (client *ProviderOperationsMetadataClient) getCreateRequest(ctx context.Con
 func (client *ProviderOperationsMetadataClient) getHandleResponse(resp *http.Response) (ProviderOperationsMetadataGetResponse, error) {
 	result := ProviderOperationsMetadataGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProviderOperationsMetadata); err != nil {
-		return ProviderOperationsMetadataGetResponse{}, err
+		return ProviderOperationsMetadataGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -127,7 +131,7 @@ func (client *ProviderOperationsMetadataClient) listCreateRequest(ctx context.Co
 func (client *ProviderOperationsMetadataClient) listHandleResponse(resp *http.Response) (ProviderOperationsMetadataListResponse, error) {
 	result := ProviderOperationsMetadataListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProviderOperationsMetadataListResult); err != nil {
-		return ProviderOperationsMetadataListResponse{}, err
+		return ProviderOperationsMetadataListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

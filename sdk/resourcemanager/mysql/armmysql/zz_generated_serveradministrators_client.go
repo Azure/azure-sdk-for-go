@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // ServerAdministratorsClient contains the methods for the ServerAdministrators group.
@@ -31,8 +31,15 @@ type ServerAdministratorsClient struct {
 }
 
 // NewServerAdministratorsClient creates a new instance of ServerAdministratorsClient with the specified values.
-func NewServerAdministratorsClient(con *arm.Connection, subscriptionID string) *ServerAdministratorsClient {
-	return &ServerAdministratorsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewServerAdministratorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServerAdministratorsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ServerAdministratorsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Creates or update active directory administrator on an existing server. The update action will overwrite the existing administrator.
@@ -234,7 +241,7 @@ func (client *ServerAdministratorsClient) getCreateRequest(ctx context.Context, 
 func (client *ServerAdministratorsClient) getHandleResponse(resp *http.Response) (ServerAdministratorsGetResponse, error) {
 	result := ServerAdministratorsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerAdministratorResource); err != nil {
-		return ServerAdministratorsGetResponse{}, err
+		return ServerAdministratorsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -299,7 +306,7 @@ func (client *ServerAdministratorsClient) listCreateRequest(ctx context.Context,
 func (client *ServerAdministratorsClient) listHandleResponse(resp *http.Response) (ServerAdministratorsListResponse, error) {
 	result := ServerAdministratorsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerAdministratorResourceListResult); err != nil {
-		return ServerAdministratorsListResponse{}, err
+		return ServerAdministratorsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // WorkflowRunActionsClient contains the methods for the WorkflowRunActions group.
@@ -31,8 +32,15 @@ type WorkflowRunActionsClient struct {
 }
 
 // NewWorkflowRunActionsClient creates a new instance of WorkflowRunActionsClient with the specified values.
-func NewWorkflowRunActionsClient(con *arm.Connection, subscriptionID string) *WorkflowRunActionsClient {
-	return &WorkflowRunActionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewWorkflowRunActionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WorkflowRunActionsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &WorkflowRunActionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Gets a workflow run action.
@@ -90,7 +98,7 @@ func (client *WorkflowRunActionsClient) getCreateRequest(ctx context.Context, re
 func (client *WorkflowRunActionsClient) getHandleResponse(resp *http.Response) (WorkflowRunActionsGetResponse, error) {
 	result := WorkflowRunActionsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowRunAction); err != nil {
-		return WorkflowRunActionsGetResponse{}, err
+		return WorkflowRunActionsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -162,7 +170,7 @@ func (client *WorkflowRunActionsClient) listCreateRequest(ctx context.Context, r
 func (client *WorkflowRunActionsClient) listHandleResponse(resp *http.Response) (WorkflowRunActionsListResponse, error) {
 	result := WorkflowRunActionsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowRunActionListResult); err != nil {
-		return WorkflowRunActionsListResponse{}, err
+		return WorkflowRunActionsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -235,7 +243,7 @@ func (client *WorkflowRunActionsClient) listExpressionTracesCreateRequest(ctx co
 func (client *WorkflowRunActionsClient) listExpressionTracesHandleResponse(resp *http.Response) (WorkflowRunActionsListExpressionTracesResponse, error) {
 	result := WorkflowRunActionsListExpressionTracesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExpressionTraces); err != nil {
-		return WorkflowRunActionsListExpressionTracesResponse{}, err
+		return WorkflowRunActionsListExpressionTracesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

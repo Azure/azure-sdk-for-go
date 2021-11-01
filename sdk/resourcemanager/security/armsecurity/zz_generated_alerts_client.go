@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // AlertsClient contains the methods for the Alerts group.
@@ -32,8 +32,15 @@ type AlertsClient struct {
 }
 
 // NewAlertsClient creates a new instance of AlertsClient with the specified values.
-func NewAlertsClient(con *arm.Connection, subscriptionID string, ascLocation string) *AlertsClient {
-	return &AlertsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID, ascLocation: ascLocation}
+func NewAlertsClient(subscriptionID string, ascLocation string, credential azcore.TokenCredential, options *arm.ClientOptions) *AlertsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &AlertsClient{subscriptionID: subscriptionID, ascLocation: ascLocation, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // GetResourceGroupLevel - Get an alert that is associated a resource group or a resource in a resource group
@@ -87,7 +94,7 @@ func (client *AlertsClient) getResourceGroupLevelCreateRequest(ctx context.Conte
 func (client *AlertsClient) getResourceGroupLevelHandleResponse(resp *http.Response) (AlertsGetResourceGroupLevelResponse, error) {
 	result := AlertsGetResourceGroupLevelResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Alert); err != nil {
-		return AlertsGetResourceGroupLevelResponse{}, err
+		return AlertsGetResourceGroupLevelResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -152,7 +159,7 @@ func (client *AlertsClient) getSubscriptionLevelCreateRequest(ctx context.Contex
 func (client *AlertsClient) getSubscriptionLevelHandleResponse(resp *http.Response) (AlertsGetSubscriptionLevelResponse, error) {
 	result := AlertsGetSubscriptionLevelResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Alert); err != nil {
-		return AlertsGetSubscriptionLevelResponse{}, err
+		return AlertsGetSubscriptionLevelResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -206,7 +213,7 @@ func (client *AlertsClient) listCreateRequest(ctx context.Context, options *Aler
 func (client *AlertsClient) listHandleResponse(resp *http.Response) (AlertsListResponse, error) {
 	result := AlertsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertList); err != nil {
-		return AlertsListResponse{}, err
+		return AlertsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -264,7 +271,7 @@ func (client *AlertsClient) listByResourceGroupCreateRequest(ctx context.Context
 func (client *AlertsClient) listByResourceGroupHandleResponse(resp *http.Response) (AlertsListByResourceGroupResponse, error) {
 	result := AlertsListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertList); err != nil {
-		return AlertsListByResourceGroupResponse{}, err
+		return AlertsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -326,7 +333,7 @@ func (client *AlertsClient) listResourceGroupLevelByRegionCreateRequest(ctx cont
 func (client *AlertsClient) listResourceGroupLevelByRegionHandleResponse(resp *http.Response) (AlertsListResourceGroupLevelByRegionResponse, error) {
 	result := AlertsListResourceGroupLevelByRegionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertList); err != nil {
-		return AlertsListResourceGroupLevelByRegionResponse{}, err
+		return AlertsListResourceGroupLevelByRegionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -384,7 +391,7 @@ func (client *AlertsClient) listSubscriptionLevelByRegionCreateRequest(ctx conte
 func (client *AlertsClient) listSubscriptionLevelByRegionHandleResponse(resp *http.Response) (AlertsListSubscriptionLevelByRegionResponse, error) {
 	result := AlertsListSubscriptionLevelByRegionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertList); err != nil {
-		return AlertsListSubscriptionLevelByRegionResponse{}, err
+		return AlertsListSubscriptionLevelByRegionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

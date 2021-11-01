@@ -11,14 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // RestorePointsClient contains the methods for the RestorePoints group.
@@ -30,8 +30,15 @@ type RestorePointsClient struct {
 }
 
 // NewRestorePointsClient creates a new instance of RestorePointsClient with the specified values.
-func NewRestorePointsClient(con *arm.Connection, subscriptionID string) *RestorePointsClient {
-	return &RestorePointsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewRestorePointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RestorePointsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &RestorePointsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreate - Creates a restore point for a data warehouse.
@@ -230,7 +237,7 @@ func (client *RestorePointsClient) getCreateRequest(ctx context.Context, resourc
 func (client *RestorePointsClient) getHandleResponse(resp *http.Response) (RestorePointsGetResponse, error) {
 	result := RestorePointsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestorePoint); err != nil {
-		return RestorePointsGetResponse{}, err
+		return RestorePointsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -295,7 +302,7 @@ func (client *RestorePointsClient) listByDatabaseCreateRequest(ctx context.Conte
 func (client *RestorePointsClient) listByDatabaseHandleResponse(resp *http.Response) (RestorePointsListByDatabaseResponse, error) {
 	result := RestorePointsListByDatabaseResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestorePointListResult); err != nil {
-		return RestorePointsListByDatabaseResponse{}, err
+		return RestorePointsListByDatabaseResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

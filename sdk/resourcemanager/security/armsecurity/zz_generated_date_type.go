@@ -9,7 +9,11 @@
 package armsecurity
 
 import (
+	"encoding/json"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"reflect"
+	"strings"
 	"time"
 )
 
@@ -28,4 +32,28 @@ func (d *dateType) UnmarshalJSON(data []byte) (err error) {
 	t, err := time.Parse(fullDateJSON, string(data))
 	*d = (dateType)(t)
 	return err
+}
+
+func populateDateType(m map[string]interface{}, k string, t *time.Time) {
+	if t == nil {
+		return
+	} else if azcore.IsNullValue(t) {
+		m[k] = nil
+		return
+	} else if reflect.ValueOf(t).IsNil() {
+		return
+	}
+	m[k] = (*dateType)(t)
+}
+
+func unpopulateDateType(data json.RawMessage, t **time.Time) error {
+	if data == nil || strings.EqualFold(string(data), "null") {
+		return nil
+	}
+	var aux dateType
+	if err := json.Unmarshal(data, &aux); err != nil {
+		return err
+	}
+	*t = (*time.Time)(&aux)
+	return nil
 }

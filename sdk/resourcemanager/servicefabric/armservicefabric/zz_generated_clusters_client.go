@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // ClustersClient contains the methods for the Clusters group.
@@ -31,8 +31,15 @@ type ClustersClient struct {
 }
 
 // NewClustersClient creates a new instance of ClustersClient with the specified values.
-func NewClustersClient(con *arm.Connection, subscriptionID string) *ClustersClient {
-	return &ClustersClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewClustersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ClustersClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ClustersClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Create or update a Service Fabric cluster resource with the specified name.
@@ -214,7 +221,7 @@ func (client *ClustersClient) getCreateRequest(ctx context.Context, resourceGrou
 func (client *ClustersClient) getHandleResponse(resp *http.Response) (ClustersGetResponse, error) {
 	result := ClustersGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Cluster); err != nil {
-		return ClustersGetResponse{}, err
+		return ClustersGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -271,7 +278,7 @@ func (client *ClustersClient) listCreateRequest(ctx context.Context, options *Cl
 func (client *ClustersClient) listHandleResponse(resp *http.Response) (ClustersListResponse, error) {
 	result := ClustersListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterListResult); err != nil {
-		return ClustersListResponse{}, err
+		return ClustersListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -332,7 +339,7 @@ func (client *ClustersClient) listByResourceGroupCreateRequest(ctx context.Conte
 func (client *ClustersClient) listByResourceGroupHandleResponse(resp *http.Response) (ClustersListByResourceGroupResponse, error) {
 	result := ClustersListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterListResult); err != nil {
-		return ClustersListByResourceGroupResponse{}, err
+		return ClustersListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -402,7 +409,7 @@ func (client *ClustersClient) listUpgradableVersionsCreateRequest(ctx context.Co
 func (client *ClustersClient) listUpgradableVersionsHandleResponse(resp *http.Response) (ClustersListUpgradableVersionsResponse, error) {
 	result := ClustersListUpgradableVersionsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UpgradableVersionPathResult); err != nil {
-		return ClustersListUpgradableVersionsResponse{}, err
+		return ClustersListUpgradableVersionsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

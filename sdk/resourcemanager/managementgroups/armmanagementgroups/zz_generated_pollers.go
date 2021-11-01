@@ -10,9 +10,8 @@ package armmanagementgroups
 
 import (
 	"context"
-	"net/http"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"net/http"
 )
 
 // ManagementGroupsCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.

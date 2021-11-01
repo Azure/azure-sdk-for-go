@@ -12,15 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // RedisClient contains the methods for the Redis group.
@@ -32,8 +32,15 @@ type RedisClient struct {
 }
 
 // NewRedisClient creates a new instance of RedisClient with the specified values.
-func NewRedisClient(con *arm.Connection, subscriptionID string) *RedisClient {
-	return &RedisClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewRedisClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RedisClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &RedisClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CheckNameAvailability - Checks that the redis cache name is valid and is not already in use.
@@ -359,7 +366,7 @@ func (client *RedisClient) forceRebootCreateRequest(ctx context.Context, resourc
 func (client *RedisClient) forceRebootHandleResponse(resp *http.Response) (RedisForceRebootResponseEnvelope, error) {
 	result := RedisForceRebootResponseEnvelope{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RedisForceRebootResponse); err != nil {
-		return RedisForceRebootResponseEnvelope{}, err
+		return RedisForceRebootResponseEnvelope{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -424,7 +431,7 @@ func (client *RedisClient) getCreateRequest(ctx context.Context, resourceGroupNa
 func (client *RedisClient) getHandleResponse(resp *http.Response) (RedisGetResponse, error) {
 	result := RedisGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RedisResource); err != nil {
-		return RedisGetResponse{}, err
+		return RedisGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -558,7 +565,7 @@ func (client *RedisClient) listByResourceGroupCreateRequest(ctx context.Context,
 func (client *RedisClient) listByResourceGroupHandleResponse(resp *http.Response) (RedisListByResourceGroupResponse, error) {
 	result := RedisListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RedisListResult); err != nil {
-		return RedisListByResourceGroupResponse{}, err
+		return RedisListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -612,7 +619,7 @@ func (client *RedisClient) listBySubscriptionCreateRequest(ctx context.Context, 
 func (client *RedisClient) listBySubscriptionHandleResponse(resp *http.Response) (RedisListBySubscriptionResponse, error) {
 	result := RedisListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RedisListResult); err != nil {
-		return RedisListBySubscriptionResponse{}, err
+		return RedisListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -677,7 +684,7 @@ func (client *RedisClient) listKeysCreateRequest(ctx context.Context, resourceGr
 func (client *RedisClient) listKeysHandleResponse(resp *http.Response) (RedisListKeysResponse, error) {
 	result := RedisListKeysResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RedisAccessKeys); err != nil {
-		return RedisListKeysResponse{}, err
+		return RedisListKeysResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -740,7 +747,7 @@ func (client *RedisClient) listUpgradeNotificationsCreateRequest(ctx context.Con
 func (client *RedisClient) listUpgradeNotificationsHandleResponse(resp *http.Response) (RedisListUpgradeNotificationsResponse, error) {
 	result := RedisListUpgradeNotificationsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NotificationListResponse); err != nil {
-		return RedisListUpgradeNotificationsResponse{}, err
+		return RedisListUpgradeNotificationsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -805,7 +812,7 @@ func (client *RedisClient) regenerateKeyCreateRequest(ctx context.Context, resou
 func (client *RedisClient) regenerateKeyHandleResponse(resp *http.Response) (RedisRegenerateKeyResponse, error) {
 	result := RedisRegenerateKeyResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RedisAccessKeys); err != nil {
-		return RedisRegenerateKeyResponse{}, err
+		return RedisRegenerateKeyResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -870,7 +877,7 @@ func (client *RedisClient) updateCreateRequest(ctx context.Context, resourceGrou
 func (client *RedisClient) updateHandleResponse(resp *http.Response) (RedisUpdateResponse, error) {
 	result := RedisUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RedisResource); err != nil {
-		return RedisUpdateResponse{}, err
+		return RedisUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

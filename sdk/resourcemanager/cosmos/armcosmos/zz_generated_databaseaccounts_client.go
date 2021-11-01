@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // DatabaseAccountsClient contains the methods for the DatabaseAccounts group.
@@ -31,8 +31,15 @@ type DatabaseAccountsClient struct {
 }
 
 // NewDatabaseAccountsClient creates a new instance of DatabaseAccountsClient with the specified values.
-func NewDatabaseAccountsClient(con *arm.Connection, subscriptionID string) *DatabaseAccountsClient {
-	return &DatabaseAccountsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewDatabaseAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DatabaseAccountsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &DatabaseAccountsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CheckNameExists - Checks that the Azure Cosmos DB account name already exists. A valid account name may contain only lowercase letters, numbers, and
@@ -66,7 +73,7 @@ func (client *DatabaseAccountsClient) checkNameExistsCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -128,7 +135,7 @@ func (client *DatabaseAccountsClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, createUpdateParameters)
@@ -203,7 +210,7 @@ func (client *DatabaseAccountsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -281,7 +288,7 @@ func (client *DatabaseAccountsClient) failoverPriorityChangeCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, runtime.MarshalAsJSON(req, failoverParameters)
 }
@@ -335,7 +342,7 @@ func (client *DatabaseAccountsClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -345,7 +352,7 @@ func (client *DatabaseAccountsClient) getCreateRequest(ctx context.Context, reso
 func (client *DatabaseAccountsClient) getHandleResponse(resp *http.Response) (DatabaseAccountsGetResponse, error) {
 	result := DatabaseAccountsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseAccountGetResults); err != nil {
-		return DatabaseAccountsGetResponse{}, err
+		return DatabaseAccountsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -399,7 +406,7 @@ func (client *DatabaseAccountsClient) getReadOnlyKeysCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -409,7 +416,7 @@ func (client *DatabaseAccountsClient) getReadOnlyKeysCreateRequest(ctx context.C
 func (client *DatabaseAccountsClient) getReadOnlyKeysHandleResponse(resp *http.Response) (DatabaseAccountsGetReadOnlyKeysResponse, error) {
 	result := DatabaseAccountsGetReadOnlyKeysResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseAccountListReadOnlyKeysResult); err != nil {
-		return DatabaseAccountsGetReadOnlyKeysResponse{}, err
+		return DatabaseAccountsGetReadOnlyKeysResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -455,7 +462,7 @@ func (client *DatabaseAccountsClient) listCreateRequest(ctx context.Context, opt
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -465,7 +472,7 @@ func (client *DatabaseAccountsClient) listCreateRequest(ctx context.Context, opt
 func (client *DatabaseAccountsClient) listHandleResponse(resp *http.Response) (DatabaseAccountsListResponse, error) {
 	result := DatabaseAccountsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseAccountsListResult); err != nil {
-		return DatabaseAccountsListResponse{}, err
+		return DatabaseAccountsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -515,7 +522,7 @@ func (client *DatabaseAccountsClient) listByResourceGroupCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -525,7 +532,7 @@ func (client *DatabaseAccountsClient) listByResourceGroupCreateRequest(ctx conte
 func (client *DatabaseAccountsClient) listByResourceGroupHandleResponse(resp *http.Response) (DatabaseAccountsListByResourceGroupResponse, error) {
 	result := DatabaseAccountsListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseAccountsListResult); err != nil {
-		return DatabaseAccountsListByResourceGroupResponse{}, err
+		return DatabaseAccountsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -579,7 +586,7 @@ func (client *DatabaseAccountsClient) listConnectionStringsCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -589,7 +596,7 @@ func (client *DatabaseAccountsClient) listConnectionStringsCreateRequest(ctx con
 func (client *DatabaseAccountsClient) listConnectionStringsHandleResponse(resp *http.Response) (DatabaseAccountsListConnectionStringsResponse, error) {
 	result := DatabaseAccountsListConnectionStringsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseAccountListConnectionStringsResult); err != nil {
-		return DatabaseAccountsListConnectionStringsResponse{}, err
+		return DatabaseAccountsListConnectionStringsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -643,7 +650,7 @@ func (client *DatabaseAccountsClient) listKeysCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -653,7 +660,7 @@ func (client *DatabaseAccountsClient) listKeysCreateRequest(ctx context.Context,
 func (client *DatabaseAccountsClient) listKeysHandleResponse(resp *http.Response) (DatabaseAccountsListKeysResponse, error) {
 	result := DatabaseAccountsListKeysResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseAccountListKeysResult); err != nil {
-		return DatabaseAccountsListKeysResponse{}, err
+		return DatabaseAccountsListKeysResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -707,7 +714,7 @@ func (client *DatabaseAccountsClient) listMetricDefinitionsCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -717,7 +724,7 @@ func (client *DatabaseAccountsClient) listMetricDefinitionsCreateRequest(ctx con
 func (client *DatabaseAccountsClient) listMetricDefinitionsHandleResponse(resp *http.Response) (DatabaseAccountsListMetricDefinitionsResponse, error) {
 	result := DatabaseAccountsListMetricDefinitionsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricDefinitionsListResult); err != nil {
-		return DatabaseAccountsListMetricDefinitionsResponse{}, err
+		return DatabaseAccountsListMetricDefinitionsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -771,7 +778,7 @@ func (client *DatabaseAccountsClient) listMetricsCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	reqQP.Set("$filter", filter)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
@@ -782,7 +789,7 @@ func (client *DatabaseAccountsClient) listMetricsCreateRequest(ctx context.Conte
 func (client *DatabaseAccountsClient) listMetricsHandleResponse(resp *http.Response) (DatabaseAccountsListMetricsResponse, error) {
 	result := DatabaseAccountsListMetricsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricListResult); err != nil {
-		return DatabaseAccountsListMetricsResponse{}, err
+		return DatabaseAccountsListMetricsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -836,7 +843,7 @@ func (client *DatabaseAccountsClient) listReadOnlyKeysCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -846,7 +853,7 @@ func (client *DatabaseAccountsClient) listReadOnlyKeysCreateRequest(ctx context.
 func (client *DatabaseAccountsClient) listReadOnlyKeysHandleResponse(resp *http.Response) (DatabaseAccountsListReadOnlyKeysResponse, error) {
 	result := DatabaseAccountsListReadOnlyKeysResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseAccountListReadOnlyKeysResult); err != nil {
-		return DatabaseAccountsListReadOnlyKeysResponse{}, err
+		return DatabaseAccountsListReadOnlyKeysResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -900,7 +907,7 @@ func (client *DatabaseAccountsClient) listUsagesCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -913,7 +920,7 @@ func (client *DatabaseAccountsClient) listUsagesCreateRequest(ctx context.Contex
 func (client *DatabaseAccountsClient) listUsagesHandleResponse(resp *http.Response) (DatabaseAccountsListUsagesResponse, error) {
 	result := DatabaseAccountsListUsagesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UsagesResult); err != nil {
-		return DatabaseAccountsListUsagesResponse{}, err
+		return DatabaseAccountsListUsagesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -987,7 +994,7 @@ func (client *DatabaseAccountsClient) offlineRegionCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, regionParameterForOffline)
@@ -1063,7 +1070,7 @@ func (client *DatabaseAccountsClient) onlineRegionCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, regionParameterForOnline)
@@ -1139,7 +1146,7 @@ func (client *DatabaseAccountsClient) regenerateKeyCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, runtime.MarshalAsJSON(req, keyToRegenerate)
 }
@@ -1213,7 +1220,7 @@ func (client *DatabaseAccountsClient) updateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, updateParameters)

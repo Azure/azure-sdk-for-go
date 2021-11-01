@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ConnectorsClient contains the methods for the Connectors group.
@@ -30,8 +31,15 @@ type ConnectorsClient struct {
 }
 
 // NewConnectorsClient creates a new instance of ConnectorsClient with the specified values.
-func NewConnectorsClient(con *arm.Connection, subscriptionID string) *ConnectorsClient {
-	return &ConnectorsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewConnectorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ConnectorsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ConnectorsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Create a cloud account connector or update an existing one. Connect to your cloud account. For AWS, use either account credentials or
@@ -79,7 +87,7 @@ func (client *ConnectorsClient) createOrUpdateCreateRequest(ctx context.Context,
 func (client *ConnectorsClient) createOrUpdateHandleResponse(resp *http.Response) (ConnectorsCreateOrUpdateResponse, error) {
 	result := ConnectorsCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectorSetting); err != nil {
-		return ConnectorsCreateOrUpdateResponse{}, err
+		return ConnectorsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -192,7 +200,7 @@ func (client *ConnectorsClient) getCreateRequest(ctx context.Context, connectorN
 func (client *ConnectorsClient) getHandleResponse(resp *http.Response) (ConnectorsGetResponse, error) {
 	result := ConnectorsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectorSetting); err != nil {
-		return ConnectorsGetResponse{}, err
+		return ConnectorsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -246,7 +254,7 @@ func (client *ConnectorsClient) listCreateRequest(ctx context.Context, options *
 func (client *ConnectorsClient) listHandleResponse(resp *http.Response) (ConnectorsListResponse, error) {
 	result := ConnectorsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectorSettingList); err != nil {
-		return ConnectorsListResponse{}, err
+		return ConnectorsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

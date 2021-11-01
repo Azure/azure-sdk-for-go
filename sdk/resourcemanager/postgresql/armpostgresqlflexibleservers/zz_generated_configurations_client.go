@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // ConfigurationsClient contains the methods for the Configurations group.
@@ -31,8 +31,15 @@ type ConfigurationsClient struct {
 }
 
 // NewConfigurationsClient creates a new instance of ConfigurationsClient with the specified values.
-func NewConfigurationsClient(con *arm.Connection, subscriptionID string) *ConfigurationsClient {
-	return &ConfigurationsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ConfigurationsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ConfigurationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Gets information about a configuration of server.
@@ -86,7 +93,7 @@ func (client *ConfigurationsClient) getCreateRequest(ctx context.Context, resour
 func (client *ConfigurationsClient) getHandleResponse(resp *http.Response) (ConfigurationsGetResponse, error) {
 	result := ConfigurationsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Configuration); err != nil {
-		return ConfigurationsGetResponse{}, err
+		return ConfigurationsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -148,7 +155,7 @@ func (client *ConfigurationsClient) listByServerCreateRequest(ctx context.Contex
 func (client *ConfigurationsClient) listByServerHandleResponse(resp *http.Response) (ConfigurationsListByServerResponse, error) {
 	result := ConfigurationsListByServerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigurationListResult); err != nil {
-		return ConfigurationsListByServerResponse{}, err
+		return ConfigurationsListByServerResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

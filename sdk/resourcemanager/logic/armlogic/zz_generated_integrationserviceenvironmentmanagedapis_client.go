@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // IntegrationServiceEnvironmentManagedApisClient contains the methods for the IntegrationServiceEnvironmentManagedApis group.
@@ -31,8 +31,15 @@ type IntegrationServiceEnvironmentManagedApisClient struct {
 }
 
 // NewIntegrationServiceEnvironmentManagedApisClient creates a new instance of IntegrationServiceEnvironmentManagedApisClient with the specified values.
-func NewIntegrationServiceEnvironmentManagedApisClient(con *arm.Connection, subscriptionID string) *IntegrationServiceEnvironmentManagedApisClient {
-	return &IntegrationServiceEnvironmentManagedApisClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewIntegrationServiceEnvironmentManagedApisClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IntegrationServiceEnvironmentManagedApisClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &IntegrationServiceEnvironmentManagedApisClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginDelete - Deletes the integration service environment managed Api.
@@ -166,7 +173,7 @@ func (client *IntegrationServiceEnvironmentManagedApisClient) getCreateRequest(c
 func (client *IntegrationServiceEnvironmentManagedApisClient) getHandleResponse(resp *http.Response) (IntegrationServiceEnvironmentManagedApisGetResponse, error) {
 	result := IntegrationServiceEnvironmentManagedApisGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationServiceEnvironmentManagedAPI); err != nil {
-		return IntegrationServiceEnvironmentManagedApisGetResponse{}, err
+		return IntegrationServiceEnvironmentManagedApisGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -228,7 +235,7 @@ func (client *IntegrationServiceEnvironmentManagedApisClient) listCreateRequest(
 func (client *IntegrationServiceEnvironmentManagedApisClient) listHandleResponse(resp *http.Response) (IntegrationServiceEnvironmentManagedApisListResponse, error) {
 	result := IntegrationServiceEnvironmentManagedApisListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationServiceEnvironmentManagedAPIListResult); err != nil {
-		return IntegrationServiceEnvironmentManagedApisListResponse{}, err
+		return IntegrationServiceEnvironmentManagedApisListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

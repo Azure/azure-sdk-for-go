@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // HierarchySettingsClient contains the methods for the HierarchySettings group.
@@ -29,8 +30,15 @@ type HierarchySettingsClient struct {
 }
 
 // NewHierarchySettingsClient creates a new instance of HierarchySettingsClient with the specified values.
-func NewHierarchySettingsClient(con *arm.Connection) *HierarchySettingsClient {
-	return &HierarchySettingsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewHierarchySettingsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *HierarchySettingsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &HierarchySettingsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or updates the hierarchy settings defined at the Management Group level.
@@ -72,7 +80,7 @@ func (client *HierarchySettingsClient) createOrUpdateCreateRequest(ctx context.C
 func (client *HierarchySettingsClient) createOrUpdateHandleResponse(resp *http.Response) (HierarchySettingsCreateOrUpdateResponse, error) {
 	result := HierarchySettingsCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HierarchySettings); err != nil {
-		return HierarchySettingsCreateOrUpdateResponse{}, err
+		return HierarchySettingsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -177,7 +185,7 @@ func (client *HierarchySettingsClient) getCreateRequest(ctx context.Context, gro
 func (client *HierarchySettingsClient) getHandleResponse(resp *http.Response) (HierarchySettingsGetResponse, error) {
 	result := HierarchySettingsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HierarchySettings); err != nil {
-		return HierarchySettingsGetResponse{}, err
+		return HierarchySettingsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -234,7 +242,7 @@ func (client *HierarchySettingsClient) listCreateRequest(ctx context.Context, gr
 func (client *HierarchySettingsClient) listHandleResponse(resp *http.Response) (HierarchySettingsListResponse, error) {
 	result := HierarchySettingsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HierarchySettingsList); err != nil {
-		return HierarchySettingsListResponse{}, err
+		return HierarchySettingsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -291,7 +299,7 @@ func (client *HierarchySettingsClient) updateCreateRequest(ctx context.Context, 
 func (client *HierarchySettingsClient) updateHandleResponse(resp *http.Response) (HierarchySettingsUpdateResponse, error) {
 	result := HierarchySettingsUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HierarchySettings); err != nil {
-		return HierarchySettingsUpdateResponse{}, err
+		return HierarchySettingsUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

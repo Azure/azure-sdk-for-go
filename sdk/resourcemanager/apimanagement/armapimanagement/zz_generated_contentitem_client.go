@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ContentItemClient contains the methods for the ContentItem group.
@@ -30,8 +31,15 @@ type ContentItemClient struct {
 }
 
 // NewContentItemClient creates a new instance of ContentItemClient with the specified values.
-func NewContentItemClient(con *arm.Connection, subscriptionID string) *ContentItemClient {
-	return &ContentItemClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewContentItemClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ContentItemClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ContentItemClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates a new developer portal's content item specified by the provided content type.
@@ -79,7 +87,7 @@ func (client *ContentItemClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header.Set("If-Match", *options.IfMatch)
@@ -95,7 +103,7 @@ func (client *ContentItemClient) createOrUpdateHandleResponse(resp *http.Respons
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContentItemContract); err != nil {
-		return ContentItemCreateOrUpdateResponse{}, err
+		return ContentItemCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -158,7 +166,7 @@ func (client *ContentItemClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("If-Match", ifMatch)
 	req.Raw().Header.Set("Accept", "application/json")
@@ -223,7 +231,7 @@ func (client *ContentItemClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -236,7 +244,7 @@ func (client *ContentItemClient) getHandleResponse(resp *http.Response) (Content
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContentItemContract); err != nil {
-		return ContentItemGetResponse{}, err
+		return ContentItemGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -296,7 +304,7 @@ func (client *ContentItemClient) getEntityTagCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -352,7 +360,7 @@ func (client *ContentItemClient) listByServiceCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -362,7 +370,7 @@ func (client *ContentItemClient) listByServiceCreateRequest(ctx context.Context,
 func (client *ContentItemClient) listByServiceHandleResponse(resp *http.Response) (ContentItemListByServiceResponse, error) {
 	result := ContentItemListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContentItemCollection); err != nil {
-		return ContentItemListByServiceResponse{}, err
+		return ContentItemListByServiceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

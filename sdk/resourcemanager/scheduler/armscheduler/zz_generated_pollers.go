@@ -10,9 +10,8 @@ package armscheduler
 
 import (
 	"context"
-	"net/http"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"net/http"
 )
 
 // JobCollectionsDeletePoller provides polling facilities until the operation reaches a terminal state.

@@ -306,8 +306,8 @@ type LogFileProperties struct {
 // MarshalJSON implements the json.Marshaller interface for type LogFileProperties.
 func (l LogFileProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "createdTime", (*timeRFC3339)(l.CreatedTime))
-	populate(objectMap, "lastModifiedTime", (*timeRFC3339)(l.LastModifiedTime))
+	populateTimeRFC3339(objectMap, "createdTime", l.CreatedTime)
+	populateTimeRFC3339(objectMap, "lastModifiedTime", l.LastModifiedTime)
 	populate(objectMap, "sizeInKB", l.SizeInKB)
 	populate(objectMap, "type", l.Type)
 	populate(objectMap, "url", l.URL)
@@ -324,14 +324,10 @@ func (l *LogFileProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "createdTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			l.CreatedTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &l.CreatedTime)
 			delete(rawMsg, key)
 		case "lastModifiedTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			l.LastModifiedTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &l.LastModifiedTime)
 			delete(rawMsg, key)
 		case "sizeInKB":
 			err = unpopulate(val, &l.SizeInKB)
@@ -1009,7 +1005,7 @@ type ServerKeyProperties struct {
 // MarshalJSON implements the json.Marshaller interface for type ServerKeyProperties.
 func (s ServerKeyProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "creationDate", (*timeRFC3339)(s.CreationDate))
+	populateTimeRFC3339(objectMap, "creationDate", s.CreationDate)
 	populate(objectMap, "serverKeyType", s.ServerKeyType)
 	populate(objectMap, "uri", s.URI)
 	return json.Marshal(objectMap)
@@ -1025,9 +1021,7 @@ func (s *ServerKeyProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "creationDate":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			s.CreationDate = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &s.CreationDate)
 			delete(rawMsg, key)
 		case "serverKeyType":
 			err = unpopulate(val, &s.ServerKeyType)
@@ -1166,7 +1160,7 @@ func (s ServerProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "administratorLogin", s.AdministratorLogin)
 	populate(objectMap, "byokEnforcement", s.ByokEnforcement)
-	populate(objectMap, "earliestRestoreDate", (*timeRFC3339)(s.EarliestRestoreDate))
+	populateTimeRFC3339(objectMap, "earliestRestoreDate", s.EarliestRestoreDate)
 	populate(objectMap, "fullyQualifiedDomainName", s.FullyQualifiedDomainName)
 	populate(objectMap, "infrastructureEncryption", s.InfrastructureEncryption)
 	populate(objectMap, "masterServerId", s.MasterServerID)
@@ -1198,9 +1192,7 @@ func (s *ServerProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &s.ByokEnforcement)
 			delete(rawMsg, key)
 		case "earliestRestoreDate":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			s.EarliestRestoreDate = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &s.EarliestRestoreDate)
 			delete(rawMsg, key)
 		case "fullyQualifiedDomainName":
 			err = unpopulate(val, &s.FullyQualifiedDomainName)
@@ -1473,7 +1465,7 @@ type ServerPropertiesForRestore struct {
 func (s ServerPropertiesForRestore) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	s.ServerPropertiesForCreate.marshalInternal(objectMap, CreateModePointInTimeRestore)
-	populate(objectMap, "restorePointInTime", (*timeRFC3339)(s.RestorePointInTime))
+	populateTimeRFC3339(objectMap, "restorePointInTime", s.RestorePointInTime)
 	populate(objectMap, "sourceServerId", s.SourceServerID)
 	return json.Marshal(objectMap)
 }
@@ -1488,9 +1480,7 @@ func (s *ServerPropertiesForRestore) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "restorePointInTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			s.RestorePointInTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &s.RestorePointInTime)
 			delete(rawMsg, key)
 		case "sourceServerId":
 			err = unpopulate(val, &s.SourceServerID)

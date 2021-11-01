@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // WatcherClient contains the methods for the Watcher group.
@@ -30,8 +31,15 @@ type WatcherClient struct {
 }
 
 // NewWatcherClient creates a new instance of WatcherClient with the specified values.
-func NewWatcherClient(con *arm.Connection, subscriptionID string) *WatcherClient {
-	return &WatcherClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewWatcherClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WatcherClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &WatcherClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Create the watcher identified by watcher name.
@@ -85,7 +93,7 @@ func (client *WatcherClient) createOrUpdateCreateRequest(ctx context.Context, re
 func (client *WatcherClient) createOrUpdateHandleResponse(resp *http.Response) (WatcherCreateOrUpdateResponse, error) {
 	result := WatcherCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Watcher); err != nil {
-		return WatcherCreateOrUpdateResponse{}, err
+		return WatcherCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -214,7 +222,7 @@ func (client *WatcherClient) getCreateRequest(ctx context.Context, resourceGroup
 func (client *WatcherClient) getHandleResponse(resp *http.Response) (WatcherGetResponse, error) {
 	result := WatcherGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Watcher); err != nil {
-		return WatcherGetResponse{}, err
+		return WatcherGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -279,7 +287,7 @@ func (client *WatcherClient) listByAutomationAccountCreateRequest(ctx context.Co
 func (client *WatcherClient) listByAutomationAccountHandleResponse(resp *http.Response) (WatcherListByAutomationAccountResponse, error) {
 	result := WatcherListByAutomationAccountResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WatcherListResult); err != nil {
-		return WatcherListByAutomationAccountResponse{}, err
+		return WatcherListByAutomationAccountResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -468,7 +476,7 @@ func (client *WatcherClient) updateCreateRequest(ctx context.Context, resourceGr
 func (client *WatcherClient) updateHandleResponse(resp *http.Response) (WatcherUpdateResponse, error) {
 	result := WatcherUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Watcher); err != nil {
-		return WatcherUpdateResponse{}, err
+		return WatcherUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

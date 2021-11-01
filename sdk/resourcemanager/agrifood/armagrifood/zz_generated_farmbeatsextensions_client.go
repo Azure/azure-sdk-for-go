@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // FarmBeatsExtensionsClient contains the methods for the FarmBeatsExtensions group.
@@ -30,8 +31,15 @@ type FarmBeatsExtensionsClient struct {
 }
 
 // NewFarmBeatsExtensionsClient creates a new instance of FarmBeatsExtensionsClient with the specified values.
-func NewFarmBeatsExtensionsClient(con *arm.Connection) *FarmBeatsExtensionsClient {
-	return &FarmBeatsExtensionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewFarmBeatsExtensionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *FarmBeatsExtensionsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &FarmBeatsExtensionsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Get farmBeats extension.
@@ -73,7 +81,7 @@ func (client *FarmBeatsExtensionsClient) getCreateRequest(ctx context.Context, f
 func (client *FarmBeatsExtensionsClient) getHandleResponse(resp *http.Response) (FarmBeatsExtensionsGetResponse, error) {
 	result := FarmBeatsExtensionsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FarmBeatsExtension); err != nil {
-		return FarmBeatsExtensionsGetResponse{}, err
+		return FarmBeatsExtensionsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -146,7 +154,7 @@ func (client *FarmBeatsExtensionsClient) listCreateRequest(ctx context.Context, 
 func (client *FarmBeatsExtensionsClient) listHandleResponse(resp *http.Response) (FarmBeatsExtensionsListResponse, error) {
 	result := FarmBeatsExtensionsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FarmBeatsExtensionListResponse); err != nil {
-		return FarmBeatsExtensionsListResponse{}, err
+		return FarmBeatsExtensionsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // MigrationConfigsClient contains the methods for the MigrationConfigs group.
@@ -31,8 +31,15 @@ type MigrationConfigsClient struct {
 }
 
 // NewMigrationConfigsClient creates a new instance of MigrationConfigsClient with the specified values.
-func NewMigrationConfigsClient(con *arm.Connection, subscriptionID string) *MigrationConfigsClient {
-	return &MigrationConfigsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewMigrationConfigsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *MigrationConfigsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &MigrationConfigsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CompleteMigration - This operation Completes Migration of entities by pointing the connection strings to Premium namespace and any entities created after
@@ -288,7 +295,7 @@ func (client *MigrationConfigsClient) getCreateRequest(ctx context.Context, reso
 func (client *MigrationConfigsClient) getHandleResponse(resp *http.Response) (MigrationConfigsGetResponse, error) {
 	result := MigrationConfigsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MigrationConfigProperties); err != nil {
-		return MigrationConfigsGetResponse{}, err
+		return MigrationConfigsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -350,7 +357,7 @@ func (client *MigrationConfigsClient) listCreateRequest(ctx context.Context, res
 func (client *MigrationConfigsClient) listHandleResponse(resp *http.Response) (MigrationConfigsListResponse, error) {
 	result := MigrationConfigsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MigrationConfigListResult); err != nil {
-		return MigrationConfigsListResponse{}, err
+		return MigrationConfigsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

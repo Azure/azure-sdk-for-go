@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // APIPolicyClient contains the methods for the APIPolicy group.
@@ -30,8 +31,15 @@ type APIPolicyClient struct {
 }
 
 // NewAPIPolicyClient creates a new instance of APIPolicyClient with the specified values.
-func NewAPIPolicyClient(con *arm.Connection, subscriptionID string) *APIPolicyClient {
-	return &APIPolicyClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewAPIPolicyClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *APIPolicyClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &APIPolicyClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or updates policy configuration for the API.
@@ -79,7 +87,7 @@ func (client *APIPolicyClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header.Set("If-Match", *options.IfMatch)
@@ -95,7 +103,7 @@ func (client *APIPolicyClient) createOrUpdateHandleResponse(resp *http.Response)
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyContract); err != nil {
-		return APIPolicyCreateOrUpdateResponse{}, err
+		return APIPolicyCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -158,7 +166,7 @@ func (client *APIPolicyClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("If-Match", ifMatch)
 	req.Raw().Header.Set("Accept", "application/json")
@@ -227,7 +235,7 @@ func (client *APIPolicyClient) getCreateRequest(ctx context.Context, resourceGro
 	if options != nil && options.Format != nil {
 		reqQP.Set("format", string(*options.Format))
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json, application/vnd.ms-azure-apim.policy+xml, application/vnd.ms-azure-apim.policy.raw+xml")
 	return req, nil
@@ -240,7 +248,7 @@ func (client *APIPolicyClient) getHandleResponse(resp *http.Response) (APIPolicy
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyContract); err != nil {
-		return APIPolicyGetResponse{}, err
+		return APIPolicyGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -300,7 +308,7 @@ func (client *APIPolicyClient) getEntityTagCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -359,7 +367,7 @@ func (client *APIPolicyClient) listByAPICreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -369,7 +377,7 @@ func (client *APIPolicyClient) listByAPICreateRequest(ctx context.Context, resou
 func (client *APIPolicyClient) listByAPIHandleResponse(resp *http.Response) (APIPolicyListByAPIResponse, error) {
 	result := APIPolicyListByAPIResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyCollection); err != nil {
-		return APIPolicyListByAPIResponse{}, err
+		return APIPolicyListByAPIResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

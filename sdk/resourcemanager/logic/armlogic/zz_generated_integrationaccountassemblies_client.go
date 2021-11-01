@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // IntegrationAccountAssembliesClient contains the methods for the IntegrationAccountAssemblies group.
@@ -30,8 +31,15 @@ type IntegrationAccountAssembliesClient struct {
 }
 
 // NewIntegrationAccountAssembliesClient creates a new instance of IntegrationAccountAssembliesClient with the specified values.
-func NewIntegrationAccountAssembliesClient(con *arm.Connection, subscriptionID string) *IntegrationAccountAssembliesClient {
-	return &IntegrationAccountAssembliesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewIntegrationAccountAssembliesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IntegrationAccountAssembliesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &IntegrationAccountAssembliesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Create or update an assembly for an integration account.
@@ -85,7 +93,7 @@ func (client *IntegrationAccountAssembliesClient) createOrUpdateCreateRequest(ct
 func (client *IntegrationAccountAssembliesClient) createOrUpdateHandleResponse(resp *http.Response) (IntegrationAccountAssembliesCreateOrUpdateResponse, error) {
 	result := IntegrationAccountAssembliesCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssemblyDefinition); err != nil {
-		return IntegrationAccountAssembliesCreateOrUpdateResponse{}, err
+		return IntegrationAccountAssembliesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -214,7 +222,7 @@ func (client *IntegrationAccountAssembliesClient) getCreateRequest(ctx context.C
 func (client *IntegrationAccountAssembliesClient) getHandleResponse(resp *http.Response) (IntegrationAccountAssembliesGetResponse, error) {
 	result := IntegrationAccountAssembliesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssemblyDefinition); err != nil {
-		return IntegrationAccountAssembliesGetResponse{}, err
+		return IntegrationAccountAssembliesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -279,7 +287,7 @@ func (client *IntegrationAccountAssembliesClient) listCreateRequest(ctx context.
 func (client *IntegrationAccountAssembliesClient) listHandleResponse(resp *http.Response) (IntegrationAccountAssembliesListResponse, error) {
 	result := IntegrationAccountAssembliesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssemblyCollection); err != nil {
-		return IntegrationAccountAssembliesListResponse{}, err
+		return IntegrationAccountAssembliesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -348,7 +356,7 @@ func (client *IntegrationAccountAssembliesClient) listContentCallbackURLCreateRe
 func (client *IntegrationAccountAssembliesClient) listContentCallbackURLHandleResponse(resp *http.Response) (IntegrationAccountAssembliesListContentCallbackURLResponse, error) {
 	result := IntegrationAccountAssembliesListContentCallbackURLResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowTriggerCallbackURL); err != nil {
-		return IntegrationAccountAssembliesListContentCallbackURLResponse{}, err
+		return IntegrationAccountAssembliesListContentCallbackURLResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

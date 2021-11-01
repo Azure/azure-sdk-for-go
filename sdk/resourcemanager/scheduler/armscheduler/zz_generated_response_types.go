@@ -10,10 +10,9 @@ package armscheduler
 
 import (
 	"context"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"net/http"
 	"time"
-
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 )
 
 // JobCollectionsCreateOrUpdateResponse contains the response from method JobCollections.CreateOrUpdate.
@@ -38,6 +37,8 @@ type JobCollectionsDeletePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l JobCollectionsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (JobCollectionsDeleteResponse, error) {
 	respType := JobCollectionsDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -82,6 +83,8 @@ type JobCollectionsDisablePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l JobCollectionsDisablePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (JobCollectionsDisableResponse, error) {
 	respType := JobCollectionsDisableResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -126,6 +129,8 @@ type JobCollectionsEnablePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l JobCollectionsEnablePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (JobCollectionsEnableResponse, error) {
 	respType := JobCollectionsEnableResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)

@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // AutomationAccountClient contains the methods for the AutomationAccount group.
@@ -30,8 +31,15 @@ type AutomationAccountClient struct {
 }
 
 // NewAutomationAccountClient creates a new instance of AutomationAccountClient with the specified values.
-func NewAutomationAccountClient(con *arm.Connection, subscriptionID string) *AutomationAccountClient {
-	return &AutomationAccountClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewAutomationAccountClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AutomationAccountClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &AutomationAccountClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Create or update automation account.
@@ -81,7 +89,7 @@ func (client *AutomationAccountClient) createOrUpdateCreateRequest(ctx context.C
 func (client *AutomationAccountClient) createOrUpdateHandleResponse(resp *http.Response) (AutomationAccountCreateOrUpdateResponse, error) {
 	result := AutomationAccountCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutomationAccount); err != nil {
-		return AutomationAccountCreateOrUpdateResponse{}, err
+		return AutomationAccountCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -202,7 +210,7 @@ func (client *AutomationAccountClient) getCreateRequest(ctx context.Context, res
 func (client *AutomationAccountClient) getHandleResponse(resp *http.Response) (AutomationAccountGetResponse, error) {
 	result := AutomationAccountGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutomationAccount); err != nil {
-		return AutomationAccountGetResponse{}, err
+		return AutomationAccountGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -256,7 +264,7 @@ func (client *AutomationAccountClient) listCreateRequest(ctx context.Context, op
 func (client *AutomationAccountClient) listHandleResponse(resp *http.Response) (AutomationAccountListResponse, error) {
 	result := AutomationAccountListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutomationAccountListResult); err != nil {
-		return AutomationAccountListResponse{}, err
+		return AutomationAccountListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -314,7 +322,7 @@ func (client *AutomationAccountClient) listByResourceGroupCreateRequest(ctx cont
 func (client *AutomationAccountClient) listByResourceGroupHandleResponse(resp *http.Response) (AutomationAccountListByResourceGroupResponse, error) {
 	result := AutomationAccountListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutomationAccountListResult); err != nil {
-		return AutomationAccountListByResourceGroupResponse{}, err
+		return AutomationAccountListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -379,7 +387,7 @@ func (client *AutomationAccountClient) updateCreateRequest(ctx context.Context, 
 func (client *AutomationAccountClient) updateHandleResponse(resp *http.Response) (AutomationAccountUpdateResponse, error) {
 	result := AutomationAccountUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutomationAccount); err != nil {
-		return AutomationAccountUpdateResponse{}, err
+		return AutomationAccountUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

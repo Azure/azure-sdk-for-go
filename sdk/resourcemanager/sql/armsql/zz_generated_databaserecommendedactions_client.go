@@ -11,13 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // DatabaseRecommendedActionsClient contains the methods for the DatabaseRecommendedActions group.
@@ -29,8 +30,15 @@ type DatabaseRecommendedActionsClient struct {
 }
 
 // NewDatabaseRecommendedActionsClient creates a new instance of DatabaseRecommendedActionsClient with the specified values.
-func NewDatabaseRecommendedActionsClient(con *arm.Connection, subscriptionID string) *DatabaseRecommendedActionsClient {
-	return &DatabaseRecommendedActionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewDatabaseRecommendedActionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DatabaseRecommendedActionsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &DatabaseRecommendedActionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Gets a database recommended action.
@@ -92,7 +100,7 @@ func (client *DatabaseRecommendedActionsClient) getCreateRequest(ctx context.Con
 func (client *DatabaseRecommendedActionsClient) getHandleResponse(resp *http.Response) (DatabaseRecommendedActionsGetResponse, error) {
 	result := DatabaseRecommendedActionsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendedAction); err != nil {
-		return DatabaseRecommendedActionsGetResponse{}, err
+		return DatabaseRecommendedActionsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -164,7 +172,7 @@ func (client *DatabaseRecommendedActionsClient) listByDatabaseAdvisorCreateReque
 func (client *DatabaseRecommendedActionsClient) listByDatabaseAdvisorHandleResponse(resp *http.Response) (DatabaseRecommendedActionsListByDatabaseAdvisorResponse, error) {
 	result := DatabaseRecommendedActionsListByDatabaseAdvisorResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendedActionArray); err != nil {
-		return DatabaseRecommendedActionsListByDatabaseAdvisorResponse{}, err
+		return DatabaseRecommendedActionsListByDatabaseAdvisorResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -240,7 +248,7 @@ func (client *DatabaseRecommendedActionsClient) updateCreateRequest(ctx context.
 func (client *DatabaseRecommendedActionsClient) updateHandleResponse(resp *http.Response) (DatabaseRecommendedActionsUpdateResponse, error) {
 	result := DatabaseRecommendedActionsUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendedAction); err != nil {
-		return DatabaseRecommendedActionsUpdateResponse{}, err
+		return DatabaseRecommendedActionsUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

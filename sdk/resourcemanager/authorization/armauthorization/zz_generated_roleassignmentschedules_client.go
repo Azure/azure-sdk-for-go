@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // RoleAssignmentSchedulesClient contains the methods for the RoleAssignmentSchedules group.
@@ -29,8 +30,15 @@ type RoleAssignmentSchedulesClient struct {
 }
 
 // NewRoleAssignmentSchedulesClient creates a new instance of RoleAssignmentSchedulesClient with the specified values.
-func NewRoleAssignmentSchedulesClient(con *arm.Connection) *RoleAssignmentSchedulesClient {
-	return &RoleAssignmentSchedulesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewRoleAssignmentSchedulesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *RoleAssignmentSchedulesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &RoleAssignmentSchedulesClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Get the specified role assignment schedule for a resource scope
@@ -53,9 +61,6 @@ func (client *RoleAssignmentSchedulesClient) Get(ctx context.Context, scope stri
 // getCreateRequest creates the Get request.
 func (client *RoleAssignmentSchedulesClient) getCreateRequest(ctx context.Context, scope string, roleAssignmentScheduleName string, options *RoleAssignmentSchedulesGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleAssignmentSchedules/{roleAssignmentScheduleName}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if roleAssignmentScheduleName == "" {
 		return nil, errors.New("parameter roleAssignmentScheduleName cannot be empty")
@@ -76,7 +81,7 @@ func (client *RoleAssignmentSchedulesClient) getCreateRequest(ctx context.Contex
 func (client *RoleAssignmentSchedulesClient) getHandleResponse(resp *http.Response) (RoleAssignmentSchedulesGetResponse, error) {
 	result := RoleAssignmentSchedulesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignmentSchedule); err != nil {
-		return RoleAssignmentSchedulesGetResponse{}, err
+		return RoleAssignmentSchedulesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -111,9 +116,6 @@ func (client *RoleAssignmentSchedulesClient) ListForScope(scope string, options 
 // listForScopeCreateRequest creates the ListForScope request.
 func (client *RoleAssignmentSchedulesClient) listForScopeCreateRequest(ctx context.Context, scope string, options *RoleAssignmentSchedulesListForScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleAssignmentSchedules"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -133,7 +135,7 @@ func (client *RoleAssignmentSchedulesClient) listForScopeCreateRequest(ctx conte
 func (client *RoleAssignmentSchedulesClient) listForScopeHandleResponse(resp *http.Response) (RoleAssignmentSchedulesListForScopeResponse, error) {
 	result := RoleAssignmentSchedulesListForScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignmentScheduleListResult); err != nil {
-		return RoleAssignmentSchedulesListForScopeResponse{}, err
+		return RoleAssignmentSchedulesListForScopeResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

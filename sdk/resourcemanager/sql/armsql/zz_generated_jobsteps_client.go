@@ -11,14 +11,15 @@ package armsql
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // JobStepsClient contains the methods for the JobSteps group.
@@ -30,8 +31,15 @@ type JobStepsClient struct {
 }
 
 // NewJobStepsClient creates a new instance of JobStepsClient with the specified values.
-func NewJobStepsClient(con *arm.Connection, subscriptionID string) *JobStepsClient {
-	return &JobStepsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewJobStepsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *JobStepsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &JobStepsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or updates a job step. This will implicitly create a new job version.
@@ -93,7 +101,7 @@ func (client *JobStepsClient) createOrUpdateCreateRequest(ctx context.Context, r
 func (client *JobStepsClient) createOrUpdateHandleResponse(resp *http.Response) (JobStepsCreateOrUpdateResponse, error) {
 	result := JobStepsCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobStep); err != nil {
-		return JobStepsCreateOrUpdateResponse{}, err
+		return JobStepsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -235,7 +243,7 @@ func (client *JobStepsClient) getCreateRequest(ctx context.Context, resourceGrou
 func (client *JobStepsClient) getHandleResponse(resp *http.Response) (JobStepsGetResponse, error) {
 	result := JobStepsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobStep); err != nil {
-		return JobStepsGetResponse{}, err
+		return JobStepsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -312,7 +320,7 @@ func (client *JobStepsClient) getByVersionCreateRequest(ctx context.Context, res
 func (client *JobStepsClient) getByVersionHandleResponse(resp *http.Response) (JobStepsGetByVersionResponse, error) {
 	result := JobStepsGetByVersionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobStep); err != nil {
-		return JobStepsGetByVersionResponse{}, err
+		return JobStepsGetByVersionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -381,7 +389,7 @@ func (client *JobStepsClient) listByJobCreateRequest(ctx context.Context, resour
 func (client *JobStepsClient) listByJobHandleResponse(resp *http.Response) (JobStepsListByJobResponse, error) {
 	result := JobStepsListByJobResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobStepListResult); err != nil {
-		return JobStepsListByJobResponse{}, err
+		return JobStepsListByJobResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -451,7 +459,7 @@ func (client *JobStepsClient) listByVersionCreateRequest(ctx context.Context, re
 func (client *JobStepsClient) listByVersionHandleResponse(resp *http.Response) (JobStepsListByVersionResponse, error) {
 	result := JobStepsListByVersionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobStepListResult); err != nil {
-		return JobStepsListByVersionResponse{}, err
+		return JobStepsListByVersionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

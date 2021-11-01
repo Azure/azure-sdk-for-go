@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // GalleriesClient contains the methods for the Galleries group.
@@ -31,8 +31,15 @@ type GalleriesClient struct {
 }
 
 // NewGalleriesClient creates a new instance of GalleriesClient with the specified values.
-func NewGalleriesClient(con *arm.Connection, subscriptionID string) *GalleriesClient {
-	return &GalleriesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewGalleriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *GalleriesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &GalleriesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Create or update a Shared Image Gallery.
@@ -237,7 +244,7 @@ func (client *GalleriesClient) getCreateRequest(ctx context.Context, resourceGro
 func (client *GalleriesClient) getHandleResponse(resp *http.Response) (GalleriesGetResponse, error) {
 	result := GalleriesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Gallery); err != nil {
-		return GalleriesGetResponse{}, err
+		return GalleriesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -291,7 +298,7 @@ func (client *GalleriesClient) listCreateRequest(ctx context.Context, options *G
 func (client *GalleriesClient) listHandleResponse(resp *http.Response) (GalleriesListResponse, error) {
 	result := GalleriesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GalleryList); err != nil {
-		return GalleriesListResponse{}, err
+		return GalleriesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -349,7 +356,7 @@ func (client *GalleriesClient) listByResourceGroupCreateRequest(ctx context.Cont
 func (client *GalleriesClient) listByResourceGroupHandleResponse(resp *http.Response) (GalleriesListByResourceGroupResponse, error) {
 	result := GalleriesListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GalleryList); err != nil {
-		return GalleriesListByResourceGroupResponse{}, err
+		return GalleriesListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

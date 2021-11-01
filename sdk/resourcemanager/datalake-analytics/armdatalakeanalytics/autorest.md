@@ -5,8 +5,8 @@
 ``` yaml
 azure-arm: true
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/348665d474283df6a73d6a2ec6defef271251f13/specification/datalake-analytics/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/348665d474283df6a73d6a2ec6defef271251f13/specification/datalake-analytics/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/69eacf00a36d565d3220d5dd6f4a5293664f1ae9/specification/datalake-analytics/resource-manager/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/69eacf00a36d565d3220d5dd6f4a5293664f1ae9/specification/datalake-analytics/resource-manager/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 0.1.0
+module-version: 0.2.0
 ```

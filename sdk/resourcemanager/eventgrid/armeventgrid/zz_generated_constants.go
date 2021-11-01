@@ -10,7 +10,7 @@ package armeventgrid
 
 const (
 	module  = "armeventgrid"
-	version = "v0.1.0"
+	version = "v0.2.0"
 )
 
 // AdvancedFilterOperatorType - The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
@@ -18,23 +18,16 @@ type AdvancedFilterOperatorType string
 
 const (
 	AdvancedFilterOperatorTypeBoolEquals                AdvancedFilterOperatorType = "BoolEquals"
-	AdvancedFilterOperatorTypeIsNotNull                 AdvancedFilterOperatorType = "IsNotNull"
-	AdvancedFilterOperatorTypeIsNullOrUndefined         AdvancedFilterOperatorType = "IsNullOrUndefined"
 	AdvancedFilterOperatorTypeNumberGreaterThan         AdvancedFilterOperatorType = "NumberGreaterThan"
 	AdvancedFilterOperatorTypeNumberGreaterThanOrEquals AdvancedFilterOperatorType = "NumberGreaterThanOrEquals"
 	AdvancedFilterOperatorTypeNumberIn                  AdvancedFilterOperatorType = "NumberIn"
-	AdvancedFilterOperatorTypeNumberInRange             AdvancedFilterOperatorType = "NumberInRange"
 	AdvancedFilterOperatorTypeNumberLessThan            AdvancedFilterOperatorType = "NumberLessThan"
 	AdvancedFilterOperatorTypeNumberLessThanOrEquals    AdvancedFilterOperatorType = "NumberLessThanOrEquals"
 	AdvancedFilterOperatorTypeNumberNotIn               AdvancedFilterOperatorType = "NumberNotIn"
-	AdvancedFilterOperatorTypeNumberNotInRange          AdvancedFilterOperatorType = "NumberNotInRange"
 	AdvancedFilterOperatorTypeStringBeginsWith          AdvancedFilterOperatorType = "StringBeginsWith"
 	AdvancedFilterOperatorTypeStringContains            AdvancedFilterOperatorType = "StringContains"
 	AdvancedFilterOperatorTypeStringEndsWith            AdvancedFilterOperatorType = "StringEndsWith"
 	AdvancedFilterOperatorTypeStringIn                  AdvancedFilterOperatorType = "StringIn"
-	AdvancedFilterOperatorTypeStringNotBeginsWith       AdvancedFilterOperatorType = "StringNotBeginsWith"
-	AdvancedFilterOperatorTypeStringNotContains         AdvancedFilterOperatorType = "StringNotContains"
-	AdvancedFilterOperatorTypeStringNotEndsWith         AdvancedFilterOperatorType = "StringNotEndsWith"
 	AdvancedFilterOperatorTypeStringNotIn               AdvancedFilterOperatorType = "StringNotIn"
 )
 
@@ -42,23 +35,16 @@ const (
 func PossibleAdvancedFilterOperatorTypeValues() []AdvancedFilterOperatorType {
 	return []AdvancedFilterOperatorType{
 		AdvancedFilterOperatorTypeBoolEquals,
-		AdvancedFilterOperatorTypeIsNotNull,
-		AdvancedFilterOperatorTypeIsNullOrUndefined,
 		AdvancedFilterOperatorTypeNumberGreaterThan,
 		AdvancedFilterOperatorTypeNumberGreaterThanOrEquals,
 		AdvancedFilterOperatorTypeNumberIn,
-		AdvancedFilterOperatorTypeNumberInRange,
 		AdvancedFilterOperatorTypeNumberLessThan,
 		AdvancedFilterOperatorTypeNumberLessThanOrEquals,
 		AdvancedFilterOperatorTypeNumberNotIn,
-		AdvancedFilterOperatorTypeNumberNotInRange,
 		AdvancedFilterOperatorTypeStringBeginsWith,
 		AdvancedFilterOperatorTypeStringContains,
 		AdvancedFilterOperatorTypeStringEndsWith,
 		AdvancedFilterOperatorTypeStringIn,
-		AdvancedFilterOperatorTypeStringNotBeginsWith,
-		AdvancedFilterOperatorTypeStringNotContains,
-		AdvancedFilterOperatorTypeStringNotEndsWith,
 		AdvancedFilterOperatorTypeStringNotIn,
 	}
 }
@@ -222,120 +208,83 @@ func (c EndpointType) ToPtr() *EndpointType {
 	return &c
 }
 
-type Enum25 string
+type Enum18 string
 
 const (
-	Enum25Domains           Enum25 = "domains"
-	Enum25PartnerNamespaces Enum25 = "partnerNamespaces"
-	Enum25Topics            Enum25 = "topics"
+	Enum18Domains Enum18 = "domains"
+	Enum18Topics  Enum18 = "topics"
 )
 
-// PossibleEnum25Values returns the possible values for the Enum25 const type.
-func PossibleEnum25Values() []Enum25 {
-	return []Enum25{
-		Enum25Domains,
-		Enum25PartnerNamespaces,
-		Enum25Topics,
+// PossibleEnum18Values returns the possible values for the Enum18 const type.
+func PossibleEnum18Values() []Enum18 {
+	return []Enum18{
+		Enum18Domains,
+		Enum18Topics,
 	}
 }
 
-// ToPtr returns a *Enum25 pointing to the current value.
-func (c Enum25) ToPtr() *Enum25 {
+// ToPtr returns a *Enum18 pointing to the current value.
+func (c Enum18) ToPtr() *Enum18 {
 	return &c
 }
 
-type Enum26 string
+type Enum19 string
 
 const (
-	Enum26Domains           Enum26 = "domains"
-	Enum26PartnerNamespaces Enum26 = "partnerNamespaces"
-	Enum26Topics            Enum26 = "topics"
+	Enum19Domains Enum19 = "domains"
+	Enum19Topics  Enum19 = "topics"
 )
 
-// PossibleEnum26Values returns the possible values for the Enum26 const type.
-func PossibleEnum26Values() []Enum26 {
-	return []Enum26{
-		Enum26Domains,
-		Enum26PartnerNamespaces,
-		Enum26Topics,
+// PossibleEnum19Values returns the possible values for the Enum19 const type.
+func PossibleEnum19Values() []Enum19 {
+	return []Enum19{
+		Enum19Domains,
+		Enum19Topics,
 	}
 }
 
-// ToPtr returns a *Enum26 pointing to the current value.
-func (c Enum26) ToPtr() *Enum26 {
+// ToPtr returns a *Enum19 pointing to the current value.
+func (c Enum19) ToPtr() *Enum19 {
 	return &c
 }
 
-type Enum27 string
+type Enum20 string
 
 const (
-	Enum27Domains           Enum27 = "domains"
-	Enum27PartnerNamespaces Enum27 = "partnerNamespaces"
-	Enum27Topics            Enum27 = "topics"
+	Enum20Domains Enum20 = "domains"
+	Enum20Topics  Enum20 = "topics"
 )
 
-// PossibleEnum27Values returns the possible values for the Enum27 const type.
-func PossibleEnum27Values() []Enum27 {
-	return []Enum27{
-		Enum27Domains,
-		Enum27PartnerNamespaces,
-		Enum27Topics,
+// PossibleEnum20Values returns the possible values for the Enum20 const type.
+func PossibleEnum20Values() []Enum20 {
+	return []Enum20{
+		Enum20Domains,
+		Enum20Topics,
 	}
 }
 
-// ToPtr returns a *Enum27 pointing to the current value.
-func (c Enum27) ToPtr() *Enum27 {
+// ToPtr returns a *Enum20 pointing to the current value.
+func (c Enum20) ToPtr() *Enum20 {
 	return &c
 }
 
-type Enum28 string
+type Enum21 string
 
 const (
-	Enum28Domains           Enum28 = "domains"
-	Enum28PartnerNamespaces Enum28 = "partnerNamespaces"
-	Enum28Topics            Enum28 = "topics"
+	Enum21Domains Enum21 = "domains"
+	Enum21Topics  Enum21 = "topics"
 )
 
-// PossibleEnum28Values returns the possible values for the Enum28 const type.
-func PossibleEnum28Values() []Enum28 {
-	return []Enum28{
-		Enum28Domains,
-		Enum28PartnerNamespaces,
-		Enum28Topics,
+// PossibleEnum21Values returns the possible values for the Enum21 const type.
+func PossibleEnum21Values() []Enum21 {
+	return []Enum21{
+		Enum21Domains,
+		Enum21Topics,
 	}
 }
 
-// ToPtr returns a *Enum28 pointing to the current value.
-func (c Enum28) ToPtr() *Enum28 {
-	return &c
-}
-
-// EventChannelProvisioningState - Provisioning state of the event channel.
-type EventChannelProvisioningState string
-
-const (
-	EventChannelProvisioningStateCanceled  EventChannelProvisioningState = "Canceled"
-	EventChannelProvisioningStateCreating  EventChannelProvisioningState = "Creating"
-	EventChannelProvisioningStateDeleting  EventChannelProvisioningState = "Deleting"
-	EventChannelProvisioningStateFailed    EventChannelProvisioningState = "Failed"
-	EventChannelProvisioningStateSucceeded EventChannelProvisioningState = "Succeeded"
-	EventChannelProvisioningStateUpdating  EventChannelProvisioningState = "Updating"
-)
-
-// PossibleEventChannelProvisioningStateValues returns the possible values for the EventChannelProvisioningState const type.
-func PossibleEventChannelProvisioningStateValues() []EventChannelProvisioningState {
-	return []EventChannelProvisioningState{
-		EventChannelProvisioningStateCanceled,
-		EventChannelProvisioningStateCreating,
-		EventChannelProvisioningStateDeleting,
-		EventChannelProvisioningStateFailed,
-		EventChannelProvisioningStateSucceeded,
-		EventChannelProvisioningStateUpdating,
-	}
-}
-
-// ToPtr returns a *EventChannelProvisioningState pointing to the current value.
-func (c EventChannelProvisioningState) ToPtr() *EventChannelProvisioningState {
+// ToPtr returns a *Enum21 pointing to the current value.
+func (c Enum21) ToPtr() *Enum21 {
 	return &c
 }
 
@@ -460,7 +409,7 @@ func (c IdentityType) ToPtr() *IdentityType {
 	return &c
 }
 
-// InputSchema - This determines the format that Event Grid should expect for incoming events published to the Event Grid Domain Resource.
+// InputSchema - This determines the format that Event Grid should expect for incoming events published to the domain.
 type InputSchema string
 
 const (
@@ -499,164 +448,6 @@ func PossibleInputSchemaMappingTypeValues() []InputSchemaMappingType {
 
 // ToPtr returns a *InputSchemaMappingType pointing to the current value.
 func (c InputSchemaMappingType) ToPtr() *InputSchemaMappingType {
-	return &c
-}
-
-// PartnerNamespaceProvisioningState - Provisioning state of the partner namespace.
-type PartnerNamespaceProvisioningState string
-
-const (
-	PartnerNamespaceProvisioningStateCanceled  PartnerNamespaceProvisioningState = "Canceled"
-	PartnerNamespaceProvisioningStateCreating  PartnerNamespaceProvisioningState = "Creating"
-	PartnerNamespaceProvisioningStateDeleting  PartnerNamespaceProvisioningState = "Deleting"
-	PartnerNamespaceProvisioningStateFailed    PartnerNamespaceProvisioningState = "Failed"
-	PartnerNamespaceProvisioningStateSucceeded PartnerNamespaceProvisioningState = "Succeeded"
-	PartnerNamespaceProvisioningStateUpdating  PartnerNamespaceProvisioningState = "Updating"
-)
-
-// PossiblePartnerNamespaceProvisioningStateValues returns the possible values for the PartnerNamespaceProvisioningState const type.
-func PossiblePartnerNamespaceProvisioningStateValues() []PartnerNamespaceProvisioningState {
-	return []PartnerNamespaceProvisioningState{
-		PartnerNamespaceProvisioningStateCanceled,
-		PartnerNamespaceProvisioningStateCreating,
-		PartnerNamespaceProvisioningStateDeleting,
-		PartnerNamespaceProvisioningStateFailed,
-		PartnerNamespaceProvisioningStateSucceeded,
-		PartnerNamespaceProvisioningStateUpdating,
-	}
-}
-
-// ToPtr returns a *PartnerNamespaceProvisioningState pointing to the current value.
-func (c PartnerNamespaceProvisioningState) ToPtr() *PartnerNamespaceProvisioningState {
-	return &c
-}
-
-// PartnerRegistrationProvisioningState - Provisioning state of the partner registration.
-type PartnerRegistrationProvisioningState string
-
-const (
-	PartnerRegistrationProvisioningStateCanceled  PartnerRegistrationProvisioningState = "Canceled"
-	PartnerRegistrationProvisioningStateCreating  PartnerRegistrationProvisioningState = "Creating"
-	PartnerRegistrationProvisioningStateDeleting  PartnerRegistrationProvisioningState = "Deleting"
-	PartnerRegistrationProvisioningStateFailed    PartnerRegistrationProvisioningState = "Failed"
-	PartnerRegistrationProvisioningStateSucceeded PartnerRegistrationProvisioningState = "Succeeded"
-	PartnerRegistrationProvisioningStateUpdating  PartnerRegistrationProvisioningState = "Updating"
-)
-
-// PossiblePartnerRegistrationProvisioningStateValues returns the possible values for the PartnerRegistrationProvisioningState const type.
-func PossiblePartnerRegistrationProvisioningStateValues() []PartnerRegistrationProvisioningState {
-	return []PartnerRegistrationProvisioningState{
-		PartnerRegistrationProvisioningStateCanceled,
-		PartnerRegistrationProvisioningStateCreating,
-		PartnerRegistrationProvisioningStateDeleting,
-		PartnerRegistrationProvisioningStateFailed,
-		PartnerRegistrationProvisioningStateSucceeded,
-		PartnerRegistrationProvisioningStateUpdating,
-	}
-}
-
-// ToPtr returns a *PartnerRegistrationProvisioningState pointing to the current value.
-func (c PartnerRegistrationProvisioningState) ToPtr() *PartnerRegistrationProvisioningState {
-	return &c
-}
-
-// PartnerRegistrationVisibilityState - Visibility state of the partner registration.
-type PartnerRegistrationVisibilityState string
-
-const (
-	PartnerRegistrationVisibilityStateGenerallyAvailable PartnerRegistrationVisibilityState = "GenerallyAvailable"
-	PartnerRegistrationVisibilityStateHidden             PartnerRegistrationVisibilityState = "Hidden"
-	PartnerRegistrationVisibilityStatePublicPreview      PartnerRegistrationVisibilityState = "PublicPreview"
-)
-
-// PossiblePartnerRegistrationVisibilityStateValues returns the possible values for the PartnerRegistrationVisibilityState const type.
-func PossiblePartnerRegistrationVisibilityStateValues() []PartnerRegistrationVisibilityState {
-	return []PartnerRegistrationVisibilityState{
-		PartnerRegistrationVisibilityStateGenerallyAvailable,
-		PartnerRegistrationVisibilityStateHidden,
-		PartnerRegistrationVisibilityStatePublicPreview,
-	}
-}
-
-// ToPtr returns a *PartnerRegistrationVisibilityState pointing to the current value.
-func (c PartnerRegistrationVisibilityState) ToPtr() *PartnerRegistrationVisibilityState {
-	return &c
-}
-
-// PartnerTopicActivationState - Activation state of the partner topic.
-type PartnerTopicActivationState string
-
-const (
-	PartnerTopicActivationStateActivated      PartnerTopicActivationState = "Activated"
-	PartnerTopicActivationStateDeactivated    PartnerTopicActivationState = "Deactivated"
-	PartnerTopicActivationStateNeverActivated PartnerTopicActivationState = "NeverActivated"
-)
-
-// PossiblePartnerTopicActivationStateValues returns the possible values for the PartnerTopicActivationState const type.
-func PossiblePartnerTopicActivationStateValues() []PartnerTopicActivationState {
-	return []PartnerTopicActivationState{
-		PartnerTopicActivationStateActivated,
-		PartnerTopicActivationStateDeactivated,
-		PartnerTopicActivationStateNeverActivated,
-	}
-}
-
-// ToPtr returns a *PartnerTopicActivationState pointing to the current value.
-func (c PartnerTopicActivationState) ToPtr() *PartnerTopicActivationState {
-	return &c
-}
-
-// PartnerTopicProvisioningState - Provisioning state of the partner topic.
-type PartnerTopicProvisioningState string
-
-const (
-	PartnerTopicProvisioningStateCanceled  PartnerTopicProvisioningState = "Canceled"
-	PartnerTopicProvisioningStateCreating  PartnerTopicProvisioningState = "Creating"
-	PartnerTopicProvisioningStateDeleting  PartnerTopicProvisioningState = "Deleting"
-	PartnerTopicProvisioningStateFailed    PartnerTopicProvisioningState = "Failed"
-	PartnerTopicProvisioningStateSucceeded PartnerTopicProvisioningState = "Succeeded"
-	PartnerTopicProvisioningStateUpdating  PartnerTopicProvisioningState = "Updating"
-)
-
-// PossiblePartnerTopicProvisioningStateValues returns the possible values for the PartnerTopicProvisioningState const type.
-func PossiblePartnerTopicProvisioningStateValues() []PartnerTopicProvisioningState {
-	return []PartnerTopicProvisioningState{
-		PartnerTopicProvisioningStateCanceled,
-		PartnerTopicProvisioningStateCreating,
-		PartnerTopicProvisioningStateDeleting,
-		PartnerTopicProvisioningStateFailed,
-		PartnerTopicProvisioningStateSucceeded,
-		PartnerTopicProvisioningStateUpdating,
-	}
-}
-
-// ToPtr returns a *PartnerTopicProvisioningState pointing to the current value.
-func (c PartnerTopicProvisioningState) ToPtr() *PartnerTopicProvisioningState {
-	return &c
-}
-
-// PartnerTopicReadinessState - The readiness state of the corresponding partner topic.
-type PartnerTopicReadinessState string
-
-const (
-	PartnerTopicReadinessStateActivatedByUser       PartnerTopicReadinessState = "ActivatedByUser"
-	PartnerTopicReadinessStateDeactivatedByUser     PartnerTopicReadinessState = "DeactivatedByUser"
-	PartnerTopicReadinessStateDeletedByUser         PartnerTopicReadinessState = "DeletedByUser"
-	PartnerTopicReadinessStateNotActivatedByUserYet PartnerTopicReadinessState = "NotActivatedByUserYet"
-)
-
-// PossiblePartnerTopicReadinessStateValues returns the possible values for the PartnerTopicReadinessState const type.
-func PossiblePartnerTopicReadinessStateValues() []PartnerTopicReadinessState {
-	return []PartnerTopicReadinessState{
-		PartnerTopicReadinessStateActivatedByUser,
-		PartnerTopicReadinessStateDeactivatedByUser,
-		PartnerTopicReadinessStateDeletedByUser,
-		PartnerTopicReadinessStateNotActivatedByUserYet,
-	}
-}
-
-// ToPtr returns a *PartnerTopicReadinessState pointing to the current value.
-func (c PartnerTopicReadinessState) ToPtr() *PartnerTopicReadinessState {
 	return &c
 }
 
@@ -707,27 +498,6 @@ func (c PublicNetworkAccess) ToPtr() *PublicNetworkAccess {
 	return &c
 }
 
-// ResourceKind - Kind of the resource.
-type ResourceKind string
-
-const (
-	ResourceKindAzure    ResourceKind = "Azure"
-	ResourceKindAzureArc ResourceKind = "AzureArc"
-)
-
-// PossibleResourceKindValues returns the possible values for the ResourceKind const type.
-func PossibleResourceKindValues() []ResourceKind {
-	return []ResourceKind{
-		ResourceKindAzure,
-		ResourceKindAzureArc,
-	}
-}
-
-// ToPtr returns a *ResourceKind pointing to the current value.
-func (c ResourceKind) ToPtr() *ResourceKind {
-	return &c
-}
-
 // ResourceProvisioningState - Provisioning state of the Private Endpoint Connection.
 type ResourceProvisioningState string
 
@@ -775,27 +545,6 @@ func PossibleResourceRegionTypeValues() []ResourceRegionType {
 
 // ToPtr returns a *ResourceRegionType pointing to the current value.
 func (c ResourceRegionType) ToPtr() *ResourceRegionType {
-	return &c
-}
-
-// SKU - The Sku name of the resource. The possible values are: Basic or Premium.
-type SKU string
-
-const (
-	SKUBasic   SKU = "Basic"
-	SKUPremium SKU = "Premium"
-)
-
-// PossibleSKUValues returns the possible values for the SKU const type.
-func PossibleSKUValues() []SKU {
-	return []SKU{
-		SKUBasic,
-		SKUPremium,
-	}
-}
-
-// ToPtr returns a *SKU pointing to the current value.
-func (c SKU) ToPtr() *SKU {
 	return &c
 }
 

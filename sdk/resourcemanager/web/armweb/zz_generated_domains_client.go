@@ -12,15 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // DomainsClient contains the methods for the Domains group.
@@ -32,8 +32,15 @@ type DomainsClient struct {
 }
 
 // NewDomainsClient creates a new instance of DomainsClient with the specified values.
-func NewDomainsClient(con *arm.Connection, subscriptionID string) *DomainsClient {
-	return &DomainsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewDomainsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DomainsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &DomainsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CheckAvailability - Description for Check if a domain is available for registration.
@@ -75,7 +82,7 @@ func (client *DomainsClient) checkAvailabilityCreateRequest(ctx context.Context,
 func (client *DomainsClient) checkAvailabilityHandleResponse(resp *http.Response) (DomainsCheckAvailabilityResponse, error) {
 	result := DomainsCheckAvailabilityResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DomainAvailabilityCheckResult); err != nil {
-		return DomainsCheckAvailabilityResponse{}, err
+		return DomainsCheckAvailabilityResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -220,7 +227,7 @@ func (client *DomainsClient) createOrUpdateOwnershipIdentifierCreateRequest(ctx 
 func (client *DomainsClient) createOrUpdateOwnershipIdentifierHandleResponse(resp *http.Response) (DomainsCreateOrUpdateOwnershipIdentifierResponse, error) {
 	result := DomainsCreateOrUpdateOwnershipIdentifierResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DomainOwnershipIdentifier); err != nil {
-		return DomainsCreateOrUpdateOwnershipIdentifierResponse{}, err
+		return DomainsCreateOrUpdateOwnershipIdentifierResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -404,7 +411,7 @@ func (client *DomainsClient) getCreateRequest(ctx context.Context, resourceGroup
 func (client *DomainsClient) getHandleResponse(resp *http.Response) (DomainsGetResponse, error) {
 	result := DomainsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Domain); err != nil {
-		return DomainsGetResponse{}, err
+		return DomainsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -461,7 +468,7 @@ func (client *DomainsClient) getControlCenterSsoRequestCreateRequest(ctx context
 func (client *DomainsClient) getControlCenterSsoRequestHandleResponse(resp *http.Response) (DomainsGetControlCenterSsoRequestResponse, error) {
 	result := DomainsGetControlCenterSsoRequestResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DomainControlCenterSsoRequest); err != nil {
-		return DomainsGetControlCenterSsoRequestResponse{}, err
+		return DomainsGetControlCenterSsoRequestResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -530,7 +537,7 @@ func (client *DomainsClient) getOwnershipIdentifierCreateRequest(ctx context.Con
 func (client *DomainsClient) getOwnershipIdentifierHandleResponse(resp *http.Response) (DomainsGetOwnershipIdentifierResponse, error) {
 	result := DomainsGetOwnershipIdentifierResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DomainOwnershipIdentifier); err != nil {
-		return DomainsGetOwnershipIdentifierResponse{}, err
+		return DomainsGetOwnershipIdentifierResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -584,7 +591,7 @@ func (client *DomainsClient) listCreateRequest(ctx context.Context, options *Dom
 func (client *DomainsClient) listHandleResponse(resp *http.Response) (DomainsListResponse, error) {
 	result := DomainsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DomainCollection); err != nil {
-		return DomainsListResponse{}, err
+		return DomainsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -642,7 +649,7 @@ func (client *DomainsClient) listByResourceGroupCreateRequest(ctx context.Contex
 func (client *DomainsClient) listByResourceGroupHandleResponse(resp *http.Response) (DomainsListByResourceGroupResponse, error) {
 	result := DomainsListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DomainCollection); err != nil {
-		return DomainsListByResourceGroupResponse{}, err
+		return DomainsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -704,7 +711,7 @@ func (client *DomainsClient) listOwnershipIdentifiersCreateRequest(ctx context.C
 func (client *DomainsClient) listOwnershipIdentifiersHandleResponse(resp *http.Response) (DomainsListOwnershipIdentifiersResponse, error) {
 	result := DomainsListOwnershipIdentifiersResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DomainOwnershipIdentifierCollection); err != nil {
-		return DomainsListOwnershipIdentifiersResponse{}, err
+		return DomainsListOwnershipIdentifiersResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -758,7 +765,7 @@ func (client *DomainsClient) listRecommendationsCreateRequest(ctx context.Contex
 func (client *DomainsClient) listRecommendationsHandleResponse(resp *http.Response) (DomainsListRecommendationsResponse, error) {
 	result := DomainsListRecommendationsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NameIdentifierCollection); err != nil {
-		return DomainsListRecommendationsResponse{}, err
+		return DomainsListRecommendationsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -879,7 +886,7 @@ func (client *DomainsClient) updateCreateRequest(ctx context.Context, resourceGr
 func (client *DomainsClient) updateHandleResponse(resp *http.Response) (DomainsUpdateResponse, error) {
 	result := DomainsUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Domain); err != nil {
-		return DomainsUpdateResponse{}, err
+		return DomainsUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -948,7 +955,7 @@ func (client *DomainsClient) updateOwnershipIdentifierCreateRequest(ctx context.
 func (client *DomainsClient) updateOwnershipIdentifierHandleResponse(resp *http.Response) (DomainsUpdateOwnershipIdentifierResponse, error) {
 	result := DomainsUpdateOwnershipIdentifierResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DomainOwnershipIdentifier); err != nil {
-		return DomainsUpdateOwnershipIdentifierResponse{}, err
+		return DomainsUpdateOwnershipIdentifierResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

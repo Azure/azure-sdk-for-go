@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // FileSharesClient contains the methods for the FileShares group.
@@ -30,8 +31,15 @@ type FileSharesClient struct {
 }
 
 // NewFileSharesClient creates a new instance of FileSharesClient with the specified values.
-func NewFileSharesClient(con *arm.Connection, subscriptionID string) *FileSharesClient {
-	return &FileSharesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewFileSharesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *FileSharesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &FileSharesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Create - Creates a new share under the specified account as described by request body. The share resource includes metadata and properties for that share.
@@ -90,7 +98,7 @@ func (client *FileSharesClient) createCreateRequest(ctx context.Context, resourc
 func (client *FileSharesClient) createHandleResponse(resp *http.Response) (FileSharesCreateResponse, error) {
 	result := FileSharesCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FileShare); err != nil {
-		return FileSharesCreateResponse{}, err
+		return FileSharesCreateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -231,7 +239,7 @@ func (client *FileSharesClient) getCreateRequest(ctx context.Context, resourceGr
 func (client *FileSharesClient) getHandleResponse(resp *http.Response) (FileSharesGetResponse, error) {
 	result := FileSharesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FileShare); err != nil {
-		return FileSharesGetResponse{}, err
+		return FileSharesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -310,7 +318,7 @@ func (client *FileSharesClient) leaseHandleResponse(resp *http.Response) (FileSh
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LeaseShareResponse); err != nil {
-		return FileSharesLeaseResponse{}, err
+		return FileSharesLeaseResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -381,7 +389,7 @@ func (client *FileSharesClient) listCreateRequest(ctx context.Context, resourceG
 func (client *FileSharesClient) listHandleResponse(resp *http.Response) (FileSharesListResponse, error) {
 	result := FileSharesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FileShareItems); err != nil {
-		return FileSharesListResponse{}, err
+		return FileSharesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -511,7 +519,7 @@ func (client *FileSharesClient) updateCreateRequest(ctx context.Context, resourc
 func (client *FileSharesClient) updateHandleResponse(resp *http.Response) (FileSharesUpdateResponse, error) {
 	result := FileSharesUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FileShare); err != nil {
-		return FileSharesUpdateResponse{}, err
+		return FileSharesUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

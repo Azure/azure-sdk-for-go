@@ -12,15 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // VaultsClient contains the methods for the Vaults group.
@@ -32,8 +32,15 @@ type VaultsClient struct {
 }
 
 // NewVaultsClient creates a new instance of VaultsClient with the specified values.
-func NewVaultsClient(con *arm.Connection, subscriptionID string) *VaultsClient {
-	return &VaultsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewVaultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VaultsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &VaultsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CheckNameAvailability - Checks that the vault name is valid and is not already in use.
@@ -75,7 +82,7 @@ func (client *VaultsClient) checkNameAvailabilityCreateRequest(ctx context.Conte
 func (client *VaultsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (VaultsCheckNameAvailabilityResponse, error) {
 	result := VaultsCheckNameAvailabilityResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityResult); err != nil {
-		return VaultsCheckNameAvailabilityResponse{}, err
+		return VaultsCheckNameAvailabilityResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -272,7 +279,7 @@ func (client *VaultsClient) getCreateRequest(ctx context.Context, resourceGroupN
 func (client *VaultsClient) getHandleResponse(resp *http.Response) (VaultsGetResponse, error) {
 	result := VaultsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Vault); err != nil {
-		return VaultsGetResponse{}, err
+		return VaultsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -337,7 +344,7 @@ func (client *VaultsClient) getDeletedCreateRequest(ctx context.Context, vaultNa
 func (client *VaultsClient) getDeletedHandleResponse(resp *http.Response) (VaultsGetDeletedResponse, error) {
 	result := VaultsGetDeletedResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedVault); err != nil {
-		return VaultsGetDeletedResponse{}, err
+		return VaultsGetDeletedResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -395,7 +402,7 @@ func (client *VaultsClient) listCreateRequest(ctx context.Context, options *Vaul
 func (client *VaultsClient) listHandleResponse(resp *http.Response) (VaultsListResponse, error) {
 	result := VaultsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceListResult); err != nil {
-		return VaultsListResponse{}, err
+		return VaultsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -456,7 +463,7 @@ func (client *VaultsClient) listByResourceGroupCreateRequest(ctx context.Context
 func (client *VaultsClient) listByResourceGroupHandleResponse(resp *http.Response) (VaultsListByResourceGroupResponse, error) {
 	result := VaultsListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VaultListResult); err != nil {
-		return VaultsListByResourceGroupResponse{}, err
+		return VaultsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -513,7 +520,7 @@ func (client *VaultsClient) listBySubscriptionCreateRequest(ctx context.Context,
 func (client *VaultsClient) listBySubscriptionHandleResponse(resp *http.Response) (VaultsListBySubscriptionResponse, error) {
 	result := VaultsListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VaultListResult); err != nil {
-		return VaultsListBySubscriptionResponse{}, err
+		return VaultsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -567,7 +574,7 @@ func (client *VaultsClient) listDeletedCreateRequest(ctx context.Context, option
 func (client *VaultsClient) listDeletedHandleResponse(resp *http.Response) (VaultsListDeletedResponse, error) {
 	result := VaultsListDeletedResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedVaultListResult); err != nil {
-		return VaultsListDeletedResponse{}, err
+		return VaultsListDeletedResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -586,8 +593,7 @@ func (client *VaultsClient) listDeletedHandleError(resp *http.Response) error {
 }
 
 // BeginPurgeDeleted - Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
-// If the operation fails it returns one of the following error types.
-// - *CloudError, *CloudError
+// If the operation fails it returns the *CloudError error type.
 func (client *VaultsClient) BeginPurgeDeleted(ctx context.Context, vaultName string, location string, options *VaultsBeginPurgeDeletedOptions) (VaultsPurgeDeletedPollerResponse, error) {
 	resp, err := client.purgeDeleted(ctx, vaultName, location, options)
 	if err != nil {
@@ -607,8 +613,7 @@ func (client *VaultsClient) BeginPurgeDeleted(ctx context.Context, vaultName str
 }
 
 // PurgeDeleted - Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
-// If the operation fails it returns one of the following error types.
-// - *CloudError, *CloudError
+// If the operation fails it returns the *CloudError error type.
 func (client *VaultsClient) purgeDeleted(ctx context.Context, vaultName string, location string, options *VaultsBeginPurgeDeletedOptions) (*http.Response, error) {
 	req, err := client.purgeDeletedCreateRequest(ctx, vaultName, location, options)
 	if err != nil {
@@ -710,7 +715,7 @@ func (client *VaultsClient) updateCreateRequest(ctx context.Context, resourceGro
 func (client *VaultsClient) updateHandleResponse(resp *http.Response) (VaultsUpdateResponse, error) {
 	result := VaultsUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Vault); err != nil {
-		return VaultsUpdateResponse{}, err
+		return VaultsUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -729,8 +734,7 @@ func (client *VaultsClient) updateHandleError(resp *http.Response) error {
 }
 
 // UpdateAccessPolicy - Update access policies in a key vault in the specified subscription.
-// If the operation fails it returns one of the following error types.
-// - *CloudError, *CloudError
+// If the operation fails it returns the *CloudError error type.
 func (client *VaultsClient) UpdateAccessPolicy(ctx context.Context, resourceGroupName string, vaultName string, operationKind AccessPolicyUpdateKind, parameters VaultAccessPolicyParameters, options *VaultsUpdateAccessPolicyOptions) (VaultsUpdateAccessPolicyResponse, error) {
 	req, err := client.updateAccessPolicyCreateRequest(ctx, resourceGroupName, vaultName, operationKind, parameters, options)
 	if err != nil {
@@ -780,7 +784,7 @@ func (client *VaultsClient) updateAccessPolicyCreateRequest(ctx context.Context,
 func (client *VaultsClient) updateAccessPolicyHandleResponse(resp *http.Response) (VaultsUpdateAccessPolicyResponse, error) {
 	result := VaultsUpdateAccessPolicyResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VaultAccessPolicyParameters); err != nil {
-		return VaultsUpdateAccessPolicyResponse{}, err
+		return VaultsUpdateAccessPolicyResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

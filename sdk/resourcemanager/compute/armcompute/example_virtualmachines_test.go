@@ -12,7 +12,6 @@ import (
 	"log"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
@@ -25,7 +24,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armcompute.NewVirtualMachinesClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armcompute.NewVirtualMachinesClient("<subscription ID>", cred, nil)
 	poller, err := client.BeginCreateOrUpdate(
 		context.Background(),
 		"<resource group name>",
@@ -95,7 +94,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_withDisk() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armcompute.NewVirtualMachinesClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armcompute.NewVirtualMachinesClient("<subscription ID>", cred, nil)
 	poller, err := client.BeginCreateOrUpdate(
 		context.Background(),
 		"<resource group name>",
@@ -173,7 +172,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_withLoadBalancer() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armcompute.NewVirtualMachinesClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armcompute.NewVirtualMachinesClient("<subscription ID>", cred, nil)
 	poller, err := client.BeginCreateOrUpdate(
 		context.Background(),
 		"<resource group name>",
@@ -236,7 +235,7 @@ func ExampleVirtualMachinesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armcompute.NewVirtualMachinesClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armcompute.NewVirtualMachinesClient("<subscription ID>", cred, nil)
 	resp, err := client.Get(context.Background(), "<resource group name>", "<VM name>", nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a response: %v", err)
@@ -249,7 +248,7 @@ func ExampleVirtualMachinesClient_BeginDeallocate() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armcompute.NewVirtualMachinesClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armcompute.NewVirtualMachinesClient("<subscription ID>", cred, nil)
 	poller, err := client.BeginDeallocate(context.Background(), "<resource group name>", "<VM name>", nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a response: %v", err)
@@ -265,7 +264,7 @@ func ExampleVirtualMachinesClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armcompute.NewVirtualMachinesClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armcompute.NewVirtualMachinesClient("<subscription ID>", cred, nil)
 	poller, err := client.BeginUpdate(
 		context.Background(),
 		"<resource group name>",
@@ -295,7 +294,7 @@ func ExampleVirtualMachinesClient_BeginStart() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armcompute.NewVirtualMachinesClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armcompute.NewVirtualMachinesClient("<subscription ID>", cred, nil)
 	poller, err := client.BeginStart(
 		context.Background(),
 		"<resource group name>",
@@ -316,7 +315,7 @@ func ExampleVirtualMachinesClient_BeginRestart() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armcompute.NewVirtualMachinesClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armcompute.NewVirtualMachinesClient("<subscription ID>", cred, nil)
 	poller, err := client.BeginRestart(
 		context.Background(),
 		"<resource group name>",
@@ -337,7 +336,7 @@ func ExampleVirtualMachinesClient_BeginPowerOff() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armcompute.NewVirtualMachinesClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armcompute.NewVirtualMachinesClient("<subscription ID>", cred, nil)
 	poller, err := client.BeginPowerOff(
 		context.Background(),
 		"<resource group name>",

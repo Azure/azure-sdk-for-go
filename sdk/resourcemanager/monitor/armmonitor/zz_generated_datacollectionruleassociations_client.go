@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // DataCollectionRuleAssociationsClient contains the methods for the DataCollectionRuleAssociations group.
@@ -30,8 +31,15 @@ type DataCollectionRuleAssociationsClient struct {
 }
 
 // NewDataCollectionRuleAssociationsClient creates a new instance of DataCollectionRuleAssociationsClient with the specified values.
-func NewDataCollectionRuleAssociationsClient(con *arm.Connection, subscriptionID string) *DataCollectionRuleAssociationsClient {
-	return &DataCollectionRuleAssociationsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewDataCollectionRuleAssociationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DataCollectionRuleAssociationsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &DataCollectionRuleAssociationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Create - Creates or updates an association.
@@ -54,9 +62,6 @@ func (client *DataCollectionRuleAssociationsClient) Create(ctx context.Context, 
 // createCreateRequest creates the Create request.
 func (client *DataCollectionRuleAssociationsClient) createCreateRequest(ctx context.Context, resourceURI string, associationName string, options *DataCollectionRuleAssociationsCreateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Insights/dataCollectionRuleAssociations/{associationName}"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if associationName == "" {
 		return nil, errors.New("parameter associationName cannot be empty")
@@ -80,7 +85,7 @@ func (client *DataCollectionRuleAssociationsClient) createCreateRequest(ctx cont
 func (client *DataCollectionRuleAssociationsClient) createHandleResponse(resp *http.Response) (DataCollectionRuleAssociationsCreateResponse, error) {
 	result := DataCollectionRuleAssociationsCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionRuleAssociationProxyOnlyResource); err != nil {
-		return DataCollectionRuleAssociationsCreateResponse{}, err
+		return DataCollectionRuleAssociationsCreateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -118,9 +123,6 @@ func (client *DataCollectionRuleAssociationsClient) Delete(ctx context.Context, 
 // deleteCreateRequest creates the Delete request.
 func (client *DataCollectionRuleAssociationsClient) deleteCreateRequest(ctx context.Context, resourceURI string, associationName string, options *DataCollectionRuleAssociationsDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Insights/dataCollectionRuleAssociations/{associationName}"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if associationName == "" {
 		return nil, errors.New("parameter associationName cannot be empty")
@@ -170,9 +172,6 @@ func (client *DataCollectionRuleAssociationsClient) Get(ctx context.Context, res
 // getCreateRequest creates the Get request.
 func (client *DataCollectionRuleAssociationsClient) getCreateRequest(ctx context.Context, resourceURI string, associationName string, options *DataCollectionRuleAssociationsGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Insights/dataCollectionRuleAssociations/{associationName}"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if associationName == "" {
 		return nil, errors.New("parameter associationName cannot be empty")
@@ -193,7 +192,7 @@ func (client *DataCollectionRuleAssociationsClient) getCreateRequest(ctx context
 func (client *DataCollectionRuleAssociationsClient) getHandleResponse(resp *http.Response) (DataCollectionRuleAssociationsGetResponse, error) {
 	result := DataCollectionRuleAssociationsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionRuleAssociationProxyOnlyResource); err != nil {
-		return DataCollectionRuleAssociationsGetResponse{}, err
+		return DataCollectionRuleAssociationsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -228,9 +227,6 @@ func (client *DataCollectionRuleAssociationsClient) ListByResource(resourceURI s
 // listByResourceCreateRequest creates the ListByResource request.
 func (client *DataCollectionRuleAssociationsClient) listByResourceCreateRequest(ctx context.Context, resourceURI string, options *DataCollectionRuleAssociationsListByResourceOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Insights/dataCollectionRuleAssociations"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -247,7 +243,7 @@ func (client *DataCollectionRuleAssociationsClient) listByResourceCreateRequest(
 func (client *DataCollectionRuleAssociationsClient) listByResourceHandleResponse(resp *http.Response) (DataCollectionRuleAssociationsListByResourceResponse, error) {
 	result := DataCollectionRuleAssociationsListByResourceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionRuleAssociationProxyOnlyResourceListResult); err != nil {
-		return DataCollectionRuleAssociationsListByResourceResponse{}, err
+		return DataCollectionRuleAssociationsListByResourceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -309,7 +305,7 @@ func (client *DataCollectionRuleAssociationsClient) listByRuleCreateRequest(ctx 
 func (client *DataCollectionRuleAssociationsClient) listByRuleHandleResponse(resp *http.Response) (DataCollectionRuleAssociationsListByRuleResponse, error) {
 	result := DataCollectionRuleAssociationsListByRuleResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionRuleAssociationProxyOnlyResourceListResult); err != nil {
-		return DataCollectionRuleAssociationsListByRuleResponse{}, err
+		return DataCollectionRuleAssociationsListByRuleResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

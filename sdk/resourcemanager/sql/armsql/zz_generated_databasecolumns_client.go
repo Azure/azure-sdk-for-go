@@ -11,13 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // DatabaseColumnsClient contains the methods for the DatabaseColumns group.
@@ -29,8 +30,15 @@ type DatabaseColumnsClient struct {
 }
 
 // NewDatabaseColumnsClient creates a new instance of DatabaseColumnsClient with the specified values.
-func NewDatabaseColumnsClient(con *arm.Connection, subscriptionID string) *DatabaseColumnsClient {
-	return &DatabaseColumnsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewDatabaseColumnsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DatabaseColumnsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &DatabaseColumnsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Get database column
@@ -96,7 +104,7 @@ func (client *DatabaseColumnsClient) getCreateRequest(ctx context.Context, resou
 func (client *DatabaseColumnsClient) getHandleResponse(resp *http.Response) (DatabaseColumnsGetResponse, error) {
 	result := DatabaseColumnsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseColumn); err != nil {
-		return DatabaseColumnsGetResponse{}, err
+		return DatabaseColumnsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -184,7 +192,7 @@ func (client *DatabaseColumnsClient) listByDatabaseCreateRequest(ctx context.Con
 func (client *DatabaseColumnsClient) listByDatabaseHandleResponse(resp *http.Response) (DatabaseColumnsListByDatabaseResponse, error) {
 	result := DatabaseColumnsListByDatabaseResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseColumnListResult); err != nil {
-		return DatabaseColumnsListByDatabaseResponse{}, err
+		return DatabaseColumnsListByDatabaseResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -260,7 +268,7 @@ func (client *DatabaseColumnsClient) listByTableCreateRequest(ctx context.Contex
 func (client *DatabaseColumnsClient) listByTableHandleResponse(resp *http.Response) (DatabaseColumnsListByTableResponse, error) {
 	result := DatabaseColumnsListByTableResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseColumnListResult); err != nil {
-		return DatabaseColumnsListByTableResponse{}, err
+		return DatabaseColumnsListByTableResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

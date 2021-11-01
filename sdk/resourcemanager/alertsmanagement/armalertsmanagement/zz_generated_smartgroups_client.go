@@ -12,7 +12,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -30,8 +32,15 @@ type SmartGroupsClient struct {
 }
 
 // NewSmartGroupsClient creates a new instance of SmartGroupsClient with the specified values.
-func NewSmartGroupsClient(con *arm.Connection, subscriptionID string) *SmartGroupsClient {
-	return &SmartGroupsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewSmartGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SmartGroupsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &SmartGroupsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // ChangeState - Change the state of a Smart Group.
@@ -81,7 +90,7 @@ func (client *SmartGroupsClient) changeStateHandleResponse(resp *http.Response) 
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SmartGroup); err != nil {
-		return SmartGroupsChangeStateResponse{}, err
+		return SmartGroupsChangeStateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -168,7 +177,7 @@ func (client *SmartGroupsClient) getAllCreateRequest(ctx context.Context, option
 func (client *SmartGroupsClient) getAllHandleResponse(resp *http.Response) (SmartGroupsGetAllResponse, error) {
 	result := SmartGroupsGetAllResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SmartGroupsList); err != nil {
-		return SmartGroupsGetAllResponse{}, err
+		return SmartGroupsGetAllResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -232,7 +241,7 @@ func (client *SmartGroupsClient) getByIDHandleResponse(resp *http.Response) (Sma
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SmartGroup); err != nil {
-		return SmartGroupsGetByIDResponse{}, err
+		return SmartGroupsGetByIDResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -293,7 +302,7 @@ func (client *SmartGroupsClient) getHistoryCreateRequest(ctx context.Context, sm
 func (client *SmartGroupsClient) getHistoryHandleResponse(resp *http.Response) (SmartGroupsGetHistoryResponse, error) {
 	result := SmartGroupsGetHistoryResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SmartGroupModification); err != nil {
-		return SmartGroupsGetHistoryResponse{}, err
+		return SmartGroupsGetHistoryResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

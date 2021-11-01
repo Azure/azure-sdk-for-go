@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // TenantConfigurationClient contains the methods for the TenantConfiguration group.
@@ -31,8 +31,15 @@ type TenantConfigurationClient struct {
 }
 
 // NewTenantConfigurationClient creates a new instance of TenantConfigurationClient with the specified values.
-func NewTenantConfigurationClient(con *arm.Connection, subscriptionID string) *TenantConfigurationClient {
-	return &TenantConfigurationClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewTenantConfigurationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TenantConfigurationClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &TenantConfigurationClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginDeploy - This operation applies changes from the specified Git branch to the configuration database. This is a long running operation and could
@@ -98,7 +105,7 @@ func (client *TenantConfigurationClient) deployCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -158,7 +165,7 @@ func (client *TenantConfigurationClient) getSyncStateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -168,7 +175,7 @@ func (client *TenantConfigurationClient) getSyncStateCreateRequest(ctx context.C
 func (client *TenantConfigurationClient) getSyncStateHandleResponse(resp *http.Response) (TenantConfigurationGetSyncStateResponse, error) {
 	result := TenantConfigurationGetSyncStateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TenantConfigurationSyncStateContract); err != nil {
-		return TenantConfigurationGetSyncStateResponse{}, err
+		return TenantConfigurationGetSyncStateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -249,7 +256,7 @@ func (client *TenantConfigurationClient) saveCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -330,7 +337,7 @@ func (client *TenantConfigurationClient) validateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)

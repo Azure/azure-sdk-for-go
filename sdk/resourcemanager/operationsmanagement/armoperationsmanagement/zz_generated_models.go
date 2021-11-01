@@ -10,9 +10,8 @@ package armoperationsmanagement
 
 import (
 	"encoding/json"
-	"reflect"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"reflect"
 )
 
 // ArmTemplateParameter - Parameter to pass to ARM template

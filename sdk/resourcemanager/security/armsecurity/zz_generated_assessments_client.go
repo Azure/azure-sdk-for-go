@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // AssessmentsClient contains the methods for the Assessments group.
@@ -29,8 +30,15 @@ type AssessmentsClient struct {
 }
 
 // NewAssessmentsClient creates a new instance of AssessmentsClient with the specified values.
-func NewAssessmentsClient(con *arm.Connection) *AssessmentsClient {
-	return &AssessmentsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewAssessmentsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *AssessmentsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &AssessmentsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Create a security assessment on your resource. An assessment metadata that describes this assessment must be predefined with the same
@@ -54,9 +62,6 @@ func (client *AssessmentsClient) CreateOrUpdate(ctx context.Context, resourceID 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *AssessmentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceID string, assessmentName string, assessment SecurityAssessment, options *AssessmentsCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}"
-	if resourceID == "" {
-		return nil, errors.New("parameter resourceID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	if assessmentName == "" {
 		return nil, errors.New("parameter assessmentName cannot be empty")
@@ -77,7 +82,7 @@ func (client *AssessmentsClient) createOrUpdateCreateRequest(ctx context.Context
 func (client *AssessmentsClient) createOrUpdateHandleResponse(resp *http.Response) (AssessmentsCreateOrUpdateResponse, error) {
 	result := AssessmentsCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityAssessmentResponse); err != nil {
-		return AssessmentsCreateOrUpdateResponse{}, err
+		return AssessmentsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -116,9 +121,6 @@ func (client *AssessmentsClient) Delete(ctx context.Context, resourceID string, 
 // deleteCreateRequest creates the Delete request.
 func (client *AssessmentsClient) deleteCreateRequest(ctx context.Context, resourceID string, assessmentName string, options *AssessmentsDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}"
-	if resourceID == "" {
-		return nil, errors.New("parameter resourceID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	if assessmentName == "" {
 		return nil, errors.New("parameter assessmentName cannot be empty")
@@ -168,9 +170,6 @@ func (client *AssessmentsClient) Get(ctx context.Context, resourceID string, ass
 // getCreateRequest creates the Get request.
 func (client *AssessmentsClient) getCreateRequest(ctx context.Context, resourceID string, assessmentName string, options *AssessmentsGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}"
-	if resourceID == "" {
-		return nil, errors.New("parameter resourceID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	if assessmentName == "" {
 		return nil, errors.New("parameter assessmentName cannot be empty")
@@ -194,7 +193,7 @@ func (client *AssessmentsClient) getCreateRequest(ctx context.Context, resourceI
 func (client *AssessmentsClient) getHandleResponse(resp *http.Response) (AssessmentsGetResponse, error) {
 	result := AssessmentsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityAssessmentResponse); err != nil {
-		return AssessmentsGetResponse{}, err
+		return AssessmentsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -229,9 +228,6 @@ func (client *AssessmentsClient) List(scope string, options *AssessmentsListOpti
 // listCreateRequest creates the List request.
 func (client *AssessmentsClient) listCreateRequest(ctx context.Context, scope string, options *AssessmentsListOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/assessments"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -248,7 +244,7 @@ func (client *AssessmentsClient) listCreateRequest(ctx context.Context, scope st
 func (client *AssessmentsClient) listHandleResponse(resp *http.Response) (AssessmentsListResponse, error) {
 	result := AssessmentsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityAssessmentList); err != nil {
-		return AssessmentsListResponse{}, err
+		return AssessmentsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

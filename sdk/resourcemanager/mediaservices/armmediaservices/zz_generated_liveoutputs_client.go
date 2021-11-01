@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // LiveOutputsClient contains the methods for the LiveOutputs group.
@@ -31,8 +31,15 @@ type LiveOutputsClient struct {
 }
 
 // NewLiveOutputsClient creates a new instance of LiveOutputsClient with the specified values.
-func NewLiveOutputsClient(con *arm.Connection, subscriptionID string) *LiveOutputsClient {
-	return &LiveOutputsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewLiveOutputsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LiveOutputsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &LiveOutputsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreate - Creates a new live output.
@@ -258,7 +265,7 @@ func (client *LiveOutputsClient) getCreateRequest(ctx context.Context, resourceG
 func (client *LiveOutputsClient) getHandleResponse(resp *http.Response) (LiveOutputsGetResponse, error) {
 	result := LiveOutputsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LiveOutput); err != nil {
-		return LiveOutputsGetResponse{}, err
+		return LiveOutputsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -324,7 +331,7 @@ func (client *LiveOutputsClient) listCreateRequest(ctx context.Context, resource
 func (client *LiveOutputsClient) listHandleResponse(resp *http.Response) (LiveOutputsListResponse, error) {
 	result := LiveOutputsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LiveOutputListResult); err != nil {
-		return LiveOutputsListResponse{}, err
+		return LiveOutputsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

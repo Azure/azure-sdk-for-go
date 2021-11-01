@@ -11,13 +11,14 @@ package armcompute
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // SSHPublicKeysClient contains the methods for the SSHPublicKeys group.
@@ -29,8 +30,15 @@ type SSHPublicKeysClient struct {
 }
 
 // NewSSHPublicKeysClient creates a new instance of SSHPublicKeysClient with the specified values.
-func NewSSHPublicKeysClient(con *arm.Connection, subscriptionID string) *SSHPublicKeysClient {
-	return &SSHPublicKeysClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewSSHPublicKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SSHPublicKeysClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &SSHPublicKeysClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Create - Creates a new SSH public key resource.
@@ -80,7 +88,7 @@ func (client *SSHPublicKeysClient) createCreateRequest(ctx context.Context, reso
 func (client *SSHPublicKeysClient) createHandleResponse(resp *http.Response) (SSHPublicKeysCreateResponse, error) {
 	result := SSHPublicKeysCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SSHPublicKeyResource); err != nil {
-		return SSHPublicKeysCreateResponse{}, err
+		return SSHPublicKeysCreateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -200,7 +208,7 @@ func (client *SSHPublicKeysClient) generateKeyPairCreateRequest(ctx context.Cont
 func (client *SSHPublicKeysClient) generateKeyPairHandleResponse(resp *http.Response) (SSHPublicKeysGenerateKeyPairResponse, error) {
 	result := SSHPublicKeysGenerateKeyPairResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SSHPublicKeyGenerateKeyPairResult); err != nil {
-		return SSHPublicKeysGenerateKeyPairResponse{}, err
+		return SSHPublicKeysGenerateKeyPairResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -264,7 +272,7 @@ func (client *SSHPublicKeysClient) getCreateRequest(ctx context.Context, resourc
 func (client *SSHPublicKeysClient) getHandleResponse(resp *http.Response) (SSHPublicKeysGetResponse, error) {
 	result := SSHPublicKeysGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SSHPublicKeyResource); err != nil {
-		return SSHPublicKeysGetResponse{}, err
+		return SSHPublicKeysGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -322,7 +330,7 @@ func (client *SSHPublicKeysClient) listByResourceGroupCreateRequest(ctx context.
 func (client *SSHPublicKeysClient) listByResourceGroupHandleResponse(resp *http.Response) (SSHPublicKeysListByResourceGroupResponse, error) {
 	result := SSHPublicKeysListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SSHPublicKeysGroupListResult); err != nil {
-		return SSHPublicKeysListByResourceGroupResponse{}, err
+		return SSHPublicKeysListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -376,7 +384,7 @@ func (client *SSHPublicKeysClient) listBySubscriptionCreateRequest(ctx context.C
 func (client *SSHPublicKeysClient) listBySubscriptionHandleResponse(resp *http.Response) (SSHPublicKeysListBySubscriptionResponse, error) {
 	result := SSHPublicKeysListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SSHPublicKeysGroupListResult); err != nil {
-		return SSHPublicKeysListBySubscriptionResponse{}, err
+		return SSHPublicKeysListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -440,7 +448,7 @@ func (client *SSHPublicKeysClient) updateCreateRequest(ctx context.Context, reso
 func (client *SSHPublicKeysClient) updateHandleResponse(resp *http.Response) (SSHPublicKeysUpdateResponse, error) {
 	result := SSHPublicKeysUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SSHPublicKeyResource); err != nil {
-		return SSHPublicKeysUpdateResponse{}, err
+		return SSHPublicKeysUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

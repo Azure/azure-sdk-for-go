@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ApplicationGatewayPrivateLinkResourcesClient contains the methods for the ApplicationGatewayPrivateLinkResources group.
@@ -30,8 +31,15 @@ type ApplicationGatewayPrivateLinkResourcesClient struct {
 }
 
 // NewApplicationGatewayPrivateLinkResourcesClient creates a new instance of ApplicationGatewayPrivateLinkResourcesClient with the specified values.
-func NewApplicationGatewayPrivateLinkResourcesClient(con *arm.Connection, subscriptionID string) *ApplicationGatewayPrivateLinkResourcesClient {
-	return &ApplicationGatewayPrivateLinkResourcesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewApplicationGatewayPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ApplicationGatewayPrivateLinkResourcesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ApplicationGatewayPrivateLinkResourcesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // List - Lists all private link resources on an application gateway.
@@ -68,7 +76,7 @@ func (client *ApplicationGatewayPrivateLinkResourcesClient) listCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -78,7 +86,7 @@ func (client *ApplicationGatewayPrivateLinkResourcesClient) listCreateRequest(ct
 func (client *ApplicationGatewayPrivateLinkResourcesClient) listHandleResponse(resp *http.Response) (ApplicationGatewayPrivateLinkResourcesListResponse, error) {
 	result := ApplicationGatewayPrivateLinkResourcesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationGatewayPrivateLinkResourceListResult); err != nil {
-		return ApplicationGatewayPrivateLinkResourcesListResponse{}, err
+		return ApplicationGatewayPrivateLinkResourcesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

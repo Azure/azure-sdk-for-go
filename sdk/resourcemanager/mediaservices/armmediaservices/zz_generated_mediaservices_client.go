@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // MediaservicesClient contains the methods for the Mediaservices group.
@@ -30,8 +31,15 @@ type MediaservicesClient struct {
 }
 
 // NewMediaservicesClient creates a new instance of MediaservicesClient with the specified values.
-func NewMediaservicesClient(con *arm.Connection, subscriptionID string) *MediaservicesClient {
-	return &MediaservicesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewMediaservicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *MediaservicesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &MediaservicesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or updates a Media Services account
@@ -81,7 +89,7 @@ func (client *MediaservicesClient) createOrUpdateCreateRequest(ctx context.Conte
 func (client *MediaservicesClient) createOrUpdateHandleResponse(resp *http.Response) (MediaservicesCreateOrUpdateResponse, error) {
 	result := MediaservicesCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MediaService); err != nil {
-		return MediaservicesCreateOrUpdateResponse{}, err
+		return MediaservicesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -202,7 +210,7 @@ func (client *MediaservicesClient) getCreateRequest(ctx context.Context, resourc
 func (client *MediaservicesClient) getHandleResponse(resp *http.Response) (MediaservicesGetResponse, error) {
 	result := MediaservicesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MediaService); err != nil {
-		return MediaservicesGetResponse{}, err
+		return MediaservicesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -260,7 +268,7 @@ func (client *MediaservicesClient) listCreateRequest(ctx context.Context, resour
 func (client *MediaservicesClient) listHandleResponse(resp *http.Response) (MediaservicesListResponse, error) {
 	result := MediaservicesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MediaServiceCollection); err != nil {
-		return MediaservicesListResponse{}, err
+		return MediaservicesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -314,7 +322,7 @@ func (client *MediaservicesClient) listBySubscriptionCreateRequest(ctx context.C
 func (client *MediaservicesClient) listBySubscriptionHandleResponse(resp *http.Response) (MediaservicesListBySubscriptionResponse, error) {
 	result := MediaservicesListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MediaServiceCollection); err != nil {
-		return MediaservicesListBySubscriptionResponse{}, err
+		return MediaservicesListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -379,7 +387,7 @@ func (client *MediaservicesClient) listEdgePoliciesCreateRequest(ctx context.Con
 func (client *MediaservicesClient) listEdgePoliciesHandleResponse(resp *http.Response) (MediaservicesListEdgePoliciesResponse, error) {
 	result := MediaservicesListEdgePoliciesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EdgePolicies); err != nil {
-		return MediaservicesListEdgePoliciesResponse{}, err
+		return MediaservicesListEdgePoliciesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -500,7 +508,7 @@ func (client *MediaservicesClient) updateCreateRequest(ctx context.Context, reso
 func (client *MediaservicesClient) updateHandleResponse(resp *http.Response) (MediaservicesUpdateResponse, error) {
 	result := MediaservicesUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MediaService); err != nil {
-		return MediaservicesUpdateResponse{}, err
+		return MediaservicesUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

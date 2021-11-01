@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // CertificatesClient contains the methods for the Certificates group.
@@ -30,8 +31,15 @@ type CertificatesClient struct {
 }
 
 // NewCertificatesClient creates a new instance of CertificatesClient with the specified values.
-func NewCertificatesClient(con *arm.Connection, subscriptionID string) *CertificatesClient {
-	return &CertificatesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewCertificatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CertificatesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &CertificatesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Description for Create or update a certificate.
@@ -81,7 +89,7 @@ func (client *CertificatesClient) createOrUpdateCreateRequest(ctx context.Contex
 func (client *CertificatesClient) createOrUpdateHandleResponse(resp *http.Response) (CertificatesCreateOrUpdateResponse, error) {
 	result := CertificatesCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Certificate); err != nil {
-		return CertificatesCreateOrUpdateResponse{}, err
+		return CertificatesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -202,7 +210,7 @@ func (client *CertificatesClient) getCreateRequest(ctx context.Context, resource
 func (client *CertificatesClient) getHandleResponse(resp *http.Response) (CertificatesGetResponse, error) {
 	result := CertificatesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Certificate); err != nil {
-		return CertificatesGetResponse{}, err
+		return CertificatesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -261,7 +269,7 @@ func (client *CertificatesClient) listCreateRequest(ctx context.Context, options
 func (client *CertificatesClient) listHandleResponse(resp *http.Response) (CertificatesListResponse, error) {
 	result := CertificatesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateCollection); err != nil {
-		return CertificatesListResponse{}, err
+		return CertificatesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -319,7 +327,7 @@ func (client *CertificatesClient) listByResourceGroupCreateRequest(ctx context.C
 func (client *CertificatesClient) listByResourceGroupHandleResponse(resp *http.Response) (CertificatesListByResourceGroupResponse, error) {
 	result := CertificatesListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateCollection); err != nil {
-		return CertificatesListByResourceGroupResponse{}, err
+		return CertificatesListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -384,7 +392,7 @@ func (client *CertificatesClient) updateCreateRequest(ctx context.Context, resou
 func (client *CertificatesClient) updateHandleResponse(resp *http.Response) (CertificatesUpdateResponse, error) {
 	result := CertificatesUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Certificate); err != nil {
-		return CertificatesUpdateResponse{}, err
+		return CertificatesUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

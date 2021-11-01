@@ -11,11 +11,12 @@ package armmonitor
 import (
 	"context"
 	"fmt"
-	"net/http"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
 )
 
 // EventCategoriesClient contains the methods for the EventCategories group.
@@ -26,8 +27,15 @@ type EventCategoriesClient struct {
 }
 
 // NewEventCategoriesClient creates a new instance of EventCategoriesClient with the specified values.
-func NewEventCategoriesClient(con *arm.Connection) *EventCategoriesClient {
-	return &EventCategoriesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewEventCategoriesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *EventCategoriesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &EventCategoriesClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // List - Get the list of available event categories supported in the Activity Logs Service. The current list includes the following: Administrative, Security,
@@ -66,7 +74,7 @@ func (client *EventCategoriesClient) listCreateRequest(ctx context.Context, opti
 func (client *EventCategoriesClient) listHandleResponse(resp *http.Response) (EventCategoriesListResponse, error) {
 	result := EventCategoriesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventCategoryCollection); err != nil {
-		return EventCategoriesListResponse{}, err
+		return EventCategoriesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

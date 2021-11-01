@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // BlobContainersClient contains the methods for the BlobContainers group.
@@ -31,8 +31,15 @@ type BlobContainersClient struct {
 }
 
 // NewBlobContainersClient creates a new instance of BlobContainersClient with the specified values.
-func NewBlobContainersClient(con *arm.Connection, subscriptionID string) *BlobContainersClient {
-	return &BlobContainersClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewBlobContainersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *BlobContainersClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &BlobContainersClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // ClearLegalHold - Clears legal hold tags. Clearing the same or non-existent tag results in an idempotent operation. ClearLegalHold clears out only the
@@ -87,7 +94,7 @@ func (client *BlobContainersClient) clearLegalHoldCreateRequest(ctx context.Cont
 func (client *BlobContainersClient) clearLegalHoldHandleResponse(resp *http.Response) (BlobContainersClearLegalHoldResponse, error) {
 	result := BlobContainersClearLegalHoldResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LegalHold); err != nil {
-		return BlobContainersClearLegalHoldResponse{}, err
+		return BlobContainersClearLegalHoldResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -157,7 +164,7 @@ func (client *BlobContainersClient) createCreateRequest(ctx context.Context, res
 func (client *BlobContainersClient) createHandleResponse(resp *http.Response) (BlobContainersCreateResponse, error) {
 	result := BlobContainersCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BlobContainer); err != nil {
-		return BlobContainersCreateResponse{}, err
+		return BlobContainersCreateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -236,7 +243,7 @@ func (client *BlobContainersClient) createOrUpdateImmutabilityPolicyHandleRespon
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImmutabilityPolicy); err != nil {
-		return BlobContainersCreateOrUpdateImmutabilityPolicyResponse{}, err
+		return BlobContainersCreateOrUpdateImmutabilityPolicyResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -369,7 +376,7 @@ func (client *BlobContainersClient) deleteImmutabilityPolicyHandleResponse(resp 
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImmutabilityPolicy); err != nil {
-		return BlobContainersDeleteImmutabilityPolicyResponse{}, err
+		return BlobContainersDeleteImmutabilityPolicyResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -445,7 +452,7 @@ func (client *BlobContainersClient) extendImmutabilityPolicyHandleResponse(resp 
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImmutabilityPolicy); err != nil {
-		return BlobContainersExtendImmutabilityPolicyResponse{}, err
+		return BlobContainersExtendImmutabilityPolicyResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -513,7 +520,7 @@ func (client *BlobContainersClient) getCreateRequest(ctx context.Context, resour
 func (client *BlobContainersClient) getHandleResponse(resp *http.Response) (BlobContainersGetResponse, error) {
 	result := BlobContainersGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BlobContainer); err != nil {
-		return BlobContainersGetResponse{}, err
+		return BlobContainersGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -588,7 +595,7 @@ func (client *BlobContainersClient) getImmutabilityPolicyHandleResponse(resp *ht
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImmutabilityPolicy); err != nil {
-		return BlobContainersGetImmutabilityPolicyResponse{}, err
+		return BlobContainersGetImmutabilityPolicyResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -660,7 +667,7 @@ func (client *BlobContainersClient) leaseCreateRequest(ctx context.Context, reso
 func (client *BlobContainersClient) leaseHandleResponse(resp *http.Response) (BlobContainersLeaseResponse, error) {
 	result := BlobContainersLeaseResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LeaseContainerResponse); err != nil {
-		return BlobContainersLeaseResponse{}, err
+		return BlobContainersLeaseResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -730,7 +737,7 @@ func (client *BlobContainersClient) listCreateRequest(ctx context.Context, resou
 func (client *BlobContainersClient) listHandleResponse(resp *http.Response) (BlobContainersListResponse, error) {
 	result := BlobContainersListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListContainerItems); err != nil {
-		return BlobContainersListResponse{}, err
+		return BlobContainersListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -803,7 +810,7 @@ func (client *BlobContainersClient) lockImmutabilityPolicyHandleResponse(resp *h
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImmutabilityPolicy); err != nil {
-		return BlobContainersLockImmutabilityPolicyResponse{}, err
+		return BlobContainersLockImmutabilityPolicyResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -956,7 +963,7 @@ func (client *BlobContainersClient) setLegalHoldCreateRequest(ctx context.Contex
 func (client *BlobContainersClient) setLegalHoldHandleResponse(resp *http.Response) (BlobContainersSetLegalHoldResponse, error) {
 	result := BlobContainersSetLegalHoldResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LegalHold); err != nil {
-		return BlobContainersSetLegalHoldResponse{}, err
+		return BlobContainersSetLegalHoldResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1025,7 +1032,7 @@ func (client *BlobContainersClient) updateCreateRequest(ctx context.Context, res
 func (client *BlobContainersClient) updateHandleResponse(resp *http.Response) (BlobContainersUpdateResponse, error) {
 	result := BlobContainersUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BlobContainer); err != nil {
-		return BlobContainersUpdateResponse{}, err
+		return BlobContainersUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

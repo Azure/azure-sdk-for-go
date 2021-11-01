@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // AssessmentsMetadataClient contains the methods for the AssessmentsMetadata group.
@@ -30,8 +31,15 @@ type AssessmentsMetadataClient struct {
 }
 
 // NewAssessmentsMetadataClient creates a new instance of AssessmentsMetadataClient with the specified values.
-func NewAssessmentsMetadataClient(con *arm.Connection, subscriptionID string) *AssessmentsMetadataClient {
-	return &AssessmentsMetadataClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewAssessmentsMetadataClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AssessmentsMetadataClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &AssessmentsMetadataClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateInSubscription - Create metadata information on an assessment type in a specific subscription
@@ -77,7 +85,7 @@ func (client *AssessmentsMetadataClient) createInSubscriptionCreateRequest(ctx c
 func (client *AssessmentsMetadataClient) createInSubscriptionHandleResponse(resp *http.Response) (AssessmentsMetadataCreateInSubscriptionResponse, error) {
 	result := AssessmentsMetadataCreateInSubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityAssessmentMetadataResponse); err != nil {
-		return AssessmentsMetadataCreateInSubscriptionResponse{}, err
+		return AssessmentsMetadataCreateInSubscriptionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -187,7 +195,7 @@ func (client *AssessmentsMetadataClient) getCreateRequest(ctx context.Context, a
 func (client *AssessmentsMetadataClient) getHandleResponse(resp *http.Response) (AssessmentsMetadataGetResponse, error) {
 	result := AssessmentsMetadataGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityAssessmentMetadataResponse); err != nil {
-		return AssessmentsMetadataGetResponse{}, err
+		return AssessmentsMetadataGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -248,7 +256,7 @@ func (client *AssessmentsMetadataClient) getInSubscriptionCreateRequest(ctx cont
 func (client *AssessmentsMetadataClient) getInSubscriptionHandleResponse(resp *http.Response) (AssessmentsMetadataGetInSubscriptionResponse, error) {
 	result := AssessmentsMetadataGetInSubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityAssessmentMetadataResponse); err != nil {
-		return AssessmentsMetadataGetInSubscriptionResponse{}, err
+		return AssessmentsMetadataGetInSubscriptionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -298,7 +306,7 @@ func (client *AssessmentsMetadataClient) listCreateRequest(ctx context.Context, 
 func (client *AssessmentsMetadataClient) listHandleResponse(resp *http.Response) (AssessmentsMetadataListResponse, error) {
 	result := AssessmentsMetadataListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityAssessmentMetadataResponseList); err != nil {
-		return AssessmentsMetadataListResponse{}, err
+		return AssessmentsMetadataListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -352,7 +360,7 @@ func (client *AssessmentsMetadataClient) listBySubscriptionCreateRequest(ctx con
 func (client *AssessmentsMetadataClient) listBySubscriptionHandleResponse(resp *http.Response) (AssessmentsMetadataListBySubscriptionResponse, error) {
 	result := AssessmentsMetadataListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityAssessmentMetadataResponseList); err != nil {
-		return AssessmentsMetadataListBySubscriptionResponse{}, err
+		return AssessmentsMetadataListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

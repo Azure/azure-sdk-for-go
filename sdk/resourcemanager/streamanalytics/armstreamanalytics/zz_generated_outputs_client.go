@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // OutputsClient contains the methods for the Outputs group.
@@ -31,8 +31,15 @@ type OutputsClient struct {
 }
 
 // NewOutputsClient creates a new instance of OutputsClient with the specified values.
-func NewOutputsClient(con *arm.Connection, subscriptionID string) *OutputsClient {
-	return &OutputsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewOutputsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *OutputsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &OutputsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrReplace - Creates an output or replaces an already existing output under an existing streaming job.
@@ -95,7 +102,7 @@ func (client *OutputsClient) createOrReplaceHandleResponse(resp *http.Response) 
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Output); err != nil {
-		return OutputsCreateOrReplaceResponse{}, err
+		return OutputsCreateOrReplaceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -227,7 +234,7 @@ func (client *OutputsClient) getHandleResponse(resp *http.Response) (OutputsGetR
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Output); err != nil {
-		return OutputsGetResponse{}, err
+		return OutputsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -292,7 +299,7 @@ func (client *OutputsClient) listByStreamingJobCreateRequest(ctx context.Context
 func (client *OutputsClient) listByStreamingJobHandleResponse(resp *http.Response) (OutputsListByStreamingJobResponse, error) {
 	result := OutputsListByStreamingJobResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OutputListResult); err != nil {
-		return OutputsListByStreamingJobResponse{}, err
+		return OutputsListByStreamingJobResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -451,7 +458,7 @@ func (client *OutputsClient) updateHandleResponse(resp *http.Response) (OutputsU
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Output); err != nil {
-		return OutputsUpdateResponse{}, err
+		return OutputsUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

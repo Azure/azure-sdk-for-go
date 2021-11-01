@@ -11,11 +11,12 @@ package armmysqlflexibleservers
 import (
 	"context"
 	"fmt"
-	"net/http"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
 )
 
 // GetPrivateDNSZoneSuffixClient contains the methods for the GetPrivateDNSZoneSuffix group.
@@ -26,8 +27,15 @@ type GetPrivateDNSZoneSuffixClient struct {
 }
 
 // NewGetPrivateDNSZoneSuffixClient creates a new instance of GetPrivateDNSZoneSuffixClient with the specified values.
-func NewGetPrivateDNSZoneSuffixClient(con *arm.Connection) *GetPrivateDNSZoneSuffixClient {
-	return &GetPrivateDNSZoneSuffixClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewGetPrivateDNSZoneSuffixClient(credential azcore.TokenCredential, options *arm.ClientOptions) *GetPrivateDNSZoneSuffixClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &GetPrivateDNSZoneSuffixClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Execute - Get private DNS zone suffix in the cloud.
@@ -65,7 +73,7 @@ func (client *GetPrivateDNSZoneSuffixClient) executeCreateRequest(ctx context.Co
 func (client *GetPrivateDNSZoneSuffixClient) executeHandleResponse(resp *http.Response) (GetPrivateDNSZoneSuffixExecuteResponse, error) {
 	result := GetPrivateDNSZoneSuffixExecuteResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GetPrivateDNSZoneSuffixResponse); err != nil {
-		return GetPrivateDNSZoneSuffixExecuteResponse{}, err
+		return GetPrivateDNSZoneSuffixExecuteResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

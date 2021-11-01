@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // DiagnosticClient contains the methods for the Diagnostic group.
@@ -31,8 +32,15 @@ type DiagnosticClient struct {
 }
 
 // NewDiagnosticClient creates a new instance of DiagnosticClient with the specified values.
-func NewDiagnosticClient(con *arm.Connection, subscriptionID string) *DiagnosticClient {
-	return &DiagnosticClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewDiagnosticClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DiagnosticClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &DiagnosticClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates a new Diagnostic or updates an existing one.
@@ -76,7 +84,7 @@ func (client *DiagnosticClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header.Set("If-Match", *options.IfMatch)
@@ -92,7 +100,7 @@ func (client *DiagnosticClient) createOrUpdateHandleResponse(resp *http.Response
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticContract); err != nil {
-		return DiagnosticCreateOrUpdateResponse{}, err
+		return DiagnosticCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -151,7 +159,7 @@ func (client *DiagnosticClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("If-Match", ifMatch)
 	req.Raw().Header.Set("Accept", "application/json")
@@ -212,7 +220,7 @@ func (client *DiagnosticClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -225,7 +233,7 @@ func (client *DiagnosticClient) getHandleResponse(resp *http.Response) (Diagnost
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticContract); err != nil {
-		return DiagnosticGetResponse{}, err
+		return DiagnosticGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -281,7 +289,7 @@ func (client *DiagnosticClient) getEntityTagCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -342,7 +350,7 @@ func (client *DiagnosticClient) listByServiceCreateRequest(ctx context.Context, 
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -352,7 +360,7 @@ func (client *DiagnosticClient) listByServiceCreateRequest(ctx context.Context, 
 func (client *DiagnosticClient) listByServiceHandleResponse(resp *http.Response) (DiagnosticListByServiceResponse, error) {
 	result := DiagnosticListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticCollection); err != nil {
-		return DiagnosticListByServiceResponse{}, err
+		return DiagnosticListByServiceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -411,7 +419,7 @@ func (client *DiagnosticClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("If-Match", ifMatch)
 	req.Raw().Header.Set("Accept", "application/json")
@@ -425,7 +433,7 @@ func (client *DiagnosticClient) updateHandleResponse(resp *http.Response) (Diagn
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticContract); err != nil {
-		return DiagnosticUpdateResponse{}, err
+		return DiagnosticUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

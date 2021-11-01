@@ -10,10 +10,9 @@ package armdatalakeanalytics
 
 import (
 	"encoding/json"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // AccountsBeginCreateOptions contains the optional parameters for the Accounts.BeginCreate method.
@@ -642,9 +641,9 @@ func (d *DataLakeAnalyticsAccountPropertiesBasic) UnmarshalJSON(data []byte) err
 
 func (d DataLakeAnalyticsAccountPropertiesBasic) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "accountId", d.AccountID)
-	populate(objectMap, "creationTime", (*timeRFC3339)(d.CreationTime))
+	populateTimeRFC3339(objectMap, "creationTime", d.CreationTime)
 	populate(objectMap, "endpoint", d.Endpoint)
-	populate(objectMap, "lastModifiedTime", (*timeRFC3339)(d.LastModifiedTime))
+	populateTimeRFC3339(objectMap, "lastModifiedTime", d.LastModifiedTime)
 	populate(objectMap, "provisioningState", d.ProvisioningState)
 	populate(objectMap, "state", d.State)
 }
@@ -657,17 +656,13 @@ func (d *DataLakeAnalyticsAccountPropertiesBasic) unmarshalInternal(rawMsg map[s
 			err = unpopulate(val, &d.AccountID)
 			delete(rawMsg, key)
 		case "creationTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			d.CreationTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &d.CreationTime)
 			delete(rawMsg, key)
 		case "endpoint":
 			err = unpopulate(val, &d.Endpoint)
 			delete(rawMsg, key)
 		case "lastModifiedTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			d.LastModifiedTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &d.LastModifiedTime)
 			delete(rawMsg, key)
 		case "provisioningState":
 			err = unpopulate(val, &d.ProvisioningState)
@@ -1217,7 +1212,7 @@ type StorageContainerProperties struct {
 // MarshalJSON implements the json.Marshaller interface for type StorageContainerProperties.
 func (s StorageContainerProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "lastModifiedTime", (*timeRFC3339)(s.LastModifiedTime))
+	populateTimeRFC3339(objectMap, "lastModifiedTime", s.LastModifiedTime)
 	return json.Marshal(objectMap)
 }
 
@@ -1231,9 +1226,7 @@ func (s *StorageContainerProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "lastModifiedTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			s.LastModifiedTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &s.LastModifiedTime)
 			delete(rawMsg, key)
 		}
 		if err != nil {

@@ -11,11 +11,12 @@ package armappplatform
 import (
 	"context"
 	"fmt"
-	"net/http"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
 )
 
 // RuntimeVersionsClient contains the methods for the RuntimeVersions group.
@@ -26,8 +27,15 @@ type RuntimeVersionsClient struct {
 }
 
 // NewRuntimeVersionsClient creates a new instance of RuntimeVersionsClient with the specified values.
-func NewRuntimeVersionsClient(con *arm.Connection) *RuntimeVersionsClient {
-	return &RuntimeVersionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewRuntimeVersionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *RuntimeVersionsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &RuntimeVersionsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // ListRuntimeVersions - Lists all of the available runtime versions supported by Microsoft.AppPlatform provider.
@@ -55,7 +63,7 @@ func (client *RuntimeVersionsClient) listRuntimeVersionsCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -65,7 +73,7 @@ func (client *RuntimeVersionsClient) listRuntimeVersionsCreateRequest(ctx contex
 func (client *RuntimeVersionsClient) listRuntimeVersionsHandleResponse(resp *http.Response) (RuntimeVersionsListRuntimeVersionsResponse, error) {
 	result := RuntimeVersionsListRuntimeVersionsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailableRuntimeVersions); err != nil {
-		return RuntimeVersionsListRuntimeVersionsResponse{}, err
+		return RuntimeVersionsListRuntimeVersionsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

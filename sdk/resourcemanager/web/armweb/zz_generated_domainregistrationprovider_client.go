@@ -11,11 +11,12 @@ package armweb
 import (
 	"context"
 	"fmt"
-	"net/http"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
 )
 
 // DomainRegistrationProviderClient contains the methods for the DomainRegistrationProvider group.
@@ -26,8 +27,15 @@ type DomainRegistrationProviderClient struct {
 }
 
 // NewDomainRegistrationProviderClient creates a new instance of DomainRegistrationProviderClient with the specified values.
-func NewDomainRegistrationProviderClient(con *arm.Connection) *DomainRegistrationProviderClient {
-	return &DomainRegistrationProviderClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewDomainRegistrationProviderClient(credential azcore.TokenCredential, options *arm.ClientOptions) *DomainRegistrationProviderClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &DomainRegistrationProviderClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // ListOperations - Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource provider
@@ -62,7 +70,7 @@ func (client *DomainRegistrationProviderClient) listOperationsCreateRequest(ctx 
 func (client *DomainRegistrationProviderClient) listOperationsHandleResponse(resp *http.Response) (DomainRegistrationProviderListOperationsResponse, error) {
 	result := DomainRegistrationProviderListOperationsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CsmOperationCollection); err != nil {
-		return DomainRegistrationProviderListOperationsResponse{}, err
+		return DomainRegistrationProviderListOperationsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -12,6 +12,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -30,8 +31,15 @@ type OriginGroupsClient struct {
 }
 
 // NewOriginGroupsClient creates a new instance of OriginGroupsClient with the specified values.
-func NewOriginGroupsClient(con *arm.Connection, subscriptionID string) *OriginGroupsClient {
-	return &OriginGroupsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewOriginGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *OriginGroupsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &OriginGroupsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreate - Creates a new origin group within the specified endpoint.
@@ -257,7 +265,7 @@ func (client *OriginGroupsClient) getCreateRequest(ctx context.Context, resource
 func (client *OriginGroupsClient) getHandleResponse(resp *http.Response) (OriginGroupsGetResponse, error) {
 	result := OriginGroupsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OriginGroup); err != nil {
-		return OriginGroupsGetResponse{}, err
+		return OriginGroupsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -323,7 +331,7 @@ func (client *OriginGroupsClient) listByEndpointCreateRequest(ctx context.Contex
 func (client *OriginGroupsClient) listByEndpointHandleResponse(resp *http.Response) (OriginGroupsListByEndpointResponse, error) {
 	result := OriginGroupsListByEndpointResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OriginGroupListResult); err != nil {
-		return OriginGroupsListByEndpointResponse{}, err
+		return OriginGroupsListByEndpointResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

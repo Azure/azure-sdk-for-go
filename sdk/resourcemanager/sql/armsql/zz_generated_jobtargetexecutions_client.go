@@ -11,15 +11,16 @@ package armsql
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // JobTargetExecutionsClient contains the methods for the JobTargetExecutions group.
@@ -31,8 +32,15 @@ type JobTargetExecutionsClient struct {
 }
 
 // NewJobTargetExecutionsClient creates a new instance of JobTargetExecutionsClient with the specified values.
-func NewJobTargetExecutionsClient(con *arm.Connection, subscriptionID string) *JobTargetExecutionsClient {
-	return &JobTargetExecutionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewJobTargetExecutionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *JobTargetExecutionsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &JobTargetExecutionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Gets a target execution.
@@ -96,7 +104,7 @@ func (client *JobTargetExecutionsClient) getCreateRequest(ctx context.Context, r
 func (client *JobTargetExecutionsClient) getHandleResponse(resp *http.Response) (JobTargetExecutionsGetResponse, error) {
 	result := JobTargetExecutionsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobExecution); err != nil {
-		return JobTargetExecutionsGetResponse{}, err
+		return JobTargetExecutionsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -187,7 +195,7 @@ func (client *JobTargetExecutionsClient) listByJobExecutionCreateRequest(ctx con
 func (client *JobTargetExecutionsClient) listByJobExecutionHandleResponse(resp *http.Response) (JobTargetExecutionsListByJobExecutionResponse, error) {
 	result := JobTargetExecutionsListByJobExecutionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobExecutionListResult); err != nil {
-		return JobTargetExecutionsListByJobExecutionResponse{}, err
+		return JobTargetExecutionsListByJobExecutionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -282,7 +290,7 @@ func (client *JobTargetExecutionsClient) listByStepCreateRequest(ctx context.Con
 func (client *JobTargetExecutionsClient) listByStepHandleResponse(resp *http.Response) (JobTargetExecutionsListByStepResponse, error) {
 	result := JobTargetExecutionsListByStepResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobExecutionListResult); err != nil {
-		return JobTargetExecutionsListByStepResponse{}, err
+		return JobTargetExecutionsListByStepResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

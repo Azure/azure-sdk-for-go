@@ -11,14 +11,14 @@ package armcontainerregistry
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // ScopeMapsClient contains the methods for the ScopeMaps group.
@@ -30,8 +30,15 @@ type ScopeMapsClient struct {
 }
 
 // NewScopeMapsClient creates a new instance of ScopeMapsClient with the specified values.
-func NewScopeMapsClient(con *arm.Connection, subscriptionID string) *ScopeMapsClient {
-	return &ScopeMapsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewScopeMapsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ScopeMapsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ScopeMapsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreate - Creates a scope map for a container registry with the specified parameters.
@@ -95,7 +102,7 @@ func (client *ScopeMapsClient) createCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, scopeMapCreateParameters)
@@ -174,7 +181,7 @@ func (client *ScopeMapsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -232,7 +239,7 @@ func (client *ScopeMapsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -242,7 +249,7 @@ func (client *ScopeMapsClient) getCreateRequest(ctx context.Context, resourceGro
 func (client *ScopeMapsClient) getHandleResponse(resp *http.Response) (ScopeMapsGetResponse, error) {
 	result := ScopeMapsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ScopeMap); err != nil {
-		return ScopeMapsGetResponse{}, err
+		return ScopeMapsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -293,7 +300,7 @@ func (client *ScopeMapsClient) listCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -303,7 +310,7 @@ func (client *ScopeMapsClient) listCreateRequest(ctx context.Context, resourceGr
 func (client *ScopeMapsClient) listHandleResponse(resp *http.Response) (ScopeMapsListResponse, error) {
 	result := ScopeMapsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ScopeMapListResult); err != nil {
-		return ScopeMapsListResponse{}, err
+		return ScopeMapsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -381,7 +388,7 @@ func (client *ScopeMapsClient) updateCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, scopeMapUpdateParameters)

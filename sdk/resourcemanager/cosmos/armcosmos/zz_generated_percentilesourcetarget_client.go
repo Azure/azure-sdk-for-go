@@ -11,13 +11,14 @@ package armcosmos
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // PercentileSourceTargetClient contains the methods for the PercentileSourceTarget group.
@@ -29,8 +30,15 @@ type PercentileSourceTargetClient struct {
 }
 
 // NewPercentileSourceTargetClient creates a new instance of PercentileSourceTargetClient with the specified values.
-func NewPercentileSourceTargetClient(con *arm.Connection, subscriptionID string) *PercentileSourceTargetClient {
-	return &PercentileSourceTargetClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewPercentileSourceTargetClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PercentileSourceTargetClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &PercentileSourceTargetClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // ListMetrics - Retrieves the metrics determined by the given filter for the given account, source and target region. This url is only for PBS and Replication
@@ -79,7 +87,7 @@ func (client *PercentileSourceTargetClient) listMetricsCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	reqQP.Set("$filter", filter)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
@@ -90,7 +98,7 @@ func (client *PercentileSourceTargetClient) listMetricsCreateRequest(ctx context
 func (client *PercentileSourceTargetClient) listMetricsHandleResponse(resp *http.Response) (PercentileSourceTargetListMetricsResponse, error) {
 	result := PercentileSourceTargetListMetricsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PercentileMetricListResult); err != nil {
-		return PercentileSourceTargetListMetricsResponse{}, err
+		return PercentileSourceTargetListMetricsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

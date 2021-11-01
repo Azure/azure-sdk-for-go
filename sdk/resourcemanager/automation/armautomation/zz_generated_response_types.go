@@ -10,10 +10,9 @@ package armautomation
 
 import (
 	"context"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"net/http"
 	"time"
-
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 )
 
 // ActivityGetResponse contains the response from method Activity.Get.
@@ -356,6 +355,8 @@ type DscCompilationJobCreatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l DscCompilationJobCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DscCompilationJobCreateResponse, error) {
 	respType := DscCompilationJobCreateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.DscCompilationJob)
@@ -544,6 +545,8 @@ type DscNodeConfigurationCreateOrUpdatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l DscNodeConfigurationCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DscNodeConfigurationCreateOrUpdateResponse, error) {
 	respType := DscNodeConfigurationCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.DscNodeConfiguration)
@@ -1087,6 +1090,8 @@ type PrivateEndpointConnectionsCreateOrUpdatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l PrivateEndpointConnectionsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsCreateOrUpdateResponse, error) {
 	respType := PrivateEndpointConnectionsCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PrivateEndpointConnection)
@@ -1137,6 +1142,8 @@ type PrivateEndpointConnectionsDeletePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l PrivateEndpointConnectionsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsDeleteResponse, error) {
 	respType := PrivateEndpointConnectionsDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -1307,6 +1314,8 @@ type RunbookDraftReplaceContentPollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l RunbookDraftReplaceContentPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (RunbookDraftReplaceContentResponse, error) {
 	respType := RunbookDraftReplaceContentResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -1393,6 +1402,8 @@ type RunbookPublishPollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l RunbookPublishPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (RunbookPublishResponse, error) {
 	respType := RunbookPublishResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)

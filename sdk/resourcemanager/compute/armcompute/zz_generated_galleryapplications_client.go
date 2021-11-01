@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // GalleryApplicationsClient contains the methods for the GalleryApplications group.
@@ -31,8 +31,15 @@ type GalleryApplicationsClient struct {
 }
 
 // NewGalleryApplicationsClient creates a new instance of GalleryApplicationsClient with the specified values.
-func NewGalleryApplicationsClient(con *arm.Connection, subscriptionID string) *GalleryApplicationsClient {
-	return &GalleryApplicationsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewGalleryApplicationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *GalleryApplicationsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &GalleryApplicationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Create or update a gallery Application Definition.
@@ -246,7 +253,7 @@ func (client *GalleryApplicationsClient) getCreateRequest(ctx context.Context, r
 func (client *GalleryApplicationsClient) getHandleResponse(resp *http.Response) (GalleryApplicationsGetResponse, error) {
 	result := GalleryApplicationsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GalleryApplication); err != nil {
-		return GalleryApplicationsGetResponse{}, err
+		return GalleryApplicationsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -308,7 +315,7 @@ func (client *GalleryApplicationsClient) listByGalleryCreateRequest(ctx context.
 func (client *GalleryApplicationsClient) listByGalleryHandleResponse(resp *http.Response) (GalleryApplicationsListByGalleryResponse, error) {
 	result := GalleryApplicationsListByGalleryResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GalleryApplicationList); err != nil {
-		return GalleryApplicationsListByGalleryResponse{}, err
+		return GalleryApplicationsListByGalleryResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

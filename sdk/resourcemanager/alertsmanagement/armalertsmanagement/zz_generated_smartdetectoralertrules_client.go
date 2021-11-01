@@ -12,7 +12,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -30,8 +32,15 @@ type SmartDetectorAlertRulesClient struct {
 }
 
 // NewSmartDetectorAlertRulesClient creates a new instance of SmartDetectorAlertRulesClient with the specified values.
-func NewSmartDetectorAlertRulesClient(con *arm.Connection, subscriptionID string) *SmartDetectorAlertRulesClient {
-	return &SmartDetectorAlertRulesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewSmartDetectorAlertRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SmartDetectorAlertRulesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &SmartDetectorAlertRulesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Create or update a Smart Detector alert rule.
@@ -81,7 +90,7 @@ func (client *SmartDetectorAlertRulesClient) createOrUpdateCreateRequest(ctx con
 func (client *SmartDetectorAlertRulesClient) createOrUpdateHandleResponse(resp *http.Response) (SmartDetectorAlertRulesCreateOrUpdateResponse, error) {
 	result := SmartDetectorAlertRulesCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertRule); err != nil {
-		return SmartDetectorAlertRulesCreateOrUpdateResponse{}, err
+		return SmartDetectorAlertRulesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -205,7 +214,7 @@ func (client *SmartDetectorAlertRulesClient) getCreateRequest(ctx context.Contex
 func (client *SmartDetectorAlertRulesClient) getHandleResponse(resp *http.Response) (SmartDetectorAlertRulesGetResponse, error) {
 	result := SmartDetectorAlertRulesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertRule); err != nil {
-		return SmartDetectorAlertRulesGetResponse{}, err
+		return SmartDetectorAlertRulesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -262,7 +271,7 @@ func (client *SmartDetectorAlertRulesClient) listCreateRequest(ctx context.Conte
 func (client *SmartDetectorAlertRulesClient) listHandleResponse(resp *http.Response) (SmartDetectorAlertRulesListResponse, error) {
 	result := SmartDetectorAlertRulesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertRulesList); err != nil {
-		return SmartDetectorAlertRulesListResponse{}, err
+		return SmartDetectorAlertRulesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -323,7 +332,7 @@ func (client *SmartDetectorAlertRulesClient) listByResourceGroupCreateRequest(ct
 func (client *SmartDetectorAlertRulesClient) listByResourceGroupHandleResponse(resp *http.Response) (SmartDetectorAlertRulesListByResourceGroupResponse, error) {
 	result := SmartDetectorAlertRulesListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertRulesList); err != nil {
-		return SmartDetectorAlertRulesListByResourceGroupResponse{}, err
+		return SmartDetectorAlertRulesListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -388,7 +397,7 @@ func (client *SmartDetectorAlertRulesClient) patchCreateRequest(ctx context.Cont
 func (client *SmartDetectorAlertRulesClient) patchHandleResponse(resp *http.Response) (SmartDetectorAlertRulesPatchResponse, error) {
 	result := SmartDetectorAlertRulesPatchResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertRule); err != nil {
-		return SmartDetectorAlertRulesPatchResponse{}, err
+		return SmartDetectorAlertRulesPatchResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

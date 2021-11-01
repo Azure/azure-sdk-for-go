@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // SoftwareUpdateConfigurationMachineRunsClient contains the methods for the SoftwareUpdateConfigurationMachineRuns group.
@@ -30,8 +31,15 @@ type SoftwareUpdateConfigurationMachineRunsClient struct {
 }
 
 // NewSoftwareUpdateConfigurationMachineRunsClient creates a new instance of SoftwareUpdateConfigurationMachineRunsClient with the specified values.
-func NewSoftwareUpdateConfigurationMachineRunsClient(con *arm.Connection, subscriptionID string) *SoftwareUpdateConfigurationMachineRunsClient {
-	return &SoftwareUpdateConfigurationMachineRunsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewSoftwareUpdateConfigurationMachineRunsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SoftwareUpdateConfigurationMachineRunsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &SoftwareUpdateConfigurationMachineRunsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // GetByID - Get a single software update configuration machine run by Id.
@@ -85,7 +93,7 @@ func (client *SoftwareUpdateConfigurationMachineRunsClient) getByIDCreateRequest
 func (client *SoftwareUpdateConfigurationMachineRunsClient) getByIDHandleResponse(resp *http.Response) (SoftwareUpdateConfigurationMachineRunsGetByIDResponse, error) {
 	result := SoftwareUpdateConfigurationMachineRunsGetByIDResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SoftwareUpdateConfigurationMachineRun); err != nil {
-		return SoftwareUpdateConfigurationMachineRunsGetByIDResponse{}, err
+		return SoftwareUpdateConfigurationMachineRunsGetByIDResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -162,7 +170,7 @@ func (client *SoftwareUpdateConfigurationMachineRunsClient) listCreateRequest(ct
 func (client *SoftwareUpdateConfigurationMachineRunsClient) listHandleResponse(resp *http.Response) (SoftwareUpdateConfigurationMachineRunsListResponse, error) {
 	result := SoftwareUpdateConfigurationMachineRunsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SoftwareUpdateConfigurationMachineRunListResult); err != nil {
-		return SoftwareUpdateConfigurationMachineRunsListResponse{}, err
+		return SoftwareUpdateConfigurationMachineRunsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

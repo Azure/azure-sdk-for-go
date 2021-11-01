@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // TenantAccessClient contains the methods for the TenantAccess group.
@@ -30,8 +31,15 @@ type TenantAccessClient struct {
 }
 
 // NewTenantAccessClient creates a new instance of TenantAccessClient with the specified values.
-func NewTenantAccessClient(con *arm.Connection, subscriptionID string) *TenantAccessClient {
-	return &TenantAccessClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewTenantAccessClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TenantAccessClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &TenantAccessClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Create - Update tenant access information details.
@@ -75,7 +83,7 @@ func (client *TenantAccessClient) createCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("If-Match", ifMatch)
 	req.Raw().Header.Set("Accept", "application/json")
@@ -89,7 +97,7 @@ func (client *TenantAccessClient) createHandleResponse(resp *http.Response) (Ten
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessInformationContract); err != nil {
-		return TenantAccessCreateResponse{}, err
+		return TenantAccessCreateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -148,7 +156,7 @@ func (client *TenantAccessClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -161,7 +169,7 @@ func (client *TenantAccessClient) getHandleResponse(resp *http.Response) (Tenant
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessInformationContract); err != nil {
-		return TenantAccessGetResponse{}, err
+		return TenantAccessGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -217,7 +225,7 @@ func (client *TenantAccessClient) getEntityTagCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -272,7 +280,7 @@ func (client *TenantAccessClient) listByServiceCreateRequest(ctx context.Context
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -282,7 +290,7 @@ func (client *TenantAccessClient) listByServiceCreateRequest(ctx context.Context
 func (client *TenantAccessClient) listByServiceHandleResponse(resp *http.Response) (TenantAccessListByServiceResponse, error) {
 	result := TenantAccessListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessInformationCollection); err != nil {
-		return TenantAccessListByServiceResponse{}, err
+		return TenantAccessListByServiceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -341,7 +349,7 @@ func (client *TenantAccessClient) listSecretsCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -354,7 +362,7 @@ func (client *TenantAccessClient) listSecretsHandleResponse(resp *http.Response)
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessInformationSecretsContract); err != nil {
-		return TenantAccessListSecretsResponse{}, err
+		return TenantAccessListSecretsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -413,7 +421,7 @@ func (client *TenantAccessClient) regeneratePrimaryKeyCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -473,7 +481,7 @@ func (client *TenantAccessClient) regenerateSecondaryKeyCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -533,7 +541,7 @@ func (client *TenantAccessClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("If-Match", ifMatch)
 	req.Raw().Header.Set("Accept", "application/json")
@@ -547,7 +555,7 @@ func (client *TenantAccessClient) updateHandleResponse(resp *http.Response) (Ten
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessInformationContract); err != nil {
-		return TenantAccessUpdateResponse{}, err
+		return TenantAccessUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

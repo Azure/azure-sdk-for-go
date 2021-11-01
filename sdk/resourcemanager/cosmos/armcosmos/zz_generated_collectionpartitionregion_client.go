@@ -11,13 +11,14 @@ package armcosmos
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // CollectionPartitionRegionClient contains the methods for the CollectionPartitionRegion group.
@@ -29,8 +30,15 @@ type CollectionPartitionRegionClient struct {
 }
 
 // NewCollectionPartitionRegionClient creates a new instance of CollectionPartitionRegionClient with the specified values.
-func NewCollectionPartitionRegionClient(con *arm.Connection, subscriptionID string) *CollectionPartitionRegionClient {
-	return &CollectionPartitionRegionClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewCollectionPartitionRegionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CollectionPartitionRegionClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &CollectionPartitionRegionClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // ListMetrics - Retrieves the metrics determined by the given filter for the given collection and region, split by partition.
@@ -82,7 +90,7 @@ func (client *CollectionPartitionRegionClient) listMetricsCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	reqQP.Set("$filter", filter)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
@@ -93,7 +101,7 @@ func (client *CollectionPartitionRegionClient) listMetricsCreateRequest(ctx cont
 func (client *CollectionPartitionRegionClient) listMetricsHandleResponse(resp *http.Response) (CollectionPartitionRegionListMetricsResponse, error) {
 	result := CollectionPartitionRegionListMetricsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PartitionMetricListResult); err != nil {
-		return CollectionPartitionRegionListMetricsResponse{}, err
+		return CollectionPartitionRegionListMetricsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

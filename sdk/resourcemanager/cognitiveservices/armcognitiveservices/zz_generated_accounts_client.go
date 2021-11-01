@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // AccountsClient contains the methods for the Accounts group.
@@ -31,8 +31,15 @@ type AccountsClient struct {
 }
 
 // NewAccountsClient creates a new instance of AccountsClient with the specified values.
-func NewAccountsClient(con *arm.Connection, subscriptionID string) *AccountsClient {
-	return &AccountsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AccountsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &AccountsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreate - Create Cognitive Services Account. Accounts is a resource group wide resource type. It holds the keys for developer to access intelligent
@@ -236,7 +243,7 @@ func (client *AccountsClient) getCreateRequest(ctx context.Context, resourceGrou
 func (client *AccountsClient) getHandleResponse(resp *http.Response) (AccountsGetResponse, error) {
 	result := AccountsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Account); err != nil {
-		return AccountsGetResponse{}, err
+		return AccountsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -290,7 +297,7 @@ func (client *AccountsClient) listCreateRequest(ctx context.Context, options *Ac
 func (client *AccountsClient) listHandleResponse(resp *http.Response) (AccountsListResponse, error) {
 	result := AccountsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccountListResult); err != nil {
-		return AccountsListResponse{}, err
+		return AccountsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -348,7 +355,7 @@ func (client *AccountsClient) listByResourceGroupCreateRequest(ctx context.Conte
 func (client *AccountsClient) listByResourceGroupHandleResponse(resp *http.Response) (AccountsListByResourceGroupResponse, error) {
 	result := AccountsListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccountListResult); err != nil {
-		return AccountsListByResourceGroupResponse{}, err
+		return AccountsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -413,7 +420,7 @@ func (client *AccountsClient) listKeysCreateRequest(ctx context.Context, resourc
 func (client *AccountsClient) listKeysHandleResponse(resp *http.Response) (AccountsListKeysResponse, error) {
 	result := AccountsListKeysResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIKeys); err != nil {
-		return AccountsListKeysResponse{}, err
+		return AccountsListKeysResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -478,7 +485,7 @@ func (client *AccountsClient) listSKUsCreateRequest(ctx context.Context, resourc
 func (client *AccountsClient) listSKUsHandleResponse(resp *http.Response) (AccountsListSKUsResponse, error) {
 	result := AccountsListSKUsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccountSKUListResult); err != nil {
-		return AccountsListSKUsResponse{}, err
+		return AccountsListSKUsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -546,7 +553,7 @@ func (client *AccountsClient) listUsagesCreateRequest(ctx context.Context, resou
 func (client *AccountsClient) listUsagesHandleResponse(resp *http.Response) (AccountsListUsagesResponse, error) {
 	result := AccountsListUsagesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UsageListResult); err != nil {
-		return AccountsListUsagesResponse{}, err
+		return AccountsListUsagesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -611,7 +618,7 @@ func (client *AccountsClient) regenerateKeyCreateRequest(ctx context.Context, re
 func (client *AccountsClient) regenerateKeyHandleResponse(resp *http.Response) (AccountsRegenerateKeyResponse, error) {
 	result := AccountsRegenerateKeyResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIKeys); err != nil {
-		return AccountsRegenerateKeyResponse{}, err
+		return AccountsRegenerateKeyResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

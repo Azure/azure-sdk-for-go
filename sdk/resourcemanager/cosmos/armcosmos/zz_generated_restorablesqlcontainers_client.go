@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // RestorableSQLContainersClient contains the methods for the RestorableSQLContainers group.
@@ -30,8 +31,15 @@ type RestorableSQLContainersClient struct {
 }
 
 // NewRestorableSQLContainersClient creates a new instance of RestorableSQLContainersClient with the specified values.
-func NewRestorableSQLContainersClient(con *arm.Connection, subscriptionID string) *RestorableSQLContainersClient {
-	return &RestorableSQLContainersClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewRestorableSQLContainersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RestorableSQLContainersClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &RestorableSQLContainersClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // List - Show the event feed of all mutations done on all the Azure Cosmos DB SQL containers under a specific database. This helps in scenario where container
@@ -73,7 +81,7 @@ func (client *RestorableSQLContainersClient) listCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	if options != nil && options.RestorableSQLDatabaseRid != nil {
 		reqQP.Set("restorableSqlDatabaseRid", *options.RestorableSQLDatabaseRid)
 	}
@@ -92,7 +100,7 @@ func (client *RestorableSQLContainersClient) listCreateRequest(ctx context.Conte
 func (client *RestorableSQLContainersClient) listHandleResponse(resp *http.Response) (RestorableSQLContainersListResponse, error) {
 	result := RestorableSQLContainersListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestorableSQLContainersListResult); err != nil {
-		return RestorableSQLContainersListResponse{}, err
+		return RestorableSQLContainersListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

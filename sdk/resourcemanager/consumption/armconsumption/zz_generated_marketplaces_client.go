@@ -10,15 +10,15 @@ package armconsumption
 
 import (
 	"context"
-	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // MarketplacesClient contains the methods for the Marketplaces group.
@@ -29,8 +29,15 @@ type MarketplacesClient struct {
 }
 
 // NewMarketplacesClient creates a new instance of MarketplacesClient with the specified values.
-func NewMarketplacesClient(con *arm.Connection) *MarketplacesClient {
-	return &MarketplacesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewMarketplacesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *MarketplacesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &MarketplacesClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // List - Lists the marketplaces for a scope at the defined scope. Marketplaces are available via this API only for May 1, 2014 or later.
@@ -50,9 +57,6 @@ func (client *MarketplacesClient) List(scope string, options *MarketplacesListOp
 // listCreateRequest creates the List request.
 func (client *MarketplacesClient) listCreateRequest(ctx context.Context, scope string, options *MarketplacesListOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Consumption/marketplaces"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -78,7 +82,7 @@ func (client *MarketplacesClient) listCreateRequest(ctx context.Context, scope s
 func (client *MarketplacesClient) listHandleResponse(resp *http.Response) (MarketplacesListResponse, error) {
 	result := MarketplacesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MarketplacesListResult); err != nil {
-		return MarketplacesListResponse{}, err
+		return MarketplacesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

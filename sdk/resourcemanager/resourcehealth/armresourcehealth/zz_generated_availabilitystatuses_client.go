@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // AvailabilityStatusesClient contains the methods for the AvailabilityStatuses group.
@@ -30,8 +31,15 @@ type AvailabilityStatusesClient struct {
 }
 
 // NewAvailabilityStatusesClient creates a new instance of AvailabilityStatusesClient with the specified values.
-func NewAvailabilityStatusesClient(con *arm.Connection, subscriptionID string) *AvailabilityStatusesClient {
-	return &AvailabilityStatusesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewAvailabilityStatusesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AvailabilityStatusesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &AvailabilityStatusesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // GetByResource - Gets current availability status for a single resource
@@ -54,9 +62,6 @@ func (client *AvailabilityStatusesClient) GetByResource(ctx context.Context, res
 // getByResourceCreateRequest creates the GetByResource request.
 func (client *AvailabilityStatusesClient) getByResourceCreateRequest(ctx context.Context, resourceURI string, options *AvailabilityStatusesGetByResourceOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.ResourceHealth/availabilityStatuses/current"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -79,7 +84,7 @@ func (client *AvailabilityStatusesClient) getByResourceCreateRequest(ctx context
 func (client *AvailabilityStatusesClient) getByResourceHandleResponse(resp *http.Response) (AvailabilityStatusesGetByResourceResponse, error) {
 	result := AvailabilityStatusesGetByResourceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailabilityStatus); err != nil {
-		return AvailabilityStatusesGetByResourceResponse{}, err
+		return AvailabilityStatusesGetByResourceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -115,9 +120,6 @@ func (client *AvailabilityStatusesClient) List(resourceURI string, options *Avai
 // listCreateRequest creates the List request.
 func (client *AvailabilityStatusesClient) listCreateRequest(ctx context.Context, resourceURI string, options *AvailabilityStatusesListOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.ResourceHealth/availabilityStatuses"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -140,7 +142,7 @@ func (client *AvailabilityStatusesClient) listCreateRequest(ctx context.Context,
 func (client *AvailabilityStatusesClient) listHandleResponse(resp *http.Response) (AvailabilityStatusesListResponse, error) {
 	result := AvailabilityStatusesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailabilityStatusListResult); err != nil {
-		return AvailabilityStatusesListResponse{}, err
+		return AvailabilityStatusesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -205,7 +207,7 @@ func (client *AvailabilityStatusesClient) listByResourceGroupCreateRequest(ctx c
 func (client *AvailabilityStatusesClient) listByResourceGroupHandleResponse(resp *http.Response) (AvailabilityStatusesListByResourceGroupResponse, error) {
 	result := AvailabilityStatusesListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailabilityStatusListResult); err != nil {
-		return AvailabilityStatusesListByResourceGroupResponse{}, err
+		return AvailabilityStatusesListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -266,7 +268,7 @@ func (client *AvailabilityStatusesClient) listBySubscriptionIDCreateRequest(ctx 
 func (client *AvailabilityStatusesClient) listBySubscriptionIDHandleResponse(resp *http.Response) (AvailabilityStatusesListBySubscriptionIDResponse, error) {
 	result := AvailabilityStatusesListBySubscriptionIDResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailabilityStatusListResult); err != nil {
-		return AvailabilityStatusesListBySubscriptionIDResponse{}, err
+		return AvailabilityStatusesListBySubscriptionIDResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

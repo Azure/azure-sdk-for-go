@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ConfigurationClient contains the methods for the Configuration group.
@@ -30,8 +31,15 @@ type ConfigurationClient struct {
 }
 
 // NewConfigurationClient creates a new instance of ConfigurationClient with the specified values.
-func NewConfigurationClient(con *arm.Connection, subscriptionID string) *ConfigurationClient {
-	return &ConfigurationClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewConfigurationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ConfigurationClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ConfigurationClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Get all Event Hubs Cluster settings - a collection of key/value pairs which represent the quotas and settings imposed on the cluster.
@@ -71,7 +79,7 @@ func (client *ConfigurationClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -81,7 +89,7 @@ func (client *ConfigurationClient) getCreateRequest(ctx context.Context, resourc
 func (client *ConfigurationClient) getHandleResponse(resp *http.Response) (ConfigurationGetResponse, error) {
 	result := ConfigurationGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterQuotaConfigurationProperties); err != nil {
-		return ConfigurationGetResponse{}, err
+		return ConfigurationGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -137,7 +145,7 @@ func (client *ConfigurationClient) patchCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -147,7 +155,7 @@ func (client *ConfigurationClient) patchCreateRequest(ctx context.Context, resou
 func (client *ConfigurationClient) patchHandleResponse(resp *http.Response) (ConfigurationPatchResponse, error) {
 	result := ConfigurationPatchResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterQuotaConfigurationProperties); err != nil {
-		return ConfigurationPatchResponse{}, err
+		return ConfigurationPatchResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

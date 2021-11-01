@@ -11,13 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // FirewallRulesClient contains the methods for the FirewallRules group.
@@ -29,8 +30,15 @@ type FirewallRulesClient struct {
 }
 
 // NewFirewallRulesClient creates a new instance of FirewallRulesClient with the specified values.
-func NewFirewallRulesClient(con *arm.Connection, subscriptionID string) *FirewallRulesClient {
-	return &FirewallRulesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewFirewallRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *FirewallRulesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &FirewallRulesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or updates a firewall rule.
@@ -84,7 +92,7 @@ func (client *FirewallRulesClient) createOrUpdateCreateRequest(ctx context.Conte
 func (client *FirewallRulesClient) createOrUpdateHandleResponse(resp *http.Response) (FirewallRulesCreateOrUpdateResponse, error) {
 	result := FirewallRulesCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FirewallRule); err != nil {
-		return FirewallRulesCreateOrUpdateResponse{}, err
+		return FirewallRulesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -210,7 +218,7 @@ func (client *FirewallRulesClient) getCreateRequest(ctx context.Context, resourc
 func (client *FirewallRulesClient) getHandleResponse(resp *http.Response) (FirewallRulesGetResponse, error) {
 	result := FirewallRulesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FirewallRule); err != nil {
-		return FirewallRulesGetResponse{}, err
+		return FirewallRulesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -271,7 +279,7 @@ func (client *FirewallRulesClient) listByServerCreateRequest(ctx context.Context
 func (client *FirewallRulesClient) listByServerHandleResponse(resp *http.Response) (FirewallRulesListByServerResponse, error) {
 	result := FirewallRulesListByServerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FirewallRuleListResult); err != nil {
-		return FirewallRulesListByServerResponse{}, err
+		return FirewallRulesListByServerResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -335,7 +343,7 @@ func (client *FirewallRulesClient) replaceCreateRequest(ctx context.Context, res
 func (client *FirewallRulesClient) replaceHandleResponse(resp *http.Response) (FirewallRulesReplaceResponse, error) {
 	result := FirewallRulesReplaceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FirewallRule); err != nil {
-		return FirewallRulesReplaceResponse{}, err
+		return FirewallRulesReplaceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

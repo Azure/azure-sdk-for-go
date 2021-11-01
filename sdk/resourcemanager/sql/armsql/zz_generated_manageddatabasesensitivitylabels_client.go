@@ -11,14 +11,15 @@ package armsql
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ManagedDatabaseSensitivityLabelsClient contains the methods for the ManagedDatabaseSensitivityLabels group.
@@ -30,8 +31,15 @@ type ManagedDatabaseSensitivityLabelsClient struct {
 }
 
 // NewManagedDatabaseSensitivityLabelsClient creates a new instance of ManagedDatabaseSensitivityLabelsClient with the specified values.
-func NewManagedDatabaseSensitivityLabelsClient(con *arm.Connection, subscriptionID string) *ManagedDatabaseSensitivityLabelsClient {
-	return &ManagedDatabaseSensitivityLabelsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewManagedDatabaseSensitivityLabelsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagedDatabaseSensitivityLabelsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ManagedDatabaseSensitivityLabelsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or updates the sensitivity label of a given column
@@ -98,7 +106,7 @@ func (client *ManagedDatabaseSensitivityLabelsClient) createOrUpdateCreateReques
 func (client *ManagedDatabaseSensitivityLabelsClient) createOrUpdateHandleResponse(resp *http.Response) (ManagedDatabaseSensitivityLabelsCreateOrUpdateResponse, error) {
 	result := ManagedDatabaseSensitivityLabelsCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SensitivityLabel); err != nil {
-		return ManagedDatabaseSensitivityLabelsCreateOrUpdateResponse{}, err
+		return ManagedDatabaseSensitivityLabelsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -395,7 +403,7 @@ func (client *ManagedDatabaseSensitivityLabelsClient) getCreateRequest(ctx conte
 func (client *ManagedDatabaseSensitivityLabelsClient) getHandleResponse(resp *http.Response) (ManagedDatabaseSensitivityLabelsGetResponse, error) {
 	result := ManagedDatabaseSensitivityLabelsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SensitivityLabel); err != nil {
-		return ManagedDatabaseSensitivityLabelsGetResponse{}, err
+		return ManagedDatabaseSensitivityLabelsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -469,7 +477,7 @@ func (client *ManagedDatabaseSensitivityLabelsClient) listCurrentByDatabaseCreat
 func (client *ManagedDatabaseSensitivityLabelsClient) listCurrentByDatabaseHandleResponse(resp *http.Response) (ManagedDatabaseSensitivityLabelsListCurrentByDatabaseResponse, error) {
 	result := ManagedDatabaseSensitivityLabelsListCurrentByDatabaseResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SensitivityLabelListResult); err != nil {
-		return ManagedDatabaseSensitivityLabelsListCurrentByDatabaseResponse{}, err
+		return ManagedDatabaseSensitivityLabelsListCurrentByDatabaseResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -543,7 +551,7 @@ func (client *ManagedDatabaseSensitivityLabelsClient) listRecommendedByDatabaseC
 func (client *ManagedDatabaseSensitivityLabelsClient) listRecommendedByDatabaseHandleResponse(resp *http.Response) (ManagedDatabaseSensitivityLabelsListRecommendedByDatabaseResponse, error) {
 	result := ManagedDatabaseSensitivityLabelsListRecommendedByDatabaseResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SensitivityLabelListResult); err != nil {
-		return ManagedDatabaseSensitivityLabelsListRecommendedByDatabaseResponse{}, err
+		return ManagedDatabaseSensitivityLabelsListRecommendedByDatabaseResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

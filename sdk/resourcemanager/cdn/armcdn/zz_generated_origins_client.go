@@ -12,6 +12,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -30,8 +31,15 @@ type OriginsClient struct {
 }
 
 // NewOriginsClient creates a new instance of OriginsClient with the specified values.
-func NewOriginsClient(con *arm.Connection, subscriptionID string) *OriginsClient {
-	return &OriginsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewOriginsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *OriginsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &OriginsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreate - Creates a new origin within the specified endpoint.
@@ -257,7 +265,7 @@ func (client *OriginsClient) getCreateRequest(ctx context.Context, resourceGroup
 func (client *OriginsClient) getHandleResponse(resp *http.Response) (OriginsGetResponse, error) {
 	result := OriginsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Origin); err != nil {
-		return OriginsGetResponse{}, err
+		return OriginsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -323,7 +331,7 @@ func (client *OriginsClient) listByEndpointCreateRequest(ctx context.Context, re
 func (client *OriginsClient) listByEndpointHandleResponse(resp *http.Response) (OriginsListByEndpointResponse, error) {
 	result := OriginsListByEndpointResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OriginListResult); err != nil {
-		return OriginsListByEndpointResponse{}, err
+		return OriginsListByEndpointResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

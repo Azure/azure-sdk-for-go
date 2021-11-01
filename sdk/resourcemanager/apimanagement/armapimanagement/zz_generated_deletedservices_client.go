@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // DeletedServicesClient contains the methods for the DeletedServices group.
@@ -31,8 +31,15 @@ type DeletedServicesClient struct {
 }
 
 // NewDeletedServicesClient creates a new instance of DeletedServicesClient with the specified values.
-func NewDeletedServicesClient(con *arm.Connection, subscriptionID string) *DeletedServicesClient {
-	return &DeletedServicesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewDeletedServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DeletedServicesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &DeletedServicesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // GetByName - Get soft-deleted Api Management Service by name.
@@ -72,7 +79,7 @@ func (client *DeletedServicesClient) getByNameCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -82,7 +89,7 @@ func (client *DeletedServicesClient) getByNameCreateRequest(ctx context.Context,
 func (client *DeletedServicesClient) getByNameHandleResponse(resp *http.Response) (DeletedServicesGetByNameResponse, error) {
 	result := DeletedServicesGetByNameResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedServiceContract); err != nil {
-		return DeletedServicesGetByNameResponse{}, err
+		return DeletedServicesGetByNameResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -126,7 +133,7 @@ func (client *DeletedServicesClient) listBySubscriptionCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -136,7 +143,7 @@ func (client *DeletedServicesClient) listBySubscriptionCreateRequest(ctx context
 func (client *DeletedServicesClient) listBySubscriptionHandleResponse(resp *http.Response) (DeletedServicesListBySubscriptionResponse, error) {
 	result := DeletedServicesListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedServicesCollection); err != nil {
-		return DeletedServicesListBySubscriptionResponse{}, err
+		return DeletedServicesListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -211,7 +218,7 @@ func (client *DeletedServicesClient) purgeCreateRequest(ctx context.Context, ser
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil

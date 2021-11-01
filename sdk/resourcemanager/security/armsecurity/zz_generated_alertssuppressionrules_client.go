@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // AlertsSuppressionRulesClient contains the methods for the AlertsSuppressionRules group.
@@ -30,8 +31,15 @@ type AlertsSuppressionRulesClient struct {
 }
 
 // NewAlertsSuppressionRulesClient creates a new instance of AlertsSuppressionRulesClient with the specified values.
-func NewAlertsSuppressionRulesClient(con *arm.Connection, subscriptionID string) *AlertsSuppressionRulesClient {
-	return &AlertsSuppressionRulesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewAlertsSuppressionRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AlertsSuppressionRulesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &AlertsSuppressionRulesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Delete - Delete dismiss alert rule for this subscription.
@@ -129,7 +137,7 @@ func (client *AlertsSuppressionRulesClient) getCreateRequest(ctx context.Context
 func (client *AlertsSuppressionRulesClient) getHandleResponse(resp *http.Response) (AlertsSuppressionRulesGetResponse, error) {
 	result := AlertsSuppressionRulesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertsSuppressionRule); err != nil {
-		return AlertsSuppressionRulesGetResponse{}, err
+		return AlertsSuppressionRulesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -186,7 +194,7 @@ func (client *AlertsSuppressionRulesClient) listCreateRequest(ctx context.Contex
 func (client *AlertsSuppressionRulesClient) listHandleResponse(resp *http.Response) (AlertsSuppressionRulesListResponse, error) {
 	result := AlertsSuppressionRulesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertsSuppressionRulesList); err != nil {
-		return AlertsSuppressionRulesListResponse{}, err
+		return AlertsSuppressionRulesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -247,7 +255,7 @@ func (client *AlertsSuppressionRulesClient) updateCreateRequest(ctx context.Cont
 func (client *AlertsSuppressionRulesClient) updateHandleResponse(resp *http.Response) (AlertsSuppressionRulesUpdateResponse, error) {
 	result := AlertsSuppressionRulesUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertsSuppressionRule); err != nil {
-		return AlertsSuppressionRulesUpdateResponse{}, err
+		return AlertsSuppressionRulesUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

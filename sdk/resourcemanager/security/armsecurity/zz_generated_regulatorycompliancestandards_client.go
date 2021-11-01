@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // RegulatoryComplianceStandardsClient contains the methods for the RegulatoryComplianceStandards group.
@@ -30,8 +31,15 @@ type RegulatoryComplianceStandardsClient struct {
 }
 
 // NewRegulatoryComplianceStandardsClient creates a new instance of RegulatoryComplianceStandardsClient with the specified values.
-func NewRegulatoryComplianceStandardsClient(con *arm.Connection, subscriptionID string) *RegulatoryComplianceStandardsClient {
-	return &RegulatoryComplianceStandardsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewRegulatoryComplianceStandardsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RegulatoryComplianceStandardsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &RegulatoryComplianceStandardsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Supported regulatory compliance details state for selected standard
@@ -77,7 +85,7 @@ func (client *RegulatoryComplianceStandardsClient) getCreateRequest(ctx context.
 func (client *RegulatoryComplianceStandardsClient) getHandleResponse(resp *http.Response) (RegulatoryComplianceStandardsGetResponse, error) {
 	result := RegulatoryComplianceStandardsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegulatoryComplianceStandard); err != nil {
-		return RegulatoryComplianceStandardsGetResponse{}, err
+		return RegulatoryComplianceStandardsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -134,7 +142,7 @@ func (client *RegulatoryComplianceStandardsClient) listCreateRequest(ctx context
 func (client *RegulatoryComplianceStandardsClient) listHandleResponse(resp *http.Response) (RegulatoryComplianceStandardsListResponse, error) {
 	result := RegulatoryComplianceStandardsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegulatoryComplianceStandardList); err != nil {
-		return RegulatoryComplianceStandardsListResponse{}, err
+		return RegulatoryComplianceStandardsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

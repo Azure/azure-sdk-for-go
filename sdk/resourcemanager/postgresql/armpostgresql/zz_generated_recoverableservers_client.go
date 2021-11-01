@@ -12,7 +12,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -29,8 +31,15 @@ type RecoverableServersClient struct {
 }
 
 // NewRecoverableServersClient creates a new instance of RecoverableServersClient with the specified values.
-func NewRecoverableServersClient(con *arm.Connection, subscriptionID string) *RecoverableServersClient {
-	return &RecoverableServersClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewRecoverableServersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RecoverableServersClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &RecoverableServersClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Gets a recoverable PostgreSQL Server.
@@ -80,7 +89,7 @@ func (client *RecoverableServersClient) getCreateRequest(ctx context.Context, re
 func (client *RecoverableServersClient) getHandleResponse(resp *http.Response) (RecoverableServersGetResponse, error) {
 	result := RecoverableServersGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecoverableServerResource); err != nil {
-		return RecoverableServersGetResponse{}, err
+		return RecoverableServersGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

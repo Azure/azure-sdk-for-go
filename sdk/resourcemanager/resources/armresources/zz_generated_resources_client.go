@@ -12,6 +12,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -31,8 +32,15 @@ type ResourcesClient struct {
 }
 
 // NewResourcesClient creates a new instance of ResourcesClient with the specified values.
-func NewResourcesClient(con *arm.Connection, subscriptionID string) *ResourcesClient {
-	return &ResourcesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ResourcesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ResourcesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CheckExistence - Checks whether a resource exists.
@@ -64,13 +72,7 @@ func (client *ResourcesClient) checkExistenceCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
-	if parentResourcePath == "" {
-		return nil, errors.New("parameter parentResourcePath cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{parentResourcePath}", parentResourcePath)
-	if resourceType == "" {
-		return nil, errors.New("parameter resourceType cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", resourceType)
 	if resourceName == "" {
 		return nil, errors.New("parameter resourceName cannot be empty")
@@ -112,9 +114,6 @@ func (client *ResourcesClient) CheckExistenceByID(ctx context.Context, resourceI
 // checkExistenceByIDCreateRequest creates the CheckExistenceByID request.
 func (client *ResourcesClient) checkExistenceByIDCreateRequest(ctx context.Context, resourceID string, apiVersion string, options *ResourcesCheckExistenceByIDOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}"
-	if resourceID == "" {
-		return nil, errors.New("parameter resourceID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -175,13 +174,7 @@ func (client *ResourcesClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
-	if parentResourcePath == "" {
-		return nil, errors.New("parameter parentResourcePath cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{parentResourcePath}", parentResourcePath)
-	if resourceType == "" {
-		return nil, errors.New("parameter resourceType cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", resourceType)
 	if resourceName == "" {
 		return nil, errors.New("parameter resourceName cannot be empty")
@@ -255,9 +248,6 @@ func (client *ResourcesClient) createOrUpdateByID(ctx context.Context, resourceI
 // createOrUpdateByIDCreateRequest creates the CreateOrUpdateByID request.
 func (client *ResourcesClient) createOrUpdateByIDCreateRequest(ctx context.Context, resourceID string, apiVersion string, parameters GenericResource, options *ResourcesBeginCreateOrUpdateByIDOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}"
-	if resourceID == "" {
-		return nil, errors.New("parameter resourceID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -331,13 +321,7 @@ func (client *ResourcesClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
-	if parentResourcePath == "" {
-		return nil, errors.New("parameter parentResourcePath cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{parentResourcePath}", parentResourcePath)
-	if resourceType == "" {
-		return nil, errors.New("parameter resourceType cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", resourceType)
 	if resourceName == "" {
 		return nil, errors.New("parameter resourceName cannot be empty")
@@ -411,9 +395,6 @@ func (client *ResourcesClient) deleteByID(ctx context.Context, resourceID string
 // deleteByIDCreateRequest creates the DeleteByID request.
 func (client *ResourcesClient) deleteByIDCreateRequest(ctx context.Context, resourceID string, apiVersion string, options *ResourcesBeginDeleteByIDOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}"
-	if resourceID == "" {
-		return nil, errors.New("parameter resourceID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -467,13 +448,7 @@ func (client *ResourcesClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
-	if parentResourcePath == "" {
-		return nil, errors.New("parameter parentResourcePath cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{parentResourcePath}", parentResourcePath)
-	if resourceType == "" {
-		return nil, errors.New("parameter resourceType cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", resourceType)
 	if resourceName == "" {
 		return nil, errors.New("parameter resourceName cannot be empty")
@@ -498,7 +473,7 @@ func (client *ResourcesClient) getCreateRequest(ctx context.Context, resourceGro
 func (client *ResourcesClient) getHandleResponse(resp *http.Response) (ResourcesGetResponse, error) {
 	result := ResourcesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GenericResource); err != nil {
-		return ResourcesGetResponse{}, err
+		return ResourcesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -536,9 +511,6 @@ func (client *ResourcesClient) GetByID(ctx context.Context, resourceID string, a
 // getByIDCreateRequest creates the GetByID request.
 func (client *ResourcesClient) getByIDCreateRequest(ctx context.Context, resourceID string, apiVersion string, options *ResourcesGetByIDOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}"
-	if resourceID == "" {
-		return nil, errors.New("parameter resourceID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -555,7 +527,7 @@ func (client *ResourcesClient) getByIDCreateRequest(ctx context.Context, resourc
 func (client *ResourcesClient) getByIDHandleResponse(resp *http.Response) (ResourcesGetByIDResponse, error) {
 	result := ResourcesGetByIDResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GenericResource); err != nil {
-		return ResourcesGetByIDResponse{}, err
+		return ResourcesGetByIDResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -618,7 +590,7 @@ func (client *ResourcesClient) listCreateRequest(ctx context.Context, options *R
 func (client *ResourcesClient) listHandleResponse(resp *http.Response) (ResourcesListResponse, error) {
 	result := ResourcesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceListResult); err != nil {
-		return ResourcesListResponse{}, err
+		return ResourcesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -685,7 +657,7 @@ func (client *ResourcesClient) listByResourceGroupCreateRequest(ctx context.Cont
 func (client *ResourcesClient) listByResourceGroupHandleResponse(resp *http.Response) (ResourcesListByResourceGroupResponse, error) {
 	result := ResourcesListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceListResult); err != nil {
-		return ResourcesListByResourceGroupResponse{}, err
+		return ResourcesListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -829,13 +801,7 @@ func (client *ResourcesClient) updateCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
-	if parentResourcePath == "" {
-		return nil, errors.New("parameter parentResourcePath cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{parentResourcePath}", parentResourcePath)
-	if resourceType == "" {
-		return nil, errors.New("parameter resourceType cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", resourceType)
 	if resourceName == "" {
 		return nil, errors.New("parameter resourceName cannot be empty")
@@ -909,9 +875,6 @@ func (client *ResourcesClient) updateByID(ctx context.Context, resourceID string
 // updateByIDCreateRequest creates the UpdateByID request.
 func (client *ResourcesClient) updateByIDCreateRequest(ctx context.Context, resourceID string, apiVersion string, parameters GenericResource, options *ResourcesBeginUpdateByIDOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}"
-	if resourceID == "" {
-		return nil, errors.New("parameter resourceID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {

@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // TableClient contains the methods for the Table group.
@@ -30,8 +31,15 @@ type TableClient struct {
 }
 
 // NewTableClient creates a new instance of TableClient with the specified values.
-func NewTableClient(con *arm.Connection, subscriptionID string) *TableClient {
-	return &TableClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewTableClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TableClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &TableClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Create - Creates a new table with the specified table name, under the specified account.
@@ -85,7 +93,7 @@ func (client *TableClient) createCreateRequest(ctx context.Context, resourceGrou
 func (client *TableClient) createHandleResponse(resp *http.Response) (TableCreateResponse, error) {
 	result := TableCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Table); err != nil {
-		return TableCreateResponse{}, err
+		return TableCreateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -214,7 +222,7 @@ func (client *TableClient) getCreateRequest(ctx context.Context, resourceGroupNa
 func (client *TableClient) getHandleResponse(resp *http.Response) (TableGetResponse, error) {
 	result := TableGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Table); err != nil {
-		return TableGetResponse{}, err
+		return TableGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -276,7 +284,7 @@ func (client *TableClient) listCreateRequest(ctx context.Context, resourceGroupN
 func (client *TableClient) listHandleResponse(resp *http.Response) (TableListResponse, error) {
 	result := TableListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListTableResource); err != nil {
-		return TableListResponse{}, err
+		return TableListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -345,7 +353,7 @@ func (client *TableClient) updateCreateRequest(ctx context.Context, resourceGrou
 func (client *TableClient) updateHandleResponse(resp *http.Response) (TableUpdateResponse, error) {
 	result := TableUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Table); err != nil {
-		return TableUpdateResponse{}, err
+		return TableUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

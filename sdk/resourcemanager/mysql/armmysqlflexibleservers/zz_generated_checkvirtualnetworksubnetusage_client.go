@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // CheckVirtualNetworkSubnetUsageClient contains the methods for the CheckVirtualNetworkSubnetUsage group.
@@ -30,8 +31,15 @@ type CheckVirtualNetworkSubnetUsageClient struct {
 }
 
 // NewCheckVirtualNetworkSubnetUsageClient creates a new instance of CheckVirtualNetworkSubnetUsageClient with the specified values.
-func NewCheckVirtualNetworkSubnetUsageClient(con *arm.Connection, subscriptionID string) *CheckVirtualNetworkSubnetUsageClient {
-	return &CheckVirtualNetworkSubnetUsageClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewCheckVirtualNetworkSubnetUsageClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CheckVirtualNetworkSubnetUsageClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &CheckVirtualNetworkSubnetUsageClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Execute - Get virtual network subnet usage for a given vNet resource id.
@@ -77,7 +85,7 @@ func (client *CheckVirtualNetworkSubnetUsageClient) executeCreateRequest(ctx con
 func (client *CheckVirtualNetworkSubnetUsageClient) executeHandleResponse(resp *http.Response) (CheckVirtualNetworkSubnetUsageExecuteResponse, error) {
 	result := CheckVirtualNetworkSubnetUsageExecuteResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkSubnetUsageResult); err != nil {
-		return CheckVirtualNetworkSubnetUsageExecuteResponse{}, err
+		return CheckVirtualNetworkSubnetUsageExecuteResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // RegulatoryComplianceControlsClient contains the methods for the RegulatoryComplianceControls group.
@@ -30,8 +31,15 @@ type RegulatoryComplianceControlsClient struct {
 }
 
 // NewRegulatoryComplianceControlsClient creates a new instance of RegulatoryComplianceControlsClient with the specified values.
-func NewRegulatoryComplianceControlsClient(con *arm.Connection, subscriptionID string) *RegulatoryComplianceControlsClient {
-	return &RegulatoryComplianceControlsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewRegulatoryComplianceControlsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RegulatoryComplianceControlsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &RegulatoryComplianceControlsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Selected regulatory compliance control details and state
@@ -81,7 +89,7 @@ func (client *RegulatoryComplianceControlsClient) getCreateRequest(ctx context.C
 func (client *RegulatoryComplianceControlsClient) getHandleResponse(resp *http.Response) (RegulatoryComplianceControlsGetResponse, error) {
 	result := RegulatoryComplianceControlsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegulatoryComplianceControl); err != nil {
-		return RegulatoryComplianceControlsGetResponse{}, err
+		return RegulatoryComplianceControlsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -142,7 +150,7 @@ func (client *RegulatoryComplianceControlsClient) listCreateRequest(ctx context.
 func (client *RegulatoryComplianceControlsClient) listHandleResponse(resp *http.Response) (RegulatoryComplianceControlsListResponse, error) {
 	result := RegulatoryComplianceControlsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegulatoryComplianceControlList); err != nil {
-		return RegulatoryComplianceControlsListResponse{}, err
+		return RegulatoryComplianceControlsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -10,7 +10,6 @@ import (
 	"context"
 	"log"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
@@ -21,7 +20,7 @@ func ExampleAvailabilitySetsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armcompute.NewAvailabilitySetsClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armcompute.NewAvailabilitySetsClient("<subscription ID>", cred, nil)
 	resp, err := client.CreateOrUpdate(
 		context.Background(),
 		"<resource group name>",
@@ -52,7 +51,7 @@ func ExampleAvailabilitySetsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armcompute.NewAvailabilitySetsClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armcompute.NewAvailabilitySetsClient("<subscription ID>", cred, nil)
 	resp, err := client.Get(context.Background(), "<resource group name>", "<availability set name>", nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a response: %v", err)

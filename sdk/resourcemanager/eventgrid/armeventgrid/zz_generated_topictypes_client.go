@@ -11,13 +11,14 @@ package armeventgrid
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // TopicTypesClient contains the methods for the TopicTypes group.
@@ -28,8 +29,15 @@ type TopicTypesClient struct {
 }
 
 // NewTopicTypesClient creates a new instance of TopicTypesClient with the specified values.
-func NewTopicTypesClient(con *arm.Connection) *TopicTypesClient {
-	return &TopicTypesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewTopicTypesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *TopicTypesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &TopicTypesClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Get information about a topic type.
@@ -61,7 +69,7 @@ func (client *TopicTypesClient) getCreateRequest(ctx context.Context, topicTypeN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -71,7 +79,7 @@ func (client *TopicTypesClient) getCreateRequest(ctx context.Context, topicTypeN
 func (client *TopicTypesClient) getHandleResponse(resp *http.Response) (TopicTypesGetResponse, error) {
 	result := TopicTypesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TopicTypeInfo); err != nil {
-		return TopicTypesGetResponse{}, err
+		return TopicTypesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -113,7 +121,7 @@ func (client *TopicTypesClient) listCreateRequest(ctx context.Context, options *
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -123,7 +131,7 @@ func (client *TopicTypesClient) listCreateRequest(ctx context.Context, options *
 func (client *TopicTypesClient) listHandleResponse(resp *http.Response) (TopicTypesListResponse, error) {
 	result := TopicTypesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TopicTypesListResult); err != nil {
-		return TopicTypesListResponse{}, err
+		return TopicTypesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -169,7 +177,7 @@ func (client *TopicTypesClient) listEventTypesCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -179,7 +187,7 @@ func (client *TopicTypesClient) listEventTypesCreateRequest(ctx context.Context,
 func (client *TopicTypesClient) listEventTypesHandleResponse(resp *http.Response) (TopicTypesListEventTypesResponse, error) {
 	result := TopicTypesListEventTypesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventTypesListResult); err != nil {
-		return TopicTypesListEventTypesResponse{}, err
+		return TopicTypesListEventTypesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

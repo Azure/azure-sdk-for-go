@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // FunctionsClient contains the methods for the Functions group.
@@ -31,8 +31,15 @@ type FunctionsClient struct {
 }
 
 // NewFunctionsClient creates a new instance of FunctionsClient with the specified values.
-func NewFunctionsClient(con *arm.Connection, subscriptionID string) *FunctionsClient {
-	return &FunctionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewFunctionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *FunctionsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &FunctionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrReplace - Creates a function or replaces an already existing function under an existing streaming job.
@@ -95,7 +102,7 @@ func (client *FunctionsClient) createOrReplaceHandleResponse(resp *http.Response
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Function); err != nil {
-		return FunctionsCreateOrReplaceResponse{}, err
+		return FunctionsCreateOrReplaceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -227,7 +234,7 @@ func (client *FunctionsClient) getHandleResponse(resp *http.Response) (Functions
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Function); err != nil {
-		return FunctionsGetResponse{}, err
+		return FunctionsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -292,7 +299,7 @@ func (client *FunctionsClient) listByStreamingJobCreateRequest(ctx context.Conte
 func (client *FunctionsClient) listByStreamingJobHandleResponse(resp *http.Response) (FunctionsListByStreamingJobResponse, error) {
 	result := FunctionsListByStreamingJobResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FunctionListResult); err != nil {
-		return FunctionsListByStreamingJobResponse{}, err
+		return FunctionsListByStreamingJobResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -364,7 +371,7 @@ func (client *FunctionsClient) retrieveDefaultDefinitionCreateRequest(ctx contex
 func (client *FunctionsClient) retrieveDefaultDefinitionHandleResponse(resp *http.Response) (FunctionsRetrieveDefaultDefinitionResponse, error) {
 	result := FunctionsRetrieveDefaultDefinitionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Function); err != nil {
-		return FunctionsRetrieveDefaultDefinitionResponse{}, err
+		return FunctionsRetrieveDefaultDefinitionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -528,7 +535,7 @@ func (client *FunctionsClient) updateHandleResponse(resp *http.Response) (Functi
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Function); err != nil {
-		return FunctionsUpdateResponse{}, err
+		return FunctionsUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

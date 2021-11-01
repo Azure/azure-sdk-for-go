@@ -10,10 +10,9 @@ package armlogic
 
 import (
 	"context"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"net/http"
 	"time"
-
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 )
 
 // IntegrationAccountAgreementsCreateOrUpdateResponse contains the response from method IntegrationAccountAgreements.CreateOrUpdate.
@@ -542,6 +541,8 @@ type IntegrationServiceEnvironmentManagedApisDeletePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l IntegrationServiceEnvironmentManagedApisDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (IntegrationServiceEnvironmentManagedApisDeleteResponse, error) {
 	respType := IntegrationServiceEnvironmentManagedApisDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -610,6 +611,8 @@ type IntegrationServiceEnvironmentManagedApisPutPollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l IntegrationServiceEnvironmentManagedApisPutPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (IntegrationServiceEnvironmentManagedApisPutResponse, error) {
 	respType := IntegrationServiceEnvironmentManagedApisPutResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.IntegrationServiceEnvironmentManagedAPI)
@@ -685,6 +688,8 @@ type IntegrationServiceEnvironmentsCreateOrUpdatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l IntegrationServiceEnvironmentsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (IntegrationServiceEnvironmentsCreateOrUpdateResponse, error) {
 	respType := IntegrationServiceEnvironmentsCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.IntegrationServiceEnvironment)
@@ -783,6 +788,8 @@ type IntegrationServiceEnvironmentsUpdatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l IntegrationServiceEnvironmentsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (IntegrationServiceEnvironmentsUpdateResponse, error) {
 	respType := IntegrationServiceEnvironmentsUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.IntegrationServiceEnvironment)
@@ -1267,6 +1274,8 @@ type WorkflowsMovePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l WorkflowsMovePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WorkflowsMoveResponse, error) {
 	respType := WorkflowsMoveResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)

@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // PermissionsClient contains the methods for the Permissions group.
@@ -30,8 +31,15 @@ type PermissionsClient struct {
 }
 
 // NewPermissionsClient creates a new instance of PermissionsClient with the specified values.
-func NewPermissionsClient(con *arm.Connection, subscriptionID string) *PermissionsClient {
-	return &PermissionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewPermissionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PermissionsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &PermissionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // ListForResource - Gets all permissions the caller has for a resource.
@@ -55,17 +63,8 @@ func (client *PermissionsClient) listForResourceCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceProviderNamespace == "" {
-		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", resourceProviderNamespace)
-	if parentResourcePath == "" {
-		return nil, errors.New("parameter parentResourcePath cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{parentResourcePath}", parentResourcePath)
-	if resourceType == "" {
-		return nil, errors.New("parameter resourceType cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", resourceType)
 	if resourceName == "" {
 		return nil, errors.New("parameter resourceName cannot be empty")
@@ -90,7 +89,7 @@ func (client *PermissionsClient) listForResourceCreateRequest(ctx context.Contex
 func (client *PermissionsClient) listForResourceHandleResponse(resp *http.Response) (PermissionsListForResourceResponse, error) {
 	result := PermissionsListForResourceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PermissionGetResult); err != nil {
-		return PermissionsListForResourceResponse{}, err
+		return PermissionsListForResourceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -148,7 +147,7 @@ func (client *PermissionsClient) listForResourceGroupCreateRequest(ctx context.C
 func (client *PermissionsClient) listForResourceGroupHandleResponse(resp *http.Response) (PermissionsListForResourceGroupResponse, error) {
 	result := PermissionsListForResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PermissionGetResult); err != nil {
-		return PermissionsListForResourceGroupResponse{}, err
+		return PermissionsListForResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

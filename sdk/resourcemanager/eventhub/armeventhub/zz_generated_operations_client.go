@@ -11,11 +11,12 @@ package armeventhub
 import (
 	"context"
 	"fmt"
-	"net/http"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
 )
 
 // OperationsClient contains the methods for the Operations group.
@@ -26,8 +27,15 @@ type OperationsClient struct {
 }
 
 // NewOperationsClient creates a new instance of OperationsClient with the specified values.
-func NewOperationsClient(con *arm.Connection) *OperationsClient {
-	return &OperationsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewOperationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *OperationsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &OperationsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // List - Lists all of the available Event Hub REST API operations.
@@ -52,7 +60,7 @@ func (client *OperationsClient) listCreateRequest(ctx context.Context, options *
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -62,7 +70,7 @@ func (client *OperationsClient) listCreateRequest(ctx context.Context, options *
 func (client *OperationsClient) listHandleResponse(resp *http.Response) (OperationsListResponse, error) {
 	result := OperationsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationListResult); err != nil {
-		return OperationsListResponse{}, err
+		return OperationsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

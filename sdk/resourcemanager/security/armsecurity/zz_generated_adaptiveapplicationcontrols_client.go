@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // AdaptiveApplicationControlsClient contains the methods for the AdaptiveApplicationControls group.
@@ -32,8 +33,15 @@ type AdaptiveApplicationControlsClient struct {
 }
 
 // NewAdaptiveApplicationControlsClient creates a new instance of AdaptiveApplicationControlsClient with the specified values.
-func NewAdaptiveApplicationControlsClient(con *arm.Connection, subscriptionID string, ascLocation string) *AdaptiveApplicationControlsClient {
-	return &AdaptiveApplicationControlsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID, ascLocation: ascLocation}
+func NewAdaptiveApplicationControlsClient(subscriptionID string, ascLocation string, credential azcore.TokenCredential, options *arm.ClientOptions) *AdaptiveApplicationControlsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &AdaptiveApplicationControlsClient{subscriptionID: subscriptionID, ascLocation: ascLocation, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Delete - Delete an application control machine group
@@ -139,7 +147,7 @@ func (client *AdaptiveApplicationControlsClient) getCreateRequest(ctx context.Co
 func (client *AdaptiveApplicationControlsClient) getHandleResponse(resp *http.Response) (AdaptiveApplicationControlsGetResponse, error) {
 	result := AdaptiveApplicationControlsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AdaptiveApplicationControlGroup); err != nil {
-		return AdaptiveApplicationControlsGetResponse{}, err
+		return AdaptiveApplicationControlsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -202,7 +210,7 @@ func (client *AdaptiveApplicationControlsClient) listCreateRequest(ctx context.C
 func (client *AdaptiveApplicationControlsClient) listHandleResponse(resp *http.Response) (AdaptiveApplicationControlsListResponse, error) {
 	result := AdaptiveApplicationControlsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AdaptiveApplicationControlGroups); err != nil {
-		return AdaptiveApplicationControlsListResponse{}, err
+		return AdaptiveApplicationControlsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -267,7 +275,7 @@ func (client *AdaptiveApplicationControlsClient) putCreateRequest(ctx context.Co
 func (client *AdaptiveApplicationControlsClient) putHandleResponse(resp *http.Response) (AdaptiveApplicationControlsPutResponse, error) {
 	result := AdaptiveApplicationControlsPutResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AdaptiveApplicationControlGroup); err != nil {
-		return AdaptiveApplicationControlsPutResponse{}, err
+		return AdaptiveApplicationControlsPutResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

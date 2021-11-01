@@ -11,14 +11,14 @@ package armmonitor
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // PrivateLinkScopesClient contains the methods for the PrivateLinkScopes group.
@@ -30,8 +30,15 @@ type PrivateLinkScopesClient struct {
 }
 
 // NewPrivateLinkScopesClient creates a new instance of PrivateLinkScopesClient with the specified values.
-func NewPrivateLinkScopesClient(con *arm.Connection, subscriptionID string) *PrivateLinkScopesClient {
-	return &PrivateLinkScopesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewPrivateLinkScopesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateLinkScopesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &PrivateLinkScopesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates (or updates) a Azure Monitor PrivateLinkScope. Note: You cannot specify a different value for InstrumentationKey nor AppId in
@@ -82,7 +89,7 @@ func (client *PrivateLinkScopesClient) createOrUpdateCreateRequest(ctx context.C
 func (client *PrivateLinkScopesClient) createOrUpdateHandleResponse(resp *http.Response) (PrivateLinkScopesCreateOrUpdateResponse, error) {
 	result := PrivateLinkScopesCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AzureMonitorPrivateLinkScope); err != nil {
-		return PrivateLinkScopesCreateOrUpdateResponse{}, err
+		return PrivateLinkScopesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -220,7 +227,7 @@ func (client *PrivateLinkScopesClient) getCreateRequest(ctx context.Context, res
 func (client *PrivateLinkScopesClient) getHandleResponse(resp *http.Response) (PrivateLinkScopesGetResponse, error) {
 	result := PrivateLinkScopesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AzureMonitorPrivateLinkScope); err != nil {
-		return PrivateLinkScopesGetResponse{}, err
+		return PrivateLinkScopesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -273,7 +280,7 @@ func (client *PrivateLinkScopesClient) listCreateRequest(ctx context.Context, op
 func (client *PrivateLinkScopesClient) listHandleResponse(resp *http.Response) (PrivateLinkScopesListResponse, error) {
 	result := PrivateLinkScopesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AzureMonitorPrivateLinkScopeListResult); err != nil {
-		return PrivateLinkScopesListResponse{}, err
+		return PrivateLinkScopesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -330,7 +337,7 @@ func (client *PrivateLinkScopesClient) listByResourceGroupCreateRequest(ctx cont
 func (client *PrivateLinkScopesClient) listByResourceGroupHandleResponse(resp *http.Response) (PrivateLinkScopesListByResourceGroupResponse, error) {
 	result := PrivateLinkScopesListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AzureMonitorPrivateLinkScopeListResult); err != nil {
-		return PrivateLinkScopesListByResourceGroupResponse{}, err
+		return PrivateLinkScopesListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -394,7 +401,7 @@ func (client *PrivateLinkScopesClient) updateTagsCreateRequest(ctx context.Conte
 func (client *PrivateLinkScopesClient) updateTagsHandleResponse(resp *http.Response) (PrivateLinkScopesUpdateTagsResponse, error) {
 	result := PrivateLinkScopesUpdateTagsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AzureMonitorPrivateLinkScope); err != nil {
-		return PrivateLinkScopesUpdateTagsResponse{}, err
+		return PrivateLinkScopesUpdateTagsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

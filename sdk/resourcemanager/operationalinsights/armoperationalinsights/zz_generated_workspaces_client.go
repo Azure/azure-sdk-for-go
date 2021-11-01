@@ -12,15 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // WorkspacesClient contains the methods for the Workspaces group.
@@ -32,8 +32,15 @@ type WorkspacesClient struct {
 }
 
 // NewWorkspacesClient creates a new instance of WorkspacesClient with the specified values.
-func NewWorkspacesClient(con *arm.Connection, subscriptionID string) *WorkspacesClient {
-	return &WorkspacesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewWorkspacesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WorkspacesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &WorkspacesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Create or update a workspace.
@@ -242,7 +249,7 @@ func (client *WorkspacesClient) getCreateRequest(ctx context.Context, resourceGr
 func (client *WorkspacesClient) getHandleResponse(resp *http.Response) (WorkspacesGetResponse, error) {
 	result := WorkspacesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Workspace); err != nil {
-		return WorkspacesGetResponse{}, err
+		return WorkspacesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -299,7 +306,7 @@ func (client *WorkspacesClient) listCreateRequest(ctx context.Context, options *
 func (client *WorkspacesClient) listHandleResponse(resp *http.Response) (WorkspacesListResponse, error) {
 	result := WorkspacesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspaceListResult); err != nil {
-		return WorkspacesListResponse{}, err
+		return WorkspacesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -360,7 +367,7 @@ func (client *WorkspacesClient) listByResourceGroupCreateRequest(ctx context.Con
 func (client *WorkspacesClient) listByResourceGroupHandleResponse(resp *http.Response) (WorkspacesListByResourceGroupResponse, error) {
 	result := WorkspacesListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspaceListResult); err != nil {
-		return WorkspacesListByResourceGroupResponse{}, err
+		return WorkspacesListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -425,7 +432,7 @@ func (client *WorkspacesClient) updateCreateRequest(ctx context.Context, resourc
 func (client *WorkspacesClient) updateHandleResponse(resp *http.Response) (WorkspacesUpdateResponse, error) {
 	result := WorkspacesUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Workspace); err != nil {
-		return WorkspacesUpdateResponse{}, err
+		return WorkspacesUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

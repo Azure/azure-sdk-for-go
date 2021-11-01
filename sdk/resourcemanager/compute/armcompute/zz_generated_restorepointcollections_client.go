@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // RestorePointCollectionsClient contains the methods for the RestorePointCollections group.
@@ -31,8 +31,15 @@ type RestorePointCollectionsClient struct {
 }
 
 // NewRestorePointCollectionsClient creates a new instance of RestorePointCollectionsClient with the specified values.
-func NewRestorePointCollectionsClient(con *arm.Connection, subscriptionID string) *RestorePointCollectionsClient {
-	return &RestorePointCollectionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewRestorePointCollectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RestorePointCollectionsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &RestorePointCollectionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - The operation to create or update the restore point collection. Please refer to https://aka.ms/RestorePoints for more details. When
@@ -83,7 +90,7 @@ func (client *RestorePointCollectionsClient) createOrUpdateCreateRequest(ctx con
 func (client *RestorePointCollectionsClient) createOrUpdateHandleResponse(resp *http.Response) (RestorePointCollectionsCreateOrUpdateResponse, error) {
 	result := RestorePointCollectionsCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestorePointCollection); err != nil {
-		return RestorePointCollectionsCreateOrUpdateResponse{}, err
+		return RestorePointCollectionsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -227,7 +234,7 @@ func (client *RestorePointCollectionsClient) getCreateRequest(ctx context.Contex
 func (client *RestorePointCollectionsClient) getHandleResponse(resp *http.Response) (RestorePointCollectionsGetResponse, error) {
 	result := RestorePointCollectionsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestorePointCollection); err != nil {
-		return RestorePointCollectionsGetResponse{}, err
+		return RestorePointCollectionsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -285,7 +292,7 @@ func (client *RestorePointCollectionsClient) listCreateRequest(ctx context.Conte
 func (client *RestorePointCollectionsClient) listHandleResponse(resp *http.Response) (RestorePointCollectionsListResponse, error) {
 	result := RestorePointCollectionsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestorePointCollectionListResult); err != nil {
-		return RestorePointCollectionsListResponse{}, err
+		return RestorePointCollectionsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -341,7 +348,7 @@ func (client *RestorePointCollectionsClient) listAllCreateRequest(ctx context.Co
 func (client *RestorePointCollectionsClient) listAllHandleResponse(resp *http.Response) (RestorePointCollectionsListAllResponse, error) {
 	result := RestorePointCollectionsListAllResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestorePointCollectionListResult); err != nil {
-		return RestorePointCollectionsListAllResponse{}, err
+		return RestorePointCollectionsListAllResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -406,7 +413,7 @@ func (client *RestorePointCollectionsClient) updateCreateRequest(ctx context.Con
 func (client *RestorePointCollectionsClient) updateHandleResponse(resp *http.Response) (RestorePointCollectionsUpdateResponse, error) {
 	result := RestorePointCollectionsUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestorePointCollection); err != nil {
-		return RestorePointCollectionsUpdateResponse{}, err
+		return RestorePointCollectionsUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

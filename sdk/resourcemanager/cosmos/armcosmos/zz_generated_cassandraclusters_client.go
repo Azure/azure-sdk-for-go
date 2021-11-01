@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // CassandraClustersClient contains the methods for the CassandraClusters group.
@@ -31,8 +31,15 @@ type CassandraClustersClient struct {
 }
 
 // NewCassandraClustersClient creates a new instance of CassandraClustersClient with the specified values.
-func NewCassandraClustersClient(con *arm.Connection, subscriptionID string) *CassandraClustersClient {
-	return &CassandraClustersClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewCassandraClustersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CassandraClustersClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &CassandraClustersClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateUpdate - Create or update a managed Cassandra cluster. When updating, you must specify all writable properties. To update only some properties,
@@ -94,7 +101,7 @@ func (client *CassandraClustersClient) createUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, body)
@@ -102,6 +109,86 @@ func (client *CassandraClustersClient) createUpdateCreateRequest(ctx context.Con
 
 // createUpdateHandleError handles the CreateUpdate error response.
 func (client *CassandraClustersClient) createUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
+	if err != nil {
+		return runtime.NewResponseError(err, resp)
+	}
+	errType := CloudError{raw: string(body)}
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
+	}
+	return runtime.NewResponseError(&errType, resp)
+}
+
+// BeginDeallocate - Deallocate the Managed Cassandra Cluster and Associated Data Centers. Deallocation will deallocate the host virtual machine of this
+// cluster, and reserved the data disk. This won't do anything on an
+// already deallocated cluster. Use Start to restart the cluster.
+// If the operation fails it returns the *CloudError error type.
+func (client *CassandraClustersClient) BeginDeallocate(ctx context.Context, resourceGroupName string, clusterName string, options *CassandraClustersBeginDeallocateOptions) (CassandraClustersDeallocatePollerResponse, error) {
+	resp, err := client.deallocate(ctx, resourceGroupName, clusterName, options)
+	if err != nil {
+		return CassandraClustersDeallocatePollerResponse{}, err
+	}
+	result := CassandraClustersDeallocatePollerResponse{
+		RawResponse: resp,
+	}
+	pt, err := armruntime.NewPoller("CassandraClustersClient.Deallocate", "", resp, client.pl, client.deallocateHandleError)
+	if err != nil {
+		return CassandraClustersDeallocatePollerResponse{}, err
+	}
+	result.Poller = &CassandraClustersDeallocatePoller{
+		pt: pt,
+	}
+	return result, nil
+}
+
+// Deallocate - Deallocate the Managed Cassandra Cluster and Associated Data Centers. Deallocation will deallocate the host virtual machine of this cluster,
+// and reserved the data disk. This won't do anything on an
+// already deallocated cluster. Use Start to restart the cluster.
+// If the operation fails it returns the *CloudError error type.
+func (client *CassandraClustersClient) deallocate(ctx context.Context, resourceGroupName string, clusterName string, options *CassandraClustersBeginDeallocateOptions) (*http.Response, error) {
+	req, err := client.deallocateCreateRequest(ctx, resourceGroupName, clusterName, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
+		return nil, client.deallocateHandleError(resp)
+	}
+	return resp, nil
+}
+
+// deallocateCreateRequest creates the Deallocate request.
+func (client *CassandraClustersClient) deallocateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *CassandraClustersBeginDeallocateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/cassandraClusters/{clusterName}/deallocate"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-10-15")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, nil
+}
+
+// deallocateHandleError handles the Deallocate error response.
+func (client *CassandraClustersClient) deallocateHandleError(resp *http.Response) error {
 	body, err := runtime.Payload(resp)
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
@@ -170,7 +257,7 @@ func (client *CassandraClustersClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -178,82 +265,6 @@ func (client *CassandraClustersClient) deleteCreateRequest(ctx context.Context, 
 
 // deleteHandleError handles the Delete error response.
 func (client *CassandraClustersClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginFetchNodeStatus - Request the status of all nodes in the cluster (as returned by 'nodetool status').
-// If the operation fails it returns the *CloudError error type.
-func (client *CassandraClustersClient) BeginFetchNodeStatus(ctx context.Context, resourceGroupName string, clusterName string, options *CassandraClustersBeginFetchNodeStatusOptions) (CassandraClustersFetchNodeStatusPollerResponse, error) {
-	resp, err := client.fetchNodeStatus(ctx, resourceGroupName, clusterName, options)
-	if err != nil {
-		return CassandraClustersFetchNodeStatusPollerResponse{}, err
-	}
-	result := CassandraClustersFetchNodeStatusPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("CassandraClustersClient.FetchNodeStatus", "", resp, client.pl, client.fetchNodeStatusHandleError)
-	if err != nil {
-		return CassandraClustersFetchNodeStatusPollerResponse{}, err
-	}
-	result.Poller = &CassandraClustersFetchNodeStatusPoller{
-		pt: pt,
-	}
-	return result, nil
-}
-
-// FetchNodeStatus - Request the status of all nodes in the cluster (as returned by 'nodetool status').
-// If the operation fails it returns the *CloudError error type.
-func (client *CassandraClustersClient) fetchNodeStatus(ctx context.Context, resourceGroupName string, clusterName string, options *CassandraClustersBeginFetchNodeStatusOptions) (*http.Response, error) {
-	req, err := client.fetchNodeStatusCreateRequest(ctx, resourceGroupName, clusterName, options)
-	if err != nil {
-		return nil, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.fetchNodeStatusHandleError(resp)
-	}
-	return resp, nil
-}
-
-// fetchNodeStatusCreateRequest creates the FetchNodeStatus request.
-func (client *CassandraClustersClient) fetchNodeStatusCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *CassandraClustersBeginFetchNodeStatusOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/cassandraClusters/{clusterName}/fetchNodeStatus"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
-	return req, nil
-}
-
-// fetchNodeStatusHandleError handles the FetchNodeStatus error response.
-func (client *CassandraClustersClient) fetchNodeStatusHandleError(resp *http.Response) error {
 	body, err := runtime.Payload(resp)
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
@@ -302,7 +313,7 @@ func (client *CassandraClustersClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -312,7 +323,7 @@ func (client *CassandraClustersClient) getCreateRequest(ctx context.Context, res
 func (client *CassandraClustersClient) getHandleResponse(resp *http.Response) (CassandraClustersGetResponse, error) {
 	result := CassandraClustersGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterResource); err != nil {
-		return CassandraClustersGetResponse{}, err
+		return CassandraClustersGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -330,26 +341,46 @@ func (client *CassandraClustersClient) getHandleError(resp *http.Response) error
 	return runtime.NewResponseError(&errType, resp)
 }
 
-// GetBackup - Get the properties of an individual backup of this cluster that is available to restore.
+// BeginInvokeCommand - Invoke a command like nodetool for cassandra maintenance
 // If the operation fails it returns the *CloudError error type.
-func (client *CassandraClustersClient) GetBackup(ctx context.Context, resourceGroupName string, clusterName string, backupID string, options *CassandraClustersGetBackupOptions) (CassandraClustersGetBackupResponse, error) {
-	req, err := client.getBackupCreateRequest(ctx, resourceGroupName, clusterName, backupID, options)
+func (client *CassandraClustersClient) BeginInvokeCommand(ctx context.Context, resourceGroupName string, clusterName string, body CommandPostBody, options *CassandraClustersBeginInvokeCommandOptions) (CassandraClustersInvokeCommandPollerResponse, error) {
+	resp, err := client.invokeCommand(ctx, resourceGroupName, clusterName, body, options)
 	if err != nil {
-		return CassandraClustersGetBackupResponse{}, err
+		return CassandraClustersInvokeCommandPollerResponse{}, err
+	}
+	result := CassandraClustersInvokeCommandPollerResponse{
+		RawResponse: resp,
+	}
+	pt, err := armruntime.NewPoller("CassandraClustersClient.InvokeCommand", "", resp, client.pl, client.invokeCommandHandleError)
+	if err != nil {
+		return CassandraClustersInvokeCommandPollerResponse{}, err
+	}
+	result.Poller = &CassandraClustersInvokeCommandPoller{
+		pt: pt,
+	}
+	return result, nil
+}
+
+// InvokeCommand - Invoke a command like nodetool for cassandra maintenance
+// If the operation fails it returns the *CloudError error type.
+func (client *CassandraClustersClient) invokeCommand(ctx context.Context, resourceGroupName string, clusterName string, body CommandPostBody, options *CassandraClustersBeginInvokeCommandOptions) (*http.Response, error) {
+	req, err := client.invokeCommandCreateRequest(ctx, resourceGroupName, clusterName, body, options)
+	if err != nil {
+		return nil, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CassandraClustersGetBackupResponse{}, err
+		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CassandraClustersGetBackupResponse{}, client.getBackupHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
+		return nil, client.invokeCommandHandleError(resp)
 	}
-	return client.getBackupHandleResponse(resp)
+	return resp, nil
 }
 
-// getBackupCreateRequest creates the GetBackup request.
-func (client *CassandraClustersClient) getBackupCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, backupID string, options *CassandraClustersGetBackupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/cassandraClusters/{clusterName}/backups/{backupId}"
+// invokeCommandCreateRequest creates the InvokeCommand request.
+func (client *CassandraClustersClient) invokeCommandCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, body CommandPostBody, options *CassandraClustersBeginInvokeCommandOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/cassandraClusters/{clusterName}/invokeCommand"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -362,97 +393,19 @@ func (client *CassandraClustersClient) getBackupCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	if backupID == "" {
-		return nil, errors.New("parameter backupID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{backupId}", url.PathEscape(backupID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
-	return req, nil
+	return req, runtime.MarshalAsJSON(req, body)
 }
 
-// getBackupHandleResponse handles the GetBackup response.
-func (client *CassandraClustersClient) getBackupHandleResponse(resp *http.Response) (CassandraClustersGetBackupResponse, error) {
-	result := CassandraClustersGetBackupResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.BackupResource); err != nil {
-		return CassandraClustersGetBackupResponse{}, err
-	}
-	return result, nil
-}
-
-// getBackupHandleError handles the GetBackup error response.
-func (client *CassandraClustersClient) getBackupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListBackups - List the backups of this cluster that are available to restore.
-// If the operation fails it returns the *CloudError error type.
-func (client *CassandraClustersClient) ListBackups(ctx context.Context, resourceGroupName string, clusterName string, options *CassandraClustersListBackupsOptions) (CassandraClustersListBackupsResponse, error) {
-	req, err := client.listBackupsCreateRequest(ctx, resourceGroupName, clusterName, options)
-	if err != nil {
-		return CassandraClustersListBackupsResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return CassandraClustersListBackupsResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CassandraClustersListBackupsResponse{}, client.listBackupsHandleError(resp)
-	}
-	return client.listBackupsHandleResponse(resp)
-}
-
-// listBackupsCreateRequest creates the ListBackups request.
-func (client *CassandraClustersClient) listBackupsCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *CassandraClustersListBackupsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/cassandraClusters/{clusterName}/backups"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
-	return req, nil
-}
-
-// listBackupsHandleResponse handles the ListBackups response.
-func (client *CassandraClustersClient) listBackupsHandleResponse(resp *http.Response) (CassandraClustersListBackupsResponse, error) {
-	result := CassandraClustersListBackupsResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ListBackups); err != nil {
-		return CassandraClustersListBackupsResponse{}, err
-	}
-	return result, nil
-}
-
-// listBackupsHandleError handles the ListBackups error response.
-func (client *CassandraClustersClient) listBackupsHandleError(resp *http.Response) error {
+// invokeCommandHandleError handles the InvokeCommand error response.
+func (client *CassandraClustersClient) invokeCommandHandleError(resp *http.Response) error {
 	body, err := runtime.Payload(resp)
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
@@ -497,7 +450,7 @@ func (client *CassandraClustersClient) listByResourceGroupCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -507,7 +460,7 @@ func (client *CassandraClustersClient) listByResourceGroupCreateRequest(ctx cont
 func (client *CassandraClustersClient) listByResourceGroupHandleResponse(resp *http.Response) (CassandraClustersListByResourceGroupResponse, error) {
 	result := CassandraClustersListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListClusters); err != nil {
-		return CassandraClustersListByResourceGroupResponse{}, err
+		return CassandraClustersListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -554,7 +507,7 @@ func (client *CassandraClustersClient) listBySubscriptionCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -564,7 +517,7 @@ func (client *CassandraClustersClient) listBySubscriptionCreateRequest(ctx conte
 func (client *CassandraClustersClient) listBySubscriptionHandleResponse(resp *http.Response) (CassandraClustersListBySubscriptionResponse, error) {
 	result := CassandraClustersListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListClusters); err != nil {
-		return CassandraClustersListBySubscriptionResponse{}, err
+		return CassandraClustersListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -582,30 +535,34 @@ func (client *CassandraClustersClient) listBySubscriptionHandleError(resp *http.
 	return runtime.NewResponseError(&errType, resp)
 }
 
-// BeginRequestRepair - Request that repair begin on this cluster as soon as possible.
+// BeginStart - Start the Managed Cassandra Cluster and Associated Data Centers. Start will start the host virtual machine of this cluster with reserved
+// data disk. This won't do anything on an already running
+// cluster. Use Deallocate to deallocate the cluster.
 // If the operation fails it returns the *CloudError error type.
-func (client *CassandraClustersClient) BeginRequestRepair(ctx context.Context, resourceGroupName string, clusterName string, body RepairPostBody, options *CassandraClustersBeginRequestRepairOptions) (CassandraClustersRequestRepairPollerResponse, error) {
-	resp, err := client.requestRepair(ctx, resourceGroupName, clusterName, body, options)
+func (client *CassandraClustersClient) BeginStart(ctx context.Context, resourceGroupName string, clusterName string, options *CassandraClustersBeginStartOptions) (CassandraClustersStartPollerResponse, error) {
+	resp, err := client.start(ctx, resourceGroupName, clusterName, options)
 	if err != nil {
-		return CassandraClustersRequestRepairPollerResponse{}, err
+		return CassandraClustersStartPollerResponse{}, err
 	}
-	result := CassandraClustersRequestRepairPollerResponse{
+	result := CassandraClustersStartPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("CassandraClustersClient.RequestRepair", "", resp, client.pl, client.requestRepairHandleError)
+	pt, err := armruntime.NewPoller("CassandraClustersClient.Start", "", resp, client.pl, client.startHandleError)
 	if err != nil {
-		return CassandraClustersRequestRepairPollerResponse{}, err
+		return CassandraClustersStartPollerResponse{}, err
 	}
-	result.Poller = &CassandraClustersRequestRepairPoller{
+	result.Poller = &CassandraClustersStartPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// RequestRepair - Request that repair begin on this cluster as soon as possible.
+// Start - Start the Managed Cassandra Cluster and Associated Data Centers. Start will start the host virtual machine of this cluster with reserved data
+// disk. This won't do anything on an already running
+// cluster. Use Deallocate to deallocate the cluster.
 // If the operation fails it returns the *CloudError error type.
-func (client *CassandraClustersClient) requestRepair(ctx context.Context, resourceGroupName string, clusterName string, body RepairPostBody, options *CassandraClustersBeginRequestRepairOptions) (*http.Response, error) {
-	req, err := client.requestRepairCreateRequest(ctx, resourceGroupName, clusterName, body, options)
+func (client *CassandraClustersClient) start(ctx context.Context, resourceGroupName string, clusterName string, options *CassandraClustersBeginStartOptions) (*http.Response, error) {
+	req, err := client.startCreateRequest(ctx, resourceGroupName, clusterName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -613,15 +570,15 @@ func (client *CassandraClustersClient) requestRepair(ctx context.Context, resour
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return nil, client.requestRepairHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
+		return nil, client.startHandleError(resp)
 	}
 	return resp, nil
 }
 
-// requestRepairCreateRequest creates the RequestRepair request.
-func (client *CassandraClustersClient) requestRepairCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, body RepairPostBody, options *CassandraClustersBeginRequestRepairOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/cassandraClusters/{clusterName}/repair"
+// startCreateRequest creates the Start request.
+func (client *CassandraClustersClient) startCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *CassandraClustersBeginStartOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/cassandraClusters/{clusterName}/start"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -639,14 +596,79 @@ func (client *CassandraClustersClient) requestRepairCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
-	return req, runtime.MarshalAsJSON(req, body)
+	return req, nil
 }
 
-// requestRepairHandleError handles the RequestRepair error response.
-func (client *CassandraClustersClient) requestRepairHandleError(resp *http.Response) error {
+// startHandleError handles the Start error response.
+func (client *CassandraClustersClient) startHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
+	if err != nil {
+		return runtime.NewResponseError(err, resp)
+	}
+	errType := CloudError{raw: string(body)}
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
+	}
+	return runtime.NewResponseError(&errType, resp)
+}
+
+// Status - Gets the CPU, memory, and disk usage statistics for each Cassandra node in a cluster.
+// If the operation fails it returns the *CloudError error type.
+func (client *CassandraClustersClient) Status(ctx context.Context, resourceGroupName string, clusterName string, options *CassandraClustersStatusOptions) (CassandraClustersStatusResponse, error) {
+	req, err := client.statusCreateRequest(ctx, resourceGroupName, clusterName, options)
+	if err != nil {
+		return CassandraClustersStatusResponse{}, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return CassandraClustersStatusResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return CassandraClustersStatusResponse{}, client.statusHandleError(resp)
+	}
+	return client.statusHandleResponse(resp)
+}
+
+// statusCreateRequest creates the Status request.
+func (client *CassandraClustersClient) statusCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *CassandraClustersStatusOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/cassandraClusters/{clusterName}/status"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-10-15")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, nil
+}
+
+// statusHandleResponse handles the Status response.
+func (client *CassandraClustersClient) statusHandleResponse(resp *http.Response) (CassandraClustersStatusResponse, error) {
+	result := CassandraClustersStatusResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CassandraClusterPublicStatus); err != nil {
+		return CassandraClustersStatusResponse{}, runtime.NewResponseError(err, resp)
+	}
+	return result, nil
+}
+
+// statusHandleError handles the Status error response.
+func (client *CassandraClustersClient) statusHandleError(resp *http.Response) error {
 	body, err := runtime.Payload(resp)
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
@@ -715,7 +737,7 @@ func (client *CassandraClustersClient) updateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, body)

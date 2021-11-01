@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // BudgetsClient contains the methods for the Budgets group.
@@ -29,8 +30,15 @@ type BudgetsClient struct {
 }
 
 // NewBudgetsClient creates a new instance of BudgetsClient with the specified values.
-func NewBudgetsClient(con *arm.Connection) *BudgetsClient {
-	return &BudgetsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewBudgetsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *BudgetsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &BudgetsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - The operation to create or update a budget. You can optionally provide an eTag if desired as a form of concurrency control. To obtain
@@ -55,9 +63,6 @@ func (client *BudgetsClient) CreateOrUpdate(ctx context.Context, scope string, b
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *BudgetsClient) createOrUpdateCreateRequest(ctx context.Context, scope string, budgetName string, parameters Budget, options *BudgetsCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Consumption/budgets/{budgetName}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if budgetName == "" {
 		return nil, errors.New("parameter budgetName cannot be empty")
@@ -78,7 +83,7 @@ func (client *BudgetsClient) createOrUpdateCreateRequest(ctx context.Context, sc
 func (client *BudgetsClient) createOrUpdateHandleResponse(resp *http.Response) (BudgetsCreateOrUpdateResponse, error) {
 	result := BudgetsCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Budget); err != nil {
-		return BudgetsCreateOrUpdateResponse{}, err
+		return BudgetsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -116,9 +121,6 @@ func (client *BudgetsClient) Delete(ctx context.Context, scope string, budgetNam
 // deleteCreateRequest creates the Delete request.
 func (client *BudgetsClient) deleteCreateRequest(ctx context.Context, scope string, budgetName string, options *BudgetsDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Consumption/budgets/{budgetName}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if budgetName == "" {
 		return nil, errors.New("parameter budgetName cannot be empty")
@@ -168,9 +170,6 @@ func (client *BudgetsClient) Get(ctx context.Context, scope string, budgetName s
 // getCreateRequest creates the Get request.
 func (client *BudgetsClient) getCreateRequest(ctx context.Context, scope string, budgetName string, options *BudgetsGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Consumption/budgets/{budgetName}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if budgetName == "" {
 		return nil, errors.New("parameter budgetName cannot be empty")
@@ -191,7 +190,7 @@ func (client *BudgetsClient) getCreateRequest(ctx context.Context, scope string,
 func (client *BudgetsClient) getHandleResponse(resp *http.Response) (BudgetsGetResponse, error) {
 	result := BudgetsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Budget); err != nil {
-		return BudgetsGetResponse{}, err
+		return BudgetsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -226,9 +225,6 @@ func (client *BudgetsClient) List(scope string, options *BudgetsListOptions) *Bu
 // listCreateRequest creates the List request.
 func (client *BudgetsClient) listCreateRequest(ctx context.Context, scope string, options *BudgetsListOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Consumption/budgets"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -245,7 +241,7 @@ func (client *BudgetsClient) listCreateRequest(ctx context.Context, scope string
 func (client *BudgetsClient) listHandleResponse(resp *http.Response) (BudgetsListResponse, error) {
 	result := BudgetsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BudgetsListResult); err != nil {
-		return BudgetsListResponse{}, err
+		return BudgetsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // AppServiceCertificateOrdersClient contains the methods for the AppServiceCertificateOrders group.
@@ -31,8 +31,15 @@ type AppServiceCertificateOrdersClient struct {
 }
 
 // NewAppServiceCertificateOrdersClient creates a new instance of AppServiceCertificateOrdersClient with the specified values.
-func NewAppServiceCertificateOrdersClient(con *arm.Connection, subscriptionID string) *AppServiceCertificateOrdersClient {
-	return &AppServiceCertificateOrdersClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewAppServiceCertificateOrdersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AppServiceCertificateOrdersClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &AppServiceCertificateOrdersClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Description for Create or update a certificate purchase order.
@@ -354,7 +361,7 @@ func (client *AppServiceCertificateOrdersClient) getCreateRequest(ctx context.Co
 func (client *AppServiceCertificateOrdersClient) getHandleResponse(resp *http.Response) (AppServiceCertificateOrdersGetResponse, error) {
 	result := AppServiceCertificateOrdersGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppServiceCertificateOrder); err != nil {
-		return AppServiceCertificateOrdersGetResponse{}, err
+		return AppServiceCertificateOrdersGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -423,7 +430,7 @@ func (client *AppServiceCertificateOrdersClient) getCertificateCreateRequest(ctx
 func (client *AppServiceCertificateOrdersClient) getCertificateHandleResponse(resp *http.Response) (AppServiceCertificateOrdersGetCertificateResponse, error) {
 	result := AppServiceCertificateOrdersGetCertificateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppServiceCertificateResource); err != nil {
-		return AppServiceCertificateOrdersGetCertificateResponse{}, err
+		return AppServiceCertificateOrdersGetCertificateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -477,7 +484,7 @@ func (client *AppServiceCertificateOrdersClient) listCreateRequest(ctx context.C
 func (client *AppServiceCertificateOrdersClient) listHandleResponse(resp *http.Response) (AppServiceCertificateOrdersListResponse, error) {
 	result := AppServiceCertificateOrdersListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppServiceCertificateOrderCollection); err != nil {
-		return AppServiceCertificateOrdersListResponse{}, err
+		return AppServiceCertificateOrdersListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -535,7 +542,7 @@ func (client *AppServiceCertificateOrdersClient) listByResourceGroupCreateReques
 func (client *AppServiceCertificateOrdersClient) listByResourceGroupHandleResponse(resp *http.Response) (AppServiceCertificateOrdersListByResourceGroupResponse, error) {
 	result := AppServiceCertificateOrdersListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppServiceCertificateOrderCollection); err != nil {
-		return AppServiceCertificateOrdersListByResourceGroupResponse{}, err
+		return AppServiceCertificateOrdersListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -597,7 +604,7 @@ func (client *AppServiceCertificateOrdersClient) listCertificatesCreateRequest(c
 func (client *AppServiceCertificateOrdersClient) listCertificatesHandleResponse(resp *http.Response) (AppServiceCertificateOrdersListCertificatesResponse, error) {
 	result := AppServiceCertificateOrdersListCertificatesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppServiceCertificateCollection); err != nil {
-		return AppServiceCertificateOrdersListCertificatesResponse{}, err
+		return AppServiceCertificateOrdersListCertificatesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -886,7 +893,7 @@ func (client *AppServiceCertificateOrdersClient) retrieveCertificateActionsCreat
 func (client *AppServiceCertificateOrdersClient) retrieveCertificateActionsHandleResponse(resp *http.Response) (AppServiceCertificateOrdersRetrieveCertificateActionsResponse, error) {
 	result := AppServiceCertificateOrdersRetrieveCertificateActionsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateOrderActionArray); err != nil {
-		return AppServiceCertificateOrdersRetrieveCertificateActionsResponse{}, err
+		return AppServiceCertificateOrdersRetrieveCertificateActionsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -951,7 +958,7 @@ func (client *AppServiceCertificateOrdersClient) retrieveCertificateEmailHistory
 func (client *AppServiceCertificateOrdersClient) retrieveCertificateEmailHistoryHandleResponse(resp *http.Response) (AppServiceCertificateOrdersRetrieveCertificateEmailHistoryResponse, error) {
 	result := AppServiceCertificateOrdersRetrieveCertificateEmailHistoryResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateEmailArray); err != nil {
-		return AppServiceCertificateOrdersRetrieveCertificateEmailHistoryResponse{}, err
+		return AppServiceCertificateOrdersRetrieveCertificateEmailHistoryResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1022,7 +1029,7 @@ func (client *AppServiceCertificateOrdersClient) retrieveSiteSealCreateRequest(c
 func (client *AppServiceCertificateOrdersClient) retrieveSiteSealHandleResponse(resp *http.Response) (AppServiceCertificateOrdersRetrieveSiteSealResponse, error) {
 	result := AppServiceCertificateOrdersRetrieveSiteSealResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteSeal); err != nil {
-		return AppServiceCertificateOrdersRetrieveSiteSealResponse{}, err
+		return AppServiceCertificateOrdersRetrieveSiteSealResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1087,7 +1094,7 @@ func (client *AppServiceCertificateOrdersClient) updateCreateRequest(ctx context
 func (client *AppServiceCertificateOrdersClient) updateHandleResponse(resp *http.Response) (AppServiceCertificateOrdersUpdateResponse, error) {
 	result := AppServiceCertificateOrdersUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppServiceCertificateOrder); err != nil {
-		return AppServiceCertificateOrdersUpdateResponse{}, err
+		return AppServiceCertificateOrdersUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1156,7 +1163,7 @@ func (client *AppServiceCertificateOrdersClient) updateCertificateCreateRequest(
 func (client *AppServiceCertificateOrdersClient) updateCertificateHandleResponse(resp *http.Response) (AppServiceCertificateOrdersUpdateCertificateResponse, error) {
 	result := AppServiceCertificateOrdersUpdateCertificateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppServiceCertificateResource); err != nil {
-		return AppServiceCertificateOrdersUpdateCertificateResponse{}, err
+		return AppServiceCertificateOrdersUpdateCertificateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

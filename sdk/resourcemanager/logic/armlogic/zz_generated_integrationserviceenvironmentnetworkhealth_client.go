@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // IntegrationServiceEnvironmentNetworkHealthClient contains the methods for the IntegrationServiceEnvironmentNetworkHealth group.
@@ -30,8 +31,15 @@ type IntegrationServiceEnvironmentNetworkHealthClient struct {
 }
 
 // NewIntegrationServiceEnvironmentNetworkHealthClient creates a new instance of IntegrationServiceEnvironmentNetworkHealthClient with the specified values.
-func NewIntegrationServiceEnvironmentNetworkHealthClient(con *arm.Connection, subscriptionID string) *IntegrationServiceEnvironmentNetworkHealthClient {
-	return &IntegrationServiceEnvironmentNetworkHealthClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewIntegrationServiceEnvironmentNetworkHealthClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IntegrationServiceEnvironmentNetworkHealthClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &IntegrationServiceEnvironmentNetworkHealthClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Gets the integration service environment network health.
@@ -81,7 +89,7 @@ func (client *IntegrationServiceEnvironmentNetworkHealthClient) getCreateRequest
 func (client *IntegrationServiceEnvironmentNetworkHealthClient) getHandleResponse(resp *http.Response) (IntegrationServiceEnvironmentNetworkHealthGetResponse, error) {
 	result := IntegrationServiceEnvironmentNetworkHealthGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Value); err != nil {
-		return IntegrationServiceEnvironmentNetworkHealthGetResponse{}, err
+		return IntegrationServiceEnvironmentNetworkHealthGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

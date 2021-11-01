@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // HybridConnectionsClient contains the methods for the HybridConnections group.
@@ -30,8 +31,15 @@ type HybridConnectionsClient struct {
 }
 
 // NewHybridConnectionsClient creates a new instance of HybridConnectionsClient with the specified values.
-func NewHybridConnectionsClient(con *arm.Connection, subscriptionID string) *HybridConnectionsClient {
-	return &HybridConnectionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewHybridConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *HybridConnectionsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &HybridConnectionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or updates a service hybrid connection. This operation is idempotent.
@@ -85,7 +93,7 @@ func (client *HybridConnectionsClient) createOrUpdateCreateRequest(ctx context.C
 func (client *HybridConnectionsClient) createOrUpdateHandleResponse(resp *http.Response) (HybridConnectionsCreateOrUpdateResponse, error) {
 	result := HybridConnectionsCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridConnection); err != nil {
-		return HybridConnectionsCreateOrUpdateResponse{}, err
+		return HybridConnectionsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -158,7 +166,7 @@ func (client *HybridConnectionsClient) createOrUpdateAuthorizationRuleCreateRequ
 func (client *HybridConnectionsClient) createOrUpdateAuthorizationRuleHandleResponse(resp *http.Response) (HybridConnectionsCreateOrUpdateAuthorizationRuleResponse, error) {
 	result := HybridConnectionsCreateOrUpdateAuthorizationRuleResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationRule); err != nil {
-		return HybridConnectionsCreateOrUpdateAuthorizationRuleResponse{}, err
+		return HybridConnectionsCreateOrUpdateAuthorizationRuleResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -351,7 +359,7 @@ func (client *HybridConnectionsClient) getCreateRequest(ctx context.Context, res
 func (client *HybridConnectionsClient) getHandleResponse(resp *http.Response) (HybridConnectionsGetResponse, error) {
 	result := HybridConnectionsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridConnection); err != nil {
-		return HybridConnectionsGetResponse{}, err
+		return HybridConnectionsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -424,7 +432,7 @@ func (client *HybridConnectionsClient) getAuthorizationRuleCreateRequest(ctx con
 func (client *HybridConnectionsClient) getAuthorizationRuleHandleResponse(resp *http.Response) (HybridConnectionsGetAuthorizationRuleResponse, error) {
 	result := HybridConnectionsGetAuthorizationRuleResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationRule); err != nil {
-		return HybridConnectionsGetAuthorizationRuleResponse{}, err
+		return HybridConnectionsGetAuthorizationRuleResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -490,7 +498,7 @@ func (client *HybridConnectionsClient) listAuthorizationRulesCreateRequest(ctx c
 func (client *HybridConnectionsClient) listAuthorizationRulesHandleResponse(resp *http.Response) (HybridConnectionsListAuthorizationRulesResponse, error) {
 	result := HybridConnectionsListAuthorizationRulesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationRuleListResult); err != nil {
-		return HybridConnectionsListAuthorizationRulesResponse{}, err
+		return HybridConnectionsListAuthorizationRulesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -552,7 +560,7 @@ func (client *HybridConnectionsClient) listByNamespaceCreateRequest(ctx context.
 func (client *HybridConnectionsClient) listByNamespaceHandleResponse(resp *http.Response) (HybridConnectionsListByNamespaceResponse, error) {
 	result := HybridConnectionsListByNamespaceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridConnectionListResult); err != nil {
-		return HybridConnectionsListByNamespaceResponse{}, err
+		return HybridConnectionsListByNamespaceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -625,7 +633,7 @@ func (client *HybridConnectionsClient) listKeysCreateRequest(ctx context.Context
 func (client *HybridConnectionsClient) listKeysHandleResponse(resp *http.Response) (HybridConnectionsListKeysResponse, error) {
 	result := HybridConnectionsListKeysResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
-		return HybridConnectionsListKeysResponse{}, err
+		return HybridConnectionsListKeysResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -698,7 +706,7 @@ func (client *HybridConnectionsClient) regenerateKeysCreateRequest(ctx context.C
 func (client *HybridConnectionsClient) regenerateKeysHandleResponse(resp *http.Response) (HybridConnectionsRegenerateKeysResponse, error) {
 	result := HybridConnectionsRegenerateKeysResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
-		return HybridConnectionsRegenerateKeysResponse{}, err
+		return HybridConnectionsRegenerateKeysResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

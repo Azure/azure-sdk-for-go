@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // AccessReviewInstancesAssignedForMyApprovalClient contains the methods for the AccessReviewInstancesAssignedForMyApproval group.
@@ -29,8 +30,15 @@ type AccessReviewInstancesAssignedForMyApprovalClient struct {
 }
 
 // NewAccessReviewInstancesAssignedForMyApprovalClient creates a new instance of AccessReviewInstancesAssignedForMyApprovalClient with the specified values.
-func NewAccessReviewInstancesAssignedForMyApprovalClient(con *arm.Connection) *AccessReviewInstancesAssignedForMyApprovalClient {
-	return &AccessReviewInstancesAssignedForMyApprovalClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewAccessReviewInstancesAssignedForMyApprovalClient(credential azcore.TokenCredential, options *arm.ClientOptions) *AccessReviewInstancesAssignedForMyApprovalClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &AccessReviewInstancesAssignedForMyApprovalClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // GetByID - Get single access review instance assigned for my approval.
@@ -76,7 +84,7 @@ func (client *AccessReviewInstancesAssignedForMyApprovalClient) getByIDCreateReq
 func (client *AccessReviewInstancesAssignedForMyApprovalClient) getByIDHandleResponse(resp *http.Response) (AccessReviewInstancesAssignedForMyApprovalGetByIDResponse, error) {
 	result := AccessReviewInstancesAssignedForMyApprovalGetByIDResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessReviewInstance); err != nil {
-		return AccessReviewInstancesAssignedForMyApprovalGetByIDResponse{}, err
+		return AccessReviewInstancesAssignedForMyApprovalGetByIDResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -130,7 +138,7 @@ func (client *AccessReviewInstancesAssignedForMyApprovalClient) listCreateReques
 func (client *AccessReviewInstancesAssignedForMyApprovalClient) listHandleResponse(resp *http.Response) (AccessReviewInstancesAssignedForMyApprovalListResponse, error) {
 	result := AccessReviewInstancesAssignedForMyApprovalListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessReviewInstanceListResult); err != nil {
-		return AccessReviewInstancesAssignedForMyApprovalListResponse{}, err
+		return AccessReviewInstancesAssignedForMyApprovalListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

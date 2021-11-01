@@ -515,3 +515,13 @@ func TestLiveOnly(t *testing.T) {
 	LiveOnly(t)
 	require.Equal(t, IsLiveOnly(t), true)
 }
+
+func TestHostAndScheme(t *testing.T) {
+	r := RecordingOptions{UseHTTPS: true}
+	require.Equal(t, r.Host(), "https")
+	require.Equal(t, r.Scheme(), "localhost:5001")
+
+	r.UseHTTPS = false
+	require.Equal(t, r.Host(), "http")
+	require.Equal(t, r.Scheme(), "localhost:5000")
+}

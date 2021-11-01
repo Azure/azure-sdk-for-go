@@ -3,6 +3,7 @@
 ## 0.8.2 (Unreleased)
 
 ### Features Added
+* Added `Host` and `Scheme` methods to `recording.RecordingOptions`
 
 ### Breaking Changes
 

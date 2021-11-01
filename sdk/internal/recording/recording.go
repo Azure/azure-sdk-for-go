@@ -473,11 +473,21 @@ func defaultOptions() *RecordingOptions {
 	}
 }
 
-func (r RecordingOptions) hostScheme() string {
+func (r RecordingOptions) Host() string {
 	if r.UseHTTPS {
-		return "https://localhost:5001"
+		return "https"
 	}
-	return "http://localhost:5000"
+	return "http"
+}
+func (r RecordingOptions) Scheme() string {
+	if r.UseHTTPS {
+		return "localhost:5001"
+	}
+	return "localhost:5000"
+}
+
+func (r RecordingOptions) hostScheme() string {
+	return fmt.Sprintf("%s://%s", r.Host(), r.Scheme())
 }
 
 func getTestId(pathToRecordings string, t *testing.T) string {

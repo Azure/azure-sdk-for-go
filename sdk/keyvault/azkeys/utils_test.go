@@ -81,12 +81,12 @@ func TestMain(m *testing.M) {
 
 	// 3. Reset
 	// TODO: Add after sanitizer PR
-	// if recording.GetRecordMode() != "live" {
-	// 	err := recording.ResetSanitizers(nil)
-	// 	if err != nil {
-	// 		panic(err)
-	// 	}
-	// }
+	if recording.GetRecordMode() != "live" {
+		err := recording.ResetSanitizers(nil)
+		if err != nil {
+			panic(err)
+		}
+	}
 
 	// 4. Error out if applicable
 	os.Exit(exitVal)

@@ -44,6 +44,7 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 	}
 
 	if k.scope == nil || k.tenantID == nil {
+		fmt.Println("Making first request with policy...")
 		// First request, get both to get the token
 		challengeReq, err := k.getChallengeRequest(req)
 		if err != nil {
@@ -78,6 +79,7 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 
 	// If it fails and has a 401, try it with a new token
 	if resp.StatusCode == 401 {
+		fmt.Println("Received a 401 with token....")
 		// Check for a new auth policy
 		err := k.findScopeAndTenant(resp)
 
@@ -115,6 +117,7 @@ func (k KeyVaultChallengePolicy) parseTenant(url string) *string {
 
 // sets the k.scope and k.tenantID from the WWW-Authenticate header
 func (k *KeyVaultChallengePolicy) findScopeAndTenant(resp *http.Response) error {
+	fmt.Printf("findScopeAndTenant\n%v\n%v",resp.Request.URL.String(), resp)
 	authHeader := resp.Header.Get("WWW-Authenticate")
 	if authHeader == "" && k.scope == nil && k.tenantID == nil {
 		// No WWW-Authenticate and we don't already know the scope and tenatnID

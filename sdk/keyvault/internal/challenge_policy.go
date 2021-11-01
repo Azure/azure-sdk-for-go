@@ -67,7 +67,10 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 	}
 
 	if token, ok := tk.(*azcore.AccessToken); ok {
-		req.Raw().Header.Set(headerAuthorization, fmt.Sprintf("%s %s", bearerHeader, token.Token))
+		req.Raw().Header.Set(
+			headerAuthorization,
+			fmt.Sprintf("%s %s", bearerHeader, token.Token),
+		)
 	}
 
 	// try the request
@@ -78,6 +81,9 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 
 	// If it fails and has a 401, try it with a new token
 	if resp.StatusCode == 401 {
+		// Force a new token by creating a brand new ExpiringResource
+		k.mainResource = NewExpiringResource(acquire)
+
 		// Check for a new auth policy
 		err := k.findScopeAndTenant(resp)
 
@@ -92,7 +98,10 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 		}
 
 		if token, ok := tk.(*azcore.AccessToken); ok {
-			req.Raw().Header.Set(headerAuthorization, fmt.Sprintf("%s %s", bearerHeader, token.Token))
+			req.Raw().Header.Set(
+				headerAuthorization,
+				fmt.Sprintf("%s %s", bearerHeader, token.Token),
+			)
 		}
 
 		resp, err = http.DefaultClient.Do(req.Raw())

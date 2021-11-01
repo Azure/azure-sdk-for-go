@@ -107,9 +107,9 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 
 // parses Tenant ID from auth challenge
 // https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000
-func (k KeyVaultChallengePolicy) parseTenant(url string) *string {
+func parseTenant(url string) *string {
 	parts := strings.Split(url, "/")
-	tenant := parts[len(parts)-1]
+	tenant := parts[3]
 	return &tenant
 }
 
@@ -117,22 +117,15 @@ func (k KeyVaultChallengePolicy) parseTenant(url string) *string {
 func (k *KeyVaultChallengePolicy) findScopeAndTenant(resp *http.Response) error {
 	authHeader := resp.Header.Get("WWW-Authenticate")
 	if authHeader == "" && k.scope == nil && k.tenantID == nil {
-		// No WWW-Authenticate and we don't already know the scope and tenatnID
-		k.scope = nil
-		k.tenantID = nil
 		return errors.New("response has no WWW-Authenticate header for challenge authentication")
 	}
 
 	// Strip down to auth and resource
-	// Format is "Bearer authorization=\"<site>\" resource=\"<site>\""
+	// Format is "Bearer authorization=\"<site>\" resource=\"<site>\"" OR
+	// "Bearer authorization=\"<site>\" scope=\"<site>\""
 	authHeader = strings.ReplaceAll(authHeader, "Bearer ", "")
 
 	parts := strings.Split(authHeader, " ")
-	if len(parts) != 2 {
-		k.scope = nil
-		k.tenantID = nil
-		return fmt.Errorf("could not understand WWW-Authenticate header: %s", authHeader)
-	}
 
 	vals := make([]string, 0)
 	for _, part := range parts {
@@ -148,13 +141,11 @@ func (k *KeyVaultChallengePolicy) findScopeAndTenant(resp *http.Response) error 
 		vals = append(vals, url)
 	}
 
-	if strings.HasSuffix(vals[1], "/") {
-		vals[1] += ".default"
-	} else {
+	if !strings.HasSuffix(vals[1], "/.default") {
 		vals[1] += "/.default"
 	}
 
-	k.tenantID = k.parseTenant(vals[0])
+	k.tenantID = parseTenant(vals[0])
 	k.scope = &vals[1]
 
 	return nil
@@ -181,7 +172,13 @@ type acquiringResourceState struct {
 // thread/goroutine at a time ever calls this function
 func acquire(state interface{}) (newResource interface{}, newExpiration time.Time, err error) {
 	s := state.(acquiringResourceState)
-	tk, err := s.p.cred.GetToken(s.req.Raw().Context(), policy.TokenRequestOptions{Scopes: []string{*s.p.scope}})
+	tk, err := s.p.cred.GetToken(
+		s.req.Raw().Context(),
+		policy.TokenRequestOptions{
+			Scopes:   []string{*s.p.scope},
+			TenantID: *s.p.scope,
+		},
+	)
 	if err != nil {
 		return nil, time.Time{}, err
 	}

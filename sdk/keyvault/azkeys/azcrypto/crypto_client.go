@@ -29,8 +29,6 @@ type Client struct {
 	vaultURL   string
 	keyID      string
 	keyVersion string
-	cred       azcore.TokenCredential
-	transport  policy.Transporter
 }
 
 // ClientOptions are the configurable options on a Client.
@@ -85,28 +83,30 @@ func parseVaultURL(base string) (string, error) {
 
 // NewClient creates a new azcrytpo.Client that will perform operations against the Key Vault service. The key should
 // be an identifier of an Azure Key Vault key. Including a version is recommended but not required.
-func NewClient(key string, credential azcore.TokenCredential, options *ClientOptions) (*Client, error) {
+func NewClient(keyURL string, credential azcore.TokenCredential, options *ClientOptions) (*Client, error) {
+	// TODO: should this return by pointer or by reference, ask Joel
 	if options == nil {
 		options = &ClientOptions{}
 	}
+	genOptions := options.toConnectionOptions()
 
 	// Have to have a transport for the challenge policy
-	if options.Transport == nil {
-		options.Transport = http.DefaultClient
+	if genOptions.Transport == nil {
+		genOptions.Transport = http.DefaultClient
 	}
 
-	options.PerRetryPolicies = append(
-		options.PerRetryPolicies,
-		shared.NewKeyVaultChallengePolicy(credential, options.Transport),
+	genOptions.PerRetryPolicies = append(
+		genOptions.PerRetryPolicies,
+		shared.NewKeyVaultChallengePolicy(credential, genOptions.Transport),
 	)
-	conn := generated.NewConnection(options.toConnectionOptions())
+	conn := generated.NewConnection(genOptions)
 
-	vaultURL, err := parseVaultURL(key)
+	vaultURL, err := parseVaultURL(keyURL)
 	if err != nil {
 		return &Client{}, err
 	}
 
-	keyID, keyVersion, err := parseKeyIDAndVersion(key)
+	keyID, keyVersion, err := parseKeyIDAndVersion(keyURL)
 	if err != nil {
 		return &Client{}, err
 	}
@@ -116,8 +116,6 @@ func NewClient(key string, credential azcore.TokenCredential, options *ClientOpt
 		vaultURL:   vaultURL,
 		keyID:      keyID,
 		keyVersion: keyVersion,
-		cred:       credential,
-		transport:  options.Transport,
 	}, nil
 }
 

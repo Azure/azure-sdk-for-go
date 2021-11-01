@@ -61,7 +61,7 @@ func TestMain(m *testing.M) {
 		}
 
 		mhsmURL, ok := os.LookupEnv("AZURE_MANAGEDHSM_URL")
-		if ok {
+		if !ok {
 			fmt.Println("Did not find managed HSM url, skipping those tests")
 			enableHSM = true
 			err = recording.AddURISanitizer(fakeKvMHSMURL, mhsmURL, nil)
@@ -80,13 +80,12 @@ func TestMain(m *testing.M) {
 	exitVal := m.Run()
 
 	// 3. Reset
-	// TODO: Add after sanitizer PR
-	// if recording.GetRecordMode() != "live" {
-	// 	err := recording.ResetSanitizers(nil)
-	// 	if err != nil {
-	// 		panic(err)
-	// 	}
-	// }
+	if recording.GetRecordMode() != "live" {
+		err := recording.ResetSanitizers(nil)
+		if err != nil {
+			panic(err)
+		}
+	}
 
 	// 4. Error out if applicable
 	os.Exit(exitVal)

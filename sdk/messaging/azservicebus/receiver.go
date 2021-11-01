@@ -198,9 +198,9 @@ func (r *Receiver) ReceiveDeferredMessages(ctx context.Context, sequenceNumbers 
 	return receivedMessages, nil
 }
 
-// PeekOptions contains options for the `Receiver.PeekMessages`
+// PeekMessagesOptions contains options for the `Receiver.PeekMessages`
 // function.
-type PeekOptions struct {
+type PeekMessagesOptions struct {
 	// FromSequenceNumber is the sequence number to start with when peeking messages.
 	FromSequenceNumber *int64
 }
@@ -209,7 +209,7 @@ type PeekOptions struct {
 // Messages that are peeked do not have lock tokens, so settlement methods
 // like CompleteMessage, AbandonMessage, DeferMessage or DeadLetterMessage
 // will not work with them.
-func (r *Receiver) PeekMessages(ctx context.Context, maxMessageCount int, options *PeekOptions) ([]*ReceivedMessage, error) {
+func (r *Receiver) PeekMessages(ctx context.Context, maxMessageCount int, options *PeekMessagesOptions) ([]*ReceivedMessage, error) {
 	_, _, mgmt, _, err := r.amqpLinks.Get(ctx)
 
 	if err != nil {

@@ -278,7 +278,7 @@ func TestReceiverPeek(t *testing.T) {
 		"Message 0", "Message 1", "Message 2",
 	}, getSortedBodies(append(peekedMessages, peekedMessages2...)))
 
-	repeekedMessages, err := receiver.PeekMessages(ctx, 1, &PeekOptions{
+	repeekedMessages, err := receiver.PeekMessages(ctx, 1, &PeekMessagesOptions{
 		FromSequenceNumber: peekedMessages2[0].SequenceNumber,
 	})
 	require.NoError(t, err)

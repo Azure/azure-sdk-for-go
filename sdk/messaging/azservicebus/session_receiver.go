@@ -118,7 +118,7 @@ func (r *SessionReceiver) ReceiveDeferredMessages(ctx context.Context, sequenceN
 // Messages that are peeked do not have lock tokens, so settlement methods
 // like CompleteMessage, AbandonMessage, DeferMessage or DeadLetterMessage
 // will not work with them.
-func (r *SessionReceiver) PeekMessages(ctx context.Context, maxMessageCount int, options *PeekOptions) ([]*ReceivedMessage, error) {
+func (r *SessionReceiver) PeekMessages(ctx context.Context, maxMessageCount int, options *PeekMessagesOptions) ([]*ReceivedMessage, error) {
 	return r.inner.PeekMessages(ctx, maxMessageCount, options)
 }
 

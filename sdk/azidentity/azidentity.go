@@ -22,8 +22,6 @@ type AuthorityHost string
 const (
 	// AzureChina is a global constant to use in order to access the Azure China cloud.
 	AzureChina AuthorityHost = "https://login.chinacloudapi.cn/"
-	// AzureGermany is a global constant to use in order to access the Azure Germany cloud.
-	AzureGermany AuthorityHost = "https://login.microsoftonline.de/"
 	// AzureGovernment is a global constant to use in order to access the Azure Government cloud.
 	AzureGovernment AuthorityHost = "https://login.microsoftonline.us/"
 	// AzurePublicCloud is a global constant to use in order to access the Azure public cloud.

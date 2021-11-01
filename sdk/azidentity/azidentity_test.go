@@ -45,8 +45,6 @@ func init() {
 	switch host {
 	case AzureChina:
 		liveTestScope = "https://management.core.chinacloudapi.cn//.default"
-	case AzureGermany:
-		liveTestScope = "https://management.core.cloudapi.de//.default"
 	case AzureGovernment:
 		liveTestScope = "https://management.core.usgovcloudapi.net//.default"
 	}

@@ -35,7 +35,7 @@ func TestSessionReceiver_acceptSession(t *testing.T) {
 	receiver, err := client.AcceptSessionForQueue(ctx, queueName, "session-1", nil)
 	require.NoError(t, err)
 
-	msg, err := receiver.receiveMessage(ctx, nil)
+	msg, err := receiver.inner.receiveMessage(ctx, nil)
 	require.NoError(t, err)
 
 	require.EqualValues(t, "session-based message", msg.Body)
@@ -43,6 +43,15 @@ func TestSessionReceiver_acceptSession(t *testing.T) {
 	require.NoError(t, receiver.CompleteMessage(ctx, msg))
 
 	require.EqualValues(t, "session-1", receiver.SessionID())
+
+	sessionState, err := receiver.GetSessionState(ctx)
+	require.NoError(t, err)
+	require.Nil(t, sessionState)
+
+	require.NoError(t, receiver.SetSessionState(ctx, []byte("hello")))
+	sessionState, err = receiver.GetSessionState(ctx)
+	require.NoError(t, err)
+	require.EqualValues(t, "hello", string(sessionState))
 }
 
 func TestSessionReceiver_blankSessionIDs(t *testing.T) {
@@ -69,7 +78,7 @@ func TestSessionReceiver_blankSessionIDs(t *testing.T) {
 	receiver, err := client.AcceptSessionForQueue(ctx, queueName, "", nil)
 	require.NoError(t, err)
 
-	msg, err := receiver.receiveMessage(ctx, nil)
+	msg, err := receiver.inner.receiveMessage(ctx, nil)
 	require.NoError(t, err)
 
 	require.EqualValues(t, "session-based message", msg.Body)
@@ -120,7 +129,7 @@ func TestSessionReceiver_acceptNextSession(t *testing.T) {
 	receiver, err := client.AcceptNextSessionForQueue(ctx, queueName, nil)
 	require.NoError(t, err)
 
-	msg, err := receiver.receiveMessage(ctx, nil)
+	msg, err := receiver.inner.receiveMessage(ctx, nil)
 	require.NoError(t, err)
 
 	require.EqualValues(t, "session-based message", msg.Body)
@@ -128,6 +137,15 @@ func TestSessionReceiver_acceptNextSession(t *testing.T) {
 	require.NoError(t, receiver.CompleteMessage(ctx, msg))
 
 	require.EqualValues(t, "acceptnextsession-test", receiver.SessionID())
+
+	sessionState, err := receiver.GetSessionState(ctx)
+	require.NoError(t, err)
+	require.Nil(t, sessionState)
+
+	require.NoError(t, receiver.SetSessionState(ctx, []byte("hello")))
+	sessionState, err = receiver.GetSessionState(ctx)
+	require.NoError(t, err)
+	require.EqualValues(t, "hello", string(sessionState))
 }
 
 func TestSessionReceiver_noSessionsAvailable(t *testing.T) {
@@ -224,8 +242,8 @@ func Test_toReceiverOptions(t *testing.T) {
 	require.Nil(t, toReceiverOptions(nil))
 
 	require.EqualValues(t, &ReceiverOptions{
-		ReceiveMode: ReceiveAndDelete,
+		ReceiveMode: ReceiveModeReceiveAndDelete,
 	}, toReceiverOptions(&SessionReceiverOptions{
-		ReceiveMode: ReceiveAndDelete,
+		ReceiveMode: ReceiveModeReceiveAndDelete,
 	}))
 }

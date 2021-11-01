@@ -16,7 +16,7 @@ func ExampleClient_NewReceiverForSubscription() {
 		"exampleTopic",
 		"exampleSubscription",
 		&azservicebus.ReceiverOptions{
-			ReceiveMode: azservicebus.PeekLock,
+			ReceiveMode: azservicebus.ReceiveModePeekLock,
 		},
 	)
 	exitOnError("Failed to create Receiver", err)
@@ -26,7 +26,7 @@ func ExampleClient_NewReceiverForQueue() {
 	receiver, err = client.NewReceiverForQueue(
 		"exampleQueue",
 		&azservicebus.ReceiverOptions{
-			ReceiveMode: azservicebus.PeekLock,
+			ReceiveMode: azservicebus.ReceiveModePeekLock,
 		},
 	)
 	exitOnError("Failed to create Receiver", err)
@@ -36,7 +36,7 @@ func ExampleClient_NewReceiverForQueue_deadLetterQueue() {
 	receiver, err = client.NewReceiverForQueue(
 		"exampleQueue",
 		&azservicebus.ReceiverOptions{
-			ReceiveMode: azservicebus.PeekLock,
+			ReceiveMode: azservicebus.ReceiveModePeekLock,
 			SubQueue:    azservicebus.SubQueueDeadLetter,
 		},
 	)
@@ -48,7 +48,7 @@ func ExampleClient_NewReceiverForSubscription_deadLetterQueue() {
 		"exampleTopic",
 		"exampleSubscription",
 		&azservicebus.ReceiverOptions{
-			ReceiveMode: azservicebus.PeekLock,
+			ReceiveMode: azservicebus.ReceiveModePeekLock,
 			SubQueue:    azservicebus.SubQueueDeadLetter,
 		},
 	)

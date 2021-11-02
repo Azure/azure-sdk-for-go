@@ -6,7 +6,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
@@ -30,22 +29,24 @@ func TestMain(m *testing.M) {
 }
 
 func startTest(t *testing.T) func() {
-	err := recording.StartRecording(t, pathToPackage, nil)
+	err := recording.Start(t, pathToPackage, nil)
 	require.NoError(t, err)
 	return func() {
-		err := recording.StopRecording(t, nil)
+		err := recording.Stop(t, nil)
 		require.NoError(t, err)
 	}
 }
 
-func authenticateTest(t *testing.T) (azcore.TokenCredential, *arm.ConnectionOptions) {
+func authenticateTest(t *testing.T) (azcore.TokenCredential, *arm.ClientOptions) {
 	p := NewRecordingPolicy(t, &recording.RecordingOptions{UseHTTPS: true})
 	client, err := recording.GetHTTPClient(t)
 	require.NoError(t, err)
 
-	options := &arm.ConnectionOptions{
-		PerCallPolicies: []policy.Policy{p},
-		HTTPClient:       client,
+	options := &arm.ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			PerCallPolicies: []policy.Policy{p},
+			Transport:       client,
+		},
 	}
 
 	var cred azcore.TokenCredential
@@ -75,25 +76,38 @@ type recordingPolicy struct {
 	t       *testing.T
 }
 
+func (r recordingPolicy) Host() string {
+	if r.options.UseHTTPS {
+		return "localhost:5001"
+	}
+	return "localhost:5000"
+}
+
+func (r recordingPolicy) Scheme() string {
+	if r.options.UseHTTPS {
+		return "https"
+	}
+	return "http"
+}
+
 func NewRecordingPolicy(t *testing.T, o *recording.RecordingOptions) policy.Policy {
 	if o == nil {
-		o = &recording.RecordingOptions{}
+		o = &recording.RecordingOptions{UseHTTPS: true}
 	}
 	p := &recordingPolicy{options: *o, t: t}
-	p.options.Init()
 	return p
 }
 
-func (p *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
-	if recording.GetRecordMode() != "live" {
+func (r *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
+	if recording.GetRecordMode() != "live" && !recording.IsLiveOnly(r.t) {
 		originalURLHost := req.Raw().URL.Host
-		req.Raw().URL.Scheme = "https"
-		req.Raw().URL.Host = p.options.Host
-		req.Raw().Host = p.options.Host
+		req.Raw().URL.Scheme = r.Scheme()
+		req.Raw().URL.Host = r.Host()
+		req.Raw().Host = r.Host()
 
-		req.Raw().Header.Set(recording.UpstreamUriHeader, fmt.Sprintf("%v://%v", p.options.Scheme, originalURLHost))
+		req.Raw().Header.Set(recording.UpstreamURIHeader, fmt.Sprintf("%v://%v", r.Scheme(), originalURLHost))
 		req.Raw().Header.Set(recording.ModeHeader, recording.GetRecordMode())
-		req.Raw().Header.Set(recording.IdHeader, recording.GetRecordingId(p.t))
+		req.Raw().Header.Set(recording.IDHeader, recording.GetRecordingId(r.t))
 	}
 	return req.Next()
 }
@@ -111,7 +125,7 @@ func (f *fakeCredential) Do(req *policy.Request) (*http.Response, error) {
 	return req.Next()
 }
 
-func (f *fakeCredential) NewAuthenticationPolicy(options runtime.AuthenticationOptions) policy.Policy {
+func (f *fakeCredential) NewAuthenticationPolicy() policy.Policy {
 	return &fakeCredential{}
 }
 

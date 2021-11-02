@@ -37,7 +37,7 @@ steps:
     workingDirectory: '${{parameters.GoWorkspace}}'
 
   - task: PowerShell@2
-    displayName: 'Require no directives in go.mod file'
+    displayName: 'Require no replace directives in go.mod file'
     inputs:
       targetType: 'filePath'
       filePath: ./eng/scripts/validate_go_mod.ps1

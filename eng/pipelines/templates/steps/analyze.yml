@@ -36,14 +36,6 @@ steps:
     displayName: 'Verify doc.go'
     workingDirectory: '${{parameters.GoWorkspace}}'
 
-  - task: PowerShell@2
-    displayName: 'Require no replace directives in go.mod file'
-    inputs:
-      targetType: 'filePath'
-      filePath: ./eng/scripts/validate_go_mod.ps1
-      arguments: '${{ parameters.ServiceDirectory }}'
-      pwsh: true
-
   - script: |
       echo scanning copyright headers in $(pwd)
       grep -L -r --include \*.go -P "Copyright (\d{4}|\(c\)) Microsoft" . | tee >&2

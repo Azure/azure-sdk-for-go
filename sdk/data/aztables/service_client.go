@@ -28,7 +28,7 @@ type ServiceClient struct {
 func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*ServiceClient, error) {
 	conOptions := getConnectionOptions(serviceURL, options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, runtime.NewBearerTokenPolicy(cred, []string{"https://storage.azure.com/.default"}, nil))
-	con := generated.NewConnection(serviceURL, conOptions.toPolicyOptions())
+	con := generated.NewConnection(serviceURL, conOptions)
 	return &ServiceClient{
 		client:  generated.NewTableClient(con, generated.Enum0TwoThousandNineteen0202),
 		service: generated.NewServiceClient(con, generated.Enum0TwoThousandNineteen0202),
@@ -40,10 +40,7 @@ func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *C
 // Call this method when serviceURL contains a SAS token.
 func NewServiceClientWithNoCredential(serviceURL string, options *ClientOptions) (*ServiceClient, error) {
 	conOptions := getConnectionOptions(serviceURL, options)
-	if isCosmosEndpoint(serviceURL) {
-		conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, cosmosPatchTransformPolicy{})
-	}
-	con := generated.NewConnection(serviceURL, conOptions.toPolicyOptions())
+	con := generated.NewConnection(serviceURL, conOptions)
 	return &ServiceClient{
 		client:  generated.NewTableClient(con, generated.Enum0TwoThousandNineteen0202),
 		service: generated.NewServiceClient(con, generated.Enum0TwoThousandNineteen0202),
@@ -53,12 +50,10 @@ func NewServiceClientWithNoCredential(serviceURL string, options *ClientOptions)
 
 // NewServiceClientWithSharedKey creates a ServiceClient struct using the specified serviceURL, credential, and options.
 func NewServiceClientWithSharedKey(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*ServiceClient, error) {
-	conOptions := &policy.ClientOptions{}
+	conOptions := getConnectionOptions(serviceURL, options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, newSharedKeyCredPolicy(cred))
 
-	policyOptions := setConnectionOptions(serviceURL, conOptions, options)
-
-	con := generated.NewConnection(serviceURL, policyOptions)
+	con := generated.NewConnection(serviceURL, conOptions)
 	return &ServiceClient{
 		client:  generated.NewTableClient(con, generated.Enum0TwoThousandNineteen0202),
 		service: generated.NewServiceClient(con, generated.Enum0TwoThousandNineteen0202),
@@ -67,38 +62,15 @@ func NewServiceClientWithSharedKey(serviceURL string, cred *SharedKeyCredential,
 	}, nil
 }
 
-// used to merge the ClientOptions into the policy.ClientOptions. Most importantly it sets any client options last (this is important for testing where the request is modified to send to proxy)
-func setConnectionOptions(serviceURL string, policyOptions *policy.ClientOptions, clientOptions *ClientOptions) *policy.ClientOptions {
-	if clientOptions == nil {
-		clientOptions = &ClientOptions{}
-	}
-	if policyOptions == nil {
-		policyOptions = &policy.ClientOptions{}
-	}
-
-	if isCosmosEndpoint(serviceURL) {
-		policyOptions.PerCallPolicies = append(policyOptions.PerCallPolicies, cosmosPatchTransformPolicy{})
-	}
-
-	policyOptions.PerCallPolicies = append(policyOptions.PerCallPolicies, clientOptions.PerCallPolicies...)
-	policyOptions.PerRetryPolicies = append(policyOptions.PerRetryPolicies, clientOptions.PerRetryPolicies...)
-	policyOptions.Transport = clientOptions.Transport
-	policyOptions.Logging = clientOptions.Logging
-	policyOptions.Retry = clientOptions.Retry
-	policyOptions.Telemetry = clientOptions.Telemetry
-	return policyOptions
-}
-
-func getConnectionOptions(serviceURL string, options *ClientOptions) *ClientOptions {
+func getConnectionOptions(serviceURL string, options *ClientOptions) *policy.ClientOptions {
 	if options == nil {
 		options = &ClientOptions{}
 	}
+	conOptions := options.toPolicyOptions()
 	if isCosmosEndpoint(serviceURL) {
-		options.PerCallPolicies = append(options.PerCallPolicies, cosmosPatchTransformPolicy{})
+		conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, cosmosPatchTransformPolicy{})
 	}
-	options.PerCallPolicies = append(options.PerCallPolicies, options.PerCallPolicies...)
-	options.PerRetryPolicies = append(options.PerRetryPolicies, options.PerRetryPolicies...)
-	return options
+	return conOptions
 }
 
 // NewClient returns a pointer to a Client affinitized to the specified table name and initialized with the same serviceURL and credentials as this ServiceClient

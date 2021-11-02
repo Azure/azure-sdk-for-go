@@ -7,7 +7,7 @@ Push-Location sdk/$serviceDir
 $goModFiles = Get-ChildItem -Path . -Filter go.mod -Recurse
 
 if ($goModFiles.Length -eq 0) {
-    Write-Host "Could not find a go.mod file in the directory"
+    Write-Host "Could not find a go.mod file in the directory $(pwd)"
     exit 1
 }
 

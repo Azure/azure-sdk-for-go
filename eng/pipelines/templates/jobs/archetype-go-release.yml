@@ -30,7 +30,7 @@ stages:
                       PackageName: 'sdk/${{ parameters.ServiceDirectory }}'
                       ForRelease: true
                   - task: PowerShell@2
-                    displayName: 'Require no replace directives in go.mod file'
+                    displayName: 'Verify no replace directives in go.mod file'
                     inputs:
                       targetType: 'filePath'
                       filePath: ./eng/scripts/validate_go_mod.ps1

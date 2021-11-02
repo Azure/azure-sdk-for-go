@@ -199,8 +199,8 @@ client secret and certificate are both present, the client secret will be used.
 ### Error Handling
 
 Credentials return an `error` when they fail to authenticate or lack data they require
-to authenticate. See the [troubleshooting guide](troubleshoot.md) for guidance on resolving errors from
-specific credential types.
+to authenticate. See the [troubleshooting guide](https://aka.ms/azsdk/go/identity/troubleshoot)
+for guidance on resolving errors from specific credential types.
 
 For more details on handling specific Azure Active Directory errors please refer to the
 Azure Active Directory

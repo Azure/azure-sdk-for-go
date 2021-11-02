@@ -50,16 +50,16 @@ func NewClient(vaultUrl string, credential azcore.TokenCredential, options *Clie
 		options = &ClientOptions{}
 	}
 
-	options.PerRetryPolicies = append(
-		options.PerRetryPolicies,
+	conOptions := options.toConnectionOptions()
+
+	conOptions.PerRetryPolicies = append(
+		conOptions.PerRetryPolicies,
 		runtime.NewBearerTokenPolicy(
 			credential,
 			[]string{"https://vault.azure.net/.default"},
 			nil,
 		),
 	)
-
-	conOptions := options.toConnectionOptions()
 
 	conn := internal.NewConnection(conOptions)
 

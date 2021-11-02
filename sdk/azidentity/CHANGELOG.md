@@ -1,6 +1,6 @@
 # Release History
 
-## 0.12.0 (Unreleased)
+## 0.12.0 (2021-11-02)
 ### Breaking Changes
 * Raised minimum go version to 1.16
 * Removed `NewAuthenticationPolicy()` from credentials. Clients should instead use azcore's

@@ -13,8 +13,8 @@ import (
 
 // A ContainerClient represents a URL to the Azure Storage container allowing you to manipulate its blobs.
 type ContainerClient struct {
-	client *containerClient
-	cred   interface{}
+	client    *containerClient
+	sharedKey *SharedKeyCredential
 }
 
 // URL returns the URL endpoint used by the ContainerClient object.
@@ -27,14 +27,14 @@ func NewContainerClient(containerURL string, cred azcore.TokenCredential, option
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{tokenScope}, nil)
 	return ContainerClient{client: &containerClient{
 		con: newConnection(containerURL, authPolicy, options.getConnectionOptions()),
-	}, cred: cred}, nil
+	}}, nil
 }
 
 // NewContainerClientWithNoCredential creates a ContainerClient object using the specified URL and options.
 func NewContainerClientWithNoCredential(containerURL string, options *ClientOptions) (ContainerClient, error) {
 	return ContainerClient{client: &containerClient{
 		con: newConnection(containerURL, nil, options.getConnectionOptions()),
-	}, cred: nil}, nil
+	}}, nil
 }
 
 // NewContainerClientWithSharedKey creates a ContainerClient object using the specified URL, shared key, and options.
@@ -42,7 +42,7 @@ func NewContainerClientWithSharedKey(containerURL string, cred *SharedKeyCredent
 	authPolicy := newSharedKeyCredPolicy(cred)
 	return ContainerClient{client: &containerClient{
 		con: newConnection(containerURL, authPolicy, options.getConnectionOptions()),
-	}, cred: cred}, nil
+	}, sharedKey: cred}, nil
 }
 
 // NewContainerClientFromConnectionString creates a ContainerClient object using connection string of an account
@@ -229,5 +229,5 @@ func (c ContainerClient) GetSASToken(permissions BlobSASPermissions, start time.
 
 		StartTime:  start.UTC(),
 		ExpiryTime: expiry.UTC(),
-	}.NewSASQueryParameters(c.cred.(*SharedKeyCredential))
+	}.NewSASQueryParameters(c.sharedKey)
 }

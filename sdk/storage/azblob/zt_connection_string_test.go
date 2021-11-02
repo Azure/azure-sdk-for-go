@@ -144,10 +144,9 @@ func (s *azblobTestSuite) TestConnectionStringChinaCloud() {
 	_assert.True(strings.HasPrefix(client.client.con.Endpoint(), "http://"))
 	_assert.True(strings.Contains(client.client.con.Endpoint(), "core.chinacloudapi.cn"))
 
-	sharedKey, ok := client.cred.(*SharedKeyCredential)
-	_assert.True(ok)
-	_assert.Equal(sharedKey.accountName, "dummyaccountname")
-	_assert.Equal(getAccountKey(sharedKey), "secretkeykey")
+	_assert.NotNil(client.sharedKey)
+	_assert.Equal(client.sharedKey.accountName, "dummyaccountname")
+	_assert.Equal(getAccountKey(client.sharedKey), "secretkeykey")
 }
 
 func (s *azblobTestSuite) TestConnectionStringAzurite() {
@@ -164,8 +163,7 @@ func (s *azblobTestSuite) TestConnectionStringAzurite() {
 	_assert.True(strings.HasPrefix(client.client.con.Endpoint(), "http://"))
 	_assert.True(strings.Contains(client.client.con.Endpoint(), "http://local-machine:11002/custom/account/path/faketokensignature"))
 
-	sharedKey, ok := client.cred.(*SharedKeyCredential)
-	_assert.True(ok)
-	_assert.Equal(sharedKey.accountName, "dummyaccountname")
-	_assert.Equal(getAccountKey(sharedKey), "secretkeykey")
+	_assert.NotNil(client.sharedKey)
+	_assert.Equal(client.sharedKey.accountName, "dummyaccountname")
+	_assert.Equal(getAccountKey(client.sharedKey), "secretkeykey")
 }

@@ -44,24 +44,26 @@ func newConnection(endpoint string, cred interface{}, options *connectionOptions
 	if options == nil {
 		options = &connectionOptions{}
 	}
-	policies := []policy.Policy{}
-	if !options.Telemetry.Disabled {
-		policies = append(policies, runtime.NewTelemetryPolicy(module, version, &options.Telemetry))
-	}
-	policies = append(policies, options.PerCallPolicies...)
-	policies = append(policies, runtime.NewRetryPolicy(&options.Retry))
-	policies = append(policies, options.PerRetryPolicies...)
 
+	opts := azcore.ClientOptions{
+		Transport: options.HTTPClient,
+		Retry: options.Retry,
+		Telemetry: options.Telemetry,
+		Logging: options.Logging,
+		PerCallPolicies: options.PerCallPolicies,
+		PerRetryPolicies: options.PerRetryPolicies,
+	}
+
+	perRetryPolicies := []policy.Policy{}
 	switch c := cred.(type) {
 	case nil:
 		// anonymous authentication, no policy required
 	case azcore.TokenCredential:
-		policies = append(policies, runtime.NewBearerTokenPolicy(c, runtime.AuthenticationOptions{TokenRequest: policy.TokenRequestOptions{}}))
+		perRetryPolicies = append(opts.PerRetryPolicies, runtime.NewBearerTokenPolicy(c, []string{"https://storage.azure.com/.default"}, nil))
 	case *SharedKeyCredential:
-		policies = append(policies, newSharedKeyCredPolicy(c, runtime.AuthenticationOptions{TokenRequest: policy.TokenRequestOptions{}}))
+		perRetryPolicies = append(opts.PerRetryPolicies, newSharedKeyCredPolicy(c))
 	}
-	policies = append(policies, runtime.NewLogPolicy(&options.Logging))
-	return &connection{u: endpoint, p: runtime.NewPipeline(options.HTTPClient, policies...)}
+	return &connection{u: endpoint, p: runtime.NewPipeline(module, version, nil, perRetryPolicies, &opts)}
 }
 
 // Endpoint returns the connection's endpoint.

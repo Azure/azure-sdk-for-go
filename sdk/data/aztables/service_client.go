@@ -53,37 +53,13 @@ func NewServiceClientWithSharedKey(serviceURL string, cred *SharedKeyCredential,
 	conOptions := getConnectionOptions(serviceURL, options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, newSharedKeyCredPolicy(cred))
 
-	policyOptions := setConnectionOptions(serviceURL, conOptions, options)
-
-	con := generated.NewConnection(serviceURL, policyOptions)
+	con := generated.NewConnection(serviceURL, conOptions)
 	return &ServiceClient{
 		client:  generated.NewTableClient(con, generated.Enum0TwoThousandNineteen0202),
 		service: generated.NewServiceClient(con, generated.Enum0TwoThousandNineteen0202),
 		cred:    cred,
 		con:     con,
 	}, nil
-}
-
-// used to merge the ClientOptions into the policy.ClientOptions. Most importantly it sets any client options last (this is important for testing where the request is modified to send to proxy)
-func setConnectionOptions(serviceURL string, policyOptions *policy.ClientOptions, clientOptions *ClientOptions) *policy.ClientOptions {
-	if clientOptions == nil {
-		clientOptions = &ClientOptions{}
-	}
-	if policyOptions == nil {
-		policyOptions = &policy.ClientOptions{}
-	}
-
-	if isCosmosEndpoint(serviceURL) {
-		policyOptions.PerCallPolicies = append(policyOptions.PerCallPolicies, cosmosPatchTransformPolicy{})
-	}
-
-	policyOptions.PerCallPolicies = append(policyOptions.PerCallPolicies, clientOptions.PerCallPolicies...)
-	policyOptions.PerRetryPolicies = append(policyOptions.PerRetryPolicies, clientOptions.PerRetryPolicies...)
-	policyOptions.Transport = clientOptions.Transport
-	policyOptions.Logging = clientOptions.Logging
-	policyOptions.Retry = clientOptions.Retry
-	policyOptions.Telemetry = clientOptions.Telemetry
-	return policyOptions
 }
 
 func getConnectionOptions(serviceURL string, options *ClientOptions) *policy.ClientOptions {

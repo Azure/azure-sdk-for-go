@@ -40,30 +40,16 @@ type connection struct {
 
 // newConnection creates an instance of the connection type with the specified endpoint.
 // Pass nil to accept the default options; this is the same as passing a zero-value options.
-func newConnection(endpoint string, cred interface{}, options *connectionOptions) *connection {
-	if options == nil {
-		options = &connectionOptions{}
+func newConnection(endpoint string, authPolicy policy.Policy, options *azcore.ClientOptions) *connection {
+	cp := azcore.ClientOptions{}
+	if options != nil {
+		cp = *options
 	}
-
-	opts := azcore.ClientOptions{
-		Transport: options.HTTPClient,
-		Retry: options.Retry,
-		Telemetry: options.Telemetry,
-		Logging: options.Logging,
-		PerCallPolicies: options.PerCallPolicies,
-		PerRetryPolicies: options.PerRetryPolicies,
-	}
-
 	perRetryPolicies := []policy.Policy{}
-	switch c := cred.(type) {
-	case nil:
-		// anonymous authentication, no policy required
-	case azcore.TokenCredential:
-		perRetryPolicies = append(opts.PerRetryPolicies, runtime.NewBearerTokenPolicy(c, []string{"https://storage.azure.com/.default"}, nil))
-	case *SharedKeyCredential:
-		perRetryPolicies = append(opts.PerRetryPolicies, newSharedKeyCredPolicy(c))
+	if authPolicy != nil {
+		perRetryPolicies = append(perRetryPolicies, authPolicy)
 	}
-	return &connection{u: endpoint, p: runtime.NewPipeline(module, version, nil, perRetryPolicies, &opts)}
+	return &connection{u: endpoint, p: runtime.NewPipeline(module, version, nil, perRetryPolicies, &cp)}
 }
 
 // Endpoint returns the connection's endpoint.

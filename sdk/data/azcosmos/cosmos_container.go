@@ -20,8 +20,8 @@ type ContainerClient struct {
 	link string
 }
 
-func newContainer(id string, database *DatabaseClient) (ContainerClient, error) {
-	return ContainerClient{
+func newContainer(id string, database *DatabaseClient) (*ContainerClient, error) {
+	return &ContainerClient{
 		id:       id,
 		database: database,
 		link:     createLink(database.link, pathSegmentCollection, id)}, nil

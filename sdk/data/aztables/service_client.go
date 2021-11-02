@@ -90,14 +90,7 @@ func getConnectionOptions(serviceURL string, options *ClientOptions) *policy.Cli
 	if options == nil {
 		options = &ClientOptions{}
 	}
-	conOptions := &policy.ClientOptions{
-		PerCallPolicies:  options.PerCallPolicies,
-		PerRetryPolicies: options.PerRetryPolicies,
-		Transport:        options.Transport,
-		Logging:          options.Logging,
-		Retry:            options.Retry,
-		Telemetry:        options.Telemetry,
-	}
+	conOptions := options.toPolicyOptions()
 	if isCosmosEndpoint(serviceURL) {
 		conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, cosmosPatchTransformPolicy{})
 	}

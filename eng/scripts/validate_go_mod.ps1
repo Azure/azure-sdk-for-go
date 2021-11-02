@@ -13,9 +13,9 @@ if ($goModFiles.Length -eq 0) {
 
 $hasError = $false
 foreach ($goMod in $goModFiles) {
-    $patternMatches = Get-Content $goMod.FullName | Select-String -Pattern "replace "
+    $name = $goMod.FullName
+    $patternMatches = Get-Content $name | Select-String -Pattern "replace "
     if ($patternMatches.Length -ne 0) {
-        $name = $goMod.FullName
         Write-Host "Found a replace directive in go.mod file at $name"
         $hasError = $true
     }

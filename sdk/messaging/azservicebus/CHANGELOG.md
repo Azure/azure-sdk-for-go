@@ -15,9 +15,10 @@
 - Can now renew a message lock for a ReceivedMessage using Receiver.RenewMessageLock()
 - Can now renew a session lock for a SessionReceiver using SessionReceiver.RenewSessionLock()
 
-### Breaking Changes
-
 ### Bugs Fixed
+
+- Receiver.ReceiveMessages() had a bug where multiple calls could result in the link no longer receiving messages.
+  This was fixed with an update in go-amqp.
 
 ### Other Changes
 

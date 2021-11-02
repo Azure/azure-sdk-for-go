@@ -6,6 +6,7 @@ package azblob
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"io"
 )
@@ -29,7 +30,8 @@ type BlockBlobClient struct {
 
 // NewBlockBlobClient creates a BlockBlobClient object using the specified URL, Azure AD credential, and options.
 func NewBlockBlobClient(blobURL string, cred azcore.TokenCredential, options *ClientOptions) (BlockBlobClient, error) {
-	con := newConnection(blobURL, cred, options.getConnectionOptions())
+	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{tokenScope}, nil)
+	con := newConnection(blobURL, authPolicy, options.getConnectionOptions())
 	return BlockBlobClient{
 		client:     &blockBlobClient{con: con},
 		BlobClient: BlobClient{client: &blobClient{con: con}},
@@ -47,7 +49,8 @@ func NewBlockBlobClientWithNoCredential(blobURL string, options *ClientOptions) 
 
 // NewBlockBlobClientWithSharedKey creates a BlockBlobClient object using the specified URL, shared key, and options.
 func NewBlockBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential, options *ClientOptions) (BlockBlobClient, error) {
-	con := newConnection(blobURL, cred, options.getConnectionOptions())
+	authPolicy := newSharedKeyCredPolicy(cred)
+	con := newConnection(blobURL, authPolicy, options.getConnectionOptions())
 	return BlockBlobClient{
 		client:     &blockBlobClient{con: con},
 		BlobClient: BlobClient{client: &blobClient{con: con}},

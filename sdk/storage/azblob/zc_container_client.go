@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // A ContainerClient represents a URL to the Azure Storage container allowing you to manipulate its blobs.
@@ -23,8 +24,9 @@ func (c ContainerClient) URL() string {
 
 // NewContainerClient creates a ContainerClient object using the specified URL, Azure AD credential, and options.
 func NewContainerClient(containerURL string, cred azcore.TokenCredential, options *ClientOptions) (ContainerClient, error) {
+	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{tokenScope}, nil)
 	return ContainerClient{client: &containerClient{
-		con: newConnection(containerURL, cred, options.getConnectionOptions()),
+		con: newConnection(containerURL, authPolicy, options.getConnectionOptions()),
 	}, cred: cred}, nil
 }
 
@@ -37,8 +39,9 @@ func NewContainerClientWithNoCredential(containerURL string, options *ClientOpti
 
 // NewContainerClientWithSharedKey creates a ContainerClient object using the specified URL, shared key, and options.
 func NewContainerClientWithSharedKey(containerURL string, cred *SharedKeyCredential, options *ClientOptions) (ContainerClient, error) {
+	authPolicy := newSharedKeyCredPolicy(cred)
 	return ContainerClient{client: &containerClient{
-		con: newConnection(containerURL, cred, options.getConnectionOptions()),
+		con: newConnection(containerURL, authPolicy, options.getConnectionOptions()),
 	}, cred: cred}, nil
 }
 

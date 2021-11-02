@@ -10,9 +10,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 //nolint
@@ -44,8 +44,9 @@ func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *C
 		return ServiceClient{}, err
 	}
 
+	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{tokenScope}, nil)
 	return ServiceClient{client: &serviceClient{
-		con: newConnection(serviceURL, cred, options.getConnectionOptions()),
+		con: newConnection(serviceURL, authPolicy, options.getConnectionOptions()),
 	}, u: *u, cred: cred}, nil
 }
 
@@ -69,9 +70,9 @@ func NewServiceClientWithSharedKey(serviceURL string, cred *SharedKeyCredential,
 	if err != nil {
 		return ServiceClient{}, err
 	}
-
+	authPolicy := newSharedKeyCredPolicy(cred)
 	return ServiceClient{client: &serviceClient{
-		con: newConnection(serviceURL, cred, options.getConnectionOptions()),
+		con: newConnection(serviceURL, authPolicy, options.getConnectionOptions()),
 	}, u: *u, cred: cred}, nil
 }
 

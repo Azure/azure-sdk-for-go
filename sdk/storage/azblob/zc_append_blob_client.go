@@ -5,8 +5,10 @@ package azblob
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"io"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 type AppendBlobClient struct {
@@ -16,7 +18,8 @@ type AppendBlobClient struct {
 
 // NewAppendBlobClient creates an AppendBlobClient with the specified URL, Azure AD credential, and options.
 func NewAppendBlobClient(blobURL string, cred azcore.TokenCredential, options *ClientOptions) (AppendBlobClient, error) {
-	con := newConnection(blobURL, cred, options.getConnectionOptions())
+	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{tokenScope}, nil)
+	con := newConnection(blobURL, authPolicy, options.getConnectionOptions())
 	return AppendBlobClient{
 		client:     &appendBlobClient{con: con},
 		BlobClient: BlobClient{client: &blobClient{con: con}},
@@ -34,7 +37,8 @@ func NewAppendBlobClientWithNoCredential(blobURL string, options *ClientOptions)
 
 // NewAppendBlobClientWithSharedKey creates an AppendBlobClient with the specified URL, shared key, and options.
 func NewAppendBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential, options *ClientOptions) (AppendBlobClient, error) {
-	con := newConnection(blobURL, cred, options.getConnectionOptions())
+	authPolicy := newSharedKeyCredPolicy(cred)
+	con := newConnection(blobURL, authPolicy, options.getConnectionOptions())
 	return AppendBlobClient{
 		client:     &appendBlobClient{con: con},
 		BlobClient: BlobClient{client: &blobClient{con: con}},

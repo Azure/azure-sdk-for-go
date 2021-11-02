@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // A BlobClient represents a URL to an Azure Storage blob; the blob may be a block blob, append blob, or page blob.
@@ -19,7 +20,8 @@ type BlobClient struct {
 
 // NewBlobClient creates a BlobClient object using the specified URL, Azure AD credential, and options.
 func NewBlobClient(blobURL string, cred azcore.TokenCredential, options *ClientOptions) (BlobClient, error) {
-	con := newConnection(blobURL, cred, options.getConnectionOptions())
+	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{tokenScope}, nil)
+	con := newConnection(blobURL, authPolicy, options.getConnectionOptions())
 
 	return BlobClient{client: &blobClient{con, nil}, cred: cred}, nil
 }
@@ -33,7 +35,8 @@ func NewBlobClientWithNoCredential(blobURL string, options *ClientOptions) (Blob
 
 // NewBlobClientWithSharedKey creates a BlobClient object using the specified URL, shared key, and options.
 func NewBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential, options *ClientOptions) (BlobClient, error) {
-	con := newConnection(blobURL, cred, options.getConnectionOptions())
+	authPolicy := newSharedKeyCredPolicy(cred)
+	con := newConnection(blobURL, authPolicy, options.getConnectionOptions())
 
 	return BlobClient{client: &blobClient{con, nil}, cred: cred}, nil
 }

@@ -1,12 +1,6 @@
 # Release History
 
-## 0.2.0 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 0.2.0 (2021-11-02)
 
 ### Other Changes
 * Bumps `azcore` dependency to `v0.20.0` and `azidentity` to `v0.12.0`

@@ -33,8 +33,8 @@ func TestPolicyLoggingSuccess(t *testing.T) {
 		t.Fatalf("unexpected error: %v", err)
 	}
 	qp := req.Raw().URL.Query()
-	qp.Set("one", "fish")
-	qp.Set("sig", "redact")
+	qp.Set("api-version", "12345")
+	qp.Set("sig", "redact_me")
 	req.Raw().URL.RawQuery = qp.Encode()
 	resp, err := pl.Do(req)
 	if err != nil {
@@ -49,6 +49,12 @@ func TestPolicyLoggingSuccess(t *testing.T) {
 		// 	(no headers)
 		if !strings.Contains(logReq, "(no headers)") {
 			t.Fatal("missing (no headers)")
+		}
+		if !strings.Contains(logReq, "api-version=12345") {
+			t.Fatal("didn't find api-version query param")
+		}
+		if strings.Contains(logReq, "sig=redact_me") {
+			t.Fatal("sig query param wasn't redacted")
 		}
 	} else {
 		t.Fatal("missing LogRequest")

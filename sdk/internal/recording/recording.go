@@ -473,21 +473,33 @@ func defaultOptions() *RecordingOptions {
 	}
 }
 
-func (r RecordingOptions) Host() string {
-	if r.UseHTTPS {
-		return "https"
-	}
-	return "http"
+func (r RecordingOptions) RouteURL(t *testing.T, rawReq *http.Request) {
+	originalURLHost := rawReq.URL.Host
+	rawReq.URL.Scheme = r.scheme()
+	rawReq.URL.Host = r.hostAndPort()
+	rawReq.Host = r.hostAndPort()
+
+	rawReq.Header.Set(UpstreamURIHeader, fmt.Sprintf("%v://%v", r.scheme(), originalURLHost))
+	rawReq.Header.Set(ModeHeader, GetRecordMode())
+	rawReq.Header.Set(IDHeader, GetRecordingId(t))
 }
-func (r RecordingOptions) Scheme() string {
+
+func (r RecordingOptions) hostAndPort() string {
 	if r.UseHTTPS {
 		return "localhost:5001"
 	}
 	return "localhost:5000"
 }
 
+func (r RecordingOptions) scheme() string {
+	if r.UseHTTPS {
+		return "https"
+	}
+	return "http"
+}
+
 func (r RecordingOptions) hostScheme() string {
-	return fmt.Sprintf("%s://%s", r.Host(), r.Scheme())
+	return fmt.Sprintf("%s://%s", r.scheme(), r.hostAndPort())
 }
 
 func getTestId(pathToRecordings string, t *testing.T) string {

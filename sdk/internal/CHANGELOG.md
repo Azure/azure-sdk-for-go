@@ -3,7 +3,7 @@
 ## 0.8.2 (Unreleased)
 
 ### Features Added
-* Added `Host` and `Scheme` methods to `recording.RecordingOptions`
+* Adding `RecordingOptions.RouteURL` to handle routing requests to the test proxy
 
 ### Breaking Changes
 

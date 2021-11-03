@@ -26,7 +26,6 @@ import (
 
 const (
 	serviceBusSchema = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
-	schemaInstance   = "http://www.w3.org/2001/XMLSchema-instance"
 	atomSchema       = "http://www.w3.org/2005/Atom"
 	applicationXML   = "application/xml"
 )
@@ -397,15 +396,6 @@ func isEmptyFeed(b []byte) bool {
 	var emptyFeed QueueFeed
 	feedErr := xml.Unmarshal(b, &emptyFeed)
 	return feedErr == nil && emptyFeed.Title == "Publicly Listed Services"
-}
-
-func xmlDoc(content []byte) []byte {
-	return []byte(xml.Header + string(content))
-}
-
-// ptrBool takes a boolean and returns a pointer to that bool. For use in literal pointers, ptrBool(true) -> *bool
-func ptrBool(toPtr bool) *bool {
-	return &toPtr
 }
 
 // ptrString takes a string and returns a pointer to that string. For use in literal pointers,

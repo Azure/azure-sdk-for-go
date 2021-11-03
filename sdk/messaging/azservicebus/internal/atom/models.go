@@ -171,11 +171,6 @@ type (
 		Content *ruleContent `xml:"content"`
 	}
 
-	ruleFeed struct {
-		*Feed
-		Entries []RuleEnvelope `xml:"entry"`
-	}
-
 	// SubscriptionDescription is the content type for Subscription management requests
 	SubscriptionDescription struct {
 		XMLName xml.Name `xml:"SubscriptionDescription"`

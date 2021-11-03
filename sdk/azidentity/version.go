@@ -11,5 +11,5 @@ const (
 	component = "azidentity"
 
 	// Version is the semantic version (see http://semver.org) of this module.
-	version = "v0.12.0"
+	version = "v0.12.1"
 )

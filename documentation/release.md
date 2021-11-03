@@ -4,8 +4,9 @@ After going through a minimal architects board review and preparing your package
 
 ## Release Checklist
 
+- [] Verify there are no replace directives in the go.mod file
 - [] Verify the package has a LICENSE file
-- [] Verify generated documentation is present and accurate for all public methods and types. Reference the [content guidelines](https://review.docs.microsoft.com/help/contribute-ref/contribute-ref-how-to-document-sdk?branch=master#api-reference) for best practices. You can start the `godoc` server by running `godoc -http=:6060` from the module home and navigating to localhost:6060 in the browser.
+- [] Verify documentation is present and accurate for all public methods and types. Reference the [content guidelines](https://review.docs.microsoft.com/help/contribute-ref/contribute-ref-how-to-document-sdk?branch=master#api-reference) for best practices. You can start the `godoc` server by running `godoc -http=:6060` from the module home and navigating to `localhost:6060` in the browser.
 - [] Verify there are no broken links
 - [] Verify all links are non-localized (no "en-us" in links)
 - [] Check the package manager link goes to the correct package
@@ -19,6 +20,6 @@ After going through a minimal architects board review and preparing your package
 ## Release Process
 
 1. Complete all steps of the Release Checklist shown above
-2. Mark the package as 'in-release' by running the `./eng/common/scripts/Prepare-Release.ps1` script and following the prompts. The script may update the version and/or `CHANGELOG.md` of the package, make sure to commit any changes before continuing the release project.
+2. Mark the package as 'in-release' by running the `./eng/common/scripts/Prepare-Release.ps1` script and following the prompts. The script may update the version and/or `CHANGELOG.md` of the package. If changes are made, these changes need to be committed and merged before continuing with the release process.
 3. Run the pipeline from the `internal` Azure Devops. This will require you to approve the release after both the live and recorded test pipelines pass.
 4. Validate the package was released properly by running `go get <your-package>@<your-version>` (ie. `go get github.com/Azure/azure-sdk-for-go/sdk/azcore@v0.20.0`) and validating that pkg.go.dev has updated with the latest version.

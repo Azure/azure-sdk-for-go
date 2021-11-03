@@ -20,122 +20,94 @@ const (
 )
 
 var (
-	// RootResourceIdentifier defines a ResourceIdentifier of a tenant as a root level parent of all other ResourceIdentifier
-	RootResourceIdentifier = &ResourceIdentifier{
-		parent:       nil,
-		resourceType: TenantResourceType,
-		name:         "",
+	// RootResourceIdentifier defines a ResourceID of a tenant as a root level parent of all other ResourceID
+	RootResourceIdentifier = &ResourceID{
+		Parent:       nil,
+		ResourceType: TenantResourceType,
+		Name:         "",
 	}
 )
 
-// ResourceIdentifier represents a resource ID such as `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRg`
+// ResourceID represents a resource ID such as `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRg`
 // Don't create this type directly, use ParseResourceID() instead
-type ResourceIdentifier struct {
-	parent            *ResourceIdentifier
-	subscriptionId    string
-	provider          string
-	resourceGroupName string
-	location          string
-	resourceType      *ResourceType
-	name              string
-	isChild           bool
+type ResourceID struct {
+	Parent            *ResourceID
+	SubscriptionId    string
+	Provider          string
+	ResourceGroupName string
+	Location          string
+	ResourceType      ResourceType
+	Name              string
 
+	isChild     bool
 	stringValue string
 }
 
-func (id *ResourceIdentifier) Parent() *ResourceIdentifier {
-	return id.parent
-}
-
-func (id *ResourceIdentifier) SubscriptionId() string {
-	return id.subscriptionId
-}
-
-func (id *ResourceIdentifier) Provider() string {
-	return id.provider
-}
-
-func (id *ResourceIdentifier) ResourceGroupName() string {
-	return id.resourceGroupName
-}
-
-func (id *ResourceIdentifier) Location() string {
-	return id.location
-}
-
-func (id *ResourceIdentifier) ResourceType() *ResourceType {
-	return id.resourceType
-}
-
-func (id *ResourceIdentifier) Name() string {
-	return id.name
-}
-
-func newResourceIdentifier(parent *ResourceIdentifier, resourceTypeName string, resourceName string) *ResourceIdentifier {
-	id := &ResourceIdentifier{}
+func newResourceIdentifier(parent *ResourceID, resourceTypeName string, resourceName string) *ResourceID {
+	id := &ResourceID{}
 	id.init(parent, chooseResourceType(resourceTypeName, parent), resourceName, true)
 	return id
 }
 
-func newResourceIdentifierWithResourceType(parent *ResourceIdentifier, resourceType *ResourceType, resourceName string) *ResourceIdentifier {
-	id := &ResourceIdentifier{}
+func newResourceIdentifierWithResourceType(parent *ResourceID, resourceType ResourceType, resourceName string) *ResourceID {
+	id := &ResourceID{}
 	id.init(parent, resourceType, resourceName, true)
 	return id
 }
 
-func newResourceIdentifierWithProvider(parent *ResourceIdentifier, providerNamespace, resourceTypeName, resourceName string) *ResourceIdentifier {
-	id := &ResourceIdentifier{}
+func newResourceIdentifierWithProvider(parent *ResourceID, providerNamespace, resourceTypeName, resourceName string) *ResourceID {
+	id := &ResourceID{}
 	id.init(parent, NewResourceType(providerNamespace, resourceTypeName), resourceName, false)
 	return id
 }
 
-func chooseResourceType(resourceTypeName string, parent *ResourceIdentifier) *ResourceType {
+func chooseResourceType(resourceTypeName string, parent *ResourceID) ResourceType {
 	switch strings.ToLower(resourceTypeName) {
 	case resourceGroupsLowerKey:
 		return ResourceGroupResourceType
 	case subscriptionsKey:
 		return SubscriptionResourceType
 	default:
-		return parent.resourceType.AppendChild(resourceTypeName)
+		return parent.ResourceType.AppendChild(resourceTypeName)
 	}
 }
 
-func (id *ResourceIdentifier) init(parent *ResourceIdentifier, resourceType *ResourceType, name string, isChild bool) {
+func (id *ResourceID) init(parent *ResourceID, resourceType ResourceType, name string, isChild bool) {
 	if parent != nil {
-		id.provider = parent.provider
-		id.subscriptionId = parent.subscriptionId
-		id.resourceGroupName = parent.resourceGroupName
-		id.location = parent.location
+		id.Provider = parent.Provider
+		id.SubscriptionId = parent.SubscriptionId
+		id.ResourceGroupName = parent.ResourceGroupName
+		id.Location = parent.Location
 	}
 
 	if resourceType.String() == SubscriptionResourceType.String() {
-		id.subscriptionId = name
+		id.SubscriptionId = name
 	}
 
 	if resourceType.LastType() == locationsKey {
-		id.location = name
+		id.Location = name
 	}
 
 	if resourceType.String() == ResourceGroupResourceType.String() {
-		id.resourceGroupName = name
+		id.ResourceGroupName = name
 	}
 
 	if resourceType.String() == ProviderResourceType.String() {
-		id.provider = name
+		id.Provider = name
 	}
 
 	if parent == nil {
-		id.parent = RootResourceIdentifier
+		id.Parent = RootResourceIdentifier
 	} else {
-		id.parent = parent
+		id.Parent = parent
 	}
 	id.isChild = isChild
-	id.resourceType = resourceType
-	id.name = name
+	id.ResourceType = resourceType
+	id.Name = name
 }
 
-// ParseResourceIdentifier parses a string to an instance of ResourceIdentifier
-func ParseResourceIdentifier(id string) (*ResourceIdentifier, error) {
+// ParseResourceIdentifier parses a string to an instance of ResourceID
+func ParseResourceIdentifier(id string) (*ResourceID, error) {
 	if len(id) == 0 {
 		return nil, fmt.Errorf("invalid resource id: id cannot be empty")
 	}
@@ -157,7 +129,7 @@ func ParseResourceIdentifier(id string) (*ResourceIdentifier, error) {
 	return appendNext(RootResourceIdentifier, parts, id)
 }
 
-func appendNext(parent *ResourceIdentifier, parts []string, id string) (*ResourceIdentifier, error) {
+func appendNext(parent *ResourceID, parts []string, id string) (*ResourceID, error) {
 	if len(parts) == 0 {
 		return parent, nil
 	}
@@ -169,7 +141,7 @@ func appendNext(parent *ResourceIdentifier, parts []string, id string) (*Resourc
 		}
 
 		// resourceGroup must contain either child or provider resource type
-		if parent.resourceType.String() == ResourceGroupResourceType.String() {
+		if parent.ResourceType.String() == ResourceGroupResourceType.String() {
 			return nil, fmt.Errorf("invalid resource id: %s", id)
 		}
 
@@ -178,7 +150,7 @@ func appendNext(parent *ResourceIdentifier, parts []string, id string) (*Resourc
 
 	if strings.EqualFold(parts[0], providersKey) && (len(parts) == 2 || strings.EqualFold(parts[2], providersKey)) {
 		//provider resource can only be on a tenant or a subscription parent
-		if parent.resourceType.String() != SubscriptionResourceType.String() && parent.resourceType.String() != TenantResourceType.String() {
+		if parent.ResourceType.String() != SubscriptionResourceType.String() && parent.ResourceType.String() != TenantResourceType.String() {
 			return nil, fmt.Errorf("invalid resource id: %s", id)
 		}
 
@@ -196,7 +168,7 @@ func appendNext(parent *ResourceIdentifier, parts []string, id string) (*Resourc
 	return nil, fmt.Errorf("invalid resource id: %s", id)
 }
 
-func (id ResourceIdentifier) String() string {
+func (id ResourceID) String() string {
 	if len(id.stringValue) > 0 {
 		return id.stringValue
 	}
@@ -205,21 +177,21 @@ func (id ResourceIdentifier) String() string {
 	return id.stringValue
 }
 
-func (id ResourceIdentifier) resourceString() string {
-	if id.parent == nil {
+func (id ResourceID) resourceString() string {
+	if id.Parent == nil {
 		return ""
 	}
 
 	builder := strings.Builder{}
-	builder.WriteString(id.parent.String())
+	builder.WriteString(id.Parent.String())
 
 	if id.isChild {
-		builder.WriteString(fmt.Sprintf("/%s", id.resourceType.LastType()))
-		if len(id.name) > 0 {
-			builder.WriteString(fmt.Sprintf("/%s", id.name))
+		builder.WriteString(fmt.Sprintf("/%s", id.ResourceType.LastType()))
+		if len(id.Name) > 0 {
+			builder.WriteString(fmt.Sprintf("/%s", id.Name))
 		}
 	} else {
-		builder.WriteString(fmt.Sprintf("/providers/%s/%s/%s", id.resourceType.namespace, id.resourceType.typeName, id.name))
+		builder.WriteString(fmt.Sprintf("/providers/%s/%s/%s", id.ResourceType.Namespace, id.ResourceType.Type, id.Name))
 	}
 
 	return builder.String()

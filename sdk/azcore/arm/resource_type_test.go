@@ -55,14 +55,14 @@ func TestParseResourceType(t *testing.T) {
 		if err != nil {
 			t.Fatalf("unexpected error: %+v", err)
 		}
-		if resourceType.Namespace() != expected.namespace {
-			t.Fatalf("expecting %s, but got %s", expected.namespace, resourceType.Namespace())
+		if resourceType.NamespaceOld() != expected.namespace {
+			t.Fatalf("expecting %s, but got %s", expected.namespace, resourceType.NamespaceOld())
 		}
 		if resourceType.Type() != expected.resourceType {
 			t.Fatalf("expecting %s, but got %s", expected.resourceType, resourceType.Type())
 		}
-		if len(resourceType.types) != expected.typesLen {
-			t.Fatalf("expecting %d, but got %d", expected.typesLen, len(resourceType.types))
+		if len(resourceType.Types) != expected.typesLen {
+			t.Fatalf("expecting %d, but got %d", expected.typesLen, len(resourceType.Types))
 		}
 	}
 }

@@ -80,6 +80,7 @@ func (t *ServiceClient) NewClient(tableName string) *Client {
 		name:    tableName,
 		service: t,
 		con:     t.con,
+		cred:    t.cred,
 	}
 }
 

@@ -124,6 +124,114 @@ func (p *AccountsListPager) PageResponse() AccountsListResponse {
 	return p.current
 }
 
+// CommitmentPlansListPager provides operations for iterating over paged responses.
+type CommitmentPlansListPager struct {
+	client    *CommitmentPlansClient
+	current   CommitmentPlansListResponse
+	err       error
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, CommitmentPlansListResponse) (*policy.Request, error)
+}
+
+// Err returns the last error encountered while paging.
+func (p *CommitmentPlansListPager) Err() error {
+	return p.err
+}
+
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *CommitmentPlansListPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.CommitmentPlanListResult.NextLink == nil || len(*p.current.CommitmentPlanListResult.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.pl.Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		p.err = p.client.listHandleError(resp)
+		return false
+	}
+	result, err := p.client.listHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+// PageResponse returns the current CommitmentPlansListResponse page.
+func (p *CommitmentPlansListPager) PageResponse() CommitmentPlansListResponse {
+	return p.current
+}
+
+// CommitmentTiersListPager provides operations for iterating over paged responses.
+type CommitmentTiersListPager struct {
+	client    *CommitmentTiersClient
+	current   CommitmentTiersListResponse
+	err       error
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, CommitmentTiersListResponse) (*policy.Request, error)
+}
+
+// Err returns the last error encountered while paging.
+func (p *CommitmentTiersListPager) Err() error {
+	return p.err
+}
+
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *CommitmentTiersListPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.CommitmentTierListResult.NextLink == nil || len(*p.current.CommitmentTierListResult.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.pl.Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		p.err = p.client.listHandleError(resp)
+		return false
+	}
+	result, err := p.client.listHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+// PageResponse returns the current CommitmentTiersListResponse page.
+func (p *CommitmentTiersListPager) PageResponse() CommitmentTiersListResponse {
+	return p.current
+}
+
 // DeletedAccountsListPager provides operations for iterating over paged responses.
 type DeletedAccountsListPager struct {
 	client    *DeletedAccountsClient
@@ -175,6 +283,60 @@ func (p *DeletedAccountsListPager) NextPage(ctx context.Context) bool {
 
 // PageResponse returns the current DeletedAccountsListResponse page.
 func (p *DeletedAccountsListPager) PageResponse() DeletedAccountsListResponse {
+	return p.current
+}
+
+// DeploymentsListPager provides operations for iterating over paged responses.
+type DeploymentsListPager struct {
+	client    *DeploymentsClient
+	current   DeploymentsListResponse
+	err       error
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, DeploymentsListResponse) (*policy.Request, error)
+}
+
+// Err returns the last error encountered while paging.
+func (p *DeploymentsListPager) Err() error {
+	return p.err
+}
+
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *DeploymentsListPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.DeploymentListResult.NextLink == nil || len(*p.current.DeploymentListResult.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.pl.Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		p.err = p.client.listHandleError(resp)
+		return false
+	}
+	result, err := p.client.listHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+// PageResponse returns the current DeploymentsListResponse page.
+func (p *DeploymentsListPager) PageResponse() DeploymentsListResponse {
 	return p.current
 }
 

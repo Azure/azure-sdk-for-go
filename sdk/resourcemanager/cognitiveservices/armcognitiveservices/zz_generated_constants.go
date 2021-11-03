@@ -10,7 +10,7 @@ package armcognitiveservices
 
 const (
 	module  = "armcognitiveservices"
-	version = "v0.2.0"
+	version = "v0.2.1"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -54,6 +54,77 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 
 // ToPtr returns a *CreatedByType pointing to the current value.
 func (c CreatedByType) ToPtr() *CreatedByType {
+	return &c
+}
+
+// DeploymentProvisioningState - Gets the status of the resource at the time the operation was called.
+type DeploymentProvisioningState string
+
+const (
+	DeploymentProvisioningStateAccepted  DeploymentProvisioningState = "Accepted"
+	DeploymentProvisioningStateCreating  DeploymentProvisioningState = "Creating"
+	DeploymentProvisioningStateDeleting  DeploymentProvisioningState = "Deleting"
+	DeploymentProvisioningStateFailed    DeploymentProvisioningState = "Failed"
+	DeploymentProvisioningStateMoving    DeploymentProvisioningState = "Moving"
+	DeploymentProvisioningStateSucceeded DeploymentProvisioningState = "Succeeded"
+)
+
+// PossibleDeploymentProvisioningStateValues returns the possible values for the DeploymentProvisioningState const type.
+func PossibleDeploymentProvisioningStateValues() []DeploymentProvisioningState {
+	return []DeploymentProvisioningState{
+		DeploymentProvisioningStateAccepted,
+		DeploymentProvisioningStateCreating,
+		DeploymentProvisioningStateDeleting,
+		DeploymentProvisioningStateFailed,
+		DeploymentProvisioningStateMoving,
+		DeploymentProvisioningStateSucceeded,
+	}
+}
+
+// ToPtr returns a *DeploymentProvisioningState pointing to the current value.
+func (c DeploymentProvisioningState) ToPtr() *DeploymentProvisioningState {
+	return &c
+}
+
+// DeploymentScaleType - Deployment scale type.
+type DeploymentScaleType string
+
+const (
+	DeploymentScaleTypeManual DeploymentScaleType = "Manual"
+)
+
+// PossibleDeploymentScaleTypeValues returns the possible values for the DeploymentScaleType const type.
+func PossibleDeploymentScaleTypeValues() []DeploymentScaleType {
+	return []DeploymentScaleType{
+		DeploymentScaleTypeManual,
+	}
+}
+
+// ToPtr returns a *DeploymentScaleType pointing to the current value.
+func (c DeploymentScaleType) ToPtr() *DeploymentScaleType {
+	return &c
+}
+
+// HostingModel - Account hosting model.
+type HostingModel string
+
+const (
+	HostingModelConnectedContainer    HostingModel = "ConnectedContainer"
+	HostingModelDisconnectedContainer HostingModel = "DisconnectedContainer"
+	HostingModelWeb                   HostingModel = "Web"
+)
+
+// PossibleHostingModelValues returns the possible values for the HostingModel const type.
+func PossibleHostingModelValues() []HostingModel {
+	return []HostingModel{
+		HostingModelConnectedContainer,
+		HostingModelDisconnectedContainer,
+		HostingModelWeb,
+	}
+}
+
+// ToPtr returns a *HostingModel pointing to the current value.
+func (c HostingModel) ToPtr() *HostingModel {
 	return &c
 }
 

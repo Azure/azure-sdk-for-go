@@ -403,6 +403,9 @@ type CheckDomainAvailabilityParameter struct {
 
 	// REQUIRED; The Type of the resource.
 	Type *string `json:"type,omitempty"`
+
+	// The Kind of the resource.
+	Kind *string `json:"kind,omitempty"`
 }
 
 // CheckSKUAvailabilityParameter - Check SKU availability parameter.
@@ -438,6 +441,172 @@ type CognitiveServicesManagementClientCheckSKUAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
+// CommitmentCost - Cognitive Services account commitment cost.
+type CommitmentCost struct {
+	// Commitment meter Id.
+	CommitmentMeterID *string `json:"commitmentMeterId,omitempty"`
+
+	// Overage meter Id.
+	OverageMeterID *string `json:"overageMeterId,omitempty"`
+}
+
+// CommitmentPeriod - Cognitive Services account commitment period.
+type CommitmentPeriod struct {
+	// Commitment period commitment count.
+	Count *int32 `json:"count,omitempty"`
+
+	// Commitment period commitment tier.
+	Tier *string `json:"tier,omitempty"`
+
+	// READ-ONLY; Commitment period end date.
+	EndDate *string `json:"endDate,omitempty" azure:"ro"`
+
+	// READ-ONLY; Cognitive Services account commitment quota.
+	Quota *CommitmentQuota `json:"quota,omitempty" azure:"ro"`
+
+	// READ-ONLY; Commitment period start date.
+	StartDate *string `json:"startDate,omitempty" azure:"ro"`
+}
+
+// CommitmentPlan - Cognitive Services account commitment plan.
+type CommitmentPlan struct {
+	ProxyResource
+	// Properties of Cognitive Services account commitment plan.
+	Properties *CommitmentPlanProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Etag.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CommitmentPlan.
+func (c CommitmentPlan) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	c.ProxyResource.marshalInternal(objectMap)
+	populate(objectMap, "etag", c.Etag)
+	populate(objectMap, "properties", c.Properties)
+	populate(objectMap, "systemData", c.SystemData)
+	return json.Marshal(objectMap)
+}
+
+// CommitmentPlanListResult - The list of cognitive services accounts operation response.
+type CommitmentPlanListResult struct {
+	// The link used to get the next page of CommitmentPlan.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// READ-ONLY; Gets the list of Cognitive Services accounts CommitmentPlan and their properties.
+	Value []*CommitmentPlan `json:"value,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CommitmentPlanListResult.
+func (c CommitmentPlanListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", c.NextLink)
+	populate(objectMap, "value", c.Value)
+	return json.Marshal(objectMap)
+}
+
+// CommitmentPlanProperties - Properties of Cognitive Services account commitment plan.
+type CommitmentPlanProperties struct {
+	// AutoRenew commitment plan.
+	AutoRenew *bool `json:"autoRenew,omitempty"`
+
+	// Cognitive Services account commitment period.
+	Current *CommitmentPeriod `json:"current,omitempty"`
+
+	// Account hosting model.
+	HostingModel *HostingModel `json:"hostingModel,omitempty"`
+
+	// Cognitive Services account commitment period.
+	Next *CommitmentPeriod `json:"next,omitempty"`
+
+	// Commitment plan type.
+	PlanType *string `json:"planType,omitempty"`
+
+	// READ-ONLY; Cognitive Services account commitment period.
+	Last *CommitmentPeriod `json:"last,omitempty" azure:"ro"`
+}
+
+// CommitmentPlansBeginDeleteOptions contains the optional parameters for the CommitmentPlans.BeginDelete method.
+type CommitmentPlansBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CommitmentPlansCreateOrUpdateOptions contains the optional parameters for the CommitmentPlans.CreateOrUpdate method.
+type CommitmentPlansCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CommitmentPlansGetOptions contains the optional parameters for the CommitmentPlans.Get method.
+type CommitmentPlansGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CommitmentPlansListOptions contains the optional parameters for the CommitmentPlans.List method.
+type CommitmentPlansListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CommitmentQuota - Cognitive Services account commitment quota.
+type CommitmentQuota struct {
+	// Commitment quota quantity.
+	Quantity *int64 `json:"quantity,omitempty"`
+
+	// Commitment quota unit.
+	Unit *string `json:"unit,omitempty"`
+}
+
+// CommitmentTier - Cognitive Services account commitment tier.
+type CommitmentTier struct {
+	// Cognitive Services account commitment cost.
+	Cost *CommitmentCost `json:"cost,omitempty"`
+
+	// Account hosting model.
+	HostingModel *HostingModel `json:"hostingModel,omitempty"`
+
+	// The Kind of the resource.
+	Kind *string `json:"kind,omitempty"`
+
+	// Commitment period commitment max count.
+	MaxCount *int32 `json:"maxCount,omitempty"`
+
+	// Commitment plan type.
+	PlanType *string `json:"planType,omitempty"`
+
+	// Cognitive Services account commitment quota.
+	Quota *CommitmentQuota `json:"quota,omitempty"`
+
+	// The name of the SKU. Ex - P3. It is typically a letter+number code
+	SKUName *string `json:"skuName,omitempty"`
+
+	// Commitment period commitment tier.
+	Tier *string `json:"tier,omitempty"`
+}
+
+// CommitmentTierListResult - The list of cognitive services accounts operation response.
+type CommitmentTierListResult struct {
+	// The link used to get the next page of CommitmentTier.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// READ-ONLY; Gets the list of Cognitive Services accounts CommitmentTier and their properties.
+	Value []*CommitmentTier `json:"value,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CommitmentTierListResult.
+func (c CommitmentTierListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", c.NextLink)
+	populate(objectMap, "value", c.Value)
+	return json.Marshal(objectMap)
+}
+
+// CommitmentTiersListOptions contains the optional parameters for the CommitmentTiers.List method.
+type CommitmentTiersListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // DeletedAccountsBeginPurgeOptions contains the optional parameters for the DeletedAccounts.BeginPurge method.
 type DeletedAccountsBeginPurgeOptions struct {
 	// placeholder for future optional parameters
@@ -453,10 +622,106 @@ type DeletedAccountsListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// Deployment - Cognitive Services account deployment.
+type Deployment struct {
+	ProxyResource
+	// Properties of Cognitive Services account deployment.
+	Properties *DeploymentProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Etag.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Deployment.
+func (d Deployment) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	d.ProxyResource.marshalInternal(objectMap)
+	populate(objectMap, "etag", d.Etag)
+	populate(objectMap, "properties", d.Properties)
+	populate(objectMap, "systemData", d.SystemData)
+	return json.Marshal(objectMap)
+}
+
+// DeploymentListResult - The list of cognitive services accounts operation response.
+type DeploymentListResult struct {
+	// The link used to get the next page of Deployment.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// READ-ONLY; Gets the list of Cognitive Services accounts Deployment and their properties.
+	Value []*Deployment `json:"value,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type DeploymentListResult.
+func (d DeploymentListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", d.NextLink)
+	populate(objectMap, "value", d.Value)
+	return json.Marshal(objectMap)
+}
+
+// DeploymentModel - Properties of Cognitive Services account deployment model.
+type DeploymentModel struct {
+	// Deployment model format.
+	Format *string `json:"format,omitempty"`
+
+	// Deployment model name.
+	Name *string `json:"name,omitempty"`
+
+	// Deployment model version.
+	Version *string `json:"version,omitempty"`
+}
+
+// DeploymentProperties - Properties of Cognitive Services account deployment.
+type DeploymentProperties struct {
+	// Properties of Cognitive Services account deployment model.
+	Model *DeploymentModel `json:"model,omitempty"`
+
+	// Properties of Cognitive Services account deployment model.
+	ScaleSettings *DeploymentScaleSettings `json:"scaleSettings,omitempty"`
+
+	// READ-ONLY; Gets the status of the resource at the time the operation was called.
+	ProvisioningState *DeploymentProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// DeploymentScaleSettings - Properties of Cognitive Services account deployment model.
+type DeploymentScaleSettings struct {
+	// Deployment capacity.
+	Capacity *int32 `json:"capacity,omitempty"`
+
+	// Deployment scale type.
+	ScaleType *DeploymentScaleType `json:"scaleType,omitempty"`
+}
+
+// DeploymentsBeginCreateOrUpdateOptions contains the optional parameters for the Deployments.BeginCreateOrUpdate method.
+type DeploymentsBeginCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsBeginDeleteOptions contains the optional parameters for the Deployments.BeginDelete method.
+type DeploymentsBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsGetOptions contains the optional parameters for the Deployments.Get method.
+type DeploymentsGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsListOptions contains the optional parameters for the Deployments.List method.
+type DeploymentsListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // DomainAvailability - Domain availability.
 type DomainAvailability struct {
 	// Indicates the given SKU is available or not.
 	IsSubdomainAvailable *bool `json:"isSubdomainAvailable,omitempty"`
+
+	// The Kind of the resource.
+	Kind *string `json:"kind,omitempty"`
 
 	// Reason why the SKU is not available.
 	Reason *string `json:"reason,omitempty"`
@@ -817,6 +1082,15 @@ type PrivateLinkServiceConnectionState struct {
 
 	// Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
 	Status *PrivateEndpointServiceConnectionStatus `json:"status,omitempty"`
+}
+
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a location
+type ProxyResource struct {
+	Resource
+}
+
+func (p ProxyResource) marshalInternal(objectMap map[string]interface{}) {
+	p.Resource.marshalInternal(objectMap)
 }
 
 type QuotaLimit struct {

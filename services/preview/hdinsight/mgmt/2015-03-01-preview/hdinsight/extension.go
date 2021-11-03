@@ -210,7 +210,7 @@ func (client ExtensionClient) DisableMonitoring(ctx context.Context, resourceGro
 
 	result, err = client.DisableMonitoringSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "DisableMonitoring", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "DisableMonitoring", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -242,6 +242,7 @@ func (client ExtensionClient) DisableMonitoringPreparer(ctx context.Context, res
 // http.Response Body if it receives an error.
 func (client ExtensionClient) DisableMonitoringSender(req *http.Request) (future ExtensionDisableMonitoringFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -288,7 +289,7 @@ func (client ExtensionClient) EnableMonitoring(ctx context.Context, resourceGrou
 
 	result, err = client.EnableMonitoringSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "EnableMonitoring", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "EnableMonitoring", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -322,6 +323,7 @@ func (client ExtensionClient) EnableMonitoringPreparer(ctx context.Context, reso
 // http.Response Body if it receives an error.
 func (client ExtensionClient) EnableMonitoringSender(req *http.Request) (future ExtensionEnableMonitoringFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

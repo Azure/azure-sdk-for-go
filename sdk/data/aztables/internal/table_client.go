@@ -26,22 +26,23 @@ import (
 // TableClient contains the methods for the Table group.
 // Don't use this type directly, use NewTableClient() instead.
 type TableClient struct {
-	Con *connection
+	con     *Connection
+	version Enum0
 }
 
 // NewTableClient creates a new instance of TableClient with the specified values.
-func NewTableClient(con *connection) *TableClient {
-	return &TableClient{Con: con}
+func NewTableClient(con *Connection, version Enum0) *TableClient {
+	return &TableClient{con: con, version: version}
 }
 
 // Create - Creates a new table under the given account.
 // If the operation fails it returns the *TableServiceError error type.
-func (client *TableClient) Create(ctx context.Context, tableProperties TableProperties, tableCreateOptions *TableCreateOptions, queryOptions *QueryOptions) (TableCreateResponse, error) {
-	req, err := client.createCreateRequest(ctx, tableProperties, tableCreateOptions, queryOptions)
+func (client *TableClient) Create(ctx context.Context, dataServiceVersion Enum1, tableProperties TableProperties, tableCreateOptions *TableCreateOptions, queryOptions *QueryOptions) (TableCreateResponse, error) {
+	req, err := client.createCreateRequest(ctx, dataServiceVersion, tableProperties, tableCreateOptions, queryOptions)
 	if err != nil {
 		return TableCreateResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return TableCreateResponse{}, err
 	}
@@ -52,9 +53,9 @@ func (client *TableClient) Create(ctx context.Context, tableProperties TableProp
 }
 
 // createCreateRequest creates the Create request.
-func (client *TableClient) createCreateRequest(ctx context.Context, tableProperties TableProperties, tableCreateOptions *TableCreateOptions, queryOptions *QueryOptions) (*policy.Request, error) {
+func (client *TableClient) createCreateRequest(ctx context.Context, dataServiceVersion Enum1, tableProperties TableProperties, tableCreateOptions *TableCreateOptions, queryOptions *QueryOptions) (*policy.Request, error) {
 	urlPath := "/Tables"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.Con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -63,11 +64,11 @@ func (client *TableClient) createCreateRequest(ctx context.Context, tablePropert
 		reqQP.Set("$format", string(*queryOptions.Format))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2019-02-02")
+	req.Raw().Header.Set("x-ms-version", string(client.version))
 	if tableCreateOptions != nil && tableCreateOptions.RequestID != nil {
 		req.Raw().Header.Set("x-ms-client-request-id", *tableCreateOptions.RequestID)
 	}
-	req.Raw().Header.Set("DataServiceVersion", "3.0")
+	req.Raw().Header.Set("DataServiceVersion", string(dataServiceVersion))
 	if tableCreateOptions != nil && tableCreateOptions.ResponsePreference != nil {
 		req.Raw().Header.Set("Prefer", string(*tableCreateOptions.ResponsePreference))
 	}
@@ -123,7 +124,7 @@ func (client *TableClient) Delete(ctx context.Context, table string, options *Ta
 	if err != nil {
 		return TableDeleteResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return TableDeleteResponse{}, err
 	}
@@ -140,11 +141,11 @@ func (client *TableClient) deleteCreateRequest(ctx context.Context, table string
 		return nil, errors.New("parameter table cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{table}", url.PathEscape(table))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.Con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Raw().Header.Set("x-ms-version", "2019-02-02")
+	req.Raw().Header.Set("x-ms-version", string(client.version))
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header.Set("x-ms-client-request-id", *options.RequestID)
 	}
@@ -189,12 +190,12 @@ func (client *TableClient) deleteHandleError(resp *http.Response) error {
 
 // DeleteEntity - Deletes the specified entity in a table.
 // If the operation fails it returns the *TableServiceError error type.
-func (client *TableClient) DeleteEntity(ctx context.Context, table string, partitionKey string, rowKey string, ifMatch string, tableDeleteEntityOptions *TableDeleteEntityOptions, queryOptions *QueryOptions) (TableDeleteEntityResponse, error) {
-	req, err := client.DeleteEntityCreateRequest(ctx, table, partitionKey, rowKey, ifMatch, tableDeleteEntityOptions, queryOptions)
+func (client *TableClient) DeleteEntity(ctx context.Context, dataServiceVersion Enum1, table string, partitionKey string, rowKey string, ifMatch string, tableDeleteEntityOptions *TableDeleteEntityOptions, queryOptions *QueryOptions) (TableDeleteEntityResponse, error) {
+	req, err := client.DeleteEntityCreateRequest(ctx, dataServiceVersion, table, partitionKey, rowKey, ifMatch, tableDeleteEntityOptions, queryOptions)
 	if err != nil {
 		return TableDeleteEntityResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return TableDeleteEntityResponse{}, err
 	}
@@ -205,7 +206,7 @@ func (client *TableClient) DeleteEntity(ctx context.Context, table string, parti
 }
 
 // DeleteEntityCreateRequest creates the DeleteEntity request.
-func (client *TableClient) DeleteEntityCreateRequest(ctx context.Context, table string, partitionKey string, rowKey string, ifMatch string, tableDeleteEntityOptions *TableDeleteEntityOptions, queryOptions *QueryOptions) (*policy.Request, error) {
+func (client *TableClient) DeleteEntityCreateRequest(ctx context.Context, dataServiceVersion Enum1, table string, partitionKey string, rowKey string, ifMatch string, tableDeleteEntityOptions *TableDeleteEntityOptions, queryOptions *QueryOptions) (*policy.Request, error) {
 	urlPath := "/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')"
 	if table == "" {
 		return nil, errors.New("parameter table cannot be empty")
@@ -219,7 +220,7 @@ func (client *TableClient) DeleteEntityCreateRequest(ctx context.Context, table 
 		return nil, errors.New("parameter rowKey cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{rowKey}", url.PathEscape(rowKey))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.Con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -231,11 +232,11 @@ func (client *TableClient) DeleteEntityCreateRequest(ctx context.Context, table 
 		reqQP.Set("$format", string(*queryOptions.Format))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2019-02-02")
+	req.Raw().Header.Set("x-ms-version", string(client.version))
 	if tableDeleteEntityOptions != nil && tableDeleteEntityOptions.RequestID != nil {
 		req.Raw().Header.Set("x-ms-client-request-id", *tableDeleteEntityOptions.RequestID)
 	}
-	req.Raw().Header.Set("DataServiceVersion", "3.0")
+	req.Raw().Header.Set("DataServiceVersion", string(dataServiceVersion))
 	req.Raw().Header.Set("If-Match", ifMatch)
 	req.Raw().Header.Set("Accept", "application/json;odata=minimalmetadata")
 	return req, nil
@@ -278,12 +279,12 @@ func (client *TableClient) deleteEntityHandleError(resp *http.Response) error {
 
 // GetAccessPolicy - Retrieves details about any stored access policies specified on the table that may be used with Shared Access Signatures.
 // If the operation fails it returns the *TableServiceError error type.
-func (client *TableClient) GetAccessPolicy(ctx context.Context, table string, options *TableGetAccessPolicyOptions) (TableGetAccessPolicyResponse, error) {
-	req, err := client.getAccessPolicyCreateRequest(ctx, table, options)
+func (client *TableClient) GetAccessPolicy(ctx context.Context, table string, comp Enum4, options *TableGetAccessPolicyOptions) (TableGetAccessPolicyResponse, error) {
+	req, err := client.getAccessPolicyCreateRequest(ctx, table, comp, options)
 	if err != nil {
 		return TableGetAccessPolicyResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return TableGetAccessPolicyResponse{}, err
 	}
@@ -294,13 +295,13 @@ func (client *TableClient) GetAccessPolicy(ctx context.Context, table string, op
 }
 
 // getAccessPolicyCreateRequest creates the GetAccessPolicy request.
-func (client *TableClient) getAccessPolicyCreateRequest(ctx context.Context, table string, options *TableGetAccessPolicyOptions) (*policy.Request, error) {
+func (client *TableClient) getAccessPolicyCreateRequest(ctx context.Context, table string, comp Enum4, options *TableGetAccessPolicyOptions) (*policy.Request, error) {
 	urlPath := "/{table}"
 	if table == "" {
 		return nil, errors.New("parameter table cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{table}", url.PathEscape(table))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.Con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -308,9 +309,9 @@ func (client *TableClient) getAccessPolicyCreateRequest(ctx context.Context, tab
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	reqQP.Set("comp", "acl")
+	reqQP.Set("comp", string(comp))
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2019-02-02")
+	req.Raw().Header.Set("x-ms-version", string(client.version))
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header.Set("x-ms-client-request-id", *options.RequestID)
 	}
@@ -358,12 +359,12 @@ func (client *TableClient) getAccessPolicyHandleError(resp *http.Response) error
 
 // InsertEntity - Insert entity in a table.
 // If the operation fails it returns the *TableServiceError error type.
-func (client *TableClient) InsertEntity(ctx context.Context, table string, tableInsertEntityOptions *TableInsertEntityOptions, queryOptions *QueryOptions) (TableInsertEntityResponse, error) {
-	req, err := client.InsertEntityCreateRequest(ctx, table, tableInsertEntityOptions, queryOptions)
+func (client *TableClient) InsertEntity(ctx context.Context, dataServiceVersion Enum1, table string, tableInsertEntityOptions *TableInsertEntityOptions, queryOptions *QueryOptions) (TableInsertEntityResponse, error) {
+	req, err := client.InsertEntityCreateRequest(ctx, dataServiceVersion, table, tableInsertEntityOptions, queryOptions)
 	if err != nil {
 		return TableInsertEntityResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return TableInsertEntityResponse{}, err
 	}
@@ -374,13 +375,13 @@ func (client *TableClient) InsertEntity(ctx context.Context, table string, table
 }
 
 // InsertEntityCreateRequest creates the InsertEntity request.
-func (client *TableClient) InsertEntityCreateRequest(ctx context.Context, table string, tableInsertEntityOptions *TableInsertEntityOptions, queryOptions *QueryOptions) (*policy.Request, error) {
+func (client *TableClient) InsertEntityCreateRequest(ctx context.Context, dataServiceVersion Enum1, table string, tableInsertEntityOptions *TableInsertEntityOptions, queryOptions *QueryOptions) (*policy.Request, error) {
 	urlPath := "/{table}"
 	if table == "" {
 		return nil, errors.New("parameter table cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{table}", url.PathEscape(table))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.Con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -392,11 +393,11 @@ func (client *TableClient) InsertEntityCreateRequest(ctx context.Context, table 
 		reqQP.Set("$format", string(*queryOptions.Format))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2019-02-02")
+	req.Raw().Header.Set("x-ms-version", string(client.version))
 	if tableInsertEntityOptions != nil && tableInsertEntityOptions.RequestID != nil {
 		req.Raw().Header.Set("x-ms-client-request-id", *tableInsertEntityOptions.RequestID)
 	}
-	req.Raw().Header.Set("DataServiceVersion", "3.0")
+	req.Raw().Header.Set("DataServiceVersion", string(dataServiceVersion))
 	if tableInsertEntityOptions != nil && tableInsertEntityOptions.ResponsePreference != nil {
 		req.Raw().Header.Set("Prefer", string(*tableInsertEntityOptions.ResponsePreference))
 	}
@@ -456,12 +457,12 @@ func (client *TableClient) insertEntityHandleError(resp *http.Response) error {
 
 // MergeEntity - Merge entity in a table.
 // If the operation fails it returns the *TableServiceError error type.
-func (client *TableClient) MergeEntity(ctx context.Context, table string, partitionKey string, rowKey string, tableMergeEntityOptions *TableMergeEntityOptions, queryOptions *QueryOptions) (TableMergeEntityResponse, error) {
-	req, err := client.MergeEntityCreateRequest(ctx, table, partitionKey, rowKey, tableMergeEntityOptions, queryOptions)
+func (client *TableClient) MergeEntity(ctx context.Context, dataServiceVersion Enum1, table string, partitionKey string, rowKey string, tableMergeEntityOptions *TableMergeEntityOptions, queryOptions *QueryOptions) (TableMergeEntityResponse, error) {
+	req, err := client.MergeEntityCreateRequest(ctx, dataServiceVersion, table, partitionKey, rowKey, tableMergeEntityOptions, queryOptions)
 	if err != nil {
 		return TableMergeEntityResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return TableMergeEntityResponse{}, err
 	}
@@ -472,7 +473,7 @@ func (client *TableClient) MergeEntity(ctx context.Context, table string, partit
 }
 
 // MergeEntityCreateRequest creates the MergeEntity request.
-func (client *TableClient) MergeEntityCreateRequest(ctx context.Context, table string, partitionKey string, rowKey string, tableMergeEntityOptions *TableMergeEntityOptions, queryOptions *QueryOptions) (*policy.Request, error) {
+func (client *TableClient) MergeEntityCreateRequest(ctx context.Context, dataServiceVersion Enum1, table string, partitionKey string, rowKey string, tableMergeEntityOptions *TableMergeEntityOptions, queryOptions *QueryOptions) (*policy.Request, error) {
 	urlPath := "/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')"
 	if table == "" {
 		return nil, errors.New("parameter table cannot be empty")
@@ -486,7 +487,7 @@ func (client *TableClient) MergeEntityCreateRequest(ctx context.Context, table s
 		return nil, errors.New("parameter rowKey cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{rowKey}", url.PathEscape(rowKey))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.Con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -498,11 +499,11 @@ func (client *TableClient) MergeEntityCreateRequest(ctx context.Context, table s
 		reqQP.Set("$format", string(*queryOptions.Format))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2019-02-02")
+	req.Raw().Header.Set("x-ms-version", string(client.version))
 	if tableMergeEntityOptions != nil && tableMergeEntityOptions.RequestID != nil {
 		req.Raw().Header.Set("x-ms-client-request-id", *tableMergeEntityOptions.RequestID)
 	}
-	req.Raw().Header.Set("DataServiceVersion", "3.0")
+	req.Raw().Header.Set("DataServiceVersion", string(dataServiceVersion))
 	if tableMergeEntityOptions != nil && tableMergeEntityOptions.IfMatch != nil {
 		req.Raw().Header.Set("If-Match", *tableMergeEntityOptions.IfMatch)
 	}
@@ -553,12 +554,12 @@ func (client *TableClient) mergeEntityHandleError(resp *http.Response) error {
 
 // Query - Queries tables under the given account.
 // If the operation fails it returns a generic error.
-func (client *TableClient) Query(ctx context.Context, tableQueryOptions *TableQueryOptions, queryOptions *QueryOptions) (TableQueryResponseEnvelope, error) {
-	req, err := client.queryCreateRequest(ctx, tableQueryOptions, queryOptions)
+func (client *TableClient) Query(ctx context.Context, dataServiceVersion Enum1, tableQueryOptions *TableQueryOptions, queryOptions *QueryOptions) (TableQueryResponseEnvelope, error) {
+	req, err := client.queryCreateRequest(ctx, dataServiceVersion, tableQueryOptions, queryOptions)
 	if err != nil {
 		return TableQueryResponseEnvelope{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return TableQueryResponseEnvelope{}, err
 	}
@@ -569,9 +570,9 @@ func (client *TableClient) Query(ctx context.Context, tableQueryOptions *TableQu
 }
 
 // queryCreateRequest creates the Query request.
-func (client *TableClient) queryCreateRequest(ctx context.Context, tableQueryOptions *TableQueryOptions, queryOptions *QueryOptions) (*policy.Request, error) {
+func (client *TableClient) queryCreateRequest(ctx context.Context, dataServiceVersion Enum1, tableQueryOptions *TableQueryOptions, queryOptions *QueryOptions) (*policy.Request, error) {
 	urlPath := "/Tables"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.Con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -592,11 +593,11 @@ func (client *TableClient) queryCreateRequest(ctx context.Context, tableQueryOpt
 		reqQP.Set("NextTableName", *tableQueryOptions.NextTableName)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2019-02-02")
+	req.Raw().Header.Set("x-ms-version", string(client.version))
 	if tableQueryOptions != nil && tableQueryOptions.RequestID != nil {
 		req.Raw().Header.Set("x-ms-client-request-id", *tableQueryOptions.RequestID)
 	}
-	req.Raw().Header.Set("DataServiceVersion", "3.0")
+	req.Raw().Header.Set("DataServiceVersion", string(dataServiceVersion))
 	req.Raw().Header.Set("Accept", "application/json;odata=minimalmetadata")
 	return req, nil
 }
@@ -643,12 +644,12 @@ func (client *TableClient) queryHandleError(resp *http.Response) error {
 
 // QueryEntities - Queries entities in a table.
 // If the operation fails it returns the *TableServiceError error type.
-func (client *TableClient) QueryEntities(ctx context.Context, table string, tableQueryEntitiesOptions *TableQueryEntitiesOptions, queryOptions *QueryOptions) (TableQueryEntitiesResponse, error) {
-	req, err := client.queryEntitiesCreateRequest(ctx, table, tableQueryEntitiesOptions, queryOptions)
+func (client *TableClient) QueryEntities(ctx context.Context, dataServiceVersion Enum1, table string, tableQueryEntitiesOptions *TableQueryEntitiesOptions, queryOptions *QueryOptions) (TableQueryEntitiesResponse, error) {
+	req, err := client.queryEntitiesCreateRequest(ctx, dataServiceVersion, table, tableQueryEntitiesOptions, queryOptions)
 	if err != nil {
 		return TableQueryEntitiesResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return TableQueryEntitiesResponse{}, err
 	}
@@ -659,13 +660,13 @@ func (client *TableClient) QueryEntities(ctx context.Context, table string, tabl
 }
 
 // queryEntitiesCreateRequest creates the QueryEntities request.
-func (client *TableClient) queryEntitiesCreateRequest(ctx context.Context, table string, tableQueryEntitiesOptions *TableQueryEntitiesOptions, queryOptions *QueryOptions) (*policy.Request, error) {
+func (client *TableClient) queryEntitiesCreateRequest(ctx context.Context, dataServiceVersion Enum1, table string, tableQueryEntitiesOptions *TableQueryEntitiesOptions, queryOptions *QueryOptions) (*policy.Request, error) {
 	urlPath := "/{table}()"
 	if table == "" {
 		return nil, errors.New("parameter table cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{table}", url.PathEscape(table))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.Con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -692,11 +693,11 @@ func (client *TableClient) queryEntitiesCreateRequest(ctx context.Context, table
 		reqQP.Set("NextRowKey", *tableQueryEntitiesOptions.NextRowKey)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2019-02-02")
+	req.Raw().Header.Set("x-ms-version", string(client.version))
 	if tableQueryEntitiesOptions != nil && tableQueryEntitiesOptions.RequestID != nil {
 		req.Raw().Header.Set("x-ms-client-request-id", *tableQueryEntitiesOptions.RequestID)
 	}
-	req.Raw().Header.Set("DataServiceVersion", "3.0")
+	req.Raw().Header.Set("DataServiceVersion", string(dataServiceVersion))
 	req.Raw().Header.Set("Accept", "application/json;odata=minimalmetadata")
 	return req, nil
 }
@@ -747,12 +748,12 @@ func (client *TableClient) queryEntitiesHandleError(resp *http.Response) error {
 
 // QueryEntityWithPartitionAndRowKey - Queries a single entity in a table.
 // If the operation fails it returns the *TableServiceError error type.
-func (client *TableClient) QueryEntityWithPartitionAndRowKey(ctx context.Context, table string, partitionKey string, rowKey string, tableQueryEntityWithPartitionAndRowKeyOptions *TableQueryEntityWithPartitionAndRowKeyOptions, queryOptions *QueryOptions) (TableQueryEntityWithPartitionAndRowKeyResponse, error) {
-	req, err := client.queryEntityWithPartitionAndRowKeyCreateRequest(ctx, table, partitionKey, rowKey, tableQueryEntityWithPartitionAndRowKeyOptions, queryOptions)
+func (client *TableClient) QueryEntityWithPartitionAndRowKey(ctx context.Context, dataServiceVersion Enum1, table string, partitionKey string, rowKey string, tableQueryEntityWithPartitionAndRowKeyOptions *TableQueryEntityWithPartitionAndRowKeyOptions, queryOptions *QueryOptions) (TableQueryEntityWithPartitionAndRowKeyResponse, error) {
+	req, err := client.queryEntityWithPartitionAndRowKeyCreateRequest(ctx, dataServiceVersion, table, partitionKey, rowKey, tableQueryEntityWithPartitionAndRowKeyOptions, queryOptions)
 	if err != nil {
 		return TableQueryEntityWithPartitionAndRowKeyResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return TableQueryEntityWithPartitionAndRowKeyResponse{}, err
 	}
@@ -763,7 +764,7 @@ func (client *TableClient) QueryEntityWithPartitionAndRowKey(ctx context.Context
 }
 
 // queryEntityWithPartitionAndRowKeyCreateRequest creates the QueryEntityWithPartitionAndRowKey request.
-func (client *TableClient) queryEntityWithPartitionAndRowKeyCreateRequest(ctx context.Context, table string, partitionKey string, rowKey string, tableQueryEntityWithPartitionAndRowKeyOptions *TableQueryEntityWithPartitionAndRowKeyOptions, queryOptions *QueryOptions) (*policy.Request, error) {
+func (client *TableClient) queryEntityWithPartitionAndRowKeyCreateRequest(ctx context.Context, dataServiceVersion Enum1, table string, partitionKey string, rowKey string, tableQueryEntityWithPartitionAndRowKeyOptions *TableQueryEntityWithPartitionAndRowKeyOptions, queryOptions *QueryOptions) (*policy.Request, error) {
 	urlPath := "/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')"
 	if table == "" {
 		return nil, errors.New("parameter table cannot be empty")
@@ -777,7 +778,7 @@ func (client *TableClient) queryEntityWithPartitionAndRowKeyCreateRequest(ctx co
 		return nil, errors.New("parameter rowKey cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{rowKey}", url.PathEscape(rowKey))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.Con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -795,11 +796,11 @@ func (client *TableClient) queryEntityWithPartitionAndRowKeyCreateRequest(ctx co
 		reqQP.Set("$filter", *queryOptions.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2019-02-02")
+	req.Raw().Header.Set("x-ms-version", string(client.version))
 	if tableQueryEntityWithPartitionAndRowKeyOptions != nil && tableQueryEntityWithPartitionAndRowKeyOptions.RequestID != nil {
 		req.Raw().Header.Set("x-ms-client-request-id", *tableQueryEntityWithPartitionAndRowKeyOptions.RequestID)
 	}
-	req.Raw().Header.Set("DataServiceVersion", "3.0")
+	req.Raw().Header.Set("DataServiceVersion", string(dataServiceVersion))
 	req.Raw().Header.Set("Accept", "application/json;odata=minimalmetadata")
 	return req, nil
 }
@@ -853,12 +854,12 @@ func (client *TableClient) queryEntityWithPartitionAndRowKeyHandleError(resp *ht
 
 // SetAccessPolicy - Sets stored access policies for the table that may be used with Shared Access Signatures.
 // If the operation fails it returns the *TableServiceError error type.
-func (client *TableClient) SetAccessPolicy(ctx context.Context, table string, options *TableSetAccessPolicyOptions) (TableSetAccessPolicyResponse, error) {
-	req, err := client.setAccessPolicyCreateRequest(ctx, table, options)
+func (client *TableClient) SetAccessPolicy(ctx context.Context, table string, comp Enum4, options *TableSetAccessPolicyOptions) (TableSetAccessPolicyResponse, error) {
+	req, err := client.setAccessPolicyCreateRequest(ctx, table, comp, options)
 	if err != nil {
 		return TableSetAccessPolicyResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return TableSetAccessPolicyResponse{}, err
 	}
@@ -869,13 +870,13 @@ func (client *TableClient) SetAccessPolicy(ctx context.Context, table string, op
 }
 
 // setAccessPolicyCreateRequest creates the SetAccessPolicy request.
-func (client *TableClient) setAccessPolicyCreateRequest(ctx context.Context, table string, options *TableSetAccessPolicyOptions) (*policy.Request, error) {
+func (client *TableClient) setAccessPolicyCreateRequest(ctx context.Context, table string, comp Enum4, options *TableSetAccessPolicyOptions) (*policy.Request, error) {
 	urlPath := "/{table}"
 	if table == "" {
 		return nil, errors.New("parameter table cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{table}", url.PathEscape(table))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.Con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -883,9 +884,9 @@ func (client *TableClient) setAccessPolicyCreateRequest(ctx context.Context, tab
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	reqQP.Set("comp", "acl")
+	reqQP.Set("comp", string(comp))
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2019-02-02")
+	req.Raw().Header.Set("x-ms-version", string(client.version))
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header.Set("x-ms-client-request-id", *options.RequestID)
 	}
@@ -937,12 +938,12 @@ func (client *TableClient) setAccessPolicyHandleError(resp *http.Response) error
 
 // UpdateEntity - Update entity in a table.
 // If the operation fails it returns the *TableServiceError error type.
-func (client *TableClient) UpdateEntity(ctx context.Context, table string, partitionKey string, rowKey string, tableUpdateEntityOptions *TableUpdateEntityOptions, queryOptions *QueryOptions) (TableUpdateEntityResponse, error) {
-	req, err := client.UpdateEntityCreateRequest(ctx, table, partitionKey, rowKey, tableUpdateEntityOptions, queryOptions)
+func (client *TableClient) UpdateEntity(ctx context.Context, dataServiceVersion Enum1, table string, partitionKey string, rowKey string, tableUpdateEntityOptions *TableUpdateEntityOptions, queryOptions *QueryOptions) (TableUpdateEntityResponse, error) {
+	req, err := client.UpdateEntityCreateRequest(ctx, dataServiceVersion, table, partitionKey, rowKey, tableUpdateEntityOptions, queryOptions)
 	if err != nil {
 		return TableUpdateEntityResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return TableUpdateEntityResponse{}, err
 	}
@@ -953,7 +954,7 @@ func (client *TableClient) UpdateEntity(ctx context.Context, table string, parti
 }
 
 // UpdateEntityCreateRequest creates the UpdateEntity request.
-func (client *TableClient) UpdateEntityCreateRequest(ctx context.Context, table string, partitionKey string, rowKey string, tableUpdateEntityOptions *TableUpdateEntityOptions, queryOptions *QueryOptions) (*policy.Request, error) {
+func (client *TableClient) UpdateEntityCreateRequest(ctx context.Context, dataServiceVersion Enum1, table string, partitionKey string, rowKey string, tableUpdateEntityOptions *TableUpdateEntityOptions, queryOptions *QueryOptions) (*policy.Request, error) {
 	urlPath := "/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')"
 	if table == "" {
 		return nil, errors.New("parameter table cannot be empty")
@@ -967,7 +968,7 @@ func (client *TableClient) UpdateEntityCreateRequest(ctx context.Context, table 
 		return nil, errors.New("parameter rowKey cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{rowKey}", url.PathEscape(rowKey))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.Con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -979,11 +980,11 @@ func (client *TableClient) UpdateEntityCreateRequest(ctx context.Context, table 
 		reqQP.Set("$format", string(*queryOptions.Format))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2019-02-02")
+	req.Raw().Header.Set("x-ms-version", string(client.version))
 	if tableUpdateEntityOptions != nil && tableUpdateEntityOptions.RequestID != nil {
 		req.Raw().Header.Set("x-ms-client-request-id", *tableUpdateEntityOptions.RequestID)
 	}
-	req.Raw().Header.Set("DataServiceVersion", "3.0")
+	req.Raw().Header.Set("DataServiceVersion", string(dataServiceVersion))
 	if tableUpdateEntityOptions != nil && tableUpdateEntityOptions.IfMatch != nil {
 		req.Raw().Header.Set("If-Match", *tableUpdateEntityOptions.IfMatch)
 	}

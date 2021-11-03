@@ -164,7 +164,7 @@ func (client DatabaseAccountsClient) CreateOrUpdate(ctx context.Context, resourc
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -198,6 +198,7 @@ func (client DatabaseAccountsClient) CreateOrUpdatePreparer(ctx context.Context,
 // http.Response Body if it receives an error.
 func (client DatabaseAccountsClient) CreateOrUpdateSender(req *http.Request) (future DatabaseAccountsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -264,7 +265,7 @@ func (client DatabaseAccountsClient) CreateUpdateCassandraKeyspace(ctx context.C
 
 	result, err = client.CreateUpdateCassandraKeyspaceSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "CreateUpdateCassandraKeyspace", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "CreateUpdateCassandraKeyspace", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -299,6 +300,7 @@ func (client DatabaseAccountsClient) CreateUpdateCassandraKeyspacePreparer(ctx c
 // http.Response Body if it receives an error.
 func (client DatabaseAccountsClient) CreateUpdateCassandraKeyspaceSender(req *http.Request) (future DatabaseAccountsCreateUpdateCassandraKeyspaceFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -366,7 +368,7 @@ func (client DatabaseAccountsClient) CreateUpdateCassandraTable(ctx context.Cont
 
 	result, err = client.CreateUpdateCassandraTableSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "CreateUpdateCassandraTable", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "CreateUpdateCassandraTable", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -402,6 +404,7 @@ func (client DatabaseAccountsClient) CreateUpdateCassandraTablePreparer(ctx cont
 // http.Response Body if it receives an error.
 func (client DatabaseAccountsClient) CreateUpdateCassandraTableSender(req *http.Request) (future DatabaseAccountsCreateUpdateCassandraTableFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -468,7 +471,7 @@ func (client DatabaseAccountsClient) CreateUpdateGremlinDatabase(ctx context.Con
 
 	result, err = client.CreateUpdateGremlinDatabaseSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "CreateUpdateGremlinDatabase", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "CreateUpdateGremlinDatabase", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -503,6 +506,7 @@ func (client DatabaseAccountsClient) CreateUpdateGremlinDatabasePreparer(ctx con
 // http.Response Body if it receives an error.
 func (client DatabaseAccountsClient) CreateUpdateGremlinDatabaseSender(req *http.Request) (future DatabaseAccountsCreateUpdateGremlinDatabaseFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -570,7 +574,7 @@ func (client DatabaseAccountsClient) CreateUpdateGremlinGraph(ctx context.Contex
 
 	result, err = client.CreateUpdateGremlinGraphSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "CreateUpdateGremlinGraph", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "CreateUpdateGremlinGraph", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -606,6 +610,7 @@ func (client DatabaseAccountsClient) CreateUpdateGremlinGraphPreparer(ctx contex
 // http.Response Body if it receives an error.
 func (client DatabaseAccountsClient) CreateUpdateGremlinGraphSender(req *http.Request) (future DatabaseAccountsCreateUpdateGremlinGraphFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -673,7 +678,7 @@ func (client DatabaseAccountsClient) CreateUpdateMongoDBCollection(ctx context.C
 
 	result, err = client.CreateUpdateMongoDBCollectionSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "CreateUpdateMongoDBCollection", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "CreateUpdateMongoDBCollection", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -709,6 +714,7 @@ func (client DatabaseAccountsClient) CreateUpdateMongoDBCollectionPreparer(ctx c
 // http.Response Body if it receives an error.
 func (client DatabaseAccountsClient) CreateUpdateMongoDBCollectionSender(req *http.Request) (future DatabaseAccountsCreateUpdateMongoDBCollectionFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -775,7 +781,7 @@ func (client DatabaseAccountsClient) CreateUpdateMongoDBDatabase(ctx context.Con
 
 	result, err = client.CreateUpdateMongoDBDatabaseSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "CreateUpdateMongoDBDatabase", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "CreateUpdateMongoDBDatabase", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -810,6 +816,7 @@ func (client DatabaseAccountsClient) CreateUpdateMongoDBDatabasePreparer(ctx con
 // http.Response Body if it receives an error.
 func (client DatabaseAccountsClient) CreateUpdateMongoDBDatabaseSender(req *http.Request) (future DatabaseAccountsCreateUpdateMongoDBDatabaseFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -877,7 +884,7 @@ func (client DatabaseAccountsClient) CreateUpdateSQLContainer(ctx context.Contex
 
 	result, err = client.CreateUpdateSQLContainerSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "CreateUpdateSQLContainer", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "CreateUpdateSQLContainer", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -913,6 +920,7 @@ func (client DatabaseAccountsClient) CreateUpdateSQLContainerPreparer(ctx contex
 // http.Response Body if it receives an error.
 func (client DatabaseAccountsClient) CreateUpdateSQLContainerSender(req *http.Request) (future DatabaseAccountsCreateUpdateSQLContainerFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -979,7 +987,7 @@ func (client DatabaseAccountsClient) CreateUpdateSQLDatabase(ctx context.Context
 
 	result, err = client.CreateUpdateSQLDatabaseSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "CreateUpdateSQLDatabase", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "CreateUpdateSQLDatabase", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1014,6 +1022,7 @@ func (client DatabaseAccountsClient) CreateUpdateSQLDatabasePreparer(ctx context
 // http.Response Body if it receives an error.
 func (client DatabaseAccountsClient) CreateUpdateSQLDatabaseSender(req *http.Request) (future DatabaseAccountsCreateUpdateSQLDatabaseFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1080,7 +1089,7 @@ func (client DatabaseAccountsClient) CreateUpdateTable(ctx context.Context, reso
 
 	result, err = client.CreateUpdateTableSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "CreateUpdateTable", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "CreateUpdateTable", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1115,6 +1124,7 @@ func (client DatabaseAccountsClient) CreateUpdateTablePreparer(ctx context.Conte
 // http.Response Body if it receives an error.
 func (client DatabaseAccountsClient) CreateUpdateTableSender(req *http.Request) (future DatabaseAccountsCreateUpdateTableFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1173,7 +1183,7 @@ func (client DatabaseAccountsClient) Delete(ctx context.Context, resourceGroupNa
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1205,6 +1215,7 @@ func (client DatabaseAccountsClient) DeletePreparer(ctx context.Context, resourc
 // http.Response Body if it receives an error.
 func (client DatabaseAccountsClient) DeleteSender(req *http.Request) (future DatabaseAccountsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1263,7 +1274,7 @@ func (client DatabaseAccountsClient) DeleteCassandraKeyspace(ctx context.Context
 
 	result, err = client.DeleteCassandraKeyspaceSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "DeleteCassandraKeyspace", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "DeleteCassandraKeyspace", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1296,6 +1307,7 @@ func (client DatabaseAccountsClient) DeleteCassandraKeyspacePreparer(ctx context
 // http.Response Body if it receives an error.
 func (client DatabaseAccountsClient) DeleteCassandraKeyspaceSender(req *http.Request) (future DatabaseAccountsDeleteCassandraKeyspaceFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1355,7 +1367,7 @@ func (client DatabaseAccountsClient) DeleteCassandraTable(ctx context.Context, r
 
 	result, err = client.DeleteCassandraTableSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "DeleteCassandraTable", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "DeleteCassandraTable", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1389,6 +1401,7 @@ func (client DatabaseAccountsClient) DeleteCassandraTablePreparer(ctx context.Co
 // http.Response Body if it receives an error.
 func (client DatabaseAccountsClient) DeleteCassandraTableSender(req *http.Request) (future DatabaseAccountsDeleteCassandraTableFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1447,7 +1460,7 @@ func (client DatabaseAccountsClient) DeleteGremlinDatabase(ctx context.Context, 
 
 	result, err = client.DeleteGremlinDatabaseSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "DeleteGremlinDatabase", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "DeleteGremlinDatabase", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1480,6 +1493,7 @@ func (client DatabaseAccountsClient) DeleteGremlinDatabasePreparer(ctx context.C
 // http.Response Body if it receives an error.
 func (client DatabaseAccountsClient) DeleteGremlinDatabaseSender(req *http.Request) (future DatabaseAccountsDeleteGremlinDatabaseFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1539,7 +1553,7 @@ func (client DatabaseAccountsClient) DeleteGremlinGraph(ctx context.Context, res
 
 	result, err = client.DeleteGremlinGraphSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "DeleteGremlinGraph", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "DeleteGremlinGraph", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1573,6 +1587,7 @@ func (client DatabaseAccountsClient) DeleteGremlinGraphPreparer(ctx context.Cont
 // http.Response Body if it receives an error.
 func (client DatabaseAccountsClient) DeleteGremlinGraphSender(req *http.Request) (future DatabaseAccountsDeleteGremlinGraphFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1632,7 +1647,7 @@ func (client DatabaseAccountsClient) DeleteMongoDBCollection(ctx context.Context
 
 	result, err = client.DeleteMongoDBCollectionSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "DeleteMongoDBCollection", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "DeleteMongoDBCollection", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1666,6 +1681,7 @@ func (client DatabaseAccountsClient) DeleteMongoDBCollectionPreparer(ctx context
 // http.Response Body if it receives an error.
 func (client DatabaseAccountsClient) DeleteMongoDBCollectionSender(req *http.Request) (future DatabaseAccountsDeleteMongoDBCollectionFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1724,7 +1740,7 @@ func (client DatabaseAccountsClient) DeleteMongoDBDatabase(ctx context.Context, 
 
 	result, err = client.DeleteMongoDBDatabaseSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "DeleteMongoDBDatabase", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "DeleteMongoDBDatabase", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1757,6 +1773,7 @@ func (client DatabaseAccountsClient) DeleteMongoDBDatabasePreparer(ctx context.C
 // http.Response Body if it receives an error.
 func (client DatabaseAccountsClient) DeleteMongoDBDatabaseSender(req *http.Request) (future DatabaseAccountsDeleteMongoDBDatabaseFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1816,7 +1833,7 @@ func (client DatabaseAccountsClient) DeleteSQLContainer(ctx context.Context, res
 
 	result, err = client.DeleteSQLContainerSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "DeleteSQLContainer", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "DeleteSQLContainer", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1850,6 +1867,7 @@ func (client DatabaseAccountsClient) DeleteSQLContainerPreparer(ctx context.Cont
 // http.Response Body if it receives an error.
 func (client DatabaseAccountsClient) DeleteSQLContainerSender(req *http.Request) (future DatabaseAccountsDeleteSQLContainerFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1908,7 +1926,7 @@ func (client DatabaseAccountsClient) DeleteSQLDatabase(ctx context.Context, reso
 
 	result, err = client.DeleteSQLDatabaseSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "DeleteSQLDatabase", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "DeleteSQLDatabase", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1941,6 +1959,7 @@ func (client DatabaseAccountsClient) DeleteSQLDatabasePreparer(ctx context.Conte
 // http.Response Body if it receives an error.
 func (client DatabaseAccountsClient) DeleteSQLDatabaseSender(req *http.Request) (future DatabaseAccountsDeleteSQLDatabaseFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1999,7 +2018,7 @@ func (client DatabaseAccountsClient) DeleteTable(ctx context.Context, resourceGr
 
 	result, err = client.DeleteTableSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "DeleteTable", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "DeleteTable", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -2032,6 +2051,7 @@ func (client DatabaseAccountsClient) DeleteTablePreparer(ctx context.Context, re
 // http.Response Body if it receives an error.
 func (client DatabaseAccountsClient) DeleteTableSender(req *http.Request) (future DatabaseAccountsDeleteTableFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -2094,7 +2114,7 @@ func (client DatabaseAccountsClient) FailoverPriorityChange(ctx context.Context,
 
 	result, err = client.FailoverPriorityChangeSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "FailoverPriorityChange", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "FailoverPriorityChange", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -2128,6 +2148,7 @@ func (client DatabaseAccountsClient) FailoverPriorityChangePreparer(ctx context.
 // http.Response Body if it receives an error.
 func (client DatabaseAccountsClient) FailoverPriorityChangeSender(req *http.Request) (future DatabaseAccountsFailoverPriorityChangeFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -5502,7 +5523,7 @@ func (client DatabaseAccountsClient) OfflineRegion(ctx context.Context, resource
 
 	result, err = client.OfflineRegionSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "OfflineRegion", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "OfflineRegion", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -5536,6 +5557,7 @@ func (client DatabaseAccountsClient) OfflineRegionPreparer(ctx context.Context, 
 // http.Response Body if it receives an error.
 func (client DatabaseAccountsClient) OfflineRegionSender(req *http.Request) (future DatabaseAccountsOfflineRegionFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -5596,7 +5618,7 @@ func (client DatabaseAccountsClient) OnlineRegion(ctx context.Context, resourceG
 
 	result, err = client.OnlineRegionSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "OnlineRegion", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "OnlineRegion", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -5630,6 +5652,7 @@ func (client DatabaseAccountsClient) OnlineRegionPreparer(ctx context.Context, r
 // http.Response Body if it receives an error.
 func (client DatabaseAccountsClient) OnlineRegionSender(req *http.Request) (future DatabaseAccountsOnlineRegionFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -5688,7 +5711,7 @@ func (client DatabaseAccountsClient) Patch(ctx context.Context, resourceGroupNam
 
 	result, err = client.PatchSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "Patch", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "Patch", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -5722,6 +5745,7 @@ func (client DatabaseAccountsClient) PatchPreparer(ctx context.Context, resource
 // http.Response Body if it receives an error.
 func (client DatabaseAccountsClient) PatchSender(req *http.Request) (future DatabaseAccountsPatchFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -5781,7 +5805,7 @@ func (client DatabaseAccountsClient) RegenerateKey(ctx context.Context, resource
 
 	result, err = client.RegenerateKeySender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "RegenerateKey", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "RegenerateKey", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -5815,6 +5839,7 @@ func (client DatabaseAccountsClient) RegenerateKeyPreparer(ctx context.Context, 
 // http.Response Body if it receives an error.
 func (client DatabaseAccountsClient) RegenerateKeySender(req *http.Request) (future DatabaseAccountsRegenerateKeyFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -5880,7 +5905,7 @@ func (client DatabaseAccountsClient) UpdateCassandraKeyspaceThroughput(ctx conte
 
 	result, err = client.UpdateCassandraKeyspaceThroughputSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "UpdateCassandraKeyspaceThroughput", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "UpdateCassandraKeyspaceThroughput", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -5915,6 +5940,7 @@ func (client DatabaseAccountsClient) UpdateCassandraKeyspaceThroughputPreparer(c
 // http.Response Body if it receives an error.
 func (client DatabaseAccountsClient) UpdateCassandraKeyspaceThroughputSender(req *http.Request) (future DatabaseAccountsUpdateCassandraKeyspaceThroughputFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -5982,7 +6008,7 @@ func (client DatabaseAccountsClient) UpdateCassandraTableThroughput(ctx context.
 
 	result, err = client.UpdateCassandraTableThroughputSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "UpdateCassandraTableThroughput", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "UpdateCassandraTableThroughput", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -6018,6 +6044,7 @@ func (client DatabaseAccountsClient) UpdateCassandraTableThroughputPreparer(ctx 
 // http.Response Body if it receives an error.
 func (client DatabaseAccountsClient) UpdateCassandraTableThroughputSender(req *http.Request) (future DatabaseAccountsUpdateCassandraTableThroughputFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -6084,7 +6111,7 @@ func (client DatabaseAccountsClient) UpdateGremlinDatabaseThroughput(ctx context
 
 	result, err = client.UpdateGremlinDatabaseThroughputSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "UpdateGremlinDatabaseThroughput", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "UpdateGremlinDatabaseThroughput", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -6119,6 +6146,7 @@ func (client DatabaseAccountsClient) UpdateGremlinDatabaseThroughputPreparer(ctx
 // http.Response Body if it receives an error.
 func (client DatabaseAccountsClient) UpdateGremlinDatabaseThroughputSender(req *http.Request) (future DatabaseAccountsUpdateGremlinDatabaseThroughputFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -6185,7 +6213,7 @@ func (client DatabaseAccountsClient) UpdateGremlinGraphThroughput(ctx context.Co
 
 	result, err = client.UpdateGremlinGraphThroughputSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "UpdateGremlinGraphThroughput", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "UpdateGremlinGraphThroughput", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -6221,6 +6249,7 @@ func (client DatabaseAccountsClient) UpdateGremlinGraphThroughputPreparer(ctx co
 // http.Response Body if it receives an error.
 func (client DatabaseAccountsClient) UpdateGremlinGraphThroughputSender(req *http.Request) (future DatabaseAccountsUpdateGremlinGraphThroughputFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -6288,7 +6317,7 @@ func (client DatabaseAccountsClient) UpdateMongoDBCollectionThroughput(ctx conte
 
 	result, err = client.UpdateMongoDBCollectionThroughputSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "UpdateMongoDBCollectionThroughput", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "UpdateMongoDBCollectionThroughput", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -6324,6 +6353,7 @@ func (client DatabaseAccountsClient) UpdateMongoDBCollectionThroughputPreparer(c
 // http.Response Body if it receives an error.
 func (client DatabaseAccountsClient) UpdateMongoDBCollectionThroughputSender(req *http.Request) (future DatabaseAccountsUpdateMongoDBCollectionThroughputFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -6390,7 +6420,7 @@ func (client DatabaseAccountsClient) UpdateMongoDBDatabaseThroughput(ctx context
 
 	result, err = client.UpdateMongoDBDatabaseThroughputSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "UpdateMongoDBDatabaseThroughput", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "UpdateMongoDBDatabaseThroughput", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -6425,6 +6455,7 @@ func (client DatabaseAccountsClient) UpdateMongoDBDatabaseThroughputPreparer(ctx
 // http.Response Body if it receives an error.
 func (client DatabaseAccountsClient) UpdateMongoDBDatabaseThroughputSender(req *http.Request) (future DatabaseAccountsUpdateMongoDBDatabaseThroughputFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -6491,7 +6522,7 @@ func (client DatabaseAccountsClient) UpdateSQLContainerThroughput(ctx context.Co
 
 	result, err = client.UpdateSQLContainerThroughputSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "UpdateSQLContainerThroughput", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "UpdateSQLContainerThroughput", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -6527,6 +6558,7 @@ func (client DatabaseAccountsClient) UpdateSQLContainerThroughputPreparer(ctx co
 // http.Response Body if it receives an error.
 func (client DatabaseAccountsClient) UpdateSQLContainerThroughputSender(req *http.Request) (future DatabaseAccountsUpdateSQLContainerThroughputFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -6592,7 +6624,7 @@ func (client DatabaseAccountsClient) UpdateSQLDatabaseThroughput(ctx context.Con
 
 	result, err = client.UpdateSQLDatabaseThroughputSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "UpdateSQLDatabaseThroughput", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "UpdateSQLDatabaseThroughput", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -6627,6 +6659,7 @@ func (client DatabaseAccountsClient) UpdateSQLDatabaseThroughputPreparer(ctx con
 // http.Response Body if it receives an error.
 func (client DatabaseAccountsClient) UpdateSQLDatabaseThroughputSender(req *http.Request) (future DatabaseAccountsUpdateSQLDatabaseThroughputFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -6692,7 +6725,7 @@ func (client DatabaseAccountsClient) UpdateTableThroughput(ctx context.Context, 
 
 	result, err = client.UpdateTableThroughputSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "UpdateTableThroughput", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "UpdateTableThroughput", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -6727,6 +6760,7 @@ func (client DatabaseAccountsClient) UpdateTableThroughputPreparer(ctx context.C
 // http.Response Body if it receives an error.
 func (client DatabaseAccountsClient) UpdateTableThroughputSender(req *http.Request) (future DatabaseAccountsUpdateTableThroughputFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

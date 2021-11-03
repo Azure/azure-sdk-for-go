@@ -260,7 +260,7 @@ func (client CostClient) RefreshData(ctx context.Context, resourceGroupName stri
 
 	result, err = client.RefreshDataSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dtl.CostClient", "RefreshData", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "dtl.CostClient", "RefreshData", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -293,6 +293,7 @@ func (client CostClient) RefreshDataPreparer(ctx context.Context, resourceGroupN
 // http.Response Body if it receives an error.
 func (client CostClient) RefreshDataSender(req *http.Request) (future CostRefreshDataFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

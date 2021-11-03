@@ -4,101 +4,292 @@
 package azcosmos
 
 import (
+	"bytes"
 	"context"
 	"errors"
+	"net/http"
+	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 )
 
-// A CosmosClient is used to interact with the Azure Cosmos DB database service.
-type CosmosClient struct {
-	// Endpoint used to create the client.
-	Endpoint   string
-	connection *cosmosClientConnection
-	cred       *SharedKeyCredential
-	options    *CosmosClientOptions
+// Cosmos client is used to interact with the Azure Cosmos DB database service.
+type Client struct {
+	endpoint string
+	pipeline azruntime.Pipeline
 }
 
-// NewCosmosClient creates a new instance of CosmosClient with the specified values. It uses the default pipeline configuration.
+// Endpoint used to create the client.
+func (c *Client) Endpoint() string {
+	return c.endpoint
+}
+
+// NewClientWithKey creates a new instance of Cosmos client with the specified values. It uses the default pipeline configuration.
 // endpoint - The cosmos service endpoint to use.
 // cred - The credential used to authenticate with the cosmos service.
-// options - Optional CosmosClient options.  Pass nil to accept default values.
-func NewCosmosClient(endpoint string, cred azcore.Credential, options *CosmosClientOptions) (*CosmosClient, error) {
+// options - Optional Cosmos client options.  Pass nil to accept default values.
+func NewClientWithKey(endpoint string, cred KeyCredential, o *ClientOptions) (*Client, error) {
+	return &Client{endpoint: endpoint, pipeline: newPipeline(cred, o)}, nil
+}
+
+func newPipeline(cred KeyCredential, options *ClientOptions) azruntime.Pipeline {
 	if options == nil {
-		options = &CosmosClientOptions{}
+		options = &ClientOptions{}
 	}
 
-	connection := newCosmosClientConnection(endpoint, cred, options)
-
-	c, _ := cred.(*SharedKeyCredential)
-
-	return &CosmosClient{Endpoint: endpoint, connection: connection, cred: c, options: options}, nil
+	return azruntime.NewPipeline("azcosmos", serviceLibVersion,
+		[]policy.Policy{
+			newSharedKeyCredPolicy(cred),
+			&headerPolicies{
+				enableContentResponseOnWrite: options.EnableContentResponseOnWrite,
+			}},
+		nil,
+		&options.ClientOptions)
 }
 
-// GetCosmosDatabase returns a CosmosDatabase object.
+// NewDatabase returns a struct that represents a database and allows database level operations.
 // id - The id of the database.
-func (c *CosmosClient) GetCosmosDatabase(id string) (*CosmosDatabase, error) {
+func (c *Client) NewDatabase(id string) (DatabaseClient, error) {
 	if id == "" {
-		return nil, errors.New("id is required")
+		return DatabaseClient{}, errors.New("id is required")
 	}
 
-	return newCosmosDatabase(id, c), nil
+	return newDatabase(id, c)
 }
 
-// GetCosmosContainer returns a CosmosContainer object.
+// NewContainer returns a struct that represents a container and allows container level operations.
 // databaseId - The id of the database.
 // containerId - The id of the container.
-func (c *CosmosClient) GetCosmosContainer(databaseId string, containerId string) (*CosmosContainer, error) {
+func (c *Client) NewContainer(databaseId string, containerId string) (ContainerClient, error) {
 	if databaseId == "" {
-		return nil, errors.New("databaseId is required")
+		return ContainerClient{}, errors.New("databaseId is required")
 	}
 
 	if containerId == "" {
-		return nil, errors.New("containerId is required")
+		return ContainerClient{}, errors.New("containerId is required")
 	}
 
-	return newCosmosDatabase(databaseId, c).GetContainer(containerId)
+	db, err := newDatabase(databaseId, c)
+	if err != nil {
+		return ContainerClient{}, err
+	}
+
+	return db.NewContainer(containerId)
 }
 
 // CreateDatabase creates a new database.
 // ctx - The context for the request.
 // databaseProperties - The definition of the database
-// throughputProperties - Optional throughput configuration of the database
-// requestOptions - Optional parameters for the request.
-func (c *CosmosClient) CreateDatabase(
+// o - Options for the create database operation.
+func (c *Client) CreateDatabase(
 	ctx context.Context,
-	databaseProperties CosmosDatabaseProperties,
-	throughputProperties *ThroughputProperties,
-	requestOptions *CosmosDatabaseRequestOptions) (CosmosDatabaseResponse, error) {
-	if requestOptions == nil {
-		requestOptions = &CosmosDatabaseRequestOptions{}
+	databaseProperties DatabaseProperties,
+	o *CreateDatabaseOptions) (DatabaseResponse, error) {
+	if o == nil {
+		o = &CreateDatabaseOptions{}
 	}
 
-	operationContext := cosmosOperationContext{
+	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeDatabase,
-		resourceAddress: "",
-	}
+		resourceAddress: ""}
 
 	path, err := generatePathForNameBased(resourceTypeDatabase, "", true)
 	if err != nil {
-		return CosmosDatabaseResponse{}, err
+		return DatabaseResponse{}, err
 	}
 
-	database, err := c.GetCosmosDatabase(databaseProperties.Id)
-	if err != nil {
-		return CosmosDatabaseResponse{}, err
-	}
-
-	azResponse, err := c.connection.sendPostRequest(
+	azResponse, err := c.sendPostRequest(
 		path,
 		ctx,
 		databaseProperties,
 		operationContext,
-		requestOptions,
-		throughputProperties.addHeadersToRequest)
+		nil,
+		o.ThroughputProperties.addHeadersToRequest)
 	if err != nil {
-		return CosmosDatabaseResponse{}, err
+		return DatabaseResponse{}, err
 	}
 
-	return newCosmosDatabaseResponse(azResponse, database)
+	return newDatabaseResponse(azResponse)
+}
+
+func (c *Client) sendPostRequest(
+	path string,
+	ctx context.Context,
+	content interface{},
+	operationContext pipelineRequestOptions,
+	requestOptions cosmosRequestOptions,
+	requestEnricher func(*policy.Request)) (*http.Response, error) {
+	req, err := c.createRequest(path, ctx, http.MethodPost, operationContext, requestOptions, requestEnricher)
+	if err != nil {
+		return nil, err
+	}
+
+	err = c.attachContent(content, req)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.executeAndEnsureSuccessResponse(req)
+}
+
+func (c *Client) sendQueryRequest(
+	path string,
+	ctx context.Context,
+	query string,
+	operationContext pipelineRequestOptions,
+	requestOptions cosmosRequestOptions,
+	requestEnricher func(*policy.Request)) (*http.Response, error) {
+	req, err := c.createRequest(path, ctx, http.MethodPost, operationContext, requestOptions, requestEnricher)
+	if err != nil {
+		return nil, err
+	}
+
+	type queryBody struct {
+		Query string `json:"query"`
+	}
+
+	err = azruntime.MarshalAsJSON(req, queryBody{
+		Query: query,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	req.Raw().Header.Add(cosmosHeaderQuery, "True")
+	// Override content type for query
+	req.Raw().Header.Set(headerContentType, cosmosHeaderValuesQuery)
+
+	return c.executeAndEnsureSuccessResponse(req)
+}
+
+func (c *Client) sendPutRequest(
+	path string,
+	ctx context.Context,
+	content interface{},
+	operationContext pipelineRequestOptions,
+	requestOptions cosmosRequestOptions,
+	requestEnricher func(*policy.Request)) (*http.Response, error) {
+	req, err := c.createRequest(path, ctx, http.MethodPut, operationContext, requestOptions, requestEnricher)
+	if err != nil {
+		return nil, err
+	}
+
+	err = c.attachContent(content, req)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.executeAndEnsureSuccessResponse(req)
+}
+
+func (c *Client) sendGetRequest(
+	path string,
+	ctx context.Context,
+	operationContext pipelineRequestOptions,
+	requestOptions cosmosRequestOptions,
+	requestEnricher func(*policy.Request)) (*http.Response, error) {
+	req, err := c.createRequest(path, ctx, http.MethodGet, operationContext, requestOptions, requestEnricher)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.executeAndEnsureSuccessResponse(req)
+}
+
+func (c *Client) sendDeleteRequest(
+	path string,
+	ctx context.Context,
+	operationContext pipelineRequestOptions,
+	requestOptions cosmosRequestOptions,
+	requestEnricher func(*policy.Request)) (*http.Response, error) {
+	req, err := c.createRequest(path, ctx, http.MethodDelete, operationContext, requestOptions, requestEnricher)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.executeAndEnsureSuccessResponse(req)
+}
+
+func (c *Client) createRequest(
+	path string,
+	ctx context.Context,
+	method string,
+	operationContext pipelineRequestOptions,
+	requestOptions cosmosRequestOptions,
+	requestEnricher func(*policy.Request)) (*policy.Request, error) {
+
+	// todo: endpoint will be set originally by globalendpointmanager
+	finalURL := c.endpoint
+
+	if path != "" {
+		finalURL = azruntime.JoinPaths(c.endpoint, path)
+	}
+
+	req, err := azruntime.NewRequest(ctx, method, finalURL)
+	if err != nil {
+		return nil, err
+	}
+
+	if requestOptions != nil {
+		headers := requestOptions.toHeaders()
+		if headers != nil {
+			for k, v := range *headers {
+				req.Raw().Header.Set(k, v)
+			}
+		}
+	}
+
+	req.Raw().Header.Set(headerXmsDate, time.Now().UTC().Format(http.TimeFormat))
+	req.Raw().Header.Set(headerXmsVersion, "2020-11-05")
+
+	req.SetOperationValue(operationContext)
+
+	if requestEnricher != nil {
+		requestEnricher(req)
+	}
+
+	return req, nil
+}
+
+func (c *Client) attachContent(content interface{}, req *policy.Request) error {
+	var err error
+	switch v := content.(type) {
+	case []byte:
+		// If its a raw byte array, we can just set the body
+		err = req.SetBody(streaming.NopCloser(bytes.NewReader(v)), "application/json")
+	default:
+		// Otherwise, we need to marshal it
+		err = azruntime.MarshalAsJSON(req, content)
+
+	}
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (c *Client) executeAndEnsureSuccessResponse(request *policy.Request) (*http.Response, error) {
+	response, err := c.pipeline.Do(request)
+	if err != nil {
+		return nil, err
+	}
+
+	successResponse := (response.StatusCode >= 200 && response.StatusCode < 300) || response.StatusCode == 304
+	if successResponse {
+		return response, nil
+	}
+
+	return nil, newCosmosError(response)
+}
+
+type pipelineRequestOptions struct {
+	headerOptionsOverride *headerOptionsOverride
+	resourceType          resourceType
+	resourceAddress       string
+	isRidBased            bool
+	isWriteOperation      bool
 }

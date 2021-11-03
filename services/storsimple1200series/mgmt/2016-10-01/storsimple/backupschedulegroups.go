@@ -78,7 +78,7 @@ func (client BackupScheduleGroupsClient) CreateOrUpdate(ctx context.Context, dev
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.BackupScheduleGroupsClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.BackupScheduleGroupsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -114,6 +114,7 @@ func (client BackupScheduleGroupsClient) CreateOrUpdatePreparer(ctx context.Cont
 // http.Response Body if it receives an error.
 func (client BackupScheduleGroupsClient) CreateOrUpdateSender(req *http.Request) (future BackupScheduleGroupsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -169,7 +170,7 @@ func (client BackupScheduleGroupsClient) Delete(ctx context.Context, deviceName 
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.BackupScheduleGroupsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.BackupScheduleGroupsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -203,6 +204,7 @@ func (client BackupScheduleGroupsClient) DeletePreparer(ctx context.Context, dev
 // http.Response Body if it receives an error.
 func (client BackupScheduleGroupsClient) DeleteSender(req *http.Request) (future BackupScheduleGroupsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

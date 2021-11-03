@@ -66,7 +66,7 @@ func (client DevicesClient) CreateOrUpdateAlertSettings(ctx context.Context, dev
 
 	result, err = client.CreateOrUpdateAlertSettingsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "CreateOrUpdateAlertSettings", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "CreateOrUpdateAlertSettings", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -101,6 +101,7 @@ func (client DevicesClient) CreateOrUpdateAlertSettingsPreparer(ctx context.Cont
 // http.Response Body if it receives an error.
 func (client DevicesClient) CreateOrUpdateAlertSettingsSender(req *http.Request) (future DevicesCreateOrUpdateAlertSettingsFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -161,7 +162,7 @@ func (client DevicesClient) CreateOrUpdateSecuritySettings(ctx context.Context, 
 
 	result, err = client.CreateOrUpdateSecuritySettingsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "CreateOrUpdateSecuritySettings", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "CreateOrUpdateSecuritySettings", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -196,6 +197,7 @@ func (client DevicesClient) CreateOrUpdateSecuritySettingsPreparer(ctx context.C
 // http.Response Body if it receives an error.
 func (client DevicesClient) CreateOrUpdateSecuritySettingsSender(req *http.Request) (future DevicesCreateOrUpdateSecuritySettingsFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -249,7 +251,7 @@ func (client DevicesClient) Deactivate(ctx context.Context, deviceName string, r
 
 	result, err = client.DeactivateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "Deactivate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "Deactivate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -282,6 +284,7 @@ func (client DevicesClient) DeactivatePreparer(ctx context.Context, deviceName s
 // http.Response Body if it receives an error.
 func (client DevicesClient) DeactivateSender(req *http.Request) (future DevicesDeactivateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -335,7 +338,7 @@ func (client DevicesClient) Delete(ctx context.Context, deviceName string, resou
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -368,6 +371,7 @@ func (client DevicesClient) DeletePreparer(ctx context.Context, deviceName strin
 // http.Response Body if it receives an error.
 func (client DevicesClient) DeleteSender(req *http.Request) (future DevicesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -421,7 +425,7 @@ func (client DevicesClient) DownloadUpdates(ctx context.Context, deviceName stri
 
 	result, err = client.DownloadUpdatesSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "DownloadUpdates", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "DownloadUpdates", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -454,6 +458,7 @@ func (client DevicesClient) DownloadUpdatesPreparer(ctx context.Context, deviceN
 // http.Response Body if it receives an error.
 func (client DevicesClient) DownloadUpdatesSender(req *http.Request) (future DevicesDownloadUpdatesFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -508,7 +513,7 @@ func (client DevicesClient) Failover(ctx context.Context, deviceName string, fai
 
 	result, err = client.FailoverSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "Failover", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "Failover", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -543,6 +548,7 @@ func (client DevicesClient) FailoverPreparer(ctx context.Context, deviceName str
 // http.Response Body if it receives an error.
 func (client DevicesClient) FailoverSender(req *http.Request) (future DevicesFailoverFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1025,7 +1031,7 @@ func (client DevicesClient) InstallUpdates(ctx context.Context, deviceName strin
 
 	result, err = client.InstallUpdatesSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "InstallUpdates", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "InstallUpdates", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1058,6 +1064,7 @@ func (client DevicesClient) InstallUpdatesPreparer(ctx context.Context, deviceNa
 // http.Response Body if it receives an error.
 func (client DevicesClient) InstallUpdatesSender(req *http.Request) (future DevicesInstallUpdatesFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1462,7 +1469,7 @@ func (client DevicesClient) Patch(ctx context.Context, deviceName string, device
 
 	result, err = client.PatchSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "Patch", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "Patch", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1497,6 +1504,7 @@ func (client DevicesClient) PatchPreparer(ctx context.Context, deviceName string
 // http.Response Body if it receives an error.
 func (client DevicesClient) PatchSender(req *http.Request) (future DevicesPatchFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1551,7 +1559,7 @@ func (client DevicesClient) ScanForUpdates(ctx context.Context, deviceName strin
 
 	result, err = client.ScanForUpdatesSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "ScanForUpdates", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.DevicesClient", "ScanForUpdates", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1584,6 +1592,7 @@ func (client DevicesClient) ScanForUpdatesPreparer(ctx context.Context, deviceNa
 // http.Response Body if it receives an error.
 func (client DevicesClient) ScanForUpdatesSender(req *http.Request) (future DevicesScanForUpdatesFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
@@ -37,9 +38,9 @@ func TestItemResponseParsing(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	pl := azruntime.NewPipeline(srv)
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", []policy.Policy{}, []policy.Policy{}, &policy.ClientOptions{Transport: srv})
 	resp, _ := pl.Do(req)
-	parsedResponse, err := newCosmosItemResponse(resp)
+	parsedResponse, err := newItemResponse(resp)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -48,16 +49,16 @@ func TestItemResponseParsing(t *testing.T) {
 		t.Fatal("parsedResponse.RawResponse is nil")
 	}
 
-	if parsedResponse.ActivityId() != "someActivityId" {
-		t.Errorf("Expected ActivityId to be %s, but got %s", "someActivityId", parsedResponse.ActivityId())
+	if parsedResponse.ActivityID != "someActivityId" {
+		t.Errorf("Expected ActivityId to be %s, but got %s", "someActivityId", parsedResponse.ActivityID)
 	}
 
-	if parsedResponse.RequestCharge() != 13.42 {
-		t.Errorf("Expected RequestCharge to be %f, but got %f", 13.42, parsedResponse.RequestCharge())
+	if parsedResponse.RequestCharge != 13.42 {
+		t.Errorf("Expected RequestCharge to be %f, but got %f", 13.42, parsedResponse.RequestCharge)
 	}
 
-	if parsedResponse.ETag() != "someEtag" {
-		t.Errorf("Expected ETag to be %s, but got %s", "someEtag", parsedResponse.ActivityId())
+	if parsedResponse.ETag != "someEtag" {
+		t.Errorf("Expected ETag to be %s, but got %s", "someEtag", parsedResponse.ETag)
 	}
 
 	if string(parsedResponse.Value) != string(jsonString) {

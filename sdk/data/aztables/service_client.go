@@ -11,6 +11,8 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	generated "github.com/Azure/azure-sdk-for-go/sdk/data/aztables/internal"
 )
 
@@ -18,35 +20,94 @@ import (
 type ServiceClient struct {
 	client  *generated.TableClient
 	service *generated.ServiceClient
-	cred    azcore.Credential
+	cred    *SharedKeyCredential
+	con     *generated.Connection
 }
 
 // NewServiceClient creates a ServiceClient struct using the specified serviceURL, credential, and options.
-func NewServiceClient(serviceURL string, cred azcore.Credential, options *ClientOptions) (*ServiceClient, error) {
-	if options == nil {
-		options = &ClientOptions{}
-	}
-	conOptions := options.getConnectionOptions()
+func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*ServiceClient, error) {
+	conOptions := getConnectionOptions(serviceURL, options)
+	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, runtime.NewBearerTokenPolicy(cred, []string{"https://storage.azure.com/.default"}, nil))
+	con := generated.NewConnection(serviceURL, conOptions.toPolicyOptions())
+	return &ServiceClient{
+		client:  generated.NewTableClient(con, generated.Enum0TwoThousandNineteen0202),
+		service: generated.NewServiceClient(con, generated.Enum0TwoThousandNineteen0202),
+		con:     con,
+	}, nil
+}
+
+// NewServiceClientWithNoCredential creates a ServiceClient struct using the specified serviceURL and options.
+// Call this method when serviceURL contains a SAS token.
+func NewServiceClientWithNoCredential(serviceURL string, options *ClientOptions) (*ServiceClient, error) {
+	conOptions := getConnectionOptions(serviceURL, options)
 	if isCosmosEndpoint(serviceURL) {
 		conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, cosmosPatchTransformPolicy{})
 	}
-	conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, options.PerCallPolicies...)
-	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, options.PerTryPolicies...)
-	con := generated.NewConnection(serviceURL, cred, conOptions)
+	con := generated.NewConnection(serviceURL, conOptions.toPolicyOptions())
 	return &ServiceClient{
-		client:  generated.NewTableClient(con),
-		service: generated.NewServiceClient(con),
-		cred:    cred,
+		client:  generated.NewTableClient(con, generated.Enum0TwoThousandNineteen0202),
+		service: generated.NewServiceClient(con, generated.Enum0TwoThousandNineteen0202),
+		con:     con,
 	}, nil
+}
+
+// NewServiceClientWithSharedKey creates a ServiceClient struct using the specified serviceURL, credential, and options.
+func NewServiceClientWithSharedKey(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*ServiceClient, error) {
+	conOptions := &policy.ClientOptions{}
+	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, newSharedKeyCredPolicy(cred))
+
+	policyOptions := setConnectionOptions(serviceURL, conOptions, options)
+
+	con := generated.NewConnection(serviceURL, policyOptions)
+	return &ServiceClient{
+		client:  generated.NewTableClient(con, generated.Enum0TwoThousandNineteen0202),
+		service: generated.NewServiceClient(con, generated.Enum0TwoThousandNineteen0202),
+		cred:    cred,
+		con:     con,
+	}, nil
+}
+
+// used to merge the ClientOptions into the policy.ClientOptions. Most importantly it sets any client options last (this is important for testing where the request is modified to send to proxy)
+func setConnectionOptions(serviceURL string, policyOptions *policy.ClientOptions, clientOptions *ClientOptions) *policy.ClientOptions {
+	if clientOptions == nil {
+		clientOptions = &ClientOptions{}
+	}
+	if policyOptions == nil {
+		policyOptions = &policy.ClientOptions{}
+	}
+
+	if isCosmosEndpoint(serviceURL) {
+		policyOptions.PerCallPolicies = append(policyOptions.PerCallPolicies, cosmosPatchTransformPolicy{})
+	}
+
+	policyOptions.PerCallPolicies = append(policyOptions.PerCallPolicies, clientOptions.PerCallPolicies...)
+	policyOptions.PerRetryPolicies = append(policyOptions.PerRetryPolicies, clientOptions.PerRetryPolicies...)
+	policyOptions.Transport = clientOptions.Transport
+	policyOptions.Logging = clientOptions.Logging
+	policyOptions.Retry = clientOptions.Retry
+	policyOptions.Telemetry = clientOptions.Telemetry
+	return policyOptions
+}
+
+func getConnectionOptions(serviceURL string, options *ClientOptions) *ClientOptions {
+	if options == nil {
+		options = &ClientOptions{}
+	}
+	if isCosmosEndpoint(serviceURL) {
+		options.PerCallPolicies = append(options.PerCallPolicies, cosmosPatchTransformPolicy{})
+	}
+	options.PerCallPolicies = append(options.PerCallPolicies, options.PerCallPolicies...)
+	options.PerRetryPolicies = append(options.PerRetryPolicies, options.PerRetryPolicies...)
+	return options
 }
 
 // NewClient returns a pointer to a Client affinitized to the specified table name and initialized with the same serviceURL and credentials as this ServiceClient
 func (t *ServiceClient) NewClient(tableName string) *Client {
 	return &Client{
 		client:  t.client,
-		cred:    t.cred,
 		name:    tableName,
 		service: t,
+		con:     t.con,
 	}
 }
 
@@ -63,7 +124,7 @@ func (t *ServiceClient) CreateTable(ctx context.Context, name string, options *C
 	if options == nil {
 		options = &CreateTableOptions{}
 	}
-	_, err := t.client.Create(ctx, generated.TableProperties{TableName: &name}, options.toGenerated(), &generated.QueryOptions{})
+	_, err := t.client.Create(ctx, generated.Enum1Three0, generated.TableProperties{TableName: &name}, options.toGenerated(), &generated.QueryOptions{})
 	return t.NewClient(name), err
 }
 
@@ -217,7 +278,7 @@ func (p *tableQueryResponsePager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	var resp generated.TableQueryResponseEnvelope
-	resp, p.err = p.client.Query(ctx, p.tableQueryOptions, p.listOptions.toQueryOptions())
+	resp, p.err = p.client.Query(ctx, generated.Enum1Three0, p.tableQueryOptions, p.listOptions.toQueryOptions())
 	p.current = &resp
 	p.tableQueryOptions.NextTableName = resp.XMSContinuationNextTableName
 	return p.err == nil && resp.TableQueryResponse.Value != nil && len(resp.TableQueryResponse.Value) > 0
@@ -276,7 +337,7 @@ func (t *ServiceClient) GetStatistics(ctx context.Context, options *GetStatistic
 	if options == nil {
 		options = &GetStatisticsOptions{}
 	}
-	resp, err := t.service.GetStatistics(ctx, options.toGenerated())
+	resp, err := t.service.GetStatistics(ctx, generated.Enum5Service, generated.Enum7Stats, options.toGenerated())
 	return getStatisticsResponseFromGenerated(&resp), err
 }
 
@@ -321,7 +382,7 @@ func (t *ServiceClient) GetProperties(ctx context.Context, options *GetPropertie
 	if options == nil {
 		options = &GetPropertiesOptions{}
 	}
-	resp, err := t.service.GetProperties(ctx, options.toGenerated())
+	resp, err := t.service.GetProperties(ctx, generated.Enum5Service, generated.Enum6Properties, options.toGenerated())
 	return getPropertiesResponseFromGenerated(&resp), err
 }
 
@@ -354,16 +415,15 @@ func (t *ServiceClient) SetProperties(ctx context.Context, properties ServicePro
 	if options == nil {
 		options = &SetPropertiesOptions{}
 	}
-	resp, err := t.service.SetProperties(ctx, *properties.toGenerated(), options.toGenerated())
+	resp, err := t.service.SetProperties(ctx, generated.Enum5Service, generated.Enum6Properties, *properties.toGenerated(), options.toGenerated())
 	return setPropertiesResponseFromGenerated(&resp), err
 }
 
 // GetAccountSASToken is a convenience method for generating a SAS token for the currently pointed at account. This methods returns the full service URL and an error
-// if there was an error during creation. This method can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.
+// if there was an error during creation. This method can only be used by clients created by NewServiceClientWithSharedKey().
 func (t ServiceClient) GetAccountSASToken(resources AccountSASResourceTypes, permissions AccountSASPermissions, start time.Time, expiry time.Time) (string, error) {
-	cred, ok := t.cred.(*SharedKeyCredential)
-	if !ok {
-		return "", errors.New("credential is not a SharedKeyCredential. SAS can only be signed with a SharedKeyCredential")
+	if t.cred == nil {
+		return "", errors.New("SAS can only be signed with a SharedKeyCredential")
 	}
 	qps, err := AccountSASSignatureValues{
 		Version:       SASVersion,
@@ -373,11 +433,11 @@ func (t ServiceClient) GetAccountSASToken(resources AccountSASResourceTypes, per
 		ResourceTypes: resources.String(),
 		StartTime:     start.UTC(),
 		ExpiryTime:    expiry.UTC(),
-	}.Sign(cred)
+	}.Sign(t.cred)
 	if err != nil {
 		return "", err
 	}
-	endpoint := t.client.Con.Endpoint()
+	endpoint := t.con.Endpoint()
 	if !strings.HasSuffix(endpoint, "/") {
 		endpoint += "/"
 	}

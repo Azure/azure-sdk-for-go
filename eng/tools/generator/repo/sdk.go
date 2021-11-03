@@ -70,11 +70,11 @@ type sdkRepository struct {
 
 func (s *sdkRepository) AddReleaseCommit(rpName, namespaceName, specHash, version string) error {
 	log.Printf("Add release package and commit")
-	if err := s.Add(fmt.Sprintf("sdk/%s/%s", rpName, namespaceName)); err != nil {
+	if err := s.Add(fmt.Sprintf("sdk/resourcemanager/%s/%s", rpName, namespaceName)); err != nil {
 		return fmt.Errorf("failed to add 'profiles': %+v", err)
 	}
 
-	message := fmt.Sprintf("[Release] sdk/%s/%s/%s generation from spec commit: %s", rpName, namespaceName, version, specHash)
+	message := fmt.Sprintf("[Release] sdk/resourcemanager/%s/%s/%s generation from spec commit: %s", rpName, namespaceName, version, specHash)
 	if err := s.Commit(message); err != nil {
 		if IsNothingToCommit(err) {
 			log.Printf("There is nothing to commit. Message: %s", message)

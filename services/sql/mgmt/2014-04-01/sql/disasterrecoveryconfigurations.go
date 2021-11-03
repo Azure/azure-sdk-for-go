@@ -58,7 +58,7 @@ func (client DisasterRecoveryConfigurationsClient) CreateOrUpdate(ctx context.Co
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DisasterRecoveryConfigurationsClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.DisasterRecoveryConfigurationsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -91,6 +91,7 @@ func (client DisasterRecoveryConfigurationsClient) CreateOrUpdatePreparer(ctx co
 // http.Response Body if it receives an error.
 func (client DisasterRecoveryConfigurationsClient) CreateOrUpdateSender(req *http.Request) (future DisasterRecoveryConfigurationsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -139,7 +140,7 @@ func (client DisasterRecoveryConfigurationsClient) Delete(ctx context.Context, r
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DisasterRecoveryConfigurationsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.DisasterRecoveryConfigurationsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -172,6 +173,7 @@ func (client DisasterRecoveryConfigurationsClient) DeletePreparer(ctx context.Co
 // http.Response Body if it receives an error.
 func (client DisasterRecoveryConfigurationsClient) DeleteSender(req *http.Request) (future DisasterRecoveryConfigurationsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -219,7 +221,7 @@ func (client DisasterRecoveryConfigurationsClient) Failover(ctx context.Context,
 
 	result, err = client.FailoverSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DisasterRecoveryConfigurationsClient", "Failover", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.DisasterRecoveryConfigurationsClient", "Failover", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -252,6 +254,7 @@ func (client DisasterRecoveryConfigurationsClient) FailoverPreparer(ctx context.
 // http.Response Body if it receives an error.
 func (client DisasterRecoveryConfigurationsClient) FailoverSender(req *http.Request) (future DisasterRecoveryConfigurationsFailoverFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -300,7 +303,7 @@ func (client DisasterRecoveryConfigurationsClient) FailoverAllowDataLoss(ctx con
 
 	result, err = client.FailoverAllowDataLossSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DisasterRecoveryConfigurationsClient", "FailoverAllowDataLoss", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.DisasterRecoveryConfigurationsClient", "FailoverAllowDataLoss", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -333,6 +336,7 @@ func (client DisasterRecoveryConfigurationsClient) FailoverAllowDataLossPreparer
 // http.Response Body if it receives an error.
 func (client DisasterRecoveryConfigurationsClient) FailoverAllowDataLossSender(req *http.Request) (future DisasterRecoveryConfigurationsFailoverAllowDataLossFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

@@ -9,22 +9,21 @@ import (
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
-// CosmosItemResponse represents the response from an item request.
-type CosmosItemResponse struct {
+// ItemResponse represents the response from an item request.
+type ItemResponse struct {
 	// The byte content of the operation response.
 	Value []byte
-	CosmosResponse
+	Response
+	// SessionToken contains the value from the session token header to be used on session consistency.
+	SessionToken string
 }
 
-// SessionToken contains the value from the session token header to be used on session consistency.
-func (c *CosmosItemResponse) SessionToken() string {
-	return c.RawResponse.Header.Get(cosmosHeaderSessionToken)
-}
-
-func newCosmosItemResponse(resp *http.Response) (CosmosItemResponse, error) {
-	response := CosmosItemResponse{}
+func newItemResponse(resp *http.Response) (ItemResponse, error) {
+	response := ItemResponse{
+		Response: newResponse(resp),
+	}
+	response.SessionToken = resp.Header.Get(cosmosHeaderSessionToken)
 	defer resp.Body.Close()
-	response.RawResponse = resp
 	body, err := azruntime.Payload(resp)
 	if err != nil {
 		return response, err

@@ -59,7 +59,7 @@ type managedIdentityClient struct {
 	imdsAvailableTimeout time.Duration
 	msiType              msiType
 	endpoint             string
-	id                   ManagedIdentityIDKind
+	id                   ManagedIDKind
 	unavailableMessage   string
 }
 
@@ -71,6 +71,48 @@ func (n *wrappedNumber) UnmarshalJSON(b []byte) error {
 		return nil
 	}
 	return json.Unmarshal(b, (*json.Number)(n))
+}
+
+// setRetryOptionDefaults sets zero-valued fields to default values appropriate for IMDS
+func setRetryOptionDefaults(o *policy.RetryOptions) {
+	if o.MaxRetries == 0 {
+		o.MaxRetries = 5
+	}
+	if o.MaxRetryDelay == 0 {
+		o.MaxRetryDelay = 1 * time.Minute
+	}
+	if o.RetryDelay == 0 {
+		o.RetryDelay = 2 * time.Second
+	}
+	if o.StatusCodes == nil {
+		o.StatusCodes = []int{
+			// IMDS docs recommend retrying 404, 429 and all 5xx
+			// https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/how-to-use-vm-token#error-handling
+			http.StatusNotFound,                      // 404
+			http.StatusTooManyRequests,               // 429
+			http.StatusInternalServerError,           // 500
+			http.StatusNotImplemented,                // 501
+			http.StatusBadGateway,                    // 502
+			http.StatusGatewayTimeout,                // 504
+			http.StatusHTTPVersionNotSupported,       // 505
+			http.StatusVariantAlsoNegotiates,         // 506
+			http.StatusInsufficientStorage,           // 507
+			http.StatusLoopDetected,                  // 508
+			http.StatusNotExtended,                   // 510
+			http.StatusNetworkAuthenticationRequired, // 511
+		}
+	}
+	if o.TryTimeout == 0 {
+		o.TryTimeout = 1 * time.Minute
+	}
+}
+
+// newDefaultMSIPipeline creates a pipeline using the specified pipeline options needed
+// for a Managed Identity, such as a MSI specific retry policy.
+func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) runtime.Pipeline {
+	cp := o.ClientOptions
+	setRetryOptionDefaults(&cp.Retry)
+	return runtime.NewPipeline(component, version, nil, nil, &cp)
 }
 
 // newManagedIdentityClient creates a new instance of the ManagedIdentityClient with the ManagedIdentityCredentialOptions
@@ -92,12 +134,12 @@ func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) *manage
 // ctx: The current context for controlling the request lifetime.
 // clientID: The client (application) ID of the service principal.
 // scopes: The scopes required for the token.
-func (c *managedIdentityClient) authenticate(ctx context.Context, clientID string, scopes []string) (*azcore.AccessToken, error) {
+func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKind, scopes []string) (*azcore.AccessToken, error) {
 	if len(c.unavailableMessage) > 0 {
-		return nil, &CredentialUnavailableError{credentialType: "Managed Identity Credential", message: c.unavailableMessage}
+		return nil, newCredentialUnavailableError("Managed Identity Credential", c.unavailableMessage)
 	}
 
-	msg, err := c.createAuthRequest(ctx, clientID, scopes)
+	msg, err := c.createAuthRequest(ctx, id, scopes)
 	if err != nil {
 		return nil, err
 	}
@@ -112,14 +154,14 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, clientID strin
 	}
 
 	if c.msiType == msiTypeIMDS && resp.StatusCode == 400 {
-		if len(clientID) > 0 {
-			return nil, &AuthenticationFailedError{msg: "The requested identity isn't assigned to this resource."}
+		if id != nil {
+			return nil, newAuthenticationFailedError(errors.New("The requested identity isn't assigned to this resource."), resp)
 		}
 		c.unavailableMessage = "No default identity is assigned to this resource."
-		return nil, &CredentialUnavailableError{credentialType: "Managed Identity Credential", message: c.unavailableMessage}
+		return nil, newCredentialUnavailableError("Managed Identity Credential", c.unavailableMessage)
 	}
 
-	return nil, &AuthenticationFailedError{inner: newAADAuthenticationFailedError(resp)}
+	return nil, newAuthenticationFailedError(errors.New("authentication failed"), resp)
 }
 
 func (c *managedIdentityClient) createAccessToken(res *http.Response) (*azcore.AccessToken, error) {
@@ -131,7 +173,7 @@ func (c *managedIdentityClient) createAccessToken(res *http.Response) (*azcore.A
 		ExpiresOn    interface{}   `json:"expires_on,omitempty"` // the value returned in this field varies between a number and a date string
 	}{}
 	if err := runtime.UnmarshalAsJSON(res, &value); err != nil {
-		return nil, fmt.Errorf("internal AccessToken: %w", err)
+		return nil, fmt.Errorf("internal AccessToken: %v", err)
 	}
 	if value.ExpiresIn != "" {
 		expiresIn, err := json.Number(value.ExpiresIn).Int64()
@@ -159,27 +201,29 @@ func (c *managedIdentityClient) createAccessToken(res *http.Response) (*azcore.A
 			return nil, err
 		}
 	default:
-		return nil, &AuthenticationFailedError{msg: fmt.Sprintf("unsupported type received in expires_on: %T, %v", v, v)}
+		err := fmt.Errorf("unsupported type received in expires_on: %T, %v", v, v)
+		return nil, newAuthenticationFailedError(err, res)
 	}
 }
 
-func (c *managedIdentityClient) createAuthRequest(ctx context.Context, clientID string, scopes []string) (*policy.Request, error) {
+func (c *managedIdentityClient) createAuthRequest(ctx context.Context, id ManagedIDKind, scopes []string) (*policy.Request, error) {
 	switch c.msiType {
 	case msiTypeIMDS:
-		return c.createIMDSAuthRequest(ctx, clientID, scopes)
+		return c.createIMDSAuthRequest(ctx, id, scopes)
 	case msiTypeAppServiceV20170901, msiTypeAppServiceV20190801:
-		return c.createAppServiceAuthRequest(ctx, clientID, scopes)
+		return c.createAppServiceAuthRequest(ctx, id, scopes)
 	case msiTypeAzureArc:
 		// need to perform preliminary request to retreive the secret key challenge provided by the HIMDS service
 		key, err := c.getAzureArcSecretKey(ctx, scopes)
 		if err != nil {
-			return nil, &AuthenticationFailedError{inner: err, msg: "Failed to retreive secret key from the identity endpoint."}
+			msg := fmt.Errorf("failed to retreive secret key from the identity endpoint: %v", err)
+			return nil, newAuthenticationFailedError(msg, nil)
 		}
 		return c.createAzureArcAuthRequest(ctx, key, scopes)
 	case msiTypeServiceFabric:
-		return c.createServiceFabricAuthRequest(ctx, clientID, scopes)
+		return c.createServiceFabricAuthRequest(ctx, id, scopes)
 	case msiTypeCloudShell:
-		return c.createCloudShellAuthRequest(ctx, clientID, scopes)
+		return c.createCloudShellAuthRequest(ctx, id, scopes)
 	default:
 		errorMsg := ""
 		switch c.msiType {
@@ -188,12 +232,12 @@ func (c *managedIdentityClient) createAuthRequest(ctx context.Context, clientID 
 		default:
 			errorMsg = "unknown"
 		}
-		c.unavailableMessage = "Make sure you are running in a valid Managed Identity environment. Status: " + errorMsg
-		return nil, &CredentialUnavailableError{credentialType: "Managed Identity Credential", message: c.unavailableMessage}
+		c.unavailableMessage = "managed identity support is " + errorMsg
+		return nil, newCredentialUnavailableError("Managed Identity Credential", c.unavailableMessage)
 	}
 }
 
-func (c *managedIdentityClient) createIMDSAuthRequest(ctx context.Context, id string, scopes []string) (*policy.Request, error) {
+func (c *managedIdentityClient) createIMDSAuthRequest(ctx context.Context, id ManagedIDKind, scopes []string) (*policy.Request, error) {
 	request, err := runtime.NewRequest(ctx, http.MethodGet, c.endpoint)
 	if err != nil {
 		return nil, err
@@ -202,16 +246,18 @@ func (c *managedIdentityClient) createIMDSAuthRequest(ctx context.Context, id st
 	q := request.Raw().URL.Query()
 	q.Add("api-version", c.imdsAPIVersion)
 	q.Add("resource", strings.Join(scopes, " "))
-	if c.id == ResourceID {
-		q.Add(qpResID, id)
-	} else if id != "" {
-		q.Add(qpClientID, id)
+	if id != nil {
+		if id.idKind() == miResourceID {
+			q.Add(qpResID, id.String())
+		} else {
+			q.Add(qpClientID, id.String())
+		}
 	}
 	request.Raw().URL.RawQuery = q.Encode()
 	return request, nil
 }
 
-func (c *managedIdentityClient) createAppServiceAuthRequest(ctx context.Context, id string, scopes []string) (*policy.Request, error) {
+func (c *managedIdentityClient) createAppServiceAuthRequest(ctx context.Context, id ManagedIDKind, scopes []string) (*policy.Request, error) {
 	request, err := runtime.NewRequest(ctx, http.MethodGet, c.endpoint)
 	if err != nil {
 		return nil, err
@@ -221,20 +267,24 @@ func (c *managedIdentityClient) createAppServiceAuthRequest(ctx context.Context,
 		request.Raw().Header.Set("secret", os.Getenv(msiSecret))
 		q.Add("api-version", "2017-09-01")
 		q.Add("resource", strings.Join(scopes, " "))
-		if c.id == ResourceID {
-			q.Add(qpResID, id)
-		} else if id != "" {
-			// the legacy 2017 API version specifically specifies "clientid" and not "client_id" as a query param
-			q.Add("clientid", id)
+		if id != nil {
+			if id.idKind() == miResourceID {
+				q.Add(qpResID, id.String())
+			} else {
+				// the legacy 2017 API version specifically specifies "clientid" and not "client_id" as a query param
+				q.Add("clientid", id.String())
+			}
 		}
 	} else if c.msiType == msiTypeAppServiceV20190801 {
 		request.Raw().Header.Set("X-IDENTITY-HEADER", os.Getenv(identityHeader))
 		q.Add("api-version", "2019-08-01")
 		q.Add("resource", scopes[0])
-		if c.id == ResourceID {
-			q.Add(qpResID, id)
-		} else if id != "" {
-			q.Add(qpClientID, id)
+		if id != nil {
+			if id.idKind() == miResourceID {
+				q.Add(qpResID, id.String())
+			} else {
+				q.Add(qpClientID, id.String())
+			}
 		}
 	}
 
@@ -242,7 +292,7 @@ func (c *managedIdentityClient) createAppServiceAuthRequest(ctx context.Context,
 	return request, nil
 }
 
-func (c *managedIdentityClient) createServiceFabricAuthRequest(ctx context.Context, id string, scopes []string) (*policy.Request, error) {
+func (c *managedIdentityClient) createServiceFabricAuthRequest(ctx context.Context, id ManagedIDKind, scopes []string) (*policy.Request, error) {
 	request, err := runtime.NewRequest(ctx, http.MethodGet, c.endpoint)
 	if err != nil {
 		return nil, err
@@ -252,8 +302,8 @@ func (c *managedIdentityClient) createServiceFabricAuthRequest(ctx context.Conte
 	request.Raw().Header.Set("Secret", os.Getenv(identityHeader))
 	q.Add("api-version", serviceFabricAPIVersion)
 	q.Add("resource", strings.Join(scopes, " "))
-	if id != "" {
-		q.Add(qpClientID, id)
+	if id != nil {
+		q.Add(qpClientID, id.String())
 	}
 	request.Raw().URL.RawQuery = q.Encode()
 	return request, nil
@@ -275,10 +325,11 @@ func (c *managedIdentityClient) getAzureArcSecretKey(ctx context.Context, resour
 	if err != nil {
 		return "", err
 	}
-	// the endpoint is expected to return a 401 with the WWW-Authenticte header set to the location
+	// the endpoint is expected to return a 401 with the WWW-Authenticate header set to the location
 	// of the secret key file. Any other status code indicates an error in the request.
 	if response.StatusCode != 401 {
-		return "", &AuthenticationFailedError{inner: newAADAuthenticationFailedError(response), msg: fmt.Sprintf("Expected a 401 Unauthorized response, received: %d", response.StatusCode)}
+		err := fmt.Errorf("expected a 401 response, received %d", response.StatusCode)
+		return "", newAuthenticationFailedError(err, response)
 	}
 	header := response.Header.Get("WWW-Authenticate")
 	if len(header) == 0 {
@@ -291,7 +342,7 @@ func (c *managedIdentityClient) getAzureArcSecretKey(ctx context.Context, resour
 	}
 	key, err := ioutil.ReadFile(header[pos+1:])
 	if err != nil {
-		return "", fmt.Errorf("could not read file (%s) contents: %w", header[pos+1:], err)
+		return "", fmt.Errorf("could not read file (%s) contents: %v", header[pos+1:], err)
 	}
 	return string(key), nil
 }
@@ -302,7 +353,7 @@ func (c *managedIdentityClient) createAzureArcAuthRequest(ctx context.Context, k
 		return nil, err
 	}
 	request.Raw().Header.Set(headerMetadata, "true")
-	request.Raw().Header.Set(headerAuthorization, fmt.Sprintf("Basic %s", key))
+	request.Raw().Header.Set("Authorization", fmt.Sprintf("Basic %s", key))
 	q := request.Raw().URL.Query()
 	q.Add("api-version", azureArcAPIVersion)
 	q.Add("resource", strings.Join(resources, " "))
@@ -310,7 +361,7 @@ func (c *managedIdentityClient) createAzureArcAuthRequest(ctx context.Context, k
 	return request, nil
 }
 
-func (c *managedIdentityClient) createCloudShellAuthRequest(ctx context.Context, clientID string, scopes []string) (*policy.Request, error) {
+func (c *managedIdentityClient) createCloudShellAuthRequest(ctx context.Context, id ManagedIDKind, scopes []string) (*policy.Request, error) {
 	request, err := runtime.NewRequest(ctx, http.MethodPost, c.endpoint)
 	if err != nil {
 		return nil, err
@@ -318,8 +369,8 @@ func (c *managedIdentityClient) createCloudShellAuthRequest(ctx context.Context,
 	request.Raw().Header.Set(headerMetadata, "true")
 	data := url.Values{}
 	data.Set("resource", strings.Join(scopes, " "))
-	if clientID != "" {
-		data.Set(qpClientID, clientID)
+	if id != nil {
+		data.Set(qpClientID, id.String())
 	}
 	dataEncoded := data.Encode()
 	body := streaming.NopCloser(strings.NewReader(dataEncoded))
@@ -349,14 +400,14 @@ func (c *managedIdentityClient) getMSIType() (msiType, error) {
 				c.msiType = msiTypeAzureArc
 			} else {
 				c.msiType = msiTypeUnavailable
-				return c.msiType, &CredentialUnavailableError{credentialType: "Managed Identity Credential", message: "This Managed Identity Environment is not supported yet"}
+				return c.msiType, newCredentialUnavailableError("Managed Identity Credential", "this environment is not supported")
 			}
 		} else if c.imdsAvailable() { // if MSI_ENDPOINT is NOT set AND the IMDS endpoint is available the msiType is IMDS. This will timeout after 500 milliseconds
 			c.endpoint = imdsEndpoint
 			c.msiType = msiTypeIMDS
 		} else { // if MSI_ENDPOINT is NOT set and IMDS endpoint is not available Managed Identity is not available
 			c.msiType = msiTypeUnavailable
-			return c.msiType, &CredentialUnavailableError{credentialType: "Managed Identity Credential", message: "Make sure you are running in a valid Managed Identity Environment"}
+			return c.msiType, newCredentialUnavailableError("Managed Identity Credential", "no managed identity endpoint is available")
 		}
 	}
 	return c.msiType, nil

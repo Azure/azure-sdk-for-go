@@ -69,7 +69,7 @@ func (client ScriptExecutionsClient) CreateOrUpdate(ctx context.Context, resourc
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.ScriptExecutionsClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.ScriptExecutionsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -104,6 +104,7 @@ func (client ScriptExecutionsClient) CreateOrUpdatePreparer(ctx context.Context,
 // http.Response Body if it receives an error.
 func (client ScriptExecutionsClient) CreateOrUpdateSender(req *http.Request) (future ScriptExecutionsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -160,7 +161,7 @@ func (client ScriptExecutionsClient) Delete(ctx context.Context, resourceGroupNa
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.ScriptExecutionsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.ScriptExecutionsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -193,6 +194,7 @@ func (client ScriptExecutionsClient) DeletePreparer(ctx context.Context, resourc
 // http.Response Body if it receives an error.
 func (client ScriptExecutionsClient) DeleteSender(req *http.Request) (future ScriptExecutionsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

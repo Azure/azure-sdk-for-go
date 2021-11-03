@@ -52,13 +52,18 @@ func (client InstancesClient) Create(ctx context.Context, resourceGroupName stri
 		{TargetValue: accountName,
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
-				{Target: "accountName", Name: validation.Pattern, Rule: `^[A-Za-z][A-Za-z0-9]+$`, Chain: nil}}},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(-[A-Za-z0-9]+)*$`, Chain: nil}}},
 		{TargetValue: instanceName,
 			Constraints: []validation.Constraint{{Target: "instanceName", Name: validation.MaxLength, Rule: 36, Chain: nil},
 				{Target: "instanceName", Name: validation.MinLength, Rule: 3, Chain: nil},
-				{Target: "instanceName", Name: validation.Pattern, Rule: `^[A-Za-z][A-Za-z0-9]+$`, Chain: nil}}},
+				{Target: "instanceName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(-[A-Za-z0-9]+)*$`, Chain: nil}}},
 		{TargetValue: instance,
-			Constraints: []validation.Constraint{{Target: "instance.InstanceProperties", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "instance.InstanceProperties", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "instance.InstanceProperties.DiagnosticStorageProperties", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "instance.InstanceProperties.DiagnosticStorageProperties.AuthenticationType", Name: validation.Null, Rule: true, Chain: nil},
+						{Target: "instance.InstanceProperties.DiagnosticStorageProperties.ResourceID", Name: validation.Null, Rule: true, Chain: nil},
+					}},
+				}}}}}); err != nil {
 		return result, validation.NewError("deviceupdate.InstancesClient", "Create", err.Error())
 	}
 
@@ -70,7 +75,7 @@ func (client InstancesClient) Create(ctx context.Context, resourceGroupName stri
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "deviceupdate.InstancesClient", "Create", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "deviceupdate.InstancesClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -105,6 +110,7 @@ func (client InstancesClient) CreatePreparer(ctx context.Context, resourceGroupN
 // http.Response Body if it receives an error.
 func (client InstancesClient) CreateSender(req *http.Request) (future InstancesCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -148,11 +154,11 @@ func (client InstancesClient) Delete(ctx context.Context, resourceGroupName stri
 		{TargetValue: accountName,
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
-				{Target: "accountName", Name: validation.Pattern, Rule: `^[A-Za-z][A-Za-z0-9]+$`, Chain: nil}}},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(-[A-Za-z0-9]+)*$`, Chain: nil}}},
 		{TargetValue: instanceName,
 			Constraints: []validation.Constraint{{Target: "instanceName", Name: validation.MaxLength, Rule: 36, Chain: nil},
 				{Target: "instanceName", Name: validation.MinLength, Rule: 3, Chain: nil},
-				{Target: "instanceName", Name: validation.Pattern, Rule: `^[A-Za-z][A-Za-z0-9]+$`, Chain: nil}}}}); err != nil {
+				{Target: "instanceName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(-[A-Za-z0-9]+)*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("deviceupdate.InstancesClient", "Delete", err.Error())
 	}
 
@@ -164,7 +170,7 @@ func (client InstancesClient) Delete(ctx context.Context, resourceGroupName stri
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "deviceupdate.InstancesClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "deviceupdate.InstancesClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -197,6 +203,7 @@ func (client InstancesClient) DeletePreparer(ctx context.Context, resourceGroupN
 // http.Response Body if it receives an error.
 func (client InstancesClient) DeleteSender(req *http.Request) (future InstancesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -219,7 +226,7 @@ func (client InstancesClient) DeleteResponder(resp *http.Response) (result autor
 	return
 }
 
-// Get returns instances for the given account and instance name.
+// Get returns instance details for the given instance and account name.
 // Parameters:
 // resourceGroupName - the resource group name.
 // accountName - account name.
@@ -239,11 +246,11 @@ func (client InstancesClient) Get(ctx context.Context, resourceGroupName string,
 		{TargetValue: accountName,
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
-				{Target: "accountName", Name: validation.Pattern, Rule: `^[A-Za-z][A-Za-z0-9]+$`, Chain: nil}}},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(-[A-Za-z0-9]+)*$`, Chain: nil}}},
 		{TargetValue: instanceName,
 			Constraints: []validation.Constraint{{Target: "instanceName", Name: validation.MaxLength, Rule: 36, Chain: nil},
 				{Target: "instanceName", Name: validation.MinLength, Rule: 3, Chain: nil},
-				{Target: "instanceName", Name: validation.Pattern, Rule: `^[A-Za-z][A-Za-z0-9]+$`, Chain: nil}}}}); err != nil {
+				{Target: "instanceName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(-[A-Za-z0-9]+)*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("deviceupdate.InstancesClient", "Get", err.Error())
 	}
 
@@ -309,6 +316,95 @@ func (client InstancesClient) GetResponder(resp *http.Response) (result Instance
 	return
 }
 
+// Head checks whether instance exists.
+// Parameters:
+// resourceGroupName - the resource group name.
+// accountName - account name.
+// instanceName - instance name.
+func (client InstancesClient) Head(ctx context.Context, resourceGroupName string, accountName string, instanceName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/InstancesClient.Head")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(-[A-Za-z0-9]+)*$`, Chain: nil}}},
+		{TargetValue: instanceName,
+			Constraints: []validation.Constraint{{Target: "instanceName", Name: validation.MaxLength, Rule: 36, Chain: nil},
+				{Target: "instanceName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "instanceName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(-[A-Za-z0-9]+)*$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("deviceupdate.InstancesClient", "Head", err.Error())
+	}
+
+	req, err := client.HeadPreparer(ctx, resourceGroupName, accountName, instanceName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "deviceupdate.InstancesClient", "Head", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.HeadSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "deviceupdate.InstancesClient", "Head", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.HeadResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "deviceupdate.InstancesClient", "Head", resp, "Failure responding to request")
+		return
+	}
+
+	return
+}
+
+// HeadPreparer prepares the Head request.
+func (client InstancesClient) HeadPreparer(ctx context.Context, resourceGroupName string, accountName string, instanceName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"instanceName":      autorest.Encode("path", instanceName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-03-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsHead(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/accounts/{accountName}/instances/{instanceName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// HeadSender sends the Head request. The method will close the
+// http.Response Body if it receives an error.
+func (client InstancesClient) HeadSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// HeadResponder handles the response to the Head request. The method always
+// closes the http.Response Body.
+func (client InstancesClient) HeadResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // ListByAccount returns instances for the given account name.
 // Parameters:
 // resourceGroupName - the resource group name.
@@ -328,7 +424,7 @@ func (client InstancesClient) ListByAccount(ctx context.Context, resourceGroupNa
 		{TargetValue: accountName,
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
-				{Target: "accountName", Name: validation.Pattern, Rule: `^[A-Za-z][A-Za-z0-9]+$`, Chain: nil}}}}); err != nil {
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(-[A-Za-z0-9]+)*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("deviceupdate.InstancesClient", "ListByAccount", err.Error())
 	}
 
@@ -456,11 +552,11 @@ func (client InstancesClient) Update(ctx context.Context, resourceGroupName stri
 		{TargetValue: accountName,
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
-				{Target: "accountName", Name: validation.Pattern, Rule: `^[A-Za-z][A-Za-z0-9]+$`, Chain: nil}}},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(-[A-Za-z0-9]+)*$`, Chain: nil}}},
 		{TargetValue: instanceName,
 			Constraints: []validation.Constraint{{Target: "instanceName", Name: validation.MaxLength, Rule: 36, Chain: nil},
 				{Target: "instanceName", Name: validation.MinLength, Rule: 3, Chain: nil},
-				{Target: "instanceName", Name: validation.Pattern, Rule: `^[A-Za-z][A-Za-z0-9]+$`, Chain: nil}}}}); err != nil {
+				{Target: "instanceName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(-[A-Za-z0-9]+)*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("deviceupdate.InstancesClient", "Update", err.Error())
 	}
 

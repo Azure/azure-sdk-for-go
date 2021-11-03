@@ -9,7 +9,6 @@ package runtime
 import (
 	"context"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"reflect"
 	"strings"
@@ -22,6 +21,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
@@ -52,8 +52,12 @@ func (m mockError) Error() string {
 
 func getPipeline(srv *mock.Server) pipeline.Pipeline {
 	return runtime.NewPipeline(
-		srv,
-		runtime.NewLogPolicy(nil))
+		"test",
+		"v0.1.0",
+		nil,
+		[]pipeline.Policy{runtime.NewLogPolicy(nil)},
+		&policy.ClientOptions{Transport: srv},
+	)
 }
 
 func handleError(resp *http.Response) error {
@@ -64,17 +68,18 @@ func handleError(resp *http.Response) error {
 	return me
 }
 
-func initialResponse(method, u string, resp io.Reader) *http.Response {
+func initialResponse(method, u string, resp io.Reader) (*http.Response, mock.TrackedClose) {
 	req, err := http.NewRequest(method, u, nil)
 	if err != nil {
 		panic(err)
 	}
+	body, closed := mock.NewTrackedCloser(resp)
 	return &http.Response{
-		Body:          ioutil.NopCloser(resp),
+		Body:          body,
 		ContentLength: -1,
 		Header:        http.Header{},
 		Request:       req,
-	}
+	}, closed
 }
 
 func TestNewPollerAsync(t *testing.T) {
@@ -83,13 +88,16 @@ func TestNewPollerAsync(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(statusInProgress)))
 	srv.AppendResponse(mock.WithBody([]byte(statusSucceeded)))
 	srv.AppendResponse(mock.WithBody([]byte(successResp)))
-	resp := initialResponse(http.MethodPut, srv.URL(), strings.NewReader(provStateStarted))
+	resp, closed := initialResponse(http.MethodPut, srv.URL(), strings.NewReader(provStateStarted))
 	resp.Header.Set(shared.HeaderAzureAsync, srv.URL())
 	resp.StatusCode = http.StatusCreated
 	pl := getPipeline(srv)
 	poller, err := NewPoller("pollerID", "", resp, pl, handleError)
 	if err != nil {
 		t.Fatal(err)
+	}
+	if !closed() {
+		t.Fatal("initial response body wasn't closed")
 	}
 	if pt := pollers.PollerType(poller); pt != reflect.TypeOf(&async.Poller{}) {
 		t.Fatalf("unexpected poller type %s", pt.String())
@@ -103,7 +111,7 @@ func TestNewPollerAsync(t *testing.T) {
 		t.Fatal(err)
 	}
 	var result mockType
-	_, err = poller.PollUntilDone(context.Background(), 10*time.Millisecond, &result)
+	_, err = poller.PollUntilDone(context.Background(), time.Second, &result)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -117,12 +125,15 @@ func TestNewPollerBody(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(provStateUpdating)), mock.WithHeader("Retry-After", "1"))
 	srv.AppendResponse(mock.WithBody([]byte(provStateSucceeded)))
-	resp := initialResponse(http.MethodPatch, srv.URL(), strings.NewReader(provStateStarted))
+	resp, closed := initialResponse(http.MethodPatch, srv.URL(), strings.NewReader(provStateStarted))
 	resp.StatusCode = http.StatusCreated
 	pl := getPipeline(srv)
 	poller, err := NewPoller("pollerID", "", resp, pl, handleError)
 	if err != nil {
 		t.Fatal(err)
+	}
+	if !closed() {
+		t.Fatal("initial response body wasn't closed")
 	}
 	if pt := pollers.PollerType(poller); pt != reflect.TypeOf(&body.Poller{}) {
 		t.Fatalf("unexpected poller type %s", pt.String())
@@ -136,7 +147,7 @@ func TestNewPollerBody(t *testing.T) {
 		t.Fatal(err)
 	}
 	var result mockType
-	_, err = poller.PollUntilDone(context.Background(), 10*time.Millisecond, &result)
+	_, err = poller.PollUntilDone(context.Background(), time.Second, &result)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -150,13 +161,16 @@ func TestNewPollerLoc(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted))
 	srv.AppendResponse(mock.WithBody([]byte(successResp)))
-	resp := initialResponse(http.MethodPatch, srv.URL(), strings.NewReader(provStateStarted))
+	resp, closed := initialResponse(http.MethodPatch, srv.URL(), strings.NewReader(provStateStarted))
 	resp.Header.Set(shared.HeaderLocation, srv.URL())
 	resp.StatusCode = http.StatusAccepted
 	pl := getPipeline(srv)
 	poller, err := NewPoller("pollerID", "", resp, pl, handleError)
 	if err != nil {
 		t.Fatal(err)
+	}
+	if !closed() {
+		t.Fatal("initial response body wasn't closed")
 	}
 	if pt := pollers.PollerType(poller); pt != reflect.TypeOf(&loc.Poller{}) {
 		t.Fatalf("unexpected poller type %s", pt.String())
@@ -170,7 +184,7 @@ func TestNewPollerLoc(t *testing.T) {
 		t.Fatal(err)
 	}
 	var result mockType
-	_, err = poller.PollUntilDone(context.Background(), 10*time.Millisecond, &result)
+	_, err = poller.PollUntilDone(context.Background(), time.Second, &result)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -185,7 +199,7 @@ func TestNewPollerInitialRetryAfter(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(statusInProgress)))
 	srv.AppendResponse(mock.WithBody([]byte(statusSucceeded)))
 	srv.AppendResponse(mock.WithBody([]byte(successResp)))
-	resp := initialResponse(http.MethodPut, srv.URL(), strings.NewReader(provStateStarted))
+	resp, closed := initialResponse(http.MethodPut, srv.URL(), strings.NewReader(provStateStarted))
 	resp.Header.Set(shared.HeaderAzureAsync, srv.URL())
 	resp.Header.Set("Retry-After", "1")
 	resp.StatusCode = http.StatusCreated
@@ -194,11 +208,14 @@ func TestNewPollerInitialRetryAfter(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	if !closed() {
+		t.Fatal("initial response body wasn't closed")
+	}
 	if pt := pollers.PollerType(poller); pt != reflect.TypeOf(&async.Poller{}) {
 		t.Fatalf("unexpected poller type %s", pt.String())
 	}
 	var result mockType
-	_, err = poller.PollUntilDone(context.Background(), 10*time.Millisecond, &result)
+	_, err = poller.PollUntilDone(context.Background(), time.Second, &result)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -212,13 +229,16 @@ func TestNewPollerCanceled(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(statusInProgress)))
 	srv.AppendResponse(mock.WithBody([]byte(statusCanceled)), mock.WithStatusCode(http.StatusOK))
-	resp := initialResponse(http.MethodPut, srv.URL(), strings.NewReader(provStateStarted))
+	resp, closed := initialResponse(http.MethodPut, srv.URL(), strings.NewReader(provStateStarted))
 	resp.Header.Set(shared.HeaderAzureAsync, srv.URL())
 	resp.StatusCode = http.StatusCreated
 	pl := getPipeline(srv)
 	poller, err := NewPoller("pollerID", "", resp, pl, handleError)
 	if err != nil {
 		t.Fatal(err)
+	}
+	if !closed() {
+		t.Fatal("initial response body wasn't closed")
 	}
 	if pt := pollers.PollerType(poller); pt != reflect.TypeOf(&async.Poller{}) {
 		t.Fatalf("unexpected poller type %s", pt.String())
@@ -238,7 +258,7 @@ func TestNewPollerFailedWithError(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(statusInProgress)))
 	srv.AppendResponse(mock.WithBody([]byte(errorResp)), mock.WithStatusCode(http.StatusBadRequest))
-	resp := initialResponse(http.MethodPut, srv.URL(), strings.NewReader(provStateStarted))
+	resp, closed := initialResponse(http.MethodPut, srv.URL(), strings.NewReader(provStateStarted))
 	resp.Header.Set(shared.HeaderAzureAsync, srv.URL())
 	resp.StatusCode = http.StatusCreated
 	pl := getPipeline(srv)
@@ -246,11 +266,14 @@ func TestNewPollerFailedWithError(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	if !closed() {
+		t.Fatal("initial response body wasn't closed")
+	}
 	if pt := pollers.PollerType(poller); pt != reflect.TypeOf(&async.Poller{}) {
 		t.Fatalf("unexpected poller type %s", pt.String())
 	}
 	var result mockType
-	_, err = poller.PollUntilDone(context.Background(), 10*time.Millisecond, &result)
+	_, err = poller.PollUntilDone(context.Background(), time.Second, &result)
 	if err == nil {
 		t.Fatal(err)
 	}
@@ -264,12 +287,15 @@ func TestNewPollerSuccessNoContent(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(provStateUpdating)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusNoContent))
-	resp := initialResponse(http.MethodPatch, srv.URL(), strings.NewReader(provStateStarted))
+	resp, closed := initialResponse(http.MethodPatch, srv.URL(), strings.NewReader(provStateStarted))
 	resp.StatusCode = http.StatusCreated
 	pl := getPipeline(srv)
 	poller, err := NewPoller("pollerID", "", resp, pl, handleError)
 	if err != nil {
 		t.Fatal(err)
+	}
+	if !closed() {
+		t.Fatal("initial response body wasn't closed")
 	}
 	if pt := pollers.PollerType(poller); pt != reflect.TypeOf(&body.Poller{}) {
 		t.Fatalf("unexpected poller type %s", pt.String())
@@ -283,7 +309,7 @@ func TestNewPollerSuccessNoContent(t *testing.T) {
 		t.Fatal(err)
 	}
 	var result mockType
-	_, err = poller.PollUntilDone(context.Background(), 10*time.Millisecond, &result)
+	_, err = poller.PollUntilDone(context.Background(), time.Second, &result)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -295,12 +321,15 @@ func TestNewPollerSuccessNoContent(t *testing.T) {
 func TestNewPollerFail202NoHeaders(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
-	resp := initialResponse(http.MethodDelete, srv.URL(), http.NoBody)
+	resp, closed := initialResponse(http.MethodDelete, srv.URL(), http.NoBody)
 	resp.StatusCode = http.StatusAccepted
 	pl := getPipeline(srv)
 	poller, err := NewPoller("pollerID", "", resp, pl, handleError)
 	if err == nil {
 		t.Fatal("unexpected nil error")
+	}
+	if !closed() {
+		t.Fatal("initial response body wasn't closed")
 	}
 	if poller != nil {
 		t.Fatal("expected nil poller")

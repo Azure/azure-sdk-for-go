@@ -8,7 +8,7 @@ import (
 )
 
 func TestContainerRequestOptionsToHeaders(t *testing.T) {
-	options := &CosmosContainerRequestOptions{}
+	options := &ReadContainerOptions{}
 	if options.toHeaders() != nil {
 		t.Error("toHeaders should return nil")
 	}
@@ -16,7 +16,7 @@ func TestContainerRequestOptionsToHeaders(t *testing.T) {
 	options.PopulateQuotaInfo = true
 	header := options.toHeaders()
 	if header == nil {
-		t.Error("toHeaders should return non-nil")
+		t.Fatal("toHeaders should return non-nil")
 	}
 
 	headers := *header
@@ -26,6 +26,16 @@ func TestContainerRequestOptionsToHeaders(t *testing.T) {
 
 	options.PopulateQuotaInfo = false
 	if options.toHeaders() != nil {
+		t.Error("toHeaders should return nil")
+	}
+
+	replaceOptions := &ReplaceContainerOptions{}
+	if replaceOptions.toHeaders() != nil {
+		t.Error("toHeaders should return nil")
+	}
+
+	deleteOptions := &DeleteContainerOptions{}
+	if deleteOptions.toHeaders() != nil {
 		t.Error("toHeaders should return nil")
 	}
 }

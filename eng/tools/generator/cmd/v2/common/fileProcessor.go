@@ -74,12 +74,12 @@ func ReadV2ModuleNameToGetNamespace(path string) (map[string][]string, error) {
 		for _, line := range section {
 			if strings.HasPrefix(line, swagger_md_module_name_prefix) {
 				modules := strings.Split(strings.TrimSpace(line[len(swagger_md_module_name_prefix):]), "/")
-				if len(modules) != 3 {
+				if len(modules) != 4 {
 					return nil, fmt.Errorf("cannot parse module name from `track2` section")
 				}
-				namespaceName := strings.TrimSuffix(strings.TrimSuffix(modules[2], "\n"), "\r")
-				log.Printf("RP: %s Package: %s", modules[1], namespaceName)
-				result[modules[1]] = append(result[modules[1]], namespaceName)
+				namespaceName := strings.TrimSuffix(strings.TrimSuffix(modules[3], "\n"), "\r")
+				log.Printf("RP: %s Package: %s", modules[2], namespaceName)
+				result[modules[2]] = append(result[modules[2]], namespaceName)
 			}
 		}
 	}
@@ -240,27 +240,15 @@ func AddChangelogToFile(changelog *model.Changelog, version *semver.Version, pac
 	return additionalChangelog, nil
 }
 
-// replace `{{NewClientMethod}}`` placeholder in README.md by first func name according to `^New.+Method$` pattern
-func ReplaceNewClientMethodPlaceholder(packageRootPath string, exports exports.Content) error {
+// replace `{{NewClientName}}`` placeholder in README.md by first func name according to `^New.+Method$` pattern
+func ReplaceNewClientNamePlaceholder(packageRootPath string, exports exports.Content) error {
 	path := filepath.Join(packageRootPath, "README.md")
 	var clientName string
 	for k, v := range exports.Funcs {
-		if newClientMethodNameRegex.MatchString(k) && *v.Params == "*arm.Connection, string" {
+		if newClientMethodNameRegex.MatchString(k) && *v.Params == "string, azcore.TokenCredential, *arm.ClientOptions" {
 			clientName = k
 			break
 		}
-	}
-
-	if clientName == "" {
-		for k, v := range exports.Funcs {
-			if newClientMethodNameRegex.MatchString(k) && *v.Params == "*arm.Connection" {
-				clientName = k
-				break
-			}
-		}
-	}
-	if clientName == "" {
-		return fmt.Errorf("cannot find any NewClientMethod in package")
 	}
 
 	b, err := ioutil.ReadFile(path)
@@ -268,12 +256,6 @@ func ReplaceNewClientMethodPlaceholder(packageRootPath string, exports exports.C
 		return fmt.Errorf("cannot read from file '%s': %+v", path, err)
 	}
 
-	var content string
-	if *(exports.Funcs[clientName].Params) == "*arm.Connection" {
-		content = strings.ReplaceAll(string(b), "{{NewClientMethod}}", fmt.Sprintf("%s(con)", clientName))
-	} else {
-		content = strings.ReplaceAll(string(b), "{{NewClientMethod}}", fmt.Sprintf("%s(con, \"<subscription ID>\")", clientName))
-	}
-
+	var content = strings.ReplaceAll(string(b), "{{NewClientName}}", clientName)
 	return ioutil.WriteFile(path, []byte(content), 0644)
 }

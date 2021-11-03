@@ -15,14 +15,14 @@ import (
 )
 
 var (
-	mockCLITokenProviderSuccess = func(ctx context.Context, resource string) ([]byte, error) {
+	mockCLITokenProviderSuccess = func(ctx context.Context, resource string, tenantID string) ([]byte, error) {
 		return []byte(" {\"accessToken\":\"mocktoken\" , " +
 			"\"expiresOn\": \"2007-01-01 01:01:01.079627\"," +
 			"\"subscription\": \"mocksub\"," +
 			"\"tenant\": \"mocktenant\"," +
 			"\"tokenType\": \"mocktype\"}"), nil
 	}
-	mockCLITokenProviderFailure = func(ctx context.Context, resource string) ([]byte, error) {
+	mockCLITokenProviderFailure = func(ctx context.Context, resource string, tenantID string) ([]byte, error) {
 		return nil, errors.New("provider failure message")
 	}
 )
@@ -56,6 +56,32 @@ func TestAzureCLICredential_GetTokenInvalidToken(t *testing.T) {
 	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{scope}})
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one.")
+	}
+}
+
+func TestAzureCLICredential_TenantID(t *testing.T) {
+	expected := "expected-tenant-id"
+	called := false
+	options := AzureCLICredentialOptions{
+		TenantID: expected,
+		tokenProvider: func(ctx context.Context, resource, tenantID string) ([]byte, error) {
+			called = true
+			if tenantID != expected {
+				t.Fatal("Unexpected tenant ID: " + tenantID)
+			}
+			return mockCLITokenProviderSuccess(ctx, resource, tenantID)
+		},
+	}
+	cred, err := NewAzureCLICredential(&options)
+	if err != nil {
+		t.Fatalf("Unable to create credential. Received: %v", err)
+	}
+	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{scope}})
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	if !called {
+		t.Fatal("token provider wasn't called")
 	}
 }
 

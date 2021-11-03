@@ -54,7 +54,7 @@ func (client ScheduleClient) CreateOrUpdateResource(ctx context.Context, resourc
 
 	result, err = client.CreateOrUpdateResourceSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dtl.ScheduleClient", "CreateOrUpdateResource", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "dtl.ScheduleClient", "CreateOrUpdateResource", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -89,6 +89,7 @@ func (client ScheduleClient) CreateOrUpdateResourcePreparer(ctx context.Context,
 // http.Response Body if it receives an error.
 func (client ScheduleClient) CreateOrUpdateResourceSender(req *http.Request) (future ScheduleCreateOrUpdateResourceFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -136,7 +137,7 @@ func (client ScheduleClient) DeleteResource(ctx context.Context, resourceGroupNa
 
 	result, err = client.DeleteResourceSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dtl.ScheduleClient", "DeleteResource", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "dtl.ScheduleClient", "DeleteResource", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -169,6 +170,7 @@ func (client ScheduleClient) DeleteResourcePreparer(ctx context.Context, resourc
 // http.Response Body if it receives an error.
 func (client ScheduleClient) DeleteResourceSender(req *http.Request) (future ScheduleDeleteResourceFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -215,7 +217,7 @@ func (client ScheduleClient) Execute(ctx context.Context, resourceGroupName stri
 
 	result, err = client.ExecuteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dtl.ScheduleClient", "Execute", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "dtl.ScheduleClient", "Execute", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -248,6 +250,7 @@ func (client ScheduleClient) ExecutePreparer(ctx context.Context, resourceGroupN
 // http.Response Body if it receives an error.
 func (client ScheduleClient) ExecuteSender(req *http.Request) (future ScheduleExecuteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This client library enables client applications to connect to Azure Cosmos via the SQL API. Azure Cosmos is a globally distributed, multi-model database service. 
+This client library enables client applications to connect to Azure Cosmos via the SQL API. Azure Cosmos is a globally distributed, multi-model database service.
 
 ## Getting Started
 
@@ -29,15 +29,15 @@ You can create an Azure Cosmos account using:
   ```bash
   go get -u github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos
   ```
-  
+
 #### Authenticate the client
 
-In order to interact with the Azure CosmosDB service you'll need to create an instance of the Cosmos Client class. To make this possible you will need an URL and key of the Azure CosmosDB service.
+In order to interact with the Azure CosmosDB service you'll need to create an instance of the Cosmos client class. To make this possible you will need an URL and key of the Azure CosmosDB service.
 
 ## Examples
 
 The following section provides several code snippets covering some of the most common CosmosDB SQL API tasks, including:
-* [Create Cosmos Client](#create-cosmos-client "Create Cosmos Client")
+* [Create Client](#create-cosmos-client "Create Cosmos client")
 * [Create Database](#create-database "Create Database")
 * [Create Container](#create-container "Create Container")
 * [CRUD operation on Items](#crud-operation-on-items "CRUD operation on Items")
@@ -46,12 +46,12 @@ The following section provides several code snippets covering some of the most c
 
 ```go
 const (
-    CosmosDbEndpoint = "someEndpoint"
-    CosmoDbKey = "someKey"
+    cosmosDbEndpoint = "someEndpoint"
+    cosmosDbKey = "someKey"
 )
 
-cred, _ := NewSharedKeyCredential(CosmosDbEndpoint)
-client, err := NewCosmosClient(CosmoDbKey, cred, &CosmosClientOptions{})
+cred, _ := azcosmos.NewKeyCredential(cosmosDbKey)
+client, err := azcosmos.NewClientWithKey(cosmosDbEndpoint, cred, nil)
 handle(err)
 ```
 
@@ -60,8 +60,10 @@ handle(err)
 Using the client created in previous example, you can create a database like this:
 
 ```go
-database := CosmosDatabaseProperties{Id: dbName}
-response, err := client.CreateDatabase(context, database, nil, nil)
+database := azcosmos.DatabaseProperties{Id: dbName}
+response, err := client.CreateDatabase(context, database, nil)
+handle(err)
+database, err := azcosmos.NewDatabase(dbName)
 handle(err)
 ```
 
@@ -70,17 +72,16 @@ handle(err)
 Using the above created database for creating a container, like this:
 
 ```go
-properties := CosmosContainerProperties{
+properties := azcosmos.ContainerProperties{
     Id: "aContainer",
-    PartitionKeyDefinition: PartitionKeyDefinition{
+    PartitionKeyDefinition: azcosmos.PartitionKeyDefinition{
         Paths: []string{"/id"},
     },
 }
 
-throughput := NewManualThroughputProperties(400)
-response, err := database.CreateContainer(context, properties, throughput, nil)
+throughput := azcosmos.NewManualThroughputProperties(400)
+response, err := database.CreateContainer(context, properties, &CreateContainerOptions{ThroughputProperties: &throughput})
 handle(err)
-container := resp.ContainerProperties.Container
 ```
 
 ### CRUD operation on Items
@@ -91,22 +92,43 @@ item := map[string]string{
     "value": "2",
 }
 
-// Create partition key
-container := client.GetCosmosContainer(dbName, containerName)
-pk, err := NewPartitionKey("1")
+marshalled, err := json.Marshal(item)
+if err != nil {
+    log.Fatal(err)
+}
+
+container, err := client.NewContainer(dbName, containerName)
 handle(err)
+
+pk := azcosmos.NewPartitionKeyString("1")
+id := "1"
 
 // Create an item
-itemResponse, err := container.CreateItem(context, pk, item, nil)
+itemResponse, err := container.CreateItem(context, pk, marshalled, nil)
 handle(err)
 
-itemResponse, err = container.ReadItem(context, pk, "1", nil)
+// Read an item
+itemResponse, err = container.ReadItem(context, pk, id, nil)
 handle(err)
 
-itemResponse, err = container.ReplaceItem(context, pk, "1", item, nil)
+var itemResponseBody map[string]string
+err = json.Unmarshal(itemResponse.Value, &itemResponseBody)
+if err != nil {
+    log.Fatal(err)
+}
+
+itemResponseBody["value"] = "3"
+marshalledReplace, err := json.Marshal(itemResponseBody)
+if err != nil {
+    log.Fatal(err)
+}
+
+// Replace an item
+itemResponse, err = container.ReplaceItem(context, pk, id, marshalledReplace, nil)
 handle(err)
 
-itemResponse, err = container.DeleteItem(context, pk, "1", nil)
+// Delete an item
+itemResponse, err = container.DeleteItem(context, pk, id, nil)
 handle(err)
 ```
 
@@ -125,7 +147,7 @@ This project is licensed under MIT.
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please
-[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Azure.data.azcosmos` label.
+[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Cosmos` label.
 
 ## Contributing
 
@@ -139,4 +161,6 @@ do this once across all repos using our CLA.
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional 
+contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-go/sdk/data/azcosmos/README.png)

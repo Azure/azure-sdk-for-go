@@ -54,7 +54,7 @@ func (client CustomImageClient) CreateOrUpdateResource(ctx context.Context, reso
 
 	result, err = client.CreateOrUpdateResourceSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dtl.CustomImageClient", "CreateOrUpdateResource", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "dtl.CustomImageClient", "CreateOrUpdateResource", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -89,6 +89,7 @@ func (client CustomImageClient) CreateOrUpdateResourcePreparer(ctx context.Conte
 // http.Response Body if it receives an error.
 func (client CustomImageClient) CreateOrUpdateResourceSender(req *http.Request) (future CustomImageCreateOrUpdateResourceFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -136,7 +137,7 @@ func (client CustomImageClient) DeleteResource(ctx context.Context, resourceGrou
 
 	result, err = client.DeleteResourceSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dtl.CustomImageClient", "DeleteResource", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "dtl.CustomImageClient", "DeleteResource", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -169,6 +170,7 @@ func (client CustomImageClient) DeleteResourcePreparer(ctx context.Context, reso
 // http.Response Body if it receives an error.
 func (client CustomImageClient) DeleteResourceSender(req *http.Request) (future CustomImageDeleteResourceFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

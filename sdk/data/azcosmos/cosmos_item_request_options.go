@@ -3,10 +3,14 @@
 
 package azcosmos
 
-import "strings"
+import (
+	"strings"
 
-// CosmosItemRequestOptions includes options for operations on items.
-type CosmosItemRequestOptions struct {
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+)
+
+// ItemOptions includes options for operations on items.
+type ItemOptions struct {
 	// Triggers to be invoked before the operation.
 	PreTriggers []string
 	// Triggers to be invoked after the operation.
@@ -27,9 +31,12 @@ type CosmosItemRequestOptions struct {
 	// When EnableContentResponseOnWrite is false will cause the response on write operations to have a null resource. This reduces networking and CPU load by not sending the resource back over the network and serializing it on the client.
 	// The default is false.
 	EnableContentResponseOnWrite bool
+	// IfMatchEtag is used to ensure optimistic concurrency control.
+	// https://docs.microsoft.com/azure/cosmos-db/sql/database-transactions-optimistic-concurrency#optimistic-concurrency-control
+	IfMatchEtag *azcore.ETag
 }
 
-func (options *CosmosItemRequestOptions) toHeaders() *map[string]string {
+func (options *ItemOptions) toHeaders() *map[string]string {
 	headers := make(map[string]string)
 
 	if options.PreTriggers != nil && len(options.PreTriggers) > 0 {
@@ -50,6 +57,10 @@ func (options *CosmosItemRequestOptions) toHeaders() *map[string]string {
 
 	if options.SessionToken != "" {
 		headers[cosmosHeaderSessionToken] = options.SessionToken
+	}
+
+	if options.IfMatchEtag != nil {
+		headers[headerIfMatch] = string(*options.IfMatchEtag)
 	}
 
 	return &headers

@@ -6,17 +6,33 @@ package azcosmos
 import (
 	"net/http"
 	"strconv"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-// CosmosResponse is the base response type for all responses from the Azure Cosmos DB database service.
+// Response is the base response type for all responses from the Azure Cosmos DB database service.
 // It contains base methods and properties that are common to all responses.
-type CosmosResponse struct {
+type Response struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+	// RequestCharge contains the value from the request charge header.
+	RequestCharge float32
+	// ActivityID contains the value from the activity header.
+	ActivityID string
+	// ETag contains the value from the ETag header.
+	ETag azcore.ETag
 }
 
-// RequestCharge contains the value from the request charge header.
-func (c *CosmosResponse) RequestCharge() float32 {
+func newResponse(resp *http.Response) Response {
+	response := Response{}
+	response.RawResponse = resp
+	response.RequestCharge = response.readRequestCharge()
+	response.ActivityID = resp.Header.Get(cosmosHeaderActivityId)
+	response.ETag = azcore.ETag(resp.Header.Get(cosmosHeaderEtag))
+	return response
+}
+
+func (c *Response) readRequestCharge() float32 {
 	requestChargeString := c.RawResponse.Header.Get(cosmosHeaderRequestCharge)
 	if requestChargeString == "" {
 		return 0
@@ -26,14 +42,4 @@ func (c *CosmosResponse) RequestCharge() float32 {
 		return 0
 	}
 	return float32(f)
-}
-
-// ActivityId contains the value from the activity header.
-func (c *CosmosResponse) ActivityId() string {
-	return c.RawResponse.Header.Get(cosmosHeaderActivityId)
-}
-
-// ETag contains the value from the ETag header.
-func (c *CosmosResponse) ETag() string {
-	return c.RawResponse.Header.Get(cosmosHeaderEtag)
 }

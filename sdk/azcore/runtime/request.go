@@ -17,6 +17,7 @@ import (
 	"mime/multipart"
 	"reflect"
 	"strings"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
@@ -42,17 +43,6 @@ const (
 // NewRequest creates a new policy.Request with the specified input.
 func NewRequest(ctx context.Context, httpMethod string, endpoint string) (*pipeline.Request, error) {
 	return pipeline.NewRequest(ctx, httpMethod, endpoint)
-}
-
-// NewPipeline creates a new Pipeline object from the specified Transport and Policies.
-// If no transport is provided then the default *http.Client transport will be used.
-func NewPipeline(transport pipeline.Transporter, policies ...pipeline.Policy) pipeline.Pipeline {
-	if transport == nil {
-		transport = defaultHTTPClient
-	}
-	// transport policy must always be the last in the slice
-	policies = append(policies, pipeline.PolicyFunc(httpHeaderPolicy), pipeline.PolicyFunc(bodyDownloadPolicy))
-	return pipeline.NewPipeline(transport, policies...)
 }
 
 // JoinPaths concatenates multiple URL path segments into one path,
@@ -187,28 +177,32 @@ func recursiveFindReadOnlyField(val reflect.Value) bool {
 
 // clones the object graph of val.  all non-R/O properties are copied to the clone
 func recursiveCloneWithoutReadOnlyFields(val reflect.Value) interface{} {
-	clone := reflect.New(val.Type())
 	t := val.Type()
+	clone := reflect.New(t)
 	// iterate over the fields, looking for the "azure" tag.
 	for i := 0; i < t.NumField(); i++ {
 		field := t.Field(i)
 		aztag := field.Tag.Get("azure")
 		if azureTagIsReadOnly(aztag) {
 			// omit from payload
-		} else if reflect.Indirect(val.Field(i)).Kind() == reflect.Struct {
-			// recursive case
-			v := recursiveCloneWithoutReadOnlyFields(reflect.Indirect(val.Field(i)))
-			if t.Field(i).Anonymous {
+			continue
+		}
+		// clone field will receive the same value as the source field...
+		value := val.Field(i)
+		v := reflect.Indirect(value)
+		if v.IsValid() && v.Type() != reflect.TypeOf(time.Time{}) && v.Kind() == reflect.Struct {
+			// ...unless the source value is a struct, in which case we recurse to clone that struct.
+			// (We can't recursively clone time.Time because it contains unexported fields.)
+			c := recursiveCloneWithoutReadOnlyFields(v)
+			if field.Anonymous {
 				// NOTE: this does not handle the case of embedded fields of unexported struct types.
 				// this should be ok as we don't generate any code like this at present
-				reflect.Indirect(clone).Field(i).Set(reflect.Indirect(reflect.ValueOf(v)))
+				value = reflect.Indirect(reflect.ValueOf(c))
 			} else {
-				reflect.Indirect(clone).Field(i).Set(reflect.ValueOf(v))
+				value = reflect.ValueOf(c)
 			}
-		} else {
-			// no azure RO tag, non-recursive case, include in payload
-			reflect.Indirect(clone).Field(i).Set(val.Field(i))
 		}
+		reflect.Indirect(clone).Field(i).Set(value)
 	}
 	return clone.Interface()
 }

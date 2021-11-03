@@ -80,7 +80,7 @@ func (ctx GenerateContext) GenerateForAutomation(readme, repo string) ([]Generat
 }
 
 func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateParam) (*GenerateResult, error) {
-	packagePath := filepath.Join(ctx.SDKPath, "sdk", generateParam.RPName, generateParam.NamespaceName)
+	packagePath := filepath.Join(ctx.SDKPath, "sdk", "resourcemanager", generateParam.RPName, generateParam.NamespaceName)
 	changelogPath := filepath.Join(packagePath, common.ChangelogFilename)
 
 	onBoard := false
@@ -96,7 +96,7 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 		log.Printf("Use template to generate new rp folder and basic package files...")
 		if err = template.GeneratePackageByTemplate(generateParam.RPName, generateParam.NamespaceName, template.Flags{
 			SDKRoot:      ctx.SDKPath,
-			TemplatePath: "tools/generator/template/rpName/packageName",
+			TemplatePath: "eng/tools/generator/template/rpName/packageName",
 			PackageTitle: generateParam.SpecficPackageTitle,
 			Commit:       ctx.SpecCommitHash,
 		}); err != nil {
@@ -106,18 +106,9 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 		log.Printf("Package '%s' existed, do update process", packagePath)
 
 		log.Printf("Get ori exports for changelog generation...")
-		if err := (*ctx.SDKRepo).Add(fmt.Sprintf("sdk/%s/%s", generateParam.RPName, generateParam.NamespaceName)); err != nil {
-			return nil, err
-		}
-		if err := (*ctx.SDKRepo).Stash(); err != nil {
-			log.Printf("failed to stash changes: %+v", err)
-		}
 		oriExports, err = exports.Get(packagePath)
 		if err != nil {
 			return nil, err
-		}
-		if err := (*ctx.SDKRepo).StashPop(); err != nil {
-			log.Printf("failed to stash pop changes: %+v", err)
 		}
 
 		log.Printf("Remove all the files that start with `zz_generated_`...")
@@ -146,11 +137,6 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 		return nil, err
 	}
 
-	log.Printf("Run `goimports` to refine the code import...")
-	if err := ExecuteGoimports(packagePath); err != nil {
-		return nil, err
-	}
-
 	log.Printf("Generate changelog for package...")
 	newExports, err := exports.Get(packagePath)
 	if err != nil {
@@ -162,8 +148,8 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 	}
 
 	if onBoard {
-		log.Printf("Replace {{NewClientMethod}} placeholder in the README.md ")
-		if err = ReplaceNewClientMethodPlaceholder(packagePath, newExports); err != nil {
+		log.Printf("Replace {{NewClientName}} placeholder in the README.md ")
+		if err = ReplaceNewClientNamePlaceholder(packagePath, newExports); err != nil {
 			return nil, err
 		}
 

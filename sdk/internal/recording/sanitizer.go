@@ -7,7 +7,12 @@
 package recording
 
 import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
 	"net/http"
+	"strings"
 
 	"github.com/dnaeon/go-vcr/cassette"
 	"github.com/dnaeon/go-vcr/recorder"
@@ -86,3 +91,297 @@ func (s *Sanitizer) applySaveFilter(i *cassette.Interaction) error {
 }
 
 func DefaultStringSanitizer(s *string) {}
+
+func handleProxyResponse(resp *http.Response, err error) error {
+	if err != nil {
+		return err
+	}
+
+	if resp.StatusCode == http.StatusAccepted || resp.StatusCode == http.StatusOK {
+		return nil
+	}
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+	return fmt.Errorf("there was an error communicating with the test proxy: %s", body)
+}
+
+// AddBodyKeySanitizer adds a sanitizer for JSON Bodies. jsonPath is the path to the key, value
+// is the value to replace with, and regex is the string to match in the body. If your regex includes a group
+// options.GroupForReplace specifies which group to replace
+func AddBodyKeySanitizer(jsonPath, value, regex string, options *RecordingOptions) error {
+	if options == nil {
+		options = defaultOptions()
+	}
+	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.hostScheme())
+	req, err := http.NewRequest("POST", url, nil)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("x-abstraction-identifier", "BodyKeySanitizer")
+
+	marshalled, err := json.MarshalIndent(struct {
+		JSONPath        string `json:"jsonPath"`
+		Value           string `json:"value,omitempty"`
+		Regex           string `json:"regex,omitempty"`
+		GroupForReplace string `json:"groupForReplace,omitempty"`
+	}{
+		JSONPath:        jsonPath,
+		Value:           value,
+		Regex:           regex,
+		GroupForReplace: options.GroupForReplace,
+	}, "", "")
+	if err != nil {
+		return err
+	}
+
+	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+	req.ContentLength = int64(len(marshalled))
+	return handleProxyResponse(client.Do(req))
+}
+
+// AddBodyRegexSanitizer offers regex replace within a returned JSON body. value is the
+// substitution value, regex can be a simple regex or a substitution operation if
+// options.GroupForReplace is set.
+func AddBodyRegexSanitizer(value, regex string, options *RecordingOptions) error {
+	if options == nil {
+		options = defaultOptions()
+	}
+	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.hostScheme())
+	req, err := http.NewRequest("POST", url, nil)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("x-abstraction-identifier", "BodyRegexSanitizer")
+
+	marshalled, err := json.MarshalIndent(struct {
+		Value           string `json:"value"`
+		Regex           string `json:"regex,omitempty"`
+		GroupForReplace string `json:"groupForReplace,omitempty"`
+	}{
+		Value:           value,
+		Regex:           regex,
+		GroupForReplace: options.GroupForReplace,
+	}, "", "")
+	if err != nil {
+		return err
+	}
+
+	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+	req.ContentLength = int64(len(marshalled))
+	return handleProxyResponse(client.Do(req))
+}
+
+// AddContinuationSanitizer is used to anonymize private keys in response/request pairs.
+// key: the name of the header whos value will be replaced from response -> next request
+// method: the method by which the value of the targeted key will be replaced. Defaults to GUID replacement
+// resetAfterFirt: Do we need multiple pairs replaced? Or do we want to replace each value with the same value.
+func AddContinuationSanitizer(key, method string, resetAfterFirst bool, options *RecordingOptions) error {
+	if options == nil {
+		options = defaultOptions()
+	}
+	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.hostScheme())
+	req, err := http.NewRequest("POST", url, nil)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("x-abstraction-identifier", "ContinuationSanitizer")
+
+	marshalled, err := json.MarshalIndent(struct {
+		Key             string `json:"key"`
+		Method          string `json:"method"`
+		ResetAfterFirst string `json:"resetAfterFirst"`
+	}{
+		Key:             key,
+		Method:          method,
+		ResetAfterFirst: fmt.Sprintf("%v", resetAfterFirst),
+	}, "", "")
+	if err != nil {
+		return err
+	}
+
+	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+	req.ContentLength = int64(len(marshalled))
+	return handleProxyResponse(client.Do(req))
+}
+
+// AddGeneralRegexSanitizer adds a general regex across request/response Body, Headers, and URI.
+// value is the substitution value, regex can be defined as a simple regex replace or a substition
+// operation if options.GroupForReplace specifies which group to replace.
+func AddGeneralRegexSanitizer(value, regex string, options *RecordingOptions) error {
+	if options == nil {
+		options = defaultOptions()
+	}
+	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.hostScheme())
+	req, err := http.NewRequest("POST", url, nil)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("x-abstraction-identifier", "GeneralRegexSanitizer")
+
+	marshalled, err := json.MarshalIndent(struct {
+		Value           string `json:"value"`
+		Regex           string `json:"regex"`
+		GroupForReplace string `json:"groupForReplace"`
+	}{
+		Value:           value,
+		Regex:           regex,
+		GroupForReplace: options.GroupForReplace,
+	}, "", "")
+	if err != nil {
+		return err
+	}
+
+	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+	req.ContentLength = int64(len(marshalled))
+	return handleProxyResponse(client.Do(req))
+}
+
+// AddHeaderRegexSanitizer can be used to replace a key with a specific value: set regex to ""
+// OR can be used to do a simple regex replace operation by setting key, value, and regex.
+// OR To do a substitution operation if options.GroupForReplace is set.
+// key is the name of the header to operate against. value is the substitution or whole new header
+// value. regex can be defined as a simple regex replace or a substitution operation if
+// options.GroupForReplace is set.
+func AddHeaderRegexSanitizer(key, value, regex string, options *RecordingOptions) error {
+	if options == nil {
+		options = defaultOptions()
+	}
+	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.hostScheme())
+	req, err := http.NewRequest("POST", url, nil)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("x-abstraction-identifier", "HeaderRegexSanitizer")
+
+	marshalled, err := json.MarshalIndent(struct {
+		Key             string `json:"key"`
+		Value           string `json:"value,omitempty"`
+		Regex           string `json:"regex,omitempty"`
+		GroupForReplace string `json:"groupForReplace,omitempty"`
+	}{
+		Key:             key,
+		Value:           value,
+		Regex:           regex,
+		GroupForReplace: options.GroupForReplace,
+	}, "", "")
+	if err != nil {
+		return err
+	}
+
+	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+	req.ContentLength = int64(len(marshalled))
+	return handleProxyResponse(client.Do(req))
+}
+
+// AddOAuthResponseSanitizer cleans all request/response pairs taht match an oauth regex in their URI
+func AddOAuthResponseSanitizer(options *RecordingOptions) error {
+	if options == nil {
+		options = defaultOptions()
+	}
+	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.hostScheme())
+	req, err := http.NewRequest("POST", url, nil)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("x-abstraction-identifier", "OAuthResponseSanitizer")
+	return handleProxyResponse(client.Do(req))
+}
+
+// AddRemoveHeaderSanitizer removes a list of headers from request/responses.
+func AddRemoveHeaderSanitizer(headersForRemoval []string, options *RecordingOptions) error {
+	if options == nil {
+		options = defaultOptions()
+	}
+	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.hostScheme())
+	req, err := http.NewRequest("POST", url, nil)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("x-abstraction-identifier", "RemoveHeaderSanitizer")
+
+	marshalled, err := json.MarshalIndent(struct {
+		HeadersForRemoval string `json:"headersForRemoval"`
+	}{
+		HeadersForRemoval: strings.Join(headersForRemoval, ""),
+	}, "", "")
+	if err != nil {
+		return err
+	}
+
+	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+	req.ContentLength = int64(len(marshalled))
+	return handleProxyResponse(client.Do(req))
+}
+
+// AddURISanitizer sanitizes URIs via regex. value is the substition value, regex is
+// either a simple regex or a substitution operation if options.GroupForReplace is defined.
+func AddURISanitizer(value, regex string, options *RecordingOptions) error {
+	if options == nil {
+		options = defaultOptions()
+	}
+	url := fmt.Sprintf("%v/Admin/AddSanitizer", options.hostScheme())
+	req, err := http.NewRequest("POST", url, nil)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("x-abstraction-identifier", "UriRegexSanitizer")
+
+	marshalled, err := json.MarshalIndent(struct {
+		Value string `json:"value"`
+		Regex string `json:"regex"`
+	}{
+		Value: value,
+		Regex: regex,
+	}, "", "")
+	if err != nil {
+		return err
+	}
+
+	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+	req.ContentLength = int64(len(marshalled))
+	return handleProxyResponse(client.Do(req))
+}
+
+// AddURISubscriptionIDSanitizer replaces real subscriptionIDs within a URI with a default
+// or configured fake value. To use the default value set value to "", otherwise value specifies the replacement value.
+func AddURISubscriptionIDSanitizer(value string, options *RecordingOptions) error {
+	if options == nil {
+		options = defaultOptions()
+	}
+	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.hostScheme())
+	req, err := http.NewRequest("POST", url, nil)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("x-abstraction-identifier", "UriSubscriptionIdSanitizer")
+
+	if value != "" {
+		marshalled, err := json.MarshalIndent(struct {
+			Value string `json:"value,omitempty"`
+		}{
+			Value: value,
+		}, "", "")
+		if err != nil {
+			return err
+		}
+
+		req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+		req.ContentLength = int64(len(marshalled))
+	}
+	return handleProxyResponse(client.Do(req))
+}
+
+func ResetSanitizers(options *RecordingOptions) error {
+	if options == nil {
+		options = defaultOptions()
+	}
+	url := fmt.Sprintf("%v/Admin/Reset", options.hostScheme())
+	req, err := http.NewRequest("POST", url, nil)
+	if err != nil {
+		return err
+	}
+	return handleProxyResponse(client.Do(req))
+}

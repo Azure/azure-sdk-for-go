@@ -141,7 +141,7 @@ func (client BackupVaultsClient) CreateOrUpdate(ctx context.Context, vaultName s
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dataprotection.BackupVaultsClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "dataprotection.BackupVaultsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -175,6 +175,7 @@ func (client BackupVaultsClient) CreateOrUpdatePreparer(ctx context.Context, vau
 // http.Response Body if it receives an error.
 func (client BackupVaultsClient) CreateOrUpdateSender(req *http.Request) (future BackupVaultsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -602,7 +603,7 @@ func (client BackupVaultsClient) Patch(ctx context.Context, vaultName string, re
 
 	result, err = client.PatchSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dataprotection.BackupVaultsClient", "Patch", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "dataprotection.BackupVaultsClient", "Patch", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -636,6 +637,7 @@ func (client BackupVaultsClient) PatchPreparer(ctx context.Context, vaultName st
 // http.Response Body if it receives an error.
 func (client BackupVaultsClient) PatchSender(req *http.Request) (future BackupVaultsPatchFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

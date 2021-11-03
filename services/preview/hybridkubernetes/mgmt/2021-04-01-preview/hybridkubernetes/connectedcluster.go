@@ -69,7 +69,7 @@ func (client ConnectedClusterClient) Create(ctx context.Context, resourceGroupNa
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridkubernetes.ConnectedClusterClient", "Create", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybridkubernetes.ConnectedClusterClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -104,6 +104,7 @@ func (client ConnectedClusterClient) CreatePreparer(ctx context.Context, resourc
 // http.Response Body if it receives an error.
 func (client ConnectedClusterClient) CreateSender(req *http.Request) (future ConnectedClusterCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -159,7 +160,7 @@ func (client ConnectedClusterClient) Delete(ctx context.Context, resourceGroupNa
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridkubernetes.ConnectedClusterClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybridkubernetes.ConnectedClusterClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -191,6 +192,7 @@ func (client ConnectedClusterClient) DeletePreparer(ctx context.Context, resourc
 // http.Response Body if it receives an error.
 func (client ConnectedClusterClient) DeleteSender(req *http.Request) (future ConnectedClusterDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -667,7 +669,7 @@ func (client ConnectedClusterClient) Update(ctx context.Context, resourceGroupNa
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridkubernetes.ConnectedClusterClient", "Update", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybridkubernetes.ConnectedClusterClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -701,6 +703,7 @@ func (client ConnectedClusterClient) UpdatePreparer(ctx context.Context, resourc
 // http.Response Body if it receives an error.
 func (client ConnectedClusterClient) UpdateSender(req *http.Request) (future ConnectedClusterUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

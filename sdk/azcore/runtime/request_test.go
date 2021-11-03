@@ -19,8 +19,10 @@ import (
 	"strconv"
 	"strings"
 	"testing"
+	"time"
 	"unsafe"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 )
 
@@ -450,6 +452,61 @@ func TestCloneWithoutReadOnlyFieldsCloneByVal(t *testing.T) {
 	}
 }
 
+func TestCloneWithoutReadOnlyFieldsTime(t *testing.T) {
+	id := int32(123)
+	expires := time.Date(2021, 10, 13, 8, 48, 31, 0, time.UTC)
+	type withTime struct {
+		ID      *int32     `json:"id" azure:"ro"`
+		Expires *time.Time `json:"expires"`
+	}
+	nro := withTime{
+		ID:      &id,
+		Expires: &expires,
+	}
+	v := cloneWithoutReadOnlyFields(nro)
+	b, err := json.Marshal(v)
+	if err != nil {
+		t.Fatal(err)
+	}
+	um := withTime{}
+	err = json.Unmarshal(b, &um)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if um.ID != nil {
+		t.Fatalf("expected nil ID, got %d", *um.ID)
+	}
+	if um.Expires == nil {
+		t.Fatal("unexpected nil Expires")
+	} else if *um.Expires != expires {
+		t.Fatalf("unexpected Expires %v", *um.Expires)
+	}
+}
+
+func TestCloneWithoutReadOnlyFieldsNilField(t *testing.T) {
+	type zeroValues struct {
+		A *string `json:"a"`
+		B *string `json:"b" azure:"ro"`
+	}
+	expected := zeroValues{}
+	clone := cloneWithoutReadOnlyFields(expected)
+	if reflect.ValueOf(clone).Pointer() == uintptr(unsafe.Pointer(&expected)) {
+		t.Fatal("pointers match, clone was not made")
+	}
+	b, err := json.Marshal(clone)
+	if err != nil {
+		t.Fatal(err)
+	}
+	um := zeroValues{}
+	err = json.Unmarshal(b, &um)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if um.A != expected.A || um.B != expected.B {
+		t.Fatal("unexpected values in unmarshalled struct")
+	}
+}
+
 func TestAzureTagIsReadOnly(t *testing.T) {
 	if azureTagIsReadOnly("") {
 		t.Fatal("unexpected RO for empty string")
@@ -508,7 +565,7 @@ func TestRequestValidFail(t *testing.T) {
 		t.Fatal(err)
 	}
 	req.Raw().Header.Add("inval d", "header")
-	p := NewPipeline(nil)
+	p := pipeline.NewPipeline(nil)
 	resp, err := p.Do(req)
 	if err == nil {
 		t.Fatal("unexpected nil error")

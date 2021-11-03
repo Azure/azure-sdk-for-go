@@ -6,6 +6,7 @@ package azidentity
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -54,13 +55,37 @@ type aadIdentityClient struct {
 	pipeline      runtime.Pipeline
 }
 
-// newAADIdentityClient creates a new instance of the aadIdentityClient with the TokenCredentialOptions
-// that are passed into it along with a default pipeline.
-// options: TokenCredentialOptions that can configure policies for the pipeline and the authority host that
-// will be used to retrieve tokens and authenticate
-func newAADIdentityClient(authorityHost string, options pipelineOptions) (*aadIdentityClient, error) {
+// newAADIdentityClient creates a new instance of the aadIdentityClient
+func newAADIdentityClient(authorityHost string, options *azcore.ClientOptions) (*aadIdentityClient, error) {
 	logEnvVars()
-	return &aadIdentityClient{authorityHost: authorityHost, pipeline: newDefaultPipeline(options)}, nil
+	pl := runtime.NewPipeline(component, version, nil, nil, options)
+	return &aadIdentityClient{authorityHost: authorityHost, pipeline: pl}, nil
+}
+
+// aadAuthenticationError is used to unmarshal error responses received from Azure Active Directory
+type aadAuthenticationError struct {
+	Message       string `json:"error"`
+	Description   string `json:"error_description"`
+	Timestamp     string `json:"timestamp"`
+	TraceID       string `json:"trace_id"`
+	CorrelationID string `json:"correlation_id"`
+	URL           string `json:"error_uri"`
+}
+
+func getError(resp *http.Response) error {
+	authFailed := &aadAuthenticationError{}
+	err := runtime.UnmarshalAsJSON(resp, authFailed)
+	if err != nil {
+		authFailed.Message = resp.Status
+		authFailed.Description = "failed to unmarshal response: " + err.Error()
+	}
+	var msg string
+	if len(authFailed.Description) > 0 {
+		msg = fmt.Sprintf("(%s) %s", authFailed.Message, authFailed.Description)
+	} else {
+		msg = fmt.Sprintf("authentication failed: %s", authFailed.Message)
+	}
+	return newAuthenticationFailedError(errors.New(msg), resp)
 }
 
 // refreshAccessToken creates a refresh token request and returns the resulting Access Token or
@@ -85,7 +110,7 @@ func (c *aadIdentityClient) refreshAccessToken(ctx context.Context, tenantID str
 		return c.createRefreshAccessToken(resp)
 	}
 
-	return nil, &AuthenticationFailedError{inner: newAADAuthenticationFailedError(resp)}
+	return nil, getError(resp)
 }
 
 // authenticate creates a client secret authentication request and returns the resulting Access Token or
@@ -110,7 +135,7 @@ func (c *aadIdentityClient) authenticate(ctx context.Context, tenantID string, c
 		return c.createAccessToken(resp)
 	}
 
-	return nil, &AuthenticationFailedError{inner: newAADAuthenticationFailedError(resp)}
+	return nil, getError(resp)
 }
 
 // authenticateCertificate creates a client certificate authentication request and returns an Access Token or
@@ -135,7 +160,7 @@ func (c *aadIdentityClient) authenticateCertificate(ctx context.Context, tenantI
 		return c.createAccessToken(resp)
 	}
 
-	return nil, &AuthenticationFailedError{inner: newAADAuthenticationFailedError(resp)}
+	return nil, getError(resp)
 }
 
 func (c *aadIdentityClient) createAccessToken(res *http.Response) (*azcore.AccessToken, error) {
@@ -145,7 +170,7 @@ func (c *aadIdentityClient) createAccessToken(res *http.Response) (*azcore.Acces
 		ExpiresOn string      `json:"expires_on"`
 	}{}
 	if err := runtime.UnmarshalAsJSON(res, &value); err != nil {
-		return nil, fmt.Errorf("internal AccessToken: %w", err)
+		return nil, fmt.Errorf("internal AccessToken: %v", err)
 	}
 	t, err := value.ExpiresIn.Int64()
 	if err != nil {
@@ -167,7 +192,7 @@ func (c *aadIdentityClient) createRefreshAccessToken(res *http.Response) (*token
 		ExpiresOn    string      `json:"expires_on"`
 	}{}
 	if err := runtime.UnmarshalAsJSON(res, &value); err != nil {
-		return nil, fmt.Errorf("internal AccessToken: %w", err)
+		return nil, fmt.Errorf("internal AccessToken: %v", err)
 	}
 	t, err := value.ExpiresIn.Int64()
 	if err != nil {
@@ -269,7 +294,7 @@ func (c *aadIdentityClient) authenticateUsernamePassword(ctx context.Context, te
 		return c.createAccessToken(resp)
 	}
 
-	return nil, &AuthenticationFailedError{inner: newAADAuthenticationFailedError(resp)}
+	return nil, getError(resp)
 }
 
 func (c *aadIdentityClient) createUsernamePasswordAuthRequest(ctx context.Context, tenantID string, clientID string, username string, password string, scopes []string) (*policy.Request, error) {
@@ -295,7 +320,7 @@ func (c *aadIdentityClient) createUsernamePasswordAuthRequest(ctx context.Contex
 func createDeviceCodeResult(res *http.Response) (*deviceCodeResult, error) {
 	value := &deviceCodeResult{}
 	if err := runtime.UnmarshalAsJSON(res, &value); err != nil {
-		return nil, fmt.Errorf("DeviceCodeResult: %w", err)
+		return nil, fmt.Errorf("DeviceCodeResult: %v", err)
 	}
 	return value, nil
 }
@@ -322,7 +347,7 @@ func (c *aadIdentityClient) authenticateDeviceCode(ctx context.Context, tenantID
 		return c.createRefreshAccessToken(resp)
 	}
 
-	return nil, &AuthenticationFailedError{inner: newAADAuthenticationFailedError(resp)}
+	return nil, getError(resp)
 }
 
 func (c *aadIdentityClient) createDeviceCodeAuthRequest(ctx context.Context, tenantID string, clientID string, deviceCode string, scopes []string) (*policy.Request, error) {
@@ -357,7 +382,7 @@ func (c *aadIdentityClient) requestNewDeviceCode(ctx context.Context, tenantID, 
 	if runtime.HasStatusCode(resp, successStatusCodes[:]...) {
 		return createDeviceCodeResult(resp)
 	}
-	return nil, &AuthenticationFailedError{inner: newAADAuthenticationFailedError(resp)}
+	return nil, getError(resp)
 }
 
 func (c *aadIdentityClient) createDeviceCodeNumberRequest(ctx context.Context, tenantID string, clientID string, scopes []string) (*policy.Request, error) {
@@ -410,7 +435,7 @@ func (c *aadIdentityClient) authenticateAuthCode(ctx context.Context, tenantID, 
 		return c.createAccessToken(resp)
 	}
 
-	return nil, &AuthenticationFailedError{inner: newAADAuthenticationFailedError(resp)}
+	return nil, getError(resp)
 }
 
 // createAuthorizationCodeAuthRequest creates a request for an Access Token for authorization_code grant types.

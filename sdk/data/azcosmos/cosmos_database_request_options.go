@@ -3,23 +3,52 @@
 
 package azcosmos
 
-// CosmosDatabaseRequestOptions includes options for operations against a database.
-type CosmosDatabaseRequestOptions struct {
-	IfMatchEtag     string
-	IfNoneMatchEtag string
+import "github.com/Azure/azure-sdk-for-go/sdk/azcore"
+
+// ReadDatabaseOptions includes options ReadDatabase operation.
+type ReadDatabaseOptions struct {
+	IfMatchEtag     *azcore.ETag
+	IfNoneMatchEtag *azcore.ETag
 }
 
-func (options *CosmosDatabaseRequestOptions) toHeaders() *map[string]string {
-	if options.IfMatchEtag == "" && options.IfNoneMatchEtag == "" {
+func (options *ReadDatabaseOptions) toHeaders() *map[string]string {
+	if options.IfMatchEtag == nil && options.IfNoneMatchEtag == nil {
 		return nil
 	}
 
 	headers := make(map[string]string)
-	if options.IfMatchEtag != "" {
-		headers[headerIfMatch] = options.IfMatchEtag
+	if options.IfMatchEtag != nil {
+		headers[headerIfMatch] = string(*options.IfMatchEtag)
 	}
-	if options.IfNoneMatchEtag != "" {
-		headers[headerIfNoneMatch] = options.IfNoneMatchEtag
+	if options.IfNoneMatchEtag != nil {
+		headers[headerIfNoneMatch] = string(*options.IfNoneMatchEtag)
 	}
 	return &headers
+}
+
+// DeleteDatabaseOptions includes options DeleteDatabase operation.
+type DeleteDatabaseOptions struct {
+	IfMatchEtag     *azcore.ETag
+	IfNoneMatchEtag *azcore.ETag
+}
+
+func (options *DeleteDatabaseOptions) toHeaders() *map[string]string {
+	if options.IfMatchEtag == nil && options.IfNoneMatchEtag == nil {
+		return nil
+	}
+
+	headers := make(map[string]string)
+	if options.IfMatchEtag != nil {
+		headers[headerIfMatch] = string(*options.IfMatchEtag)
+	}
+	if options.IfNoneMatchEtag != nil {
+		headers[headerIfNoneMatch] = string(*options.IfNoneMatchEtag)
+	}
+	return &headers
+}
+
+// CreateDatabaseOptions are options for the CreateDatabase operation
+type CreateDatabaseOptions struct {
+	// ThroughputProperties: Optional throughput configuration of the database
+	ThroughputProperties *ThroughputProperties
 }

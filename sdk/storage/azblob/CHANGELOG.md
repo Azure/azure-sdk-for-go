@@ -1,6 +1,6 @@
 # Release History
 
-## 0.2.0 (Unreleased)
+## 0.2.0 (2021-11-03)
 
 ### Breaking Changes
 * Clients now have one constructor per authentication method

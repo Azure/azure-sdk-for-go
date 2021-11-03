@@ -154,7 +154,7 @@ var (
 func TestParseResourceIdentifier(t *testing.T) {
 	for input, expected := range testData {
 		t.Logf("testing %s...", input)
-		id, err := ParseResourceIdentifier(input)
+		id, err := ParseResourceID(input)
 		if err != nil && expected != nil {
 			t.Fatalf("unexpected error: %+v", err)
 		}

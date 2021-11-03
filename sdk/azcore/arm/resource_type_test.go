@@ -37,15 +37,18 @@ var (
 		"/providers/Microsoft.Insights/providers/Microsoft.Compute/virtualMachines/myVmName": {
 			namespace:    "Microsoft.Compute",
 			resourceType: "virtualMachines",
-			typesLen:     1},
+			typesLen:     1,
+		},
 		"/providers/Microsoft.Insights/providers/Microsoft.Network/virtualNetworks/testvnet/subnets/testsubnet": {
 			namespace:    "Microsoft.Network",
 			resourceType: "virtualNetworks/subnets",
-			typesLen:     2},
+			typesLen:     2,
+		},
 		"/providers/Microsoft.Compute/virtualMachines/myVmName/fooType/fooName": {
 			namespace:    "Microsoft.Compute",
 			resourceType: "virtualMachines/fooType",
-			typesLen:     2},
+			typesLen:     2,
+		},
 	}
 )
 
@@ -55,11 +58,11 @@ func TestParseResourceType(t *testing.T) {
 		if err != nil {
 			t.Fatalf("unexpected error: %+v", err)
 		}
-		if resourceType.NamespaceOld() != expected.namespace {
-			t.Fatalf("expecting %s, but got %s", expected.namespace, resourceType.NamespaceOld())
+		if resourceType.Namespace != expected.namespace {
+			t.Fatalf("expecting %s, but got %s", expected.namespace, resourceType.Namespace)
 		}
-		if resourceType.Type() != expected.resourceType {
-			t.Fatalf("expecting %s, but got %s", expected.resourceType, resourceType.Type())
+		if resourceType.Type != expected.resourceType {
+			t.Fatalf("expecting %s, but got %s", expected.resourceType, resourceType.Type)
 		}
 		if len(resourceType.Types) != expected.typesLen {
 			t.Fatalf("expecting %d, but got %d", expected.typesLen, len(resourceType.Types))

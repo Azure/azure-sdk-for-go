@@ -43,19 +43,19 @@ type ResourceID struct {
 	stringValue string
 }
 
-func newResourceIdentifier(parent *ResourceID, resourceTypeName string, resourceName string) *ResourceID {
+func newResourceID(parent *ResourceID, resourceTypeName string, resourceName string) *ResourceID {
 	id := &ResourceID{}
 	id.init(parent, chooseResourceType(resourceTypeName, parent), resourceName, true)
 	return id
 }
 
-func newResourceIdentifierWithResourceType(parent *ResourceID, resourceType ResourceType, resourceName string) *ResourceID {
+func newResourceIDWithResourceType(parent *ResourceID, resourceType ResourceType, resourceName string) *ResourceID {
 	id := &ResourceID{}
 	id.init(parent, resourceType, resourceName, true)
 	return id
 }
 
-func newResourceIdentifierWithProvider(parent *ResourceID, providerNamespace, resourceTypeName, resourceName string) *ResourceID {
+func newResourceIDWithProvider(parent *ResourceID, providerNamespace, resourceTypeName, resourceName string) *ResourceID {
 	id := &ResourceID{}
 	id.init(parent, NewResourceType(providerNamespace, resourceTypeName), resourceName, false)
 	return id
@@ -106,8 +106,8 @@ func (id *ResourceID) init(parent *ResourceID, resourceType ResourceType, name s
 	id.Name = name
 }
 
-// ParseResourceIdentifier parses a string to an instance of ResourceID
-func ParseResourceIdentifier(id string) (*ResourceID, error) {
+// ParseResourceID parses a string to an instance of ResourceID
+func ParseResourceID(id string) (*ResourceID, error) {
 	if len(id) == 0 {
 		return nil, fmt.Errorf("invalid resource id: id cannot be empty")
 	}
@@ -145,7 +145,7 @@ func appendNext(parent *ResourceID, parts []string, id string) (*ResourceID, err
 			return nil, fmt.Errorf("invalid resource id: %s", id)
 		}
 
-		return newResourceIdentifier(parent, parts[0], ""), nil
+		return newResourceID(parent, parts[0], ""), nil
 	}
 
 	if strings.EqualFold(parts[0], providersKey) && (len(parts) == 2 || strings.EqualFold(parts[2], providersKey)) {
@@ -154,15 +154,15 @@ func appendNext(parent *ResourceID, parts []string, id string) (*ResourceID, err
 			return nil, fmt.Errorf("invalid resource id: %s", id)
 		}
 
-		return appendNext(newResourceIdentifierWithResourceType(parent, ProviderResourceType, parts[1]), parts[2:], id)
+		return appendNext(newResourceIDWithResourceType(parent, ProviderResourceType, parts[1]), parts[2:], id)
 	}
 
 	if len(parts) > 3 && strings.EqualFold(parts[0], providersKey) {
-		return appendNext(newResourceIdentifierWithProvider(parent, parts[1], parts[2], parts[3]), parts[4:], id)
+		return appendNext(newResourceIDWithProvider(parent, parts[1], parts[2], parts[3]), parts[4:], id)
 	}
 
 	if len(parts) > 1 && !strings.EqualFold(parts[0], providersKey) {
-		return appendNext(newResourceIdentifier(parent, parts[0], parts[1]), parts[2:], id)
+		return appendNext(newResourceID(parent, parts[0], parts[1]), parts[2:], id)
 	}
 
 	return nil, fmt.Errorf("invalid resource id: %s", id)

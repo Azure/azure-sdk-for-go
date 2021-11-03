@@ -98,7 +98,7 @@ func ParseResourceType(resourceIdOrType string) (ResourceType, error) {
 		return NewResourceType(parts[0], strings.Join(parts[1:], "/")), nil
 	} else {
 		// Check if ResourceID
-		id, err := ParseResourceIdentifier(resourceIdOrType)
+		id, err := ParseResourceID(resourceIdOrType)
 		if err != nil {
 			return ResourceType{}, fmt.Errorf("invalid resource id: %s", resourceIdOrType)
 		}

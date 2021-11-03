@@ -21,7 +21,7 @@ func TestAvailabilitySetsClient_CreateOrUpdate(t *testing.T) {
 	defer stop()
 
 	cred, opt := authenticateTest(t)
-	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	subscriptionID := lookupEnvVar("AZURE_SUBSCRIPTION_ID")
 	location := recording.GetEnvVariable("AZURE_LOCATION", "westus2")
 
 	// create resource group

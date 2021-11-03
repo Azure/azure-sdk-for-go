@@ -74,9 +74,9 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 	}
 
 	// try the request
-	resp, err := req.Next()
-	if err != nil {
-		return nil, err
+	resp, requestErr := req.Next()
+	if requestErr != nil {
+		return nil, requestErr
 	}
 
 	// If it fails and has a 401, try it with a new token
@@ -89,12 +89,12 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 
 		// Error parsing challenge, doomed to fail. Return
 		if err != nil {
-			return nil, err
+			return resp, err
 		}
 
 		tk, err := k.mainResource.GetResource(as)
 		if err != nil {
-			return nil, err
+			return resp, err
 		}
 
 		if token, ok := tk.(*azcore.AccessToken); ok {
@@ -102,6 +102,9 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 				headerAuthorization,
 				fmt.Sprintf("%s %s", bearerHeader, token.Token),
 			)
+		} else {
+			// tk is not an azcore.AccessToken type, something went wrong and we should return the 401 and accompanying error
+			return resp, requestErr
 		}
 
 		resp, err = http.DefaultClient.Do(req.Raw())
@@ -125,7 +128,7 @@ func parseTenant(url string) *string {
 // sets the k.scope and k.tenantID from the WWW-Authenticate header
 func (k *KeyVaultChallengePolicy) findScopeAndTenant(resp *http.Response) error {
 	authHeader := resp.Header.Get("WWW-Authenticate")
-	if authHeader == "" && k.scope == nil && k.tenantID == nil {
+	if authHeader == "" {
 		return errors.New("response has no WWW-Authenticate header for challenge authentication")
 	}
 

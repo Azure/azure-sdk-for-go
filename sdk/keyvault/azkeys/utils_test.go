@@ -28,7 +28,7 @@ var pathToPackage = "sdk/keyvault/azkeys/testdata"
 const fakeKvURL = "https://fakekvurl.vault.azure.net/"
 const fakeKvMHSMURL = "https://fakekvurl.managedhsm.azure.net/"
 
-var enableHSM = false
+var enableHSM = true
 
 func TestMain(m *testing.M) {
 	// Initialize
@@ -63,7 +63,8 @@ func TestMain(m *testing.M) {
 		mhsmURL, ok := os.LookupEnv("AZURE_MANAGEDHSM_URL")
 		if !ok {
 			fmt.Println("Did not find managed HSM url, skipping those tests")
-			enableHSM = true
+			enableHSM = false
+		} else {
 			err = recording.AddURISanitizer(fakeKvMHSMURL, mhsmURL, nil)
 			if err != nil {
 				panic(err)

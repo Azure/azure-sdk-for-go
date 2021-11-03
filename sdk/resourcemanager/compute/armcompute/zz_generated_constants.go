@@ -10,7 +10,7 @@ package armcompute
 
 const (
 	module  = "armcompute"
-	version = "v0.2.0"
+	version = "v0.2.1"
 )
 
 type AccessLevel string

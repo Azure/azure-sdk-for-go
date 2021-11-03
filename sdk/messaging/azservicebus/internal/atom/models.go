@@ -219,9 +219,7 @@ type (
 		Type                    string                  `xml:"type,attr"`
 		SubscriptionDescription SubscriptionDescription `xml:"SubscriptionDescription"`
 	}
-)
 
-type (
 	// Entity is represents the most basic form of an Azure Service Bus entity.
 	Entity struct {
 		Name string

@@ -1,18 +1,17 @@
 # Troubleshoot Azure Identity authentication issues
 
-`azidentity` credential types return errors when authentication fails or they are otherwise unable to authenticate.
-This troubleshooting guide describes steps you can take to resolve such errors.
+`azidentity` credential types return errors when authentication fails or they are otherwise unable to authenticate. This troubleshooting guide describes steps you can take to resolve such errors.
 
 ## Table of contents
 
-- [Troubleshoot Default Azure Credential Authentication issues](#troubleshoot-default-azure-credential-authentication-issues)
+- [Troubleshoot Default Azure Credential authentication issues](#troubleshoot-default-azure-credential-authentication-issues)
 - [Troubleshoot environment credential authentication issues](#troubleshoot-environment-credential-authentication-issues)
 - [Troubleshoot service principal authentication issues](#troubleshoot-service-principal-authentication-issues)
 - [Troubleshoot user password authentication issues](#troubleshoot-user-password-authentication-issues)
 - [Troubleshoot Managed Identity authentication issues](#troubleshoot-managed-identity-authentication-issues)
 - [Troubleshoot Azure CLI authentication issues](#troubleshoot-azure-cli-authentication-issues)
 
-## Troubleshoot Default Azure Credential issues
+## Troubleshoot Default Azure Credential authentication issues
 
 `DefaultAzureCredential` attempts to retrieve an access token by sequentially invoking a chain of credentials. An error from this credential signifies that every credential in the chain failed to acquire a token. To address this, follow the configuration instructions for the respective credential you intend to use. This document contains more guidance for handling errors from each credential type:
 
@@ -20,7 +19,7 @@ This troubleshooting guide describes steps you can take to resolve such errors.
 -  [Managed Identity](#troubleshoot-managed-identity-authentication-issues) |
 -  [Azure CLI](#troubleshoot-azure-cli-authentication-issues) |
 
-## Troubleshoot environment credential issues
+## Troubleshoot environment credential authentication issues
 
 #### Environment variables not configured
 
@@ -28,7 +27,7 @@ This troubleshooting guide describes steps you can take to resolve such errors.
 
 ##### Service principal with secret
 
-| Variable Name | Value |
+| Variable name | Value |
 | --- | --- |
 `AZURE_CLIENT_ID` | ID of an Azure AD app. |
 `AZURE_TENANT_ID` | ID of the app's Azure AD tenant. |
@@ -77,11 +76,11 @@ Authenticating a service principal requires a client or "application" ID and ten
 
 #### Client secret
 
-A client secret, also called an application password, is a secret string that an application uses to prove its identity. Azure AD doesn't expose the values of existing secrets. If you've already created a service principal, follow the instructions at [Create a new application secret](https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal#option-2-create-a-new-application-secret) to create a new secret.
+A client secret, also called an application password, is a secret string that an app uses to prove its identity. Azure AD doesn't expose the values of existing secrets. If you've already created a service principal, follow the instructions at [Create a new app secret](https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal#option-2-create-a-new-application-secret) to create a new secret.
 
 ### Client certificate credential issues
 
-`ClientCertificateCredential` authenticates with a certificate in PKCS12 (PFX) or PEM format. The certificate must first be registered for your service principal. Follow the instructions at [Upload a certificate](https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal#option-1-upload-a-certificate) to register a certificate.
+`ClientCertificateCredential` authenticates with a certificate in PKCS12 (PFX) or PEM format. The certificate must first be registered for your service principal. To register a certificate, see [Upload a certificate](https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal#option-1-upload-a-certificate).
 
 ## Troubleshoot managed identity authentication issues
 
@@ -101,7 +100,7 @@ A client secret, also called an application password, is a secret string that an
 
 ### Azure CLI not installed
 
-The Azure CLI must be installed and on the app's path. Follow the instructions at [How to install the Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli) to install it. Then try authenticating again.
+The Azure CLI must be installed and on the app's path. To install it, see [How to install the Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli). Then try authenticating again.
 
 ### Azure account not logged in
 

@@ -50,9 +50,9 @@ moduleName="sdk/$ResourceProvider/arm$ResourceProvider"
 module="github.com/Azure/azure-sdk-for-go/$moduleName"
 outputfolder="$SDK_PATH/$moduleName"
 if [ "$TAG" == "" ]; then
-    npx autorest --use=@autorest/go@4.0.0-preview.28 --go --track2 --go-sdk-folder=$SDK_PATH --module=$module --output-folder=$outputfolder --azure-arm=true --file-prefix="zz_generated_" --clear-output-folder=false --module-version="0.0.1" $SWAGGER_PATH/$ResourceProvider/resource-manager/readme.md
+    npx autorest --use=@autorest/go@4.0.0-preview.31 --go --track2 --go-sdk-folder=$SDK_PATH --module=$module --output-folder=$outputfolder --azure-arm=true --file-prefix="zz_generated_" --clear-output-folder=false --module-version="0.0.1" $SWAGGER_PATH/$ResourceProvider/resource-manager/readme.md
 else
-    npx autorest --use=@autorest/go@4.0.0-preview.28 --go --track2 --tag=$TAG --go-sdk-folder=$SDK_PATH --module=$module --output-folder=$outputfolder --azure-arm=true --file-prefix="zz_generated_" --clear-output-folder=false --module-version="0.0.1" $SWAGGER_PATH/$ResourceProvider/resource-manager/readme.md
+    npx autorest --use=@autorest/go@4.0.0-preview.31 --go --track2 --tag=$TAG --go-sdk-folder=$SDK_PATH --module=$module --output-folder=$outputfolder --azure-arm=true --file-prefix="zz_generated_" --clear-output-folder=false --module-version="0.0.1" $SWAGGER_PATH/$ResourceProvider/resource-manager/readme.md
 fi
 
 if [ "$?" != "0" ]; then
@@ -61,4 +61,4 @@ if [ "$?" != "0" ]; then
 fi
 
 #Generate Go-SDK Mock test
-npx autorest --version=3.2.1 --use=https://amecodegenstorage.blob.core.windows.net/tools/autorest-tests-0.1.0-preview.tgz $SWAGGER_PATH/$ResourceProvider/resource-manager/readme.md --use=@autorest/go@4.0.0-preview.28 --file-prefix="zz_generated_" --track2 --go --output-folder=$outputfolder --module-version="0.0.1"
+npx autorest --version=3.6.2 --use=@autorest/gotest@1.0.0 $SWAGGER_PATH/$ResourceProvider/resource-manager/readme.md --use=@autorest/go@4.0.0-preview.31 --file-prefix="zz_generated_" --track2 --go --output-folder=$outputfolder --module-version="0.0.1"

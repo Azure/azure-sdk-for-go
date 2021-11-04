@@ -83,11 +83,11 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 		// Force a new token
 		k.mainResource.Reset()
 
-		// Check for a new auth policy
+		// Find the scope and tenant again in case they have changed
 		err := k.findScopeAndTenant(resp)
 
-		// Error parsing challenge, doomed to fail. Return
 		if err != nil {
+			// Error parsing challenge, doomed to fail. Return
 			return resp, err
 		}
 
@@ -99,18 +99,14 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 		if token, ok := tk.(*azcore.AccessToken); ok {
 			req.Raw().Header.Set(
 				headerAuthorization,
-				fmt.Sprintf("%s %s", bearerHeader, token.Token),
+				bearerHeader+token.Token,
 			)
 		} else {
 			// tk is not an azcore.AccessToken type, something went wrong and we should return the 401 and accompanying error
 			return resp, requestErr
 		}
 
-		resp, err = http.DefaultClient.Do(req.Raw())
-		if err != nil {
-			// A second request failed, return error
-			return nil, err
-		}
+		return req.Next()
 	}
 
 	return resp, err
@@ -121,6 +117,7 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 func parseTenant(url string) *string {
 	parts := strings.Split(url, "/")
 	tenant := parts[3]
+	tenant = strings.ReplaceAll(tenant, ",", "")
 	return &tenant
 }
 

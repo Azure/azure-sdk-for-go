@@ -53,11 +53,6 @@ func NewClient(vaultUrl string, credential azcore.TokenCredential, options *Clie
 
 	genOptions := options.toConnectionOptions()
 
-	// Have to have a transport for the challenge policy
-	if genOptions.Transport == nil {
-		genOptions.Transport = http.DefaultClient
-	}
-
 	genOptions.PerRetryPolicies = append(
 		genOptions.PerRetryPolicies,
 		shared.NewKeyVaultChallengePolicy(credential),

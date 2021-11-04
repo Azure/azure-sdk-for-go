@@ -1,8 +1,8 @@
-# Azure Resources Module for Go
+# Azure Features Module for Go
 
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armfeatures)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armfeatures)
 
-The `armfeatures` module provides operations for working with Azure Resources.
+The `armfeatures` module provides operations for working with Azure Features.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/resources/armfeatures)
 
@@ -17,7 +17,7 @@ The `armfeatures` module provides operations for working with Azure Resources.
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Resources module:
+Install the Azure Features module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armfeatures
@@ -25,7 +25,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armfeatur
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Resources.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Features.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -35,10 +35,10 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Clients
 
-Azure Resources modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your credential.
+Azure Features modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your credential.
 
 ```go
-client := armfeatures.{{NewClientName}}(<subscription ID>, cred, nil)
+client := armfeatures.NewFeaturesClient(<subscription ID>, cred, nil)
 ```
 
 You can use `ClientOptions` in package `github.com/Azure/azure-sdk-for-go/sdk/azcore/arm` to set endpoint to connect with public and sovereign clouds as well as Azure Stack. For more information, please see the documentation for `azcore` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore).
@@ -47,13 +47,13 @@ You can use `ClientOptions` in package `github.com/Azure/azure-sdk-for-go/sdk/az
 options = arm.ClientOptions{
     Host: arm.AzureChina,
 }
-client := armfeatures.{{NewClientName}}(<subscription ID>, cred, &options)
+client := armfeatures.NewFeaturesClient(<subscription ID>, cred, &options)
 ```
 
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please
-[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Resources` label.
+[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Features` label.
 
 # Contributing
 

@@ -11,26 +11,34 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
+// SDKOptions contains Pipeline options for SDK developers
+type SDKOptions struct {
+	AllowedHeaders, AllowedQueryParameters []string
+	PerCall, PerRetry                      []policy.Policy
+}
+
 // NewPipeline creates a pipeline from connection options, with any additional policies as specified.
 // module, version: used by the telemetry policy, when enabled
 // perCall: additional policies to invoke once per request
 // perRetry: additional policies to invoke once per request and once per retry of that request
-func NewPipeline(module, version string, perCall, perRetry []policy.Policy, options *policy.ClientOptions) Pipeline {
-	if options == nil {
-		options = &policy.ClientOptions{}
+func NewPipeline(module, version string, sdkOpts SDKOptions, options *policy.ClientOptions) Pipeline {
+	cp := policy.ClientOptions{}
+	if options != nil {
+		cp = *options
 	}
+	cp.Logging.AllowedHeaders = append(cp.Logging.AllowedHeaders, sdkOpts.AllowedHeaders...)
 	policies := []policy.Policy{}
 	if !options.Telemetry.Disabled {
-		policies = append(policies, NewTelemetryPolicy(module, version, &options.Telemetry))
+		policies = append(policies, NewTelemetryPolicy(module, version, &cp.Telemetry))
 	}
-	policies = append(policies, options.PerCallPolicies...)
-	policies = append(policies, perCall...)
-	policies = append(policies, NewRetryPolicy(&options.Retry))
-	policies = append(policies, options.PerRetryPolicies...)
-	policies = append(policies, perRetry...)
-	policies = append(policies, NewLogPolicy(&options.Logging))
+	policies = append(policies, cp.PerCallPolicies...)
+	policies = append(policies, sdkOpts.PerCall...)
+	policies = append(policies, NewRetryPolicy(&cp.Retry))
+	policies = append(policies, cp.PerRetryPolicies...)
+	policies = append(policies, sdkOpts.PerRetry...)
+	policies = append(policies, NewLogPolicy(&cp.Logging))
 	policies = append(policies, pipeline.PolicyFunc(httpHeaderPolicy), pipeline.PolicyFunc(bodyDownloadPolicy))
-	transport := options.Transport
+	transport := cp.Transport
 	if transport == nil {
 		transport = defaultHTTPClient
 	}

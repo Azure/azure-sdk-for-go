@@ -136,6 +136,10 @@ type ListEntitiesOptions struct {
 	Select *string
 	// Maximum number of records to return.
 	Top *int32
+	// The PartitionKey to start paging from
+	PartitionKey *string
+	// The RowKey to start paging from
+	RowKey *string
 }
 
 func (l *ListEntitiesOptions) toQueryOptions() *generated.QueryOptions {
@@ -218,6 +222,10 @@ type ListEntitiesPager interface {
 	NextPage(context.Context) bool
 	// Err returns an error if there was an error on the last request
 	Err() error
+	// NextPagePartitionKey returns the PartitionKey for the current page
+	NextPagePartitionKey() *string
+	// NextPageRowKey returns the RowKey for the current page
+	NextPageRowKey() *string
 }
 
 type tableEntityQueryResponsePager struct {
@@ -228,6 +236,14 @@ type tableEntityQueryResponsePager struct {
 	err               error
 }
 
+func (p *tableEntityQueryResponsePager) NextPagePartitionKey() *string {
+	return p.tableQueryOptions.NextPartitionKey
+}
+
+func (p *tableEntityQueryResponsePager) NextPageRowKey() *string {
+	return p.tableQueryOptions.NextRowKey
+}
+
 // NextPage fetches the next available page of results from the service.
 // If the fetched page contains results, the return value is true, else false.
 // Results fetched from the service can be evaluated by calling PageResponse on this Pager.
@@ -236,7 +252,13 @@ func (p *tableEntityQueryResponsePager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	var resp generated.TableQueryEntitiesResponse
-	resp, p.err = p.tableClient.client.QueryEntities(ctx, generated.Enum1Three0, p.tableClient.name, p.tableQueryOptions, p.listOptions.toQueryOptions())
+	resp, p.err = p.tableClient.client.QueryEntities(
+		ctx,
+		generated.Enum1Three0,
+		p.tableClient.name,
+		p.tableQueryOptions,
+		p.listOptions.toQueryOptions(),
+	)
 
 	c, err := newListEntitiesPage(&resp)
 	if err != nil {
@@ -273,10 +295,16 @@ func (p *tableEntityQueryResponsePager) Err() error {
 //
 // List returns a Pager, which allows iteration through each page of results.
 func (t *Client) List(listOptions *ListEntitiesOptions) ListEntitiesPager {
+	if listOptions == nil {
+		listOptions = &ListEntitiesOptions{}
+	}
 	return &tableEntityQueryResponsePager{
-		tableClient:       t,
-		listOptions:       listOptions,
-		tableQueryOptions: &generated.TableQueryEntitiesOptions{},
+		tableClient: t,
+		listOptions: listOptions,
+		tableQueryOptions: &generated.TableQueryEntitiesOptions{
+			NextPartitionKey: listOptions.PartitionKey,
+			NextRowKey:       listOptions.RowKey,
+		},
 	}
 }
 

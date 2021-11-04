@@ -14,33 +14,41 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
-// EnvironmentCredentialOptions configures the EnvironmentCredential with optional parameters.
-// All zero-value fields will be initialized with their default values.
+// EnvironmentCredentialOptions contains optional parameters for EnvironmentCredential
 type EnvironmentCredentialOptions struct {
 	azcore.ClientOptions
 
-	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
-	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
+	// AuthorityHost is the base URL of an Azure Active Directory authority. Defaults
+	// to the value of environment variable AZURE_AUTHORITY_HOST, if set, or AzurePublicCloud.
 	AuthorityHost AuthorityHost
 }
 
-// EnvironmentCredential enables authentication to Azure Active Directory using either ClientSecretCredential, ClientCertificateCredential or UsernamePasswordCredential.
-// This credential type will check for the following environment variables in the same order as listed:
-// - AZURE_TENANT_ID
-// - AZURE_CLIENT_ID
-// - AZURE_CLIENT_SECRET
-// - AZURE_CLIENT_CERTIFICATE_PATH
-// - AZURE_USERNAME
-// - AZURE_PASSWORD
-// NOTE: EnvironmentCredential will stop checking environment variables as soon as it finds enough environment variables to
-// create a credential type.
+// EnvironmentCredential authenticates a service principal with a secret or certificate, or a user with a password, depending
+// on environment variable configuration. It reads configuration from these variables, in the following order:
+//
+// Service principal:
+// - AZURE_TENANT_ID: ID of the service principal's tenant. Also called its "directory" ID.
+// - AZURE_CLIENT_ID: the service principal's client ID
+// - AZURE_CLIENT_SECRET: one of the service principal's client secrets
+//
+// Service principal with certificate:
+// - AZURE_TENANT_ID: ID of the service principal's tenant. Also called its "directory" ID.
+// - AZURE_CLIENT_ID: the service principal's client ID
+// - AZURE_CLIENT_CERTIFICATE_PATH: path to a PEM or PKCS12 certificate file including the private key. The
+//   certificate must not be password-protected.
+//
+// User with username and password:
+// - AZURE_CLIENT_ID: the application's client ID
+// - AZURE_USERNAME: a username (usually an email address)
+// - AZURE_PASSWORD: that user's password
+// - AZURE_TENANT_ID: (optional) tenant to authenticate in. If not set, defaults to the "organizations" tenant, which
+//   can authenticate only Azure Active Directory work or school accounts.
 type EnvironmentCredential struct {
 	cred azcore.TokenCredential
 }
 
-// NewEnvironmentCredential creates an instance that implements the azcore.TokenCredential interface and reads credential details from environment variables.
-// If the expected environment variables are not found at this time, then a CredentialUnavailableError will be returned.
-// options: The options used to configure the management of the requests sent to Azure Active Directory.
+// NewEnvironmentCredential creates an EnvironmentCredential.
+// options: Optional configuration.
 func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*EnvironmentCredential, error) {
 	cp := EnvironmentCredentialOptions{}
 	if options != nil {
@@ -91,10 +99,9 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 	return nil, errors.New("Missing environment variable AZURE_CLIENT_SECRET or AZURE_CLIENT_CERTIFICATE_PATH or AZURE_USERNAME and AZURE_PASSWORD")
 }
 
-// GetToken obtains a token from Azure Active Directory, using the underlying credential's GetToken method.
+// GetToken obtains a token from Azure Active Directory. This method is called automatically by Azure SDK clients.
 // ctx: Context used to control the request lifetime.
-// opts: TokenRequestOptions contains the list of scopes for which the token will have access.
-// Returns an AccessToken which can be used to authenticate service client calls.
+// opts: Options for the token request, in particular the desired scope of the access token.
 func (c *EnvironmentCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 	return c.cred.GetToken(ctx, opts)
 }

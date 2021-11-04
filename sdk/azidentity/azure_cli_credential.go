@@ -23,12 +23,12 @@ import (
 // used by tests to fake invoking the CLI
 type azureCLITokenProvider func(ctx context.Context, resource string, tenantID string) ([]byte, error)
 
-// AzureCLICredentialOptions contains options used to configure the AzureCLICredential
-// All zero-value fields will be initialized with their default values.
+// AzureCLICredentialOptions contains optional parameters for AzureCLICredential.
 type AzureCLICredentialOptions struct {
 	tokenProvider azureCLITokenProvider
+
 	// TenantID identifies the tenant the credential should authenticate in.
-	// Defaults to the CLI's default tenant, which is typically the home tenant of the user logged in to the CLI.
+	// Defaults to the CLI's default tenant, which is typically the home tenant of the logged in user.
 	TenantID string
 }
 
@@ -39,14 +39,14 @@ func (o *AzureCLICredentialOptions) init() {
 	}
 }
 
-// AzureCLICredential enables authentication to Azure Active Directory using the Azure CLI command "az account get-access-token".
+// AzureCLICredential authenticates as the identity logged in to the Azure CLI.
 type AzureCLICredential struct {
 	tokenProvider azureCLITokenProvider
 	tenantID      string
 }
 
-// NewAzureCLICredential constructs a new AzureCLICredential with the details needed to authenticate against Azure Active Directory
-// options: configure the management of the requests sent to Azure Active Directory.
+// NewAzureCLICredential constructs an AzureCLICredential.
+// options: Optional configuration.
 func NewAzureCLICredential(options *AzureCLICredentialOptions) (*AzureCLICredential, error) {
 	cp := AzureCLICredentialOptions{}
 	if options != nil {
@@ -59,10 +59,10 @@ func NewAzureCLICredential(options *AzureCLICredentialOptions) (*AzureCLICredent
 	}, nil
 }
 
-// GetToken obtains a token from Azure Active Directory, using the Azure CLI command to authenticate.
-// ctx: Context used to control the request lifetime.
-// opts: TokenRequestOptions contains the list of scopes for which the token will have access.
-// Returns an AccessToken which can be used to authenticate service client calls.
+// GetToken requests a token from the Azure CLI. This credential doesn't cache tokens, so every call invokes the CLI.
+// This method is called automatically by Azure SDK clients.
+// ctx: Context controlling the request lifetime.
+// opts: Options for the token request, in particular the desired scope of the access token.
 func (c *AzureCLICredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 	if len(opts.Scopes) != 1 {
 		return nil, errors.New("this credential requires exactly one scope per token request")
@@ -80,10 +80,6 @@ func (c *AzureCLICredential) GetToken(ctx context.Context, opts policy.TokenRequ
 
 const timeoutCLIRequest = 10 * time.Second
 
-// authenticate creates a client secret authentication request and returns the resulting Access Token or
-// an error in case of authentication failure.
-// ctx: The current request context
-// scopes: The scopes for which the token has access
 func (c *AzureCLICredential) authenticate(ctx context.Context, resource string) (*azcore.AccessToken, error) {
 	output, err := c.tokenProvider(ctx, resource, c.tenantID)
 	if err != nil {

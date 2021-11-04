@@ -56,6 +56,15 @@ type LogOptions struct {
 	// The default value is false.
 	// NOTE: enabling this can lead to disclosure of sensitive information, use with care.
 	IncludeBody bool
+
+	// AllowedHeaders is the slice of headers to log with their values intact.
+	// All headers not in the slice will have their values REDACTED.
+	// Applies to request and response headers.
+	AllowedHeaders []string
+
+	// AllowedQueryParams is the slice of query parameters to log with their values intact.
+	// All query parameters not in the slice will have their values REDACTED.
+	AllowedQueryParams []string
 }
 
 // RetryOptions configures the retry policy's behavior.

@@ -1,0 +1,627 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/listRG780973347?api-version=2021-04-01",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "PUT",
+        ":path": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/listRG780973347?api-version=2021-04-01",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "21",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-armresources/v0.2.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+      },
+      "RequestBody": {
+        "location": "westus"
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "227",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 04 Nov 2021 08:17:14 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "3791e2ce-e711-4256-b13e-68d6f168ca47",
+        "x-ms-ratelimit-remaining-subscription-writes": "1195",
+        "x-ms-request-id": "3791e2ce-e711-4256-b13e-68d6f168ca47",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20211104T081715Z:3791e2ce-e711-4256-b13e-68d6f168ca47"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/listRG780973347",
+        "name": "listRG780973347",
+        "type": "Microsoft.Resources/resourceGroups",
+        "location": "westus",
+        "properties": {
+          "provisioningState": "Succeeded"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups?api-version=2021-04-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "GET",
+        ":path": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups?api-version=2021-04-01",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armresources/v0.2.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Length": "14967",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 04 Nov 2021 08:17:14 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "6f1c8e88-6bf9-488d-8fda-d463e3213dec",
+        "x-ms-ratelimit-remaining-subscription-reads": "11997",
+        "x-ms-request-id": "6f1c8e88-6bf9-488d-8fda-d463e3213dec",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20211104T081715Z:6f1c8e88-6bf9-488d-8fda-d463e3213dec"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sdk-net-test-qa2",
+            "name": "sdk-net-test-qa2",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "eastus",
+            "tags": {},
+            "properties": {
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/iyljd2wtoqh43dern43sawzmqxkeari3bcqiadgfste4outj7cdmmslvr4yfw2vmrsqeiogmitj",
+            "name": "iyljd2wtoqh43dern43sawzmqxkeari3bcqiadgfste4outj7cdmmslvr4yfw2vmrsqeiogmitj",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "eastus",
+            "tags": {
+              "DeleteAfter": "2020-08-15T07:02:26.327834"
+            },
+            "properties": {
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG",
+            "name": "AzSecPackAutoConfigRG",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "eastus",
+            "properties": {
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myjstest",
+            "name": "myjstest",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "eastus",
+            "tags": {},
+            "properties": {
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/DefaultResourceGroup-EUS",
+            "name": "DefaultResourceGroup-EUS",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "eastus",
+            "properties": {
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qiaozhatest",
+            "name": "qiaozhatest",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "eastus",
+            "tags": {},
+            "properties": {
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-g553cbzwd2h7yggh2akwgfi73lk4pyoj44qxzbahkmilj2p6k3i77pecaamf4q5k2kk5ifq7ztd",
+            "name": "rgpy-g553cbzwd2h7yggh2akwgfi73lk4pyoj44qxzbahkmilj2p6k3i77pecaamf4q5k2kk5ifq7ztd",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "eastus",
+            "tags": {
+              "DeleteAfter": "2021-10-09T14:10:31",
+              "BuildId": "local",
+              "BuildJob": "local",
+              "BuildNumber": "local",
+              "BuildReason": "local"
+            },
+            "properties": {
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-ebm4jvnsvqpji5t6btyw7sxjg5s7ini3jsownblfy7ongu4yecaxhdfyg6pdhy3b7hbbfncvcmf",
+            "name": "rgpy-ebm4jvnsvqpji5t6btyw7sxjg5s7ini3jsownblfy7ongu4yecaxhdfyg6pdhy3b7hbbfncvcmf",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "eastus",
+            "tags": {
+              "DeleteAfter": "2021-10-09T14:10:41",
+              "BuildId": "local",
+              "BuildJob": "local",
+              "BuildNumber": "local",
+              "BuildReason": "local"
+            },
+            "properties": {
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-ai55nvbuzx67lvruftflooqzn6mtrkqticmd2u7pvzc3bl5fsdtqbj4cjlldktbhyxxnwfekdcr",
+            "name": "rgpy-ai55nvbuzx67lvruftflooqzn6mtrkqticmd2u7pvzc3bl5fsdtqbj4cjlldktbhyxxnwfekdcr",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "eastus",
+            "tags": {
+              "DeleteAfter": "2021-10-09T14:56:38",
+              "BuildId": "local",
+              "BuildJob": "local",
+              "BuildNumber": "local",
+              "BuildReason": "local"
+            },
+            "properties": {
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-diqm56fklrrnmikd4uj5fajkp52tc2cptmwa7wxpya3x7c4j53dww7mevkazbgoicntfsdhjdtz",
+            "name": "rgpy-diqm56fklrrnmikd4uj5fajkp52tc2cptmwa7wxpya3x7c4j53dww7mevkazbgoicntfsdhjdtz",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "eastus",
+            "tags": {
+              "DeleteAfter": "2021-10-09T14:57:36",
+              "BuildId": "local",
+              "BuildJob": "local",
+              "BuildNumber": "local",
+              "BuildReason": "local"
+            },
+            "properties": {
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-2yjgjebkvhtntgrvztt754xxcp5qbo5fbjtmztctaibljt4y6q6fmtygrqclxvnzwzm3aer5j2t",
+            "name": "rgpy-2yjgjebkvhtntgrvztt754xxcp5qbo5fbjtmztctaibljt4y6q6fmtygrqclxvnzwzm3aer5j2t",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "eastus",
+            "tags": {
+              "DeleteAfter": "2021-10-09T15:01:16",
+              "BuildId": "local",
+              "BuildJob": "local",
+              "BuildNumber": "local",
+              "BuildReason": "local"
+            },
+            "properties": {
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-test_cli_mgmt_network_firewall_test_network892411e1",
+            "name": "rgpy-test_cli_mgmt_network_firewall_test_network892411e1",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "eastus",
+            "tags": {
+              "DeleteAfter": "2021-10-15T10:35:54",
+              "BuildId": "local",
+              "BuildJob": "local",
+              "BuildNumber": "local",
+              "BuildReason": "local"
+            },
+            "properties": {
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-324tvcxb2h7exvapb5kiehabvmhmawqwj3ur7efcvxih26gn3tytrgx5tz3p4rwoslj4e3lj6rg",
+            "name": "rgpy-324tvcxb2h7exvapb5kiehabvmhmawqwj3ur7efcvxih26gn3tytrgx5tz3p4rwoslj4e3lj6rg",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "eastus",
+            "tags": {
+              "DeleteAfter": "2021-10-09T15:29:03",
+              "BuildId": "local",
+              "BuildJob": "local",
+              "BuildNumber": "local",
+              "BuildReason": "local"
+            },
+            "properties": {
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-gd5oajxahzpvsjvtrb2igqi7fgtu5b6ddj4fjypre34jk2g56noqnw4oaeq5iepin3efwe5uyba",
+            "name": "rgpy-gd5oajxahzpvsjvtrb2igqi7fgtu5b6ddj4fjypre34jk2g56noqnw4oaeq5iepin3efwe5uyba",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "eastus",
+            "tags": {
+              "DeleteAfter": "2021-10-09T15:30:03",
+              "BuildId": "local",
+              "BuildJob": "local",
+              "BuildNumber": "local",
+              "BuildReason": "local"
+            },
+            "properties": {
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-q3r5kbwvttql3d5x7ekd45isd2jmidafa2pj6zh3acwittzgsafz5ywftgw2fssey7bm7qh4z2w",
+            "name": "rgpy-q3r5kbwvttql3d5x7ekd45isd2jmidafa2pj6zh3acwittzgsafz5ywftgw2fssey7bm7qh4z2w",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "eastus",
+            "tags": {
+              "DeleteAfter": "2021-10-09T15:30:32",
+              "BuildId": "local",
+              "BuildJob": "local",
+              "BuildNumber": "local",
+              "BuildReason": "local"
+            },
+            "properties": {
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-hyyetnby7ajxgelebatz2vffy42hnh6uln7d7augkff5e3akdosozn46jahgabbs3xv7zugtfkx",
+            "name": "rgpy-hyyetnby7ajxgelebatz2vffy42hnh6uln7d7augkff5e3akdosozn46jahgabbs3xv7zugtfkx",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "eastus",
+            "tags": {
+              "DeleteAfter": "2021-10-09T15:31:25",
+              "BuildId": "local",
+              "BuildJob": "local",
+              "BuildNumber": "local",
+              "BuildReason": "local"
+            },
+            "properties": {
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-3ce4gnf77alvydtr6dsq6izl75hhgwex3wzmwr3h3mpg2gdo5rkssdopmaasfmpeouv7guynbl5",
+            "name": "rgpy-3ce4gnf77alvydtr6dsq6izl75hhgwex3wzmwr3h3mpg2gdo5rkssdopmaasfmpeouv7guynbl5",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "eastus",
+            "tags": {
+              "DeleteAfter": "2021-10-09T15:33:20",
+              "BuildId": "local",
+              "BuildJob": "local",
+              "BuildNumber": "local",
+              "BuildReason": "local"
+            },
+            "properties": {
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-qhnoh44kzmger3mwirmdk5de3z3uklal2ha6ejd4u5dmdyjkrbgihwnm5fpz2w7akj4wc4awhih",
+            "name": "rgpy-qhnoh44kzmger3mwirmdk5de3z3uklal2ha6ejd4u5dmdyjkrbgihwnm5fpz2w7akj4wc4awhih",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "eastus",
+            "tags": {
+              "DeleteAfter": "2021-10-09T15:34:16",
+              "BuildId": "local",
+              "BuildJob": "local",
+              "BuildNumber": "local",
+              "BuildReason": "local"
+            },
+            "properties": {
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-x2bw7tmoy2pck7dp355jxpw2dkyce3iyzhxjkzq47g3o4qgstoc3sfldg52tbm6tkctlcxuk7bu",
+            "name": "rgpy-x2bw7tmoy2pck7dp355jxpw2dkyce3iyzhxjkzq47g3o4qgstoc3sfldg52tbm6tkctlcxuk7bu",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "eastus",
+            "tags": {
+              "DeleteAfter": "2021-10-09T15:34:23",
+              "BuildId": "local",
+              "BuildJob": "local",
+              "BuildNumber": "local",
+              "BuildReason": "local"
+            },
+            "properties": {
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-t3ylpzx6xtfo2ethk3p337fl3gbnez3ajkhxr4z6ktzdr3t3voebbhsig2kad2wojuc7dclmjr7",
+            "name": "rgpy-t3ylpzx6xtfo2ethk3p337fl3gbnez3ajkhxr4z6ktzdr3t3voebbhsig2kad2wojuc7dclmjr7",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "eastus",
+            "tags": {
+              "DeleteAfter": "2021-10-09T15:35:37",
+              "BuildId": "local",
+              "BuildJob": "local",
+              "BuildNumber": "local",
+              "BuildReason": "local"
+            },
+            "properties": {
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-aoonun4mp42ymgweztalqbcmtagylwmuzhlqals7x3t2edouyyoaq47brnovjdkhiz3dby3bwrd",
+            "name": "rgpy-aoonun4mp42ymgweztalqbcmtagylwmuzhlqals7x3t2edouyyoaq47brnovjdkhiz3dby3bwrd",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "eastus",
+            "tags": {
+              "DeleteAfter": "2021-10-09T15:36:40",
+              "BuildId": "local",
+              "BuildJob": "local",
+              "BuildNumber": "local",
+              "BuildReason": "local"
+            },
+            "properties": {
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-7czt5jsia643awzm5mzri6xvfth2nsgokw5uxbift3ca5txaxtrmpixgnkfgdkkqmy4ga4wkrgr",
+            "name": "rgpy-7czt5jsia643awzm5mzri6xvfth2nsgokw5uxbift3ca5txaxtrmpixgnkfgdkkqmy4ga4wkrgr",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "eastus",
+            "tags": {
+              "DeleteAfter": "2021-10-09T16:51:51",
+              "BuildId": "local",
+              "BuildJob": "local",
+              "BuildNumber": "local",
+              "BuildReason": "local"
+            },
+            "properties": {
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-aefhrmx5upd7bh64wdaxpkhyvkr4jvwgqmvgabxzv4ujzv2d4rnxxjcciiys67tpzqw442pzrje",
+            "name": "rgpy-aefhrmx5upd7bh64wdaxpkhyvkr4jvwgqmvgabxzv4ujzv2d4rnxxjcciiys67tpzqw442pzrje",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "eastus",
+            "tags": {
+              "DeleteAfter": "2021-10-14T17:11:14",
+              "BuildId": "local",
+              "BuildJob": "local",
+              "BuildNumber": "local",
+              "BuildReason": "local"
+            },
+            "properties": {
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-5pqdgwdicsucg7sxfh4delzq5namxut3itefagilopwowhjpjbgqgeb35zvwdoywsdzuxmbkknf",
+            "name": "rgpy-5pqdgwdicsucg7sxfh4delzq5namxut3itefagilopwowhjpjbgqgeb35zvwdoywsdzuxmbkknf",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "eastus",
+            "tags": {
+              "DeleteAfter": "2021-10-14T17:11:22",
+              "BuildId": "local",
+              "BuildJob": "local",
+              "BuildNumber": "local",
+              "BuildReason": "local"
+            },
+            "properties": {
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-t5ujr2i6ghjoq7hr2h7qveyelxvx2pfqkahmfwrk4xuedwkurfwrr33cvm4dtq6xy25aecaazzs",
+            "name": "rgpy-t5ujr2i6ghjoq7hr2h7qveyelxvx2pfqkahmfwrk4xuedwkurfwrr33cvm4dtq6xy25aecaazzs",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "eastus",
+            "tags": {
+              "DeleteAfter": "2021-10-15T09:42:47",
+              "BuildId": "local",
+              "BuildJob": "local",
+              "BuildNumber": "local",
+              "BuildReason": "local"
+            },
+            "properties": {
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-wzre6wqmchfclvdsvmmz6nv66hmeisbbx2oyjas35j5acvk3yhnj3czy6flhmhpxvbg4biuwbbm",
+            "name": "rgpy-wzre6wqmchfclvdsvmmz6nv66hmeisbbx2oyjas35j5acvk3yhnj3czy6flhmhpxvbg4biuwbbm",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "eastus",
+            "tags": {
+              "DeleteAfter": "2021-10-15T09:42:54",
+              "BuildId": "local",
+              "BuildJob": "local",
+              "BuildNumber": "local",
+              "BuildReason": "local"
+            },
+            "properties": {
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-l2kzvphry2vimuf5wbuweeyayd2wdliesiphcidoo4fb4icmeheyzq2qlhrizts6azzarf5ht7b",
+            "name": "rgpy-l2kzvphry2vimuf5wbuweeyayd2wdliesiphcidoo4fb4icmeheyzq2qlhrizts6azzarf5ht7b",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "eastus",
+            "tags": {
+              "DeleteAfter": "2021-10-15T10:30:32",
+              "BuildId": "local",
+              "BuildJob": "local",
+              "BuildNumber": "local",
+              "BuildReason": "local"
+            },
+            "properties": {
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-4nnsyhv3odq2b4qbrd5tdyf5i55qaupcb4jpgccec3yd7ahzalhwf3p3626to6qocoztdkydmmu",
+            "name": "rgpy-4nnsyhv3odq2b4qbrd5tdyf5i55qaupcb4jpgccec3yd7ahzalhwf3p3626to6qocoztdkydmmu",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "eastus",
+            "tags": {
+              "DeleteAfter": "2021-10-15T10:31:28",
+              "BuildId": "local",
+              "BuildJob": "local",
+              "BuildNumber": "local",
+              "BuildReason": "local"
+            },
+            "properties": {
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-r3eacblywuiicgqokxmww3zg6ilsquqohrtiaybhbsr6fp6tuh3i36zgbtee2pcvff4l4du43fp",
+            "name": "rgpy-r3eacblywuiicgqokxmww3zg6ilsquqohrtiaybhbsr6fp6tuh3i36zgbtee2pcvff4l4du43fp",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "eastus",
+            "tags": {
+              "DeleteAfter": "2021-10-15T10:34:51",
+              "BuildId": "local",
+              "BuildJob": "local",
+              "BuildNumber": "local",
+              "BuildReason": "local"
+            },
+            "properties": {
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group2",
+            "name": "sample-resource-group2",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "eastus",
+            "properties": {
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/DefaultResourceGroup-WUS",
+            "name": "DefaultResourceGroup-WUS",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "westus",
+            "properties": {
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group3",
+            "name": "sample-resource-group3",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "westus",
+            "properties": {
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group",
+            "name": "sample-resource-group",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "westus",
+            "properties": {
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/createRG4104958899",
+            "name": "createRG4104958899",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "westus",
+            "properties": {
+              "provisioningState": "Deleting"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/getRG1294971157",
+            "name": "getRG1294971157",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "westus",
+            "properties": {
+              "provisioningState": "Deleting"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/listRG780973347",
+            "name": "listRG780973347",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "westus",
+            "properties": {
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/managed-rg-jsteste2e",
+            "name": "managed-rg-jsteste2e",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "westus2",
+            "managedBy": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qiaozhatest/providers/Microsoft.Purview/accounts/jsteste2e",
+            "tags": {},
+            "properties": {
+              "provisioningState": "Succeeded"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group22",
+            "name": "sample-resource-group22",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "westus2",
+            "properties": {
+              "provisioningState": "Succeeded"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/listRG780973347?api-version=2021-04-01",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "DELETE",
+        ":path": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/listRG780973347?api-version=2021-04-01",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armresources/v0.2.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "0",
+        "Date": "Thu, 04 Nov 2021 08:17:15 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1MSVNUUkc3ODA5NzMzNDctV0VTVFVTIiwiam9iTG9jYXRpb24iOiJ3ZXN0dXMifQ?api-version=2021-04-01",
+        "Pragma": "no-cache",
+        "Retry-After": "15",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "4855fce0-59ad-4e5d-9957-3fdae226c368",
+        "x-ms-ratelimit-remaining-subscription-deletes": "14997",
+        "x-ms-request-id": "4855fce0-59ad-4e5d-9957-3fdae226c368",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20211104T081716Z:4855fce0-59ad-4e5d-9957-3fdae226c368"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {}
+}

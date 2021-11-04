@@ -392,7 +392,8 @@ func TestContinuationTokens(t *testing.T) {
 			client, delete := initClientTest(t, service, true)
 			defer delete()
 
-			insertNEntities("contToken", 10, client)
+			err := insertNEntities("contToken", 10, client)
+			require.NoError(t, err)
 
 			pager := client.List(&ListEntitiesOptions{Top: to.Int32Ptr(1)})
 			var pkContToken *string
@@ -404,6 +405,7 @@ func TestContinuationTokens(t *testing.T) {
 				break
 			}
 
+			require.NoError(t, pager.Err())
 			require.NotNil(t, pkContToken)
 			require.NotNil(t, rkContToken)
 
@@ -416,6 +418,7 @@ func TestContinuationTokens(t *testing.T) {
 				count += len(newPager.PageResponse().Entities)
 			}
 
+			require.NoError(t, pager.Err())
 			require.Equal(t, 9, count)
 		})
 	}

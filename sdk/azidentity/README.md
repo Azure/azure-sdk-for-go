@@ -49,6 +49,7 @@ Directory (AAD). It offers a variety of credential types capable of acquiring
 an Azure AD access token. See [Credential Types](#credential-types "Credential Types") for a list of this module's credential types.
 
 ### DefaultAzureCredential
+
 `DefaultAzureCredential` is appropriate for most apps that will be deployed to Azure. It combines common production credentials with development credentials. It attempts to authenticate via the following mechanisms in this order, stopping when one succeeds:
 
 ![DefaultAzureCredential authentication flow](img/DAC_flow.PNG)
@@ -72,10 +73,12 @@ in any hosting environment which supports managed identities, such as (this list
 * [Azure Service Fabric](https://docs.microsoft.com/azure/service-fabric/concepts-managed-identity)
 
 ## Examples
+
 - [Authenticate with DefaultAzureCredential](#authenticate-with-defaultazurecredential "Authenticate with DefaultAzureCredential")
 - [Define a custom authentication flow with ChainedTokenCredential](#define-a-custom-authentication-flow-with-chainedtokencredential "Define a custom authentication flow with ChainedTokenCredential")
 
 ### Authenticate with DefaultAzureCredential
+
 This example demonstrates authenticating a client from the `armresources` module with `DefaultAzureCredential`.
 
 ```go
@@ -157,6 +160,7 @@ environment variables. Each type of authentication requires values for specific
 variables:
 
 #### Service principal with secret
+
 |variable name|value
 |-|-
 |`AZURE_CLIENT_ID`|id of an Azure Active Directory application
@@ -164,6 +168,7 @@ variables:
 |`AZURE_CLIENT_SECRET`|one of the application's client secrets
 
 #### Service principal with certificate
+
 |variable name|value
 |-|-
 |`AZURE_CLIENT_ID`|id of an Azure Active Directory application
@@ -171,6 +176,7 @@ variables:
 |`AZURE_CLIENT_CERTIFICATE_PATH`|path to a PEM-encoded certificate file including private key (without password protection)
 
 #### Username and password
+
 |variable name|value
 |-|-
 |`AZURE_CLIENT_ID`|id of an Azure Active Directory application

@@ -15,7 +15,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
 	generated "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
 	shared "github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 )
@@ -83,7 +82,7 @@ func parseVaultURL(base string) (string, error) {
 
 // NewClient creates a new azcrytpo.Client that will perform operations against the Key Vault service. The key should
 // be an identifier of an Azure Key Vault key. Including a version is recommended but not required.
-func NewClient(keyURL string, credential azcore.TokenCredential, options *ClientOptions) (*Client, error) {
+func NewClient(keyURL string, credential azcore.TokenCredential, options *ClientOptions) (Client, error) {
 	// TODO: should this return by pointer or by reference, ask Joel
 	if options == nil {
 		options = &ClientOptions{}
@@ -103,25 +102,20 @@ func NewClient(keyURL string, credential azcore.TokenCredential, options *Client
 
 	vaultURL, err := parseVaultURL(keyURL)
 	if err != nil {
-		return &Client{}, err
+		return Client{}, err
 	}
 
 	keyID, keyVersion, err := parseKeyIDAndVersion(keyURL)
 	if err != nil {
-		return &Client{}, err
+		return Client{}, err
 	}
 
-	return &Client{
+	return Client{
 		kvClient:   generated.NewKeyVaultClient(conn),
 		vaultURL:   vaultURL,
 		keyID:      keyID,
 		keyVersion: keyVersion,
 	}, nil
-}
-
-// Creates a new Client that can only perform cryptographic operations locally.
-func NewClientFromJSONWebKey(key azkeys.JSONWebKey) (*Client, error) {
-	return &Client{}, nil
 }
 
 // Optional parameters for the azcrypto.Client.EncryptOptions method

@@ -104,7 +104,7 @@ func getCredential(t *testing.T) azcore.TokenCredential {
 	}
 }
 
-func createClient(t *testing.T, key string) (*Client, error) {
+func createClient(t *testing.T, key string) (Client, error) {
 	p := NewRecordingPolicy(t, &recording.RecordingOptions{UseHTTPS: true})
 	client, err := recording.GetHTTPClient(t)
 	require.NoError(t, err)
@@ -121,7 +121,7 @@ func createClient(t *testing.T, key string) (*Client, error) {
 	return NewClient(key, cred, options)
 }
 
-func createKeyClient(t *testing.T) (*azkeys.Client, error) {
+func createKeyClient(t *testing.T) (azkeys.Client, error) {
 	vaultUrl := recording.GetEnvVariable("AZURE_KEYVAULT_URL", fakeKvURL)
 	if recording.GetRecordMode() == "playback" {
 		vaultUrl = fakeKvURL

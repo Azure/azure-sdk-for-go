@@ -1,5 +1,8 @@
 # Release History
 
+## 0.2.1 (2021-11-04)
+No exported changes
+
 ## 0.2.0 (2021-10-29)
 
 ### Breaking Changes

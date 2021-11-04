@@ -1,7 +1,6 @@
 # Azure Identity Client Module for Go
 
-The Azure Identity module provides Azure Active Directory token authentication support across the Azure SDK. It
-includes a set of TokenCredential implementations which can be used with Azure SDK clients supporting token authentication.
+The Azure Identity module provides Azure Active Directory (Azure AD) token authentication support across the Azure SDK. It includes a set of `TokenCredential` implementations, which can be used with Azure SDK clients supporting token authentication.
 
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/azidentity)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity)
 | [Azure Active Directory documentation](https://docs.microsoft.com/azure/active-directory/)
@@ -22,20 +21,16 @@ go get -u github.com/Azure/azure-sdk-for-go/sdk/azidentity
 ## Prerequisites
 
 - an [Azure subscription](https://azure.microsoft.com/free/)
-- a recent version of Go. This module supports the two most recent stable versions.
+- A recent version of Go. This module supports the two most recent stable versions.
 
 ### Authenticating during local development
 
-When debugging and executing code locally developers typically use their own accounts
-to authenticate calls to Azure services. The `azidentity` module supports
-authenticating through developer tools to simplify local development.
+When debugging and executing code locally, developers typically use their own accounts to authenticate calls to Azure services. The `azidentity` module supports authenticating through developer tools to simplify local development.
 
 #### Authenticating via the Azure CLI
 
 `DefaultAzureCredential` and `AzureCLICredential` can authenticate as the user
-signed in to the [Azure CLI](https://docs.microsoft.com/cli/azure). To sign in
-to the Azure CLI, run `az login`. On a system with a default web browser, the
-Azure CLI will launch the browser to authenticate a user.
+signed in to the [Azure CLI](https://docs.microsoft.com/cli/azure). To sign in to the Azure CLI, run `az login`. On a system with a default web browser, the Azure CLI will launch the browser to authenticate a user.
 
 When no default browser is available, `az login` will use the device code
 authentication flow. This can also be selected manually by running `az login --use-device-code`.
@@ -51,24 +46,21 @@ to authenticate requests.
 
 The `azidentity` module focuses on OAuth authentication with Azure Active
 Directory (AAD). It offers a variety of credential types capable of acquiring
-an AAD access token. See [Credential Types](#credential-types "Credential Types")
-below for a list of this module's credential types.
+an Azure AD access token. See [Credential Types](#credential-types "Credential Types") for a list of this module's credential types.
 
 ### DefaultAzureCredential
-`DefaultAzureCredential` is appropriate for most applications which will deploy
-to Azure because it combines common production credentials with development credentials.
-It attempts to authenticate via the following mechanisms in this order, stopping when
-one succeeds:
+`DefaultAzureCredential` is appropriate for most apps that will be deployed to Azure. It combines common production credentials with development credentials. It attempts to authenticate via the following mechanisms in this order, stopping when one succeeds:
 
 ![DefaultAzureCredential authentication flow](img/DAC_flow.PNG)
 
  - Environment - `DefaultAzureCredential` will read account information specified via [environment variables](#environment-variables) and use it to authenticate.
- - Managed Identity - if the application is deployed to an Azure host with managed identity enabled, `DefaultAzureCredential` will authenticate with it.
- - Azure CLI - if a user or service principal has authenticated via the Azure CLI `az login` command, `DefaultAzureCredential` will authenticate that identity.
+ - Managed Identity - If the app is deployed to an Azure host with managed identity enabled, `DefaultAzureCredential` will authenticate with it.
+ - Azure CLI - If a user or service principal has authenticated via the Azure CLI `az login` command, `DefaultAzureCredential` will authenticate that identity.
 
 > Note: `DefaultAzureCredential` is intended to simplify getting started with the SDK by handling common scenarios with reasonable default behaviors. Developers who want more control or whose scenario isn't served by the default settings should use other credential types.
 
 ## Managed Identity
+
 `DefaultAzureCredential` and `ManagedIdentityCredential` support
 [managed identity authentication](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview)
 in any hosting environment which supports managed identities, such as (this list is not exhaustive):
@@ -98,21 +90,15 @@ client := armresources.NewResourceGroupsClient("subscription ID", cred, nil)
 See more how to configure the `DefaultAzureCredential` on your workstation or Azure in [Configure DefaultAzureCredential](https://github.com/Azure/azure-sdk-for-go/wiki/Set-up-Your-Environment-for-Authentication#configure-defaultazurecredential).
 
 #### Specify a user assigned managed identity for `DefaultAzureCredential`
-To configure `DefaultAzureCredential` to authenticate a user assigned managed identity, set the
-environment variable `AZURE_CLIENT_ID` to the identity's client ID.
+
+To configure `DefaultAzureCredential` to authenticate a user-assigned managed identity, set the `AZURE_CLIENT_ID` environment variable to the identity's client ID.
 
 ### Define a custom authentication flow with `ChainedTokenCredential`
 
-`DefaultAzureCredential` is generally the quickest way to get started developing
-applications for Azure. For more advanced scenarios,
-[ChainedTokenCredential][chain_cred_ref] links multiple credential instances
-to be tried sequentially when authenticating. It will try each chained
-credential in turn until one provides a token or fails to authenticate due to
+`DefaultAzureCredential` is generally the quickest way to get started developing apps for Azure. For more advanced scenarios, [ChainedTokenCredential][chain_cred_ref] links multiple credential instances to be tried sequentially when authenticating. It will try each chained credential in turn until one provides a token or fails to authenticate due to
 an error.
 
-The following example demonstrates creating a credential which will attempt to
-authenticate using managed identity, and fall back to authenticating via the
-Azure CLI when a managed identity is unavailable.
+The following example demonstrates creating a credential, which will attempt to authenticate using managed identity. It will fall back to authenticating via the Azure CLI when a managed identity is unavailable.
 
 ```go
 managedId, err := azidentity.NewManagedIdentityCredential(nil)
@@ -137,36 +123,36 @@ client := armresources.NewResourceGroupsClient("subscription ID", chain, nil)
 
 |credential|usage
 |-|-
-|[DefaultAzureCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#DefaultAzureCredential)|simplified authentication experience for getting started developing Azure applications
-|[ChainedTokenCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#ChainedTokenCredential)|define custom authentication flows composing multiple credentials
-|[EnvironmentCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#EnvironmentCredential)|authenticate a service principal or user configured by environment variables
-|[ManagedIdentityCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#ManagedIdentityCredential)|authenticate the managed identity of an Azure resource
+|[DefaultAzureCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#DefaultAzureCredential)|Simplified authentication experience for getting started developing Azure apps
+|[ChainedTokenCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#ChainedTokenCredential)|Define custom authentication flows, composing multiple credentials
+|[EnvironmentCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#EnvironmentCredential)|Authenticate a service principal or user configured by environment variables
+|[ManagedIdentityCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#ManagedIdentityCredential)|Authenticate the managed identity of an Azure resource
 
 ### Authenticating Service Principals
 
 |credential|usage
 |-|-
-|[ClientSecretCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#ClientSecretCredential)|authenticate a service principal with a secret
-|[ClientCertificateCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#ClientCertificateCredential)|authenticate a service principal with a certificate
+|[ClientSecretCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#ClientSecretCredential)|Authenticate a service principal with a secret
+|[ClientCertificateCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#ClientCertificateCredential)|Authenticate a service principal with a certificate
 
 ### Authenticating Users
 
 |credential|usage
 |-|-
-|[InteractiveBrowserCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#InteractiveBrowserCredential)|interactively authenticate a user with the default web browser
-|[DeviceCodeCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#DeviceCodeCredential)|interactively authenticate a user on a device with limited UI
-|[UsernamePasswordCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#UsernamePasswordCredential)|authenticate a user with a username and password
-|[AuthorizationCodeCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#AuthorizationCodeCredential)|authenticate a user with a previously obtained authorization code
+|[InteractiveBrowserCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#InteractiveBrowserCredential)|Interactively authenticate a user with the default web browser
+|[DeviceCodeCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#DeviceCodeCredential)|Interactively authenticate a user on a device with limited UI
+|[UsernamePasswordCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#UsernamePasswordCredential)|Authenticate a user with a username and password
+|[AuthorizationCodeCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#AuthorizationCodeCredential)|Authenticate a user with a previously obtained authorization code
 
 ### Authenticating via Development Tools
 
 |credential|usage
 |-|-
-|[AzureCLICredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#AzureCLICredential)|authenticate as the user signed in to the Azure CLI
+|[AzureCLICredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#AzureCLICredential)|Authenticate as the user signed in to the Azure CLI
 
 ## Environment Variables
 
-DefaultAzureCredential and EnvironmentCredential can be configured with
+`DefaultAzureCredential` and `EnvironmentCredential` can be configured with
 environment variables. Each type of authentication requires values for specific
 variables:
 
@@ -198,9 +184,7 @@ client secret and certificate are both present, the client secret will be used.
 
 ### Error Handling
 
-Credentials return an `error` when they fail to authenticate or lack data they require
-to authenticate. See the [troubleshooting guide](https://aka.ms/azsdk/go/identity/troubleshoot)
-for guidance on resolving errors from specific credential types.
+Credentials return an `error` when they fail to authenticate or lack data they require to authenticate. See the [troubleshooting guide](https://aka.ms/azsdk/go/identity/troubleshoot) for guidance on resolving errors from specific credential types.
 
 For more details on handling specific Azure Active Directory errors please refer to the
 Azure Active Directory
@@ -208,9 +192,7 @@ Azure Active Directory
 
 ### Logging
 
-This module uses the classification based logging implementation in `azcore`. To enable
-console logging for all SDK modules, set `AZURE_SDK_GO_LOGGING` to `all`. Use the azcore/log
-package to control log event output, or to enable logs for `azidentity` only. For example:
+This module uses the classification-based logging implementation in `azcore`. To enable console logging for all SDK modules, set `AZURE_SDK_GO_LOGGING` to `all`. Use the `azcore/log` package to control log event output or to enable logs for `azidentity` only. For example:
 ```go
 import azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 
@@ -223,15 +205,11 @@ azlog.SetListener(func(event azlog.Event, s string) {
 azlog.SetEvents(azidentity.EventCredential)
 ```
 
-Credentials log basic information only, such as `GetToken` success or failure and errors.
-These log entries do not contain authentication secrets but may contain sensitive information.
+Credentials log basic information only, such as `GetToken` success or failure and errors. These log entries don't contain authentication secrets but may contain sensitive information.
 
 ## Next steps
 
-Client and management modules listed on the
-[Azure SDK release page](https://azure.github.io/azure-sdk/releases/latest/go.html)
-support authenticating with `azidentity` credential types. You can learn more about
-using these libraries in their documentation, which is linked from the release page.
+Client and management modules listed on the [Azure SDK release page](https://azure.github.io/azure-sdk/releases/latest/go.html) support authenticating with `azidentity` credential types. You can learn more about using these libraries in their documentation, which is linked from the release page.
 
 ## Provide Feedback
 

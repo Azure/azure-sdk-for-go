@@ -1,6 +1,6 @@
 # Troubleshoot Azure Identity authentication issues
 
-`azidentity` credential types return errors when authentication fails or they are otherwise unable to authenticate. This troubleshooting guide describes steps you can take to resolve such errors.
+`azidentity` credential types return errors when authentication fails or they're otherwise unable to authenticate. This troubleshooting guide describes steps you can take to resolve such errors.
 
 ## Table of contents
 
@@ -21,11 +21,11 @@
 
 ## Troubleshoot environment credential authentication issues
 
-#### Environment variables not configured
+### Environment variables not configured
 
 `EnvironmentCredential` supports service principal and user password authentication. `NewEnvironmentCredential()` returns an error when environment configuration is incomplete. To fix this, set the appropriate environment variables for the identity you want to authenticate:
 
-##### Service principal with secret
+#### Service principal with secret
 
 | Variable name | Value |
 | --- | --- |
@@ -33,7 +33,7 @@
 `AZURE_TENANT_ID` | ID of the app's Azure AD tenant. |
 `AZURE_CLIENT_SECRET` | One of the app's client secrets. |
 
-##### Service principal with certificate
+#### Service principal with certificate
 
 | Variable name | Value |
 | --- | --- |
@@ -41,7 +41,7 @@
 `AZURE_TENANT_ID` | ID of the app's Azure AD tenant. |
 `AZURE_CLIENT_CERTIFICATE_PATH` | Path to a PEM-encoded or PKCS12 certificate file including private key (without password protection). |
 
-##### User password
+#### User password
 
 | Variable name | Value |
 | --- | --- |

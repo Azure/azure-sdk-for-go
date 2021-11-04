@@ -268,8 +268,6 @@ func (p *tableEntityQueryResponsePager) NextPage(ctx context.Context) bool {
 	p.current = &c
 	p.tableQueryOptions.NextPartitionKey = resp.XMSContinuationNextPartitionKey
 	p.tableQueryOptions.NextRowKey = resp.XMSContinuationNextRowKey
-	// fmt.Println(*p.tableQueryOptions.NextPartitionKey, *p.current.ContinuationNextPartitionKey)
-	// fmt.Println(*p.tableQueryOptions.NextRowKey, *p.current.ContinuationNextRowKey)
 	return p.err == nil && len(resp.TableEntityQueryResponse.Value) > 0
 }
 

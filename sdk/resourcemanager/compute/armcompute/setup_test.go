@@ -14,12 +14,13 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-var pathToPackage = "sdk/resourcemanager/compute/armcompute/testdata"
+var (
+	pathToPackage = "sdk/resourcemanager/compute/armcompute/testdata"
+)
 
 func TestMain(m *testing.M) {
 	// Initialize
-	err := recording.AddURISubscriptionIDSanitizer("00000000-0000-0000-0000-000000000000", nil)
-	if err != nil {
+	if err := recording.AddGeneralRegexSanitizer("00000000-0000-0000-0000-000000000000", `[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}`, nil); err != nil {
 		panic(err)
 	}
 

@@ -1,43 +1,139 @@
+//go:build go1.16
+// +build go1.16
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+
 package armcompute_test
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/stretchr/testify/require"
 	"testing"
 	"time"
 )
 
 func TestVirtualMachinesClient_CreateOrUpdate(t *testing.T) {
-	//stop := startTest(t)
-	//defer stop()
-	//
-	//cred, opt := authenticateTest(t)
-	//conn := arm.NewDefaultConnection(cred, opt)
+	stop := startTest(t)
+	defer stop()
+
+	cred, _ := authenticateTest(t)
 	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 
-	cred,err := azidentity.NewDefaultAzureCredential(nil)
-	require.NoError(t, err)
-	//conn := arm.NewDefaultConnection(cred,nil)
-	//subscriptionID,ok := os.LookupEnv("AZURE_SUBSCRIPTION_ID")
-	//require.Equal(t, true,ok)
+	// create resource group
+	rg,clean := createResourceGroup(t,cred,subscriptionID,"createVM","westus2")
+	rgName := *rg.Name
+	defer clean()
+
+	//create virtual machine
+	_,_ = createVirtualMachineTest(t,cred,subscriptionID,rgName)
+}
+
+func TestVirtualMachinesClient_BeginDelete(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	cred, _ := authenticateTest(t)
+	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 
 	// create resource group
-	rgName, err := createRandomName(t, "testRP")
-	require.NoError(t, err)
-	rgClient := armresources.NewResourceGroupsClient(subscriptionID, cred,nil)
-	_, err = rgClient.CreateOrUpdate(context.Background(), rgName, armresources.ResourceGroup{
-		Location: to.StringPtr("westus2"),
-	}, nil)
-	defer cleanup(t, rgClient, rgName)
-	require.NoError(t, err)
+	rg, clean := createResourceGroup(t, cred, subscriptionID, "deleteVM", "westus")
+	rgName := *rg.Name
+	defer clean()
 
-	// create virtual network
+	// create virtual machine
+	vmClient,vm := createVirtualMachineTest(t,cred,subscriptionID,rgName)
+
+	// delete virtual machine
+	delPoller,err := vmClient.BeginDelete(context.Background(),rgName,*vm.Name,nil)
+	require.NoError(t, err)
+	delResp,err := delPoller.PollUntilDone(context.Background(),10*time.Second)
+	require.NoError(t, err)
+	require.Equal(t, delResp.RawResponse.StatusCode,200)
+}
+
+func TestVirtualMachinesClient_Get(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	cred, _ := authenticateTest(t)
+	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+
+	// create resource group
+	rg, clean := createResourceGroup(t, cred, subscriptionID, "getVM", "westus")
+	rgName := *rg.Name
+	defer clean()
+
+	// create virtual machine
+	vmClient,vm := createVirtualMachineTest(t,cred,subscriptionID,rgName)
+
+	// virtual machine get
+	resp,err := vmClient.Get(context.Background(),rgName,*vm.Name,nil)
+	require.NoError(t, err)
+	require.Equal(t, *resp.Name,*vm.Name)
+}
+
+func TestVirtualMachinesClient_List(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	cred, _ := authenticateTest(t)
+	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+
+	// create resource group
+	rg, clean := createResourceGroup(t, cred, subscriptionID, "listVM", "westus")
+	rgName := *rg.Name
+	defer clean()
+
+	// create virtual machine
+	vmClient,_ := createVirtualMachineTest(t,cred,subscriptionID,rgName)
+
+	// virtual machine list
+	resp := vmClient.List(rgName,nil)
+	require.Equal(t, resp.NextPage(context.Background()),true)
+}
+
+func TestVirtualMachinesClient_BeginUpdate(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	cred, _ := authenticateTest(t)
+	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+
+	// create resource group
+	rg, clean := createResourceGroup(t, cred, subscriptionID, "updateVM", "westus")
+	rgName := *rg.Name
+	defer clean()
+
+	// create virtual machine
+	vmClient,vm := createVirtualMachineTest(t,cred,subscriptionID,rgName)
+
+	// virtual machine update
+	updatePoller,err := vmClient.BeginUpdate(
+		context.Background(),
+		rgName,
+		*vm.Name,
+		armcompute.VirtualMachineUpdate{
+			UpdateResource: armcompute.UpdateResource{
+				Tags: map[string]*string{
+					"tag":to.StringPtr("value"),
+				},
+			},
+		},
+		nil,
+		)
+	require.NoError(t, err)
+	updateResp,err := updatePoller.PollUntilDone(context.Background(),10*time.Second)
+	require.NoError(t, err)
+	require.Equal(t, *updateResp.Name,*vm.Name)
+}
+
+func createVirtualMachineTest(t *testing.T,cred azcore.TokenCredential,subscriptionID,rgName string) (*armcompute.VirtualMachinesClient,*armcompute.VirtualMachine) {
 	vnClient := armnetwork.NewVirtualNetworksClient(subscriptionID,cred,nil)
 	vnName, err := createRandomName(t, "network")
 	require.NoError(t, err)
@@ -266,4 +362,5 @@ func TestVirtualMachinesClient_CreateOrUpdate(t *testing.T) {
 	vmResp, err := vmPoller.PollUntilDone(context.Background(), 10*time.Second)
 	require.NoError(t, err)
 	require.Equal(t, *vmResp.Name, vmName)
+	return vmClient,&vmResp.VirtualMachine
 }

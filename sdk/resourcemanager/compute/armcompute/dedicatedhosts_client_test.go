@@ -1,44 +1,36 @@
+//go:build go1.16
+// +build go1.16
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+
 package armcompute_test
 
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/stretchr/testify/require"
 	"testing"
 	"time"
 )
 
 func TestDedicatedHostsClient_CreateOrUpdate(t *testing.T) {
-	//stop := startTest(t)
-	//defer stop()
-	//
-	//cred, opt := authenticateTest(t)
-	//conn := arm.NewDefaultConnection(cred, opt)
+	stop := startTest(t)
+	defer stop()
+
+	cred, opt := authenticateTest(t)
 	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 
-	cred,err := azidentity.NewDefaultAzureCredential(nil)
-	require.NoError(t, err)
-	//conn := arm.NewDefaultConnection(cred,nil)
-	//subscriptionID,ok := os.LookupEnv("AZURE_SUBSCRIPTION_ID")
-	//require.Equal(t, true,ok)
-
 	// create resource group
-	rgName, err := createRandomName(t, "testRP")
-	require.NoError(t, err)
-	rgClient := armresources.NewResourceGroupsClient(subscriptionID,cred,nil)
-	_, err = rgClient.CreateOrUpdate(context.Background(), rgName, armresources.ResourceGroup{
-		Location: to.StringPtr("westus"),
-	}, nil)
-	defer cleanup(t, rgClient, rgName)
-	require.NoError(t, err)
+	rg,clean := createResourceGroup(t,cred,subscriptionID,"dhcreate","eastus")
+	rgName := *rg.Name
+	defer clean()
 
 	// create dedicated host group
-	dhgClient := armcompute.NewDedicatedHostGroupsClient(subscriptionID,cred,nil)
-	dhgName, err := createRandomName(t, "dhg")
+	dhgClient := armcompute.NewDedicatedHostGroupsClient(subscriptionID,cred,opt)
+	dhgName, err := createRandomName(t, "createDH")
 	require.NoError(t, err)
 	dhgResp, err := dhgClient.CreateOrUpdate(
 		context.Background(),

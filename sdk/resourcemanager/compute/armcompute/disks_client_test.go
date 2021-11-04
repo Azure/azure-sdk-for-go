@@ -1,48 +1,38 @@
+//go:build go1.16
+// +build go1.16
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+
 package armcompute_test
 
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/stretchr/testify/require"
 	"testing"
 	"time"
 )
 
 func TestDisksClient_CreateOrUpdate(t *testing.T) {
-	//stop := startTest(t)
-	//defer stop()
+	stop := startTest(t)
+	defer stop()
 
-	//cred, opt := authenticateTest(t)
-	//conn := arm.NewDefaultConnection(cred, opt)
+	cred, _ := authenticateTest(t)
 	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 	tenantID := recording.GetEnvVariable("AZURE_TENANT_ID", "00000000-0000-0000-0000-000000000000")
 
-	cred,err := azidentity.NewDefaultAzureCredential(nil)
-	require.NoError(t, err)
-	//conn := arm.NewDefaultConnection(cred,nil)
-	//subscriptionID,ok := os.LookupEnv("AZURE_SUBSCRIPTION_ID")
-	//require.Equal(t, true,ok)
-	//tenantID,ok := os.LookupEnv("AZURE_TENANT_ID")
-	//require.Equal(t, true,ok)
-
 	// create resource group
-	rgName, err := createRandomName(t, "testRP")
-	require.NoError(t, err)
-	rgClient := armresources.NewResourceGroupsClient(subscriptionID,cred,nil)
-	_, err = rgClient.CreateOrUpdate(context.Background(), rgName, armresources.ResourceGroup{
-		Location: to.StringPtr("westus"),
-	}, nil)
-	defer cleanup(t, rgClient, rgName)
-	require.NoError(t, err)
+	rg,clean := createResourceGroup(t,cred,subscriptionID,"disk","westus")
+	rgName := *rg.Name
+	defer clean()
 
 	// create vault
 	vClient := armkeyvault.NewVaultsClient(subscriptionID,cred,nil)
-	vName, err := createRandomName(t, "vault")
+	vName, err := createRandomName(t, "vaultX")
 	require.NoError(t, err)
 	vPoller, err := vClient.BeginCreateOrUpdate(
 		context.Background(),

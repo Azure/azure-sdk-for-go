@@ -11,13 +11,14 @@ package armdatalakestore
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // LocationsClient contains the methods for the Locations group.
@@ -29,8 +30,15 @@ type LocationsClient struct {
 }
 
 // NewLocationsClient creates a new instance of LocationsClient with the specified values.
-func NewLocationsClient(con *arm.Connection, subscriptionID string) *LocationsClient {
-	return &LocationsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LocationsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &LocationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // GetCapability - Gets subscription-level properties and limits for Data Lake Store specified by resource location.
@@ -76,7 +84,7 @@ func (client *LocationsClient) getCapabilityCreateRequest(ctx context.Context, l
 func (client *LocationsClient) getCapabilityHandleResponse(resp *http.Response) (LocationsGetCapabilityResponse, error) {
 	result := LocationsGetCapabilityResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CapabilityInformation); err != nil {
-		return LocationsGetCapabilityResponse{}, err
+		return LocationsGetCapabilityResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -136,7 +144,7 @@ func (client *LocationsClient) getUsageCreateRequest(ctx context.Context, locati
 func (client *LocationsClient) getUsageHandleResponse(resp *http.Response) (LocationsGetUsageResponse, error) {
 	result := LocationsGetUsageResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UsageListResult); err != nil {
-		return LocationsGetUsageResponse{}, err
+		return LocationsGetUsageResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

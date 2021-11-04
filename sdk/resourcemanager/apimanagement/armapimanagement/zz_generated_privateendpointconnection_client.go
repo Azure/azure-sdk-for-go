@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // PrivateEndpointConnectionClient contains the methods for the PrivateEndpointConnection group.
@@ -31,8 +31,15 @@ type PrivateEndpointConnectionClient struct {
 }
 
 // NewPrivateEndpointConnectionClient creates a new instance of PrivateEndpointConnectionClient with the specified values.
-func NewPrivateEndpointConnectionClient(con *arm.Connection, subscriptionID string) *PrivateEndpointConnectionClient {
-	return &PrivateEndpointConnectionClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewPrivateEndpointConnectionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateEndpointConnectionClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &PrivateEndpointConnectionClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Creates a new Private Endpoint Connection or updates an existing one.
@@ -96,7 +103,7 @@ func (client *PrivateEndpointConnectionClient) createOrUpdateCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, privateEndpointConnectionRequest)
@@ -176,7 +183,7 @@ func (client *PrivateEndpointConnectionClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -236,7 +243,7 @@ func (client *PrivateEndpointConnectionClient) getByNameCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -246,7 +253,7 @@ func (client *PrivateEndpointConnectionClient) getByNameCreateRequest(ctx contex
 func (client *PrivateEndpointConnectionClient) getByNameHandleResponse(resp *http.Response) (PrivateEndpointConnectionGetByNameResponse, error) {
 	result := PrivateEndpointConnectionGetByNameResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnection); err != nil {
-		return PrivateEndpointConnectionGetByNameResponse{}, err
+		return PrivateEndpointConnectionGetByNameResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -305,7 +312,7 @@ func (client *PrivateEndpointConnectionClient) getPrivateLinkResourceCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -315,7 +322,7 @@ func (client *PrivateEndpointConnectionClient) getPrivateLinkResourceCreateReque
 func (client *PrivateEndpointConnectionClient) getPrivateLinkResourceHandleResponse(resp *http.Response) (PrivateEndpointConnectionGetPrivateLinkResourceResponse, error) {
 	result := PrivateEndpointConnectionGetPrivateLinkResourceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResource); err != nil {
-		return PrivateEndpointConnectionGetPrivateLinkResourceResponse{}, err
+		return PrivateEndpointConnectionGetPrivateLinkResourceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -370,7 +377,7 @@ func (client *PrivateEndpointConnectionClient) listByServiceCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -380,7 +387,7 @@ func (client *PrivateEndpointConnectionClient) listByServiceCreateRequest(ctx co
 func (client *PrivateEndpointConnectionClient) listByServiceHandleResponse(resp *http.Response) (PrivateEndpointConnectionListByServiceResponse, error) {
 	result := PrivateEndpointConnectionListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionListResult); err != nil {
-		return PrivateEndpointConnectionListByServiceResponse{}, err
+		return PrivateEndpointConnectionListByServiceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -435,7 +442,7 @@ func (client *PrivateEndpointConnectionClient) listPrivateLinkResourcesCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -445,7 +452,7 @@ func (client *PrivateEndpointConnectionClient) listPrivateLinkResourcesCreateReq
 func (client *PrivateEndpointConnectionClient) listPrivateLinkResourcesHandleResponse(resp *http.Response) (PrivateEndpointConnectionListPrivateLinkResourcesResponse, error) {
 	result := PrivateEndpointConnectionListPrivateLinkResourcesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourceListResult); err != nil {
-		return PrivateEndpointConnectionListPrivateLinkResourcesResponse{}, err
+		return PrivateEndpointConnectionListPrivateLinkResourcesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

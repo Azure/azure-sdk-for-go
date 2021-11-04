@@ -11,13 +11,14 @@ package armcosmos
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // CollectionClient contains the methods for the Collection group.
@@ -29,8 +30,15 @@ type CollectionClient struct {
 }
 
 // NewCollectionClient creates a new instance of CollectionClient with the specified values.
-func NewCollectionClient(con *arm.Connection, subscriptionID string) *CollectionClient {
-	return &CollectionClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewCollectionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CollectionClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &CollectionClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // ListMetricDefinitions - Retrieves metric definitions for the given collection.
@@ -78,7 +86,7 @@ func (client *CollectionClient) listMetricDefinitionsCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -88,7 +96,7 @@ func (client *CollectionClient) listMetricDefinitionsCreateRequest(ctx context.C
 func (client *CollectionClient) listMetricDefinitionsHandleResponse(resp *http.Response) (CollectionListMetricDefinitionsResponse, error) {
 	result := CollectionListMetricDefinitionsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricDefinitionsListResult); err != nil {
-		return CollectionListMetricDefinitionsResponse{}, err
+		return CollectionListMetricDefinitionsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -150,7 +158,7 @@ func (client *CollectionClient) listMetricsCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	reqQP.Set("$filter", filter)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
@@ -161,7 +169,7 @@ func (client *CollectionClient) listMetricsCreateRequest(ctx context.Context, re
 func (client *CollectionClient) listMetricsHandleResponse(resp *http.Response) (CollectionListMetricsResponse, error) {
 	result := CollectionListMetricsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricListResult); err != nil {
-		return CollectionListMetricsResponse{}, err
+		return CollectionListMetricsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -223,7 +231,7 @@ func (client *CollectionClient) listUsagesCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -236,7 +244,7 @@ func (client *CollectionClient) listUsagesCreateRequest(ctx context.Context, res
 func (client *CollectionClient) listUsagesHandleResponse(resp *http.Response) (CollectionListUsagesResponse, error) {
 	result := CollectionListUsagesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UsagesResult); err != nil {
-		return CollectionListUsagesResponse{}, err
+		return CollectionListUsagesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

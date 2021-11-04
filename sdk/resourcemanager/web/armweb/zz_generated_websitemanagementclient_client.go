@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // WebSiteManagementClient contains the methods for the WebSiteManagementClient group.
@@ -31,8 +32,15 @@ type WebSiteManagementClient struct {
 }
 
 // NewWebSiteManagementClient creates a new instance of WebSiteManagementClient with the specified values.
-func NewWebSiteManagementClient(con *arm.Connection, subscriptionID string) *WebSiteManagementClient {
-	return &WebSiteManagementClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewWebSiteManagementClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WebSiteManagementClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &WebSiteManagementClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CheckNameAvailability - Description for Check if a resource name is available.
@@ -74,7 +82,7 @@ func (client *WebSiteManagementClient) checkNameAvailabilityCreateRequest(ctx co
 func (client *WebSiteManagementClient) checkNameAvailabilityHandleResponse(resp *http.Response) (WebSiteManagementClientCheckNameAvailabilityResponse, error) {
 	result := WebSiteManagementClientCheckNameAvailabilityResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceNameAvailability); err != nil {
-		return WebSiteManagementClientCheckNameAvailabilityResponse{}, err
+		return WebSiteManagementClientCheckNameAvailabilityResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -127,7 +135,7 @@ func (client *WebSiteManagementClient) generateGithubAccessTokenForAppserviceCLI
 func (client *WebSiteManagementClient) generateGithubAccessTokenForAppserviceCLIAsyncHandleResponse(resp *http.Response) (WebSiteManagementClientGenerateGithubAccessTokenForAppserviceCLIAsyncResponse, error) {
 	result := WebSiteManagementClientGenerateGithubAccessTokenForAppserviceCLIAsyncResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppserviceGithubToken); err != nil {
-		return WebSiteManagementClientGenerateGithubAccessTokenForAppserviceCLIAsyncResponse{}, err
+		return WebSiteManagementClientGenerateGithubAccessTokenForAppserviceCLIAsyncResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -180,7 +188,7 @@ func (client *WebSiteManagementClient) getPublishingUserCreateRequest(ctx contex
 func (client *WebSiteManagementClient) getPublishingUserHandleResponse(resp *http.Response) (WebSiteManagementClientGetPublishingUserResponse, error) {
 	result := WebSiteManagementClientGetPublishingUserResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.User); err != nil {
-		return WebSiteManagementClientGetPublishingUserResponse{}, err
+		return WebSiteManagementClientGetPublishingUserResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -237,7 +245,7 @@ func (client *WebSiteManagementClient) getSourceControlCreateRequest(ctx context
 func (client *WebSiteManagementClient) getSourceControlHandleResponse(resp *http.Response) (WebSiteManagementClientGetSourceControlResponse, error) {
 	result := WebSiteManagementClientGetSourceControlResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControl); err != nil {
-		return WebSiteManagementClientGetSourceControlResponse{}, err
+		return WebSiteManagementClientGetSourceControlResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -294,7 +302,7 @@ func (client *WebSiteManagementClient) getSubscriptionDeploymentLocationsCreateR
 func (client *WebSiteManagementClient) getSubscriptionDeploymentLocationsHandleResponse(resp *http.Response) (WebSiteManagementClientGetSubscriptionDeploymentLocationsResponse, error) {
 	result := WebSiteManagementClientGetSubscriptionDeploymentLocationsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentLocations); err != nil {
-		return WebSiteManagementClientGetSubscriptionDeploymentLocationsResponse{}, err
+		return WebSiteManagementClientGetSubscriptionDeploymentLocationsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -354,7 +362,7 @@ func (client *WebSiteManagementClient) listBillingMetersCreateRequest(ctx contex
 func (client *WebSiteManagementClient) listBillingMetersHandleResponse(resp *http.Response) (WebSiteManagementClientListBillingMetersResponse, error) {
 	result := WebSiteManagementClientListBillingMetersResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BillingMeterCollection); err != nil {
-		return WebSiteManagementClientListBillingMetersResponse{}, err
+		return WebSiteManagementClientListBillingMetersResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -420,7 +428,7 @@ func (client *WebSiteManagementClient) listGeoRegionsCreateRequest(ctx context.C
 func (client *WebSiteManagementClient) listGeoRegionsHandleResponse(resp *http.Response) (WebSiteManagementClientListGeoRegionsResponse, error) {
 	result := WebSiteManagementClientListGeoRegionsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GeoRegionCollection); err != nil {
-		return WebSiteManagementClientListGeoRegionsResponse{}, err
+		return WebSiteManagementClientListGeoRegionsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -474,7 +482,7 @@ func (client *WebSiteManagementClient) listPremierAddOnOffersCreateRequest(ctx c
 func (client *WebSiteManagementClient) listPremierAddOnOffersHandleResponse(resp *http.Response) (WebSiteManagementClientListPremierAddOnOffersResponse, error) {
 	result := WebSiteManagementClientListPremierAddOnOffersResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PremierAddOnOfferCollection); err != nil {
-		return WebSiteManagementClientListPremierAddOnOffersResponse{}, err
+		return WebSiteManagementClientListPremierAddOnOffersResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -531,7 +539,7 @@ func (client *WebSiteManagementClient) listSKUsCreateRequest(ctx context.Context
 func (client *WebSiteManagementClient) listSKUsHandleResponse(resp *http.Response) (WebSiteManagementClientListSKUsResponse, error) {
 	result := WebSiteManagementClientListSKUsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SKUInfos); err != nil {
-		return WebSiteManagementClientListSKUsResponse{}, err
+		return WebSiteManagementClientListSKUsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -585,7 +593,7 @@ func (client *WebSiteManagementClient) listSiteIdentifiersAssignedToHostNameCrea
 func (client *WebSiteManagementClient) listSiteIdentifiersAssignedToHostNameHandleResponse(resp *http.Response) (WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse, error) {
 	result := WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IdentifierCollection); err != nil {
-		return WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse{}, err
+		return WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -635,7 +643,7 @@ func (client *WebSiteManagementClient) listSourceControlsCreateRequest(ctx conte
 func (client *WebSiteManagementClient) listSourceControlsHandleResponse(resp *http.Response) (WebSiteManagementClientListSourceControlsResponse, error) {
 	result := WebSiteManagementClientListSourceControlsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControlCollection); err != nil {
-		return WebSiteManagementClientListSourceControlsResponse{}, err
+		return WebSiteManagementClientListSourceControlsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -740,7 +748,7 @@ func (client *WebSiteManagementClient) updatePublishingUserCreateRequest(ctx con
 func (client *WebSiteManagementClient) updatePublishingUserHandleResponse(resp *http.Response) (WebSiteManagementClientUpdatePublishingUserResponse, error) {
 	result := WebSiteManagementClientUpdatePublishingUserResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.User); err != nil {
-		return WebSiteManagementClientUpdatePublishingUserResponse{}, err
+		return WebSiteManagementClientUpdatePublishingUserResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -797,7 +805,7 @@ func (client *WebSiteManagementClient) updateSourceControlCreateRequest(ctx cont
 func (client *WebSiteManagementClient) updateSourceControlHandleResponse(resp *http.Response) (WebSiteManagementClientUpdateSourceControlResponse, error) {
 	result := WebSiteManagementClientUpdateSourceControlResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControl); err != nil {
-		return WebSiteManagementClientUpdateSourceControlResponse{}, err
+		return WebSiteManagementClientUpdateSourceControlResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -858,7 +866,7 @@ func (client *WebSiteManagementClient) validateCreateRequest(ctx context.Context
 func (client *WebSiteManagementClient) validateHandleResponse(resp *http.Response) (WebSiteManagementClientValidateResponse, error) {
 	result := WebSiteManagementClientValidateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ValidateResponse); err != nil {
-		return WebSiteManagementClientValidateResponse{}, err
+		return WebSiteManagementClientValidateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -968,7 +976,7 @@ func (client *WebSiteManagementClient) verifyHostingEnvironmentVnetCreateRequest
 func (client *WebSiteManagementClient) verifyHostingEnvironmentVnetHandleResponse(resp *http.Response) (WebSiteManagementClientVerifyHostingEnvironmentVnetResponse, error) {
 	result := WebSiteManagementClientVerifyHostingEnvironmentVnetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetValidationFailureDetails); err != nil {
-		return WebSiteManagementClientVerifyHostingEnvironmentVnetResponse{}, err
+		return WebSiteManagementClientVerifyHostingEnvironmentVnetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

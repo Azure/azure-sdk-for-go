@@ -11,14 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient contains the methods for the ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolicies group.
@@ -30,8 +30,15 @@ type ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient stru
 }
 
 // NewManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient creates a new instance of ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient with the specified values.
-func NewManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient(con *arm.Connection, subscriptionID string) *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient {
-	return &ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Sets a database's short term retention policy.
@@ -172,7 +179,7 @@ func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesCl
 func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient) getHandleResponse(resp *http.Response) (ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesGetResponse, error) {
 	result := ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedBackupShortTermRetentionPolicy); err != nil {
-		return ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesGetResponse{}, err
+		return ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -237,7 +244,7 @@ func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesCl
 func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient) listByRestorableDroppedDatabaseHandleResponse(resp *http.Response) (ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesListByRestorableDroppedDatabaseResponse, error) {
 	result := ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesListByRestorableDroppedDatabaseResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedBackupShortTermRetentionPolicyListResult); err != nil {
-		return ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesListByRestorableDroppedDatabaseResponse{}, err
+		return ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesListByRestorableDroppedDatabaseResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

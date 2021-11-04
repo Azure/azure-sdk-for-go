@@ -11,14 +11,14 @@ package armnotificationhubs
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // NamespacesClient contains the methods for the Namespaces group.
@@ -30,8 +30,15 @@ type NamespacesClient struct {
 }
 
 // NewNamespacesClient creates a new instance of NamespacesClient with the specified values.
-func NewNamespacesClient(con *arm.Connection, subscriptionID string) *NamespacesClient {
-	return &NamespacesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewNamespacesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *NamespacesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &NamespacesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CheckAvailability - Checks the availability of the given service namespace across all Azure subscriptions. This is useful because the domain name is
@@ -74,7 +81,7 @@ func (client *NamespacesClient) checkAvailabilityCreateRequest(ctx context.Conte
 func (client *NamespacesClient) checkAvailabilityHandleResponse(resp *http.Response) (NamespacesCheckAvailabilityResponse, error) {
 	result := NamespacesCheckAvailabilityResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckAvailabilityResult); err != nil {
-		return NamespacesCheckAvailabilityResponse{}, err
+		return NamespacesCheckAvailabilityResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -138,7 +145,7 @@ func (client *NamespacesClient) createOrUpdateCreateRequest(ctx context.Context,
 func (client *NamespacesClient) createOrUpdateHandleResponse(resp *http.Response) (NamespacesCreateOrUpdateResponse, error) {
 	result := NamespacesCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NamespaceResource); err != nil {
-		return NamespacesCreateOrUpdateResponse{}, err
+		return NamespacesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -206,7 +213,7 @@ func (client *NamespacesClient) createOrUpdateAuthorizationRuleCreateRequest(ctx
 func (client *NamespacesClient) createOrUpdateAuthorizationRuleHandleResponse(resp *http.Response) (NamespacesCreateOrUpdateAuthorizationRuleResponse, error) {
 	result := NamespacesCreateOrUpdateAuthorizationRuleResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SharedAccessAuthorizationRuleResource); err != nil {
-		return NamespacesCreateOrUpdateAuthorizationRuleResponse{}, err
+		return NamespacesCreateOrUpdateAuthorizationRuleResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -402,7 +409,7 @@ func (client *NamespacesClient) getCreateRequest(ctx context.Context, resourceGr
 func (client *NamespacesClient) getHandleResponse(resp *http.Response) (NamespacesGetResponse, error) {
 	result := NamespacesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NamespaceResource); err != nil {
-		return NamespacesGetResponse{}, err
+		return NamespacesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -470,7 +477,7 @@ func (client *NamespacesClient) getAuthorizationRuleCreateRequest(ctx context.Co
 func (client *NamespacesClient) getAuthorizationRuleHandleResponse(resp *http.Response) (NamespacesGetAuthorizationRuleResponse, error) {
 	result := NamespacesGetAuthorizationRuleResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SharedAccessAuthorizationRuleResource); err != nil {
-		return NamespacesGetAuthorizationRuleResponse{}, err
+		return NamespacesGetAuthorizationRuleResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -527,7 +534,7 @@ func (client *NamespacesClient) listCreateRequest(ctx context.Context, resourceG
 func (client *NamespacesClient) listHandleResponse(resp *http.Response) (NamespacesListResponse, error) {
 	result := NamespacesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NamespaceListResult); err != nil {
-		return NamespacesListResponse{}, err
+		return NamespacesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -580,7 +587,7 @@ func (client *NamespacesClient) listAllCreateRequest(ctx context.Context, option
 func (client *NamespacesClient) listAllHandleResponse(resp *http.Response) (NamespacesListAllResponse, error) {
 	result := NamespacesListAllResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NamespaceListResult); err != nil {
-		return NamespacesListAllResponse{}, err
+		return NamespacesListAllResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -641,7 +648,7 @@ func (client *NamespacesClient) listAuthorizationRulesCreateRequest(ctx context.
 func (client *NamespacesClient) listAuthorizationRulesHandleResponse(resp *http.Response) (NamespacesListAuthorizationRulesResponse, error) {
 	result := NamespacesListAuthorizationRulesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SharedAccessAuthorizationRuleListResult); err != nil {
-		return NamespacesListAuthorizationRulesResponse{}, err
+		return NamespacesListAuthorizationRulesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -709,7 +716,7 @@ func (client *NamespacesClient) listKeysCreateRequest(ctx context.Context, resou
 func (client *NamespacesClient) listKeysHandleResponse(resp *http.Response) (NamespacesListKeysResponse, error) {
 	result := NamespacesListKeysResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SharedAccessAuthorizationRuleListResult); err != nil {
-		return NamespacesListKeysResponse{}, err
+		return NamespacesListKeysResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -773,7 +780,7 @@ func (client *NamespacesClient) patchCreateRequest(ctx context.Context, resource
 func (client *NamespacesClient) patchHandleResponse(resp *http.Response) (NamespacesPatchResponse, error) {
 	result := NamespacesPatchResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NamespaceResource); err != nil {
-		return NamespacesPatchResponse{}, err
+		return NamespacesPatchResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -841,7 +848,7 @@ func (client *NamespacesClient) regenerateKeysCreateRequest(ctx context.Context,
 func (client *NamespacesClient) regenerateKeysHandleResponse(resp *http.Response) (NamespacesRegenerateKeysResponse, error) {
 	result := NamespacesRegenerateKeysResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceListKeys); err != nil {
-		return NamespacesRegenerateKeysResponse{}, err
+		return NamespacesRegenerateKeysResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -10,10 +10,9 @@ package armredis
 
 import (
 	"context"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"net/http"
 	"time"
-
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 )
 
 // FirewallRulesCreateOrUpdateResponse contains the response from method FirewallRules.CreateOrUpdate.
@@ -68,6 +67,8 @@ type LinkedServerCreatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l LinkedServerCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (LinkedServerCreateResponse, error) {
 	respType := LinkedServerCreateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.RedisLinkedServerWithProperties)
@@ -232,6 +233,8 @@ type PrivateEndpointConnectionsPutPollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l PrivateEndpointConnectionsPutPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsPutResponse, error) {
 	respType := PrivateEndpointConnectionsPutResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PrivateEndpointConnection)
@@ -300,6 +303,8 @@ type RedisCreatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l RedisCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (RedisCreateResponse, error) {
 	respType := RedisCreateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.RedisResource)
@@ -350,6 +355,8 @@ type RedisDeletePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l RedisDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (RedisDeleteResponse, error) {
 	respType := RedisDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -394,6 +401,8 @@ type RedisExportDataPollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l RedisExportDataPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (RedisExportDataResponse, error) {
 	respType := RedisExportDataResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -462,6 +471,8 @@ type RedisImportDataPollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l RedisImportDataPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (RedisImportDataResponse, error) {
 	respType := RedisImportDataResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)

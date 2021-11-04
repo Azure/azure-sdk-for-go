@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // InformationProtectionPoliciesClient contains the methods for the InformationProtectionPolicies group.
@@ -29,8 +30,15 @@ type InformationProtectionPoliciesClient struct {
 }
 
 // NewInformationProtectionPoliciesClient creates a new instance of InformationProtectionPoliciesClient with the specified values.
-func NewInformationProtectionPoliciesClient(con *arm.Connection) *InformationProtectionPoliciesClient {
-	return &InformationProtectionPoliciesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewInformationProtectionPoliciesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *InformationProtectionPoliciesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &InformationProtectionPoliciesClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Details of the information protection policy.
@@ -53,9 +61,6 @@ func (client *InformationProtectionPoliciesClient) CreateOrUpdate(ctx context.Co
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *InformationProtectionPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, scope string, informationProtectionPolicyName Enum20, informationProtectionPolicy InformationProtectionPolicy, options *InformationProtectionPoliciesCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/informationProtectionPolicies/{informationProtectionPolicyName}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if informationProtectionPolicyName == "" {
 		return nil, errors.New("parameter informationProtectionPolicyName cannot be empty")
@@ -76,7 +81,7 @@ func (client *InformationProtectionPoliciesClient) createOrUpdateCreateRequest(c
 func (client *InformationProtectionPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (InformationProtectionPoliciesCreateOrUpdateResponse, error) {
 	result := InformationProtectionPoliciesCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InformationProtectionPolicy); err != nil {
-		return InformationProtectionPoliciesCreateOrUpdateResponse{}, err
+		return InformationProtectionPoliciesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -114,9 +119,6 @@ func (client *InformationProtectionPoliciesClient) Get(ctx context.Context, scop
 // getCreateRequest creates the Get request.
 func (client *InformationProtectionPoliciesClient) getCreateRequest(ctx context.Context, scope string, informationProtectionPolicyName Enum20, options *InformationProtectionPoliciesGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/informationProtectionPolicies/{informationProtectionPolicyName}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if informationProtectionPolicyName == "" {
 		return nil, errors.New("parameter informationProtectionPolicyName cannot be empty")
@@ -137,7 +139,7 @@ func (client *InformationProtectionPoliciesClient) getCreateRequest(ctx context.
 func (client *InformationProtectionPoliciesClient) getHandleResponse(resp *http.Response) (InformationProtectionPoliciesGetResponse, error) {
 	result := InformationProtectionPoliciesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InformationProtectionPolicy); err != nil {
-		return InformationProtectionPoliciesGetResponse{}, err
+		return InformationProtectionPoliciesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -172,9 +174,6 @@ func (client *InformationProtectionPoliciesClient) List(scope string, options *I
 // listCreateRequest creates the List request.
 func (client *InformationProtectionPoliciesClient) listCreateRequest(ctx context.Context, scope string, options *InformationProtectionPoliciesListOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/informationProtectionPolicies"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -191,7 +190,7 @@ func (client *InformationProtectionPoliciesClient) listCreateRequest(ctx context
 func (client *InformationProtectionPoliciesClient) listHandleResponse(resp *http.Response) (InformationProtectionPoliciesListResponse, error) {
 	result := InformationProtectionPoliciesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InformationProtectionPolicyList); err != nil {
-		return InformationProtectionPoliciesListResponse{}, err
+		return InformationProtectionPoliciesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

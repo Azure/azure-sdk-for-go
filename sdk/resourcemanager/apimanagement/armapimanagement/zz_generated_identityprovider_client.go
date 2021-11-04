@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // IdentityProviderClient contains the methods for the IdentityProvider group.
@@ -30,8 +31,15 @@ type IdentityProviderClient struct {
 }
 
 // NewIdentityProviderClient creates a new instance of IdentityProviderClient with the specified values.
-func NewIdentityProviderClient(con *arm.Connection, subscriptionID string) *IdentityProviderClient {
-	return &IdentityProviderClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewIdentityProviderClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IdentityProviderClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &IdentityProviderClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or Updates the IdentityProvider configuration.
@@ -75,7 +83,7 @@ func (client *IdentityProviderClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header.Set("If-Match", *options.IfMatch)
@@ -91,7 +99,7 @@ func (client *IdentityProviderClient) createOrUpdateHandleResponse(resp *http.Re
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IdentityProviderContract); err != nil {
-		return IdentityProviderCreateOrUpdateResponse{}, err
+		return IdentityProviderCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -150,7 +158,7 @@ func (client *IdentityProviderClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("If-Match", ifMatch)
 	req.Raw().Header.Set("Accept", "application/json")
@@ -211,7 +219,7 @@ func (client *IdentityProviderClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -224,7 +232,7 @@ func (client *IdentityProviderClient) getHandleResponse(resp *http.Response) (Id
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IdentityProviderContract); err != nil {
-		return IdentityProviderGetResponse{}, err
+		return IdentityProviderGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -280,7 +288,7 @@ func (client *IdentityProviderClient) getEntityTagCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -332,7 +340,7 @@ func (client *IdentityProviderClient) listByServiceCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -342,7 +350,7 @@ func (client *IdentityProviderClient) listByServiceCreateRequest(ctx context.Con
 func (client *IdentityProviderClient) listByServiceHandleResponse(resp *http.Response) (IdentityProviderListByServiceResponse, error) {
 	result := IdentityProviderListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IdentityProviderList); err != nil {
-		return IdentityProviderListByServiceResponse{}, err
+		return IdentityProviderListByServiceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -401,7 +409,7 @@ func (client *IdentityProviderClient) listSecretsCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -414,7 +422,7 @@ func (client *IdentityProviderClient) listSecretsHandleResponse(resp *http.Respo
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClientSecretContract); err != nil {
-		return IdentityProviderListSecretsResponse{}, err
+		return IdentityProviderListSecretsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -473,7 +481,7 @@ func (client *IdentityProviderClient) updateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("If-Match", ifMatch)
 	req.Raw().Header.Set("Accept", "application/json")
@@ -487,7 +495,7 @@ func (client *IdentityProviderClient) updateHandleResponse(resp *http.Response) 
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IdentityProviderContract); err != nil {
-		return IdentityProviderUpdateResponse{}, err
+		return IdentityProviderUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

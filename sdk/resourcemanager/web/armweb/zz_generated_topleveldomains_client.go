@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // TopLevelDomainsClient contains the methods for the TopLevelDomains group.
@@ -30,8 +31,15 @@ type TopLevelDomainsClient struct {
 }
 
 // NewTopLevelDomainsClient creates a new instance of TopLevelDomainsClient with the specified values.
-func NewTopLevelDomainsClient(con *arm.Connection, subscriptionID string) *TopLevelDomainsClient {
-	return &TopLevelDomainsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewTopLevelDomainsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TopLevelDomainsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &TopLevelDomainsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Description for Get details of a top-level domain.
@@ -77,7 +85,7 @@ func (client *TopLevelDomainsClient) getCreateRequest(ctx context.Context, name 
 func (client *TopLevelDomainsClient) getHandleResponse(resp *http.Response) (TopLevelDomainsGetResponse, error) {
 	result := TopLevelDomainsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TopLevelDomain); err != nil {
-		return TopLevelDomainsGetResponse{}, err
+		return TopLevelDomainsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -131,7 +139,7 @@ func (client *TopLevelDomainsClient) listCreateRequest(ctx context.Context, opti
 func (client *TopLevelDomainsClient) listHandleResponse(resp *http.Response) (TopLevelDomainsListResponse, error) {
 	result := TopLevelDomainsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TopLevelDomainCollection); err != nil {
-		return TopLevelDomainsListResponse{}, err
+		return TopLevelDomainsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -189,7 +197,7 @@ func (client *TopLevelDomainsClient) listAgreementsCreateRequest(ctx context.Con
 func (client *TopLevelDomainsClient) listAgreementsHandleResponse(resp *http.Response) (TopLevelDomainsListAgreementsResponse, error) {
 	result := TopLevelDomainsListAgreementsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TldLegalAgreementCollection); err != nil {
-		return TopLevelDomainsListAgreementsResponse{}, err
+		return TopLevelDomainsListAgreementsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

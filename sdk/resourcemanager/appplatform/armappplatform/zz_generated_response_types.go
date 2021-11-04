@@ -10,10 +10,9 @@ package armappplatform
 
 import (
 	"context"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"net/http"
 	"time"
-
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 )
 
 // AppsCreateOrUpdatePollerResponse contains the response from method Apps.CreateOrUpdate.
@@ -26,6 +25,8 @@ type AppsCreateOrUpdatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l AppsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AppsCreateOrUpdateResponse, error) {
 	respType := AppsCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.AppResource)
@@ -76,6 +77,8 @@ type AppsDeletePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l AppsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AppsDeleteResponse, error) {
 	respType := AppsDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -156,6 +159,8 @@ type AppsUpdatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l AppsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AppsUpdateResponse, error) {
 	respType := AppsUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.AppResource)
@@ -218,6 +223,8 @@ type BindingsCreateOrUpdatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l BindingsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (BindingsCreateOrUpdateResponse, error) {
 	respType := BindingsCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.BindingResource)
@@ -268,6 +275,8 @@ type BindingsDeletePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l BindingsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (BindingsDeleteResponse, error) {
 	respType := BindingsDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -336,6 +345,8 @@ type BindingsUpdatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l BindingsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (BindingsUpdateResponse, error) {
 	respType := BindingsUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.BindingResource)
@@ -386,6 +397,8 @@ type CertificatesCreateOrUpdatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l CertificatesCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CertificatesCreateOrUpdateResponse, error) {
 	respType := CertificatesCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.CertificateResource)
@@ -436,6 +449,8 @@ type CertificatesDeletePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l CertificatesDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CertificatesDeleteResponse, error) {
 	respType := CertificatesDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -516,6 +531,8 @@ type ConfigServersUpdatePatchPollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l ConfigServersUpdatePatchPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ConfigServersUpdatePatchResponse, error) {
 	respType := ConfigServersUpdatePatchResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ConfigServerResource)
@@ -566,6 +583,8 @@ type ConfigServersUpdatePutPollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l ConfigServersUpdatePutPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ConfigServersUpdatePutResponse, error) {
 	respType := ConfigServersUpdatePutResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ConfigServerResource)
@@ -616,6 +635,8 @@ type ConfigServersValidatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l ConfigServersValidatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ConfigServersValidateResponse, error) {
 	respType := ConfigServersValidateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ConfigServerSettingsValidateResult)
@@ -666,6 +687,8 @@ type CustomDomainsCreateOrUpdatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l CustomDomainsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CustomDomainsCreateOrUpdateResponse, error) {
 	respType := CustomDomainsCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.CustomDomainResource)
@@ -716,6 +739,8 @@ type CustomDomainsDeletePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l CustomDomainsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CustomDomainsDeleteResponse, error) {
 	respType := CustomDomainsDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -784,6 +809,8 @@ type CustomDomainsUpdatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l CustomDomainsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CustomDomainsUpdateResponse, error) {
 	respType := CustomDomainsUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.CustomDomainResource)
@@ -834,6 +861,8 @@ type DeploymentsCreateOrUpdatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l DeploymentsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DeploymentsCreateOrUpdateResponse, error) {
 	respType := DeploymentsCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.DeploymentResource)
@@ -884,6 +913,8 @@ type DeploymentsDeletePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l DeploymentsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DeploymentsDeleteResponse, error) {
 	respType := DeploymentsDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -914,6 +945,98 @@ func (l *DeploymentsDeletePollerResponse) Resume(ctx context.Context, client *De
 
 // DeploymentsDeleteResponse contains the response from method Deployments.Delete.
 type DeploymentsDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DeploymentsGenerateHeapDumpPollerResponse contains the response from method Deployments.GenerateHeapDump.
+type DeploymentsGenerateHeapDumpPollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *DeploymentsGenerateHeapDumpPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l DeploymentsGenerateHeapDumpPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DeploymentsGenerateHeapDumpResponse, error) {
+	respType := DeploymentsGenerateHeapDumpResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a DeploymentsGenerateHeapDumpPollerResponse from the provided client and resume token.
+func (l *DeploymentsGenerateHeapDumpPollerResponse) Resume(ctx context.Context, client *DeploymentsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("DeploymentsClient.GenerateHeapDump", token, client.pl, client.generateHeapDumpHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &DeploymentsGenerateHeapDumpPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// DeploymentsGenerateHeapDumpResponse contains the response from method Deployments.GenerateHeapDump.
+type DeploymentsGenerateHeapDumpResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DeploymentsGenerateThreadDumpPollerResponse contains the response from method Deployments.GenerateThreadDump.
+type DeploymentsGenerateThreadDumpPollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *DeploymentsGenerateThreadDumpPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l DeploymentsGenerateThreadDumpPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DeploymentsGenerateThreadDumpResponse, error) {
+	respType := DeploymentsGenerateThreadDumpResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a DeploymentsGenerateThreadDumpPollerResponse from the provided client and resume token.
+func (l *DeploymentsGenerateThreadDumpPollerResponse) Resume(ctx context.Context, client *DeploymentsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("DeploymentsClient.GenerateThreadDump", token, client.pl, client.generateThreadDumpHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &DeploymentsGenerateThreadDumpPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// DeploymentsGenerateThreadDumpResponse contains the response from method Deployments.GenerateThreadDump.
+type DeploymentsGenerateThreadDumpResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
@@ -976,6 +1099,8 @@ type DeploymentsRestartPollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l DeploymentsRestartPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DeploymentsRestartResponse, error) {
 	respType := DeploymentsRestartResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -1010,6 +1135,52 @@ type DeploymentsRestartResponse struct {
 	RawResponse *http.Response
 }
 
+// DeploymentsStartJFRPollerResponse contains the response from method Deployments.StartJFR.
+type DeploymentsStartJFRPollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *DeploymentsStartJFRPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l DeploymentsStartJFRPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DeploymentsStartJFRResponse, error) {
+	respType := DeploymentsStartJFRResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a DeploymentsStartJFRPollerResponse from the provided client and resume token.
+func (l *DeploymentsStartJFRPollerResponse) Resume(ctx context.Context, client *DeploymentsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("DeploymentsClient.StartJFR", token, client.pl, client.startJFRHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &DeploymentsStartJFRPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// DeploymentsStartJFRResponse contains the response from method Deployments.StartJFR.
+type DeploymentsStartJFRResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
 // DeploymentsStartPollerResponse contains the response from method Deployments.Start.
 type DeploymentsStartPollerResponse struct {
 	// Poller contains an initialized poller.
@@ -1020,6 +1191,8 @@ type DeploymentsStartPollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l DeploymentsStartPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DeploymentsStartResponse, error) {
 	respType := DeploymentsStartResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -1064,6 +1237,8 @@ type DeploymentsStopPollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l DeploymentsStopPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DeploymentsStopResponse, error) {
 	respType := DeploymentsStopResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -1108,6 +1283,8 @@ type DeploymentsUpdatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l DeploymentsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DeploymentsUpdateResponse, error) {
 	respType := DeploymentsUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.DeploymentResource)
@@ -1170,6 +1347,8 @@ type MonitoringSettingsUpdatePatchPollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l MonitoringSettingsUpdatePatchPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MonitoringSettingsUpdatePatchResponse, error) {
 	respType := MonitoringSettingsUpdatePatchResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.MonitoringSettingResource)
@@ -1220,6 +1399,8 @@ type MonitoringSettingsUpdatePutPollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l MonitoringSettingsUpdatePutPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MonitoringSettingsUpdatePutResponse, error) {
 	respType := MonitoringSettingsUpdatePutResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.MonitoringSettingResource)
@@ -1318,6 +1499,8 @@ type ServicesCreateOrUpdatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l ServicesCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ServicesCreateOrUpdateResponse, error) {
 	respType := ServicesCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ServiceResource)
@@ -1368,6 +1551,8 @@ type ServicesDeletePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l ServicesDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ServicesDeleteResponse, error) {
 	respType := ServicesDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -1480,6 +1665,98 @@ type ServicesRegenerateTestKeyResult struct {
 	TestKeys
 }
 
+// ServicesStartPollerResponse contains the response from method Services.Start.
+type ServicesStartPollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *ServicesStartPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l ServicesStartPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ServicesStartResponse, error) {
+	respType := ServicesStartResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a ServicesStartPollerResponse from the provided client and resume token.
+func (l *ServicesStartPollerResponse) Resume(ctx context.Context, client *ServicesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ServicesClient.Start", token, client.pl, client.startHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &ServicesStartPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// ServicesStartResponse contains the response from method Services.Start.
+type ServicesStartResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ServicesStopPollerResponse contains the response from method Services.Stop.
+type ServicesStopPollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *ServicesStopPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l ServicesStopPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ServicesStopResponse, error) {
+	respType := ServicesStopResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a ServicesStopPollerResponse from the provided client and resume token.
+func (l *ServicesStopPollerResponse) Resume(ctx context.Context, client *ServicesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ServicesClient.Stop", token, client.pl, client.stopHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &ServicesStopPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// ServicesStopResponse contains the response from method Services.Stop.
+type ServicesStopResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
 // ServicesUpdatePollerResponse contains the response from method Services.Update.
 type ServicesUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
@@ -1490,6 +1767,8 @@ type ServicesUpdatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l ServicesUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ServicesUpdateResponse, error) {
 	respType := ServicesUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ServiceResource)
@@ -1528,4 +1807,126 @@ type ServicesUpdateResponse struct {
 // ServicesUpdateResult contains the result from method Services.Update.
 type ServicesUpdateResult struct {
 	ServiceResource
+}
+
+// StoragesCreateOrUpdatePollerResponse contains the response from method Storages.CreateOrUpdate.
+type StoragesCreateOrUpdatePollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *StoragesCreateOrUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l StoragesCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StoragesCreateOrUpdateResponse, error) {
+	respType := StoragesCreateOrUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.StorageResource)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a StoragesCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *StoragesCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *StoragesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("StoragesClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &StoragesCreateOrUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// StoragesCreateOrUpdateResponse contains the response from method Storages.CreateOrUpdate.
+type StoragesCreateOrUpdateResponse struct {
+	StoragesCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// StoragesCreateOrUpdateResult contains the result from method Storages.CreateOrUpdate.
+type StoragesCreateOrUpdateResult struct {
+	StorageResource
+}
+
+// StoragesDeletePollerResponse contains the response from method Storages.Delete.
+type StoragesDeletePollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *StoragesDeletePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l StoragesDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StoragesDeleteResponse, error) {
+	respType := StoragesDeleteResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a StoragesDeletePollerResponse from the provided client and resume token.
+func (l *StoragesDeletePollerResponse) Resume(ctx context.Context, client *StoragesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("StoragesClient.Delete", token, client.pl, client.deleteHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &StoragesDeletePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// StoragesDeleteResponse contains the response from method Storages.Delete.
+type StoragesDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// StoragesGetResponse contains the response from method Storages.Get.
+type StoragesGetResponse struct {
+	StoragesGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// StoragesGetResult contains the result from method Storages.Get.
+type StoragesGetResult struct {
+	StorageResource
+}
+
+// StoragesListResponse contains the response from method Storages.List.
+type StoragesListResponse struct {
+	StoragesListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// StoragesListResult contains the result from method Storages.List.
+type StoragesListResult struct {
+	StorageResourceCollection
 }

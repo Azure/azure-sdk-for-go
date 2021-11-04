@@ -40,7 +40,7 @@ func (e *emulatorTests) createDatabase(
 	t *testing.T,
 	ctx context.Context,
 	client *Client,
-	dbName string) DatabaseClient {
+	dbName string) *DatabaseClient {
 	database := DatabaseProperties{ID: dbName}
 	resp, err := client.CreateDatabase(ctx, database, nil)
 	if err != nil {
@@ -58,7 +58,7 @@ func (e *emulatorTests) createDatabase(
 func (e *emulatorTests) deleteDatabase(
 	t *testing.T,
 	ctx context.Context,
-	database DatabaseClient) {
+	database *DatabaseClient) {
 	_, err := database.Delete(ctx, nil)
 	if err != nil {
 		t.Fatalf("Failed to delete database: %v", err)

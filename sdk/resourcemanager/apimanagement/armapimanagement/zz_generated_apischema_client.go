@@ -12,15 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // APISchemaClient contains the methods for the APISchema group.
@@ -32,8 +32,15 @@ type APISchemaClient struct {
 }
 
 // NewAPISchemaClient creates a new instance of APISchemaClient with the specified values.
-func NewAPISchemaClient(con *arm.Connection, subscriptionID string) *APISchemaClient {
-	return &APISchemaClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewAPISchemaClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *APISchemaClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &APISchemaClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Creates or updates schema configuration for the API.
@@ -101,7 +108,7 @@ func (client *APISchemaClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header.Set("If-Match", *options.IfMatch)
@@ -171,7 +178,7 @@ func (client *APISchemaClient) deleteCreateRequest(ctx context.Context, resource
 	if options != nil && options.Force != nil {
 		reqQP.Set("force", strconv.FormatBool(*options.Force))
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("If-Match", ifMatch)
 	req.Raw().Header.Set("Accept", "application/json")
@@ -236,7 +243,7 @@ func (client *APISchemaClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -249,7 +256,7 @@ func (client *APISchemaClient) getHandleResponse(resp *http.Response) (APISchema
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SchemaContract); err != nil {
-		return APISchemaGetResponse{}, err
+		return APISchemaGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -309,7 +316,7 @@ func (client *APISchemaClient) getEntityTagCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -374,7 +381,7 @@ func (client *APISchemaClient) listByAPICreateRequest(ctx context.Context, resou
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -384,7 +391,7 @@ func (client *APISchemaClient) listByAPICreateRequest(ctx context.Context, resou
 func (client *APISchemaClient) listByAPIHandleResponse(resp *http.Response) (APISchemaListByAPIResponse, error) {
 	result := APISchemaListByAPIResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SchemaCollection); err != nil {
-		return APISchemaListByAPIResponse{}, err
+		return APISchemaListByAPIResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

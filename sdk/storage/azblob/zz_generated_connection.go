@@ -40,20 +40,16 @@ type connection struct {
 
 // newConnection creates an instance of the connection type with the specified endpoint.
 // Pass nil to accept the default options; this is the same as passing a zero-value options.
-func newConnection(endpoint string, cred azcore.Credential, options *connectionOptions) *connection {
-	if options == nil {
-		options = &connectionOptions{}
+func newConnection(endpoint string, authPolicy policy.Policy, options *azcore.ClientOptions) *connection {
+	cp := azcore.ClientOptions{}
+	if options != nil {
+		cp = *options
 	}
-	policies := []policy.Policy{}
-	if !options.Telemetry.Disabled {
-		policies = append(policies, runtime.NewTelemetryPolicy(module, version, &options.Telemetry))
+	perRetryPolicies := []policy.Policy{}
+	if authPolicy != nil {
+		perRetryPolicies = append(perRetryPolicies, authPolicy)
 	}
-	policies = append(policies, options.PerCallPolicies...)
-	policies = append(policies, runtime.NewRetryPolicy(&options.Retry))
-	policies = append(policies, options.PerRetryPolicies...)
-	policies = append(policies, cred.NewAuthenticationPolicy(runtime.AuthenticationOptions{TokenRequest: policy.TokenRequestOptions{}}))
-	policies = append(policies, runtime.NewLogPolicy(&options.Logging))
-	return &connection{u: endpoint, p: runtime.NewPipeline(options.HTTPClient, policies...)}
+	return &connection{u: endpoint, p: runtime.NewPipeline(module, version, nil, perRetryPolicies, &cp)}
 }
 
 // Endpoint returns the connection's endpoint.

@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // EventHubsClient contains the methods for the EventHubs group.
@@ -31,8 +32,15 @@ type EventHubsClient struct {
 }
 
 // NewEventHubsClient creates a new instance of EventHubsClient with the specified values.
-func NewEventHubsClient(con *arm.Connection, subscriptionID string) *EventHubsClient {
-	return &EventHubsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewEventHubsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *EventHubsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &EventHubsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or updates a new Event Hub as a nested resource within a Namespace.
@@ -76,7 +84,7 @@ func (client *EventHubsClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -86,7 +94,7 @@ func (client *EventHubsClient) createOrUpdateCreateRequest(ctx context.Context, 
 func (client *EventHubsClient) createOrUpdateHandleResponse(resp *http.Response) (EventHubsCreateOrUpdateResponse, error) {
 	result := EventHubsCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Eventhub); err != nil {
-		return EventHubsCreateOrUpdateResponse{}, err
+		return EventHubsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -150,7 +158,7 @@ func (client *EventHubsClient) createOrUpdateAuthorizationRuleCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -160,7 +168,7 @@ func (client *EventHubsClient) createOrUpdateAuthorizationRuleCreateRequest(ctx 
 func (client *EventHubsClient) createOrUpdateAuthorizationRuleHandleResponse(resp *http.Response) (EventHubsCreateOrUpdateAuthorizationRuleResponse, error) {
 	result := EventHubsCreateOrUpdateAuthorizationRuleResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationRule); err != nil {
-		return EventHubsCreateOrUpdateAuthorizationRuleResponse{}, err
+		return EventHubsCreateOrUpdateAuthorizationRuleResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -219,7 +227,7 @@ func (client *EventHubsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -283,7 +291,7 @@ func (client *EventHubsClient) deleteAuthorizationRuleCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -343,7 +351,7 @@ func (client *EventHubsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -353,7 +361,7 @@ func (client *EventHubsClient) getCreateRequest(ctx context.Context, resourceGro
 func (client *EventHubsClient) getHandleResponse(resp *http.Response) (EventHubsGetResponse, error) {
 	result := EventHubsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Eventhub); err != nil {
-		return EventHubsGetResponse{}, err
+		return EventHubsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -416,7 +424,7 @@ func (client *EventHubsClient) getAuthorizationRuleCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -426,7 +434,7 @@ func (client *EventHubsClient) getAuthorizationRuleCreateRequest(ctx context.Con
 func (client *EventHubsClient) getAuthorizationRuleHandleResponse(resp *http.Response) (EventHubsGetAuthorizationRuleResponse, error) {
 	result := EventHubsGetAuthorizationRuleResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationRule); err != nil {
-		return EventHubsGetAuthorizationRuleResponse{}, err
+		return EventHubsGetAuthorizationRuleResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -482,7 +490,7 @@ func (client *EventHubsClient) listAuthorizationRulesCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -492,7 +500,7 @@ func (client *EventHubsClient) listAuthorizationRulesCreateRequest(ctx context.C
 func (client *EventHubsClient) listAuthorizationRulesHandleResponse(resp *http.Response) (EventHubsListAuthorizationRulesResponse, error) {
 	result := EventHubsListAuthorizationRulesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationRuleListResult); err != nil {
-		return EventHubsListAuthorizationRulesResponse{}, err
+		return EventHubsListAuthorizationRulesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -544,7 +552,7 @@ func (client *EventHubsClient) listByNamespaceCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
@@ -560,7 +568,7 @@ func (client *EventHubsClient) listByNamespaceCreateRequest(ctx context.Context,
 func (client *EventHubsClient) listByNamespaceHandleResponse(resp *http.Response) (EventHubsListByNamespaceResponse, error) {
 	result := EventHubsListByNamespaceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventHubListResult); err != nil {
-		return EventHubsListByNamespaceResponse{}, err
+		return EventHubsListByNamespaceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -623,7 +631,7 @@ func (client *EventHubsClient) listKeysCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -633,7 +641,7 @@ func (client *EventHubsClient) listKeysCreateRequest(ctx context.Context, resour
 func (client *EventHubsClient) listKeysHandleResponse(resp *http.Response) (EventHubsListKeysResponse, error) {
 	result := EventHubsListKeysResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
-		return EventHubsListKeysResponse{}, err
+		return EventHubsListKeysResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -696,7 +704,7 @@ func (client *EventHubsClient) regenerateKeysCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -706,7 +714,7 @@ func (client *EventHubsClient) regenerateKeysCreateRequest(ctx context.Context, 
 func (client *EventHubsClient) regenerateKeysHandleResponse(resp *http.Response) (EventHubsRegenerateKeysResponse, error) {
 	result := EventHubsRegenerateKeysResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
-		return EventHubsRegenerateKeysResponse{}, err
+		return EventHubsRegenerateKeysResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

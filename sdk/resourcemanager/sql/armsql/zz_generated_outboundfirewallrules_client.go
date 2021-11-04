@@ -11,14 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // OutboundFirewallRulesClient contains the methods for the OutboundFirewallRules group.
@@ -30,8 +30,15 @@ type OutboundFirewallRulesClient struct {
 }
 
 // NewOutboundFirewallRulesClient creates a new instance of OutboundFirewallRulesClient with the specified values.
-func NewOutboundFirewallRulesClient(con *arm.Connection, subscriptionID string) *OutboundFirewallRulesClient {
-	return &OutboundFirewallRulesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewOutboundFirewallRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *OutboundFirewallRulesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &OutboundFirewallRulesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Create a outbound firewall rule with a given name.
@@ -242,7 +249,7 @@ func (client *OutboundFirewallRulesClient) getCreateRequest(ctx context.Context,
 func (client *OutboundFirewallRulesClient) getHandleResponse(resp *http.Response) (OutboundFirewallRulesGetResponse, error) {
 	result := OutboundFirewallRulesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OutboundFirewallRule); err != nil {
-		return OutboundFirewallRulesGetResponse{}, err
+		return OutboundFirewallRulesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -303,7 +310,7 @@ func (client *OutboundFirewallRulesClient) listByServerCreateRequest(ctx context
 func (client *OutboundFirewallRulesClient) listByServerHandleResponse(resp *http.Response) (OutboundFirewallRulesListByServerResponse, error) {
 	result := OutboundFirewallRulesListByServerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OutboundFirewallRuleListResult); err != nil {
-		return OutboundFirewallRulesListByServerResponse{}, err
+		return OutboundFirewallRulesListByServerResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // LoggerClient contains the methods for the Logger group.
@@ -31,8 +32,15 @@ type LoggerClient struct {
 }
 
 // NewLoggerClient creates a new instance of LoggerClient with the specified values.
-func NewLoggerClient(con *arm.Connection, subscriptionID string) *LoggerClient {
-	return &LoggerClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewLoggerClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LoggerClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &LoggerClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or Updates a logger.
@@ -76,7 +84,7 @@ func (client *LoggerClient) createOrUpdateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header.Set("If-Match", *options.IfMatch)
@@ -92,7 +100,7 @@ func (client *LoggerClient) createOrUpdateHandleResponse(resp *http.Response) (L
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LoggerContract); err != nil {
-		return LoggerCreateOrUpdateResponse{}, err
+		return LoggerCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -151,7 +159,7 @@ func (client *LoggerClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("If-Match", ifMatch)
 	req.Raw().Header.Set("Accept", "application/json")
@@ -212,7 +220,7 @@ func (client *LoggerClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -225,7 +233,7 @@ func (client *LoggerClient) getHandleResponse(resp *http.Response) (LoggerGetRes
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LoggerContract); err != nil {
-		return LoggerGetResponse{}, err
+		return LoggerGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -281,7 +289,7 @@ func (client *LoggerClient) getEntityTagCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -342,7 +350,7 @@ func (client *LoggerClient) listByServiceCreateRequest(ctx context.Context, reso
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -352,7 +360,7 @@ func (client *LoggerClient) listByServiceCreateRequest(ctx context.Context, reso
 func (client *LoggerClient) listByServiceHandleResponse(resp *http.Response) (LoggerListByServiceResponse, error) {
 	result := LoggerListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LoggerCollection); err != nil {
-		return LoggerListByServiceResponse{}, err
+		return LoggerListByServiceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -411,7 +419,7 @@ func (client *LoggerClient) updateCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("If-Match", ifMatch)
 	req.Raw().Header.Set("Accept", "application/json")
@@ -425,7 +433,7 @@ func (client *LoggerClient) updateHandleResponse(resp *http.Response) (LoggerUpd
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LoggerContract); err != nil {
-		return LoggerUpdateResponse{}, err
+		return LoggerUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

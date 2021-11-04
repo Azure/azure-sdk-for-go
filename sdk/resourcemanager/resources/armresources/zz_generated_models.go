@@ -304,7 +304,7 @@ func (d DeploymentOperationProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "statusCode", d.StatusCode)
 	populate(objectMap, "statusMessage", d.StatusMessage)
 	populate(objectMap, "targetResource", d.TargetResource)
-	populate(objectMap, "timestamp", (*timeRFC3339)(d.Timestamp))
+	populateTimeRFC3339(objectMap, "timestamp", d.Timestamp)
 	return json.Marshal(objectMap)
 }
 
@@ -345,9 +345,7 @@ func (d *DeploymentOperationProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &d.TargetResource)
 			delete(rawMsg, key)
 		case "timestamp":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			d.Timestamp = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &d.Timestamp)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -538,7 +536,7 @@ func (d DeploymentPropertiesExtended) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "provisioningState", d.ProvisioningState)
 	populate(objectMap, "templateHash", d.TemplateHash)
 	populate(objectMap, "templateLink", d.TemplateLink)
-	populate(objectMap, "timestamp", (*timeRFC3339)(d.Timestamp))
+	populateTimeRFC3339(objectMap, "timestamp", d.Timestamp)
 	populate(objectMap, "validatedResources", d.ValidatedResources)
 	return json.Marshal(objectMap)
 }
@@ -598,9 +596,7 @@ func (d *DeploymentPropertiesExtended) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &d.TemplateLink)
 			delete(rawMsg, key)
 		case "timestamp":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			d.Timestamp = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &d.Timestamp)
 			delete(rawMsg, key)
 		case "validatedResources":
 			err = unpopulate(val, &d.ValidatedResources)
@@ -1056,8 +1052,8 @@ type GenericResourceExpanded struct {
 func (g GenericResourceExpanded) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	g.GenericResource.marshalInternal(objectMap)
-	populate(objectMap, "changedTime", (*timeRFC3339)(g.ChangedTime))
-	populate(objectMap, "createdTime", (*timeRFC3339)(g.CreatedTime))
+	populateTimeRFC3339(objectMap, "changedTime", g.ChangedTime)
+	populateTimeRFC3339(objectMap, "createdTime", g.CreatedTime)
 	populate(objectMap, "provisioningState", g.ProvisioningState)
 	return json.Marshal(objectMap)
 }
@@ -1072,14 +1068,10 @@ func (g *GenericResourceExpanded) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "changedTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			g.ChangedTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &g.ChangedTime)
 			delete(rawMsg, key)
 		case "createdTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			g.CreatedTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &g.CreatedTime)
 			delete(rawMsg, key)
 		case "provisioningState":
 			err = unpopulate(val, &g.ProvisioningState)
@@ -1831,7 +1823,7 @@ type ResourcesListByResourceGroupOptions struct {
 	// resource are not returned in the results.<br><br>You can use some properties together when filtering. The combinations you can use are: substringof and/or
 	// resourceType, plan and plan/publisher and plan/name, identity and identity/principalId.
 	Filter *string
-	// The maximum number of results to return. If null is passed, returns all resources.
+	// The number of results to return. If null is passed, returns all resources.
 	Top *int32
 }
 
@@ -1845,15 +1837,15 @@ type ResourcesListOptions struct {
 	// `plan/version`, and `plan/promotionCode`.<br><br>For example, to filter by a resource type, use `$filter=resourceType eq 'Microsoft.Network/virtualNetworks'`<br><br><br>`substringof(value,
 	// property)` can be used to filter for substrings of the following currently-supported properties: `name` and `resourceGroup`<br><br>For example, to get
 	// all resources with 'demo' anywhere in the resource name, use `$filter=substringof('demo', name)`<br><br>Multiple substring operations can also be combined
-	// using `and`/`or` operators.<br><br><br>Resources can be filtered by tag names and values. For example, to filter for a tag name and value, use `$filter=tagName
-	// eq 'tag1' and tagValue eq 'Value1'`. Note that when resources are filtered by tag name and value, <b>the original tags for each resource will not be
-	// returned in the results.</b> Any list of additional properties queried via `$expand` may also not be compatible when filtering by tag names/values. <br><br>For
-	// tag names only, resources can be filtered by prefix using the following syntax: `$filter=startswith(tagName, 'depart')`. This query will return all resources
-	// with a tag name prefixed by the phrase `depart` (i.e.`department`, `departureDate`, `departureTime`, etc.)<br><br><br>Note that some properties can be
-	// combined when filtering resources, which include the following: `substringof() and/or resourceType`, `plan and plan/publisher and plan/name`, and `identity
-	// and identity/principalId`.
+	// using `and`/`or` operators.<br><br>Note that any truncated number of results queried via `$top` may also not be compatible when using a filter.<br><br><br>Resources
+	// can be filtered by tag names and values. For example, to filter for a tag name and value, use `$filter=tagName eq 'tag1' and tagValue eq 'Value1'`. Note
+	// that when resources are filtered by tag name and value, <b>the original tags for each resource will not be returned in the results.</b> Any list of additional
+	// properties queried via `$expand` may also not be compatible when filtering by tag names/values. <br><br>For tag names only, resources can be filtered
+	// by prefix using the following syntax: `$filter=startswith(tagName, 'depart')`. This query will return all resources with a tag name prefixed by the phrase
+	// `depart` (i.e.`department`, `departureDate`, `departureTime`, etc.)<br><br><br>Note that some properties can be combined when filtering resources, which
+	// include the following: `substringof() and/or resourceType`, `plan and plan/publisher and plan/name`, and `identity and identity/principalId`.
 	Filter *string
-	// The maximum number of results to return. If null is passed, returns all resources.
+	// The number of results to return. If null is passed, returns all resources.
 	Top *int32
 }
 

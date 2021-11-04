@@ -12,6 +12,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -30,8 +31,15 @@ type AFDOriginGroupsClient struct {
 }
 
 // NewAFDOriginGroupsClient creates a new instance of AFDOriginGroupsClient with the specified values.
-func NewAFDOriginGroupsClient(con *arm.Connection, subscriptionID string) *AFDOriginGroupsClient {
-	return &AFDOriginGroupsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewAFDOriginGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AFDOriginGroupsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &AFDOriginGroupsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreate - Creates a new origin group within the specified profile.
@@ -245,7 +253,7 @@ func (client *AFDOriginGroupsClient) getCreateRequest(ctx context.Context, resou
 func (client *AFDOriginGroupsClient) getHandleResponse(resp *http.Response) (AFDOriginGroupsGetResponse, error) {
 	result := AFDOriginGroupsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AFDOriginGroup); err != nil {
-		return AFDOriginGroupsGetResponse{}, err
+		return AFDOriginGroupsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -307,7 +315,7 @@ func (client *AFDOriginGroupsClient) listByProfileCreateRequest(ctx context.Cont
 func (client *AFDOriginGroupsClient) listByProfileHandleResponse(resp *http.Response) (AFDOriginGroupsListByProfileResponse, error) {
 	result := AFDOriginGroupsListByProfileResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AFDOriginGroupListResult); err != nil {
-		return AFDOriginGroupsListByProfileResponse{}, err
+		return AFDOriginGroupsListByProfileResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -373,7 +381,7 @@ func (client *AFDOriginGroupsClient) listResourceUsageCreateRequest(ctx context.
 func (client *AFDOriginGroupsClient) listResourceUsageHandleResponse(resp *http.Response) (AFDOriginGroupsListResourceUsageResponse, error) {
 	result := AFDOriginGroupsListResourceUsageResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UsagesListResult); err != nil {
-		return AFDOriginGroupsListResourceUsageResponse{}, err
+		return AFDOriginGroupsListResourceUsageResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

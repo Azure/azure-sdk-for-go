@@ -11,14 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // WorkloadClassifiersClient contains the methods for the WorkloadClassifiers group.
@@ -30,8 +30,15 @@ type WorkloadClassifiersClient struct {
 }
 
 // NewWorkloadClassifiersClient creates a new instance of WorkloadClassifiersClient with the specified values.
-func NewWorkloadClassifiersClient(con *arm.Connection, subscriptionID string) *WorkloadClassifiersClient {
-	return &WorkloadClassifiersClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewWorkloadClassifiersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WorkloadClassifiersClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &WorkloadClassifiersClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Creates or updates a workload classifier.
@@ -266,7 +273,7 @@ func (client *WorkloadClassifiersClient) getCreateRequest(ctx context.Context, r
 func (client *WorkloadClassifiersClient) getHandleResponse(resp *http.Response) (WorkloadClassifiersGetResponse, error) {
 	result := WorkloadClassifiersGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadClassifier); err != nil {
-		return WorkloadClassifiersGetResponse{}, err
+		return WorkloadClassifiersGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -335,7 +342,7 @@ func (client *WorkloadClassifiersClient) listByWorkloadGroupCreateRequest(ctx co
 func (client *WorkloadClassifiersClient) listByWorkloadGroupHandleResponse(resp *http.Response) (WorkloadClassifiersListByWorkloadGroupResponse, error) {
 	result := WorkloadClassifiersListByWorkloadGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadClassifierListResult); err != nil {
-		return WorkloadClassifiersListByWorkloadGroupResponse{}, err
+		return WorkloadClassifiersListByWorkloadGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

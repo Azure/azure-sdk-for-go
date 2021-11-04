@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // APIRevisionClient contains the methods for the APIRevision group.
@@ -31,8 +32,15 @@ type APIRevisionClient struct {
 }
 
 // NewAPIRevisionClient creates a new instance of APIRevisionClient with the specified values.
-func NewAPIRevisionClient(con *arm.Connection, subscriptionID string) *APIRevisionClient {
-	return &APIRevisionClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewAPIRevisionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *APIRevisionClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &APIRevisionClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // ListByService - Lists all revisions of an API.
@@ -82,7 +90,7 @@ func (client *APIRevisionClient) listByServiceCreateRequest(ctx context.Context,
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -92,7 +100,7 @@ func (client *APIRevisionClient) listByServiceCreateRequest(ctx context.Context,
 func (client *APIRevisionClient) listByServiceHandleResponse(resp *http.Response) (APIRevisionListByServiceResponse, error) {
 	result := APIRevisionListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIRevisionCollection); err != nil {
-		return APIRevisionListByServiceResponse{}, err
+		return APIRevisionListByServiceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

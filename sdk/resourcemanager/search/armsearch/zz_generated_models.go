@@ -10,9 +10,8 @@ package armsearch
 
 import (
 	"encoding/json"
-	"reflect"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"reflect"
 )
 
 // AdminKeyResult - Response containing the primary and secondary admin API keys for a given Azure Cognitive Search service.

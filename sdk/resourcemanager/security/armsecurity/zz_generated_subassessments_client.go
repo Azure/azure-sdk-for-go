@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // SubAssessmentsClient contains the methods for the SubAssessments group.
@@ -29,8 +30,15 @@ type SubAssessmentsClient struct {
 }
 
 // NewSubAssessmentsClient creates a new instance of SubAssessmentsClient with the specified values.
-func NewSubAssessmentsClient(con *arm.Connection) *SubAssessmentsClient {
-	return &SubAssessmentsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewSubAssessmentsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *SubAssessmentsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &SubAssessmentsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Get a security sub-assessment on your scanned resource
@@ -53,9 +61,6 @@ func (client *SubAssessmentsClient) Get(ctx context.Context, scope string, asses
 // getCreateRequest creates the Get request.
 func (client *SubAssessmentsClient) getCreateRequest(ctx context.Context, scope string, assessmentName string, subAssessmentName string, options *SubAssessmentsGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/subAssessments/{subAssessmentName}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if assessmentName == "" {
 		return nil, errors.New("parameter assessmentName cannot be empty")
@@ -80,7 +85,7 @@ func (client *SubAssessmentsClient) getCreateRequest(ctx context.Context, scope 
 func (client *SubAssessmentsClient) getHandleResponse(resp *http.Response) (SubAssessmentsGetResponse, error) {
 	result := SubAssessmentsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecuritySubAssessment); err != nil {
-		return SubAssessmentsGetResponse{}, err
+		return SubAssessmentsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -115,9 +120,6 @@ func (client *SubAssessmentsClient) List(scope string, assessmentName string, op
 // listCreateRequest creates the List request.
 func (client *SubAssessmentsClient) listCreateRequest(ctx context.Context, scope string, assessmentName string, options *SubAssessmentsListOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/subAssessments"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if assessmentName == "" {
 		return nil, errors.New("parameter assessmentName cannot be empty")
@@ -138,7 +140,7 @@ func (client *SubAssessmentsClient) listCreateRequest(ctx context.Context, scope
 func (client *SubAssessmentsClient) listHandleResponse(resp *http.Response) (SubAssessmentsListResponse, error) {
 	result := SubAssessmentsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecuritySubAssessmentList); err != nil {
-		return SubAssessmentsListResponse{}, err
+		return SubAssessmentsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -173,9 +175,6 @@ func (client *SubAssessmentsClient) ListAll(scope string, options *SubAssessment
 // listAllCreateRequest creates the ListAll request.
 func (client *SubAssessmentsClient) listAllCreateRequest(ctx context.Context, scope string, options *SubAssessmentsListAllOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/subAssessments"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -192,7 +191,7 @@ func (client *SubAssessmentsClient) listAllCreateRequest(ctx context.Context, sc
 func (client *SubAssessmentsClient) listAllHandleResponse(resp *http.Response) (SubAssessmentsListAllResponse, error) {
 	result := SubAssessmentsListAllResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecuritySubAssessmentList); err != nil {
-		return SubAssessmentsListAllResponse{}, err
+		return SubAssessmentsListAllResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -12,7 +12,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -29,8 +31,15 @@ type ManagedRuleSetsClient struct {
 }
 
 // NewManagedRuleSetsClient creates a new instance of ManagedRuleSetsClient with the specified values.
-func NewManagedRuleSetsClient(con *arm.Connection, subscriptionID string) *ManagedRuleSetsClient {
-	return &ManagedRuleSetsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewManagedRuleSetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagedRuleSetsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ManagedRuleSetsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // List - Lists all available managed rule sets.
@@ -69,7 +78,7 @@ func (client *ManagedRuleSetsClient) listCreateRequest(ctx context.Context, opti
 func (client *ManagedRuleSetsClient) listHandleResponse(resp *http.Response) (ManagedRuleSetsListResponse, error) {
 	result := ManagedRuleSetsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedRuleSetDefinitionList); err != nil {
-		return ManagedRuleSetsListResponse{}, err
+		return ManagedRuleSetsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

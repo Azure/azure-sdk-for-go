@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // UserGroupClient contains the methods for the UserGroup group.
@@ -31,8 +32,15 @@ type UserGroupClient struct {
 }
 
 // NewUserGroupClient creates a new instance of UserGroupClient with the specified values.
-func NewUserGroupClient(con *arm.Connection, subscriptionID string) *UserGroupClient {
-	return &UserGroupClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewUserGroupClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *UserGroupClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &UserGroupClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // List - Lists all user groups.
@@ -82,7 +90,7 @@ func (client *UserGroupClient) listCreateRequest(ctx context.Context, resourceGr
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -92,7 +100,7 @@ func (client *UserGroupClient) listCreateRequest(ctx context.Context, resourceGr
 func (client *UserGroupClient) listHandleResponse(resp *http.Response) (UserGroupListResponse, error) {
 	result := UserGroupListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GroupCollection); err != nil {
-		return UserGroupListResponse{}, err
+		return UserGroupListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

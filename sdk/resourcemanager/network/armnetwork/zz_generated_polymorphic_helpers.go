@@ -51,6 +51,25 @@ func unmarshalFirewallPolicyRuleClassificationArray(rawMsg json.RawMessage) ([]F
 	return fArray, nil
 }
 
+func unmarshalFirewallPolicyRuleClassificationMap(rawMsg json.RawMessage) (map[string]FirewallPolicyRuleClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var rawMessages map[string]json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fMap := make(map[string]FirewallPolicyRuleClassification, len(rawMessages))
+	for key, rawMessage := range rawMessages {
+		f, err := unmarshalFirewallPolicyRuleClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fMap[key] = f
+	}
+	return fMap, nil
+}
+
 func unmarshalFirewallPolicyRuleCollectionClassification(rawMsg json.RawMessage) (FirewallPolicyRuleCollectionClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -88,4 +107,23 @@ func unmarshalFirewallPolicyRuleCollectionClassificationArray(rawMsg json.RawMes
 		fArray[index] = f
 	}
 	return fArray, nil
+}
+
+func unmarshalFirewallPolicyRuleCollectionClassificationMap(rawMsg json.RawMessage) (map[string]FirewallPolicyRuleCollectionClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var rawMessages map[string]json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fMap := make(map[string]FirewallPolicyRuleCollectionClassification, len(rawMessages))
+	for key, rawMessage := range rawMessages {
+		f, err := unmarshalFirewallPolicyRuleCollectionClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fMap[key] = f
+	}
+	return fMap, nil
 }

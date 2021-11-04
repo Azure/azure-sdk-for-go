@@ -11,13 +11,14 @@ package armoperationalinsights
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // SavedSearchesClient contains the methods for the SavedSearches group.
@@ -29,8 +30,15 @@ type SavedSearchesClient struct {
 }
 
 // NewSavedSearchesClient creates a new instance of SavedSearchesClient with the specified values.
-func NewSavedSearchesClient(con *arm.Connection, subscriptionID string) *SavedSearchesClient {
-	return &SavedSearchesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewSavedSearchesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SavedSearchesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &SavedSearchesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or updates a saved search for a given workspace.
@@ -84,7 +92,7 @@ func (client *SavedSearchesClient) createOrUpdateCreateRequest(ctx context.Conte
 func (client *SavedSearchesClient) createOrUpdateHandleResponse(resp *http.Response) (SavedSearchesCreateOrUpdateResponse, error) {
 	result := SavedSearchesCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SavedSearch); err != nil {
-		return SavedSearchesCreateOrUpdateResponse{}, err
+		return SavedSearchesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -210,7 +218,7 @@ func (client *SavedSearchesClient) getCreateRequest(ctx context.Context, resourc
 func (client *SavedSearchesClient) getHandleResponse(resp *http.Response) (SavedSearchesGetResponse, error) {
 	result := SavedSearchesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SavedSearch); err != nil {
-		return SavedSearchesGetResponse{}, err
+		return SavedSearchesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -274,7 +282,7 @@ func (client *SavedSearchesClient) listByWorkspaceCreateRequest(ctx context.Cont
 func (client *SavedSearchesClient) listByWorkspaceHandleResponse(resp *http.Response) (SavedSearchesListByWorkspaceResponse, error) {
 	result := SavedSearchesListByWorkspaceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SavedSearchesListResult); err != nil {
-		return SavedSearchesListByWorkspaceResponse{}, err
+		return SavedSearchesListByWorkspaceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

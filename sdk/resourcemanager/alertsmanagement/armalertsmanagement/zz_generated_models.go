@@ -165,10 +165,10 @@ func (a *ActionRuleProperties) UnmarshalJSON(data []byte) error {
 
 func (a ActionRuleProperties) marshalInternal(objectMap map[string]interface{}, discValue ActionRuleType) {
 	populate(objectMap, "conditions", a.Conditions)
-	populate(objectMap, "createdAt", (*timeRFC3339)(a.CreatedAt))
+	populateTimeRFC3339(objectMap, "createdAt", a.CreatedAt)
 	populate(objectMap, "createdBy", a.CreatedBy)
 	populate(objectMap, "description", a.Description)
-	populate(objectMap, "lastModifiedAt", (*timeRFC3339)(a.LastModifiedAt))
+	populateTimeRFC3339(objectMap, "lastModifiedAt", a.LastModifiedAt)
 	populate(objectMap, "lastModifiedBy", a.LastModifiedBy)
 	populate(objectMap, "scope", a.Scope)
 	populate(objectMap, "status", a.Status)
@@ -184,9 +184,7 @@ func (a *ActionRuleProperties) unmarshalInternal(rawMsg map[string]json.RawMessa
 			err = unpopulate(val, &a.Conditions)
 			delete(rawMsg, key)
 		case "createdAt":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			a.CreatedAt = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &a.CreatedAt)
 			delete(rawMsg, key)
 		case "createdBy":
 			err = unpopulate(val, &a.CreatedBy)
@@ -195,9 +193,7 @@ func (a *ActionRuleProperties) unmarshalInternal(rawMsg map[string]json.RawMessa
 			err = unpopulate(val, &a.Description)
 			delete(rawMsg, key)
 		case "lastModifiedAt":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			a.LastModifiedAt = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &a.LastModifiedAt)
 			delete(rawMsg, key)
 		case "lastModifiedBy":
 			err = unpopulate(val, &a.LastModifiedBy)
@@ -1126,17 +1122,17 @@ func (e Essentials) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "alertRule", e.AlertRule)
 	populate(objectMap, "alertState", e.AlertState)
-	populate(objectMap, "lastModifiedDateTime", (*timeRFC3339)(e.LastModifiedDateTime))
+	populateTimeRFC3339(objectMap, "lastModifiedDateTime", e.LastModifiedDateTime)
 	populate(objectMap, "lastModifiedUserName", e.LastModifiedUserName)
 	populate(objectMap, "monitorCondition", e.MonitorCondition)
-	populate(objectMap, "monitorConditionResolvedDateTime", (*timeRFC3339)(e.MonitorConditionResolvedDateTime))
+	populateTimeRFC3339(objectMap, "monitorConditionResolvedDateTime", e.MonitorConditionResolvedDateTime)
 	populate(objectMap, "monitorService", e.MonitorService)
 	populate(objectMap, "severity", e.Severity)
 	populate(objectMap, "signalType", e.SignalType)
 	populate(objectMap, "smartGroupId", e.SmartGroupID)
 	populate(objectMap, "smartGroupingReason", e.SmartGroupingReason)
 	populate(objectMap, "sourceCreatedId", e.SourceCreatedID)
-	populate(objectMap, "startDateTime", (*timeRFC3339)(e.StartDateTime))
+	populateTimeRFC3339(objectMap, "startDateTime", e.StartDateTime)
 	populate(objectMap, "targetResource", e.TargetResource)
 	populate(objectMap, "targetResourceGroup", e.TargetResourceGroup)
 	populate(objectMap, "targetResourceName", e.TargetResourceName)
@@ -1160,9 +1156,7 @@ func (e *Essentials) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &e.AlertState)
 			delete(rawMsg, key)
 		case "lastModifiedDateTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			e.LastModifiedDateTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &e.LastModifiedDateTime)
 			delete(rawMsg, key)
 		case "lastModifiedUserName":
 			err = unpopulate(val, &e.LastModifiedUserName)
@@ -1171,9 +1165,7 @@ func (e *Essentials) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &e.MonitorCondition)
 			delete(rawMsg, key)
 		case "monitorConditionResolvedDateTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			e.MonitorConditionResolvedDateTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &e.MonitorConditionResolvedDateTime)
 			delete(rawMsg, key)
 		case "monitorService":
 			err = unpopulate(val, &e.MonitorService)
@@ -1194,9 +1186,7 @@ func (e *Essentials) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &e.SourceCreatedID)
 			delete(rawMsg, key)
 		case "startDateTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			e.StartDateTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &e.StartDateTime)
 			delete(rawMsg, key)
 		case "targetResource":
 			err = unpopulate(val, &e.TargetResource)
@@ -1691,7 +1681,7 @@ func (s SmartGroupProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "alertSeverities", s.AlertSeverities)
 	populate(objectMap, "alertStates", s.AlertStates)
 	populate(objectMap, "alertsCount", s.AlertsCount)
-	populate(objectMap, "lastModifiedDateTime", (*timeRFC3339)(s.LastModifiedDateTime))
+	populateTimeRFC3339(objectMap, "lastModifiedDateTime", s.LastModifiedDateTime)
 	populate(objectMap, "lastModifiedUserName", s.LastModifiedUserName)
 	populate(objectMap, "monitorConditions", s.MonitorConditions)
 	populate(objectMap, "monitorServices", s.MonitorServices)
@@ -1701,7 +1691,7 @@ func (s SmartGroupProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "resources", s.Resources)
 	populate(objectMap, "severity", s.Severity)
 	populate(objectMap, "smartGroupState", s.SmartGroupState)
-	populate(objectMap, "startDateTime", (*timeRFC3339)(s.StartDateTime))
+	populateTimeRFC3339(objectMap, "startDateTime", s.StartDateTime)
 	return json.Marshal(objectMap)
 }
 
@@ -1724,9 +1714,7 @@ func (s *SmartGroupProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &s.AlertsCount)
 			delete(rawMsg, key)
 		case "lastModifiedDateTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			s.LastModifiedDateTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &s.LastModifiedDateTime)
 			delete(rawMsg, key)
 		case "lastModifiedUserName":
 			err = unpopulate(val, &s.LastModifiedUserName)
@@ -1756,9 +1744,7 @@ func (s *SmartGroupProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &s.SmartGroupState)
 			delete(rawMsg, key)
 		case "startDateTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			s.StartDateTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &s.StartDateTime)
 			delete(rawMsg, key)
 		}
 		if err != nil {

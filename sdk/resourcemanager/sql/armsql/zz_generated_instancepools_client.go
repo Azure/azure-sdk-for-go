@@ -11,14 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // InstancePoolsClient contains the methods for the InstancePools group.
@@ -30,8 +30,15 @@ type InstancePoolsClient struct {
 }
 
 // NewInstancePoolsClient creates a new instance of InstancePoolsClient with the specified values.
-func NewInstancePoolsClient(con *arm.Connection, subscriptionID string) *InstancePoolsClient {
-	return &InstancePoolsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewInstancePoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *InstancePoolsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &InstancePoolsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Creates or updates an instance pool.
@@ -230,7 +237,7 @@ func (client *InstancePoolsClient) getCreateRequest(ctx context.Context, resourc
 func (client *InstancePoolsClient) getHandleResponse(resp *http.Response) (InstancePoolsGetResponse, error) {
 	result := InstancePoolsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InstancePool); err != nil {
-		return InstancePoolsGetResponse{}, err
+		return InstancePoolsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -283,7 +290,7 @@ func (client *InstancePoolsClient) listCreateRequest(ctx context.Context, option
 func (client *InstancePoolsClient) listHandleResponse(resp *http.Response) (InstancePoolsListResponse, error) {
 	result := InstancePoolsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InstancePoolListResult); err != nil {
-		return InstancePoolsListResponse{}, err
+		return InstancePoolsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -340,7 +347,7 @@ func (client *InstancePoolsClient) listByResourceGroupCreateRequest(ctx context.
 func (client *InstancePoolsClient) listByResourceGroupHandleResponse(resp *http.Response) (InstancePoolsListByResourceGroupResponse, error) {
 	result := InstancePoolsListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InstancePoolListResult); err != nil {
-		return InstancePoolsListByResourceGroupResponse{}, err
+		return InstancePoolsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

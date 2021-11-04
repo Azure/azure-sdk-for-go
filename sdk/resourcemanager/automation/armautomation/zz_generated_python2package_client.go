@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // Python2PackageClient contains the methods for the Python2Package group.
@@ -30,8 +31,15 @@ type Python2PackageClient struct {
 }
 
 // NewPython2PackageClient creates a new instance of Python2PackageClient with the specified values.
-func NewPython2PackageClient(con *arm.Connection, subscriptionID string) *Python2PackageClient {
-	return &Python2PackageClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewPython2PackageClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *Python2PackageClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &Python2PackageClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Create or Update the python 2 package identified by package name.
@@ -85,7 +93,7 @@ func (client *Python2PackageClient) createOrUpdateCreateRequest(ctx context.Cont
 func (client *Python2PackageClient) createOrUpdateHandleResponse(resp *http.Response) (Python2PackageCreateOrUpdateResponse, error) {
 	result := Python2PackageCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Module); err != nil {
-		return Python2PackageCreateOrUpdateResponse{}, err
+		return Python2PackageCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -214,7 +222,7 @@ func (client *Python2PackageClient) getCreateRequest(ctx context.Context, resour
 func (client *Python2PackageClient) getHandleResponse(resp *http.Response) (Python2PackageGetResponse, error) {
 	result := Python2PackageGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Module); err != nil {
-		return Python2PackageGetResponse{}, err
+		return Python2PackageGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -276,7 +284,7 @@ func (client *Python2PackageClient) listByAutomationAccountCreateRequest(ctx con
 func (client *Python2PackageClient) listByAutomationAccountHandleResponse(resp *http.Response) (Python2PackageListByAutomationAccountResponse, error) {
 	result := Python2PackageListByAutomationAccountResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ModuleListResult); err != nil {
-		return Python2PackageListByAutomationAccountResponse{}, err
+		return Python2PackageListByAutomationAccountResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -345,7 +353,7 @@ func (client *Python2PackageClient) updateCreateRequest(ctx context.Context, res
 func (client *Python2PackageClient) updateHandleResponse(resp *http.Response) (Python2PackageUpdateResponse, error) {
 	result := Python2PackageUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Module); err != nil {
-		return Python2PackageUpdateResponse{}, err
+		return Python2PackageUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

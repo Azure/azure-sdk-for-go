@@ -11,13 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ServerAdvisorsClient contains the methods for the ServerAdvisors group.
@@ -29,8 +30,15 @@ type ServerAdvisorsClient struct {
 }
 
 // NewServerAdvisorsClient creates a new instance of ServerAdvisorsClient with the specified values.
-func NewServerAdvisorsClient(con *arm.Connection, subscriptionID string) *ServerAdvisorsClient {
-	return &ServerAdvisorsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewServerAdvisorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServerAdvisorsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ServerAdvisorsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Gets a server advisor.
@@ -84,7 +92,7 @@ func (client *ServerAdvisorsClient) getCreateRequest(ctx context.Context, resour
 func (client *ServerAdvisorsClient) getHandleResponse(resp *http.Response) (ServerAdvisorsGetResponse, error) {
 	result := ServerAdvisorsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Advisor); err != nil {
-		return ServerAdvisorsGetResponse{}, err
+		return ServerAdvisorsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -151,7 +159,7 @@ func (client *ServerAdvisorsClient) listByServerCreateRequest(ctx context.Contex
 func (client *ServerAdvisorsClient) listByServerHandleResponse(resp *http.Response) (ServerAdvisorsListByServerResponse, error) {
 	result := ServerAdvisorsListByServerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AdvisorArray); err != nil {
-		return ServerAdvisorsListByServerResponse{}, err
+		return ServerAdvisorsListByServerResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -219,7 +227,7 @@ func (client *ServerAdvisorsClient) updateCreateRequest(ctx context.Context, res
 func (client *ServerAdvisorsClient) updateHandleResponse(resp *http.Response) (ServerAdvisorsUpdateResponse, error) {
 	result := ServerAdvisorsUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Advisor); err != nil {
-		return ServerAdvisorsUpdateResponse{}, err
+		return ServerAdvisorsUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"net/url"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
@@ -128,5 +129,25 @@ func TestClientSecretCredential_GetTokenUnexpectedJSON(t *testing.T) {
 	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{scope}})
 	if err == nil {
 		t.Fatalf("Expected a JSON marshal error but received nil")
+	}
+}
+
+func TestClientSecretCredential_Live(t *testing.T) {
+	if liveSP.tenantID == "" || liveSP.clientID == "" || liveSP.secret == "" {
+		t.Skip("missing live service principal configuration")
+	}
+	cred, err := NewClientSecretCredential(liveSP.tenantID, liveSP.clientID, liveSP.secret, nil)
+	if err != nil {
+		t.Fatalf("failed to construct credential: %v", err)
+	}
+	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	if err != nil {
+		t.Fatalf("GetToken failed: %v", err)
+	}
+	if tk.Token == "" {
+		t.Fatalf("GetToken returned an invalid token")
+	}
+	if !tk.ExpiresOn.After(time.Now().UTC()) {
+		t.Fatalf("GetToken returned an invalid expiration time")
 	}
 }

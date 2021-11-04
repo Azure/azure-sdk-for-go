@@ -10,10 +10,9 @@ package armeventhub
 
 import (
 	"context"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"net/http"
 	"time"
-
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 )
 
 // ClustersCreateOrUpdatePollerResponse contains the response from method Clusters.CreateOrUpdate.
@@ -26,6 +25,8 @@ type ClustersCreateOrUpdatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l ClustersCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ClustersCreateOrUpdateResponse, error) {
 	respType := ClustersCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Cluster)
@@ -76,6 +77,8 @@ type ClustersDeletePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l ClustersDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ClustersDeleteResponse, error) {
 	respType := ClustersDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -180,6 +183,8 @@ type ClustersUpdatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l ClustersUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ClustersUpdateResponse, error) {
 	respType := ClustersUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Cluster)
@@ -542,6 +547,8 @@ type NamespacesCreateOrUpdatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l NamespacesCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (NamespacesCreateOrUpdateResponse, error) {
 	respType := NamespacesCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.EHNamespace)
@@ -598,6 +605,8 @@ type NamespacesDeletePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l NamespacesDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (NamespacesDeleteResponse, error) {
 	respType := NamespacesDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -704,6 +713,18 @@ type NamespacesListKeysResult struct {
 	AccessKeys
 }
 
+// NamespacesListNetworkRuleSetResponse contains the response from method Namespaces.ListNetworkRuleSet.
+type NamespacesListNetworkRuleSetResponse struct {
+	NamespacesListNetworkRuleSetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// NamespacesListNetworkRuleSetResult contains the result from method Namespaces.ListNetworkRuleSet.
+type NamespacesListNetworkRuleSetResult struct {
+	NetworkRuleSetListResult
+}
+
 // NamespacesListResponse contains the response from method Namespaces.List.
 type NamespacesListResponse struct {
 	NamespacesListResult
@@ -774,6 +795,8 @@ type PrivateEndpointConnectionsDeletePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l PrivateEndpointConnectionsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsDeleteResponse, error) {
 	respType := PrivateEndpointConnectionsDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -842,4 +865,46 @@ type PrivateLinkResourcesGetResponse struct {
 // PrivateLinkResourcesGetResult contains the result from method PrivateLinkResources.Get.
 type PrivateLinkResourcesGetResult struct {
 	PrivateLinkResourcesListResult
+}
+
+// SchemaRegistryCreateOrUpdateResponse contains the response from method SchemaRegistry.CreateOrUpdate.
+type SchemaRegistryCreateOrUpdateResponse struct {
+	SchemaRegistryCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SchemaRegistryCreateOrUpdateResult contains the result from method SchemaRegistry.CreateOrUpdate.
+type SchemaRegistryCreateOrUpdateResult struct {
+	SchemaGroup
+}
+
+// SchemaRegistryDeleteResponse contains the response from method SchemaRegistry.Delete.
+type SchemaRegistryDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SchemaRegistryGetResponse contains the response from method SchemaRegistry.Get.
+type SchemaRegistryGetResponse struct {
+	SchemaRegistryGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SchemaRegistryGetResult contains the result from method SchemaRegistry.Get.
+type SchemaRegistryGetResult struct {
+	SchemaGroup
+}
+
+// SchemaRegistryListByNamespaceResponse contains the response from method SchemaRegistry.ListByNamespace.
+type SchemaRegistryListByNamespaceResponse struct {
+	SchemaRegistryListByNamespaceResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SchemaRegistryListByNamespaceResult contains the result from method SchemaRegistry.ListByNamespace.
+type SchemaRegistryListByNamespaceResult struct {
+	SchemaGroupListResult
 }

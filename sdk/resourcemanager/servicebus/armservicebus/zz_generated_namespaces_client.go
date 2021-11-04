@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // NamespacesClient contains the methods for the Namespaces group.
@@ -31,8 +31,15 @@ type NamespacesClient struct {
 }
 
 // NewNamespacesClient creates a new instance of NamespacesClient with the specified values.
-func NewNamespacesClient(con *arm.Connection, subscriptionID string) *NamespacesClient {
-	return &NamespacesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewNamespacesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *NamespacesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &NamespacesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CheckNameAvailability - Check the give namespace name availability.
@@ -74,7 +81,7 @@ func (client *NamespacesClient) checkNameAvailabilityCreateRequest(ctx context.C
 func (client *NamespacesClient) checkNameAvailabilityHandleResponse(resp *http.Response) (NamespacesCheckNameAvailabilityResponse, error) {
 	result := NamespacesCheckNameAvailabilityResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityResult); err != nil {
-		return NamespacesCheckNameAvailabilityResponse{}, err
+		return NamespacesCheckNameAvailabilityResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -219,7 +226,7 @@ func (client *NamespacesClient) createOrUpdateAuthorizationRuleCreateRequest(ctx
 func (client *NamespacesClient) createOrUpdateAuthorizationRuleHandleResponse(resp *http.Response) (NamespacesCreateOrUpdateAuthorizationRuleResponse, error) {
 	result := NamespacesCreateOrUpdateAuthorizationRuleResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBAuthorizationRule); err != nil {
-		return NamespacesCreateOrUpdateAuthorizationRuleResponse{}, err
+		return NamespacesCreateOrUpdateAuthorizationRuleResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -284,7 +291,7 @@ func (client *NamespacesClient) createOrUpdateNetworkRuleSetCreateRequest(ctx co
 func (client *NamespacesClient) createOrUpdateNetworkRuleSetHandleResponse(resp *http.Response) (NamespacesCreateOrUpdateNetworkRuleSetResponse, error) {
 	result := NamespacesCreateOrUpdateNetworkRuleSetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkRuleSet); err != nil {
-		return NamespacesCreateOrUpdateNetworkRuleSetResponse{}, err
+		return NamespacesCreateOrUpdateNetworkRuleSetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -485,7 +492,7 @@ func (client *NamespacesClient) getCreateRequest(ctx context.Context, resourceGr
 func (client *NamespacesClient) getHandleResponse(resp *http.Response) (NamespacesGetResponse, error) {
 	result := NamespacesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBNamespace); err != nil {
-		return NamespacesGetResponse{}, err
+		return NamespacesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -554,7 +561,7 @@ func (client *NamespacesClient) getAuthorizationRuleCreateRequest(ctx context.Co
 func (client *NamespacesClient) getAuthorizationRuleHandleResponse(resp *http.Response) (NamespacesGetAuthorizationRuleResponse, error) {
 	result := NamespacesGetAuthorizationRuleResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBAuthorizationRule); err != nil {
-		return NamespacesGetAuthorizationRuleResponse{}, err
+		return NamespacesGetAuthorizationRuleResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -619,7 +626,7 @@ func (client *NamespacesClient) getNetworkRuleSetCreateRequest(ctx context.Conte
 func (client *NamespacesClient) getNetworkRuleSetHandleResponse(resp *http.Response) (NamespacesGetNetworkRuleSetResponse, error) {
 	result := NamespacesGetNetworkRuleSetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkRuleSet); err != nil {
-		return NamespacesGetNetworkRuleSetResponse{}, err
+		return NamespacesGetNetworkRuleSetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -673,7 +680,7 @@ func (client *NamespacesClient) listCreateRequest(ctx context.Context, options *
 func (client *NamespacesClient) listHandleResponse(resp *http.Response) (NamespacesListResponse, error) {
 	result := NamespacesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBNamespaceListResult); err != nil {
-		return NamespacesListResponse{}, err
+		return NamespacesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -735,7 +742,7 @@ func (client *NamespacesClient) listAuthorizationRulesCreateRequest(ctx context.
 func (client *NamespacesClient) listAuthorizationRulesHandleResponse(resp *http.Response) (NamespacesListAuthorizationRulesResponse, error) {
 	result := NamespacesListAuthorizationRulesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBAuthorizationRuleListResult); err != nil {
-		return NamespacesListAuthorizationRulesResponse{}, err
+		return NamespacesListAuthorizationRulesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -793,7 +800,7 @@ func (client *NamespacesClient) listByResourceGroupCreateRequest(ctx context.Con
 func (client *NamespacesClient) listByResourceGroupHandleResponse(resp *http.Response) (NamespacesListByResourceGroupResponse, error) {
 	result := NamespacesListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBNamespaceListResult); err != nil {
-		return NamespacesListByResourceGroupResponse{}, err
+		return NamespacesListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -862,7 +869,7 @@ func (client *NamespacesClient) listKeysCreateRequest(ctx context.Context, resou
 func (client *NamespacesClient) listKeysHandleResponse(resp *http.Response) (NamespacesListKeysResponse, error) {
 	result := NamespacesListKeysResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
-		return NamespacesListKeysResponse{}, err
+		return NamespacesListKeysResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -924,7 +931,7 @@ func (client *NamespacesClient) listNetworkRuleSetsCreateRequest(ctx context.Con
 func (client *NamespacesClient) listNetworkRuleSetsHandleResponse(resp *http.Response) (NamespacesListNetworkRuleSetsResponse, error) {
 	result := NamespacesListNetworkRuleSetsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkRuleSetListResult); err != nil {
-		return NamespacesListNetworkRuleSetsResponse{}, err
+		return NamespacesListNetworkRuleSetsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -993,7 +1000,7 @@ func (client *NamespacesClient) regenerateKeysCreateRequest(ctx context.Context,
 func (client *NamespacesClient) regenerateKeysHandleResponse(resp *http.Response) (NamespacesRegenerateKeysResponse, error) {
 	result := NamespacesRegenerateKeysResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
-		return NamespacesRegenerateKeysResponse{}, err
+		return NamespacesRegenerateKeysResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1058,7 +1065,7 @@ func (client *NamespacesClient) updateCreateRequest(ctx context.Context, resourc
 func (client *NamespacesClient) updateHandleResponse(resp *http.Response) (NamespacesUpdateResponse, error) {
 	result := NamespacesUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBNamespace); err != nil {
-		return NamespacesUpdateResponse{}, err
+		return NamespacesUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

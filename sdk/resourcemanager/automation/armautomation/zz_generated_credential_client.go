@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // CredentialClient contains the methods for the Credential group.
@@ -30,8 +31,15 @@ type CredentialClient struct {
 }
 
 // NewCredentialClient creates a new instance of CredentialClient with the specified values.
-func NewCredentialClient(con *arm.Connection, subscriptionID string) *CredentialClient {
-	return &CredentialClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewCredentialClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CredentialClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &CredentialClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Create a credential.
@@ -85,7 +93,7 @@ func (client *CredentialClient) createOrUpdateCreateRequest(ctx context.Context,
 func (client *CredentialClient) createOrUpdateHandleResponse(resp *http.Response) (CredentialCreateOrUpdateResponse, error) {
 	result := CredentialCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Credential); err != nil {
-		return CredentialCreateOrUpdateResponse{}, err
+		return CredentialCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -214,7 +222,7 @@ func (client *CredentialClient) getCreateRequest(ctx context.Context, resourceGr
 func (client *CredentialClient) getHandleResponse(resp *http.Response) (CredentialGetResponse, error) {
 	result := CredentialGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Credential); err != nil {
-		return CredentialGetResponse{}, err
+		return CredentialGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -276,7 +284,7 @@ func (client *CredentialClient) listByAutomationAccountCreateRequest(ctx context
 func (client *CredentialClient) listByAutomationAccountHandleResponse(resp *http.Response) (CredentialListByAutomationAccountResponse, error) {
 	result := CredentialListByAutomationAccountResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CredentialListResult); err != nil {
-		return CredentialListByAutomationAccountResponse{}, err
+		return CredentialListByAutomationAccountResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -344,7 +352,7 @@ func (client *CredentialClient) updateCreateRequest(ctx context.Context, resourc
 func (client *CredentialClient) updateHandleResponse(resp *http.Response) (CredentialUpdateResponse, error) {
 	result := CredentialUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Credential); err != nil {
-		return CredentialUpdateResponse{}, err
+		return CredentialUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

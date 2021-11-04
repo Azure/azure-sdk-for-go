@@ -10,14 +10,14 @@ package armresourcehealth
 
 import (
 	"context"
-	"errors"
 	"fmt"
-	"net/http"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"strings"
 )
 
 // ChildResourcesClient contains the methods for the ChildResources group.
@@ -28,8 +28,15 @@ type ChildResourcesClient struct {
 }
 
 // NewChildResourcesClient creates a new instance of ChildResourcesClient with the specified values.
-func NewChildResourcesClient(con *arm.Connection) *ChildResourcesClient {
-	return &ChildResourcesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewChildResourcesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *ChildResourcesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ChildResourcesClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // List - Lists the all the children and its current health status for a parent resource. Use the nextLink property in the response to get the next page
@@ -50,9 +57,6 @@ func (client *ChildResourcesClient) List(resourceURI string, options *ChildResou
 // listCreateRequest creates the List request.
 func (client *ChildResourcesClient) listCreateRequest(ctx context.Context, resourceURI string, options *ChildResourcesListOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.ResourceHealth/childResources"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -75,7 +79,7 @@ func (client *ChildResourcesClient) listCreateRequest(ctx context.Context, resou
 func (client *ChildResourcesClient) listHandleResponse(resp *http.Response) (ChildResourcesListResponse, error) {
 	result := ChildResourcesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailabilityStatusListResult); err != nil {
-		return ChildResourcesListResponse{}, err
+		return ChildResourcesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

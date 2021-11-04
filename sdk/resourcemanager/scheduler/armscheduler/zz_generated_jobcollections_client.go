@@ -11,14 +11,14 @@ package armscheduler
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // JobCollectionsClient contains the methods for the JobCollections group.
@@ -30,8 +30,15 @@ type JobCollectionsClient struct {
 }
 
 // NewJobCollectionsClient creates a new instance of JobCollectionsClient with the specified values.
-func NewJobCollectionsClient(con *arm.Connection, subscriptionID string) *JobCollectionsClient {
-	return &JobCollectionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewJobCollectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *JobCollectionsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &JobCollectionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Provisions a new job collection or updates an existing job collection.
@@ -81,7 +88,7 @@ func (client *JobCollectionsClient) createOrUpdateCreateRequest(ctx context.Cont
 func (client *JobCollectionsClient) createOrUpdateHandleResponse(resp *http.Response) (JobCollectionsCreateOrUpdateResponse, error) {
 	result := JobCollectionsCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobCollectionDefinition); err != nil {
-		return JobCollectionsCreateOrUpdateResponse{}, err
+		return JobCollectionsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -367,7 +374,7 @@ func (client *JobCollectionsClient) getCreateRequest(ctx context.Context, resour
 func (client *JobCollectionsClient) getHandleResponse(resp *http.Response) (JobCollectionsGetResponse, error) {
 	result := JobCollectionsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobCollectionDefinition); err != nil {
-		return JobCollectionsGetResponse{}, err
+		return JobCollectionsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -424,7 +431,7 @@ func (client *JobCollectionsClient) listByResourceGroupCreateRequest(ctx context
 func (client *JobCollectionsClient) listByResourceGroupHandleResponse(resp *http.Response) (JobCollectionsListByResourceGroupResponse, error) {
 	result := JobCollectionsListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobCollectionListResult); err != nil {
-		return JobCollectionsListByResourceGroupResponse{}, err
+		return JobCollectionsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -477,7 +484,7 @@ func (client *JobCollectionsClient) listBySubscriptionCreateRequest(ctx context.
 func (client *JobCollectionsClient) listBySubscriptionHandleResponse(resp *http.Response) (JobCollectionsListBySubscriptionResponse, error) {
 	result := JobCollectionsListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobCollectionListResult); err != nil {
-		return JobCollectionsListBySubscriptionResponse{}, err
+		return JobCollectionsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -541,7 +548,7 @@ func (client *JobCollectionsClient) patchCreateRequest(ctx context.Context, reso
 func (client *JobCollectionsClient) patchHandleResponse(resp *http.Response) (JobCollectionsPatchResponse, error) {
 	result := JobCollectionsPatchResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobCollectionDefinition); err != nil {
-		return JobCollectionsPatchResponse{}, err
+		return JobCollectionsPatchResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

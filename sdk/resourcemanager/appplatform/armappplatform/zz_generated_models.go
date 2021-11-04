@@ -10,10 +10,9 @@ package armappplatform
 
 import (
 	"encoding/json"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // AppResource - App resource payload
@@ -39,6 +38,35 @@ func (a AppResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type AppResource.
+func (a *AppResource) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "identity":
+			err = unpopulate(val, &a.Identity)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, &a.Location)
+			delete(rawMsg, key)
+		case "properties":
+			err = unpopulate(val, &a.Properties)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	if err := a.ProxyResource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
+}
+
 // AppResourceCollection - Object that includes an array of App resources and a possible link for next set
 type AppResourceCollection struct {
 	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
@@ -61,6 +89,9 @@ type AppResourceProperties struct {
 	// Name of the active deployment of the App
 	ActiveDeploymentName *string `json:"activeDeploymentName,omitempty"`
 
+	// List of custom persistent disks
+	CustomPersistentDisks []*CustomPersistentDiskResource `json:"customPersistentDisks,omitempty"`
+
 	// Indicate if end to end TLS is enabled.
 	EnableEndToEndTLS *bool `json:"enableEndToEndTLS,omitempty"`
 
@@ -69,6 +100,9 @@ type AppResourceProperties struct {
 
 	// Indicate if only https is allowed.
 	HTTPSOnly *bool `json:"httpsOnly,omitempty"`
+
+	// Collection of loaded certificates
+	LoadedCertificates []*LoadedCertificate `json:"loadedCertificates,omitempty"`
 
 	// Persistent disk settings
 	PersistentDisk *PersistentDisk `json:"persistentDisk,omitempty"`
@@ -93,10 +127,12 @@ type AppResourceProperties struct {
 func (a AppResourceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "activeDeploymentName", a.ActiveDeploymentName)
-	populate(objectMap, "createdTime", (*timeRFC3339)(a.CreatedTime))
+	populateTimeRFC3339(objectMap, "createdTime", a.CreatedTime)
+	populate(objectMap, "customPersistentDisks", a.CustomPersistentDisks)
 	populate(objectMap, "enableEndToEndTLS", a.EnableEndToEndTLS)
 	populate(objectMap, "fqdn", a.Fqdn)
 	populate(objectMap, "httpsOnly", a.HTTPSOnly)
+	populate(objectMap, "loadedCertificates", a.LoadedCertificates)
 	populate(objectMap, "persistentDisk", a.PersistentDisk)
 	populate(objectMap, "provisioningState", a.ProvisioningState)
 	populate(objectMap, "public", a.Public)
@@ -118,9 +154,10 @@ func (a *AppResourceProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &a.ActiveDeploymentName)
 			delete(rawMsg, key)
 		case "createdTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			a.CreatedTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &a.CreatedTime)
+			delete(rawMsg, key)
+		case "customPersistentDisks":
+			err = unpopulate(val, &a.CustomPersistentDisks)
 			delete(rawMsg, key)
 		case "enableEndToEndTLS":
 			err = unpopulate(val, &a.EnableEndToEndTLS)
@@ -130,6 +167,9 @@ func (a *AppResourceProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "httpsOnly":
 			err = unpopulate(val, &a.HTTPSOnly)
+			delete(rawMsg, key)
+		case "loadedCertificates":
+			err = unpopulate(val, &a.LoadedCertificates)
 			delete(rawMsg, key)
 		case "persistentDisk":
 			err = unpopulate(val, &a.PersistentDisk)
@@ -225,6 +265,44 @@ func (a AvailableRuntimeVersions) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// AzureFileVolume - The properties of the Azure File volume. Azure File shares are mounted as volumes.
+type AzureFileVolume struct {
+	CustomPersistentDiskProperties
+	// REQUIRED; The share name of the Azure File share.
+	ShareName *string `json:"shareName,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AzureFileVolume.
+func (a AzureFileVolume) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	a.CustomPersistentDiskProperties.marshalInternal(objectMap, CustomPersistentDiskPropertiesTypeAzureFileVolume)
+	populate(objectMap, "shareName", a.ShareName)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureFileVolume.
+func (a *AzureFileVolume) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "shareName":
+			err = unpopulate(val, &a.ShareName)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	if err := a.CustomPersistentDiskProperties.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
+}
+
 // BindingResource - Binding resource payload
 type BindingResource struct {
 	ProxyResource
@@ -238,6 +316,29 @@ func (b BindingResource) MarshalJSON() ([]byte, error) {
 	b.ProxyResource.marshalInternal(objectMap)
 	populate(objectMap, "properties", b.Properties)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type BindingResource.
+func (b *BindingResource) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "properties":
+			err = unpopulate(val, &b.Properties)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	if err := b.ProxyResource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // BindingResourceCollection - Object that includes an array of Binding resources and a possible link for next set
@@ -323,16 +424,19 @@ type BindingsListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// CertificatePropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetCertificateProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *CertificateProperties, *ContentCertificateProperties, *KeyVaultCertificateProperties
+type CertificatePropertiesClassification interface {
+	// GetCertificateProperties returns the CertificateProperties content of the underlying type.
+	GetCertificateProperties() *CertificateProperties
+}
+
 // CertificateProperties - Certificate resource payload.
 type CertificateProperties struct {
-	// REQUIRED; The certificate name of key vault.
-	KeyVaultCertName *string `json:"keyVaultCertName,omitempty"`
-
-	// REQUIRED; The vault uri of user key vault.
-	VaultURI *string `json:"vaultUri,omitempty"`
-
-	// The certificate version of key vault.
-	CertVersion *string `json:"certVersion,omitempty"`
+	// REQUIRED; The type of the certificate source.
+	Type *string `json:"type,omitempty"`
 
 	// READ-ONLY; The activate date of certificate.
 	ActivateDate *string `json:"activateDate,omitempty" azure:"ro"`
@@ -356,27 +460,71 @@ type CertificateProperties struct {
 	Thumbprint *string `json:"thumbprint,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CertificateProperties.
-func (c CertificateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+// GetCertificateProperties implements the CertificatePropertiesClassification interface for type CertificateProperties.
+func (c *CertificateProperties) GetCertificateProperties() *CertificateProperties { return c }
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type CertificateProperties.
+func (c *CertificateProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	return c.unmarshalInternal(rawMsg)
+}
+
+func (c CertificateProperties) marshalInternal(objectMap map[string]interface{}, discValue string) {
 	populate(objectMap, "activateDate", c.ActivateDate)
-	populate(objectMap, "certVersion", c.CertVersion)
 	populate(objectMap, "dnsNames", c.DNSNames)
 	populate(objectMap, "expirationDate", c.ExpirationDate)
 	populate(objectMap, "issuedDate", c.IssuedDate)
 	populate(objectMap, "issuer", c.Issuer)
-	populate(objectMap, "keyVaultCertName", c.KeyVaultCertName)
 	populate(objectMap, "subjectName", c.SubjectName)
 	populate(objectMap, "thumbprint", c.Thumbprint)
-	populate(objectMap, "vaultUri", c.VaultURI)
-	return json.Marshal(objectMap)
+	c.Type = &discValue
+	objectMap["type"] = c.Type
+}
+
+func (c *CertificateProperties) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "activateDate":
+			err = unpopulate(val, &c.ActivateDate)
+			delete(rawMsg, key)
+		case "dnsNames":
+			err = unpopulate(val, &c.DNSNames)
+			delete(rawMsg, key)
+		case "expirationDate":
+			err = unpopulate(val, &c.ExpirationDate)
+			delete(rawMsg, key)
+		case "issuedDate":
+			err = unpopulate(val, &c.IssuedDate)
+			delete(rawMsg, key)
+		case "issuer":
+			err = unpopulate(val, &c.Issuer)
+			delete(rawMsg, key)
+		case "subjectName":
+			err = unpopulate(val, &c.SubjectName)
+			delete(rawMsg, key)
+		case "thumbprint":
+			err = unpopulate(val, &c.Thumbprint)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &c.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // CertificateResource - Certificate resource payload.
 type CertificateResource struct {
 	ProxyResource
 	// Properties of the certificate resource payload.
-	Properties *CertificateProperties `json:"properties,omitempty"`
+	Properties CertificatePropertiesClassification `json:"properties,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type CertificateResource.
@@ -385,6 +533,29 @@ func (c CertificateResource) MarshalJSON() ([]byte, error) {
 	c.ProxyResource.marshalInternal(objectMap)
 	populate(objectMap, "properties", c.Properties)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type CertificateResource.
+func (c *CertificateResource) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "properties":
+			c.Properties, err = unmarshalCertificatePropertiesClassification(val)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	if err := c.ProxyResource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // CertificateResourceCollection - Collection compose of certificate resources list and a possible link for next page.
@@ -467,6 +638,9 @@ func (c CloudErrorBody) MarshalJSON() ([]byte, error) {
 type ClusterResourceProperties struct {
 	// Network profile of the Service
 	NetworkProfile *NetworkProfile `json:"networkProfile,omitempty"`
+
+	// READ-ONLY; Power state of the Service
+	PowerState *PowerState `json:"powerState,omitempty" azure:"ro"`
 
 	// READ-ONLY; Provisioning state of the Service
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
@@ -554,6 +728,29 @@ func (c ConfigServerResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type ConfigServerResource.
+func (c *ConfigServerResource) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "properties":
+			err = unpopulate(val, &c.Properties)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	if err := c.ProxyResource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
+}
+
 // ConfigServerSettings - The settings of config server.
 type ConfigServerSettings struct {
 	// Property of git environment.
@@ -618,6 +815,44 @@ type ConfigServersGetOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ContentCertificateProperties - Properties of certificate imported from key vault.
+type ContentCertificateProperties struct {
+	CertificateProperties
+	// REQUIRED; The content of uploaded certificate.
+	Content *string `json:"content,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ContentCertificateProperties.
+func (c ContentCertificateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	c.CertificateProperties.marshalInternal(objectMap, "ContentCertificate")
+	populate(objectMap, "content", c.Content)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ContentCertificateProperties.
+func (c *ContentCertificateProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "content":
+			err = unpopulate(val, &c.Content)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	if err := c.CertificateProperties.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
+}
+
 // CustomContainer - Custom container payload
 type CustomContainer struct {
 	// Arguments to the entrypoint. The docker image's CMD is used if this is not provided.
@@ -672,6 +907,29 @@ func (c CustomDomainResource) MarshalJSON() ([]byte, error) {
 	c.ProxyResource.marshalInternal(objectMap)
 	populate(objectMap, "properties", c.Properties)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type CustomDomainResource.
+func (c *CustomDomainResource) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "properties":
+			err = unpopulate(val, &c.Properties)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	if err := c.ProxyResource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // CustomDomainResourceCollection - Collection compose of a custom domain resources list and a possible link for next page.
@@ -731,6 +989,116 @@ type CustomDomainsListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// CustomPersistentDiskPropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetCustomPersistentDiskProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AzureFileVolume, *CustomPersistentDiskProperties
+type CustomPersistentDiskPropertiesClassification interface {
+	// GetCustomPersistentDiskProperties returns the CustomPersistentDiskProperties content of the underlying type.
+	GetCustomPersistentDiskProperties() *CustomPersistentDiskProperties
+}
+
+// CustomPersistentDiskProperties - Custom persistent disk resource payload.
+type CustomPersistentDiskProperties struct {
+	// REQUIRED; The mount path of the persistent disk.
+	MountPath *string `json:"mountPath,omitempty"`
+
+	// REQUIRED; The type of the underlying resource to mount as a persistent disk.
+	Type *CustomPersistentDiskPropertiesType `json:"type,omitempty"`
+
+	// These are the mount options for a persistent disk.
+	MountOptions []*string `json:"mountOptions,omitempty"`
+
+	// Indicates whether the persistent disk is a readOnly one.
+	ReadOnly *bool `json:"readOnly,omitempty"`
+}
+
+// GetCustomPersistentDiskProperties implements the CustomPersistentDiskPropertiesClassification interface for type CustomPersistentDiskProperties.
+func (c *CustomPersistentDiskProperties) GetCustomPersistentDiskProperties() *CustomPersistentDiskProperties {
+	return c
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type CustomPersistentDiskProperties.
+func (c *CustomPersistentDiskProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	return c.unmarshalInternal(rawMsg)
+}
+
+func (c CustomPersistentDiskProperties) marshalInternal(objectMap map[string]interface{}, discValue CustomPersistentDiskPropertiesType) {
+	populate(objectMap, "mountOptions", c.MountOptions)
+	populate(objectMap, "mountPath", c.MountPath)
+	populate(objectMap, "readOnly", c.ReadOnly)
+	c.Type = &discValue
+	objectMap["type"] = c.Type
+}
+
+func (c *CustomPersistentDiskProperties) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "mountOptions":
+			err = unpopulate(val, &c.MountOptions)
+			delete(rawMsg, key)
+		case "mountPath":
+			err = unpopulate(val, &c.MountPath)
+			delete(rawMsg, key)
+		case "readOnly":
+			err = unpopulate(val, &c.ReadOnly)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &c.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// CustomPersistentDiskResource - Custom persistent disk resource payload.
+type CustomPersistentDiskResource struct {
+	// REQUIRED; The resource id of Azure Spring Cloud Storage resource.
+	StorageID *string `json:"storageId,omitempty"`
+
+	// Properties of the custom persistent disk resource payload.
+	CustomPersistentDiskProperties CustomPersistentDiskPropertiesClassification `json:"customPersistentDiskProperties,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CustomPersistentDiskResource.
+func (c CustomPersistentDiskResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "customPersistentDiskProperties", c.CustomPersistentDiskProperties)
+	populate(objectMap, "storageId", c.StorageID)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type CustomPersistentDiskResource.
+func (c *CustomPersistentDiskResource) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "customPersistentDiskProperties":
+			c.CustomPersistentDiskProperties, err = unmarshalCustomPersistentDiskPropertiesClassification(val)
+			delete(rawMsg, key)
+		case "storageId":
+			err = unpopulate(val, &c.StorageID)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 // DeploymentInstance - Deployment instance payload
 type DeploymentInstance struct {
 	// READ-ONLY; Discovery status of the deployment instance
@@ -766,6 +1134,32 @@ func (d DeploymentResource) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "properties", d.Properties)
 	populate(objectMap, "sku", d.SKU)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type DeploymentResource.
+func (d *DeploymentResource) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "properties":
+			err = unpopulate(val, &d.Properties)
+			delete(rawMsg, key)
+		case "sku":
+			err = unpopulate(val, &d.SKU)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	if err := d.ProxyResource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // DeploymentResourceCollection - Object that includes an array of App resources and a possible link for next set
@@ -817,7 +1211,7 @@ func (d DeploymentResourceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "active", d.Active)
 	populate(objectMap, "appName", d.AppName)
-	populate(objectMap, "createdTime", (*timeRFC3339)(d.CreatedTime))
+	populateTimeRFC3339(objectMap, "createdTime", d.CreatedTime)
 	populate(objectMap, "deploymentSettings", d.DeploymentSettings)
 	populate(objectMap, "instances", d.Instances)
 	populate(objectMap, "provisioningState", d.ProvisioningState)
@@ -842,9 +1236,7 @@ func (d *DeploymentResourceProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &d.AppName)
 			delete(rawMsg, key)
 		case "createdTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			d.CreatedTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &d.CreatedTime)
 			delete(rawMsg, key)
 		case "deploymentSettings":
 			err = unpopulate(val, &d.DeploymentSettings)
@@ -871,10 +1263,13 @@ func (d *DeploymentResourceProperties) UnmarshalJSON(data []byte) error {
 
 // DeploymentSettings - Deployment settings payload
 type DeploymentSettings struct {
-	// Required CPU. This should be 1 for Basic tier, and in range [1, 4] for Standard tier. This is deprecated starting from API version 2021-06-01-preview.
+	// Required CPU. This should be 1 for Basic tier, and in range [1, 4] for Standard tier. This is deprecated starting from API version 2021-09-01-preview.
 	// Please use the resourceRequests field to set the
 	// CPU size.
 	CPU *int32 `json:"cpu,omitempty"`
+
+	// Container liveness and readiness probe settings
+	ContainerProbeSettings *DeploymentSettingsContainerProbeSettings `json:"containerProbeSettings,omitempty"`
 
 	// Collection of environment variables
 	EnvironmentVariables map[string]*string `json:"environmentVariables,omitempty"`
@@ -883,7 +1278,7 @@ type DeploymentSettings struct {
 	JvmOptions *string `json:"jvmOptions,omitempty"`
 
 	// Required Memory size in GB. This should be in range [1, 2] for Basic tier, and in range [1, 8] for Standard tier. This is deprecated starting from API
-	// version 2021-06-01-preview. Please use the
+	// version 2021-09-01-preview. Please use the
 	// resourceRequests field to set the the memory size.
 	MemoryInGB *int32 `json:"memoryInGB,omitempty"`
 
@@ -903,6 +1298,7 @@ type DeploymentSettings struct {
 func (d DeploymentSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "cpu", d.CPU)
+	populate(objectMap, "containerProbeSettings", d.ContainerProbeSettings)
 	populate(objectMap, "environmentVariables", d.EnvironmentVariables)
 	populate(objectMap, "jvmOptions", d.JvmOptions)
 	populate(objectMap, "memoryInGB", d.MemoryInGB)
@@ -910,6 +1306,12 @@ func (d DeploymentSettings) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "resourceRequests", d.ResourceRequests)
 	populate(objectMap, "runtimeVersion", d.RuntimeVersion)
 	return json.Marshal(objectMap)
+}
+
+// DeploymentSettingsContainerProbeSettings - Container liveness and readiness probe settings
+type DeploymentSettingsContainerProbeSettings struct {
+	// Indicates whether disable the liveness and readiness probe
+	DisableProbe *bool `json:"disableProbe,omitempty"`
 }
 
 // DeploymentsBeginCreateOrUpdateOptions contains the optional parameters for the Deployments.BeginCreateOrUpdate method.
@@ -922,8 +1324,23 @@ type DeploymentsBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
+// DeploymentsBeginGenerateHeapDumpOptions contains the optional parameters for the Deployments.BeginGenerateHeapDump method.
+type DeploymentsBeginGenerateHeapDumpOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsBeginGenerateThreadDumpOptions contains the optional parameters for the Deployments.BeginGenerateThreadDump method.
+type DeploymentsBeginGenerateThreadDumpOptions struct {
+	// placeholder for future optional parameters
+}
+
 // DeploymentsBeginRestartOptions contains the optional parameters for the Deployments.BeginRestart method.
 type DeploymentsBeginRestartOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsBeginStartJFROptions contains the optional parameters for the Deployments.BeginStartJFR method.
+type DeploymentsBeginStartJFROptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -962,6 +1379,18 @@ type DeploymentsListForClusterOptions struct {
 type DeploymentsListOptions struct {
 	// Version of the deployments to be listed
 	Version []string
+}
+
+// DiagnosticParameters - Diagnostic parameters of diagnostic operations
+type DiagnosticParameters struct {
+	// App instance name
+	AppInstance *string `json:"appInstance,omitempty"`
+
+	// Duration of your JFR. 1 min can be represented by 1m or 60s.
+	Duration *string `json:"duration,omitempty"`
+
+	// Your target file path in your own BYOS
+	FilePath *string `json:"filePath,omitempty"`
 }
 
 // Error - The error code compose of code and message.
@@ -1033,6 +1462,74 @@ type ImageRegistryCredential struct {
 
 	// The username of the image registry credential
 	Username *string `json:"username,omitempty"`
+}
+
+// KeyVaultCertificateProperties - Properties of certificate imported from key vault.
+type KeyVaultCertificateProperties struct {
+	CertificateProperties
+	// REQUIRED; The certificate name of key vault.
+	KeyVaultCertName *string `json:"keyVaultCertName,omitempty"`
+
+	// REQUIRED; The vault uri of user key vault.
+	VaultURI *string `json:"vaultUri,omitempty"`
+
+	// The certificate version of key vault.
+	CertVersion *string `json:"certVersion,omitempty"`
+
+	// Optional. If set to true, it will not import private key from key vault.
+	ExcludePrivateKey *bool `json:"excludePrivateKey,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type KeyVaultCertificateProperties.
+func (k KeyVaultCertificateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	k.CertificateProperties.marshalInternal(objectMap, "KeyVaultCertificate")
+	populate(objectMap, "certVersion", k.CertVersion)
+	populate(objectMap, "excludePrivateKey", k.ExcludePrivateKey)
+	populate(objectMap, "keyVaultCertName", k.KeyVaultCertName)
+	populate(objectMap, "vaultUri", k.VaultURI)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type KeyVaultCertificateProperties.
+func (k *KeyVaultCertificateProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "certVersion":
+			err = unpopulate(val, &k.CertVersion)
+			delete(rawMsg, key)
+		case "excludePrivateKey":
+			err = unpopulate(val, &k.ExcludePrivateKey)
+			delete(rawMsg, key)
+		case "keyVaultCertName":
+			err = unpopulate(val, &k.KeyVaultCertName)
+			delete(rawMsg, key)
+		case "vaultUri":
+			err = unpopulate(val, &k.VaultURI)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	if err := k.CertificateProperties.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
+}
+
+// LoadedCertificate - Loaded certificate payload
+type LoadedCertificate struct {
+	// REQUIRED; Resource Id of loaded certificate
+	ResourceID *string `json:"resourceId,omitempty"`
+
+	// Indicate whether the certificate will be loaded into default trust store, only work for Java runtime.
+	LoadTrustStore *bool `json:"loadTrustStore,omitempty"`
 }
 
 // LogFileURLResponse - Log file URL payload
@@ -1166,6 +1663,29 @@ func (m MonitoringSettingResource) MarshalJSON() ([]byte, error) {
 	m.ProxyResource.marshalInternal(objectMap)
 	populate(objectMap, "properties", m.Properties)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type MonitoringSettingResource.
+func (m *MonitoringSettingResource) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "properties":
+			err = unpopulate(val, &m.Properties)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	if err := m.ProxyResource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // MonitoringSettingsBeginUpdatePatchOptions contains the optional parameters for the MonitoringSettings.BeginUpdatePatch method.
@@ -1319,6 +1839,13 @@ func (p ProxyResource) marshalInternal(objectMap map[string]interface{}) {
 	p.Resource.marshalInternal(objectMap)
 }
 
+func (p *ProxyResource) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
+	if err := p.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
+}
+
 // RegenerateTestKeyRequestPayload - Regenerate test key request payload
 type RegenerateTestKeyRequestPayload struct {
 	// REQUIRED; Type of the test key
@@ -1373,10 +1900,40 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type Resource.
+func (r *Resource) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	return r.unmarshalInternal(rawMsg)
+}
+
 func (r Resource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "id", r.ID)
 	populate(objectMap, "name", r.Name)
 	populate(objectMap, "type", r.Type)
+}
+
+func (r *Resource) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "id":
+			err = unpopulate(val, &r.ID)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &r.Name)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &r.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // ResourceRequests - Deployment resource request payload
@@ -1596,6 +2153,32 @@ func (s ServiceResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type ServiceResource.
+func (s *ServiceResource) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "properties":
+			err = unpopulate(val, &s.Properties)
+			delete(rawMsg, key)
+		case "sku":
+			err = unpopulate(val, &s.SKU)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	if err := s.TrackedResource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
+}
+
 // ServiceResourceList - Object that includes an array of Service resources and a possible link for next set
 type ServiceResourceList struct {
 	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
@@ -1637,6 +2220,16 @@ type ServicesBeginCreateOrUpdateOptions struct {
 
 // ServicesBeginDeleteOptions contains the optional parameters for the Services.BeginDelete method.
 type ServicesBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServicesBeginStartOptions contains the optional parameters for the Services.BeginStart method.
+type ServicesBeginStartOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServicesBeginStopOptions contains the optional parameters for the Services.BeginStop method.
+type ServicesBeginStopOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1685,6 +2278,180 @@ type ServicesRegenerateTestKeyOptions struct {
 	// placeholder for future optional parameters
 }
 
+// StorageAccount - storage resource of type Azure Storage Account.
+type StorageAccount struct {
+	StorageProperties
+	// REQUIRED; The account key of the Azure Storage Account.
+	AccountKey *string `json:"accountKey,omitempty"`
+
+	// REQUIRED; The account name of the Azure Storage Account.
+	AccountName *string `json:"accountName,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type StorageAccount.
+func (s StorageAccount) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	s.StorageProperties.marshalInternal(objectMap, StoragePropertiesStorageTypeStorageAccount)
+	populate(objectMap, "accountKey", s.AccountKey)
+	populate(objectMap, "accountName", s.AccountName)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type StorageAccount.
+func (s *StorageAccount) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "accountKey":
+			err = unpopulate(val, &s.AccountKey)
+			delete(rawMsg, key)
+		case "accountName":
+			err = unpopulate(val, &s.AccountName)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	if err := s.StorageProperties.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
+}
+
+// StoragePropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetStorageProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *StorageAccount, *StorageProperties
+type StoragePropertiesClassification interface {
+	// GetStorageProperties returns the StorageProperties content of the underlying type.
+	GetStorageProperties() *StorageProperties
+}
+
+// StorageProperties - Storage resource payload.
+type StorageProperties struct {
+	// REQUIRED; The type of the storage.
+	StorageType *StoragePropertiesStorageType `json:"storageType,omitempty"`
+}
+
+// GetStorageProperties implements the StoragePropertiesClassification interface for type StorageProperties.
+func (s *StorageProperties) GetStorageProperties() *StorageProperties { return s }
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type StorageProperties.
+func (s *StorageProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	return s.unmarshalInternal(rawMsg)
+}
+
+func (s StorageProperties) marshalInternal(objectMap map[string]interface{}, discValue StoragePropertiesStorageType) {
+	s.StorageType = &discValue
+	objectMap["storageType"] = s.StorageType
+}
+
+func (s *StorageProperties) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "storageType":
+			err = unpopulate(val, &s.StorageType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// StorageResource - Storage resource payload.
+type StorageResource struct {
+	ProxyResource
+	// Properties of the storage resource payload.
+	Properties StoragePropertiesClassification `json:"properties,omitempty"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type StorageResource.
+func (s StorageResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	s.ProxyResource.marshalInternal(objectMap)
+	populate(objectMap, "properties", s.Properties)
+	populate(objectMap, "systemData", s.SystemData)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type StorageResource.
+func (s *StorageResource) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "properties":
+			s.Properties, err = unmarshalStoragePropertiesClassification(val)
+			delete(rawMsg, key)
+		case "systemData":
+			err = unpopulate(val, &s.SystemData)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	if err := s.ProxyResource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
+}
+
+// StorageResourceCollection - Collection compose of storage resources list and a possible link for next page.
+type StorageResourceCollection struct {
+	// The link to next page of storage list.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// The storage resources list.
+	Value []*StorageResource `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type StorageResourceCollection.
+func (s StorageResourceCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", s.NextLink)
+	populate(objectMap, "value", s.Value)
+	return json.Marshal(objectMap)
+}
+
+// StoragesBeginCreateOrUpdateOptions contains the optional parameters for the Storages.BeginCreateOrUpdate method.
+type StoragesBeginCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StoragesBeginDeleteOptions contains the optional parameters for the Storages.BeginDelete method.
+type StoragesBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StoragesGetOptions contains the optional parameters for the Storages.Get method.
+type StoragesGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StoragesListOptions contains the optional parameters for the Storages.List method.
+type StoragesListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // SupportedRuntimeVersion - Supported deployment runtime version descriptor.
 type SupportedRuntimeVersion struct {
 	// The platform of this runtime version (possible values: "Java" or ".NET").
@@ -1695,6 +2462,74 @@ type SupportedRuntimeVersion struct {
 
 	// The detailed version (major.minor) of the platform.
 	Version *string `json:"version,omitempty"`
+}
+
+// SystemData - Metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// The timestamp of resource creation (UTC).
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
+
+	// The identity that created the resource.
+	CreatedBy *string `json:"createdBy,omitempty"`
+
+	// The type of identity that created the resource.
+	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+
+	// The timestamp of resource last modification (UTC)
+	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+
+	// The identity that last modified the resource.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+
+	// The type of identity that last modified the resource.
+	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SystemData.
+func (s SystemData) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
+	populate(objectMap, "createdBy", s.CreatedBy)
+	populate(objectMap, "createdByType", s.CreatedByType)
+	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
+	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
+	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
+func (s *SystemData) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "createdAt":
+			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
+			delete(rawMsg, key)
+		case "createdBy":
+			err = unpopulate(val, &s.CreatedBy)
+			delete(rawMsg, key)
+		case "createdByType":
+			err = unpopulate(val, &s.CreatedByType)
+			delete(rawMsg, key)
+		case "lastModifiedAt":
+			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
+			delete(rawMsg, key)
+		case "lastModifiedBy":
+			err = unpopulate(val, &s.LastModifiedBy)
+			delete(rawMsg, key)
+		case "lastModifiedByType":
+			err = unpopulate(val, &s.LastModifiedByType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // TemporaryDisk - Temporary disk payload
@@ -1741,10 +2576,40 @@ func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type TrackedResource.
+func (t *TrackedResource) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	return t.unmarshalInternal(rawMsg)
+}
+
 func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
 	t.Resource.marshalInternal(objectMap)
 	populate(objectMap, "location", t.Location)
 	populate(objectMap, "tags", t.Tags)
+}
+
+func (t *TrackedResource) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "location":
+			err = unpopulate(val, &t.Location)
+			delete(rawMsg, key)
+		case "tags":
+			err = unpopulate(val, &t.Tags)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	if err := t.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // UserSourceInfo - Source information for a deployment

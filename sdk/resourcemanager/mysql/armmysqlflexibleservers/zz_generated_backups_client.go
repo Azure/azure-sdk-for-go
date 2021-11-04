@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // BackupsClient contains the methods for the Backups group.
@@ -30,8 +31,15 @@ type BackupsClient struct {
 }
 
 // NewBackupsClient creates a new instance of BackupsClient with the specified values.
-func NewBackupsClient(con *arm.Connection, subscriptionID string) *BackupsClient {
-	return &BackupsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewBackupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *BackupsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &BackupsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - List all the backups for a given server.
@@ -85,7 +93,7 @@ func (client *BackupsClient) getCreateRequest(ctx context.Context, resourceGroup
 func (client *BackupsClient) getHandleResponse(resp *http.Response) (BackupsGetResponse, error) {
 	result := BackupsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerBackup); err != nil {
-		return BackupsGetResponse{}, err
+		return BackupsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -147,7 +155,7 @@ func (client *BackupsClient) listByServerCreateRequest(ctx context.Context, reso
 func (client *BackupsClient) listByServerHandleResponse(resp *http.Response) (BackupsListByServerResponse, error) {
 	result := BackupsListByServerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerBackupListResult); err != nil {
-		return BackupsListByServerResponse{}, err
+		return BackupsListByServerResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

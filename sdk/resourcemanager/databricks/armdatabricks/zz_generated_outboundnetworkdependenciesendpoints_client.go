@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // OutboundNetworkDependenciesEndpointsClient contains the methods for the OutboundNetworkDependenciesEndpoints group.
@@ -30,8 +31,15 @@ type OutboundNetworkDependenciesEndpointsClient struct {
 }
 
 // NewOutboundNetworkDependenciesEndpointsClient creates a new instance of OutboundNetworkDependenciesEndpointsClient with the specified values.
-func NewOutboundNetworkDependenciesEndpointsClient(con *arm.Connection, subscriptionID string) *OutboundNetworkDependenciesEndpointsClient {
-	return &OutboundNetworkDependenciesEndpointsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewOutboundNetworkDependenciesEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *OutboundNetworkDependenciesEndpointsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &OutboundNetworkDependenciesEndpointsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // List - Gets the list of endpoints that VNET Injected Workspace calls Azure Databricks Control Plane. You must configure outbound access with these endpoints.
@@ -83,7 +91,7 @@ func (client *OutboundNetworkDependenciesEndpointsClient) listCreateRequest(ctx 
 func (client *OutboundNetworkDependenciesEndpointsClient) listHandleResponse(resp *http.Response) (OutboundNetworkDependenciesEndpointsListResponse, error) {
 	result := OutboundNetworkDependenciesEndpointsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OutboundEnvironmentEndpointArray); err != nil {
-		return OutboundNetworkDependenciesEndpointsListResponse{}, err
+		return OutboundNetworkDependenciesEndpointsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

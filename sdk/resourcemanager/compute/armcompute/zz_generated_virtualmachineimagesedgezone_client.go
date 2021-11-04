@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // VirtualMachineImagesEdgeZoneClient contains the methods for the VirtualMachineImagesEdgeZone group.
@@ -31,8 +32,15 @@ type VirtualMachineImagesEdgeZoneClient struct {
 }
 
 // NewVirtualMachineImagesEdgeZoneClient creates a new instance of VirtualMachineImagesEdgeZoneClient with the specified values.
-func NewVirtualMachineImagesEdgeZoneClient(con *arm.Connection, subscriptionID string) *VirtualMachineImagesEdgeZoneClient {
-	return &VirtualMachineImagesEdgeZoneClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewVirtualMachineImagesEdgeZoneClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VirtualMachineImagesEdgeZoneClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &VirtualMachineImagesEdgeZoneClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Gets a virtual machine image in an edge zone.
@@ -98,7 +106,7 @@ func (client *VirtualMachineImagesEdgeZoneClient) getCreateRequest(ctx context.C
 func (client *VirtualMachineImagesEdgeZoneClient) getHandleResponse(resp *http.Response) (VirtualMachineImagesEdgeZoneGetResponse, error) {
 	result := VirtualMachineImagesEdgeZoneGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineImage); err != nil {
-		return VirtualMachineImagesEdgeZoneGetResponse{}, err
+		return VirtualMachineImagesEdgeZoneGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -184,7 +192,7 @@ func (client *VirtualMachineImagesEdgeZoneClient) listCreateRequest(ctx context.
 func (client *VirtualMachineImagesEdgeZoneClient) listHandleResponse(resp *http.Response) (VirtualMachineImagesEdgeZoneListResponse, error) {
 	result := VirtualMachineImagesEdgeZoneListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineImageResourceArray); err != nil {
-		return VirtualMachineImagesEdgeZoneListResponse{}, err
+		return VirtualMachineImagesEdgeZoneListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -253,7 +261,7 @@ func (client *VirtualMachineImagesEdgeZoneClient) listOffersCreateRequest(ctx co
 func (client *VirtualMachineImagesEdgeZoneClient) listOffersHandleResponse(resp *http.Response) (VirtualMachineImagesEdgeZoneListOffersResponse, error) {
 	result := VirtualMachineImagesEdgeZoneListOffersResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineImageResourceArray); err != nil {
-		return VirtualMachineImagesEdgeZoneListOffersResponse{}, err
+		return VirtualMachineImagesEdgeZoneListOffersResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -318,7 +326,7 @@ func (client *VirtualMachineImagesEdgeZoneClient) listPublishersCreateRequest(ct
 func (client *VirtualMachineImagesEdgeZoneClient) listPublishersHandleResponse(resp *http.Response) (VirtualMachineImagesEdgeZoneListPublishersResponse, error) {
 	result := VirtualMachineImagesEdgeZoneListPublishersResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineImageResourceArray); err != nil {
-		return VirtualMachineImagesEdgeZoneListPublishersResponse{}, err
+		return VirtualMachineImagesEdgeZoneListPublishersResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -391,7 +399,7 @@ func (client *VirtualMachineImagesEdgeZoneClient) listSKUsCreateRequest(ctx cont
 func (client *VirtualMachineImagesEdgeZoneClient) listSKUsHandleResponse(resp *http.Response) (VirtualMachineImagesEdgeZoneListSKUsResponse, error) {
 	result := VirtualMachineImagesEdgeZoneListSKUsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineImageResourceArray); err != nil {
-		return VirtualMachineImagesEdgeZoneListSKUsResponse{}, err
+		return VirtualMachineImagesEdgeZoneListSKUsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

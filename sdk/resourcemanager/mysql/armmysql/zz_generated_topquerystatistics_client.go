@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // TopQueryStatisticsClient contains the methods for the TopQueryStatistics group.
@@ -30,8 +31,15 @@ type TopQueryStatisticsClient struct {
 }
 
 // NewTopQueryStatisticsClient creates a new instance of TopQueryStatisticsClient with the specified values.
-func NewTopQueryStatisticsClient(con *arm.Connection, subscriptionID string) *TopQueryStatisticsClient {
-	return &TopQueryStatisticsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewTopQueryStatisticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TopQueryStatisticsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &TopQueryStatisticsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Retrieve the query statistic for specified identifier.
@@ -85,7 +93,7 @@ func (client *TopQueryStatisticsClient) getCreateRequest(ctx context.Context, re
 func (client *TopQueryStatisticsClient) getHandleResponse(resp *http.Response) (TopQueryStatisticsGetResponse, error) {
 	result := TopQueryStatisticsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QueryStatistic); err != nil {
-		return TopQueryStatisticsGetResponse{}, err
+		return TopQueryStatisticsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -147,7 +155,7 @@ func (client *TopQueryStatisticsClient) listByServerCreateRequest(ctx context.Co
 func (client *TopQueryStatisticsClient) listByServerHandleResponse(resp *http.Response) (TopQueryStatisticsListByServerResponse, error) {
 	result := TopQueryStatisticsListByServerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TopQueryStatisticsResultList); err != nil {
-		return TopQueryStatisticsListByServerResponse{}, err
+		return TopQueryStatisticsListByServerResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

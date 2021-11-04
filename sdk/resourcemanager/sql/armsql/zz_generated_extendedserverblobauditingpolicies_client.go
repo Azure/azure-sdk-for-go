@@ -11,14 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // ExtendedServerBlobAuditingPoliciesClient contains the methods for the ExtendedServerBlobAuditingPolicies group.
@@ -30,8 +30,15 @@ type ExtendedServerBlobAuditingPoliciesClient struct {
 }
 
 // NewExtendedServerBlobAuditingPoliciesClient creates a new instance of ExtendedServerBlobAuditingPoliciesClient with the specified values.
-func NewExtendedServerBlobAuditingPoliciesClient(con *arm.Connection, subscriptionID string) *ExtendedServerBlobAuditingPoliciesClient {
-	return &ExtendedServerBlobAuditingPoliciesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewExtendedServerBlobAuditingPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ExtendedServerBlobAuditingPoliciesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ExtendedServerBlobAuditingPoliciesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Creates or updates an extended server's blob auditing policy.
@@ -158,7 +165,7 @@ func (client *ExtendedServerBlobAuditingPoliciesClient) getCreateRequest(ctx con
 func (client *ExtendedServerBlobAuditingPoliciesClient) getHandleResponse(resp *http.Response) (ExtendedServerBlobAuditingPoliciesGetResponse, error) {
 	result := ExtendedServerBlobAuditingPoliciesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExtendedServerBlobAuditingPolicy); err != nil {
-		return ExtendedServerBlobAuditingPoliciesGetResponse{}, err
+		return ExtendedServerBlobAuditingPoliciesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -219,7 +226,7 @@ func (client *ExtendedServerBlobAuditingPoliciesClient) listByServerCreateReques
 func (client *ExtendedServerBlobAuditingPoliciesClient) listByServerHandleResponse(resp *http.Response) (ExtendedServerBlobAuditingPoliciesListByServerResponse, error) {
 	result := ExtendedServerBlobAuditingPoliciesListByServerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExtendedServerBlobAuditingPolicyListResult); err != nil {
-		return ExtendedServerBlobAuditingPoliciesListByServerResponse{}, err
+		return ExtendedServerBlobAuditingPoliciesListByServerResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

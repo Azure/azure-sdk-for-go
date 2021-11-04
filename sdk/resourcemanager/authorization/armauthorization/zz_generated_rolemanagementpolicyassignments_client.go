@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // RoleManagementPolicyAssignmentsClient contains the methods for the RoleManagementPolicyAssignments group.
@@ -29,8 +30,15 @@ type RoleManagementPolicyAssignmentsClient struct {
 }
 
 // NewRoleManagementPolicyAssignmentsClient creates a new instance of RoleManagementPolicyAssignmentsClient with the specified values.
-func NewRoleManagementPolicyAssignmentsClient(con *arm.Connection) *RoleManagementPolicyAssignmentsClient {
-	return &RoleManagementPolicyAssignmentsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewRoleManagementPolicyAssignmentsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *RoleManagementPolicyAssignmentsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &RoleManagementPolicyAssignmentsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Create - Create a role management policy assignment
@@ -53,9 +61,6 @@ func (client *RoleManagementPolicyAssignmentsClient) Create(ctx context.Context,
 // createCreateRequest creates the Create request.
 func (client *RoleManagementPolicyAssignmentsClient) createCreateRequest(ctx context.Context, scope string, roleManagementPolicyAssignmentName string, parameters RoleManagementPolicyAssignment, options *RoleManagementPolicyAssignmentsCreateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleManagementPolicyAssignments/{roleManagementPolicyAssignmentName}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if roleManagementPolicyAssignmentName == "" {
 		return nil, errors.New("parameter roleManagementPolicyAssignmentName cannot be empty")
@@ -76,7 +81,7 @@ func (client *RoleManagementPolicyAssignmentsClient) createCreateRequest(ctx con
 func (client *RoleManagementPolicyAssignmentsClient) createHandleResponse(resp *http.Response) (RoleManagementPolicyAssignmentsCreateResponse, error) {
 	result := RoleManagementPolicyAssignmentsCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleManagementPolicyAssignment); err != nil {
-		return RoleManagementPolicyAssignmentsCreateResponse{}, err
+		return RoleManagementPolicyAssignmentsCreateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -114,9 +119,6 @@ func (client *RoleManagementPolicyAssignmentsClient) Delete(ctx context.Context,
 // deleteCreateRequest creates the Delete request.
 func (client *RoleManagementPolicyAssignmentsClient) deleteCreateRequest(ctx context.Context, scope string, roleManagementPolicyAssignmentName string, options *RoleManagementPolicyAssignmentsDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleManagementPolicyAssignments/{roleManagementPolicyAssignmentName}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if roleManagementPolicyAssignmentName == "" {
 		return nil, errors.New("parameter roleManagementPolicyAssignmentName cannot be empty")
@@ -166,9 +168,6 @@ func (client *RoleManagementPolicyAssignmentsClient) Get(ctx context.Context, sc
 // getCreateRequest creates the Get request.
 func (client *RoleManagementPolicyAssignmentsClient) getCreateRequest(ctx context.Context, scope string, roleManagementPolicyAssignmentName string, options *RoleManagementPolicyAssignmentsGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleManagementPolicyAssignments/{roleManagementPolicyAssignmentName}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if roleManagementPolicyAssignmentName == "" {
 		return nil, errors.New("parameter roleManagementPolicyAssignmentName cannot be empty")
@@ -189,7 +188,7 @@ func (client *RoleManagementPolicyAssignmentsClient) getCreateRequest(ctx contex
 func (client *RoleManagementPolicyAssignmentsClient) getHandleResponse(resp *http.Response) (RoleManagementPolicyAssignmentsGetResponse, error) {
 	result := RoleManagementPolicyAssignmentsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleManagementPolicyAssignment); err != nil {
-		return RoleManagementPolicyAssignmentsGetResponse{}, err
+		return RoleManagementPolicyAssignmentsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -224,9 +223,6 @@ func (client *RoleManagementPolicyAssignmentsClient) ListForScope(scope string, 
 // listForScopeCreateRequest creates the ListForScope request.
 func (client *RoleManagementPolicyAssignmentsClient) listForScopeCreateRequest(ctx context.Context, scope string, options *RoleManagementPolicyAssignmentsListForScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleManagementPolicyAssignments"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -243,7 +239,7 @@ func (client *RoleManagementPolicyAssignmentsClient) listForScopeCreateRequest(c
 func (client *RoleManagementPolicyAssignmentsClient) listForScopeHandleResponse(resp *http.Response) (RoleManagementPolicyAssignmentsListForScopeResponse, error) {
 	result := RoleManagementPolicyAssignmentsListForScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleManagementPolicyAssignmentListResult); err != nil {
-		return RoleManagementPolicyAssignmentsListForScopeResponse{}, err
+		return RoleManagementPolicyAssignmentsListForScopeResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

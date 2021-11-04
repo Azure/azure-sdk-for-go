@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // GalleryImageVersionsClient contains the methods for the GalleryImageVersions group.
@@ -31,8 +31,15 @@ type GalleryImageVersionsClient struct {
 }
 
 // NewGalleryImageVersionsClient creates a new instance of GalleryImageVersionsClient with the specified values.
-func NewGalleryImageVersionsClient(con *arm.Connection, subscriptionID string) *GalleryImageVersionsClient {
-	return &GalleryImageVersionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewGalleryImageVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *GalleryImageVersionsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &GalleryImageVersionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Create or update a gallery image version.
@@ -261,7 +268,7 @@ func (client *GalleryImageVersionsClient) getCreateRequest(ctx context.Context, 
 func (client *GalleryImageVersionsClient) getHandleResponse(resp *http.Response) (GalleryImageVersionsGetResponse, error) {
 	result := GalleryImageVersionsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GalleryImageVersion); err != nil {
-		return GalleryImageVersionsGetResponse{}, err
+		return GalleryImageVersionsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -327,7 +334,7 @@ func (client *GalleryImageVersionsClient) listByGalleryImageCreateRequest(ctx co
 func (client *GalleryImageVersionsClient) listByGalleryImageHandleResponse(resp *http.Response) (GalleryImageVersionsListByGalleryImageResponse, error) {
 	result := GalleryImageVersionsListByGalleryImageResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GalleryImageVersionList); err != nil {
-		return GalleryImageVersionsListByGalleryImageResponse{}, err
+		return GalleryImageVersionsListByGalleryImageResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

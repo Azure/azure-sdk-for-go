@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // DataExportsClient contains the methods for the DataExports group.
@@ -30,8 +31,15 @@ type DataExportsClient struct {
 }
 
 // NewDataExportsClient creates a new instance of DataExportsClient with the specified values.
-func NewDataExportsClient(con *arm.Connection, subscriptionID string) *DataExportsClient {
-	return &DataExportsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewDataExportsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DataExportsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &DataExportsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Create or update a data export.
@@ -85,7 +93,7 @@ func (client *DataExportsClient) createOrUpdateCreateRequest(ctx context.Context
 func (client *DataExportsClient) createOrUpdateHandleResponse(resp *http.Response) (DataExportsCreateOrUpdateResponse, error) {
 	result := DataExportsCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataExport); err != nil {
-		return DataExportsCreateOrUpdateResponse{}, err
+		return DataExportsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -214,7 +222,7 @@ func (client *DataExportsClient) getCreateRequest(ctx context.Context, resourceG
 func (client *DataExportsClient) getHandleResponse(resp *http.Response) (DataExportsGetResponse, error) {
 	result := DataExportsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataExport); err != nil {
-		return DataExportsGetResponse{}, err
+		return DataExportsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -279,7 +287,7 @@ func (client *DataExportsClient) listByWorkspaceCreateRequest(ctx context.Contex
 func (client *DataExportsClient) listByWorkspaceHandleResponse(resp *http.Response) (DataExportsListByWorkspaceResponse, error) {
 	result := DataExportsListByWorkspaceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataExportListResult); err != nil {
-		return DataExportsListByWorkspaceResponse{}, err
+		return DataExportsListByWorkspaceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

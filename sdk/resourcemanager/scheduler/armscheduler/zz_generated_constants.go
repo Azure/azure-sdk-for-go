@@ -10,7 +10,7 @@ package armscheduler
 
 const (
 	module  = "armscheduler"
-	version = "v0.1.1"
+	version = "v0.2.1"
 )
 
 type DayOfWeek string

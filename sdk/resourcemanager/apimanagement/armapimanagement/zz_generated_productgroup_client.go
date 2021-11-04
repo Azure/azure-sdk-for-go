@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ProductGroupClient contains the methods for the ProductGroup group.
@@ -31,8 +32,15 @@ type ProductGroupClient struct {
 }
 
 // NewProductGroupClient creates a new instance of ProductGroupClient with the specified values.
-func NewProductGroupClient(con *arm.Connection, subscriptionID string) *ProductGroupClient {
-	return &ProductGroupClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewProductGroupClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ProductGroupClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ProductGroupClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CheckEntityExists - Checks that Group entity specified by identifier is associated with the Product entity.
@@ -81,7 +89,7 @@ func (client *ProductGroupClient) checkEntityExistsCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -132,7 +140,7 @@ func (client *ProductGroupClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -142,7 +150,7 @@ func (client *ProductGroupClient) createOrUpdateCreateRequest(ctx context.Contex
 func (client *ProductGroupClient) createOrUpdateHandleResponse(resp *http.Response) (ProductGroupCreateOrUpdateResponse, error) {
 	result := ProductGroupCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GroupContract); err != nil {
-		return ProductGroupCreateOrUpdateResponse{}, err
+		return ProductGroupCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -205,7 +213,7 @@ func (client *ProductGroupClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -271,7 +279,7 @@ func (client *ProductGroupClient) listByProductCreateRequest(ctx context.Context
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -281,7 +289,7 @@ func (client *ProductGroupClient) listByProductCreateRequest(ctx context.Context
 func (client *ProductGroupClient) listByProductHandleResponse(resp *http.Response) (ProductGroupListByProductResponse, error) {
 	result := ProductGroupListByProductResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GroupCollection); err != nil {
-		return ProductGroupListByProductResponse{}, err
+		return ProductGroupListByProductResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

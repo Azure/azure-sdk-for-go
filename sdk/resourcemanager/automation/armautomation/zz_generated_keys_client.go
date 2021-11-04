@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // KeysClient contains the methods for the Keys group.
@@ -30,8 +31,15 @@ type KeysClient struct {
 }
 
 // NewKeysClient creates a new instance of KeysClient with the specified values.
-func NewKeysClient(con *arm.Connection, subscriptionID string) *KeysClient {
-	return &KeysClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *KeysClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &KeysClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // ListByAutomationAccount - Retrieve the automation keys for an account.
@@ -81,7 +89,7 @@ func (client *KeysClient) listByAutomationAccountCreateRequest(ctx context.Conte
 func (client *KeysClient) listByAutomationAccountHandleResponse(resp *http.Response) (KeysListByAutomationAccountResponse, error) {
 	result := KeysListByAutomationAccountResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyListResult); err != nil {
-		return KeysListByAutomationAccountResponse{}, err
+		return KeysListByAutomationAccountResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

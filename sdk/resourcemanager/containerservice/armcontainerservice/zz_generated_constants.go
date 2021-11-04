@@ -10,7 +10,7 @@ package armcontainerservice
 
 const (
 	module  = "armcontainerservice"
-	version = "v0.1.0"
+	version = "v0.2.1"
 )
 
 // AgentPoolMode - A cluster must have at least one 'System' Agent Pool at all times. For additional information on agent pool restrictions and best practices,

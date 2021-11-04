@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // TransformsClient contains the methods for the Transforms group.
@@ -30,8 +31,15 @@ type TransformsClient struct {
 }
 
 // NewTransformsClient creates a new instance of TransformsClient with the specified values.
-func NewTransformsClient(con *arm.Connection, subscriptionID string) *TransformsClient {
-	return &TransformsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewTransformsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TransformsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &TransformsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or updates a new Transform.
@@ -85,7 +93,7 @@ func (client *TransformsClient) createOrUpdateCreateRequest(ctx context.Context,
 func (client *TransformsClient) createOrUpdateHandleResponse(resp *http.Response) (TransformsCreateOrUpdateResponse, error) {
 	result := TransformsCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Transform); err != nil {
-		return TransformsCreateOrUpdateResponse{}, err
+		return TransformsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -214,7 +222,7 @@ func (client *TransformsClient) getCreateRequest(ctx context.Context, resourceGr
 func (client *TransformsClient) getHandleResponse(resp *http.Response) (TransformsGetResponse, error) {
 	result := TransformsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Transform); err != nil {
-		return TransformsGetResponse{}, err
+		return TransformsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -282,7 +290,7 @@ func (client *TransformsClient) listCreateRequest(ctx context.Context, resourceG
 func (client *TransformsClient) listHandleResponse(resp *http.Response) (TransformsListResponse, error) {
 	result := TransformsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TransformCollection); err != nil {
-		return TransformsListResponse{}, err
+		return TransformsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -351,7 +359,7 @@ func (client *TransformsClient) updateCreateRequest(ctx context.Context, resourc
 func (client *TransformsClient) updateHandleResponse(resp *http.Response) (TransformsUpdateResponse, error) {
 	result := TransformsUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Transform); err != nil {
-		return TransformsUpdateResponse{}, err
+		return TransformsUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

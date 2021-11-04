@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // GalleryImagesClient contains the methods for the GalleryImages group.
@@ -31,8 +31,15 @@ type GalleryImagesClient struct {
 }
 
 // NewGalleryImagesClient creates a new instance of GalleryImagesClient with the specified values.
-func NewGalleryImagesClient(con *arm.Connection, subscriptionID string) *GalleryImagesClient {
-	return &GalleryImagesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewGalleryImagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *GalleryImagesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &GalleryImagesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Create or update a gallery image definition.
@@ -246,7 +253,7 @@ func (client *GalleryImagesClient) getCreateRequest(ctx context.Context, resourc
 func (client *GalleryImagesClient) getHandleResponse(resp *http.Response) (GalleryImagesGetResponse, error) {
 	result := GalleryImagesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GalleryImage); err != nil {
-		return GalleryImagesGetResponse{}, err
+		return GalleryImagesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -308,7 +315,7 @@ func (client *GalleryImagesClient) listByGalleryCreateRequest(ctx context.Contex
 func (client *GalleryImagesClient) listByGalleryHandleResponse(resp *http.Response) (GalleryImagesListByGalleryResponse, error) {
 	result := GalleryImagesListByGalleryResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GalleryImageList); err != nil {
-		return GalleryImagesListByGalleryResponse{}, err
+		return GalleryImagesListByGalleryResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

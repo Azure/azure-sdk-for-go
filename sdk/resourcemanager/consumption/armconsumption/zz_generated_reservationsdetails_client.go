@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ReservationsDetailsClient contains the methods for the ReservationsDetails group.
@@ -29,8 +30,15 @@ type ReservationsDetailsClient struct {
 }
 
 // NewReservationsDetailsClient creates a new instance of ReservationsDetailsClient with the specified values.
-func NewReservationsDetailsClient(con *arm.Connection) *ReservationsDetailsClient {
-	return &ReservationsDetailsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewReservationsDetailsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *ReservationsDetailsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ReservationsDetailsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // List - Lists the reservations details for the defined scope and provided date range.
@@ -50,9 +58,6 @@ func (client *ReservationsDetailsClient) List(scope string, options *Reservation
 // listCreateRequest creates the List request.
 func (client *ReservationsDetailsClient) listCreateRequest(ctx context.Context, scope string, options *ReservationsDetailsListOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Consumption/reservationDetails"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -84,7 +89,7 @@ func (client *ReservationsDetailsClient) listCreateRequest(ctx context.Context, 
 func (client *ReservationsDetailsClient) listHandleResponse(resp *http.Response) (ReservationsDetailsListResponse, error) {
 	result := ReservationsDetailsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationDetailsListResult); err != nil {
-		return ReservationsDetailsListResponse{}, err
+		return ReservationsDetailsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -139,7 +144,7 @@ func (client *ReservationsDetailsClient) listByReservationOrderCreateRequest(ctx
 func (client *ReservationsDetailsClient) listByReservationOrderHandleResponse(resp *http.Response) (ReservationsDetailsListByReservationOrderResponse, error) {
 	result := ReservationsDetailsListByReservationOrderResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationDetailsListResult); err != nil {
-		return ReservationsDetailsListByReservationOrderResponse{}, err
+		return ReservationsDetailsListByReservationOrderResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -198,7 +203,7 @@ func (client *ReservationsDetailsClient) listByReservationOrderAndReservationCre
 func (client *ReservationsDetailsClient) listByReservationOrderAndReservationHandleResponse(resp *http.Response) (ReservationsDetailsListByReservationOrderAndReservationResponse, error) {
 	result := ReservationsDetailsListByReservationOrderAndReservationResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationDetailsListResult); err != nil {
-		return ReservationsDetailsListByReservationOrderAndReservationResponse{}, err
+		return ReservationsDetailsListByReservationOrderAndReservationResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

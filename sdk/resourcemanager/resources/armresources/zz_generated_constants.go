@@ -10,7 +10,7 @@ package armresources
 
 const (
 	module  = "armresources"
-	version = "v0.1.0"
+	version = "v0.2.1"
 )
 
 // AliasPathAttributes - The attributes of the token that the alias path is referring to.

@@ -12,7 +12,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -29,8 +31,15 @@ type LocationBasedPerformanceTierClient struct {
 }
 
 // NewLocationBasedPerformanceTierClient creates a new instance of LocationBasedPerformanceTierClient with the specified values.
-func NewLocationBasedPerformanceTierClient(con *arm.Connection, subscriptionID string) *LocationBasedPerformanceTierClient {
-	return &LocationBasedPerformanceTierClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewLocationBasedPerformanceTierClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LocationBasedPerformanceTierClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &LocationBasedPerformanceTierClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // List - List all the performance tiers at specified location in a given subscription.
@@ -76,7 +85,7 @@ func (client *LocationBasedPerformanceTierClient) listCreateRequest(ctx context.
 func (client *LocationBasedPerformanceTierClient) listHandleResponse(resp *http.Response) (LocationBasedPerformanceTierListResponse, error) {
 	result := LocationBasedPerformanceTierListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PerformanceTierListResult); err != nil {
-		return LocationBasedPerformanceTierListResponse{}, err
+		return LocationBasedPerformanceTierListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

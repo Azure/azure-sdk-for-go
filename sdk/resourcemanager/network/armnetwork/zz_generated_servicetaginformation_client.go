@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ServiceTagInformationClient contains the methods for the ServiceTagInformation group.
@@ -31,8 +32,15 @@ type ServiceTagInformationClient struct {
 }
 
 // NewServiceTagInformationClient creates a new instance of ServiceTagInformationClient with the specified values.
-func NewServiceTagInformationClient(con *arm.Connection, subscriptionID string) *ServiceTagInformationClient {
-	return &ServiceTagInformationClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewServiceTagInformationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServiceTagInformationClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ServiceTagInformationClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // List - Gets a list of service tag information resources with pagination.
@@ -65,7 +73,7 @@ func (client *ServiceTagInformationClient) listCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	if options != nil && options.NoAddressPrefixes != nil {
 		reqQP.Set("noAddressPrefixes", strconv.FormatBool(*options.NoAddressPrefixes))
 	}
@@ -81,7 +89,7 @@ func (client *ServiceTagInformationClient) listCreateRequest(ctx context.Context
 func (client *ServiceTagInformationClient) listHandleResponse(resp *http.Response) (ServiceTagInformationListResponse, error) {
 	result := ServiceTagInformationListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceTagInformationListResult); err != nil {
-		return ServiceTagInformationListResponse{}, err
+		return ServiceTagInformationListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

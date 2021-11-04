@@ -11,13 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // GeoBackupPoliciesClient contains the methods for the GeoBackupPolicies group.
@@ -29,8 +30,15 @@ type GeoBackupPoliciesClient struct {
 }
 
 // NewGeoBackupPoliciesClient creates a new instance of GeoBackupPoliciesClient with the specified values.
-func NewGeoBackupPoliciesClient(con *arm.Connection, subscriptionID string) *GeoBackupPoliciesClient {
-	return &GeoBackupPoliciesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewGeoBackupPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *GeoBackupPoliciesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &GeoBackupPoliciesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Updates a database geo backup policy.
@@ -88,7 +96,7 @@ func (client *GeoBackupPoliciesClient) createOrUpdateCreateRequest(ctx context.C
 func (client *GeoBackupPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (GeoBackupPoliciesCreateOrUpdateResponse, error) {
 	result := GeoBackupPoliciesCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GeoBackupPolicy); err != nil {
-		return GeoBackupPoliciesCreateOrUpdateResponse{}, err
+		return GeoBackupPoliciesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -160,7 +168,7 @@ func (client *GeoBackupPoliciesClient) getCreateRequest(ctx context.Context, res
 func (client *GeoBackupPoliciesClient) getHandleResponse(resp *http.Response) (GeoBackupPoliciesGetResponse, error) {
 	result := GeoBackupPoliciesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GeoBackupPolicy); err != nil {
-		return GeoBackupPoliciesGetResponse{}, err
+		return GeoBackupPoliciesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -228,7 +236,7 @@ func (client *GeoBackupPoliciesClient) listByDatabaseCreateRequest(ctx context.C
 func (client *GeoBackupPoliciesClient) listByDatabaseHandleResponse(resp *http.Response) (GeoBackupPoliciesListByDatabaseResponse, error) {
 	result := GeoBackupPoliciesListByDatabaseResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GeoBackupPolicyListResult); err != nil {
-		return GeoBackupPoliciesListByDatabaseResponse{}, err
+		return GeoBackupPoliciesListByDatabaseResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

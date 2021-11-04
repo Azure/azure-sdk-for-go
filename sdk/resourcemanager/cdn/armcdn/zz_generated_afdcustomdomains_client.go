@@ -12,6 +12,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -30,8 +31,15 @@ type AFDCustomDomainsClient struct {
 }
 
 // NewAFDCustomDomainsClient creates a new instance of AFDCustomDomainsClient with the specified values.
-func NewAFDCustomDomainsClient(con *arm.Connection, subscriptionID string) *AFDCustomDomainsClient {
-	return &AFDCustomDomainsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewAFDCustomDomainsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AFDCustomDomainsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &AFDCustomDomainsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreate - Creates a new domain within the specified profile.
@@ -245,7 +253,7 @@ func (client *AFDCustomDomainsClient) getCreateRequest(ctx context.Context, reso
 func (client *AFDCustomDomainsClient) getHandleResponse(resp *http.Response) (AFDCustomDomainsGetResponse, error) {
 	result := AFDCustomDomainsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AFDDomain); err != nil {
-		return AFDCustomDomainsGetResponse{}, err
+		return AFDCustomDomainsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -307,7 +315,7 @@ func (client *AFDCustomDomainsClient) listByProfileCreateRequest(ctx context.Con
 func (client *AFDCustomDomainsClient) listByProfileHandleResponse(resp *http.Response) (AFDCustomDomainsListByProfileResponse, error) {
 	result := AFDCustomDomainsListByProfileResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AFDDomainListResult); err != nil {
-		return AFDCustomDomainsListByProfileResponse{}, err
+		return AFDCustomDomainsListByProfileResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

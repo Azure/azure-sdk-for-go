@@ -11,13 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ManagedDatabaseColumnsClient contains the methods for the ManagedDatabaseColumns group.
@@ -29,8 +30,15 @@ type ManagedDatabaseColumnsClient struct {
 }
 
 // NewManagedDatabaseColumnsClient creates a new instance of ManagedDatabaseColumnsClient with the specified values.
-func NewManagedDatabaseColumnsClient(con *arm.Connection, subscriptionID string) *ManagedDatabaseColumnsClient {
-	return &ManagedDatabaseColumnsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewManagedDatabaseColumnsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagedDatabaseColumnsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ManagedDatabaseColumnsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Get managed database column
@@ -96,7 +104,7 @@ func (client *ManagedDatabaseColumnsClient) getCreateRequest(ctx context.Context
 func (client *ManagedDatabaseColumnsClient) getHandleResponse(resp *http.Response) (ManagedDatabaseColumnsGetResponse, error) {
 	result := ManagedDatabaseColumnsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseColumn); err != nil {
-		return ManagedDatabaseColumnsGetResponse{}, err
+		return ManagedDatabaseColumnsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -184,7 +192,7 @@ func (client *ManagedDatabaseColumnsClient) listByDatabaseCreateRequest(ctx cont
 func (client *ManagedDatabaseColumnsClient) listByDatabaseHandleResponse(resp *http.Response) (ManagedDatabaseColumnsListByDatabaseResponse, error) {
 	result := ManagedDatabaseColumnsListByDatabaseResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseColumnListResult); err != nil {
-		return ManagedDatabaseColumnsListByDatabaseResponse{}, err
+		return ManagedDatabaseColumnsListByDatabaseResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -260,7 +268,7 @@ func (client *ManagedDatabaseColumnsClient) listByTableCreateRequest(ctx context
 func (client *ManagedDatabaseColumnsClient) listByTableHandleResponse(resp *http.Response) (ManagedDatabaseColumnsListByTableResponse, error) {
 	result := ManagedDatabaseColumnsListByTableResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseColumnListResult); err != nil {
-		return ManagedDatabaseColumnsListByTableResponse{}, err
+		return ManagedDatabaseColumnsListByTableResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

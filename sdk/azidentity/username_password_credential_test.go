@@ -8,7 +8,9 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"os"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -126,5 +128,28 @@ func TestBearerPolicy_UsernamePasswordCredential(t *testing.T) {
 	_, err = pipeline.Do(req)
 	if err != nil {
 		t.Fatalf("Expected an empty error but receive: %v", err)
+	}
+}
+
+func TestUsernamePasswordCredential_Live(t *testing.T) {
+	username := os.Getenv("AZURE_IDENTITY_TEST_USERNAME")
+	password := os.Getenv("AZURE_IDENTITY_TEST_PASSWORD")
+	tenantID := os.Getenv("AZURE_IDENTITY_TEST_TENANTID")
+	if username == "" || password == "" || tenantID == "" {
+		t.Skip("no user configured")
+	}
+	cred, err := NewUsernamePasswordCredential(tenantID, developerSignOnClientID, username, password, nil)
+	if err != nil {
+		t.Fatalf("Unable to create credential. Received: %v", err)
+	}
+	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	if err != nil {
+		t.Fatalf("GetToken failed: %v", err)
+	}
+	if tk.Token == "" {
+		t.Fatalf("GetToken returned an invalid token")
+	}
+	if !tk.ExpiresOn.After(time.Now().UTC()) {
+		t.Fatalf("GetToken returned an invalid expiration time")
 	}
 }

@@ -11,13 +11,14 @@ package armdatalakestore
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // TrustedIDProvidersClient contains the methods for the TrustedIDProviders group.
@@ -29,8 +30,15 @@ type TrustedIDProvidersClient struct {
 }
 
 // NewTrustedIDProvidersClient creates a new instance of TrustedIDProvidersClient with the specified values.
-func NewTrustedIDProvidersClient(con *arm.Connection, subscriptionID string) *TrustedIDProvidersClient {
-	return &TrustedIDProvidersClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewTrustedIDProvidersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TrustedIDProvidersClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &TrustedIDProvidersClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or updates the specified trusted identity provider. During update, the trusted identity provider with the specified name will
@@ -85,7 +93,7 @@ func (client *TrustedIDProvidersClient) createOrUpdateCreateRequest(ctx context.
 func (client *TrustedIDProvidersClient) createOrUpdateHandleResponse(resp *http.Response) (TrustedIDProvidersCreateOrUpdateResponse, error) {
 	result := TrustedIDProvidersCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TrustedIDProvider); err != nil {
-		return TrustedIDProvidersCreateOrUpdateResponse{}, err
+		return TrustedIDProvidersCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -211,7 +219,7 @@ func (client *TrustedIDProvidersClient) getCreateRequest(ctx context.Context, re
 func (client *TrustedIDProvidersClient) getHandleResponse(resp *http.Response) (TrustedIDProvidersGetResponse, error) {
 	result := TrustedIDProvidersGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TrustedIDProvider); err != nil {
-		return TrustedIDProvidersGetResponse{}, err
+		return TrustedIDProvidersGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -272,7 +280,7 @@ func (client *TrustedIDProvidersClient) listByAccountCreateRequest(ctx context.C
 func (client *TrustedIDProvidersClient) listByAccountHandleResponse(resp *http.Response) (TrustedIDProvidersListByAccountResponse, error) {
 	result := TrustedIDProvidersListByAccountResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TrustedIDProviderListResult); err != nil {
-		return TrustedIDProvidersListByAccountResponse{}, err
+		return TrustedIDProvidersListByAccountResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -343,7 +351,7 @@ func (client *TrustedIDProvidersClient) updateCreateRequest(ctx context.Context,
 func (client *TrustedIDProvidersClient) updateHandleResponse(resp *http.Response) (TrustedIDProvidersUpdateResponse, error) {
 	result := TrustedIDProvidersUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TrustedIDProvider); err != nil {
-		return TrustedIDProvidersUpdateResponse{}, err
+		return TrustedIDProvidersUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

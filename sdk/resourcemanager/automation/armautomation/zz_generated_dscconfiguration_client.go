@@ -12,15 +12,16 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 )
 
 // DscConfigurationClient contains the methods for the DscConfiguration group.
@@ -32,8 +33,15 @@ type DscConfigurationClient struct {
 }
 
 // NewDscConfigurationClient creates a new instance of DscConfigurationClient with the specified values.
-func NewDscConfigurationClient(con *arm.Connection, subscriptionID string) *DscConfigurationClient {
-	return &DscConfigurationClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewDscConfigurationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DscConfigurationClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &DscConfigurationClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Create the configuration identified by configuration name.
@@ -88,7 +96,7 @@ func (client *DscConfigurationClient) createOrUpdateCreateRequest(ctx context.Co
 func (client *DscConfigurationClient) createOrUpdateHandleResponse(resp *http.Response) (DscConfigurationCreateOrUpdateResponse, error) {
 	result := DscConfigurationCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DscConfiguration); err != nil {
-		return DscConfigurationCreateOrUpdateResponse{}, err
+		return DscConfigurationCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -157,7 +165,7 @@ func (client *DscConfigurationClient) createOrUpdateWithDscConfigurationCreateOr
 func (client *DscConfigurationClient) createOrUpdateWithDscConfigurationCreateOrUpdateParametersHandleResponse(resp *http.Response) (DscConfigurationCreateOrUpdateWithDscConfigurationCreateOrUpdateParametersResponse, error) {
 	result := DscConfigurationCreateOrUpdateWithDscConfigurationCreateOrUpdateParametersResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DscConfiguration); err != nil {
-		return DscConfigurationCreateOrUpdateWithDscConfigurationCreateOrUpdateParametersResponse{}, err
+		return DscConfigurationCreateOrUpdateWithDscConfigurationCreateOrUpdateParametersResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -286,7 +294,7 @@ func (client *DscConfigurationClient) getCreateRequest(ctx context.Context, reso
 func (client *DscConfigurationClient) getHandleResponse(resp *http.Response) (DscConfigurationGetResponse, error) {
 	result := DscConfigurationGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DscConfiguration); err != nil {
-		return DscConfigurationGetResponse{}, err
+		return DscConfigurationGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -425,7 +433,7 @@ func (client *DscConfigurationClient) listByAutomationAccountCreateRequest(ctx c
 func (client *DscConfigurationClient) listByAutomationAccountHandleResponse(resp *http.Response) (DscConfigurationListByAutomationAccountResponse, error) {
 	result := DscConfigurationListByAutomationAccountResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DscConfigurationListResult); err != nil {
-		return DscConfigurationListByAutomationAccountResponse{}, err
+		return DscConfigurationListByAutomationAccountResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -498,7 +506,7 @@ func (client *DscConfigurationClient) updateCreateRequest(ctx context.Context, r
 func (client *DscConfigurationClient) updateHandleResponse(resp *http.Response) (DscConfigurationUpdateResponse, error) {
 	result := DscConfigurationUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DscConfiguration); err != nil {
-		return DscConfigurationUpdateResponse{}, err
+		return DscConfigurationUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -570,7 +578,7 @@ func (client *DscConfigurationClient) updateWithDscConfigurationUpdateParameters
 func (client *DscConfigurationClient) updateWithDscConfigurationUpdateParametersHandleResponse(resp *http.Response) (DscConfigurationUpdateWithDscConfigurationUpdateParametersResponse, error) {
 	result := DscConfigurationUpdateWithDscConfigurationUpdateParametersResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DscConfiguration); err != nil {
-		return DscConfigurationUpdateWithDscConfigurationUpdateParametersResponse{}, err
+		return DscConfigurationUpdateWithDscConfigurationUpdateParametersResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

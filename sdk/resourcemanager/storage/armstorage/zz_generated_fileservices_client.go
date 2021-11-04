@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // FileServicesClient contains the methods for the FileServices group.
@@ -30,8 +31,15 @@ type FileServicesClient struct {
 }
 
 // NewFileServicesClient creates a new instance of FileServicesClient with the specified values.
-func NewFileServicesClient(con *arm.Connection, subscriptionID string) *FileServicesClient {
-	return &FileServicesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewFileServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *FileServicesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &FileServicesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // GetServiceProperties - Gets the properties of file services in storage accounts, including CORS (Cross-Origin Resource Sharing) rules.
@@ -82,7 +90,7 @@ func (client *FileServicesClient) getServicePropertiesCreateRequest(ctx context.
 func (client *FileServicesClient) getServicePropertiesHandleResponse(resp *http.Response) (FileServicesGetServicePropertiesResponse, error) {
 	result := FileServicesGetServicePropertiesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FileServiceProperties); err != nil {
-		return FileServicesGetServicePropertiesResponse{}, err
+		return FileServicesGetServicePropertiesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -147,7 +155,7 @@ func (client *FileServicesClient) listCreateRequest(ctx context.Context, resourc
 func (client *FileServicesClient) listHandleResponse(resp *http.Response) (FileServicesListResponse, error) {
 	result := FileServicesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FileServiceItems); err != nil {
-		return FileServicesListResponse{}, err
+		return FileServicesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -213,7 +221,7 @@ func (client *FileServicesClient) setServicePropertiesCreateRequest(ctx context.
 func (client *FileServicesClient) setServicePropertiesHandleResponse(resp *http.Response) (FileServicesSetServicePropertiesResponse, error) {
 	result := FileServicesSetServicePropertiesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FileServiceProperties); err != nil {
-		return FileServicesSetServicePropertiesResponse{}, err
+		return FileServicesSetServicePropertiesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -45,7 +45,7 @@ Once you have the account URL, it can be used to create the service client:
 ```golang
 cred, err := azblob.NewSharedKeyCredential("myAccountName", "myAccountKey")
 handle(err)
-serviceClient, err := azblob.NewServiceClient("https://<myAccountName>.blob.core.windows.net/", cred, nil)
+serviceClient, err := azblob.NewServiceClientWithSharedKey("https://<myAccountName>.blob.core.windows.net/", cred, nil)
 handle(err)
 ```
 
@@ -70,7 +70,7 @@ Use Shared Key authentication as the credential parameter to authenticate the cl
 ```golang
 credential, err := azblob.NewSharedKeyCredential("accountName", "accountKey")
 handle(err)
-serviceClient, err := azblob.NewServiceClient("https://<myAccountName>.blob.core.windows.net/", credential, nil)
+serviceClient, err := azblob.NewServiceClientWithSharedKey("https://<myAccountName>.blob.core.windows.net/", credential, nil)
 handle(err)
 ```
 
@@ -99,7 +99,7 @@ the `ServiceClient.GetSASToken` or `ContainerClient.GetSASToken()` methods.
 ```golang
 credential, err := azblob.NewSharedKeyCredential("accountName", "accountKey")
 handle(err)
-serviceClient, err := azblob.NewServiceClient(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), credential, nil)
+serviceClient, err := azblob.NewServiceClientWithSharedKey(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), credential, nil)
 handle(err)
 // Provide the convenience function with relevant info (services, resource types, permissions, and duration)
 // The SAS token will be valid from this moment onwards.
@@ -112,7 +112,7 @@ urlToSend := fmt.Sprintf("https://%s.blob.core.windows.net/?%s", accountName, ac
 // ******************************************
 
 // When someone receives the URL, they can access the resource using it in code like this, or a tool of some variety.
-serviceClient, err = NewServiceClient(urlToSend, azcore.NewAnonymousCredential(), nil)
+serviceClient, err = NewServiceClientWithNoCredential(urlToSend, nil)
 handle(err)
 ```
 
@@ -153,7 +153,7 @@ Three different clients are provided to interact with the various components of 
 
 	// Open up a service client.
 	// You'll need to specify a service URL, which for blob endpoints usually makes up the syntax http(s)://<account>.blob.core.windows.net/
-	service, err := NewServiceClient(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
+	service, err := NewServiceClientWithSharedKey(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
     handle(err)
 
 	// All operations in the Azure Storage Blob SDK for Go operate on a context.Context, allowing you to control cancellation/timeout.

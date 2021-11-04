@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // RoleManagementPoliciesClient contains the methods for the RoleManagementPolicies group.
@@ -29,8 +30,15 @@ type RoleManagementPoliciesClient struct {
 }
 
 // NewRoleManagementPoliciesClient creates a new instance of RoleManagementPoliciesClient with the specified values.
-func NewRoleManagementPoliciesClient(con *arm.Connection) *RoleManagementPoliciesClient {
-	return &RoleManagementPoliciesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewRoleManagementPoliciesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *RoleManagementPoliciesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &RoleManagementPoliciesClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Delete - Delete a role management policy
@@ -53,9 +61,6 @@ func (client *RoleManagementPoliciesClient) Delete(ctx context.Context, scope st
 // deleteCreateRequest creates the Delete request.
 func (client *RoleManagementPoliciesClient) deleteCreateRequest(ctx context.Context, scope string, roleManagementPolicyName string, options *RoleManagementPoliciesDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleManagementPolicies/{roleManagementPolicyName}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if roleManagementPolicyName == "" {
 		return nil, errors.New("parameter roleManagementPolicyName cannot be empty")
@@ -105,9 +110,6 @@ func (client *RoleManagementPoliciesClient) Get(ctx context.Context, scope strin
 // getCreateRequest creates the Get request.
 func (client *RoleManagementPoliciesClient) getCreateRequest(ctx context.Context, scope string, roleManagementPolicyName string, options *RoleManagementPoliciesGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleManagementPolicies/{roleManagementPolicyName}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if roleManagementPolicyName == "" {
 		return nil, errors.New("parameter roleManagementPolicyName cannot be empty")
@@ -128,7 +130,7 @@ func (client *RoleManagementPoliciesClient) getCreateRequest(ctx context.Context
 func (client *RoleManagementPoliciesClient) getHandleResponse(resp *http.Response) (RoleManagementPoliciesGetResponse, error) {
 	result := RoleManagementPoliciesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleManagementPolicy); err != nil {
-		return RoleManagementPoliciesGetResponse{}, err
+		return RoleManagementPoliciesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -163,9 +165,6 @@ func (client *RoleManagementPoliciesClient) ListForScope(scope string, options *
 // listForScopeCreateRequest creates the ListForScope request.
 func (client *RoleManagementPoliciesClient) listForScopeCreateRequest(ctx context.Context, scope string, options *RoleManagementPoliciesListForScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleManagementPolicies"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -182,7 +181,7 @@ func (client *RoleManagementPoliciesClient) listForScopeCreateRequest(ctx contex
 func (client *RoleManagementPoliciesClient) listForScopeHandleResponse(resp *http.Response) (RoleManagementPoliciesListForScopeResponse, error) {
 	result := RoleManagementPoliciesListForScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleManagementPolicyListResult); err != nil {
-		return RoleManagementPoliciesListForScopeResponse{}, err
+		return RoleManagementPoliciesListForScopeResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -220,9 +219,6 @@ func (client *RoleManagementPoliciesClient) Update(ctx context.Context, scope st
 // updateCreateRequest creates the Update request.
 func (client *RoleManagementPoliciesClient) updateCreateRequest(ctx context.Context, scope string, roleManagementPolicyName string, parameters RoleManagementPolicy, options *RoleManagementPoliciesUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleManagementPolicies/{roleManagementPolicyName}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if roleManagementPolicyName == "" {
 		return nil, errors.New("parameter roleManagementPolicyName cannot be empty")
@@ -243,7 +239,7 @@ func (client *RoleManagementPoliciesClient) updateCreateRequest(ctx context.Cont
 func (client *RoleManagementPoliciesClient) updateHandleResponse(resp *http.Response) (RoleManagementPoliciesUpdateResponse, error) {
 	result := RoleManagementPoliciesUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleManagementPolicy); err != nil {
-		return RoleManagementPoliciesUpdateResponse{}, err
+		return RoleManagementPoliciesUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

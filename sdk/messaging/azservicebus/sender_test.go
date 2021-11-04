@@ -43,7 +43,7 @@ func Test_Sender_SendBatchOfTwo(t *testing.T) {
 	require.NoError(t, err)
 
 	receiver, err := client.NewReceiverForQueue(
-		queueName, &ReceiverOptions{ReceiveMode: ReceiveAndDelete})
+		queueName, &ReceiverOptions{ReceiveMode: ReceiveModeReceiveAndDelete})
 	require.NoError(t, err)
 	defer receiver.Close(ctx)
 
@@ -64,7 +64,7 @@ func Test_Sender_UsingPartitionedQueue(t *testing.T) {
 	defer sender.Close(context.Background())
 
 	receiver, err := client.NewReceiverForQueue(
-		queueName, &ReceiverOptions{ReceiveMode: ReceiveAndDelete})
+		queueName, &ReceiverOptions{ReceiveMode: ReceiveModeReceiveAndDelete})
 	require.NoError(t, err)
 	defer receiver.Close(context.Background())
 
@@ -116,7 +116,7 @@ func Test_Sender_SendMessages(t *testing.T) {
 	defer cleanup()
 
 	receiver, err := client.NewReceiverForQueue(
-		queueName, &ReceiverOptions{ReceiveMode: ReceiveAndDelete})
+		queueName, &ReceiverOptions{ReceiveMode: ReceiveModeReceiveAndDelete})
 	require.NoError(t, err)
 	defer receiver.Close(context.Background())
 
@@ -151,12 +151,12 @@ func Test_Sender_SendMessages_resend(t *testing.T) {
 	require.NoError(t, err)
 
 	peekLockReceiver, err := client.NewReceiverForQueue(queueName, &ReceiverOptions{
-		ReceiveMode: PeekLock,
+		ReceiveMode: ReceiveModePeekLock,
 	})
 	require.NoError(t, err)
 
 	deletingReceiver, err := client.NewReceiverForQueue(queueName, &ReceiverOptions{
-		ReceiveMode: ReceiveAndDelete,
+		ReceiveMode: ReceiveModeReceiveAndDelete,
 	})
 	require.NoError(t, err)
 
@@ -205,7 +205,7 @@ func Test_Sender_ScheduleMessages(t *testing.T) {
 	defer cleanup()
 
 	receiver, err := client.NewReceiverForQueue(
-		queueName, &ReceiverOptions{ReceiveMode: ReceiveAndDelete})
+		queueName, &ReceiverOptions{ReceiveMode: ReceiveModeReceiveAndDelete})
 	require.NoError(t, err)
 	defer receiver.Close(context.Background())
 

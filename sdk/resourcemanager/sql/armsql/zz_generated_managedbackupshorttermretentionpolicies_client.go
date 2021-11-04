@@ -11,14 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // ManagedBackupShortTermRetentionPoliciesClient contains the methods for the ManagedBackupShortTermRetentionPolicies group.
@@ -30,8 +30,15 @@ type ManagedBackupShortTermRetentionPoliciesClient struct {
 }
 
 // NewManagedBackupShortTermRetentionPoliciesClient creates a new instance of ManagedBackupShortTermRetentionPoliciesClient with the specified values.
-func NewManagedBackupShortTermRetentionPoliciesClient(con *arm.Connection, subscriptionID string) *ManagedBackupShortTermRetentionPoliciesClient {
-	return &ManagedBackupShortTermRetentionPoliciesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewManagedBackupShortTermRetentionPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagedBackupShortTermRetentionPoliciesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ManagedBackupShortTermRetentionPoliciesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Updates a managed database's short term retention policy.
@@ -172,7 +179,7 @@ func (client *ManagedBackupShortTermRetentionPoliciesClient) getCreateRequest(ct
 func (client *ManagedBackupShortTermRetentionPoliciesClient) getHandleResponse(resp *http.Response) (ManagedBackupShortTermRetentionPoliciesGetResponse, error) {
 	result := ManagedBackupShortTermRetentionPoliciesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedBackupShortTermRetentionPolicy); err != nil {
-		return ManagedBackupShortTermRetentionPoliciesGetResponse{}, err
+		return ManagedBackupShortTermRetentionPoliciesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -237,7 +244,7 @@ func (client *ManagedBackupShortTermRetentionPoliciesClient) listByDatabaseCreat
 func (client *ManagedBackupShortTermRetentionPoliciesClient) listByDatabaseHandleResponse(resp *http.Response) (ManagedBackupShortTermRetentionPoliciesListByDatabaseResponse, error) {
 	result := ManagedBackupShortTermRetentionPoliciesListByDatabaseResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedBackupShortTermRetentionPolicyListResult); err != nil {
-		return ManagedBackupShortTermRetentionPoliciesListByDatabaseResponse{}, err
+		return ManagedBackupShortTermRetentionPoliciesListByDatabaseResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

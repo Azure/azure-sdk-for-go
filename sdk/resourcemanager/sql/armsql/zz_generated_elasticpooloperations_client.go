@@ -11,13 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ElasticPoolOperationsClient contains the methods for the ElasticPoolOperations group.
@@ -29,8 +30,15 @@ type ElasticPoolOperationsClient struct {
 }
 
 // NewElasticPoolOperationsClient creates a new instance of ElasticPoolOperationsClient with the specified values.
-func NewElasticPoolOperationsClient(con *arm.Connection, subscriptionID string) *ElasticPoolOperationsClient {
-	return &ElasticPoolOperationsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewElasticPoolOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ElasticPoolOperationsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ElasticPoolOperationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Cancel - Cancels the asynchronous operation on the elastic pool.
@@ -140,7 +148,7 @@ func (client *ElasticPoolOperationsClient) listByElasticPoolCreateRequest(ctx co
 func (client *ElasticPoolOperationsClient) listByElasticPoolHandleResponse(resp *http.Response) (ElasticPoolOperationsListByElasticPoolResponse, error) {
 	result := ElasticPoolOperationsListByElasticPoolResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ElasticPoolOperationListResult); err != nil {
-		return ElasticPoolOperationsListByElasticPoolResponse{}, err
+		return ElasticPoolOperationsListByElasticPoolResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

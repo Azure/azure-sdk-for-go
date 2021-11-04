@@ -12,15 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // IntegrationServiceEnvironmentsClient contains the methods for the IntegrationServiceEnvironments group.
@@ -32,8 +32,15 @@ type IntegrationServiceEnvironmentsClient struct {
 }
 
 // NewIntegrationServiceEnvironmentsClient creates a new instance of IntegrationServiceEnvironmentsClient with the specified values.
-func NewIntegrationServiceEnvironmentsClient(con *arm.Connection, subscriptionID string) *IntegrationServiceEnvironmentsClient {
-	return &IntegrationServiceEnvironmentsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewIntegrationServiceEnvironmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IntegrationServiceEnvironmentsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &IntegrationServiceEnvironmentsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Creates or updates an integration service environment.
@@ -215,7 +222,7 @@ func (client *IntegrationServiceEnvironmentsClient) getCreateRequest(ctx context
 func (client *IntegrationServiceEnvironmentsClient) getHandleResponse(resp *http.Response) (IntegrationServiceEnvironmentsGetResponse, error) {
 	result := IntegrationServiceEnvironmentsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationServiceEnvironment); err != nil {
-		return IntegrationServiceEnvironmentsGetResponse{}, err
+		return IntegrationServiceEnvironmentsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -276,7 +283,7 @@ func (client *IntegrationServiceEnvironmentsClient) listByResourceGroupCreateReq
 func (client *IntegrationServiceEnvironmentsClient) listByResourceGroupHandleResponse(resp *http.Response) (IntegrationServiceEnvironmentsListByResourceGroupResponse, error) {
 	result := IntegrationServiceEnvironmentsListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationServiceEnvironmentListResult); err != nil {
-		return IntegrationServiceEnvironmentsListByResourceGroupResponse{}, err
+		return IntegrationServiceEnvironmentsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -333,7 +340,7 @@ func (client *IntegrationServiceEnvironmentsClient) listBySubscriptionCreateRequ
 func (client *IntegrationServiceEnvironmentsClient) listBySubscriptionHandleResponse(resp *http.Response) (IntegrationServiceEnvironmentsListBySubscriptionResponse, error) {
 	result := IntegrationServiceEnvironmentsListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationServiceEnvironmentListResult); err != nil {
-		return IntegrationServiceEnvironmentsListBySubscriptionResponse{}, err
+		return IntegrationServiceEnvironmentsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

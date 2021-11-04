@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // DenyAssignmentsClient contains the methods for the DenyAssignments group.
@@ -30,8 +31,15 @@ type DenyAssignmentsClient struct {
 }
 
 // NewDenyAssignmentsClient creates a new instance of DenyAssignmentsClient with the specified values.
-func NewDenyAssignmentsClient(con *arm.Connection, subscriptionID string) *DenyAssignmentsClient {
-	return &DenyAssignmentsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewDenyAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DenyAssignmentsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &DenyAssignmentsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Get the specified deny assignment.
@@ -54,9 +62,6 @@ func (client *DenyAssignmentsClient) Get(ctx context.Context, scope string, deny
 // getCreateRequest creates the Get request.
 func (client *DenyAssignmentsClient) getCreateRequest(ctx context.Context, scope string, denyAssignmentID string, options *DenyAssignmentsGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/denyAssignments/{denyAssignmentId}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if denyAssignmentID == "" {
 		return nil, errors.New("parameter denyAssignmentID cannot be empty")
@@ -77,7 +82,7 @@ func (client *DenyAssignmentsClient) getCreateRequest(ctx context.Context, scope
 func (client *DenyAssignmentsClient) getHandleResponse(resp *http.Response) (DenyAssignmentsGetResponse, error) {
 	result := DenyAssignmentsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DenyAssignment); err != nil {
-		return DenyAssignmentsGetResponse{}, err
+		return DenyAssignmentsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -115,9 +120,6 @@ func (client *DenyAssignmentsClient) GetByID(ctx context.Context, denyAssignment
 // getByIDCreateRequest creates the GetByID request.
 func (client *DenyAssignmentsClient) getByIDCreateRequest(ctx context.Context, denyAssignmentID string, options *DenyAssignmentsGetByIDOptions) (*policy.Request, error) {
 	urlPath := "/{denyAssignmentId}"
-	if denyAssignmentID == "" {
-		return nil, errors.New("parameter denyAssignmentID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{denyAssignmentId}", denyAssignmentID)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -134,7 +136,7 @@ func (client *DenyAssignmentsClient) getByIDCreateRequest(ctx context.Context, d
 func (client *DenyAssignmentsClient) getByIDHandleResponse(resp *http.Response) (DenyAssignmentsGetByIDResponse, error) {
 	result := DenyAssignmentsGetByIDResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DenyAssignment); err != nil {
-		return DenyAssignmentsGetByIDResponse{}, err
+		return DenyAssignmentsGetByIDResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -191,7 +193,7 @@ func (client *DenyAssignmentsClient) listCreateRequest(ctx context.Context, opti
 func (client *DenyAssignmentsClient) listHandleResponse(resp *http.Response) (DenyAssignmentsListResponse, error) {
 	result := DenyAssignmentsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DenyAssignmentListResult); err != nil {
-		return DenyAssignmentsListResponse{}, err
+		return DenyAssignmentsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -234,17 +236,8 @@ func (client *DenyAssignmentsClient) listForResourceCreateRequest(ctx context.Co
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceProviderNamespace == "" {
-		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", resourceProviderNamespace)
-	if parentResourcePath == "" {
-		return nil, errors.New("parameter parentResourcePath cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{parentResourcePath}", parentResourcePath)
-	if resourceType == "" {
-		return nil, errors.New("parameter resourceType cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", resourceType)
 	if resourceName == "" {
 		return nil, errors.New("parameter resourceName cannot be empty")
@@ -268,7 +261,7 @@ func (client *DenyAssignmentsClient) listForResourceCreateRequest(ctx context.Co
 func (client *DenyAssignmentsClient) listForResourceHandleResponse(resp *http.Response) (DenyAssignmentsListForResourceResponse, error) {
 	result := DenyAssignmentsListForResourceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DenyAssignmentListResult); err != nil {
-		return DenyAssignmentsListForResourceResponse{}, err
+		return DenyAssignmentsListForResourceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -329,7 +322,7 @@ func (client *DenyAssignmentsClient) listForResourceGroupCreateRequest(ctx conte
 func (client *DenyAssignmentsClient) listForResourceGroupHandleResponse(resp *http.Response) (DenyAssignmentsListForResourceGroupResponse, error) {
 	result := DenyAssignmentsListForResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DenyAssignmentListResult); err != nil {
-		return DenyAssignmentsListForResourceGroupResponse{}, err
+		return DenyAssignmentsListForResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -364,9 +357,6 @@ func (client *DenyAssignmentsClient) ListForScope(scope string, options *DenyAss
 // listForScopeCreateRequest creates the ListForScope request.
 func (client *DenyAssignmentsClient) listForScopeCreateRequest(ctx context.Context, scope string, options *DenyAssignmentsListForScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/denyAssignments"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -386,7 +376,7 @@ func (client *DenyAssignmentsClient) listForScopeCreateRequest(ctx context.Conte
 func (client *DenyAssignmentsClient) listForScopeHandleResponse(resp *http.Response) (DenyAssignmentsListForScopeResponse, error) {
 	result := DenyAssignmentsListForScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DenyAssignmentListResult); err != nil {
-		return DenyAssignmentsListForScopeResponse{}, err
+		return DenyAssignmentsListForScopeResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

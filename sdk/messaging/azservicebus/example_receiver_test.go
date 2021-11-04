@@ -16,7 +16,7 @@ func ExampleClient_NewReceiverForSubscription() {
 		"exampleTopic",
 		"exampleSubscription",
 		&azservicebus.ReceiverOptions{
-			ReceiveMode: azservicebus.PeekLock,
+			ReceiveMode: azservicebus.ReceiveModePeekLock,
 		},
 	)
 	exitOnError("Failed to create Receiver", err)
@@ -26,7 +26,7 @@ func ExampleClient_NewReceiverForQueue() {
 	receiver, err = client.NewReceiverForQueue(
 		"exampleQueue",
 		&azservicebus.ReceiverOptions{
-			ReceiveMode: azservicebus.PeekLock,
+			ReceiveMode: azservicebus.ReceiveModePeekLock,
 		},
 	)
 	exitOnError("Failed to create Receiver", err)
@@ -36,7 +36,7 @@ func ExampleClient_NewReceiverForQueue_deadLetterQueue() {
 	receiver, err = client.NewReceiverForQueue(
 		"exampleQueue",
 		&azservicebus.ReceiverOptions{
-			ReceiveMode: azservicebus.PeekLock,
+			ReceiveMode: azservicebus.ReceiveModePeekLock,
 			SubQueue:    azservicebus.SubQueueDeadLetter,
 		},
 	)
@@ -48,7 +48,7 @@ func ExampleClient_NewReceiverForSubscription_deadLetterQueue() {
 		"exampleTopic",
 		"exampleSubscription",
 		&azservicebus.ReceiverOptions{
-			ReceiveMode: azservicebus.PeekLock,
+			ReceiveMode: azservicebus.ReceiveModePeekLock,
 			SubQueue:    azservicebus.SubQueueDeadLetter,
 		},
 	)
@@ -56,20 +56,18 @@ func ExampleClient_NewReceiverForSubscription_deadLetterQueue() {
 }
 
 func ExampleReceiver_ReceiveMessages() {
-	// Receive a fixed set of messages. Note that the number of messages
-	// to receive and the amount of time to wait are upper bounds.
-	messages, err = receiver.ReceiveMessages(context.TODO(),
+	// ReceiveMessages respects the passed in context, and will gracefully stop
+	// receiving when 'ctx' is cancelled.
+	ctx, cancel := context.WithTimeout(context.TODO(), 60*time.Second)
+	defer cancel()
+
+	messages, err = receiver.ReceiveMessages(ctx,
 		// The number of messages to receive. Note this is merely an upper
 		// bound. It is possible to get fewer message (or zero), depending
 		// on the contents of the remote queue or subscription and network
 		// conditions.
 		1,
-		&azservicebus.ReceiveOptions{
-			// This configures the amount of time to wait for messages to arrive.
-			// Note that this is merely an upper bound. It is possible to get messages
-			// faster than the duration specified.
-			MaxWaitTime: 60 * time.Second,
-		},
+		nil,
 	)
 
 	exitOnError("Failed to receive messages", err)

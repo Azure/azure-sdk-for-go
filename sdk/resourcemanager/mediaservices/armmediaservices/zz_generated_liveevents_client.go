@@ -12,15 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // LiveEventsClient contains the methods for the LiveEvents group.
@@ -32,8 +32,15 @@ type LiveEventsClient struct {
 }
 
 // NewLiveEventsClient creates a new instance of LiveEventsClient with the specified values.
-func NewLiveEventsClient(con *arm.Connection, subscriptionID string) *LiveEventsClient {
-	return &LiveEventsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewLiveEventsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LiveEventsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &LiveEventsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginAllocate - A live event is in StandBy state after allocation completes, and is ready to start.
@@ -330,7 +337,7 @@ func (client *LiveEventsClient) getCreateRequest(ctx context.Context, resourceGr
 func (client *LiveEventsClient) getHandleResponse(resp *http.Response) (LiveEventsGetResponse, error) {
 	result := LiveEventsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LiveEvent); err != nil {
-		return LiveEventsGetResponse{}, err
+		return LiveEventsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -392,7 +399,7 @@ func (client *LiveEventsClient) listCreateRequest(ctx context.Context, resourceG
 func (client *LiveEventsClient) listHandleResponse(resp *http.Response) (LiveEventsListResponse, error) {
 	result := LiveEventsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LiveEventListResult); err != nil {
-		return LiveEventsListResponse{}, err
+		return LiveEventsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

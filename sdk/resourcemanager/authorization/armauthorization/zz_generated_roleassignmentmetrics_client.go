@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // RoleAssignmentMetricsClient contains the methods for the RoleAssignmentMetrics group.
@@ -30,8 +31,15 @@ type RoleAssignmentMetricsClient struct {
 }
 
 // NewRoleAssignmentMetricsClient creates a new instance of RoleAssignmentMetricsClient with the specified values.
-func NewRoleAssignmentMetricsClient(con *arm.Connection, subscriptionID string) *RoleAssignmentMetricsClient {
-	return &RoleAssignmentMetricsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewRoleAssignmentMetricsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RoleAssignmentMetricsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &RoleAssignmentMetricsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // GetMetricsForSubscription - Get role assignment usage metrics for a subscription
@@ -73,7 +81,7 @@ func (client *RoleAssignmentMetricsClient) getMetricsForSubscriptionCreateReques
 func (client *RoleAssignmentMetricsClient) getMetricsForSubscriptionHandleResponse(resp *http.Response) (RoleAssignmentMetricsGetMetricsForSubscriptionResponse, error) {
 	result := RoleAssignmentMetricsGetMetricsForSubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignmentMetricsResult); err != nil {
-		return RoleAssignmentMetricsGetMetricsForSubscriptionResponse{}, err
+		return RoleAssignmentMetricsGetMetricsForSubscriptionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

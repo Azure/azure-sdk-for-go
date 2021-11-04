@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // GatewayClient contains the methods for the Gateway group.
@@ -31,8 +32,15 @@ type GatewayClient struct {
 }
 
 // NewGatewayClient creates a new instance of GatewayClient with the specified values.
-func NewGatewayClient(con *arm.Connection, subscriptionID string) *GatewayClient {
-	return &GatewayClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewGatewayClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *GatewayClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &GatewayClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or updates a Gateway to be used in Api Management instance.
@@ -76,7 +84,7 @@ func (client *GatewayClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header.Set("If-Match", *options.IfMatch)
@@ -92,7 +100,7 @@ func (client *GatewayClient) createOrUpdateHandleResponse(resp *http.Response) (
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GatewayContract); err != nil {
-		return GatewayCreateOrUpdateResponse{}, err
+		return GatewayCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -151,7 +159,7 @@ func (client *GatewayClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("If-Match", ifMatch)
 	req.Raw().Header.Set("Accept", "application/json")
@@ -212,7 +220,7 @@ func (client *GatewayClient) generateTokenCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -222,7 +230,7 @@ func (client *GatewayClient) generateTokenCreateRequest(ctx context.Context, res
 func (client *GatewayClient) generateTokenHandleResponse(resp *http.Response) (GatewayGenerateTokenResponse, error) {
 	result := GatewayGenerateTokenResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GatewayTokenContract); err != nil {
-		return GatewayGenerateTokenResponse{}, err
+		return GatewayGenerateTokenResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -281,7 +289,7 @@ func (client *GatewayClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -294,7 +302,7 @@ func (client *GatewayClient) getHandleResponse(resp *http.Response) (GatewayGetR
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GatewayContract); err != nil {
-		return GatewayGetResponse{}, err
+		return GatewayGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -350,7 +358,7 @@ func (client *GatewayClient) getEntityTagCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -411,7 +419,7 @@ func (client *GatewayClient) listByServiceCreateRequest(ctx context.Context, res
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -421,7 +429,7 @@ func (client *GatewayClient) listByServiceCreateRequest(ctx context.Context, res
 func (client *GatewayClient) listByServiceHandleResponse(resp *http.Response) (GatewayListByServiceResponse, error) {
 	result := GatewayListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GatewayCollection); err != nil {
-		return GatewayListByServiceResponse{}, err
+		return GatewayListByServiceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -480,7 +488,7 @@ func (client *GatewayClient) listKeysCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -493,7 +501,7 @@ func (client *GatewayClient) listKeysHandleResponse(resp *http.Response) (Gatewa
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GatewayKeysContract); err != nil {
-		return GatewayListKeysResponse{}, err
+		return GatewayListKeysResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -552,7 +560,7 @@ func (client *GatewayClient) regenerateKeyCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -612,7 +620,7 @@ func (client *GatewayClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("If-Match", ifMatch)
 	req.Raw().Header.Set("Accept", "application/json")
@@ -626,7 +634,7 @@ func (client *GatewayClient) updateHandleResponse(resp *http.Response) (GatewayU
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GatewayContract); err != nil {
-		return GatewayUpdateResponse{}, err
+		return GatewayUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

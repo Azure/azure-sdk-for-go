@@ -12,6 +12,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -31,8 +32,15 @@ type ResourceGroupsClient struct {
 }
 
 // NewResourceGroupsClient creates a new instance of ResourceGroupsClient with the specified values.
-func NewResourceGroupsClient(con *arm.Connection, subscriptionID string) *ResourceGroupsClient {
-	return &ResourceGroupsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewResourceGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ResourceGroupsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ResourceGroupsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CheckExistence - Checks whether a resource group exists.
@@ -118,7 +126,7 @@ func (client *ResourceGroupsClient) createOrUpdateCreateRequest(ctx context.Cont
 func (client *ResourceGroupsClient) createOrUpdateHandleResponse(resp *http.Response) (ResourceGroupsCreateOrUpdateResponse, error) {
 	result := ResourceGroupsCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceGroup); err != nil {
-		return ResourceGroupsCreateOrUpdateResponse{}, err
+		return ResourceGroupsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -328,7 +336,7 @@ func (client *ResourceGroupsClient) getCreateRequest(ctx context.Context, resour
 func (client *ResourceGroupsClient) getHandleResponse(resp *http.Response) (ResourceGroupsGetResponse, error) {
 	result := ResourceGroupsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceGroup); err != nil {
-		return ResourceGroupsGetResponse{}, err
+		return ResourceGroupsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -388,7 +396,7 @@ func (client *ResourceGroupsClient) listCreateRequest(ctx context.Context, optio
 func (client *ResourceGroupsClient) listHandleResponse(resp *http.Response) (ResourceGroupsListResponse, error) {
 	result := ResourceGroupsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceGroupListResult); err != nil {
-		return ResourceGroupsListResponse{}, err
+		return ResourceGroupsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -451,7 +459,7 @@ func (client *ResourceGroupsClient) updateCreateRequest(ctx context.Context, res
 func (client *ResourceGroupsClient) updateHandleResponse(resp *http.Response) (ResourceGroupsUpdateResponse, error) {
 	result := ResourceGroupsUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceGroup); err != nil {
-		return ResourceGroupsUpdateResponse{}, err
+		return ResourceGroupsUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

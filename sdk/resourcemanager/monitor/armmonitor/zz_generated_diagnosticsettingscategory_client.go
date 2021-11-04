@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // DiagnosticSettingsCategoryClient contains the methods for the DiagnosticSettingsCategory group.
@@ -29,8 +30,15 @@ type DiagnosticSettingsCategoryClient struct {
 }
 
 // NewDiagnosticSettingsCategoryClient creates a new instance of DiagnosticSettingsCategoryClient with the specified values.
-func NewDiagnosticSettingsCategoryClient(con *arm.Connection) *DiagnosticSettingsCategoryClient {
-	return &DiagnosticSettingsCategoryClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewDiagnosticSettingsCategoryClient(credential azcore.TokenCredential, options *arm.ClientOptions) *DiagnosticSettingsCategoryClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &DiagnosticSettingsCategoryClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Gets the diagnostic settings category for the specified resource.
@@ -53,9 +61,6 @@ func (client *DiagnosticSettingsCategoryClient) Get(ctx context.Context, resourc
 // getCreateRequest creates the Get request.
 func (client *DiagnosticSettingsCategoryClient) getCreateRequest(ctx context.Context, resourceURI string, name string, options *DiagnosticSettingsCategoryGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Insights/diagnosticSettingsCategories/{name}"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
@@ -76,7 +81,7 @@ func (client *DiagnosticSettingsCategoryClient) getCreateRequest(ctx context.Con
 func (client *DiagnosticSettingsCategoryClient) getHandleResponse(resp *http.Response) (DiagnosticSettingsCategoryGetResponse, error) {
 	result := DiagnosticSettingsCategoryGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticSettingsCategoryResource); err != nil {
-		return DiagnosticSettingsCategoryGetResponse{}, err
+		return DiagnosticSettingsCategoryGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -114,9 +119,6 @@ func (client *DiagnosticSettingsCategoryClient) List(ctx context.Context, resour
 // listCreateRequest creates the List request.
 func (client *DiagnosticSettingsCategoryClient) listCreateRequest(ctx context.Context, resourceURI string, options *DiagnosticSettingsCategoryListOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Insights/diagnosticSettingsCategories"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -133,7 +135,7 @@ func (client *DiagnosticSettingsCategoryClient) listCreateRequest(ctx context.Co
 func (client *DiagnosticSettingsCategoryClient) listHandleResponse(resp *http.Response) (DiagnosticSettingsCategoryListResponse, error) {
 	result := DiagnosticSettingsCategoryListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticSettingsCategoryResourceCollection); err != nil {
-		return DiagnosticSettingsCategoryListResponse{}, err
+		return DiagnosticSettingsCategoryListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

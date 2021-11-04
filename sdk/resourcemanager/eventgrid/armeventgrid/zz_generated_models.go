@@ -10,20 +10,18 @@ package armeventgrid
 
 import (
 	"encoding/json"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // AdvancedFilterClassification provides polymorphic access to related types.
 // Call the interface's GetAdvancedFilter() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AdvancedFilter, *BoolEqualsAdvancedFilter, *IsNotNullAdvancedFilter, *IsNullOrUndefinedAdvancedFilter, *NumberGreaterThanAdvancedFilter,
-// - *NumberGreaterThanOrEqualsAdvancedFilter, *NumberInAdvancedFilter, *NumberInRangeAdvancedFilter, *NumberLessThanAdvancedFilter,
-// - *NumberLessThanOrEqualsAdvancedFilter, *NumberNotInAdvancedFilter, *NumberNotInRangeAdvancedFilter, *StringBeginsWithAdvancedFilter,
-// - *StringContainsAdvancedFilter, *StringEndsWithAdvancedFilter, *StringInAdvancedFilter, *StringNotBeginsWithAdvancedFilter,
-// - *StringNotContainsAdvancedFilter, *StringNotEndsWithAdvancedFilter, *StringNotInAdvancedFilter
+// - *AdvancedFilter, *BoolEqualsAdvancedFilter, *NumberGreaterThanAdvancedFilter, *NumberGreaterThanOrEqualsAdvancedFilter,
+// - *NumberInAdvancedFilter, *NumberLessThanAdvancedFilter, *NumberLessThanOrEqualsAdvancedFilter, *NumberNotInAdvancedFilter,
+// - *StringBeginsWithAdvancedFilter, *StringContainsAdvancedFilter, *StringEndsWithAdvancedFilter, *StringInAdvancedFilter,
+// - *StringNotInAdvancedFilter
 type AdvancedFilterClassification interface {
 	// GetAdvancedFilter returns the AdvancedFilter content of the underlying type.
 	GetAdvancedFilter() *AdvancedFilter
@@ -447,10 +445,7 @@ type Domain struct {
 	// Properties of the Event Grid Domain resource.
 	Properties *DomainProperties `json:"properties,omitempty"`
 
-	// The Sku pricing tier for the Event Grid Domain resource.
-	SKU *ResourceSKU `json:"sku,omitempty"`
-
-	// READ-ONLY; The system metadata relating to the Event Grid Domain resource.
+	// READ-ONLY; The system metadata relating to Domain resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 }
 
@@ -460,7 +455,6 @@ func (d Domain) MarshalJSON() ([]byte, error) {
 	d.TrackedResource.marshalInternal(objectMap)
 	populate(objectMap, "identity", d.Identity)
 	populate(objectMap, "properties", d.Properties)
-	populate(objectMap, "sku", d.SKU)
 	populate(objectMap, "systemData", d.SystemData)
 	return json.Marshal(objectMap)
 }
@@ -496,7 +490,7 @@ type DomainProperties struct {
 	// This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess is enabled.
 	InboundIPRules []*InboundIPRule `json:"inboundIpRules,omitempty"`
 
-	// This determines the format that Event Grid should expect for incoming events published to the Event Grid Domain Resource.
+	// This determines the format that Event Grid should expect for incoming events published to the domain.
 	InputSchema *InputSchema `json:"inputSchema,omitempty"`
 
 	// Information about the InputSchemaMapping which specified the info about mapping event payload.
@@ -505,10 +499,10 @@ type DomainProperties struct {
 	// This determines if traffic is allowed over public network. By default it is enabled. You can further restrict to specific IPs by configuring
 	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
 
-	// READ-ONLY; Endpoint for the Event Grid Domain Resource which is used for publishing the events.
+	// READ-ONLY; Endpoint for the domain.
 	Endpoint *string `json:"endpoint,omitempty" azure:"ro"`
 
-	// READ-ONLY; Metric resource id for the Event Grid Domain Resource.
+	// READ-ONLY; Metric resource id for the domain.
 	MetricResourceID *string `json:"metricResourceId,omitempty" azure:"ro"`
 
 	// READ-ONLY; List of private endpoint connections.
@@ -723,9 +717,6 @@ type DomainUpdateParameters struct {
 	// Properties of the resource.
 	Properties *DomainUpdateParameterProperties `json:"properties,omitempty"`
 
-	// The Sku pricing tier for the domain.
-	SKU *ResourceSKU `json:"sku,omitempty"`
-
 	// Tags of the domains resource.
 	Tags map[string]*string `json:"tags,omitempty"`
 }
@@ -735,7 +726,6 @@ func (d DomainUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "identity", d.Identity)
 	populate(objectMap, "properties", d.Properties)
-	populate(objectMap, "sku", d.SKU)
 	populate(objectMap, "tags", d.Tags)
 	return json.Marshal(objectMap)
 }
@@ -784,12 +774,12 @@ type DomainsListBySubscriptionOptions struct {
 	Top *int32
 }
 
-// DomainsListResult - Result of the List Domains operation
+// DomainsListResult - Result of the List Domains operation.
 type DomainsListResult struct {
-	// A link for the next page of domains
+	// A link for the next page of domains.
 	NextLink *string `json:"nextLink,omitempty"`
 
-	// A collection of Domains
+	// A collection of Domains.
 	Value []*Domain `json:"value,omitempty"`
 }
 
@@ -853,209 +843,6 @@ func (d *DynamicDeliveryAttributeMapping) UnmarshalJSON(data []byte) error {
 type DynamicDeliveryAttributeMappingProperties struct {
 	// JSON path in the event which contains attribute value.
 	SourceField *string `json:"sourceField,omitempty"`
-}
-
-// EventChannel - Event Channel.
-type EventChannel struct {
-	Resource
-	// Properties of the EventChannel.
-	Properties *EventChannelProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; The system metadata relating to Event Channel resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EventChannel.
-func (e EventChannel) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	e.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", e.Properties)
-	populate(objectMap, "systemData", e.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// EventChannelDestination - Properties of the destination of an event channel.
-type EventChannelDestination struct {
-	// Azure subscription ID of the customer creating the event channel. The partner topic associated with the event channel will be created under this Azure
-	// subscription.
-	AzureSubscriptionID *string `json:"azureSubscriptionId,omitempty"`
-
-	// Name of the partner topic associated with the event channel.
-	PartnerTopicName *string `json:"partnerTopicName,omitempty"`
-
-	// Azure Resource Group of the customer creating the event channel. The partner topic associated with the event channel will be created under this resource
-	// group.
-	ResourceGroup *string `json:"resourceGroup,omitempty"`
-}
-
-// EventChannelFilter - Filter for the Event Channel.
-type EventChannelFilter struct {
-	// An array of advanced filters that are used for filtering event channels.
-	AdvancedFilters []AdvancedFilterClassification `json:"advancedFilters,omitempty"`
-
-	// Allows advanced filters to be evaluated against an array of values instead of expecting a singular value. The default value is either false or null.
-	EnableAdvancedFilteringOnArrays *bool `json:"enableAdvancedFilteringOnArrays,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EventChannelFilter.
-func (e EventChannelFilter) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "advancedFilters", e.AdvancedFilters)
-	populate(objectMap, "enableAdvancedFilteringOnArrays", e.EnableAdvancedFilteringOnArrays)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EventChannelFilter.
-func (e *EventChannelFilter) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "advancedFilters":
-			e.AdvancedFilters, err = unmarshalAdvancedFilterClassificationArray(val)
-			delete(rawMsg, key)
-		case "enableAdvancedFilteringOnArrays":
-			err = unpopulate(val, &e.EnableAdvancedFilteringOnArrays)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// EventChannelProperties - Properties of the Event Channel.
-type EventChannelProperties struct {
-	// Represents the destination of an event channel.
-	Destination *EventChannelDestination `json:"destination,omitempty"`
-
-	// Expiration time of the event channel. If this timer expires while the corresponding partner topic is never activated, the event channel and corresponding
-	// partner topic are deleted.
-	ExpirationTimeIfNotActivatedUTC *time.Time `json:"expirationTimeIfNotActivatedUtc,omitempty"`
-
-	// Information about the filter for the event channel.
-	Filter *EventChannelFilter `json:"filter,omitempty"`
-
-	// Friendly description about the topic. This can be set by the publisher/partner to show custom description for the customer partner topic. This will be
-	// helpful to remove any ambiguity of the origin of
-	// creation of the partner topic for the customer.
-	PartnerTopicFriendlyDescription *string `json:"partnerTopicFriendlyDescription,omitempty"`
-
-	// Source of the event channel. This represents a unique resource in the partner's resource model.
-	Source *EventChannelSource `json:"source,omitempty"`
-
-	// READ-ONLY; The readiness state of the corresponding partner topic.
-	PartnerTopicReadinessState *PartnerTopicReadinessState `json:"partnerTopicReadinessState,omitempty" azure:"ro"`
-
-	// READ-ONLY; Provisioning state of the event channel.
-	ProvisioningState *EventChannelProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EventChannelProperties.
-func (e EventChannelProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "destination", e.Destination)
-	populate(objectMap, "expirationTimeIfNotActivatedUtc", (*timeRFC3339)(e.ExpirationTimeIfNotActivatedUTC))
-	populate(objectMap, "filter", e.Filter)
-	populate(objectMap, "partnerTopicFriendlyDescription", e.PartnerTopicFriendlyDescription)
-	populate(objectMap, "partnerTopicReadinessState", e.PartnerTopicReadinessState)
-	populate(objectMap, "provisioningState", e.ProvisioningState)
-	populate(objectMap, "source", e.Source)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EventChannelProperties.
-func (e *EventChannelProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "destination":
-			err = unpopulate(val, &e.Destination)
-			delete(rawMsg, key)
-		case "expirationTimeIfNotActivatedUtc":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			e.ExpirationTimeIfNotActivatedUTC = (*time.Time)(&aux)
-			delete(rawMsg, key)
-		case "filter":
-			err = unpopulate(val, &e.Filter)
-			delete(rawMsg, key)
-		case "partnerTopicFriendlyDescription":
-			err = unpopulate(val, &e.PartnerTopicFriendlyDescription)
-			delete(rawMsg, key)
-		case "partnerTopicReadinessState":
-			err = unpopulate(val, &e.PartnerTopicReadinessState)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &e.ProvisioningState)
-			delete(rawMsg, key)
-		case "source":
-			err = unpopulate(val, &e.Source)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// EventChannelSource - Properties of the source of an event channel.
-type EventChannelSource struct {
-	// The identifier of the resource that's the source of the events. This represents a unique resource in the partner's resource model.
-	Source *string `json:"source,omitempty"`
-}
-
-// EventChannelsBeginDeleteOptions contains the optional parameters for the EventChannels.BeginDelete method.
-type EventChannelsBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EventChannelsCreateOrUpdateOptions contains the optional parameters for the EventChannels.CreateOrUpdate method.
-type EventChannelsCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EventChannelsGetOptions contains the optional parameters for the EventChannels.Get method.
-type EventChannelsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EventChannelsListByPartnerNamespaceOptions contains the optional parameters for the EventChannels.ListByPartnerNamespace method.
-type EventChannelsListByPartnerNamespaceOptions struct {
-	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations.
-	// These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-	// operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a
-	// valid filter example: $filter=location eq 'westus'.
-	Filter *string
-	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results
-	// to be returned is 20 items per page.
-	Top *int32
-}
-
-// EventChannelsListResult - Result of the List Event Channels operation
-type EventChannelsListResult struct {
-	// A link for the next page of event channels
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// A collection of Event Channels
-	Value []*EventChannel `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EventChannelsListResult.
-func (e EventChannelsListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", e.NextLink)
-	populate(objectMap, "value", e.Value)
-	return json.Marshal(objectMap)
 }
 
 // EventHubEventSubscriptionDestination - Information about the event hub destination for an event subscription.
@@ -1295,9 +1082,7 @@ type EventSubscriptionIdentity struct {
 
 // EventSubscriptionProperties - Properties of the Event Subscription.
 type EventSubscriptionProperties struct {
-	// The dead letter destination of the event subscription. Any event that cannot be delivered to its' destination is sent to the dead letter destination.
-	// Uses Azure Event Grid's identity to acquire the
-	// authentication tokens being used during delivery / dead-lettering.
+	// The DeadLetter destination of the event subscription.
 	DeadLetterDestination DeadLetterDestinationClassification `json:"deadLetterDestination,omitempty"`
 
 	// The dead letter destination of the event subscription. Any event that cannot be delivered to its' destination is sent to the dead letter destination.
@@ -1310,9 +1095,7 @@ type EventSubscriptionProperties struct {
 	// authentication tokens being used during delivery / dead-lettering.
 	DeliveryWithResourceIdentity *DeliveryWithResourceIdentity `json:"deliveryWithResourceIdentity,omitempty"`
 
-	// Information about the destination where events have to be delivered for the event subscription. Uses Azure Event Grid's identity to acquire the authentication
-	// tokens being used during delivery /
-	// dead-lettering.
+	// Information about the destination where events have to be delivered for the event subscription.
 	Destination EventSubscriptionDestinationClassification `json:"destination,omitempty"`
 
 	// The event delivery schema for the event subscription.
@@ -1345,7 +1128,7 @@ func (e EventSubscriptionProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "deliveryWithResourceIdentity", e.DeliveryWithResourceIdentity)
 	populate(objectMap, "destination", e.Destination)
 	populate(objectMap, "eventDeliverySchema", e.EventDeliverySchema)
-	populate(objectMap, "expirationTimeUtc", (*timeRFC3339)(e.ExpirationTimeUTC))
+	populateTimeRFC3339(objectMap, "expirationTimeUtc", e.ExpirationTimeUTC)
 	populate(objectMap, "filter", e.Filter)
 	populate(objectMap, "labels", e.Labels)
 	populate(objectMap, "provisioningState", e.ProvisioningState)
@@ -1379,9 +1162,7 @@ func (e *EventSubscriptionProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &e.EventDeliverySchema)
 			delete(rawMsg, key)
 		case "expirationTimeUtc":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			e.ExpirationTimeUTC = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &e.ExpirationTimeUTC)
 			delete(rawMsg, key)
 		case "filter":
 			err = unpopulate(val, &e.Filter)
@@ -1408,9 +1189,7 @@ func (e *EventSubscriptionProperties) UnmarshalJSON(data []byte) error {
 
 // EventSubscriptionUpdateParameters - Properties of the Event Subscription update.
 type EventSubscriptionUpdateParameters struct {
-	// The dead letter destination of the event subscription. Any event that cannot be delivered to its' destination is sent to the dead letter destination.
-	// Uses Azure Event Grid's identity to acquire the
-	// authentication tokens being used during delivery / dead-lettering.
+	// The DeadLetter destination of the event subscription.
 	DeadLetterDestination DeadLetterDestinationClassification `json:"deadLetterDestination,omitempty"`
 
 	// The dead letter destination of the event subscription. Any event that cannot be delivered to its' destination is sent to the dead letter destination.
@@ -1423,9 +1202,7 @@ type EventSubscriptionUpdateParameters struct {
 	// tokens being used during delivery / dead-lettering.
 	DeliveryWithResourceIdentity *DeliveryWithResourceIdentity `json:"deliveryWithResourceIdentity,omitempty"`
 
-	// Information about the destination where events have to be delivered for the event subscription. Uses Azure Event Grid's identity to acquire the authentication
-	// tokens being used during delivery /
-	// dead-lettering.
+	// Information about the destination where events have to be delivered for the event subscription.
 	Destination EventSubscriptionDestinationClassification `json:"destination,omitempty"`
 
 	// The event delivery schema for the event subscription.
@@ -1452,7 +1229,7 @@ func (e EventSubscriptionUpdateParameters) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "deliveryWithResourceIdentity", e.DeliveryWithResourceIdentity)
 	populate(objectMap, "destination", e.Destination)
 	populate(objectMap, "eventDeliverySchema", e.EventDeliverySchema)
-	populate(objectMap, "expirationTimeUtc", (*timeRFC3339)(e.ExpirationTimeUTC))
+	populateTimeRFC3339(objectMap, "expirationTimeUtc", e.ExpirationTimeUTC)
 	populate(objectMap, "filter", e.Filter)
 	populate(objectMap, "labels", e.Labels)
 	populate(objectMap, "retryPolicy", e.RetryPolicy)
@@ -1484,9 +1261,7 @@ func (e *EventSubscriptionUpdateParameters) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &e.EventDeliverySchema)
 			delete(rawMsg, key)
 		case "expirationTimeUtc":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			e.ExpirationTimeUTC = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &e.ExpirationTimeUTC)
 			delete(rawMsg, key)
 		case "filter":
 			err = unpopulate(val, &e.Filter)
@@ -1719,20 +1494,14 @@ func (e EventTypesListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ExtendedLocation - Definition of an Extended Location
-type ExtendedLocation struct {
-	// Fully qualified name of the extended location.
-	Name *string `json:"name,omitempty"`
-
-	// Type of the extended location.
-	Type *string `json:"type,omitempty"`
-}
-
 // ExtensionTopic - Event grid Extension Topic. This is used for getting Event Grid related metrics for Azure resources.
 type ExtensionTopic struct {
 	Resource
 	// Properties of the extension topic
 	Properties *ExtensionTopicProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The system metadata relating to the Extension Topic resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ExtensionTopic.
@@ -1740,6 +1509,7 @@ func (e ExtensionTopic) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	e.Resource.marshalInternal(objectMap)
 	populate(objectMap, "properties", e.Properties)
+	populate(objectMap, "systemData", e.SystemData)
 	return json.Marshal(objectMap)
 }
 
@@ -1919,30 +1689,6 @@ func (i *InputSchemaMapping) unmarshalInternal(rawMsg map[string]json.RawMessage
 		}
 	}
 	return nil
-}
-
-// IsNotNullAdvancedFilter - IsNotNull Advanced Filter.
-type IsNotNullAdvancedFilter struct {
-	AdvancedFilter
-}
-
-// MarshalJSON implements the json.Marshaller interface for type IsNotNullAdvancedFilter.
-func (i IsNotNullAdvancedFilter) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	i.AdvancedFilter.marshalInternal(objectMap, AdvancedFilterOperatorTypeIsNotNull)
-	return json.Marshal(objectMap)
-}
-
-// IsNullOrUndefinedAdvancedFilter - IsNullOrUndefined Advanced Filter.
-type IsNullOrUndefinedAdvancedFilter struct {
-	AdvancedFilter
-}
-
-// MarshalJSON implements the json.Marshaller interface for type IsNullOrUndefinedAdvancedFilter.
-func (i IsNullOrUndefinedAdvancedFilter) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	i.AdvancedFilter.marshalInternal(objectMap, AdvancedFilterOperatorTypeIsNullOrUndefined)
-	return json.Marshal(objectMap)
 }
 
 // JSONField - This is used to express the source of an input schema mapping for a single target field in the Event Grid Event schema. This is currently
@@ -2141,44 +1887,6 @@ func (n *NumberInAdvancedFilter) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// NumberInRangeAdvancedFilter - NumberInRange Advanced Filter.
-type NumberInRangeAdvancedFilter struct {
-	AdvancedFilter
-	// The set of filter values.
-	Values [][]*float64 `json:"values,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type NumberInRangeAdvancedFilter.
-func (n NumberInRangeAdvancedFilter) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	n.AdvancedFilter.marshalInternal(objectMap, AdvancedFilterOperatorTypeNumberInRange)
-	populate(objectMap, "values", n.Values)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type NumberInRangeAdvancedFilter.
-func (n *NumberInRangeAdvancedFilter) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "values":
-			err = unpopulate(val, &n.Values)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := n.AdvancedFilter.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
 // NumberLessThanAdvancedFilter - NumberLessThan Advanced Filter.
 type NumberLessThanAdvancedFilter struct {
 	AdvancedFilter
@@ -2293,51 +2001,10 @@ func (n *NumberNotInAdvancedFilter) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// NumberNotInRangeAdvancedFilter - NumberNotInRange Advanced Filter.
-type NumberNotInRangeAdvancedFilter struct {
-	AdvancedFilter
-	// The set of filter values.
-	Values [][]*float64 `json:"values,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type NumberNotInRangeAdvancedFilter.
-func (n NumberNotInRangeAdvancedFilter) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	n.AdvancedFilter.marshalInternal(objectMap, AdvancedFilterOperatorTypeNumberNotInRange)
-	populate(objectMap, "values", n.Values)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type NumberNotInRangeAdvancedFilter.
-func (n *NumberNotInRangeAdvancedFilter) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "values":
-			err = unpopulate(val, &n.Values)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := n.AdvancedFilter.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
 // Operation - Represents an operation returned by the GetOperations request
 type Operation struct {
 	// Display name of the operation
 	Display *OperationInfo `json:"display,omitempty"`
-
-	// This Boolean is used to determine if the operation is a data plane action or not.
-	IsDataAction *bool `json:"isDataAction,omitempty"`
 
 	// Name of the operation
 	Name *string `json:"name,omitempty"`
@@ -2380,594 +2047,6 @@ func (o OperationsListResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "value", o.Value)
 	return json.Marshal(objectMap)
-}
-
-// PartnerNamespace - EventGrid Partner Namespace.
-type PartnerNamespace struct {
-	TrackedResource
-	// Properties of the partner namespace.
-	Properties *PartnerNamespaceProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; The system metadata relating to Partner Namespace resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PartnerNamespace.
-func (p PartnerNamespace) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.TrackedResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	populate(objectMap, "systemData", p.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// PartnerNamespaceProperties - Properties of the partner namespace.
-type PartnerNamespaceProperties struct {
-	// This boolean is used to enable or disable local auth. Default value is false. When the property is set to true, only AAD token will be used to authenticate
-	// if user is allowed to publish to the partner
-	// namespace.
-	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
-
-	// This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess is enabled.
-	InboundIPRules []*InboundIPRule `json:"inboundIpRules,omitempty"`
-
-	// The fully qualified ARM Id of the partner registration that should be associated with this partner namespace. This takes the following format:
-	// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerRegistrations/{partnerRegistrationName}.
-	PartnerRegistrationFullyQualifiedID *string `json:"partnerRegistrationFullyQualifiedId,omitempty"`
-
-	// This determines if traffic is allowed over public network. By default it is enabled. You can further restrict to specific IPs by configuring
-	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
-
-	// READ-ONLY; Endpoint for the partner namespace.
-	Endpoint *string `json:"endpoint,omitempty" azure:"ro"`
-
-	// READ-ONLY
-	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty" azure:"ro"`
-
-	// READ-ONLY; Provisioning state of the partner namespace.
-	ProvisioningState *PartnerNamespaceProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PartnerNamespaceProperties.
-func (p PartnerNamespaceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "disableLocalAuth", p.DisableLocalAuth)
-	populate(objectMap, "endpoint", p.Endpoint)
-	populate(objectMap, "inboundIpRules", p.InboundIPRules)
-	populate(objectMap, "partnerRegistrationFullyQualifiedId", p.PartnerRegistrationFullyQualifiedID)
-	populate(objectMap, "privateEndpointConnections", p.PrivateEndpointConnections)
-	populate(objectMap, "provisioningState", p.ProvisioningState)
-	populate(objectMap, "publicNetworkAccess", p.PublicNetworkAccess)
-	return json.Marshal(objectMap)
-}
-
-// PartnerNamespaceRegenerateKeyRequest - PartnerNamespace regenerate shared access key request.
-type PartnerNamespaceRegenerateKeyRequest struct {
-	// REQUIRED; Key name to regenerate (key1 or key2).
-	KeyName *string `json:"keyName,omitempty"`
-}
-
-// PartnerNamespaceSharedAccessKeys - Shared access keys of the partner namespace.
-type PartnerNamespaceSharedAccessKeys struct {
-	// Shared access key1 for the partner namespace.
-	Key1 *string `json:"key1,omitempty"`
-
-	// Shared access key2 for the partner namespace.
-	Key2 *string `json:"key2,omitempty"`
-}
-
-// PartnerNamespaceUpdateParameterProperties - Information of Partner Namespace update parameter properties.
-type PartnerNamespaceUpdateParameterProperties struct {
-	// This boolean is used to enable or disable local auth. Default value is false. When the property is set to true, only AAD token will be used to authenticate
-	// if user is allowed to publish to the partner
-	// namespace.
-	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
-
-	// This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess is enabled.
-	InboundIPRules []*InboundIPRule `json:"inboundIpRules,omitempty"`
-
-	// This determines if traffic is allowed over public network. By default it is enabled. You can further restrict to specific IPs by configuring
-	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PartnerNamespaceUpdateParameterProperties.
-func (p PartnerNamespaceUpdateParameterProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "disableLocalAuth", p.DisableLocalAuth)
-	populate(objectMap, "inboundIpRules", p.InboundIPRules)
-	populate(objectMap, "publicNetworkAccess", p.PublicNetworkAccess)
-	return json.Marshal(objectMap)
-}
-
-// PartnerNamespaceUpdateParameters - Properties of the PartnerNamespace update.
-type PartnerNamespaceUpdateParameters struct {
-	// Properties of the Partner Namespace.
-	Properties *PartnerNamespaceUpdateParameterProperties `json:"properties,omitempty"`
-
-	// Tags of the partner namespace.
-	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PartnerNamespaceUpdateParameters.
-func (p PartnerNamespaceUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", p.Properties)
-	populate(objectMap, "tags", p.Tags)
-	return json.Marshal(objectMap)
-}
-
-// PartnerNamespacesBeginCreateOrUpdateOptions contains the optional parameters for the PartnerNamespaces.BeginCreateOrUpdate method.
-type PartnerNamespacesBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerNamespacesBeginDeleteOptions contains the optional parameters for the PartnerNamespaces.BeginDelete method.
-type PartnerNamespacesBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerNamespacesBeginUpdateOptions contains the optional parameters for the PartnerNamespaces.BeginUpdate method.
-type PartnerNamespacesBeginUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerNamespacesGetOptions contains the optional parameters for the PartnerNamespaces.Get method.
-type PartnerNamespacesGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerNamespacesListByResourceGroupOptions contains the optional parameters for the PartnerNamespaces.ListByResourceGroup method.
-type PartnerNamespacesListByResourceGroupOptions struct {
-	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations.
-	// These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-	// operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a
-	// valid filter example: $filter=location eq 'westus'.
-	Filter *string
-	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results
-	// to be returned is 20 items per page.
-	Top *int32
-}
-
-// PartnerNamespacesListBySubscriptionOptions contains the optional parameters for the PartnerNamespaces.ListBySubscription method.
-type PartnerNamespacesListBySubscriptionOptions struct {
-	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations.
-	// These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-	// operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a
-	// valid filter example: $filter=location eq 'westus'.
-	Filter *string
-	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results
-	// to be returned is 20 items per page.
-	Top *int32
-}
-
-// PartnerNamespacesListResult - Result of the List Partner Namespaces operation
-type PartnerNamespacesListResult struct {
-	// A link for the next page of partner namespaces.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// A collection of partner namespaces.
-	Value []*PartnerNamespace `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PartnerNamespacesListResult.
-func (p PartnerNamespacesListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
-// PartnerNamespacesListSharedAccessKeysOptions contains the optional parameters for the PartnerNamespaces.ListSharedAccessKeys method.
-type PartnerNamespacesListSharedAccessKeysOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerNamespacesRegenerateKeyOptions contains the optional parameters for the PartnerNamespaces.RegenerateKey method.
-type PartnerNamespacesRegenerateKeyOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerRegistration - Information about a partner registration.
-type PartnerRegistration struct {
-	TrackedResource
-	// Properties of the partner registration.
-	Properties *PartnerRegistrationProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; The system metadata relating to Partner Registration resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PartnerRegistration.
-func (p PartnerRegistration) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.TrackedResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	populate(objectMap, "systemData", p.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// PartnerRegistrationProperties - Properties of the partner registration.
-type PartnerRegistrationProperties struct {
-	// List of Azure subscription Ids that are authorized to create a partner namespace associated with this partner registration. This is an optional property.
-	// Creating partner namespaces is always
-	// permitted under the same Azure subscription as the one used for creating the partner registration.
-	AuthorizedAzureSubscriptionIDs []*string `json:"authorizedAzureSubscriptionIds,omitempty"`
-
-	// The extension of the customer service URI of the publisher.
-	CustomerServiceURI *string `json:"customerServiceUri,omitempty"`
-
-	// URI of the logo.
-	LogoURI *string `json:"logoUri,omitempty"`
-
-	// Long description for the custom scenarios and integration to be displayed in the portal if needed. Length of this description should not exceed 2048
-	// characters.
-	LongDescription *string `json:"longDescription,omitempty"`
-
-	// The extension of the customer service number of the publisher. Only digits are allowed and number of digits should not exceed 10.
-	PartnerCustomerServiceExtension *string `json:"partnerCustomerServiceExtension,omitempty"`
-
-	// The customer service number of the publisher. The expected phone format should start with a '+' sign followed by the country code. The remaining digits
-	// are then followed. Only digits and spaces are
-	// allowed and its length cannot exceed 16 digits including country code. Examples of valid phone numbers are: +1 515 123 4567 and +966 7 5115 2471. Examples
-	// of invalid phone numbers are: +1 (515)
-	// 123-4567, 1 515 123 4567 and +966 121 5115 24 7 551 1234 43
-	PartnerCustomerServiceNumber *string `json:"partnerCustomerServiceNumber,omitempty"`
-
-	// Official name of the partner name. For example: "Contoso".
-	PartnerName *string `json:"partnerName,omitempty"`
-
-	// Short description of the partner resource type. The length of this description should not exceed 256 characters.
-	PartnerResourceTypeDescription *string `json:"partnerResourceTypeDescription,omitempty"`
-
-	// Display name of the partner resource type.
-	PartnerResourceTypeDisplayName *string `json:"partnerResourceTypeDisplayName,omitempty"`
-
-	// Name of the partner resource type.
-	PartnerResourceTypeName *string `json:"partnerResourceTypeName,omitempty"`
-
-	// URI of the partner website that can be used by Azure customers to setup Event Grid integration on an event source.
-	SetupURI *string `json:"setupUri,omitempty"`
-
-	// Visibility state of the partner registration.
-	VisibilityState *PartnerRegistrationVisibilityState `json:"visibilityState,omitempty"`
-
-	// READ-ONLY; Provisioning state of the partner registration.
-	ProvisioningState *PartnerRegistrationProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PartnerRegistrationProperties.
-func (p PartnerRegistrationProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "authorizedAzureSubscriptionIds", p.AuthorizedAzureSubscriptionIDs)
-	populate(objectMap, "customerServiceUri", p.CustomerServiceURI)
-	populate(objectMap, "logoUri", p.LogoURI)
-	populate(objectMap, "longDescription", p.LongDescription)
-	populate(objectMap, "partnerCustomerServiceExtension", p.PartnerCustomerServiceExtension)
-	populate(objectMap, "partnerCustomerServiceNumber", p.PartnerCustomerServiceNumber)
-	populate(objectMap, "partnerName", p.PartnerName)
-	populate(objectMap, "partnerResourceTypeDescription", p.PartnerResourceTypeDescription)
-	populate(objectMap, "partnerResourceTypeDisplayName", p.PartnerResourceTypeDisplayName)
-	populate(objectMap, "partnerResourceTypeName", p.PartnerResourceTypeName)
-	populate(objectMap, "provisioningState", p.ProvisioningState)
-	populate(objectMap, "setupUri", p.SetupURI)
-	populate(objectMap, "visibilityState", p.VisibilityState)
-	return json.Marshal(objectMap)
-}
-
-// PartnerRegistrationUpdateParameters - Properties of the Partner Registration update.
-type PartnerRegistrationUpdateParameters struct {
-	// List of IDs of Azure AD applications that are authorized to create a partner namespace associated with this partner registration. This is an optional
-	// property. Creating partner namespaces is always
-	// permitted under the same Azure subscription as the one used for creating the partner registration.
-	AuthorizedAzureSubscriptionIDs []*string `json:"authorizedAzureSubscriptionIds,omitempty"`
-
-	// URI of the partner logo.
-	LogoURI *string `json:"logoUri,omitempty"`
-
-	// Description of the partner topic type.
-	PartnerTopicTypeDescription *string `json:"partnerTopicTypeDescription,omitempty"`
-
-	// Display name of the partner topic type.
-	PartnerTopicTypeDisplayName *string `json:"partnerTopicTypeDisplayName,omitempty"`
-
-	// Name of the partner topic type.
-	PartnerTopicTypeName *string `json:"partnerTopicTypeName,omitempty"`
-
-	// URI of the partner website that can be used by Azure customers to setup Event Grid integration on an event source.
-	SetupURI *string `json:"setupUri,omitempty"`
-
-	// Tags of the partner registration resource.
-	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PartnerRegistrationUpdateParameters.
-func (p PartnerRegistrationUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "authorizedAzureSubscriptionIds", p.AuthorizedAzureSubscriptionIDs)
-	populate(objectMap, "logoUri", p.LogoURI)
-	populate(objectMap, "partnerTopicTypeDescription", p.PartnerTopicTypeDescription)
-	populate(objectMap, "partnerTopicTypeDisplayName", p.PartnerTopicTypeDisplayName)
-	populate(objectMap, "partnerTopicTypeName", p.PartnerTopicTypeName)
-	populate(objectMap, "setupUri", p.SetupURI)
-	populate(objectMap, "tags", p.Tags)
-	return json.Marshal(objectMap)
-}
-
-// PartnerRegistrationsCreateOrUpdateOptions contains the optional parameters for the PartnerRegistrations.CreateOrUpdate method.
-type PartnerRegistrationsCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerRegistrationsDeleteOptions contains the optional parameters for the PartnerRegistrations.Delete method.
-type PartnerRegistrationsDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerRegistrationsGetOptions contains the optional parameters for the PartnerRegistrations.Get method.
-type PartnerRegistrationsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerRegistrationsListByResourceGroupOptions contains the optional parameters for the PartnerRegistrations.ListByResourceGroup method.
-type PartnerRegistrationsListByResourceGroupOptions struct {
-	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations.
-	// These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-	// operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a
-	// valid filter example: $filter=location eq 'westus'.
-	Filter *string
-	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results
-	// to be returned is 20 items per page.
-	Top *int32
-}
-
-// PartnerRegistrationsListBySubscriptionOptions contains the optional parameters for the PartnerRegistrations.ListBySubscription method.
-type PartnerRegistrationsListBySubscriptionOptions struct {
-	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations.
-	// These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-	// operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a
-	// valid filter example: $filter=location eq 'westus'.
-	Filter *string
-	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results
-	// to be returned is 20 items per page.
-	Top *int32
-}
-
-// PartnerRegistrationsListResult - Result of the List Partner Registrations operation.
-type PartnerRegistrationsListResult struct {
-	// A link for the next page of partner registrations.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// A collection of partner registrations.
-	Value []*PartnerRegistration `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PartnerRegistrationsListResult.
-func (p PartnerRegistrationsListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
-// PartnerRegistrationsUpdateOptions contains the optional parameters for the PartnerRegistrations.Update method.
-type PartnerRegistrationsUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerTopic - EventGrid Partner Topic.
-type PartnerTopic struct {
-	TrackedResource
-	// Identity information for the Partner Topic resource.
-	Identity *IdentityInfo `json:"identity,omitempty"`
-
-	// Properties of the partner topic.
-	Properties *PartnerTopicProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; The system metadata relating to Partner Topic resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PartnerTopic.
-func (p PartnerTopic) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.TrackedResource.marshalInternal(objectMap)
-	populate(objectMap, "identity", p.Identity)
-	populate(objectMap, "properties", p.Properties)
-	populate(objectMap, "systemData", p.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// PartnerTopicEventSubscriptionsBeginCreateOrUpdateOptions contains the optional parameters for the PartnerTopicEventSubscriptions.BeginCreateOrUpdate
-// method.
-type PartnerTopicEventSubscriptionsBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerTopicEventSubscriptionsBeginDeleteOptions contains the optional parameters for the PartnerTopicEventSubscriptions.BeginDelete method.
-type PartnerTopicEventSubscriptionsBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerTopicEventSubscriptionsBeginUpdateOptions contains the optional parameters for the PartnerTopicEventSubscriptions.BeginUpdate method.
-type PartnerTopicEventSubscriptionsBeginUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerTopicEventSubscriptionsGetDeliveryAttributesOptions contains the optional parameters for the PartnerTopicEventSubscriptions.GetDeliveryAttributes
-// method.
-type PartnerTopicEventSubscriptionsGetDeliveryAttributesOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerTopicEventSubscriptionsGetFullURLOptions contains the optional parameters for the PartnerTopicEventSubscriptions.GetFullURL method.
-type PartnerTopicEventSubscriptionsGetFullURLOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerTopicEventSubscriptionsGetOptions contains the optional parameters for the PartnerTopicEventSubscriptions.Get method.
-type PartnerTopicEventSubscriptionsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerTopicEventSubscriptionsListByPartnerTopicOptions contains the optional parameters for the PartnerTopicEventSubscriptions.ListByPartnerTopic method.
-type PartnerTopicEventSubscriptionsListByPartnerTopicOptions struct {
-	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations.
-	// These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-	// operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a
-	// valid filter example: $filter=location eq 'westus'.
-	Filter *string
-	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results
-	// to be returned is 20 items per page.
-	Top *int32
-}
-
-// PartnerTopicProperties - Properties of the Partner Topic.
-type PartnerTopicProperties struct {
-	// Activation state of the partner topic.
-	ActivationState *PartnerTopicActivationState `json:"activationState,omitempty"`
-
-	// Expiration time of the partner topic. If this timer expires while the partner topic is still never activated, the partner topic and corresponding event
-	// channel are deleted.
-	ExpirationTimeIfNotActivatedUTC *time.Time `json:"expirationTimeIfNotActivatedUtc,omitempty"`
-
-	// Friendly description about the topic. This can be set by the publisher/partner to show custom description for the customer partner topic. This will be
-	// helpful to remove any ambiguity of the origin of
-	// creation of the partner topic for the customer.
-	PartnerTopicFriendlyDescription *string `json:"partnerTopicFriendlyDescription,omitempty"`
-
-	// Source associated with this partner topic. This represents a unique partner resource.
-	Source *string `json:"source,omitempty"`
-
-	// READ-ONLY; Provisioning state of the partner topic.
-	ProvisioningState *PartnerTopicProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PartnerTopicProperties.
-func (p PartnerTopicProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "activationState", p.ActivationState)
-	populate(objectMap, "expirationTimeIfNotActivatedUtc", (*timeRFC3339)(p.ExpirationTimeIfNotActivatedUTC))
-	populate(objectMap, "partnerTopicFriendlyDescription", p.PartnerTopicFriendlyDescription)
-	populate(objectMap, "provisioningState", p.ProvisioningState)
-	populate(objectMap, "source", p.Source)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PartnerTopicProperties.
-func (p *PartnerTopicProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "activationState":
-			err = unpopulate(val, &p.ActivationState)
-			delete(rawMsg, key)
-		case "expirationTimeIfNotActivatedUtc":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			p.ExpirationTimeIfNotActivatedUTC = (*time.Time)(&aux)
-			delete(rawMsg, key)
-		case "partnerTopicFriendlyDescription":
-			err = unpopulate(val, &p.PartnerTopicFriendlyDescription)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &p.ProvisioningState)
-			delete(rawMsg, key)
-		case "source":
-			err = unpopulate(val, &p.Source)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// PartnerTopicUpdateParameters - Properties of the Partner Topic update.
-type PartnerTopicUpdateParameters struct {
-	// Identity information for the Partner Topic resource.
-	Identity *IdentityInfo `json:"identity,omitempty"`
-
-	// Tags of the Partner Topic resource.
-	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PartnerTopicUpdateParameters.
-func (p PartnerTopicUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "identity", p.Identity)
-	populate(objectMap, "tags", p.Tags)
-	return json.Marshal(objectMap)
-}
-
-// PartnerTopicsActivateOptions contains the optional parameters for the PartnerTopics.Activate method.
-type PartnerTopicsActivateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerTopicsBeginDeleteOptions contains the optional parameters for the PartnerTopics.BeginDelete method.
-type PartnerTopicsBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerTopicsDeactivateOptions contains the optional parameters for the PartnerTopics.Deactivate method.
-type PartnerTopicsDeactivateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerTopicsGetOptions contains the optional parameters for the PartnerTopics.Get method.
-type PartnerTopicsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnerTopicsListByResourceGroupOptions contains the optional parameters for the PartnerTopics.ListByResourceGroup method.
-type PartnerTopicsListByResourceGroupOptions struct {
-	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations.
-	// These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-	// operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a
-	// valid filter example: $filter=location eq 'westus'.
-	Filter *string
-	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results
-	// to be returned is 20 items per page.
-	Top *int32
-}
-
-// PartnerTopicsListBySubscriptionOptions contains the optional parameters for the PartnerTopics.ListBySubscription method.
-type PartnerTopicsListBySubscriptionOptions struct {
-	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations.
-	// These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-	// operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a
-	// valid filter example: $filter=location eq 'westus'.
-	Filter *string
-	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results
-	// to be returned is 20 items per page.
-	Top *int32
-}
-
-// PartnerTopicsListResult - Result of the List Partner Topics operation.
-type PartnerTopicsListResult struct {
-	// A link for the next page of partner topics.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// A collection of partner topics.
-	Value []*PartnerTopic `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PartnerTopicsListResult.
-func (p PartnerTopicsListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
-// PartnerTopicsUpdateOptions contains the optional parameters for the PartnerTopics.Update method.
-type PartnerTopicsUpdateOptions struct {
-	// placeholder for future optional parameters
 }
 
 // PrivateEndpoint information.
@@ -3125,7 +2204,7 @@ func (p PrivateLinkResourcesListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// Resource - Definition of a Resource
+// Resource - Definition of a Resource.
 type Resource struct {
 	// READ-ONLY; Fully qualified identifier of the resource.
 	ID *string `json:"id,omitempty" azure:"ro"`
@@ -3148,12 +2227,6 @@ func (r Resource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "id", r.ID)
 	populate(objectMap, "name", r.Name)
 	populate(objectMap, "type", r.Type)
-}
-
-// ResourceSKU - Describes an EventGrid Resource Sku.
-type ResourceSKU struct {
-	// The Sku name of the resource. The possible values are: Basic or Premium.
-	Name *SKU `json:"name,omitempty"`
 }
 
 // RetryPolicy - Information about the retry policy for an event subscription.
@@ -3617,120 +2690,6 @@ func (s *StringInAdvancedFilter) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// StringNotBeginsWithAdvancedFilter - StringNotBeginsWith Advanced Filter.
-type StringNotBeginsWithAdvancedFilter struct {
-	AdvancedFilter
-	// The set of filter values.
-	Values []*string `json:"values,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type StringNotBeginsWithAdvancedFilter.
-func (s StringNotBeginsWithAdvancedFilter) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.AdvancedFilter.marshalInternal(objectMap, AdvancedFilterOperatorTypeStringNotBeginsWith)
-	populate(objectMap, "values", s.Values)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type StringNotBeginsWithAdvancedFilter.
-func (s *StringNotBeginsWithAdvancedFilter) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "values":
-			err = unpopulate(val, &s.Values)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := s.AdvancedFilter.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// StringNotContainsAdvancedFilter - StringNotContains Advanced Filter.
-type StringNotContainsAdvancedFilter struct {
-	AdvancedFilter
-	// The set of filter values.
-	Values []*string `json:"values,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type StringNotContainsAdvancedFilter.
-func (s StringNotContainsAdvancedFilter) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.AdvancedFilter.marshalInternal(objectMap, AdvancedFilterOperatorTypeStringNotContains)
-	populate(objectMap, "values", s.Values)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type StringNotContainsAdvancedFilter.
-func (s *StringNotContainsAdvancedFilter) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "values":
-			err = unpopulate(val, &s.Values)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := s.AdvancedFilter.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// StringNotEndsWithAdvancedFilter - StringNotEndsWith Advanced Filter.
-type StringNotEndsWithAdvancedFilter struct {
-	AdvancedFilter
-	// The set of filter values.
-	Values []*string `json:"values,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type StringNotEndsWithAdvancedFilter.
-func (s StringNotEndsWithAdvancedFilter) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.AdvancedFilter.marshalInternal(objectMap, AdvancedFilterOperatorTypeStringNotEndsWith)
-	populate(objectMap, "values", s.Values)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type StringNotEndsWithAdvancedFilter.
-func (s *StringNotEndsWithAdvancedFilter) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "values":
-			err = unpopulate(val, &s.Values)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := s.AdvancedFilter.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
 // StringNotInAdvancedFilter - StringNotIn Advanced Filter.
 type StringNotInAdvancedFilter struct {
 	AdvancedFilter
@@ -3793,10 +2752,10 @@ type SystemData struct {
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "createdAt", (*timeRFC3339)(s.CreatedAt))
+	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
 	populate(objectMap, "createdBy", s.CreatedBy)
 	populate(objectMap, "createdByType", s.CreatedByType)
-	populate(objectMap, "lastModifiedAt", (*timeRFC3339)(s.LastModifiedAt))
+	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
 	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
 	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
 	return json.Marshal(objectMap)
@@ -3812,9 +2771,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "createdAt":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			s.CreatedAt = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
 			delete(rawMsg, key)
 		case "createdBy":
 			err = unpopulate(val, &s.CreatedBy)
@@ -3823,9 +2780,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &s.CreatedByType)
 			delete(rawMsg, key)
 		case "lastModifiedAt":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			s.LastModifiedAt = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
 			delete(rawMsg, key)
 		case "lastModifiedBy":
 			err = unpopulate(val, &s.LastModifiedBy)
@@ -4003,20 +2958,11 @@ func (s SystemTopicsListResult) MarshalJSON() ([]byte, error) {
 // Topic - EventGrid Topic
 type Topic struct {
 	TrackedResource
-	// Extended location of the resource.
-	ExtendedLocation *ExtendedLocation `json:"extendedLocation,omitempty"`
-
 	// Identity information for the resource.
 	Identity *IdentityInfo `json:"identity,omitempty"`
 
-	// Kind of the resource.
-	Kind *ResourceKind `json:"kind,omitempty"`
-
 	// Properties of the topic.
 	Properties *TopicProperties `json:"properties,omitempty"`
-
-	// The Sku pricing tier for the topic.
-	SKU *ResourceSKU `json:"sku,omitempty"`
 
 	// READ-ONLY; The system metadata relating to Topic resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
@@ -4026,16 +2972,13 @@ type Topic struct {
 func (t Topic) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	t.TrackedResource.marshalInternal(objectMap)
-	populate(objectMap, "extendedLocation", t.ExtendedLocation)
 	populate(objectMap, "identity", t.Identity)
-	populate(objectMap, "kind", t.Kind)
 	populate(objectMap, "properties", t.Properties)
-	populate(objectMap, "sku", t.SKU)
 	populate(objectMap, "systemData", t.SystemData)
 	return json.Marshal(objectMap)
 }
 
-// TopicProperties - Properties of the Topic.
+// TopicProperties - Properties of the Topic
 type TopicProperties struct {
 	// This boolean is used to enable or disable local auth. Default value is false. When the property is set to true, only AAD token will be used to authenticate
 	// if user is allowed to publish to the topic.
@@ -4252,13 +3195,10 @@ type TopicUpdateParameters struct {
 	// Topic resource identity information.
 	Identity *IdentityInfo `json:"identity,omitempty"`
 
-	// Properties of the Topic resource.
+	// Properties of the resource.
 	Properties *TopicUpdateParameterProperties `json:"properties,omitempty"`
 
-	// The Sku pricing tier for the topic.
-	SKU *ResourceSKU `json:"sku,omitempty"`
-
-	// Tags of the Topic resource.
+	// Tags of the resource.
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
@@ -4267,7 +3207,6 @@ func (t TopicUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "identity", t.Identity)
 	populate(objectMap, "properties", t.Properties)
-	populate(objectMap, "sku", t.SKU)
 	populate(objectMap, "tags", t.Tags)
 	return json.Marshal(objectMap)
 }

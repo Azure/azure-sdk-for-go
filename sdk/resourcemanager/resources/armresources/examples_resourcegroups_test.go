@@ -11,7 +11,6 @@ import (
 	"log"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
@@ -22,7 +21,7 @@ func ExampleResourceGroupsClient_CheckExistence() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armresources.NewResourceGroupsClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armresources.NewResourceGroupsClient("<subscription ID>", cred, nil)
 	resp, err := client.CheckExistence(context.Background(), "<resource group name>", nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a response: %v", err)
@@ -35,7 +34,7 @@ func ExampleResourceGroupsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armresources.NewResourceGroupsClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armresources.NewResourceGroupsClient("<subscription ID>", cred, nil)
 	resp, err := client.CreateOrUpdate(context.Background(), "<resource group name>", armresources.ResourceGroup{
 		Location: to.StringPtr("<location>"),
 	}, nil)
@@ -50,7 +49,7 @@ func ExampleResourceGroupsClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armresources.NewResourceGroupsClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armresources.NewResourceGroupsClient("<subscription ID>", cred, nil)
 	resp, err := client.Update(
 		context.Background(),
 		"<resource group name>",
@@ -70,7 +69,7 @@ func ExampleResourceGroupsClient_List() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armresources.NewResourceGroupsClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armresources.NewResourceGroupsClient("<subscription ID>", cred, nil)
 	pager := client.List(nil)
 	for pager.NextPage(context.Background()) {
 		if err := pager.Err(); err != nil {
@@ -87,7 +86,7 @@ func ExampleResourceGroupsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armresources.NewResourceGroupsClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armresources.NewResourceGroupsClient("<subscription ID>", cred, nil)
 	poller, err := client.BeginDelete(context.Background(), "<resource group name>", nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a response: %v", err)
@@ -103,7 +102,7 @@ func ExampleResourceGroupsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armresources.NewResourceGroupsClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armresources.NewResourceGroupsClient("<subscription ID>", cred, nil)
 	rg, err := client.Get(context.Background(), "<resource group name>", nil)
 	if err != nil {
 		log.Fatalf("failed to get resource group: %v", err)

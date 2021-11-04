@@ -11,14 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // SyncMembersClient contains the methods for the SyncMembers group.
@@ -30,8 +30,15 @@ type SyncMembersClient struct {
 }
 
 // NewSyncMembersClient creates a new instance of SyncMembersClient with the specified values.
-func NewSyncMembersClient(con *arm.Connection, subscriptionID string) *SyncMembersClient {
-	return &SyncMembersClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewSyncMembersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SyncMembersClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &SyncMembersClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Creates or updates a sync member.
@@ -266,7 +273,7 @@ func (client *SyncMembersClient) getCreateRequest(ctx context.Context, resourceG
 func (client *SyncMembersClient) getHandleResponse(resp *http.Response) (SyncMembersGetResponse, error) {
 	result := SyncMembersGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncMember); err != nil {
-		return SyncMembersGetResponse{}, err
+		return SyncMembersGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -335,7 +342,7 @@ func (client *SyncMembersClient) listBySyncGroupCreateRequest(ctx context.Contex
 func (client *SyncMembersClient) listBySyncGroupHandleResponse(resp *http.Response) (SyncMembersListBySyncGroupResponse, error) {
 	result := SyncMembersListBySyncGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncMemberListResult); err != nil {
-		return SyncMembersListBySyncGroupResponse{}, err
+		return SyncMembersListBySyncGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -408,7 +415,7 @@ func (client *SyncMembersClient) listMemberSchemasCreateRequest(ctx context.Cont
 func (client *SyncMembersClient) listMemberSchemasHandleResponse(resp *http.Response) (SyncMembersListMemberSchemasResponse, error) {
 	result := SyncMembersListMemberSchemasResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncFullSchemaPropertiesListResult); err != nil {
-		return SyncMembersListMemberSchemasResponse{}, err
+		return SyncMembersListMemberSchemasResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

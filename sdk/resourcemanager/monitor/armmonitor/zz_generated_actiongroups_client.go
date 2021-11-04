@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ActionGroupsClient contains the methods for the ActionGroups group.
@@ -30,8 +31,15 @@ type ActionGroupsClient struct {
 }
 
 // NewActionGroupsClient creates a new instance of ActionGroupsClient with the specified values.
-func NewActionGroupsClient(con *arm.Connection, subscriptionID string) *ActionGroupsClient {
-	return &ActionGroupsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewActionGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ActionGroupsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ActionGroupsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Create a new action group or update an existing one.
@@ -81,7 +89,7 @@ func (client *ActionGroupsClient) createOrUpdateCreateRequest(ctx context.Contex
 func (client *ActionGroupsClient) createOrUpdateHandleResponse(resp *http.Response) (ActionGroupsCreateOrUpdateResponse, error) {
 	result := ActionGroupsCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActionGroupResource); err != nil {
-		return ActionGroupsCreateOrUpdateResponse{}, err
+		return ActionGroupsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -259,7 +267,7 @@ func (client *ActionGroupsClient) getCreateRequest(ctx context.Context, resource
 func (client *ActionGroupsClient) getHandleResponse(resp *http.Response) (ActionGroupsGetResponse, error) {
 	result := ActionGroupsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActionGroupResource); err != nil {
-		return ActionGroupsGetResponse{}, err
+		return ActionGroupsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -320,7 +328,7 @@ func (client *ActionGroupsClient) listByResourceGroupCreateRequest(ctx context.C
 func (client *ActionGroupsClient) listByResourceGroupHandleResponse(resp *http.Response) (ActionGroupsListByResourceGroupResponse, error) {
 	result := ActionGroupsListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActionGroupList); err != nil {
-		return ActionGroupsListByResourceGroupResponse{}, err
+		return ActionGroupsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -377,7 +385,7 @@ func (client *ActionGroupsClient) listBySubscriptionIDCreateRequest(ctx context.
 func (client *ActionGroupsClient) listBySubscriptionIDHandleResponse(resp *http.Response) (ActionGroupsListBySubscriptionIDResponse, error) {
 	result := ActionGroupsListBySubscriptionIDResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActionGroupList); err != nil {
-		return ActionGroupsListBySubscriptionIDResponse{}, err
+		return ActionGroupsListBySubscriptionIDResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -442,7 +450,7 @@ func (client *ActionGroupsClient) updateCreateRequest(ctx context.Context, resou
 func (client *ActionGroupsClient) updateHandleResponse(resp *http.Response) (ActionGroupsUpdateResponse, error) {
 	result := ActionGroupsUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActionGroupResource); err != nil {
-		return ActionGroupsUpdateResponse{}, err
+		return ActionGroupsUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

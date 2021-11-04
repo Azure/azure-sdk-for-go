@@ -12,15 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // WorkflowsClient contains the methods for the Workflows group.
@@ -32,8 +32,15 @@ type WorkflowsClient struct {
 }
 
 // NewWorkflowsClient creates a new instance of WorkflowsClient with the specified values.
-func NewWorkflowsClient(con *arm.Connection, subscriptionID string) *WorkflowsClient {
-	return &WorkflowsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewWorkflowsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WorkflowsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &WorkflowsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or updates a workflow.
@@ -83,7 +90,7 @@ func (client *WorkflowsClient) createOrUpdateCreateRequest(ctx context.Context, 
 func (client *WorkflowsClient) createOrUpdateHandleResponse(resp *http.Response) (WorkflowsCreateOrUpdateResponse, error) {
 	result := WorkflowsCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Workflow); err != nil {
-		return WorkflowsCreateOrUpdateResponse{}, err
+		return WorkflowsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -316,7 +323,7 @@ func (client *WorkflowsClient) generateUpgradedDefinitionCreateRequest(ctx conte
 func (client *WorkflowsClient) generateUpgradedDefinitionHandleResponse(resp *http.Response) (WorkflowsGenerateUpgradedDefinitionResponse, error) {
 	result := WorkflowsGenerateUpgradedDefinitionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Object); err != nil {
-		return WorkflowsGenerateUpgradedDefinitionResponse{}, err
+		return WorkflowsGenerateUpgradedDefinitionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -381,7 +388,7 @@ func (client *WorkflowsClient) getCreateRequest(ctx context.Context, resourceGro
 func (client *WorkflowsClient) getHandleResponse(resp *http.Response) (WorkflowsGetResponse, error) {
 	result := WorkflowsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Workflow); err != nil {
-		return WorkflowsGetResponse{}, err
+		return WorkflowsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -445,7 +452,7 @@ func (client *WorkflowsClient) listByResourceGroupCreateRequest(ctx context.Cont
 func (client *WorkflowsClient) listByResourceGroupHandleResponse(resp *http.Response) (WorkflowsListByResourceGroupResponse, error) {
 	result := WorkflowsListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowListResult); err != nil {
-		return WorkflowsListByResourceGroupResponse{}, err
+		return WorkflowsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -505,7 +512,7 @@ func (client *WorkflowsClient) listBySubscriptionCreateRequest(ctx context.Conte
 func (client *WorkflowsClient) listBySubscriptionHandleResponse(resp *http.Response) (WorkflowsListBySubscriptionResponse, error) {
 	result := WorkflowsListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowListResult); err != nil {
-		return WorkflowsListBySubscriptionResponse{}, err
+		return WorkflowsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -570,7 +577,7 @@ func (client *WorkflowsClient) listCallbackURLCreateRequest(ctx context.Context,
 func (client *WorkflowsClient) listCallbackURLHandleResponse(resp *http.Response) (WorkflowsListCallbackURLResponse, error) {
 	result := WorkflowsListCallbackURLResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowTriggerCallbackURL); err != nil {
-		return WorkflowsListCallbackURLResponse{}, err
+		return WorkflowsListCallbackURLResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -635,7 +642,7 @@ func (client *WorkflowsClient) listSwaggerCreateRequest(ctx context.Context, res
 func (client *WorkflowsClient) listSwaggerHandleResponse(resp *http.Response) (WorkflowsListSwaggerResponse, error) {
 	result := WorkflowsListSwaggerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Object); err != nil {
-		return WorkflowsListSwaggerResponse{}, err
+		return WorkflowsListSwaggerResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -832,7 +839,7 @@ func (client *WorkflowsClient) updateCreateRequest(ctx context.Context, resource
 func (client *WorkflowsClient) updateHandleResponse(resp *http.Response) (WorkflowsUpdateResponse, error) {
 	result := WorkflowsUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Workflow); err != nil {
-		return WorkflowsUpdateResponse{}, err
+		return WorkflowsUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

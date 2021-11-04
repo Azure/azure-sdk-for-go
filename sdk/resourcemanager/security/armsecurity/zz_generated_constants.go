@@ -10,7 +10,7 @@ package armsecurity
 
 const (
 	module  = "armsecurity"
-	version = "v0.1.1"
+	version = "v0.2.1"
 )
 
 // AADConnectivityState - The connectivity state of the external AAD solution
@@ -446,6 +446,29 @@ func (c Categories) ToPtr() *Categories {
 	return &c
 }
 
+// CloudName - The multi cloud resource's cloud name.
+type CloudName string
+
+const (
+	CloudNameAWS   CloudName = "AWS"
+	CloudNameAzure CloudName = "Azure"
+	CloudNameGCP   CloudName = "GCP"
+)
+
+// PossibleCloudNameValues returns the possible values for the CloudName const type.
+func PossibleCloudNameValues() []CloudName {
+	return []CloudName{
+		CloudNameAWS,
+		CloudNameAzure,
+		CloudNameGCP,
+	}
+}
+
+// ToPtr returns a *CloudName pointing to the current value.
+func (c CloudName) ToPtr() *CloudName {
+	return &c
+}
+
 // ConfigurationStatus - The configuration status of the machines group or machine or rule
 type ConfigurationStatus string
 
@@ -754,21 +777,21 @@ func (c Enum58) ToPtr() *Enum58 {
 	return &c
 }
 
-type Enum6 string
+type Enum7 string
 
 const (
-	Enum6Current Enum6 = "current"
+	Enum7Current Enum7 = "current"
 )
 
-// PossibleEnum6Values returns the possible values for the Enum6 const type.
-func PossibleEnum6Values() []Enum6 {
-	return []Enum6{
-		Enum6Current,
+// PossibleEnum7Values returns the possible values for the Enum7 const type.
+func PossibleEnum7Values() []Enum7 {
+	return []Enum7{
+		Enum7Current,
 	}
 }
 
-// ToPtr returns a *Enum6 pointing to the current value.
-func (c Enum6) ToPtr() *Enum6 {
+// ToPtr returns a *Enum7 pointing to the current value.
+func (c Enum7) ToPtr() *Enum7 {
 	return &c
 }
 
@@ -802,6 +825,7 @@ type EventSource string
 const (
 	EventSourceAlerts                                 EventSource = "Alerts"
 	EventSourceAssessments                            EventSource = "Assessments"
+	EventSourceAssessmentsSnapshot                    EventSource = "AssessmentsSnapshot"
 	EventSourceRegulatoryComplianceAssessment         EventSource = "RegulatoryComplianceAssessment"
 	EventSourceRegulatoryComplianceAssessmentSnapshot EventSource = "RegulatoryComplianceAssessmentSnapshot"
 	EventSourceSecureScoreControls                    EventSource = "SecureScoreControls"
@@ -809,6 +833,7 @@ const (
 	EventSourceSecureScores                           EventSource = "SecureScores"
 	EventSourceSecureScoresSnapshot                   EventSource = "SecureScoresSnapshot"
 	EventSourceSubAssessments                         EventSource = "SubAssessments"
+	EventSourceSubAssessmentsSnapshot                 EventSource = "SubAssessmentsSnapshot"
 )
 
 // PossibleEventSourceValues returns the possible values for the EventSource const type.
@@ -816,6 +841,7 @@ func PossibleEventSourceValues() []EventSource {
 	return []EventSource{
 		EventSourceAlerts,
 		EventSourceAssessments,
+		EventSourceAssessmentsSnapshot,
 		EventSourceRegulatoryComplianceAssessment,
 		EventSourceRegulatoryComplianceAssessmentSnapshot,
 		EventSourceSecureScoreControls,
@@ -823,6 +849,7 @@ func PossibleEventSourceValues() []EventSource {
 		EventSourceSecureScores,
 		EventSourceSecureScoresSnapshot,
 		EventSourceSubAssessments,
+		EventSourceSubAssessmentsSnapshot,
 	}
 }
 
@@ -1111,6 +1138,29 @@ func (c Kind) ToPtr() *Kind {
 	return &c
 }
 
+// OfferingType - The type of the security offering.
+type OfferingType string
+
+const (
+	OfferingTypeCspmMonitorAws           OfferingType = "CspmMonitorAws"
+	OfferingTypeDefenderForContainersAws OfferingType = "DefenderForContainersAws"
+	OfferingTypeDefenderForServersAws    OfferingType = "DefenderForServersAws"
+)
+
+// PossibleOfferingTypeValues returns the possible values for the OfferingType const type.
+func PossibleOfferingTypeValues() []OfferingType {
+	return []OfferingType{
+		OfferingTypeCspmMonitorAws,
+		OfferingTypeDefenderForContainersAws,
+		OfferingTypeDefenderForServersAws,
+	}
+}
+
+// ToPtr returns a *OfferingType pointing to the current value.
+func (c OfferingType) ToPtr() *OfferingType {
+	return &c
+}
+
 // Operator - A valid comparer operator to use. A case-insensitive comparison will be applied for String PropertyType.
 type Operator string
 
@@ -1152,6 +1202,27 @@ func PossibleOperatorValues() []Operator {
 
 // ToPtr returns a *Operator pointing to the current value.
 func (c Operator) ToPtr() *Operator {
+	return &c
+}
+
+// OrganizationMembershipType - The multi cloud account's membership type in the organization
+type OrganizationMembershipType string
+
+const (
+	OrganizationMembershipTypeMember       OrganizationMembershipType = "Member"
+	OrganizationMembershipTypeOrganization OrganizationMembershipType = "Organization"
+)
+
+// PossibleOrganizationMembershipTypeValues returns the possible values for the OrganizationMembershipType const type.
+func PossibleOrganizationMembershipTypeValues() []OrganizationMembershipType {
+	return []OrganizationMembershipType{
+		OrganizationMembershipTypeMember,
+		OrganizationMembershipTypeOrganization,
+	}
+}
+
+// ToPtr returns a *OrganizationMembershipType pointing to the current value.
+func (c OrganizationMembershipType) ToPtr() *OrganizationMembershipType {
 	return &c
 }
 

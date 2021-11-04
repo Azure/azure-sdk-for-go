@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // WorkspacesClient contains the methods for the Workspaces group.
@@ -31,8 +31,15 @@ type WorkspacesClient struct {
 }
 
 // NewWorkspacesClient creates a new instance of WorkspacesClient with the specified values.
-func NewWorkspacesClient(con *arm.Connection, subscriptionID string) *WorkspacesClient {
-	return &WorkspacesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewWorkspacesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WorkspacesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &WorkspacesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Creates a new workspace.
@@ -234,7 +241,7 @@ func (client *WorkspacesClient) getCreateRequest(ctx context.Context, resourceGr
 func (client *WorkspacesClient) getHandleResponse(resp *http.Response) (WorkspacesGetResponse, error) {
 	result := WorkspacesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Workspace); err != nil {
-		return WorkspacesGetResponse{}, err
+		return WorkspacesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -292,7 +299,7 @@ func (client *WorkspacesClient) listByResourceGroupCreateRequest(ctx context.Con
 func (client *WorkspacesClient) listByResourceGroupHandleResponse(resp *http.Response) (WorkspacesListByResourceGroupResponse, error) {
 	result := WorkspacesListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspaceListResult); err != nil {
-		return WorkspacesListByResourceGroupResponse{}, err
+		return WorkspacesListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -346,7 +353,7 @@ func (client *WorkspacesClient) listBySubscriptionCreateRequest(ctx context.Cont
 func (client *WorkspacesClient) listBySubscriptionHandleResponse(resp *http.Response) (WorkspacesListBySubscriptionResponse, error) {
 	result := WorkspacesListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspaceListResult); err != nil {
-		return WorkspacesListBySubscriptionResponse{}, err
+		return WorkspacesListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

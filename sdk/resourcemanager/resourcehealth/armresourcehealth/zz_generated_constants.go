@@ -10,7 +10,7 @@ package armresourcehealth
 
 const (
 	module  = "armresourcehealth"
-	version = "v0.1.1"
+	version = "v0.2.1"
 )
 
 // AvailabilityStateValues - Availability status of the resource. When it is null, this availabilityStatus object represents an availability impacting event

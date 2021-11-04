@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // MHSMPrivateLinkResourcesClient contains the methods for the MHSMPrivateLinkResources group.
@@ -30,8 +31,15 @@ type MHSMPrivateLinkResourcesClient struct {
 }
 
 // NewMHSMPrivateLinkResourcesClient creates a new instance of MHSMPrivateLinkResourcesClient with the specified values.
-func NewMHSMPrivateLinkResourcesClient(con *arm.Connection, subscriptionID string) *MHSMPrivateLinkResourcesClient {
-	return &MHSMPrivateLinkResourcesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewMHSMPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *MHSMPrivateLinkResourcesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &MHSMPrivateLinkResourcesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // ListByMHSMResource - Gets the private link resources supported for the managed hsm pool.
@@ -81,7 +89,7 @@ func (client *MHSMPrivateLinkResourcesClient) listByMHSMResourceCreateRequest(ct
 func (client *MHSMPrivateLinkResourcesClient) listByMHSMResourceHandleResponse(resp *http.Response) (MHSMPrivateLinkResourcesListByMHSMResourceResponse, error) {
 	result := MHSMPrivateLinkResourcesListByMHSMResourceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MHSMPrivateLinkResourceListResult); err != nil {
-		return MHSMPrivateLinkResourcesListByMHSMResourceResponse{}, err
+		return MHSMPrivateLinkResourcesListByMHSMResourceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // GroupUserClient contains the methods for the GroupUser group.
@@ -31,8 +32,15 @@ type GroupUserClient struct {
 }
 
 // NewGroupUserClient creates a new instance of GroupUserClient with the specified values.
-func NewGroupUserClient(con *arm.Connection, subscriptionID string) *GroupUserClient {
-	return &GroupUserClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewGroupUserClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *GroupUserClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &GroupUserClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CheckEntityExists - Checks that user entity specified by identifier is associated with the group entity.
@@ -81,7 +89,7 @@ func (client *GroupUserClient) checkEntityExistsCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -132,7 +140,7 @@ func (client *GroupUserClient) createCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -142,7 +150,7 @@ func (client *GroupUserClient) createCreateRequest(ctx context.Context, resource
 func (client *GroupUserClient) createHandleResponse(resp *http.Response) (GroupUserCreateResponse, error) {
 	result := GroupUserCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UserContract); err != nil {
-		return GroupUserCreateResponse{}, err
+		return GroupUserCreateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -205,7 +213,7 @@ func (client *GroupUserClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -271,7 +279,7 @@ func (client *GroupUserClient) listCreateRequest(ctx context.Context, resourceGr
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -281,7 +289,7 @@ func (client *GroupUserClient) listCreateRequest(ctx context.Context, resourceGr
 func (client *GroupUserClient) listHandleResponse(resp *http.Response) (GroupUserListResponse, error) {
 	result := GroupUserListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UserCollection); err != nil {
-		return GroupUserListResponse{}, err
+		return GroupUserListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

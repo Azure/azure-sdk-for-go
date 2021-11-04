@@ -11,14 +11,14 @@ package armcontainerregistry
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // ExportPipelinesClient contains the methods for the ExportPipelines group.
@@ -30,8 +30,15 @@ type ExportPipelinesClient struct {
 }
 
 // NewExportPipelinesClient creates a new instance of ExportPipelinesClient with the specified values.
-func NewExportPipelinesClient(con *arm.Connection, subscriptionID string) *ExportPipelinesClient {
-	return &ExportPipelinesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewExportPipelinesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ExportPipelinesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ExportPipelinesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreate - Creates an export pipeline for a container registry with the specified parameters.
@@ -95,7 +102,7 @@ func (client *ExportPipelinesClient) createCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, exportPipelineCreateParameters)
@@ -174,7 +181,7 @@ func (client *ExportPipelinesClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -232,7 +239,7 @@ func (client *ExportPipelinesClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -242,7 +249,7 @@ func (client *ExportPipelinesClient) getCreateRequest(ctx context.Context, resou
 func (client *ExportPipelinesClient) getHandleResponse(resp *http.Response) (ExportPipelinesGetResponse, error) {
 	result := ExportPipelinesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExportPipeline); err != nil {
-		return ExportPipelinesGetResponse{}, err
+		return ExportPipelinesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -293,7 +300,7 @@ func (client *ExportPipelinesClient) listCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -303,7 +310,7 @@ func (client *ExportPipelinesClient) listCreateRequest(ctx context.Context, reso
 func (client *ExportPipelinesClient) listHandleResponse(resp *http.Response) (ExportPipelinesListResponse, error) {
 	result := ExportPipelinesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExportPipelineListResult); err != nil {
-		return ExportPipelinesListResponse{}, err
+		return ExportPipelinesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

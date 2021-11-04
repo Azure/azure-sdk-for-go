@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // WorkflowVersionsClient contains the methods for the WorkflowVersions group.
@@ -31,8 +32,15 @@ type WorkflowVersionsClient struct {
 }
 
 // NewWorkflowVersionsClient creates a new instance of WorkflowVersionsClient with the specified values.
-func NewWorkflowVersionsClient(con *arm.Connection, subscriptionID string) *WorkflowVersionsClient {
-	return &WorkflowVersionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewWorkflowVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WorkflowVersionsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &WorkflowVersionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Gets a workflow version.
@@ -86,7 +94,7 @@ func (client *WorkflowVersionsClient) getCreateRequest(ctx context.Context, reso
 func (client *WorkflowVersionsClient) getHandleResponse(resp *http.Response) (WorkflowVersionsGetResponse, error) {
 	result := WorkflowVersionsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowVersion); err != nil {
-		return WorkflowVersionsGetResponse{}, err
+		return WorkflowVersionsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -151,7 +159,7 @@ func (client *WorkflowVersionsClient) listCreateRequest(ctx context.Context, res
 func (client *WorkflowVersionsClient) listHandleResponse(resp *http.Response) (WorkflowVersionsListResponse, error) {
 	result := WorkflowVersionsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowVersionListResult); err != nil {
-		return WorkflowVersionsListResponse{}, err
+		return WorkflowVersionsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

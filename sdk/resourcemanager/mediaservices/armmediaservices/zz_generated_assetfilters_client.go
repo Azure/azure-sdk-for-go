@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // AssetFiltersClient contains the methods for the AssetFilters group.
@@ -30,8 +31,15 @@ type AssetFiltersClient struct {
 }
 
 // NewAssetFiltersClient creates a new instance of AssetFiltersClient with the specified values.
-func NewAssetFiltersClient(con *arm.Connection, subscriptionID string) *AssetFiltersClient {
-	return &AssetFiltersClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewAssetFiltersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AssetFiltersClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &AssetFiltersClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or updates an Asset Filter associated with the specified Asset.
@@ -89,7 +97,7 @@ func (client *AssetFiltersClient) createOrUpdateCreateRequest(ctx context.Contex
 func (client *AssetFiltersClient) createOrUpdateHandleResponse(resp *http.Response) (AssetFiltersCreateOrUpdateResponse, error) {
 	result := AssetFiltersCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssetFilter); err != nil {
-		return AssetFiltersCreateOrUpdateResponse{}, err
+		return AssetFiltersCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -226,7 +234,7 @@ func (client *AssetFiltersClient) getCreateRequest(ctx context.Context, resource
 func (client *AssetFiltersClient) getHandleResponse(resp *http.Response) (AssetFiltersGetResponse, error) {
 	result := AssetFiltersGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssetFilter); err != nil {
-		return AssetFiltersGetResponse{}, err
+		return AssetFiltersGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -292,7 +300,7 @@ func (client *AssetFiltersClient) listCreateRequest(ctx context.Context, resourc
 func (client *AssetFiltersClient) listHandleResponse(resp *http.Response) (AssetFiltersListResponse, error) {
 	result := AssetFiltersListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssetFilterCollection); err != nil {
-		return AssetFiltersListResponse{}, err
+		return AssetFiltersListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -365,7 +373,7 @@ func (client *AssetFiltersClient) updateCreateRequest(ctx context.Context, resou
 func (client *AssetFiltersClient) updateHandleResponse(resp *http.Response) (AssetFiltersUpdateResponse, error) {
 	result := AssetFiltersUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssetFilter); err != nil {
-		return AssetFiltersUpdateResponse{}, err
+		return AssetFiltersUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

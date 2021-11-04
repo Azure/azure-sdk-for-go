@@ -58,6 +58,9 @@ type MgmtClient interface {
 
 	RenewLocks(ctx context.Context, linkName string, lockTokens []amqp.UUID) ([]time.Time, error)
 	RenewSessionLock(ctx context.Context, sessionID string) (time.Time, error)
+
+	GetSessionState(ctx context.Context, sessionID string) ([]byte, error)
+	SetSessionState(ctx context.Context, sessionID string, state []byte) error
 }
 
 func newMgmtClient(ctx context.Context, links AMQPLinks, ns NamespaceForMgmtClient) (MgmtClient, error) {
@@ -479,6 +482,81 @@ func (mc *mgmtClient) RenewSessionLock(ctx context.Context, sessionID string) (t
 	}
 
 	return lockedUntil, nil
+}
+
+// GetSessionState retrieves state associated with the session.
+func (mc *mgmtClient) GetSessionState(ctx context.Context, sessionID string) ([]byte, error) {
+	amqpMsg := &amqp.Message{
+		Value: map[string]interface{}{
+			"session-id": sessionID,
+		},
+		ApplicationProperties: map[string]interface{}{
+			"operation": "com.microsoft:get-session-state",
+		},
+	}
+
+	resp, err := mc.doRPCWithRetry(ctx, amqpMsg, 5, 5*time.Second)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.Code != 200 {
+		return nil, ErrAMQP(*resp)
+	}
+
+	asMap, ok := resp.Message.Value.(map[string]interface{})
+
+	if !ok {
+		return nil, NewErrIncorrectType("Value", map[string]interface{}{}, resp.Message.Value)
+	}
+
+	val := asMap["session-state"]
+
+	if val == nil {
+		// no session state set
+		return nil, nil
+	}
+
+	asBytes, ok := val.([]byte)
+
+	if !ok {
+		return nil, NewErrIncorrectType("Value['session-state']", []byte{}, asMap["session-state"])
+	}
+
+	return asBytes, nil
+}
+
+// SetSessionState sets the state associated with the session.
+func (mc *mgmtClient) SetSessionState(ctx context.Context, sessionID string, state []byte) error {
+	uuid, err := uuid.NewV4()
+
+	if err != nil {
+		return err
+	}
+
+	amqpMsg := &amqp.Message{
+		Value: map[string]interface{}{
+			"session-id":    sessionID,
+			"session-state": state,
+		},
+		ApplicationProperties: map[string]interface{}{
+			"operation":                 "com.microsoft:set-session-state",
+			"com.microsoft:tracking-id": uuid.String(),
+		},
+	}
+
+	resp, err := mc.doRPCWithRetry(ctx, amqpMsg, 5, 5*time.Second)
+
+	if err != nil {
+		return err
+	}
+
+	if resp.Code != 200 {
+		return ErrAMQP(*resp)
+	}
+
+	return nil
 }
 
 // SendDisposition allows you settle a message using the management link, rather than via your

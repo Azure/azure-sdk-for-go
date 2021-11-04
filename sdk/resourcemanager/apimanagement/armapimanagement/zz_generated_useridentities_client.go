@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // UserIdentitiesClient contains the methods for the UserIdentities group.
@@ -30,8 +31,15 @@ type UserIdentitiesClient struct {
 }
 
 // NewUserIdentitiesClient creates a new instance of UserIdentitiesClient with the specified values.
-func NewUserIdentitiesClient(con *arm.Connection, subscriptionID string) *UserIdentitiesClient {
-	return &UserIdentitiesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewUserIdentitiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *UserIdentitiesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &UserIdentitiesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // List - List of all user identities.
@@ -72,7 +80,7 @@ func (client *UserIdentitiesClient) listCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -82,7 +90,7 @@ func (client *UserIdentitiesClient) listCreateRequest(ctx context.Context, resou
 func (client *UserIdentitiesClient) listHandleResponse(resp *http.Response) (UserIdentitiesListResponse, error) {
 	result := UserIdentitiesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UserIdentityCollection); err != nil {
-		return UserIdentitiesListResponse{}, err
+		return UserIdentitiesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

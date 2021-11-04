@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // VNetPeeringClient contains the methods for the VNetPeering group.
@@ -31,8 +31,15 @@ type VNetPeeringClient struct {
 }
 
 // NewVNetPeeringClient creates a new instance of VNetPeeringClient with the specified values.
-func NewVNetPeeringClient(con *arm.Connection, subscriptionID string) *VNetPeeringClient {
-	return &VNetPeeringClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewVNetPeeringClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VNetPeeringClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &VNetPeeringClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Creates vNet Peering for workspace.
@@ -246,7 +253,7 @@ func (client *VNetPeeringClient) getCreateRequest(ctx context.Context, resourceG
 func (client *VNetPeeringClient) getHandleResponse(resp *http.Response) (VNetPeeringGetResponse, error) {
 	result := VNetPeeringGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkPeering); err != nil {
-		return VNetPeeringGetResponse{}, err
+		return VNetPeeringGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -308,7 +315,7 @@ func (client *VNetPeeringClient) listByWorkspaceCreateRequest(ctx context.Contex
 func (client *VNetPeeringClient) listByWorkspaceHandleResponse(resp *http.Response) (VNetPeeringListByWorkspaceResponse, error) {
 	result := VNetPeeringListByWorkspaceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkPeeringList); err != nil {
-		return VNetPeeringListByWorkspaceResponse{}, err
+		return VNetPeeringListByWorkspaceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

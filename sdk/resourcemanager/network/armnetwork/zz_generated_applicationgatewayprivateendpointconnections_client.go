@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // ApplicationGatewayPrivateEndpointConnectionsClient contains the methods for the ApplicationGatewayPrivateEndpointConnections group.
@@ -31,8 +31,15 @@ type ApplicationGatewayPrivateEndpointConnectionsClient struct {
 }
 
 // NewApplicationGatewayPrivateEndpointConnectionsClient creates a new instance of ApplicationGatewayPrivateEndpointConnectionsClient with the specified values.
-func NewApplicationGatewayPrivateEndpointConnectionsClient(con *arm.Connection, subscriptionID string) *ApplicationGatewayPrivateEndpointConnectionsClient {
-	return &ApplicationGatewayPrivateEndpointConnectionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewApplicationGatewayPrivateEndpointConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ApplicationGatewayPrivateEndpointConnectionsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ApplicationGatewayPrivateEndpointConnectionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginDelete - Deletes the specified private endpoint connection on application gateway.
@@ -96,7 +103,7 @@ func (client *ApplicationGatewayPrivateEndpointConnectionsClient) deleteCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -156,7 +163,7 @@ func (client *ApplicationGatewayPrivateEndpointConnectionsClient) getCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -166,7 +173,7 @@ func (client *ApplicationGatewayPrivateEndpointConnectionsClient) getCreateReque
 func (client *ApplicationGatewayPrivateEndpointConnectionsClient) getHandleResponse(resp *http.Response) (ApplicationGatewayPrivateEndpointConnectionsGetResponse, error) {
 	result := ApplicationGatewayPrivateEndpointConnectionsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationGatewayPrivateEndpointConnection); err != nil {
-		return ApplicationGatewayPrivateEndpointConnectionsGetResponse{}, err
+		return ApplicationGatewayPrivateEndpointConnectionsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -218,7 +225,7 @@ func (client *ApplicationGatewayPrivateEndpointConnectionsClient) listCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -228,7 +235,7 @@ func (client *ApplicationGatewayPrivateEndpointConnectionsClient) listCreateRequ
 func (client *ApplicationGatewayPrivateEndpointConnectionsClient) listHandleResponse(resp *http.Response) (ApplicationGatewayPrivateEndpointConnectionsListResponse, error) {
 	result := ApplicationGatewayPrivateEndpointConnectionsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationGatewayPrivateEndpointConnectionListResult); err != nil {
-		return ApplicationGatewayPrivateEndpointConnectionsListResponse{}, err
+		return ApplicationGatewayPrivateEndpointConnectionsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -307,7 +314,7 @@ func (client *ApplicationGatewayPrivateEndpointConnectionsClient) updateCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)

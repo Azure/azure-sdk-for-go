@@ -10,10 +10,9 @@ package armprivatedns
 
 import (
 	"context"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"net/http"
 	"time"
-
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 )
 
 // PrivateZonesCreateOrUpdatePollerResponse contains the response from method PrivateZones.CreateOrUpdate.
@@ -26,6 +25,8 @@ type PrivateZonesCreateOrUpdatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l PrivateZonesCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateZonesCreateOrUpdateResponse, error) {
 	respType := PrivateZonesCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PrivateZone)
@@ -76,6 +77,8 @@ type PrivateZonesDeletePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l PrivateZonesDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateZonesDeleteResponse, error) {
 	respType := PrivateZonesDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -156,6 +159,8 @@ type PrivateZonesUpdatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l PrivateZonesUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateZonesUpdateResponse, error) {
 	respType := PrivateZonesUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PrivateZone)
@@ -272,6 +277,8 @@ type VirtualNetworkLinksCreateOrUpdatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l VirtualNetworkLinksCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (VirtualNetworkLinksCreateOrUpdateResponse, error) {
 	respType := VirtualNetworkLinksCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.VirtualNetworkLink)
@@ -322,6 +329,8 @@ type VirtualNetworkLinksDeletePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l VirtualNetworkLinksDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (VirtualNetworkLinksDeleteResponse, error) {
 	respType := VirtualNetworkLinksDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -390,6 +399,8 @@ type VirtualNetworkLinksUpdatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l VirtualNetworkLinksUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (VirtualNetworkLinksUpdateResponse, error) {
 	respType := VirtualNetworkLinksUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.VirtualNetworkLink)

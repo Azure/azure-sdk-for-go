@@ -11,13 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // MaintenanceWindowOptionsClient contains the methods for the MaintenanceWindowOptions group.
@@ -29,8 +30,15 @@ type MaintenanceWindowOptionsClient struct {
 }
 
 // NewMaintenanceWindowOptionsClient creates a new instance of MaintenanceWindowOptionsClient with the specified values.
-func NewMaintenanceWindowOptionsClient(con *arm.Connection, subscriptionID string) *MaintenanceWindowOptionsClient {
-	return &MaintenanceWindowOptionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewMaintenanceWindowOptionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *MaintenanceWindowOptionsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &MaintenanceWindowOptionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Gets a list of available maintenance windows.
@@ -85,7 +93,7 @@ func (client *MaintenanceWindowOptionsClient) getCreateRequest(ctx context.Conte
 func (client *MaintenanceWindowOptionsClient) getHandleResponse(resp *http.Response) (MaintenanceWindowOptionsGetResponse, error) {
 	result := MaintenanceWindowOptionsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MaintenanceWindowOptions); err != nil {
-		return MaintenanceWindowOptionsGetResponse{}, err
+		return MaintenanceWindowOptionsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

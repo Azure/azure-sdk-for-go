@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // HybridRunbookWorkerGroupClient contains the methods for the HybridRunbookWorkerGroup group.
@@ -30,8 +31,15 @@ type HybridRunbookWorkerGroupClient struct {
 }
 
 // NewHybridRunbookWorkerGroupClient creates a new instance of HybridRunbookWorkerGroupClient with the specified values.
-func NewHybridRunbookWorkerGroupClient(con *arm.Connection, subscriptionID string) *HybridRunbookWorkerGroupClient {
-	return &HybridRunbookWorkerGroupClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewHybridRunbookWorkerGroupClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *HybridRunbookWorkerGroupClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &HybridRunbookWorkerGroupClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Create - Create a hybrid runbook worker group.
@@ -85,7 +93,7 @@ func (client *HybridRunbookWorkerGroupClient) createCreateRequest(ctx context.Co
 func (client *HybridRunbookWorkerGroupClient) createHandleResponse(resp *http.Response) (HybridRunbookWorkerGroupCreateResponse, error) {
 	result := HybridRunbookWorkerGroupCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridRunbookWorkerGroup); err != nil {
-		return HybridRunbookWorkerGroupCreateResponse{}, err
+		return HybridRunbookWorkerGroupCreateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -214,7 +222,7 @@ func (client *HybridRunbookWorkerGroupClient) getCreateRequest(ctx context.Conte
 func (client *HybridRunbookWorkerGroupClient) getHandleResponse(resp *http.Response) (HybridRunbookWorkerGroupGetResponse, error) {
 	result := HybridRunbookWorkerGroupGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridRunbookWorkerGroup); err != nil {
-		return HybridRunbookWorkerGroupGetResponse{}, err
+		return HybridRunbookWorkerGroupGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -279,7 +287,7 @@ func (client *HybridRunbookWorkerGroupClient) listByAutomationAccountCreateReque
 func (client *HybridRunbookWorkerGroupClient) listByAutomationAccountHandleResponse(resp *http.Response) (HybridRunbookWorkerGroupListByAutomationAccountResponse, error) {
 	result := HybridRunbookWorkerGroupListByAutomationAccountResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridRunbookWorkerGroupsListResult); err != nil {
-		return HybridRunbookWorkerGroupListByAutomationAccountResponse{}, err
+		return HybridRunbookWorkerGroupListByAutomationAccountResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -348,7 +356,7 @@ func (client *HybridRunbookWorkerGroupClient) updateCreateRequest(ctx context.Co
 func (client *HybridRunbookWorkerGroupClient) updateHandleResponse(resp *http.Response) (HybridRunbookWorkerGroupUpdateResponse, error) {
 	result := HybridRunbookWorkerGroupUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridRunbookWorkerGroup); err != nil {
-		return HybridRunbookWorkerGroupUpdateResponse{}, err
+		return HybridRunbookWorkerGroupUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

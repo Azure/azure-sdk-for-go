@@ -10,7 +10,6 @@ import (
 	"context"
 	"log"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
 )
@@ -20,7 +19,7 @@ func ExampleUsagesClient_ListByLocation() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armstorage.NewUsagesClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armstorage.NewUsagesClient("<subscription ID>", cred, nil)
 	resp, err := client.ListByLocation(context.Background(), "<Azure location>", nil)
 	if err != nil {
 		log.Fatalf("failed to delete account: %v", err)

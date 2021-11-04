@@ -11,15 +11,15 @@ package armeventgrid
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // DomainsClient contains the methods for the Domains group.
@@ -31,8 +31,15 @@ type DomainsClient struct {
 }
 
 // NewDomainsClient creates a new instance of DomainsClient with the specified values.
-func NewDomainsClient(con *arm.Connection, subscriptionID string) *DomainsClient {
-	return &DomainsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewDomainsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DomainsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &DomainsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Asynchronously creates or updates a new domain with the specified parameters.
@@ -92,7 +99,7 @@ func (client *DomainsClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, domainInfo)
@@ -167,7 +174,7 @@ func (client *DomainsClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -221,7 +228,7 @@ func (client *DomainsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -231,7 +238,7 @@ func (client *DomainsClient) getCreateRequest(ctx context.Context, resourceGroup
 func (client *DomainsClient) getHandleResponse(resp *http.Response) (DomainsGetResponse, error) {
 	result := DomainsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Domain); err != nil {
-		return DomainsGetResponse{}, err
+		return DomainsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -278,7 +285,7 @@ func (client *DomainsClient) listByResourceGroupCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -294,7 +301,7 @@ func (client *DomainsClient) listByResourceGroupCreateRequest(ctx context.Contex
 func (client *DomainsClient) listByResourceGroupHandleResponse(resp *http.Response) (DomainsListByResourceGroupResponse, error) {
 	result := DomainsListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DomainsListResult); err != nil {
-		return DomainsListByResourceGroupResponse{}, err
+		return DomainsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -337,7 +344,7 @@ func (client *DomainsClient) listBySubscriptionCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -353,7 +360,7 @@ func (client *DomainsClient) listBySubscriptionCreateRequest(ctx context.Context
 func (client *DomainsClient) listBySubscriptionHandleResponse(resp *http.Response) (DomainsListBySubscriptionResponse, error) {
 	result := DomainsListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DomainsListResult); err != nil {
-		return DomainsListBySubscriptionResponse{}, err
+		return DomainsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -407,7 +414,7 @@ func (client *DomainsClient) listSharedAccessKeysCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -417,7 +424,7 @@ func (client *DomainsClient) listSharedAccessKeysCreateRequest(ctx context.Conte
 func (client *DomainsClient) listSharedAccessKeysHandleResponse(resp *http.Response) (DomainsListSharedAccessKeysResponse, error) {
 	result := DomainsListSharedAccessKeysResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DomainSharedAccessKeys); err != nil {
-		return DomainsListSharedAccessKeysResponse{}, err
+		return DomainsListSharedAccessKeysResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -471,7 +478,7 @@ func (client *DomainsClient) regenerateKeyCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, regenerateKeyRequest)
@@ -481,7 +488,7 @@ func (client *DomainsClient) regenerateKeyCreateRequest(ctx context.Context, res
 func (client *DomainsClient) regenerateKeyHandleResponse(resp *http.Response) (DomainsRegenerateKeyResponse, error) {
 	result := DomainsRegenerateKeyResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DomainSharedAccessKeys); err != nil {
-		return DomainsRegenerateKeyResponse{}, err
+		return DomainsRegenerateKeyResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -555,7 +562,7 @@ func (client *DomainsClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, domainUpdateParameters)

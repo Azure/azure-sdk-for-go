@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // IntegrationAccountPartnersClient contains the methods for the IntegrationAccountPartners group.
@@ -31,8 +32,15 @@ type IntegrationAccountPartnersClient struct {
 }
 
 // NewIntegrationAccountPartnersClient creates a new instance of IntegrationAccountPartnersClient with the specified values.
-func NewIntegrationAccountPartnersClient(con *arm.Connection, subscriptionID string) *IntegrationAccountPartnersClient {
-	return &IntegrationAccountPartnersClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewIntegrationAccountPartnersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IntegrationAccountPartnersClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &IntegrationAccountPartnersClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or updates an integration account partner.
@@ -86,7 +94,7 @@ func (client *IntegrationAccountPartnersClient) createOrUpdateCreateRequest(ctx 
 func (client *IntegrationAccountPartnersClient) createOrUpdateHandleResponse(resp *http.Response) (IntegrationAccountPartnersCreateOrUpdateResponse, error) {
 	result := IntegrationAccountPartnersCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationAccountPartner); err != nil {
-		return IntegrationAccountPartnersCreateOrUpdateResponse{}, err
+		return IntegrationAccountPartnersCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -215,7 +223,7 @@ func (client *IntegrationAccountPartnersClient) getCreateRequest(ctx context.Con
 func (client *IntegrationAccountPartnersClient) getHandleResponse(resp *http.Response) (IntegrationAccountPartnersGetResponse, error) {
 	result := IntegrationAccountPartnersGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationAccountPartner); err != nil {
-		return IntegrationAccountPartnersGetResponse{}, err
+		return IntegrationAccountPartnersGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -283,7 +291,7 @@ func (client *IntegrationAccountPartnersClient) listCreateRequest(ctx context.Co
 func (client *IntegrationAccountPartnersClient) listHandleResponse(resp *http.Response) (IntegrationAccountPartnersListResponse, error) {
 	result := IntegrationAccountPartnersListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationAccountPartnerListResult); err != nil {
-		return IntegrationAccountPartnersListResponse{}, err
+		return IntegrationAccountPartnersListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -352,7 +360,7 @@ func (client *IntegrationAccountPartnersClient) listContentCallbackURLCreateRequ
 func (client *IntegrationAccountPartnersClient) listContentCallbackURLHandleResponse(resp *http.Response) (IntegrationAccountPartnersListContentCallbackURLResponse, error) {
 	result := IntegrationAccountPartnersListContentCallbackURLResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowTriggerCallbackURL); err != nil {
-		return IntegrationAccountPartnersListContentCallbackURLResponse{}, err
+		return IntegrationAccountPartnersListContentCallbackURLResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

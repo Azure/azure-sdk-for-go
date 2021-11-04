@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // LotsClient contains the methods for the Lots group.
@@ -29,8 +30,15 @@ type LotsClient struct {
 }
 
 // NewLotsClient creates a new instance of LotsClient with the specified values.
-func NewLotsClient(con *arm.Connection) *LotsClient {
-	return &LotsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewLotsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *LotsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &LotsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // ListByBillingAccount - Lists all Azure credits and Microsoft Azure consumption commitments for a billing account or a billing profile. Microsoft Azure
@@ -74,7 +82,7 @@ func (client *LotsClient) listByBillingAccountCreateRequest(ctx context.Context,
 func (client *LotsClient) listByBillingAccountHandleResponse(resp *http.Response) (LotsListByBillingAccountResponse, error) {
 	result := LotsListByBillingAccountResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Lots); err != nil {
-		return LotsListByBillingAccountResponse{}, err
+		return LotsListByBillingAccountResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -134,7 +142,7 @@ func (client *LotsClient) listByBillingProfileCreateRequest(ctx context.Context,
 func (client *LotsClient) listByBillingProfileHandleResponse(resp *http.Response) (LotsListByBillingProfileResponse, error) {
 	result := LotsListByBillingProfileResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Lots); err != nil {
-		return LotsListByBillingProfileResponse{}, err
+		return LotsListByBillingProfileResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

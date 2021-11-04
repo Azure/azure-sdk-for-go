@@ -11,14 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // InstanceFailoverGroupsClient contains the methods for the InstanceFailoverGroups group.
@@ -30,8 +30,15 @@ type InstanceFailoverGroupsClient struct {
 }
 
 // NewInstanceFailoverGroupsClient creates a new instance of InstanceFailoverGroupsClient with the specified values.
-func NewInstanceFailoverGroupsClient(con *arm.Connection, subscriptionID string) *InstanceFailoverGroupsClient {
-	return &InstanceFailoverGroupsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewInstanceFailoverGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *InstanceFailoverGroupsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &InstanceFailoverGroupsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Creates or updates a failover group.
@@ -401,7 +408,7 @@ func (client *InstanceFailoverGroupsClient) getCreateRequest(ctx context.Context
 func (client *InstanceFailoverGroupsClient) getHandleResponse(resp *http.Response) (InstanceFailoverGroupsGetResponse, error) {
 	result := InstanceFailoverGroupsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InstanceFailoverGroup); err != nil {
-		return InstanceFailoverGroupsGetResponse{}, err
+		return InstanceFailoverGroupsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -462,7 +469,7 @@ func (client *InstanceFailoverGroupsClient) listByLocationCreateRequest(ctx cont
 func (client *InstanceFailoverGroupsClient) listByLocationHandleResponse(resp *http.Response) (InstanceFailoverGroupsListByLocationResponse, error) {
 	result := InstanceFailoverGroupsListByLocationResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InstanceFailoverGroupListResult); err != nil {
-		return InstanceFailoverGroupsListByLocationResponse{}, err
+		return InstanceFailoverGroupsListByLocationResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

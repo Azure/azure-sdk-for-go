@@ -59,6 +59,7 @@ type LogOptions struct {
 
 	// AllowedHeaders is the slice of headers to log with their values intact.
 	// All headers not in the slice will have their values REDACTED.
+	// Applies to request and response headers.
 	AllowedHeaders []string
 
 	// AllowedQueryParams is the slice of query parameters to log with their values intact.

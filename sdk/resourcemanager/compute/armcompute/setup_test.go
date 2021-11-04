@@ -20,7 +20,10 @@ var (
 
 func TestMain(m *testing.M) {
 	// Initialize
-	if err := recording.AddGeneralRegexSanitizer("00000000-0000-0000-0000-000000000000", `[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}`, nil); err != nil {
+	if err := recording.AddGeneralRegexSanitizer("00000000-0000-0000-0000-000000000000", `/subscriptions/(?<subsId>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})`, &recording.RecordingOptions{
+		UseHTTPS:        true,
+		GroupForReplace: "subsId",
+	}); err != nil {
 		panic(err)
 	}
 

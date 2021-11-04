@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## `v59.1.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/cognitiveservices/mgmt/2021-10-01/cognitiveservices`
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/preview/quota/mgmt/2021-03-15-preview/quota` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/preview/quota/mgmt/2021-03-15-preview/quota/CHANGELOG.md) |
+
 ## `v59.0.0`
 
 ### New Packages
@@ -15,9 +27,9 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-09-01/cdn` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/cdn/mgmt/2020-09-01/cdn/CHANGELOG.md) |
-| `github.com/Azure/azure-sdk-for-go/services/logic/mgmt/2019-05-01/logic` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/logic/mgmt/2019-05-01/logic/CHANGELOG.md) |
-| `github.com/Azure/azure-sdk-for-go/services/preview/videoanalyzer/mgmt/2021-11-01-preview/videoanalyzer` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/preview/videoanalyzer/mgmt/2021-11-01-preview/videoanalyzer/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-09-01/cdn` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v59.0.0/services/cdn/mgmt/2020-09-01/cdn/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/logic/mgmt/2019-05-01/logic` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v59.0.0/services/logic/mgmt/2019-05-01/logic/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/videoanalyzer/mgmt/2021-11-01-preview/videoanalyzer` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v59.0.0/services/preview/videoanalyzer/mgmt/2021-11-01-preview/videoanalyzer/CHANGELOG.md) |
 
 ## `v58.3.0`
 

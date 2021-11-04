@@ -75,6 +75,12 @@ func TestMain(m *testing.M) {
 				panic(err)
 			}
 		}
+	} else if recording.GetRecordMode() == "live" {
+		_, ok := os.LookupEnv("AZURE_MANAGEDHSM_URL")
+		if !ok {
+			fmt.Println("Did not find managed HSM url, skipping those tests")
+			enableHSM = false
+		}
 	}
 
 	// Run tests

@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
 )
 
-var client azkeys.Client
+var client *azkeys.Client
 
 func ExampleNewClient() {
 	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")

@@ -82,7 +82,7 @@ func parseVaultURL(base string) (string, error) {
 
 // NewClient creates a new azcrytpo.Client that will perform operations against the Key Vault service. The key should
 // be an identifier of an Azure Key Vault key. Including a version is recommended but not required.
-func NewClient(keyURL string, credential azcore.TokenCredential, options *ClientOptions) (Client, error) {
+func NewClient(keyURL string, credential azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	// TODO: should this return by pointer or by reference, ask Joel
 	if options == nil {
 		options = &ClientOptions{}
@@ -96,21 +96,21 @@ func NewClient(keyURL string, credential azcore.TokenCredential, options *Client
 
 	genOptions.PerRetryPolicies = append(
 		genOptions.PerRetryPolicies,
-		shared.NewKeyVaultChallengePolicy(credential, genOptions.Transport),
+		shared.NewKeyVaultChallengePolicy(credential),
 	)
 	conn := generated.NewConnection(genOptions)
 
 	vaultURL, err := parseVaultURL(keyURL)
 	if err != nil {
-		return Client{}, err
+		return nil, err
 	}
 
 	keyID, keyVersion, err := parseKeyIDAndVersion(keyURL)
 	if err != nil {
-		return Client{}, err
+		return nil, err
 	}
 
-	return Client{
+	return &Client{
 		kvClient:   generated.NewKeyVaultClient(conn),
 		vaultURL:   vaultURL,
 		keyID:      keyID,

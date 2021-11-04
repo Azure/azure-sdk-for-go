@@ -25,15 +25,13 @@ type KeyVaultChallengePolicy struct {
 	// mainResource is the resource to be retrieved using the tenant specified in the credential
 	mainResource *ExpiringResource
 	cred         azcore.TokenCredential
-	transport    policy.Transporter
 	scope        *string
 	tenantID     *string
 }
 
-func NewKeyVaultChallengePolicy(cred azcore.TokenCredential, t policy.Transporter) *KeyVaultChallengePolicy {
+func NewKeyVaultChallengePolicy(cred azcore.TokenCredential) *KeyVaultChallengePolicy {
 	return &KeyVaultChallengePolicy{
 		cred:         cred,
-		transport:    t,
 		mainResource: NewExpiringResource(acquire),
 	}
 }
@@ -51,7 +49,6 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 			return nil, err
 		}
 
-		// challengeResp, err := k.transport.Do(challengeReq)
 		challengeResp, err := challengeReq.Next()
 		if err != nil {
 			return nil, err

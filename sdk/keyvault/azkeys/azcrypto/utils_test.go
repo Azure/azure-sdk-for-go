@@ -104,7 +104,7 @@ func getCredential(t *testing.T) azcore.TokenCredential {
 	}
 }
 
-func createClient(t *testing.T, key string) (Client, error) {
+func createClient(t *testing.T, key string) (*Client, error) {
 	p := NewRecordingPolicy(t, &recording.RecordingOptions{UseHTTPS: true})
 	client, err := recording.GetHTTPClient(t)
 	require.NoError(t, err)
@@ -121,7 +121,7 @@ func createClient(t *testing.T, key string) (Client, error) {
 	return NewClient(key, cred, options)
 }
 
-func createKeyClient(t *testing.T) (azkeys.Client, error) {
+func createKeyClient(t *testing.T) (*azkeys.Client, error) {
 	vaultUrl := recording.GetEnvVariable("AZURE_KEYVAULT_URL", fakeKvURL)
 	if recording.GetRecordMode() == "playback" {
 		vaultUrl = fakeKvURL
@@ -142,27 +142,6 @@ func createKeyClient(t *testing.T) (azkeys.Client, error) {
 
 	return azkeys.NewClient(vaultUrl, cred, options)
 }
-
-// func delay() time.Duration {
-// 	if recording.GetRecordMode() == "playback" {
-// 		return 1 * time.Microsecond
-// 	}
-// 	return 250 * time.Millisecond
-// }
-
-// func cleanUpKey(t *testing.T, client *azkeys.Client, key string) {
-// 	resp, err := client.BeginDeleteKey(context.Background(), key, nil)
-// 	if err != nil {
-// 		fmt.Println("Could not find key with name ", key)
-// 		return
-// 	}
-
-// 	_, err = resp.PollUntilDone(context.Background(), delay())
-// 	require.NoError(t, err)
-
-// 	_, err = client.PurgeDeletedKey(context.Background(), key, nil)
-// 	require.NoError(t, err)
-// }
 
 type FakeCredential struct {
 	accountName string

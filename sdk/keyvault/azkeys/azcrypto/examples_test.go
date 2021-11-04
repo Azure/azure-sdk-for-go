@@ -11,7 +11,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/azcrypto"
 )
 
-var client azcrypto.Client
+var client *azcrypto.Client
 
 func ExampleNewClient() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)

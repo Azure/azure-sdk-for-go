@@ -172,7 +172,7 @@ func lookupEnvVar(s string) string {
 	return ret
 }
 
-func createClient(t *testing.T, testType string) (Client, error) {
+func createClient(t *testing.T, testType string) (*Client, error) {
 	vaultUrl := recording.GetEnvVariable("AZURE_KEYVAULT_URL", fakeKvURL)
 	var credOptions *azidentity.ClientSecretCredentialOptions
 	if testType == HSMTEST {
@@ -211,7 +211,7 @@ func delay() time.Duration {
 	return 250 * time.Millisecond
 }
 
-func cleanUpKey(t *testing.T, client Client, key string) {
+func cleanUpKey(t *testing.T, client *Client, key string) {
 	resp, err := client.BeginDeleteKey(context.Background(), key, nil)
 	if err != nil {
 		return

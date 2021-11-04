@@ -7,8 +7,10 @@ import (
 	"bytes"
 	"context"
 	"encoding/xml"
+	"errors"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"net/http/httputil"
 	"strings"
@@ -24,7 +26,6 @@ import (
 
 const (
 	serviceBusSchema = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
-	schemaInstance   = "http://www.w3.org/2001/XMLSchema-instance"
 	atomSchema       = "http://www.w3.org/2005/Atom"
 	applicationXML   = "application/xml"
 )
@@ -185,40 +186,52 @@ func NewEntityManager(ns string, tokenCredential azcore.TokenCredential, version
 	}, nil
 }
 
-// Get performs an HTTP Get for a given entity path
-func (em *EntityManager) Get(ctx context.Context, entityPath string, mw ...MiddlewareFunc) (*http.Response, error) {
-	ctx, span := em.startSpanFromContext(ctx, "sb.EntityManger.Get")
+// Get performs an HTTP Get for a given entity path, deserializing the returned XML into `respObj`
+func (em *EntityManager) Get(ctx context.Context, entityPath string, respObj interface{}, mw ...MiddlewareFunc) (*http.Response, error) {
+	ctx, span := em.startSpanFromContext(ctx, "sb.ATOM.Get")
 	defer span.End()
 
-	return em.Execute(ctx, http.MethodGet, entityPath, http.NoBody, mw...)
+	resp, err := em.execute(ctx, http.MethodGet, entityPath, http.NoBody, mw...)
+	defer CloseRes(ctx, resp)
+
+	if err != nil {
+		return resp, err
+	}
+
+	return deserializeBody(resp, respObj)
 }
 
-// Put performs an HTTP PUT for a given entity path and body
-func (em *EntityManager) Put(ctx context.Context, entityPath string, body []byte, mw ...MiddlewareFunc) (*http.Response, error) {
-	ctx, span := em.startSpanFromContext(ctx, "sb.EntityManger.Put")
+// Put performs an HTTP PUT for a given entity path and body, deserializing the returned XML into `respObj`
+func (em *EntityManager) Put(ctx context.Context, entityPath string, body interface{}, respObj interface{}, mw ...MiddlewareFunc) (*http.Response, error) {
+	ctx, span := em.startSpanFromContext(ctx, "sb.ATOM.Put")
 	defer span.End()
 
-	return em.Execute(ctx, http.MethodPut, entityPath, bytes.NewReader(body), mw...)
+	bodyBytes, err := xml.Marshal(body)
+
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := em.execute(ctx, http.MethodPut, entityPath, bytes.NewReader(bodyBytes), mw...)
+	defer CloseRes(ctx, resp)
+
+	if err != nil {
+		return resp, err
+	}
+
+	return deserializeBody(resp, respObj)
 }
 
 // Delete performs an HTTP DELETE for a given entity path
 func (em *EntityManager) Delete(ctx context.Context, entityPath string, mw ...MiddlewareFunc) (*http.Response, error) {
-	ctx, span := em.startSpanFromContext(ctx, "sb.EntityManger.Delete")
+	ctx, span := em.startSpanFromContext(ctx, "sb.ATOM.Delete")
 	defer span.End()
 
-	return em.Execute(ctx, http.MethodDelete, entityPath, http.NoBody, mw...)
+	return em.execute(ctx, http.MethodDelete, entityPath, http.NoBody, mw...)
 }
 
-// Post performs an HTTP POST for a given entity path and body
-func (em *EntityManager) Post(ctx context.Context, entityPath string, body []byte, mw ...MiddlewareFunc) (*http.Response, error) {
-	ctx, span := em.startSpanFromContext(ctx, "sb.EntityManger.Post")
-	defer span.End()
-
-	return em.Execute(ctx, http.MethodPost, entityPath, bytes.NewReader(body), mw...)
-}
-
-func (em *EntityManager) Execute(ctx context.Context, method string, entityPath string, body io.Reader, mw ...MiddlewareFunc) (*http.Response, error) {
-	ctx, span := em.startSpanFromContext(ctx, "sb.EntityManger.Execute")
+func (em *EntityManager) execute(ctx context.Context, method string, entityPath string, body io.Reader, mw ...MiddlewareFunc) (*http.Response, error) {
+	ctx, span := em.startSpanFromContext(ctx, "sb.ATOM.Execute")
 	defer span.End()
 
 	req, err := http.NewRequest(method, em.Host+strings.TrimPrefix(entityPath, "/"), body)
@@ -255,6 +268,19 @@ func (em *EntityManager) Execute(ctx context.Context, method string, entityPath 
 	resp, err := h(ctx, req)
 
 	if err == nil {
+		if resp.StatusCode >= http.StatusBadRequest {
+			bytes, err := ioutil.ReadAll(resp.Body)
+
+			if err == nil {
+				err = FormatManagementError(bytes, err)
+			}
+
+			return nil, ResponseError{
+				inner: err,
+				resp:  resp,
+			}
+		}
+
 		return resp, nil
 	}
 
@@ -278,11 +304,11 @@ func (em *EntityManager) TokenProvider() auth.TokenProvider {
 	return em.tokenProvider
 }
 
-func FormatManagementError(body []byte) error {
+func FormatManagementError(body []byte, origErr error) error {
 	var mgmtError managementError
 	unmarshalErr := xml.Unmarshal(body, &mgmtError)
 	if unmarshalErr != nil {
-		return fmt.Errorf("body:%s error:%s", string(body), unmarshalErr.Error())
+		return origErr
 	}
 
 	return fmt.Errorf("error code: %d, Details: %s", mgmtError.Code, mgmtError.Detail)
@@ -358,23 +384,43 @@ func TraceReqAndResponseMiddleware() MiddlewareFunc {
 	}
 }
 
+var errEntityDoesNotExist = errors.New("entity does not exist")
+
+func NotFound(err error) bool {
+	var httpResponse azcore.HTTPResponse
+	return errors.Is(err, errEntityDoesNotExist) ||
+		(errors.As(err, &httpResponse) && httpResponse.RawResponse().StatusCode == 404)
+}
+
 func isEmptyFeed(b []byte) bool {
 	var emptyFeed QueueFeed
 	feedErr := xml.Unmarshal(b, &emptyFeed)
 	return feedErr == nil && emptyFeed.Title == "Publicly Listed Services"
 }
 
-func xmlDoc(content []byte) []byte {
-	return []byte(xml.Header + string(content))
-}
-
-// ptrBool takes a boolean and returns a pointer to that bool. For use in literal pointers, ptrBool(true) -> *bool
-func ptrBool(toPtr bool) *bool {
-	return &toPtr
-}
-
 // ptrString takes a string and returns a pointer to that string. For use in literal pointers,
 // ptrString(fmt.Sprintf("..", foo)) -> *string
 func ptrString(toPtr string) *string {
 	return &toPtr
+}
+
+func deserializeBody(resp *http.Response, respObj interface{}) (*http.Response, error) {
+	bytes, err := ioutil.ReadAll(resp.Body)
+
+	if err != nil {
+		return resp, err
+	}
+
+	if err := xml.Unmarshal(bytes, respObj); err != nil {
+
+		// ATOM does this interesting thing where, when something doesn't exist, it gives you back an empty feed
+		// check:
+		if isEmptyFeed(bytes) {
+			return nil, errEntityDoesNotExist
+		}
+
+		return resp, err
+	}
+
+	return resp, nil
 }

@@ -11,9 +11,8 @@
   enough to fit into a single batch.
 - Receiving from sessions using a SessionReceiver, created using Client.AcceptSessionFor(Queue|Subscription)
   or Client.AcceptNextSessionFor(Queue|Subscription).
-- Can fully create, update, delete and list queues (and queue runtime properties) using the `AdministrationClient`.
-- Can now renew a message lock for a ReceivedMessage using Receiver.RenewMessageLock()
-- Can now renew a session lock for a SessionReceiver using SessionReceiver.RenewSessionLock()
+- Can fully create, update, delete and list queues, topics and subscriptions using the `AdministrationClient`.
+- Can renew message and session locks, using Receiver.RenewMessageLock() and SessionReceiver.RenewSessionLock(), respectively.
 
 ### Bugs Fixed
 

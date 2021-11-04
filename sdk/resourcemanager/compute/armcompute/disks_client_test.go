@@ -21,21 +21,22 @@ func TestDisksClient_CreateOrUpdate(t *testing.T) {
 	stop := startTest(t)
 	defer stop()
 
-	cred, _ := authenticateTest(t)
+	cred, opt := authenticateTest(t)
 	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 	tenantID := recording.GetEnvVariable("AZURE_TENANT_ID", "00000000-0000-0000-0000-000000000000")
+	ctx := context.Background()
 
 	// create resource group
-	rg,clean := createResourceGroup(t,cred,subscriptionID,"disk","westus")
+	rg,clean := createResourceGroup(t,cred,opt,subscriptionID,"disk","westus")
 	rgName := *rg.Name
 	defer clean()
 
 	// create vault
-	vClient := armkeyvault.NewVaultsClient(subscriptionID,cred,nil)
+	vClient := armkeyvault.NewVaultsClient(subscriptionID,cred,opt)
 	vName, err := createRandomName(t, "vaultX")
 	require.NoError(t, err)
 	vPoller, err := vClient.BeginCreateOrUpdate(
-		context.Background(),
+		ctx,
 		rgName,
 		vName,
 		armkeyvault.VaultCreateOrUpdateParameters{
@@ -73,7 +74,7 @@ func TestDisksClient_CreateOrUpdate(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	vResp, err := vPoller.PollUntilDone(context.Background(), 10*time.Second)
+	vResp, err := vPoller.PollUntilDone(ctx, 10*time.Second)
 	require.NoError(t, err)
 	require.Equal(t, *vResp.Name, vName)
 
@@ -82,7 +83,7 @@ func TestDisksClient_CreateOrUpdate(t *testing.T) {
 	keyName, err := createRandomName(t, "key")
 	require.NoError(t, err)
 	keyResp, err := keyClient.CreateIfNotExist(
-		context.Background(),
+		ctx,
 		rgName,
 		vName,
 		keyName,
@@ -109,7 +110,7 @@ func TestDisksClient_CreateOrUpdate(t *testing.T) {
 	diskName, err := createRandomName(t, "disk")
 	require.NoError(t, err)
 	diskPoller, err := diskClient.BeginCreateOrUpdate(
-		context.Background(),
+		ctx,
 		rgName,
 		diskName,
 		armcompute.Disk{
@@ -129,7 +130,7 @@ func TestDisksClient_CreateOrUpdate(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	diskResp, err := diskPoller.PollUntilDone(context.Background(), 10*time.Second)
+	diskResp, err := diskPoller.PollUntilDone(ctx, 10*time.Second)
 	require.NoError(t, err)
 	require.Equal(t, *diskResp.Name, diskName)
 

@@ -119,10 +119,10 @@ func (f *fakeCredential) GetToken(ctx context.Context, options policy.TokenReque
 	}, nil
 }
 
-func createResourceGroup(t *testing.T,cred azcore.TokenCredential,subscriptionID,name,location string) (*armresources.ResourceGroup,func()) {
+func createResourceGroup(t *testing.T,cred azcore.TokenCredential,option *arm.ClientOptions,subscriptionID,name,location string) (*armresources.ResourceGroup,func()) {
 	rgName, err := createRandomName(t, "testRG-"+name)
 	require.NoError(t, err)
-	rgClient := armresources.NewResourceGroupsClient(subscriptionID,cred,nil)
+	rgClient := armresources.NewResourceGroupsClient(subscriptionID,cred,option)
 	rg, err := rgClient.CreateOrUpdate(context.Background(), rgName, armresources.ResourceGroup{
 		Location: to.StringPtr(location),
 	}, nil)
@@ -131,6 +131,6 @@ func createResourceGroup(t *testing.T,cred azcore.TokenCredential,subscriptionID
 }
 
 func cleanup(t *testing.T, client *armresources.ResourceGroupsClient, resourceGroupName string) {
-	_, err := client.BeginDelete(context.Background(), resourceGroupName, nil)
+	_, err := client.BeginDelete(context.Background(), resourceGroupName,nil)
 	require.NoError(t, err)
 }

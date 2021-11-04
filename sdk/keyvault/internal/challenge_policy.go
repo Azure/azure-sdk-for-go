@@ -130,7 +130,7 @@ func (k *KeyVaultChallengePolicy) findScopeAndTenant(resp *http.Response) error 
 
 	// Strip down to auth and resource
 	// Format is "Bearer authorization=\"<site>\" resource=\"<site>\"" OR
-	// "Bearer authorization=\"<site>\" scope=\"<site>\""
+	// "Bearer authorization=\"<site>\" scope=\"<site>\" resource=\"<resource>\""
 	authHeader = strings.ReplaceAll(authHeader, "Bearer ", "")
 
 	parts := strings.Split(authHeader, " ")

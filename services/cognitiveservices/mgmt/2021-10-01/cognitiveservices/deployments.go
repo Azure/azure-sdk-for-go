@@ -15,34 +15,31 @@ import (
 	"net/http"
 )
 
-// PrivateEndpointConnectionsClient is the cognitive Services Management Client
-type PrivateEndpointConnectionsClient struct {
+// DeploymentsClient is the cognitive Services Management Client
+type DeploymentsClient struct {
 	BaseClient
 }
 
-// NewPrivateEndpointConnectionsClient creates an instance of the PrivateEndpointConnectionsClient client.
-func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
-	return NewPrivateEndpointConnectionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewDeploymentsClient creates an instance of the DeploymentsClient client.
+func NewDeploymentsClient(subscriptionID string) DeploymentsClient {
+	return NewDeploymentsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewPrivateEndpointConnectionsClientWithBaseURI creates an instance of the PrivateEndpointConnectionsClient client
-// using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
-// clouds, Azure stack).
-func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionsClient {
-	return PrivateEndpointConnectionsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewDeploymentsClientWithBaseURI creates an instance of the DeploymentsClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
+func NewDeploymentsClientWithBaseURI(baseURI string, subscriptionID string) DeploymentsClient {
+	return DeploymentsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate update the state of specified private endpoint connection associated with the Cognitive Services
-// account.
+// CreateOrUpdate update the state of specified deployments associated with the Cognitive Services account.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - the name of Cognitive Services account.
-// privateEndpointConnectionName - the name of the private endpoint connection associated with the Cognitive
-// Services Account
-// properties - the private endpoint connection properties.
-func (client PrivateEndpointConnectionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, properties PrivateEndpointConnection) (result PrivateEndpointConnectionsCreateOrUpdateFuture, err error) {
+// deploymentName - the name of the deployment associated with the Cognitive Services Account
+// deployment - the deployment properties.
+func (client DeploymentsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, deployment Deployment) (result DeploymentsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateEndpointConnectionsClient.CreateOrUpdate")
+		ctx = tracing.StartSpan(ctx, fqdn+"/DeploymentsClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
 			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
@@ -60,22 +57,19 @@ func (client PrivateEndpointConnectionsClient) CreateOrUpdate(ctx context.Contex
 				{Target: "accountName", Name: validation.MinLength, Rule: 2, Chain: nil},
 				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}},
 		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
-		{TargetValue: properties,
-			Constraints: []validation.Constraint{{Target: "properties.Properties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "properties.Properties.PrivateLinkServiceConnectionState", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewError("cognitiveservices.PrivateEndpointConnectionsClient", "CreateOrUpdate", err.Error())
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("cognitiveservices.DeploymentsClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, accountName, privateEndpointConnectionName, properties)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, accountName, deploymentName, deployment)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cognitiveservices.PrivateEndpointConnectionsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cognitiveservices.DeploymentsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cognitiveservices.PrivateEndpointConnectionsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cognitiveservices.DeploymentsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -83,33 +77,34 @@ func (client PrivateEndpointConnectionsClient) CreateOrUpdate(ctx context.Contex
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client PrivateEndpointConnectionsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, properties PrivateEndpointConnection) (*http.Request, error) {
+func (client DeploymentsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, deployment Deployment) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"accountName":                   autorest.Encode("path", accountName),
-		"privateEndpointConnectionName": autorest.Encode("path", privateEndpointConnectionName),
-		"resourceGroupName":             autorest.Encode("path", resourceGroupName),
-		"subscriptionId":                autorest.Encode("path", client.SubscriptionID),
+		"accountName":       autorest.Encode("path", accountName),
+		"deploymentName":    autorest.Encode("path", deploymentName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-04-30"
+	const APIVersion = "2021-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
 
-	properties.SystemData = nil
+	deployment.SystemData = nil
+	deployment.Etag = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/privateEndpointConnections/{privateEndpointConnectionName}", pathParameters),
-		autorest.WithJSON(properties),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/deployments/{deploymentName}", pathParameters),
+		autorest.WithJSON(deployment),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client PrivateEndpointConnectionsClient) CreateOrUpdateSender(req *http.Request) (future PrivateEndpointConnectionsCreateOrUpdateFuture, err error) {
+func (client DeploymentsClient) CreateOrUpdateSender(req *http.Request) (future DeploymentsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
 	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
@@ -125,25 +120,24 @@ func (client PrivateEndpointConnectionsClient) CreateOrUpdateSender(req *http.Re
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client PrivateEndpointConnectionsClient) CreateOrUpdateResponder(resp *http.Response) (result PrivateEndpointConnection, err error) {
+func (client DeploymentsClient) CreateOrUpdateResponder(resp *http.Response) (result Deployment, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
 }
 
-// Delete deletes the specified private endpoint connection associated with the Cognitive Services account.
+// Delete deletes the specified deployment associated with the Cognitive Services account.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - the name of Cognitive Services account.
-// privateEndpointConnectionName - the name of the private endpoint connection associated with the Cognitive
-// Services Account
-func (client PrivateEndpointConnectionsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string) (result PrivateEndpointConnectionsDeleteFuture, err error) {
+// deploymentName - the name of the deployment associated with the Cognitive Services Account
+func (client DeploymentsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, deploymentName string) (result DeploymentsDeleteFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateEndpointConnectionsClient.Delete")
+		ctx = tracing.StartSpan(ctx, fqdn+"/DeploymentsClient.Delete")
 		defer func() {
 			sc := -1
 			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
@@ -162,18 +156,18 @@ func (client PrivateEndpointConnectionsClient) Delete(ctx context.Context, resou
 				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}},
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("cognitiveservices.PrivateEndpointConnectionsClient", "Delete", err.Error())
+		return result, validation.NewError("cognitiveservices.DeploymentsClient", "Delete", err.Error())
 	}
 
-	req, err := client.DeletePreparer(ctx, resourceGroupName, accountName, privateEndpointConnectionName)
+	req, err := client.DeletePreparer(ctx, resourceGroupName, accountName, deploymentName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cognitiveservices.PrivateEndpointConnectionsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cognitiveservices.DeploymentsClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cognitiveservices.PrivateEndpointConnectionsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cognitiveservices.DeploymentsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -181,15 +175,15 @@ func (client PrivateEndpointConnectionsClient) Delete(ctx context.Context, resou
 }
 
 // DeletePreparer prepares the Delete request.
-func (client PrivateEndpointConnectionsClient) DeletePreparer(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string) (*http.Request, error) {
+func (client DeploymentsClient) DeletePreparer(ctx context.Context, resourceGroupName string, accountName string, deploymentName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"accountName":                   autorest.Encode("path", accountName),
-		"privateEndpointConnectionName": autorest.Encode("path", privateEndpointConnectionName),
-		"resourceGroupName":             autorest.Encode("path", resourceGroupName),
-		"subscriptionId":                autorest.Encode("path", client.SubscriptionID),
+		"accountName":       autorest.Encode("path", accountName),
+		"deploymentName":    autorest.Encode("path", deploymentName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-04-30"
+	const APIVersion = "2021-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -197,14 +191,14 @@ func (client PrivateEndpointConnectionsClient) DeletePreparer(ctx context.Contex
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/privateEndpointConnections/{privateEndpointConnectionName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/deployments/{deploymentName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client PrivateEndpointConnectionsClient) DeleteSender(req *http.Request) (future PrivateEndpointConnectionsDeleteFuture, err error) {
+func (client DeploymentsClient) DeleteSender(req *http.Request) (future DeploymentsDeleteFuture, err error) {
 	var resp *http.Response
 	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
@@ -220,7 +214,7 @@ func (client PrivateEndpointConnectionsClient) DeleteSender(req *http.Request) (
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client PrivateEndpointConnectionsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client DeploymentsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
@@ -229,15 +223,14 @@ func (client PrivateEndpointConnectionsClient) DeleteResponder(resp *http.Respon
 	return
 }
 
-// Get gets the specified private endpoint connection associated with the Cognitive Services account.
+// Get gets the specified deployments associated with the Cognitive Services account.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - the name of Cognitive Services account.
-// privateEndpointConnectionName - the name of the private endpoint connection associated with the Cognitive
-// Services Account
-func (client PrivateEndpointConnectionsClient) Get(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string) (result PrivateEndpointConnection, err error) {
+// deploymentName - the name of the deployment associated with the Cognitive Services Account
+func (client DeploymentsClient) Get(ctx context.Context, resourceGroupName string, accountName string, deploymentName string) (result Deployment, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateEndpointConnectionsClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/DeploymentsClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -256,25 +249,25 @@ func (client PrivateEndpointConnectionsClient) Get(ctx context.Context, resource
 				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}},
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("cognitiveservices.PrivateEndpointConnectionsClient", "Get", err.Error())
+		return result, validation.NewError("cognitiveservices.DeploymentsClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, accountName, privateEndpointConnectionName)
+	req, err := client.GetPreparer(ctx, resourceGroupName, accountName, deploymentName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cognitiveservices.PrivateEndpointConnectionsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cognitiveservices.DeploymentsClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "cognitiveservices.PrivateEndpointConnectionsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cognitiveservices.DeploymentsClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cognitiveservices.PrivateEndpointConnectionsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cognitiveservices.DeploymentsClient", "Get", resp, "Failure responding to request")
 		return
 	}
 
@@ -282,15 +275,15 @@ func (client PrivateEndpointConnectionsClient) Get(ctx context.Context, resource
 }
 
 // GetPreparer prepares the Get request.
-func (client PrivateEndpointConnectionsClient) GetPreparer(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string) (*http.Request, error) {
+func (client DeploymentsClient) GetPreparer(ctx context.Context, resourceGroupName string, accountName string, deploymentName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"accountName":                   autorest.Encode("path", accountName),
-		"privateEndpointConnectionName": autorest.Encode("path", privateEndpointConnectionName),
-		"resourceGroupName":             autorest.Encode("path", resourceGroupName),
-		"subscriptionId":                autorest.Encode("path", client.SubscriptionID),
+		"accountName":       autorest.Encode("path", accountName),
+		"deploymentName":    autorest.Encode("path", deploymentName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-04-30"
+	const APIVersion = "2021-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -298,20 +291,20 @@ func (client PrivateEndpointConnectionsClient) GetPreparer(ctx context.Context, 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/privateEndpointConnections/{privateEndpointConnectionName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/deployments/{deploymentName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client PrivateEndpointConnectionsClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client DeploymentsClient) GetSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client PrivateEndpointConnectionsClient) GetResponder(resp *http.Response) (result PrivateEndpointConnection, err error) {
+func (client DeploymentsClient) GetResponder(resp *http.Response) (result Deployment, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -321,17 +314,17 @@ func (client PrivateEndpointConnectionsClient) GetResponder(resp *http.Response)
 	return
 }
 
-// List gets the private endpoint connections associated with the Cognitive Services account.
+// List gets the deployments associated with the Cognitive Services account.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - the name of Cognitive Services account.
-func (client PrivateEndpointConnectionsClient) List(ctx context.Context, resourceGroupName string, accountName string) (result PrivateEndpointConnectionListResult, err error) {
+func (client DeploymentsClient) List(ctx context.Context, resourceGroupName string, accountName string) (result DeploymentListResultPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateEndpointConnectionsClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/DeploymentsClient.List")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.dlr.Response.Response != nil {
+				sc = result.dlr.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -346,25 +339,30 @@ func (client PrivateEndpointConnectionsClient) List(ctx context.Context, resourc
 				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}},
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("cognitiveservices.PrivateEndpointConnectionsClient", "List", err.Error())
+		return result, validation.NewError("cognitiveservices.DeploymentsClient", "List", err.Error())
 	}
 
+	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, accountName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cognitiveservices.PrivateEndpointConnectionsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cognitiveservices.DeploymentsClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "cognitiveservices.PrivateEndpointConnectionsClient", "List", resp, "Failure sending request")
+		result.dlr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "cognitiveservices.DeploymentsClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListResponder(resp)
+	result.dlr, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cognitiveservices.PrivateEndpointConnectionsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cognitiveservices.DeploymentsClient", "List", resp, "Failure responding to request")
+		return
+	}
+	if result.dlr.hasNextLink() && result.dlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 		return
 	}
 
@@ -372,14 +370,14 @@ func (client PrivateEndpointConnectionsClient) List(ctx context.Context, resourc
 }
 
 // ListPreparer prepares the List request.
-func (client PrivateEndpointConnectionsClient) ListPreparer(ctx context.Context, resourceGroupName string, accountName string) (*http.Request, error) {
+func (client DeploymentsClient) ListPreparer(ctx context.Context, resourceGroupName string, accountName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-04-30"
+	const APIVersion = "2021-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -387,25 +385,62 @@ func (client PrivateEndpointConnectionsClient) ListPreparer(ctx context.Context,
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/privateEndpointConnections", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/deployments", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client PrivateEndpointConnectionsClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client DeploymentsClient) ListSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client PrivateEndpointConnectionsClient) ListResponder(resp *http.Response) (result PrivateEndpointConnectionListResult, err error) {
+func (client DeploymentsClient) ListResponder(resp *http.Response) (result DeploymentListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listNextResults retrieves the next set of results, if any.
+func (client DeploymentsClient) listNextResults(ctx context.Context, lastResults DeploymentListResult) (result DeploymentListResult, err error) {
+	req, err := lastResults.deploymentListResultPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "cognitiveservices.DeploymentsClient", "listNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "cognitiveservices.DeploymentsClient", "listNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "cognitiveservices.DeploymentsClient", "listNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListComplete enumerates all values, automatically crossing page boundaries as required.
+func (client DeploymentsClient) ListComplete(ctx context.Context, resourceGroupName string, accountName string) (result DeploymentListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DeploymentsClient.List")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.List(ctx, resourceGroupName, accountName)
 	return
 }

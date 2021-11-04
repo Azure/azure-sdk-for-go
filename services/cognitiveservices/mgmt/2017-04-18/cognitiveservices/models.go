@@ -72,6 +72,10 @@ func (a Account) MarshalJSON() ([]byte, error) {
 type AccountAPIProperties struct {
 	// QnaRuntimeEndpoint - (QnAMaker Only) The runtime endpoint of QnAMaker.
 	QnaRuntimeEndpoint *string `json:"qnaRuntimeEndpoint,omitempty"`
+	// QnaAzureSearchEndpointKey - (QnAMaker Only) The Azure Search endpoint key of QnAMaker.
+	QnaAzureSearchEndpointKey *string `json:"qnaAzureSearchEndpointKey,omitempty"`
+	// QnaAzureSearchEndpointID - (QnAMaker Only) The Azure Search endpoint id of QnAMaker.
+	QnaAzureSearchEndpointID *string `json:"qnaAzureSearchEndpointId,omitempty"`
 	// StatisticsEnabled - (Bing Search Only) The flag to enable statistics of Bing Search.
 	StatisticsEnabled *bool `json:"statisticsEnabled,omitempty"`
 	// EventHubConnectionString - (Personalization Only) The flag to enable statistics of Bing Search.
@@ -288,6 +292,10 @@ type AccountProperties struct {
 	InternalID *string `json:"internalId,omitempty"`
 	// Capabilities - READ-ONLY; Gets the capabilities of the cognitive services account. Each item indicates the capability of a specific feature. The values are read-only and for reference only.
 	Capabilities *[]SkuCapability `json:"capabilities,omitempty"`
+	// IsMigrated - READ-ONLY; If the resource is migrated from an existing key.
+	IsMigrated *bool `json:"isMigrated,omitempty"`
+	// SkuChangeInfo - READ-ONLY; Sku change info of account.
+	SkuChangeInfo *AccountSkuChangeInfo `json:"skuChangeInfo,omitempty"`
 	// CustomSubDomainName - Optional subdomain name used for token-based authentication.
 	CustomSubDomainName *string `json:"customSubDomainName,omitempty"`
 	// NetworkAcls - A collection of rules governing the accessibility from specific network locations.
@@ -330,6 +338,22 @@ func (ap AccountProperties) MarshalJSON() ([]byte, error) {
 	if ap.APIProperties != nil {
 		objectMap["apiProperties"] = ap.APIProperties
 	}
+	return json.Marshal(objectMap)
+}
+
+// AccountSkuChangeInfo sku change info of account.
+type AccountSkuChangeInfo struct {
+	// CountOfDowngrades - READ-ONLY; Gets the count of downgrades.
+	CountOfDowngrades *float64 `json:"countOfDowngrades,omitempty"`
+	// CountOfUpgradesAfterDowngrades - READ-ONLY; Gets the count of upgrades after downgrades.
+	CountOfUpgradesAfterDowngrades *float64 `json:"countOfUpgradesAfterDowngrades,omitempty"`
+	// LastChangeDate - READ-ONLY; Gets the last change date.
+	LastChangeDate *string `json:"lastChangeDate,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AccountSkuChangeInfo.
+func (asci AccountSkuChangeInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
 }
 
@@ -691,6 +715,10 @@ type PrivateEndpointConnection struct {
 	autorest.Response `json:"-"`
 	// Properties - Resource properties.
 	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+	// Etag - READ-ONLY; Entity Tag
+	Etag *string `json:"etag,omitempty"`
+	// Location - The location of the private endpoint connection
+	Location *string `json:"location,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
@@ -704,6 +732,9 @@ func (pec PrivateEndpointConnection) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if pec.Properties != nil {
 		objectMap["properties"] = pec.Properties
+	}
+	if pec.Location != nil {
+		objectMap["location"] = pec.Location
 	}
 	return json.Marshal(objectMap)
 }
@@ -781,8 +812,8 @@ type PrivateLinkServiceConnectionState struct {
 	Status PrivateEndpointServiceConnectionStatus `json:"status,omitempty"`
 	// Description - The reason for approval/rejection of the connection.
 	Description *string `json:"description,omitempty"`
-	// ActionRequired - A message indicating if changes on the service provider require any updates on the consumer.
-	ActionRequired *string `json:"actionRequired,omitempty"`
+	// ActionsRequired - A message indicating if changes on the service provider require any updates on the consumer.
+	ActionsRequired *string `json:"actionsRequired,omitempty"`
 }
 
 // ProxyResource the resource model definition for a Azure Resource Manager proxy resource. It will not

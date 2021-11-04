@@ -37,13 +37,13 @@ func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) Account
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - the name of Cognitive Services account.
 // account - the parameters to provide for the created account.
-func (client AccountsClient) Create(ctx context.Context, resourceGroupName string, accountName string, account Account) (result Account, err error) {
+func (client AccountsClient) Create(ctx context.Context, resourceGroupName string, accountName string, account Account) (result AccountsCreateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.Create")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -57,28 +57,28 @@ func (client AccountsClient) Create(ctx context.Context, resourceGroupName strin
 				{Target: "accountName", Name: validation.MinLength, Rule: 2, Chain: nil},
 				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}},
 		{TargetValue: account,
-			Constraints: []validation.Constraint{{Target: "account.Properties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "account.Properties.APIProperties", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "account.Properties.APIProperties.EventHubConnectionString", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "account.Properties.APIProperties.EventHubConnectionString", Name: validation.MaxLength, Rule: 1000, Chain: nil},
-							{Target: "account.Properties.APIProperties.EventHubConnectionString", Name: validation.Pattern, Rule: `^( *)Endpoint=sb://(.*);( *)SharedAccessKeyName=(.*);( *)SharedAccessKey=(.*)$`, Chain: nil},
-						}},
-						{Target: "account.Properties.APIProperties.StorageAccountConnectionString", Name: validation.Null, Rule: false,
-							Chain: []validation.Constraint{{Target: "account.Properties.APIProperties.StorageAccountConnectionString", Name: validation.MaxLength, Rule: 1000, Chain: nil},
-								{Target: "account.Properties.APIProperties.StorageAccountConnectionString", Name: validation.Pattern, Rule: `^(( *)DefaultEndpointsProtocol=(http|https)( *);( *))?AccountName=(.*)AccountKey=(.*)EndpointSuffix=(.*)$`, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "account.Sku", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "account.Sku.Name", Name: validation.Null, Rule: true, Chain: nil}}},
+				{Target: "account.Properties", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "account.Properties.APIProperties", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "account.Properties.APIProperties.EventHubConnectionString", Name: validation.Null, Rule: false,
+							Chain: []validation.Constraint{{Target: "account.Properties.APIProperties.EventHubConnectionString", Name: validation.MaxLength, Rule: 1000, Chain: nil},
+								{Target: "account.Properties.APIProperties.EventHubConnectionString", Name: validation.Pattern, Rule: `^( *)Endpoint=sb://(.*);( *)SharedAccessKeyName=(.*);( *)SharedAccessKey=(.*)$`, Chain: nil},
 							}},
-						{Target: "account.Properties.APIProperties.AadClientID", Name: validation.Null, Rule: false,
-							Chain: []validation.Constraint{{Target: "account.Properties.APIProperties.AadClientID", Name: validation.MaxLength, Rule: 500, Chain: nil}}},
-						{Target: "account.Properties.APIProperties.AadTenantID", Name: validation.Null, Rule: false,
-							Chain: []validation.Constraint{{Target: "account.Properties.APIProperties.AadTenantID", Name: validation.MaxLength, Rule: 500, Chain: nil}}},
-						{Target: "account.Properties.APIProperties.SuperUser", Name: validation.Null, Rule: false,
-							Chain: []validation.Constraint{{Target: "account.Properties.APIProperties.SuperUser", Name: validation.MaxLength, Rule: 500, Chain: nil}}},
-						{Target: "account.Properties.APIProperties.WebsiteName", Name: validation.Null, Rule: false,
-							Chain: []validation.Constraint{{Target: "account.Properties.APIProperties.WebsiteName", Name: validation.MaxLength, Rule: 500, Chain: nil}}},
-					}},
-				}},
-				{Target: "account.Sku", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "account.Sku.Name", Name: validation.Null, Rule: true, Chain: nil}}}}},
+							{Target: "account.Properties.APIProperties.StorageAccountConnectionString", Name: validation.Null, Rule: false,
+								Chain: []validation.Constraint{{Target: "account.Properties.APIProperties.StorageAccountConnectionString", Name: validation.MaxLength, Rule: 1000, Chain: nil},
+									{Target: "account.Properties.APIProperties.StorageAccountConnectionString", Name: validation.Pattern, Rule: `^(( *)DefaultEndpointsProtocol=(http|https)( *);( *))?AccountName=(.*)AccountKey=(.*)EndpointSuffix=(.*)$`, Chain: nil},
+								}},
+							{Target: "account.Properties.APIProperties.AadClientID", Name: validation.Null, Rule: false,
+								Chain: []validation.Constraint{{Target: "account.Properties.APIProperties.AadClientID", Name: validation.MaxLength, Rule: 500, Chain: nil}}},
+							{Target: "account.Properties.APIProperties.AadTenantID", Name: validation.Null, Rule: false,
+								Chain: []validation.Constraint{{Target: "account.Properties.APIProperties.AadTenantID", Name: validation.MaxLength, Rule: 500, Chain: nil}}},
+							{Target: "account.Properties.APIProperties.SuperUser", Name: validation.Null, Rule: false,
+								Chain: []validation.Constraint{{Target: "account.Properties.APIProperties.SuperUser", Name: validation.MaxLength, Rule: 500, Chain: nil}}},
+							{Target: "account.Properties.APIProperties.WebsiteName", Name: validation.Null, Rule: false,
+								Chain: []validation.Constraint{{Target: "account.Properties.APIProperties.WebsiteName", Name: validation.MaxLength, Rule: 500, Chain: nil}}},
+						}},
+					}}}},
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("cognitiveservices.AccountsClient", "Create", err.Error())
@@ -90,16 +90,9 @@ func (client AccountsClient) Create(ctx context.Context, resourceGroupName strin
 		return
 	}
 
-	resp, err := client.CreateSender(req)
+	result, err = client.CreateSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "Create", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.CreateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "Create", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -114,15 +107,12 @@ func (client AccountsClient) CreatePreparer(ctx context.Context, resourceGroupNa
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-18"
+	const APIVersion = "2021-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
 
-	account.Etag = nil
-	account.ID = nil
-	account.Name = nil
-	account.Type = nil
+	account.SystemData = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
@@ -135,8 +125,18 @@ func (client AccountsClient) CreatePreparer(ctx context.Context, resourceGroupNa
 
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
-func (client AccountsClient) CreateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+func (client AccountsClient) CreateSender(req *http.Request) (future AccountsCreateFuture, err error) {
+	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -155,13 +155,13 @@ func (client AccountsClient) CreateResponder(resp *http.Response) (result Accoun
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - the name of Cognitive Services account.
-func (client AccountsClient) Delete(ctx context.Context, resourceGroupName string, accountName string) (result autorest.Response, err error) {
+func (client AccountsClient) Delete(ctx context.Context, resourceGroupName string, accountName string) (result AccountsDeleteFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -185,16 +185,9 @@ func (client AccountsClient) Delete(ctx context.Context, resourceGroupName strin
 		return
 	}
 
-	resp, err := client.DeleteSender(req)
+	result, err = client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "Delete", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.DeleteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -209,7 +202,7 @@ func (client AccountsClient) DeletePreparer(ctx context.Context, resourceGroupNa
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-18"
+	const APIVersion = "2021-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -224,8 +217,18 @@ func (client AccountsClient) DeletePreparer(ctx context.Context, resourceGroupNa
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client AccountsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+func (client AccountsClient) DeleteSender(req *http.Request) (future AccountsDeleteFuture, err error) {
+	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -239,13 +242,13 @@ func (client AccountsClient) DeleteResponder(resp *http.Response) (result autore
 	return
 }
 
-// GetProperties returns a Cognitive Services account specified by the parameters.
+// Get returns a Cognitive Services account specified by the parameters.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - the name of Cognitive Services account.
-func (client AccountsClient) GetProperties(ctx context.Context, resourceGroupName string, accountName string) (result Account, err error) {
+func (client AccountsClient) Get(ctx context.Context, resourceGroupName string, accountName string) (result Account, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.GetProperties")
+		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -264,40 +267,40 @@ func (client AccountsClient) GetProperties(ctx context.Context, resourceGroupNam
 				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}},
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("cognitiveservices.AccountsClient", "GetProperties", err.Error())
+		return result, validation.NewError("cognitiveservices.AccountsClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPropertiesPreparer(ctx, resourceGroupName, accountName)
+	req, err := client.GetPreparer(ctx, resourceGroupName, accountName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "GetProperties", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.GetPropertiesSender(req)
+	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "GetProperties", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "Get", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.GetPropertiesResponder(resp)
+	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "GetProperties", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "Get", resp, "Failure responding to request")
 		return
 	}
 
 	return
 }
 
-// GetPropertiesPreparer prepares the GetProperties request.
-func (client AccountsClient) GetPropertiesPreparer(ctx context.Context, resourceGroupName string, accountName string) (*http.Request, error) {
+// GetPreparer prepares the Get request.
+func (client AccountsClient) GetPreparer(ctx context.Context, resourceGroupName string, accountName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-18"
+	const APIVersion = "2021-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -310,109 +313,15 @@ func (client AccountsClient) GetPropertiesPreparer(ctx context.Context, resource
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// GetPropertiesSender sends the GetProperties request. The method will close the
+// GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client AccountsClient) GetPropertiesSender(req *http.Request) (*http.Response, error) {
+func (client AccountsClient) GetSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
-// GetPropertiesResponder handles the response to the GetProperties request. The method always
+// GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client AccountsClient) GetPropertiesResponder(resp *http.Response) (result Account, err error) {
-	err = autorest.Respond(
-		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// GetUsages get usages for the requested Cognitive Services account
-// Parameters:
-// resourceGroupName - the name of the resource group. The name is case insensitive.
-// accountName - the name of Cognitive Services account.
-// filter - an OData filter expression that describes a subset of usages to return. The supported parameter is
-// name.value (name of the metric, can have an or of multiple names).
-func (client AccountsClient) GetUsages(ctx context.Context, resourceGroupName string, accountName string, filter string) (result UsagesResult, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.GetUsages")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
-		{TargetValue: accountName,
-			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 64, Chain: nil},
-				{Target: "accountName", Name: validation.MinLength, Rule: 2, Chain: nil},
-				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}},
-		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("cognitiveservices.AccountsClient", "GetUsages", err.Error())
-	}
-
-	req, err := client.GetUsagesPreparer(ctx, resourceGroupName, accountName, filter)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "GetUsages", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.GetUsagesSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "GetUsages", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.GetUsagesResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "GetUsages", resp, "Failure responding to request")
-		return
-	}
-
-	return
-}
-
-// GetUsagesPreparer prepares the GetUsages request.
-func (client AccountsClient) GetUsagesPreparer(ctx context.Context, resourceGroupName string, accountName string, filter string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":       autorest.Encode("path", accountName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2017-04-18"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/usages", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// GetUsagesSender sends the GetUsages request. The method will close the
-// http.Response Body if it receives an error.
-func (client AccountsClient) GetUsagesSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
-}
-
-// GetUsagesResponder handles the response to the GetUsages request. The method always
-// closes the http.Response Body.
-func (client AccountsClient) GetUsagesResponder(resp *http.Response) (result UsagesResult, err error) {
+func (client AccountsClient) GetResponder(resp *http.Response) (result Account, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -473,7 +382,7 @@ func (client AccountsClient) ListPreparer(ctx context.Context) (*http.Request, e
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-18"
+	const APIVersion = "2021-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -598,7 +507,7 @@ func (client AccountsClient) ListByResourceGroupPreparer(ctx context.Context, re
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-18"
+	const APIVersion = "2021-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -670,7 +579,7 @@ func (client AccountsClient) ListByResourceGroupComplete(ctx context.Context, re
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - the name of Cognitive Services account.
-func (client AccountsClient) ListKeys(ctx context.Context, resourceGroupName string, accountName string) (result AccountKeys, err error) {
+func (client AccountsClient) ListKeys(ctx context.Context, resourceGroupName string, accountName string) (result APIKeys, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.ListKeys")
 		defer func() {
@@ -724,7 +633,7 @@ func (client AccountsClient) ListKeysPreparer(ctx context.Context, resourceGroup
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-18"
+	const APIVersion = "2021-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -745,7 +654,7 @@ func (client AccountsClient) ListKeysSender(req *http.Request) (*http.Response, 
 
 // ListKeysResponder handles the response to the ListKeys request. The method always
 // closes the http.Response Body.
-func (client AccountsClient) ListKeysResponder(resp *http.Response) (result AccountKeys, err error) {
+func (client AccountsClient) ListKeysResponder(resp *http.Response) (result APIKeys, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -759,7 +668,7 @@ func (client AccountsClient) ListKeysResponder(resp *http.Response) (result Acco
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - the name of Cognitive Services account.
-func (client AccountsClient) ListSkus(ctx context.Context, resourceGroupName string, accountName string) (result AccountEnumerateSkusResult, err error) {
+func (client AccountsClient) ListSkus(ctx context.Context, resourceGroupName string, accountName string) (result AccountSkuListResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.ListSkus")
 		defer func() {
@@ -813,7 +722,7 @@ func (client AccountsClient) ListSkusPreparer(ctx context.Context, resourceGroup
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-18"
+	const APIVersion = "2021-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -834,7 +743,101 @@ func (client AccountsClient) ListSkusSender(req *http.Request) (*http.Response, 
 
 // ListSkusResponder handles the response to the ListSkus request. The method always
 // closes the http.Response Body.
-func (client AccountsClient) ListSkusResponder(resp *http.Response) (result AccountEnumerateSkusResult, err error) {
+func (client AccountsClient) ListSkusResponder(resp *http.Response) (result AccountSkuListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListUsages get usages for the requested Cognitive Services account
+// Parameters:
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// accountName - the name of Cognitive Services account.
+// filter - an OData filter expression that describes a subset of usages to return. The supported parameter is
+// name.value (name of the metric, can have an or of multiple names).
+func (client AccountsClient) ListUsages(ctx context.Context, resourceGroupName string, accountName string, filter string) (result UsageListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.ListUsages")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 64, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 2, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("cognitiveservices.AccountsClient", "ListUsages", err.Error())
+	}
+
+	req, err := client.ListUsagesPreparer(ctx, resourceGroupName, accountName, filter)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "ListUsages", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListUsagesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "ListUsages", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListUsagesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "ListUsages", resp, "Failure responding to request")
+		return
+	}
+
+	return
+}
+
+// ListUsagesPreparer prepares the ListUsages request.
+func (client AccountsClient) ListUsagesPreparer(ctx context.Context, resourceGroupName string, accountName string, filter string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2021-10-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/usages", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListUsagesSender sends the ListUsages request. The method will close the
+// http.Response Body if it receives an error.
+func (client AccountsClient) ListUsagesSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListUsagesResponder handles the response to the ListUsages request. The method always
+// closes the http.Response Body.
+func (client AccountsClient) ListUsagesResponder(resp *http.Response) (result UsageListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -849,7 +852,7 @@ func (client AccountsClient) ListSkusResponder(resp *http.Response) (result Acco
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - the name of Cognitive Services account.
 // parameters - regenerate key parameters.
-func (client AccountsClient) RegenerateKey(ctx context.Context, resourceGroupName string, accountName string, parameters RegenerateKeyParameters) (result AccountKeys, err error) {
+func (client AccountsClient) RegenerateKey(ctx context.Context, resourceGroupName string, accountName string, parameters RegenerateKeyParameters) (result APIKeys, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.RegenerateKey")
 		defer func() {
@@ -903,7 +906,7 @@ func (client AccountsClient) RegenerateKeyPreparer(ctx context.Context, resource
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-18"
+	const APIVersion = "2021-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -926,7 +929,7 @@ func (client AccountsClient) RegenerateKeySender(req *http.Request) (*http.Respo
 
 // RegenerateKeyResponder handles the response to the RegenerateKey request. The method always
 // closes the http.Response Body.
-func (client AccountsClient) RegenerateKeyResponder(resp *http.Response) (result AccountKeys, err error) {
+func (client AccountsClient) RegenerateKeyResponder(resp *http.Response) (result APIKeys, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -941,13 +944,13 @@ func (client AccountsClient) RegenerateKeyResponder(resp *http.Response) (result
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - the name of Cognitive Services account.
 // account - the parameters to provide for the created account.
-func (client AccountsClient) Update(ctx context.Context, resourceGroupName string, accountName string, account Account) (result Account, err error) {
+func (client AccountsClient) Update(ctx context.Context, resourceGroupName string, accountName string, account Account) (result AccountsUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.Update")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -971,16 +974,9 @@ func (client AccountsClient) Update(ctx context.Context, resourceGroupName strin
 		return
 	}
 
-	resp, err := client.UpdateSender(req)
+	result, err = client.UpdateSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "Update", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.UpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "Update", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -995,15 +991,12 @@ func (client AccountsClient) UpdatePreparer(ctx context.Context, resourceGroupNa
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-18"
+	const APIVersion = "2021-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
 
-	account.Etag = nil
-	account.ID = nil
-	account.Name = nil
-	account.Type = nil
+	account.SystemData = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),
@@ -1016,8 +1009,18 @@ func (client AccountsClient) UpdatePreparer(ctx context.Context, resourceGroupNa
 
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
-func (client AccountsClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+func (client AccountsClient) UpdateSender(req *http.Request) (future AccountsUpdateFuture, err error) {
+	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
 }
 
 // UpdateResponder handles the response to the Update request. The method always

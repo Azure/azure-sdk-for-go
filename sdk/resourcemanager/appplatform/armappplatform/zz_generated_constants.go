@@ -10,7 +10,7 @@ package armappplatform
 
 const (
 	module  = "armappplatform"
-	version = "v0.2.0"
+	version = "v0.2.1"
 )
 
 // AppResourceProvisioningState - Provisioning state of the App

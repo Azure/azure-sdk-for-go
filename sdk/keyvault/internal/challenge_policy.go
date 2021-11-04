@@ -15,6 +15,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 const headerAuthorization = "Authorization"
@@ -45,12 +46,13 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 
 	if k.scope == nil || k.tenantID == nil {
 		// First request, get both to get the token
-		challengeReq, err := k.getChallengeRequest(req)
+		challengeReq, err := k.getChallengeRequest(*req)
 		if err != nil {
 			return nil, err
 		}
 
-		challengeResp, err := k.transport.Do(challengeReq)
+		// challengeResp, err := k.transport.Do(challengeReq)
+		challengeResp, err := challengeReq.Next()
 		if err != nil {
 			return nil, err
 		}
@@ -163,16 +165,19 @@ func (k *KeyVaultChallengePolicy) findScopeAndTenant(resp *http.Response) error 
 	return nil
 }
 
-func (k KeyVaultChallengePolicy) getChallengeRequest(orig *policy.Request) (*http.Request, error) {
-	req, err := http.NewRequest(orig.Raw().Method, orig.Raw().URL.String(), nil)
+func (k KeyVaultChallengePolicy) getChallengeRequest(orig policy.Request) (*policy.Request, error) {
+	req, err := runtime.NewRequest(orig.Raw().Context(), orig.Raw().Method, orig.Raw().URL.String())
 	if err != nil {
 		return nil, err
 	}
 
-	req.Header = orig.Raw().Header.Clone()
-	req.Header.Set("Content-Length", "0")
+	req.Raw().Header = orig.Raw().Header
+	req.Raw().Header.Set("Content-Length", "0")
 
-	return req, err
+	copied := orig.Clone(orig.Raw().Context())
+	copied.Raw().Body = req.Body()
+
+	return copied, err
 }
 
 type acquiringResourceState struct {

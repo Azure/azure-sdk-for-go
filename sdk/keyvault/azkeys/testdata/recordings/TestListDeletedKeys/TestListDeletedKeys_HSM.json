@@ -1,12 +1,12 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/list-delkey02135889235/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/list-del-key02135889235/create?api-version=7.3-preview",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "POST",
-        ":path": "/keys/list-delkey02135889235/create?api-version=7.3-preview",
+        ":path": "/keys/list-del-key02135889235/create?api-version=7.3-preview",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -31,12 +31,12 @@
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/list-delkey02135889235/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/list-del-key02135889235/create?api-version=7.3-preview",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "POST",
-        ":path": "/keys/list-delkey02135889235/create?api-version=7.3-preview",
+        ":path": "/keys/list-del-key02135889235/create?api-version=7.3-preview",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -81,19 +81,19 @@
             "sign",
             "verify"
           ],
-          "kid": "https://fakekvurl.managedhsm.azure.net/keys/list-delkey02135889235/00733d97a21f06f9293d2809102931ef",
+          "kid": "https://fakekvurl.managedhsm.azure.net/keys/list-del-key02135889235/00733d97a21f06f9293d2809102931ef",
           "kty": "RSA-HSM",
           "n": "kE5nqxhr7IU7aO6HNUqah7SKdI8KWPJb16qoQl5KQLNY-UtKmEYlhGbh61fUBvKVcnhFuOzcvOtnpYxBeeCafddChZzP4d-LXhO3nsoij89tW5f5dOU2sprEUWfyJ5y5U7tYrYgQAtCfnR4ilTUBL4b1Ug_nMzC3uIbDDFKkxw8Y7ZMZ8ISn-wjJ6BER3xcoNRJIIcu7XYdeSJG_2MCr_3P9HNo9ELW53Czd7oXioLF8svFxUAwbV_IJwboOipB-tEO1fkodm0_PRQypDZOELHrCi_H4E4-Rsk6siGUOEJGHZ_blDFM82Sy9bnJnag_L84XofBzCSZ6mySu72ur35w"
         }
       }
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/list-delkey02135889235?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/list-del-key02135889235?api-version=7.3-preview",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "DELETE",
-        ":path": "/keys/list-delkey02135889235?api-version=7.3-preview",
+        ":path": "/keys/list-del-key02135889235?api-version=7.3-preview",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -116,12 +116,12 @@
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/list-delkey02135889235?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/list-del-key02135889235?api-version=7.3-preview",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "DELETE",
-        ":path": "/keys/list-delkey02135889235?api-version=7.3-preview",
+        ":path": "/keys/list-del-key02135889235?api-version=7.3-preview",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -163,21 +163,21 @@
             "sign",
             "verify"
           ],
-          "kid": "https://fakekvurl.managedhsm.azure.net/keys/list-delkey02135889235/00733d97a21f06f9293d2809102931ef",
+          "kid": "https://fakekvurl.managedhsm.azure.net/keys/list-del-key02135889235/00733d97a21f06f9293d2809102931ef",
           "kty": "RSA-HSM",
           "n": "kE5nqxhr7IU7aO6HNUqah7SKdI8KWPJb16qoQl5KQLNY-UtKmEYlhGbh61fUBvKVcnhFuOzcvOtnpYxBeeCafddChZzP4d-LXhO3nsoij89tW5f5dOU2sprEUWfyJ5y5U7tYrYgQAtCfnR4ilTUBL4b1Ug_nMzC3uIbDDFKkxw8Y7ZMZ8ISn-wjJ6BER3xcoNRJIIcu7XYdeSJG_2MCr_3P9HNo9ELW53Czd7oXioLF8svFxUAwbV_IJwboOipB-tEO1fkodm0_PRQypDZOELHrCi_H4E4-Rsk6siGUOEJGHZ_blDFM82Sy9bnJnag_L84XofBzCSZ6mySu72ur35w"
         },
-        "recoveryId": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-delkey02135889235",
+        "recoveryId": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-del-key02135889235",
         "scheduledPurgeDate": 1636050245
       }
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-delkey02135889235?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-del-key02135889235?api-version=7.3-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "GET",
-        ":path": "/deletedkeys/list-delkey02135889235?api-version=7.3-preview",
+        ":path": "/deletedkeys/list-del-key02135889235?api-version=7.3-preview",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -201,12 +201,12 @@
       "ResponseBody": "OK"
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-delkey02135889235?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-del-key02135889235?api-version=7.3-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "GET",
-        ":path": "/deletedkeys/list-delkey02135889235?api-version=7.3-preview",
+        ":path": "/deletedkeys/list-del-key02135889235?api-version=7.3-preview",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -249,21 +249,21 @@
             "decrypt",
             "wrapKey"
           ],
-          "kid": "https://fakekvurl.managedhsm.azure.net/keys/list-delkey02135889235/00733d97a21f06f9293d2809102931ef",
+          "kid": "https://fakekvurl.managedhsm.azure.net/keys/list-del-key02135889235/00733d97a21f06f9293d2809102931ef",
           "kty": "RSA-HSM",
           "n": "kE5nqxhr7IU7aO6HNUqah7SKdI8KWPJb16qoQl5KQLNY-UtKmEYlhGbh61fUBvKVcnhFuOzcvOtnpYxBeeCafddChZzP4d-LXhO3nsoij89tW5f5dOU2sprEUWfyJ5y5U7tYrYgQAtCfnR4ilTUBL4b1Ug_nMzC3uIbDDFKkxw8Y7ZMZ8ISn-wjJ6BER3xcoNRJIIcu7XYdeSJG_2MCr_3P9HNo9ELW53Czd7oXioLF8svFxUAwbV_IJwboOipB-tEO1fkodm0_PRQypDZOELHrCi_H4E4-Rsk6siGUOEJGHZ_blDFM82Sy9bnJnag_L84XofBzCSZ6mySu72ur35w"
         },
-        "recoveryId": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-delkey02135889235",
+        "recoveryId": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-del-key02135889235",
         "scheduledPurgeDate": 1636050245
       }
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-delkey02135889235?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-del-key02135889235?api-version=7.3-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "GET",
-        ":path": "/deletedkeys/list-delkey02135889235?api-version=7.3-preview",
+        ":path": "/deletedkeys/list-del-key02135889235?api-version=7.3-preview",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -287,12 +287,12 @@
       "ResponseBody": "OK"
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-delkey02135889235?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-del-key02135889235?api-version=7.3-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "GET",
-        ":path": "/deletedkeys/list-delkey02135889235?api-version=7.3-preview",
+        ":path": "/deletedkeys/list-del-key02135889235?api-version=7.3-preview",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -335,21 +335,21 @@
             "decrypt",
             "wrapKey"
           ],
-          "kid": "https://fakekvurl.managedhsm.azure.net/keys/list-delkey02135889235/00733d97a21f06f9293d2809102931ef",
+          "kid": "https://fakekvurl.managedhsm.azure.net/keys/list-del-key02135889235/00733d97a21f06f9293d2809102931ef",
           "kty": "RSA-HSM",
           "n": "kE5nqxhr7IU7aO6HNUqah7SKdI8KWPJb16qoQl5KQLNY-UtKmEYlhGbh61fUBvKVcnhFuOzcvOtnpYxBeeCafddChZzP4d-LXhO3nsoij89tW5f5dOU2sprEUWfyJ5y5U7tYrYgQAtCfnR4ilTUBL4b1Ug_nMzC3uIbDDFKkxw8Y7ZMZ8ISn-wjJ6BER3xcoNRJIIcu7XYdeSJG_2MCr_3P9HNo9ELW53Czd7oXioLF8svFxUAwbV_IJwboOipB-tEO1fkodm0_PRQypDZOELHrCi_H4E4-Rsk6siGUOEJGHZ_blDFM82Sy9bnJnag_L84XofBzCSZ6mySu72ur35w"
         },
-        "recoveryId": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-delkey02135889235",
+        "recoveryId": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-del-key02135889235",
         "scheduledPurgeDate": 1636050245
       }
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/list-delkey12135889235/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/list-del-key12135889235/create?api-version=7.3-preview",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "POST",
-        ":path": "/keys/list-delkey12135889235/create?api-version=7.3-preview",
+        ":path": "/keys/list-del-key12135889235/create?api-version=7.3-preview",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -374,12 +374,12 @@
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/list-delkey12135889235/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/list-del-key12135889235/create?api-version=7.3-preview",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "POST",
-        ":path": "/keys/list-delkey12135889235/create?api-version=7.3-preview",
+        ":path": "/keys/list-del-key12135889235/create?api-version=7.3-preview",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -424,19 +424,19 @@
             "sign",
             "verify"
           ],
-          "kid": "https://fakekvurl.managedhsm.azure.net/keys/list-delkey12135889235/a535975929f50b5300a4ac740cc2950c",
+          "kid": "https://fakekvurl.managedhsm.azure.net/keys/list-del-key12135889235/a535975929f50b5300a4ac740cc2950c",
           "kty": "RSA-HSM",
           "n": "i9KjXbMoXBHr3FNkzk1bsNajTVDsK2rBpDolPFbS_JmPGu1buIegC6nG_EoaAzmNzqh3uZwNs8CuUKkjUol-vXNGqvAksGrz92BWsf7p_sq97S7np4ODqJanzHHfYcklg1BKM3nO_yiApuFDzdxrpVp9occxwJBI50cP1W5ztoe1iF5KWvIdJQ_TmIkaRGfgMg1G7FB5CNaKHCtqoFRlV7PIibuUxkfrc92dP-aSULEHwCe4hsiHsigWmq5FfLoA_0P-QJGHWGGYyNaQMqzQl4wG5iECZ2KSZJiLui6-cKTeKZPWSq8a_qi1x7JF6TMWSr0xEDuoTgoEbV11XWlQTw"
         }
       }
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/list-delkey12135889235?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/list-del-key12135889235?api-version=7.3-preview",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "DELETE",
-        ":path": "/keys/list-delkey12135889235?api-version=7.3-preview",
+        ":path": "/keys/list-del-key12135889235?api-version=7.3-preview",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -459,12 +459,12 @@
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/list-delkey12135889235?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/list-del-key12135889235?api-version=7.3-preview",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "DELETE",
-        ":path": "/keys/list-delkey12135889235?api-version=7.3-preview",
+        ":path": "/keys/list-del-key12135889235?api-version=7.3-preview",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -506,21 +506,21 @@
             "sign",
             "verify"
           ],
-          "kid": "https://fakekvurl.managedhsm.azure.net/keys/list-delkey12135889235/a535975929f50b5300a4ac740cc2950c",
+          "kid": "https://fakekvurl.managedhsm.azure.net/keys/list-del-key12135889235/a535975929f50b5300a4ac740cc2950c",
           "kty": "RSA-HSM",
           "n": "i9KjXbMoXBHr3FNkzk1bsNajTVDsK2rBpDolPFbS_JmPGu1buIegC6nG_EoaAzmNzqh3uZwNs8CuUKkjUol-vXNGqvAksGrz92BWsf7p_sq97S7np4ODqJanzHHfYcklg1BKM3nO_yiApuFDzdxrpVp9occxwJBI50cP1W5ztoe1iF5KWvIdJQ_TmIkaRGfgMg1G7FB5CNaKHCtqoFRlV7PIibuUxkfrc92dP-aSULEHwCe4hsiHsigWmq5FfLoA_0P-QJGHWGGYyNaQMqzQl4wG5iECZ2KSZJiLui6-cKTeKZPWSq8a_qi1x7JF6TMWSr0xEDuoTgoEbV11XWlQTw"
         },
-        "recoveryId": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-delkey12135889235",
+        "recoveryId": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-del-key12135889235",
         "scheduledPurgeDate": 1636050247
       }
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-delkey12135889235?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-del-key12135889235?api-version=7.3-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "GET",
-        ":path": "/deletedkeys/list-delkey12135889235?api-version=7.3-preview",
+        ":path": "/deletedkeys/list-del-key12135889235?api-version=7.3-preview",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -544,12 +544,12 @@
       "ResponseBody": "OK"
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-delkey12135889235?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-del-key12135889235?api-version=7.3-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "GET",
-        ":path": "/deletedkeys/list-delkey12135889235?api-version=7.3-preview",
+        ":path": "/deletedkeys/list-del-key12135889235?api-version=7.3-preview",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -592,21 +592,21 @@
             "decrypt",
             "wrapKey"
           ],
-          "kid": "https://fakekvurl.managedhsm.azure.net/keys/list-delkey12135889235/a535975929f50b5300a4ac740cc2950c",
+          "kid": "https://fakekvurl.managedhsm.azure.net/keys/list-del-key12135889235/a535975929f50b5300a4ac740cc2950c",
           "kty": "RSA-HSM",
           "n": "i9KjXbMoXBHr3FNkzk1bsNajTVDsK2rBpDolPFbS_JmPGu1buIegC6nG_EoaAzmNzqh3uZwNs8CuUKkjUol-vXNGqvAksGrz92BWsf7p_sq97S7np4ODqJanzHHfYcklg1BKM3nO_yiApuFDzdxrpVp9occxwJBI50cP1W5ztoe1iF5KWvIdJQ_TmIkaRGfgMg1G7FB5CNaKHCtqoFRlV7PIibuUxkfrc92dP-aSULEHwCe4hsiHsigWmq5FfLoA_0P-QJGHWGGYyNaQMqzQl4wG5iECZ2KSZJiLui6-cKTeKZPWSq8a_qi1x7JF6TMWSr0xEDuoTgoEbV11XWlQTw"
         },
-        "recoveryId": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-delkey12135889235",
+        "recoveryId": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-del-key12135889235",
         "scheduledPurgeDate": 1636050247
       }
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-delkey12135889235?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-del-key12135889235?api-version=7.3-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "GET",
-        ":path": "/deletedkeys/list-delkey12135889235?api-version=7.3-preview",
+        ":path": "/deletedkeys/list-del-key12135889235?api-version=7.3-preview",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -630,12 +630,12 @@
       "ResponseBody": "OK"
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-delkey12135889235?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-del-key12135889235?api-version=7.3-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "GET",
-        ":path": "/deletedkeys/list-delkey12135889235?api-version=7.3-preview",
+        ":path": "/deletedkeys/list-del-key12135889235?api-version=7.3-preview",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -678,21 +678,21 @@
             "decrypt",
             "wrapKey"
           ],
-          "kid": "https://fakekvurl.managedhsm.azure.net/keys/list-delkey12135889235/a535975929f50b5300a4ac740cc2950c",
+          "kid": "https://fakekvurl.managedhsm.azure.net/keys/list-del-key12135889235/a535975929f50b5300a4ac740cc2950c",
           "kty": "RSA-HSM",
           "n": "i9KjXbMoXBHr3FNkzk1bsNajTVDsK2rBpDolPFbS_JmPGu1buIegC6nG_EoaAzmNzqh3uZwNs8CuUKkjUol-vXNGqvAksGrz92BWsf7p_sq97S7np4ODqJanzHHfYcklg1BKM3nO_yiApuFDzdxrpVp9occxwJBI50cP1W5ztoe1iF5KWvIdJQ_TmIkaRGfgMg1G7FB5CNaKHCtqoFRlV7PIibuUxkfrc92dP-aSULEHwCe4hsiHsigWmq5FfLoA_0P-QJGHWGGYyNaQMqzQl4wG5iECZ2KSZJiLui6-cKTeKZPWSq8a_qi1x7JF6TMWSr0xEDuoTgoEbV11XWlQTw"
         },
-        "recoveryId": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-delkey12135889235",
+        "recoveryId": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-del-key12135889235",
         "scheduledPurgeDate": 1636050247
       }
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/list-delkey22135889235/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/list-del-key22135889235/create?api-version=7.3-preview",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "POST",
-        ":path": "/keys/list-delkey22135889235/create?api-version=7.3-preview",
+        ":path": "/keys/list-del-key22135889235/create?api-version=7.3-preview",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -717,12 +717,12 @@
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/list-delkey22135889235/create?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/list-del-key22135889235/create?api-version=7.3-preview",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "POST",
-        ":path": "/keys/list-delkey22135889235/create?api-version=7.3-preview",
+        ":path": "/keys/list-del-key22135889235/create?api-version=7.3-preview",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -767,19 +767,19 @@
             "sign",
             "verify"
           ],
-          "kid": "https://fakekvurl.managedhsm.azure.net/keys/list-delkey22135889235/a7ea2e97513302c795de1b5ad70d096b",
+          "kid": "https://fakekvurl.managedhsm.azure.net/keys/list-del-key22135889235/a7ea2e97513302c795de1b5ad70d096b",
           "kty": "RSA-HSM",
           "n": "hrin1PyxbAfW_-Z9vieoPHwVJBdtRrVkIXF-ROxewL0Ps1SBcDH1HqtqHW3_wPSEb7v7h7LcNUAbY32dvWv8keP_VpLmO_0S-vlXhm1qT98y_d4TvVPHfrr4y8ViOCmesuYLZzaK-3k_xBvXkJlU6m98bjzY45SoY12_U050XKA37Eay-IJ7papduNgbOukd-E6WcCbz9HKGzcYwI1lQyLJcjmbzWvo-qdDlcCrQ83aKGf36mir7L1vimCMIwxl8IOwsbWKmcGl56QVag49NaM2KRqGU0R8Msf0W3F19b2L8Rg-5HxxsJUTaoLztdkpKQIkFza71osmQLih_YxugGQ"
         }
       }
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/list-delkey22135889235?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/list-del-key22135889235?api-version=7.3-preview",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "DELETE",
-        ":path": "/keys/list-delkey22135889235?api-version=7.3-preview",
+        ":path": "/keys/list-del-key22135889235?api-version=7.3-preview",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -802,12 +802,12 @@
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/list-delkey22135889235?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/list-del-key22135889235?api-version=7.3-preview",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "DELETE",
-        ":path": "/keys/list-delkey22135889235?api-version=7.3-preview",
+        ":path": "/keys/list-del-key22135889235?api-version=7.3-preview",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -849,21 +849,21 @@
             "sign",
             "verify"
           ],
-          "kid": "https://fakekvurl.managedhsm.azure.net/keys/list-delkey22135889235/a7ea2e97513302c795de1b5ad70d096b",
+          "kid": "https://fakekvurl.managedhsm.azure.net/keys/list-del-key22135889235/a7ea2e97513302c795de1b5ad70d096b",
           "kty": "RSA-HSM",
           "n": "hrin1PyxbAfW_-Z9vieoPHwVJBdtRrVkIXF-ROxewL0Ps1SBcDH1HqtqHW3_wPSEb7v7h7LcNUAbY32dvWv8keP_VpLmO_0S-vlXhm1qT98y_d4TvVPHfrr4y8ViOCmesuYLZzaK-3k_xBvXkJlU6m98bjzY45SoY12_U050XKA37Eay-IJ7papduNgbOukd-E6WcCbz9HKGzcYwI1lQyLJcjmbzWvo-qdDlcCrQ83aKGf36mir7L1vimCMIwxl8IOwsbWKmcGl56QVag49NaM2KRqGU0R8Msf0W3F19b2L8Rg-5HxxsJUTaoLztdkpKQIkFza71osmQLih_YxugGQ"
         },
-        "recoveryId": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-delkey22135889235",
+        "recoveryId": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-del-key22135889235",
         "scheduledPurgeDate": 1636050248
       }
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-delkey22135889235?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-del-key22135889235?api-version=7.3-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "GET",
-        ":path": "/deletedkeys/list-delkey22135889235?api-version=7.3-preview",
+        ":path": "/deletedkeys/list-del-key22135889235?api-version=7.3-preview",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -887,12 +887,12 @@
       "ResponseBody": "OK"
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-delkey22135889235?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-del-key22135889235?api-version=7.3-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "GET",
-        ":path": "/deletedkeys/list-delkey22135889235?api-version=7.3-preview",
+        ":path": "/deletedkeys/list-del-key22135889235?api-version=7.3-preview",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -935,21 +935,21 @@
             "decrypt",
             "wrapKey"
           ],
-          "kid": "https://fakekvurl.managedhsm.azure.net/keys/list-delkey22135889235/a7ea2e97513302c795de1b5ad70d096b",
+          "kid": "https://fakekvurl.managedhsm.azure.net/keys/list-del-key22135889235/a7ea2e97513302c795de1b5ad70d096b",
           "kty": "RSA-HSM",
           "n": "hrin1PyxbAfW_-Z9vieoPHwVJBdtRrVkIXF-ROxewL0Ps1SBcDH1HqtqHW3_wPSEb7v7h7LcNUAbY32dvWv8keP_VpLmO_0S-vlXhm1qT98y_d4TvVPHfrr4y8ViOCmesuYLZzaK-3k_xBvXkJlU6m98bjzY45SoY12_U050XKA37Eay-IJ7papduNgbOukd-E6WcCbz9HKGzcYwI1lQyLJcjmbzWvo-qdDlcCrQ83aKGf36mir7L1vimCMIwxl8IOwsbWKmcGl56QVag49NaM2KRqGU0R8Msf0W3F19b2L8Rg-5HxxsJUTaoLztdkpKQIkFza71osmQLih_YxugGQ"
         },
-        "recoveryId": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-delkey22135889235",
+        "recoveryId": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-del-key22135889235",
         "scheduledPurgeDate": 1636050248
       }
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-delkey22135889235?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-del-key22135889235?api-version=7.3-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "GET",
-        ":path": "/deletedkeys/list-delkey22135889235?api-version=7.3-preview",
+        ":path": "/deletedkeys/list-del-key22135889235?api-version=7.3-preview",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -973,12 +973,12 @@
       "ResponseBody": "OK"
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-delkey22135889235?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-del-key22135889235?api-version=7.3-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "GET",
-        ":path": "/deletedkeys/list-delkey22135889235?api-version=7.3-preview",
+        ":path": "/deletedkeys/list-del-key22135889235?api-version=7.3-preview",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -1021,11 +1021,11 @@
             "decrypt",
             "wrapKey"
           ],
-          "kid": "https://fakekvurl.managedhsm.azure.net/keys/list-delkey22135889235/a7ea2e97513302c795de1b5ad70d096b",
+          "kid": "https://fakekvurl.managedhsm.azure.net/keys/list-del-key22135889235/a7ea2e97513302c795de1b5ad70d096b",
           "kty": "RSA-HSM",
           "n": "hrin1PyxbAfW_-Z9vieoPHwVJBdtRrVkIXF-ROxewL0Ps1SBcDH1HqtqHW3_wPSEb7v7h7LcNUAbY32dvWv8keP_VpLmO_0S-vlXhm1qT98y_d4TvVPHfrr4y8ViOCmesuYLZzaK-3k_xBvXkJlU6m98bjzY45SoY12_U050XKA37Eay-IJ7papduNgbOukd-E6WcCbz9HKGzcYwI1lQyLJcjmbzWvo-qdDlcCrQ83aKGf36mir7L1vimCMIwxl8IOwsbWKmcGl56QVag49NaM2KRqGU0R8Msf0W3F19b2L8Rg-5HxxsJUTaoLztdkpKQIkFza71osmQLih_YxugGQ"
         },
-        "recoveryId": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-delkey22135889235",
+        "recoveryId": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-del-key22135889235",
         "scheduledPurgeDate": 1636050248
       }
     },
@@ -1183,8 +1183,8 @@
               "updated": 1635445445
             },
             "deletedDate": 1635445445,
-            "kid": "https://fakekvurl.managedhsm.azure.net/keys/list-delkey02135889235",
-            "recoveryId": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-delkey02135889235",
+            "kid": "https://fakekvurl.managedhsm.azure.net/keys/list-del-key02135889235",
+            "recoveryId": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-del-key02135889235",
             "scheduledPurgeDate": 1636050245
           },
           {
@@ -1197,8 +1197,8 @@
               "updated": 1635445446
             },
             "deletedDate": 1635445447,
-            "kid": "https://fakekvurl.managedhsm.azure.net/keys/list-delkey12135889235",
-            "recoveryId": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-delkey12135889235",
+            "kid": "https://fakekvurl.managedhsm.azure.net/keys/list-del-key12135889235",
+            "recoveryId": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-del-key12135889235",
             "scheduledPurgeDate": 1636050247
           },
           {
@@ -1211,20 +1211,20 @@
               "updated": 1635445448
             },
             "deletedDate": 1635445448,
-            "kid": "https://fakekvurl.managedhsm.azure.net/keys/list-delkey22135889235",
-            "recoveryId": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-delkey22135889235",
+            "kid": "https://fakekvurl.managedhsm.azure.net/keys/list-del-key22135889235",
+            "recoveryId": "https://fakekvurl.managedhsm.azure.net/deletedkeys/list-del-key22135889235",
             "scheduledPurgeDate": 1636050248
           }
         ]
       }
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/list-delkey22135889235?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/list-del-key22135889235?api-version=7.3-preview",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "DELETE",
-        ":path": "/keys/list-delkey22135889235?api-version=7.3-preview",
+        ":path": "/keys/list-del-key22135889235?api-version=7.3-preview",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -1247,12 +1247,12 @@
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/list-delkey22135889235?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/list-del-key22135889235?api-version=7.3-preview",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "DELETE",
-        ":path": "/keys/list-delkey22135889235?api-version=7.3-preview",
+        ":path": "/keys/list-del-key22135889235?api-version=7.3-preview",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -1275,17 +1275,17 @@
       "ResponseBody": {
         "error": {
           "code": "KeyNotFound",
-          "message": "Key not found: https://fakekvurl.managedhsm.azure.net/keys/list-delkey22135889235 (Activity ID: 3ebe675e-381c-11ec-8f32-000d3aed998e)"
+          "message": "Key not found: https://fakekvurl.managedhsm.azure.net/keys/list-del-key22135889235 (Activity ID: 3ebe675e-381c-11ec-8f32-000d3aed998e)"
         }
       }
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/list-delkey12135889235?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/list-del-key12135889235?api-version=7.3-preview",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "DELETE",
-        ":path": "/keys/list-delkey12135889235?api-version=7.3-preview",
+        ":path": "/keys/list-del-key12135889235?api-version=7.3-preview",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -1308,12 +1308,12 @@
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/list-delkey12135889235?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/list-del-key12135889235?api-version=7.3-preview",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "DELETE",
-        ":path": "/keys/list-delkey12135889235?api-version=7.3-preview",
+        ":path": "/keys/list-del-key12135889235?api-version=7.3-preview",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -1336,17 +1336,17 @@
       "ResponseBody": {
         "error": {
           "code": "KeyNotFound",
-          "message": "Key not found: https://fakekvurl.managedhsm.azure.net/keys/list-delkey12135889235 (Activity ID: 3ee0db7c-381c-11ec-8f32-000d3aed998e)"
+          "message": "Key not found: https://fakekvurl.managedhsm.azure.net/keys/list-del-key12135889235 (Activity ID: 3ee0db7c-381c-11ec-8f32-000d3aed998e)"
         }
       }
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/list-delkey02135889235?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/list-del-key02135889235?api-version=7.3-preview",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "DELETE",
-        ":path": "/keys/list-delkey02135889235?api-version=7.3-preview",
+        ":path": "/keys/list-del-key02135889235?api-version=7.3-preview",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -1369,12 +1369,12 @@
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/list-delkey02135889235?api-version=7.3-preview",
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/keys/list-del-key02135889235?api-version=7.3-preview",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         ":authority": "localhost:5001",
         ":method": "DELETE",
-        ":path": "/keys/list-delkey02135889235?api-version=7.3-preview",
+        ":path": "/keys/list-del-key02135889235?api-version=7.3-preview",
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
@@ -1397,7 +1397,7 @@
       "ResponseBody": {
         "error": {
           "code": "KeyNotFound",
-          "message": "Key not found: https://fakekvurl.managedhsm.azure.net/keys/list-delkey02135889235 (Activity ID: 3f03455e-381c-11ec-8f32-000d3aed998e)"
+          "message": "Key not found: https://fakekvurl.managedhsm.azure.net/keys/list-del-key02135889235 (Activity ID: 3f03455e-381c-11ec-8f32-000d3aed998e)"
         }
       }
     }

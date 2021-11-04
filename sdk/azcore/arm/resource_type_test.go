@@ -6,7 +6,9 @@
 
 package arm
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestParseResourceType(t *testing.T) {
 	resourceTypeData := map[string]struct {
@@ -68,39 +70,44 @@ func TestParseResourceType(t *testing.T) {
 }
 
 func TestResourceType_IsParentOf(t *testing.T) {
-	resourceTypes := []struct{
-		left ResourceType
-		right ResourceType
+	resourceTypes := []struct {
+		left     ResourceType
+		right    ResourceType
 		expected bool
 	}{
 		{
-			left: NewResourceType("Microsoft.Compute", "virtualMachines"),
-			right: NewResourceType("Microsoft.Compute", "virtualMachines"),
+			left:     NewResourceType("Microsoft.Compute", "virtualMachines"),
+			right:    NewResourceType("Microsoft.Compute", "virtualMachines"),
 			expected: false,
 		},
 		{
-			left: NewResourceType("Microsoft.Compute", "virtualMachines"),
-			right: NewResourceType("Microsoft.Compute", "virtualMachines/extensions"),
+			left:     NewResourceType("Microsoft.Compute", "virtualMachines"),
+			right:    NewResourceType("Microsoft.Compute", "virtualMachines/extensions"),
 			expected: true,
 		},
 		{
-			left: NewResourceType("Microsoft.Network", "virtualMachines"),
-			right: NewResourceType("Microsoft.Compute", "virtualMachines"),
+			left:     NewResourceType("Microsoft.Compute", "virtualMachines"),
+			right:    NewResourceType("Microsoft.Compute", "virtualMachineScaleSets/someScaleset"),
 			expected: false,
 		},
 		{
-			left: NewResourceType("Microsoft.Network", "virtualNetworks"),
-			right: NewResourceType("Microsoft.Network", "virtualNetworks/subnets"),
+			left:     NewResourceType("Microsoft.Network", "virtualMachines"),
+			right:    NewResourceType("Microsoft.Compute", "virtualMachines"),
+			expected: false,
+		},
+		{
+			left:     NewResourceType("Microsoft.Network", "virtualNetworks"),
+			right:    NewResourceType("Microsoft.Network", "virtualNetworks/subnets"),
 			expected: true,
 		},
 		{
-			left: NewResourceType("Microsoft.Network", "virtualNetworks"),
-			right: NewResourceType("Microsoft.Network", "virtualNetworks/subnets/ipConfigurations"),
+			left:     NewResourceType("Microsoft.Network", "virtualNetworks"),
+			right:    NewResourceType("Microsoft.Network", "virtualNetworks/subnets/ipConfigurations"),
 			expected: true,
 		},
 		{
-			left: NewResourceType("Microsoft.Network", "virtualNetworks/subnets"),
-			right: NewResourceType("Microsoft.Network", "virtualNetworks"),
+			left:     NewResourceType("Microsoft.Network", "virtualNetworks/subnets"),
+			right:    NewResourceType("Microsoft.Network", "virtualNetworks"),
 			expected: false,
 		},
 	}

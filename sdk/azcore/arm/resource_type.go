@@ -14,22 +14,31 @@ import (
 var (
 	// SubscriptionResourceType is the ResourceType of a subscription
 	SubscriptionResourceType = NewResourceType(builtInResourceNamespace, "subscriptions")
+
 	// ResourceGroupResourceType is the ResourceType of a resource group
 	ResourceGroupResourceType = NewResourceType(builtInResourceNamespace, "resourceGroups")
+
 	// TenantResourceType is the ResourceType of a tenant
 	TenantResourceType = NewResourceType(builtInResourceNamespace, "tenants")
+
 	// ProviderResourceType is the ResourceType of a provider
 	ProviderResourceType = NewResourceType(builtInResourceNamespace, "providers")
 )
 
-// ResourceType represents an Azure resource type, e.g. "Microsoft.Network/virtualNetworks/subnets"
+// ResourceType represents an Azure resource type, e.g. "Microsoft.Network/virtualNetworks/subnets".
+// Don't create this type directly, use ParseResourceType or NewResourceType instead.
 type ResourceType struct {
-	// Namespace is the namespace of the resource type, e.g. "Microsoft.Network" in resource type "Microsoft.Network/virtualNetworks/subnets"
+	// Namespace is the namespace of the resource type.
+	// e.g. "Microsoft.Network" in resource type "Microsoft.Network/virtualNetworks/subnets"
 	Namespace string
-	// Type is the full type name of the resource type, e.g. "virtualNetworks/subnets" in resource type "Microsoft.Network/virtualNetworks/subnets"
-	Type      string
-	// Types is the slice of all the sub-types of this resource type, e.g. ["virtualNetworks", "subnets"] in resource type "Microsoft.Network/virtualNetworks/subnets"
-	Types     []string
+
+	// Type is the full type name of the resource type.
+	// e.g. "virtualNetworks/subnets" in resource type "Microsoft.Network/virtualNetworks/subnets"
+	Type string
+
+	// Types is the slice of all the sub-types of this resource type.
+	// e.g. ["virtualNetworks", "subnets"] in resource type "Microsoft.Network/virtualNetworks/subnets"
+	Types []string
 
 	stringValue string
 }
@@ -55,8 +64,13 @@ func (t ResourceType) IsParentOf(child ResourceType) bool {
 	return true
 }
 
-// NewResourceType initiate a simple instance of ResourceType using provider namespace such as "Microsoft.Network" and
-// Type such as "virtualNetworks/subnets"
+// AppendChild creates an instance of ResourceType using the receiver as the parent with childType appended to it.
+func (t ResourceType) AppendChild(childType string) ResourceType {
+	return NewResourceType(t.Namespace, fmt.Sprintf("%s/%s", t.Type, childType))
+}
+
+// NewResourceType creates an instance of ResourceType using a provider namespace
+// such as "Microsoft.Network" and type such as "virtualNetworks/subnets".
 func NewResourceType(providerNamespace, typeName string) ResourceType {
 	return ResourceType{
 		Namespace:   providerNamespace,
@@ -66,13 +80,9 @@ func NewResourceType(providerNamespace, typeName string) ResourceType {
 	}
 }
 
-// AppendChild creates a ResourceType instance using the receiver as the parent with childType appended to it.
-func (t ResourceType) AppendChild(childType string) ResourceType {
-	return NewResourceType(t.Namespace, fmt.Sprintf("%s/%s", t.Type, childType))
-}
-
 // ParseResourceType parses the ResourceType from a resource type string (e.g. Microsoft.Network/virtualNetworks/subsets)
-// or a resource identifier string (e.g. /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRg/providers/Microsoft.Network/virtualNetworks/vnet/subnets/mySubnet)
+// or a resource identifier string.
+// e.g. /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRg/providers/Microsoft.Network/virtualNetworks/vnet/subnets/mySubnet)
 func ParseResourceType(resourceIDOrType string) (ResourceType, error) {
 	// split the path into segments
 	parts := splitStringAndOmitEmpty(resourceIDOrType, "/")
@@ -94,12 +104,12 @@ func ParseResourceType(resourceIDOrType string) (ResourceType, error) {
 		// Check if ResourceID
 		id, err := ParseResourceID(resourceIDOrType)
 		if err != nil {
-			return ResourceType{}, fmt.Errorf("invalid resource ID: %s", resourceIDOrType)
+			return ResourceType{}, err
 		}
 		return NewResourceType(id.ResourceType.Namespace, id.ResourceType.Type), nil
 	}
 }
 
 func (t ResourceType) lastType() string {
-	return t.Types[len(t.Types) - 1]
+	return t.Types[len(t.Types)-1]
 }

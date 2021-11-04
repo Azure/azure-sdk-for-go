@@ -1,8 +1,10 @@
 # Release History
 
-## 0.3.1 (Unreleased)
+## 0.4.0 (Unreleased)
 
 ### Features Added
+* Added `NextPagePartitionKey` and `NextPageRowKey` to `ListEntitiesPager` for retrieving continuation tokens.
+* Added `PartitionKey` and `RowKey` to `ListEntitiesOptions` for using exposed continuation tokens.
 
 ### Breaking Changes
 

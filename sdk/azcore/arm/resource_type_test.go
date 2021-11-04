@@ -8,8 +8,8 @@ package arm
 
 import "testing"
 
-var (
-	resourceTypeData = map[string]struct {
+func TestParseResourceType(t *testing.T) {
+	resourceTypeData := map[string]struct {
 		namespace    string
 		resourceType string
 		typesLen     int
@@ -50,9 +50,6 @@ var (
 			typesLen:     2,
 		},
 	}
-)
-
-func TestParseResourceType(t *testing.T) {
 	for input, expected := range resourceTypeData {
 		resourceType, err := ParseResourceType(input)
 		if err != nil {
@@ -66,6 +63,52 @@ func TestParseResourceType(t *testing.T) {
 		}
 		if len(resourceType.Types) != expected.typesLen {
 			t.Fatalf("expecting %d, but got %d", expected.typesLen, len(resourceType.Types))
+		}
+	}
+}
+
+func TestResourceType_IsParentOf(t *testing.T) {
+	resourceTypes := []struct{
+		left ResourceType
+		right ResourceType
+		expected bool
+	}{
+		{
+			left: NewResourceType("Microsoft.Compute", "virtualMachines"),
+			right: NewResourceType("Microsoft.Compute", "virtualMachines"),
+			expected: false,
+		},
+		{
+			left: NewResourceType("Microsoft.Compute", "virtualMachines"),
+			right: NewResourceType("Microsoft.Compute", "virtualMachines/extensions"),
+			expected: true,
+		},
+		{
+			left: NewResourceType("Microsoft.Network", "virtualMachines"),
+			right: NewResourceType("Microsoft.Compute", "virtualMachines"),
+			expected: false,
+		},
+		{
+			left: NewResourceType("Microsoft.Network", "virtualNetworks"),
+			right: NewResourceType("Microsoft.Network", "virtualNetworks/subnets"),
+			expected: true,
+		},
+		{
+			left: NewResourceType("Microsoft.Network", "virtualNetworks"),
+			right: NewResourceType("Microsoft.Network", "virtualNetworks/subnets/ipConfigurations"),
+			expected: true,
+		},
+		{
+			left: NewResourceType("Microsoft.Network", "virtualNetworks/subnets"),
+			right: NewResourceType("Microsoft.Network", "virtualNetworks"),
+			expected: false,
+		},
+	}
+
+	for _, c := range resourceTypes {
+		result := c.left.IsParentOf(c.right)
+		if result != c.expected {
+			t.Fatalf("expected %v but got %v", c.expected, result)
 		}
 	}
 }

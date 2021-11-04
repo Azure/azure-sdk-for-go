@@ -24,36 +24,30 @@ var (
 
 // ResourceType represents an Azure resource type, e.g. "Microsoft.Network/virtualNetworks/subnets"
 type ResourceType struct {
+	// Namespace is the namespace of the resource type, e.g. "Microsoft.Network" in resource type "Microsoft.Network/virtualNetworks/subnets"
 	Namespace string
+	// Type is the full type name of the resource type, e.g. "virtualNetworks/subnets" in resource type "Microsoft.Network/virtualNetworks/subnets"
 	Type      string
+	// Types is the slice of all the sub-types of this resource type, e.g. ["virtualNetworks", "subnets"] in resource type "Microsoft.Network/virtualNetworks/subnets"
 	Types     []string
 
 	stringValue string
 }
 
-func (t *ResourceType) LastType() string {
-	return t.Types[len(t.Types)-1]
-}
-
-func (t *ResourceType) String() string {
+func (t ResourceType) String() string {
 	return t.stringValue
 }
 
 // IsParentOf returns true when the receiver is the parent resource type of the child.
-func (t *ResourceType) IsParentOf(child *ResourceType) bool {
-	if child == nil {
-		return false
-	}
+func (t ResourceType) IsParentOf(child ResourceType) bool {
 	if !strings.EqualFold(t.Namespace, child.Namespace) {
 		return false
 	}
-	var types = splitStringAndOmitEmpty(t.Type, "/")
-	var childTypes = splitStringAndOmitEmpty(child.Type, "/")
-	if len(types) >= len(childTypes) {
+	if len(t.Types) >= len(child.Types) {
 		return false
 	}
-	for i := range types {
-		if !strings.EqualFold(types[i], childTypes[i]) {
+	for i := range t.Types {
+		if !strings.EqualFold(t.Types[i], child.Types[i]) {
 			return false
 		}
 	}
@@ -72,20 +66,20 @@ func NewResourceType(providerNamespace, typeName string) ResourceType {
 	}
 }
 
-// AppendChild initiate an instance using the receiver ResourceType as parent and append childType to it.
+// AppendChild creates a ResourceType instance using the receiver as the parent with childType appended to it.
 func (t ResourceType) AppendChild(childType string) ResourceType {
 	return NewResourceType(t.Namespace, fmt.Sprintf("%s/%s", t.Type, childType))
 }
 
 // ParseResourceType parses the ResourceType from a resource type string (e.g. Microsoft.Network/virtualNetworks/subsets)
 // or a resource identifier string (e.g. /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRg/providers/Microsoft.Network/virtualNetworks/vnet/subnets/mySubnet)
-func ParseResourceType(resourceIdOrType string) (ResourceType, error) {
+func ParseResourceType(resourceIDOrType string) (ResourceType, error) {
 	// split the path into segments
-	parts := splitStringAndOmitEmpty(resourceIdOrType, "/")
+	parts := splitStringAndOmitEmpty(resourceIDOrType, "/")
 
 	// There must be at least a namespace and type name
 	if len(parts) < 1 {
-		return ResourceType{}, fmt.Errorf("invalid resource id or type: %s", resourceIdOrType)
+		return ResourceType{}, fmt.Errorf("invalid resource ID or type: %s", resourceIDOrType)
 	}
 
 	// if the type is just subscriptions, it is a built-in type in the Microsoft.Resources namespace
@@ -98,10 +92,14 @@ func ParseResourceType(resourceIdOrType string) (ResourceType, error) {
 		return NewResourceType(parts[0], strings.Join(parts[1:], "/")), nil
 	} else {
 		// Check if ResourceID
-		id, err := ParseResourceID(resourceIdOrType)
+		id, err := ParseResourceID(resourceIDOrType)
 		if err != nil {
-			return ResourceType{}, fmt.Errorf("invalid resource id: %s", resourceIdOrType)
+			return ResourceType{}, fmt.Errorf("invalid resource ID: %s", resourceIDOrType)
 		}
 		return NewResourceType(id.ResourceType.Namespace, id.ResourceType.Type), nil
 	}
+}
+
+func (t ResourceType) lastType() string {
+	return t.Types[len(t.Types) - 1]
 }

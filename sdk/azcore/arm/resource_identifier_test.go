@@ -13,7 +13,7 @@ var (
 		// valid resource identifiers
 		"/subscriptions/db1ab6f0-4769-4b27-930e-01e2ef9c123c": {
 			Parent:         RootResourceIdentifier,
-			SubscriptionId: "db1ab6f0-4769-4b27-930e-01e2ef9c123c",
+			SubscriptionID: "db1ab6f0-4769-4b27-930e-01e2ef9c123c",
 			ResourceType:   SubscriptionResourceType,
 			Name:           "db1ab6f0-4769-4b27-930e-01e2ef9c123c",
 			isChild:        true,
@@ -26,12 +26,12 @@ var (
 		"/subscriptions/db1ab6f0-4769-4b27-930e-01e2ef9c123c/providers/microsoft.insights": {
 			Parent: &ResourceID{
 				Parent:         RootResourceIdentifier,
-				SubscriptionId: "db1ab6f0-4769-4b27-930e-01e2ef9c123c",
+				SubscriptionID: "db1ab6f0-4769-4b27-930e-01e2ef9c123c",
 				ResourceType:   SubscriptionResourceType,
 				Name:           "db1ab6f0-4769-4b27-930e-01e2ef9c123c",
 				isChild:        true,
 			},
-			SubscriptionId: "db1ab6f0-4769-4b27-930e-01e2ef9c123c",
+			SubscriptionID: "db1ab6f0-4769-4b27-930e-01e2ef9c123c",
 			Provider:       "microsoft.insights",
 			ResourceType:   ProviderResourceType,
 			Name:           "microsoft.insights",
@@ -41,18 +41,18 @@ var (
 			Parent: &ResourceID{
 				Parent: &ResourceID{
 					Parent:         RootResourceIdentifier,
-					SubscriptionId: "0c2f6471-1bf0-4dda-aec3-cb9272f09575",
+					SubscriptionID: "0c2f6471-1bf0-4dda-aec3-cb9272f09575",
 					ResourceType:   SubscriptionResourceType,
 					Name:           "0c2f6471-1bf0-4dda-aec3-cb9272f09575",
 					isChild:        true,
 				},
-				SubscriptionId:    "0c2f6471-1bf0-4dda-aec3-cb9272f09575",
+				SubscriptionID:    "0c2f6471-1bf0-4dda-aec3-cb9272f09575",
 				ResourceGroupName: "myRg",
 				ResourceType:      ResourceGroupResourceType,
 				Name:              "myRg",
 				isChild:           true,
 			},
-			SubscriptionId:    "0c2f6471-1bf0-4dda-aec3-cb9272f09575",
+			SubscriptionID:    "0c2f6471-1bf0-4dda-aec3-cb9272f09575",
 			ResourceGroupName: "myRg",
 			ResourceType:      NewResourceType("Microsoft.Compute", "virtualMachines"),
 			Name:              "myVm",
@@ -63,24 +63,24 @@ var (
 				Parent: &ResourceID{
 					Parent: &ResourceID{
 						Parent:         RootResourceIdentifier,
-						SubscriptionId: "0c2f6471-1bf0-4dda-aec3-cb9272f09575",
+						SubscriptionID: "0c2f6471-1bf0-4dda-aec3-cb9272f09575",
 						ResourceType:   SubscriptionResourceType,
 						Name:           "0c2f6471-1bf0-4dda-aec3-cb9272f09575",
 						isChild:        true,
 					},
-					SubscriptionId:    "0c2f6471-1bf0-4dda-aec3-cb9272f09575",
+					SubscriptionID:    "0c2f6471-1bf0-4dda-aec3-cb9272f09575",
 					ResourceGroupName: "myRg",
 					ResourceType:      ResourceGroupResourceType,
 					Name:              "myRg",
 					isChild:           true,
 				},
-				SubscriptionId:    "0c2f6471-1bf0-4dda-aec3-cb9272f09575",
+				SubscriptionID:    "0c2f6471-1bf0-4dda-aec3-cb9272f09575",
 				ResourceGroupName: "myRg",
 				ResourceType:      NewResourceType("Microsoft.Network", "virtualNetworks"),
 				Name:              "myNet",
 				isChild:           false,
 			},
-			SubscriptionId:    "0c2f6471-1bf0-4dda-aec3-cb9272f09575",
+			SubscriptionID:    "0c2f6471-1bf0-4dda-aec3-cb9272f09575",
 			ResourceGroupName: "myRg",
 			ResourceType:      NewResourceType("Microsoft.Network", "virtualNetworks/subnets"),
 			Name:              "mySubnet",
@@ -89,12 +89,12 @@ var (
 		"/subscriptions/0c2f6471-1bf0-4dda-aec3-cb9272f09575/resourceGroups/myRg": {
 			Parent: &ResourceID{
 				Parent:         RootResourceIdentifier,
-				SubscriptionId: "0c2f6471-1bf0-4dda-aec3-cb9272f09575",
+				SubscriptionID: "0c2f6471-1bf0-4dda-aec3-cb9272f09575",
 				ResourceType:   SubscriptionResourceType,
 				Name:           "0c2f6471-1bf0-4dda-aec3-cb9272f09575",
 				isChild:        true,
 			},
-			SubscriptionId:    "0c2f6471-1bf0-4dda-aec3-cb9272f09575",
+			SubscriptionID:    "0c2f6471-1bf0-4dda-aec3-cb9272f09575",
 			ResourceGroupName: "myRg",
 			ResourceType:      ResourceGroupResourceType,
 			Name:              "myRg",
@@ -103,12 +103,12 @@ var (
 		"/subscriptions/0c2f6471-1bf0-4dda-aec3-cb9272f09575/locations/MyLocation": {
 			Parent: &ResourceID{
 				Parent:         RootResourceIdentifier,
-				SubscriptionId: "0c2f6471-1bf0-4dda-aec3-cb9272f09575",
+				SubscriptionID: "0c2f6471-1bf0-4dda-aec3-cb9272f09575",
 				ResourceType:   SubscriptionResourceType,
 				Name:           "0c2f6471-1bf0-4dda-aec3-cb9272f09575",
 				isChild:        true,
 			},
-			SubscriptionId: "0c2f6471-1bf0-4dda-aec3-cb9272f09575",
+			SubscriptionID: "0c2f6471-1bf0-4dda-aec3-cb9272f09575",
 			ResourceType:   SubscriptionResourceType.AppendChild(locationsKey),
 			Name:           "MyLocation",
 			Location:       "MyLocation",
@@ -118,18 +118,18 @@ var (
 			Parent: &ResourceID{
 				Parent: &ResourceID{
 					Parent:         RootResourceIdentifier,
-					SubscriptionId: "0c2f6471-1bf0-4dda-aec3-cb9272f09575",
+					SubscriptionID: "0c2f6471-1bf0-4dda-aec3-cb9272f09575",
 					ResourceType:   SubscriptionResourceType,
 					Name:           "0c2f6471-1bf0-4dda-aec3-cb9272f09575",
 					isChild:        true,
 				},
-				SubscriptionId: "0c2f6471-1bf0-4dda-aec3-cb9272f09575",
+				SubscriptionID: "0c2f6471-1bf0-4dda-aec3-cb9272f09575",
 				ResourceType:   SubscriptionResourceType.AppendChild(locationsKey),
 				Name:           "MyLocation",
 				Location:       "MyLocation",
 				isChild:        true,
 			},
-			SubscriptionId: "0c2f6471-1bf0-4dda-aec3-cb9272f09575",
+			SubscriptionID: "0c2f6471-1bf0-4dda-aec3-cb9272f09575",
 			ResourceType:   NewResourceType("Microsoft.Authorization", "roleAssignments"),
 			Name:           "myRa",
 			isChild:        false,
@@ -175,7 +175,7 @@ func equals(left, right *ResourceID) bool {
 		fieldEquals := left.Name == right.Name &&
 			left.Provider == right.Provider &&
 			left.ResourceType.String() == right.ResourceType.String() &&
-			left.SubscriptionId == right.SubscriptionId &&
+			left.SubscriptionID == right.SubscriptionID &&
 			left.ResourceGroupName == right.ResourceGroupName
 		if !fieldEquals {
 			return false

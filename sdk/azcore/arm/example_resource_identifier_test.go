@@ -16,47 +16,47 @@ func ExampleParseResourceType() {
 	}
 
 	fmt.Printf("ResourceType: %s\n", resourceType.String())
-	fmt.Printf("Namespace: %s, Type: %s, LastType: %s\n", resourceType.Namespace, resourceType.Type, resourceType.LastType())
+	fmt.Printf("Namespace: %s, Type: %s\n", resourceType.Namespace, resourceType.Type)
 
 	// Output:
 	// ResourceType: Microsoft.Network/virtualNetworks/subnets
-	// Namespace: Microsoft.Network, Type: virtualNetworks/subnets, LastType: subnets
+	// Namespace: Microsoft.Network, Type: virtualNetworks/subnets
 }
 
-func ExampleParseResourceType_fromResourceIdentifier() {
-	rawResourceId := "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRg/providers/Microsoft.Network/virtualNetworks/vnet/subnets/mySub"
-	resourceType, err := ParseResourceType(rawResourceId)
+func ExampleParseResourceType_fromResourceID() {
+	rawResourceID := "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRg/providers/Microsoft.Network/virtualNetworks/vnet/subnets/mySub"
+	resourceType, err := ParseResourceType(rawResourceID)
 	if err != nil {
 		panic(err)
 	}
 
 	fmt.Printf("ResourceType: %s\n", resourceType.String())
-	fmt.Printf("Namespace: %s, Type: %s, LastType: %s\n", resourceType.Namespace, resourceType.Type, resourceType.LastType())
+	fmt.Printf("Namespace: %s, Type: %s\n", resourceType.Namespace, resourceType.Type)
 
 	// Output:
 	// ResourceType: Microsoft.Network/virtualNetworks/subnets
-	// Namespace: Microsoft.Network, Type: virtualNetworks/subnets, LastType: subnets
+	// Namespace: Microsoft.Network, Type: virtualNetworks/subnets
 }
 
-func ExampleParseResourceIdentifier() {
-	rawResourceId := "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRg/providers/Microsoft.Network/virtualNetworks/vnet/subsets/mySub"
-	id, err := ParseResourceID(rawResourceId)
+func ExampleParseResourceID() {
+	rawResourceID := "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRg/providers/Microsoft.Network/virtualNetworks/vnet/subsets/mySub"
+	id, err := ParseResourceID(rawResourceID)
 	if err != nil {
 		panic(err)
 	}
 
 	fmt.Printf("ID: %s\n", id.String())
 	fmt.Printf("Name: %s, ResourceType: %s, SubscriptionId: %s, ResourceGroupName: %s\n",
-		id.Name, id.ResourceType, id.SubscriptionId, id.ResourceGroupName)
+		id.Name, id.ResourceType, id.SubscriptionID, id.ResourceGroupName)
 	fmt.Printf("Parent: %s\n", id.Parent.String())
 	fmt.Printf("Name: %s, ResourceType: %s, SubscriptionId: %s, ResourceGroupName: %s\n",
-		id.Parent.Name, id.Parent.ResourceType, id.Parent.SubscriptionId, id.Parent.ResourceGroupName)
+		id.Parent.Name, id.Parent.ResourceType, id.Parent.SubscriptionID, id.Parent.ResourceGroupName)
 	fmt.Printf("Parent: %s\n", id.Parent.Parent.String())
 	fmt.Printf("Name: %s, ResourceType: %s, SubscriptionId: %s, ResourceGroupName: %s\n",
-		id.Parent.Parent.Name, id.Parent.Parent.ResourceType, id.Parent.Parent.SubscriptionId, id.Parent.Parent.ResourceGroupName)
+		id.Parent.Parent.Name, id.Parent.Parent.ResourceType, id.Parent.Parent.SubscriptionID, id.Parent.Parent.ResourceGroupName)
 	fmt.Printf("Parent: %s\n", id.Parent.Parent.Parent.String())
 	fmt.Printf("Name: %s, ResourceType: %s, SubscriptionId: %s, ResourceGroupName: %s\n",
-		id.Parent.Parent.Parent.Name, id.Parent.Parent.Parent.ResourceType, id.Parent.Parent.Parent.SubscriptionId, id.Parent.Parent.Parent.ResourceGroupName)
+		id.Parent.Parent.Parent.Name, id.Parent.Parent.Parent.ResourceType, id.Parent.Parent.Parent.SubscriptionID, id.Parent.Parent.Parent.ResourceGroupName)
 
 	// Output:
 	// ID: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRg/providers/Microsoft.Network/virtualNetworks/vnet/subsets/mySub

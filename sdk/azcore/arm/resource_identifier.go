@@ -31,9 +31,9 @@ var (
 // ResourceID represents a resource ID such as `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRg`
 // Don't create this type directly, use ParseResourceID() instead
 type ResourceID struct {
-	Parent            *ResourceID
-	SubscriptionId    string
-	Provider          string
+	Parent         *ResourceID
+	SubscriptionID string
+	Provider       string
 	ResourceGroupName string
 	Location          string
 	ResourceType      ResourceType
@@ -41,6 +41,29 @@ type ResourceID struct {
 
 	isChild     bool
 	stringValue string
+}
+
+// ParseResourceID parses a string to an instance of ResourceID
+func ParseResourceID(id string) (*ResourceID, error) {
+	if len(id) == 0 {
+		return nil, fmt.Errorf("invalid resource id: id cannot be empty")
+	}
+
+	if !strings.HasPrefix(id, "/") {
+		return nil, fmt.Errorf("invalid resource id: resource id '%s' must start with '/'", id)
+	}
+
+	parts := splitStringAndOmitEmpty(id, "/")
+
+	if len(parts) < 2 {
+		return nil, fmt.Errorf("invalid resource id: %s", id)
+	}
+
+	if !strings.EqualFold(parts[0], subscriptionsKey) && !strings.EqualFold(parts[0], providersKey) {
+		return nil, fmt.Errorf("invalid resource id: %s", id)
+	}
+
+	return appendNext(RootResourceIdentifier, parts, id)
 }
 
 func newResourceID(parent *ResourceID, resourceTypeName string, resourceName string) *ResourceID {
@@ -75,16 +98,16 @@ func chooseResourceType(resourceTypeName string, parent *ResourceID) ResourceTyp
 func (id *ResourceID) init(parent *ResourceID, resourceType ResourceType, name string, isChild bool) {
 	if parent != nil {
 		id.Provider = parent.Provider
-		id.SubscriptionId = parent.SubscriptionId
+		id.SubscriptionID = parent.SubscriptionID
 		id.ResourceGroupName = parent.ResourceGroupName
 		id.Location = parent.Location
 	}
 
 	if resourceType.String() == SubscriptionResourceType.String() {
-		id.SubscriptionId = name
+		id.SubscriptionID = name
 	}
 
-	if resourceType.LastType() == locationsKey {
+	if resourceType.lastType() == locationsKey {
 		id.Location = name
 	}
 
@@ -104,29 +127,6 @@ func (id *ResourceID) init(parent *ResourceID, resourceType ResourceType, name s
 	id.isChild = isChild
 	id.ResourceType = resourceType
 	id.Name = name
-}
-
-// ParseResourceID parses a string to an instance of ResourceID
-func ParseResourceID(id string) (*ResourceID, error) {
-	if len(id) == 0 {
-		return nil, fmt.Errorf("invalid resource id: id cannot be empty")
-	}
-
-	if !strings.HasPrefix(id, "/") {
-		return nil, fmt.Errorf("invalid resource id: resource id '%s' must start with '/'", id)
-	}
-
-	parts := splitStringAndOmitEmpty(id, "/")
-
-	if len(parts) < 2 {
-		return nil, fmt.Errorf("invalid resource id: %s", id)
-	}
-
-	if !strings.EqualFold(parts[0], subscriptionsKey) && !strings.EqualFold(parts[0], providersKey) {
-		return nil, fmt.Errorf("invalid resource id: %s", id)
-	}
-
-	return appendNext(RootResourceIdentifier, parts, id)
 }
 
 func appendNext(parent *ResourceID, parts []string, id string) (*ResourceID, error) {
@@ -173,11 +173,6 @@ func (id ResourceID) String() string {
 		return id.stringValue
 	}
 
-	id.stringValue = id.resourceString()
-	return id.stringValue
-}
-
-func (id ResourceID) resourceString() string {
 	if id.Parent == nil {
 		return ""
 	}
@@ -186,7 +181,7 @@ func (id ResourceID) resourceString() string {
 	builder.WriteString(id.Parent.String())
 
 	if id.isChild {
-		builder.WriteString(fmt.Sprintf("/%s", id.ResourceType.LastType()))
+		builder.WriteString(fmt.Sprintf("/%s", id.ResourceType.lastType()))
 		if len(id.Name) > 0 {
 			builder.WriteString(fmt.Sprintf("/%s", id.Name))
 		}
@@ -194,7 +189,9 @@ func (id ResourceID) resourceString() string {
 		builder.WriteString(fmt.Sprintf("/providers/%s/%s/%s", id.ResourceType.Namespace, id.ResourceType.Type, id.Name))
 	}
 
-	return builder.String()
+	id.stringValue = builder.String()
+
+	return id.stringValue
 }
 
 func splitStringAndOmitEmpty(v, sep string) []string {

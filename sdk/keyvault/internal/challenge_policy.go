@@ -73,10 +73,11 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 		)
 	}
 
-	// try the request
-	resp, requestErr := req.Next()
-	if requestErr != nil {
-		return nil, requestErr
+	// send a copy of the request
+	cloneReq := req.Clone(req.Raw().Context())
+	resp, cloneReqErr := cloneReq.Next()
+	if cloneReqErr != nil {
+		return nil, cloneReqErr
 	}
 
 	// If it fails and has a 401, try it with a new token
@@ -86,7 +87,6 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 
 		// Find the scope and tenant again in case they have changed
 		err := k.findScopeAndTenant(resp)
-
 		if err != nil {
 			// Error parsing challenge, doomed to fail. Return
 			return resp, err
@@ -104,10 +104,11 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 			)
 		} else {
 			// tk is not an azcore.AccessToken type, something went wrong and we should return the 401 and accompanying error
-			return resp, requestErr
+			return resp, cloneReqErr
 		}
 
-		return http.DefaultClient.Do(req.Raw())
+		// send the original request now
+		return req.Next()
 	}
 
 	return resp, err
@@ -144,9 +145,7 @@ func (k *KeyVaultChallengePolicy) findScopeAndTenant(resp *http.Response) error 
 		subParts := strings.Split(part, "=")
 		if len(subParts) == 2 {
 			stripped := strings.ReplaceAll(subParts[1], "\"", "")
-			if strings.HasSuffix(stripped, ",") {
-				stripped = strings.TrimSuffix(stripped, ",")
-			}
+			stripped = strings.TrimSuffix(stripped, ",")
 			vals[subParts[0]] = stripped
 		}
 	}

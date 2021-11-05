@@ -104,16 +104,17 @@ func NewDeviceCodeCredential(options *DeviceCodeCredentialOptions) (*DeviceCodeC
 // opts: Options for the token request, in particular the desired scope of the access token.
 func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 	// ensure we request offline_access
-	for i, scope := range opts.Scopes {
+	scopes := make([]string, len(opts.Scopes))
+	copy(scopes, opts.Scopes)
+	for i, scope := range scopes {
 		if scope == "offline_access" {
 			break
-		}
-		if i == len(opts.Scopes)-1 && scope != "offline_access" {
-			opts.Scopes = append(opts.Scopes, "offline_access")
+		} else if i == len(scopes)-1 {
+			scopes = append(scopes, "offline_access")
 		}
 	}
 	if len(c.refreshToken) != 0 {
-		tk, err := c.client.refreshAccessToken(ctx, c.tenantID, c.clientID, "", c.refreshToken, opts.Scopes)
+		tk, err := c.client.refreshAccessToken(ctx, c.tenantID, c.clientID, "", c.refreshToken, scopes)
 		if err != nil {
 			addGetTokenFailureLogs("Device Code Credential", err, true)
 			return nil, err
@@ -122,7 +123,7 @@ func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts policy.TokenRe
 		logGetTokenSuccess(c, opts)
 		return tk.token, nil
 	}
-	dc, err := c.client.requestNewDeviceCode(ctx, c.tenantID, c.clientID, opts.Scopes)
+	dc, err := c.client.requestNewDeviceCode(ctx, c.tenantID, c.clientID, scopes)
 	if err != nil {
 		authErr := newAuthenticationFailedError(err, nil)
 		addGetTokenFailureLogs("Device Code Credential", authErr, true)
@@ -139,7 +140,7 @@ func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts policy.TokenRe
 	}
 	// poll the token endpoint until a valid access token is received or until authentication fails
 	for {
-		tk, err := c.client.authenticateDeviceCode(ctx, c.tenantID, c.clientID, dc.DeviceCode, opts.Scopes)
+		tk, err := c.client.authenticateDeviceCode(ctx, c.tenantID, c.clientID, dc.DeviceCode, scopes)
 		// if there is no error, save the refresh token and return the token credential
 		if err == nil {
 			c.refreshToken = tk.refreshToken

@@ -477,8 +477,8 @@ func (r RecordingOptions) RouteURL(t *testing.T, rawReq *http.Request) {
 	if GetRecordMode() != LiveMode && !IsLiveOnly(t) {
 		originalURLHost := rawReq.URL.Host
 		rawReq.URL.Scheme = r.scheme()
-		rawReq.URL.Host = r.hostAndPort()
-		rawReq.Host = r.hostAndPort()
+		rawReq.URL.Host = r.host()
+		rawReq.Host = r.host()
 
 		rawReq.Header.Set(UpstreamURIHeader, fmt.Sprintf("%v://%v", r.scheme(), originalURLHost))
 		rawReq.Header.Set(ModeHeader, GetRecordMode())
@@ -501,7 +501,7 @@ func (r RecordingOptions) scheme() string {
 }
 
 func (r RecordingOptions) hostScheme() string {
-	return fmt.Sprintf("%s://%s", r.scheme(), r.hostAndPort())
+	return fmt.Sprintf("%s://%s", r.scheme(), r.host())
 }
 
 func getTestId(pathToRecordings string, t *testing.T) string {

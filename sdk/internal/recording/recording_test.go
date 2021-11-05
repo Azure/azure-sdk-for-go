@@ -519,9 +519,9 @@ func TestLiveOnly(t *testing.T) {
 func TestHostAndScheme(t *testing.T) {
 	r := RecordingOptions{UseHTTPS: true}
 	require.Equal(t, r.scheme(), "https")
-	require.Equal(t, r.hostAndPort(), "localhost:5001")
+	require.Equal(t, r.host(), "localhost:5001")
 
 	r.UseHTTPS = false
 	require.Equal(t, r.scheme(), "http")
-	require.Equal(t, r.hostAndPort(), "localhost:5000")
+	require.Equal(t, r.host(), "localhost:5000")
 }

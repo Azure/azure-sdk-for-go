@@ -3,7 +3,7 @@ Azure Key Vault helps solve the following problems:
 - Cryptographic key management (this library) - create, store, and control
 access to the keys used to encrypt your data
 
-[Source code][key_client_src] | [Package (pkg.go.dev)][goget_azkeys] | [API reference documentation][reference_docs] | [Product documentation][keyvault_docs] | [Samples][key_samples]
+[Source code][key_client_src] | [Package (pkg.go.dev)][goget_azkeys] | [API reference documentation][reference_docs] | [Product documentation][keyvault_docs]
 
 ## Getting started
 ### Install packages
@@ -260,7 +260,7 @@ func ExampleClient_BeginDeleteKey() {
 }
 ```
 
-<!-- ### Configure automatic key rotation
+### Configure automatic key rotation
 `update_key_rotation_policy` allows you to configure automatic key rotation for a key by specifying a rotation policy.
 In addition, `rotate_key` allows you to rotate a key on-demand by creating a new version of the given key.
 
@@ -271,21 +271,36 @@ import (
 )
 
 credential, err := azidentity.NewDefaultAzureCredential(nil)
+handle(err)
 
 client, err = azkeys.NewClient("https://my-key-vault.vault.azure.net/", credential, nil)
+handle(err)
 
-// # Set the key's automated rotation policy to rotate the key 30 days before the key expires
-// actions = [KeyRotationLifetimeAction(KeyRotationPolicyAction.ROTATE, time_before_expiry="P30D")]
-// # You may also specify the duration after which the newly rotated key will expire
-// # In this example, any new key versions will expire after 90 days
-updated_policy = key_client.update_key_rotation_policy("key-name", expires_in="P90D", lifetime_actions=actions)
+// Set the key's automated rotation policy to rotate the key 30 days before the key expires
+resp, err = client.UpdateKeyRotationPolicy(ctx, "key-name", &UpdateKeyRotationPolicyOptions{
+    Attributes: &KeyRotationPolicyAttributes{
+        ExpiryTime: to.StringPtr("P90D"),
+    },
+    LifetimeActions: []*LifetimeActions{
+        {
+            Action: &LifetimeActionsType{
+                Type: ActionTypeNotify.ToPtr(),
+            },
+            Trigger: &LifetimeActionsTrigger{
+                TimeBeforeExpiry: to.StringPtr("P30D"),
+            },
+        },
+    },
+})
+handle(err)
 
-// # You can get the current rotation policy for a key with get_key_rotation_policy
-current_policy = key_client.get_key_rotation_policy("key-name")
+currentPolicyResp, err := client.GetKeyRotationPolicy(context.TODO(), "key-name", nil)
+handle(err)
 
-// # Finally, you can rotate a key on-demand by creating a new version of the key
-rotated_key = key_client.rotate_key("key-name")
-``` -->
+// Finally, you can rotate a key on-demand by creating a new version of the key
+rotatedResp, err := client.RotateKey.rotate_key(context.TODO(), "key-name", nil)
+handle(err)
+```
 
 ### List keys
 [`ListKeys`](https://aka.ms/azsdk/go/keyvault-keys) lists the properties of all of the keys in the client's vault.
@@ -323,33 +338,24 @@ func ExampleClient_ListKeys() {
 }
 ```
 
-<!-- ### Cryptographic operations
+### Cryptographic operations
 [CryptographyClient](https://aka.ms/azsdk/go/keyvault-keys)
 enables cryptographic operations (encrypt/decrypt, wrap/unwrap, sign/verify) using a particular key.
 
 ```go
 import (
-    "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
+    "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/azcrypto"
     "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
-from azure.keyvault.keys.crypto import CryptographyClient, EncryptionAlgorithm
 
 credential, err := azidentity.NewDefaultAzureCredential(nil)
 
-client, err = azkeys.NewClient("https://my-key-vault.vault.azure.net/", credential, nil)
+client, err = azcrypto.NewClient("https://my-key-vault.vault.azure.net/keys/<my-key>", credential, nil)
 
-key = key_client.get_key("key-name")
-crypto_client = CryptographyClient(key, credential=credential)
-plaintext = b"plaintext"
-
-result = crypto_client.encrypt(EncryptionAlgorithm.rsa_oaep, plaintext)
-decrypted = crypto_client.decrypt(result.algorithm, result.ciphertext)
+encryptResponse, err := cryptoClient.Encrypt(ctx, AlgorithmRSAOAEP, []byte("plaintext"), nil)
 ```
 
-See the
-[package documentation][crypto_client_docs]
-for more details of the cryptography API. -->
-
+See the [package documentation][crypto_client_docs] for more details of the cryptography API.
 
 ## Troubleshooting
 
@@ -424,10 +430,6 @@ contact opencode@microsoft.com with any additional questions or comments.
 [azure_sub]: https://azure.microsoft.com/free/
 [default_cred_ref]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#NewDefaultAzureCredential
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
-<!-- [hello_world_sample]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/keyvault/azure-keyvault-keys/samples/hello_world.py
-[backup_operations_sample]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/keyvault/azure-keyvault-keys/samples/backup_restore_operations.py
-[list_operations_sample]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/keyvault/azure-keyvault-keys/samples/list_operations.py
-[recover_purge_sample]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/keyvault/azure-keyvault-keys/samples/recover_purge_operations.py -->
 [keyvault_docs]: https://docs.microsoft.com/azure/key-vault/
 [goget_azkey]: https://aka.ms/azsdk/go/keyvault-keys
 <!-- [goget_azkeys]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys -->
@@ -435,8 +437,8 @@ contact opencode@microsoft.com with any additional questions or comments.
 [reference_docs]: https://aka.ms/azsdk/go/keyvault-keys
 [key_client_docs]: https://aka.ms/azsdk/go/keyvault-keys#Client
 [crypto_client_docs]: https://aka.ms/azsdk/go/keyvault-keys/crypto/docs
-[key_client_src]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/keyvault/azkeys/client.go
-[key_samples]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/keyvault/azkeys/example_test.go
+[key_client_src]: https://github.com/Azure/azure-sdk-for-go/tree/fd86ba6a0ece5a0658dd16f8d3d564493369a8a2/sdk/keyvault/azkeys/client.go
+[key_samples]: https://github.com/Azure/azure-sdk-for-go/tree/fd86ba6a0ece5a0658dd16f8d3d564493369a8a2/sdk/keyvault/azkeys/example_test.go
 [soft_delete]: https://docs.microsoft.com/azure/key-vault/general/soft-delete-overview
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-go%2Fsdk%2Fkeyvault%2Fazkeys%2FREADME.png)

@@ -8,6 +8,12 @@ parameters:
   - name: NonShipping
     type: boolean
     default: false
+  - name: LicenseCheck
+    type: boolean
+    default: true
+  - name: EnvVars
+    type: object
+    default: {}
   - name: Clouds
     type: string
     default: 'Public'
@@ -59,9 +65,6 @@ parameters:
   - name: MatrixReplace
     type: object
     default: []
-  - name: LicenseCheck
-    type: boolean
-    default: true
 
 
 stages:
@@ -107,7 +110,6 @@ stages:
       - template: ../steps/build-test.yml
         parameters:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
-          GoWorkspace: $(GO_WORKSPACE_PATH)
           Image: $(vm.image)
           GoVersion: $(go.version)
           TestProxy: true # Do we need this conditional if it's always true? @benbp
@@ -137,7 +139,6 @@ stages:
       - template: ../steps/analyze.yml
         parameters:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
-          GoWorkspace: $(GO_WORKSPACE_PATH)
           LintVersion: $(GoLintCLIVersion)
           NonShipping: ${{ parameters.NonShipping }}
           LicenseCheck: ${{ parameters.LicenseCheck }}

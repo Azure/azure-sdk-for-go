@@ -15,6 +15,7 @@ func TestParseResourceType(t *testing.T) {
 		namespace    string
 		resourceType string
 		typesLen     int
+		err          bool
 	}{
 		"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/virtualMachines/myVmName": {
 			namespace:    "Microsoft.Compute",
@@ -51,11 +52,23 @@ func TestParseResourceType(t *testing.T) {
 			resourceType: "virtualMachines/fooType",
 			typesLen:     2,
 		},
+		"": {
+			err: true,
+		},
+		" ": {
+			err: true,
+		},
+		"/": {
+			err: true,
+		},
 	}
 	for input, expected := range resourceTypeData {
 		resourceType, err := ParseResourceType(input)
-		if err != nil {
+		if err != nil && !expected.err {
 			t.Fatalf("unexpected error: %+v", err)
+		}
+		if expected.err {
+			continue
 		}
 		if resourceType.Namespace != expected.namespace {
 			t.Fatalf("expecting %s, but got %s", expected.namespace, resourceType.Namespace)

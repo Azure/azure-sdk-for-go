@@ -110,7 +110,6 @@ stages:
       - template: ../steps/build-test.yml
         parameters:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
-          GoWorkspace: $(GO_WORKSPACE_PATH)
           Image: $(vm.image)
           GoVersion: $(go.version)
           TestProxy: true # Do we need this conditional if it's always true? @benbp
@@ -140,7 +139,6 @@ stages:
       - template: ../steps/analyze.yml
         parameters:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
-          GoWorkspace: $(GO_WORKSPACE_PATH)
           LintVersion: $(GoLintCLIVersion)
           NonShipping: ${{ parameters.NonShipping }}
           LicenseCheck: ${{ parameters.LicenseCheck }}

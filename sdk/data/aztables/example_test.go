@@ -202,7 +202,7 @@ func ExampleClient_SubmitTransaction() {
 		Entity:     marshalled,
 	})
 
-	resp, err := client.SubmitTransaction(context.Background(), batch, nil)
+	resp, err := client.SubmitTransaction(context.TODO(), batch, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -231,7 +231,7 @@ func ExampleServiceClient_CreateTable() {
 	}
 
 	// Create a table
-	_, err = service.CreateTable(context.Background(), "fromServiceClient", nil)
+	_, err = service.CreateTable(context.TODO(), "fromServiceClient", nil)
 	if err != nil {
 		panic(err)
 	}
@@ -254,7 +254,7 @@ func ExampleServiceClient_DeleteTable() {
 	}
 
 	// Delete a table
-	_, err = service.DeleteTable(context.Background(), "fromServiceClient", nil)
+	_, err = service.DeleteTable(context.TODO(), "fromServiceClient", nil)
 	if err != nil {
 		panic(err)
 	}
@@ -276,7 +276,7 @@ func ExampleClient_Create() {
 	}
 
 	// Create a table
-	_, err = client.Create(context.Background(), nil)
+	_, err = client.Create(context.TODO(), nil)
 	if err != nil {
 		panic(err)
 	}
@@ -298,7 +298,7 @@ func ExampleClient_Delete() {
 	}
 
 	// Delete a table
-	_, err = client.Delete(context.Background(), nil)
+	_, err = client.Delete(context.TODO(), nil)
 	if err != nil {
 		panic(err)
 	}
@@ -387,7 +387,7 @@ func ExampleClient_InsertEntity() {
 		panic(err)
 	}
 
-	_, err = client.AddEntity(context.Background(), marshalled, nil)
+	_, err = client.AddEntity(context.TODO(), marshalled, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -414,7 +414,7 @@ func ExampleClient_InsertEntity() {
 	if err != nil {
 		panic(err)
 	}
-	_, err = client.AddEntity(context.Background(), marshalled, nil)
+	_, err = client.AddEntity(context.TODO(), marshalled, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -441,7 +441,7 @@ func ExampleClient_DeleteEntity() {
 	}
 
 	anyETag := azcore.ETagAny
-	_, err = client.DeleteEntity(context.Background(), "pk001", "rk001", &aztables.DeleteEntityOptions{IfMatch: &anyETag})
+	_, err = client.DeleteEntity(context.TODO(), "pk001", "rk001", &aztables.DeleteEntityOptions{IfMatch: &anyETag})
 	if err != nil {
 		panic(err)
 	}
@@ -471,7 +471,7 @@ func ExampleClient_List() {
 	pager := client.List(&aztables.ListEntitiesOptions{Filter: &filter})
 
 	pageCount := 1
-	for pager.NextPage(context.Background()) {
+	for pager.NextPage(context.TODO()) {
 		response := pager.PageResponse()
 		fmt.Printf("There are %d entities in page #%d\n", len(response.Entities), pageCount)
 		pageCount += 1
@@ -483,7 +483,7 @@ func ExampleClient_List() {
 	// To list all entities in a table, provide nil to Query()
 	listPager := client.List(nil)
 	pageCount = 1
-	for listPager.NextPage(context.Background()) {
+	for listPager.NextPage(context.TODO()) {
 		response := listPager.PageResponse()
 		fmt.Printf("There are %d entities in page #%d\n", len(response.Entities), pageCount)
 		pageCount += 1
@@ -518,7 +518,7 @@ func ExampleServiceClient_ListTables() {
 	pager := service.ListTables(&aztables.ListTablesOptions{Filter: &filter})
 
 	pageCount := 1
-	for pager.NextPage(context.Background()) {
+	for pager.NextPage(context.TODO()) {
 		response := pager.PageResponse()
 		fmt.Printf("There are %d tables in page #%d\n", len(response.Tables), pageCount)
 		for _, table := range response.Tables {

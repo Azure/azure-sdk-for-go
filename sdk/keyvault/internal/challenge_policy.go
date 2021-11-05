@@ -16,6 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 )
 
 const headerAuthorization = "Authorization"
@@ -106,7 +107,7 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 			return resp, requestErr
 		}
 
-		return req.Next()
+		return http.DefaultClient.Do(req.Raw())
 	}
 
 	return resp, err
@@ -115,6 +116,9 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 // parses Tenant ID from auth challenge
 // https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000
 func parseTenant(url string) *string {
+	if url == "" {
+		return to.StringPtr("")
+	}
 	parts := strings.Split(url, "/")
 	tenant := parts[3]
 	tenant = strings.ReplaceAll(tenant, ",", "")
@@ -135,26 +139,23 @@ func (k *KeyVaultChallengePolicy) findScopeAndTenant(resp *http.Response) error 
 
 	parts := strings.Split(authHeader, " ")
 
-	vals := make([]string, 0)
+	vals := map[string]string{}
 	for _, part := range parts {
 		subParts := strings.Split(part, "=")
-		if len(subParts) != 2 {
-			k.scope = nil
-			k.tenantID = nil
-			return fmt.Errorf("could not understand WWW-Authenticate header: %s", authHeader)
+		if len(subParts) == 2 {
+			vals[subParts[0]] = strings.ReplaceAll(subParts[1], "\"", "")
 		}
-		url := subParts[1]
-
-		url = strings.ReplaceAll(url, "\"", "")
-		vals = append(vals, url)
 	}
 
-	if !strings.HasSuffix(vals[1], "/.default") {
-		vals[1] += "/.default"
+	k.tenantID = parseTenant(vals["authorization"])
+	if scope, ok := vals["resource"]; ok {
+		if !strings.HasSuffix(scope, "/.default") {
+			scope += "/.default"
+		}
+		k.scope = &scope
+	} else {
+		return errors.New("could not find a valid resource in the WWW-Authenticate header")
 	}
-
-	k.tenantID = parseTenant(vals[0])
-	k.scope = &vals[1]
 
 	return nil
 }

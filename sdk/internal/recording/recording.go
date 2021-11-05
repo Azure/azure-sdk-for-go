@@ -486,7 +486,7 @@ func (r RecordingOptions) RouteURL(t *testing.T, rawReq *http.Request) {
 	}
 }
 
-func (r RecordingOptions) hostAndPort() string {
+func (r RecordingOptions) host() string {
 	if r.UseHTTPS {
 		return "localhost:5001"
 	}

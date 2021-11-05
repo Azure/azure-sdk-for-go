@@ -17,7 +17,7 @@ import (
 
 // NewPipeline creates a pipeline from connection options.
 // The telemetry policy, when enabled, will use the specified module and version info.
-func NewPipeline(module, version string, cred azcore.TokenCredential, sdkOpts azruntime.SDKOptions, options *arm.ClientOptions) pipeline.Pipeline {
+func NewPipeline(module, version string, cred azcore.TokenCredential, plOpts azruntime.PipelineOptions, options *arm.ClientOptions) pipeline.Pipeline {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
@@ -29,7 +29,7 @@ func NewPipeline(module, version string, cred azcore.TokenCredential, sdkOpts az
 		Scopes:           []string{shared.EndpointToScope(string(ep))},
 		AuxiliaryTenants: options.AuxiliaryTenants,
 	})
-	o := sdkOpts
+	o := plOpts
 	o.PerRetry = append(o.PerRetry, authPolicy)
 	if !options.DisableRPRegistration {
 		regRPOpts := armpolicy.RegistrationOptions{ClientOptions: options.ClientOptions}

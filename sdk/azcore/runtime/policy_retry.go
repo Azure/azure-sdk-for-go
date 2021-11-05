@@ -41,6 +41,7 @@ func setDefaults(o *policy.RetryOptions) {
 	if o.StatusCodes == nil {
 		o.StatusCodes = []int{
 			http.StatusRequestTimeout,      // 408
+			http.StatusTooManyRequests,     // 429
 			http.StatusInternalServerError, // 500
 			http.StatusBadGateway,          // 502
 			http.StatusServiceUnavailable,  // 503
@@ -101,7 +102,7 @@ func (p *retryPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
 	try := int32(1)
 	for {
 		resp = nil // reset
-		log.Writef(log.RetryPolicy, "\n=====> Try=%d %s %s", try, req.Raw().Method, req.Raw().URL.String())
+		log.Writef(log.EventRetryPolicy, "\n=====> Try=%d %s %s", try, req.Raw().Method, req.Raw().URL.String())
 
 		// For each try, seek to the beginning of the Body stream. We do this even for the 1st try because
 		// the stream may not be at offset 0 when we first get it and we want the same behavior for the
@@ -125,9 +126,9 @@ func (p *retryPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
 			tryCancel()
 		}
 		if err == nil {
-			log.Writef(log.RetryPolicy, "response %d", resp.StatusCode)
+			log.Writef(log.EventRetryPolicy, "response %d", resp.StatusCode)
 		} else {
-			log.Writef(log.RetryPolicy, "error %v", err)
+			log.Writef(log.EventRetryPolicy, "error %v", err)
 		}
 
 		if err == nil && !HasStatusCode(resp, options.StatusCodes...) {
@@ -136,7 +137,7 @@ func (p *retryPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
 		} else if ctxErr := req.Raw().Context().Err(); ctxErr != nil {
 			// don't retry if the parent context has been cancelled or its deadline exceeded
 			err = ctxErr
-			log.Writef(log.RetryPolicy, "abort due to %v", err)
+			log.Writef(log.EventRetryPolicy, "abort due to %v", err)
 			return
 		}
 
@@ -144,13 +145,13 @@ func (p *retryPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
 		var nre errorinfo.NonRetriable
 		if errors.As(err, &nre) {
 			// the error says it's not retriable so don't retry
-			log.Writef(log.RetryPolicy, "non-retriable error %T", nre)
+			log.Writef(log.EventRetryPolicy, "non-retriable error %T", nre)
 			return
 		}
 
 		if try == options.MaxRetries+1 {
 			// max number of tries has been reached, don't sleep again
-			log.Writef(log.RetryPolicy, "MaxRetries %d exceeded", options.MaxRetries)
+			log.Writef(log.EventRetryPolicy, "MaxRetries %d exceeded", options.MaxRetries)
 			return
 		}
 
@@ -162,13 +163,13 @@ func (p *retryPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
 		if delay <= 0 {
 			delay = calcDelay(options, try)
 		}
-		log.Writef(log.RetryPolicy, "End Try #%d, Delay=%v", try, delay)
+		log.Writef(log.EventRetryPolicy, "End Try #%d, Delay=%v", try, delay)
 		select {
 		case <-time.After(delay):
 			try++
 		case <-req.Raw().Context().Done():
 			err = req.Raw().Context().Err()
-			log.Writef(log.RetryPolicy, "abort due to %v", err)
+			log.Writef(log.EventRetryPolicy, "abort due to %v", err)
 			return
 		}
 	}

@@ -37,7 +37,7 @@ func TestProcessorReceiveWithDefaults(t *testing.T) {
 		require.NoError(t, err)
 	}()
 
-	processor, err := serviceBusClient.NewProcessorForQueue(queueName, nil)
+	processor, err := newProcessorForQueue(serviceBusClient, queueName, nil)
 	require.NoError(t, err)
 
 	defer processor.Close(context.Background()) // multiple close is fine
@@ -112,9 +112,10 @@ func TestProcessorReceiveWith100MessagesWithMaxConcurrency(t *testing.T) {
 		require.NoError(t, sender.SendMessageBatch(context.Background(), batch))
 	}()
 
-	processor, err := serviceBusClient.NewProcessorForQueue(
+	processor, err := newProcessorForQueue(
+		serviceBusClient,
 		queueName,
-		&ProcessorOptions{
+		&processorOptions{
 			MaxConcurrentCalls: 20,
 		})
 
@@ -158,29 +159,29 @@ func TestProcessorReceiveWith100MessagesWithMaxConcurrency(t *testing.T) {
 }
 
 func TestProcessorUnitTests(t *testing.T) {
-	p := &Processor{}
+	p := &processor{}
 	e := &entity{}
 
 	require.NoError(t, applyProcessorOptions(p, e, nil))
 	require.True(t, p.autoComplete)
 	require.EqualValues(t, 1, p.maxConcurrentCalls)
-	require.EqualValues(t, PeekLock, p.receiveMode)
+	require.EqualValues(t, ReceiveModePeekLock, p.receiveMode)
 
-	p = &Processor{}
+	p = &processor{}
 	e = &entity{
 		Queue: "queue",
 	}
 
-	require.NoError(t, applyProcessorOptions(p, e, &ProcessorOptions{
-		ReceiveMode:        ReceiveAndDelete,
-		SubQueue:           SubQueueDeadLetter,
-		ManualComplete:     true,
-		MaxConcurrentCalls: 101,
+	require.NoError(t, applyProcessorOptions(p, e, &processorOptions{
+		ReceiveMode:         ReceiveModeReceiveAndDelete,
+		SubQueue:            SubQueueDeadLetter,
+		DisableAutoComplete: true,
+		MaxConcurrentCalls:  101,
 	}))
 
 	require.False(t, p.autoComplete)
 	require.EqualValues(t, 101, p.maxConcurrentCalls)
-	require.EqualValues(t, ReceiveAndDelete, p.receiveMode)
+	require.EqualValues(t, ReceiveModeReceiveAndDelete, p.receiveMode)
 	fullEntityPath, err := e.String()
 	require.NoError(t, err)
 	require.EqualValues(t, "queue/$DeadLetterQueue", fullEntityPath)

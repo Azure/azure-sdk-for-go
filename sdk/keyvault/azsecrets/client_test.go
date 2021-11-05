@@ -25,7 +25,7 @@ func TestMain(m *testing.M) {
 	// Initialize
 	if recording.GetRecordMode() == "record" {
 		vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
-		err := recording.AddUriSanitizer("https://fakekvurl.vault.azure.net/", vaultUrl, nil)
+		err := recording.AddURISanitizer("https://fakekvurl.vault.azure.net/", vaultUrl, nil)
 		if err != nil {
 			panic(err)
 		}
@@ -40,10 +40,10 @@ func TestMain(m *testing.M) {
 }
 
 func startTest(t *testing.T) func() {
-	err := recording.StartRecording(t, pathToPackage, nil)
+	err := recording.Start(t, pathToPackage, nil)
 	require.NoError(t, err)
 	return func() {
-		err := recording.StopRecording(t, nil)
+		err := recording.Stop(t, nil)
 		require.NoError(t, err)
 	}
 }

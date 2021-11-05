@@ -11,14 +11,17 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/go-amqp"
 	"github.com/devigned/tab"
 )
 
-// ProcessorOptions contains options for the `Client.NewProcessorForQueue` or
+// NOTE: this type is experimental
+
+// processorOptions contains options for the `Client.NewProcessorForQueue` or
 // `Client.NewProcessorForSubscription` functions.
-type ProcessorOptions struct {
+type processorOptions struct {
 	// ReceiveMode controls when a message is deleted from Service Bus.
 	//
 	// `azservicebus.PeekLock` is the default. The message is locked, preventing multiple
@@ -37,16 +40,16 @@ type ProcessorOptions struct {
 	// of the queue or subscription.
 	SubQueue SubQueue
 
-	// ManualComplete controls whether messages must be settled explicitly via the
-	// settlement methods (ie, Complete, Abandon) or if the
-	// processor will automatically settle messages.
+	// DisableAutoComplete controls whether messages must be settled explicitly via the
+	// settlement methods (ie, Complete, Abandon) or if the processor will automatically
+	// settle messages.
 	//
 	// If true, no automatic settlement is done.
 	// If false, the return value of your `handleMessage` function will control if the
 	// message is abandoned (non-nil error return) or completed (nil error return).
 	//
-	// This option is enabled, by default.
-	ManualComplete bool
+	// This option is false, by default.
+	DisableAutoComplete bool
 
 	// MaxConcurrentCalls controls the maximum number of message processing
 	// goroutines that are active at any time.
@@ -54,8 +57,8 @@ type ProcessorOptions struct {
 	MaxConcurrentCalls int
 }
 
-// Processor is a push-based receiver for Service Bus.
-type Processor struct {
+// processor is a push-based receiver for Service Bus.
+type processor struct {
 	receiveMode        ReceiveMode
 	autoComplete       bool
 	maxConcurrentCalls int
@@ -77,36 +80,36 @@ type Processor struct {
 	cleanupOnClose func()
 }
 
-func applyProcessorOptions(processor *Processor, entity *entity, options *ProcessorOptions) error {
+func applyProcessorOptions(p *processor, entity *entity, options *processorOptions) error {
 	if options == nil {
-		processor.maxConcurrentCalls = 1
-		processor.receiveMode = PeekLock
-		processor.autoComplete = true
+		p.maxConcurrentCalls = 1
+		p.receiveMode = ReceiveModePeekLock
+		p.autoComplete = true
 
 		return nil
 	}
 
-	processor.autoComplete = !options.ManualComplete
+	p.autoComplete = !options.DisableAutoComplete
 
 	if err := checkReceiverMode(options.ReceiveMode); err != nil {
 		return err
 	}
 
-	processor.receiveMode = options.ReceiveMode
+	p.receiveMode = options.ReceiveMode
 
 	if err := entity.SetSubQueue(options.SubQueue); err != nil {
 		return err
 	}
 
 	if options.MaxConcurrentCalls > 0 {
-		processor.maxConcurrentCalls = options.MaxConcurrentCalls
+		p.maxConcurrentCalls = options.MaxConcurrentCalls
 	}
 
 	return nil
 }
 
-func newProcessor(ns internal.NamespaceWithNewAMQPLinks, entity *entity, cleanupOnClose func(), options *ProcessorOptions) (*Processor, error) {
-	processor := &Processor{
+func newProcessor(ns internal.NamespaceWithNewAMQPLinks, entity *entity, cleanupOnClose func(), options *processorOptions) (*processor, error) {
+	processor := &processor{
 		// TODO: make this configurable
 		baseRetrier: internal.NewBackoffRetrier(internal.BackoffRetrierParams{
 			Factor:     1.5,
@@ -159,8 +162,8 @@ func newProcessor(ns internal.NamespaceWithNewAMQPLinks, entity *entity, cleanup
 // Any errors that occur (such as network disconnects, failures in handleMessage) will be
 // sent to your handleError function. The processor will retry and restart as needed -
 // no user intervention is required.
-func (p *Processor) Start(ctx context.Context, handleMessage func(message *ReceivedMessage) error, handleError func(err error)) error {
-	ctx, span := tab.StartSpan(ctx, internal.SpanProcessorLoop)
+func (p *processor) Start(ctx context.Context, handleMessage func(message *ReceivedMessage) error, handleError func(err error)) error {
+	ctx, span := tab.StartSpan(ctx, tracing.SpanProcessorLoop)
 	defer span.End()
 
 	err := func() error {
@@ -213,7 +216,7 @@ func (p *Processor) Start(ctx context.Context, handleMessage func(message *Recei
 // NOTE: Close() cannot be called synchronously in a message
 // or error handler. You must run it asynchronously using
 // `go processor.Close(ctx)` or similar.
-func (p *Processor) Close(ctx context.Context) error {
+func (p *processor) Close(ctx context.Context) error {
 	p.mu.Lock()
 	defer p.mu.Unlock()
 
@@ -221,7 +224,7 @@ func (p *Processor) Close(ctx context.Context) error {
 		return nil
 	}
 
-	ctx, span := tab.StartSpan(ctx, internal.SpanProcessorClose)
+	ctx, span := tab.StartSpan(ctx, tracing.SpanProcessorClose)
 	defer span.End()
 
 	defer func() {
@@ -250,33 +253,33 @@ func (p *Processor) Close(ctx context.Context) error {
 }
 
 // CompleteMessage completes a message, deleting it from the queue or subscription.
-func (p *Processor) CompleteMessage(ctx context.Context, message *ReceivedMessage) error {
+func (p *processor) CompleteMessage(ctx context.Context, message *ReceivedMessage) error {
 	return p.settler.CompleteMessage(ctx, message)
 }
 
 // AbandonMessage will cause a message to be returned to the queue or subscription.
 // This will increment its delivery count, and potentially cause it to be dead lettered
 // depending on your queue or subscription's configuration.
-func (p *Processor) AbandonMessage(ctx context.Context, message *ReceivedMessage) error {
+func (p *processor) AbandonMessage(ctx context.Context, message *ReceivedMessage) error {
 	return p.settler.AbandonMessage(ctx, message)
 }
 
 // DeferMessage will cause a message to be deferred. Deferred messages
 // can be received using `Receiver.ReceiveDeferredMessages`.
-func (p *Processor) DeferMessage(ctx context.Context, message *ReceivedMessage) error {
+func (p *processor) DeferMessage(ctx context.Context, message *ReceivedMessage) error {
 	return p.settler.DeferMessage(ctx, message)
 }
 
 // DeadLetterMessage settles a message by moving it to the dead letter queue for a
 // queue or subscription. To receive these messages create a processor with `Client.NewProcessorForQueue()`
 // or `Client.NewProcessorForSubscription()` using the `ProcessorOptions.SubQueue` option.
-func (p *Processor) DeadLetterMessage(ctx context.Context, message *ReceivedMessage, options *DeadLetterOptions) error {
+func (p *processor) DeadLetterMessage(ctx context.Context, message *ReceivedMessage, options *DeadLetterOptions) error {
 	return p.settler.DeadLetterMessage(ctx, message, options)
 }
 
 // subscribe continually receives messages from Service Bus, stopping
 // if a fatal link/connection error occurs.
-func (p *Processor) subscribe() error {
+func (p *processor) subscribe() error {
 	p.wg.Add(1)
 	defer p.wg.Done()
 
@@ -326,8 +329,8 @@ func (p *Processor) subscribe() error {
 	}
 }
 
-func (p *Processor) processMessage(ctx context.Context, receiver internal.AMQPReceiver, amqpMessage *amqp.Message) error {
-	ctx, span := tab.StartSpan(ctx, internal.SpanProcessorMessage)
+func (p *processor) processMessage(ctx context.Context, receiver internal.AMQPReceiver, amqpMessage *amqp.Message) error {
+	ctx, span := tab.StartSpan(ctx, tracing.SpanProcessorMessage)
 	defer span.End()
 
 	receivedMessage := newReceivedMessage(ctx, amqpMessage)
@@ -369,9 +372,37 @@ func (p *Processor) processMessage(ctx context.Context, receiver internal.AMQPRe
 }
 
 func checkReceiverMode(receiveMode ReceiveMode) error {
-	if receiveMode == PeekLock || receiveMode == ReceiveAndDelete {
+	if receiveMode == ReceiveModePeekLock || receiveMode == ReceiveModeReceiveAndDelete {
 		return nil
 	} else {
 		return fmt.Errorf("Invalid receive mode %d, must be either azservicebus.PeekLock or azservicebus.ReceiveAndDelete", receiveMode)
 	}
+}
+
+// newProcessorForQueue creates a Processor for a queue.
+func newProcessorForQueue(client *Client, queue string, options *processorOptions) (*processor, error) {
+	id, cleanupOnClose := client.getCleanupForCloseable()
+
+	processor, err := newProcessor(client.namespace, &entity{Queue: queue}, cleanupOnClose, options)
+
+	if err != nil {
+		return nil, err
+	}
+
+	client.addCloseable(id, processor)
+	return processor, nil
+}
+
+// newProcessorForQueue creates a Processor for a subscription.
+func newProcessorForSubscription(client *Client, topic string, subscription string, options *processorOptions) (*processor, error) {
+	id, cleanupOnClose := client.getCleanupForCloseable()
+
+	processor, err := newProcessor(client.namespace, &entity{Topic: topic, Subscription: subscription}, cleanupOnClose, options)
+
+	if err != nil {
+		return nil, err
+	}
+
+	client.addCloseable(id, processor)
+	return processor, nil
 }

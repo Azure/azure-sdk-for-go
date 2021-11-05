@@ -13,6 +13,7 @@ import (
 	common "github.com/Azure/azure-amqp-common-go/v3"
 	"github.com/Azure/azure-amqp-common-go/v3/rpc"
 	"github.com/Azure/azure-amqp-common-go/v3/uuid"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/go-amqp"
 	"github.com/devigned/tab"
 )
@@ -54,6 +55,12 @@ type MgmtClient interface {
 
 	ScheduleMessages(ctx context.Context, enqueueTime time.Time, messages ...*amqp.Message) ([]int64, error)
 	CancelScheduled(ctx context.Context, seq ...int64) error
+
+	RenewLocks(ctx context.Context, linkName string, lockTokens []amqp.UUID) ([]time.Time, error)
+	RenewSessionLock(ctx context.Context, sessionID string) (time.Time, error)
+
+	GetSessionState(ctx context.Context, sessionID string) ([]byte, error)
+	SetSessionState(ctx context.Context, sessionID string, state []byte) error
 }
 
 func newMgmtClient(ctx context.Context, links AMQPLinks, ns NamespaceForMgmtClient) (MgmtClient, error) {
@@ -70,7 +77,7 @@ func (mc *mgmtClient) recover(ctx context.Context) error {
 	mc.clientMu.Lock()
 	defer mc.clientMu.Unlock()
 
-	ctx, span := mc.startSpanFromContext(ctx, string(spanNameRecover))
+	ctx, span := mc.startSpanFromContext(ctx, string(tracing.SpanNameRecover))
 	defer span.End()
 
 	if mc.rpcLink != nil {
@@ -147,7 +154,7 @@ func (mc *mgmtClient) doRPCWithRetry(ctx context.Context, msg *amqp.Message, tim
 		tab.For(ctx).Debug("recovering RPC connection")
 
 		_, retryErr := common.Retry(amqpRetryDefaultTimes, amqpRetryDefaultDelay, func() (interface{}, error) {
-			ctx, sp := mc.startProducerSpanFromContext(ctx, string(spanNameTryRecover))
+			ctx, sp := mc.startProducerSpanFromContext(ctx, string(tracing.SpanTryRecover))
 			defer sp.End()
 
 			if err := mc.recover(ctx); err == nil {
@@ -192,7 +199,7 @@ func isAMQPTransientError(ctx context.Context, err error) bool {
 }
 
 func (mc *mgmtClient) ReceiveDeferred(ctx context.Context, mode ReceiveMode, sequenceNumbers []int64) ([]*amqp.Message, error) {
-	ctx, span := startConsumerSpanFromContext(ctx, spanNameReceiveDeferred)
+	ctx, span := tracing.StartConsumerSpanFromContext(ctx, tracing.SpanReceiveDeferred, Version)
 	defer span.End()
 
 	const messagesField, messageField = "messages", "message"
@@ -280,7 +287,7 @@ func (mc *mgmtClient) ReceiveDeferred(ctx context.Context, mode ReceiveMode, seq
 }
 
 func (mc *mgmtClient) PeekMessages(ctx context.Context, fromSequenceNumber int64, messageCount int32) ([]*amqp.Message, error) {
-	ctx, span := startConsumerSpanFromContext(ctx, spanPeekFromSequenceNumber)
+	ctx, span := tracing.StartConsumerSpanFromContext(ctx, tracing.SpanPeekFromSequenceNumber, Version)
 	defer span.End()
 
 	const messagesField, messageField = "messages", "message"
@@ -390,13 +397,9 @@ func (mc *mgmtClient) PeekMessages(ctx context.Context, fromSequenceNumber int64
 
 // RenewLocks renews the locks in a single 'com.microsoft:renew-lock' operation.
 // NOTE: this function assumes all the messages received on the same link.
-func (mc *mgmtClient) RenewLocks(ctx context.Context, linkName string, lockTokens ...*amqp.UUID) (err error) {
-	ctx, span := startConsumerSpanFromContext(ctx, spanNameRenewLock)
+func (mc *mgmtClient) RenewLocks(ctx context.Context, linkName string, lockTokens []amqp.UUID) ([]time.Time, error) {
+	ctx, span := tracing.StartConsumerSpanFromContext(ctx, tracing.SpanRenewLock, Version)
 	defer span.End()
-
-	if len(lockTokens) == 0 {
-		return nil
-	}
 
 	renewRequestMsg := &amqp.Message{
 		ApplicationProperties: map[string]interface{}{
@@ -412,15 +415,145 @@ func (mc *mgmtClient) RenewLocks(ctx context.Context, linkName string, lockToken
 	}
 
 	response, err := mc.doRPCWithRetry(ctx, renewRequestMsg, 3, 1*time.Second)
+
 	if err != nil {
 		tab.For(ctx).Error(err)
-		return err
+		return nil, err
 	}
 
 	if response.Code != 200 {
 		err := fmt.Errorf("error renewing locks: %v", response.Description)
 		tab.For(ctx).Error(err)
+		return nil, err
+	}
+
+	// extract the new lock renewal times from the response
+	// response.Message.
+
+	val, ok := response.Message.Value.(map[string]interface{})
+	if !ok {
+		return nil, NewErrIncorrectType("Message.Value", map[string]interface{}{}, response.Message.Value)
+	}
+
+	expirations, ok := val["expirations"]
+
+	if !ok {
+		return nil, NewErrIncorrectType("Message.Value[\"expirations\"]", map[string]interface{}{}, response.Message.Value)
+	}
+
+	asTimes, ok := expirations.([]time.Time)
+
+	if !ok {
+		return nil, NewErrIncorrectType("Message.Value[\"expirations\"] as times", map[string]interface{}{}, response.Message.Value)
+	}
+
+	return asTimes, nil
+}
+
+// RenewSessionLocks renews a session lock.
+func (mc *mgmtClient) RenewSessionLock(ctx context.Context, sessionID string) (time.Time, error) {
+	body := map[string]interface{}{
+		"session-id": sessionID,
+	}
+
+	msg := &amqp.Message{
+		Value: body,
+		ApplicationProperties: map[string]interface{}{
+			"operation": "com.microsoft:renew-session-lock",
+		},
+	}
+
+	resp, err := mc.doRPCWithRetry(ctx, msg, 5, 5*time.Second)
+
+	if err != nil {
+		return time.Time{}, err
+	}
+
+	m, ok := resp.Message.Value.(map[string]interface{})
+
+	if !ok {
+		return time.Time{}, NewErrIncorrectType("Message.Value", map[string]interface{}{}, resp.Message.Value)
+	}
+
+	lockedUntil, ok := m["expiration"].(time.Time)
+
+	if !ok {
+		return time.Time{}, NewErrIncorrectType("Message.Value[\"expiration\"] as times", time.Time{}, resp.Message.Value)
+	}
+
+	return lockedUntil, nil
+}
+
+// GetSessionState retrieves state associated with the session.
+func (mc *mgmtClient) GetSessionState(ctx context.Context, sessionID string) ([]byte, error) {
+	amqpMsg := &amqp.Message{
+		Value: map[string]interface{}{
+			"session-id": sessionID,
+		},
+		ApplicationProperties: map[string]interface{}{
+			"operation": "com.microsoft:get-session-state",
+		},
+	}
+
+	resp, err := mc.doRPCWithRetry(ctx, amqpMsg, 5, 5*time.Second)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.Code != 200 {
+		return nil, ErrAMQP(*resp)
+	}
+
+	asMap, ok := resp.Message.Value.(map[string]interface{})
+
+	if !ok {
+		return nil, NewErrIncorrectType("Value", map[string]interface{}{}, resp.Message.Value)
+	}
+
+	val := asMap["session-state"]
+
+	if val == nil {
+		// no session state set
+		return nil, nil
+	}
+
+	asBytes, ok := val.([]byte)
+
+	if !ok {
+		return nil, NewErrIncorrectType("Value['session-state']", []byte{}, asMap["session-state"])
+	}
+
+	return asBytes, nil
+}
+
+// SetSessionState sets the state associated with the session.
+func (mc *mgmtClient) SetSessionState(ctx context.Context, sessionID string, state []byte) error {
+	uuid, err := uuid.NewV4()
+
+	if err != nil {
 		return err
+	}
+
+	amqpMsg := &amqp.Message{
+		Value: map[string]interface{}{
+			"session-id":    sessionID,
+			"session-state": state,
+		},
+		ApplicationProperties: map[string]interface{}{
+			"operation":                 "com.microsoft:set-session-state",
+			"com.microsoft:tracking-id": uuid.String(),
+		},
+	}
+
+	resp, err := mc.doRPCWithRetry(ctx, amqpMsg, 5, 5*time.Second)
+
+	if err != nil {
+		return err
+	}
+
+	if resp.Code != 200 {
+		return ErrAMQP(*resp)
 	}
 
 	return nil
@@ -430,7 +563,7 @@ func (mc *mgmtClient) RenewLocks(ctx context.Context, linkName string, lockToken
 // *amqp.Receiver. Use this if the receiver has been closed/lost or if the message isn't associated
 // with a link (ex: deferred messages).
 func (mc *mgmtClient) SendDisposition(ctx context.Context, lockToken *amqp.UUID, state Disposition) error {
-	ctx, span := startConsumerSpanFromContext(ctx, spanNameSendDisposition)
+	ctx, span := tracing.StartConsumerSpanFromContext(ctx, tracing.SpanSendDisposition, Version)
 	defer span.End()
 
 	if lockToken == nil {
@@ -473,7 +606,7 @@ func (mc *mgmtClient) SendDisposition(ctx context.Context, lockToken *amqp.UUID,
 // ScheduleMessages will send a batch of messages to a Queue, schedule them to be enqueued, and return the sequence numbers
 // that can be used to cancel each message.
 func (mc *mgmtClient) ScheduleMessages(ctx context.Context, enqueueTime time.Time, messages ...*amqp.Message) ([]int64, error) {
-	ctx, span := startConsumerSpanFromContext(ctx, spanNameScheduleMessage)
+	ctx, span := tracing.StartConsumerSpanFromContext(ctx, tracing.SpanScheduleMessage, Version)
 	defer span.End()
 
 	if len(messages) <= 0 {
@@ -572,7 +705,7 @@ func (mc *mgmtClient) ScheduleMessages(ctx context.Context, enqueueTime time.Tim
 // CancelScheduled allows for removal of messages that have been handed to the Service Bus broker for later delivery,
 // but have not yet ben enqueued.
 func (mc *mgmtClient) CancelScheduled(ctx context.Context, seq ...int64) error {
-	ctx, span := startConsumerSpanFromContext(ctx, spanNameCancelScheduledMessage)
+	ctx, span := tracing.StartConsumerSpanFromContext(ctx, tracing.SpanCancelScheduledMessage, Version)
 	defer span.End()
 
 	msg := &amqp.Message{
@@ -599,4 +732,20 @@ func (mc *mgmtClient) CancelScheduled(ctx context.Context, seq ...int64) error {
 	}
 
 	return nil
+}
+
+func (mc *mgmtClient) startSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
+	ctx, span := tracing.StartConsumerSpanFromContext(ctx, operationName, Version)
+	span.AddAttributes(tab.StringAttribute("message_bus.destination", mc.links.ManagementPath()))
+	return ctx, span
+}
+
+func (mc *mgmtClient) startProducerSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
+	ctx, span := tab.StartSpan(ctx, operationName)
+	tracing.ApplyComponentInfo(span, Version)
+	span.AddAttributes(
+		tab.StringAttribute("span.kind", "producer"),
+		tab.StringAttribute("message_bus.destination", mc.links.ManagementPath()),
+	)
+	return ctx, span
 }

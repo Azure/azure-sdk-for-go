@@ -422,7 +422,7 @@ func getServiceClientFromConnectionString(recording *testframework.Recording, ac
 		return ServiceClient{}, nil
 	}
 
-	svcClient, err := NewServiceClient(primaryURL, cred, options)
+	svcClient, err := NewServiceClientWithSharedKey(primaryURL, cred, options)
 	return svcClient, err
 }
 
@@ -450,7 +450,7 @@ func getServiceClient(recording *testframework.Recording, accountType testAccoun
 	}
 
 	serviceURL, _ := url.Parse("https://" + cred.AccountName() + ".blob.core.windows.net/")
-	serviceClient, err := NewServiceClient(serviceURL.String(), cred, options)
+	serviceClient, err := NewServiceClientWithSharedKey(serviceURL.String(), cred, options)
 
 	return serviceClient, err
 }

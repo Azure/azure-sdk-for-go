@@ -10,7 +10,7 @@ import (
 )
 
 func TestItemRequestOptionsToHeaders(t *testing.T) {
-	options := &CosmosItemRequestOptions{}
+	options := &ItemOptions{}
 	options.PreTriggers = []string{"preTrigger1", "preTrigger2"}
 	options.PostTriggers = []string{"postTrigger1", "postTrigger2"}
 	options.ConsistencyLevel = ConsistencyLevelSession.ToPtr()
@@ -20,7 +20,7 @@ func TestItemRequestOptionsToHeaders(t *testing.T) {
 	options.IfMatchEtag = &etagValue
 	header := options.toHeaders()
 	if header == nil {
-		t.Error("toHeaders should return non-nil")
+		t.Fatal("toHeaders should return non-nil")
 	}
 
 	headers := *header

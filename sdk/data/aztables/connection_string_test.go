@@ -22,20 +22,17 @@ func TestConnectionStringParser(t *testing.T) {
 	require.Equal(t, serviceURL, "https://dummyaccount.table.core.windows.net")
 	require.NotNil(t, cred)
 
-	sharedKeyCred, ok := cred.(*SharedKeyCredential)
-	require.True(t, ok)
-	require.Equal(t, sharedKeyCred.accountName, "dummyaccount")
-	require.Equal(t, getAccountKey(sharedKeyCred), "secretkeykey")
+	require.Equal(t, cred.accountName, "dummyaccount")
+	require.Equal(t, getAccountKey(cred), "secretkeykey")
 
 	client, err := NewServiceClientFromConnectionString(connStr, nil)
 	require.NoError(t, err)
 	require.NotNil(t, client)
-	sharedKeyCred, ok = client.cred.(*SharedKeyCredential)
-	require.True(t, ok)
-	require.Equal(t, sharedKeyCred.accountName, "dummyaccount")
-	require.Equal(t, getAccountKey(sharedKeyCred), "secretkeykey")
-	require.True(t, strings.HasPrefix(client.client.Con.Endpoint(), "https://"))
-	require.True(t, strings.Contains(client.client.Con.Endpoint(), "core.windows.net"))
+	require.NotNil(t, client.cred)
+	require.Equal(t, client.cred.accountName, "dummyaccount")
+	require.Equal(t, getAccountKey(client.cred), "secretkeykey")
+	require.True(t, strings.HasPrefix(client.con.Endpoint(), "https://"))
+	require.True(t, strings.Contains(client.con.Endpoint(), "core.windows.net"))
 }
 
 func TestConnectionStringParserHTTP(t *testing.T) {
@@ -45,20 +42,17 @@ func TestConnectionStringParserHTTP(t *testing.T) {
 	require.Equal(t, serviceURL, "http://dummyaccount.table.core.windows.net")
 	require.NotNil(t, cred)
 
-	sharedKeyCred, ok := cred.(*SharedKeyCredential)
-	require.True(t, ok)
-	require.Equal(t, sharedKeyCred.accountName, "dummyaccount")
-	require.Equal(t, getAccountKey(sharedKeyCred), "secretkeykey")
+	require.Equal(t, cred.accountName, "dummyaccount")
+	require.Equal(t, getAccountKey(cred), "secretkeykey")
 
 	client, err := NewServiceClientFromConnectionString(connStr, nil)
 	require.NoError(t, err)
 	require.NotNil(t, client)
-	sharedKeyCred, ok = client.cred.(*SharedKeyCredential)
-	require.True(t, ok)
-	require.Equal(t, sharedKeyCred.accountName, "dummyaccount")
-	require.Equal(t, getAccountKey(sharedKeyCred), "secretkeykey")
-	require.True(t, strings.HasPrefix(client.client.Con.Endpoint(), "http://"))
-	require.True(t, strings.Contains(client.client.Con.Endpoint(), "core.windows.net"))
+	require.NotNil(t, client.cred)
+	require.Equal(t, client.cred.accountName, "dummyaccount")
+	require.Equal(t, getAccountKey(client.cred), "secretkeykey")
+	require.True(t, strings.HasPrefix(client.con.Endpoint(), "http://"))
+	require.True(t, strings.Contains(client.con.Endpoint(), "core.windows.net"))
 }
 
 func TestConnectionStringParserBasic(t *testing.T) {
@@ -68,20 +62,17 @@ func TestConnectionStringParserBasic(t *testing.T) {
 	require.Equal(t, serviceURL, "https://dummyaccount.table.core.windows.net")
 	require.NotNil(t, cred)
 
-	sharedKeyCred, ok := cred.(*SharedKeyCredential)
-	require.True(t, ok)
-	require.Equal(t, sharedKeyCred.accountName, "dummyaccount")
-	require.Equal(t, getAccountKey(sharedKeyCred), "secretkeykey")
+	require.Equal(t, cred.accountName, "dummyaccount")
+	require.Equal(t, getAccountKey(cred), "secretkeykey")
 
 	client, err := NewServiceClientFromConnectionString(connStr, nil)
 	require.NoError(t, err)
 	require.NotNil(t, client)
-	sharedKeyCred, ok = client.cred.(*SharedKeyCredential)
-	require.True(t, ok)
-	require.Equal(t, sharedKeyCred.accountName, "dummyaccount")
-	require.Equal(t, getAccountKey(sharedKeyCred), "secretkeykey")
-	require.True(t, strings.HasPrefix(client.client.Con.Endpoint(), "https://"))
-	require.True(t, strings.Contains(client.client.Con.Endpoint(), "core.windows.net"))
+	require.NotNil(t, client.cred)
+	require.Equal(t, client.cred.accountName, "dummyaccount")
+	require.Equal(t, getAccountKey(client.cred), "secretkeykey")
+	require.True(t, strings.HasPrefix(client.con.Endpoint(), "https://"))
+	require.True(t, strings.Contains(client.con.Endpoint(), "core.windows.net"))
 }
 
 func TestConnectionStringParserCustomDomain(t *testing.T) {
@@ -91,20 +82,17 @@ func TestConnectionStringParserCustomDomain(t *testing.T) {
 	require.Equal(t, serviceURL, "www.mydomain.com")
 	require.NotNil(t, cred)
 
-	sharedKeyCred, ok := cred.(*SharedKeyCredential)
-	require.True(t, ok)
-	require.Equal(t, sharedKeyCred.accountName, "dummyaccount")
-	require.Equal(t, getAccountKey(sharedKeyCred), "secretkeykey")
+	require.Equal(t, cred.accountName, "dummyaccount")
+	require.Equal(t, getAccountKey(cred), "secretkeykey")
 
 	client, err := NewServiceClientFromConnectionString(connStr, nil)
 	require.NoError(t, err)
 	require.NotNil(t, client)
-	sharedKeyCred, ok = client.cred.(*SharedKeyCredential)
-	require.True(t, ok)
-	require.Equal(t, sharedKeyCred.accountName, "dummyaccount")
-	require.Equal(t, getAccountKey(sharedKeyCred), "secretkeykey")
-	require.True(t, strings.HasPrefix(client.client.Con.Endpoint(), "www."))
-	require.True(t, strings.Contains(client.client.Con.Endpoint(), "mydomain.com"))
+	require.NotNil(t, client.cred)
+	require.Equal(t, client.cred.accountName, "dummyaccount")
+	require.Equal(t, getAccountKey(client.cred), "secretkeykey")
+	require.True(t, strings.HasPrefix(client.con.Endpoint(), "www."))
+	require.True(t, strings.Contains(client.con.Endpoint(), "mydomain.com"))
 }
 
 func TestConnectionStringParserInvalid(t *testing.T) {
@@ -131,13 +119,13 @@ func TestConnectionStringSAS(t *testing.T) {
 	serviceURL, cred, err := parseConnectionString(connStr)
 	require.NoError(t, err)
 	require.Equal(t, serviceURL, "https://dummyaccount.table.core.windows.net/?fakesharedaccesssignature")
-	require.NotNil(t, cred)
+	require.Nil(t, cred)
 
 	client, err := NewServiceClientFromConnectionString(connStr, nil)
 	require.NoError(t, err)
 	require.NotNil(t, client)
-	require.True(t, strings.HasPrefix(client.client.Con.Endpoint(), "https://"))
-	require.True(t, strings.Contains(client.client.Con.Endpoint(), "core.windows.net"))
+	require.True(t, strings.HasPrefix(client.con.Endpoint(), "https://"))
+	require.True(t, strings.Contains(client.con.Endpoint(), "core.windows.net"))
 }
 
 func TestConnectionStringCosmos(t *testing.T) {
@@ -150,13 +138,12 @@ func TestConnectionStringCosmos(t *testing.T) {
 	client, err := NewServiceClientFromConnectionString(connStr, nil)
 	require.NoError(t, err)
 	require.NotNil(t, client)
-	require.True(t, strings.HasPrefix(client.client.Con.Endpoint(), "https://"))
-	require.True(t, strings.Contains(client.client.Con.Endpoint(), "cosmos.azure.com:443"))
+	require.True(t, strings.HasPrefix(client.con.Endpoint(), "https://"))
+	require.True(t, strings.Contains(client.con.Endpoint(), "cosmos.azure.com:443"))
 
-	sharedKey, ok := client.cred.(*SharedKeyCredential)
-	require.True(t, ok)
-	require.Equal(t, sharedKey.accountName, "dummyaccountname")
-	require.Equal(t, getAccountKey(sharedKey), "secretkeykey")
+	require.NotNil(t, client.cred)
+	require.Equal(t, client.cred.accountName, "dummyaccountname")
+	require.Equal(t, getAccountKey(client.cred), "secretkeykey")
 }
 
 func TestConnectionStringChinaCloud(t *testing.T) {
@@ -169,13 +156,11 @@ func TestConnectionStringChinaCloud(t *testing.T) {
 	client, err := NewServiceClientFromConnectionString(connStr, nil)
 	require.NoError(t, err)
 	require.NotNil(t, client)
-	require.True(t, strings.HasPrefix(client.client.Con.Endpoint(), "http://"))
-	require.True(t, strings.Contains(client.client.Con.Endpoint(), "core.chinacloudapi.cn"))
+	require.True(t, strings.HasPrefix(client.con.Endpoint(), "http://"))
+	require.True(t, strings.Contains(client.con.Endpoint(), "core.chinacloudapi.cn"))
 
-	sharedKey, ok := client.cred.(*SharedKeyCredential)
-	require.True(t, ok)
-	require.Equal(t, sharedKey.accountName, "dummyaccountname")
-	require.Equal(t, getAccountKey(sharedKey), "secretkeykey")
+	require.Equal(t, client.cred.accountName, "dummyaccountname")
+	require.Equal(t, getAccountKey(client.cred), "secretkeykey")
 }
 
 func TestConnectionStringAzurite(t *testing.T) {
@@ -188,11 +173,9 @@ func TestConnectionStringAzurite(t *testing.T) {
 	client, err := NewServiceClientFromConnectionString(connStr, nil)
 	require.NoError(t, err)
 	require.NotNil(t, client)
-	require.True(t, strings.HasPrefix(client.client.Con.Endpoint(), "http://"))
-	require.True(t, strings.Contains(client.client.Con.Endpoint(), "http://local-machine:11002/custom/account/path/faketokensignature"))
-
-	sharedKey, ok := client.cred.(*SharedKeyCredential)
-	require.True(t, ok)
-	require.Equal(t, sharedKey.accountName, "dummyaccountname")
-	require.Equal(t, getAccountKey(sharedKey), "secretkeykey")
+	require.True(t, strings.HasPrefix(client.con.Endpoint(), "http://"))
+	require.True(t, strings.Contains(client.con.Endpoint(), "http://local-machine:11002/custom/account/path/faketokensignature"))
+	require.NotNil(t, client.cred)
+	require.Equal(t, client.cred.accountName, "dummyaccountname")
+	require.Equal(t, getAccountKey(client.cred), "secretkeykey")
 }

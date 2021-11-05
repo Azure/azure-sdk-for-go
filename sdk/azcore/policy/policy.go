@@ -26,12 +26,45 @@ type Transporter = pipeline.Transporter
 // Don't use this type directly, use runtime.NewRequest() instead.
 type Request = pipeline.Request
 
+// ClientOptions contains optional settings for a client's pipeline.
+// All zero-value fields will be initialized with default values.
+type ClientOptions struct {
+	// Logging configures the built-in logging policy.
+	Logging LogOptions
+
+	// Retry configures the built-in retry policy.
+	Retry RetryOptions
+
+	// Telemetry configures the built-in telemetry policy.
+	Telemetry TelemetryOptions
+
+	// Transport sets the transport for HTTP requests.
+	Transport Transporter
+
+	// PerCallPolicies contains custom policies to inject into the pipeline.
+	// Each policy is executed once per request.
+	PerCallPolicies []Policy
+
+	// PerRetryPolicies contains custom policies to inject into the pipeline.
+	// Each policy is executed once per request, and for each retry of that request.
+	PerRetryPolicies []Policy
+}
+
 // LogOptions configures the logging policy's behavior.
 type LogOptions struct {
 	// IncludeBody indicates if request and response bodies should be included in logging.
 	// The default value is false.
 	// NOTE: enabling this can lead to disclosure of sensitive information, use with care.
 	IncludeBody bool
+
+	// AllowedHeaders is the slice of headers to log with their values intact.
+	// All headers not in the slice will have their values REDACTED.
+	// Applies to request and response headers.
+	AllowedHeaders []string
+
+	// AllowedQueryParams is the slice of query parameters to log with their values intact.
+	// All query parameters not in the slice will have their values REDACTED.
+	AllowedQueryParams []string
 }
 
 // RetryOptions configures the retry policy's behavior.
@@ -80,6 +113,11 @@ type TokenRequestOptions struct {
 	// TenantID contains the tenant ID to use in a multi-tenant authentication scenario, if TenantID is set
 	// it will override the tenant ID that was added at credential creation time.
 	TenantID string
+}
+
+// BearerTokenOptions configures the bearer token policy's behavior.
+type BearerTokenOptions struct {
+	// placeholder for future options
 }
 
 // WithHTTPHeader adds the specified http.Header to the parent context.

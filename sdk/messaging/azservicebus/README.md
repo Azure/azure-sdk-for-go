@@ -43,7 +43,7 @@ import (
 )
 
 func main() {
-  client, err := azservicebus.NewClientWithConnectionString("<Service Bus connection string>")
+  client, err := azservicebus.NewClientFromConnectionString("<Service Bus connection string>")
  
   if err != nil {
     log.Fatalf("Failed to create Service Bus Client: %s", err.Error())
@@ -157,71 +157,7 @@ if !added {
 
 ### Receive messages
 
-Once you've created a [Client][godoc_client] you can create a [Processor][godoc_processor], which will allow you to receive messages.
-
-The [Processor][godoc_processor] handles error recovery internally, making it a good fit for
-applications where the intention is to stream and process events for an extended period 
-of time.
-
-> NOTE: Creating a `client` is covered in the ["Authenticate the client"](#authenticate-the-client) section of the readme.
-
-```go
-processor, err := client.NewProcessorForQueue(
-  "<queue>",
-  &azservicebus.ProcessorOptions{
-    // NOTE: this is a parameter you'll want to tune. It controls the number of
-    // active message `handleMessage` calls that the processor will allow at any time.
-    MaxConcurrentCalls: 1,
-    ReceiveMode:        azservicebus.PeekLock,
-    ManualComplete:     false,
-  },
-)
-// or
-// client.NewProcessorForSubscription("<topic>", "<subscription>")
-
-if err != nil {
-  log.Fatalf("Failed to create the processor: %s", err.Error())
-}
-
-handleMessage := func(message *azservicebus.ReceivedMessage) error {
-  // This is where your logic for handling messages goes
-  yourLogicForProcessing(message)
-  return nil
-}
-
-handleError := func(err error) {
-  // handleError will be called on errors that are noteworthy
-  // but the Processor internally will continue to attempt to 
-  // recover.
-  
-  // NOTE: errors returned from `handleMessage` above will also be 
-  // sent here, but do not affect the running of the Processor
-  // itself.
-
-  // We'll just print these out, as they're informational and
-  // can indicate if there are longer lived problems that we might
-  // want to resolve manually (for instance, longer term network
-  // outages, or issues affecting your `handleMessage` handler)
-  log.Printf("Error: %s", err.Error())
-}
-
-err := processor.Start(context.TODO(), handleMessage, handleError)
-
-if err != nil {
-  log.Printf("Processor loop has exited: %s", err.Error())
-}
-
-err := processor.Close(context.TODO())
-
-if err != nil {
-  log.Printf("Processor failed to close: %s", err.Error())
-}
-```
-
 Once you've created a [Client][godoc_client] you can create a [Receiver][godoc_receiver], which will allow you to receive messages.
-
-The [Receiver][godoc_receiver] is a good fit for applications that want to receive messages in fixed increments, rather than
-continually streaming messages, as the [Processor][godoc_processor] does.
 
 > NOTE: Creating a `client` is covered in the ["Authenticate the client"](#authenticate-the-client) section of the readme.
 
@@ -256,7 +192,7 @@ messages, err := receiver.ReceiveMessages(context.TODO(),
 )
 
 if err != nil {
-  log.Fatalf("Failed to get messages: %s", err.Error())
+  panic(err)
 }
 
 for _, message := range messages {
@@ -266,7 +202,7 @@ for _, message := range messages {
   // For more information about settling messages:
   // https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#settling-receive-operations
   if err := receiver.CompleteMessage(message); err != nil {
-    log.Printf("Error completing message: %s", err.Error())
+    panic(err)
   }
 }
 ```
@@ -274,25 +210,13 @@ for _, message := range messages {
 ### Dead letter queue
 
 The dead letter queue is a **sub-queue**. Each queue or subscription has its own dead letter queue. Dead letter queues store
-messages that have been explicitly dead lettered via the [Processor.DeadLetterMessage][godoc_processor_deadlettermessage] 
-or [Receiver.DeadLetterMessage][godoc_receiver_deadlettermessage] functions.
+messages that have been explicitly dead lettered using the [Receiver.DeadLetterMessage][godoc_receiver_deadlettermessage] function.
 
-Opening a dead letter queue is just a configuration option when creating a [Processor][godoc_processor] or [Receiver][godoc_receiver].
+Opening a dead letter queue is just a configuration option when creating a [Receiver][godoc_receiver].
 
 > NOTE: Creating a `client` is covered in the ["Authenticate the client"](#authenticate-the-client) section of the readme.
 
 ```go
-
-deadLetterReceiver, err := client.NewProcessorForQueue("<queue>",
-  &azservicebus.ProcessorOptions{
-    SubQueue: azservicebus.SubQueueDeadLetter,
-  })
-// or 
-// client.NewProcessorForSubscription("<topic>", "<subscription>", 
-//   &azservicebus.ProcessorOptions{
-//      SubQueue: azservicebus.SubQueueDeadLetter,
-//   })
-
 deadLetterReceiver, err := client.NewReceiverForQueue("<queue>",
   &azservicebus.ReceiverOptions{
 	  SubQueue: azservicebus.SubQueueDeadLetter,
@@ -304,7 +228,7 @@ deadLetterReceiver, err := client.NewReceiverForQueue("<queue>",
 //   })
 ```
 
-To see some example code for receiving messages using the Processor or Receiver see the ["Receive messages"](#receive-messages) sample.
+To see some example code for receiving messages using the Receiver see the ["Receive messages"](#receive-messages) sample.
 
 ## Next steps
 
@@ -332,8 +256,6 @@ If you'd like to contribute to this library, please read the [contributing guide
 [godoc_receiver]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Receiver
 [godoc_receiver_completemessage]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Receiver.CompleteMessage
 [godoc_receiver_deadlettermessage]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Receiver.DeadLetterMessage
-[godoc_processor]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Processor
-[godoc_processor_deadlettermessage]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Processor.DeadLetterMessage
 [godoc_newsender]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Client.NewSender
 [godoc_newreceiver_queue]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Client.NewReceiverForQueue
 [godoc_newreceiver_subscription]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Client.NewReceiverForSubscription

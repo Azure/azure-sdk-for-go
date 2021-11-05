@@ -15,7 +15,7 @@ import (
 )
 
 type (
-	// ReceivedMessage is a received message from a Client.NewReceiver() or Client.NewProcessor().
+	// ReceivedMessage is a received message from a Client.NewReceiver().
 	ReceivedMessage struct {
 		Message
 
@@ -31,9 +31,6 @@ type (
 		// GroupSequence  *uint32
 
 		rawAMQPMessage *amqp.Message
-
-		// the 'revision' of the link we received on (ie, if it was recovered it won't match)
-		linkRevision uint64
 
 		// deferred indicates we received it using ReceiveDeferredMessages. These messages
 		// will still go through the normal Receiver.Settle functions but internally will
@@ -80,19 +77,6 @@ const (
 	deadLetterSourceAnnotation       = "x-opt-deadletter-source"
 	enqueuedSequenceNumberAnnotation = "x-opt-enqueue-sequence-number"
 )
-
-// Set implements tab.Carrier
-func (m *Message) Set(key string, value interface{}) {
-	if m.ApplicationProperties == nil {
-		m.ApplicationProperties = make(map[string]interface{})
-	}
-	m.ApplicationProperties[key] = value
-}
-
-// GetKeyValues implements tab.Carrier
-func (m *Message) GetKeyValues() map[string]interface{} {
-	return m.ApplicationProperties
-}
 
 func (m *Message) messageType() string {
 	return "Message"

@@ -1,18 +1,40 @@
 # Release History
 
-## 0.20.0 (Unreleased)
+## 0.20.1 (Unreleased)
+
+### Features Added
+* Added `AllowedHeaders` and `AllowedQueryParams` to `policy.LogOptions` to control which headers and query parameters are written to the logger.
 
 ### Breaking Changes
-* The endpoint parameter for `arm/Connection` constructors has changed to a string typedef in order to provide a hint for applicable values.
+
+### Bugs Fixed
+
+### Other Changes
+
+## 0.20.0 (2021-10-22)
+
+### Breaking Changes
+* Removed `arm.Connection`
 * Removed `azcore.Credential` and `.NewAnonymousCredential()`
   * `NewRPRegistrationPolicy` now requires an `azcore.TokenCredential`
+* `runtime.NewPipeline` has a new signature that simplifies implementing custom authentication
+* `arm/runtime.RegistrationOptions` embeds `policy.ClientOptions`
+* Contents in the `log` package have been slightly renamed.
+* Removed `AuthenticationOptions` in favor of `policy.BearerTokenOptions`
+* Changed parameters for `NewBearerTokenPolicy()`
+* Moved policy config options out of `arm/runtime` and into `arm/policy`
 
 ### Features Added
 * Updating Documentation
+* Added string typdef `arm.Endpoint` to provide a hint toward expected ARM client endpoints
+* `azcore.ClientOptions` contains common pipeline configuration settings
+* Added support for multi-tenant authorization in `arm/runtime`
+* Require one second minimum when calling `PollUntilDone()`
 
 ### Bug Fixes
 * Fixed a potential panic when creating the default Transporter.
 * Close LRO initial response body when creating a poller.
+* Fixed a panic when recursively cloning structs that contain time.Time.
 
 ## 0.19.0 (2021-08-25)
 

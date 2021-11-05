@@ -9,11 +9,14 @@
 
 package cognitiveservicesapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/mgmt/2021-04-30/cognitiveservices/cognitiveservicesapi"
+import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/mgmt/2021-10-01/cognitiveservices/cognitiveservicesapi"
 
 type AccountsClientAPI = original.AccountsClientAPI
 type BaseClientAPI = original.BaseClientAPI
+type CommitmentPlansClientAPI = original.CommitmentPlansClientAPI
+type CommitmentTiersClientAPI = original.CommitmentTiersClientAPI
 type DeletedAccountsClientAPI = original.DeletedAccountsClientAPI
+type DeploymentsClientAPI = original.DeploymentsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type PrivateEndpointConnectionsClientAPI = original.PrivateEndpointConnectionsClientAPI
 type PrivateLinkResourcesClientAPI = original.PrivateLinkResourcesClientAPI

@@ -5,8 +5,8 @@ package azidentity
 
 import (
 	"context"
+	"errors"
 	"fmt"
-	"os"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -53,20 +53,12 @@ func (r ResourceID) String() string {
 // ManagedIdentityCredentialOptions contains parameters that can be used to configure the pipeline used with Managed Identity Credential.
 // All zero-value fields will be initialized with their default values.
 type ManagedIdentityCredentialOptions struct {
+	azcore.ClientOptions
+
 	// ID is the ID of a managed identity the credential should authenticate. Set this field to use a specific identity
 	// instead of the hosting environment's default. The value may be the identity's client ID or resource ID, but note that
 	// some platforms don't accept resource IDs.
 	ID ManagedIDKind
-
-	// HTTPClient sets the transport for making HTTP requests.
-	// Leave this as nil to use the default HTTP transport.
-	HTTPClient policy.Transporter
-
-	// Telemetry configures the built-in telemetry policy behavior.
-	Telemetry policy.TelemetryOptions
-
-	// Logging configures the built-in logging policy behavior.
-	Logging policy.LogOptions
 }
 
 // ManagedIdentityCredential attempts authentication using a managed identity that has been assigned to the deployment environment. This authentication type works in several
@@ -83,33 +75,20 @@ type ManagedIdentityCredential struct {
 // options: ManagedIdentityCredentialOptions that configure the pipeline for requests sent to Azure Active Directory.
 func NewManagedIdentityCredential(options *ManagedIdentityCredentialOptions) (*ManagedIdentityCredential, error) {
 	// Create a new Managed Identity Client with default options
-	if options == nil {
-		options = &ManagedIdentityCredentialOptions{}
+	cp := ManagedIdentityCredentialOptions{}
+	if options != nil {
+		cp = *options
 	}
-	client := newManagedIdentityClient(options)
+	client := newManagedIdentityClient(&cp)
 	msiType, err := client.getMSIType()
 	// If there is an error that means that the code is not running in a Managed Identity environment
 	if err != nil {
-		credErr := &CredentialUnavailableError{credentialType: "Managed Identity Credential", message: "Please make sure you are running in a managed identity environment, such as a VM, Azure Functions, Cloud Shell, etc..."}
-		logCredentialError(credErr.credentialType, credErr)
-		return nil, credErr
+		logCredentialError("Managed Identity Credential", err)
+		return nil, err
 	}
 	// Assign the msiType discovered onto the client
 	client.msiType = msiType
-	// check if no clientID is specified then check if it exists in an environment variable
-	id := options.ID
-	if id == nil {
-		cID := os.Getenv("AZURE_CLIENT_ID")
-		if cID != "" {
-			id = ClientID(cID)
-		} else {
-			rID := os.Getenv("AZURE_RESOURCE_ID")
-			if rID != "" {
-				id = ResourceID(rID)
-			}
-		}
-	}
-	return &ManagedIdentityCredential{id: id, client: client}, nil
+	return &ManagedIdentityCredential{id: cp.ID, client: client}, nil
 }
 
 // GetToken obtains an AccessToken from the Managed Identity service if available.
@@ -117,12 +96,12 @@ func NewManagedIdentityCredential(options *ManagedIdentityCredentialOptions) (*M
 // Returns an AccessToken which can be used to authenticate service client calls.
 func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 	if opts.Scopes == nil {
-		err := &AuthenticationFailedError{msg: "must specify a resource in order to authenticate"}
+		err := errors.New("must specify a resource in order to authenticate")
 		addGetTokenFailureLogs("Managed Identity Credential", err, true)
 		return nil, err
 	}
 	if len(opts.Scopes) != 1 {
-		err := &AuthenticationFailedError{msg: "can only specify one resource to authenticate with ManagedIdentityCredential"}
+		err := errors.New("can only specify one resource to authenticate with ManagedIdentityCredential")
 		addGetTokenFailureLogs("Managed Identity Credential", err, true)
 		return nil, err
 	}

@@ -1,7 +1,18 @@
 # Release History
 
-## 0.12.0 (Unreleased)
+## 0.12.1 (Unreleased)
+
+### Features Added
+
 ### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 0.12.0 (2021-11-02)
+### Breaking Changes
+* Raised minimum go version to 1.16
 * Removed `NewAuthenticationPolicy()` from credentials. Clients should instead use azcore's
  `runtime.NewBearerTokenPolicy()` to construct a bearer token authorization policy.
 * The `AuthorityHost` field in credential options structs is now a custom type,
@@ -17,15 +28,16 @@
   ```
 * Removed `ExcludeAzureCLICredential`, `ExcludeEnvironmentCredential`, and `ExcludeMSICredential`
   from `DefaultAzureCredentialOptions`
-* `NewClientCertificateCredential` requires the bytes of a certificate instead of
-  a path to a certificate file:
+* `NewClientCertificateCredential` requires a `[]*x509.Certificate` and `crypto.PrivateKey` instead of
+  a path to a certificate file. Added `ParseCertificates` to simplify getting these in common cases:
   ```go
   // before
   cred, err := NewClientCertificateCredential("tenant", "client-id", "/cert.pem", nil)
 
   // after
   certData, err := os.ReadFile("/cert.pem")
-  cred, err := NewClientCertificateCredential("tenant", "client-id", certData, nil)
+  certs, key, err := ParseCertificates(certData, password)
+  cred, err := NewClientCertificateCredential(tenantID, clientID, certs, key, nil)
   ```
 * Removed `InteractiveBrowserCredentialOptions.ClientSecret` and `.Port`
 * Removed `AADAuthenticationFailedError`
@@ -46,12 +58,27 @@
   opts := &ManagedIdentityCredentialOptions{ID: resID}
   cred, err := NewManagedIdentityCredential(opts)
   ```
+* `DeviceCodeCredentialOptions.UserPrompt` has a new type: `func(context.Context, DeviceCodeMessage) error`
+* Credential options structs now embed `azcore.ClientOptions`. In addition to changing literal initialization
+  syntax, this change renames `HTTPClient` fields to `Transport`.
+* Renamed `LogCredential` to `EventCredential`
+* `AzureCLICredential` no longer reads the environment variable `AZURE_CLI_PATH`
+* `NewManagedIdentityCredential` no longer reads environment variables `AZURE_CLIENT_ID` and
+  `AZURE_RESOURCE_ID`. Use `ManagedIdentityCredentialOptions.ID` instead.
+* Unexported `AuthenticationFailedError` and `CredentialUnavailableError` structs. In their place are two
+  interfaces having the same names.
+
+### Bugs Fixed
+* `AzureCLICredential.GetToken` no longer mutates its `opts.Scopes`
 
 ### Features Added
 * Added connection configuration options to `DefaultAzureCredentialOptions`
 * `AuthenticationFailedError.RawResponse()` returns the HTTP response motivating the error,
   if available
 
+### Other Changes
+* `NewDefaultAzureCredential()` returns `*DefaultAzureCredential` instead of `*ChainedTokenCredential`
+* Added `TenantID` field to `DefaultAzureCredentialOptions` and `AzureCLICredentialOptions`
 
 ## 0.11.0 (2021-09-08)
 ### Breaking Changes

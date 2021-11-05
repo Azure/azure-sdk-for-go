@@ -22,6 +22,8 @@ const (
 // All zero-value fields will be initialized with their default values. Please note, that both the TenantID or ClientID fields should
 // changed together if default values are not desired.
 type DeviceCodeCredentialOptions struct {
+	azcore.ClientOptions
+
 	// Gets the Azure Active Directory tenant (directory) ID of the service principal
 	// The default value is "organizations". If this value is changed, then also change ClientID to the corresponding value.
 	TenantID string
@@ -30,19 +32,10 @@ type DeviceCodeCredentialOptions struct {
 	ClientID string
 	// The callback function used to send the login message back to the user
 	// The default will print device code log in information to stdout.
-	UserPrompt func(DeviceCodeMessage)
+	UserPrompt func(context.Context, DeviceCodeMessage) error
 	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
 	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
 	AuthorityHost AuthorityHost
-	// HTTPClient sets the transport for making HTTP requests
-	// Leave this as nil to use the default HTTP transport
-	HTTPClient policy.Transporter
-	// Retry configures the built-in retry policy behavior
-	Retry policy.RetryOptions
-	// Telemetry configures the built-in telemetry policy behavior
-	Telemetry policy.TelemetryOptions
-	// Logging configures the built-in logging policy behavior.
-	Logging policy.LogOptions
 }
 
 // init provides the default settings for DeviceCodeCredential.
@@ -58,8 +51,9 @@ func (o *DeviceCodeCredentialOptions) init() {
 		o.ClientID = developerSignOnClientID
 	}
 	if o.UserPrompt == nil {
-		o.UserPrompt = func(dc DeviceCodeMessage) {
+		o.UserPrompt = func(ctx context.Context, dc DeviceCodeMessage) error {
 			fmt.Println(dc.Message)
+			return nil
 		}
 	}
 }
@@ -79,10 +73,10 @@ type DeviceCodeMessage struct {
 // For more information on the device code authentication flow see: https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-device-code.
 type DeviceCodeCredential struct {
 	client       *aadIdentityClient
-	tenantID     string                  // Gets the Azure Active Directory tenant (directory) ID of the service principal
-	clientID     string                  // Gets the client (application) ID of the service principal
-	userPrompt   func(DeviceCodeMessage) // Sends the user a message with a verification URL and device code to sign in to the login server
-	refreshToken string                  // Gets the refresh token sent from the service and will be used to retreive new access tokens after the initial request for a token. Thread safety for updates is handled in the authentication policy since only one goroutine will be updating at a time
+	tenantID     string
+	clientID     string
+	userPrompt   func(context.Context, DeviceCodeMessage) error
+	refreshToken string
 }
 
 // NewDeviceCodeCredential constructs a new DeviceCodeCredential used to authenticate against Azure Active Directory with a device code.
@@ -94,13 +88,13 @@ func NewDeviceCodeCredential(options *DeviceCodeCredentialOptions) (*DeviceCodeC
 	}
 	cp.init()
 	if !validTenantID(cp.TenantID) {
-		return nil, &CredentialUnavailableError{credentialType: "Device Code Credential", message: tenantIDValidationErr}
+		return nil, errors.New(tenantIDValidationErr)
 	}
 	authorityHost, err := setAuthorityHost(cp.AuthorityHost)
 	if err != nil {
 		return nil, err
 	}
-	c, err := newAADIdentityClient(authorityHost, pipelineOptions{HTTPClient: cp.HTTPClient, Retry: cp.Retry, Telemetry: cp.Telemetry, Logging: cp.Logging})
+	c, err := newAADIdentityClient(authorityHost, &cp.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -138,15 +132,20 @@ func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts policy.TokenRe
 	// make initial request to the device code endpoint for a device code and instructions for authentication
 	dc, err := c.client.requestNewDeviceCode(ctx, c.tenantID, c.clientID, opts.Scopes)
 	if err != nil {
-		addGetTokenFailureLogs("Device Code Credential", err, true)
-		return nil, err // TODO check what error type to return here
+		authErr := newAuthenticationFailedError(err, nil)
+		addGetTokenFailureLogs("Device Code Credential", authErr, true)
+		return nil, authErr
 	}
 	// send authentication flow instructions back to the user to log in and authorize the device
 
-	c.userPrompt(DeviceCodeMessage{
+	err = c.userPrompt(ctx, DeviceCodeMessage{
 		UserCode:        dc.UserCode,
 		VerificationURL: dc.VerificationURL,
-		Message:         dc.Message})
+		Message:         dc.Message,
+	})
+	if err != nil {
+		return nil, err
+	}
 	// poll the token endpoint until a valid access token is received or until authentication fails
 	for {
 		tk, err := c.client.authenticateDeviceCode(ctx, c.tenantID, c.clientID, dc.DeviceCode, opts.Scopes)
@@ -158,8 +157,8 @@ func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts policy.TokenRe
 		}
 		// if there is an error, check for an AADAuthenticationFailedError in order to check the status for token retrieval
 		// if the error is not an AADAuthenticationFailedError, then fail here since something unexpected occurred
-		var authFailed *AuthenticationFailedError
-		if errors.As(err, &authFailed) && strings.Contains(authFailed.msg, "authorization_pending") {
+		var authFailed AuthenticationFailedError
+		if errors.As(err, &authFailed) && strings.Contains(authFailed.Error(), "authorization_pending") {
 			// wait for the interval specified from the initial device code endpoint and then poll for the token again
 			time.Sleep(time.Duration(dc.Interval) * time.Second)
 		} else {

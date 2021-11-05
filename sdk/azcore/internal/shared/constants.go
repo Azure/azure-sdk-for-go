@@ -12,23 +12,28 @@ const (
 )
 
 const (
-	HeaderAzureAsync        = "Azure-AsyncOperation"
-	HeaderContentLength     = "Content-Length"
-	HeaderContentType       = "Content-Type"
-	HeaderLocation          = "Location"
-	HeaderOperationLocation = "Operation-Location"
-	HeaderRetryAfter        = "Retry-After"
-	HeaderUserAgent         = "User-Agent"
+	HeaderAuthorization          = "Authorization"
+	HeaderAuxiliaryAuthorization = "x-ms-authorization-auxiliary"
+	HeaderAzureAsync             = "Azure-AsyncOperation"
+	HeaderContentLength          = "Content-Length"
+	HeaderContentType            = "Content-Type"
+	HeaderLocation               = "Location"
+	HeaderOperationLocation      = "Operation-Location"
+	HeaderRetryAfter             = "Retry-After"
+	HeaderUserAgent              = "User-Agent"
+	HeaderXmsDate                = "x-ms-date"
 )
 
 const (
 	DefaultMaxRetries = 3
 )
 
+const BearerTokenPrefix = "Bearer "
+
 const (
 	// Module is the name of the calling module used in telemetry data.
 	Module = "azcore"
 
 	// Version is the semantic version (see http://semver.org) of this module.
-	Version = "v0.20.0"
+	Version = "v0.20.1"
 )

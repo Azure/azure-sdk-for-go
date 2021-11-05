@@ -16,9 +16,10 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	armpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	azpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
@@ -54,9 +55,15 @@ const rpRegisteredResp = `{
 
 const requestEndpoint = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/fakeResourceGroupo/providers/Microsoft.Storage/storageAccounts/fakeAccountName"
 
-func testRPRegistrationOptions(t policy.Transporter) *RegistrationOptions {
-	def := RegistrationOptions{}
-	def.HTTPClient = t
+func newTestRPRegistrationPipeline(srv *mock.Server) pipeline.Pipeline {
+	opts := azcore.ClientOptions{Transport: srv}
+	rp := NewRPRegistrationPolicy(srv.URL(), mockTokenCred{}, testRPRegistrationOptions(srv))
+	return runtime.NewPipeline("test", "v0.1.0", []azpolicy.Policy{rp}, nil, &opts)
+}
+
+func testRPRegistrationOptions(t azpolicy.Transporter) *armpolicy.RegistrationOptions {
+	def := armpolicy.RegistrationOptions{}
+	def.Transport = t
 	def.PollingDelay = 100 * time.Millisecond
 	def.PollingDuration = 1 * time.Second
 	return &def
@@ -64,13 +71,13 @@ func testRPRegistrationOptions(t policy.Transporter) *RegistrationOptions {
 
 type mockTokenCred struct{}
 
-func (mockTokenCred) NewAuthenticationPolicy(runtime.AuthenticationOptions) policy.Policy {
-	return pipeline.PolicyFunc(func(req *policy.Request) (*http.Response, error) {
+func (mockTokenCred) NewAuthenticationPolicy() azpolicy.Policy {
+	return pipeline.PolicyFunc(func(req *azpolicy.Request) (*http.Response, error) {
 		return req.Next()
 	})
 }
 
-func (mockTokenCred) GetToken(context.Context, policy.TokenRequestOptions) (*azcore.AccessToken, error) {
+func (mockTokenCred) GetToken(context.Context, azpolicy.TokenRequestOptions) (*azcore.AccessToken, error) {
 	return &azcore.AccessToken{
 		Token:     "abc123",
 		ExpiresOn: time.Now().Add(1 * time.Hour),
@@ -88,19 +95,19 @@ func TestRPRegistrationPolicySuccess(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(rpRegisteredResp)))
 	// response for original request (different status code than any of the other responses)
 	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted))
-	pl := runtime.NewPipeline(srv, NewRPRegistrationPolicy(srv.URL(), mockTokenCred{}, testRPRegistrationOptions(srv)))
+	pl := newTestRPRegistrationPipeline(srv)
 	req, err := runtime.NewRequest(context.Background(), http.MethodGet, runtime.JoinPaths(srv.URL(), requestEndpoint))
 	if err != nil {
 		t.Fatal(err)
 	}
 	// log only RP registration
-	log.SetClassifications(LogRPRegistration)
+	log.SetEvents(LogRPRegistration)
 	defer func() {
 		// reset logging
-		log.SetClassifications()
+		log.SetEvents()
 	}()
 	logEntries := 0
-	log.SetListener(func(cls log.Classification, msg string) {
+	log.SetListener(func(cls log.Event, msg string) {
 		logEntries++
 	})
 	resp, err := pl.Do(req)
@@ -128,18 +135,18 @@ func TestRPRegistrationPolicyNA(t *testing.T) {
 	defer close()
 	// response indicates no RP registration is required, policy does nothing
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-	pl := runtime.NewPipeline(srv, NewRPRegistrationPolicy(srv.URL(), mockTokenCred{}, testRPRegistrationOptions(srv)))
+	pl := newTestRPRegistrationPipeline(srv)
 	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)
 	}
 	// log only RP registration
-	log.SetClassifications(LogRPRegistration)
+	log.SetEvents(LogRPRegistration)
 	defer func() {
 		// reset logging
-		log.SetClassifications()
+		log.SetEvents()
 	}()
-	log.SetListener(func(cls log.Classification, msg string) {
+	log.SetListener(func(cls log.Event, msg string) {
 		t.Fatalf("unexpected log entry %s: %s", cls, msg)
 	})
 	resp, err := pl.Do(req)
@@ -167,18 +174,18 @@ func TestRPRegistrationPolicy409Other(t *testing.T) {
 	defer close()
 	// test getting a 409 but not due to registration required
 	srv.AppendResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(failedResp)))
-	pl := runtime.NewPipeline(srv, NewRPRegistrationPolicy(srv.URL(), mockTokenCred{}, testRPRegistrationOptions(srv)))
+	pl := newTestRPRegistrationPipeline(srv)
 	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)
 	}
 	// log only RP registration
-	log.SetClassifications(LogRPRegistration)
+	log.SetEvents(LogRPRegistration)
 	defer func() {
 		// reset logging
-		log.SetClassifications()
+		log.SetEvents()
 	}()
-	log.SetListener(func(cls log.Classification, msg string) {
+	log.SetListener(func(cls log.Event, msg string) {
 		t.Fatalf("unexpected log entry %s: %s", cls, msg)
 	})
 	resp, err := pl.Do(req)
@@ -198,19 +205,19 @@ func TestRPRegistrationPolicyTimesOut(t *testing.T) {
 	// polling responses to Register() and Get(), in progress but slow
 	// tests registration takes too long, times out
 	srv.RepeatResponse(10, mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(rpRegisteringResp)), mock.WithSlowResponse(400*time.Millisecond))
-	pl := runtime.NewPipeline(srv, NewRPRegistrationPolicy(srv.URL(), mockTokenCred{}, testRPRegistrationOptions(srv)))
+	pl := newTestRPRegistrationPipeline(srv)
 	req, err := runtime.NewRequest(context.Background(), http.MethodGet, runtime.JoinPaths(srv.URL(), requestEndpoint))
 	if err != nil {
 		t.Fatal(err)
 	}
 	// log only RP registration
-	log.SetClassifications(LogRPRegistration)
+	log.SetEvents(LogRPRegistration)
 	defer func() {
 		// reset logging
-		log.SetClassifications()
+		log.SetEvents()
 	}()
 	logEntries := 0
-	log.SetListener(func(cls log.Classification, msg string) {
+	log.SetListener(func(cls log.Event, msg string) {
 		logEntries++
 	})
 	resp, err := pl.Do(req)
@@ -242,19 +249,19 @@ func TestRPRegistrationPolicyExceedsAttempts(t *testing.T) {
 		// polling response, successful registration
 		srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(rpRegisteredResp)))
 	}
-	pl := runtime.NewPipeline(srv, NewRPRegistrationPolicy(srv.URL(), mockTokenCred{}, testRPRegistrationOptions(srv)))
+	pl := newTestRPRegistrationPipeline(srv)
 	req, err := runtime.NewRequest(context.Background(), http.MethodGet, runtime.JoinPaths(srv.URL(), requestEndpoint))
 	if err != nil {
 		t.Fatal(err)
 	}
 	// log only RP registration
-	log.SetClassifications(LogRPRegistration)
+	log.SetEvents(LogRPRegistration)
 	defer func() {
 		// reset logging
-		log.SetClassifications()
+		log.SetEvents()
 	}()
 	logEntries := 0
-	log.SetListener(func(cls log.Classification, msg string) {
+	log.SetListener(func(cls log.Event, msg string) {
 		logEntries++
 	})
 	resp, err := pl.Do(req)
@@ -288,17 +295,17 @@ func TestRPRegistrationPolicyCanCancel(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpUnregisteredResp)))
 	// polling responses to Register() and Get(), in progress but slow so we have time to cancel
 	srv.RepeatResponse(10, mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(rpRegisteringResp)), mock.WithSlowResponse(300*time.Millisecond))
-	opts := RegistrationOptions{}
-	opts.HTTPClient = srv
-	pl := runtime.NewPipeline(srv, NewRPRegistrationPolicy(srv.URL(), mockTokenCred{}, &opts))
+	opts := armpolicy.RegistrationOptions{}
+	opts.Transport = srv
+	pl := newTestRPRegistrationPipeline(srv)
 	// log only RP registration
-	log.SetClassifications(LogRPRegistration)
+	log.SetEvents(LogRPRegistration)
 	defer func() {
 		// reset logging
-		log.SetClassifications()
+		log.SetEvents()
 	}()
 	logEntries := 0
-	log.SetListener(func(cls log.Classification, msg string) {
+	log.SetListener(func(cls log.Event, msg string) {
 		logEntries++
 	})
 
@@ -311,7 +318,7 @@ func TestRPRegistrationPolicyCanCancel(t *testing.T) {
 	go func() {
 		defer wg.Done()
 		// create request and start pipeline
-		var req *policy.Request
+		var req *azpolicy.Request
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(srv.URL(), requestEndpoint))
 		if err != nil {
 			return
@@ -343,19 +350,19 @@ func TestRPRegistrationPolicyDisabled(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpUnregisteredResp)))
 	ops := testRPRegistrationOptions(srv)
 	ops.MaxAttempts = -1
-	pl := runtime.NewPipeline(srv, NewRPRegistrationPolicy(srv.URL(), mockTokenCred{}, ops))
+	pl := runtime.NewPipeline("test", "v0.1.0", []pipeline.Policy{NewRPRegistrationPolicy(srv.URL(), mockTokenCred{}, ops)}, nil, nil)
 	req, err := runtime.NewRequest(context.Background(), http.MethodGet, runtime.JoinPaths(srv.URL(), requestEndpoint))
 	if err != nil {
 		t.Fatal(err)
 	}
 	// log only RP registration
-	log.SetClassifications(LogRPRegistration)
+	log.SetEvents(LogRPRegistration)
 	defer func() {
 		// reset logging
-		log.SetClassifications()
+		log.SetEvents()
 	}()
 	logEntries := 0
-	log.SetListener(func(cls log.Classification, msg string) {
+	log.SetListener(func(cls log.Event, msg string) {
 		logEntries++
 	})
 	resp, err := pl.Do(req)

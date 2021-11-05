@@ -23,6 +23,7 @@ type LimitObjectType = original.LimitObjectType
 
 const (
 	LimitObjectTypeLimitJSONObject LimitObjectType = original.LimitObjectTypeLimitJSONObject
+	LimitObjectTypeLimitValue      LimitObjectType = original.LimitObjectTypeLimitValue
 )
 
 type LimitType = original.LimitType
@@ -66,7 +67,6 @@ type CurrentUsagesBase = original.CurrentUsagesBase
 type ExceptionResponse = original.ExceptionResponse
 type LimitJSONObject = original.LimitJSONObject
 type LimitObject = original.LimitObject
-type LimitValue = original.LimitValue
 type Limits = original.Limits
 type LimitsIterator = original.LimitsIterator
 type LimitsPage = original.LimitsPage

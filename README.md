@@ -28,7 +28,7 @@ Previous Go SDK packages are located under [/services folder](https://github.com
 
 For instructions and documentation on how to use our Azure SDK for Go, we have provided quick-start tutorials for both new and previous releases. 
 
-* [Quickstart tutorial for new releases](https://aka.ms/azsdk/go/mgmt). Documentation is also available at each readme file of the individual module (Example: [Readme for Compute Module](https://github.com/Azure/azure-sdk-for-go/tree/master/sdk/compute/armcompute))
+* [Quickstart tutorial for new releases](https://aka.ms/azsdk/go/mgmt). Documentation is also available at each readme file of the individual module (Example: [Readme for Compute Module](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/compute/armcompute))
 * [Quickstart tutorial for previous versions](https://aka.ms/azsdk/go/mgmt/previous)
 
 ## Other Azure Go Packages
@@ -51,7 +51,7 @@ Packages that are still in public preview can be found under the `services/previ
 
 More code samples for using the management library for Go SDK can be found in the following locations
 - [Go SDK Code Samples Repo](https://github.com/azure-samples/azure-sdk-for-go-samples)
-- Example files under each package. For example, examples for Network packages can be [found here](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/network/armnetwork/example_networkinterfaces_test.go)
+- Example files under each package. For example, examples for Network packages can be [found here](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/resourcemanager/network/armnetwork/example_networkinterfaces_test.go)
 
 ## Reporting security issues and security bugs
 

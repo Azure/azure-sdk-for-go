@@ -67,9 +67,9 @@ func TestReceiverForceTimeoutWithTooFewMessages(t *testing.T) {
 	require.NoError(t, err)
 
 	// there's only one message, requesting more messages will time out.
-	messages, err := receiver.ReceiveMessages(context.Background(), 1+1, &ReceiveOptions{
-		MaxWaitTime: 10 * time.Second,
-	})
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	messages, err := receiver.ReceiveMessages(ctx, 1+1, nil)
 	require.NoError(t, err)
 
 	require.EqualValues(t,
@@ -127,11 +127,13 @@ func TestReceiveWithEarlyFirstMessageTimeout(t *testing.T) {
 	receiver, err := serviceBusClient.NewReceiverForQueue(queueName, nil)
 	require.NoError(t, err)
 
+	// this is never meant to be hit since the first message time is so short.
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Minute)
+	defer cancel()
+
 	startTime := time.Now()
-	messages, err := receiver.ReceiveMessages(context.Background(), 1,
+	messages, err := receiver.ReceiveMessages(ctx, 1,
 		&ReceiveOptions{
-			// this is never meant to be hit since the first message time is so short.
-			MaxWaitTime:                  10 * time.Minute,
 			maxWaitTimeAfterFirstMessage: time.Millisecond,
 		})
 
@@ -164,9 +166,10 @@ func TestReceiverSendAndReceiveManyTimes(t *testing.T) {
 	var allMessages []*ReceivedMessage
 
 	for i := 0; i < 100; i++ {
-		messages, err := receiver.ReceiveMessages(context.Background(), 1, &ReceiveOptions{
-			MaxWaitTime: 10 * time.Second,
-		})
+		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		defer cancel()
+
+		messages, err := receiver.ReceiveMessages(ctx, 1, nil)
 		require.NoError(t, err)
 		allMessages = append(allMessages, messages...)
 
@@ -275,7 +278,7 @@ func TestReceiverPeek(t *testing.T) {
 		"Message 0", "Message 1", "Message 2",
 	}, getSortedBodies(append(peekedMessages, peekedMessages2...)))
 
-	repeekedMessages, err := receiver.PeekMessages(ctx, 1, &PeekOptions{
+	repeekedMessages, err := receiver.PeekMessages(ctx, 1, &PeekMessagesOptions{
 		FromSequenceNumber: peekedMessages2[0].SequenceNumber,
 	})
 	require.NoError(t, err)
@@ -291,6 +294,45 @@ func TestReceiverPeek(t *testing.T) {
 	require.Empty(t, noMessagesExpected)
 }
 
+func TestReceiver_RenewMessageLock(t *testing.T) {
+	client, cleanup, queueName := setupLiveTest(t, nil)
+	defer cleanup()
+
+	sender, err := client.NewSender(queueName)
+	require.NoError(t, err)
+
+	err = sender.SendMessage(context.Background(), &Message{
+		Body: []byte("hello world"),
+	})
+	require.NoError(t, err)
+
+	receiver, err := client.NewReceiverForQueue(queueName, nil)
+	require.NoError(t, err)
+
+	messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+
+	time.Sleep(2 * time.Second)
+	lockedUntilOld := messages[0].LockedUntil
+	require.NoError(t, receiver.RenewMessageLock(context.Background(), messages[0]))
+
+	// these should hopefully be unaffected by clock drift since both values come from
+	// the service's times, not ours.
+	require.Greater(t, messages[0].LockedUntil.UnixNano(), lockedUntilOld.UnixNano())
+
+	// try renewing a bogus token
+	for i := 0; i < len(messages[0].LockToken); i++ {
+		messages[0].LockToken[i] = 0
+	}
+
+	expectedLockBadError := receiver.RenewMessageLock(context.Background(), messages[0])
+	// String matching can go away once we fix #15644
+	// For now it at least provides the user with good context that something is incorrect about their lock token.
+	require.Contains(t, expectedLockBadError.Error(),
+		"status code 410 and description: The lock supplied is invalid. Either the lock expired, or the message has already been removed from the queue",
+		"error message from SB comes through")
+}
+
 func TestReceiverOptions(t *testing.T) {
 	// defaults
 	receiver := &Receiver{}
@@ -298,7 +340,7 @@ func TestReceiverOptions(t *testing.T) {
 
 	require.NoError(t, applyReceiverOptions(receiver, e, nil))
 
-	require.EqualValues(t, PeekLock, receiver.receiveMode)
+	require.EqualValues(t, ReceiveModePeekLock, receiver.receiveMode)
 	path, err := e.String()
 	require.NoError(t, err)
 	require.EqualValues(t, "topic/Subscriptions/subscription", path)
@@ -308,11 +350,11 @@ func TestReceiverOptions(t *testing.T) {
 	e = &entity{Topic: "topic", Subscription: "subscription"}
 
 	require.NoError(t, applyReceiverOptions(receiver, e, &ReceiverOptions{
-		ReceiveMode: ReceiveAndDelete,
+		ReceiveMode: ReceiveModeReceiveAndDelete,
 		SubQueue:    SubQueueTransfer,
 	}))
 
-	require.EqualValues(t, ReceiveAndDelete, receiver.receiveMode)
+	require.EqualValues(t, ReceiveModeReceiveAndDelete, receiver.receiveMode)
 	path, err = e.String()
 	require.NoError(t, err)
 	require.EqualValues(t, "topic/Subscriptions/subscription/$Transfer/$DeadLetterQueue", path)

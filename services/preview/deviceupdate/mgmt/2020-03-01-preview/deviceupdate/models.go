@@ -11,8 +11,10 @@ import (
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/Azure/go-autorest/tracing"
+	"github.com/gofrs/uuid"
 	"net/http"
 )
 
@@ -24,6 +26,8 @@ type Account struct {
 	autorest.Response `json:"-"`
 	// AccountProperties - Device Update account properties.
 	*AccountProperties `json:"properties,omitempty"`
+	// Identity - The type of identity used for the resource.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
@@ -34,6 +38,8 @@ type Account struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
+	// SystemData - READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Account.
@@ -41,6 +47,9 @@ func (a Account) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if a.AccountProperties != nil {
 		objectMap["properties"] = a.AccountProperties
+	}
+	if a.Identity != nil {
+		objectMap["identity"] = a.Identity
 	}
 	if a.Tags != nil {
 		objectMap["tags"] = a.Tags
@@ -68,6 +77,15 @@ func (a *Account) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				a.AccountProperties = &accountProperties
+			}
+		case "identity":
+			if v != nil {
+				var identity ManagedServiceIdentity
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				a.Identity = &identity
 			}
 		case "tags":
 			if v != nil {
@@ -113,6 +131,15 @@ func (a *Account) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				a.Type = &typeVar
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				a.SystemData = &systemData
 			}
 		}
 	}
@@ -281,15 +308,20 @@ func NewAccountListPage(cur AccountList, getNextPage func(context.Context, Accou
 
 // AccountProperties device Update account properties.
 type AccountProperties struct {
-	// ProvisioningState - READ-ONLY; Provisioning state. Possible values include: 'Succeeded', 'Deleted', 'Failed', 'Canceled', 'Accepted', 'Creating'
+	// ProvisioningState - READ-ONLY; Provisioning state. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateDeleted', 'ProvisioningStateFailed', 'ProvisioningStateCanceled', 'ProvisioningStateAccepted', 'ProvisioningStateCreating'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// HostName - READ-ONLY; API host name.
 	HostName *string `json:"hostName,omitempty"`
+	// PublicNetworkAccess - Whether or not public network access is allowed for the container registry. Possible values include: 'Enabled', 'Disabled'
+	PublicNetworkAccess PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AccountProperties.
 func (a AccountProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if a.PublicNetworkAccess != "" {
+		objectMap["publicNetworkAccess"] = a.PublicNetworkAccess
+	}
 	return json.Marshal(objectMap)
 }
 
@@ -418,6 +450,8 @@ func (future *AccountsUpdateFuture) result(client AccountsClient) (a Account, er
 
 // AccountUpdate request payload used to update and existing Accounts.
 type AccountUpdate struct {
+	// Identity - The type of identity used for the resource.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 	// Tags - List of key value pairs that describe the resource. This will overwrite the existing tags.
@@ -427,6 +461,9 @@ type AccountUpdate struct {
 // MarshalJSON is the custom marshaler for AccountUpdate.
 func (au AccountUpdate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if au.Identity != nil {
+		objectMap["identity"] = au.Identity
+	}
 	if au.Location != nil {
 		objectMap["location"] = au.Location
 	}
@@ -446,12 +483,43 @@ type AzureEntityResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
+	// SystemData - READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AzureEntityResource.
 func (aer AzureEntityResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
+}
+
+// CheckNameAvailabilityRequest the check availability request body.
+type CheckNameAvailabilityRequest struct {
+	// Name - The name of the resource for which availability needs to be checked.
+	Name *string `json:"name,omitempty"`
+	// Type - The resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// CheckNameAvailabilityResponse the check availability result.
+type CheckNameAvailabilityResponse struct {
+	autorest.Response `json:"-"`
+	// NameAvailable - Indicates if the resource name is available.
+	NameAvailable *bool `json:"nameAvailable,omitempty"`
+	// Reason - The reason why the given name is not available. Possible values include: 'Invalid', 'AlreadyExists'
+	Reason CheckNameAvailabilityReason `json:"reason,omitempty"`
+	// Message - Detailed reason why the given name is available.
+	Message *string `json:"message,omitempty"`
+}
+
+// DiagnosticStorageProperties customer-initiated diagnostic log collection storage properties
+type DiagnosticStorageProperties struct {
+	// AuthenticationType - Authentication Type
+	AuthenticationType *string `json:"authenticationType,omitempty"`
+	// ConnectionString - ConnectionString of the diagnostic storage account
+	ConnectionString *string `json:"connectionString,omitempty"`
+	// ResourceID - ResourceId of the diagnostic storage account
+	ResourceID *string `json:"resourceId,omitempty"`
 }
 
 // ErrorAdditionalInfo the resource management error additional info.
@@ -468,21 +536,8 @@ func (eai ErrorAdditionalInfo) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ErrorDefinition error response indicates that the service is not able to process the incoming request.
-type ErrorDefinition struct {
-	// Error - READ-ONLY; Error details.
-	Error *ErrorResponse `json:"error,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for ErrorDefinition.
-func (ed ErrorDefinition) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	return json.Marshal(objectMap)
-}
-
-// ErrorResponse common error response for all Azure Resource Manager APIs to return error details for
-// failed operations. (This also follows the OData error response format.)
-type ErrorResponse struct {
+// ErrorDetail the error detail.
+type ErrorDetail struct {
 	// Code - READ-ONLY; The error code.
 	Code *string `json:"code,omitempty"`
 	// Message - READ-ONLY; The error message.
@@ -490,14 +545,126 @@ type ErrorResponse struct {
 	// Target - READ-ONLY; The error target.
 	Target *string `json:"target,omitempty"`
 	// Details - READ-ONLY; The error details.
-	Details *[]ErrorResponse `json:"details,omitempty"`
+	Details *[]ErrorDetail `json:"details,omitempty"`
 	// AdditionalInfo - READ-ONLY; The error additional info.
 	AdditionalInfo *[]ErrorAdditionalInfo `json:"additionalInfo,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for ErrorResponse.
-func (er ErrorResponse) MarshalJSON() ([]byte, error) {
+// MarshalJSON is the custom marshaler for ErrorDetail.
+func (ed ErrorDetail) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// ErrorResponse common error response for all Azure Resource Manager APIs to return error details for
+// failed operations. (This also follows the OData error response format.).
+type ErrorResponse struct {
+	// Error - The error object.
+	Error *ErrorDetail `json:"error,omitempty"`
+}
+
+// GroupInformation the group information for creating a private endpoint on an Account
+type GroupInformation struct {
+	autorest.Response `json:"-"`
+	// GroupInformationProperties - The properties for a group information object
+	*GroupInformationProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+	// SystemData - READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for GroupInformation.
+func (gi GroupInformation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if gi.GroupInformationProperties != nil {
+		objectMap["properties"] = gi.GroupInformationProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for GroupInformation struct.
+func (gi *GroupInformation) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var groupInformationProperties GroupInformationProperties
+				err = json.Unmarshal(*v, &groupInformationProperties)
+				if err != nil {
+					return err
+				}
+				gi.GroupInformationProperties = &groupInformationProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				gi.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				gi.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				gi.Type = &typeVar
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				gi.SystemData = &systemData
+			}
+		}
+	}
+
+	return nil
+}
+
+// GroupInformationProperties the properties for a group information object
+type GroupInformationProperties struct {
+	// ProvisioningState - READ-ONLY; The provisioning state of private link group ID. Possible values include: 'Succeeded', 'Failed', 'Canceled'
+	ProvisioningState GroupIDProvisioningState `json:"provisioningState,omitempty"`
+	// GroupID - READ-ONLY; The private link resource group id.
+	GroupID *string `json:"groupId,omitempty"`
+	// RequiredMembers - READ-ONLY; The private link resource required member names.
+	RequiredMembers *[]string `json:"requiredMembers,omitempty"`
+	// RequiredZoneNames - The private link resource Private link DNS zone name.
+	RequiredZoneNames *[]string `json:"requiredZoneNames,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for GroupInformationProperties.
+func (gip GroupInformationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if gip.RequiredZoneNames != nil {
+		objectMap["requiredZoneNames"] = gip.RequiredZoneNames
+	}
 	return json.Marshal(objectMap)
 }
 
@@ -516,6 +683,8 @@ type Instance struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
+	// SystemData - READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Instance.
@@ -595,6 +764,15 @@ func (i *Instance) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				i.Type = &typeVar
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				i.SystemData = &systemData
 			}
 		}
 	}
@@ -763,12 +941,15 @@ func NewInstanceListPage(cur InstanceList, getNextPage func(context.Context, Ins
 
 // InstanceProperties device Update instance properties.
 type InstanceProperties struct {
-	// ProvisioningState - READ-ONLY; Provisioning state. Possible values include: 'Succeeded', 'Deleted', 'Failed', 'Canceled', 'Accepted', 'Creating'
+	// ProvisioningState - READ-ONLY; Provisioning state. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateDeleted', 'ProvisioningStateFailed', 'ProvisioningStateCanceled', 'ProvisioningStateAccepted', 'ProvisioningStateCreating'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// AccountName - READ-ONLY; Parent Device Update Account name which Instance belongs to.
 	AccountName *string `json:"accountName,omitempty"`
 	// IotHubs - List of IoT Hubs associated with the account.
 	IotHubs *[]IotHubSettings `json:"iotHubs,omitempty"`
+	// EnableDiagnostics - Enables or Disables the diagnostic logs collection
+	EnableDiagnostics           *bool                        `json:"enableDiagnostics,omitempty"`
+	DiagnosticStorageProperties *DiagnosticStorageProperties `json:"diagnosticStorageProperties,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for InstanceProperties.
@@ -776,6 +957,12 @@ func (i InstanceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if i.IotHubs != nil {
 		objectMap["iotHubs"] = i.IotHubs
+	}
+	if i.EnableDiagnostics != nil {
+		objectMap["enableDiagnostics"] = i.EnableDiagnostics
+	}
+	if i.DiagnosticStorageProperties != nil {
+		objectMap["diagnosticStorageProperties"] = i.DiagnosticStorageProperties
 	}
 	return json.Marshal(objectMap)
 }
@@ -870,6 +1057,29 @@ type IotHubSettings struct {
 	EventHubConnectionString *string `json:"eventHubConnectionString,omitempty"`
 }
 
+// ManagedServiceIdentity managed service identity (system assigned and/or user assigned identities)
+type ManagedServiceIdentity struct {
+	// PrincipalID - READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	PrincipalID *uuid.UUID `json:"principalId,omitempty"`
+	// TenantID - READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *uuid.UUID `json:"tenantId,omitempty"`
+	// Type - Possible values include: 'None', 'SystemAssigned', 'UserAssigned', 'SystemAssignedUserAssigned'
+	Type                   ManagedServiceIdentityType       `json:"type,omitempty"`
+	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedServiceIdentity.
+func (msi ManagedServiceIdentity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if msi.Type != "" {
+		objectMap["type"] = msi.Type
+	}
+	if msi.UserAssignedIdentities != nil {
+		objectMap["userAssignedIdentities"] = msi.UserAssignedIdentities
+	}
+	return json.Marshal(objectMap)
+}
+
 // Operation details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
 	// Name - READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write", "Microsoft.Compute/virtualMachines/capture/action"
@@ -878,7 +1088,7 @@ type Operation struct {
 	IsDataAction *bool `json:"isDataAction,omitempty"`
 	// Display - Localized display information for this particular operation.
 	Display *OperationDisplay `json:"display,omitempty"`
-	// Origin - READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default value is "user,system". Possible values include: 'User', 'System', 'Usersystem'
+	// Origin - READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default value is "user,system". Possible values include: 'OriginUser', 'OriginSystem', 'OriginUsersystem'
 	Origin Origin `json:"origin,omitempty"`
 	// ActionType - READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs. Possible values include: 'Internal'
 	ActionType ActionType `json:"actionType,omitempty"`
@@ -1077,6 +1287,239 @@ func NewOperationListResultPage(cur OperationListResult, getNextPage func(contex
 	}
 }
 
+// PrivateEndpoint the Private Endpoint resource.
+type PrivateEndpoint struct {
+	// ID - READ-ONLY; The ARM identifier for Private Endpoint
+	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PrivateEndpoint.
+func (peVar PrivateEndpoint) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// PrivateEndpointConnection the Private Endpoint Connection resource.
+type PrivateEndpointConnection struct {
+	autorest.Response `json:"-"`
+	// PrivateEndpointConnectionProperties - Resource properties.
+	*PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+	// SystemData - READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PrivateEndpointConnection.
+func (pec PrivateEndpointConnection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pec.PrivateEndpointConnectionProperties != nil {
+		objectMap["properties"] = pec.PrivateEndpointConnectionProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for PrivateEndpointConnection struct.
+func (pec *PrivateEndpointConnection) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var privateEndpointConnectionProperties PrivateEndpointConnectionProperties
+				err = json.Unmarshal(*v, &privateEndpointConnectionProperties)
+				if err != nil {
+					return err
+				}
+				pec.PrivateEndpointConnectionProperties = &privateEndpointConnectionProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				pec.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				pec.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				pec.Type = &typeVar
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				pec.SystemData = &systemData
+			}
+		}
+	}
+
+	return nil
+}
+
+// PrivateEndpointConnectionListResult list of private endpoint connection associated with the specified
+// storage account
+type PrivateEndpointConnectionListResult struct {
+	autorest.Response `json:"-"`
+	// Value - Array of private endpoint connections
+	Value *[]PrivateEndpointConnection `json:"value,omitempty"`
+}
+
+// PrivateEndpointConnectionProperties properties of the PrivateEndpointConnectProperties.
+type PrivateEndpointConnectionProperties struct {
+	// PrivateEndpoint - The resource of private end point.
+	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
+	// PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer and provider.
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
+	// ProvisioningState - The provisioning state of the private endpoint connection resource. Possible values include: 'PrivateEndpointConnectionProvisioningStateSucceeded', 'PrivateEndpointConnectionProvisioningStateCreating', 'PrivateEndpointConnectionProvisioningStateDeleting', 'PrivateEndpointConnectionProvisioningStateFailed'
+	ProvisioningState PrivateEndpointConnectionProvisioningState `json:"provisioningState,omitempty"`
+}
+
+// PrivateEndpointConnectionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
+type PrivateEndpointConnectionsCreateOrUpdateFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(PrivateEndpointConnectionsClient) (PrivateEndpointConnection, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *PrivateEndpointConnectionsCreateOrUpdateFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for PrivateEndpointConnectionsCreateOrUpdateFuture.Result.
+func (future *PrivateEndpointConnectionsCreateOrUpdateFuture) result(client PrivateEndpointConnectionsClient) (pec PrivateEndpointConnection, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "deviceupdate.PrivateEndpointConnectionsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		pec.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("deviceupdate.PrivateEndpointConnectionsCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if pec.Response.Response, err = future.GetResult(sender); err == nil && pec.Response.Response.StatusCode != http.StatusNoContent {
+		pec, err = client.CreateOrUpdateResponder(pec.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "deviceupdate.PrivateEndpointConnectionsCreateOrUpdateFuture", "Result", pec.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// PrivateEndpointConnectionsDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type PrivateEndpointConnectionsDeleteFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(PrivateEndpointConnectionsClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *PrivateEndpointConnectionsDeleteFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for PrivateEndpointConnectionsDeleteFuture.Result.
+func (future *PrivateEndpointConnectionsDeleteFuture) result(client PrivateEndpointConnectionsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "deviceupdate.PrivateEndpointConnectionsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("deviceupdate.PrivateEndpointConnectionsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// PrivateLinkResourceListResult the available private link resources for an Account
+type PrivateLinkResourceListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of available private link resources for an Account
+	Value *[]GroupInformation `json:"value,omitempty"`
+	// NextLink - The URI that can be used to request the next list of private link resources.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// PrivateLinkResourceProperties properties of a private link resource.
+type PrivateLinkResourceProperties struct {
+	// GroupID - READ-ONLY; The private link resource group id.
+	GroupID *string `json:"groupId,omitempty"`
+	// RequiredMembers - READ-ONLY; The private link resource required member names.
+	RequiredMembers *[]string `json:"requiredMembers,omitempty"`
+	// RequiredZoneNames - The private link resource Private link DNS zone name.
+	RequiredZoneNames *[]string `json:"requiredZoneNames,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PrivateLinkResourceProperties.
+func (plrp PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if plrp.RequiredZoneNames != nil {
+		objectMap["requiredZoneNames"] = plrp.RequiredZoneNames
+	}
+	return json.Marshal(objectMap)
+}
+
+// PrivateLinkServiceConnectionState a collection of information about the state of the connection between
+// service consumer and provider.
+type PrivateLinkServiceConnectionState struct {
+	// Status - Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service. Possible values include: 'Pending', 'Approved', 'Rejected'
+	Status PrivateEndpointServiceConnectionStatus `json:"status,omitempty"`
+	// Description - The reason for approval/rejection of the connection.
+	Description *string `json:"description,omitempty"`
+	// ActionsRequired - A message indicating if changes on the service provider require any updates on the consumer.
+	ActionsRequired *string `json:"actionsRequired,omitempty"`
+}
+
 // ProxyResource the resource model definition for a Azure Resource Manager proxy resource. It will not
 // have tags and a location
 type ProxyResource struct {
@@ -1086,6 +1529,8 @@ type ProxyResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
+	// SystemData - READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ProxyResource.
@@ -1102,12 +1547,30 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
+	// SystemData - READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
+}
+
+// SystemData metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// CreatedBy - The identity that created the resource.
+	CreatedBy *string `json:"createdBy,omitempty"`
+	// CreatedByType - The type of identity that created the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	CreatedByType CreatedByType `json:"createdByType,omitempty"`
+	// CreatedAt - The timestamp of resource creation (UTC).
+	CreatedAt *date.Time `json:"createdAt,omitempty"`
+	// LastModifiedBy - The identity that last modified the resource.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	// LastModifiedByType - The type of identity that last modified the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	LastModifiedByType CreatedByType `json:"lastModifiedByType,omitempty"`
+	// LastModifiedAt - The timestamp of resource last modification (UTC)
+	LastModifiedAt *date.Time `json:"lastModifiedAt,omitempty"`
 }
 
 // TagUpdate request payload used to update an existing resource's tags.
@@ -1138,6 +1601,8 @@ type TrackedResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
+	// SystemData - READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for TrackedResource.
@@ -1149,5 +1614,19 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 	if tr.Location != nil {
 		objectMap["location"] = tr.Location
 	}
+	return json.Marshal(objectMap)
+}
+
+// UserAssignedIdentity user assigned identity properties
+type UserAssignedIdentity struct {
+	// PrincipalID - READ-ONLY; The principal ID of the assigned identity.
+	PrincipalID *uuid.UUID `json:"principalId,omitempty"`
+	// ClientID - READ-ONLY; The client ID of the assigned identity.
+	ClientID *uuid.UUID `json:"clientId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UserAssignedIdentity.
+func (uai UserAssignedIdentity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
 }

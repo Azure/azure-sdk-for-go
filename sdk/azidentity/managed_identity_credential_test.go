@@ -14,6 +14,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
@@ -88,7 +89,7 @@ func TestManagedIdentityCredential_GetTokenInCloudShellMock(t *testing.T) {
 	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
 	defer clearEnvVars("MSI_ENDPOINT")
 	options := ManagedIdentityCredentialOptions{}
-	options.HTTPClient = srv
+	options.Transport = srv
 	msiCred, err := NewManagedIdentityCredential(&options)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -107,7 +108,7 @@ func TestManagedIdentityCredential_GetTokenInCloudShellMockFail(t *testing.T) {
 	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
 	defer clearEnvVars("MSI_ENDPOINT")
 	options := ManagedIdentityCredentialOptions{}
-	options.HTTPClient = srv
+	options.Transport = srv
 	msiCred, err := NewManagedIdentityCredential(&options)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -127,7 +128,7 @@ func TestManagedIdentityCredential_GetTokenInAppServiceV20170901Mock_windows(t *
 	_ = os.Setenv("MSI_SECRET", "secret")
 	defer clearEnvVars("MSI_ENDPOINT", "MSI_SECRET")
 	options := ManagedIdentityCredentialOptions{}
-	options.HTTPClient = srv
+	options.Transport = srv
 	msiCred, err := NewManagedIdentityCredential(&options)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -153,7 +154,7 @@ func TestManagedIdentityCredential_GetTokenInAppServiceV20170901Mock_linux(t *te
 	_ = os.Setenv("MSI_SECRET", "secret")
 	defer clearEnvVars("MSI_ENDPOINT", "MSI_SECRET")
 	options := ManagedIdentityCredentialOptions{}
-	options.HTTPClient = srv
+	options.Transport = srv
 	msiCred, err := NewManagedIdentityCredential(&options)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -179,7 +180,7 @@ func TestManagedIdentityCredential_GetTokenInAppServiceV20190801Mock_windows(t *
 	_ = os.Setenv("IDENTITY_HEADER", "header")
 	defer clearEnvVars("IDENTITY_ENDPOINT", "IDENTITY_HEADER")
 	options := ManagedIdentityCredentialOptions{}
-	options.HTTPClient = srv
+	options.Transport = srv
 	msiCred, err := NewManagedIdentityCredential(&options)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -205,7 +206,7 @@ func TestManagedIdentityCredential_GetTokenInAppServiceV20190801Mock_linux(t *te
 	_ = os.Setenv("IDENTITY_HEADER", "header")
 	defer clearEnvVars("IDENTITY_ENDPOINT", "IDENTITY_HEADER")
 	options := ManagedIdentityCredentialOptions{}
-	options.HTTPClient = srv
+	options.Transport = srv
 	msiCred, err := NewManagedIdentityCredential(&options)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -235,9 +236,7 @@ func TestManagedIdentityCredential_GetTokenInAzureFunctions_linux(t *testing.T) 
 	_ = os.Setenv("IDENTITY_ENDPOINT", srv.URL())
 	_ = os.Setenv("IDENTITY_HEADER", "header")
 	defer clearEnvVars("IDENTITY_ENDPOINT", "IDENTITY_HEADER")
-	msiCred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{
-		HTTPClient: srv,
-	})
+	msiCred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: srv}})
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -328,7 +327,7 @@ func TestManagedIdentityCredential_CreateAccessTokenExpiresOnStringInt(t *testin
 	_ = os.Setenv("MSI_SECRET", "secret")
 	defer clearEnvVars("MSI_ENDPOINT", "MSI_SECRET")
 	options := ManagedIdentityCredentialOptions{}
-	options.HTTPClient = srv
+	options.Transport = srv
 	msiCred, err := NewManagedIdentityCredential(&options)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -348,7 +347,7 @@ func TestManagedIdentityCredential_GetTokenInAppServiceMockFail(t *testing.T) {
 	_ = os.Setenv("MSI_SECRET", "secret")
 	defer clearEnvVars("MSI_ENDPOINT", "MSI_SECRET")
 	options := ManagedIdentityCredentialOptions{}
-	options.HTTPClient = srv
+	options.Transport = srv
 	msiCred, err := NewManagedIdentityCredential(&options)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -368,14 +367,14 @@ func TestManagedIdentityCredential_GetTokenIMDS400(t *testing.T) {
 		Body:       io.NopCloser(bytes.NewBufferString("")),
 	}
 	res2 := res1
-	options.HTTPClient = newMockImds(res1, res2)
+	options.Transport = newMockImds(res1, res2)
 	cred, err := NewManagedIdentityCredential(&options)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
 	// cred should return CredentialUnavailableError when IMDS responds 400 to a token request.
 	// Also, it shouldn't send another token request (mockIMDS will appropriately panic if it does).
-	var expected *CredentialUnavailableError
+	var expected CredentialUnavailableError
 	for i := 0; i < 3; i++ {
 		_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{msiScope}})
 		if !errors.As(err, &expected) {
@@ -392,7 +391,7 @@ func TestManagedIdentityCredential_NewManagedIdentityCredentialFail(t *testing.T
 	_ = os.Setenv("MSI_ENDPOINT", "https://t .com")
 	defer clearEnvVars("MSI_ENDPOINT")
 	options := ManagedIdentityCredentialOptions{}
-	options.HTTPClient = srv
+	options.Transport = srv
 	cred, err := NewManagedIdentityCredential(&options)
 	if err != nil {
 		t.Fatal(err)
@@ -411,7 +410,7 @@ func TestBearerPolicy_ManagedIdentityCredential(t *testing.T) {
 	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
 	defer clearEnvVars("MSI_ENDPOINT")
 	options := ManagedIdentityCredentialOptions{}
-	options.HTTPClient = srv
+	options.Transport = srv
 	cred, err := NewManagedIdentityCredential(&options)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -435,7 +434,7 @@ func TestManagedIdentityCredential_GetTokenUnexpectedJSON(t *testing.T) {
 	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
 	defer clearEnvVars("MSI_ENDPOINT")
 	options := ManagedIdentityCredentialOptions{}
-	options.HTTPClient = srv
+	options.Transport = srv
 	msiCred, err := NewManagedIdentityCredential(&options)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -496,7 +495,7 @@ func TestManagedIdentityCredential_GetTokenEnvVar(t *testing.T) {
 	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
 	defer clearEnvVars("MSI_ENDPOINT")
 	options := ManagedIdentityCredentialOptions{}
-	options.HTTPClient = srv
+	options.Transport = srv
 	msiCred, err := NewManagedIdentityCredential(&options)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -518,7 +517,7 @@ func TestManagedIdentityCredential_GetTokenNilResource(t *testing.T) {
 	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
 	defer clearEnvVars("MSI_ENDPOINT")
 	options := ManagedIdentityCredentialOptions{}
-	options.HTTPClient = srv
+	options.Transport = srv
 	msiCred, err := NewManagedIdentityCredential(&options)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -539,9 +538,7 @@ func TestManagedIdentityCredential_ScopesImmutable(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(expiresOnIntResp)))
 	_ = os.Setenv(msiEndpoint, srv.URL())
 	defer clearEnvVars(msiEndpoint)
-	options := ManagedIdentityCredentialOptions{
-		HTTPClient: srv,
-	}
+	options := ManagedIdentityCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: srv}}
 	cred, err := NewManagedIdentityCredential(&options)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -565,7 +562,7 @@ func TestManagedIdentityCredential_GetTokenMultipleResources(t *testing.T) {
 	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
 	defer clearEnvVars("MSI_ENDPOINT")
 	options := ManagedIdentityCredentialOptions{}
-	options.HTTPClient = srv
+	options.Transport = srv
 	msiCred, err := NewManagedIdentityCredential(&options)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -588,7 +585,7 @@ func TestManagedIdentityCredential_UseResourceID(t *testing.T) {
 	_ = os.Setenv("MSI_SECRET", "secret")
 	defer clearEnvVars("MSI_ENDPOINT", "MSI_SECRET")
 	options := ManagedIdentityCredentialOptions{}
-	options.HTTPClient = srv
+	options.Transport = srv
 	options.ID = ResourceID("sample/resource/id")
 	cred, err := NewManagedIdentityCredential(&options)
 	if err != nil {
@@ -676,7 +673,7 @@ func TestManagedIdentityCredential_CreateAccessTokenExpiresOnInt(t *testing.T) {
 	_ = os.Setenv("MSI_SECRET", "secret")
 	defer clearEnvVars("MSI_ENDPOINT", "MSI_SECRET")
 	options := ManagedIdentityCredentialOptions{}
-	options.HTTPClient = srv
+	options.Transport = srv
 	msiCred, err := NewManagedIdentityCredential(&options)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -697,7 +694,7 @@ func TestManagedIdentityCredential_CreateAccessTokenExpiresOnFail(t *testing.T) 
 	_ = os.Setenv("MSI_SECRET", "secret")
 	defer clearEnvVars("MSI_ENDPOINT", "MSI_SECRET")
 	options := ManagedIdentityCredentialOptions{}
-	options.HTTPClient = srv
+	options.Transport = srv
 	msiCred, err := NewManagedIdentityCredential(&options)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -705,36 +702,5 @@ func TestManagedIdentityCredential_CreateAccessTokenExpiresOnFail(t *testing.T) 
 	_, err = msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{msiScope}})
 	if err == nil {
 		t.Fatalf("expected to receive an error but received none")
-	}
-}
-
-func TestManagedIdentityCredential_ResourceID_envVar(t *testing.T) {
-	// setting a dummy value for IDENTITY_ENDPOINT in order to be able to get a ManagedIdentityCredential type
-	_ = os.Setenv("IDENTITY_ENDPOINT", "somevalue")
-	_ = os.Setenv("IDENTITY_HEADER", "header")
-	_ = os.Setenv("AZURE_RESOURCE_ID", "resource_id")
-	defer clearEnvVars("IDENTITY_ENDPOINT", "IDENTITY_HEADER", "AZURE_CLIENT_ID", "AZURE_RESOURCE_ID")
-	cred, err := NewManagedIdentityCredential(nil)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	if cred.id != ResourceID("resource_id") {
-		t.Fatal("unexpected id value stored")
-	}
-	_ = os.Setenv("AZURE_RESOURCE_ID", "")
-	_ = os.Setenv("AZURE_CLIENT_ID", "client_id")
-	cred, err = NewManagedIdentityCredential(nil)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	if cred.id != ClientID("client_id") {
-		t.Fatal("unexpected id value stored")
-	}
-	cred, err = NewManagedIdentityCredential(nil)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	if cred.id != ClientID("client_id") {
-		t.Fatal("unexpected id value stored")
 	}
 }

@@ -20,13 +20,13 @@ func TestNewClientWithAzureIdentity(t *testing.T) {
 
 	// test with azure identity support
 	ns := os.Getenv("SERVICEBUS_ENDPOINT")
-	dac, err := azidentity.NewEnvironmentCredential(nil)
+	envCred, err := azidentity.NewEnvironmentCredential(nil)
 
 	if err != nil || ns == "" {
 		t.Skip("Azure Identity compatible credentials not configured")
 	}
 
-	client, err := NewClient(ns, dac, nil)
+	client, err := NewClient(ns, envCred, nil)
 	require.NoError(t, err)
 
 	sender, err := client.NewSender(queue)
@@ -69,7 +69,7 @@ func TestNewClientUnitTests(t *testing.T) {
 		require.EqualValues(t, fakeTokenCredential, client.config.credential)
 		require.EqualValues(t, "mysb.windows.servicebus.net", client.config.fullyQualifiedNamespace)
 
-		_, err = NewClientWithConnectionString("", nil)
+		_, err = NewClientFromConnectionString("", nil)
 		require.EqualError(t, err, "connectionString must not be empty")
 
 		_, err = NewClient("", fakeTokenCredential, nil)
@@ -139,7 +139,7 @@ func TestNewClientUnitTests(t *testing.T) {
 		require.EqualValues(t, 1, ns.AMQPLinks.Closed)
 
 		client, ns = setupClient()
-		_, err = client.NewProcessorForQueue("hello", nil)
+		_, err = newProcessorForQueue(client, "hello", nil)
 
 		require.NoError(t, err)
 		require.EqualValues(t, 1, len(client.links))
@@ -149,7 +149,7 @@ func TestNewClientUnitTests(t *testing.T) {
 		require.EqualValues(t, 1, ns.AMQPLinks.Closed)
 
 		client, ns = setupClient()
-		_, err = client.NewProcessorForSubscription("hello", "world", nil)
+		_, err = newProcessorForSubscription(client, "hello", "world", nil)
 
 		require.NoError(t, err)
 		require.EqualValues(t, 1, len(client.links))

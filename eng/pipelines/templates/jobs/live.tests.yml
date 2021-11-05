@@ -85,9 +85,9 @@ jobs:
           GoWorkspace: $(GO_WORKSPACE_PATH)
           Image: $(OSVmImage)
           GoVersion: $(GoVersion)
-          RunTests: true
           EnvVars:
             AZURE_RECORD_MODE: 'live'
+            ${{ insert }}: ${{ parameters.EnvVars }}
 
       - ${{ parameters.PostSteps }}
 

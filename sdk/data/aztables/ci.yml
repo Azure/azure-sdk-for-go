@@ -25,5 +25,4 @@ stages:
 - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: 'data/aztables'
-    RunTests: true
     RunLiveTests: true

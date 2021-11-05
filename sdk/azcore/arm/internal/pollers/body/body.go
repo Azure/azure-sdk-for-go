@@ -41,7 +41,7 @@ type Poller struct {
 
 // New creates a new Poller from the provided initial response.
 func New(resp *http.Response, pollerID string) (*Poller, error) {
-	log.Write(log.LongRunningOperation, "Using Body poller.")
+	log.Write(log.EventLRO, "Using Body poller.")
 	p := &Poller{
 		Type:    pollers.MakeID(pollerID, Kind),
 		PollURL: resp.Request.URL.String(),

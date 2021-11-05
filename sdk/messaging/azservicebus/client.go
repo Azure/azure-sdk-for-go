@@ -16,7 +16,7 @@ import (
 	"github.com/devigned/tab"
 )
 
-// Client provides methods to create Sender, Receiver and Processor
+// Client provides methods to create Sender and Receiver
 // instances to send and receive messages from Service Bus.
 type Client struct {
 	config    clientConfig
@@ -32,7 +32,7 @@ type Client struct {
 	links       map[uint64]internal.Closeable
 }
 
-// ClientOptions contains options for the `NewClient` and `NewClientWithConnectionString`
+// ClientOptions contains options for the `NewClient` and `NewClientFromConnectionString`
 // functions.
 type ClientOptions struct {
 	// TLSConfig configures a client with a custom *tls.Config.
@@ -58,10 +58,10 @@ func NewClient(fullyQualifiedNamespace string, credential azcore.TokenCredential
 	}, options)
 }
 
-// NewClient creates a new Client for a Service Bus namespace, using a TokenCredential.
+// NewClientFromConnectionString creates a new Client for a Service Bus namespace using a connection string.
 // A Client allows you create receivers (for queues or subscriptions) and senders (for queues and topics).
 // connectionString is a Service Bus connection string for the namespace or for an entity.
-func NewClientWithConnectionString(connectionString string, options *ClientOptions) (*Client, error) {
+func NewClientFromConnectionString(connectionString string, options *ClientOptions) (*Client, error) {
 	if connectionString == "" {
 		return nil, errors.New("connectionString must not be empty")
 	}
@@ -110,48 +110,20 @@ func newClientImpl(config clientConfig, options *ClientOptions) (*Client, error)
 			client.config.credential)
 
 		nsOptions = append(nsOptions, option)
+	}
 
-		if client.config.tlsConfig != nil {
-			nsOptions = append(nsOptions, internal.NamespaceWithTLSConfig(client.config.tlsConfig))
-		}
+	if client.config.tlsConfig != nil {
+		nsOptions = append(nsOptions, internal.NamespaceWithTLSConfig(client.config.tlsConfig))
 	}
 
 	client.namespace, err = internal.NewNamespace(nsOptions...)
 	return client, err
 }
 
-// NewProcessor creates a Processor for a queue.
-func (client *Client) NewProcessorForQueue(queue string, options *ProcessorOptions) (*Processor, error) {
-	id, cleanupOnClose := client.getCleanupForCloseable()
-
-	processor, err := newProcessor(client.namespace, &entity{Queue: queue}, cleanupOnClose, options)
-
-	if err != nil {
-		return nil, err
-	}
-
-	client.addCloseable(id, processor)
-	return processor, nil
-}
-
-// NewProcessor creates a Processor for a subscription.
-func (client *Client) NewProcessorForSubscription(topic string, subscription string, options *ProcessorOptions) (*Processor, error) {
-	id, cleanupOnClose := client.getCleanupForCloseable()
-
-	processor, err := newProcessor(client.namespace, &entity{Topic: topic, Subscription: subscription}, cleanupOnClose, options)
-
-	if err != nil {
-		return nil, err
-	}
-
-	client.addCloseable(id, processor)
-	return processor, nil
-}
-
 // NewReceiver creates a Receiver for a queue. A receiver allows you to receive messages.
 func (client *Client) NewReceiverForQueue(queue string, options *ReceiverOptions) (*Receiver, error) {
 	id, cleanupOnClose := client.getCleanupForCloseable()
-	receiver, err := newReceiver(client.namespace, &entity{Queue: queue}, cleanupOnClose, options)
+	receiver, err := newReceiver(client.namespace, &entity{Queue: queue}, cleanupOnClose, options, nil)
 
 	if err != nil {
 		return nil, err
@@ -164,7 +136,7 @@ func (client *Client) NewReceiverForQueue(queue string, options *ReceiverOptions
 // NewReceiver creates a Receiver for a subscription. A receiver allows you to receive messages.
 func (client *Client) NewReceiverForSubscription(topic string, subscription string, options *ReceiverOptions) (*Receiver, error) {
 	id, cleanupOnClose := client.getCleanupForCloseable()
-	receiver, err := newReceiver(client.namespace, &entity{Topic: topic, Subscription: subscription}, cleanupOnClose, options)
+	receiver, err := newReceiver(client.namespace, &entity{Topic: topic, Subscription: subscription}, cleanupOnClose, options, nil)
 
 	if err != nil {
 		return nil, err
@@ -187,7 +159,103 @@ func (client *Client) NewSender(queueOrTopic string) (*Sender, error) {
 	return sender, nil
 }
 
-// Close closes the current connection Service Bus as well as any Sender, Receiver or Processors created
+// AcceptSessionForQueue accepts a session from a queue with a specific session ID.
+// NOTE: this receiver is initialized immediately, not lazily.
+func (client *Client) AcceptSessionForQueue(ctx context.Context, queue string, sessionID string, options *SessionReceiverOptions) (*SessionReceiver, error) {
+	id, cleanupOnClose := client.getCleanupForCloseable()
+	sessionReceiver, err := newSessionReceiver(
+		ctx,
+		&sessionID,
+		client.namespace,
+		&entity{Queue: queue},
+		cleanupOnClose,
+		toReceiverOptions(options))
+
+	if err != nil {
+		return nil, err
+	}
+
+	if err := sessionReceiver.init(ctx); err != nil {
+		return nil, err
+	}
+
+	client.addCloseable(id, sessionReceiver)
+	return sessionReceiver, nil
+}
+
+// AcceptSessionForSubscription accepts a session from a subscription with a specific session ID.
+// NOTE: this receiver is initialized immediately, not lazily.
+func (client *Client) AcceptSessionForSubscription(ctx context.Context, topic string, subscription string, sessionID string, options *SessionReceiverOptions) (*SessionReceiver, error) {
+	id, cleanupOnClose := client.getCleanupForCloseable()
+	sessionReceiver, err := newSessionReceiver(
+		ctx,
+		&sessionID,
+		client.namespace,
+		&entity{Topic: topic, Subscription: subscription},
+		cleanupOnClose,
+		toReceiverOptions(options))
+
+	if err != nil {
+		return nil, err
+	}
+
+	if err := sessionReceiver.init(ctx); err != nil {
+		return nil, err
+	}
+
+	client.addCloseable(id, sessionReceiver)
+	return sessionReceiver, nil
+}
+
+// AcceptNextSessionForQueue accepts the next available session from a queue.
+// NOTE: this receiver is initialized immediately, not lazily.
+func (client *Client) AcceptNextSessionForQueue(ctx context.Context, queue string, options *SessionReceiverOptions) (*SessionReceiver, error) {
+	id, cleanupOnClose := client.getCleanupForCloseable()
+	sessionReceiver, err := newSessionReceiver(
+		ctx,
+		nil,
+		client.namespace,
+		&entity{Queue: queue},
+		cleanupOnClose,
+		toReceiverOptions(options))
+
+	if err != nil {
+		return nil, err
+	}
+
+	if err := sessionReceiver.init(ctx); err != nil {
+		return nil, err
+	}
+
+	client.addCloseable(id, sessionReceiver)
+	return sessionReceiver, nil
+}
+
+// AcceptNextSessionForSubscription accepts the next available session from a subscription.
+// NOTE: this receiver is initialized immediately, not lazily.
+func (client *Client) AcceptNextSessionForSubscription(ctx context.Context, topic string, subscription string, options *SessionReceiverOptions) (*SessionReceiver, error) {
+	id, cleanupOnClose := client.getCleanupForCloseable()
+	sessionReceiver, err := newSessionReceiver(
+		ctx,
+		nil,
+		client.namespace,
+		&entity{Topic: topic, Subscription: subscription},
+		cleanupOnClose,
+		toReceiverOptions(options))
+
+	if err != nil {
+		return nil, err
+	}
+
+	if err := sessionReceiver.init(ctx); err != nil {
+		return nil, err
+	}
+
+	client.addCloseable(id, sessionReceiver)
+	return sessionReceiver, nil
+}
+
+// Close closes the current connection Service Bus as well as any Senders or Receivers created
 // using this client.
 func (client *Client) Close(ctx context.Context) error {
 	var lastError error

@@ -84,17 +84,16 @@ func NewRecordingPolicy(t *testing.T, o *recording.RecordingOptions) policy.Poli
 }
 
 func (p *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
-	// if recording.GetRecordMode() != "live" && !recording.IsLiveOnly(p.t) {
-	p.options.RouteURL(p.t, req.Raw())
-	// originalURLHost := req.Raw().URL.Host
-	// req.Raw().URL.Scheme = p.Scheme()
-	// req.Raw().URL.Host = p.Host()
-	// req.Raw().Host = p.Host()
+	if recording.GetRecordMode() != "live" && !recording.IsLiveOnly(p.t) {
+		originalURLHost := req.Raw().URL.Host
+		req.Raw().URL.Scheme = p.Scheme()
+		req.Raw().URL.Host = p.Host()
+		req.Raw().Host = p.Host()
 
-	// req.Raw().Header.Set(recording.UpstreamURIHeader, fmt.Sprintf("%v://%v", p.Scheme(), originalURLHost))
-	// req.Raw().Header.Set(recording.ModeHeader, recording.GetRecordMode())
-	// req.Raw().Header.Set(recording.IDHeader, recording.GetRecordingId(p.t))
-	// }
+		req.Raw().Header.Set(recording.UpstreamURIHeader, fmt.Sprintf("%v://%v", p.Scheme(), originalURLHost))
+		req.Raw().Header.Set(recording.ModeHeader, recording.GetRecordMode())
+		req.Raw().Header.Set(recording.IDHeader, recording.GetRecordingId(p.t))
+	}
 	return req.Next()
 }
 

@@ -53,8 +53,7 @@ func defaultTestPipeline(srv policy.Transporter, scope string) Pipeline {
 	return NewPipeline(
 		"testmodule",
 		"v0.1.0",
-		nil,
-		[]policy.Policy{b},
+		PipelineOptions{PerRetry: []policy.Policy{b}},
 		&azcore.ClientOptions{Retry: retryOpts, Transport: srv},
 	)
 }

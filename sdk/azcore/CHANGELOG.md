@@ -3,6 +3,7 @@
 ## 0.20.1 (Unreleased)
 
 ### Features Added
+* Added `AllowedHeaders` and `AllowedQueryParams` to `policy.LogOptions` to control which headers and query parameters are written to the logger.
 
 ### Breaking Changes
 

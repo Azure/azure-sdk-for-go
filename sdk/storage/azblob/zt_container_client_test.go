@@ -5,7 +5,6 @@ package azblob
 
 import (
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/assert"
 	"strings"
@@ -302,7 +301,7 @@ func (s *azblobTestSuite) TestContainerCreateAccessNone() {
 	_assert.Nil(err)
 
 	// Reference the same container URL but with anonymous credentials
-	containerClient2, err := NewContainerClient(containerClient.URL(), azcore.NewAnonymousCredential(), nil)
+	containerClient2, err := NewContainerClientWithNoCredential(containerClient.URL(), nil)
 	_assert.Nil(err)
 
 	pager := containerClient2.ListBlobsFlat(nil)

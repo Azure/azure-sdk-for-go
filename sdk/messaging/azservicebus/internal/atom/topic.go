@@ -11,6 +11,7 @@ import (
 
 type (
 	// TopicDescription is the content type for Topic management requests
+	// Refer here for ordering constraints: https://github.com/Azure/azure-sdk-for-net/blob/ed2e86cb299e11a276dcf652a9db796efe2d2a27/sdk/servicebus/Azure.Messaging.ServiceBus/src/Administration/TopicPropertiesExtensions.cs#L178
 	TopicDescription struct {
 		XMLName xml.Name `xml:"TopicDescription"`
 		BaseEntityDescription
@@ -23,6 +24,7 @@ type (
 		FilteringMessagesBeforePublishing   *bool         `xml:"FilteringMessagesBeforePublishing,omitempty"`
 		IsAnonymousAccessible               *bool         `xml:"IsAnonymousAccessible,omitempty"`
 		Status                              *EntityStatus `xml:"Status,omitempty"`
+		AccessedAt                          *date.Time    `xml:"AccessedAt,omitempty"`
 		CreatedAt                           *date.Time    `xml:"CreatedAt,omitempty"`
 		UpdatedAt                           *date.Time    `xml:"UpdatedAt,omitempty"`
 		SupportOrdering                     *bool         `xml:"SupportOrdering,omitempty"`
@@ -31,5 +33,6 @@ type (
 		EnableSubscriptionPartitioning      *bool         `xml:"EnableSubscriptionPartitioning,omitempty"`
 		EnableExpress                       *bool         `xml:"EnableExpress,omitempty"`
 		CountDetails                        *CountDetails `xml:"CountDetails,omitempty"`
+		SubscriptionCount                   *int32        `xml:"SubscriptionCount,omitempty"`
 	}
 )

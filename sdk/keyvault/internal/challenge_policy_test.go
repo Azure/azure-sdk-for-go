@@ -39,8 +39,17 @@ func TestFindScopeAndTenant(t *testing.T) {
 
 	resp.Header.Set("WWW-Authenticate", "Bearer authorization=\"https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000\", resource=\"https://managedhsm.azure.net\" scope=\"https://vault.azure.net/.default\"")
 	p.findScopeAndTenant(&resp)
-	if *p.scope != scope {
-		t.Fatalf("scope was not properly parsed, got %s, expected %s", *p.scope, scope)
+	if *p.scope != "https://vault.azure.net/.default" {
+		t.Fatalf("scope was not properly parsed, got %s, expected %s", *p.scope, "https://vault.azure.net/.default")
+	}
+	if *p.tenantID != fakeTenant {
+		t.Fatalf("tenant ID was not properly parsed, got %s, expected %s", *p.tenantID, fakeTenant)
+	}
+
+	resp.Header.Set("WWW-Authenticate", "Bearer authorization=\"https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000\", scope=\"https://vault.azure.net/.default\"")
+	p.findScopeAndTenant(&resp)
+	if *p.scope != "https://vault.azure.net/.default" {
+		t.Fatalf("scope was not properly parsed, got %s, expected %s", *p.scope, "https://vault.azure.net/.default")
 	}
 	if *p.tenantID != fakeTenant {
 		t.Fatalf("tenant ID was not properly parsed, got %s, expected %s", *p.tenantID, fakeTenant)
@@ -48,8 +57,8 @@ func TestFindScopeAndTenant(t *testing.T) {
 
 	resp.Header.Set("WWW-Authenticate", "Bearer resource=\"https://managedhsm.azure.net\" scope=\"https://vault.azure.net/.default\", authorization=\"https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000\"")
 	p.findScopeAndTenant(&resp)
-	if *p.scope != scope {
-		t.Fatalf("scope was not properly parsed, got %s, expected %s", *p.scope, scope)
+	if *p.scope != "https://vault.azure.net/.default" {
+		t.Fatalf("scope was not properly parsed, got %s, expected %s", *p.scope, "https://vault.azure.net/.default")
 	}
 	if *p.tenantID != fakeTenant {
 		t.Fatalf("tenant ID was not properly parsed, got %s, expected %s", *p.tenantID, fakeTenant)

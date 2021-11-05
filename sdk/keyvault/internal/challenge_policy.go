@@ -143,16 +143,22 @@ func (k *KeyVaultChallengePolicy) findScopeAndTenant(resp *http.Response) error 
 	for _, part := range parts {
 		subParts := strings.Split(part, "=")
 		if len(subParts) == 2 {
-			vals[subParts[0]] = strings.ReplaceAll(subParts[1], "\"", "")
+			stripped := strings.ReplaceAll(subParts[1], "\"", "")
+			if strings.HasSuffix(stripped, ",") {
+				stripped = strings.TrimSuffix(stripped, ",")
+			}
+			vals[subParts[0]] = stripped
 		}
 	}
 
 	k.tenantID = parseTenant(vals["authorization"])
-	if scope, ok := vals["resource"]; ok {
-		if !strings.HasSuffix(scope, "/.default") {
-			scope += "/.default"
-		}
+	if scope, ok := vals["scope"]; ok {
 		k.scope = &scope
+	} else if resource, ok := vals["resource"]; ok {
+		if !strings.HasSuffix(resource, "/.default") {
+			resource += "/.default"
+		}
+		k.scope = &resource
 	} else {
 		return errors.New("could not find a valid resource in the WWW-Authenticate header")
 	}

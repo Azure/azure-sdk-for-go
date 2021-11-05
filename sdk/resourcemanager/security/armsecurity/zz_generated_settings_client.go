@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // SettingsClient contains the methods for the Settings group.
@@ -30,8 +31,15 @@ type SettingsClient struct {
 }
 
 // NewSettingsClient creates a new instance of SettingsClient with the specified values.
-func NewSettingsClient(con *arm.Connection, subscriptionID string) *SettingsClient {
-	return &SettingsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SettingsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &SettingsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Settings of different configurations in security center
@@ -77,7 +85,7 @@ func (client *SettingsClient) getCreateRequest(ctx context.Context, settingName 
 func (client *SettingsClient) getHandleResponse(resp *http.Response) (SettingsGetResponse, error) {
 	result := SettingsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
-		return SettingsGetResponse{}, err
+		return SettingsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -131,7 +139,7 @@ func (client *SettingsClient) listCreateRequest(ctx context.Context, options *Se
 func (client *SettingsClient) listHandleResponse(resp *http.Response) (SettingsListResponse, error) {
 	result := SettingsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SettingsList); err != nil {
-		return SettingsListResponse{}, err
+		return SettingsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -192,7 +200,7 @@ func (client *SettingsClient) updateCreateRequest(ctx context.Context, settingNa
 func (client *SettingsClient) updateHandleResponse(resp *http.Response) (SettingsUpdateResponse, error) {
 	result := SettingsUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
-		return SettingsUpdateResponse{}, err
+		return SettingsUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

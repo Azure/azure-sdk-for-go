@@ -11,14 +11,14 @@ package armcontainerregistry
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // ReplicationsClient contains the methods for the Replications group.
@@ -30,8 +30,15 @@ type ReplicationsClient struct {
 }
 
 // NewReplicationsClient creates a new instance of ReplicationsClient with the specified values.
-func NewReplicationsClient(con *arm.Connection, subscriptionID string) *ReplicationsClient {
-	return &ReplicationsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewReplicationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ReplicationsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ReplicationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreate - Creates a replication for a container registry with the specified parameters.
@@ -95,7 +102,7 @@ func (client *ReplicationsClient) createCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, replication)
@@ -174,7 +181,7 @@ func (client *ReplicationsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -232,7 +239,7 @@ func (client *ReplicationsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -242,7 +249,7 @@ func (client *ReplicationsClient) getCreateRequest(ctx context.Context, resource
 func (client *ReplicationsClient) getHandleResponse(resp *http.Response) (ReplicationsGetResponse, error) {
 	result := ReplicationsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Replication); err != nil {
-		return ReplicationsGetResponse{}, err
+		return ReplicationsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -293,7 +300,7 @@ func (client *ReplicationsClient) listCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -303,7 +310,7 @@ func (client *ReplicationsClient) listCreateRequest(ctx context.Context, resourc
 func (client *ReplicationsClient) listHandleResponse(resp *http.Response) (ReplicationsListResponse, error) {
 	result := ReplicationsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReplicationListResult); err != nil {
-		return ReplicationsListResponse{}, err
+		return ReplicationsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -381,7 +388,7 @@ func (client *ReplicationsClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, replicationUpdateParameters)

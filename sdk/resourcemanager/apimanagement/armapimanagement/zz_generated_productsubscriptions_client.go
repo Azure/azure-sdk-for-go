@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ProductSubscriptionsClient contains the methods for the ProductSubscriptions group.
@@ -31,8 +32,15 @@ type ProductSubscriptionsClient struct {
 }
 
 // NewProductSubscriptionsClient creates a new instance of ProductSubscriptionsClient with the specified values.
-func NewProductSubscriptionsClient(con *arm.Connection, subscriptionID string) *ProductSubscriptionsClient {
-	return &ProductSubscriptionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewProductSubscriptionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ProductSubscriptionsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ProductSubscriptionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // List - Lists the collection of subscriptions to the specified product.
@@ -82,7 +90,7 @@ func (client *ProductSubscriptionsClient) listCreateRequest(ctx context.Context,
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -92,7 +100,7 @@ func (client *ProductSubscriptionsClient) listCreateRequest(ctx context.Context,
 func (client *ProductSubscriptionsClient) listHandleResponse(resp *http.Response) (ProductSubscriptionsListResponse, error) {
 	result := ProductSubscriptionsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionCollection); err != nil {
-		return ProductSubscriptionsListResponse{}, err
+		return ProductSubscriptionsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

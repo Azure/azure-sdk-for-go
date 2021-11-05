@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // AccessReviewDefaultSettingsClient contains the methods for the AccessReviewDefaultSettings group.
@@ -30,8 +31,15 @@ type AccessReviewDefaultSettingsClient struct {
 }
 
 // NewAccessReviewDefaultSettingsClient creates a new instance of AccessReviewDefaultSettingsClient with the specified values.
-func NewAccessReviewDefaultSettingsClient(con *arm.Connection, subscriptionID string) *AccessReviewDefaultSettingsClient {
-	return &AccessReviewDefaultSettingsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewAccessReviewDefaultSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AccessReviewDefaultSettingsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &AccessReviewDefaultSettingsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Get access review default settings for the subscription
@@ -73,7 +81,7 @@ func (client *AccessReviewDefaultSettingsClient) getCreateRequest(ctx context.Co
 func (client *AccessReviewDefaultSettingsClient) getHandleResponse(resp *http.Response) (AccessReviewDefaultSettingsGetResponse, error) {
 	result := AccessReviewDefaultSettingsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessReviewDefaultSettings); err != nil {
-		return AccessReviewDefaultSettingsGetResponse{}, err
+		return AccessReviewDefaultSettingsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -130,7 +138,7 @@ func (client *AccessReviewDefaultSettingsClient) putCreateRequest(ctx context.Co
 func (client *AccessReviewDefaultSettingsClient) putHandleResponse(resp *http.Response) (AccessReviewDefaultSettingsPutResponse, error) {
 	result := AccessReviewDefaultSettingsPutResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessReviewDefaultSettings); err != nil {
-		return AccessReviewDefaultSettingsPutResponse{}, err
+		return AccessReviewDefaultSettingsPutResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

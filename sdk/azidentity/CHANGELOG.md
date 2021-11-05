@@ -1,6 +1,16 @@
 # Release History
 
-## 0.12.0 (Unreleased)
+## 0.12.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 0.12.0 (2021-11-02)
 ### Breaking Changes
 * Raised minimum go version to 1.16
 * Removed `NewAuthenticationPolicy()` from credentials. Clients should instead use azcore's
@@ -18,15 +28,16 @@
   ```
 * Removed `ExcludeAzureCLICredential`, `ExcludeEnvironmentCredential`, and `ExcludeMSICredential`
   from `DefaultAzureCredentialOptions`
-* `NewClientCertificateCredential` requires the bytes of a certificate instead of
-  a path to a certificate file:
+* `NewClientCertificateCredential` requires a `[]*x509.Certificate` and `crypto.PrivateKey` instead of
+  a path to a certificate file. Added `ParseCertificates` to simplify getting these in common cases:
   ```go
   // before
   cred, err := NewClientCertificateCredential("tenant", "client-id", "/cert.pem", nil)
 
   // after
   certData, err := os.ReadFile("/cert.pem")
-  cred, err := NewClientCertificateCredential("tenant", "client-id", certData, nil)
+  certs, key, err := ParseCertificates(certData, password)
+  cred, err := NewClientCertificateCredential(tenantID, clientID, certs, key, nil)
   ```
 * Removed `InteractiveBrowserCredentialOptions.ClientSecret` and `.Port`
 * Removed `AADAuthenticationFailedError`

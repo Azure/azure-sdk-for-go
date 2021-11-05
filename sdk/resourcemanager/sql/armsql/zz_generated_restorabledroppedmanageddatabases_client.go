@@ -11,13 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // RestorableDroppedManagedDatabasesClient contains the methods for the RestorableDroppedManagedDatabases group.
@@ -29,8 +30,15 @@ type RestorableDroppedManagedDatabasesClient struct {
 }
 
 // NewRestorableDroppedManagedDatabasesClient creates a new instance of RestorableDroppedManagedDatabasesClient with the specified values.
-func NewRestorableDroppedManagedDatabasesClient(con *arm.Connection, subscriptionID string) *RestorableDroppedManagedDatabasesClient {
-	return &RestorableDroppedManagedDatabasesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewRestorableDroppedManagedDatabasesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RestorableDroppedManagedDatabasesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &RestorableDroppedManagedDatabasesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Gets a restorable dropped managed database.
@@ -84,7 +92,7 @@ func (client *RestorableDroppedManagedDatabasesClient) getCreateRequest(ctx cont
 func (client *RestorableDroppedManagedDatabasesClient) getHandleResponse(resp *http.Response) (RestorableDroppedManagedDatabasesGetResponse, error) {
 	result := RestorableDroppedManagedDatabasesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestorableDroppedManagedDatabase); err != nil {
-		return RestorableDroppedManagedDatabasesGetResponse{}, err
+		return RestorableDroppedManagedDatabasesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -145,7 +153,7 @@ func (client *RestorableDroppedManagedDatabasesClient) listByInstanceCreateReque
 func (client *RestorableDroppedManagedDatabasesClient) listByInstanceHandleResponse(resp *http.Response) (RestorableDroppedManagedDatabasesListByInstanceResponse, error) {
 	result := RestorableDroppedManagedDatabasesListByInstanceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestorableDroppedManagedDatabaseListResult); err != nil {
-		return RestorableDroppedManagedDatabasesListByInstanceResponse{}, err
+		return RestorableDroppedManagedDatabasesListByInstanceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

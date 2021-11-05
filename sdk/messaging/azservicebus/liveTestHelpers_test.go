@@ -40,6 +40,16 @@ func getConnectionString(t *testing.T) string {
 	return cs
 }
 
+func getConnectionStringWithoutManagePerms(t *testing.T) string {
+	cs := os.Getenv("SERVICEBUS_CONNECTION_STRING_NO_MANAGE")
+
+	if cs == "" {
+		t.Skip()
+	}
+
+	return cs
+}
+
 // createQueue creates a queue using a subset of entries in 'queueDescription':
 // - EnablePartitioning
 // - RequiresSession
@@ -55,7 +65,7 @@ func createQueue(t *testing.T, connectionString string, queueProperties *QueuePr
 	}
 
 	queueProperties.Name = queueName
-	_, err = adminClient.CreateQueueWithProperties(context.Background(), queueProperties)
+	_, err = adminClient.AddQueueWithProperties(context.Background(), queueProperties)
 	require.NoError(t, err)
 
 	return queueName, func() {

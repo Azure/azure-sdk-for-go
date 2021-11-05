@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // DeletedAccountsClient contains the methods for the DeletedAccounts group.
@@ -31,8 +31,15 @@ type DeletedAccountsClient struct {
 }
 
 // NewDeletedAccountsClient creates a new instance of DeletedAccountsClient with the specified values.
-func NewDeletedAccountsClient(con *arm.Connection, subscriptionID string) *DeletedAccountsClient {
-	return &DeletedAccountsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewDeletedAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DeletedAccountsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &DeletedAccountsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Returns a Cognitive Services account specified by the parameters.
@@ -86,7 +93,7 @@ func (client *DeletedAccountsClient) getCreateRequest(ctx context.Context, locat
 func (client *DeletedAccountsClient) getHandleResponse(resp *http.Response) (DeletedAccountsGetResponse, error) {
 	result := DeletedAccountsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Account); err != nil {
-		return DeletedAccountsGetResponse{}, err
+		return DeletedAccountsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -140,7 +147,7 @@ func (client *DeletedAccountsClient) listCreateRequest(ctx context.Context, opti
 func (client *DeletedAccountsClient) listHandleResponse(resp *http.Response) (DeletedAccountsListResponse, error) {
 	result := DeletedAccountsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccountListResult); err != nil {
-		return DeletedAccountsListResponse{}, err
+		return DeletedAccountsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

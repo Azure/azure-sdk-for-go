@@ -11,7 +11,6 @@ import (
 	"log"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
@@ -22,7 +21,7 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armnetwork.NewVirtualNetworksClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armnetwork.NewVirtualNetworksClient("<subscription ID>", cred, nil)
 	poller, err := client.BeginCreateOrUpdate(
 		context.Background(),
 		"<resource group name>",
@@ -57,7 +56,7 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate_withSubnets() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armnetwork.NewVirtualNetworksClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armnetwork.NewVirtualNetworksClient("<subscription ID>", cred, nil)
 	poller, err := client.BeginCreateOrUpdate(
 		context.Background(),
 		"<resource group name>",
@@ -106,7 +105,7 @@ func ExampleVirtualNetworksClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armnetwork.NewVirtualNetworksClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armnetwork.NewVirtualNetworksClient("<subscription ID>", cred, nil)
 	resp, err := client.Get(context.Background(), "<resource group name>", "<virtual network name>", nil)
 	if err != nil {
 		log.Fatalf("failed to get resource: %v", err)
@@ -119,7 +118,7 @@ func ExampleVirtualNetworksClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armnetwork.NewVirtualNetworksClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armnetwork.NewVirtualNetworksClient("<subscription ID>", cred, nil)
 	resp, err := client.BeginDelete(context.Background(), "<resource group name>", "<virtual network name>", nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a response: %v", err)

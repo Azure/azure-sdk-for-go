@@ -11,14 +11,15 @@ package armcompute
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // VirtualMachineExtensionImagesClient contains the methods for the VirtualMachineExtensionImages group.
@@ -30,8 +31,15 @@ type VirtualMachineExtensionImagesClient struct {
 }
 
 // NewVirtualMachineExtensionImagesClient creates a new instance of VirtualMachineExtensionImagesClient with the specified values.
-func NewVirtualMachineExtensionImagesClient(con *arm.Connection, subscriptionID string) *VirtualMachineExtensionImagesClient {
-	return &VirtualMachineExtensionImagesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewVirtualMachineExtensionImagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VirtualMachineExtensionImagesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &VirtualMachineExtensionImagesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Gets a virtual machine extension image.
@@ -89,7 +97,7 @@ func (client *VirtualMachineExtensionImagesClient) getCreateRequest(ctx context.
 func (client *VirtualMachineExtensionImagesClient) getHandleResponse(resp *http.Response) (VirtualMachineExtensionImagesGetResponse, error) {
 	result := VirtualMachineExtensionImagesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineExtensionImage); err != nil {
-		return VirtualMachineExtensionImagesGetResponse{}, err
+		return VirtualMachineExtensionImagesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -153,7 +161,7 @@ func (client *VirtualMachineExtensionImagesClient) listTypesCreateRequest(ctx co
 func (client *VirtualMachineExtensionImagesClient) listTypesHandleResponse(resp *http.Response) (VirtualMachineExtensionImagesListTypesResponse, error) {
 	result := VirtualMachineExtensionImagesListTypesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineExtensionImageArray); err != nil {
-		return VirtualMachineExtensionImagesListTypesResponse{}, err
+		return VirtualMachineExtensionImagesListTypesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -230,7 +238,7 @@ func (client *VirtualMachineExtensionImagesClient) listVersionsCreateRequest(ctx
 func (client *VirtualMachineExtensionImagesClient) listVersionsHandleResponse(resp *http.Response) (VirtualMachineExtensionImagesListVersionsResponse, error) {
 	result := VirtualMachineExtensionImagesListVersionsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineExtensionImageArray); err != nil {
-		return VirtualMachineExtensionImagesListVersionsResponse{}, err
+		return VirtualMachineExtensionImagesListVersionsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

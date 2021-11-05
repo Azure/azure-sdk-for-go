@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // StreamingJobsClient contains the methods for the StreamingJobs group.
@@ -31,8 +31,15 @@ type StreamingJobsClient struct {
 }
 
 // NewStreamingJobsClient creates a new instance of StreamingJobsClient with the specified values.
-func NewStreamingJobsClient(con *arm.Connection, subscriptionID string) *StreamingJobsClient {
-	return &StreamingJobsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewStreamingJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *StreamingJobsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &StreamingJobsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrReplace - Creates a streaming job or replaces an already existing streaming job.
@@ -246,7 +253,7 @@ func (client *StreamingJobsClient) getHandleResponse(resp *http.Response) (Strea
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StreamingJob); err != nil {
-		return StreamingJobsGetResponse{}, err
+		return StreamingJobsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -303,7 +310,7 @@ func (client *StreamingJobsClient) listCreateRequest(ctx context.Context, option
 func (client *StreamingJobsClient) listHandleResponse(resp *http.Response) (StreamingJobsListResponse, error) {
 	result := StreamingJobsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StreamingJobListResult); err != nil {
-		return StreamingJobsListResponse{}, err
+		return StreamingJobsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -364,7 +371,7 @@ func (client *StreamingJobsClient) listByResourceGroupCreateRequest(ctx context.
 func (client *StreamingJobsClient) listByResourceGroupHandleResponse(resp *http.Response) (StreamingJobsListByResourceGroupResponse, error) {
 	result := StreamingJobsListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StreamingJobListResult); err != nil {
-		return StreamingJobsListByResourceGroupResponse{}, err
+		return StreamingJobsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -591,7 +598,7 @@ func (client *StreamingJobsClient) updateHandleResponse(resp *http.Response) (St
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StreamingJob); err != nil {
-		return StreamingJobsUpdateResponse{}, err
+		return StreamingJobsUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

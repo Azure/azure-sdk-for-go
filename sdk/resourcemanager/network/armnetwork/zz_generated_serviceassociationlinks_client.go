@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ServiceAssociationLinksClient contains the methods for the ServiceAssociationLinks group.
@@ -30,8 +31,15 @@ type ServiceAssociationLinksClient struct {
 }
 
 // NewServiceAssociationLinksClient creates a new instance of ServiceAssociationLinksClient with the specified values.
-func NewServiceAssociationLinksClient(con *arm.Connection, subscriptionID string) *ServiceAssociationLinksClient {
-	return &ServiceAssociationLinksClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewServiceAssociationLinksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServiceAssociationLinksClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ServiceAssociationLinksClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // List - Gets a list of service association links for a subnet.
@@ -75,7 +83,7 @@ func (client *ServiceAssociationLinksClient) listCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -85,7 +93,7 @@ func (client *ServiceAssociationLinksClient) listCreateRequest(ctx context.Conte
 func (client *ServiceAssociationLinksClient) listHandleResponse(resp *http.Response) (ServiceAssociationLinksListResponse, error) {
 	result := ServiceAssociationLinksListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceAssociationLinksListResult); err != nil {
-		return ServiceAssociationLinksListResponse{}, err
+		return ServiceAssociationLinksListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

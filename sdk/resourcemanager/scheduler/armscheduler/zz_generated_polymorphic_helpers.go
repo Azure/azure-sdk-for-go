@@ -50,3 +50,22 @@ func unmarshalHTTPAuthenticationClassificationArray(rawMsg json.RawMessage) ([]H
 	}
 	return fArray, nil
 }
+
+func unmarshalHTTPAuthenticationClassificationMap(rawMsg json.RawMessage) (map[string]HTTPAuthenticationClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var rawMessages map[string]json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fMap := make(map[string]HTTPAuthenticationClassification, len(rawMessages))
+	for key, rawMessage := range rawMessages {
+		f, err := unmarshalHTTPAuthenticationClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fMap[key] = f
+	}
+	return fMap, nil
+}

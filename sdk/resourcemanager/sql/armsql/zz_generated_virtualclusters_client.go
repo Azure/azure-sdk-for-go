@@ -11,14 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // VirtualClustersClient contains the methods for the VirtualClusters group.
@@ -30,8 +30,15 @@ type VirtualClustersClient struct {
 }
 
 // NewVirtualClustersClient creates a new instance of VirtualClustersClient with the specified values.
-func NewVirtualClustersClient(con *arm.Connection, subscriptionID string) *VirtualClustersClient {
-	return &VirtualClustersClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewVirtualClustersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VirtualClustersClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &VirtualClustersClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginDelete - Deletes a virtual cluster.
@@ -155,7 +162,7 @@ func (client *VirtualClustersClient) getCreateRequest(ctx context.Context, resou
 func (client *VirtualClustersClient) getHandleResponse(resp *http.Response) (VirtualClustersGetResponse, error) {
 	result := VirtualClustersGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualCluster); err != nil {
-		return VirtualClustersGetResponse{}, err
+		return VirtualClustersGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -208,7 +215,7 @@ func (client *VirtualClustersClient) listCreateRequest(ctx context.Context, opti
 func (client *VirtualClustersClient) listHandleResponse(resp *http.Response) (VirtualClustersListResponse, error) {
 	result := VirtualClustersListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualClusterListResult); err != nil {
-		return VirtualClustersListResponse{}, err
+		return VirtualClustersListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -265,7 +272,7 @@ func (client *VirtualClustersClient) listByResourceGroupCreateRequest(ctx contex
 func (client *VirtualClustersClient) listByResourceGroupHandleResponse(resp *http.Response) (VirtualClustersListByResourceGroupResponse, error) {
 	result := VirtualClustersListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualClusterListResult); err != nil {
-		return VirtualClustersListByResourceGroupResponse{}, err
+		return VirtualClustersListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -404,7 +411,7 @@ func (client *VirtualClustersClient) updateDNSServersCreateRequest(ctx context.C
 func (client *VirtualClustersClient) updateDNSServersHandleResponse(resp *http.Response) (VirtualClustersUpdateDNSServersResponse, error) {
 	result := VirtualClustersUpdateDNSServersResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UpdateManagedInstanceDNSServersOperation); err != nil {
-		return VirtualClustersUpdateDNSServersResponse{}, err
+		return VirtualClustersUpdateDNSServersResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

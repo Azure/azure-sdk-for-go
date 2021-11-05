@@ -11,13 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // JobCredentialsClient contains the methods for the JobCredentials group.
@@ -29,8 +30,15 @@ type JobCredentialsClient struct {
 }
 
 // NewJobCredentialsClient creates a new instance of JobCredentialsClient with the specified values.
-func NewJobCredentialsClient(con *arm.Connection, subscriptionID string) *JobCredentialsClient {
-	return &JobCredentialsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewJobCredentialsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *JobCredentialsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &JobCredentialsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or updates a job credential.
@@ -88,7 +96,7 @@ func (client *JobCredentialsClient) createOrUpdateCreateRequest(ctx context.Cont
 func (client *JobCredentialsClient) createOrUpdateHandleResponse(resp *http.Response) (JobCredentialsCreateOrUpdateResponse, error) {
 	result := JobCredentialsCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobCredential); err != nil {
-		return JobCredentialsCreateOrUpdateResponse{}, err
+		return JobCredentialsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -222,7 +230,7 @@ func (client *JobCredentialsClient) getCreateRequest(ctx context.Context, resour
 func (client *JobCredentialsClient) getHandleResponse(resp *http.Response) (JobCredentialsGetResponse, error) {
 	result := JobCredentialsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobCredential); err != nil {
-		return JobCredentialsGetResponse{}, err
+		return JobCredentialsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -287,7 +295,7 @@ func (client *JobCredentialsClient) listByAgentCreateRequest(ctx context.Context
 func (client *JobCredentialsClient) listByAgentHandleResponse(resp *http.Response) (JobCredentialsListByAgentResponse, error) {
 	result := JobCredentialsListByAgentResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobCredentialListResult); err != nil {
-		return JobCredentialsListByAgentResponse{}, err
+		return JobCredentialsListByAgentResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -12,15 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // StaticSitesClient contains the methods for the StaticSites group.
@@ -32,8 +32,15 @@ type StaticSitesClient struct {
 }
 
 // NewStaticSitesClient creates a new instance of StaticSitesClient with the specified values.
-func NewStaticSitesClient(con *arm.Connection, subscriptionID string) *StaticSitesClient {
-	return &StaticSitesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewStaticSitesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *StaticSitesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &StaticSitesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginApproveOrRejectPrivateEndpointConnection - Description for Approves or rejects a private endpoint connection
@@ -239,7 +246,7 @@ func (client *StaticSitesClient) createOrUpdateStaticSiteAppSettingsCreateReques
 func (client *StaticSitesClient) createOrUpdateStaticSiteAppSettingsHandleResponse(resp *http.Response) (StaticSitesCreateOrUpdateStaticSiteAppSettingsResponse, error) {
 	result := StaticSitesCreateOrUpdateStaticSiteAppSettingsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StringDictionary); err != nil {
-		return StaticSitesCreateOrUpdateStaticSiteAppSettingsResponse{}, err
+		return StaticSitesCreateOrUpdateStaticSiteAppSettingsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -308,7 +315,7 @@ func (client *StaticSitesClient) createOrUpdateStaticSiteBuildAppSettingsCreateR
 func (client *StaticSitesClient) createOrUpdateStaticSiteBuildAppSettingsHandleResponse(resp *http.Response) (StaticSitesCreateOrUpdateStaticSiteBuildAppSettingsResponse, error) {
 	result := StaticSitesCreateOrUpdateStaticSiteBuildAppSettingsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StringDictionary); err != nil {
-		return StaticSitesCreateOrUpdateStaticSiteBuildAppSettingsResponse{}, err
+		return StaticSitesCreateOrUpdateStaticSiteBuildAppSettingsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -377,7 +384,7 @@ func (client *StaticSitesClient) createOrUpdateStaticSiteBuildFunctionAppSetting
 func (client *StaticSitesClient) createOrUpdateStaticSiteBuildFunctionAppSettingsHandleResponse(resp *http.Response) (StaticSitesCreateOrUpdateStaticSiteBuildFunctionAppSettingsResponse, error) {
 	result := StaticSitesCreateOrUpdateStaticSiteBuildFunctionAppSettingsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StringDictionary); err != nil {
-		return StaticSitesCreateOrUpdateStaticSiteBuildFunctionAppSettingsResponse{}, err
+		return StaticSitesCreateOrUpdateStaticSiteBuildFunctionAppSettingsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -522,7 +529,7 @@ func (client *StaticSitesClient) createOrUpdateStaticSiteFunctionAppSettingsCrea
 func (client *StaticSitesClient) createOrUpdateStaticSiteFunctionAppSettingsHandleResponse(resp *http.Response) (StaticSitesCreateOrUpdateStaticSiteFunctionAppSettingsResponse, error) {
 	result := StaticSitesCreateOrUpdateStaticSiteFunctionAppSettingsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StringDictionary); err != nil {
-		return StaticSitesCreateOrUpdateStaticSiteFunctionAppSettingsResponse{}, err
+		return StaticSitesCreateOrUpdateStaticSiteFunctionAppSettingsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -587,7 +594,7 @@ func (client *StaticSitesClient) createUserRolesInvitationLinkCreateRequest(ctx 
 func (client *StaticSitesClient) createUserRolesInvitationLinkHandleResponse(resp *http.Response) (StaticSitesCreateUserRolesInvitationLinkResponse, error) {
 	result := StaticSitesCreateUserRolesInvitationLinkResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StaticSiteUserInvitationResponseResource); err != nil {
-		return StaticSitesCreateUserRolesInvitationLinkResponse{}, err
+		return StaticSitesCreateUserRolesInvitationLinkResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1392,7 +1399,7 @@ func (client *StaticSitesClient) getPrivateEndpointConnectionCreateRequest(ctx c
 func (client *StaticSitesClient) getPrivateEndpointConnectionHandleResponse(resp *http.Response) (StaticSitesGetPrivateEndpointConnectionResponse, error) {
 	result := StaticSitesGetPrivateEndpointConnectionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RemotePrivateEndpointConnectionARMResource); err != nil {
-		return StaticSitesGetPrivateEndpointConnectionResponse{}, err
+		return StaticSitesGetPrivateEndpointConnectionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1454,7 +1461,7 @@ func (client *StaticSitesClient) getPrivateEndpointConnectionListCreateRequest(c
 func (client *StaticSitesClient) getPrivateEndpointConnectionListHandleResponse(resp *http.Response) (StaticSitesGetPrivateEndpointConnectionListResponse, error) {
 	result := StaticSitesGetPrivateEndpointConnectionListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionCollection); err != nil {
-		return StaticSitesGetPrivateEndpointConnectionListResponse{}, err
+		return StaticSitesGetPrivateEndpointConnectionListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1519,7 +1526,7 @@ func (client *StaticSitesClient) getPrivateLinkResourcesCreateRequest(ctx contex
 func (client *StaticSitesClient) getPrivateLinkResourcesHandleResponse(resp *http.Response) (StaticSitesGetPrivateLinkResourcesResponse, error) {
 	result := StaticSitesGetPrivateLinkResourcesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourcesWrapper); err != nil {
-		return StaticSitesGetPrivateLinkResourcesResponse{}, err
+		return StaticSitesGetPrivateLinkResourcesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1584,7 +1591,7 @@ func (client *StaticSitesClient) getStaticSiteCreateRequest(ctx context.Context,
 func (client *StaticSitesClient) getStaticSiteHandleResponse(resp *http.Response) (StaticSitesGetStaticSiteResponse, error) {
 	result := StaticSitesGetStaticSiteResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StaticSiteARMResource); err != nil {
-		return StaticSitesGetStaticSiteResponse{}, err
+		return StaticSitesGetStaticSiteResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1653,7 +1660,7 @@ func (client *StaticSitesClient) getStaticSiteBuildCreateRequest(ctx context.Con
 func (client *StaticSitesClient) getStaticSiteBuildHandleResponse(resp *http.Response) (StaticSitesGetStaticSiteBuildResponse, error) {
 	result := StaticSitesGetStaticSiteBuildResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StaticSiteBuildARMResource); err != nil {
-		return StaticSitesGetStaticSiteBuildResponse{}, err
+		return StaticSitesGetStaticSiteBuildResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1715,7 +1722,7 @@ func (client *StaticSitesClient) getStaticSiteBuildsCreateRequest(ctx context.Co
 func (client *StaticSitesClient) getStaticSiteBuildsHandleResponse(resp *http.Response) (StaticSitesGetStaticSiteBuildsResponse, error) {
 	result := StaticSitesGetStaticSiteBuildsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StaticSiteBuildCollection); err != nil {
-		return StaticSitesGetStaticSiteBuildsResponse{}, err
+		return StaticSitesGetStaticSiteBuildsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1784,7 +1791,7 @@ func (client *StaticSitesClient) getStaticSiteCustomDomainCreateRequest(ctx cont
 func (client *StaticSitesClient) getStaticSiteCustomDomainHandleResponse(resp *http.Response) (StaticSitesGetStaticSiteCustomDomainResponse, error) {
 	result := StaticSitesGetStaticSiteCustomDomainResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StaticSiteCustomDomainOverviewARMResource); err != nil {
-		return StaticSitesGetStaticSiteCustomDomainResponse{}, err
+		return StaticSitesGetStaticSiteCustomDomainResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1842,7 +1849,7 @@ func (client *StaticSitesClient) getStaticSitesByResourceGroupCreateRequest(ctx 
 func (client *StaticSitesClient) getStaticSitesByResourceGroupHandleResponse(resp *http.Response) (StaticSitesGetStaticSitesByResourceGroupResponse, error) {
 	result := StaticSitesGetStaticSitesByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StaticSiteCollection); err != nil {
-		return StaticSitesGetStaticSitesByResourceGroupResponse{}, err
+		return StaticSitesGetStaticSitesByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1911,7 +1918,7 @@ func (client *StaticSitesClient) getUserProvidedFunctionAppForStaticSiteCreateRe
 func (client *StaticSitesClient) getUserProvidedFunctionAppForStaticSiteHandleResponse(resp *http.Response) (StaticSitesGetUserProvidedFunctionAppForStaticSiteResponse, error) {
 	result := StaticSitesGetUserProvidedFunctionAppForStaticSiteResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StaticSiteUserProvidedFunctionAppARMResource); err != nil {
-		return StaticSitesGetUserProvidedFunctionAppForStaticSiteResponse{}, err
+		return StaticSitesGetUserProvidedFunctionAppForStaticSiteResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1984,7 +1991,7 @@ func (client *StaticSitesClient) getUserProvidedFunctionAppForStaticSiteBuildCre
 func (client *StaticSitesClient) getUserProvidedFunctionAppForStaticSiteBuildHandleResponse(resp *http.Response) (StaticSitesGetUserProvidedFunctionAppForStaticSiteBuildResponse, error) {
 	result := StaticSitesGetUserProvidedFunctionAppForStaticSiteBuildResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StaticSiteUserProvidedFunctionAppARMResource); err != nil {
-		return StaticSitesGetUserProvidedFunctionAppForStaticSiteBuildResponse{}, err
+		return StaticSitesGetUserProvidedFunctionAppForStaticSiteBuildResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -2046,7 +2053,7 @@ func (client *StaticSitesClient) getUserProvidedFunctionAppsForStaticSiteCreateR
 func (client *StaticSitesClient) getUserProvidedFunctionAppsForStaticSiteHandleResponse(resp *http.Response) (StaticSitesGetUserProvidedFunctionAppsForStaticSiteResponse, error) {
 	result := StaticSitesGetUserProvidedFunctionAppsForStaticSiteResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StaticSiteUserProvidedFunctionAppsCollection); err != nil {
-		return StaticSitesGetUserProvidedFunctionAppsForStaticSiteResponse{}, err
+		return StaticSitesGetUserProvidedFunctionAppsForStaticSiteResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -2112,7 +2119,7 @@ func (client *StaticSitesClient) getUserProvidedFunctionAppsForStaticSiteBuildCr
 func (client *StaticSitesClient) getUserProvidedFunctionAppsForStaticSiteBuildHandleResponse(resp *http.Response) (StaticSitesGetUserProvidedFunctionAppsForStaticSiteBuildResponse, error) {
 	result := StaticSitesGetUserProvidedFunctionAppsForStaticSiteBuildResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StaticSiteUserProvidedFunctionAppsCollection); err != nil {
-		return StaticSitesGetUserProvidedFunctionAppsForStaticSiteBuildResponse{}, err
+		return StaticSitesGetUserProvidedFunctionAppsForStaticSiteBuildResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -2166,7 +2173,7 @@ func (client *StaticSitesClient) listCreateRequest(ctx context.Context, options 
 func (client *StaticSitesClient) listHandleResponse(resp *http.Response) (StaticSitesListResponse, error) {
 	result := StaticSitesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StaticSiteCollection); err != nil {
-		return StaticSitesListResponse{}, err
+		return StaticSitesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -2231,7 +2238,7 @@ func (client *StaticSitesClient) listStaticSiteAppSettingsCreateRequest(ctx cont
 func (client *StaticSitesClient) listStaticSiteAppSettingsHandleResponse(resp *http.Response) (StaticSitesListStaticSiteAppSettingsResponse, error) {
 	result := StaticSitesListStaticSiteAppSettingsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StringDictionary); err != nil {
-		return StaticSitesListStaticSiteAppSettingsResponse{}, err
+		return StaticSitesListStaticSiteAppSettingsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -2300,7 +2307,7 @@ func (client *StaticSitesClient) listStaticSiteBuildAppSettingsCreateRequest(ctx
 func (client *StaticSitesClient) listStaticSiteBuildAppSettingsHandleResponse(resp *http.Response) (StaticSitesListStaticSiteBuildAppSettingsResponse, error) {
 	result := StaticSitesListStaticSiteBuildAppSettingsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StringDictionary); err != nil {
-		return StaticSitesListStaticSiteBuildAppSettingsResponse{}, err
+		return StaticSitesListStaticSiteBuildAppSettingsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -2369,7 +2376,7 @@ func (client *StaticSitesClient) listStaticSiteBuildFunctionAppSettingsCreateReq
 func (client *StaticSitesClient) listStaticSiteBuildFunctionAppSettingsHandleResponse(resp *http.Response) (StaticSitesListStaticSiteBuildFunctionAppSettingsResponse, error) {
 	result := StaticSitesListStaticSiteBuildFunctionAppSettingsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StringDictionary); err != nil {
-		return StaticSitesListStaticSiteBuildFunctionAppSettingsResponse{}, err
+		return StaticSitesListStaticSiteBuildFunctionAppSettingsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -2435,7 +2442,7 @@ func (client *StaticSitesClient) listStaticSiteBuildFunctionsCreateRequest(ctx c
 func (client *StaticSitesClient) listStaticSiteBuildFunctionsHandleResponse(resp *http.Response) (StaticSitesListStaticSiteBuildFunctionsResponse, error) {
 	result := StaticSitesListStaticSiteBuildFunctionsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StaticSiteFunctionOverviewCollection); err != nil {
-		return StaticSitesListStaticSiteBuildFunctionsResponse{}, err
+		return StaticSitesListStaticSiteBuildFunctionsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -2500,7 +2507,7 @@ func (client *StaticSitesClient) listStaticSiteConfiguredRolesCreateRequest(ctx 
 func (client *StaticSitesClient) listStaticSiteConfiguredRolesHandleResponse(resp *http.Response) (StaticSitesListStaticSiteConfiguredRolesResponse, error) {
 	result := StaticSitesListStaticSiteConfiguredRolesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StringList); err != nil {
-		return StaticSitesListStaticSiteConfiguredRolesResponse{}, err
+		return StaticSitesListStaticSiteConfiguredRolesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -2562,7 +2569,7 @@ func (client *StaticSitesClient) listStaticSiteCustomDomainsCreateRequest(ctx co
 func (client *StaticSitesClient) listStaticSiteCustomDomainsHandleResponse(resp *http.Response) (StaticSitesListStaticSiteCustomDomainsResponse, error) {
 	result := StaticSitesListStaticSiteCustomDomainsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StaticSiteCustomDomainOverviewCollection); err != nil {
-		return StaticSitesListStaticSiteCustomDomainsResponse{}, err
+		return StaticSitesListStaticSiteCustomDomainsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -2627,7 +2634,7 @@ func (client *StaticSitesClient) listStaticSiteFunctionAppSettingsCreateRequest(
 func (client *StaticSitesClient) listStaticSiteFunctionAppSettingsHandleResponse(resp *http.Response) (StaticSitesListStaticSiteFunctionAppSettingsResponse, error) {
 	result := StaticSitesListStaticSiteFunctionAppSettingsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StringDictionary); err != nil {
-		return StaticSitesListStaticSiteFunctionAppSettingsResponse{}, err
+		return StaticSitesListStaticSiteFunctionAppSettingsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -2689,7 +2696,7 @@ func (client *StaticSitesClient) listStaticSiteFunctionsCreateRequest(ctx contex
 func (client *StaticSitesClient) listStaticSiteFunctionsHandleResponse(resp *http.Response) (StaticSitesListStaticSiteFunctionsResponse, error) {
 	result := StaticSitesListStaticSiteFunctionsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StaticSiteFunctionOverviewCollection); err != nil {
-		return StaticSitesListStaticSiteFunctionsResponse{}, err
+		return StaticSitesListStaticSiteFunctionsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -2754,7 +2761,7 @@ func (client *StaticSitesClient) listStaticSiteSecretsCreateRequest(ctx context.
 func (client *StaticSitesClient) listStaticSiteSecretsHandleResponse(resp *http.Response) (StaticSitesListStaticSiteSecretsResponse, error) {
 	result := StaticSitesListStaticSiteSecretsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StringDictionary); err != nil {
-		return StaticSitesListStaticSiteSecretsResponse{}, err
+		return StaticSitesListStaticSiteSecretsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -2820,7 +2827,7 @@ func (client *StaticSitesClient) listStaticSiteUsersCreateRequest(ctx context.Co
 func (client *StaticSitesClient) listStaticSiteUsersHandleResponse(resp *http.Response) (StaticSitesListStaticSiteUsersResponse, error) {
 	result := StaticSitesListStaticSiteUsersResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StaticSiteUserCollection); err != nil {
-		return StaticSitesListStaticSiteUsersResponse{}, err
+		return StaticSitesListStaticSiteUsersResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -2881,7 +2888,7 @@ func (client *StaticSitesClient) previewWorkflowCreateRequest(ctx context.Contex
 func (client *StaticSitesClient) previewWorkflowHandleResponse(resp *http.Response) (StaticSitesPreviewWorkflowResponse, error) {
 	result := StaticSitesPreviewWorkflowResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StaticSitesWorkflowPreview); err != nil {
-		return StaticSitesPreviewWorkflowResponse{}, err
+		return StaticSitesPreviewWorkflowResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -3172,7 +3179,7 @@ func (client *StaticSitesClient) updateStaticSiteCreateRequest(ctx context.Conte
 func (client *StaticSitesClient) updateStaticSiteHandleResponse(resp *http.Response) (StaticSitesUpdateStaticSiteResponse, error) {
 	result := StaticSitesUpdateStaticSiteResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StaticSiteARMResource); err != nil {
-		return StaticSitesUpdateStaticSiteResponse{}, err
+		return StaticSitesUpdateStaticSiteResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -3245,7 +3252,7 @@ func (client *StaticSitesClient) updateStaticSiteUserCreateRequest(ctx context.C
 func (client *StaticSitesClient) updateStaticSiteUserHandleResponse(resp *http.Response) (StaticSitesUpdateStaticSiteUserResponse, error) {
 	result := StaticSitesUpdateStaticSiteUserResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StaticSiteUserARMResource); err != nil {
-		return StaticSitesUpdateStaticSiteUserResponse{}, err
+		return StaticSitesUpdateStaticSiteUserResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

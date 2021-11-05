@@ -11,13 +11,14 @@ package armrecoveryservices
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ReplicationUsagesClient contains the methods for the ReplicationUsages group.
@@ -29,8 +30,15 @@ type ReplicationUsagesClient struct {
 }
 
 // NewReplicationUsagesClient creates a new instance of ReplicationUsagesClient with the specified values.
-func NewReplicationUsagesClient(con *arm.Connection, subscriptionID string) *ReplicationUsagesClient {
-	return &ReplicationUsagesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewReplicationUsagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ReplicationUsagesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ReplicationUsagesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // List - Fetches the replication usages of the vault.
@@ -80,7 +88,7 @@ func (client *ReplicationUsagesClient) listCreateRequest(ctx context.Context, re
 func (client *ReplicationUsagesClient) listHandleResponse(resp *http.Response) (ReplicationUsagesListResponse, error) {
 	result := ReplicationUsagesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReplicationUsageList); err != nil {
-		return ReplicationUsagesListResponse{}, err
+		return ReplicationUsagesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

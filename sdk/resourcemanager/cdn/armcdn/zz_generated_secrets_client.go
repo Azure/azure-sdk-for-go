@@ -12,6 +12,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -30,8 +31,15 @@ type SecretsClient struct {
 }
 
 // NewSecretsClient creates a new instance of SecretsClient with the specified values.
-func NewSecretsClient(con *arm.Connection, subscriptionID string) *SecretsClient {
-	return &SecretsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewSecretsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SecretsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &SecretsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreate - Creates a new Secret within the specified profile.
@@ -245,7 +253,7 @@ func (client *SecretsClient) getCreateRequest(ctx context.Context, resourceGroup
 func (client *SecretsClient) getHandleResponse(resp *http.Response) (SecretsGetResponse, error) {
 	result := SecretsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Secret); err != nil {
-		return SecretsGetResponse{}, err
+		return SecretsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -307,7 +315,7 @@ func (client *SecretsClient) listByProfileCreateRequest(ctx context.Context, res
 func (client *SecretsClient) listByProfileHandleResponse(resp *http.Response) (SecretsListByProfileResponse, error) {
 	result := SecretsListByProfileResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecretListResult); err != nil {
-		return SecretsListByProfileResponse{}, err
+		return SecretsListByProfileResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

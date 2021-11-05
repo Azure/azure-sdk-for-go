@@ -11,14 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // ManagedInstanceLongTermRetentionPoliciesClient contains the methods for the ManagedInstanceLongTermRetentionPolicies group.
@@ -30,8 +30,15 @@ type ManagedInstanceLongTermRetentionPoliciesClient struct {
 }
 
 // NewManagedInstanceLongTermRetentionPoliciesClient creates a new instance of ManagedInstanceLongTermRetentionPoliciesClient with the specified values.
-func NewManagedInstanceLongTermRetentionPoliciesClient(con *arm.Connection, subscriptionID string) *ManagedInstanceLongTermRetentionPoliciesClient {
-	return &ManagedInstanceLongTermRetentionPoliciesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewManagedInstanceLongTermRetentionPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagedInstanceLongTermRetentionPoliciesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ManagedInstanceLongTermRetentionPoliciesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Sets a managed database's long term retention policy.
@@ -172,7 +179,7 @@ func (client *ManagedInstanceLongTermRetentionPoliciesClient) getCreateRequest(c
 func (client *ManagedInstanceLongTermRetentionPoliciesClient) getHandleResponse(resp *http.Response) (ManagedInstanceLongTermRetentionPoliciesGetResponse, error) {
 	result := ManagedInstanceLongTermRetentionPoliciesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceLongTermRetentionPolicy); err != nil {
-		return ManagedInstanceLongTermRetentionPoliciesGetResponse{}, err
+		return ManagedInstanceLongTermRetentionPoliciesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -237,7 +244,7 @@ func (client *ManagedInstanceLongTermRetentionPoliciesClient) listByDatabaseCrea
 func (client *ManagedInstanceLongTermRetentionPoliciesClient) listByDatabaseHandleResponse(resp *http.Response) (ManagedInstanceLongTermRetentionPoliciesListByDatabaseResponse, error) {
 	result := ManagedInstanceLongTermRetentionPoliciesListByDatabaseResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceLongTermRetentionPolicyListResult); err != nil {
-		return ManagedInstanceLongTermRetentionPoliciesListByDatabaseResponse{}, err
+		return ManagedInstanceLongTermRetentionPoliciesListByDatabaseResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

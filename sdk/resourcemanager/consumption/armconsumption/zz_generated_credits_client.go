@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // CreditsClient contains the methods for the Credits group.
@@ -29,8 +30,15 @@ type CreditsClient struct {
 }
 
 // NewCreditsClient creates a new instance of CreditsClient with the specified values.
-func NewCreditsClient(con *arm.Connection) *CreditsClient {
-	return &CreditsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewCreditsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *CreditsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &CreditsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - The credit summary by billingAccountId and billingProfileId.
@@ -76,7 +84,7 @@ func (client *CreditsClient) getCreateRequest(ctx context.Context, billingAccoun
 func (client *CreditsClient) getHandleResponse(resp *http.Response) (CreditsGetResponse, error) {
 	result := CreditsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CreditSummary); err != nil {
-		return CreditsGetResponse{}, err
+		return CreditsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

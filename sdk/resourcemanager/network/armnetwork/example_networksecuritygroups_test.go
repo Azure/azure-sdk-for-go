@@ -11,7 +11,6 @@ import (
 	"log"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
@@ -22,7 +21,7 @@ func ExampleNetworkSecurityGroupsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armnetwork.NewNetworkSecurityGroupsClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armnetwork.NewNetworkSecurityGroupsClient("<subscription ID>", cred, nil)
 	poller, err := client.BeginCreateOrUpdate(
 		context.Background(),
 		"<resource group name>",
@@ -50,7 +49,7 @@ func ExampleNetworkSecurityGroupsClient_BeginCreateOrUpdate_withSSHandHTTPSrules
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armnetwork.NewNetworkSecurityGroupsClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armnetwork.NewNetworkSecurityGroupsClient("<subscription ID>", cred, nil)
 	poller, err := client.BeginCreateOrUpdate(
 		context.Background(),
 		"<resource group name>",
@@ -108,7 +107,7 @@ func ExampleNetworkSecurityGroupsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armnetwork.NewNetworkSecurityGroupsClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armnetwork.NewNetworkSecurityGroupsClient("<subscription ID>", cred, nil)
 	resp, err := client.Get(context.Background(), "<resource group name>", "<network security group name>", nil)
 	if err != nil {
 		log.Fatalf("failed to get resource: %v", err)
@@ -121,7 +120,7 @@ func ExampleNetworkSecurityGroupsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armnetwork.NewNetworkSecurityGroupsClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armnetwork.NewNetworkSecurityGroupsClient("<subscription ID>", cred, nil)
 	resp, err := client.BeginDelete(context.Background(), "<resource group name>", "<network security group name>", nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a response: %v", err)

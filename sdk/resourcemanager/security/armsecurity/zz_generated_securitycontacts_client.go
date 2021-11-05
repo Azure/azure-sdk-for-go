@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // SecurityContactsClient contains the methods for the SecurityContacts group.
@@ -30,8 +31,15 @@ type SecurityContactsClient struct {
 }
 
 // NewSecurityContactsClient creates a new instance of SecurityContactsClient with the specified values.
-func NewSecurityContactsClient(con *arm.Connection, subscriptionID string) *SecurityContactsClient {
-	return &SecurityContactsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewSecurityContactsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SecurityContactsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &SecurityContactsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Create - Security contact configurations for the subscription
@@ -77,7 +85,7 @@ func (client *SecurityContactsClient) createCreateRequest(ctx context.Context, s
 func (client *SecurityContactsClient) createHandleResponse(resp *http.Response) (SecurityContactsCreateResponse, error) {
 	result := SecurityContactsCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityContact); err != nil {
-		return SecurityContactsCreateResponse{}, err
+		return SecurityContactsCreateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -190,7 +198,7 @@ func (client *SecurityContactsClient) getCreateRequest(ctx context.Context, secu
 func (client *SecurityContactsClient) getHandleResponse(resp *http.Response) (SecurityContactsGetResponse, error) {
 	result := SecurityContactsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityContact); err != nil {
-		return SecurityContactsGetResponse{}, err
+		return SecurityContactsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -244,7 +252,7 @@ func (client *SecurityContactsClient) listCreateRequest(ctx context.Context, opt
 func (client *SecurityContactsClient) listHandleResponse(resp *http.Response) (SecurityContactsListResponse, error) {
 	result := SecurityContactsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityContactList); err != nil {
-		return SecurityContactsListResponse{}, err
+		return SecurityContactsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -305,7 +313,7 @@ func (client *SecurityContactsClient) updateCreateRequest(ctx context.Context, s
 func (client *SecurityContactsClient) updateHandleResponse(resp *http.Response) (SecurityContactsUpdateResponse, error) {
 	result := SecurityContactsUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityContact); err != nil {
-		return SecurityContactsUpdateResponse{}, err
+		return SecurityContactsUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

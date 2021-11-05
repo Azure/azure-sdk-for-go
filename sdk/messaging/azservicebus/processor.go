@@ -83,7 +83,7 @@ type processor struct {
 func applyProcessorOptions(p *processor, entity *entity, options *processorOptions) error {
 	if options == nil {
 		p.maxConcurrentCalls = 1
-		p.receiveMode = PeekLock
+		p.receiveMode = ReceiveModePeekLock
 		p.autoComplete = true
 
 		return nil
@@ -372,7 +372,7 @@ func (p *processor) processMessage(ctx context.Context, receiver internal.AMQPRe
 }
 
 func checkReceiverMode(receiveMode ReceiveMode) error {
-	if receiveMode == PeekLock || receiveMode == ReceiveAndDelete {
+	if receiveMode == ReceiveModePeekLock || receiveMode == ReceiveModeReceiveAndDelete {
 		return nil
 	} else {
 		return fmt.Errorf("Invalid receive mode %d, must be either azservicebus.PeekLock or azservicebus.ReceiveAndDelete", receiveMode)

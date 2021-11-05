@@ -12,15 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // VirtualMachineScaleSetVMsClient contains the methods for the VirtualMachineScaleSetVMs group.
@@ -32,8 +32,15 @@ type VirtualMachineScaleSetVMsClient struct {
 }
 
 // NewVirtualMachineScaleSetVMsClient creates a new instance of VirtualMachineScaleSetVMsClient with the specified values.
-func NewVirtualMachineScaleSetVMsClient(con *arm.Connection, subscriptionID string) *VirtualMachineScaleSetVMsClient {
-	return &VirtualMachineScaleSetVMsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewVirtualMachineScaleSetVMsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VirtualMachineScaleSetVMsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &VirtualMachineScaleSetVMsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginDeallocate - Deallocates a specific virtual machine in a VM scale set. Shuts down the virtual machine and releases the compute resources it uses.
@@ -253,7 +260,7 @@ func (client *VirtualMachineScaleSetVMsClient) getCreateRequest(ctx context.Cont
 func (client *VirtualMachineScaleSetVMsClient) getHandleResponse(resp *http.Response) (VirtualMachineScaleSetVMsGetResponse, error) {
 	result := VirtualMachineScaleSetVMsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineScaleSetVM); err != nil {
-		return VirtualMachineScaleSetVMsGetResponse{}, err
+		return VirtualMachineScaleSetVMsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -321,7 +328,7 @@ func (client *VirtualMachineScaleSetVMsClient) getInstanceViewCreateRequest(ctx 
 func (client *VirtualMachineScaleSetVMsClient) getInstanceViewHandleResponse(resp *http.Response) (VirtualMachineScaleSetVMsGetInstanceViewResponse, error) {
 	result := VirtualMachineScaleSetVMsGetInstanceViewResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineScaleSetVMInstanceView); err != nil {
-		return VirtualMachineScaleSetVMsGetInstanceViewResponse{}, err
+		return VirtualMachineScaleSetVMsGetInstanceViewResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -391,7 +398,7 @@ func (client *VirtualMachineScaleSetVMsClient) listCreateRequest(ctx context.Con
 func (client *VirtualMachineScaleSetVMsClient) listHandleResponse(resp *http.Response) (VirtualMachineScaleSetVMsListResponse, error) {
 	result := VirtualMachineScaleSetVMsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineScaleSetVMListResult); err != nil {
-		return VirtualMachineScaleSetVMsListResponse{}, err
+		return VirtualMachineScaleSetVMsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -942,7 +949,7 @@ func (client *VirtualMachineScaleSetVMsClient) retrieveBootDiagnosticsDataCreate
 func (client *VirtualMachineScaleSetVMsClient) retrieveBootDiagnosticsDataHandleResponse(resp *http.Response) (VirtualMachineScaleSetVMsRetrieveBootDiagnosticsDataResponse, error) {
 	result := VirtualMachineScaleSetVMsRetrieveBootDiagnosticsDataResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RetrieveBootDiagnosticsDataResult); err != nil {
-		return VirtualMachineScaleSetVMsRetrieveBootDiagnosticsDataResponse{}, err
+		return VirtualMachineScaleSetVMsRetrieveBootDiagnosticsDataResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

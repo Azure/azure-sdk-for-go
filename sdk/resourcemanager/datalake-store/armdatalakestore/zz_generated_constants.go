@@ -10,7 +10,7 @@ package armdatalakestore
 
 const (
 	module  = "armdatalakestore"
-	version = "v0.1.1"
+	version = "v0.2.1"
 )
 
 // CheckNameAvailabilityParametersType - The resource type. Note: This should not be set by the user, as the constant value is Microsoft.DataLakeStore/accounts

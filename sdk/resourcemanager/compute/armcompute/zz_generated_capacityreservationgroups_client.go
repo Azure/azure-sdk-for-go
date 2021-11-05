@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // CapacityReservationGroupsClient contains the methods for the CapacityReservationGroups group.
@@ -30,8 +31,15 @@ type CapacityReservationGroupsClient struct {
 }
 
 // NewCapacityReservationGroupsClient creates a new instance of CapacityReservationGroupsClient with the specified values.
-func NewCapacityReservationGroupsClient(con *arm.Connection, subscriptionID string) *CapacityReservationGroupsClient {
-	return &CapacityReservationGroupsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewCapacityReservationGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CapacityReservationGroupsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &CapacityReservationGroupsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - The operation to create or update a capacity reservation group. When updating a capacity reservation group, only tags may be modified.
@@ -83,7 +91,7 @@ func (client *CapacityReservationGroupsClient) createOrUpdateCreateRequest(ctx c
 func (client *CapacityReservationGroupsClient) createOrUpdateHandleResponse(resp *http.Response) (CapacityReservationGroupsCreateOrUpdateResponse, error) {
 	result := CapacityReservationGroupsCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CapacityReservationGroup); err != nil {
-		return CapacityReservationGroupsCreateOrUpdateResponse{}, err
+		return CapacityReservationGroupsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -209,7 +217,7 @@ func (client *CapacityReservationGroupsClient) getCreateRequest(ctx context.Cont
 func (client *CapacityReservationGroupsClient) getHandleResponse(resp *http.Response) (CapacityReservationGroupsGetResponse, error) {
 	result := CapacityReservationGroupsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CapacityReservationGroup); err != nil {
-		return CapacityReservationGroupsGetResponse{}, err
+		return CapacityReservationGroupsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -271,7 +279,7 @@ func (client *CapacityReservationGroupsClient) listByResourceGroupCreateRequest(
 func (client *CapacityReservationGroupsClient) listByResourceGroupHandleResponse(resp *http.Response) (CapacityReservationGroupsListByResourceGroupResponse, error) {
 	result := CapacityReservationGroupsListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CapacityReservationGroupListResult); err != nil {
-		return CapacityReservationGroupsListByResourceGroupResponse{}, err
+		return CapacityReservationGroupsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -329,7 +337,7 @@ func (client *CapacityReservationGroupsClient) listBySubscriptionCreateRequest(c
 func (client *CapacityReservationGroupsClient) listBySubscriptionHandleResponse(resp *http.Response) (CapacityReservationGroupsListBySubscriptionResponse, error) {
 	result := CapacityReservationGroupsListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CapacityReservationGroupListResult); err != nil {
-		return CapacityReservationGroupsListBySubscriptionResponse{}, err
+		return CapacityReservationGroupsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -394,7 +402,7 @@ func (client *CapacityReservationGroupsClient) updateCreateRequest(ctx context.C
 func (client *CapacityReservationGroupsClient) updateHandleResponse(resp *http.Response) (CapacityReservationGroupsUpdateResponse, error) {
 	result := CapacityReservationGroupsUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CapacityReservationGroup); err != nil {
-		return CapacityReservationGroupsUpdateResponse{}, err
+		return CapacityReservationGroupsUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -1,6 +1,16 @@
 # Release History
 
-## 0.2.0 (Unreleased)
+## 0.2.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 0.2.0 (2021-11-02)
 
 ### Features Added
 
@@ -11,14 +21,13 @@
   enough to fit into a single batch.
 - Receiving from sessions using a SessionReceiver, created using Client.AcceptSessionFor(Queue|Subscription)
   or Client.AcceptNextSessionFor(Queue|Subscription).
-- Can now renew a message lock for a ReceivedMessage using Receiver.RenewMessageLock()
-- Can now renew a session lock for a SessionReceiver using SessionReceiver.RenewSessionLock()
-
-### Breaking Changes
+- Can fully create, update, delete and list queues, topics and subscriptions using the `AdministrationClient`.
+- Can renew message and session locks, using Receiver.RenewMessageLock() and SessionReceiver.RenewSessionLock(), respectively.
 
 ### Bugs Fixed
 
-### Other Changes
+- Receiver.ReceiveMessages() had a bug where multiple calls could result in the link no longer receiving messages.
+  This was fixed with an update in go-amqp.
 
 ## 0.1.0 (2021-10-05)
 

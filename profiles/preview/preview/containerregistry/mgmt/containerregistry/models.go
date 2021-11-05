@@ -12,7 +12,7 @@ package containerregistry
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2021-06-01-preview/containerregistry"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2021-08-01-preview/containerregistry"
 )
 
 const (
@@ -79,8 +79,10 @@ const (
 type ConnectedRegistryMode = original.ConnectedRegistryMode
 
 const (
-	ConnectedRegistryModeMirror   ConnectedRegistryMode = original.ConnectedRegistryModeMirror
-	ConnectedRegistryModeRegistry ConnectedRegistryMode = original.ConnectedRegistryModeRegistry
+	ConnectedRegistryModeMirror    ConnectedRegistryMode = original.ConnectedRegistryModeMirror
+	ConnectedRegistryModeReadOnly  ConnectedRegistryMode = original.ConnectedRegistryModeReadOnly
+	ConnectedRegistryModeReadWrite ConnectedRegistryMode = original.ConnectedRegistryModeReadWrite
+	ConnectedRegistryModeRegistry  ConnectedRegistryMode = original.ConnectedRegistryModeRegistry
 )
 
 type ConnectionState = original.ConnectionState

@@ -12,15 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // APIClient contains the methods for the API group.
@@ -32,8 +32,15 @@ type APIClient struct {
 }
 
 // NewAPIClient creates a new instance of APIClient with the specified values.
-func NewAPIClient(con *arm.Connection, subscriptionID string) *APIClient {
-	return &APIClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewAPIClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *APIClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &APIClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Creates new or updates existing specified API of the API Management service instance.
@@ -97,7 +104,7 @@ func (client *APIClient) createOrUpdateCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header.Set("If-Match", *options.IfMatch)
@@ -163,7 +170,7 @@ func (client *APIClient) deleteCreateRequest(ctx context.Context, resourceGroupN
 	if options != nil && options.DeleteRevisions != nil {
 		reqQP.Set("deleteRevisions", strconv.FormatBool(*options.DeleteRevisions))
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("If-Match", ifMatch)
 	req.Raw().Header.Set("Accept", "application/json")
@@ -224,7 +231,7 @@ func (client *APIClient) getCreateRequest(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -237,7 +244,7 @@ func (client *APIClient) getHandleResponse(resp *http.Response) (APIGetResponse,
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIContract); err != nil {
-		return APIGetResponse{}, err
+		return APIGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -293,7 +300,7 @@ func (client *APIClient) getEntityTagCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -360,7 +367,7 @@ func (client *APIClient) listByServiceCreateRequest(ctx context.Context, resourc
 	if options != nil && options.ExpandAPIVersionSet != nil {
 		reqQP.Set("expandApiVersionSet", strconv.FormatBool(*options.ExpandAPIVersionSet))
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -370,7 +377,7 @@ func (client *APIClient) listByServiceCreateRequest(ctx context.Context, resourc
 func (client *APIClient) listByServiceHandleResponse(resp *http.Response) (APIListByServiceResponse, error) {
 	result := APIListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APICollection); err != nil {
-		return APIListByServiceResponse{}, err
+		return APIListByServiceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -434,7 +441,7 @@ func (client *APIClient) listByTagsCreateRequest(ctx context.Context, resourceGr
 	if options != nil && options.IncludeNotTaggedApis != nil {
 		reqQP.Set("includeNotTaggedApis", strconv.FormatBool(*options.IncludeNotTaggedApis))
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -444,7 +451,7 @@ func (client *APIClient) listByTagsCreateRequest(ctx context.Context, resourceGr
 func (client *APIClient) listByTagsHandleResponse(resp *http.Response) (APIListByTagsResponse, error) {
 	result := APIListByTagsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagResourceCollection); err != nil {
-		return APIListByTagsResponse{}, err
+		return APIListByTagsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -503,7 +510,7 @@ func (client *APIClient) updateCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("If-Match", ifMatch)
 	req.Raw().Header.Set("Accept", "application/json")
@@ -517,7 +524,7 @@ func (client *APIClient) updateHandleResponse(resp *http.Response) (APIUpdateRes
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIContract); err != nil {
-		return APIUpdateResponse{}, err
+		return APIUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

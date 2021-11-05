@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // SecuritySolutionsReferenceDataClient contains the methods for the SecuritySolutionsReferenceData group.
@@ -31,8 +32,15 @@ type SecuritySolutionsReferenceDataClient struct {
 }
 
 // NewSecuritySolutionsReferenceDataClient creates a new instance of SecuritySolutionsReferenceDataClient with the specified values.
-func NewSecuritySolutionsReferenceDataClient(con *arm.Connection, subscriptionID string, ascLocation string) *SecuritySolutionsReferenceDataClient {
-	return &SecuritySolutionsReferenceDataClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID, ascLocation: ascLocation}
+func NewSecuritySolutionsReferenceDataClient(subscriptionID string, ascLocation string, credential azcore.TokenCredential, options *arm.ClientOptions) *SecuritySolutionsReferenceDataClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &SecuritySolutionsReferenceDataClient{subscriptionID: subscriptionID, ascLocation: ascLocation, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // List - Gets a list of all supported Security Solutions for the subscription.
@@ -74,7 +82,7 @@ func (client *SecuritySolutionsReferenceDataClient) listCreateRequest(ctx contex
 func (client *SecuritySolutionsReferenceDataClient) listHandleResponse(resp *http.Response) (SecuritySolutionsReferenceDataListResponse, error) {
 	result := SecuritySolutionsReferenceDataListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecuritySolutionsReferenceDataList); err != nil {
-		return SecuritySolutionsReferenceDataListResponse{}, err
+		return SecuritySolutionsReferenceDataListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -135,7 +143,7 @@ func (client *SecuritySolutionsReferenceDataClient) listByHomeRegionCreateReques
 func (client *SecuritySolutionsReferenceDataClient) listByHomeRegionHandleResponse(resp *http.Response) (SecuritySolutionsReferenceDataListByHomeRegionResponse, error) {
 	result := SecuritySolutionsReferenceDataListByHomeRegionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecuritySolutionsReferenceDataList); err != nil {
-		return SecuritySolutionsReferenceDataListByHomeRegionResponse{}, err
+		return SecuritySolutionsReferenceDataListByHomeRegionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

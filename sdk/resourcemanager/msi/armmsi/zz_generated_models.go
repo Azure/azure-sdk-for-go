@@ -10,9 +10,8 @@ package armmsi
 
 import (
 	"encoding/json"
-	"reflect"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"reflect"
 )
 
 // CloudError - An error response from the ManagedServiceIdentity service.

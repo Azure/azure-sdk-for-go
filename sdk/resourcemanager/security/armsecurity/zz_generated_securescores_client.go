@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // SecureScoresClient contains the methods for the SecureScores group.
@@ -30,8 +31,15 @@ type SecureScoresClient struct {
 }
 
 // NewSecureScoresClient creates a new instance of SecureScoresClient with the specified values.
-func NewSecureScoresClient(con *arm.Connection, subscriptionID string) *SecureScoresClient {
-	return &SecureScoresClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewSecureScoresClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SecureScoresClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &SecureScoresClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Get secure score for a specific Security Center initiative within your current scope. For the ASC Default initiative, use 'ascScore'.
@@ -77,7 +85,7 @@ func (client *SecureScoresClient) getCreateRequest(ctx context.Context, secureSc
 func (client *SecureScoresClient) getHandleResponse(resp *http.Response) (SecureScoresGetResponse, error) {
 	result := SecureScoresGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecureScoreItem); err != nil {
-		return SecureScoresGetResponse{}, err
+		return SecureScoresGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -131,7 +139,7 @@ func (client *SecureScoresClient) listCreateRequest(ctx context.Context, options
 func (client *SecureScoresClient) listHandleResponse(resp *http.Response) (SecureScoresListResponse, error) {
 	result := SecureScoresListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecureScoresList); err != nil {
-		return SecureScoresListResponse{}, err
+		return SecureScoresListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

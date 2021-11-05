@@ -49,43 +49,21 @@ func unmarshalBackupPolicyClassificationArray(rawMsg json.RawMessage) ([]BackupP
 	return fArray, nil
 }
 
-func unmarshalServiceResourcePropertiesClassification(rawMsg json.RawMessage) (ServiceResourcePropertiesClassification, error) {
+func unmarshalBackupPolicyClassificationMap(rawMsg json.RawMessage) (map[string]BackupPolicyClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
-	if err := json.Unmarshal(rawMsg, &m); err != nil {
-		return nil, err
-	}
-	var b ServiceResourcePropertiesClassification
-	switch m["serviceType"] {
-	case string(ServiceTypeDataTransfer):
-		b = &DataTransferServiceResourceProperties{}
-	case string(ServiceTypeGraphAPICompute):
-		b = &GraphAPIComputeServiceResourceProperties{}
-	case string(ServiceTypeSQLDedicatedGateway):
-		b = &SQLDedicatedGatewayServiceResourceProperties{}
-	default:
-		b = &ServiceResourceProperties{}
-	}
-	return b, json.Unmarshal(rawMsg, b)
-}
-
-func unmarshalServiceResourcePropertiesClassificationArray(rawMsg json.RawMessage) ([]ServiceResourcePropertiesClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
+	var rawMessages map[string]json.RawMessage
 	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
 		return nil, err
 	}
-	fArray := make([]ServiceResourcePropertiesClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalServiceResourcePropertiesClassification(rawMessage)
+	fMap := make(map[string]BackupPolicyClassification, len(rawMessages))
+	for key, rawMessage := range rawMessages {
+		f, err := unmarshalBackupPolicyClassification(rawMessage)
 		if err != nil {
 			return nil, err
 		}
-		fArray[index] = f
+		fMap[key] = f
 	}
-	return fArray, nil
+	return fMap, nil
 }

@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // TestJobClient contains the methods for the TestJob group.
@@ -30,8 +31,15 @@ type TestJobClient struct {
 }
 
 // NewTestJobClient creates a new instance of TestJobClient with the specified values.
-func NewTestJobClient(con *arm.Connection, subscriptionID string) *TestJobClient {
-	return &TestJobClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewTestJobClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TestJobClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &TestJobClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Create - Create a test job of the runbook.
@@ -85,7 +93,7 @@ func (client *TestJobClient) createCreateRequest(ctx context.Context, resourceGr
 func (client *TestJobClient) createHandleResponse(resp *http.Response) (TestJobCreateResponse, error) {
 	result := TestJobCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TestJob); err != nil {
-		return TestJobCreateResponse{}, err
+		return TestJobCreateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -154,7 +162,7 @@ func (client *TestJobClient) getCreateRequest(ctx context.Context, resourceGroup
 func (client *TestJobClient) getHandleResponse(resp *http.Response) (TestJobGetResponse, error) {
 	result := TestJobGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TestJob); err != nil {
-		return TestJobGetResponse{}, err
+		return TestJobGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

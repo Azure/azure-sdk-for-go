@@ -11,15 +11,15 @@ package armeventgrid
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // EventSubscriptionsClient contains the methods for the EventSubscriptions group.
@@ -31,8 +31,15 @@ type EventSubscriptionsClient struct {
 }
 
 // NewEventSubscriptionsClient creates a new instance of EventSubscriptionsClient with the specified values.
-func NewEventSubscriptionsClient(con *arm.Connection, subscriptionID string) *EventSubscriptionsClient {
-	return &EventSubscriptionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewEventSubscriptionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *EventSubscriptionsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &EventSubscriptionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Asynchronously creates a new event subscription or updates an existing event subscription based on the specified scope.
@@ -75,9 +82,6 @@ func (client *EventSubscriptionsClient) createOrUpdate(ctx context.Context, scop
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *EventSubscriptionsClient) createOrUpdateCreateRequest(ctx context.Context, scope string, eventSubscriptionName string, eventSubscriptionInfo EventSubscription, options *EventSubscriptionsBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.EventGrid/eventSubscriptions/{eventSubscriptionName}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if eventSubscriptionName == "" {
 		return nil, errors.New("parameter eventSubscriptionName cannot be empty")
@@ -88,7 +92,7 @@ func (client *EventSubscriptionsClient) createOrUpdateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, eventSubscriptionInfo)
@@ -146,9 +150,6 @@ func (client *EventSubscriptionsClient) deleteOperation(ctx context.Context, sco
 // deleteCreateRequest creates the Delete request.
 func (client *EventSubscriptionsClient) deleteCreateRequest(ctx context.Context, scope string, eventSubscriptionName string, options *EventSubscriptionsBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.EventGrid/eventSubscriptions/{eventSubscriptionName}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if eventSubscriptionName == "" {
 		return nil, errors.New("parameter eventSubscriptionName cannot be empty")
@@ -159,7 +160,7 @@ func (client *EventSubscriptionsClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -196,9 +197,6 @@ func (client *EventSubscriptionsClient) Get(ctx context.Context, scope string, e
 // getCreateRequest creates the Get request.
 func (client *EventSubscriptionsClient) getCreateRequest(ctx context.Context, scope string, eventSubscriptionName string, options *EventSubscriptionsGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.EventGrid/eventSubscriptions/{eventSubscriptionName}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if eventSubscriptionName == "" {
 		return nil, errors.New("parameter eventSubscriptionName cannot be empty")
@@ -209,7 +207,7 @@ func (client *EventSubscriptionsClient) getCreateRequest(ctx context.Context, sc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -219,7 +217,7 @@ func (client *EventSubscriptionsClient) getCreateRequest(ctx context.Context, sc
 func (client *EventSubscriptionsClient) getHandleResponse(resp *http.Response) (EventSubscriptionsGetResponse, error) {
 	result := EventSubscriptionsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscription); err != nil {
-		return EventSubscriptionsGetResponse{}, err
+		return EventSubscriptionsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -256,9 +254,6 @@ func (client *EventSubscriptionsClient) GetDeliveryAttributes(ctx context.Contex
 // getDeliveryAttributesCreateRequest creates the GetDeliveryAttributes request.
 func (client *EventSubscriptionsClient) getDeliveryAttributesCreateRequest(ctx context.Context, scope string, eventSubscriptionName string, options *EventSubscriptionsGetDeliveryAttributesOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.EventGrid/eventSubscriptions/{eventSubscriptionName}/getDeliveryAttributes"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if eventSubscriptionName == "" {
 		return nil, errors.New("parameter eventSubscriptionName cannot be empty")
@@ -269,7 +264,7 @@ func (client *EventSubscriptionsClient) getDeliveryAttributesCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -279,7 +274,7 @@ func (client *EventSubscriptionsClient) getDeliveryAttributesCreateRequest(ctx c
 func (client *EventSubscriptionsClient) getDeliveryAttributesHandleResponse(resp *http.Response) (EventSubscriptionsGetDeliveryAttributesResponse, error) {
 	result := EventSubscriptionsGetDeliveryAttributesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeliveryAttributeListResult); err != nil {
-		return EventSubscriptionsGetDeliveryAttributesResponse{}, err
+		return EventSubscriptionsGetDeliveryAttributesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -316,9 +311,6 @@ func (client *EventSubscriptionsClient) GetFullURL(ctx context.Context, scope st
 // getFullURLCreateRequest creates the GetFullURL request.
 func (client *EventSubscriptionsClient) getFullURLCreateRequest(ctx context.Context, scope string, eventSubscriptionName string, options *EventSubscriptionsGetFullURLOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.EventGrid/eventSubscriptions/{eventSubscriptionName}/getFullUrl"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if eventSubscriptionName == "" {
 		return nil, errors.New("parameter eventSubscriptionName cannot be empty")
@@ -329,7 +321,7 @@ func (client *EventSubscriptionsClient) getFullURLCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -339,7 +331,7 @@ func (client *EventSubscriptionsClient) getFullURLCreateRequest(ctx context.Cont
 func (client *EventSubscriptionsClient) getFullURLHandleResponse(resp *http.Response) (EventSubscriptionsGetFullURLResponse, error) {
 	result := EventSubscriptionsGetFullURLResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionFullURL); err != nil {
-		return EventSubscriptionsGetFullURLResponse{}, err
+		return EventSubscriptionsGetFullURLResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -394,7 +386,7 @@ func (client *EventSubscriptionsClient) listByDomainTopicCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -410,7 +402,7 @@ func (client *EventSubscriptionsClient) listByDomainTopicCreateRequest(ctx conte
 func (client *EventSubscriptionsClient) listByDomainTopicHandleResponse(resp *http.Response) (EventSubscriptionsListByDomainTopicResponse, error) {
 	result := EventSubscriptionsListByDomainTopicResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionsListResult); err != nil {
-		return EventSubscriptionsListByDomainTopicResponse{}, err
+		return EventSubscriptionsListByDomainTopicResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -469,7 +461,7 @@ func (client *EventSubscriptionsClient) listByResourceCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -485,7 +477,7 @@ func (client *EventSubscriptionsClient) listByResourceCreateRequest(ctx context.
 func (client *EventSubscriptionsClient) listByResourceHandleResponse(resp *http.Response) (EventSubscriptionsListByResourceResponse, error) {
 	result := EventSubscriptionsListByResourceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionsListResult); err != nil {
-		return EventSubscriptionsListByResourceResponse{}, err
+		return EventSubscriptionsListByResourceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -532,7 +524,7 @@ func (client *EventSubscriptionsClient) listGlobalByResourceGroupCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -548,7 +540,7 @@ func (client *EventSubscriptionsClient) listGlobalByResourceGroupCreateRequest(c
 func (client *EventSubscriptionsClient) listGlobalByResourceGroupHandleResponse(resp *http.Response) (EventSubscriptionsListGlobalByResourceGroupResponse, error) {
 	result := EventSubscriptionsListGlobalByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionsListResult); err != nil {
-		return EventSubscriptionsListGlobalByResourceGroupResponse{}, err
+		return EventSubscriptionsListGlobalByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -599,7 +591,7 @@ func (client *EventSubscriptionsClient) listGlobalByResourceGroupForTopicTypeCre
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -615,7 +607,7 @@ func (client *EventSubscriptionsClient) listGlobalByResourceGroupForTopicTypeCre
 func (client *EventSubscriptionsClient) listGlobalByResourceGroupForTopicTypeHandleResponse(resp *http.Response) (EventSubscriptionsListGlobalByResourceGroupForTopicTypeResponse, error) {
 	result := EventSubscriptionsListGlobalByResourceGroupForTopicTypeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionsListResult); err != nil {
-		return EventSubscriptionsListGlobalByResourceGroupForTopicTypeResponse{}, err
+		return EventSubscriptionsListGlobalByResourceGroupForTopicTypeResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -658,7 +650,7 @@ func (client *EventSubscriptionsClient) listGlobalBySubscriptionCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -674,7 +666,7 @@ func (client *EventSubscriptionsClient) listGlobalBySubscriptionCreateRequest(ct
 func (client *EventSubscriptionsClient) listGlobalBySubscriptionHandleResponse(resp *http.Response) (EventSubscriptionsListGlobalBySubscriptionResponse, error) {
 	result := EventSubscriptionsListGlobalBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionsListResult); err != nil {
-		return EventSubscriptionsListGlobalBySubscriptionResponse{}, err
+		return EventSubscriptionsListGlobalBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -721,7 +713,7 @@ func (client *EventSubscriptionsClient) listGlobalBySubscriptionForTopicTypeCrea
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -737,7 +729,7 @@ func (client *EventSubscriptionsClient) listGlobalBySubscriptionForTopicTypeCrea
 func (client *EventSubscriptionsClient) listGlobalBySubscriptionForTopicTypeHandleResponse(resp *http.Response) (EventSubscriptionsListGlobalBySubscriptionForTopicTypeResponse, error) {
 	result := EventSubscriptionsListGlobalBySubscriptionForTopicTypeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionsListResult); err != nil {
-		return EventSubscriptionsListGlobalBySubscriptionForTopicTypeResponse{}, err
+		return EventSubscriptionsListGlobalBySubscriptionForTopicTypeResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -788,7 +780,7 @@ func (client *EventSubscriptionsClient) listRegionalByResourceGroupCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -804,7 +796,7 @@ func (client *EventSubscriptionsClient) listRegionalByResourceGroupCreateRequest
 func (client *EventSubscriptionsClient) listRegionalByResourceGroupHandleResponse(resp *http.Response) (EventSubscriptionsListRegionalByResourceGroupResponse, error) {
 	result := EventSubscriptionsListRegionalByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionsListResult); err != nil {
-		return EventSubscriptionsListRegionalByResourceGroupResponse{}, err
+		return EventSubscriptionsListRegionalByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -860,7 +852,7 @@ func (client *EventSubscriptionsClient) listRegionalByResourceGroupForTopicTypeC
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -876,7 +868,7 @@ func (client *EventSubscriptionsClient) listRegionalByResourceGroupForTopicTypeC
 func (client *EventSubscriptionsClient) listRegionalByResourceGroupForTopicTypeHandleResponse(resp *http.Response) (EventSubscriptionsListRegionalByResourceGroupForTopicTypeResponse, error) {
 	result := EventSubscriptionsListRegionalByResourceGroupForTopicTypeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionsListResult); err != nil {
-		return EventSubscriptionsListRegionalByResourceGroupForTopicTypeResponse{}, err
+		return EventSubscriptionsListRegionalByResourceGroupForTopicTypeResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -923,7 +915,7 @@ func (client *EventSubscriptionsClient) listRegionalBySubscriptionCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -939,7 +931,7 @@ func (client *EventSubscriptionsClient) listRegionalBySubscriptionCreateRequest(
 func (client *EventSubscriptionsClient) listRegionalBySubscriptionHandleResponse(resp *http.Response) (EventSubscriptionsListRegionalBySubscriptionResponse, error) {
 	result := EventSubscriptionsListRegionalBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionsListResult); err != nil {
-		return EventSubscriptionsListRegionalBySubscriptionResponse{}, err
+		return EventSubscriptionsListRegionalBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -990,7 +982,7 @@ func (client *EventSubscriptionsClient) listRegionalBySubscriptionForTopicTypeCr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -1006,7 +998,7 @@ func (client *EventSubscriptionsClient) listRegionalBySubscriptionForTopicTypeCr
 func (client *EventSubscriptionsClient) listRegionalBySubscriptionForTopicTypeHandleResponse(resp *http.Response) (EventSubscriptionsListRegionalBySubscriptionForTopicTypeResponse, error) {
 	result := EventSubscriptionsListRegionalBySubscriptionForTopicTypeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionsListResult); err != nil {
-		return EventSubscriptionsListRegionalBySubscriptionForTopicTypeResponse{}, err
+		return EventSubscriptionsListRegionalBySubscriptionForTopicTypeResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1063,9 +1055,6 @@ func (client *EventSubscriptionsClient) update(ctx context.Context, scope string
 // updateCreateRequest creates the Update request.
 func (client *EventSubscriptionsClient) updateCreateRequest(ctx context.Context, scope string, eventSubscriptionName string, eventSubscriptionUpdateParameters EventSubscriptionUpdateParameters, options *EventSubscriptionsBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.EventGrid/eventSubscriptions/{eventSubscriptionName}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if eventSubscriptionName == "" {
 		return nil, errors.New("parameter eventSubscriptionName cannot be empty")
@@ -1076,7 +1065,7 @@ func (client *EventSubscriptionsClient) updateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, eventSubscriptionUpdateParameters)

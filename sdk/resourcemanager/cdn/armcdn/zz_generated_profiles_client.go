@@ -12,6 +12,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -30,8 +31,15 @@ type ProfilesClient struct {
 }
 
 // NewProfilesClient creates a new instance of ProfilesClient with the specified values.
-func NewProfilesClient(con *arm.Connection, subscriptionID string) *ProfilesClient {
-	return &ProfilesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewProfilesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ProfilesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ProfilesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreate - Creates a new CDN profile with a profile name under the specified subscription and resource group.
@@ -238,7 +246,7 @@ func (client *ProfilesClient) generateSsoURICreateRequest(ctx context.Context, r
 func (client *ProfilesClient) generateSsoURIHandleResponse(resp *http.Response) (ProfilesGenerateSsoURIResponse, error) {
 	result := ProfilesGenerateSsoURIResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SsoURI); err != nil {
-		return ProfilesGenerateSsoURIResponse{}, err
+		return ProfilesGenerateSsoURIResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -303,7 +311,7 @@ func (client *ProfilesClient) getCreateRequest(ctx context.Context, resourceGrou
 func (client *ProfilesClient) getHandleResponse(resp *http.Response) (ProfilesGetResponse, error) {
 	result := ProfilesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Profile); err != nil {
-		return ProfilesGetResponse{}, err
+		return ProfilesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -357,7 +365,7 @@ func (client *ProfilesClient) listCreateRequest(ctx context.Context, options *Pr
 func (client *ProfilesClient) listHandleResponse(resp *http.Response) (ProfilesListResponse, error) {
 	result := ProfilesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProfileListResult); err != nil {
-		return ProfilesListResponse{}, err
+		return ProfilesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -415,7 +423,7 @@ func (client *ProfilesClient) listByResourceGroupCreateRequest(ctx context.Conte
 func (client *ProfilesClient) listByResourceGroupHandleResponse(resp *http.Response) (ProfilesListByResourceGroupResponse, error) {
 	result := ProfilesListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProfileListResult); err != nil {
-		return ProfilesListByResourceGroupResponse{}, err
+		return ProfilesListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -477,7 +485,7 @@ func (client *ProfilesClient) listResourceUsageCreateRequest(ctx context.Context
 func (client *ProfilesClient) listResourceUsageHandleResponse(resp *http.Response) (ProfilesListResourceUsageResponse, error) {
 	result := ProfilesListResourceUsageResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceUsageListResult); err != nil {
-		return ProfilesListResourceUsageResponse{}, err
+		return ProfilesListResourceUsageResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -543,7 +551,7 @@ func (client *ProfilesClient) listSupportedOptimizationTypesCreateRequest(ctx co
 func (client *ProfilesClient) listSupportedOptimizationTypesHandleResponse(resp *http.Response) (ProfilesListSupportedOptimizationTypesResponse, error) {
 	result := ProfilesListSupportedOptimizationTypesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SupportedOptimizationTypesListResult); err != nil {
-		return ProfilesListSupportedOptimizationTypesResponse{}, err
+		return ProfilesListSupportedOptimizationTypesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

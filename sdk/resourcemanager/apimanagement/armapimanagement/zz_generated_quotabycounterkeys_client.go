@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // QuotaByCounterKeysClient contains the methods for the QuotaByCounterKeys group.
@@ -30,8 +31,15 @@ type QuotaByCounterKeysClient struct {
 }
 
 // NewQuotaByCounterKeysClient creates a new instance of QuotaByCounterKeysClient with the specified values.
-func NewQuotaByCounterKeysClient(con *arm.Connection, subscriptionID string) *QuotaByCounterKeysClient {
-	return &QuotaByCounterKeysClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewQuotaByCounterKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *QuotaByCounterKeysClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &QuotaByCounterKeysClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // ListByService - Lists a collection of current quota counter periods associated with the counter-key configured in the policy on the specified service
@@ -76,7 +84,7 @@ func (client *QuotaByCounterKeysClient) listByServiceCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -86,7 +94,7 @@ func (client *QuotaByCounterKeysClient) listByServiceCreateRequest(ctx context.C
 func (client *QuotaByCounterKeysClient) listByServiceHandleResponse(resp *http.Response) (QuotaByCounterKeysListByServiceResponse, error) {
 	result := QuotaByCounterKeysListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QuotaCounterCollection); err != nil {
-		return QuotaByCounterKeysListByServiceResponse{}, err
+		return QuotaByCounterKeysListByServiceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -146,7 +154,7 @@ func (client *QuotaByCounterKeysClient) updateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -156,7 +164,7 @@ func (client *QuotaByCounterKeysClient) updateCreateRequest(ctx context.Context,
 func (client *QuotaByCounterKeysClient) updateHandleResponse(resp *http.Response) (QuotaByCounterKeysUpdateResponse, error) {
 	result := QuotaByCounterKeysUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QuotaCounterCollection); err != nil {
-		return QuotaByCounterKeysUpdateResponse{}, err
+		return QuotaByCounterKeysUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

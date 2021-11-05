@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // DscCompilationJobStreamClient contains the methods for the DscCompilationJobStream group.
@@ -30,8 +31,15 @@ type DscCompilationJobStreamClient struct {
 }
 
 // NewDscCompilationJobStreamClient creates a new instance of DscCompilationJobStreamClient with the specified values.
-func NewDscCompilationJobStreamClient(con *arm.Connection, subscriptionID string) *DscCompilationJobStreamClient {
-	return &DscCompilationJobStreamClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewDscCompilationJobStreamClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DscCompilationJobStreamClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &DscCompilationJobStreamClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // ListByJob - Retrieve all the job streams for the compilation Job.
@@ -82,7 +90,7 @@ func (client *DscCompilationJobStreamClient) listByJobCreateRequest(ctx context.
 func (client *DscCompilationJobStreamClient) listByJobHandleResponse(resp *http.Response) (DscCompilationJobStreamListByJobResponse, error) {
 	result := DscCompilationJobStreamListByJobResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobStreamListResult); err != nil {
-		return DscCompilationJobStreamListByJobResponse{}, err
+		return DscCompilationJobStreamListByJobResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // RoleEligibilityScheduleInstancesClient contains the methods for the RoleEligibilityScheduleInstances group.
@@ -29,8 +30,15 @@ type RoleEligibilityScheduleInstancesClient struct {
 }
 
 // NewRoleEligibilityScheduleInstancesClient creates a new instance of RoleEligibilityScheduleInstancesClient with the specified values.
-func NewRoleEligibilityScheduleInstancesClient(con *arm.Connection) *RoleEligibilityScheduleInstancesClient {
-	return &RoleEligibilityScheduleInstancesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewRoleEligibilityScheduleInstancesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *RoleEligibilityScheduleInstancesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &RoleEligibilityScheduleInstancesClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Gets the specified role eligibility schedule instance.
@@ -53,9 +61,6 @@ func (client *RoleEligibilityScheduleInstancesClient) Get(ctx context.Context, s
 // getCreateRequest creates the Get request.
 func (client *RoleEligibilityScheduleInstancesClient) getCreateRequest(ctx context.Context, scope string, roleEligibilityScheduleInstanceName string, options *RoleEligibilityScheduleInstancesGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleEligibilityScheduleInstances/{roleEligibilityScheduleInstanceName}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if roleEligibilityScheduleInstanceName == "" {
 		return nil, errors.New("parameter roleEligibilityScheduleInstanceName cannot be empty")
@@ -76,7 +81,7 @@ func (client *RoleEligibilityScheduleInstancesClient) getCreateRequest(ctx conte
 func (client *RoleEligibilityScheduleInstancesClient) getHandleResponse(resp *http.Response) (RoleEligibilityScheduleInstancesGetResponse, error) {
 	result := RoleEligibilityScheduleInstancesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleEligibilityScheduleInstance); err != nil {
-		return RoleEligibilityScheduleInstancesGetResponse{}, err
+		return RoleEligibilityScheduleInstancesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -111,9 +116,6 @@ func (client *RoleEligibilityScheduleInstancesClient) ListForScope(scope string,
 // listForScopeCreateRequest creates the ListForScope request.
 func (client *RoleEligibilityScheduleInstancesClient) listForScopeCreateRequest(ctx context.Context, scope string, options *RoleEligibilityScheduleInstancesListForScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleEligibilityScheduleInstances"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -133,7 +135,7 @@ func (client *RoleEligibilityScheduleInstancesClient) listForScopeCreateRequest(
 func (client *RoleEligibilityScheduleInstancesClient) listForScopeHandleResponse(resp *http.Response) (RoleEligibilityScheduleInstancesListForScopeResponse, error) {
 	result := RoleEligibilityScheduleInstancesListForScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleEligibilityScheduleInstanceListResult); err != nil {
-		return RoleEligibilityScheduleInstancesListForScopeResponse{}, err
+		return RoleEligibilityScheduleInstancesListForScopeResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -11,14 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // ServerBlobAuditingPoliciesClient contains the methods for the ServerBlobAuditingPolicies group.
@@ -30,8 +30,15 @@ type ServerBlobAuditingPoliciesClient struct {
 }
 
 // NewServerBlobAuditingPoliciesClient creates a new instance of ServerBlobAuditingPoliciesClient with the specified values.
-func NewServerBlobAuditingPoliciesClient(con *arm.Connection, subscriptionID string) *ServerBlobAuditingPoliciesClient {
-	return &ServerBlobAuditingPoliciesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewServerBlobAuditingPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServerBlobAuditingPoliciesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ServerBlobAuditingPoliciesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Creates or updates a server's blob auditing policy.
@@ -158,7 +165,7 @@ func (client *ServerBlobAuditingPoliciesClient) getCreateRequest(ctx context.Con
 func (client *ServerBlobAuditingPoliciesClient) getHandleResponse(resp *http.Response) (ServerBlobAuditingPoliciesGetResponse, error) {
 	result := ServerBlobAuditingPoliciesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerBlobAuditingPolicy); err != nil {
-		return ServerBlobAuditingPoliciesGetResponse{}, err
+		return ServerBlobAuditingPoliciesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -219,7 +226,7 @@ func (client *ServerBlobAuditingPoliciesClient) listByServerCreateRequest(ctx co
 func (client *ServerBlobAuditingPoliciesClient) listByServerHandleResponse(resp *http.Response) (ServerBlobAuditingPoliciesListByServerResponse, error) {
 	result := ServerBlobAuditingPoliciesListByServerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerBlobAuditingPolicyListResult); err != nil {
-		return ServerBlobAuditingPoliciesListByServerResponse{}, err
+		return ServerBlobAuditingPoliciesListByServerResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

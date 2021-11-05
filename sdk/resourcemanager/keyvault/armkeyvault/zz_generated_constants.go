@@ -10,7 +10,7 @@ package armkeyvault
 
 const (
 	module  = "armkeyvault"
-	version = "v0.1.0"
+	version = "v0.2.1"
 )
 
 type AccessPolicyUpdateKind string

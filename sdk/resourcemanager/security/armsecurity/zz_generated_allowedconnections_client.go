@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // AllowedConnectionsClient contains the methods for the AllowedConnections group.
@@ -31,8 +32,15 @@ type AllowedConnectionsClient struct {
 }
 
 // NewAllowedConnectionsClient creates a new instance of AllowedConnectionsClient with the specified values.
-func NewAllowedConnectionsClient(con *arm.Connection, subscriptionID string, ascLocation string) *AllowedConnectionsClient {
-	return &AllowedConnectionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID, ascLocation: ascLocation}
+func NewAllowedConnectionsClient(subscriptionID string, ascLocation string, credential azcore.TokenCredential, options *arm.ClientOptions) *AllowedConnectionsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &AllowedConnectionsClient{subscriptionID: subscriptionID, ascLocation: ascLocation, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Gets the list of all possible traffic between resources for the subscription and location, based on connection type.
@@ -86,7 +94,7 @@ func (client *AllowedConnectionsClient) getCreateRequest(ctx context.Context, re
 func (client *AllowedConnectionsClient) getHandleResponse(resp *http.Response) (AllowedConnectionsGetResponse, error) {
 	result := AllowedConnectionsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AllowedConnectionsResource); err != nil {
-		return AllowedConnectionsGetResponse{}, err
+		return AllowedConnectionsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -140,7 +148,7 @@ func (client *AllowedConnectionsClient) listCreateRequest(ctx context.Context, o
 func (client *AllowedConnectionsClient) listHandleResponse(resp *http.Response) (AllowedConnectionsListResponse, error) {
 	result := AllowedConnectionsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AllowedConnectionsList); err != nil {
-		return AllowedConnectionsListResponse{}, err
+		return AllowedConnectionsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -198,7 +206,7 @@ func (client *AllowedConnectionsClient) listByHomeRegionCreateRequest(ctx contex
 func (client *AllowedConnectionsClient) listByHomeRegionHandleResponse(resp *http.Response) (AllowedConnectionsListByHomeRegionResponse, error) {
 	result := AllowedConnectionsListByHomeRegionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AllowedConnectionsList); err != nil {
-		return AllowedConnectionsListByHomeRegionResponse{}, err
+		return AllowedConnectionsListByHomeRegionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

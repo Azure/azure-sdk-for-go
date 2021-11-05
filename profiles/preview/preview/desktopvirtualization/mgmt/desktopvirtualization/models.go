@@ -12,7 +12,7 @@ package desktopvirtualization
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/desktopvirtualization/mgmt/2020-11-02-preview/desktopvirtualization"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/desktopvirtualization/mgmt/2021-09-03-preview/desktopvirtualization"
 )
 
 const (
@@ -36,31 +36,76 @@ const (
 type CommandLineSetting = original.CommandLineSetting
 
 const (
-	Allow      CommandLineSetting = original.Allow
-	DoNotAllow CommandLineSetting = original.DoNotAllow
-	Require    CommandLineSetting = original.Require
+	CommandLineSettingAllow      CommandLineSetting = original.CommandLineSettingAllow
+	CommandLineSettingDoNotAllow CommandLineSetting = original.CommandLineSettingDoNotAllow
+	CommandLineSettingRequire    CommandLineSetting = original.CommandLineSettingRequire
+)
+
+type CreatedByType = original.CreatedByType
+
+const (
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
+)
+
+type HealthCheckName = original.HealthCheckName
+
+const (
+	HealthCheckNameAppAttachHealthCheck     HealthCheckName = original.HealthCheckNameAppAttachHealthCheck
+	HealthCheckNameDomainJoinedCheck        HealthCheckName = original.HealthCheckNameDomainJoinedCheck
+	HealthCheckNameDomainReachable          HealthCheckName = original.HealthCheckNameDomainReachable
+	HealthCheckNameDomainTrustCheck         HealthCheckName = original.HealthCheckNameDomainTrustCheck
+	HealthCheckNameFSLogixHealthCheck       HealthCheckName = original.HealthCheckNameFSLogixHealthCheck
+	HealthCheckNameMetaDataServiceCheck     HealthCheckName = original.HealthCheckNameMetaDataServiceCheck
+	HealthCheckNameMonitoringAgentCheck     HealthCheckName = original.HealthCheckNameMonitoringAgentCheck
+	HealthCheckNameSupportedEncryptionCheck HealthCheckName = original.HealthCheckNameSupportedEncryptionCheck
+	HealthCheckNameSxSStackListenerCheck    HealthCheckName = original.HealthCheckNameSxSStackListenerCheck
+	HealthCheckNameUrlsAccessibleCheck      HealthCheckName = original.HealthCheckNameUrlsAccessibleCheck
+	HealthCheckNameWebRTCRedirectorCheck    HealthCheckName = original.HealthCheckNameWebRTCRedirectorCheck
+)
+
+type HealthCheckResult = original.HealthCheckResult
+
+const (
+	HealthCheckResultHealthCheckFailed    HealthCheckResult = original.HealthCheckResultHealthCheckFailed
+	HealthCheckResultHealthCheckSucceeded HealthCheckResult = original.HealthCheckResultHealthCheckSucceeded
+	HealthCheckResultSessionHostShutdown  HealthCheckResult = original.HealthCheckResultSessionHostShutdown
+	HealthCheckResultUnknown              HealthCheckResult = original.HealthCheckResultUnknown
 )
 
 type HostPoolType = original.HostPoolType
 
 const (
-	Personal HostPoolType = original.Personal
-	Pooled   HostPoolType = original.Pooled
+	HostPoolTypeBYODesktop HostPoolType = original.HostPoolTypeBYODesktop
+	HostPoolTypePersonal   HostPoolType = original.HostPoolTypePersonal
+	HostPoolTypePooled     HostPoolType = original.HostPoolTypePooled
 )
 
 type LoadBalancerType = original.LoadBalancerType
 
 const (
-	BreadthFirst LoadBalancerType = original.BreadthFirst
-	DepthFirst   LoadBalancerType = original.DepthFirst
-	Persistent   LoadBalancerType = original.Persistent
+	LoadBalancerTypeBreadthFirst LoadBalancerType = original.LoadBalancerTypeBreadthFirst
+	LoadBalancerTypeDepthFirst   LoadBalancerType = original.LoadBalancerTypeDepthFirst
+	LoadBalancerTypePersistent   LoadBalancerType = original.LoadBalancerTypePersistent
+)
+
+type Operation = original.Operation
+
+const (
+	OperationComplete Operation = original.OperationComplete
+	OperationHide     Operation = original.OperationHide
+	OperationRevoke   Operation = original.OperationRevoke
+	OperationStart    Operation = original.OperationStart
+	OperationUnhide   Operation = original.OperationUnhide
 )
 
 type PersonalDesktopAssignmentType = original.PersonalDesktopAssignmentType
 
 const (
-	Automatic PersonalDesktopAssignmentType = original.Automatic
-	Direct    PersonalDesktopAssignmentType = original.Direct
+	PersonalDesktopAssignmentTypeAutomatic PersonalDesktopAssignmentType = original.PersonalDesktopAssignmentTypeAutomatic
+	PersonalDesktopAssignmentTypeDirect    PersonalDesktopAssignmentType = original.PersonalDesktopAssignmentTypeDirect
 )
 
 type PreferredAppGroupType = original.PreferredAppGroupType
@@ -71,50 +116,115 @@ const (
 	PreferredAppGroupTypeRailApplications PreferredAppGroupType = original.PreferredAppGroupTypeRailApplications
 )
 
+type PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningState
+
+const (
+	PrivateEndpointConnectionProvisioningStateCreating  PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateCreating
+	PrivateEndpointConnectionProvisioningStateDeleting  PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateDeleting
+	PrivateEndpointConnectionProvisioningStateFailed    PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateFailed
+	PrivateEndpointConnectionProvisioningStateSucceeded PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateSucceeded
+)
+
+type PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatus
+
+const (
+	PrivateEndpointServiceConnectionStatusApproved PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusApproved
+	PrivateEndpointServiceConnectionStatusPending  PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusPending
+	PrivateEndpointServiceConnectionStatusRejected PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusRejected
+)
+
+type PublicNetworkAccess = original.PublicNetworkAccess
+
+const (
+	PublicNetworkAccessDisabled PublicNetworkAccess = original.PublicNetworkAccessDisabled
+	PublicNetworkAccessEnabled  PublicNetworkAccess = original.PublicNetworkAccessEnabled
+)
+
 type RegistrationTokenOperation = original.RegistrationTokenOperation
 
 const (
-	Delete RegistrationTokenOperation = original.Delete
-	None   RegistrationTokenOperation = original.None
-	Update RegistrationTokenOperation = original.Update
+	RegistrationTokenOperationDelete RegistrationTokenOperation = original.RegistrationTokenOperationDelete
+	RegistrationTokenOperationNone   RegistrationTokenOperation = original.RegistrationTokenOperationNone
+	RegistrationTokenOperationUpdate RegistrationTokenOperation = original.RegistrationTokenOperationUpdate
 )
 
 type RemoteApplicationType = original.RemoteApplicationType
 
 const (
-	InBuilt         RemoteApplicationType = original.InBuilt
-	MsixApplication RemoteApplicationType = original.MsixApplication
+	RemoteApplicationTypeInBuilt         RemoteApplicationType = original.RemoteApplicationTypeInBuilt
+	RemoteApplicationTypeMsixApplication RemoteApplicationType = original.RemoteApplicationTypeMsixApplication
+)
+
+type ResourceIdentityType = original.ResourceIdentityType
+
+const (
+	ResourceIdentityTypeSystemAssigned ResourceIdentityType = original.ResourceIdentityTypeSystemAssigned
 )
 
 type SSOSecretType = original.SSOSecretType
 
 const (
-	Certificate           SSOSecretType = original.Certificate
-	CertificateInKeyVault SSOSecretType = original.CertificateInKeyVault
-	SharedKey             SSOSecretType = original.SharedKey
-	SharedKeyInKeyVault   SSOSecretType = original.SharedKeyInKeyVault
+	SSOSecretTypeCertificate           SSOSecretType = original.SSOSecretTypeCertificate
+	SSOSecretTypeCertificateInKeyVault SSOSecretType = original.SSOSecretTypeCertificateInKeyVault
+	SSOSecretTypeSharedKey             SSOSecretType = original.SSOSecretTypeSharedKey
+	SSOSecretTypeSharedKeyInKeyVault   SSOSecretType = original.SSOSecretTypeSharedKeyInKeyVault
+)
+
+type ScalingHostPoolType = original.ScalingHostPoolType
+
+const (
+	ScalingHostPoolTypePooled ScalingHostPoolType = original.ScalingHostPoolTypePooled
+)
+
+type SessionHostLoadBalancingAlgorithm = original.SessionHostLoadBalancingAlgorithm
+
+const (
+	SessionHostLoadBalancingAlgorithmBreadthFirst SessionHostLoadBalancingAlgorithm = original.SessionHostLoadBalancingAlgorithmBreadthFirst
+	SessionHostLoadBalancingAlgorithmDepthFirst   SessionHostLoadBalancingAlgorithm = original.SessionHostLoadBalancingAlgorithmDepthFirst
 )
 
 type SessionState = original.SessionState
 
 const (
-	Active                 SessionState = original.Active
-	Disconnected           SessionState = original.Disconnected
-	LogOff                 SessionState = original.LogOff
-	Pending                SessionState = original.Pending
-	Unknown                SessionState = original.Unknown
-	UserProfileDiskMounted SessionState = original.UserProfileDiskMounted
+	SessionStateActive                 SessionState = original.SessionStateActive
+	SessionStateDisconnected           SessionState = original.SessionStateDisconnected
+	SessionStateLogOff                 SessionState = original.SessionStateLogOff
+	SessionStatePending                SessionState = original.SessionStatePending
+	SessionStateUnknown                SessionState = original.SessionStateUnknown
+	SessionStateUserProfileDiskMounted SessionState = original.SessionStateUserProfileDiskMounted
+)
+
+type SkuTier = original.SkuTier
+
+const (
+	SkuTierBasic    SkuTier = original.SkuTierBasic
+	SkuTierFree     SkuTier = original.SkuTierFree
+	SkuTierPremium  SkuTier = original.SkuTierPremium
+	SkuTierStandard SkuTier = original.SkuTierStandard
 )
 
 type Status = original.Status
 
 const (
-	StatusAvailable     Status = original.StatusAvailable
-	StatusDisconnected  Status = original.StatusDisconnected
-	StatusShutdown      Status = original.StatusShutdown
-	StatusUnavailable   Status = original.StatusUnavailable
-	StatusUpgradeFailed Status = original.StatusUpgradeFailed
-	StatusUpgrading     Status = original.StatusUpgrading
+	StatusAvailable                   Status = original.StatusAvailable
+	StatusDisconnected                Status = original.StatusDisconnected
+	StatusDomainTrustRelationshipLost Status = original.StatusDomainTrustRelationshipLost
+	StatusFSLogixNotHealthy           Status = original.StatusFSLogixNotHealthy
+	StatusNeedsAssistance             Status = original.StatusNeedsAssistance
+	StatusNoHeartbeat                 Status = original.StatusNoHeartbeat
+	StatusNotJoinedToDomain           Status = original.StatusNotJoinedToDomain
+	StatusShutdown                    Status = original.StatusShutdown
+	StatusSxSStackListenerNotReady    Status = original.StatusSxSStackListenerNotReady
+	StatusUnavailable                 Status = original.StatusUnavailable
+	StatusUpgradeFailed               Status = original.StatusUpgradeFailed
+	StatusUpgrading                   Status = original.StatusUpgrading
+)
+
+type StopHostsWhen = original.StopHostsWhen
+
+const (
+	StopHostsWhenZeroActiveSessions StopHostsWhen = original.StopHostsWhenZeroActiveSessions
+	StopHostsWhenZeroSessions       StopHostsWhen = original.StopHostsWhenZeroSessions
 )
 
 type UpdateState = original.UpdateState
@@ -149,6 +259,8 @@ type CloudError = original.CloudError
 type CloudErrorProperties = original.CloudErrorProperties
 type Desktop = original.Desktop
 type DesktopList = original.DesktopList
+type DesktopListIterator = original.DesktopListIterator
+type DesktopListPage = original.DesktopListPage
 type DesktopPatch = original.DesktopPatch
 type DesktopPatchProperties = original.DesktopPatchProperties
 type DesktopProperties = original.DesktopProperties
@@ -166,6 +278,8 @@ type HostPoolPatch = original.HostPoolPatch
 type HostPoolPatchProperties = original.HostPoolPatchProperties
 type HostPoolProperties = original.HostPoolProperties
 type HostPoolsClient = original.HostPoolsClient
+type Identity = original.Identity
+type LogSpecification = original.LogSpecification
 type MSIXImageURI = original.MSIXImageURI
 type MSIXPackage = original.MSIXPackage
 type MSIXPackageList = original.MSIXPackageList
@@ -175,19 +289,56 @@ type MSIXPackagePatch = original.MSIXPackagePatch
 type MSIXPackagePatchProperties = original.MSIXPackagePatchProperties
 type MSIXPackageProperties = original.MSIXPackageProperties
 type MSIXPackagesClient = original.MSIXPackagesClient
+type MigrationRequestProperties = original.MigrationRequestProperties
 type MsixImagesClient = original.MsixImagesClient
 type MsixPackageApplications = original.MsixPackageApplications
 type MsixPackageDependencies = original.MsixPackageDependencies
+type OperationProperties = original.OperationProperties
 type OperationsClient = original.OperationsClient
+type Plan = original.Plan
+type PrivateEndpoint = original.PrivateEndpoint
+type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionListResultWithSystemData = original.PrivateEndpointConnectionListResultWithSystemData
+type PrivateEndpointConnectionListResultWithSystemDataIterator = original.PrivateEndpointConnectionListResultWithSystemDataIterator
+type PrivateEndpointConnectionListResultWithSystemDataPage = original.PrivateEndpointConnectionListResultWithSystemDataPage
+type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
+type PrivateEndpointConnectionWithSystemData = original.PrivateEndpointConnectionWithSystemData
+type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
+type PrivateLinkResource = original.PrivateLinkResource
+type PrivateLinkResourceListResult = original.PrivateLinkResourceListResult
+type PrivateLinkResourceListResultIterator = original.PrivateLinkResourceListResultIterator
+type PrivateLinkResourceListResultPage = original.PrivateLinkResourceListResultPage
+type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
+type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
+type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionState
 type ProxyResource = original.ProxyResource
 type RegistrationInfo = original.RegistrationInfo
 type RegistrationInfoPatch = original.RegistrationInfoPatch
 type Resource = original.Resource
+type ResourceModelWithAllowedPropertySet = original.ResourceModelWithAllowedPropertySet
+type ResourceModelWithAllowedPropertySetIdentity = original.ResourceModelWithAllowedPropertySetIdentity
+type ResourceModelWithAllowedPropertySetPlan = original.ResourceModelWithAllowedPropertySetPlan
+type ResourceModelWithAllowedPropertySetSku = original.ResourceModelWithAllowedPropertySetSku
 type ResourceProviderOperation = original.ResourceProviderOperation
 type ResourceProviderOperationDisplay = original.ResourceProviderOperationDisplay
 type ResourceProviderOperationList = original.ResourceProviderOperationList
+type ResourceProviderOperationListIterator = original.ResourceProviderOperationListIterator
+type ResourceProviderOperationListPage = original.ResourceProviderOperationListPage
+type ScalingHostPoolReference = original.ScalingHostPoolReference
+type ScalingPlan = original.ScalingPlan
+type ScalingPlanList = original.ScalingPlanList
+type ScalingPlanListIterator = original.ScalingPlanListIterator
+type ScalingPlanListPage = original.ScalingPlanListPage
+type ScalingPlanPatch = original.ScalingPlanPatch
+type ScalingPlanPatchProperties = original.ScalingPlanPatchProperties
+type ScalingPlanProperties = original.ScalingPlanProperties
+type ScalingPlansClient = original.ScalingPlansClient
+type ScalingSchedule = original.ScalingSchedule
 type SendMessage = original.SendMessage
+type ServiceSpecification = original.ServiceSpecification
 type SessionHost = original.SessionHost
+type SessionHostHealthCheckFailureDetails = original.SessionHostHealthCheckFailureDetails
+type SessionHostHealthCheckReport = original.SessionHostHealthCheckReport
 type SessionHostList = original.SessionHostList
 type SessionHostListIterator = original.SessionHostListIterator
 type SessionHostListPage = original.SessionHostListPage
@@ -195,12 +346,15 @@ type SessionHostPatch = original.SessionHostPatch
 type SessionHostPatchProperties = original.SessionHostPatchProperties
 type SessionHostProperties = original.SessionHostProperties
 type SessionHostsClient = original.SessionHostsClient
+type Sku = original.Sku
 type StartMenuItem = original.StartMenuItem
 type StartMenuItemList = original.StartMenuItemList
 type StartMenuItemListIterator = original.StartMenuItemListIterator
 type StartMenuItemListPage = original.StartMenuItemListPage
 type StartMenuItemProperties = original.StartMenuItemProperties
 type StartMenuItemsClient = original.StartMenuItemsClient
+type SystemData = original.SystemData
+type Time = original.Time
 type TrackedResource = original.TrackedResource
 type UserSession = original.UserSession
 type UserSessionList = original.UserSessionList
@@ -243,6 +397,12 @@ func NewApplicationsClient(subscriptionID string) ApplicationsClient {
 }
 func NewApplicationsClientWithBaseURI(baseURI string, subscriptionID string) ApplicationsClient {
 	return original.NewApplicationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDesktopListIterator(page DesktopListPage) DesktopListIterator {
+	return original.NewDesktopListIterator(page)
+}
+func NewDesktopListPage(cur DesktopList, getNextPage func(context.Context, DesktopList) (DesktopList, error)) DesktopListPage {
+	return original.NewDesktopListPage(cur, getNextPage)
 }
 func NewDesktopsClient(subscriptionID string) DesktopsClient {
 	return original.NewDesktopsClient(subscriptionID)
@@ -291,6 +451,48 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateEndpointConnectionListResultWithSystemDataIterator(page PrivateEndpointConnectionListResultWithSystemDataPage) PrivateEndpointConnectionListResultWithSystemDataIterator {
+	return original.NewPrivateEndpointConnectionListResultWithSystemDataIterator(page)
+}
+func NewPrivateEndpointConnectionListResultWithSystemDataPage(cur PrivateEndpointConnectionListResultWithSystemData, getNextPage func(context.Context, PrivateEndpointConnectionListResultWithSystemData) (PrivateEndpointConnectionListResultWithSystemData, error)) PrivateEndpointConnectionListResultWithSystemDataPage {
+	return original.NewPrivateEndpointConnectionListResultWithSystemDataPage(cur, getNextPage)
+}
+func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
+}
+func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateLinkResourceListResultIterator(page PrivateLinkResourceListResultPage) PrivateLinkResourceListResultIterator {
+	return original.NewPrivateLinkResourceListResultIterator(page)
+}
+func NewPrivateLinkResourceListResultPage(cur PrivateLinkResourceListResult, getNextPage func(context.Context, PrivateLinkResourceListResult) (PrivateLinkResourceListResult, error)) PrivateLinkResourceListResultPage {
+	return original.NewPrivateLinkResourceListResultPage(cur, getNextPage)
+}
+func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClient(subscriptionID)
+}
+func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewResourceProviderOperationListIterator(page ResourceProviderOperationListPage) ResourceProviderOperationListIterator {
+	return original.NewResourceProviderOperationListIterator(page)
+}
+func NewResourceProviderOperationListPage(cur ResourceProviderOperationList, getNextPage func(context.Context, ResourceProviderOperationList) (ResourceProviderOperationList, error)) ResourceProviderOperationListPage {
+	return original.NewResourceProviderOperationListPage(cur, getNextPage)
+}
+func NewScalingPlanListIterator(page ScalingPlanListPage) ScalingPlanListIterator {
+	return original.NewScalingPlanListIterator(page)
+}
+func NewScalingPlanListPage(cur ScalingPlanList, getNextPage func(context.Context, ScalingPlanList) (ScalingPlanList, error)) ScalingPlanListPage {
+	return original.NewScalingPlanListPage(cur, getNextPage)
+}
+func NewScalingPlansClient(subscriptionID string) ScalingPlansClient {
+	return original.NewScalingPlansClient(subscriptionID)
+}
+func NewScalingPlansClientWithBaseURI(baseURI string, subscriptionID string) ScalingPlansClient {
+	return original.NewScalingPlansClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewSessionHostListIterator(page SessionHostListPage) SessionHostListIterator {
 	return original.NewSessionHostListIterator(page)
@@ -352,11 +554,23 @@ func PossibleApplicationTypeValues() []ApplicationType {
 func PossibleCommandLineSettingValues() []CommandLineSetting {
 	return original.PossibleCommandLineSettingValues()
 }
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
+}
+func PossibleHealthCheckNameValues() []HealthCheckName {
+	return original.PossibleHealthCheckNameValues()
+}
+func PossibleHealthCheckResultValues() []HealthCheckResult {
+	return original.PossibleHealthCheckResultValues()
+}
 func PossibleHostPoolTypeValues() []HostPoolType {
 	return original.PossibleHostPoolTypeValues()
 }
 func PossibleLoadBalancerTypeValues() []LoadBalancerType {
 	return original.PossibleLoadBalancerTypeValues()
+}
+func PossibleOperationValues() []Operation {
+	return original.PossibleOperationValues()
 }
 func PossiblePersonalDesktopAssignmentTypeValues() []PersonalDesktopAssignmentType {
 	return original.PossiblePersonalDesktopAssignmentTypeValues()
@@ -364,20 +578,44 @@ func PossiblePersonalDesktopAssignmentTypeValues() []PersonalDesktopAssignmentTy
 func PossiblePreferredAppGroupTypeValues() []PreferredAppGroupType {
 	return original.PossiblePreferredAppGroupTypeValues()
 }
+func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
+	return original.PossiblePrivateEndpointConnectionProvisioningStateValues()
+}
+func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
+	return original.PossiblePrivateEndpointServiceConnectionStatusValues()
+}
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return original.PossiblePublicNetworkAccessValues()
+}
 func PossibleRegistrationTokenOperationValues() []RegistrationTokenOperation {
 	return original.PossibleRegistrationTokenOperationValues()
 }
 func PossibleRemoteApplicationTypeValues() []RemoteApplicationType {
 	return original.PossibleRemoteApplicationTypeValues()
 }
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
+	return original.PossibleResourceIdentityTypeValues()
+}
 func PossibleSSOSecretTypeValues() []SSOSecretType {
 	return original.PossibleSSOSecretTypeValues()
+}
+func PossibleScalingHostPoolTypeValues() []ScalingHostPoolType {
+	return original.PossibleScalingHostPoolTypeValues()
+}
+func PossibleSessionHostLoadBalancingAlgorithmValues() []SessionHostLoadBalancingAlgorithm {
+	return original.PossibleSessionHostLoadBalancingAlgorithmValues()
 }
 func PossibleSessionStateValues() []SessionState {
 	return original.PossibleSessionStateValues()
 }
+func PossibleSkuTierValues() []SkuTier {
+	return original.PossibleSkuTierValues()
+}
 func PossibleStatusValues() []Status {
 	return original.PossibleStatusValues()
+}
+func PossibleStopHostsWhenValues() []StopHostsWhen {
+	return original.PossibleStopHostsWhenValues()
 }
 func PossibleUpdateStateValues() []UpdateState {
 	return original.PossibleUpdateStateValues()

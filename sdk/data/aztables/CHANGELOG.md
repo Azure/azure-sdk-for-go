@@ -1,14 +1,20 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 0.4.0 (2021-11-09)
 
 ### Features Added
+* Added `NextPagePartitionKey` and `NextPageRowKey` to `ListEntitiesPager` for retrieving continuation tokens.
+* Added `PartitionKey` and `RowKey` to `ListEntitiesOptions` for using exposed continuation tokens.
+
+## 0.3.0 (2021-11-02)
+
+### Features Added
+* Added `NewClientWithNoCredential` and `NewServiceClientWithNoCredential` for authenticating the `Client` and `ServiceClient` with SAS URLs
+* Added `NewClientWithSharedKey` and `NewServiceClientWithSharedKey` for authenticating the `Client` and `ServiceClient` with Shared Keys
 
 ### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+* `NewClient` and `NewServiceClient` is now used for authenticating the `Client` and `ServiceClient` with credentials from `azidentity` only.
+* `ClientOptions` embeds `azcore.ClientOptions` and removes all named fields.
 
 ## 0.2.0 (2021-10-05)
 

@@ -93,8 +93,8 @@ func TestContainerResponseParsing(t *testing.T) {
 		t.Errorf("Expected PartitionKeyDefinition.Version to be %d, but got %d", properties.PartitionKeyDefinition.Version, parsedResponse.ContainerProperties.PartitionKeyDefinition.Version)
 	}
 
-	if parsedResponse.ActivityId != "someActivityId" {
-		t.Errorf("Expected ActivityId to be %s, but got %s", "someActivityId", parsedResponse.ActivityId)
+	if parsedResponse.ActivityID != "someActivityId" {
+		t.Errorf("Expected ActivityId to be %s, but got %s", "someActivityId", parsedResponse.ActivityID)
 	}
 
 	if parsedResponse.RequestCharge != 13.42 {

@@ -10,7 +10,7 @@ package armmanagementgroups
 
 const (
 	module  = "armmanagementgroups"
-	version = "v0.1.1"
+	version = "v0.2.1"
 )
 
 type Enum0 string

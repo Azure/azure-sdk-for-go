@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // TransformationsClient contains the methods for the Transformations group.
@@ -30,8 +31,15 @@ type TransformationsClient struct {
 }
 
 // NewTransformationsClient creates a new instance of TransformationsClient with the specified values.
-func NewTransformationsClient(con *arm.Connection, subscriptionID string) *TransformationsClient {
-	return &TransformationsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewTransformationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TransformationsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &TransformationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrReplace - Creates a transformation or replaces an already existing transformation under an existing streaming job.
@@ -94,7 +102,7 @@ func (client *TransformationsClient) createOrReplaceHandleResponse(resp *http.Re
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Transformation); err != nil {
-		return TransformationsCreateOrReplaceResponse{}, err
+		return TransformationsCreateOrReplaceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -166,7 +174,7 @@ func (client *TransformationsClient) getHandleResponse(resp *http.Response) (Tra
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Transformation); err != nil {
-		return TransformationsGetResponse{}, err
+		return TransformationsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -243,7 +251,7 @@ func (client *TransformationsClient) updateHandleResponse(resp *http.Response) (
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Transformation); err != nil {
-		return TransformationsUpdateResponse{}, err
+		return TransformationsUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

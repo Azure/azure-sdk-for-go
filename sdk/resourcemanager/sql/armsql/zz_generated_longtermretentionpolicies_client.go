@@ -11,14 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // LongTermRetentionPoliciesClient contains the methods for the LongTermRetentionPolicies group.
@@ -30,8 +30,15 @@ type LongTermRetentionPoliciesClient struct {
 }
 
 // NewLongTermRetentionPoliciesClient creates a new instance of LongTermRetentionPoliciesClient with the specified values.
-func NewLongTermRetentionPoliciesClient(con *arm.Connection, subscriptionID string) *LongTermRetentionPoliciesClient {
-	return &LongTermRetentionPoliciesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewLongTermRetentionPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LongTermRetentionPoliciesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &LongTermRetentionPoliciesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Sets a database's long term retention policy.
@@ -172,7 +179,7 @@ func (client *LongTermRetentionPoliciesClient) getCreateRequest(ctx context.Cont
 func (client *LongTermRetentionPoliciesClient) getHandleResponse(resp *http.Response) (LongTermRetentionPoliciesGetResponse, error) {
 	result := LongTermRetentionPoliciesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LongTermRetentionPolicy); err != nil {
-		return LongTermRetentionPoliciesGetResponse{}, err
+		return LongTermRetentionPoliciesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -237,7 +244,7 @@ func (client *LongTermRetentionPoliciesClient) listByDatabaseCreateRequest(ctx c
 func (client *LongTermRetentionPoliciesClient) listByDatabaseHandleResponse(resp *http.Response) (LongTermRetentionPoliciesListByDatabaseResponse, error) {
 	result := LongTermRetentionPoliciesListByDatabaseResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LongTermRetentionPolicyListResult); err != nil {
-		return LongTermRetentionPoliciesListByDatabaseResponse{}, err
+		return LongTermRetentionPoliciesListByDatabaseResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

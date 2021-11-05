@@ -10,11 +10,10 @@ package armrecoveryservices
 
 import (
 	"encoding/json"
-	"reflect"
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"reflect"
+	"time"
 )
 
 // CertificateRequest - Details of the certificate to be uploaded to the vault.
@@ -278,11 +277,11 @@ type OperationResource struct {
 // MarshalJSON implements the json.Marshaller interface for type OperationResource.
 func (o OperationResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "endTime", (*timeRFC3339)(o.EndTime))
+	populateTimeRFC3339(objectMap, "endTime", o.EndTime)
 	populate(objectMap, "error", o.Error)
 	populate(objectMap, "id", o.ID)
 	populate(objectMap, "name", o.Name)
-	populate(objectMap, "startTime", (*timeRFC3339)(o.StartTime))
+	populateTimeRFC3339(objectMap, "startTime", o.StartTime)
 	populate(objectMap, "status", o.Status)
 	return json.Marshal(objectMap)
 }
@@ -297,9 +296,7 @@ func (o *OperationResource) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "endTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			o.EndTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &o.EndTime)
 			delete(rawMsg, key)
 		case "error":
 			err = unpopulate(val, &o.Error)
@@ -311,9 +308,7 @@ func (o *OperationResource) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &o.Name)
 			delete(rawMsg, key)
 		case "startTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			o.StartTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &o.StartTime)
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, &o.Status)
@@ -803,8 +798,8 @@ func (r ResourceCertificateDetails) marshalInternal(objectMap map[string]interfa
 	populate(objectMap, "resourceId", r.ResourceID)
 	populate(objectMap, "subject", r.Subject)
 	populate(objectMap, "thumbprint", r.Thumbprint)
-	populate(objectMap, "validFrom", (*timeRFC3339)(r.ValidFrom))
-	populate(objectMap, "validTo", (*timeRFC3339)(r.ValidTo))
+	populateTimeRFC3339(objectMap, "validFrom", r.ValidFrom)
+	populateTimeRFC3339(objectMap, "validTo", r.ValidTo)
 }
 
 func (r *ResourceCertificateDetails) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
@@ -833,14 +828,10 @@ func (r *ResourceCertificateDetails) unmarshalInternal(rawMsg map[string]json.Ra
 			err = unpopulate(val, &r.Thumbprint)
 			delete(rawMsg, key)
 		case "validFrom":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			r.ValidFrom = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &r.ValidFrom)
 			delete(rawMsg, key)
 		case "validTo":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			r.ValidTo = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &r.ValidTo)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -892,10 +883,10 @@ type SystemData struct {
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "createdAt", (*timeRFC3339)(s.CreatedAt))
+	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
 	populate(objectMap, "createdBy", s.CreatedBy)
 	populate(objectMap, "createdByType", s.CreatedByType)
-	populate(objectMap, "lastModifiedAt", (*timeRFC3339)(s.LastModifiedAt))
+	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
 	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
 	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
 	return json.Marshal(objectMap)
@@ -911,9 +902,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "createdAt":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			s.CreatedAt = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
 			delete(rawMsg, key)
 		case "createdBy":
 			err = unpopulate(val, &s.CreatedBy)
@@ -922,9 +911,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &s.CreatedByType)
 			delete(rawMsg, key)
 		case "lastModifiedAt":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			s.LastModifiedAt = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
 			delete(rawMsg, key)
 		case "lastModifiedBy":
 			err = unpopulate(val, &s.LastModifiedBy)
@@ -996,12 +983,12 @@ type UpgradeDetails struct {
 // MarshalJSON implements the json.Marshaller interface for type UpgradeDetails.
 func (u UpgradeDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "endTimeUtc", (*timeRFC3339)(u.EndTimeUTC))
-	populate(objectMap, "lastUpdatedTimeUtc", (*timeRFC3339)(u.LastUpdatedTimeUTC))
+	populateTimeRFC3339(objectMap, "endTimeUtc", u.EndTimeUTC)
+	populateTimeRFC3339(objectMap, "lastUpdatedTimeUtc", u.LastUpdatedTimeUTC)
 	populate(objectMap, "message", u.Message)
 	populate(objectMap, "operationId", u.OperationID)
 	populate(objectMap, "previousResourceId", u.PreviousResourceID)
-	populate(objectMap, "startTimeUtc", (*timeRFC3339)(u.StartTimeUTC))
+	populateTimeRFC3339(objectMap, "startTimeUtc", u.StartTimeUTC)
 	populate(objectMap, "status", u.Status)
 	populate(objectMap, "triggerType", u.TriggerType)
 	populate(objectMap, "upgradedResourceId", u.UpgradedResourceID)
@@ -1018,14 +1005,10 @@ func (u *UpgradeDetails) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "endTimeUtc":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			u.EndTimeUTC = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &u.EndTimeUTC)
 			delete(rawMsg, key)
 		case "lastUpdatedTimeUtc":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			u.LastUpdatedTimeUTC = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &u.LastUpdatedTimeUTC)
 			delete(rawMsg, key)
 		case "message":
 			err = unpopulate(val, &u.Message)
@@ -1037,9 +1020,7 @@ func (u *UpgradeDetails) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &u.PreviousResourceID)
 			delete(rawMsg, key)
 		case "startTimeUtc":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			u.StartTimeUTC = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &u.StartTimeUTC)
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, &u.Status)
@@ -1293,10 +1274,10 @@ type VaultPropertiesMoveDetails struct {
 // MarshalJSON implements the json.Marshaller interface for type VaultPropertiesMoveDetails.
 func (v VaultPropertiesMoveDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "completionTimeUtc", (*timeRFC3339)(v.CompletionTimeUTC))
+	populateTimeRFC3339(objectMap, "completionTimeUtc", v.CompletionTimeUTC)
 	populate(objectMap, "operationId", v.OperationID)
 	populate(objectMap, "sourceResourceId", v.SourceResourceID)
-	populate(objectMap, "startTimeUtc", (*timeRFC3339)(v.StartTimeUTC))
+	populateTimeRFC3339(objectMap, "startTimeUtc", v.StartTimeUTC)
 	populate(objectMap, "targetResourceId", v.TargetResourceID)
 	return json.Marshal(objectMap)
 }
@@ -1311,9 +1292,7 @@ func (v *VaultPropertiesMoveDetails) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "completionTimeUtc":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			v.CompletionTimeUTC = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &v.CompletionTimeUTC)
 			delete(rawMsg, key)
 		case "operationId":
 			err = unpopulate(val, &v.OperationID)
@@ -1322,9 +1301,7 @@ func (v *VaultPropertiesMoveDetails) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &v.SourceResourceID)
 			delete(rawMsg, key)
 		case "startTimeUtc":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			v.StartTimeUTC = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &v.StartTimeUTC)
 			delete(rawMsg, key)
 		case "targetResourceId":
 			err = unpopulate(val, &v.TargetResourceID)
@@ -1364,7 +1341,7 @@ func (v VaultUsage) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "currentValue", v.CurrentValue)
 	populate(objectMap, "limit", v.Limit)
 	populate(objectMap, "name", v.Name)
-	populate(objectMap, "nextResetTime", (*timeRFC3339)(v.NextResetTime))
+	populateTimeRFC3339(objectMap, "nextResetTime", v.NextResetTime)
 	populate(objectMap, "quotaPeriod", v.QuotaPeriod)
 	populate(objectMap, "unit", v.Unit)
 	return json.Marshal(objectMap)
@@ -1389,9 +1366,7 @@ func (v *VaultUsage) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &v.Name)
 			delete(rawMsg, key)
 		case "nextResetTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			v.NextResetTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &v.NextResetTime)
 			delete(rawMsg, key)
 		case "quotaPeriod":
 			err = unpopulate(val, &v.QuotaPeriod)

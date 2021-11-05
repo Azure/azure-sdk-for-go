@@ -2,9 +2,6 @@ parameters:
   - name:  ServiceDirectory
     type: string
     default: ''
-  - name:  GoWorkspace
-    type: string
-    default: ''
   - name:  Image
     type: string
     default: ''
@@ -28,7 +25,6 @@ steps:
       pwsh: true
       filePath: eng/scripts/build.ps1
       arguments: -filter '${{ parameters.ServiceDirectory }}'
-      workingDirectory: '${{ parameters.GoWorkspace }}'
 
   - task: Powershell@2
     displayName: Vet
@@ -39,7 +35,6 @@ steps:
       pwsh: true
       filePath: eng/scripts/build.ps1
       arguments: -vet -skipBuild -filter '${{ parameters.ServiceDirectory }}'
-      workingDirectory: '${{ parameters.GoWorkspace }}'
 
   - pwsh: |
       go install github.com/jstemmer/go-junit-report@v0.9.1
@@ -47,7 +42,6 @@ steps:
       go install github.com/AlekSi/gocov-xml@v1.0.0
       go install github.com/matm/gocov-html@v0.0.0-20200509184451-71874e2e203b
     displayName: "Install Coverage and Junit Dependencies"
-    workingDirectory: '${{parameters.GoWorkspace}}'
 
   - ${{ if eq(parameters.TestProxy, true) }}:
     - template: /eng/common/testproxy/test-proxy-docker.yml
@@ -76,7 +70,7 @@ steps:
     condition: succeededOrFailed()
     inputs:
       testRunner: JUnit
-      testResultsFiles: '${{parameters.GoWorkspace}}sdk/${{parameters.ServiceDirectory}}/**/report.xml'
+      testResultsFiles: '$(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}/report.xml'
       testRunTitle: 'Go ${{ parameters.GoVersion }} on ${{ parameters.Image }}'
       failTaskOnFailedTests: true
 

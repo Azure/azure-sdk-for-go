@@ -8,12 +8,13 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // A ContainerClient represents a URL to the Azure Storage container allowing you to manipulate its blobs.
 type ContainerClient struct {
-	client *containerClient
-	cred   azcore.Credential
+	client    *containerClient
+	sharedKey *SharedKeyCredential
 }
 
 // URL returns the URL endpoint used by the ContainerClient object.
@@ -21,11 +22,27 @@ func (c ContainerClient) URL() string {
 	return c.client.con.u
 }
 
-// NewContainerClient creates a ContainerClient object using the specified URL and request policy pipeline.
-func NewContainerClient(containerURL string, cred azcore.Credential, options *ClientOptions) (ContainerClient, error) {
+// NewContainerClient creates a ContainerClient object using the specified URL, Azure AD credential, and options.
+func NewContainerClient(containerURL string, cred azcore.TokenCredential, options *ClientOptions) (ContainerClient, error) {
+	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{tokenScope}, nil)
 	return ContainerClient{client: &containerClient{
-		con: newConnection(containerURL, cred, options.getConnectionOptions()),
-	}, cred: cred}, nil
+		con: newConnection(containerURL, authPolicy, options.getConnectionOptions()),
+	}}, nil
+}
+
+// NewContainerClientWithNoCredential creates a ContainerClient object using the specified URL and options.
+func NewContainerClientWithNoCredential(containerURL string, options *ClientOptions) (ContainerClient, error) {
+	return ContainerClient{client: &containerClient{
+		con: newConnection(containerURL, nil, options.getConnectionOptions()),
+	}}, nil
+}
+
+// NewContainerClientWithSharedKey creates a ContainerClient object using the specified URL, shared key, and options.
+func NewContainerClientWithSharedKey(containerURL string, cred *SharedKeyCredential, options *ClientOptions) (ContainerClient, error) {
+	authPolicy := newSharedKeyCredPolicy(cred)
+	return ContainerClient{client: &containerClient{
+		con: newConnection(containerURL, authPolicy, options.getConnectionOptions()),
+	}, sharedKey: cred}, nil
 }
 
 // NewContainerClientFromConnectionString creates a ContainerClient object using connection string of an account
@@ -199,7 +216,7 @@ func (c ContainerClient) ListBlobsHierarchy(delimiter string, listOptions *Conta
 }
 
 // GetSASToken is a convenience method for generating a SAS token for the currently pointed at container.
-// It can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.
+// It can only be used if the credential supplied during creation was a SharedKeyCredential.
 func (c ContainerClient) GetSASToken(permissions BlobSASPermissions, start time.Time, expiry time.Time) (SASQueryParameters, error) {
 	urlParts := NewBlobURLParts(c.URL())
 
@@ -212,5 +229,5 @@ func (c ContainerClient) GetSASToken(permissions BlobSASPermissions, start time.
 
 		StartTime:  start.UTC(),
 		ExpiryTime: expiry.UTC(),
-	}.NewSASQueryParameters(c.cred.(*SharedKeyCredential))
+	}.NewSASQueryParameters(c.sharedKey)
 }

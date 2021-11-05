@@ -10,10 +10,9 @@ package armmanagementgroups
 
 import (
 	"context"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"net/http"
 	"time"
-
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 )
 
 // EntitiesListResponse contains the response from method Entities.List.
@@ -170,6 +169,8 @@ type ManagementGroupsCreateOrUpdatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l ManagementGroupsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagementGroupsCreateOrUpdateResponse, error) {
 	respType := ManagementGroupsCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ManagementGroup)
@@ -220,6 +221,8 @@ type ManagementGroupsDeletePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l ManagementGroupsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagementGroupsDeleteResponse, error) {
 	respType := ManagementGroupsDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.AzureAsyncOperationResults)

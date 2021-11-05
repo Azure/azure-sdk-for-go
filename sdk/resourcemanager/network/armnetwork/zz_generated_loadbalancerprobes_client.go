@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // LoadBalancerProbesClient contains the methods for the LoadBalancerProbes group.
@@ -30,8 +31,15 @@ type LoadBalancerProbesClient struct {
 }
 
 // NewLoadBalancerProbesClient creates a new instance of LoadBalancerProbesClient with the specified values.
-func NewLoadBalancerProbesClient(con *arm.Connection, subscriptionID string) *LoadBalancerProbesClient {
-	return &LoadBalancerProbesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewLoadBalancerProbesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LoadBalancerProbesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &LoadBalancerProbesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Gets load balancer probe.
@@ -75,7 +83,7 @@ func (client *LoadBalancerProbesClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -85,7 +93,7 @@ func (client *LoadBalancerProbesClient) getCreateRequest(ctx context.Context, re
 func (client *LoadBalancerProbesClient) getHandleResponse(resp *http.Response) (LoadBalancerProbesGetResponse, error) {
 	result := LoadBalancerProbesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Probe); err != nil {
-		return LoadBalancerProbesGetResponse{}, err
+		return LoadBalancerProbesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -137,7 +145,7 @@ func (client *LoadBalancerProbesClient) listCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -147,7 +155,7 @@ func (client *LoadBalancerProbesClient) listCreateRequest(ctx context.Context, r
 func (client *LoadBalancerProbesClient) listHandleResponse(resp *http.Response) (LoadBalancerProbesListResponse, error) {
 	result := LoadBalancerProbesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LoadBalancerProbeListResult); err != nil {
-		return LoadBalancerProbesListResponse{}, err
+		return LoadBalancerProbesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // DeviceSecurityGroupsClient contains the methods for the DeviceSecurityGroups group.
@@ -29,8 +30,15 @@ type DeviceSecurityGroupsClient struct {
 }
 
 // NewDeviceSecurityGroupsClient creates a new instance of DeviceSecurityGroupsClient with the specified values.
-func NewDeviceSecurityGroupsClient(con *arm.Connection) *DeviceSecurityGroupsClient {
-	return &DeviceSecurityGroupsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewDeviceSecurityGroupsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *DeviceSecurityGroupsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &DeviceSecurityGroupsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Use this method to creates or updates the device security group on a specified IoT Hub resource.
@@ -53,9 +61,6 @@ func (client *DeviceSecurityGroupsClient) CreateOrUpdate(ctx context.Context, re
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *DeviceSecurityGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceID string, deviceSecurityGroupName string, deviceSecurityGroup DeviceSecurityGroup, options *DeviceSecurityGroupsCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/providers/Microsoft.Security/deviceSecurityGroups/{deviceSecurityGroupName}"
-	if resourceID == "" {
-		return nil, errors.New("parameter resourceID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	if deviceSecurityGroupName == "" {
 		return nil, errors.New("parameter deviceSecurityGroupName cannot be empty")
@@ -76,7 +81,7 @@ func (client *DeviceSecurityGroupsClient) createOrUpdateCreateRequest(ctx contex
 func (client *DeviceSecurityGroupsClient) createOrUpdateHandleResponse(resp *http.Response) (DeviceSecurityGroupsCreateOrUpdateResponse, error) {
 	result := DeviceSecurityGroupsCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeviceSecurityGroup); err != nil {
-		return DeviceSecurityGroupsCreateOrUpdateResponse{}, err
+		return DeviceSecurityGroupsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -114,9 +119,6 @@ func (client *DeviceSecurityGroupsClient) Delete(ctx context.Context, resourceID
 // deleteCreateRequest creates the Delete request.
 func (client *DeviceSecurityGroupsClient) deleteCreateRequest(ctx context.Context, resourceID string, deviceSecurityGroupName string, options *DeviceSecurityGroupsDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/providers/Microsoft.Security/deviceSecurityGroups/{deviceSecurityGroupName}"
-	if resourceID == "" {
-		return nil, errors.New("parameter resourceID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	if deviceSecurityGroupName == "" {
 		return nil, errors.New("parameter deviceSecurityGroupName cannot be empty")
@@ -166,9 +168,6 @@ func (client *DeviceSecurityGroupsClient) Get(ctx context.Context, resourceID st
 // getCreateRequest creates the Get request.
 func (client *DeviceSecurityGroupsClient) getCreateRequest(ctx context.Context, resourceID string, deviceSecurityGroupName string, options *DeviceSecurityGroupsGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/providers/Microsoft.Security/deviceSecurityGroups/{deviceSecurityGroupName}"
-	if resourceID == "" {
-		return nil, errors.New("parameter resourceID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	if deviceSecurityGroupName == "" {
 		return nil, errors.New("parameter deviceSecurityGroupName cannot be empty")
@@ -189,7 +188,7 @@ func (client *DeviceSecurityGroupsClient) getCreateRequest(ctx context.Context, 
 func (client *DeviceSecurityGroupsClient) getHandleResponse(resp *http.Response) (DeviceSecurityGroupsGetResponse, error) {
 	result := DeviceSecurityGroupsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeviceSecurityGroup); err != nil {
-		return DeviceSecurityGroupsGetResponse{}, err
+		return DeviceSecurityGroupsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -224,9 +223,6 @@ func (client *DeviceSecurityGroupsClient) List(resourceID string, options *Devic
 // listCreateRequest creates the List request.
 func (client *DeviceSecurityGroupsClient) listCreateRequest(ctx context.Context, resourceID string, options *DeviceSecurityGroupsListOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/providers/Microsoft.Security/deviceSecurityGroups"
-	if resourceID == "" {
-		return nil, errors.New("parameter resourceID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -243,7 +239,7 @@ func (client *DeviceSecurityGroupsClient) listCreateRequest(ctx context.Context,
 func (client *DeviceSecurityGroupsClient) listHandleResponse(resp *http.Response) (DeviceSecurityGroupsListResponse, error) {
 	result := DeviceSecurityGroupsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeviceSecurityGroupList); err != nil {
-		return DeviceSecurityGroupsListResponse{}, err
+		return DeviceSecurityGroupsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // EventsClient contains the methods for the Events group.
@@ -29,8 +30,15 @@ type EventsClient struct {
 }
 
 // NewEventsClient creates a new instance of EventsClient with the specified values.
-func NewEventsClient(con *arm.Connection) *EventsClient {
-	return &EventsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewEventsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *EventsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &EventsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // ListByBillingAccount - Lists the events that decrements Azure credits or Microsoft Azure consumption commitment for a billing account or a billing profile
@@ -73,7 +81,7 @@ func (client *EventsClient) listByBillingAccountCreateRequest(ctx context.Contex
 func (client *EventsClient) listByBillingAccountHandleResponse(resp *http.Response) (EventsListByBillingAccountResponse, error) {
 	result := EventsListByBillingAccountResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Events); err != nil {
-		return EventsListByBillingAccountResponse{}, err
+		return EventsListByBillingAccountResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -134,7 +142,7 @@ func (client *EventsClient) listByBillingProfileCreateRequest(ctx context.Contex
 func (client *EventsClient) listByBillingProfileHandleResponse(resp *http.Response) (EventsListByBillingProfileResponse, error) {
 	result := EventsListByBillingProfileResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Events); err != nil {
-		return EventsListByBillingProfileResponse{}, err
+		return EventsListByBillingProfileResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

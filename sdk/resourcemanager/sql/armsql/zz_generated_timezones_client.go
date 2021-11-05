@@ -11,13 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // TimeZonesClient contains the methods for the TimeZones group.
@@ -29,8 +30,15 @@ type TimeZonesClient struct {
 }
 
 // NewTimeZonesClient creates a new instance of TimeZonesClient with the specified values.
-func NewTimeZonesClient(con *arm.Connection, subscriptionID string) *TimeZonesClient {
-	return &TimeZonesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewTimeZonesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TimeZonesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &TimeZonesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Gets a managed instance time zone.
@@ -80,7 +88,7 @@ func (client *TimeZonesClient) getCreateRequest(ctx context.Context, locationNam
 func (client *TimeZonesClient) getHandleResponse(resp *http.Response) (TimeZonesGetResponse, error) {
 	result := TimeZonesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TimeZone); err != nil {
-		return TimeZonesGetResponse{}, err
+		return TimeZonesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -137,7 +145,7 @@ func (client *TimeZonesClient) listByLocationCreateRequest(ctx context.Context, 
 func (client *TimeZonesClient) listByLocationHandleResponse(resp *http.Response) (TimeZonesListByLocationResponse, error) {
 	result := TimeZonesListByLocationResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TimeZoneListResult); err != nil {
-		return TimeZonesListByLocationResponse{}, err
+		return TimeZonesListByLocationResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

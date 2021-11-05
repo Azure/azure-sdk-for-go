@@ -11,15 +11,15 @@ package armeventgrid
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // TopicsClient contains the methods for the Topics group.
@@ -31,8 +31,15 @@ type TopicsClient struct {
 }
 
 // NewTopicsClient creates a new instance of TopicsClient with the specified values.
-func NewTopicsClient(con *arm.Connection, subscriptionID string) *TopicsClient {
-	return &TopicsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewTopicsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TopicsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &TopicsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Asynchronously creates a new topic with the specified parameters.
@@ -92,7 +99,7 @@ func (client *TopicsClient) createOrUpdateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, topicInfo)
@@ -167,7 +174,7 @@ func (client *TopicsClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -221,7 +228,7 @@ func (client *TopicsClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -231,7 +238,7 @@ func (client *TopicsClient) getCreateRequest(ctx context.Context, resourceGroupN
 func (client *TopicsClient) getHandleResponse(resp *http.Response) (TopicsGetResponse, error) {
 	result := TopicsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Topic); err != nil {
-		return TopicsGetResponse{}, err
+		return TopicsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -278,7 +285,7 @@ func (client *TopicsClient) listByResourceGroupCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -294,7 +301,7 @@ func (client *TopicsClient) listByResourceGroupCreateRequest(ctx context.Context
 func (client *TopicsClient) listByResourceGroupHandleResponse(resp *http.Response) (TopicsListByResourceGroupResponse, error) {
 	result := TopicsListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TopicsListResult); err != nil {
-		return TopicsListByResourceGroupResponse{}, err
+		return TopicsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -337,7 +344,7 @@ func (client *TopicsClient) listBySubscriptionCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -353,7 +360,7 @@ func (client *TopicsClient) listBySubscriptionCreateRequest(ctx context.Context,
 func (client *TopicsClient) listBySubscriptionHandleResponse(resp *http.Response) (TopicsListBySubscriptionResponse, error) {
 	result := TopicsListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TopicsListResult); err != nil {
-		return TopicsListBySubscriptionResponse{}, err
+		return TopicsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -415,7 +422,7 @@ func (client *TopicsClient) listEventTypesCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -425,7 +432,7 @@ func (client *TopicsClient) listEventTypesCreateRequest(ctx context.Context, res
 func (client *TopicsClient) listEventTypesHandleResponse(resp *http.Response) (TopicsListEventTypesResponse, error) {
 	result := TopicsListEventTypesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventTypesListResult); err != nil {
-		return TopicsListEventTypesResponse{}, err
+		return TopicsListEventTypesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -479,7 +486,7 @@ func (client *TopicsClient) listSharedAccessKeysCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -489,7 +496,7 @@ func (client *TopicsClient) listSharedAccessKeysCreateRequest(ctx context.Contex
 func (client *TopicsClient) listSharedAccessKeysHandleResponse(resp *http.Response) (TopicsListSharedAccessKeysResponse, error) {
 	result := TopicsListSharedAccessKeysResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TopicSharedAccessKeys); err != nil {
-		return TopicsListSharedAccessKeysResponse{}, err
+		return TopicsListSharedAccessKeysResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -537,7 +544,7 @@ func (client *TopicsClient) regenerateKey(ctx context.Context, resourceGroupName
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return nil, client.regenerateKeyHandleError(resp)
 	}
 	return resp, nil
@@ -563,7 +570,7 @@ func (client *TopicsClient) regenerateKeyCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, regenerateKeyRequest)
@@ -638,7 +645,7 @@ func (client *TopicsClient) updateCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, topicUpdateParameters)

@@ -10,10 +10,9 @@ package armstorage
 
 import (
 	"context"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"net/http"
 	"time"
-
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 )
 
 // BlobContainersClearLegalHoldResponse contains the response from method BlobContainers.ClearLegalHold.
@@ -162,6 +161,8 @@ type BlobContainersObjectLevelWormPollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l BlobContainersObjectLevelWormPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (BlobContainersObjectLevelWormResponse, error) {
 	respType := BlobContainersObjectLevelWormResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -730,6 +731,8 @@ type StorageAccountsAbortHierarchicalNamespaceMigrationPollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l StorageAccountsAbortHierarchicalNamespaceMigrationPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StorageAccountsAbortHierarchicalNamespaceMigrationResponse, error) {
 	respType := StorageAccountsAbortHierarchicalNamespaceMigrationResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -786,6 +789,8 @@ type StorageAccountsCreatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l StorageAccountsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StorageAccountsCreateResponse, error) {
 	respType := StorageAccountsCreateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.StorageAccount)
@@ -842,6 +847,8 @@ type StorageAccountsFailoverPollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l StorageAccountsFailoverPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StorageAccountsFailoverResponse, error) {
 	respType := StorageAccountsFailoverResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -898,6 +905,8 @@ type StorageAccountsHierarchicalNamespaceMigrationPollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l StorageAccountsHierarchicalNamespaceMigrationPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StorageAccountsHierarchicalNamespaceMigrationResponse, error) {
 	respType := StorageAccountsHierarchicalNamespaceMigrationResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -1014,6 +1023,8 @@ type StorageAccountsRestoreBlobRangesPollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l StorageAccountsRestoreBlobRangesPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StorageAccountsRestoreBlobRangesResponse, error) {
 	respType := StorageAccountsRestoreBlobRangesResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.BlobRestoreStatus)

@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // TagResourceClient contains the methods for the TagResource group.
@@ -31,8 +32,15 @@ type TagResourceClient struct {
 }
 
 // NewTagResourceClient creates a new instance of TagResourceClient with the specified values.
-func NewTagResourceClient(con *arm.Connection, subscriptionID string) *TagResourceClient {
-	return &TagResourceClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewTagResourceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TagResourceClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &TagResourceClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // ListByService - Lists a collection of resources associated with tags.
@@ -78,7 +86,7 @@ func (client *TagResourceClient) listByServiceCreateRequest(ctx context.Context,
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -88,7 +96,7 @@ func (client *TagResourceClient) listByServiceCreateRequest(ctx context.Context,
 func (client *TagResourceClient) listByServiceHandleResponse(resp *http.Response) (TagResourceListByServiceResponse, error) {
 	result := TagResourceListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagResourceCollection); err != nil {
-		return TagResourceListByServiceResponse{}, err
+		return TagResourceListByServiceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

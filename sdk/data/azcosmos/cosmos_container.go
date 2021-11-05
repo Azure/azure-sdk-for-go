@@ -20,13 +20,14 @@ type ContainerClient struct {
 	link string
 }
 
-func newContainer(id string, database *DatabaseClient) (ContainerClient, error) {
-	return ContainerClient{
+func newContainer(id string, database *DatabaseClient) (*ContainerClient, error) {
+	return &ContainerClient{
 		id:       id,
 		database: database,
 		link:     createLink(database.link, pathSegmentCollection, id)}, nil
 }
 
+// ID returns the identifier of the Cosmos container.
 func (c *ContainerClient) ID() string {
 	return c.id
 }

@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // IngestionSettingsClient contains the methods for the IngestionSettings group.
@@ -30,8 +31,15 @@ type IngestionSettingsClient struct {
 }
 
 // NewIngestionSettingsClient creates a new instance of IngestionSettingsClient with the specified values.
-func NewIngestionSettingsClient(con *arm.Connection, subscriptionID string) *IngestionSettingsClient {
-	return &IngestionSettingsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewIngestionSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IngestionSettingsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &IngestionSettingsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Create - Create setting for ingesting security data and logs to correlate with resources associated with the subscription.
@@ -77,7 +85,7 @@ func (client *IngestionSettingsClient) createCreateRequest(ctx context.Context, 
 func (client *IngestionSettingsClient) createHandleResponse(resp *http.Response) (IngestionSettingsCreateResponse, error) {
 	result := IngestionSettingsCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IngestionSetting); err != nil {
-		return IngestionSettingsCreateResponse{}, err
+		return IngestionSettingsCreateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -190,7 +198,7 @@ func (client *IngestionSettingsClient) getCreateRequest(ctx context.Context, ing
 func (client *IngestionSettingsClient) getHandleResponse(resp *http.Response) (IngestionSettingsGetResponse, error) {
 	result := IngestionSettingsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IngestionSetting); err != nil {
-		return IngestionSettingsGetResponse{}, err
+		return IngestionSettingsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -244,7 +252,7 @@ func (client *IngestionSettingsClient) listCreateRequest(ctx context.Context, op
 func (client *IngestionSettingsClient) listHandleResponse(resp *http.Response) (IngestionSettingsListResponse, error) {
 	result := IngestionSettingsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IngestionSettingList); err != nil {
-		return IngestionSettingsListResponse{}, err
+		return IngestionSettingsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -305,7 +313,7 @@ func (client *IngestionSettingsClient) listConnectionStringsCreateRequest(ctx co
 func (client *IngestionSettingsClient) listConnectionStringsHandleResponse(resp *http.Response) (IngestionSettingsListConnectionStringsResponse, error) {
 	result := IngestionSettingsListConnectionStringsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionStrings); err != nil {
-		return IngestionSettingsListConnectionStringsResponse{}, err
+		return IngestionSettingsListConnectionStringsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -366,7 +374,7 @@ func (client *IngestionSettingsClient) listTokensCreateRequest(ctx context.Conte
 func (client *IngestionSettingsClient) listTokensHandleResponse(resp *http.Response) (IngestionSettingsListTokensResponse, error) {
 	result := IngestionSettingsListTokensResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IngestionSettingToken); err != nil {
-		return IngestionSettingsListTokensResponse{}, err
+		return IngestionSettingsListTokensResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

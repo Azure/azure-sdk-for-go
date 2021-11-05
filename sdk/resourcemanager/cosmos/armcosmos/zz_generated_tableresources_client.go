@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // TableResourcesClient contains the methods for the TableResources group.
@@ -31,8 +31,15 @@ type TableResourcesClient struct {
 }
 
 // NewTableResourcesClient creates a new instance of TableResourcesClient with the specified values.
-func NewTableResourcesClient(con *arm.Connection, subscriptionID string) *TableResourcesClient {
-	return &TableResourcesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewTableResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TableResourcesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &TableResourcesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateUpdateTable - Create or update an Azure Cosmos DB Table
@@ -96,7 +103,7 @@ func (client *TableResourcesClient) createUpdateTableCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, createUpdateTableParameters)
@@ -175,7 +182,7 @@ func (client *TableResourcesClient) deleteTableCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -233,7 +240,7 @@ func (client *TableResourcesClient) getTableCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -243,7 +250,7 @@ func (client *TableResourcesClient) getTableCreateRequest(ctx context.Context, r
 func (client *TableResourcesClient) getTableHandleResponse(resp *http.Response) (TableResourcesGetTableResponse, error) {
 	result := TableResourcesGetTableResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TableGetResults); err != nil {
-		return TableResourcesGetTableResponse{}, err
+		return TableResourcesGetTableResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -301,7 +308,7 @@ func (client *TableResourcesClient) getTableThroughputCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -311,7 +318,7 @@ func (client *TableResourcesClient) getTableThroughputCreateRequest(ctx context.
 func (client *TableResourcesClient) getTableThroughputHandleResponse(resp *http.Response) (TableResourcesGetTableThroughputResponse, error) {
 	result := TableResourcesGetTableThroughputResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ThroughputSettingsGetResults); err != nil {
-		return TableResourcesGetTableThroughputResponse{}, err
+		return TableResourcesGetTableThroughputResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -365,7 +372,7 @@ func (client *TableResourcesClient) listTablesCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -375,7 +382,7 @@ func (client *TableResourcesClient) listTablesCreateRequest(ctx context.Context,
 func (client *TableResourcesClient) listTablesHandleResponse(resp *http.Response) (TableResourcesListTablesResponse, error) {
 	result := TableResourcesListTablesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TableListResult); err != nil {
-		return TableResourcesListTablesResponse{}, err
+		return TableResourcesListTablesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -453,7 +460,7 @@ func (client *TableResourcesClient) migrateTableToAutoscaleCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -533,7 +540,7 @@ func (client *TableResourcesClient) migrateTableToManualThroughputCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -613,7 +620,7 @@ func (client *TableResourcesClient) updateTableThroughputCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, updateThroughputParameters)

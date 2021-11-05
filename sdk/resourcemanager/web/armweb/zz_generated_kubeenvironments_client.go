@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // KubeEnvironmentsClient contains the methods for the KubeEnvironments group.
@@ -31,8 +31,15 @@ type KubeEnvironmentsClient struct {
 }
 
 // NewKubeEnvironmentsClient creates a new instance of KubeEnvironmentsClient with the specified values.
-func NewKubeEnvironmentsClient(con *arm.Connection, subscriptionID string) *KubeEnvironmentsClient {
-	return &KubeEnvironmentsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewKubeEnvironmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *KubeEnvironmentsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &KubeEnvironmentsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Description for Creates or updates a Kubernetes Environment.
@@ -234,7 +241,7 @@ func (client *KubeEnvironmentsClient) getCreateRequest(ctx context.Context, reso
 func (client *KubeEnvironmentsClient) getHandleResponse(resp *http.Response) (KubeEnvironmentsGetResponse, error) {
 	result := KubeEnvironmentsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KubeEnvironment); err != nil {
-		return KubeEnvironmentsGetResponse{}, err
+		return KubeEnvironmentsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -292,7 +299,7 @@ func (client *KubeEnvironmentsClient) listByResourceGroupCreateRequest(ctx conte
 func (client *KubeEnvironmentsClient) listByResourceGroupHandleResponse(resp *http.Response) (KubeEnvironmentsListByResourceGroupResponse, error) {
 	result := KubeEnvironmentsListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KubeEnvironmentCollection); err != nil {
-		return KubeEnvironmentsListByResourceGroupResponse{}, err
+		return KubeEnvironmentsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -346,7 +353,7 @@ func (client *KubeEnvironmentsClient) listBySubscriptionCreateRequest(ctx contex
 func (client *KubeEnvironmentsClient) listBySubscriptionHandleResponse(resp *http.Response) (KubeEnvironmentsListBySubscriptionResponse, error) {
 	result := KubeEnvironmentsListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KubeEnvironmentCollection); err != nil {
-		return KubeEnvironmentsListBySubscriptionResponse{}, err
+		return KubeEnvironmentsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -411,7 +418,7 @@ func (client *KubeEnvironmentsClient) updateCreateRequest(ctx context.Context, r
 func (client *KubeEnvironmentsClient) updateHandleResponse(resp *http.Response) (KubeEnvironmentsUpdateResponse, error) {
 	result := KubeEnvironmentsUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KubeEnvironment); err != nil {
-		return KubeEnvironmentsUpdateResponse{}, err
+		return KubeEnvironmentsUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -11,13 +11,14 @@ package armstorage
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // BlobServicesClient contains the methods for the BlobServices group.
@@ -29,8 +30,15 @@ type BlobServicesClient struct {
 }
 
 // NewBlobServicesClient creates a new instance of BlobServicesClient with the specified values.
-func NewBlobServicesClient(con *arm.Connection, subscriptionID string) *BlobServicesClient {
-	return &BlobServicesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewBlobServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *BlobServicesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &BlobServicesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // GetServiceProperties - Gets the properties of a storage account’s Blob service, including properties for Storage Analytics and CORS (Cross-Origin Resource
@@ -82,7 +90,7 @@ func (client *BlobServicesClient) getServicePropertiesCreateRequest(ctx context.
 func (client *BlobServicesClient) getServicePropertiesHandleResponse(resp *http.Response) (BlobServicesGetServicePropertiesResponse, error) {
 	result := BlobServicesGetServicePropertiesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BlobServiceProperties); err != nil {
-		return BlobServicesGetServicePropertiesResponse{}, err
+		return BlobServicesGetServicePropertiesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -146,7 +154,7 @@ func (client *BlobServicesClient) listCreateRequest(ctx context.Context, resourc
 func (client *BlobServicesClient) listHandleResponse(resp *http.Response) (BlobServicesListResponse, error) {
 	result := BlobServicesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BlobServiceItems); err != nil {
-		return BlobServicesListResponse{}, err
+		return BlobServicesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -212,7 +220,7 @@ func (client *BlobServicesClient) setServicePropertiesCreateRequest(ctx context.
 func (client *BlobServicesClient) setServicePropertiesHandleResponse(resp *http.Response) (BlobServicesSetServicePropertiesResponse, error) {
 	result := BlobServicesSetServicePropertiesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BlobServiceProperties); err != nil {
-		return BlobServicesSetServicePropertiesResponse{}, err
+		return BlobServicesSetServicePropertiesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // NamespacesClient contains the methods for the Namespaces group.
@@ -31,8 +31,15 @@ type NamespacesClient struct {
 }
 
 // NewNamespacesClient creates a new instance of NamespacesClient with the specified values.
-func NewNamespacesClient(con *arm.Connection, subscriptionID string) *NamespacesClient {
-	return &NamespacesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewNamespacesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *NamespacesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &NamespacesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CheckNameAvailability - Check the give Namespace name availability.
@@ -64,7 +71,7 @@ func (client *NamespacesClient) checkNameAvailabilityCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -74,7 +81,7 @@ func (client *NamespacesClient) checkNameAvailabilityCreateRequest(ctx context.C
 func (client *NamespacesClient) checkNameAvailabilityHandleResponse(resp *http.Response) (NamespacesCheckNameAvailabilityResponse, error) {
 	result := NamespacesCheckNameAvailabilityResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityResult); err != nil {
-		return NamespacesCheckNameAvailabilityResponse{}, err
+		return NamespacesCheckNameAvailabilityResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -149,7 +156,7 @@ func (client *NamespacesClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -209,7 +216,7 @@ func (client *NamespacesClient) createOrUpdateAuthorizationRuleCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -219,7 +226,7 @@ func (client *NamespacesClient) createOrUpdateAuthorizationRuleCreateRequest(ctx
 func (client *NamespacesClient) createOrUpdateAuthorizationRuleHandleResponse(resp *http.Response) (NamespacesCreateOrUpdateAuthorizationRuleResponse, error) {
 	result := NamespacesCreateOrUpdateAuthorizationRuleResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationRule); err != nil {
-		return NamespacesCreateOrUpdateAuthorizationRuleResponse{}, err
+		return NamespacesCreateOrUpdateAuthorizationRuleResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -274,7 +281,7 @@ func (client *NamespacesClient) createOrUpdateNetworkRuleSetCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -284,7 +291,7 @@ func (client *NamespacesClient) createOrUpdateNetworkRuleSetCreateRequest(ctx co
 func (client *NamespacesClient) createOrUpdateNetworkRuleSetHandleResponse(resp *http.Response) (NamespacesCreateOrUpdateNetworkRuleSetResponse, error) {
 	result := NamespacesCreateOrUpdateNetworkRuleSetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkRuleSet); err != nil {
-		return NamespacesCreateOrUpdateNetworkRuleSetResponse{}, err
+		return NamespacesCreateOrUpdateNetworkRuleSetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -359,7 +366,7 @@ func (client *NamespacesClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -419,7 +426,7 @@ func (client *NamespacesClient) deleteAuthorizationRuleCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -475,7 +482,7 @@ func (client *NamespacesClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -485,7 +492,7 @@ func (client *NamespacesClient) getCreateRequest(ctx context.Context, resourceGr
 func (client *NamespacesClient) getHandleResponse(resp *http.Response) (NamespacesGetResponse, error) {
 	result := NamespacesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EHNamespace); err != nil {
-		return NamespacesGetResponse{}, err
+		return NamespacesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -544,7 +551,7 @@ func (client *NamespacesClient) getAuthorizationRuleCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -554,7 +561,7 @@ func (client *NamespacesClient) getAuthorizationRuleCreateRequest(ctx context.Co
 func (client *NamespacesClient) getAuthorizationRuleHandleResponse(resp *http.Response) (NamespacesGetAuthorizationRuleResponse, error) {
 	result := NamespacesGetAuthorizationRuleResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationRule); err != nil {
-		return NamespacesGetAuthorizationRuleResponse{}, err
+		return NamespacesGetAuthorizationRuleResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -609,7 +616,7 @@ func (client *NamespacesClient) getNetworkRuleSetCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -619,7 +626,7 @@ func (client *NamespacesClient) getNetworkRuleSetCreateRequest(ctx context.Conte
 func (client *NamespacesClient) getNetworkRuleSetHandleResponse(resp *http.Response) (NamespacesGetNetworkRuleSetResponse, error) {
 	result := NamespacesGetNetworkRuleSetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkRuleSet); err != nil {
-		return NamespacesGetNetworkRuleSetResponse{}, err
+		return NamespacesGetNetworkRuleSetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -663,7 +670,7 @@ func (client *NamespacesClient) listCreateRequest(ctx context.Context, options *
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -673,7 +680,7 @@ func (client *NamespacesClient) listCreateRequest(ctx context.Context, options *
 func (client *NamespacesClient) listHandleResponse(resp *http.Response) (NamespacesListResponse, error) {
 	result := NamespacesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EHNamespaceListResult); err != nil {
-		return NamespacesListResponse{}, err
+		return NamespacesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -725,7 +732,7 @@ func (client *NamespacesClient) listAuthorizationRulesCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -735,7 +742,7 @@ func (client *NamespacesClient) listAuthorizationRulesCreateRequest(ctx context.
 func (client *NamespacesClient) listAuthorizationRulesHandleResponse(resp *http.Response) (NamespacesListAuthorizationRulesResponse, error) {
 	result := NamespacesListAuthorizationRulesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationRuleListResult); err != nil {
-		return NamespacesListAuthorizationRulesResponse{}, err
+		return NamespacesListAuthorizationRulesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -783,7 +790,7 @@ func (client *NamespacesClient) listByResourceGroupCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -793,7 +800,7 @@ func (client *NamespacesClient) listByResourceGroupCreateRequest(ctx context.Con
 func (client *NamespacesClient) listByResourceGroupHandleResponse(resp *http.Response) (NamespacesListByResourceGroupResponse, error) {
 	result := NamespacesListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EHNamespaceListResult); err != nil {
-		return NamespacesListByResourceGroupResponse{}, err
+		return NamespacesListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -852,7 +859,7 @@ func (client *NamespacesClient) listKeysCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -862,13 +869,78 @@ func (client *NamespacesClient) listKeysCreateRequest(ctx context.Context, resou
 func (client *NamespacesClient) listKeysHandleResponse(resp *http.Response) (NamespacesListKeysResponse, error) {
 	result := NamespacesListKeysResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
-		return NamespacesListKeysResponse{}, err
+		return NamespacesListKeysResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
 
 // listKeysHandleError handles the ListKeys error response.
 func (client *NamespacesClient) listKeysHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
+	if err != nil {
+		return runtime.NewResponseError(err, resp)
+	}
+	errType := ErrorResponse{raw: string(body)}
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
+	}
+	return runtime.NewResponseError(&errType, resp)
+}
+
+// ListNetworkRuleSet - Gets NetworkRuleSet for a Namespace.
+// If the operation fails it returns the *ErrorResponse error type.
+func (client *NamespacesClient) ListNetworkRuleSet(ctx context.Context, resourceGroupName string, namespaceName string, options *NamespacesListNetworkRuleSetOptions) (NamespacesListNetworkRuleSetResponse, error) {
+	req, err := client.listNetworkRuleSetCreateRequest(ctx, resourceGroupName, namespaceName, options)
+	if err != nil {
+		return NamespacesListNetworkRuleSetResponse{}, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return NamespacesListNetworkRuleSetResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return NamespacesListNetworkRuleSetResponse{}, client.listNetworkRuleSetHandleError(resp)
+	}
+	return client.listNetworkRuleSetHandleResponse(resp)
+}
+
+// listNetworkRuleSetCreateRequest creates the ListNetworkRuleSet request.
+func (client *NamespacesClient) listNetworkRuleSetCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, options *NamespacesListNetworkRuleSetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/networkRuleSets"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if namespaceName == "" {
+		return nil, errors.New("parameter namespaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-11-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, nil
+}
+
+// listNetworkRuleSetHandleResponse handles the ListNetworkRuleSet response.
+func (client *NamespacesClient) listNetworkRuleSetHandleResponse(resp *http.Response) (NamespacesListNetworkRuleSetResponse, error) {
+	result := NamespacesListNetworkRuleSetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkRuleSetListResult); err != nil {
+		return NamespacesListNetworkRuleSetResponse{}, runtime.NewResponseError(err, resp)
+	}
+	return result, nil
+}
+
+// listNetworkRuleSetHandleError handles the ListNetworkRuleSet error response.
+func (client *NamespacesClient) listNetworkRuleSetHandleError(resp *http.Response) error {
 	body, err := runtime.Payload(resp)
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
@@ -921,7 +993,7 @@ func (client *NamespacesClient) regenerateKeysCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -931,7 +1003,7 @@ func (client *NamespacesClient) regenerateKeysCreateRequest(ctx context.Context,
 func (client *NamespacesClient) regenerateKeysHandleResponse(resp *http.Response) (NamespacesRegenerateKeysResponse, error) {
 	result := NamespacesRegenerateKeysResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
-		return NamespacesRegenerateKeysResponse{}, err
+		return NamespacesRegenerateKeysResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -986,7 +1058,7 @@ func (client *NamespacesClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -996,7 +1068,7 @@ func (client *NamespacesClient) updateCreateRequest(ctx context.Context, resourc
 func (client *NamespacesClient) updateHandleResponse(resp *http.Response) (NamespacesUpdateResponse, error) {
 	result := NamespacesUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EHNamespace); err != nil {
-		return NamespacesUpdateResponse{}, err
+		return NamespacesUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

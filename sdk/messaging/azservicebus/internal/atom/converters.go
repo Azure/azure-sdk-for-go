@@ -8,7 +8,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 )
 
-func ConvertToQueueRequest(qd *QueuePutRequest, tokenProvider auth.TokenProvider) (*QueueEnvelope, []MiddlewareFunc) {
+func WrapWithQueueEnvelope(qd *QueueDescription, tokenProvider auth.TokenProvider) (*QueueEnvelope, []MiddlewareFunc) {
 	qd.ServiceBusSchema = to.StringPtr(serviceBusSchema)
 
 	qe := &QueueEnvelope{
@@ -31,4 +31,32 @@ func ConvertToQueueRequest(qd *QueuePutRequest, tokenProvider auth.TokenProvider
 	}
 
 	return qe, mw
+}
+
+func WrapWithTopicEnvelope(td *TopicDescription) *TopicEnvelope {
+	td.ServiceBusSchema = to.StringPtr(serviceBusSchema)
+
+	return &TopicEnvelope{
+		Entry: &Entry{
+			AtomSchema: atomSchema,
+		},
+		Content: &topicContent{
+			Type:             applicationXML,
+			TopicDescription: *td,
+		},
+	}
+}
+
+func WrapWithSubscriptionEnvelope(sd *SubscriptionDescription) *SubscriptionEnvelope {
+	sd.ServiceBusSchema = to.StringPtr(serviceBusSchema)
+
+	return &SubscriptionEnvelope{
+		Entry: &Entry{
+			AtomSchema: atomSchema,
+		},
+		Content: &subscriptionContent{
+			Type:                    applicationXML,
+			SubscriptionDescription: *sd,
+		},
+	}
 }

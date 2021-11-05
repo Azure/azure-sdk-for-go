@@ -10,7 +10,7 @@ package armmysqlflexibleservers
 
 const (
 	module  = "armmysqlflexibleservers"
-	version = "v0.1.1"
+	version = "v0.2.1"
 )
 
 // ConfigurationSource - Source of the configuration.

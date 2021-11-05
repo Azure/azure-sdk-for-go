@@ -11,16 +11,16 @@ package armsql
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // JobExecutionsClient contains the methods for the JobExecutions group.
@@ -32,8 +32,15 @@ type JobExecutionsClient struct {
 }
 
 // NewJobExecutionsClient creates a new instance of JobExecutionsClient with the specified values.
-func NewJobExecutionsClient(con *arm.Connection, subscriptionID string) *JobExecutionsClient {
-	return &JobExecutionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewJobExecutionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *JobExecutionsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &JobExecutionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Cancel - Requests cancellation of a job execution.
@@ -322,7 +329,7 @@ func (client *JobExecutionsClient) getCreateRequest(ctx context.Context, resourc
 func (client *JobExecutionsClient) getHandleResponse(resp *http.Response) (JobExecutionsGetResponse, error) {
 	result := JobExecutionsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobExecution); err != nil {
-		return JobExecutionsGetResponse{}, err
+		return JobExecutionsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -408,7 +415,7 @@ func (client *JobExecutionsClient) listByAgentCreateRequest(ctx context.Context,
 func (client *JobExecutionsClient) listByAgentHandleResponse(resp *http.Response) (JobExecutionsListByAgentResponse, error) {
 	result := JobExecutionsListByAgentResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobExecutionListResult); err != nil {
-		return JobExecutionsListByAgentResponse{}, err
+		return JobExecutionsListByAgentResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -498,7 +505,7 @@ func (client *JobExecutionsClient) listByJobCreateRequest(ctx context.Context, r
 func (client *JobExecutionsClient) listByJobHandleResponse(resp *http.Response) (JobExecutionsListByJobResponse, error) {
 	result := JobExecutionsListByJobResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobExecutionListResult); err != nil {
-		return JobExecutionsListByJobResponse{}, err
+		return JobExecutionsListByJobResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

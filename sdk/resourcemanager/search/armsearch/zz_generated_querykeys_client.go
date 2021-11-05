@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // QueryKeysClient contains the methods for the QueryKeys group.
@@ -30,8 +31,15 @@ type QueryKeysClient struct {
 }
 
 // NewQueryKeysClient creates a new instance of QueryKeysClient with the specified values.
-func NewQueryKeysClient(con *arm.Connection, subscriptionID string) *QueryKeysClient {
-	return &QueryKeysClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewQueryKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *QueryKeysClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &QueryKeysClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Create - Generates a new query key for the specified search service. You can create up to 50 query keys per service.
@@ -88,7 +96,7 @@ func (client *QueryKeysClient) createCreateRequest(ctx context.Context, resource
 func (client *QueryKeysClient) createHandleResponse(resp *http.Response) (QueryKeysCreateResponse, error) {
 	result := QueryKeysCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QueryKey); err != nil {
-		return QueryKeysCreateResponse{}, err
+		return QueryKeysCreateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -217,7 +225,7 @@ func (client *QueryKeysClient) listBySearchServiceCreateRequest(ctx context.Cont
 func (client *QueryKeysClient) listBySearchServiceHandleResponse(resp *http.Response) (QueryKeysListBySearchServiceResponse, error) {
 	result := QueryKeysListBySearchServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListQueryKeysResult); err != nil {
-		return QueryKeysListBySearchServiceResponse{}, err
+		return QueryKeysListBySearchServiceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -10,10 +10,9 @@ package armrelay
 
 import (
 	"encoding/json"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // AccessKeys - Namespace/Relay Connection String
@@ -170,10 +169,10 @@ type HybridConnectionProperties struct {
 // MarshalJSON implements the json.Marshaller interface for type HybridConnectionProperties.
 func (h HybridConnectionProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "createdAt", (*timeRFC3339)(h.CreatedAt))
+	populateTimeRFC3339(objectMap, "createdAt", h.CreatedAt)
 	populate(objectMap, "listenerCount", h.ListenerCount)
 	populate(objectMap, "requiresClientAuthorization", h.RequiresClientAuthorization)
-	populate(objectMap, "updatedAt", (*timeRFC3339)(h.UpdatedAt))
+	populateTimeRFC3339(objectMap, "updatedAt", h.UpdatedAt)
 	populate(objectMap, "userMetadata", h.UserMetadata)
 	return json.Marshal(objectMap)
 }
@@ -188,9 +187,7 @@ func (h *HybridConnectionProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "createdAt":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			h.CreatedAt = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &h.CreatedAt)
 			delete(rawMsg, key)
 		case "listenerCount":
 			err = unpopulate(val, &h.ListenerCount)
@@ -199,9 +196,7 @@ func (h *HybridConnectionProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &h.RequiresClientAuthorization)
 			delete(rawMsg, key)
 		case "updatedAt":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			h.UpdatedAt = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &h.UpdatedAt)
 			delete(rawMsg, key)
 		case "userMetadata":
 			err = unpopulate(val, &h.UserMetadata)
@@ -438,11 +433,11 @@ type RelayNamespaceProperties struct {
 // MarshalJSON implements the json.Marshaller interface for type RelayNamespaceProperties.
 func (r RelayNamespaceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "createdAt", (*timeRFC3339)(r.CreatedAt))
+	populateTimeRFC3339(objectMap, "createdAt", r.CreatedAt)
 	populate(objectMap, "metricId", r.MetricID)
 	populate(objectMap, "provisioningState", r.ProvisioningState)
 	populate(objectMap, "serviceBusEndpoint", r.ServiceBusEndpoint)
-	populate(objectMap, "updatedAt", (*timeRFC3339)(r.UpdatedAt))
+	populateTimeRFC3339(objectMap, "updatedAt", r.UpdatedAt)
 	return json.Marshal(objectMap)
 }
 
@@ -456,9 +451,7 @@ func (r *RelayNamespaceProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "createdAt":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			r.CreatedAt = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &r.CreatedAt)
 			delete(rawMsg, key)
 		case "metricId":
 			err = unpopulate(val, &r.MetricID)
@@ -470,9 +463,7 @@ func (r *RelayNamespaceProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &r.ServiceBusEndpoint)
 			delete(rawMsg, key)
 		case "updatedAt":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			r.UpdatedAt = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &r.UpdatedAt)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -674,13 +665,13 @@ type WcfRelayProperties struct {
 // MarshalJSON implements the json.Marshaller interface for type WcfRelayProperties.
 func (w WcfRelayProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "createdAt", (*timeRFC3339)(w.CreatedAt))
+	populateTimeRFC3339(objectMap, "createdAt", w.CreatedAt)
 	populate(objectMap, "isDynamic", w.IsDynamic)
 	populate(objectMap, "listenerCount", w.ListenerCount)
 	populate(objectMap, "relayType", w.RelayType)
 	populate(objectMap, "requiresClientAuthorization", w.RequiresClientAuthorization)
 	populate(objectMap, "requiresTransportSecurity", w.RequiresTransportSecurity)
-	populate(objectMap, "updatedAt", (*timeRFC3339)(w.UpdatedAt))
+	populateTimeRFC3339(objectMap, "updatedAt", w.UpdatedAt)
 	populate(objectMap, "userMetadata", w.UserMetadata)
 	return json.Marshal(objectMap)
 }
@@ -695,9 +686,7 @@ func (w *WcfRelayProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "createdAt":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			w.CreatedAt = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &w.CreatedAt)
 			delete(rawMsg, key)
 		case "isDynamic":
 			err = unpopulate(val, &w.IsDynamic)
@@ -715,9 +704,7 @@ func (w *WcfRelayProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &w.RequiresTransportSecurity)
 			delete(rawMsg, key)
 		case "updatedAt":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			w.UpdatedAt = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &w.UpdatedAt)
 			delete(rawMsg, key)
 		case "userMetadata":
 			err = unpopulate(val, &w.UserMetadata)

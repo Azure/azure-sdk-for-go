@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // RoleAssignmentScheduleRequestsClient contains the methods for the RoleAssignmentScheduleRequests group.
@@ -29,8 +30,15 @@ type RoleAssignmentScheduleRequestsClient struct {
 }
 
 // NewRoleAssignmentScheduleRequestsClient creates a new instance of RoleAssignmentScheduleRequestsClient with the specified values.
-func NewRoleAssignmentScheduleRequestsClient(con *arm.Connection) *RoleAssignmentScheduleRequestsClient {
-	return &RoleAssignmentScheduleRequestsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewRoleAssignmentScheduleRequestsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *RoleAssignmentScheduleRequestsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &RoleAssignmentScheduleRequestsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Cancel - Cancels a pending role assignment schedule request.
@@ -53,9 +61,6 @@ func (client *RoleAssignmentScheduleRequestsClient) Cancel(ctx context.Context, 
 // cancelCreateRequest creates the Cancel request.
 func (client *RoleAssignmentScheduleRequestsClient) cancelCreateRequest(ctx context.Context, scope string, roleAssignmentScheduleRequestName string, options *RoleAssignmentScheduleRequestsCancelOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleAssignmentScheduleRequests/{roleAssignmentScheduleRequestName}/cancel"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if roleAssignmentScheduleRequestName == "" {
 		return nil, errors.New("parameter roleAssignmentScheduleRequestName cannot be empty")
@@ -105,9 +110,6 @@ func (client *RoleAssignmentScheduleRequestsClient) Create(ctx context.Context, 
 // createCreateRequest creates the Create request.
 func (client *RoleAssignmentScheduleRequestsClient) createCreateRequest(ctx context.Context, scope string, roleAssignmentScheduleRequestName string, parameters RoleAssignmentScheduleRequest, options *RoleAssignmentScheduleRequestsCreateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleAssignmentScheduleRequests/{roleAssignmentScheduleRequestName}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if roleAssignmentScheduleRequestName == "" {
 		return nil, errors.New("parameter roleAssignmentScheduleRequestName cannot be empty")
@@ -128,7 +130,7 @@ func (client *RoleAssignmentScheduleRequestsClient) createCreateRequest(ctx cont
 func (client *RoleAssignmentScheduleRequestsClient) createHandleResponse(resp *http.Response) (RoleAssignmentScheduleRequestsCreateResponse, error) {
 	result := RoleAssignmentScheduleRequestsCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignmentScheduleRequest); err != nil {
-		return RoleAssignmentScheduleRequestsCreateResponse{}, err
+		return RoleAssignmentScheduleRequestsCreateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -166,9 +168,6 @@ func (client *RoleAssignmentScheduleRequestsClient) Get(ctx context.Context, sco
 // getCreateRequest creates the Get request.
 func (client *RoleAssignmentScheduleRequestsClient) getCreateRequest(ctx context.Context, scope string, roleAssignmentScheduleRequestName string, options *RoleAssignmentScheduleRequestsGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleAssignmentScheduleRequests/{roleAssignmentScheduleRequestName}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if roleAssignmentScheduleRequestName == "" {
 		return nil, errors.New("parameter roleAssignmentScheduleRequestName cannot be empty")
@@ -189,7 +188,7 @@ func (client *RoleAssignmentScheduleRequestsClient) getCreateRequest(ctx context
 func (client *RoleAssignmentScheduleRequestsClient) getHandleResponse(resp *http.Response) (RoleAssignmentScheduleRequestsGetResponse, error) {
 	result := RoleAssignmentScheduleRequestsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignmentScheduleRequest); err != nil {
-		return RoleAssignmentScheduleRequestsGetResponse{}, err
+		return RoleAssignmentScheduleRequestsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -224,9 +223,6 @@ func (client *RoleAssignmentScheduleRequestsClient) ListForScope(scope string, o
 // listForScopeCreateRequest creates the ListForScope request.
 func (client *RoleAssignmentScheduleRequestsClient) listForScopeCreateRequest(ctx context.Context, scope string, options *RoleAssignmentScheduleRequestsListForScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleAssignmentScheduleRequests"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -246,7 +242,7 @@ func (client *RoleAssignmentScheduleRequestsClient) listForScopeCreateRequest(ct
 func (client *RoleAssignmentScheduleRequestsClient) listForScopeHandleResponse(resp *http.Response) (RoleAssignmentScheduleRequestsListForScopeResponse, error) {
 	result := RoleAssignmentScheduleRequestsListForScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignmentScheduleRequestListResult); err != nil {
-		return RoleAssignmentScheduleRequestsListForScopeResponse{}, err
+		return RoleAssignmentScheduleRequestsListForScopeResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

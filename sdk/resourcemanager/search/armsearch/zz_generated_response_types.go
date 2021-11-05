@@ -10,10 +10,9 @@ package armsearch
 
 import (
 	"context"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"net/http"
 	"time"
-
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 )
 
 // AdminKeysGetResponse contains the response from method AdminKeys.Get.
@@ -164,6 +163,8 @@ type ServicesCreateOrUpdatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l ServicesCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ServicesCreateOrUpdateResponse, error) {
 	respType := ServicesCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SearchService)
@@ -268,6 +269,8 @@ type SharedPrivateLinkResourcesCreateOrUpdatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l SharedPrivateLinkResourcesCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SharedPrivateLinkResourcesCreateOrUpdateResponse, error) {
 	respType := SharedPrivateLinkResourcesCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SharedPrivateLinkResource)
@@ -318,6 +321,8 @@ type SharedPrivateLinkResourcesDeletePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l SharedPrivateLinkResourcesDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SharedPrivateLinkResourcesDeleteResponse, error) {
 	respType := SharedPrivateLinkResourcesDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)

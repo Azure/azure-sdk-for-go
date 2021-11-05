@@ -10,10 +10,9 @@ package armrecoveryservices
 
 import (
 	"context"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"net/http"
 	"time"
-
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 )
 
 // OperationsGetOperationResultResponse contains the response from method Operations.GetOperationResult.
@@ -176,6 +175,8 @@ type VaultsCreateOrUpdatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l VaultsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (VaultsCreateOrUpdateResponse, error) {
 	respType := VaultsCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Vault)
@@ -268,6 +269,8 @@ type VaultsUpdatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l VaultsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (VaultsUpdateResponse, error) {
 	respType := VaultsUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Vault)

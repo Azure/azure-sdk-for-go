@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // DdosProtectionPlansClient contains the methods for the DdosProtectionPlans group.
@@ -31,8 +31,15 @@ type DdosProtectionPlansClient struct {
 }
 
 // NewDdosProtectionPlansClient creates a new instance of DdosProtectionPlansClient with the specified values.
-func NewDdosProtectionPlansClient(con *arm.Connection, subscriptionID string) *DdosProtectionPlansClient {
-	return &DdosProtectionPlansClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewDdosProtectionPlansClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DdosProtectionPlansClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &DdosProtectionPlansClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Creates or updates a DDoS protection plan.
@@ -92,7 +99,7 @@ func (client *DdosProtectionPlansClient) createOrUpdateCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -168,7 +175,7 @@ func (client *DdosProtectionPlansClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -224,7 +231,7 @@ func (client *DdosProtectionPlansClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -234,7 +241,7 @@ func (client *DdosProtectionPlansClient) getCreateRequest(ctx context.Context, r
 func (client *DdosProtectionPlansClient) getHandleResponse(resp *http.Response) (DdosProtectionPlansGetResponse, error) {
 	result := DdosProtectionPlansGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DdosProtectionPlan); err != nil {
-		return DdosProtectionPlansGetResponse{}, err
+		return DdosProtectionPlansGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -278,7 +285,7 @@ func (client *DdosProtectionPlansClient) listCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -288,7 +295,7 @@ func (client *DdosProtectionPlansClient) listCreateRequest(ctx context.Context, 
 func (client *DdosProtectionPlansClient) listHandleResponse(resp *http.Response) (DdosProtectionPlansListResponse, error) {
 	result := DdosProtectionPlansListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DdosProtectionPlanListResult); err != nil {
-		return DdosProtectionPlansListResponse{}, err
+		return DdosProtectionPlansListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -336,7 +343,7 @@ func (client *DdosProtectionPlansClient) listByResourceGroupCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -346,7 +353,7 @@ func (client *DdosProtectionPlansClient) listByResourceGroupCreateRequest(ctx co
 func (client *DdosProtectionPlansClient) listByResourceGroupHandleResponse(resp *http.Response) (DdosProtectionPlansListByResourceGroupResponse, error) {
 	result := DdosProtectionPlansListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DdosProtectionPlanListResult); err != nil {
-		return DdosProtectionPlansListByResourceGroupResponse{}, err
+		return DdosProtectionPlansListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -401,7 +408,7 @@ func (client *DdosProtectionPlansClient) updateTagsCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -411,7 +418,7 @@ func (client *DdosProtectionPlansClient) updateTagsCreateRequest(ctx context.Con
 func (client *DdosProtectionPlansClient) updateTagsHandleResponse(resp *http.Response) (DdosProtectionPlansUpdateTagsResponse, error) {
 	result := DdosProtectionPlansUpdateTagsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DdosProtectionPlan); err != nil {
-		return DdosProtectionPlansUpdateTagsResponse{}, err
+		return DdosProtectionPlansUpdateTagsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

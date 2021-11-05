@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // AutoscaleSettingsClient contains the methods for the AutoscaleSettings group.
@@ -30,8 +31,15 @@ type AutoscaleSettingsClient struct {
 }
 
 // NewAutoscaleSettingsClient creates a new instance of AutoscaleSettingsClient with the specified values.
-func NewAutoscaleSettingsClient(con *arm.Connection, subscriptionID string) *AutoscaleSettingsClient {
-	return &AutoscaleSettingsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewAutoscaleSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AutoscaleSettingsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &AutoscaleSettingsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or updates an autoscale setting.
@@ -81,7 +89,7 @@ func (client *AutoscaleSettingsClient) createOrUpdateCreateRequest(ctx context.C
 func (client *AutoscaleSettingsClient) createOrUpdateHandleResponse(resp *http.Response) (AutoscaleSettingsCreateOrUpdateResponse, error) {
 	result := AutoscaleSettingsCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutoscaleSettingResource); err != nil {
-		return AutoscaleSettingsCreateOrUpdateResponse{}, err
+		return AutoscaleSettingsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -202,7 +210,7 @@ func (client *AutoscaleSettingsClient) getCreateRequest(ctx context.Context, res
 func (client *AutoscaleSettingsClient) getHandleResponse(resp *http.Response) (AutoscaleSettingsGetResponse, error) {
 	result := AutoscaleSettingsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutoscaleSettingResource); err != nil {
-		return AutoscaleSettingsGetResponse{}, err
+		return AutoscaleSettingsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -260,7 +268,7 @@ func (client *AutoscaleSettingsClient) listByResourceGroupCreateRequest(ctx cont
 func (client *AutoscaleSettingsClient) listByResourceGroupHandleResponse(resp *http.Response) (AutoscaleSettingsListByResourceGroupResponse, error) {
 	result := AutoscaleSettingsListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutoscaleSettingResourceCollection); err != nil {
-		return AutoscaleSettingsListByResourceGroupResponse{}, err
+		return AutoscaleSettingsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -314,7 +322,7 @@ func (client *AutoscaleSettingsClient) listBySubscriptionCreateRequest(ctx conte
 func (client *AutoscaleSettingsClient) listBySubscriptionHandleResponse(resp *http.Response) (AutoscaleSettingsListBySubscriptionResponse, error) {
 	result := AutoscaleSettingsListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutoscaleSettingResourceCollection); err != nil {
-		return AutoscaleSettingsListBySubscriptionResponse{}, err
+		return AutoscaleSettingsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -379,7 +387,7 @@ func (client *AutoscaleSettingsClient) updateCreateRequest(ctx context.Context, 
 func (client *AutoscaleSettingsClient) updateHandleResponse(resp *http.Response) (AutoscaleSettingsUpdateResponse, error) {
 	result := AutoscaleSettingsUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutoscaleSettingResource); err != nil {
-		return AutoscaleSettingsUpdateResponse{}, err
+		return AutoscaleSettingsUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

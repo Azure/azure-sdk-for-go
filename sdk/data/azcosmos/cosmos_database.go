@@ -18,22 +18,23 @@ type DatabaseClient struct {
 	link string
 }
 
-func newDatabase(id string, client *Client) (DatabaseClient, error) {
-	return DatabaseClient{
+func newDatabase(id string, client *Client) (*DatabaseClient, error) {
+	return &DatabaseClient{
 		id:     id,
 		client: client,
 		link:   createLink("", pathSegmentDatabase, id)}, nil
 }
 
+// ID returns the identifier of the Cosmos database.
 func (db *DatabaseClient) ID() string {
 	return db.id
 }
 
-// NewContainer returns a Container object for the container.
+// NewContainer returns a struct that represents the container and allows container level operations.
 // id - The id of the container.
-func (db *DatabaseClient) NewContainer(id string) (ContainerClient, error) {
+func (db *DatabaseClient) NewContainer(id string) (*ContainerClient, error) {
 	if id == "" {
-		return ContainerClient{}, errors.New("id is required")
+		return nil, errors.New("id is required")
 	}
 
 	return newContainer(id, db)

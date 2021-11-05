@@ -1,5 +1,36 @@
 # CHANGELOG
 
+## `v59.1.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/cognitiveservices/mgmt/2021-10-01/cognitiveservices`
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/preview/quota/mgmt/2021-03-15-preview/quota` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/preview/quota/mgmt/2021-03-15-preview/quota/CHANGELOG.md) |
+
+## `v59.0.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/avs/mgmt/2021-12-01/avs`
+- `github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2021-10-15/documentdb`
+- `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2021-05-01/network`
+- `github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2021-08-01-preview/containerregistry`
+- `github.com/Azure/azure-sdk-for-go/services/preview/desktopvirtualization/mgmt/2021-09-03-preview/desktopvirtualization`
+- `github.com/Azure/azure-sdk-for-go/services/preview/resourceconnector/mgmt/2021-10-31-preview/resourceconnector`
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-09-01/cdn` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v59.0.0/services/cdn/mgmt/2020-09-01/cdn/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/logic/mgmt/2019-05-01/logic` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v59.0.0/services/logic/mgmt/2019-05-01/logic/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/videoanalyzer/mgmt/2021-11-01-preview/videoanalyzer` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v59.0.0/services/preview/videoanalyzer/mgmt/2021-11-01-preview/videoanalyzer/CHANGELOG.md) |
+
 ## `v58.3.0`
 
 ### New Packages
@@ -12,7 +43,7 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2020-11-01-preview/containerregistry` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/preview/containerregistry/mgmt/2020-11-01-preview/containerregistry/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2020-11-01-preview/containerregistry` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v58.3.0/services/preview/containerregistry/mgmt/2020-11-01-preview/containerregistry/CHANGELOG.md) |
 
 ## `v58.2.0`
 

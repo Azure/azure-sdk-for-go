@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // TaskRunsClient contains the methods for the TaskRuns group.
@@ -31,8 +31,15 @@ type TaskRunsClient struct {
 }
 
 // NewTaskRunsClient creates a new instance of TaskRunsClient with the specified values.
-func NewTaskRunsClient(con *arm.Connection, subscriptionID string) *TaskRunsClient {
-	return &TaskRunsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewTaskRunsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TaskRunsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &TaskRunsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreate - Creates a task run for a container registry with the specified parameters.
@@ -246,7 +253,7 @@ func (client *TaskRunsClient) getCreateRequest(ctx context.Context, resourceGrou
 func (client *TaskRunsClient) getHandleResponse(resp *http.Response) (TaskRunsGetResponse, error) {
 	result := TaskRunsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TaskRun); err != nil {
-		return TaskRunsGetResponse{}, err
+		return TaskRunsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -315,7 +322,7 @@ func (client *TaskRunsClient) getDetailsCreateRequest(ctx context.Context, resou
 func (client *TaskRunsClient) getDetailsHandleResponse(resp *http.Response) (TaskRunsGetDetailsResponse, error) {
 	result := TaskRunsGetDetailsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TaskRun); err != nil {
-		return TaskRunsGetDetailsResponse{}, err
+		return TaskRunsGetDetailsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -377,7 +384,7 @@ func (client *TaskRunsClient) listCreateRequest(ctx context.Context, resourceGro
 func (client *TaskRunsClient) listHandleResponse(resp *http.Response) (TaskRunsListResponse, error) {
 	result := TaskRunsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TaskRunListResult); err != nil {
-		return TaskRunsListResponse{}, err
+		return TaskRunsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

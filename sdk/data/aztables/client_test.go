@@ -4,11 +4,11 @@
 package aztables
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/stretchr/testify/require"
 )
 
@@ -33,7 +33,7 @@ func TestCreateTable(t *testing.T) {
 			client, delete := initClientTest(t, service, false)
 			defer delete()
 
-			resp, err := client.Create(context.Background(), nil)
+			resp, err := client.Create(ctx, nil)
 
 			require.NoError(t, err)
 			require.NotNil(t, resp.RawResponse)
@@ -109,7 +109,7 @@ func TestDeleteEntityWithETag(t *testing.T) {
 
 			marshalledEntity, err = json.Marshal(simpleEntity2)
 			require.NoError(t, err)
-			resp, err = client.AddEntity(context.Background(), marshalledEntity, nil)
+			resp, err = client.AddEntity(ctx, marshalledEntity, nil)
 			require.NoError(t, err)
 			newETag := resp.ETag
 
@@ -382,6 +382,44 @@ func TestInvalidEntity(t *testing.T) {
 
 			require.NotNil(t, err)
 			require.Contains(t, err.Error(), errPartitionKeyRowKeyError.Error())
+		})
+	}
+}
+
+func TestContinuationTokens(t *testing.T) {
+	for _, service := range services {
+		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
+			client, delete := initClientTest(t, service, true)
+			defer delete()
+
+			err := insertNEntities("contToken", 10, client)
+			require.NoError(t, err)
+
+			pager := client.List(&ListEntitiesOptions{Top: to.Int32Ptr(1)})
+			var pkContToken *string
+			var rkContToken *string
+			for pager.NextPage(ctx) {
+				require.Equal(t, 1, len(pager.PageResponse().Entities))
+				pkContToken = pager.NextPagePartitionKey()
+				rkContToken = pager.NextPageRowKey()
+				break
+			}
+
+			require.NoError(t, pager.Err())
+			require.NotNil(t, pkContToken)
+			require.NotNil(t, rkContToken)
+
+			newPager := client.List(&ListEntitiesOptions{
+				PartitionKey: pkContToken,
+				RowKey:       rkContToken,
+			})
+			count := 0
+			for newPager.NextPage(ctx) {
+				count += len(newPager.PageResponse().Entities)
+			}
+
+			require.NoError(t, pager.Err())
+			require.Equal(t, 9, count)
 		})
 	}
 }

@@ -49,31 +49,31 @@ func newPipeline(cred KeyCredential, options *ClientOptions) azruntime.Pipeline 
 		&options.ClientOptions)
 }
 
-// GetDatabase returns a Database object.
+// NewDatabase returns a struct that represents a database and allows database level operations.
 // id - The id of the database.
-func (c *Client) NewDatabase(id string) (DatabaseClient, error) {
+func (c *Client) NewDatabase(id string) (*DatabaseClient, error) {
 	if id == "" {
-		return DatabaseClient{}, errors.New("id is required")
+		return nil, errors.New("id is required")
 	}
 
 	return newDatabase(id, c)
 }
 
-// NewContainer returns a Container object.
+// NewContainer returns a struct that represents a container and allows container level operations.
 // databaseId - The id of the database.
 // containerId - The id of the container.
-func (c *Client) NewContainer(databaseId string, containerId string) (ContainerClient, error) {
+func (c *Client) NewContainer(databaseId string, containerId string) (*ContainerClient, error) {
 	if databaseId == "" {
-		return ContainerClient{}, errors.New("databaseId is required")
+		return nil, errors.New("databaseId is required")
 	}
 
 	if containerId == "" {
-		return ContainerClient{}, errors.New("containerId is required")
+		return nil, errors.New("containerId is required")
 	}
 
 	db, err := newDatabase(databaseId, c)
 	if err != nil {
-		return ContainerClient{}, err
+		return nil, err
 	}
 
 	return db.NewContainer(containerId)

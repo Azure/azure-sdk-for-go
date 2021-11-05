@@ -11,14 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // ServerDevOpsAuditSettingsClient contains the methods for the ServerDevOpsAuditSettings group.
@@ -30,8 +30,15 @@ type ServerDevOpsAuditSettingsClient struct {
 }
 
 // NewServerDevOpsAuditSettingsClient creates a new instance of ServerDevOpsAuditSettingsClient with the specified values.
-func NewServerDevOpsAuditSettingsClient(con *arm.Connection, subscriptionID string) *ServerDevOpsAuditSettingsClient {
-	return &ServerDevOpsAuditSettingsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewServerDevOpsAuditSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServerDevOpsAuditSettingsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ServerDevOpsAuditSettingsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Creates or updates a server's DevOps audit settings.
@@ -164,7 +171,7 @@ func (client *ServerDevOpsAuditSettingsClient) getCreateRequest(ctx context.Cont
 func (client *ServerDevOpsAuditSettingsClient) getHandleResponse(resp *http.Response) (ServerDevOpsAuditSettingsGetResponse, error) {
 	result := ServerDevOpsAuditSettingsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerDevOpsAuditingSettings); err != nil {
-		return ServerDevOpsAuditSettingsGetResponse{}, err
+		return ServerDevOpsAuditSettingsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -225,7 +232,7 @@ func (client *ServerDevOpsAuditSettingsClient) listByServerCreateRequest(ctx con
 func (client *ServerDevOpsAuditSettingsClient) listByServerHandleResponse(resp *http.Response) (ServerDevOpsAuditSettingsListByServerResponse, error) {
 	result := ServerDevOpsAuditSettingsListByServerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerDevOpsAuditSettingsListResult); err != nil {
-		return ServerDevOpsAuditSettingsListByServerResponse{}, err
+		return ServerDevOpsAuditSettingsListByServerResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

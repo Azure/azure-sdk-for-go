@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // WebCategoriesClient contains the methods for the WebCategories group.
@@ -30,8 +31,15 @@ type WebCategoriesClient struct {
 }
 
 // NewWebCategoriesClient creates a new instance of WebCategoriesClient with the specified values.
-func NewWebCategoriesClient(con *arm.Connection, subscriptionID string) *WebCategoriesClient {
-	return &WebCategoriesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewWebCategoriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WebCategoriesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &WebCategoriesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Gets the specified Azure Web Category.
@@ -67,7 +75,7 @@ func (client *WebCategoriesClient) getCreateRequest(ctx context.Context, name st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -80,7 +88,7 @@ func (client *WebCategoriesClient) getCreateRequest(ctx context.Context, name st
 func (client *WebCategoriesClient) getHandleResponse(resp *http.Response) (WebCategoriesGetResponse, error) {
 	result := WebCategoriesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AzureWebCategory); err != nil {
-		return WebCategoriesGetResponse{}, err
+		return WebCategoriesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -124,7 +132,7 @@ func (client *WebCategoriesClient) listBySubscriptionCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -134,7 +142,7 @@ func (client *WebCategoriesClient) listBySubscriptionCreateRequest(ctx context.C
 func (client *WebCategoriesClient) listBySubscriptionHandleResponse(resp *http.Response) (WebCategoriesListBySubscriptionResponse, error) {
 	result := WebCategoriesListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AzureWebCategoryListResult); err != nil {
-		return WebCategoriesListBySubscriptionResponse{}, err
+		return WebCategoriesListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

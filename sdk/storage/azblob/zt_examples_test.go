@@ -19,7 +19,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 )
 
@@ -60,7 +59,7 @@ func Example() {
 
 	// Open up a service client.
 	// You'll need to specify a service URL, which for blob endpoints usually makes up the syntax http(s)://<account>.blob.core.windows.net/
-	service, err := NewServiceClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	service, err := NewServiceClientWithSharedKey("https://"+accountName+".blob.core.windows.net/", cred, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -174,7 +173,7 @@ func ExampleStorageError() {
 	   service-returned http.Response. And, from the http.Response, you can get the initiating http.Request.
 	*/
 
-	container, err := NewContainerClient("https://myaccount.blob.core.windows.net/mycontainer", azcore.NewAnonymousCredential(), nil)
+	container, err := NewContainerClientWithNoCredential("https://myaccount.blob.core.windows.net/mycontainer", nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -237,7 +236,7 @@ func ExampleServiceClient_GetSASToken() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	serviceClient, err := NewServiceClient(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), credential, nil)
+	serviceClient, err := NewServiceClientWithSharedKey(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), credential, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -254,7 +253,7 @@ func ExampleServiceClient_GetSASToken() {
 	// ******************************************
 
 	// When someone receives the URL, they can access the resource using it in code like this, or a tool of some variety.
-	serviceClient, err = NewServiceClient(urlToSend, azcore.NewAnonymousCredential(), nil)
+	serviceClient, err = NewServiceClientWithNoCredential(urlToSend, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -291,7 +290,7 @@ func ExampleAccountSASSignatureValues_Sign() {
 	// ******************************************
 
 	// When someone receives the URL, they can access the resource using it in code like this, or a tool of some variety.
-	serviceClient, err := NewServiceClient(urlToSend, azcore.NewAnonymousCredential(), nil)
+	serviceClient, err := NewServiceClientWithNoCredential(urlToSend, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -342,7 +341,7 @@ func ExampleBlobSASSignatureValues() {
 	// **************
 
 	// When someone receives the URL, they can access the SAS-protected resource like this:
-	blob, _ := NewBlobClient(urlToSendToSomeone, azcore.NewAnonymousCredential(), nil)
+	blob, _ := NewBlobClientWithNoCredential(urlToSendToSomeone, nil)
 
 	// if you have a SAS query parameter string, you can parse it into it's parts.
 	blobURLParts := NewBlobURLParts(blob.URL())
@@ -360,7 +359,7 @@ func ExampleContainerClient_SetAccessPolicy() {
 	}
 
 	uri := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer", accountName)
-	container, err := NewContainerClient(uri, credential, nil)
+	container, err := NewContainerClientWithSharedKey(uri, credential, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -423,7 +422,7 @@ func ExampleBlobAccessConditions() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	blockBlob, err := NewBlockBlobClient(fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer/Data.txt", accountName), credential, nil)
+	blockBlob, err := NewBlockBlobClientWithSharedKey(fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer/Data.txt", accountName), credential, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -507,7 +506,7 @@ func ExampleContainerClient_SetMetadata() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	containerClient, err := NewContainerClient(u, credential, nil)
+	containerClient, err := NewContainerClientWithSharedKey(u, credential, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -561,7 +560,7 @@ func ExampleBlobClient_SetMetadata() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	BlobClient, err := NewBlockBlobClient(u, credential, nil)
+	BlobClient, err := NewBlockBlobClientWithSharedKey(u, credential, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -618,7 +617,7 @@ func ExampleBlobHTTPHeaders() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	blobClient, err := NewBlockBlobClient(u, credential, nil)
+	blobClient, err := NewBlockBlobClientWithSharedKey(u, credential, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -671,7 +670,7 @@ func ExampleBlockBlobClient() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	BlobClient, err := NewBlockBlobClient(u, credential, nil)
+	BlobClient, err := NewBlockBlobClientWithSharedKey(u, credential, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -758,7 +757,7 @@ func ExampleAppendBlobClient() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	appendBlobClient, err := NewAppendBlobClient(u, credential, nil)
+	appendBlobClient, err := NewAppendBlobClientWithSharedKey(u, credential, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -807,7 +806,7 @@ func ExamplePageBlobClient() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	blobClient, err := NewPageBlobClient(u, credential, nil)
+	blobClient, err := NewPageBlobClientWithSharedKey(u, credential, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -881,7 +880,7 @@ func Example_blobSnapshots() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	containerClient, err := NewContainerClient(u, credential, nil)
+	containerClient, err := NewContainerClientWithSharedKey(u, credential, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -995,7 +994,7 @@ func Example_progressUploadDownload() {
 	cURL := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer", accountName)
 
 	// Create an serviceClient object that wraps the service URL and a request pipeline to making requests.
-	containerClient, err := NewContainerClient(cURL, credential, nil)
+	containerClient, err := NewContainerClientWithSharedKey(cURL, credential, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -1054,7 +1053,7 @@ func ExampleBlobClient_startCopy() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	blobClient, err := NewBlobClient(u, credential, nil)
+	blobClient, err := NewBlobClientWithSharedKey(u, credential, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -1162,7 +1161,7 @@ func ExampleBlobClient_Download() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	blobClient, err := NewBlobClient(u, credential, nil)
+	blobClient, err := NewBlobClientWithSharedKey(u, credential, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -1258,7 +1257,7 @@ func ExampleContainerLeaseClient() {
 
 	// Create an containerClient object that wraps the container's URL and a default pipeline.
 	u := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer", accountName)
-	containerClient, err := NewContainerClient(u, credential, nil)
+	containerClient, err := NewContainerClientWithSharedKey(u, credential, nil)
 	if err != nil {
 		log.Fatal(err)
 	}

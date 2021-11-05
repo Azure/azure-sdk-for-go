@@ -20,12 +20,12 @@ import (
 type ReceiveMode = internal.ReceiveMode
 
 const (
-	// PeekLock will lock messages as they are received and can be settled
+	// ReceiveModePeekLock will lock messages as they are received and can be settled
 	// using the Receiver's (Complete|Abandon|DeadLetter|Defer)Message
 	// functions.
-	PeekLock ReceiveMode = internal.PeekLock
-	// ReceiveAndDelete will delete messages as they are received.
-	ReceiveAndDelete ReceiveMode = internal.ReceiveAndDelete
+	ReceiveModePeekLock ReceiveMode = internal.PeekLock
+	// ReceiveModeReceiveAndDelete will delete messages as they are received.
+	ReceiveModeReceiveAndDelete ReceiveMode = internal.ReceiveAndDelete
 )
 
 // SubQueue allows you to target a subqueue of a queue or subscription.
@@ -82,7 +82,7 @@ const defaultLinkRxBuffer = 2048
 
 func applyReceiverOptions(receiver *Receiver, entity *entity, options *ReceiverOptions) error {
 	if options == nil {
-		receiver.receiveMode = PeekLock
+		receiver.receiveMode = ReceiveModePeekLock
 		return nil
 	}
 
@@ -133,7 +133,7 @@ func newReceiver(ns internal.NamespaceWithNewAMQPLinks, entity *entity, cleanupO
 	receiver.amqpLinks = ns.NewAMQPLinks(entityPath, newLinksFn)
 
 	// 'nil' settler handles returning an error message for receiveAndDelete links.
-	if receiver.receiveMode == PeekLock {
+	if receiver.receiveMode == ReceiveModePeekLock {
 		receiver.settler = newMessageSettler(receiver.amqpLinks, receiver.baseRetrier)
 	}
 
@@ -142,17 +142,12 @@ func newReceiver(ns internal.NamespaceWithNewAMQPLinks, entity *entity, cleanupO
 
 // ReceiveOptions are options for the ReceiveMessages function.
 type ReceiveOptions struct {
-	// MaxWaitTime configures how long to wait for the first
-	// message in a set of messages to arrive.
-	// Default: 60 seconds
-	MaxWaitTime time.Duration
-
 	maxWaitTimeAfterFirstMessage time.Duration
 }
 
 // ReceiveMessages receives a fixed number of messages, up to numMessages.
-// There are two timeouts involved in receiving messages:
-// 1. An explicit timeout set with `ReceiveOptions.MaxWaitTime` (default: 60 seconds)
+// There are two ways to stop receiving messages:
+// 1. Cancelling the `ctx` parameter.
 // 2. An implicit timeout (default: 1 second) that starts after the first
 //    message has been received.
 func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options *ReceiveOptions) ([]*ReceivedMessage, error) {
@@ -171,10 +166,163 @@ func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options
 	r.mu.Unlock()
 
 	if isReceiving {
-		return nil, errors.New("receiver is already receiving messages. ReceiveMessages() cannot be called concurrently.")
+		return nil, errors.New("receiver is already receiving messages. ReceiveMessages() cannot be called concurrently")
 	}
 
 	return r.receiveMessagesImpl(ctx, maxMessages, options)
+}
+
+// ReceiveDeferredMessages receives messages that were deferred using `Receiver.DeferMessage`.
+func (r *Receiver) ReceiveDeferredMessages(ctx context.Context, sequenceNumbers []int64) ([]*ReceivedMessage, error) {
+	_, _, mgmt, _, err := r.amqpLinks.Get(ctx)
+
+	if err != nil {
+		return nil, err
+	}
+
+	amqpMessages, err := mgmt.ReceiveDeferred(ctx, r.receiveMode, sequenceNumbers)
+
+	if err != nil {
+		return nil, err
+	}
+
+	var receivedMessages []*ReceivedMessage
+
+	for _, amqpMsg := range amqpMessages {
+		receivedMsg := newReceivedMessage(ctx, amqpMsg)
+		receivedMsg.deferred = true
+
+		receivedMessages = append(receivedMessages, receivedMsg)
+	}
+
+	return receivedMessages, nil
+}
+
+// PeekMessagesOptions contains options for the `Receiver.PeekMessages`
+// function.
+type PeekMessagesOptions struct {
+	// FromSequenceNumber is the sequence number to start with when peeking messages.
+	FromSequenceNumber *int64
+}
+
+// PeekMessages will peek messages without locking or deleting messages.
+// Messages that are peeked do not have lock tokens, so settlement methods
+// like CompleteMessage, AbandonMessage, DeferMessage or DeadLetterMessage
+// will not work with them.
+func (r *Receiver) PeekMessages(ctx context.Context, maxMessageCount int, options *PeekMessagesOptions) ([]*ReceivedMessage, error) {
+	_, _, mgmt, _, err := r.amqpLinks.Get(ctx)
+
+	if err != nil {
+		return nil, err
+	}
+
+	var sequenceNumber = r.lastPeekedSequenceNumber + 1
+	updateInternalSequenceNumber := true
+
+	if options != nil && options.FromSequenceNumber != nil {
+		sequenceNumber = *options.FromSequenceNumber
+		updateInternalSequenceNumber = false
+	}
+
+	messages, err := mgmt.PeekMessages(ctx, sequenceNumber, int32(maxMessageCount))
+
+	if err != nil {
+		return nil, err
+	}
+
+	receivedMessages := make([]*ReceivedMessage, len(messages))
+
+	for i := 0; i < len(messages); i++ {
+		receivedMessages[i] = newReceivedMessage(ctx, messages[i])
+	}
+
+	if len(receivedMessages) > 0 && updateInternalSequenceNumber {
+		// only update this if they're doing the implicit iteration as part of the receiver.
+		r.lastPeekedSequenceNumber = *receivedMessages[len(receivedMessages)-1].SequenceNumber
+	}
+
+	return receivedMessages, nil
+}
+
+// RenewLock renews the lock on a message, updating the `LockedUntil` field on `msg`.
+func (r *Receiver) RenewMessageLock(ctx context.Context, msg *ReceivedMessage) error {
+	_, _, mgmt, _, err := r.amqpLinks.Get(ctx)
+
+	if err != nil {
+		return err
+	}
+
+	newExpirationTime, err := mgmt.RenewLocks(ctx, msg.rawAMQPMessage.LinkName(), []amqp.UUID{
+		(amqp.UUID)(msg.LockToken),
+	})
+
+	if err != nil {
+		return err
+	}
+
+	msg.LockedUntil = &newExpirationTime[0]
+	return nil
+}
+
+// Close permanently closes the receiver.
+func (r *Receiver) Close(ctx context.Context) error {
+	r.cleanupOnClose()
+	return r.amqpLinks.Close(ctx, true)
+}
+
+// CompleteMessage completes a message, deleting it from the queue or subscription.
+func (r *Receiver) CompleteMessage(ctx context.Context, message *ReceivedMessage) error {
+	return r.settler.CompleteMessage(ctx, message)
+}
+
+// AbandonMessage will cause a message to be returned to the queue or subscription.
+// This will increment its delivery count, and potentially cause it to be dead lettered
+// depending on your queue or subscription's configuration.
+func (r *Receiver) AbandonMessage(ctx context.Context, message *ReceivedMessage) error {
+	return r.settler.AbandonMessage(ctx, message)
+}
+
+// DeferMessage will cause a message to be deferred. Deferred messages
+// can be received using `Receiver.ReceiveDeferredMessages`.
+func (r *Receiver) DeferMessage(ctx context.Context, message *ReceivedMessage) error {
+	return r.settler.DeferMessage(ctx, message)
+}
+
+// DeadLetterMessage settles a message by moving it to the dead letter queue for a
+// queue or subscription. To receive these messages create a receiver with `Client.NewReceiverForQueue()`
+// or `Client.NewReceiverForSubscription()` using the `ReceiverOptions.SubQueue` option.
+func (r *Receiver) DeadLetterMessage(ctx context.Context, message *ReceivedMessage, options *DeadLetterOptions) error {
+	return r.settler.DeadLetterMessage(ctx, message, options)
+}
+
+// receiveDeferredMessage receives a single message that was deferred using `Receiver.DeferMessage`.
+func (r *Receiver) receiveDeferredMessage(ctx context.Context, sequenceNumber int64) (*ReceivedMessage, error) {
+	messages, err := r.ReceiveDeferredMessages(ctx, []int64{sequenceNumber})
+
+	if err != nil {
+		return nil, err
+	}
+
+	if len(messages) == 0 {
+		return nil, nil
+	}
+
+	return messages[0], nil
+}
+
+// receiveMessage receives a single message, waiting up to `ReceiveOptions.MaxWaitTime` (default: 60 seconds)
+func (r *Receiver) receiveMessage(ctx context.Context, options *ReceiveOptions) (*ReceivedMessage, error) {
+	messages, err := r.ReceiveMessages(ctx, 1, options)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if len(messages) == 0 {
+		return nil, nil
+	}
+
+	return messages[0], nil
 }
 
 func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, options *ReceiveOptions) ([]*ReceivedMessage, error) {
@@ -186,13 +334,10 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 	//    link is still valid.
 	// Phase 3. <drain the link and leave it in a good state>
 	localOpts := &ReceiveOptions{
-		MaxWaitTime:                  time.Minute,
 		maxWaitTimeAfterFirstMessage: time.Second,
 	}
 
 	if options != nil {
-		localOpts.MaxWaitTime = options.MaxWaitTime
-
 		if options.maxWaitTimeAfterFirstMessage != 0 {
 			localOpts.maxWaitTimeAfterFirstMessage = options.maxWaitTimeAfterFirstMessage
 		}
@@ -274,10 +419,7 @@ func (r *Receiver) drainLink(receiver internal.AMQPReceiver, messages []*Receive
 
 // getMessages receives messages until a link failure, timeout or the user
 // cancels their context.
-func (r *Receiver) getMessages(theirCtx context.Context, receiver internal.AMQPReceiver, maxMessages int, ropts *ReceiveOptions) ([]*ReceivedMessage, error) {
-	ctx, cancel := context.WithTimeout(theirCtx, ropts.MaxWaitTime)
-	defer cancel()
-
+func (r *Receiver) getMessages(ctx context.Context, receiver internal.AMQPReceiver, maxMessages int, ropts *ReceiveOptions) ([]*ReceivedMessage, error) {
 	var messages []*ReceivedMessage
 
 	for {
@@ -305,169 +447,11 @@ func (r *Receiver) getMessages(theirCtx context.Context, receiver internal.AMQPR
 		}
 
 		if len(messages) == 1 {
-			go func() {
-				select {
-				case <-time.After(ropts.maxWaitTimeAfterFirstMessage):
-					cancel()
-				case <-ctx.Done():
-					break
-				}
-			}()
+			var cancel context.CancelFunc
+			ctx, cancel = context.WithTimeout(ctx, time.Second)
+			defer cancel()
 		}
 	}
-}
-
-// ReceiveDeferredMessages receives messages that were deferred using `Receiver.DeferMessage`.
-func (r *Receiver) ReceiveDeferredMessages(ctx context.Context, sequenceNumbers []int64) ([]*ReceivedMessage, error) {
-	_, _, mgmt, _, err := r.amqpLinks.Get(ctx)
-
-	if err != nil {
-		return nil, err
-	}
-
-	amqpMessages, err := mgmt.ReceiveDeferred(ctx, r.receiveMode, sequenceNumbers)
-
-	if err != nil {
-		return nil, err
-	}
-
-	var receivedMessages []*ReceivedMessage
-
-	for _, amqpMsg := range amqpMessages {
-		receivedMsg := newReceivedMessage(ctx, amqpMsg)
-		receivedMsg.deferred = true
-
-		receivedMessages = append(receivedMessages, receivedMsg)
-	}
-
-	return receivedMessages, nil
-}
-
-// PeekOptions contains options for the `Receiver.PeekMessages`
-// function.
-type PeekOptions struct {
-	// FromSequenceNumber is the sequence number to start with when peeking messages.
-	FromSequenceNumber *int64
-}
-
-// PeekMessages will peek messages without locking or deleting messages.
-// Messages that are peeked do not have lock tokens, so settlement methods
-// like CompleteMessage, AbandonMessage, DeferMessage or DeadLetterMessage
-// will not work with them.
-func (r *Receiver) PeekMessages(ctx context.Context, maxMessageCount int, options *PeekOptions) ([]*ReceivedMessage, error) {
-	_, _, mgmt, _, err := r.amqpLinks.Get(ctx)
-
-	if err != nil {
-		return nil, err
-	}
-
-	var sequenceNumber = r.lastPeekedSequenceNumber + 1
-	updateInternalSequenceNumber := true
-
-	if options != nil && options.FromSequenceNumber != nil {
-		sequenceNumber = *options.FromSequenceNumber
-		updateInternalSequenceNumber = false
-	}
-
-	messages, err := mgmt.PeekMessages(ctx, sequenceNumber, int32(maxMessageCount))
-
-	if err != nil {
-		return nil, err
-	}
-
-	receivedMessages := make([]*ReceivedMessage, len(messages))
-
-	for i := 0; i < len(messages); i++ {
-		receivedMessages[i] = newReceivedMessage(ctx, messages[i])
-	}
-
-	if len(receivedMessages) > 0 && updateInternalSequenceNumber {
-		// only update this if they're doing the implicit iteration as part of the receiver.
-		r.lastPeekedSequenceNumber = *receivedMessages[len(receivedMessages)-1].SequenceNumber
-	}
-
-	return receivedMessages, nil
-}
-
-// receiveDeferredMessage receives a single message that was deferred using `Receiver.DeferMessage`.
-func (r *Receiver) receiveDeferredMessage(ctx context.Context, sequenceNumber int64) (*ReceivedMessage, error) {
-	messages, err := r.ReceiveDeferredMessages(ctx, []int64{sequenceNumber})
-
-	if err != nil {
-		return nil, err
-	}
-
-	if len(messages) == 0 {
-		return nil, nil
-	}
-
-	return messages[0], nil
-}
-
-// receiveMessage receives a single message, waiting up to `ReceiveOptions.MaxWaitTime` (default: 60 seconds)
-func (r *Receiver) receiveMessage(ctx context.Context, options *ReceiveOptions) (*ReceivedMessage, error) {
-	messages, err := r.ReceiveMessages(ctx, 1, options)
-
-	if err != nil {
-		return nil, err
-	}
-
-	if len(messages) == 0 {
-		return nil, nil
-	}
-
-	return messages[0], nil
-}
-
-// RenewLock renews the lock on a message, updating the `LockedUntil` field on `msg`.
-func (r *Receiver) RenewMessageLock(ctx context.Context, msg *ReceivedMessage) error {
-	_, _, mgmt, _, err := r.amqpLinks.Get(ctx)
-
-	if err != nil {
-		return err
-	}
-
-	newExpirationTime, err := mgmt.RenewLocks(ctx, msg.rawAMQPMessage.LinkName(), []amqp.UUID{
-		(amqp.UUID)(msg.LockToken),
-	})
-
-	if err != nil {
-		return err
-	}
-
-	msg.LockedUntil = &newExpirationTime[0]
-	return nil
-}
-
-// Close permanently closes the receiver.
-func (r *Receiver) Close(ctx context.Context) error {
-	r.cleanupOnClose()
-	return r.amqpLinks.Close(ctx, true)
-}
-
-// CompleteMessage completes a message, deleting it from the queue or subscription.
-func (r *Receiver) CompleteMessage(ctx context.Context, message *ReceivedMessage) error {
-	return r.settler.CompleteMessage(ctx, message)
-}
-
-// AbandonMessage will cause a message to be returned to the queue or subscription.
-// This will increment its delivery count, and potentially cause it to be dead lettered
-// depending on your queue or subscription's configuration.
-func (r *Receiver) AbandonMessage(ctx context.Context, message *ReceivedMessage) error {
-	return r.settler.AbandonMessage(ctx, message)
-}
-
-// DeferMessage will cause a message to be deferred. Deferred messages
-// can be received using `Receiver.ReceiveDeferredMessages`.
-func (r *Receiver) DeferMessage(ctx context.Context, message *ReceivedMessage) error {
-	return r.settler.DeferMessage(ctx, message)
-}
-
-// DeadLetterMessage settles a message by moving it to the dead letter queue for a
-// queue or subscription. To receive these messages create a receiver with `Client.NewReceiverForQueue()`
-// or `Client.NewReceiverForSubscription()` using the `ReceiverOptions.SubQueue` option.
-func (r *Receiver) DeadLetterMessage(ctx context.Context, message *ReceivedMessage, options *DeadLetterOptions) error {
-	return r.settler.DeadLetterMessage(ctx, message, options)
 }
 
 type entity struct {
@@ -522,7 +506,7 @@ func createReceiverLink(ctx context.Context, session internal.AMQPSession, linkO
 func createLinkOptions(mode ReceiveMode, entityPath string) []amqp.LinkOption {
 	receiveMode := amqp.ModeSecond
 
-	if mode == ReceiveAndDelete {
+	if mode == ReceiveModeReceiveAndDelete {
 		receiveMode = amqp.ModeFirst
 	}
 
@@ -533,7 +517,7 @@ func createLinkOptions(mode ReceiveMode, entityPath string) []amqp.LinkOption {
 		amqp.LinkCredit(defaultLinkRxBuffer),
 	}
 
-	if mode == ReceiveAndDelete {
+	if mode == ReceiveModeReceiveAndDelete {
 		opts = append(opts, amqp.LinkSenderSettle(amqp.ModeSettled))
 	}
 

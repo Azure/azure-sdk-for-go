@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // AdaptiveNetworkHardeningsClient contains the methods for the AdaptiveNetworkHardenings group.
@@ -31,8 +31,15 @@ type AdaptiveNetworkHardeningsClient struct {
 }
 
 // NewAdaptiveNetworkHardeningsClient creates a new instance of AdaptiveNetworkHardeningsClient with the specified values.
-func NewAdaptiveNetworkHardeningsClient(con *arm.Connection, subscriptionID string) *AdaptiveNetworkHardeningsClient {
-	return &AdaptiveNetworkHardeningsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewAdaptiveNetworkHardeningsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AdaptiveNetworkHardeningsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &AdaptiveNetworkHardeningsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginEnforce - Enforces the given rules on the NSG(s) listed in the request
@@ -186,7 +193,7 @@ func (client *AdaptiveNetworkHardeningsClient) getCreateRequest(ctx context.Cont
 func (client *AdaptiveNetworkHardeningsClient) getHandleResponse(resp *http.Response) (AdaptiveNetworkHardeningsGetResponse, error) {
 	result := AdaptiveNetworkHardeningsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AdaptiveNetworkHardening); err != nil {
-		return AdaptiveNetworkHardeningsGetResponse{}, err
+		return AdaptiveNetworkHardeningsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -256,7 +263,7 @@ func (client *AdaptiveNetworkHardeningsClient) listByExtendedResourceCreateReque
 func (client *AdaptiveNetworkHardeningsClient) listByExtendedResourceHandleResponse(resp *http.Response) (AdaptiveNetworkHardeningsListByExtendedResourceResponse, error) {
 	result := AdaptiveNetworkHardeningsListByExtendedResourceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AdaptiveNetworkHardeningsList); err != nil {
-		return AdaptiveNetworkHardeningsListByExtendedResourceResponse{}, err
+		return AdaptiveNetworkHardeningsListByExtendedResourceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

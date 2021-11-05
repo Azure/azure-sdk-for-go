@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // NotificationRecipientUserClient contains the methods for the NotificationRecipientUser group.
@@ -30,8 +31,15 @@ type NotificationRecipientUserClient struct {
 }
 
 // NewNotificationRecipientUserClient creates a new instance of NotificationRecipientUserClient with the specified values.
-func NewNotificationRecipientUserClient(con *arm.Connection, subscriptionID string) *NotificationRecipientUserClient {
-	return &NotificationRecipientUserClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewNotificationRecipientUserClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *NotificationRecipientUserClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &NotificationRecipientUserClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CheckEntityExists - Determine if the Notification Recipient User is subscribed to the notification.
@@ -80,7 +88,7 @@ func (client *NotificationRecipientUserClient) checkEntityExistsCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -131,7 +139,7 @@ func (client *NotificationRecipientUserClient) createOrUpdateCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -141,7 +149,7 @@ func (client *NotificationRecipientUserClient) createOrUpdateCreateRequest(ctx c
 func (client *NotificationRecipientUserClient) createOrUpdateHandleResponse(resp *http.Response) (NotificationRecipientUserCreateOrUpdateResponse, error) {
 	result := NotificationRecipientUserCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecipientUserContract); err != nil {
-		return NotificationRecipientUserCreateOrUpdateResponse{}, err
+		return NotificationRecipientUserCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -204,7 +212,7 @@ func (client *NotificationRecipientUserClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -264,7 +272,7 @@ func (client *NotificationRecipientUserClient) listByNotificationCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -274,7 +282,7 @@ func (client *NotificationRecipientUserClient) listByNotificationCreateRequest(c
 func (client *NotificationRecipientUserClient) listByNotificationHandleResponse(resp *http.Response) (NotificationRecipientUserListByNotificationResponse, error) {
 	result := NotificationRecipientUserListByNotificationResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecipientUserCollection); err != nil {
-		return NotificationRecipientUserListByNotificationResponse{}, err
+		return NotificationRecipientUserListByNotificationResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // GalleryApplicationVersionsClient contains the methods for the GalleryApplicationVersions group.
@@ -31,8 +31,15 @@ type GalleryApplicationVersionsClient struct {
 }
 
 // NewGalleryApplicationVersionsClient creates a new instance of GalleryApplicationVersionsClient with the specified values.
-func NewGalleryApplicationVersionsClient(con *arm.Connection, subscriptionID string) *GalleryApplicationVersionsClient {
-	return &GalleryApplicationVersionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewGalleryApplicationVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *GalleryApplicationVersionsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &GalleryApplicationVersionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Create or update a gallery Application Version.
@@ -261,7 +268,7 @@ func (client *GalleryApplicationVersionsClient) getCreateRequest(ctx context.Con
 func (client *GalleryApplicationVersionsClient) getHandleResponse(resp *http.Response) (GalleryApplicationVersionsGetResponse, error) {
 	result := GalleryApplicationVersionsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GalleryApplicationVersion); err != nil {
-		return GalleryApplicationVersionsGetResponse{}, err
+		return GalleryApplicationVersionsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -327,7 +334,7 @@ func (client *GalleryApplicationVersionsClient) listByGalleryApplicationCreateRe
 func (client *GalleryApplicationVersionsClient) listByGalleryApplicationHandleResponse(resp *http.Response) (GalleryApplicationVersionsListByGalleryApplicationResponse, error) {
 	result := GalleryApplicationVersionsListByGalleryApplicationResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GalleryApplicationVersionList); err != nil {
-		return GalleryApplicationVersionsListByGalleryApplicationResponse{}, err
+		return GalleryApplicationVersionsListByGalleryApplicationResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -49,8 +49,8 @@ func TestItemResponseParsing(t *testing.T) {
 		t.Fatal("parsedResponse.RawResponse is nil")
 	}
 
-	if parsedResponse.ActivityId != "someActivityId" {
-		t.Errorf("Expected ActivityId to be %s, but got %s", "someActivityId", parsedResponse.ActivityId)
+	if parsedResponse.ActivityID != "someActivityId" {
+		t.Errorf("Expected ActivityId to be %s, but got %s", "someActivityId", parsedResponse.ActivityID)
 	}
 
 	if parsedResponse.RequestCharge != 13.42 {

@@ -11,13 +11,14 @@ package armnotificationhubs
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // NotificationHubsClient contains the methods for the NotificationHubs group.
@@ -29,8 +30,15 @@ type NotificationHubsClient struct {
 }
 
 // NewNotificationHubsClient creates a new instance of NotificationHubsClient with the specified values.
-func NewNotificationHubsClient(con *arm.Connection, subscriptionID string) *NotificationHubsClient {
-	return &NotificationHubsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewNotificationHubsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *NotificationHubsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &NotificationHubsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CheckNotificationHubAvailability - Checks the availability of the given notificationHub in a namespace.
@@ -80,7 +88,7 @@ func (client *NotificationHubsClient) checkNotificationHubAvailabilityCreateRequ
 func (client *NotificationHubsClient) checkNotificationHubAvailabilityHandleResponse(resp *http.Response) (NotificationHubsCheckNotificationHubAvailabilityResponse, error) {
 	result := NotificationHubsCheckNotificationHubAvailabilityResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckAvailabilityResult); err != nil {
-		return NotificationHubsCheckNotificationHubAvailabilityResponse{}, err
+		return NotificationHubsCheckNotificationHubAvailabilityResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -148,7 +156,7 @@ func (client *NotificationHubsClient) createOrUpdateCreateRequest(ctx context.Co
 func (client *NotificationHubsClient) createOrUpdateHandleResponse(resp *http.Response) (NotificationHubsCreateOrUpdateResponse, error) {
 	result := NotificationHubsCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NotificationHubResource); err != nil {
-		return NotificationHubsCreateOrUpdateResponse{}, err
+		return NotificationHubsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -220,7 +228,7 @@ func (client *NotificationHubsClient) createOrUpdateAuthorizationRuleCreateReque
 func (client *NotificationHubsClient) createOrUpdateAuthorizationRuleHandleResponse(resp *http.Response) (NotificationHubsCreateOrUpdateAuthorizationRuleResponse, error) {
 	result := NotificationHubsCreateOrUpdateAuthorizationRuleResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SharedAccessAuthorizationRuleResource); err != nil {
-		return NotificationHubsCreateOrUpdateAuthorizationRuleResponse{}, err
+		return NotificationHubsCreateOrUpdateAuthorizationRuleResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -291,7 +299,7 @@ func (client *NotificationHubsClient) debugSendCreateRequest(ctx context.Context
 func (client *NotificationHubsClient) debugSendHandleResponse(resp *http.Response) (NotificationHubsDebugSendResponse, error) {
 	result := NotificationHubsDebugSendResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DebugSendResponse); err != nil {
-		return NotificationHubsDebugSendResponse{}, err
+		return NotificationHubsDebugSendResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -479,7 +487,7 @@ func (client *NotificationHubsClient) getCreateRequest(ctx context.Context, reso
 func (client *NotificationHubsClient) getHandleResponse(resp *http.Response) (NotificationHubsGetResponse, error) {
 	result := NotificationHubsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NotificationHubResource); err != nil {
-		return NotificationHubsGetResponse{}, err
+		return NotificationHubsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -551,7 +559,7 @@ func (client *NotificationHubsClient) getAuthorizationRuleCreateRequest(ctx cont
 func (client *NotificationHubsClient) getAuthorizationRuleHandleResponse(resp *http.Response) (NotificationHubsGetAuthorizationRuleResponse, error) {
 	result := NotificationHubsGetAuthorizationRuleResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SharedAccessAuthorizationRuleResource); err != nil {
-		return NotificationHubsGetAuthorizationRuleResponse{}, err
+		return NotificationHubsGetAuthorizationRuleResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -619,7 +627,7 @@ func (client *NotificationHubsClient) getPnsCredentialsCreateRequest(ctx context
 func (client *NotificationHubsClient) getPnsCredentialsHandleResponse(resp *http.Response) (NotificationHubsGetPnsCredentialsResponse, error) {
 	result := NotificationHubsGetPnsCredentialsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PnsCredentialsResource); err != nil {
-		return NotificationHubsGetPnsCredentialsResponse{}, err
+		return NotificationHubsGetPnsCredentialsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -680,7 +688,7 @@ func (client *NotificationHubsClient) listCreateRequest(ctx context.Context, res
 func (client *NotificationHubsClient) listHandleResponse(resp *http.Response) (NotificationHubsListResponse, error) {
 	result := NotificationHubsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NotificationHubListResult); err != nil {
-		return NotificationHubsListResponse{}, err
+		return NotificationHubsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -745,7 +753,7 @@ func (client *NotificationHubsClient) listAuthorizationRulesCreateRequest(ctx co
 func (client *NotificationHubsClient) listAuthorizationRulesHandleResponse(resp *http.Response) (NotificationHubsListAuthorizationRulesResponse, error) {
 	result := NotificationHubsListAuthorizationRulesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SharedAccessAuthorizationRuleListResult); err != nil {
-		return NotificationHubsListAuthorizationRulesResponse{}, err
+		return NotificationHubsListAuthorizationRulesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -817,7 +825,7 @@ func (client *NotificationHubsClient) listKeysCreateRequest(ctx context.Context,
 func (client *NotificationHubsClient) listKeysHandleResponse(resp *http.Response) (NotificationHubsListKeysResponse, error) {
 	result := NotificationHubsListKeysResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceListKeys); err != nil {
-		return NotificationHubsListKeysResponse{}, err
+		return NotificationHubsListKeysResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -888,7 +896,7 @@ func (client *NotificationHubsClient) patchCreateRequest(ctx context.Context, re
 func (client *NotificationHubsClient) patchHandleResponse(resp *http.Response) (NotificationHubsPatchResponse, error) {
 	result := NotificationHubsPatchResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NotificationHubResource); err != nil {
-		return NotificationHubsPatchResponse{}, err
+		return NotificationHubsPatchResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -960,7 +968,7 @@ func (client *NotificationHubsClient) regenerateKeysCreateRequest(ctx context.Co
 func (client *NotificationHubsClient) regenerateKeysHandleResponse(resp *http.Response) (NotificationHubsRegenerateKeysResponse, error) {
 	result := NotificationHubsRegenerateKeysResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceListKeys); err != nil {
-		return NotificationHubsRegenerateKeysResponse{}, err
+		return NotificationHubsRegenerateKeysResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

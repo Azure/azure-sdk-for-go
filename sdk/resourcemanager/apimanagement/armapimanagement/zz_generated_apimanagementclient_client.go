@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // APIManagementClient contains the methods for the APIManagementClient group.
@@ -31,8 +31,15 @@ type APIManagementClient struct {
 }
 
 // NewAPIManagementClient creates a new instance of APIManagementClient with the specified values.
-func NewAPIManagementClient(con *arm.Connection, subscriptionID string) *APIManagementClient {
-	return &APIManagementClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewAPIManagementClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *APIManagementClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &APIManagementClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginPerformConnectivityCheckAsync - Performs a connectivity check between the API Management service and a given destination, and returns metrics for
@@ -94,7 +101,7 @@ func (client *APIManagementClient) performConnectivityCheckAsyncCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, connectivityCheckRequestParams)

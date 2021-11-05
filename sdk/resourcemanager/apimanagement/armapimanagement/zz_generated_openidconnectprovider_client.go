@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // OpenIDConnectProviderClient contains the methods for the OpenIDConnectProvider group.
@@ -31,8 +32,15 @@ type OpenIDConnectProviderClient struct {
 }
 
 // NewOpenIDConnectProviderClient creates a new instance of OpenIDConnectProviderClient with the specified values.
-func NewOpenIDConnectProviderClient(con *arm.Connection, subscriptionID string) *OpenIDConnectProviderClient {
-	return &OpenIDConnectProviderClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewOpenIDConnectProviderClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *OpenIDConnectProviderClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &OpenIDConnectProviderClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or updates the OpenID Connect Provider.
@@ -76,7 +84,7 @@ func (client *OpenIDConnectProviderClient) createOrUpdateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header.Set("If-Match", *options.IfMatch)
@@ -92,7 +100,7 @@ func (client *OpenIDConnectProviderClient) createOrUpdateHandleResponse(resp *ht
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OpenidConnectProviderContract); err != nil {
-		return OpenIDConnectProviderCreateOrUpdateResponse{}, err
+		return OpenIDConnectProviderCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -151,7 +159,7 @@ func (client *OpenIDConnectProviderClient) deleteCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("If-Match", ifMatch)
 	req.Raw().Header.Set("Accept", "application/json")
@@ -212,7 +220,7 @@ func (client *OpenIDConnectProviderClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -225,7 +233,7 @@ func (client *OpenIDConnectProviderClient) getHandleResponse(resp *http.Response
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OpenidConnectProviderContract); err != nil {
-		return OpenIDConnectProviderGetResponse{}, err
+		return OpenIDConnectProviderGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -281,7 +289,7 @@ func (client *OpenIDConnectProviderClient) getEntityTagCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -342,7 +350,7 @@ func (client *OpenIDConnectProviderClient) listByServiceCreateRequest(ctx contex
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -352,7 +360,7 @@ func (client *OpenIDConnectProviderClient) listByServiceCreateRequest(ctx contex
 func (client *OpenIDConnectProviderClient) listByServiceHandleResponse(resp *http.Response) (OpenIDConnectProviderListByServiceResponse, error) {
 	result := OpenIDConnectProviderListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OpenIDConnectProviderCollection); err != nil {
-		return OpenIDConnectProviderListByServiceResponse{}, err
+		return OpenIDConnectProviderListByServiceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -411,7 +419,7 @@ func (client *OpenIDConnectProviderClient) listSecretsCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -424,7 +432,7 @@ func (client *OpenIDConnectProviderClient) listSecretsHandleResponse(resp *http.
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClientSecretContract); err != nil {
-		return OpenIDConnectProviderListSecretsResponse{}, err
+		return OpenIDConnectProviderListSecretsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -483,7 +491,7 @@ func (client *OpenIDConnectProviderClient) updateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("If-Match", ifMatch)
 	req.Raw().Header.Set("Accept", "application/json")
@@ -497,7 +505,7 @@ func (client *OpenIDConnectProviderClient) updateHandleResponse(resp *http.Respo
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OpenidConnectProviderContract); err != nil {
-		return OpenIDConnectProviderUpdateResponse{}, err
+		return OpenIDConnectProviderUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -10,10 +10,9 @@ package armscheduler
 
 import (
 	"encoding/json"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 type BasicAuthentication struct {
@@ -82,7 +81,7 @@ type ClientCertAuthentication struct {
 func (c ClientCertAuthentication) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	c.HTTPAuthentication.marshalInternal(objectMap, HTTPAuthenticationTypeClientCertificate)
-	populate(objectMap, "certificateExpirationDate", (*timeRFC3339)(c.CertificateExpirationDate))
+	populateTimeRFC3339(objectMap, "certificateExpirationDate", c.CertificateExpirationDate)
 	populate(objectMap, "certificateSubjectName", c.CertificateSubjectName)
 	populate(objectMap, "certificateThumbprint", c.CertificateThumbprint)
 	populate(objectMap, "password", c.Password)
@@ -100,9 +99,7 @@ func (c *ClientCertAuthentication) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "certificateExpirationDate":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			c.CertificateExpirationDate = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &c.CertificateExpirationDate)
 			delete(rawMsg, key)
 		case "certificateSubjectName":
 			err = unpopulate(val, &c.CertificateSubjectName)
@@ -454,12 +451,12 @@ type JobHistoryDefinitionProperties struct {
 func (j JobHistoryDefinitionProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "actionName", j.ActionName)
-	populate(objectMap, "endTime", (*timeRFC3339)(j.EndTime))
-	populate(objectMap, "expectedExecutionTime", (*timeRFC3339)(j.ExpectedExecutionTime))
+	populateTimeRFC3339(objectMap, "endTime", j.EndTime)
+	populateTimeRFC3339(objectMap, "expectedExecutionTime", j.ExpectedExecutionTime)
 	populate(objectMap, "message", j.Message)
 	populate(objectMap, "repeatCount", j.RepeatCount)
 	populate(objectMap, "retryCount", j.RetryCount)
-	populate(objectMap, "startTime", (*timeRFC3339)(j.StartTime))
+	populateTimeRFC3339(objectMap, "startTime", j.StartTime)
 	populate(objectMap, "status", j.Status)
 	return json.Marshal(objectMap)
 }
@@ -477,14 +474,10 @@ func (j *JobHistoryDefinitionProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &j.ActionName)
 			delete(rawMsg, key)
 		case "endTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			j.EndTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &j.EndTime)
 			delete(rawMsg, key)
 		case "expectedExecutionTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			j.ExpectedExecutionTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &j.ExpectedExecutionTime)
 			delete(rawMsg, key)
 		case "message":
 			err = unpopulate(val, &j.Message)
@@ -496,9 +489,7 @@ func (j *JobHistoryDefinitionProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &j.RetryCount)
 			delete(rawMsg, key)
 		case "startTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			j.StartTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &j.StartTime)
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, &j.Status)
@@ -578,7 +569,7 @@ func (j JobProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "action", j.Action)
 	populate(objectMap, "recurrence", j.Recurrence)
-	populate(objectMap, "startTime", (*timeRFC3339)(j.StartTime))
+	populateTimeRFC3339(objectMap, "startTime", j.StartTime)
 	populate(objectMap, "state", j.State)
 	populate(objectMap, "status", j.Status)
 	return json.Marshal(objectMap)
@@ -600,9 +591,7 @@ func (j *JobProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &j.Recurrence)
 			delete(rawMsg, key)
 		case "startTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			j.StartTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &j.StartTime)
 			delete(rawMsg, key)
 		case "state":
 			err = unpopulate(val, &j.State)
@@ -637,7 +626,7 @@ type JobRecurrence struct {
 func (j JobRecurrence) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "count", j.Count)
-	populate(objectMap, "endTime", (*timeRFC3339)(j.EndTime))
+	populateTimeRFC3339(objectMap, "endTime", j.EndTime)
 	populate(objectMap, "frequency", j.Frequency)
 	populate(objectMap, "interval", j.Interval)
 	populate(objectMap, "schedule", j.Schedule)
@@ -657,9 +646,7 @@ func (j *JobRecurrence) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &j.Count)
 			delete(rawMsg, key)
 		case "endTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			j.EndTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &j.EndTime)
 			delete(rawMsg, key)
 		case "frequency":
 			err = unpopulate(val, &j.Frequency)
@@ -742,8 +729,8 @@ func (j JobStatus) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "executionCount", j.ExecutionCount)
 	populate(objectMap, "failureCount", j.FailureCount)
 	populate(objectMap, "faultedCount", j.FaultedCount)
-	populate(objectMap, "lastExecutionTime", (*timeRFC3339)(j.LastExecutionTime))
-	populate(objectMap, "nextExecutionTime", (*timeRFC3339)(j.NextExecutionTime))
+	populateTimeRFC3339(objectMap, "lastExecutionTime", j.LastExecutionTime)
+	populateTimeRFC3339(objectMap, "nextExecutionTime", j.NextExecutionTime)
 	return json.Marshal(objectMap)
 }
 
@@ -766,14 +753,10 @@ func (j *JobStatus) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &j.FaultedCount)
 			delete(rawMsg, key)
 		case "lastExecutionTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			j.LastExecutionTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &j.LastExecutionTime)
 			delete(rawMsg, key)
 		case "nextExecutionTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			j.NextExecutionTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &j.NextExecutionTime)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -965,7 +948,7 @@ func (s ServiceBusBrokeredMessageProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "partitionKey", s.PartitionKey)
 	populate(objectMap, "replyTo", s.ReplyTo)
 	populate(objectMap, "replyToSessionId", s.ReplyToSessionID)
-	populate(objectMap, "scheduledEnqueueTimeUtc", (*timeRFC3339)(s.ScheduledEnqueueTimeUTC))
+	populateTimeRFC3339(objectMap, "scheduledEnqueueTimeUtc", s.ScheduledEnqueueTimeUTC)
 	populate(objectMap, "sessionId", s.SessionID)
 	populate(objectMap, "timeToLive", s.TimeToLive)
 	populate(objectMap, "to", s.To)
@@ -1007,9 +990,7 @@ func (s *ServiceBusBrokeredMessageProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &s.ReplyToSessionID)
 			delete(rawMsg, key)
 		case "scheduledEnqueueTimeUtc":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			s.ScheduledEnqueueTimeUTC = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &s.ScheduledEnqueueTimeUTC)
 			delete(rawMsg, key)
 		case "sessionId":
 			err = unpopulate(val, &s.SessionID)

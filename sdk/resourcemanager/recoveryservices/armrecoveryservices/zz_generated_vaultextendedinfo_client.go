@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // VaultExtendedInfoClient contains the methods for the VaultExtendedInfo group.
@@ -30,8 +31,15 @@ type VaultExtendedInfoClient struct {
 }
 
 // NewVaultExtendedInfoClient creates a new instance of VaultExtendedInfoClient with the specified values.
-func NewVaultExtendedInfoClient(con *arm.Connection, subscriptionID string) *VaultExtendedInfoClient {
-	return &VaultExtendedInfoClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewVaultExtendedInfoClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VaultExtendedInfoClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &VaultExtendedInfoClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Create vault extended info.
@@ -81,7 +89,7 @@ func (client *VaultExtendedInfoClient) createOrUpdateCreateRequest(ctx context.C
 func (client *VaultExtendedInfoClient) createOrUpdateHandleResponse(resp *http.Response) (VaultExtendedInfoCreateOrUpdateResponse, error) {
 	result := VaultExtendedInfoCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VaultExtendedInfoResource); err != nil {
-		return VaultExtendedInfoCreateOrUpdateResponse{}, err
+		return VaultExtendedInfoCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -146,7 +154,7 @@ func (client *VaultExtendedInfoClient) getCreateRequest(ctx context.Context, res
 func (client *VaultExtendedInfoClient) getHandleResponse(resp *http.Response) (VaultExtendedInfoGetResponse, error) {
 	result := VaultExtendedInfoGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VaultExtendedInfoResource); err != nil {
-		return VaultExtendedInfoGetResponse{}, err
+		return VaultExtendedInfoGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -211,7 +219,7 @@ func (client *VaultExtendedInfoClient) updateCreateRequest(ctx context.Context, 
 func (client *VaultExtendedInfoClient) updateHandleResponse(resp *http.Response) (VaultExtendedInfoUpdateResponse, error) {
 	result := VaultExtendedInfoUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VaultExtendedInfoResource); err != nil {
-		return VaultExtendedInfoUpdateResponse{}, err
+		return VaultExtendedInfoUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -81,8 +81,8 @@ func TestDatabaseResponseParsing(t *testing.T) {
 		t.Errorf("Expected properties.LastModified.Time to be %v, but got %v", properties.LastModified, parsedResponse.DatabaseProperties.LastModified)
 	}
 
-	if parsedResponse.ActivityId != "someActivityId" {
-		t.Errorf("Expected ActivityId to be %s, but got %s", "someActivityId", parsedResponse.ActivityId)
+	if parsedResponse.ActivityID != "someActivityId" {
+		t.Errorf("Expected ActivityId to be %s, but got %s", "someActivityId", parsedResponse.ActivityID)
 	}
 
 	if parsedResponse.RequestCharge != 13.42 {

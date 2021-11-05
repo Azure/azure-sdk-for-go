@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // JobsClient contains the methods for the Jobs group.
@@ -30,8 +31,15 @@ type JobsClient struct {
 }
 
 // NewJobsClient creates a new instance of JobsClient with the specified values.
-func NewJobsClient(con *arm.Connection, subscriptionID string) *JobsClient {
-	return &JobsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *JobsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &JobsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CancelJob - Cancel a Job.
@@ -153,7 +161,7 @@ func (client *JobsClient) createCreateRequest(ctx context.Context, resourceGroup
 func (client *JobsClient) createHandleResponse(resp *http.Response) (JobsCreateResponse, error) {
 	result := JobsCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Job); err != nil {
-		return JobsCreateResponse{}, err
+		return JobsCreateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -290,7 +298,7 @@ func (client *JobsClient) getCreateRequest(ctx context.Context, resourceGroupNam
 func (client *JobsClient) getHandleResponse(resp *http.Response) (JobsGetResponse, error) {
 	result := JobsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Job); err != nil {
-		return JobsGetResponse{}, err
+		return JobsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -362,7 +370,7 @@ func (client *JobsClient) listCreateRequest(ctx context.Context, resourceGroupNa
 func (client *JobsClient) listHandleResponse(resp *http.Response) (JobsListResponse, error) {
 	result := JobsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobCollection); err != nil {
-		return JobsListResponse{}, err
+		return JobsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -436,7 +444,7 @@ func (client *JobsClient) updateCreateRequest(ctx context.Context, resourceGroup
 func (client *JobsClient) updateHandleResponse(resp *http.Response) (JobsUpdateResponse, error) {
 	result := JobsUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Job); err != nil {
-		return JobsUpdateResponse{}, err
+		return JobsUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

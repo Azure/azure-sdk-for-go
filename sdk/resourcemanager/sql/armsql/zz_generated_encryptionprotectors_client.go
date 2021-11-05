@@ -11,14 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // EncryptionProtectorsClient contains the methods for the EncryptionProtectors group.
@@ -30,8 +30,15 @@ type EncryptionProtectorsClient struct {
 }
 
 // NewEncryptionProtectorsClient creates a new instance of EncryptionProtectorsClient with the specified values.
-func NewEncryptionProtectorsClient(con *arm.Connection, subscriptionID string) *EncryptionProtectorsClient {
-	return &EncryptionProtectorsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewEncryptionProtectorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *EncryptionProtectorsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &EncryptionProtectorsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Updates an existing encryption protector.
@@ -164,7 +171,7 @@ func (client *EncryptionProtectorsClient) getCreateRequest(ctx context.Context, 
 func (client *EncryptionProtectorsClient) getHandleResponse(resp *http.Response) (EncryptionProtectorsGetResponse, error) {
 	result := EncryptionProtectorsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EncryptionProtector); err != nil {
-		return EncryptionProtectorsGetResponse{}, err
+		return EncryptionProtectorsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -225,7 +232,7 @@ func (client *EncryptionProtectorsClient) listByServerCreateRequest(ctx context.
 func (client *EncryptionProtectorsClient) listByServerHandleResponse(resp *http.Response) (EncryptionProtectorsListByServerResponse, error) {
 	result := EncryptionProtectorsListByServerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EncryptionProtectorListResult); err != nil {
-		return EncryptionProtectorsListByServerResponse{}, err
+		return EncryptionProtectorsListByServerResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

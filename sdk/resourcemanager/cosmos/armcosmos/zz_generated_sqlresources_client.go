@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // SQLResourcesClient contains the methods for the SQLResources group.
@@ -31,8 +31,15 @@ type SQLResourcesClient struct {
 }
 
 // NewSQLResourcesClient creates a new instance of SQLResourcesClient with the specified values.
-func NewSQLResourcesClient(con *arm.Connection, subscriptionID string) *SQLResourcesClient {
-	return &SQLResourcesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewSQLResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SQLResourcesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &SQLResourcesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateUpdateSQLContainer - Create or update an Azure Cosmos DB SQL container
@@ -100,7 +107,7 @@ func (client *SQLResourcesClient) createUpdateSQLContainerCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, createUpdateSQLContainerParameters)
@@ -179,7 +186,7 @@ func (client *SQLResourcesClient) createUpdateSQLDatabaseCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, createUpdateSQLDatabaseParameters)
@@ -258,7 +265,7 @@ func (client *SQLResourcesClient) createUpdateSQLRoleAssignmentCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, createUpdateSQLRoleAssignmentParameters)
@@ -338,7 +345,7 @@ func (client *SQLResourcesClient) createUpdateSQLRoleDefinitionCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, createUpdateSQLRoleDefinitionParameters)
@@ -426,7 +433,7 @@ func (client *SQLResourcesClient) createUpdateSQLStoredProcedureCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, createUpdateSQLStoredProcedureParameters)
@@ -513,7 +520,7 @@ func (client *SQLResourcesClient) createUpdateSQLTriggerCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, createUpdateSQLTriggerParameters)
@@ -600,7 +607,7 @@ func (client *SQLResourcesClient) createUpdateSQLUserDefinedFunctionCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, createUpdateSQLUserDefinedFunctionParameters)
@@ -683,7 +690,7 @@ func (client *SQLResourcesClient) deleteSQLContainerCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -761,7 +768,7 @@ func (client *SQLResourcesClient) deleteSQLDatabaseCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -839,7 +846,7 @@ func (client *SQLResourcesClient) deleteSQLRoleAssignmentCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -919,7 +926,7 @@ func (client *SQLResourcesClient) deleteSQLRoleDefinitionCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -1007,7 +1014,7 @@ func (client *SQLResourcesClient) deleteSQLStoredProcedureCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -1093,7 +1100,7 @@ func (client *SQLResourcesClient) deleteSQLTriggerCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -1179,7 +1186,7 @@ func (client *SQLResourcesClient) deleteSQLUserDefinedFunctionCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -1241,7 +1248,7 @@ func (client *SQLResourcesClient) getSQLContainerCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -1251,7 +1258,7 @@ func (client *SQLResourcesClient) getSQLContainerCreateRequest(ctx context.Conte
 func (client *SQLResourcesClient) getSQLContainerHandleResponse(resp *http.Response) (SQLResourcesGetSQLContainerResponse, error) {
 	result := SQLResourcesGetSQLContainerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLContainerGetResults); err != nil {
-		return SQLResourcesGetSQLContainerResponse{}, err
+		return SQLResourcesGetSQLContainerResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1313,7 +1320,7 @@ func (client *SQLResourcesClient) getSQLContainerThroughputCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -1323,7 +1330,7 @@ func (client *SQLResourcesClient) getSQLContainerThroughputCreateRequest(ctx con
 func (client *SQLResourcesClient) getSQLContainerThroughputHandleResponse(resp *http.Response) (SQLResourcesGetSQLContainerThroughputResponse, error) {
 	result := SQLResourcesGetSQLContainerThroughputResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ThroughputSettingsGetResults); err != nil {
-		return SQLResourcesGetSQLContainerThroughputResponse{}, err
+		return SQLResourcesGetSQLContainerThroughputResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1381,7 +1388,7 @@ func (client *SQLResourcesClient) getSQLDatabaseCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -1391,7 +1398,7 @@ func (client *SQLResourcesClient) getSQLDatabaseCreateRequest(ctx context.Contex
 func (client *SQLResourcesClient) getSQLDatabaseHandleResponse(resp *http.Response) (SQLResourcesGetSQLDatabaseResponse, error) {
 	result := SQLResourcesGetSQLDatabaseResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLDatabaseGetResults); err != nil {
-		return SQLResourcesGetSQLDatabaseResponse{}, err
+		return SQLResourcesGetSQLDatabaseResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1449,7 +1456,7 @@ func (client *SQLResourcesClient) getSQLDatabaseThroughputCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -1459,7 +1466,7 @@ func (client *SQLResourcesClient) getSQLDatabaseThroughputCreateRequest(ctx cont
 func (client *SQLResourcesClient) getSQLDatabaseThroughputHandleResponse(resp *http.Response) (SQLResourcesGetSQLDatabaseThroughputResponse, error) {
 	result := SQLResourcesGetSQLDatabaseThroughputResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ThroughputSettingsGetResults); err != nil {
-		return SQLResourcesGetSQLDatabaseThroughputResponse{}, err
+		return SQLResourcesGetSQLDatabaseThroughputResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1517,7 +1524,7 @@ func (client *SQLResourcesClient) getSQLRoleAssignmentCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -1527,7 +1534,7 @@ func (client *SQLResourcesClient) getSQLRoleAssignmentCreateRequest(ctx context.
 func (client *SQLResourcesClient) getSQLRoleAssignmentHandleResponse(resp *http.Response) (SQLResourcesGetSQLRoleAssignmentResponse, error) {
 	result := SQLResourcesGetSQLRoleAssignmentResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLRoleAssignmentGetResults); err != nil {
-		return SQLResourcesGetSQLRoleAssignmentResponse{}, err
+		return SQLResourcesGetSQLRoleAssignmentResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1586,7 +1593,7 @@ func (client *SQLResourcesClient) getSQLRoleDefinitionCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -1596,7 +1603,7 @@ func (client *SQLResourcesClient) getSQLRoleDefinitionCreateRequest(ctx context.
 func (client *SQLResourcesClient) getSQLRoleDefinitionHandleResponse(resp *http.Response) (SQLResourcesGetSQLRoleDefinitionResponse, error) {
 	result := SQLResourcesGetSQLRoleDefinitionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLRoleDefinitionGetResults); err != nil {
-		return SQLResourcesGetSQLRoleDefinitionResponse{}, err
+		return SQLResourcesGetSQLRoleDefinitionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1663,7 +1670,7 @@ func (client *SQLResourcesClient) getSQLStoredProcedureCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -1673,7 +1680,7 @@ func (client *SQLResourcesClient) getSQLStoredProcedureCreateRequest(ctx context
 func (client *SQLResourcesClient) getSQLStoredProcedureHandleResponse(resp *http.Response) (SQLResourcesGetSQLStoredProcedureResponse, error) {
 	result := SQLResourcesGetSQLStoredProcedureResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLStoredProcedureGetResults); err != nil {
-		return SQLResourcesGetSQLStoredProcedureResponse{}, err
+		return SQLResourcesGetSQLStoredProcedureResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1739,7 +1746,7 @@ func (client *SQLResourcesClient) getSQLTriggerCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -1749,7 +1756,7 @@ func (client *SQLResourcesClient) getSQLTriggerCreateRequest(ctx context.Context
 func (client *SQLResourcesClient) getSQLTriggerHandleResponse(resp *http.Response) (SQLResourcesGetSQLTriggerResponse, error) {
 	result := SQLResourcesGetSQLTriggerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLTriggerGetResults); err != nil {
-		return SQLResourcesGetSQLTriggerResponse{}, err
+		return SQLResourcesGetSQLTriggerResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1815,7 +1822,7 @@ func (client *SQLResourcesClient) getSQLUserDefinedFunctionCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -1825,7 +1832,7 @@ func (client *SQLResourcesClient) getSQLUserDefinedFunctionCreateRequest(ctx con
 func (client *SQLResourcesClient) getSQLUserDefinedFunctionHandleResponse(resp *http.Response) (SQLResourcesGetSQLUserDefinedFunctionResponse, error) {
 	result := SQLResourcesGetSQLUserDefinedFunctionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLUserDefinedFunctionGetResults); err != nil {
-		return SQLResourcesGetSQLUserDefinedFunctionResponse{}, err
+		return SQLResourcesGetSQLUserDefinedFunctionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1883,7 +1890,7 @@ func (client *SQLResourcesClient) listSQLContainersCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -1893,7 +1900,7 @@ func (client *SQLResourcesClient) listSQLContainersCreateRequest(ctx context.Con
 func (client *SQLResourcesClient) listSQLContainersHandleResponse(resp *http.Response) (SQLResourcesListSQLContainersResponse, error) {
 	result := SQLResourcesListSQLContainersResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLContainerListResult); err != nil {
-		return SQLResourcesListSQLContainersResponse{}, err
+		return SQLResourcesListSQLContainersResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1947,7 +1954,7 @@ func (client *SQLResourcesClient) listSQLDatabasesCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -1957,7 +1964,7 @@ func (client *SQLResourcesClient) listSQLDatabasesCreateRequest(ctx context.Cont
 func (client *SQLResourcesClient) listSQLDatabasesHandleResponse(resp *http.Response) (SQLResourcesListSQLDatabasesResponse, error) {
 	result := SQLResourcesListSQLDatabasesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLDatabaseListResult); err != nil {
-		return SQLResourcesListSQLDatabasesResponse{}, err
+		return SQLResourcesListSQLDatabasesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -2011,7 +2018,7 @@ func (client *SQLResourcesClient) listSQLRoleAssignmentsCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -2021,7 +2028,7 @@ func (client *SQLResourcesClient) listSQLRoleAssignmentsCreateRequest(ctx contex
 func (client *SQLResourcesClient) listSQLRoleAssignmentsHandleResponse(resp *http.Response) (SQLResourcesListSQLRoleAssignmentsResponse, error) {
 	result := SQLResourcesListSQLRoleAssignmentsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLRoleAssignmentListResult); err != nil {
-		return SQLResourcesListSQLRoleAssignmentsResponse{}, err
+		return SQLResourcesListSQLRoleAssignmentsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -2076,7 +2083,7 @@ func (client *SQLResourcesClient) listSQLRoleDefinitionsCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -2086,7 +2093,7 @@ func (client *SQLResourcesClient) listSQLRoleDefinitionsCreateRequest(ctx contex
 func (client *SQLResourcesClient) listSQLRoleDefinitionsHandleResponse(resp *http.Response) (SQLResourcesListSQLRoleDefinitionsResponse, error) {
 	result := SQLResourcesListSQLRoleDefinitionsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLRoleDefinitionListResult); err != nil {
-		return SQLResourcesListSQLRoleDefinitionsResponse{}, err
+		return SQLResourcesListSQLRoleDefinitionsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -2149,7 +2156,7 @@ func (client *SQLResourcesClient) listSQLStoredProceduresCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -2159,7 +2166,7 @@ func (client *SQLResourcesClient) listSQLStoredProceduresCreateRequest(ctx conte
 func (client *SQLResourcesClient) listSQLStoredProceduresHandleResponse(resp *http.Response) (SQLResourcesListSQLStoredProceduresResponse, error) {
 	result := SQLResourcesListSQLStoredProceduresResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLStoredProcedureListResult); err != nil {
-		return SQLResourcesListSQLStoredProceduresResponse{}, err
+		return SQLResourcesListSQLStoredProceduresResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -2222,7 +2229,7 @@ func (client *SQLResourcesClient) listSQLTriggersCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -2232,7 +2239,7 @@ func (client *SQLResourcesClient) listSQLTriggersCreateRequest(ctx context.Conte
 func (client *SQLResourcesClient) listSQLTriggersHandleResponse(resp *http.Response) (SQLResourcesListSQLTriggersResponse, error) {
 	result := SQLResourcesListSQLTriggersResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLTriggerListResult); err != nil {
-		return SQLResourcesListSQLTriggersResponse{}, err
+		return SQLResourcesListSQLTriggersResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -2294,7 +2301,7 @@ func (client *SQLResourcesClient) listSQLUserDefinedFunctionsCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -2304,7 +2311,7 @@ func (client *SQLResourcesClient) listSQLUserDefinedFunctionsCreateRequest(ctx c
 func (client *SQLResourcesClient) listSQLUserDefinedFunctionsHandleResponse(resp *http.Response) (SQLResourcesListSQLUserDefinedFunctionsResponse, error) {
 	result := SQLResourcesListSQLUserDefinedFunctionsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLUserDefinedFunctionListResult); err != nil {
-		return SQLResourcesListSQLUserDefinedFunctionsResponse{}, err
+		return SQLResourcesListSQLUserDefinedFunctionsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -2386,7 +2393,7 @@ func (client *SQLResourcesClient) migrateSQLContainerToAutoscaleCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -2470,7 +2477,7 @@ func (client *SQLResourcesClient) migrateSQLContainerToManualThroughputCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -2550,7 +2557,7 @@ func (client *SQLResourcesClient) migrateSQLDatabaseToAutoscaleCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -2630,7 +2637,7 @@ func (client *SQLResourcesClient) migrateSQLDatabaseToManualThroughputCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -2714,7 +2721,7 @@ func (client *SQLResourcesClient) retrieveContinuousBackupInformationCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, location)
@@ -2798,7 +2805,7 @@ func (client *SQLResourcesClient) updateSQLContainerThroughputCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, updateThroughputParameters)
@@ -2877,7 +2884,7 @@ func (client *SQLResourcesClient) updateSQLDatabaseThroughputCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, updateThroughputParameters)

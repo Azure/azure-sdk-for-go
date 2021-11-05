@@ -12,7 +12,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -31,8 +33,15 @@ type LogAnalyticsClient struct {
 }
 
 // NewLogAnalyticsClient creates a new instance of LogAnalyticsClient with the specified values.
-func NewLogAnalyticsClient(con *arm.Connection, subscriptionID string) *LogAnalyticsClient {
-	return &LogAnalyticsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewLogAnalyticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LogAnalyticsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &LogAnalyticsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // GetLogAnalyticsLocations - Get all available location names for AFD log analytics report.
@@ -82,7 +91,7 @@ func (client *LogAnalyticsClient) getLogAnalyticsLocationsCreateRequest(ctx cont
 func (client *LogAnalyticsClient) getLogAnalyticsLocationsHandleResponse(resp *http.Response) (LogAnalyticsGetLogAnalyticsLocationsResponse, error) {
 	result := LogAnalyticsGetLogAnalyticsLocationsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContinentsResponse); err != nil {
-		return LogAnalyticsGetLogAnalyticsLocationsResponse{}, err
+		return LogAnalyticsGetLogAnalyticsLocationsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -174,7 +183,7 @@ func (client *LogAnalyticsClient) getLogAnalyticsMetricsCreateRequest(ctx contex
 func (client *LogAnalyticsClient) getLogAnalyticsMetricsHandleResponse(resp *http.Response) (LogAnalyticsGetLogAnalyticsMetricsResponse, error) {
 	result := LogAnalyticsGetLogAnalyticsMetricsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricsResponse); err != nil {
-		return LogAnalyticsGetLogAnalyticsMetricsResponse{}, err
+		return LogAnalyticsGetLogAnalyticsMetricsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -253,7 +262,7 @@ func (client *LogAnalyticsClient) getLogAnalyticsRankingsCreateRequest(ctx conte
 func (client *LogAnalyticsClient) getLogAnalyticsRankingsHandleResponse(resp *http.Response) (LogAnalyticsGetLogAnalyticsRankingsResponse, error) {
 	result := LogAnalyticsGetLogAnalyticsRankingsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RankingsResponse); err != nil {
-		return LogAnalyticsGetLogAnalyticsRankingsResponse{}, err
+		return LogAnalyticsGetLogAnalyticsRankingsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -318,7 +327,7 @@ func (client *LogAnalyticsClient) getLogAnalyticsResourcesCreateRequest(ctx cont
 func (client *LogAnalyticsClient) getLogAnalyticsResourcesHandleResponse(resp *http.Response) (LogAnalyticsGetLogAnalyticsResourcesResponse, error) {
 	result := LogAnalyticsGetLogAnalyticsResourcesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourcesResponse); err != nil {
-		return LogAnalyticsGetLogAnalyticsResourcesResponse{}, err
+		return LogAnalyticsGetLogAnalyticsResourcesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -404,7 +413,7 @@ func (client *LogAnalyticsClient) getWafLogAnalyticsMetricsCreateRequest(ctx con
 func (client *LogAnalyticsClient) getWafLogAnalyticsMetricsHandleResponse(resp *http.Response) (LogAnalyticsGetWafLogAnalyticsMetricsResponse, error) {
 	result := LogAnalyticsGetWafLogAnalyticsMetricsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WafMetricsResponse); err != nil {
-		return LogAnalyticsGetWafLogAnalyticsMetricsResponse{}, err
+		return LogAnalyticsGetWafLogAnalyticsMetricsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -488,7 +497,7 @@ func (client *LogAnalyticsClient) getWafLogAnalyticsRankingsCreateRequest(ctx co
 func (client *LogAnalyticsClient) getWafLogAnalyticsRankingsHandleResponse(resp *http.Response) (LogAnalyticsGetWafLogAnalyticsRankingsResponse, error) {
 	result := LogAnalyticsGetWafLogAnalyticsRankingsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WafRankingsResponse); err != nil {
-		return LogAnalyticsGetWafLogAnalyticsRankingsResponse{}, err
+		return LogAnalyticsGetWafLogAnalyticsRankingsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

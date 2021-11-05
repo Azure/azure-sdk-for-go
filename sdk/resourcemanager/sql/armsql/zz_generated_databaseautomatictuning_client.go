@@ -11,13 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // DatabaseAutomaticTuningClient contains the methods for the DatabaseAutomaticTuning group.
@@ -29,8 +30,15 @@ type DatabaseAutomaticTuningClient struct {
 }
 
 // NewDatabaseAutomaticTuningClient creates a new instance of DatabaseAutomaticTuningClient with the specified values.
-func NewDatabaseAutomaticTuningClient(con *arm.Connection, subscriptionID string) *DatabaseAutomaticTuningClient {
-	return &DatabaseAutomaticTuningClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewDatabaseAutomaticTuningClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DatabaseAutomaticTuningClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &DatabaseAutomaticTuningClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Gets a database's automatic tuning.
@@ -84,7 +92,7 @@ func (client *DatabaseAutomaticTuningClient) getCreateRequest(ctx context.Contex
 func (client *DatabaseAutomaticTuningClient) getHandleResponse(resp *http.Response) (DatabaseAutomaticTuningGetResponse, error) {
 	result := DatabaseAutomaticTuningGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseAutomaticTuning); err != nil {
-		return DatabaseAutomaticTuningGetResponse{}, err
+		return DatabaseAutomaticTuningGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -152,7 +160,7 @@ func (client *DatabaseAutomaticTuningClient) updateCreateRequest(ctx context.Con
 func (client *DatabaseAutomaticTuningClient) updateHandleResponse(resp *http.Response) (DatabaseAutomaticTuningUpdateResponse, error) {
 	result := DatabaseAutomaticTuningUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseAutomaticTuning); err != nil {
-		return DatabaseAutomaticTuningUpdateResponse{}, err
+		return DatabaseAutomaticTuningUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

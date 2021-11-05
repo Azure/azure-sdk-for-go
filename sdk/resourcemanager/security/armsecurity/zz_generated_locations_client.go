@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // LocationsClient contains the methods for the Locations group.
@@ -31,8 +32,15 @@ type LocationsClient struct {
 }
 
 // NewLocationsClient creates a new instance of LocationsClient with the specified values.
-func NewLocationsClient(con *arm.Connection, subscriptionID string, ascLocation string) *LocationsClient {
-	return &LocationsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID, ascLocation: ascLocation}
+func NewLocationsClient(subscriptionID string, ascLocation string, credential azcore.TokenCredential, options *arm.ClientOptions) *LocationsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &LocationsClient{subscriptionID: subscriptionID, ascLocation: ascLocation, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Details of a specific location
@@ -78,7 +86,7 @@ func (client *LocationsClient) getCreateRequest(ctx context.Context, options *Lo
 func (client *LocationsClient) getHandleResponse(resp *http.Response) (LocationsGetResponse, error) {
 	result := LocationsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AscLocation); err != nil {
-		return LocationsGetResponse{}, err
+		return LocationsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -134,7 +142,7 @@ func (client *LocationsClient) listCreateRequest(ctx context.Context, options *L
 func (client *LocationsClient) listHandleResponse(resp *http.Response) (LocationsListResponse, error) {
 	result := LocationsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AscLocationList); err != nil {
-		return LocationsListResponse{}, err
+		return LocationsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

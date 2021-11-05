@@ -10,7 +10,7 @@ package armappplatform
 
 const (
 	module  = "armappplatform"
-	version = "v0.1.1"
+	version = "v0.2.1"
 )
 
 // AppResourceProvisioningState - Provisioning state of the App
@@ -62,6 +62,50 @@ func PossibleConfigServerStateValues() []ConfigServerState {
 
 // ToPtr returns a *ConfigServerState pointing to the current value.
 func (c ConfigServerState) ToPtr() *ConfigServerState {
+	return &c
+}
+
+// CreatedByType - The type of identity that created the resource.
+type CreatedByType string
+
+const (
+	CreatedByTypeApplication     CreatedByType = "Application"
+	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
+	CreatedByTypeUser            CreatedByType = "User"
+)
+
+// PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{
+		CreatedByTypeApplication,
+		CreatedByTypeKey,
+		CreatedByTypeManagedIdentity,
+		CreatedByTypeUser,
+	}
+}
+
+// ToPtr returns a *CreatedByType pointing to the current value.
+func (c CreatedByType) ToPtr() *CreatedByType {
+	return &c
+}
+
+// CustomPersistentDiskPropertiesType - The type of the underlying resource to mount as a persistent disk.
+type CustomPersistentDiskPropertiesType string
+
+const (
+	CustomPersistentDiskPropertiesTypeAzureFileVolume CustomPersistentDiskPropertiesType = "AzureFileVolume"
+)
+
+// PossibleCustomPersistentDiskPropertiesTypeValues returns the possible values for the CustomPersistentDiskPropertiesType const type.
+func PossibleCustomPersistentDiskPropertiesTypeValues() []CustomPersistentDiskPropertiesType {
+	return []CustomPersistentDiskPropertiesType{
+		CustomPersistentDiskPropertiesTypeAzureFileVolume,
+	}
+}
+
+// ToPtr returns a *CustomPersistentDiskPropertiesType pointing to the current value.
+func (c CustomPersistentDiskPropertiesType) ToPtr() *CustomPersistentDiskPropertiesType {
 	return &c
 }
 
@@ -168,6 +212,27 @@ func PossibleMonitoringSettingStateValues() []MonitoringSettingState {
 
 // ToPtr returns a *MonitoringSettingState pointing to the current value.
 func (c MonitoringSettingState) ToPtr() *MonitoringSettingState {
+	return &c
+}
+
+// PowerState - Power state of the Service
+type PowerState string
+
+const (
+	PowerStateRunning PowerState = "Running"
+	PowerStateStopped PowerState = "Stopped"
+)
+
+// PossiblePowerStateValues returns the possible values for the PowerState const type.
+func PossiblePowerStateValues() []PowerState {
+	return []PowerState{
+		PowerStateRunning,
+		PowerStateStopped,
+	}
+}
+
+// ToPtr returns a *PowerState pointing to the current value.
+func (c PowerState) ToPtr() *PowerState {
 	return &c
 }
 
@@ -291,6 +356,25 @@ func PossibleSKUScaleTypeValues() []SKUScaleType {
 
 // ToPtr returns a *SKUScaleType pointing to the current value.
 func (c SKUScaleType) ToPtr() *SKUScaleType {
+	return &c
+}
+
+// StoragePropertiesStorageType - The type of the storage.
+type StoragePropertiesStorageType string
+
+const (
+	StoragePropertiesStorageTypeStorageAccount StoragePropertiesStorageType = "StorageAccount"
+)
+
+// PossibleStoragePropertiesStorageTypeValues returns the possible values for the StoragePropertiesStorageType const type.
+func PossibleStoragePropertiesStorageTypeValues() []StoragePropertiesStorageType {
+	return []StoragePropertiesStorageType{
+		StoragePropertiesStorageTypeStorageAccount,
+	}
+}
+
+// ToPtr returns a *StoragePropertiesStorageType pointing to the current value.
+func (c StoragePropertiesStorageType) ToPtr() *StoragePropertiesStorageType {
 	return &c
 }
 

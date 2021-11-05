@@ -12,15 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // MHSMPrivateEndpointConnectionsClient contains the methods for the MHSMPrivateEndpointConnections group.
@@ -32,8 +32,15 @@ type MHSMPrivateEndpointConnectionsClient struct {
 }
 
 // NewMHSMPrivateEndpointConnectionsClient creates a new instance of MHSMPrivateEndpointConnectionsClient with the specified values.
-func NewMHSMPrivateEndpointConnectionsClient(con *arm.Connection, subscriptionID string) *MHSMPrivateEndpointConnectionsClient {
-	return &MHSMPrivateEndpointConnectionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewMHSMPrivateEndpointConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *MHSMPrivateEndpointConnectionsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &MHSMPrivateEndpointConnectionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginDelete - Deletes the specified private endpoint connection associated with the managed hsm pool.
@@ -167,7 +174,7 @@ func (client *MHSMPrivateEndpointConnectionsClient) getCreateRequest(ctx context
 func (client *MHSMPrivateEndpointConnectionsClient) getHandleResponse(resp *http.Response) (MHSMPrivateEndpointConnectionsGetResponse, error) {
 	result := MHSMPrivateEndpointConnectionsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MHSMPrivateEndpointConnection); err != nil {
-		return MHSMPrivateEndpointConnectionsGetResponse{}, err
+		return MHSMPrivateEndpointConnectionsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -229,7 +236,7 @@ func (client *MHSMPrivateEndpointConnectionsClient) listByResourceCreateRequest(
 func (client *MHSMPrivateEndpointConnectionsClient) listByResourceHandleResponse(resp *http.Response) (MHSMPrivateEndpointConnectionsListByResourceResponse, error) {
 	result := MHSMPrivateEndpointConnectionsListByResourceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MHSMPrivateEndpointConnectionsListResult); err != nil {
-		return MHSMPrivateEndpointConnectionsListByResourceResponse{}, err
+		return MHSMPrivateEndpointConnectionsListByResourceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -309,7 +316,7 @@ func (client *MHSMPrivateEndpointConnectionsClient) putHandleResponse(resp *http
 		result.AzureAsyncOperation = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MHSMPrivateEndpointConnection); err != nil {
-		return MHSMPrivateEndpointConnectionsPutResponse{}, err
+		return MHSMPrivateEndpointConnectionsPutResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

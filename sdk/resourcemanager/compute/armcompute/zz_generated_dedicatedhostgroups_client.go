@@ -11,13 +11,14 @@ package armcompute
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // DedicatedHostGroupsClient contains the methods for the DedicatedHostGroups group.
@@ -29,8 +30,15 @@ type DedicatedHostGroupsClient struct {
 }
 
 // NewDedicatedHostGroupsClient creates a new instance of DedicatedHostGroupsClient with the specified values.
-func NewDedicatedHostGroupsClient(con *arm.Connection, subscriptionID string) *DedicatedHostGroupsClient {
-	return &DedicatedHostGroupsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewDedicatedHostGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DedicatedHostGroupsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &DedicatedHostGroupsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Create or update a dedicated host group. For details of Dedicated Host and Dedicated Host Groups please see Dedicated Host Documentation
@@ -81,7 +89,7 @@ func (client *DedicatedHostGroupsClient) createOrUpdateCreateRequest(ctx context
 func (client *DedicatedHostGroupsClient) createOrUpdateHandleResponse(resp *http.Response) (DedicatedHostGroupsCreateOrUpdateResponse, error) {
 	result := DedicatedHostGroupsCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DedicatedHostGroup); err != nil {
-		return DedicatedHostGroupsCreateOrUpdateResponse{}, err
+		return DedicatedHostGroupsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -202,7 +210,7 @@ func (client *DedicatedHostGroupsClient) getCreateRequest(ctx context.Context, r
 func (client *DedicatedHostGroupsClient) getHandleResponse(resp *http.Response) (DedicatedHostGroupsGetResponse, error) {
 	result := DedicatedHostGroupsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DedicatedHostGroup); err != nil {
-		return DedicatedHostGroupsGetResponse{}, err
+		return DedicatedHostGroupsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -260,7 +268,7 @@ func (client *DedicatedHostGroupsClient) listByResourceGroupCreateRequest(ctx co
 func (client *DedicatedHostGroupsClient) listByResourceGroupHandleResponse(resp *http.Response) (DedicatedHostGroupsListByResourceGroupResponse, error) {
 	result := DedicatedHostGroupsListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DedicatedHostGroupListResult); err != nil {
-		return DedicatedHostGroupsListByResourceGroupResponse{}, err
+		return DedicatedHostGroupsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -314,7 +322,7 @@ func (client *DedicatedHostGroupsClient) listBySubscriptionCreateRequest(ctx con
 func (client *DedicatedHostGroupsClient) listBySubscriptionHandleResponse(resp *http.Response) (DedicatedHostGroupsListBySubscriptionResponse, error) {
 	result := DedicatedHostGroupsListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DedicatedHostGroupListResult); err != nil {
-		return DedicatedHostGroupsListBySubscriptionResponse{}, err
+		return DedicatedHostGroupsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -378,7 +386,7 @@ func (client *DedicatedHostGroupsClient) updateCreateRequest(ctx context.Context
 func (client *DedicatedHostGroupsClient) updateHandleResponse(resp *http.Response) (DedicatedHostGroupsUpdateResponse, error) {
 	result := DedicatedHostGroupsUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DedicatedHostGroup); err != nil {
-		return DedicatedHostGroupsUpdateResponse{}, err
+		return DedicatedHostGroupsUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

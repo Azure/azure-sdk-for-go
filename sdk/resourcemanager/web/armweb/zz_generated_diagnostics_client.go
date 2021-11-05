@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // DiagnosticsClient contains the methods for the Diagnostics group.
@@ -31,8 +32,15 @@ type DiagnosticsClient struct {
 }
 
 // NewDiagnosticsClient creates a new instance of DiagnosticsClient with the specified values.
-func NewDiagnosticsClient(con *arm.Connection, subscriptionID string) *DiagnosticsClient {
-	return &DiagnosticsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewDiagnosticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DiagnosticsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &DiagnosticsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // ExecuteSiteAnalysis - Description for Execute Analysis
@@ -99,7 +107,7 @@ func (client *DiagnosticsClient) executeSiteAnalysisCreateRequest(ctx context.Co
 func (client *DiagnosticsClient) executeSiteAnalysisHandleResponse(resp *http.Response) (DiagnosticsExecuteSiteAnalysisResponse, error) {
 	result := DiagnosticsExecuteSiteAnalysisResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticAnalysis); err != nil {
-		return DiagnosticsExecuteSiteAnalysisResponse{}, err
+		return DiagnosticsExecuteSiteAnalysisResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -185,7 +193,7 @@ func (client *DiagnosticsClient) executeSiteAnalysisSlotCreateRequest(ctx contex
 func (client *DiagnosticsClient) executeSiteAnalysisSlotHandleResponse(resp *http.Response) (DiagnosticsExecuteSiteAnalysisSlotResponse, error) {
 	result := DiagnosticsExecuteSiteAnalysisSlotResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticAnalysis); err != nil {
-		return DiagnosticsExecuteSiteAnalysisSlotResponse{}, err
+		return DiagnosticsExecuteSiteAnalysisSlotResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -267,7 +275,7 @@ func (client *DiagnosticsClient) executeSiteDetectorCreateRequest(ctx context.Co
 func (client *DiagnosticsClient) executeSiteDetectorHandleResponse(resp *http.Response) (DiagnosticsExecuteSiteDetectorResponse, error) {
 	result := DiagnosticsExecuteSiteDetectorResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticDetectorResponse); err != nil {
-		return DiagnosticsExecuteSiteDetectorResponse{}, err
+		return DiagnosticsExecuteSiteDetectorResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -353,7 +361,7 @@ func (client *DiagnosticsClient) executeSiteDetectorSlotCreateRequest(ctx contex
 func (client *DiagnosticsClient) executeSiteDetectorSlotHandleResponse(resp *http.Response) (DiagnosticsExecuteSiteDetectorSlotResponse, error) {
 	result := DiagnosticsExecuteSiteDetectorSlotResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticDetectorResponse); err != nil {
-		return DiagnosticsExecuteSiteDetectorSlotResponse{}, err
+		return DiagnosticsExecuteSiteDetectorSlotResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -431,7 +439,7 @@ func (client *DiagnosticsClient) getHostingEnvironmentDetectorResponseCreateRequ
 func (client *DiagnosticsClient) getHostingEnvironmentDetectorResponseHandleResponse(resp *http.Response) (DiagnosticsGetHostingEnvironmentDetectorResponseResponse, error) {
 	result := DiagnosticsGetHostingEnvironmentDetectorResponseResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DetectorResponse); err != nil {
-		return DiagnosticsGetHostingEnvironmentDetectorResponseResponse{}, err
+		return DiagnosticsGetHostingEnvironmentDetectorResponseResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -504,7 +512,7 @@ func (client *DiagnosticsClient) getSiteAnalysisCreateRequest(ctx context.Contex
 func (client *DiagnosticsClient) getSiteAnalysisHandleResponse(resp *http.Response) (DiagnosticsGetSiteAnalysisResponse, error) {
 	result := DiagnosticsGetSiteAnalysisResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AnalysisDefinition); err != nil {
-		return DiagnosticsGetSiteAnalysisResponse{}, err
+		return DiagnosticsGetSiteAnalysisResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -581,7 +589,7 @@ func (client *DiagnosticsClient) getSiteAnalysisSlotCreateRequest(ctx context.Co
 func (client *DiagnosticsClient) getSiteAnalysisSlotHandleResponse(resp *http.Response) (DiagnosticsGetSiteAnalysisSlotResponse, error) {
 	result := DiagnosticsGetSiteAnalysisSlotResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AnalysisDefinition); err != nil {
-		return DiagnosticsGetSiteAnalysisSlotResponse{}, err
+		return DiagnosticsGetSiteAnalysisSlotResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -654,7 +662,7 @@ func (client *DiagnosticsClient) getSiteDetectorCreateRequest(ctx context.Contex
 func (client *DiagnosticsClient) getSiteDetectorHandleResponse(resp *http.Response) (DiagnosticsGetSiteDetectorResponse, error) {
 	result := DiagnosticsGetSiteDetectorResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DetectorDefinitionResource); err != nil {
-		return DiagnosticsGetSiteDetectorResponse{}, err
+		return DiagnosticsGetSiteDetectorResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -732,7 +740,7 @@ func (client *DiagnosticsClient) getSiteDetectorResponseCreateRequest(ctx contex
 func (client *DiagnosticsClient) getSiteDetectorResponseHandleResponse(resp *http.Response) (DiagnosticsGetSiteDetectorResponseResponse, error) {
 	result := DiagnosticsGetSiteDetectorResponseResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DetectorResponse); err != nil {
-		return DiagnosticsGetSiteDetectorResponseResponse{}, err
+		return DiagnosticsGetSiteDetectorResponseResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -814,7 +822,7 @@ func (client *DiagnosticsClient) getSiteDetectorResponseSlotCreateRequest(ctx co
 func (client *DiagnosticsClient) getSiteDetectorResponseSlotHandleResponse(resp *http.Response) (DiagnosticsGetSiteDetectorResponseSlotResponse, error) {
 	result := DiagnosticsGetSiteDetectorResponseSlotResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DetectorResponse); err != nil {
-		return DiagnosticsGetSiteDetectorResponseSlotResponse{}, err
+		return DiagnosticsGetSiteDetectorResponseSlotResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -891,7 +899,7 @@ func (client *DiagnosticsClient) getSiteDetectorSlotCreateRequest(ctx context.Co
 func (client *DiagnosticsClient) getSiteDetectorSlotHandleResponse(resp *http.Response) (DiagnosticsGetSiteDetectorSlotResponse, error) {
 	result := DiagnosticsGetSiteDetectorSlotResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DetectorDefinitionResource); err != nil {
-		return DiagnosticsGetSiteDetectorSlotResponse{}, err
+		return DiagnosticsGetSiteDetectorSlotResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -960,7 +968,7 @@ func (client *DiagnosticsClient) getSiteDiagnosticCategoryCreateRequest(ctx cont
 func (client *DiagnosticsClient) getSiteDiagnosticCategoryHandleResponse(resp *http.Response) (DiagnosticsGetSiteDiagnosticCategoryResponse, error) {
 	result := DiagnosticsGetSiteDiagnosticCategoryResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticCategory); err != nil {
-		return DiagnosticsGetSiteDiagnosticCategoryResponse{}, err
+		return DiagnosticsGetSiteDiagnosticCategoryResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1033,7 +1041,7 @@ func (client *DiagnosticsClient) getSiteDiagnosticCategorySlotCreateRequest(ctx 
 func (client *DiagnosticsClient) getSiteDiagnosticCategorySlotHandleResponse(resp *http.Response) (DiagnosticsGetSiteDiagnosticCategorySlotResponse, error) {
 	result := DiagnosticsGetSiteDiagnosticCategorySlotResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticCategory); err != nil {
-		return DiagnosticsGetSiteDiagnosticCategorySlotResponse{}, err
+		return DiagnosticsGetSiteDiagnosticCategorySlotResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1095,7 +1103,7 @@ func (client *DiagnosticsClient) listHostingEnvironmentDetectorResponsesCreateRe
 func (client *DiagnosticsClient) listHostingEnvironmentDetectorResponsesHandleResponse(resp *http.Response) (DiagnosticsListHostingEnvironmentDetectorResponsesResponse, error) {
 	result := DiagnosticsListHostingEnvironmentDetectorResponsesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DetectorResponseCollection); err != nil {
-		return DiagnosticsListHostingEnvironmentDetectorResponsesResponse{}, err
+		return DiagnosticsListHostingEnvironmentDetectorResponsesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1161,7 +1169,7 @@ func (client *DiagnosticsClient) listSiteAnalysesCreateRequest(ctx context.Conte
 func (client *DiagnosticsClient) listSiteAnalysesHandleResponse(resp *http.Response) (DiagnosticsListSiteAnalysesResponse, error) {
 	result := DiagnosticsListSiteAnalysesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticAnalysisCollection); err != nil {
-		return DiagnosticsListSiteAnalysesResponse{}, err
+		return DiagnosticsListSiteAnalysesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1231,7 +1239,7 @@ func (client *DiagnosticsClient) listSiteAnalysesSlotCreateRequest(ctx context.C
 func (client *DiagnosticsClient) listSiteAnalysesSlotHandleResponse(resp *http.Response) (DiagnosticsListSiteAnalysesSlotResponse, error) {
 	result := DiagnosticsListSiteAnalysesSlotResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticAnalysisCollection); err != nil {
-		return DiagnosticsListSiteAnalysesSlotResponse{}, err
+		return DiagnosticsListSiteAnalysesSlotResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1293,7 +1301,7 @@ func (client *DiagnosticsClient) listSiteDetectorResponsesCreateRequest(ctx cont
 func (client *DiagnosticsClient) listSiteDetectorResponsesHandleResponse(resp *http.Response) (DiagnosticsListSiteDetectorResponsesResponse, error) {
 	result := DiagnosticsListSiteDetectorResponsesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DetectorResponseCollection); err != nil {
-		return DiagnosticsListSiteDetectorResponsesResponse{}, err
+		return DiagnosticsListSiteDetectorResponsesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1359,7 +1367,7 @@ func (client *DiagnosticsClient) listSiteDetectorResponsesSlotCreateRequest(ctx 
 func (client *DiagnosticsClient) listSiteDetectorResponsesSlotHandleResponse(resp *http.Response) (DiagnosticsListSiteDetectorResponsesSlotResponse, error) {
 	result := DiagnosticsListSiteDetectorResponsesSlotResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DetectorResponseCollection); err != nil {
-		return DiagnosticsListSiteDetectorResponsesSlotResponse{}, err
+		return DiagnosticsListSiteDetectorResponsesSlotResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1425,7 +1433,7 @@ func (client *DiagnosticsClient) listSiteDetectorsCreateRequest(ctx context.Cont
 func (client *DiagnosticsClient) listSiteDetectorsHandleResponse(resp *http.Response) (DiagnosticsListSiteDetectorsResponse, error) {
 	result := DiagnosticsListSiteDetectorsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticDetectorCollection); err != nil {
-		return DiagnosticsListSiteDetectorsResponse{}, err
+		return DiagnosticsListSiteDetectorsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1495,7 +1503,7 @@ func (client *DiagnosticsClient) listSiteDetectorsSlotCreateRequest(ctx context.
 func (client *DiagnosticsClient) listSiteDetectorsSlotHandleResponse(resp *http.Response) (DiagnosticsListSiteDetectorsSlotResponse, error) {
 	result := DiagnosticsListSiteDetectorsSlotResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticDetectorCollection); err != nil {
-		return DiagnosticsListSiteDetectorsSlotResponse{}, err
+		return DiagnosticsListSiteDetectorsSlotResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1557,7 +1565,7 @@ func (client *DiagnosticsClient) listSiteDiagnosticCategoriesCreateRequest(ctx c
 func (client *DiagnosticsClient) listSiteDiagnosticCategoriesHandleResponse(resp *http.Response) (DiagnosticsListSiteDiagnosticCategoriesResponse, error) {
 	result := DiagnosticsListSiteDiagnosticCategoriesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticCategoryCollection); err != nil {
-		return DiagnosticsListSiteDiagnosticCategoriesResponse{}, err
+		return DiagnosticsListSiteDiagnosticCategoriesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1623,7 +1631,7 @@ func (client *DiagnosticsClient) listSiteDiagnosticCategoriesSlotCreateRequest(c
 func (client *DiagnosticsClient) listSiteDiagnosticCategoriesSlotHandleResponse(resp *http.Response) (DiagnosticsListSiteDiagnosticCategoriesSlotResponse, error) {
 	result := DiagnosticsListSiteDiagnosticCategoriesSlotResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticCategoryCollection); err != nil {
-		return DiagnosticsListSiteDiagnosticCategoriesSlotResponse{}, err
+		return DiagnosticsListSiteDiagnosticCategoriesSlotResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

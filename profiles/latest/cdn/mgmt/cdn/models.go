@@ -22,17 +22,17 @@ const (
 type AFDEndpointProtocols = original.AFDEndpointProtocols
 
 const (
-	HTTP  AFDEndpointProtocols = original.HTTP
-	HTTPS AFDEndpointProtocols = original.HTTPS
+	AFDEndpointProtocolsHTTP  AFDEndpointProtocols = original.AFDEndpointProtocolsHTTP
+	AFDEndpointProtocolsHTTPS AFDEndpointProtocols = original.AFDEndpointProtocolsHTTPS
 )
 
 type ActionType = original.ActionType
 
 const (
-	Allow    ActionType = original.Allow
-	Block    ActionType = original.Block
-	Log      ActionType = original.Log
-	Redirect ActionType = original.Redirect
+	ActionTypeAllow    ActionType = original.ActionTypeAllow
+	ActionTypeBlock    ActionType = original.ActionTypeBlock
+	ActionTypeLog      ActionType = original.ActionTypeLog
+	ActionTypeRedirect ActionType = original.ActionTypeRedirect
 )
 
 type AfdCertificateType = original.AfdCertificateType
@@ -45,40 +45,40 @@ const (
 type AfdMinimumTLSVersion = original.AfdMinimumTLSVersion
 
 const (
-	TLS10 AfdMinimumTLSVersion = original.TLS10
-	TLS12 AfdMinimumTLSVersion = original.TLS12
+	AfdMinimumTLSVersionTLS10 AfdMinimumTLSVersion = original.AfdMinimumTLSVersionTLS10
+	AfdMinimumTLSVersionTLS12 AfdMinimumTLSVersion = original.AfdMinimumTLSVersionTLS12
 )
 
 type AfdProvisioningState = original.AfdProvisioningState
 
 const (
-	Creating  AfdProvisioningState = original.Creating
-	Deleting  AfdProvisioningState = original.Deleting
-	Failed    AfdProvisioningState = original.Failed
-	Succeeded AfdProvisioningState = original.Succeeded
-	Updating  AfdProvisioningState = original.Updating
+	AfdProvisioningStateCreating  AfdProvisioningState = original.AfdProvisioningStateCreating
+	AfdProvisioningStateDeleting  AfdProvisioningState = original.AfdProvisioningStateDeleting
+	AfdProvisioningStateFailed    AfdProvisioningState = original.AfdProvisioningStateFailed
+	AfdProvisioningStateSucceeded AfdProvisioningState = original.AfdProvisioningStateSucceeded
+	AfdProvisioningStateUpdating  AfdProvisioningState = original.AfdProvisioningStateUpdating
 )
 
 type AfdQueryStringCachingBehavior = original.AfdQueryStringCachingBehavior
 
 const (
-	IgnoreQueryString AfdQueryStringCachingBehavior = original.IgnoreQueryString
-	NotSet            AfdQueryStringCachingBehavior = original.NotSet
-	UseQueryString    AfdQueryStringCachingBehavior = original.UseQueryString
+	AfdQueryStringCachingBehaviorIgnoreQueryString AfdQueryStringCachingBehavior = original.AfdQueryStringCachingBehaviorIgnoreQueryString
+	AfdQueryStringCachingBehaviorNotSet            AfdQueryStringCachingBehavior = original.AfdQueryStringCachingBehaviorNotSet
+	AfdQueryStringCachingBehaviorUseQueryString    AfdQueryStringCachingBehavior = original.AfdQueryStringCachingBehaviorUseQueryString
 )
 
 type Algorithm = original.Algorithm
 
 const (
-	SHA256 Algorithm = original.SHA256
+	AlgorithmSHA256 Algorithm = original.AlgorithmSHA256
 )
 
 type CacheBehavior = original.CacheBehavior
 
 const (
-	BypassCache  CacheBehavior = original.BypassCache
-	Override     CacheBehavior = original.Override
-	SetIfMissing CacheBehavior = original.SetIfMissing
+	CacheBehaviorBypassCache  CacheBehavior = original.CacheBehaviorBypassCache
+	CacheBehaviorOverride     CacheBehavior = original.CacheBehaviorOverride
+	CacheBehaviorSetIfMissing CacheBehavior = original.CacheBehaviorSetIfMissing
 )
 
 type CertificateSource = original.CertificateSource
@@ -92,23 +92,23 @@ const (
 type CertificateType = original.CertificateType
 
 const (
-	Dedicated CertificateType = original.Dedicated
-	Shared    CertificateType = original.Shared
+	CertificateTypeDedicated CertificateType = original.CertificateTypeDedicated
+	CertificateTypeShared    CertificateType = original.CertificateTypeShared
 )
 
 type CookiesOperator = original.CookiesOperator
 
 const (
-	Any                CookiesOperator = original.Any
-	BeginsWith         CookiesOperator = original.BeginsWith
-	Contains           CookiesOperator = original.Contains
-	EndsWith           CookiesOperator = original.EndsWith
-	Equal              CookiesOperator = original.Equal
-	GreaterThan        CookiesOperator = original.GreaterThan
-	GreaterThanOrEqual CookiesOperator = original.GreaterThanOrEqual
-	LessThan           CookiesOperator = original.LessThan
-	LessThanOrEqual    CookiesOperator = original.LessThanOrEqual
-	RegEx              CookiesOperator = original.RegEx
+	CookiesOperatorAny                CookiesOperator = original.CookiesOperatorAny
+	CookiesOperatorBeginsWith         CookiesOperator = original.CookiesOperatorBeginsWith
+	CookiesOperatorContains           CookiesOperator = original.CookiesOperatorContains
+	CookiesOperatorEndsWith           CookiesOperator = original.CookiesOperatorEndsWith
+	CookiesOperatorEqual              CookiesOperator = original.CookiesOperatorEqual
+	CookiesOperatorGreaterThan        CookiesOperator = original.CookiesOperatorGreaterThan
+	CookiesOperatorGreaterThanOrEqual CookiesOperator = original.CookiesOperatorGreaterThanOrEqual
+	CookiesOperatorLessThan           CookiesOperator = original.CookiesOperatorLessThan
+	CookiesOperatorLessThanOrEqual    CookiesOperator = original.CookiesOperatorLessThanOrEqual
+	CookiesOperatorRegEx              CookiesOperator = original.CookiesOperatorRegEx
 )
 
 type CustomDomainResourceState = original.CustomDomainResourceState
@@ -132,23 +132,23 @@ const (
 type CustomHTTPSProvisioningSubstate = original.CustomHTTPSProvisioningSubstate
 
 const (
-	CertificateDeleted                            CustomHTTPSProvisioningSubstate = original.CertificateDeleted
-	CertificateDeployed                           CustomHTTPSProvisioningSubstate = original.CertificateDeployed
-	DeletingCertificate                           CustomHTTPSProvisioningSubstate = original.DeletingCertificate
-	DeployingCertificate                          CustomHTTPSProvisioningSubstate = original.DeployingCertificate
-	DomainControlValidationRequestApproved        CustomHTTPSProvisioningSubstate = original.DomainControlValidationRequestApproved
-	DomainControlValidationRequestRejected        CustomHTTPSProvisioningSubstate = original.DomainControlValidationRequestRejected
-	DomainControlValidationRequestTimedOut        CustomHTTPSProvisioningSubstate = original.DomainControlValidationRequestTimedOut
-	IssuingCertificate                            CustomHTTPSProvisioningSubstate = original.IssuingCertificate
-	PendingDomainControlValidationREquestApproval CustomHTTPSProvisioningSubstate = original.PendingDomainControlValidationREquestApproval
-	SubmittingDomainControlValidationRequest      CustomHTTPSProvisioningSubstate = original.SubmittingDomainControlValidationRequest
+	CustomHTTPSProvisioningSubstateCertificateDeleted                            CustomHTTPSProvisioningSubstate = original.CustomHTTPSProvisioningSubstateCertificateDeleted
+	CustomHTTPSProvisioningSubstateCertificateDeployed                           CustomHTTPSProvisioningSubstate = original.CustomHTTPSProvisioningSubstateCertificateDeployed
+	CustomHTTPSProvisioningSubstateDeletingCertificate                           CustomHTTPSProvisioningSubstate = original.CustomHTTPSProvisioningSubstateDeletingCertificate
+	CustomHTTPSProvisioningSubstateDeployingCertificate                          CustomHTTPSProvisioningSubstate = original.CustomHTTPSProvisioningSubstateDeployingCertificate
+	CustomHTTPSProvisioningSubstateDomainControlValidationRequestApproved        CustomHTTPSProvisioningSubstate = original.CustomHTTPSProvisioningSubstateDomainControlValidationRequestApproved
+	CustomHTTPSProvisioningSubstateDomainControlValidationRequestRejected        CustomHTTPSProvisioningSubstate = original.CustomHTTPSProvisioningSubstateDomainControlValidationRequestRejected
+	CustomHTTPSProvisioningSubstateDomainControlValidationRequestTimedOut        CustomHTTPSProvisioningSubstate = original.CustomHTTPSProvisioningSubstateDomainControlValidationRequestTimedOut
+	CustomHTTPSProvisioningSubstateIssuingCertificate                            CustomHTTPSProvisioningSubstate = original.CustomHTTPSProvisioningSubstateIssuingCertificate
+	CustomHTTPSProvisioningSubstatePendingDomainControlValidationREquestApproval CustomHTTPSProvisioningSubstate = original.CustomHTTPSProvisioningSubstatePendingDomainControlValidationREquestApproval
+	CustomHTTPSProvisioningSubstateSubmittingDomainControlValidationRequest      CustomHTTPSProvisioningSubstate = original.CustomHTTPSProvisioningSubstateSubmittingDomainControlValidationRequest
 )
 
 type CustomRuleEnabledState = original.CustomRuleEnabledState
 
 const (
-	Disabled CustomRuleEnabledState = original.Disabled
-	Enabled  CustomRuleEnabledState = original.Enabled
+	CustomRuleEnabledStateDisabled CustomRuleEnabledState = original.CustomRuleEnabledStateDisabled
+	CustomRuleEnabledStateEnabled  CustomRuleEnabledState = original.CustomRuleEnabledStateEnabled
 )
 
 type DeploymentStatus = original.DeploymentStatus
@@ -171,12 +171,12 @@ const (
 type DomainValidationState = original.DomainValidationState
 
 const (
-	Approved            DomainValidationState = original.Approved
-	Pending             DomainValidationState = original.Pending
-	PendingRevalidation DomainValidationState = original.PendingRevalidation
-	Submitting          DomainValidationState = original.Submitting
-	TimedOut            DomainValidationState = original.TimedOut
-	Unknown             DomainValidationState = original.Unknown
+	DomainValidationStateApproved            DomainValidationState = original.DomainValidationStateApproved
+	DomainValidationStatePending             DomainValidationState = original.DomainValidationStatePending
+	DomainValidationStatePendingRevalidation DomainValidationState = original.DomainValidationStatePendingRevalidation
+	DomainValidationStateSubmitting          DomainValidationState = original.DomainValidationStateSubmitting
+	DomainValidationStateTimedOut            DomainValidationState = original.DomainValidationStateTimedOut
+	DomainValidationStateUnknown             DomainValidationState = original.DomainValidationStateUnknown
 )
 
 type EnabledState = original.EnabledState
@@ -200,9 +200,9 @@ const (
 type ForwardingProtocol = original.ForwardingProtocol
 
 const (
-	HTTPOnly     ForwardingProtocol = original.HTTPOnly
-	HTTPSOnly    ForwardingProtocol = original.HTTPSOnly
-	MatchRequest ForwardingProtocol = original.MatchRequest
+	ForwardingProtocolHTTPOnly     ForwardingProtocol = original.ForwardingProtocolHTTPOnly
+	ForwardingProtocolHTTPSOnly    ForwardingProtocol = original.ForwardingProtocolHTTPSOnly
+	ForwardingProtocolMatchRequest ForwardingProtocol = original.ForwardingProtocolMatchRequest
 )
 
 type GeoFilterActions = original.GeoFilterActions
@@ -215,9 +215,9 @@ const (
 type Granularity = original.Granularity
 
 const (
-	P1D  Granularity = original.P1D
-	PT1H Granularity = original.PT1H
-	PT5M Granularity = original.PT5M
+	GranularityP1D  Granularity = original.GranularityP1D
+	GranularityPT1H Granularity = original.GranularityPT1H
+	GranularityPT5M Granularity = original.GranularityPT5M
 )
 
 type Granularity1 = original.Granularity1
@@ -238,9 +238,9 @@ const (
 type HeaderAction = original.HeaderAction
 
 const (
-	Append    HeaderAction = original.Append
-	Delete    HeaderAction = original.Delete
-	Overwrite HeaderAction = original.Overwrite
+	HeaderActionAppend    HeaderAction = original.HeaderActionAppend
+	HeaderActionDelete    HeaderAction = original.HeaderActionDelete
+	HeaderActionOverwrite HeaderAction = original.HeaderActionOverwrite
 )
 
 type HealthProbeRequestType = original.HealthProbeRequestType
@@ -254,10 +254,10 @@ const (
 type IdentityType = original.IdentityType
 
 const (
-	Application     IdentityType = original.Application
-	Key             IdentityType = original.Key
-	ManagedIdentity IdentityType = original.ManagedIdentity
-	User            IdentityType = original.User
+	IdentityTypeApplication     IdentityType = original.IdentityTypeApplication
+	IdentityTypeKey             IdentityType = original.IdentityTypeKey
+	IdentityTypeManagedIdentity IdentityType = original.IdentityTypeManagedIdentity
+	IdentityTypeUser            IdentityType = original.IdentityTypeUser
 )
 
 type LinkToDefaultDomain = original.LinkToDefaultDomain
@@ -265,6 +265,56 @@ type LinkToDefaultDomain = original.LinkToDefaultDomain
 const (
 	LinkToDefaultDomainDisabled LinkToDefaultDomain = original.LinkToDefaultDomainDisabled
 	LinkToDefaultDomainEnabled  LinkToDefaultDomain = original.LinkToDefaultDomainEnabled
+)
+
+type LogMetric = original.LogMetric
+
+const (
+	LogMetricClientRequestBandwidth LogMetric = original.LogMetricClientRequestBandwidth
+	LogMetricClientRequestCount     LogMetric = original.LogMetricClientRequestCount
+	LogMetricClientRequestTraffic   LogMetric = original.LogMetricClientRequestTraffic
+	LogMetricOriginRequestBandwidth LogMetric = original.LogMetricOriginRequestBandwidth
+	LogMetricOriginRequestTraffic   LogMetric = original.LogMetricOriginRequestTraffic
+	LogMetricTotalLatency           LogMetric = original.LogMetricTotalLatency
+)
+
+type LogMetricsGranularity = original.LogMetricsGranularity
+
+const (
+	LogMetricsGranularityP1D  LogMetricsGranularity = original.LogMetricsGranularityP1D
+	LogMetricsGranularityPT1H LogMetricsGranularity = original.LogMetricsGranularityPT1H
+	LogMetricsGranularityPT5M LogMetricsGranularity = original.LogMetricsGranularityPT5M
+)
+
+type LogMetricsGroupBy = original.LogMetricsGroupBy
+
+const (
+	LogMetricsGroupByCacheStatus    LogMetricsGroupBy = original.LogMetricsGroupByCacheStatus
+	LogMetricsGroupByCountry        LogMetricsGroupBy = original.LogMetricsGroupByCountry
+	LogMetricsGroupByCustomDomain   LogMetricsGroupBy = original.LogMetricsGroupByCustomDomain
+	LogMetricsGroupByHTTPStatusCode LogMetricsGroupBy = original.LogMetricsGroupByHTTPStatusCode
+	LogMetricsGroupByProtocol       LogMetricsGroupBy = original.LogMetricsGroupByProtocol
+)
+
+type LogRanking = original.LogRanking
+
+const (
+	LogRankingBrowser         LogRanking = original.LogRankingBrowser
+	LogRankingCountryOrRegion LogRanking = original.LogRankingCountryOrRegion
+	LogRankingReferrer        LogRanking = original.LogRankingReferrer
+	LogRankingURL             LogRanking = original.LogRankingURL
+	LogRankingUserAgent       LogRanking = original.LogRankingUserAgent
+)
+
+type LogRankingMetric = original.LogRankingMetric
+
+const (
+	LogRankingMetricClientRequestCount   LogRankingMetric = original.LogRankingMetricClientRequestCount
+	LogRankingMetricClientRequestTraffic LogRankingMetric = original.LogRankingMetricClientRequestTraffic
+	LogRankingMetricErrorCount           LogRankingMetric = original.LogRankingMetricErrorCount
+	LogRankingMetricHitCount             LogRankingMetric = original.LogRankingMetricHitCount
+	LogRankingMetricMissCount            LogRankingMetric = original.LogRankingMetricMissCount
+	LogRankingMetricUserErrorCount       LogRankingMetric = original.LogRankingMetricUserErrorCount
 )
 
 type ManagedRuleEnabledState = original.ManagedRuleEnabledState
@@ -277,22 +327,22 @@ const (
 type MatchProcessingBehavior = original.MatchProcessingBehavior
 
 const (
-	Continue MatchProcessingBehavior = original.Continue
-	Stop     MatchProcessingBehavior = original.Stop
+	MatchProcessingBehaviorContinue MatchProcessingBehavior = original.MatchProcessingBehaviorContinue
+	MatchProcessingBehaviorStop     MatchProcessingBehavior = original.MatchProcessingBehaviorStop
 )
 
 type MatchVariable = original.MatchVariable
 
 const (
-	Cookies       MatchVariable = original.Cookies
-	PostArgs      MatchVariable = original.PostArgs
-	QueryString   MatchVariable = original.QueryString
-	RemoteAddr    MatchVariable = original.RemoteAddr
-	RequestBody   MatchVariable = original.RequestBody
-	RequestHeader MatchVariable = original.RequestHeader
-	RequestMethod MatchVariable = original.RequestMethod
-	RequestURI    MatchVariable = original.RequestURI
-	SocketAddr    MatchVariable = original.SocketAddr
+	MatchVariableCookies       MatchVariable = original.MatchVariableCookies
+	MatchVariablePostArgs      MatchVariable = original.MatchVariablePostArgs
+	MatchVariableQueryString   MatchVariable = original.MatchVariableQueryString
+	MatchVariableRemoteAddr    MatchVariable = original.MatchVariableRemoteAddr
+	MatchVariableRequestBody   MatchVariable = original.MatchVariableRequestBody
+	MatchVariableRequestHeader MatchVariable = original.MatchVariableRequestHeader
+	MatchVariableRequestMethod MatchVariable = original.MatchVariableRequestMethod
+	MatchVariableRequestURI    MatchVariable = original.MatchVariableRequestURI
+	MatchVariableSocketAddr    MatchVariable = original.MatchVariableSocketAddr
 )
 
 type MinimumTLSVersion = original.MinimumTLSVersion
@@ -326,15 +376,15 @@ const (
 type NameBasicDeliveryRuleAction = original.NameBasicDeliveryRuleAction
 
 const (
-	NameCacheExpiration      NameBasicDeliveryRuleAction = original.NameCacheExpiration
-	NameCacheKeyQueryString  NameBasicDeliveryRuleAction = original.NameCacheKeyQueryString
-	NameDeliveryRuleAction   NameBasicDeliveryRuleAction = original.NameDeliveryRuleAction
-	NameModifyRequestHeader  NameBasicDeliveryRuleAction = original.NameModifyRequestHeader
-	NameModifyResponseHeader NameBasicDeliveryRuleAction = original.NameModifyResponseHeader
-	NameOriginGroupOverride  NameBasicDeliveryRuleAction = original.NameOriginGroupOverride
-	NameURLRedirect          NameBasicDeliveryRuleAction = original.NameURLRedirect
-	NameURLRewrite           NameBasicDeliveryRuleAction = original.NameURLRewrite
-	NameURLSigning           NameBasicDeliveryRuleAction = original.NameURLSigning
+	NameBasicDeliveryRuleActionNameCacheExpiration      NameBasicDeliveryRuleAction = original.NameBasicDeliveryRuleActionNameCacheExpiration
+	NameBasicDeliveryRuleActionNameCacheKeyQueryString  NameBasicDeliveryRuleAction = original.NameBasicDeliveryRuleActionNameCacheKeyQueryString
+	NameBasicDeliveryRuleActionNameDeliveryRuleAction   NameBasicDeliveryRuleAction = original.NameBasicDeliveryRuleActionNameDeliveryRuleAction
+	NameBasicDeliveryRuleActionNameModifyRequestHeader  NameBasicDeliveryRuleAction = original.NameBasicDeliveryRuleActionNameModifyRequestHeader
+	NameBasicDeliveryRuleActionNameModifyResponseHeader NameBasicDeliveryRuleAction = original.NameBasicDeliveryRuleActionNameModifyResponseHeader
+	NameBasicDeliveryRuleActionNameOriginGroupOverride  NameBasicDeliveryRuleAction = original.NameBasicDeliveryRuleActionNameOriginGroupOverride
+	NameBasicDeliveryRuleActionNameURLRedirect          NameBasicDeliveryRuleAction = original.NameBasicDeliveryRuleActionNameURLRedirect
+	NameBasicDeliveryRuleActionNameURLRewrite           NameBasicDeliveryRuleAction = original.NameBasicDeliveryRuleActionNameURLRewrite
+	NameBasicDeliveryRuleActionNameURLSigning           NameBasicDeliveryRuleAction = original.NameBasicDeliveryRuleActionNameURLSigning
 )
 
 type Operator = original.Operator
@@ -357,11 +407,11 @@ const (
 type OptimizationType = original.OptimizationType
 
 const (
-	DynamicSiteAcceleration     OptimizationType = original.DynamicSiteAcceleration
-	GeneralMediaStreaming       OptimizationType = original.GeneralMediaStreaming
-	GeneralWebDelivery          OptimizationType = original.GeneralWebDelivery
-	LargeFileDownload           OptimizationType = original.LargeFileDownload
-	VideoOnDemandMediaStreaming OptimizationType = original.VideoOnDemandMediaStreaming
+	OptimizationTypeDynamicSiteAcceleration     OptimizationType = original.OptimizationTypeDynamicSiteAcceleration
+	OptimizationTypeGeneralMediaStreaming       OptimizationType = original.OptimizationTypeGeneralMediaStreaming
+	OptimizationTypeGeneralWebDelivery          OptimizationType = original.OptimizationTypeGeneralWebDelivery
+	OptimizationTypeLargeFileDownload           OptimizationType = original.OptimizationTypeLargeFileDownload
+	OptimizationTypeVideoOnDemandMediaStreaming OptimizationType = original.OptimizationTypeVideoOnDemandMediaStreaming
 )
 
 type OriginGroupResourceState = original.OriginGroupResourceState
@@ -383,9 +433,9 @@ const (
 type ParamIndicator = original.ParamIndicator
 
 const (
-	Expires   ParamIndicator = original.Expires
-	KeyID     ParamIndicator = original.KeyID
-	Signature ParamIndicator = original.Signature
+	ParamIndicatorExpires   ParamIndicator = original.ParamIndicatorExpires
+	ParamIndicatorKeyID     ParamIndicator = original.ParamIndicatorKeyID
+	ParamIndicatorSignature ParamIndicator = original.ParamIndicatorSignature
 )
 
 type PolicyEnabledState = original.PolicyEnabledState
@@ -398,8 +448,8 @@ const (
 type PolicyMode = original.PolicyMode
 
 const (
-	Detection  PolicyMode = original.Detection
-	Prevention PolicyMode = original.Prevention
+	PolicyModeDetection  PolicyMode = original.PolicyModeDetection
+	PolicyModePrevention PolicyMode = original.PolicyModePrevention
 )
 
 type PolicyResourceState = original.PolicyResourceState
@@ -458,8 +508,8 @@ const (
 type ProtocolType = original.ProtocolType
 
 const (
-	IPBased              ProtocolType = original.IPBased
-	ServerNameIndication ProtocolType = original.ServerNameIndication
+	ProtocolTypeIPBased              ProtocolType = original.ProtocolTypeIPBased
+	ProtocolTypeServerNameIndication ProtocolType = original.ProtocolTypeServerNameIndication
 )
 
 type ProvisioningState = original.ProvisioningState
@@ -473,10 +523,10 @@ const (
 type QueryStringBehavior = original.QueryStringBehavior
 
 const (
-	Exclude    QueryStringBehavior = original.Exclude
-	ExcludeAll QueryStringBehavior = original.ExcludeAll
-	Include    QueryStringBehavior = original.Include
-	IncludeAll QueryStringBehavior = original.IncludeAll
+	QueryStringBehaviorExclude    QueryStringBehavior = original.QueryStringBehaviorExclude
+	QueryStringBehaviorExcludeAll QueryStringBehavior = original.QueryStringBehaviorExcludeAll
+	QueryStringBehaviorInclude    QueryStringBehavior = original.QueryStringBehaviorInclude
+	QueryStringBehaviorIncludeAll QueryStringBehavior = original.QueryStringBehaviorIncludeAll
 )
 
 type QueryStringCachingBehavior = original.QueryStringCachingBehavior
@@ -506,10 +556,10 @@ const (
 type RedirectType = original.RedirectType
 
 const (
-	Found             RedirectType = original.Found
-	Moved             RedirectType = original.Moved
-	PermanentRedirect RedirectType = original.PermanentRedirect
-	TemporaryRedirect RedirectType = original.TemporaryRedirect
+	RedirectTypeFound             RedirectType = original.RedirectTypeFound
+	RedirectTypeMoved             RedirectType = original.RedirectTypeMoved
+	RedirectTypePermanentRedirect RedirectType = original.RedirectTypePermanentRedirect
+	RedirectTypeTemporaryRedirect RedirectType = original.RedirectTypeTemporaryRedirect
 )
 
 type RemoteAddressOperator = original.RemoteAddressOperator
@@ -568,15 +618,15 @@ const (
 type ResourceType = original.ResourceType
 
 const (
-	MicrosoftCdnProfilesEndpoints ResourceType = original.MicrosoftCdnProfilesEndpoints
+	ResourceTypeMicrosoftCdnProfilesEndpoints ResourceType = original.ResourceTypeMicrosoftCdnProfilesEndpoints
 )
 
 type ResponseBasedDetectedErrorTypes = original.ResponseBasedDetectedErrorTypes
 
 const (
-	None             ResponseBasedDetectedErrorTypes = original.None
-	TCPAndHTTPErrors ResponseBasedDetectedErrorTypes = original.TCPAndHTTPErrors
-	TCPErrorsOnly    ResponseBasedDetectedErrorTypes = original.TCPErrorsOnly
+	ResponseBasedDetectedErrorTypesNone             ResponseBasedDetectedErrorTypes = original.ResponseBasedDetectedErrorTypesNone
+	ResponseBasedDetectedErrorTypesTCPAndHTTPErrors ResponseBasedDetectedErrorTypes = original.ResponseBasedDetectedErrorTypesTCPAndHTTPErrors
+	ResponseBasedDetectedErrorTypesTCPErrorsOnly    ResponseBasedDetectedErrorTypes = original.ResponseBasedDetectedErrorTypesTCPErrorsOnly
 )
 
 type SharedPrivateLinkResourceStatus = original.SharedPrivateLinkResourceStatus
@@ -592,36 +642,36 @@ const (
 type SkuName = original.SkuName
 
 const (
-	CustomVerizon                    SkuName = original.CustomVerizon
-	PremiumAzureFrontDoor            SkuName = original.PremiumAzureFrontDoor
-	PremiumChinaCdn                  SkuName = original.PremiumChinaCdn
-	PremiumVerizon                   SkuName = original.PremiumVerizon
-	Standard955BandWidthChinaCdn     SkuName = original.Standard955BandWidthChinaCdn
-	StandardAkamai                   SkuName = original.StandardAkamai
-	StandardAvgBandWidthChinaCdn     SkuName = original.StandardAvgBandWidthChinaCdn
-	StandardAzureFrontDoor           SkuName = original.StandardAzureFrontDoor
-	StandardChinaCdn                 SkuName = original.StandardChinaCdn
-	StandardMicrosoft                SkuName = original.StandardMicrosoft
-	StandardPlus955BandWidthChinaCdn SkuName = original.StandardPlus955BandWidthChinaCdn
-	StandardPlusAvgBandWidthChinaCdn SkuName = original.StandardPlusAvgBandWidthChinaCdn
-	StandardPlusChinaCdn             SkuName = original.StandardPlusChinaCdn
-	StandardVerizon                  SkuName = original.StandardVerizon
+	SkuNameCustomVerizon                    SkuName = original.SkuNameCustomVerizon
+	SkuNamePremiumAzureFrontDoor            SkuName = original.SkuNamePremiumAzureFrontDoor
+	SkuNamePremiumChinaCdn                  SkuName = original.SkuNamePremiumChinaCdn
+	SkuNamePremiumVerizon                   SkuName = original.SkuNamePremiumVerizon
+	SkuNameStandard955BandWidthChinaCdn     SkuName = original.SkuNameStandard955BandWidthChinaCdn
+	SkuNameStandardAkamai                   SkuName = original.SkuNameStandardAkamai
+	SkuNameStandardAvgBandWidthChinaCdn     SkuName = original.SkuNameStandardAvgBandWidthChinaCdn
+	SkuNameStandardAzureFrontDoor           SkuName = original.SkuNameStandardAzureFrontDoor
+	SkuNameStandardChinaCdn                 SkuName = original.SkuNameStandardChinaCdn
+	SkuNameStandardMicrosoft                SkuName = original.SkuNameStandardMicrosoft
+	SkuNameStandardPlus955BandWidthChinaCdn SkuName = original.SkuNameStandardPlus955BandWidthChinaCdn
+	SkuNameStandardPlusAvgBandWidthChinaCdn SkuName = original.SkuNameStandardPlusAvgBandWidthChinaCdn
+	SkuNameStandardPlusChinaCdn             SkuName = original.SkuNameStandardPlusChinaCdn
+	SkuNameStandardVerizon                  SkuName = original.SkuNameStandardVerizon
 )
 
 type Status = original.Status
 
 const (
-	AccessDenied       Status = original.AccessDenied
-	CertificateExpired Status = original.CertificateExpired
-	Invalid            Status = original.Invalid
-	Valid              Status = original.Valid
+	StatusAccessDenied       Status = original.StatusAccessDenied
+	StatusCertificateExpired Status = original.StatusCertificateExpired
+	StatusInvalid            Status = original.StatusInvalid
+	StatusValid              Status = original.StatusValid
 )
 
 type Transform = original.Transform
 
 const (
-	Lowercase Transform = original.Lowercase
-	Uppercase Transform = original.Uppercase
+	TransformLowercase Transform = original.TransformLowercase
+	TransformUppercase Transform = original.TransformUppercase
 )
 
 type TransformType = original.TransformType
@@ -645,10 +695,10 @@ const (
 type TypeBasicSecretParameters = original.TypeBasicSecretParameters
 
 const (
-	TypeCustomerCertificate TypeBasicSecretParameters = original.TypeCustomerCertificate
-	TypeManagedCertificate  TypeBasicSecretParameters = original.TypeManagedCertificate
-	TypeSecretParameters    TypeBasicSecretParameters = original.TypeSecretParameters
-	TypeURLSigningKey       TypeBasicSecretParameters = original.TypeURLSigningKey
+	TypeBasicSecretParametersTypeCustomerCertificate TypeBasicSecretParameters = original.TypeBasicSecretParametersTypeCustomerCertificate
+	TypeBasicSecretParametersTypeManagedCertificate  TypeBasicSecretParameters = original.TypeBasicSecretParametersTypeManagedCertificate
+	TypeBasicSecretParametersTypeSecretParameters    TypeBasicSecretParameters = original.TypeBasicSecretParametersTypeSecretParameters
+	TypeBasicSecretParametersTypeURLSigningKey       TypeBasicSecretParameters = original.TypeBasicSecretParametersTypeURLSigningKey
 )
 
 type URLFileExtensionOperator = original.URLFileExtensionOperator
@@ -700,9 +750,9 @@ const (
 type Unit = original.Unit
 
 const (
-	BitsPerSecond Unit = original.BitsPerSecond
-	Bytes         Unit = original.Bytes
-	Count         Unit = original.Count
+	UnitBitsPerSecond Unit = original.UnitBitsPerSecond
+	UnitBytes         Unit = original.UnitBytes
+	UnitCount         Unit = original.UnitCount
 )
 
 type Unit1 = original.Unit1
@@ -717,6 +767,57 @@ const (
 	ValidateSecretTypeCustomerCertificate ValidateSecretType = original.ValidateSecretTypeCustomerCertificate
 	ValidateSecretTypeManagedCertificate  ValidateSecretType = original.ValidateSecretTypeManagedCertificate
 	ValidateSecretTypeURLSigningKey       ValidateSecretType = original.ValidateSecretTypeURLSigningKey
+)
+
+type WafAction = original.WafAction
+
+const (
+	WafActionAllow    WafAction = original.WafActionAllow
+	WafActionBlock    WafAction = original.WafActionBlock
+	WafActionLog      WafAction = original.WafActionLog
+	WafActionRedirect WafAction = original.WafActionRedirect
+)
+
+type WafGranularity = original.WafGranularity
+
+const (
+	WafGranularityP1D  WafGranularity = original.WafGranularityP1D
+	WafGranularityPT1H WafGranularity = original.WafGranularityPT1H
+	WafGranularityPT5M WafGranularity = original.WafGranularityPT5M
+)
+
+type WafMetric = original.WafMetric
+
+const (
+	WafMetricClientRequestCount WafMetric = original.WafMetricClientRequestCount
+)
+
+type WafRankingGroupBy = original.WafRankingGroupBy
+
+const (
+	WafRankingGroupByCustomDomain   WafRankingGroupBy = original.WafRankingGroupByCustomDomain
+	WafRankingGroupByHTTPStatusCode WafRankingGroupBy = original.WafRankingGroupByHTTPStatusCode
+)
+
+type WafRankingType = original.WafRankingType
+
+const (
+	WafRankingTypeAction    WafRankingType = original.WafRankingTypeAction
+	WafRankingTypeClientIP  WafRankingType = original.WafRankingTypeClientIP
+	WafRankingTypeCountry   WafRankingType = original.WafRankingTypeCountry
+	WafRankingTypeRuleGroup WafRankingType = original.WafRankingTypeRuleGroup
+	WafRankingTypeRuleID    WafRankingType = original.WafRankingTypeRuleID
+	WafRankingTypeRuleType  WafRankingType = original.WafRankingTypeRuleType
+	WafRankingTypeURL       WafRankingType = original.WafRankingTypeURL
+	WafRankingTypeUserAgent WafRankingType = original.WafRankingTypeUserAgent
+)
+
+type WafRuleType = original.WafRuleType
+
+const (
+	WafRuleTypeBot     WafRuleType = original.WafRuleTypeBot
+	WafRuleTypeCustom  WafRuleType = original.WafRuleTypeCustom
+	WafRuleTypeManaged WafRuleType = original.WafRuleTypeManaged
 )
 
 type AFDCustomDomainsClient = original.AFDCustomDomainsClient
@@ -799,6 +900,8 @@ type CustomDomainPropertiesParameters = original.CustomDomainPropertiesParameter
 type CustomDomainsClient = original.CustomDomainsClient
 type CustomDomainsCreateFuture = original.CustomDomainsCreateFuture
 type CustomDomainsDeleteFuture = original.CustomDomainsDeleteFuture
+type CustomDomainsDisableCustomHTTPSFuture = original.CustomDomainsDisableCustomHTTPSFuture
+type CustomDomainsEnableCustomHTTPSFuture = original.CustomDomainsEnableCustomHTTPSFuture
 type CustomRule = original.CustomRule
 type CustomRuleList = original.CustomRuleList
 type CustomerCertificate = original.CustomerCertificate
@@ -1401,6 +1504,21 @@ func PossibleIdentityTypeValues() []IdentityType {
 func PossibleLinkToDefaultDomainValues() []LinkToDefaultDomain {
 	return original.PossibleLinkToDefaultDomainValues()
 }
+func PossibleLogMetricValues() []LogMetric {
+	return original.PossibleLogMetricValues()
+}
+func PossibleLogMetricsGranularityValues() []LogMetricsGranularity {
+	return original.PossibleLogMetricsGranularityValues()
+}
+func PossibleLogMetricsGroupByValues() []LogMetricsGroupBy {
+	return original.PossibleLogMetricsGroupByValues()
+}
+func PossibleLogRankingMetricValues() []LogRankingMetric {
+	return original.PossibleLogRankingMetricValues()
+}
+func PossibleLogRankingValues() []LogRanking {
+	return original.PossibleLogRankingValues()
+}
 func PossibleManagedRuleEnabledStateValues() []ManagedRuleEnabledState {
 	return original.PossibleManagedRuleEnabledStateValues()
 }
@@ -1529,6 +1647,24 @@ func PossibleUnitValues() []Unit {
 }
 func PossibleValidateSecretTypeValues() []ValidateSecretType {
 	return original.PossibleValidateSecretTypeValues()
+}
+func PossibleWafActionValues() []WafAction {
+	return original.PossibleWafActionValues()
+}
+func PossibleWafGranularityValues() []WafGranularity {
+	return original.PossibleWafGranularityValues()
+}
+func PossibleWafMetricValues() []WafMetric {
+	return original.PossibleWafMetricValues()
+}
+func PossibleWafRankingGroupByValues() []WafRankingGroupBy {
+	return original.PossibleWafRankingGroupByValues()
+}
+func PossibleWafRankingTypeValues() []WafRankingType {
+	return original.PossibleWafRankingTypeValues()
+}
+func PossibleWafRuleTypeValues() []WafRuleType {
+	return original.PossibleWafRuleTypeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

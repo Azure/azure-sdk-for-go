@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // RecommendationsClient contains the methods for the Recommendations group.
@@ -31,8 +32,15 @@ type RecommendationsClient struct {
 }
 
 // NewRecommendationsClient creates a new instance of RecommendationsClient with the specified values.
-func NewRecommendationsClient(con *arm.Connection, subscriptionID string) *RecommendationsClient {
-	return &RecommendationsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewRecommendationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RecommendationsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &RecommendationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // DisableAllForHostingEnvironment - Description for Disable all recommendations for an app.
@@ -378,7 +386,7 @@ func (client *RecommendationsClient) getRuleDetailsByHostingEnvironmentCreateReq
 func (client *RecommendationsClient) getRuleDetailsByHostingEnvironmentHandleResponse(resp *http.Response) (RecommendationsGetRuleDetailsByHostingEnvironmentResponse, error) {
 	result := RecommendationsGetRuleDetailsByHostingEnvironmentResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendationRule); err != nil {
-		return RecommendationsGetRuleDetailsByHostingEnvironmentResponse{}, err
+		return RecommendationsGetRuleDetailsByHostingEnvironmentResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -453,7 +461,7 @@ func (client *RecommendationsClient) getRuleDetailsByWebAppCreateRequest(ctx con
 func (client *RecommendationsClient) getRuleDetailsByWebAppHandleResponse(resp *http.Response) (RecommendationsGetRuleDetailsByWebAppResponse, error) {
 	result := RecommendationsGetRuleDetailsByWebAppResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendationRule); err != nil {
-		return RecommendationsGetRuleDetailsByWebAppResponse{}, err
+		return RecommendationsGetRuleDetailsByWebAppResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -515,7 +523,7 @@ func (client *RecommendationsClient) listCreateRequest(ctx context.Context, opti
 func (client *RecommendationsClient) listHandleResponse(resp *http.Response) (RecommendationsListResponse, error) {
 	result := RecommendationsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendationCollection); err != nil {
-		return RecommendationsListResponse{}, err
+		return RecommendationsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -585,7 +593,7 @@ func (client *RecommendationsClient) listHistoryForHostingEnvironmentCreateReque
 func (client *RecommendationsClient) listHistoryForHostingEnvironmentHandleResponse(resp *http.Response) (RecommendationsListHistoryForHostingEnvironmentResponse, error) {
 	result := RecommendationsListHistoryForHostingEnvironmentResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendationCollection); err != nil {
-		return RecommendationsListHistoryForHostingEnvironmentResponse{}, err
+		return RecommendationsListHistoryForHostingEnvironmentResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -655,7 +663,7 @@ func (client *RecommendationsClient) listHistoryForWebAppCreateRequest(ctx conte
 func (client *RecommendationsClient) listHistoryForWebAppHandleResponse(resp *http.Response) (RecommendationsListHistoryForWebAppResponse, error) {
 	result := RecommendationsListHistoryForWebAppResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendationCollection); err != nil {
-		return RecommendationsListHistoryForWebAppResponse{}, err
+		return RecommendationsListHistoryForWebAppResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -725,7 +733,7 @@ func (client *RecommendationsClient) listRecommendedRulesForHostingEnvironmentCr
 func (client *RecommendationsClient) listRecommendedRulesForHostingEnvironmentHandleResponse(resp *http.Response) (RecommendationsListRecommendedRulesForHostingEnvironmentResponse, error) {
 	result := RecommendationsListRecommendedRulesForHostingEnvironmentResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendationCollection); err != nil {
-		return RecommendationsListRecommendedRulesForHostingEnvironmentResponse{}, err
+		return RecommendationsListRecommendedRulesForHostingEnvironmentResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -795,7 +803,7 @@ func (client *RecommendationsClient) listRecommendedRulesForWebAppCreateRequest(
 func (client *RecommendationsClient) listRecommendedRulesForWebAppHandleResponse(resp *http.Response) (RecommendationsListRecommendedRulesForWebAppResponse, error) {
 	result := RecommendationsListRecommendedRulesForWebAppResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendationCollection); err != nil {
-		return RecommendationsListRecommendedRulesForWebAppResponse{}, err
+		return RecommendationsListRecommendedRulesForWebAppResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // SourceControlSyncJobStreamsClient contains the methods for the SourceControlSyncJobStreams group.
@@ -30,8 +31,15 @@ type SourceControlSyncJobStreamsClient struct {
 }
 
 // NewSourceControlSyncJobStreamsClient creates a new instance of SourceControlSyncJobStreamsClient with the specified values.
-func NewSourceControlSyncJobStreamsClient(con *arm.Connection, subscriptionID string) *SourceControlSyncJobStreamsClient {
-	return &SourceControlSyncJobStreamsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewSourceControlSyncJobStreamsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SourceControlSyncJobStreamsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &SourceControlSyncJobStreamsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Retrieve a sync job stream identified by stream id.
@@ -90,7 +98,7 @@ func (client *SourceControlSyncJobStreamsClient) getCreateRequest(ctx context.Co
 func (client *SourceControlSyncJobStreamsClient) getHandleResponse(resp *http.Response) (SourceControlSyncJobStreamsGetResponse, error) {
 	result := SourceControlSyncJobStreamsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControlSyncJobStreamByID); err != nil {
-		return SourceControlSyncJobStreamsGetResponse{}, err
+		return SourceControlSyncJobStreamsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -160,7 +168,7 @@ func (client *SourceControlSyncJobStreamsClient) listBySyncJobCreateRequest(ctx 
 func (client *SourceControlSyncJobStreamsClient) listBySyncJobHandleResponse(resp *http.Response) (SourceControlSyncJobStreamsListBySyncJobResponse, error) {
 	result := SourceControlSyncJobStreamsListBySyncJobResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControlSyncJobStreamsListBySyncJob); err != nil {
-		return SourceControlSyncJobStreamsListBySyncJobResponse{}, err
+		return SourceControlSyncJobStreamsListBySyncJobResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

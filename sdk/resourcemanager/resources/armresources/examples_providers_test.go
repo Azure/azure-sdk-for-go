@@ -10,7 +10,6 @@ import (
 	"context"
 	"log"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 )
@@ -20,7 +19,7 @@ func ExampleProvidersClient_Register() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armresources.NewProvidersClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armresources.NewProvidersClient("<subscription ID>", cred, nil)
 	resp, err := client.Register(context.Background(), "<resource provider namespace>", nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a response: %v", err)

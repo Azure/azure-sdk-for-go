@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // DiagnosticSettingsClient contains the methods for the DiagnosticSettings group.
@@ -29,8 +30,15 @@ type DiagnosticSettingsClient struct {
 }
 
 // NewDiagnosticSettingsClient creates a new instance of DiagnosticSettingsClient with the specified values.
-func NewDiagnosticSettingsClient(con *arm.Connection) *DiagnosticSettingsClient {
-	return &DiagnosticSettingsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewDiagnosticSettingsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *DiagnosticSettingsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &DiagnosticSettingsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or updates diagnostic settings for the specified resource.
@@ -53,9 +61,6 @@ func (client *DiagnosticSettingsClient) CreateOrUpdate(ctx context.Context, reso
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *DiagnosticSettingsClient) createOrUpdateCreateRequest(ctx context.Context, resourceURI string, name string, parameters DiagnosticSettingsResource, options *DiagnosticSettingsCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Insights/diagnosticSettings/{name}"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
@@ -76,7 +81,7 @@ func (client *DiagnosticSettingsClient) createOrUpdateCreateRequest(ctx context.
 func (client *DiagnosticSettingsClient) createOrUpdateHandleResponse(resp *http.Response) (DiagnosticSettingsCreateOrUpdateResponse, error) {
 	result := DiagnosticSettingsCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticSettingsResource); err != nil {
-		return DiagnosticSettingsCreateOrUpdateResponse{}, err
+		return DiagnosticSettingsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -114,9 +119,6 @@ func (client *DiagnosticSettingsClient) Delete(ctx context.Context, resourceURI 
 // deleteCreateRequest creates the Delete request.
 func (client *DiagnosticSettingsClient) deleteCreateRequest(ctx context.Context, resourceURI string, name string, options *DiagnosticSettingsDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Insights/diagnosticSettings/{name}"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
@@ -166,9 +168,6 @@ func (client *DiagnosticSettingsClient) Get(ctx context.Context, resourceURI str
 // getCreateRequest creates the Get request.
 func (client *DiagnosticSettingsClient) getCreateRequest(ctx context.Context, resourceURI string, name string, options *DiagnosticSettingsGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Insights/diagnosticSettings/{name}"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
@@ -189,7 +188,7 @@ func (client *DiagnosticSettingsClient) getCreateRequest(ctx context.Context, re
 func (client *DiagnosticSettingsClient) getHandleResponse(resp *http.Response) (DiagnosticSettingsGetResponse, error) {
 	result := DiagnosticSettingsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticSettingsResource); err != nil {
-		return DiagnosticSettingsGetResponse{}, err
+		return DiagnosticSettingsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -227,9 +226,6 @@ func (client *DiagnosticSettingsClient) List(ctx context.Context, resourceURI st
 // listCreateRequest creates the List request.
 func (client *DiagnosticSettingsClient) listCreateRequest(ctx context.Context, resourceURI string, options *DiagnosticSettingsListOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Insights/diagnosticSettings"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -246,7 +242,7 @@ func (client *DiagnosticSettingsClient) listCreateRequest(ctx context.Context, r
 func (client *DiagnosticSettingsClient) listHandleResponse(resp *http.Response) (DiagnosticSettingsListResponse, error) {
 	result := DiagnosticSettingsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticSettingsResourceCollection); err != nil {
-		return DiagnosticSettingsListResponse{}, err
+		return DiagnosticSettingsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

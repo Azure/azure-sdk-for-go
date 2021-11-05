@@ -11,12 +11,13 @@ package armmanagementgroups
 import (
 	"context"
 	"fmt"
-	"net/http"
-	"strconv"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"strconv"
 )
 
 // EntitiesClient contains the methods for the Entities group.
@@ -27,8 +28,15 @@ type EntitiesClient struct {
 }
 
 // NewEntitiesClient creates a new instance of EntitiesClient with the specified values.
-func NewEntitiesClient(con *arm.Connection) *EntitiesClient {
-	return &EntitiesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewEntitiesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *EntitiesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &EntitiesClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // List - List all entities (Management Groups, Subscriptions, etc.) for the authenticated user.
@@ -90,7 +98,7 @@ func (client *EntitiesClient) listCreateRequest(ctx context.Context, options *En
 func (client *EntitiesClient) listHandleResponse(resp *http.Response) (EntitiesListResponse, error) {
 	result := EntitiesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EntityListResult); err != nil {
-		return EntitiesListResponse{}, err
+		return EntitiesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

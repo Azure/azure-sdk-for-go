@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ConnectionClient contains the methods for the Connection group.
@@ -30,8 +31,15 @@ type ConnectionClient struct {
 }
 
 // NewConnectionClient creates a new instance of ConnectionClient with the specified values.
-func NewConnectionClient(con *arm.Connection, subscriptionID string) *ConnectionClient {
-	return &ConnectionClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewConnectionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ConnectionClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ConnectionClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Create or update a connection.
@@ -85,7 +93,7 @@ func (client *ConnectionClient) createOrUpdateCreateRequest(ctx context.Context,
 func (client *ConnectionClient) createOrUpdateHandleResponse(resp *http.Response) (ConnectionCreateOrUpdateResponse, error) {
 	result := ConnectionCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Connection); err != nil {
-		return ConnectionCreateOrUpdateResponse{}, err
+		return ConnectionCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -214,7 +222,7 @@ func (client *ConnectionClient) getCreateRequest(ctx context.Context, resourceGr
 func (client *ConnectionClient) getHandleResponse(resp *http.Response) (ConnectionGetResponse, error) {
 	result := ConnectionGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Connection); err != nil {
-		return ConnectionGetResponse{}, err
+		return ConnectionGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -276,7 +284,7 @@ func (client *ConnectionClient) listByAutomationAccountCreateRequest(ctx context
 func (client *ConnectionClient) listByAutomationAccountHandleResponse(resp *http.Response) (ConnectionListByAutomationAccountResponse, error) {
 	result := ConnectionListByAutomationAccountResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionListResult); err != nil {
-		return ConnectionListByAutomationAccountResponse{}, err
+		return ConnectionListByAutomationAccountResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -345,7 +353,7 @@ func (client *ConnectionClient) updateCreateRequest(ctx context.Context, resourc
 func (client *ConnectionClient) updateHandleResponse(resp *http.Response) (ConnectionUpdateResponse, error) {
 	result := ConnectionUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Connection); err != nil {
-		return ConnectionUpdateResponse{}, err
+		return ConnectionUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // StreamingPoliciesClient contains the methods for the StreamingPolicies group.
@@ -31,8 +32,15 @@ type StreamingPoliciesClient struct {
 }
 
 // NewStreamingPoliciesClient creates a new instance of StreamingPoliciesClient with the specified values.
-func NewStreamingPoliciesClient(con *arm.Connection, subscriptionID string) *StreamingPoliciesClient {
-	return &StreamingPoliciesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewStreamingPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *StreamingPoliciesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &StreamingPoliciesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Create - Create a Streaming Policy in the Media Services account
@@ -86,7 +94,7 @@ func (client *StreamingPoliciesClient) createCreateRequest(ctx context.Context, 
 func (client *StreamingPoliciesClient) createHandleResponse(resp *http.Response) (StreamingPoliciesCreateResponse, error) {
 	result := StreamingPoliciesCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StreamingPolicy); err != nil {
-		return StreamingPoliciesCreateResponse{}, err
+		return StreamingPoliciesCreateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -215,7 +223,7 @@ func (client *StreamingPoliciesClient) getCreateRequest(ctx context.Context, res
 func (client *StreamingPoliciesClient) getHandleResponse(resp *http.Response) (StreamingPoliciesGetResponse, error) {
 	result := StreamingPoliciesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StreamingPolicy); err != nil {
-		return StreamingPoliciesGetResponse{}, err
+		return StreamingPoliciesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -286,7 +294,7 @@ func (client *StreamingPoliciesClient) listCreateRequest(ctx context.Context, re
 func (client *StreamingPoliciesClient) listHandleResponse(resp *http.Response) (StreamingPoliciesListResponse, error) {
 	result := StreamingPoliciesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StreamingPolicyCollection); err != nil {
-		return StreamingPoliciesListResponse{}, err
+		return StreamingPoliciesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

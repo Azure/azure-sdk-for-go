@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // AgentRegistrationInformationClient contains the methods for the AgentRegistrationInformation group.
@@ -30,8 +31,15 @@ type AgentRegistrationInformationClient struct {
 }
 
 // NewAgentRegistrationInformationClient creates a new instance of AgentRegistrationInformationClient with the specified values.
-func NewAgentRegistrationInformationClient(con *arm.Connection, subscriptionID string) *AgentRegistrationInformationClient {
-	return &AgentRegistrationInformationClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewAgentRegistrationInformationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AgentRegistrationInformationClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &AgentRegistrationInformationClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Retrieve the automation agent registration information.
@@ -81,7 +89,7 @@ func (client *AgentRegistrationInformationClient) getCreateRequest(ctx context.C
 func (client *AgentRegistrationInformationClient) getHandleResponse(resp *http.Response) (AgentRegistrationInformationGetResponse, error) {
 	result := AgentRegistrationInformationGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AgentRegistration); err != nil {
-		return AgentRegistrationInformationGetResponse{}, err
+		return AgentRegistrationInformationGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -146,7 +154,7 @@ func (client *AgentRegistrationInformationClient) regenerateKeyCreateRequest(ctx
 func (client *AgentRegistrationInformationClient) regenerateKeyHandleResponse(resp *http.Response) (AgentRegistrationInformationRegenerateKeyResponse, error) {
 	result := AgentRegistrationInformationRegenerateKeyResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AgentRegistration); err != nil {
-		return AgentRegistrationInformationRegenerateKeyResponse{}, err
+		return AgentRegistrationInformationRegenerateKeyResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

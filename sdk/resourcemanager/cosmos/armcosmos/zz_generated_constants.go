@@ -10,7 +10,7 @@ package armcosmos
 
 const (
 	module  = "armcosmos"
-	version = "v0.1.0"
+	version = "v0.2.1"
 )
 
 // APIType - Enum to indicate the API type of the restorable database account.
@@ -197,6 +197,35 @@ func (c ConflictResolutionMode) ToPtr() *ConflictResolutionMode {
 	return &c
 }
 
+// ConnectionState - The kind of connection error that occurred.
+type ConnectionState string
+
+const (
+	ConnectionStateDatacenterToDatacenterNetworkError           ConnectionState = "DatacenterToDatacenterNetworkError"
+	ConnectionStateInternalError                                ConnectionState = "InternalError"
+	ConnectionStateInternalOperatorToDataCenterCertificateError ConnectionState = "InternalOperatorToDataCenterCertificateError"
+	ConnectionStateOK                                           ConnectionState = "OK"
+	ConnectionStateOperatorToDataCenterNetworkError             ConnectionState = "OperatorToDataCenterNetworkError"
+	ConnectionStateUnknown                                      ConnectionState = "Unknown"
+)
+
+// PossibleConnectionStateValues returns the possible values for the ConnectionState const type.
+func PossibleConnectionStateValues() []ConnectionState {
+	return []ConnectionState{
+		ConnectionStateDatacenterToDatacenterNetworkError,
+		ConnectionStateInternalError,
+		ConnectionStateInternalOperatorToDataCenterCertificateError,
+		ConnectionStateOK,
+		ConnectionStateOperatorToDataCenterNetworkError,
+		ConnectionStateUnknown,
+	}
+}
+
+// ToPtr returns a *ConnectionState pointing to the current value.
+func (c ConnectionState) ToPtr() *ConnectionState {
+	return &c
+}
+
 // ConnectorOffer - The cassandra connector offer type for the Cosmos DB C* database account.
 type ConnectorOffer string
 
@@ -341,29 +370,6 @@ func (c DefaultConsistencyLevel) ToPtr() *DefaultConsistencyLevel {
 	return &c
 }
 
-// EnableFullTextQuery - Describe the level of detail with which queries are to be logged.
-type EnableFullTextQuery string
-
-const (
-	EnableFullTextQueryNone  EnableFullTextQuery = "None"
-	EnableFullTextQueryTrue  EnableFullTextQuery = "True"
-	EnableFullTextQueryFalse EnableFullTextQuery = "False"
-)
-
-// PossibleEnableFullTextQueryValues returns the possible values for the EnableFullTextQuery const type.
-func PossibleEnableFullTextQueryValues() []EnableFullTextQuery {
-	return []EnableFullTextQuery{
-		EnableFullTextQueryNone,
-		EnableFullTextQueryTrue,
-		EnableFullTextQueryFalse,
-	}
-}
-
-// ToPtr returns a *EnableFullTextQuery pointing to the current value.
-func (c EnableFullTextQuery) ToPtr() *EnableFullTextQuery {
-	return &c
-}
-
 // IndexKind - Indicates the type of index.
 type IndexKind string
 
@@ -464,6 +470,27 @@ func (c ManagedCassandraProvisioningState) ToPtr() *ManagedCassandraProvisioning
 	return &c
 }
 
+// ManagedCassandraResourceIdentityType - The type of the resource.
+type ManagedCassandraResourceIdentityType string
+
+const (
+	ManagedCassandraResourceIdentityTypeNone           ManagedCassandraResourceIdentityType = "None"
+	ManagedCassandraResourceIdentityTypeSystemAssigned ManagedCassandraResourceIdentityType = "SystemAssigned"
+)
+
+// PossibleManagedCassandraResourceIdentityTypeValues returns the possible values for the ManagedCassandraResourceIdentityType const type.
+func PossibleManagedCassandraResourceIdentityTypeValues() []ManagedCassandraResourceIdentityType {
+	return []ManagedCassandraResourceIdentityType{
+		ManagedCassandraResourceIdentityTypeNone,
+		ManagedCassandraResourceIdentityTypeSystemAssigned,
+	}
+}
+
+// ToPtr returns a *ManagedCassandraResourceIdentityType pointing to the current value.
+func (c ManagedCassandraResourceIdentityType) ToPtr() *ManagedCassandraResourceIdentityType {
+	return &c
+}
+
 // NetworkACLBypass - Indicates what services are allowed to bypass firewall checks.
 type NetworkACLBypass string
 
@@ -485,7 +512,7 @@ func (c NetworkACLBypass) ToPtr() *NetworkACLBypass {
 	return &c
 }
 
-// NodeState - The state of the node in relation to the cluster.
+// NodeState - The state of the node in Cassandra ring.
 type NodeState string
 
 const (
@@ -737,81 +764,6 @@ func PossibleServerVersionValues() []ServerVersion {
 
 // ToPtr returns a *ServerVersion pointing to the current value.
 func (c ServerVersion) ToPtr() *ServerVersion {
-	return &c
-}
-
-// ServiceSize - Instance type for the service.
-type ServiceSize string
-
-const (
-	ServiceSizeCosmosD16S ServiceSize = "Cosmos.D16s"
-	ServiceSizeCosmosD4S  ServiceSize = "Cosmos.D4s"
-	ServiceSizeCosmosD8S  ServiceSize = "Cosmos.D8s"
-)
-
-// PossibleServiceSizeValues returns the possible values for the ServiceSize const type.
-func PossibleServiceSizeValues() []ServiceSize {
-	return []ServiceSize{
-		ServiceSizeCosmosD16S,
-		ServiceSizeCosmosD4S,
-		ServiceSizeCosmosD8S,
-	}
-}
-
-// ToPtr returns a *ServiceSize pointing to the current value.
-func (c ServiceSize) ToPtr() *ServiceSize {
-	return &c
-}
-
-// ServiceStatus - Describes the status of a service.
-type ServiceStatus string
-
-const (
-	ServiceStatusCreating ServiceStatus = "Creating"
-	ServiceStatusDeleting ServiceStatus = "Deleting"
-	ServiceStatusError    ServiceStatus = "Error"
-	ServiceStatusRunning  ServiceStatus = "Running"
-	ServiceStatusStopped  ServiceStatus = "Stopped"
-	ServiceStatusUpdating ServiceStatus = "Updating"
-)
-
-// PossibleServiceStatusValues returns the possible values for the ServiceStatus const type.
-func PossibleServiceStatusValues() []ServiceStatus {
-	return []ServiceStatus{
-		ServiceStatusCreating,
-		ServiceStatusDeleting,
-		ServiceStatusError,
-		ServiceStatusRunning,
-		ServiceStatusStopped,
-		ServiceStatusUpdating,
-	}
-}
-
-// ToPtr returns a *ServiceStatus pointing to the current value.
-func (c ServiceStatus) ToPtr() *ServiceStatus {
-	return &c
-}
-
-// ServiceType - ServiceType for the service.
-type ServiceType string
-
-const (
-	ServiceTypeDataTransfer        ServiceType = "DataTransfer"
-	ServiceTypeGraphAPICompute     ServiceType = "GraphAPICompute"
-	ServiceTypeSQLDedicatedGateway ServiceType = "SqlDedicatedGateway"
-)
-
-// PossibleServiceTypeValues returns the possible values for the ServiceType const type.
-func PossibleServiceTypeValues() []ServiceType {
-	return []ServiceType{
-		ServiceTypeDataTransfer,
-		ServiceTypeGraphAPICompute,
-		ServiceTypeSQLDedicatedGateway,
-	}
-}
-
-// ToPtr returns a *ServiceType pointing to the current value.
-func (c ServiceType) ToPtr() *ServiceType {
 	return &c
 }
 

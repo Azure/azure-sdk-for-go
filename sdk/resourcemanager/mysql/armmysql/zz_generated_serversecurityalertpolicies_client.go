@@ -11,14 +11,14 @@ package armmysql
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // ServerSecurityAlertPoliciesClient contains the methods for the ServerSecurityAlertPolicies group.
@@ -30,8 +30,15 @@ type ServerSecurityAlertPoliciesClient struct {
 }
 
 // NewServerSecurityAlertPoliciesClient creates a new instance of ServerSecurityAlertPoliciesClient with the specified values.
-func NewServerSecurityAlertPoliciesClient(con *arm.Connection, subscriptionID string) *ServerSecurityAlertPoliciesClient {
-	return &ServerSecurityAlertPoliciesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewServerSecurityAlertPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServerSecurityAlertPoliciesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ServerSecurityAlertPoliciesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Creates or updates a threat detection policy.
@@ -164,7 +171,7 @@ func (client *ServerSecurityAlertPoliciesClient) getCreateRequest(ctx context.Co
 func (client *ServerSecurityAlertPoliciesClient) getHandleResponse(resp *http.Response) (ServerSecurityAlertPoliciesGetResponse, error) {
 	result := ServerSecurityAlertPoliciesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerSecurityAlertPolicy); err != nil {
-		return ServerSecurityAlertPoliciesGetResponse{}, err
+		return ServerSecurityAlertPoliciesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -225,7 +232,7 @@ func (client *ServerSecurityAlertPoliciesClient) listByServerCreateRequest(ctx c
 func (client *ServerSecurityAlertPoliciesClient) listByServerHandleResponse(resp *http.Response) (ServerSecurityAlertPoliciesListByServerResponse, error) {
 	result := ServerSecurityAlertPoliciesListByServerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerSecurityAlertPolicyListResult); err != nil {
-		return ServerSecurityAlertPoliciesListByServerResponse{}, err
+		return ServerSecurityAlertPoliciesListByServerResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

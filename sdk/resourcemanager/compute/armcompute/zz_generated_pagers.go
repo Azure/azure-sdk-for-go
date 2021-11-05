@@ -10,11 +10,10 @@ package armcompute
 
 import (
 	"context"
-	"net/http"
-	"reflect"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"reflect"
 )
 
 // AvailabilitySetsListBySubscriptionPager provides operations for iterating over paged responses.

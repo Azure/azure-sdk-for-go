@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // BlobInventoryPoliciesClient contains the methods for the BlobInventoryPolicies group.
@@ -30,8 +31,15 @@ type BlobInventoryPoliciesClient struct {
 }
 
 // NewBlobInventoryPoliciesClient creates a new instance of BlobInventoryPoliciesClient with the specified values.
-func NewBlobInventoryPoliciesClient(con *arm.Connection, subscriptionID string) *BlobInventoryPoliciesClient {
-	return &BlobInventoryPoliciesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewBlobInventoryPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *BlobInventoryPoliciesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &BlobInventoryPoliciesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Sets the blob inventory policy to the specified storage account.
@@ -85,7 +93,7 @@ func (client *BlobInventoryPoliciesClient) createOrUpdateCreateRequest(ctx conte
 func (client *BlobInventoryPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (BlobInventoryPoliciesCreateOrUpdateResponse, error) {
 	result := BlobInventoryPoliciesCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BlobInventoryPolicy); err != nil {
-		return BlobInventoryPoliciesCreateOrUpdateResponse{}, err
+		return BlobInventoryPoliciesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -214,7 +222,7 @@ func (client *BlobInventoryPoliciesClient) getCreateRequest(ctx context.Context,
 func (client *BlobInventoryPoliciesClient) getHandleResponse(resp *http.Response) (BlobInventoryPoliciesGetResponse, error) {
 	result := BlobInventoryPoliciesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BlobInventoryPolicy); err != nil {
-		return BlobInventoryPoliciesGetResponse{}, err
+		return BlobInventoryPoliciesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -279,7 +287,7 @@ func (client *BlobInventoryPoliciesClient) listCreateRequest(ctx context.Context
 func (client *BlobInventoryPoliciesClient) listHandleResponse(resp *http.Response) (BlobInventoryPoliciesListResponse, error) {
 	result := BlobInventoryPoliciesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListBlobInventoryPolicy); err != nil {
-		return BlobInventoryPoliciesListResponse{}, err
+		return BlobInventoryPoliciesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

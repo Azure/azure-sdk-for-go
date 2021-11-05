@@ -11,14 +11,15 @@ package armcompute
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // VirtualMachineImagesClient contains the methods for the VirtualMachineImages group.
@@ -30,8 +31,15 @@ type VirtualMachineImagesClient struct {
 }
 
 // NewVirtualMachineImagesClient creates a new instance of VirtualMachineImagesClient with the specified values.
-func NewVirtualMachineImagesClient(con *arm.Connection, subscriptionID string) *VirtualMachineImagesClient {
-	return &VirtualMachineImagesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewVirtualMachineImagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VirtualMachineImagesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &VirtualMachineImagesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Gets a virtual machine image.
@@ -93,7 +101,7 @@ func (client *VirtualMachineImagesClient) getCreateRequest(ctx context.Context, 
 func (client *VirtualMachineImagesClient) getHandleResponse(resp *http.Response) (VirtualMachineImagesGetResponse, error) {
 	result := VirtualMachineImagesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineImage); err != nil {
-		return VirtualMachineImagesGetResponse{}, err
+		return VirtualMachineImagesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -174,7 +182,7 @@ func (client *VirtualMachineImagesClient) listCreateRequest(ctx context.Context,
 func (client *VirtualMachineImagesClient) listHandleResponse(resp *http.Response) (VirtualMachineImagesListResponse, error) {
 	result := VirtualMachineImagesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineImageResourceArray); err != nil {
-		return VirtualMachineImagesListResponse{}, err
+		return VirtualMachineImagesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -238,7 +246,7 @@ func (client *VirtualMachineImagesClient) listOffersCreateRequest(ctx context.Co
 func (client *VirtualMachineImagesClient) listOffersHandleResponse(resp *http.Response) (VirtualMachineImagesListOffersResponse, error) {
 	result := VirtualMachineImagesListOffersResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineImageResourceArray); err != nil {
-		return VirtualMachineImagesListOffersResponse{}, err
+		return VirtualMachineImagesListOffersResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -298,7 +306,7 @@ func (client *VirtualMachineImagesClient) listPublishersCreateRequest(ctx contex
 func (client *VirtualMachineImagesClient) listPublishersHandleResponse(resp *http.Response) (VirtualMachineImagesListPublishersResponse, error) {
 	result := VirtualMachineImagesListPublishersResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineImageResourceArray); err != nil {
-		return VirtualMachineImagesListPublishersResponse{}, err
+		return VirtualMachineImagesListPublishersResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -366,7 +374,7 @@ func (client *VirtualMachineImagesClient) listSKUsCreateRequest(ctx context.Cont
 func (client *VirtualMachineImagesClient) listSKUsHandleResponse(resp *http.Response) (VirtualMachineImagesListSKUsResponse, error) {
 	result := VirtualMachineImagesListSKUsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineImageResourceArray); err != nil {
-		return VirtualMachineImagesListSKUsResponse{}, err
+		return VirtualMachineImagesListSKUsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

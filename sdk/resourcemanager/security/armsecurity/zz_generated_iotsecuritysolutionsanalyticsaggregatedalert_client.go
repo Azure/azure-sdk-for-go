@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // IotSecuritySolutionsAnalyticsAggregatedAlertClient contains the methods for the IotSecuritySolutionsAnalyticsAggregatedAlert group.
@@ -31,8 +32,15 @@ type IotSecuritySolutionsAnalyticsAggregatedAlertClient struct {
 }
 
 // NewIotSecuritySolutionsAnalyticsAggregatedAlertClient creates a new instance of IotSecuritySolutionsAnalyticsAggregatedAlertClient with the specified values.
-func NewIotSecuritySolutionsAnalyticsAggregatedAlertClient(con *arm.Connection, subscriptionID string) *IotSecuritySolutionsAnalyticsAggregatedAlertClient {
-	return &IotSecuritySolutionsAnalyticsAggregatedAlertClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewIotSecuritySolutionsAnalyticsAggregatedAlertClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IotSecuritySolutionsAnalyticsAggregatedAlertClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &IotSecuritySolutionsAnalyticsAggregatedAlertClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Dismiss - Use this method to dismiss an aggregated IoT Security Solution Alert.
@@ -146,7 +154,7 @@ func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) getCreateReque
 func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) getHandleResponse(resp *http.Response) (IotSecuritySolutionsAnalyticsAggregatedAlertGetResponse, error) {
 	result := IotSecuritySolutionsAnalyticsAggregatedAlertGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IoTSecurityAggregatedAlert); err != nil {
-		return IotSecuritySolutionsAnalyticsAggregatedAlertGetResponse{}, err
+		return IotSecuritySolutionsAnalyticsAggregatedAlertGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -211,7 +219,7 @@ func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) listCreateRequ
 func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) listHandleResponse(resp *http.Response) (IotSecuritySolutionsAnalyticsAggregatedAlertListResponse, error) {
 	result := IotSecuritySolutionsAnalyticsAggregatedAlertListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IoTSecurityAggregatedAlertList); err != nil {
-		return IotSecuritySolutionsAnalyticsAggregatedAlertListResponse{}, err
+		return IotSecuritySolutionsAnalyticsAggregatedAlertListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

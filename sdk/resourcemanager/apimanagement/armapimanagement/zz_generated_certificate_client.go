@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // CertificateClient contains the methods for the Certificate group.
@@ -31,8 +32,15 @@ type CertificateClient struct {
 }
 
 // NewCertificateClient creates a new instance of CertificateClient with the specified values.
-func NewCertificateClient(con *arm.Connection, subscriptionID string) *CertificateClient {
-	return &CertificateClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewCertificateClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CertificateClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &CertificateClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or updates the certificate being used for authentication with the backend.
@@ -76,7 +84,7 @@ func (client *CertificateClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header.Set("If-Match", *options.IfMatch)
@@ -92,7 +100,7 @@ func (client *CertificateClient) createOrUpdateHandleResponse(resp *http.Respons
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateContract); err != nil {
-		return CertificateCreateOrUpdateResponse{}, err
+		return CertificateCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -151,7 +159,7 @@ func (client *CertificateClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("If-Match", ifMatch)
 	req.Raw().Header.Set("Accept", "application/json")
@@ -212,7 +220,7 @@ func (client *CertificateClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -225,7 +233,7 @@ func (client *CertificateClient) getHandleResponse(resp *http.Response) (Certifi
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateContract); err != nil {
-		return CertificateGetResponse{}, err
+		return CertificateGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -281,7 +289,7 @@ func (client *CertificateClient) getEntityTagCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -345,7 +353,7 @@ func (client *CertificateClient) listByServiceCreateRequest(ctx context.Context,
 	if options != nil && options.IsKeyVaultRefreshFailed != nil {
 		reqQP.Set("isKeyVaultRefreshFailed", strconv.FormatBool(*options.IsKeyVaultRefreshFailed))
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -355,7 +363,7 @@ func (client *CertificateClient) listByServiceCreateRequest(ctx context.Context,
 func (client *CertificateClient) listByServiceHandleResponse(resp *http.Response) (CertificateListByServiceResponse, error) {
 	result := CertificateListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateCollection); err != nil {
-		return CertificateListByServiceResponse{}, err
+		return CertificateListByServiceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -414,7 +422,7 @@ func (client *CertificateClient) refreshSecretCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -427,7 +435,7 @@ func (client *CertificateClient) refreshSecretHandleResponse(resp *http.Response
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateContract); err != nil {
-		return CertificateRefreshSecretResponse{}, err
+		return CertificateRefreshSecretResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -10,10 +10,9 @@ package armstreamanalytics
 
 import (
 	"encoding/json"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // AggregateFunctionProperties - The properties that are associated with an aggregate function.
@@ -1218,7 +1217,7 @@ func (c ClusterProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "capacityAllocated", c.CapacityAllocated)
 	populate(objectMap, "capacityAssigned", c.CapacityAssigned)
 	populate(objectMap, "clusterId", c.ClusterID)
-	populate(objectMap, "createdDate", (*timeRFC3339)(c.CreatedDate))
+	populateTimeRFC3339(objectMap, "createdDate", c.CreatedDate)
 	populate(objectMap, "provisioningState", c.ProvisioningState)
 	return json.Marshal(objectMap)
 }
@@ -1242,9 +1241,7 @@ func (c *ClusterProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &c.ClusterID)
 			delete(rawMsg, key)
 		case "createdDate":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			c.CreatedDate = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &c.CreatedDate)
 			delete(rawMsg, key)
 		case "provisioningState":
 			err = unpopulate(val, &c.ProvisioningState)
@@ -3586,7 +3583,7 @@ type StartStreamingJobParameters struct {
 func (s StartStreamingJobParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "outputStartMode", s.OutputStartMode)
-	populate(objectMap, "outputStartTime", (*timeRFC3339)(s.OutputStartTime))
+	populateTimeRFC3339(objectMap, "outputStartTime", s.OutputStartTime)
 	return json.Marshal(objectMap)
 }
 
@@ -3603,9 +3600,7 @@ func (s *StartStreamingJobParameters) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &s.OutputStartMode)
 			delete(rawMsg, key)
 		case "outputStartTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			s.OutputStartTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &s.OutputStartTime)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -3850,7 +3845,7 @@ func (s StreamingJobProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "cluster", s.Cluster)
 	populate(objectMap, "compatibilityLevel", s.CompatibilityLevel)
 	populate(objectMap, "contentStoragePolicy", s.ContentStoragePolicy)
-	populate(objectMap, "createdDate", (*timeRFC3339)(s.CreatedDate))
+	populateTimeRFC3339(objectMap, "createdDate", s.CreatedDate)
 	populate(objectMap, "dataLocale", s.DataLocale)
 	populate(objectMap, "etag", s.Etag)
 	populate(objectMap, "eventsLateArrivalMaxDelayInSeconds", s.EventsLateArrivalMaxDelayInSeconds)
@@ -3863,10 +3858,10 @@ func (s StreamingJobProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "jobState", s.JobState)
 	populate(objectMap, "jobStorageAccount", s.JobStorageAccount)
 	populate(objectMap, "jobType", s.JobType)
-	populate(objectMap, "lastOutputEventTime", (*timeRFC3339)(s.LastOutputEventTime))
+	populateTimeRFC3339(objectMap, "lastOutputEventTime", s.LastOutputEventTime)
 	populate(objectMap, "outputErrorPolicy", s.OutputErrorPolicy)
 	populate(objectMap, "outputStartMode", s.OutputStartMode)
-	populate(objectMap, "outputStartTime", (*timeRFC3339)(s.OutputStartTime))
+	populateTimeRFC3339(objectMap, "outputStartTime", s.OutputStartTime)
 	populate(objectMap, "outputs", s.Outputs)
 	populate(objectMap, "provisioningState", s.ProvisioningState)
 	populate(objectMap, "sku", s.SKU)
@@ -3893,9 +3888,7 @@ func (s *StreamingJobProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &s.ContentStoragePolicy)
 			delete(rawMsg, key)
 		case "createdDate":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			s.CreatedDate = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &s.CreatedDate)
 			delete(rawMsg, key)
 		case "dataLocale":
 			err = unpopulate(val, &s.DataLocale)
@@ -3934,9 +3927,7 @@ func (s *StreamingJobProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &s.JobType)
 			delete(rawMsg, key)
 		case "lastOutputEventTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			s.LastOutputEventTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &s.LastOutputEventTime)
 			delete(rawMsg, key)
 		case "outputErrorPolicy":
 			err = unpopulate(val, &s.OutputErrorPolicy)
@@ -3945,9 +3936,7 @@ func (s *StreamingJobProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &s.OutputStartMode)
 			delete(rawMsg, key)
 		case "outputStartTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			s.OutputStartTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &s.OutputStartTime)
 			delete(rawMsg, key)
 		case "outputs":
 			err = unpopulate(val, &s.Outputs)

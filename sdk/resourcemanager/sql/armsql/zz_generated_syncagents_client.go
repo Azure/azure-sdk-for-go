@@ -11,14 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // SyncAgentsClient contains the methods for the SyncAgents group.
@@ -30,8 +30,15 @@ type SyncAgentsClient struct {
 }
 
 // NewSyncAgentsClient creates a new instance of SyncAgentsClient with the specified values.
-func NewSyncAgentsClient(con *arm.Connection, subscriptionID string) *SyncAgentsClient {
-	return &SyncAgentsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewSyncAgentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SyncAgentsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &SyncAgentsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Creates or updates a sync agent.
@@ -242,7 +249,7 @@ func (client *SyncAgentsClient) generateKeyCreateRequest(ctx context.Context, re
 func (client *SyncAgentsClient) generateKeyHandleResponse(resp *http.Response) (SyncAgentsGenerateKeyResponse, error) {
 	result := SyncAgentsGenerateKeyResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncAgentKeyProperties); err != nil {
-		return SyncAgentsGenerateKeyResponse{}, err
+		return SyncAgentsGenerateKeyResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -310,7 +317,7 @@ func (client *SyncAgentsClient) getCreateRequest(ctx context.Context, resourceGr
 func (client *SyncAgentsClient) getHandleResponse(resp *http.Response) (SyncAgentsGetResponse, error) {
 	result := SyncAgentsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncAgent); err != nil {
-		return SyncAgentsGetResponse{}, err
+		return SyncAgentsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -371,7 +378,7 @@ func (client *SyncAgentsClient) listByServerCreateRequest(ctx context.Context, r
 func (client *SyncAgentsClient) listByServerHandleResponse(resp *http.Response) (SyncAgentsListByServerResponse, error) {
 	result := SyncAgentsListByServerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncAgentListResult); err != nil {
-		return SyncAgentsListByServerResponse{}, err
+		return SyncAgentsListByServerResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -436,7 +443,7 @@ func (client *SyncAgentsClient) listLinkedDatabasesCreateRequest(ctx context.Con
 func (client *SyncAgentsClient) listLinkedDatabasesHandleResponse(resp *http.Response) (SyncAgentsListLinkedDatabasesResponse, error) {
 	result := SyncAgentsListLinkedDatabasesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncAgentLinkedDatabaseListResult); err != nil {
-		return SyncAgentsListLinkedDatabasesResponse{}, err
+		return SyncAgentsListLinkedDatabasesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

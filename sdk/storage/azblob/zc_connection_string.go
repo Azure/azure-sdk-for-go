@@ -6,7 +6,6 @@ package azblob
 import (
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"strings"
 )
 
@@ -35,9 +34,9 @@ func convertConnStrToMap(connStr string) (map[string]string, error) {
 
 // parseConnectionString parses a connection string into a service URL and a SharedKeyCredential or a service url with the
 // SharedAccessSignature combined.
-func parseConnectionString(connectionString string) (string, azcore.Credential, error) {
+func parseConnectionString(connectionString string) (string, *SharedKeyCredential, error) {
 	var serviceURL string
-	var cred azcore.Credential
+	var cred *SharedKeyCredential
 
 	defaultScheme := "https"
 	defaultSuffix := "core.windows.net"
@@ -57,7 +56,7 @@ func parseConnectionString(connectionString string) (string, azcore.Credential, 
 		if !ok {
 			return "", nil, errConnectionString
 		}
-		return fmt.Sprintf("%v://%v.blob.%v/?%v", defaultScheme, accountName, defaultSuffix, sharedAccessSignature), azcore.NewAnonymousCredential(), nil
+		return fmt.Sprintf("%v://%v.blob.%v/?%v", defaultScheme, accountName, defaultSuffix, sharedAccessSignature), nil, nil
 	}
 
 	protocol, ok := connStrMap["DefaultEndpointsProtocol"]

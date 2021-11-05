@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // AlertRulesClient contains the methods for the AlertRules group.
@@ -30,8 +31,15 @@ type AlertRulesClient struct {
 }
 
 // NewAlertRulesClient creates a new instance of AlertRulesClient with the specified values.
-func NewAlertRulesClient(con *arm.Connection, subscriptionID string) *AlertRulesClient {
-	return &AlertRulesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewAlertRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AlertRulesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &AlertRulesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or updates a classic metric alert rule.
@@ -81,7 +89,7 @@ func (client *AlertRulesClient) createOrUpdateCreateRequest(ctx context.Context,
 func (client *AlertRulesClient) createOrUpdateHandleResponse(resp *http.Response) (AlertRulesCreateOrUpdateResponse, error) {
 	result := AlertRulesCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertRuleResource); err != nil {
-		return AlertRulesCreateOrUpdateResponse{}, err
+		return AlertRulesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -202,7 +210,7 @@ func (client *AlertRulesClient) getCreateRequest(ctx context.Context, resourceGr
 func (client *AlertRulesClient) getHandleResponse(resp *http.Response) (AlertRulesGetResponse, error) {
 	result := AlertRulesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertRuleResource); err != nil {
-		return AlertRulesGetResponse{}, err
+		return AlertRulesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -263,7 +271,7 @@ func (client *AlertRulesClient) listByResourceGroupCreateRequest(ctx context.Con
 func (client *AlertRulesClient) listByResourceGroupHandleResponse(resp *http.Response) (AlertRulesListByResourceGroupResponse, error) {
 	result := AlertRulesListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertRuleResourceCollection); err != nil {
-		return AlertRulesListByResourceGroupResponse{}, err
+		return AlertRulesListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -320,7 +328,7 @@ func (client *AlertRulesClient) listBySubscriptionCreateRequest(ctx context.Cont
 func (client *AlertRulesClient) listBySubscriptionHandleResponse(resp *http.Response) (AlertRulesListBySubscriptionResponse, error) {
 	result := AlertRulesListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertRuleResourceCollection); err != nil {
-		return AlertRulesListBySubscriptionResponse{}, err
+		return AlertRulesListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -385,7 +393,7 @@ func (client *AlertRulesClient) updateCreateRequest(ctx context.Context, resourc
 func (client *AlertRulesClient) updateHandleResponse(resp *http.Response) (AlertRulesUpdateResponse, error) {
 	result := AlertRulesUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertRuleResource); err != nil {
-		return AlertRulesUpdateResponse{}, err
+		return AlertRulesUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

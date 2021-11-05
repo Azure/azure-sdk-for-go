@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ClusterVersionsClient contains the methods for the ClusterVersions group.
@@ -30,8 +31,15 @@ type ClusterVersionsClient struct {
 }
 
 // NewClusterVersionsClient creates a new instance of ClusterVersionsClient with the specified values.
-func NewClusterVersionsClient(con *arm.Connection, subscriptionID string) *ClusterVersionsClient {
-	return &ClusterVersionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewClusterVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ClusterVersionsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ClusterVersionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Gets information about an available Service Fabric cluster code version.
@@ -81,7 +89,7 @@ func (client *ClusterVersionsClient) getCreateRequest(ctx context.Context, locat
 func (client *ClusterVersionsClient) getHandleResponse(resp *http.Response) (ClusterVersionsGetResponse, error) {
 	result := ClusterVersionsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterCodeVersionsListResult); err != nil {
-		return ClusterVersionsGetResponse{}, err
+		return ClusterVersionsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -150,7 +158,7 @@ func (client *ClusterVersionsClient) getByEnvironmentCreateRequest(ctx context.C
 func (client *ClusterVersionsClient) getByEnvironmentHandleResponse(resp *http.Response) (ClusterVersionsGetByEnvironmentResponse, error) {
 	result := ClusterVersionsGetByEnvironmentResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterCodeVersionsListResult); err != nil {
-		return ClusterVersionsGetByEnvironmentResponse{}, err
+		return ClusterVersionsGetByEnvironmentResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -211,7 +219,7 @@ func (client *ClusterVersionsClient) listCreateRequest(ctx context.Context, loca
 func (client *ClusterVersionsClient) listHandleResponse(resp *http.Response) (ClusterVersionsListResponse, error) {
 	result := ClusterVersionsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterCodeVersionsListResult); err != nil {
-		return ClusterVersionsListResponse{}, err
+		return ClusterVersionsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -276,7 +284,7 @@ func (client *ClusterVersionsClient) listByEnvironmentCreateRequest(ctx context.
 func (client *ClusterVersionsClient) listByEnvironmentHandleResponse(resp *http.Response) (ClusterVersionsListByEnvironmentResponse, error) {
 	result := ClusterVersionsListByEnvironmentResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterCodeVersionsListResult); err != nil {
-		return ClusterVersionsListByEnvironmentResponse{}, err
+		return ClusterVersionsListByEnvironmentResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

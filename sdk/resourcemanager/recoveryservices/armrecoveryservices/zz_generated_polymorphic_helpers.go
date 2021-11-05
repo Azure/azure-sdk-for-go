@@ -48,3 +48,22 @@ func unmarshalResourceCertificateDetailsClassificationArray(rawMsg json.RawMessa
 	}
 	return fArray, nil
 }
+
+func unmarshalResourceCertificateDetailsClassificationMap(rawMsg json.RawMessage) (map[string]ResourceCertificateDetailsClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var rawMessages map[string]json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fMap := make(map[string]ResourceCertificateDetailsClassification, len(rawMessages))
+	for key, rawMessage := range rawMessages {
+		f, err := unmarshalResourceCertificateDetailsClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fMap[key] = f
+	}
+	return fMap, nil
+}

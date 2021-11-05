@@ -279,10 +279,10 @@ var _ IntegrationServiceEnvironmentNetworkHealthClientAPI = (*logic.IntegrationS
 // IntegrationServiceEnvironmentManagedApisClientAPI contains the set of methods on the IntegrationServiceEnvironmentManagedApisClient type.
 type IntegrationServiceEnvironmentManagedApisClientAPI interface {
 	Delete(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, APIName string) (result logic.IntegrationServiceEnvironmentManagedApisDeleteFuture, err error)
-	Get(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, APIName string) (result logic.ManagedAPI, err error)
-	List(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string) (result logic.ManagedAPIListResultPage, err error)
-	ListComplete(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string) (result logic.ManagedAPIListResultIterator, err error)
-	Put(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, APIName string) (result logic.IntegrationServiceEnvironmentManagedApisPutFuture, err error)
+	Get(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, APIName string) (result logic.IntegrationServiceEnvironmentManagedAPI, err error)
+	List(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string) (result logic.IntegrationServiceEnvironmentManagedAPIListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string) (result logic.IntegrationServiceEnvironmentManagedAPIListResultIterator, err error)
+	Put(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, APIName string, integrationServiceEnvironmentManagedAPI logic.IntegrationServiceEnvironmentManagedAPI) (result logic.IntegrationServiceEnvironmentManagedApisPutFuture, err error)
 }
 
 var _ IntegrationServiceEnvironmentManagedApisClientAPI = (*logic.IntegrationServiceEnvironmentManagedApisClient)(nil)

@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // NodeCountInformationClient contains the methods for the NodeCountInformation group.
@@ -30,8 +31,15 @@ type NodeCountInformationClient struct {
 }
 
 // NewNodeCountInformationClient creates a new instance of NodeCountInformationClient with the specified values.
-func NewNodeCountInformationClient(con *arm.Connection, subscriptionID string) *NodeCountInformationClient {
-	return &NodeCountInformationClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewNodeCountInformationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *NodeCountInformationClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &NodeCountInformationClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Retrieve counts for Dsc Nodes.
@@ -85,7 +93,7 @@ func (client *NodeCountInformationClient) getCreateRequest(ctx context.Context, 
 func (client *NodeCountInformationClient) getHandleResponse(resp *http.Response) (NodeCountInformationGetResponse, error) {
 	result := NodeCountInformationGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NodeCounts); err != nil {
-		return NodeCountInformationGetResponse{}, err
+		return NodeCountInformationGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

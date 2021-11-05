@@ -10,10 +10,9 @@ package armoperationsmanagement
 
 import (
 	"context"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"net/http"
 	"time"
-
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 )
 
 // ManagementAssociationsCreateOrUpdateResponse contains the response from method ManagementAssociations.CreateOrUpdate.
@@ -122,6 +121,8 @@ type SolutionsCreateOrUpdatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l SolutionsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SolutionsCreateOrUpdateResponse, error) {
 	respType := SolutionsCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Solution)
@@ -172,6 +173,8 @@ type SolutionsDeletePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l SolutionsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SolutionsDeleteResponse, error) {
 	respType := SolutionsDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -252,6 +255,8 @@ type SolutionsUpdatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l SolutionsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SolutionsUpdateResponse, error) {
 	respType := SolutionsUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Solution)

@@ -10,7 +10,6 @@ import (
 	"context"
 	"log"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault"
@@ -21,7 +20,7 @@ func ExampleSecretsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armkeyvault.NewSecretsClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armkeyvault.NewSecretsClient("<subscription ID>", cred, nil)
 	resp, err := client.CreateOrUpdate(
 		context.Background(),
 		"<resource group name>",

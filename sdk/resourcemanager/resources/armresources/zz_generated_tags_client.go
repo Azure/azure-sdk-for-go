@@ -12,7 +12,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -29,8 +31,15 @@ type TagsClient struct {
 }
 
 // NewTagsClient creates a new instance of TagsClient with the specified values.
-func NewTagsClient(con *arm.Connection, subscriptionID string) *TagsClient {
-	return &TagsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewTagsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TagsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &TagsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - This operation allows adding a name to the list of predefined tag names for the given subscription. A tag name can have a maximum of
@@ -78,7 +87,7 @@ func (client *TagsClient) createOrUpdateCreateRequest(ctx context.Context, tagNa
 func (client *TagsClient) createOrUpdateHandleResponse(resp *http.Response) (TagsCreateOrUpdateResponse, error) {
 	result := TagsCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagDetails); err != nil {
-		return TagsCreateOrUpdateResponse{}, err
+		return TagsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -117,9 +126,6 @@ func (client *TagsClient) CreateOrUpdateAtScope(ctx context.Context, scope strin
 // createOrUpdateAtScopeCreateRequest creates the CreateOrUpdateAtScope request.
 func (client *TagsClient) createOrUpdateAtScopeCreateRequest(ctx context.Context, scope string, parameters TagsResource, options *TagsCreateOrUpdateAtScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Resources/tags/default"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -136,7 +142,7 @@ func (client *TagsClient) createOrUpdateAtScopeCreateRequest(ctx context.Context
 func (client *TagsClient) createOrUpdateAtScopeHandleResponse(resp *http.Response) (TagsCreateOrUpdateAtScopeResponse, error) {
 	result := TagsCreateOrUpdateAtScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagsResource); err != nil {
-		return TagsCreateOrUpdateAtScopeResponse{}, err
+		return TagsCreateOrUpdateAtScopeResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -202,7 +208,7 @@ func (client *TagsClient) createOrUpdateValueCreateRequest(ctx context.Context, 
 func (client *TagsClient) createOrUpdateValueHandleResponse(resp *http.Response) (TagsCreateOrUpdateValueResponse, error) {
 	result := TagsCreateOrUpdateValueResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagValue); err != nil {
-		return TagsCreateOrUpdateValueResponse{}, err
+		return TagsCreateOrUpdateValueResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -294,9 +300,6 @@ func (client *TagsClient) DeleteAtScope(ctx context.Context, scope string, optio
 // deleteAtScopeCreateRequest creates the DeleteAtScope request.
 func (client *TagsClient) deleteAtScopeCreateRequest(ctx context.Context, scope string, options *TagsDeleteAtScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Resources/tags/default"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -400,9 +403,6 @@ func (client *TagsClient) GetAtScope(ctx context.Context, scope string, options 
 // getAtScopeCreateRequest creates the GetAtScope request.
 func (client *TagsClient) getAtScopeCreateRequest(ctx context.Context, scope string, options *TagsGetAtScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Resources/tags/default"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -419,7 +419,7 @@ func (client *TagsClient) getAtScopeCreateRequest(ctx context.Context, scope str
 func (client *TagsClient) getAtScopeHandleResponse(resp *http.Response) (TagsGetAtScopeResponse, error) {
 	result := TagsGetAtScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagsResource); err != nil {
-		return TagsGetAtScopeResponse{}, err
+		return TagsGetAtScopeResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -475,7 +475,7 @@ func (client *TagsClient) listCreateRequest(ctx context.Context, options *TagsLi
 func (client *TagsClient) listHandleResponse(resp *http.Response) (TagsListResponse, error) {
 	result := TagsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagsListResult); err != nil {
-		return TagsListResponse{}, err
+		return TagsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -517,9 +517,6 @@ func (client *TagsClient) UpdateAtScope(ctx context.Context, scope string, param
 // updateAtScopeCreateRequest creates the UpdateAtScope request.
 func (client *TagsClient) updateAtScopeCreateRequest(ctx context.Context, scope string, parameters TagsPatchResource, options *TagsUpdateAtScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Resources/tags/default"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -536,7 +533,7 @@ func (client *TagsClient) updateAtScopeCreateRequest(ctx context.Context, scope 
 func (client *TagsClient) updateAtScopeHandleResponse(resp *http.Response) (TagsUpdateAtScopeResponse, error) {
 	result := TagsUpdateAtScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagsResource); err != nil {
-		return TagsUpdateAtScopeResponse{}, err
+		return TagsUpdateAtScopeResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

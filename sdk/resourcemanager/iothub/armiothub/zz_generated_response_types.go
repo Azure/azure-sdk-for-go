@@ -10,10 +10,9 @@ package armiothub
 
 import (
 	"context"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"net/http"
 	"time"
-
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 )
 
 // CertificatesCreateOrUpdateResponse contains the response from method Certificates.CreateOrUpdate.
@@ -92,6 +91,8 @@ type IotHubManualFailoverPollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l IotHubManualFailoverPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (IotHubManualFailoverResponse, error) {
 	respType := IotHubManualFailoverResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -160,6 +161,8 @@ type IotHubResourceCreateOrUpdatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l IotHubResourceCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (IotHubResourceCreateOrUpdateResponse, error) {
 	respType := IotHubResourceCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.IotHubDescription)
@@ -216,6 +219,8 @@ type IotHubResourceDeletePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l IotHubResourceDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (IotHubResourceDeleteResponse, error) {
 	respType := IotHubResourceDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.IotHubDescription)
@@ -470,6 +475,8 @@ type IotHubResourceUpdatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l IotHubResourceUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (IotHubResourceUpdateResponse, error) {
 	respType := IotHubResourceUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.IotHubDescription)
@@ -532,6 +539,8 @@ type PrivateEndpointConnectionsDeletePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l PrivateEndpointConnectionsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsDeleteResponse, error) {
 	respType := PrivateEndpointConnectionsDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PrivateEndpointConnection)
@@ -607,6 +616,8 @@ type PrivateEndpointConnectionsUpdatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l PrivateEndpointConnectionsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsUpdateResponse, error) {
 	respType := PrivateEndpointConnectionsUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PrivateEndpointConnection)

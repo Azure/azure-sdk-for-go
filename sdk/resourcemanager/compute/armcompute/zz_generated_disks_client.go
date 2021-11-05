@@ -11,14 +11,14 @@ package armcompute
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // DisksClient contains the methods for the Disks group.
@@ -30,8 +30,15 @@ type DisksClient struct {
 }
 
 // NewDisksClient creates a new instance of DisksClient with the specified values.
-func NewDisksClient(con *arm.Connection, subscriptionID string) *DisksClient {
-	return &DisksClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewDisksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DisksClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &DisksClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Creates or updates a disk.
@@ -230,7 +237,7 @@ func (client *DisksClient) getCreateRequest(ctx context.Context, resourceGroupNa
 func (client *DisksClient) getHandleResponse(resp *http.Response) (DisksGetResponse, error) {
 	result := DisksGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Disk); err != nil {
-		return DisksGetResponse{}, err
+		return DisksGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -358,7 +365,7 @@ func (client *DisksClient) listCreateRequest(ctx context.Context, options *Disks
 func (client *DisksClient) listHandleResponse(resp *http.Response) (DisksListResponse, error) {
 	result := DisksListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiskList); err != nil {
-		return DisksListResponse{}, err
+		return DisksListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -415,7 +422,7 @@ func (client *DisksClient) listByResourceGroupCreateRequest(ctx context.Context,
 func (client *DisksClient) listByResourceGroupHandleResponse(resp *http.Response) (DisksListByResourceGroupResponse, error) {
 	result := DisksListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiskList); err != nil {
-		return DisksListByResourceGroupResponse{}, err
+		return DisksListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

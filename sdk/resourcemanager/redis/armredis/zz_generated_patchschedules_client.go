@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // PatchSchedulesClient contains the methods for the PatchSchedules group.
@@ -30,8 +31,15 @@ type PatchSchedulesClient struct {
 }
 
 // NewPatchSchedulesClient creates a new instance of PatchSchedulesClient with the specified values.
-func NewPatchSchedulesClient(con *arm.Connection, subscriptionID string) *PatchSchedulesClient {
-	return &PatchSchedulesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewPatchSchedulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PatchSchedulesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &PatchSchedulesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Create or replace the patching schedule for Redis cache.
@@ -85,7 +93,7 @@ func (client *PatchSchedulesClient) createOrUpdateCreateRequest(ctx context.Cont
 func (client *PatchSchedulesClient) createOrUpdateHandleResponse(resp *http.Response) (PatchSchedulesCreateOrUpdateResponse, error) {
 	result := PatchSchedulesCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RedisPatchSchedule); err != nil {
-		return PatchSchedulesCreateOrUpdateResponse{}, err
+		return PatchSchedulesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -214,7 +222,7 @@ func (client *PatchSchedulesClient) getCreateRequest(ctx context.Context, resour
 func (client *PatchSchedulesClient) getHandleResponse(resp *http.Response) (PatchSchedulesGetResponse, error) {
 	result := PatchSchedulesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RedisPatchSchedule); err != nil {
-		return PatchSchedulesGetResponse{}, err
+		return PatchSchedulesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -276,7 +284,7 @@ func (client *PatchSchedulesClient) listByRedisResourceCreateRequest(ctx context
 func (client *PatchSchedulesClient) listByRedisResourceHandleResponse(resp *http.Response) (PatchSchedulesListByRedisResourceResponse, error) {
 	result := PatchSchedulesListByRedisResourceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RedisPatchScheduleListResult); err != nil {
-		return PatchSchedulesListByRedisResourceResponse{}, err
+		return PatchSchedulesListByRedisResourceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

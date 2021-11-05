@@ -11,13 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ServerConnectionPoliciesClient contains the methods for the ServerConnectionPolicies group.
@@ -29,8 +30,15 @@ type ServerConnectionPoliciesClient struct {
 }
 
 // NewServerConnectionPoliciesClient creates a new instance of ServerConnectionPoliciesClient with the specified values.
-func NewServerConnectionPoliciesClient(con *arm.Connection, subscriptionID string) *ServerConnectionPoliciesClient {
-	return &ServerConnectionPoliciesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewServerConnectionPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServerConnectionPoliciesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ServerConnectionPoliciesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or updates the server's connection policy.
@@ -84,7 +92,7 @@ func (client *ServerConnectionPoliciesClient) createOrUpdateCreateRequest(ctx co
 func (client *ServerConnectionPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (ServerConnectionPoliciesCreateOrUpdateResponse, error) {
 	result := ServerConnectionPoliciesCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerConnectionPolicy); err != nil {
-		return ServerConnectionPoliciesCreateOrUpdateResponse{}, err
+		return ServerConnectionPoliciesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -152,7 +160,7 @@ func (client *ServerConnectionPoliciesClient) getCreateRequest(ctx context.Conte
 func (client *ServerConnectionPoliciesClient) getHandleResponse(resp *http.Response) (ServerConnectionPoliciesGetResponse, error) {
 	result := ServerConnectionPoliciesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerConnectionPolicy); err != nil {
-		return ServerConnectionPoliciesGetResponse{}, err
+		return ServerConnectionPoliciesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

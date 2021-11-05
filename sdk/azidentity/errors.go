@@ -14,7 +14,7 @@ import (
 type AuthenticationFailedError interface {
 	azcore.HTTPResponse
 	errorinfo.NonRetriable
-	AuthenticationFailed()
+	authenticationFailed()
 }
 
 type authenticationFailedError struct {
@@ -32,7 +32,7 @@ func (authenticationFailedError) NonRetriable() {
 }
 
 // AuthenticationFailed indicates that an authentication attempt failed
-func (authenticationFailedError) AuthenticationFailed() {
+func (authenticationFailedError) authenticationFailed() {
 	// marker method
 }
 
@@ -49,7 +49,7 @@ var _ errorinfo.NonRetriable = (*authenticationFailedError)(nil)
 // because it lacks required data or state.
 type CredentialUnavailableError interface {
 	errorinfo.NonRetriable
-	CredentialUnavailable()
+	credentialUnavailable()
 }
 
 type credentialUnavailableError struct {
@@ -71,7 +71,7 @@ func (e credentialUnavailableError) NonRetriable() {
 }
 
 // CredentialUnavailable indicates that the credential didn't attempt to authenticate
-func (e credentialUnavailableError) CredentialUnavailable() {
+func (e credentialUnavailableError) credentialUnavailable() {
 	// marker method
 }
 

@@ -6,7 +6,7 @@
 
 package azkeys
 
-import "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal"
+import generated "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
 
 // DeletionRecoveryLevel - Reflects the deletion recovery level currently in effect for certificates in the current vault. If it contains 'Purgeable', the
 // certificate can be permanently deleted by a privileged user; otherwise,
@@ -57,24 +57,24 @@ func (d DeletionRecoveryLevel) ToPtr() *DeletionRecoveryLevel {
 }
 
 // convert a pointer to exported DeletionRecoveryLevel to the generated version
-func recoveryLevelToGenerated(d *DeletionRecoveryLevel) *internal.DeletionRecoveryLevel {
+func recoveryLevelToGenerated(d *DeletionRecoveryLevel) *generated.DeletionRecoveryLevel {
 	if d == nil {
 		return nil
 	}
 	if *d == DeletionRecoveryLevelCustomizedRecoverable {
-		return internal.DeletionRecoveryLevelCustomizedRecoverable.ToPtr()
+		return generated.DeletionRecoveryLevelCustomizedRecoverable.ToPtr()
 	} else if *d == DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription {
-		return internal.DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription.ToPtr()
+		return generated.DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription.ToPtr()
 	} else if *d == DeletionRecoveryLevelCustomizedRecoverablePurgeable {
-		return internal.DeletionRecoveryLevelCustomizedRecoverablePurgeable.ToPtr()
+		return generated.DeletionRecoveryLevelCustomizedRecoverablePurgeable.ToPtr()
 	} else if *d == DeletionRecoveryLevelPurgeable {
-		return internal.DeletionRecoveryLevelPurgeable.ToPtr()
+		return generated.DeletionRecoveryLevelPurgeable.ToPtr()
 	} else if *d == DeletionRecoveryLevelRecoverableProtectedSubscription {
-		return internal.DeletionRecoveryLevelRecoverableProtectedSubscription.ToPtr()
+		return generated.DeletionRecoveryLevelRecoverableProtectedSubscription.ToPtr()
 	} else if *d == DeletionRecoveryLevelRecoverable {
-		return internal.DeletionRecoveryLevelRecoverable.ToPtr()
+		return generated.DeletionRecoveryLevelRecoverable.ToPtr()
 	} else {
-		return internal.DeletionRecoveryLevelRecoverablePurgeable.ToPtr()
+		return generated.DeletionRecoveryLevelRecoverablePurgeable.ToPtr()
 	}
 }
 

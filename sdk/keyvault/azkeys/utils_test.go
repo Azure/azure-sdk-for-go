@@ -26,14 +26,60 @@ import (
 var pathToPackage = "sdk/keyvault/azkeys/testdata"
 
 const fakeKvURL = "https://fakekvurl.vault.azure.net/"
+const fakeKvMHSMURL = "https://fakekvurl.managedhsm.azure.net/"
+
+var enableHSM = true
 
 func TestMain(m *testing.M) {
 	// Initialize
 	if recording.GetRecordMode() == "record" {
-		vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
-		err := recording.AddURISanitizer(fakeKvURL, vaultUrl, nil)
+		err := recording.ResetSanitizers(nil)
 		if err != nil {
 			panic(err)
+		}
+
+		vaultUrl := os.Getenv("AZKEYS_KEYVAULT_URL")
+		err = recording.AddURISanitizer(fakeKvURL, vaultUrl, nil)
+		if err != nil {
+			panic(err)
+		}
+
+		err = recording.AddBodyKeySanitizer("$.key.kid", fakeKvURL, vaultUrl, nil)
+		if err != nil {
+			panic(err)
+		}
+
+		err = recording.AddBodyKeySanitizer("$.recoveryId", fakeKvURL, vaultUrl, nil)
+		if err != nil {
+			panic(err)
+		}
+
+		tenantID := os.Getenv("AZKEYS_TENANT_ID")
+		err = recording.AddHeaderRegexSanitizer("WWW-Authenticate", "00000000-0000-0000-0000-000000000000", tenantID, nil)
+		if err != nil {
+			panic(err)
+		}
+
+		mhsmURL, ok := os.LookupEnv("AZURE_MANAGEDHSM_URL")
+		if !ok {
+			fmt.Println("Did not find managed HSM url, skipping those tests")
+			enableHSM = false
+		} else {
+			err = recording.AddURISanitizer(fakeKvMHSMURL, mhsmURL, nil)
+			if err != nil {
+				panic(err)
+			}
+
+			err = recording.AddBodyKeySanitizer("$.key.kid", mhsmURL, fakeKvMHSMURL, nil)
+			if err != nil {
+				panic(err)
+			}
+		}
+	} else if recording.GetRecordMode() == "live" {
+		_, ok := os.LookupEnv("AZURE_MANAGEDHSM_URL")
+		if !ok {
+			fmt.Println("Did not find managed HSM url, skipping those tests")
+			enableHSM = false
 		}
 	}
 
@@ -41,15 +87,42 @@ func TestMain(m *testing.M) {
 	exitVal := m.Run()
 
 	// 3. Reset
-	// TODO: Add after sanitizer PR
-	err := recording.ResetSanitizers(nil)
-	if err != nil {
-		panic(err)
+	if recording.GetRecordMode() != "live" {
+		err := recording.ResetSanitizers(nil)
+		if err != nil {
+			panic(err)
+		}
 	}
 
 	// 4. Error out if applicable
 	os.Exit(exitVal)
 }
+
+func startTest(t *testing.T) func() {
+	err := recording.Start(t, pathToPackage, nil)
+	require.NoError(t, err)
+	return func() {
+		err := recording.Stop(t, nil)
+		require.NoError(t, err)
+	}
+}
+
+func skipHSM(t *testing.T, testType string) {
+	if testType == HSMTEST && !enableHSM {
+		if recording.GetRecordMode() != recording.PlaybackMode {
+			t.Log("Skipping HSM Test")
+			t.Skip()
+		}
+	}
+}
+
+func alwaysSkipHSM(t *testing.T, testType string) {
+	if testType == HSMTEST {
+		t.Log("Skipping HSM Test")
+		t.Skip()
+	}
+}
+
 func createRandomName(t *testing.T, prefix string) (string, error) {
 	h := fnv.New32a()
 	_, err := h.Write([]byte(t.Name()))
@@ -109,10 +182,7 @@ func createClient(t *testing.T, testType string) (*Client, error) {
 	vaultUrl := recording.GetEnvVariable("AZURE_KEYVAULT_URL", fakeKvURL)
 	var credOptions *azidentity.ClientSecretCredentialOptions
 	if testType == HSMTEST {
-		vaultUrl = recording.GetEnvVariable("AZURE_MANAGEDHSM_URL", fakeKvURL)
-	}
-	if recording.GetRecordMode() == "playback" {
-		vaultUrl = fakeKvURL
+		vaultUrl = recording.GetEnvVariable("AZURE_MANAGEDHSM_URL", fakeKvMHSMURL)
 	}
 
 	p := NewRecordingPolicy(t, &recording.RecordingOptions{UseHTTPS: true})
@@ -128,9 +198,9 @@ func createClient(t *testing.T, testType string) (*Client, error) {
 
 	var cred azcore.TokenCredential
 	if recording.GetRecordMode() != "playback" {
-		tenantId := lookupEnvVar("KEYVAULT_TENANT_ID")
-		clientId := lookupEnvVar("KEYVAULT_CLIENT_ID")
-		clientSecret := lookupEnvVar("KEYVAULT_CLIENT_SECRET")
+		tenantId := lookupEnvVar("AZKEYS_TENANT_ID")
+		clientId := lookupEnvVar("AZKEYS_CLIENT_ID")
+		clientSecret := lookupEnvVar("AZKEYS_CLIENT_SECRET")
 		cred, err = azidentity.NewClientSecretCredential(tenantId, clientId, clientSecret, credOptions)
 		require.NoError(t, err)
 	} else {

@@ -23,7 +23,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-var pathToPackage = "sdk/keyvault/azkeys/azcrypto"
+var pathToPackage = "sdk/keyvault/azkeys/azcrypto/testdata"
 
 const fakeKvURL = "https://fakekvurl.vault.azure.net/"
 
@@ -93,9 +93,9 @@ func lookupEnvVar(s string) string {
 
 func getCredential(t *testing.T) azcore.TokenCredential {
 	if recording.GetRecordMode() != "playback" {
-		tenantId := lookupEnvVar("KEYVAULT_TENANT_ID")
-		clientId := lookupEnvVar("KEYVAULT_CLIENT_ID")
-		clientSecret := lookupEnvVar("KEYVAULT_CLIENT_SECRET")
+		tenantId := lookupEnvVar("AZKEYS_TENANT_ID")
+		clientId := lookupEnvVar("AZKEYS_CLIENT_ID")
+		clientSecret := lookupEnvVar("AZKEYS_CLIENT_SECRET")
 		cred, err := azidentity.NewClientSecretCredential(tenantId, clientId, clientSecret, nil)
 		require.NoError(t, err)
 		return cred
@@ -142,27 +142,6 @@ func createKeyClient(t *testing.T) (*azkeys.Client, error) {
 
 	return azkeys.NewClient(vaultUrl, cred, options)
 }
-
-// func delay() time.Duration {
-// 	if recording.GetRecordMode() == "playback" {
-// 		return 1 * time.Microsecond
-// 	}
-// 	return 250 * time.Millisecond
-// }
-
-// func cleanUpKey(t *testing.T, client *azkeys.Client, key string) {
-// 	resp, err := client.BeginDeleteKey(context.Background(), key, nil)
-// 	if err != nil {
-// 		fmt.Println("Could not find key with name ", key)
-// 		return
-// 	}
-
-// 	_, err = resp.PollUntilDone(context.Background(), delay())
-// 	require.NoError(t, err)
-
-// 	_, err = client.PurgeDeletedKey(context.Background(), key, nil)
-// 	require.NoError(t, err)
-// }
 
 type FakeCredential struct {
 	accountName string

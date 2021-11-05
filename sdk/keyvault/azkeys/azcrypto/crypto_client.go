@@ -15,9 +15,8 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
-	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal"
+	generated "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
+	shared "github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 )
 
 // The Client performs cryptographic operations using Azure Key Vault Keys. This client
@@ -25,11 +24,10 @@ import (
 // is able to get that material from Key Vault. When the required key material is unavailable,
 // cryptographic operations are performed by the Key Vault service.
 type Client struct {
-	kvClient   *internal.KeyVaultClient
+	kvClient   *generated.KeyVaultClient
 	vaultURL   string
 	keyID      string
 	keyVersion string
-	useService bool
 }
 
 // ClientOptions are the configurable options on a Client.
@@ -37,7 +35,7 @@ type ClientOptions struct {
 	azcore.ClientOptions
 }
 
-// converts ClientOptions to generated *internal.ConnectionOptions
+// converts ClientOptions to generated *generated.ConnectionOptions
 func (c *ClientOptions) toConnectionOptions() *policy.ClientOptions {
 	if c == nil {
 		return nil
@@ -84,44 +82,35 @@ func parseVaultURL(base string) (string, error) {
 
 // NewClient creates a new azcrytpo.Client that will perform operations against the Key Vault service. The key should
 // be an identifier of an Azure Key Vault key. Including a version is recommended but not required.
-func NewClient(key string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
+func NewClient(keyURL string, credential azcore.TokenCredential, options *ClientOptions) (*Client, error) {
+	// TODO: should this return by pointer or by reference, ask Joel
 	if options == nil {
 		options = &ClientOptions{}
 	}
+	genOptions := options.toConnectionOptions()
 
-	options.PerRetryPolicies = append(
-		options.PerRetryPolicies,
-		runtime.NewBearerTokenPolicy(
-			cred,
-			[]string{"https://vault.azure.net/.default"},
-			nil,
-		),
+	genOptions.PerRetryPolicies = append(
+		genOptions.PerRetryPolicies,
+		shared.NewKeyVaultChallengePolicy(credential),
 	)
+	conn := generated.NewConnection(genOptions)
 
-	conn := internal.NewConnection(options.toConnectionOptions())
-
-	vaultURL, err := parseVaultURL(key)
+	vaultURL, err := parseVaultURL(keyURL)
 	if err != nil {
-		return &Client{}, err
+		return nil, err
 	}
 
-	keyID, keyVersion, err := parseKeyIDAndVersion(key)
+	keyID, keyVersion, err := parseKeyIDAndVersion(keyURL)
 	if err != nil {
-		return &Client{}, err
+		return nil, err
 	}
 
 	return &Client{
-		kvClient:   internal.NewKeyVaultClient(conn),
+		kvClient:   generated.NewKeyVaultClient(conn),
 		vaultURL:   vaultURL,
 		keyID:      keyID,
 		keyVersion: keyVersion,
-		useService: true,
 	}, nil
-}
-
-// Creates a new Client that can only perform cryptographic operations locally.
-func NewClientFromJSONWebKey(key azkeys.JSONWebKey) (*Client, error) {
-	return &Client{}, nil
 }
 
 // Optional parameters for the azcrypto.Client.EncryptOptions method
@@ -136,9 +125,9 @@ type EncryptOptions struct {
 	Tag []byte `json:"tag,omitempty"`
 }
 
-func (e EncryptOptions) toGeneratedKeyOperationsParameters(alg EncryptionAlgorithm, value []byte) internal.KeyOperationsParameters {
-	return internal.KeyOperationsParameters{
-		Algorithm: (*internal.JSONWebKeyEncryptionAlgorithm)(&alg),
+func (e EncryptOptions) toGeneratedKeyOperationsParameters(alg EncryptionAlgorithm, value []byte) generated.KeyOperationsParameters {
+	return generated.KeyOperationsParameters{
+		Algorithm: (*generated.JSONWebKeyEncryptionAlgorithm)(&alg),
 		Value:     value,
 		AAD:       e.AAD,
 		Iv:        e.IV,
@@ -153,7 +142,7 @@ type EncryptResponse struct {
 	RawResponse *http.Response
 }
 
-func encryptResponseFromGenerated(i internal.KeyVaultClientEncryptResponse) EncryptResponse {
+func encryptResponseFromGenerated(i generated.KeyVaultClientEncryptResponse) EncryptResponse {
 	return EncryptResponse{
 		RawResponse: i.RawResponse,
 		KeyOperationResult: KeyOperationResult{
@@ -178,22 +167,19 @@ func (c *Client) Encrypt(ctx context.Context, alg EncryptionAlgorithm, value []b
 		options = &EncryptOptions{}
 	}
 
-	if c.useService {
-		resp, err := c.kvClient.Encrypt(
-			ctx,
-			c.vaultURL,
-			c.keyID,
-			c.keyVersion,
-			options.toGeneratedKeyOperationsParameters(alg, value),
-			&internal.KeyVaultClientEncryptOptions{},
-		)
-		if err != nil {
-			return EncryptResponse{}, err
-		}
-
-		return encryptResponseFromGenerated(resp), nil
+	resp, err := c.kvClient.Encrypt(
+		ctx,
+		c.vaultURL,
+		c.keyID,
+		c.keyVersion,
+		options.toGeneratedKeyOperationsParameters(alg, value),
+		&generated.KeyVaultClientEncryptOptions{},
+	)
+	if err != nil {
+		return EncryptResponse{}, err
 	}
-	return EncryptResponse{}, nil
+
+	return encryptResponseFromGenerated(resp), nil
 }
 
 // DecryptOptions contains the optional parameters for the Client.Decrypt function
@@ -208,9 +194,9 @@ type DecryptOptions struct {
 	Tag []byte `json:"tag,omitempty"`
 }
 
-func (e DecryptOptions) toGeneratedKeyOperationsParameters(alg EncryptionAlgorithm, value []byte) internal.KeyOperationsParameters {
-	return internal.KeyOperationsParameters{
-		Algorithm: (*internal.JSONWebKeyEncryptionAlgorithm)(&alg),
+func (e DecryptOptions) toGeneratedKeyOperationsParameters(alg EncryptionAlgorithm, value []byte) generated.KeyOperationsParameters {
+	return generated.KeyOperationsParameters{
+		Algorithm: (*generated.JSONWebKeyEncryptionAlgorithm)(&alg),
 		Value:     value,
 		AAD:       e.AAD,
 		Iv:        e.IV,
@@ -224,7 +210,7 @@ type DecryptResponse struct {
 	RawResponse *http.Response
 }
 
-func decryptResponseFromGenerated(i internal.KeyVaultClientDecryptResponse) DecryptResponse {
+func decryptResponseFromGenerated(i generated.KeyVaultClientDecryptResponse) DecryptResponse {
 	return DecryptResponse{
 		RawResponse: i.RawResponse,
 		KeyOperationResult: KeyOperationResult{
@@ -247,23 +233,20 @@ func (c *Client) Decrypt(ctx context.Context, alg EncryptionAlgorithm, ciphertex
 		options = &DecryptOptions{}
 	}
 
-	if c.useService {
-		resp, err := c.kvClient.Decrypt(
-			ctx,
-			c.vaultURL,
-			c.keyID,
-			c.keyVersion,
-			options.toGeneratedKeyOperationsParameters(alg, ciphertext),
-			&internal.KeyVaultClientDecryptOptions{},
-		)
+	resp, err := c.kvClient.Decrypt(
+		ctx,
+		c.vaultURL,
+		c.keyID,
+		c.keyVersion,
+		options.toGeneratedKeyOperationsParameters(alg, ciphertext),
+		&generated.KeyVaultClientDecryptOptions{},
+	)
 
-		if err != nil {
-			return DecryptResponse{}, err
-		}
-
-		return decryptResponseFromGenerated(resp), nil
+	if err != nil {
+		return DecryptResponse{}, err
 	}
-	return DecryptResponse{}, nil
+
+	return decryptResponseFromGenerated(resp), nil
 }
 
 // WrapKeyOptions contains the optional parameters for the Client.WrapKey method.
@@ -278,9 +261,9 @@ type WrapKeyOptions struct {
 	Tag []byte `json:"tag,omitempty"`
 }
 
-func (w WrapKeyOptions) toGeneratedKeyOperationsParameters(alg KeyWrapAlgorithm, value []byte) internal.KeyOperationsParameters {
-	return internal.KeyOperationsParameters{
-		Algorithm: (*internal.JSONWebKeyEncryptionAlgorithm)(&alg),
+func (w WrapKeyOptions) toGeneratedKeyOperationsParameters(alg KeyWrapAlgorithm, value []byte) generated.KeyOperationsParameters {
+	return generated.KeyOperationsParameters{
+		Algorithm: (*generated.JSONWebKeyEncryptionAlgorithm)(&alg),
 		Value:     value,
 		AAD:       w.AAD,
 		Iv:        w.IV,
@@ -295,7 +278,7 @@ type WrapKeyResponse struct {
 	RawResponse *http.Response
 }
 
-func wrapKeyResponseFromGenerated(i internal.KeyVaultClientWrapKeyResponse) WrapKeyResponse {
+func wrapKeyResponseFromGenerated(i generated.KeyVaultClientWrapKeyResponse) WrapKeyResponse {
 	return WrapKeyResponse{
 		RawResponse: i.RawResponse,
 		KeyOperationResult: KeyOperationResult{
@@ -318,23 +301,20 @@ func (c *Client) WrapKey(ctx context.Context, alg KeyWrapAlgorithm, key []byte, 
 		options = &WrapKeyOptions{}
 	}
 
-	if c.useService {
-		resp, err := c.kvClient.WrapKey(
-			ctx,
-			c.vaultURL,
-			c.keyID,
-			c.keyVersion,
-			options.toGeneratedKeyOperationsParameters(alg, key),
-			&internal.KeyVaultClientWrapKeyOptions{},
-		)
+	resp, err := c.kvClient.WrapKey(
+		ctx,
+		c.vaultURL,
+		c.keyID,
+		c.keyVersion,
+		options.toGeneratedKeyOperationsParameters(alg, key),
+		&generated.KeyVaultClientWrapKeyOptions{},
+	)
 
-		if err != nil {
-			return WrapKeyResponse{}, err
-		}
-
-		return wrapKeyResponseFromGenerated(resp), nil
+	if err != nil {
+		return WrapKeyResponse{}, err
 	}
-	return WrapKeyResponse{}, nil
+
+	return wrapKeyResponseFromGenerated(resp), nil
 }
 
 // UnwrapKeyOptions contains the optional parameters for the Client.UnwrapKey method
@@ -349,9 +329,9 @@ type UnwrapKeyOptions struct {
 	Tag []byte `json:"tag,omitempty"`
 }
 
-func (w UnwrapKeyOptions) toGeneratedKeyOperationsParameters(alg KeyWrapAlgorithm, value []byte) internal.KeyOperationsParameters {
-	return internal.KeyOperationsParameters{
-		Algorithm: (*internal.JSONWebKeyEncryptionAlgorithm)(&alg),
+func (w UnwrapKeyOptions) toGeneratedKeyOperationsParameters(alg KeyWrapAlgorithm, value []byte) generated.KeyOperationsParameters {
+	return generated.KeyOperationsParameters{
+		Algorithm: (*generated.JSONWebKeyEncryptionAlgorithm)(&alg),
 		Value:     value,
 		AAD:       w.AAD,
 		Iv:        w.IV,
@@ -366,7 +346,7 @@ type UnwrapKeyResponse struct {
 	RawResponse *http.Response
 }
 
-func unwrapKeyResponseFromGenerated(i internal.KeyVaultClientUnwrapKeyResponse) UnwrapKeyResponse {
+func unwrapKeyResponseFromGenerated(i generated.KeyVaultClientUnwrapKeyResponse) UnwrapKeyResponse {
 	return UnwrapKeyResponse{
 		RawResponse: i.RawResponse,
 		KeyOperationResult: KeyOperationResult{
@@ -388,29 +368,26 @@ func (c *Client) UnwrapKey(ctx context.Context, alg KeyWrapAlgorithm, encryptedK
 		options = &UnwrapKeyOptions{}
 	}
 
-	if c.useService {
-		resp, err := c.kvClient.UnwrapKey(
-			ctx,
-			c.vaultURL,
-			c.keyID,
-			c.keyVersion,
-			options.toGeneratedKeyOperationsParameters(alg, encryptedKey),
-			&internal.KeyVaultClientUnwrapKeyOptions{},
-		)
-		if err != nil {
-			return UnwrapKeyResponse{}, err
-		}
-
-		return unwrapKeyResponseFromGenerated(resp), nil
+	resp, err := c.kvClient.UnwrapKey(
+		ctx,
+		c.vaultURL,
+		c.keyID,
+		c.keyVersion,
+		options.toGeneratedKeyOperationsParameters(alg, encryptedKey),
+		&generated.KeyVaultClientUnwrapKeyOptions{},
+	)
+	if err != nil {
+		return UnwrapKeyResponse{}, err
 	}
-	return UnwrapKeyResponse{}, nil
+
+	return unwrapKeyResponseFromGenerated(resp), nil
 }
 
 // SignOptions contains the optional parameters for the Client.Sign method.
 type SignOptions struct{}
 
-func (s SignOptions) toGenerated() *internal.KeyVaultClientSignOptions {
-	return &internal.KeyVaultClientSignOptions{}
+func (s SignOptions) toGenerated() *generated.KeyVaultClientSignOptions {
+	return &generated.KeyVaultClientSignOptions{}
 }
 
 // SignResponse contains the response for the Client.Sign method.
@@ -420,7 +397,7 @@ type SignResponse struct {
 	RawResponse *http.Response
 }
 
-func signResponseFromGenerated(i internal.KeyVaultClientSignResponse) SignResponse {
+func signResponseFromGenerated(i generated.KeyVaultClientSignResponse) SignResponse {
 	return SignResponse{
 		RawResponse: i.RawResponse,
 		KeyOperationResult: KeyOperationResult{
@@ -440,32 +417,29 @@ func (c *Client) Sign(ctx context.Context, algorithm SignatureAlgorithm, digest 
 		options = &SignOptions{}
 	}
 
-	if c.useService {
-		resp, err := c.kvClient.Sign(
-			ctx,
-			c.vaultURL,
-			c.keyID,
-			c.keyVersion,
-			internal.KeySignParameters{
-				Algorithm: (*internal.JSONWebKeySignatureAlgorithm)(&algorithm),
-				Value:     digest,
-			},
-			options.toGenerated(),
-		)
-		if err != nil {
-			return SignResponse{}, err
-		}
-
-		return signResponseFromGenerated(resp), nil
+	resp, err := c.kvClient.Sign(
+		ctx,
+		c.vaultURL,
+		c.keyID,
+		c.keyVersion,
+		generated.KeySignParameters{
+			Algorithm: (*generated.JSONWebKeySignatureAlgorithm)(&algorithm),
+			Value:     digest,
+		},
+		options.toGenerated(),
+	)
+	if err != nil {
+		return SignResponse{}, err
 	}
-	return SignResponse{}, nil
+
+	return signResponseFromGenerated(resp), nil
 }
 
 // VerifyOptions contains the optional parameters for the Client.Verify method
 type VerifyOptions struct{}
 
-func (v VerifyOptions) toGenerated() *internal.KeyVaultClientVerifyOptions {
-	return &internal.KeyVaultClientVerifyOptions{}
+func (v VerifyOptions) toGenerated() *generated.KeyVaultClientVerifyOptions {
+	return &generated.KeyVaultClientVerifyOptions{}
 }
 
 // VerifyResponse contains the response for the Client.Verify method
@@ -477,7 +451,7 @@ type VerifyResponse struct {
 	RawResponse *http.Response
 }
 
-func verifyResponseFromGenerated(i internal.KeyVaultClientVerifyResponse) VerifyResponse {
+func verifyResponseFromGenerated(i generated.KeyVaultClientVerifyResponse) VerifyResponse {
 	return VerifyResponse{
 		RawResponse: i.RawResponse,
 		IsValid:     i.Value,
@@ -493,25 +467,22 @@ func (c *Client) Verify(ctx context.Context, algorithm SignatureAlgorithm, diges
 		options = &VerifyOptions{}
 	}
 
-	if c.useService {
-		resp, err := c.kvClient.Verify(
-			ctx,
-			c.vaultURL,
-			c.keyID,
-			c.keyVersion,
-			internal.KeyVerifyParameters{
-				Algorithm: (*internal.JSONWebKeySignatureAlgorithm)(&algorithm),
-				Digest:    digest,
-				Signature: signature,
-			},
-			options.toGenerated(),
-		)
+	resp, err := c.kvClient.Verify(
+		ctx,
+		c.vaultURL,
+		c.keyID,
+		c.keyVersion,
+		generated.KeyVerifyParameters{
+			Algorithm: (*generated.JSONWebKeySignatureAlgorithm)(&algorithm),
+			Digest:    digest,
+			Signature: signature,
+		},
+		options.toGenerated(),
+	)
 
-		if err != nil {
-			return VerifyResponse{}, err
-		}
-
-		return verifyResponseFromGenerated(resp), nil
+	if err != nil {
+		return VerifyResponse{}, err
 	}
-	return VerifyResponse{}, nil
+
+	return verifyResponseFromGenerated(resp), nil
 }

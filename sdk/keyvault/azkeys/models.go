@@ -9,7 +9,7 @@ package azkeys
 import (
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal"
+	generated "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
 )
 
 // Attributes - The object attributes managed by the KeyVault service.
@@ -42,12 +42,12 @@ type KeyAttributes struct {
 	RecoveryLevel *DeletionRecoveryLevel `json:"recoveryLevel,omitempty" azure:"ro"`
 }
 
-// converts a KeyAttributes to *internal.KeyAttributes
-func (k KeyAttributes) toGenerated() *internal.KeyAttributes {
-	return &internal.KeyAttributes{
+// converts a KeyAttributes to *generated.KeyAttributes
+func (k KeyAttributes) toGenerated() *generated.KeyAttributes {
+	return &generated.KeyAttributes{
 		RecoverableDays: k.RecoverableDays,
 		RecoveryLevel:   recoveryLevelToGenerated(k.RecoveryLevel),
-		Attributes: internal.Attributes{
+		Attributes: generated.Attributes{
 			Enabled:   k.Enabled,
 			Expires:   k.Expires,
 			NotBefore: k.NotBefore,
@@ -57,8 +57,8 @@ func (k KeyAttributes) toGenerated() *internal.KeyAttributes {
 	}
 }
 
-// converts *internal.KeyAttributes to *KeyAttributes
-func keyAttributesFromGenerated(i *internal.KeyAttributes) *KeyAttributes {
+// converts *generated.KeyAttributes to *KeyAttributes
+func keyAttributesFromGenerated(i *generated.KeyAttributes) *KeyAttributes {
 	if i == nil {
 		return &KeyAttributes{}
 	}
@@ -143,8 +143,8 @@ type JSONWebKey struct {
 	Y []byte `json:"y,omitempty"`
 }
 
-// converts internal.JSONWebKey to publicly exposed version
-func jsonWebKeyFromGenerated(i *internal.JSONWebKey) *JSONWebKey {
+// converts generated.JSONWebKey to publicly exposed version
+func jsonWebKeyFromGenerated(i *generated.JSONWebKey) *JSONWebKey {
 	if i == nil {
 		return &JSONWebKey{}
 	}
@@ -169,10 +169,10 @@ func jsonWebKeyFromGenerated(i *internal.JSONWebKey) *JSONWebKey {
 	}
 }
 
-// converts JSONWebKey to *internal.JSONWebKey
-func (j JSONWebKey) toGenerated() *internal.JSONWebKey {
-	return &internal.JSONWebKey{
-		Crv:    (*internal.JSONWebKeyCurveName)(j.Crv),
+// converts JSONWebKey to *generated.JSONWebKey
+func (j JSONWebKey) toGenerated() *generated.JSONWebKey {
+	return &generated.JSONWebKey{
+		Crv:    (*generated.JSONWebKeyCurveName)(j.Crv),
 		D:      j.D,
 		DP:     j.DP,
 		DQ:     j.DQ,
@@ -180,7 +180,7 @@ func (j JSONWebKey) toGenerated() *internal.JSONWebKey {
 		K:      j.K,
 		KeyOps: j.KeyOps,
 		Kid:    j.ID,
-		Kty:    (*internal.JSONWebKeyType)(j.KeyType),
+		Kty:    (*generated.JSONWebKeyType)(j.KeyType),
 		N:      j.N,
 		P:      j.P,
 		Q:      j.Q,
@@ -214,9 +214,9 @@ const (
 	RSAHSM KeyType = "RSA-HSM"
 )
 
-// convert KeyType to *internal.JSONWebKeyType
-func (j KeyType) toGenerated() *internal.JSONWebKeyType {
-	return internal.JSONWebKeyType(j).ToPtr()
+// convert KeyType to *generated.JSONWebKeyType
+func (j KeyType) toGenerated() *generated.JSONWebKeyType {
+	return generated.JSONWebKeyType(j).ToPtr()
 }
 
 // KeyItem - The key item containing key metadata.
@@ -234,8 +234,8 @@ type KeyItem struct {
 	Managed *bool `json:"managed,omitempty" azure:"ro"`
 }
 
-// convert *internal.KeyItem to *KeyItem
-func keyItemFromGenerated(i *internal.KeyItem) *KeyItem {
+// convert *generated.KeyItem to *KeyItem
+func keyItemFromGenerated(i *generated.KeyItem) *KeyItem {
 	if i == nil {
 		return nil
 	}
@@ -274,8 +274,8 @@ type DeletedKeyItem struct {
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
 }
 
-// convert *internal.DeletedKeyItem to *DeletedKeyItem
-func deletedKeyItemFromGenerated(i *internal.DeletedKeyItem) *DeletedKeyItem {
+// convert *generated.DeletedKeyItem to *DeletedKeyItem
+func deletedKeyItemFromGenerated(i *generated.DeletedKeyItem) *DeletedKeyItem {
 	if i == nil {
 		return nil
 	}
@@ -296,7 +296,7 @@ type KeyReleasePolicy struct {
 	Data []byte `json:"data,omitempty"`
 }
 
-func keyReleasePolicyFromGenerated(i *internal.KeyReleasePolicy) *KeyReleasePolicy {
+func keyReleasePolicyFromGenerated(i *generated.KeyReleasePolicy) *KeyReleasePolicy {
 	if i == nil {
 		return nil
 	}
@@ -333,8 +333,8 @@ type KeyRotationPolicyAttributes struct {
 	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
 }
 
-func (k KeyRotationPolicyAttributes) toGenerated() *internal.KeyRotationPolicyAttributes {
-	return &internal.KeyRotationPolicyAttributes{
+func (k KeyRotationPolicyAttributes) toGenerated() *generated.KeyRotationPolicyAttributes {
+	return &generated.KeyRotationPolicyAttributes{
 		ExpiryTime: k.ExpiryTime,
 		Created:    k.Created,
 		Updated:    k.Updated,
@@ -350,19 +350,19 @@ type LifetimeActions struct {
 	Trigger *LifetimeActionsTrigger `json:"trigger,omitempty"`
 }
 
-func (l LifetimeActions) toGenerated() *internal.LifetimeActions {
-	return &internal.LifetimeActions{
-		Action: &internal.LifetimeActionsType{
-			Type: (*internal.ActionType)(l.Action.Type),
+func (l LifetimeActions) toGenerated() *generated.LifetimeActions {
+	return &generated.LifetimeActions{
+		Action: &generated.LifetimeActionsType{
+			Type: (*generated.ActionType)(l.Action.Type),
 		},
-		Trigger: &internal.LifetimeActionsTrigger{
+		Trigger: &generated.LifetimeActionsTrigger{
 			TimeAfterCreate:  l.Trigger.TimeAfterCreate,
 			TimeBeforeExpiry: l.Trigger.TimeBeforeExpiry,
 		},
 	}
 }
 
-func lifetimeActionsFromGenerated(i *internal.LifetimeActions) *LifetimeActions {
+func lifetimeActionsFromGenerated(i *generated.LifetimeActions) *LifetimeActions {
 	if i == nil {
 		return nil
 	}

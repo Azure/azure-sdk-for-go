@@ -5,7 +5,6 @@ package azservicebus
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net/http"
 	"time"
@@ -17,9 +16,6 @@ import (
 
 // TopicProperties represents the static properties of the topic.
 type TopicProperties struct {
-	// Name of the topic relative to the namespace base address.
-	Name string
-
 	// MaxSizeInMegabytes - The maximum size of the topic in megabytes, which is the size of memory
 	// allocated for the topic.
 	// Default is 1024.
@@ -49,9 +45,12 @@ type TopicProperties struct {
 	// EnablePartitioning indicates whether the topic is to be partitioned across multiple message brokers.
 	EnablePartitioning *bool
 
-	// SupportsOrdering defines whether ordering needs to be maintained. If true, messages
+	// SupportOrdering defines whether ordering needs to be maintained. If true, messages
 	// sent to topic will be forwarded to the subscription, in order.
-	SupportsOrdering *bool
+	SupportOrdering *bool
+
+	// UserMetadata is custom metadata that user can associate with the topic.
+	UserMetadata *string
 }
 
 // TopicRuntimeProperties represent dynamic properties of a topic, such as the ActiveMessageCount.
@@ -77,21 +76,6 @@ type TopicRuntimeProperties struct {
 	// ScheduledMessageCount is the number of messages that are scheduled to be entopicd.
 	ScheduledMessageCount int32
 }
-
-type AddTopicResponse struct {
-	// Value is the result of the request.
-	Value *TopicProperties
-	// RawResponse is the *http.Response for the request.
-	RawResponse *http.Response
-}
-
-type GetTopicResponse struct {
-	// Value is the result of the request.
-	Value *TopicProperties
-	// RawResponse is the *http.Response for the request.
-	RawResponse *http.Response
-}
-
 type GetTopicRuntimePropertiesResponse struct {
 	// Value is the result of the request.
 	Value *TopicRuntimeProperties
@@ -99,9 +83,14 @@ type GetTopicRuntimePropertiesResponse struct {
 	RawResponse *http.Response
 }
 
+type TopicItem struct {
+	TopicName string
+	TopicProperties
+}
+
 type ListTopicsResponse struct {
-	// Value is the result of the request.
-	Value []*TopicProperties
+	// Items is the result of the request.
+	Items []*TopicItem
 	// RawResponse is the *http.Response for the request.
 	RawResponse *http.Response
 }
@@ -113,13 +102,6 @@ type ListTopicsRuntimePropertiesResponse struct {
 	RawResponse *http.Response
 }
 
-type UpdateTopicResponse struct {
-	// Value is the result of the request.
-	Value *TopicProperties
-	// RawResponse is the *http.Response for the request.
-	RawResponse *http.Response
-}
-
 type DeleteTopicResponse struct {
 	// Value is the result of the request.
 	Value *TopicProperties
@@ -127,29 +109,54 @@ type DeleteTopicResponse struct {
 	RawResponse *http.Response
 }
 
-// AddTopic creates a topic using defaults for all options.
-func (ac *AdminClient) AddTopic(ctx context.Context, topicName string) (*AddTopicResponse, error) {
-	return ac.AddTopicWithProperties(ctx, &TopicProperties{
-		Name: topicName,
-	})
+type CreateTopicResult struct {
+	TopicProperties
 }
 
-// AddTopicWithProperties creates a topic with configurable properties
-func (ac *AdminClient) AddTopicWithProperties(ctx context.Context, properties *TopicProperties) (*AddTopicResponse, error) {
-	props, resp, err := ac.createOrUpdateTopicImpl(ctx, properties, true)
+type CreateTopicResponse struct {
+	CreateTopicResult
+
+	// RawResponse is the *http.Response for the request.
+	RawResponse *http.Response
+}
+
+type CreateTopicOptions struct {
+	// For future expansion
+}
+
+// CreateTopic creates a topic using defaults for all options.
+func (ac *AdminClient) CreateTopic(ctx context.Context, topicName string, properties *TopicProperties, options *CreateTopicOptions) (*CreateTopicResponse, error) {
+	newProps, resp, err := ac.createOrUpdateTopicImpl(ctx, topicName, properties, true)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return &AddTopicResponse{
+	return &CreateTopicResponse{
 		RawResponse: resp,
-		Value:       props,
+		CreateTopicResult: CreateTopicResult{
+			TopicProperties: *newProps,
+		},
 	}, nil
 }
 
+type GetTopicResult struct {
+	TopicProperties
+}
+
+type GetTopicResponse struct {
+	GetTopicResult
+
+	// RawResponse is the *http.Response for the request.
+	RawResponse *http.Response
+}
+
+type GetTopicOptions struct {
+	// For future expansion
+}
+
 // GetTopic gets a topic by name.
-func (ac *AdminClient) GetTopic(ctx context.Context, topicName string) (*GetTopicResponse, error) {
+func (ac *AdminClient) GetTopic(ctx context.Context, topicName string, options *GetTopicOptions) (*GetTopicResponse, error) {
 	var atomResp *atom.TopicEnvelope
 	resp, err := ac.em.Get(ctx, "/"+topicName, &atomResp)
 
@@ -157,7 +164,7 @@ func (ac *AdminClient) GetTopic(ctx context.Context, topicName string) (*GetTopi
 		return nil, err
 	}
 
-	props, err := newTopicProperties(atomResp.Title, &atomResp.Content.TopicDescription)
+	props, err := newTopicProperties(&atomResp.Content.TopicDescription)
 
 	if err != nil {
 		return nil, err
@@ -165,7 +172,9 @@ func (ac *AdminClient) GetTopic(ctx context.Context, topicName string) (*GetTopi
 
 	return &GetTopicResponse{
 		RawResponse: resp,
-		Value:       props,
+		GetTopicResult: GetTopicResult{
+			TopicProperties: *props,
+		},
 	}, nil
 }
 
@@ -186,10 +195,8 @@ func (ac *AdminClient) GetTopicRuntimeProperties(ctx context.Context, topicName 
 
 // ListTopicsOptions can be used to configure the ListTopics method.
 type ListTopicsOptions struct {
-	// Top is the maximum size of each page of results.
-	Top int
-	// Skip is the starting index for the paging operation.
-	Skip int
+	// MaxPageSize is the maximum size of each page of results.
+	MaxPageSize int32
 }
 
 // TopicPropertiesPager provides iteration over ListTopicProperties pages.
@@ -207,25 +214,21 @@ type TopicPropertiesPager interface {
 
 // ListTopics lists topics.
 func (ac *AdminClient) ListTopics(options *ListTopicsOptions) TopicPropertiesPager {
-	var pageSize int
-	var skip int
+	var pageSize int32
 
 	if options != nil {
-		skip = options.Skip
-		pageSize = options.Top
+		pageSize = options.MaxPageSize
 	}
 
 	return &topicPropertiesPager{
-		innerPager: ac.getTopicPager(pageSize, skip),
+		innerPager: ac.getTopicPager(pageSize, 0),
 	}
 }
 
 // ListTopicsRuntimePropertiesOptions can be used to configure the ListTopicsRuntimeProperties method.
 type ListTopicsRuntimePropertiesOptions struct {
-	// Top is the maximum size of each page of results.
-	Top int
-	// Skip is the starting index for the paging operation.
-	Skip int
+	// MaxPageSize is the maximum size of each page of results.
+	MaxPageSize int32
 }
 
 // TopicRuntimePropertiesPager provides iteration over ListTopicRuntimeProperties pages.
@@ -243,40 +246,35 @@ type TopicRuntimePropertiesPager interface {
 
 // ListTopicsRuntimeProperties lists runtime properties for topics.
 func (ac *AdminClient) ListTopicsRuntimeProperties(options *ListTopicsRuntimePropertiesOptions) TopicRuntimePropertiesPager {
-	var pageSize int
-	var skip int
+	var pageSize int32
 
 	if options != nil {
-		skip = options.Skip
-		pageSize = options.Top
+		pageSize = options.MaxPageSize
 	}
 
 	return &topicRuntimePropertiesPager{
-		innerPager: ac.getTopicPager(pageSize, skip),
+		innerPager: ac.getTopicPager(pageSize, 0),
 	}
 }
 
-// TopicExists checks if a topic exists.
-// Returns true if the topic is found
-// (false, nil) if the topic is not found
-// (false, err) if an error occurred while trying to check if the topic exists.
-func (ac *AdminClient) TopicExists(ctx context.Context, topicName string) (bool, error) {
-	_, err := ac.GetTopic(ctx, topicName)
+type UpdateTopicResult struct {
+	TopicProperties
+}
 
-	if err == nil {
-		return true, nil
-	}
+type UpdateTopicResponse struct {
+	UpdateTopicResult
 
-	if atom.NotFound(err) {
-		return false, nil
-	}
+	// RawResponse is the *http.Response for the request.
+	RawResponse *http.Response
+}
 
-	return false, err
+type UpdateTopicOptions struct {
+	// For future expansion
 }
 
 // UpdateTopic updates an existing topic.
-func (ac *AdminClient) UpdateTopic(ctx context.Context, properties *TopicProperties) (*UpdateTopicResponse, error) {
-	newProps, resp, err := ac.createOrUpdateTopicImpl(ctx, properties, false)
+func (ac *AdminClient) UpdateTopic(ctx context.Context, topicName string, properties TopicProperties, options *UpdateTopicOptions) (*UpdateTopicResponse, error) {
+	newProps, resp, err := ac.createOrUpdateTopicImpl(ctx, topicName, &properties, false)
 
 	if err != nil {
 		return nil, err
@@ -284,7 +282,9 @@ func (ac *AdminClient) UpdateTopic(ctx context.Context, properties *TopicPropert
 
 	return &UpdateTopicResponse{
 		RawResponse: resp,
-		Value:       newProps,
+		UpdateTopicResult: UpdateTopicResult{
+			TopicProperties: *newProps,
+		},
 	}, nil
 }
 
@@ -297,11 +297,11 @@ func (ac *AdminClient) DeleteTopic(ctx context.Context, topicName string) (*Dele
 	}, err
 }
 
-func (ac *AdminClient) getTopicPager(top int, skip int) topicFeedPagerFunc {
+func (ac *AdminClient) getTopicPager(maxPageSize int32, skip int32) topicFeedPagerFunc {
 	return func(ctx context.Context) (*atom.TopicFeed, *http.Response, error) {
 		url := "/$Resources/Topics?"
-		if top > 0 {
-			url += fmt.Sprintf("&$top=%d", top)
+		if maxPageSize > 0 {
+			url += fmt.Sprintf("&$top=%d", maxPageSize)
 		}
 
 		if skip > 0 {
@@ -319,14 +319,14 @@ func (ac *AdminClient) getTopicPager(top int, skip int) topicFeedPagerFunc {
 			return nil, nil, nil
 		}
 
-		skip += len(atomResp.Entries)
+		skip += int32(len(atomResp.Entries))
 		return atomResp, resp, nil
 	}
 }
 
-func (ac *AdminClient) createOrUpdateTopicImpl(ctx context.Context, props *TopicProperties, creating bool) (*TopicProperties, *http.Response, error) {
+func (ac *AdminClient) createOrUpdateTopicImpl(ctx context.Context, topicName string, props *TopicProperties, creating bool) (*TopicProperties, *http.Response, error) {
 	if props == nil {
-		return nil, nil, errors.New("properties are required and cannot be nil")
+		props = &TopicProperties{}
 	}
 
 	env := newTopicEnvelope(props, ac.em.TokenProvider())
@@ -344,13 +344,13 @@ func (ac *AdminClient) createOrUpdateTopicImpl(ctx context.Context, props *Topic
 	}
 
 	var atomResp *atom.TopicEnvelope
-	resp, err := ac.em.Put(ctx, "/"+props.Name, env, &atomResp, mw...)
+	resp, err := ac.em.Put(ctx, "/"+topicName, env, &atomResp, mw...)
 
 	if err != nil {
 		return nil, nil, err
 	}
 
-	topicProps, err := newTopicProperties(props.Name, &atomResp.Content.TopicDescription)
+	topicProps, err := newTopicProperties(&atomResp.Content.TopicDescription)
 
 	if err != nil {
 		return nil, nil, err
@@ -368,7 +368,8 @@ func newTopicEnvelope(props *TopicProperties, tokenProvider auth.TokenProvider) 
 		EnableBatchedOperations:             props.EnableBatchedOperations,
 
 		Status:             (*atom.EntityStatus)(props.Status),
-		SupportOrdering:    props.SupportsOrdering,
+		UserMetadata:       props.UserMetadata,
+		SupportOrdering:    props.SupportOrdering,
 		AutoDeleteOnIdle:   utils.DurationToStringPtr(props.AutoDeleteOnIdle),
 		EnablePartitioning: props.EnablePartitioning,
 	}
@@ -376,7 +377,7 @@ func newTopicEnvelope(props *TopicProperties, tokenProvider auth.TokenProvider) 
 	return atom.WrapWithTopicEnvelope(desc)
 }
 
-func newTopicProperties(name string, td *atom.TopicDescription) (*TopicProperties, error) {
+func newTopicProperties(td *atom.TopicDescription) (*TopicProperties, error) {
 	defaultMessageTimeToLive, err := utils.ISO8601StringToDuration(td.DefaultMessageTimeToLive)
 
 	if err != nil {
@@ -396,16 +397,16 @@ func newTopicProperties(name string, td *atom.TopicDescription) (*TopicPropertie
 	}
 
 	return &TopicProperties{
-		Name:                                name,
 		MaxSizeInMegabytes:                  td.MaxSizeInMegabytes,
 		RequiresDuplicateDetection:          td.RequiresDuplicateDetection,
 		DefaultMessageTimeToLive:            defaultMessageTimeToLive,
 		DuplicateDetectionHistoryTimeWindow: duplicateDetectionHistoryTimeWindow,
 		EnableBatchedOperations:             td.EnableBatchedOperations,
 		Status:                              (*EntityStatus)(td.Status),
+		UserMetadata:                        td.UserMetadata,
 		AutoDeleteOnIdle:                    autoDeleteOnIdle,
 		EnablePartitioning:                  td.EnablePartitioning,
-		SupportsOrdering:                    td.SupportOrdering,
+		SupportOrdering:                     td.SupportOrdering,
 	}, nil
 }
 
@@ -453,21 +454,24 @@ func (p *topicPropertiesPager) getNextPage(ctx context.Context) (*ListTopicsResp
 		return nil, err
 	}
 
-	var all []*TopicProperties
+	var all []*TopicItem
 
 	for _, env := range feed.Entries {
-		props, err := newTopicProperties(env.Title, &env.Content.TopicDescription)
+		props, err := newTopicProperties(&env.Content.TopicDescription)
 
 		if err != nil {
 			return nil, err
 		}
 
-		all = append(all, props)
+		all = append(all, &TopicItem{
+			TopicProperties: *props,
+			TopicName:       env.Title,
+		})
 	}
 
 	return &ListTopicsResponse{
 		RawResponse: resp,
-		Value:       all,
+		Items:       all,
 	}, nil
 }
 

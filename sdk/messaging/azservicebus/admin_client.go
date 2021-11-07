@@ -20,8 +20,8 @@ type AdminClientOptions struct {
 	// for future expansion
 }
 
-// NewAdminClient creates an AdminClient authenticating using a connection string.
-func NewAdminClientWithConnectionString(connectionString string, options *AdminClientOptions) (*AdminClient, error) {
+// NewAdminClientFromConnectionString creates an AdminClient authenticating using a connection string.
+func NewAdminClientFromConnectionString(connectionString string, options *AdminClientOptions) (*AdminClient, error) {
 	em, err := atom.NewEntityManagerWithConnectionString(connectionString, internal.Version)
 
 	if err != nil {

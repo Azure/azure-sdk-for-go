@@ -46,7 +46,7 @@ func main() {
   client, err := azservicebus.NewClientFromConnectionString("<Service Bus connection string>")
  
   if err != nil {
-    log.Fatalf("Failed to create Service Bus Client: %s", err.Error())
+    panic(err)
   }
 }
 ```
@@ -66,13 +66,13 @@ func main() {
   cred, err := azidentity.NewDefaultAzureCredential(nil)
 
   if err != nil {
-    log.Fatalf("Failed creating DefaultAzureCredential: %s", err.Error())
+    panic(err)
   }
 
   client, err := azservicebus.NewClient("<ex: my-service-bus.servicebus.windows.net>", cred)
 
   if err != nil {
-    log.Fatalf("Failed to create Service Bus Client: %s", err.Error())
+    panic(err)
   }
 }
 ```
@@ -112,7 +112,7 @@ NOTE: Creating a `client` is covered in the ["Authenticate the client"](#authent
 sender, err := client.NewSender("<queue or topic>")
 
 if err != nil {
-  log.Fatalf("Failed to create Sender: %s", err.Error())
+  panic(err)
 }
 
 // send a single message
@@ -129,29 +129,23 @@ You can also send messages in batches, which can be more efficient than sending 
 messageBatch, err := sender.NewMessageBatch(context.TODO())
 
 if err != nil {
-  log.Fatalf("Failed to create a message batch: %s", err.Error())
+  panic(err)
 }
 
-// Add a message using TryAdd.
-// This can be called multiple times, and will return (false, nil)
-// if the message cannot be added because the batch is full.
-added, err := messageBatch.TryAdd(&azservicebus.Message{
+// Add a message to our message batch. This can be called multiple times.
+err := messageBatch.Add(&azservicebus.Message{
     Body: []byte(fmt.Sprintf("hello world")),
 })
 
-if err != nil {
-  log.Fatalf("Failed to add message to batch because of an error: %s", err.Error())
-}
+if err == azservicebus.ErrMessageTooLarge {
+  fmt.Printf("Message batch is full. We should send it and create a new one.\n")
 
-if !added {
-  log.Printf("Message batch is full. We should send it and create a new one.")
+  // send what we have since the batch is full
   err := sender.SendMessageBatch(context.TODO(), messageBatch)
-
-  if err != nil {
-    log.Fatalf("Failed to send message batch: %s", err.Error())
-  }
-
-  // add the next message to a new batch and start again.
+  
+  // Create a new batch, add this message and start again.
+} else if err != nil {
+  panic(err)
 }
 ```
 
@@ -172,7 +166,7 @@ receiver, err := client.NewReceiverForQueue(
 // client.NewReceiverForSubscription("<topic>", "<subscription>")
 
 if err != nil {
-  log.Fatalf("Failed to create the receiver: %s", err.Error())
+  panic(err)
 }
 
 // Receive a fixed set of messages. Note that the number of messages

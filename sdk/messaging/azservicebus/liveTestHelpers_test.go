@@ -57,19 +57,18 @@ func createQueue(t *testing.T, connectionString string, queueProperties *QueuePr
 	nanoSeconds := time.Now().UnixNano()
 	queueName := fmt.Sprintf("queue-%X", nanoSeconds)
 
-	adminClient, err := NewAdminClientWithConnectionString(connectionString, nil)
+	adminClient, err := NewAdminClientFromConnectionString(connectionString, nil)
 	require.NoError(t, err)
 
 	if queueProperties == nil {
 		queueProperties = &QueueProperties{}
 	}
 
-	queueProperties.Name = queueName
-	_, err = adminClient.AddQueueWithProperties(context.Background(), queueProperties)
+	_, err = adminClient.CreateQueue(context.Background(), queueName, queueProperties, nil)
 	require.NoError(t, err)
 
 	return queueName, func() {
-		if _, err := adminClient.DeleteQueue(context.TODO(), queueProperties.Name); err != nil {
+		if _, err := adminClient.DeleteQueue(context.TODO(), queueName); err != nil {
 			require.NoError(t, err)
 		}
 	}

@@ -63,6 +63,7 @@ type (
 		CountDetails                        *CountDetails `xml:"CountDetails,omitempty"`
 		ForwardTo                           *string       `xml:"ForwardTo,omitempty"`
 		ForwardDeadLetteredMessagesTo       *string       `xml:"ForwardDeadLetteredMessagesTo,omitempty"` // ForwardDeadLetteredMessagesTo - absolute URI of the entity to forward dead letter messages
+		UserMetadata                        *string       `xml:"UserMetadata,omitempty"`
 	}
 )
 

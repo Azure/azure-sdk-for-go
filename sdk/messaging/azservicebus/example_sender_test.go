@@ -12,7 +12,7 @@ import (
 )
 
 func ExampleClient_NewSender() {
-	sender, err = client.NewSender("exampleQueue") // or topicName
+	sender, err = client.NewSender("exampleQueue", nil) // or topicName
 	exitOnError("Failed to create sender", err)
 }
 
@@ -35,22 +35,22 @@ func ExampleSender_SendMessage_messageBatch() {
 	}
 
 	for i := 0; i < len(messagesToSend); i++ {
-		added, err := batch.Add(messagesToSend[i])
+		err := batch.AddMessage(messagesToSend[i])
 
-		if added {
-			continue
+		// feedback: check err != nil
+		if err != nil {
+			switch err {
+			case azservicebus.ErrMessageTooLarge:
+				// At this point you can do a few things:
+				// 1. Ignore this message
+				// 2. Send this batch (it's full) and create a new batch.
+				//
+				// The batch can still be used after this error.
+				log.Fatal("Failed to add message to batch (batch is full)")
+			default:
+				exitOnError("Error while trying to add message to batch", err)
+			}
 		}
-
-		if err == nil {
-			// At this point you can do a few things:
-			// 1. Ignore this message
-			// 2. Send this batch (it's full) and create a new batch.
-			//
-			// The batch can still be used after this error.
-			log.Fatal("Failed to add message to batch (batch is full)")
-		}
-
-		exitOnError("Error while trying to add message to batch", err)
 	}
 
 	// now let's send the batch
@@ -65,8 +65,8 @@ func ExampleSender_ScheduleMessages() {
 
 	// schedule the message to be delivered in an hour.
 	sequenceNumbers, err := sender.ScheduleMessages(context.TODO(),
-		[]azservicebus.SendableMessage{
-			&azservicebus.Message{Body: []byte("hello world")},
+		[]*azservicebus.Message{
+			{Body: []byte("hello world")},
 		}, time.Now().Add(time.Hour))
 	exitOnError("Failed to schedule messages", err)
 
@@ -76,13 +76,11 @@ func ExampleSender_ScheduleMessages() {
 	// or you can set the `ScheduledEnqueueTime` field on a message when you send it
 	future := time.Now().Add(time.Hour)
 
-	err = sender.SendMessages(context.TODO(),
-		[]*azservicebus.Message{
-			{
-				Body: []byte("hello world"),
-				// schedule the message to be delivered in an hour.
-				ScheduledEnqueueTime: &future,
-			},
+	err = sender.SendMessage(context.TODO(),
+		&azservicebus.Message{
+			Body: []byte("hello world"),
+			// schedule the message to be delivered in an hour.
+			ScheduledEnqueueTime: &future,
 		})
-	exitOnError("Failed to schedule messages using SendMessages", err)
+	exitOnError("Failed to schedule messages using SendMessage", err)
 }

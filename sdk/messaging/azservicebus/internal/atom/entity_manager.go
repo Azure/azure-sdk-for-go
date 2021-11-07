@@ -384,12 +384,42 @@ func TraceReqAndResponseMiddleware() MiddlewareFunc {
 	}
 }
 
-var errEntityDoesNotExist = errors.New("entity does not exist")
+type feedEmptyError struct {
+	azcore.HTTPResponse
+	response *http.Response
+}
 
-func NotFound(err error) bool {
+func (e feedEmptyError) RawResponse() *http.Response {
+	return e.response
+}
+func (e feedEmptyError) Error() string {
+	return "entity does not exist"
+}
+
+func NotFound(err error) (bool, *http.Response) {
+	var feedEmptyError feedEmptyError
+
+	if errors.As(err, &feedEmptyError) {
+		return true, feedEmptyError.RawResponse()
+	}
+
 	var httpResponse azcore.HTTPResponse
-	return errors.Is(err, errEntityDoesNotExist) ||
-		(errors.As(err, &httpResponse) && httpResponse.RawResponse().StatusCode == 404)
+
+	if errors.As(err, &httpResponse) {
+		return httpResponse.RawResponse().StatusCode == 404, httpResponse.RawResponse()
+	}
+
+	return false, nil
+}
+
+func AsHTTPResponse(err error) *http.Response {
+	var httpResponse azcore.HTTPResponse
+
+	if errors.As(err, &httpResponse) {
+		return httpResponse.RawResponse()
+	}
+
+	return nil
 }
 
 func isEmptyFeed(b []byte) bool {
@@ -416,7 +446,7 @@ func deserializeBody(resp *http.Response, respObj interface{}) (*http.Response, 
 		// ATOM does this interesting thing where, when something doesn't exist, it gives you back an empty feed
 		// check:
 		if isEmptyFeed(bytes) {
-			return nil, errEntityDoesNotExist
+			return nil, feedEmptyError{response: resp}
 		}
 
 		return resp, err

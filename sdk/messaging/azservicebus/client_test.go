@@ -29,7 +29,7 @@ func TestNewClientWithAzureIdentity(t *testing.T) {
 	client, err := NewClient(ns, envCred, nil)
 	require.NoError(t, err)
 
-	sender, err := client.NewSender(queue)
+	sender, err := client.NewSender(queue, nil)
 	require.NoError(t, err)
 
 	err = sender.SendMessage(context.TODO(), &Message{Body: []byte("hello - authenticating with a TokenCredential")})
@@ -109,7 +109,7 @@ func TestNewClientUnitTests(t *testing.T) {
 		}
 
 		client, ns := setupClient()
-		_, err := client.NewSender("hello")
+		_, err := client.NewSender("hello", nil)
 
 		require.NoError(t, err)
 		require.EqualValues(t, 1, len(client.links))

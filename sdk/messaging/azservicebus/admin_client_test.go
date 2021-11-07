@@ -35,9 +35,9 @@ func TestAdminClient_UsingIdentity(t *testing.T) {
 	require.NoError(t, err)
 
 	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
-	props, err := adminClient.AddQueue(context.Background(), queueName)
+	props, err := adminClient.CreateQueue(context.Background(), queueName, nil, nil)
 	require.NoError(t, err)
-	require.EqualValues(t, queueName, props.Value.Name)
+	require.EqualValues(t, 10, *props.MaxDeliveryCount)
 
 	defer func() {
 		_, err := adminClient.DeleteQueue(context.Background(), queueName)
@@ -46,19 +46,14 @@ func TestAdminClient_UsingIdentity(t *testing.T) {
 }
 
 func TestAdminClient_QueueWithMaxValues(t *testing.T) {
-	adminClient, err := NewAdminClientWithConnectionString(getConnectionString(t), nil)
+	adminClient, err := NewAdminClientFromConnectionString(getConnectionString(t), nil)
 	require.NoError(t, err)
 
 	es := EntityStatusReceiveDisabled
 
 	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
 
-	queueExists, err := adminClient.QueueExists(context.Background(), queueName)
-	require.False(t, queueExists)
-	require.NoError(t, err)
-
-	_, err = adminClient.AddQueueWithProperties(context.Background(), &QueueProperties{
-		Name:         queueName,
+	_, err = adminClient.CreateQueue(context.Background(), queueName, &QueueProperties{
 		LockDuration: toDurationPtr(45 * time.Second),
 		// when you enable partitioning Service Bus will automatically create 16 partitions, each with the size
 		// of MaxSizeInMegabytes. This means when we retrieve this queue we'll get 16*4096 as the size (ie: 64GB)
@@ -73,20 +68,16 @@ func TestAdminClient_QueueWithMaxValues(t *testing.T) {
 		EnableBatchedOperations:             to.BoolPtr(false),
 		Status:                              &es,
 		AutoDeleteOnIdle:                    toDurationPtr(time.Duration(1<<63 - 1)),
-	})
+		UserMetadata:                        to.StringPtr("some metadata"),
+	}, nil)
 	require.NoError(t, err)
 
 	defer deleteQueue(t, adminClient, queueName)
 
-	queueExists, err = adminClient.QueueExists(context.Background(), queueName)
-	require.True(t, queueExists)
-	require.NoError(t, err)
-
 	resp, err := adminClient.GetQueue(context.Background(), queueName)
 	require.NoError(t, err)
 
-	require.EqualValues(t, &QueueProperties{
-		Name:         queueName,
+	require.EqualValues(t, QueueProperties{
 		LockDuration: toDurationPtr(45 * time.Second),
 		// ie: this response was from a partitioned queue so the size is the original max size * # of partitions
 		EnablePartitioning:                  to.BoolPtr(true),
@@ -100,18 +91,18 @@ func TestAdminClient_QueueWithMaxValues(t *testing.T) {
 		EnableBatchedOperations:             to.BoolPtr(false),
 		Status:                              &es,
 		AutoDeleteOnIdle:                    toDurationPtr(time.Duration(1<<63 - 1)),
-	}, resp.Value)
+		UserMetadata:                        to.StringPtr("some metadata"),
+	}, resp.QueueProperties)
 }
 
-func TestAdminClient_AddQueue(t *testing.T) {
-	adminClient, err := NewAdminClientWithConnectionString(getConnectionString(t), nil)
+func TestAdminClient_CreateQueue(t *testing.T) {
+	adminClient, err := NewAdminClientFromConnectionString(getConnectionString(t), nil)
 	require.NoError(t, err)
 
 	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
 
 	es := EntityStatusReceiveDisabled
-	createResp, err := adminClient.AddQueueWithProperties(context.Background(), &QueueProperties{
-		Name:         queueName,
+	createResp, err := adminClient.CreateQueue(context.Background(), queueName, &QueueProperties{
 		LockDuration: toDurationPtr(45 * time.Second),
 		// when you enable partitioning Service Bus will automatically create 16 partitions, each with the size
 		// of MaxSizeInMegabytes. This means when we retrieve this queue we'll get 16*4096 as the size (ie: 64GB)
@@ -126,7 +117,7 @@ func TestAdminClient_AddQueue(t *testing.T) {
 		EnableBatchedOperations:             to.BoolPtr(false),
 		Status:                              &es,
 		AutoDeleteOnIdle:                    toDurationPtr(10 * time.Minute),
-	})
+	}, nil)
 	require.NoError(t, err)
 
 	defer func() {
@@ -134,8 +125,7 @@ func TestAdminClient_AddQueue(t *testing.T) {
 		require.NoError(t, err)
 	}()
 
-	require.EqualValues(t, &QueueProperties{
-		Name:         queueName,
+	require.EqualValues(t, QueueProperties{
 		LockDuration: toDurationPtr(45 * time.Second),
 		// ie: this response was from a partitioned queue so the size is the original max size * # of partitions
 		EnablePartitioning:                  to.BoolPtr(true),
@@ -149,22 +139,22 @@ func TestAdminClient_AddQueue(t *testing.T) {
 		EnableBatchedOperations:             to.BoolPtr(false),
 		Status:                              &es,
 		AutoDeleteOnIdle:                    toDurationPtr(10 * time.Minute),
-	}, createResp.Value)
+	}, createResp.QueueProperties)
 
 	getResp, err := adminClient.GetQueue(context.Background(), queueName)
 	require.NoError(t, err)
 
-	require.EqualValues(t, getResp.Value, createResp.Value)
+	require.EqualValues(t, getResp.QueueProperties, createResp.QueueProperties)
 }
 
 func TestAdminClient_Queue_Forwarding(t *testing.T) {
-	adminClient, err := NewAdminClientWithConnectionString(getConnectionString(t), nil)
+	adminClient, err := NewAdminClientFromConnectionString(getConnectionString(t), nil)
 	require.NoError(t, err)
 
 	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
 	forwardToQueueName := fmt.Sprintf("queue-fwd-%X", time.Now().UnixNano())
 
-	_, err = adminClient.AddQueue(context.Background(), forwardToQueueName)
+	_, err = adminClient.CreateQueue(context.Background(), forwardToQueueName, nil, nil)
 	require.NoError(t, err)
 
 	defer func() {
@@ -174,11 +164,10 @@ func TestAdminClient_Queue_Forwarding(t *testing.T) {
 
 	formatted := fmt.Sprintf("%s%s", adminClient.em.Host, forwardToQueueName)
 
-	createResp, err := adminClient.AddQueueWithProperties(context.Background(), &QueueProperties{
-		Name:                          queueName,
+	createResp, err := adminClient.CreateQueue(context.Background(), queueName, &QueueProperties{
 		ForwardTo:                     &formatted,
 		ForwardDeadLetteredMessagesTo: &formatted,
-	})
+	}, nil)
 
 	require.NoError(t, err)
 	defer func() {
@@ -186,18 +175,18 @@ func TestAdminClient_Queue_Forwarding(t *testing.T) {
 		require.NoError(t, err)
 	}()
 
-	require.EqualValues(t, formatted, *createResp.Value.ForwardTo)
-	require.EqualValues(t, formatted, *createResp.Value.ForwardDeadLetteredMessagesTo)
+	require.EqualValues(t, formatted, *createResp.ForwardTo)
+	require.EqualValues(t, formatted, *createResp.ForwardDeadLetteredMessagesTo)
 
 	getResp, err := adminClient.GetQueue(context.Background(), queueName)
 
 	require.NoError(t, err)
-	require.EqualValues(t, createResp.Value, getResp.Value)
+	require.EqualValues(t, createResp.QueueProperties, getResp.QueueProperties)
 
 	client, err := NewClientFromConnectionString(getConnectionString(t), nil)
 	require.NoError(t, err)
 
-	sender, err := client.NewSender(queueName)
+	sender, err := client.NewSender(queueName, nil)
 	require.NoError(t, err)
 
 	err = sender.SendMessage(context.Background(), &Message{
@@ -211,15 +200,17 @@ func TestAdminClient_Queue_Forwarding(t *testing.T) {
 	forwardedMessage, err := receiver.receiveMessage(context.Background(), nil)
 	require.NoError(t, err)
 
-	require.EqualValues(t, "this message will be auto-forwarded", string(forwardedMessage.Body))
+	body, err := forwardedMessage.Body()
+	require.NoError(t, err)
+	require.EqualValues(t, "this message will be auto-forwarded", string(body))
 }
 
 func TestAdminClient_UpdateQueue(t *testing.T) {
-	adminClient, err := NewAdminClientWithConnectionString(getConnectionString(t), nil)
+	adminClient, err := NewAdminClientFromConnectionString(getConnectionString(t), nil)
 	require.NoError(t, err)
 
 	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
-	createdProps, err := adminClient.AddQueue(context.Background(), queueName)
+	createdProps, err := adminClient.CreateQueue(context.Background(), queueName, nil, nil)
 	require.NoError(t, err)
 
 	defer func() {
@@ -227,27 +218,26 @@ func TestAdminClient_UpdateQueue(t *testing.T) {
 		require.NoError(t, err)
 	}()
 
-	createdProps.Value.MaxDeliveryCount = to.Int32Ptr(101)
-	updatedProps, err := adminClient.UpdateQueue(context.Background(), createdProps.Value)
+	createdProps.MaxDeliveryCount = to.Int32Ptr(101)
+	updatedProps, err := adminClient.UpdateQueue(context.Background(), queueName, createdProps.QueueProperties, nil)
 	require.NoError(t, err)
 
-	require.EqualValues(t, 101, *updatedProps.Value.MaxDeliveryCount)
+	require.EqualValues(t, 101, *updatedProps.MaxDeliveryCount)
 
 	// try changing a value that's not allowed
-	updatedProps.Value.RequiresSession = to.BoolPtr(true)
-	updatedProps, err = adminClient.UpdateQueue(context.Background(), updatedProps.Value)
+	updatedProps.RequiresSession = to.BoolPtr(true)
+	updatedProps, err = adminClient.UpdateQueue(context.Background(), queueName, updatedProps.QueueProperties, nil)
 	require.Contains(t, err.Error(), "The value for the RequiresSession property of an existing Queue cannot be changed")
 	require.Nil(t, updatedProps)
 
-	createdProps.Value.Name = "non-existent-queue"
-	updatedProps, err = adminClient.UpdateQueue(context.Background(), createdProps.Value)
+	updatedProps, err = adminClient.UpdateQueue(context.Background(), "non-existent-queue", createdProps.QueueProperties, nil)
 	// a little awkward, we'll make these programatically inspectable as we add in better error handling.
 	require.Contains(t, err.Error(), "error code: 404")
 	require.Nil(t, updatedProps)
 }
 
 func TestAdminClient_GetQueueRuntimeProperties(t *testing.T) {
-	adminClient, err := NewAdminClientWithConnectionString(getConnectionString(t), nil)
+	adminClient, err := NewAdminClientFromConnectionString(getConnectionString(t), nil)
 	require.NoError(t, err)
 
 	client, err := NewClientFromConnectionString(getConnectionString(t), nil)
@@ -255,12 +245,12 @@ func TestAdminClient_GetQueueRuntimeProperties(t *testing.T) {
 	defer client.Close(context.Background())
 
 	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
-	_, err = adminClient.AddQueue(context.Background(), queueName)
+	_, err = adminClient.CreateQueue(context.Background(), queueName, nil, nil)
 	require.NoError(t, err)
 
 	defer deleteQueue(t, adminClient, queueName)
 
-	sender, err := client.NewSender(queueName)
+	sender, err := client.NewSender(queueName, nil)
 	require.NoError(t, err)
 
 	for i := 0; i < 3; i++ {
@@ -270,8 +260,8 @@ func TestAdminClient_GetQueueRuntimeProperties(t *testing.T) {
 		require.NoError(t, err)
 	}
 
-	sequenceNumbers, err := sender.ScheduleMessages(context.Background(), []SendableMessage{
-		&Message{Body: []byte("hello")},
+	sequenceNumbers, err := sender.ScheduleMessages(context.Background(), []*Message{
+		{Body: []byte("hello")},
 	}, time.Now().Add(2*time.Hour))
 	require.NoError(t, err)
 	require.NotEmpty(t, sequenceNumbers)
@@ -287,25 +277,23 @@ func TestAdminClient_GetQueueRuntimeProperties(t *testing.T) {
 	props, err := adminClient.GetQueueRuntimeProperties(context.Background(), queueName)
 	require.NoError(t, err)
 
-	require.EqualValues(t, queueName, props.Value.Name)
+	require.EqualValues(t, 4, props.TotalMessageCount)
 
-	require.EqualValues(t, 4, props.Value.TotalMessageCount)
+	require.EqualValues(t, 2, props.ActiveMessageCount)
+	require.EqualValues(t, 1, props.DeadLetterMessageCount)
+	require.EqualValues(t, 1, props.ScheduledMessageCount)
+	require.EqualValues(t, 0, props.TransferDeadLetterMessageCount)
+	require.EqualValues(t, 0, props.TransferMessageCount)
 
-	require.EqualValues(t, 2, props.Value.ActiveMessageCount)
-	require.EqualValues(t, 1, props.Value.DeadLetterMessageCount)
-	require.EqualValues(t, 1, props.Value.ScheduledMessageCount)
-	require.EqualValues(t, 0, props.Value.TransferDeadLetterMessageCount)
-	require.EqualValues(t, 0, props.Value.TransferMessageCount)
+	require.Greater(t, props.SizeInBytes, int64(0))
 
-	require.Greater(t, props.Value.SizeInBytes, int64(0))
-
-	require.NotEqual(t, time.Time{}, props.Value.CreatedAt)
-	require.NotEqual(t, time.Time{}, props.Value.UpdatedAt)
-	require.NotEqual(t, time.Time{}, props.Value.AccessedAt)
+	require.NotEqual(t, time.Time{}, props.CreatedAt)
+	require.NotEqual(t, time.Time{}, props.UpdatedAt)
+	require.NotEqual(t, time.Time{}, props.AccessedAt)
 }
 
 func TestAdminClient_ListQueues(t *testing.T) {
-	adminClient, err := NewAdminClientWithConnectionString(getConnectionString(t), nil)
+	adminClient, err := NewAdminClientFromConnectionString(getConnectionString(t), nil)
 	require.NoError(t, err)
 
 	var expectedQueues []string
@@ -315,10 +303,9 @@ func TestAdminClient_ListQueues(t *testing.T) {
 		queueName := strings.ToLower(fmt.Sprintf("queue-%d-%X", i, now))
 		expectedQueues = append(expectedQueues, queueName)
 
-		_, err = adminClient.AddQueueWithProperties(context.Background(), &QueueProperties{
-			Name:             queueName,
+		_, err = adminClient.CreateQueue(context.Background(), queueName, &QueueProperties{
 			MaxDeliveryCount: to.Int32Ptr(int32(i + 10)),
-		})
+		}, nil)
 		require.NoError(t, err)
 
 		defer deleteQueue(t, adminClient, queueName)
@@ -326,17 +313,15 @@ func TestAdminClient_ListQueues(t *testing.T) {
 
 	// we skipped the first queue so it shouldn't come back in the results.
 	pager := adminClient.ListQueues(nil)
-	all := map[string]*QueueProperties{}
-	var allNames []string
+	all := map[string]*QueueItem{}
 
 	for pager.NextPage(context.Background()) {
 		page := pager.PageResponse()
 
-		for _, props := range page.Value {
-			_, exists := all[props.Name]
+		for _, props := range page.Items {
+			_, exists := all[props.QueueName]
 			require.False(t, exists, "Each queue result should be unique")
-			all[props.Name] = props
-			allNames = append(allNames, props.Name)
+			all[props.QueueName] = props
 		}
 	}
 
@@ -349,25 +334,10 @@ func TestAdminClient_ListQueues(t *testing.T) {
 		require.True(t, exists)
 		require.EqualValues(t, i+10, *props.MaxDeliveryCount)
 	}
-
-	// grab the second to last item
-	pager = adminClient.ListQueues(&ListQueuesOptions{
-		Skip: len(allNames) - 2,
-		Top:  1,
-	})
-
-	require.True(t, pager.NextPage(context.Background()))
-	require.EqualValues(t, 1, len(pager.PageResponse().Value))
-	require.EqualValues(t, allNames[len(allNames)-2], pager.PageResponse().Value[0].Name)
-	require.NoError(t, pager.Err())
-
-	require.True(t, pager.NextPage(context.Background()))
-	require.EqualValues(t, allNames[len(allNames)-1], pager.PageResponse().Value[0].Name)
-	require.False(t, pager.NextPage(context.Background()))
 }
 
 func TestAdminClient_ListQueuesRuntimeProperties(t *testing.T) {
-	adminClient, err := NewAdminClientWithConnectionString(getConnectionString(t), nil)
+	adminClient, err := NewAdminClientFromConnectionString(getConnectionString(t), nil)
 	require.NoError(t, err)
 
 	var expectedQueues []string
@@ -377,10 +347,9 @@ func TestAdminClient_ListQueuesRuntimeProperties(t *testing.T) {
 		queueName := strings.ToLower(fmt.Sprintf("queue-%d-%X", i, now))
 		expectedQueues = append(expectedQueues, queueName)
 
-		_, err = adminClient.AddQueueWithProperties(context.Background(), &QueueProperties{
-			Name:             queueName,
+		_, err = adminClient.CreateQueue(context.Background(), queueName, &QueueProperties{
 			MaxDeliveryCount: to.Int32Ptr(int32(i + 10)),
-		})
+		}, nil)
 		require.NoError(t, err)
 
 		defer deleteQueue(t, adminClient, queueName)
@@ -388,17 +357,15 @@ func TestAdminClient_ListQueuesRuntimeProperties(t *testing.T) {
 
 	// we skipped the first queue so it shouldn't come back in the results.
 	pager := adminClient.ListQueuesRuntimeProperties(nil)
-	all := map[string]*QueueRuntimeProperties{}
-	var allNames []string
+	all := map[string]*QueueRuntimePropertiesItem{}
 
 	for pager.NextPage(context.Background()) {
 		page := pager.PageResponse()
 
-		for _, props := range page.Value {
-			_, exists := all[props.Name]
+		for _, queueRuntimeItem := range page.Items {
+			_, exists := all[queueRuntimeItem.QueueName]
 			require.False(t, exists, "Each queue result should be unique")
-			all[props.Name] = props
-			allNames = append(allNames, props.Name)
+			all[queueRuntimeItem.QueueName] = queueRuntimeItem
 		}
 	}
 
@@ -411,21 +378,6 @@ func TestAdminClient_ListQueuesRuntimeProperties(t *testing.T) {
 		require.True(t, exists)
 		require.NotEqualValues(t, time.Time{}, props.CreatedAt)
 	}
-
-	// grab the second to last item
-	pager = adminClient.ListQueuesRuntimeProperties(&ListQueuesRuntimePropertiesOptions{
-		Skip: len(allNames) - 2,
-		Top:  1,
-	})
-
-	require.True(t, pager.NextPage(context.Background()))
-	require.EqualValues(t, 1, len(pager.PageResponse().Value))
-	require.EqualValues(t, allNames[len(allNames)-2], pager.PageResponse().Value[0].Name)
-	require.NoError(t, pager.Err())
-
-	require.True(t, pager.NextPage(context.Background()))
-	require.EqualValues(t, allNames[len(allNames)-1], pager.PageResponse().Value[0].Name)
-	require.False(t, pager.NextPage(context.Background()))
 }
 
 func TestAdminClient_DurationToStringPtr(t *testing.T) {
@@ -473,14 +425,14 @@ func TestAdminClient_ISO8601StringToDuration(t *testing.T) {
 }
 
 func TestAdminClient_TopicAndSubscription(t *testing.T) {
-	adminClient, err := NewAdminClientWithConnectionString(getConnectionString(t), nil)
+	adminClient, err := NewAdminClientFromConnectionString(getConnectionString(t), nil)
 	require.NoError(t, err)
 
 	topicName := fmt.Sprintf("topic-%X", time.Now().UnixNano())
 	subscriptionName := fmt.Sprintf("sub-%X", time.Now().UnixNano())
 	forwardToQueueName := fmt.Sprintf("queue-fwd-%X", time.Now().UnixNano())
 
-	_, err = adminClient.AddQueue(context.Background(), forwardToQueueName)
+	_, err = adminClient.CreateQueue(context.Background(), forwardToQueueName, nil, nil)
 	require.NoError(t, err)
 
 	defer deleteQueue(t, adminClient, forwardToQueueName)
@@ -488,12 +440,7 @@ func TestAdminClient_TopicAndSubscription(t *testing.T) {
 	status := EntityStatusActive
 
 	// check topic properties, existence
-	topicExists, err := adminClient.TopicExists(context.Background(), topicName)
-	require.False(t, topicExists)
-	require.NoError(t, err)
-
-	addResp, err := adminClient.AddTopicWithProperties(context.Background(), &TopicProperties{
-		Name:                                topicName,
+	addResp, err := adminClient.CreateTopic(context.Background(), topicName, &TopicProperties{
 		EnablePartitioning:                  to.BoolPtr(true),
 		MaxSizeInMegabytes:                  to.Int32Ptr(2048),
 		RequiresDuplicateDetection:          to.BoolPtr(true),
@@ -502,18 +449,14 @@ func TestAdminClient_TopicAndSubscription(t *testing.T) {
 		EnableBatchedOperations:             to.BoolPtr(true),
 		Status:                              &status,
 		AutoDeleteOnIdle:                    toDurationPtr(time.Minute * 7),
-		SupportsOrdering:                    to.BoolPtr(true),
-	})
+		SupportOrdering:                     to.BoolPtr(true),
+		UserMetadata:                        to.StringPtr("user metadata"),
+	}, nil)
 	require.NoError(t, err)
 
 	defer deleteTopic(t, adminClient, topicName)
 
-	topicExists, err = adminClient.TopicExists(context.Background(), topicName)
-	require.True(t, topicExists)
-	require.NoError(t, err)
-
-	require.EqualValues(t, &TopicProperties{
-		Name:                                topicName,
+	require.EqualValues(t, TopicProperties{
 		EnablePartitioning:                  to.BoolPtr(true),
 		MaxSizeInMegabytes:                  to.Int32Ptr(16 * 2048), // enabling partitioning increases our max size because of the 16 partitions
 		RequiresDuplicateDetection:          to.BoolPtr(true),
@@ -522,14 +465,14 @@ func TestAdminClient_TopicAndSubscription(t *testing.T) {
 		EnableBatchedOperations:             to.BoolPtr(true),
 		Status:                              &status,
 		AutoDeleteOnIdle:                    toDurationPtr(time.Minute * 7),
-		SupportsOrdering:                    to.BoolPtr(true),
-	}, addResp.Value)
+		SupportOrdering:                     to.BoolPtr(true),
+		UserMetadata:                        to.StringPtr("user metadata"),
+	}, addResp.TopicProperties)
 
-	getResp, err := adminClient.GetTopic(context.Background(), topicName)
+	getResp, err := adminClient.GetTopic(context.Background(), topicName, nil)
 	require.NoError(t, err)
 
-	require.EqualValues(t, &TopicProperties{
-		Name:                                topicName,
+	require.EqualValues(t, TopicProperties{
 		EnablePartitioning:                  to.BoolPtr(true),
 		MaxSizeInMegabytes:                  to.Int32Ptr(16 * 2048), // enabling partitioning increases our max size because of the 16 partitions
 		RequiresDuplicateDetection:          to.BoolPtr(true),
@@ -538,83 +481,74 @@ func TestAdminClient_TopicAndSubscription(t *testing.T) {
 		EnableBatchedOperations:             to.BoolPtr(true),
 		Status:                              &status,
 		AutoDeleteOnIdle:                    toDurationPtr(time.Minute * 7),
-		SupportsOrdering:                    to.BoolPtr(true),
-	}, getResp.Value)
+		SupportOrdering:                     to.BoolPtr(true),
+		UserMetadata:                        to.StringPtr("user metadata"),
+	}, getResp.TopicProperties)
 
-	// check some subscriptions properties, existence
-	subExists, err := adminClient.SubscriptionExists(context.Background(), topicName, subscriptionName)
-	require.NoError(t, err)
-	require.False(t, subExists)
-
-	addSubWithPropsResp, err := adminClient.AddSubscriptionWithProperties(context.Background(), topicName, &SubscriptionProperties{
-		Name:                             subscriptionName,
-		LockDuration:                     toDurationPtr(3 * time.Minute),
-		RequiresSession:                  to.BoolPtr(false),
-		DefaultMessageTimeToLive:         toDurationPtr(7 * time.Minute),
-		DeadLetteringOnMessageExpiration: to.BoolPtr(true),
+	addSubWithPropsResp, err := adminClient.CreateSubscription(context.Background(), topicName, subscriptionName, &SubscriptionProperties{
+		LockDuration:                                    toDurationPtr(3 * time.Minute),
+		RequiresSession:                                 to.BoolPtr(false),
+		DefaultMessageTimeToLive:                        toDurationPtr(7 * time.Minute),
+		DeadLetteringOnMessageExpiration:                to.BoolPtr(true),
 		EnableDeadLetteringOnFilterEvaluationExceptions: to.BoolPtr(false),
-		MaxDeliveryCount: to.Int32Ptr(11),
-		Status:           &status,
+		MaxDeliveryCount:                                to.Int32Ptr(11),
+		Status:                                          &status,
 		// ForwardTo:                     &forwardToQueueName,
 		// ForwardDeadLetteredMessagesTo: &forwardToQueueName,
 		EnableBatchedOperations: to.BoolPtr(false),
-		UserMetadata:            to.StringPtr("some user metadata"),
-	})
-
+		AutoDeleteOnIdle:        toDurationPtr(11 * time.Minute),
+		UserMetadata:            to.StringPtr("user metadata"),
+	}, nil)
 	require.NoError(t, err)
-	require.EqualValues(t, &SubscriptionProperties{
-		Name:                             subscriptionName,
-		LockDuration:                     toDurationPtr(3 * time.Minute),
-		RequiresSession:                  to.BoolPtr(false),
-		DefaultMessageTimeToLive:         toDurationPtr(7 * time.Minute),
-		DeadLetteringOnMessageExpiration: to.BoolPtr(true),
-		EnableDeadLetteringOnFilterEvaluationExceptions: to.BoolPtr(false),
-		MaxDeliveryCount: to.Int32Ptr(11),
-		Status:           &status,
-		// ForwardTo:                     &forwardToQueueName,
-		// ForwardDeadLetteredMessagesTo: &forwardToQueueName,
-		EnableBatchedOperations: to.BoolPtr(false),
-		UserMetadata:            to.StringPtr("some user metadata"),
-	}, addSubWithPropsResp.Value)
-
-	subExists, err = adminClient.SubscriptionExists(context.Background(), topicName, subscriptionName)
-	require.NoError(t, err)
-	require.True(t, subExists)
 
 	defer deleteSubscription(t, adminClient, topicName, subscriptionName)
+
+	require.EqualValues(t, SubscriptionProperties{
+		LockDuration:                                    toDurationPtr(3 * time.Minute),
+		RequiresSession:                                 to.BoolPtr(false),
+		DefaultMessageTimeToLive:                        toDurationPtr(7 * time.Minute),
+		DeadLetteringOnMessageExpiration:                to.BoolPtr(true),
+		EnableDeadLetteringOnFilterEvaluationExceptions: to.BoolPtr(false),
+		MaxDeliveryCount:                                to.Int32Ptr(11),
+		Status:                                          &status,
+		// ForwardTo:                     &forwardToQueueName,
+		// ForwardDeadLetteredMessagesTo: &forwardToQueueName,
+		EnableBatchedOperations: to.BoolPtr(false),
+		AutoDeleteOnIdle:        toDurationPtr(11 * time.Minute),
+		UserMetadata:            to.StringPtr("user metadata"),
+	}, addSubWithPropsResp.CreateSubscriptionResult.SubscriptionProperties)
 }
 
 func TestAdminClient_UpdateTopic(t *testing.T) {
-	adminClient, err := NewAdminClientWithConnectionString(getConnectionString(t), nil)
+	adminClient, err := NewAdminClientFromConnectionString(getConnectionString(t), nil)
 	require.NoError(t, err)
 
 	topicName := fmt.Sprintf("topic-%X", time.Now().UnixNano())
-	addResp, err := adminClient.AddTopic(context.Background(), topicName)
+	addResp, err := adminClient.CreateTopic(context.Background(), topicName, nil, nil)
 	require.NoError(t, err)
 
 	defer deleteTopic(t, adminClient, topicName)
 
-	addResp.Value.AutoDeleteOnIdle = toDurationPtr(11 * time.Minute)
-	updateResp, err := adminClient.UpdateTopic(context.Background(), addResp.Value)
+	addResp.AutoDeleteOnIdle = toDurationPtr(11 * time.Minute)
+	updateResp, err := adminClient.UpdateTopic(context.Background(), topicName, addResp.TopicProperties, nil)
 	require.NoError(t, err)
 
-	require.EqualValues(t, 11*time.Minute, *updateResp.Value.AutoDeleteOnIdle)
+	require.EqualValues(t, 11*time.Minute, *updateResp.AutoDeleteOnIdle)
 
 	// try changing a value that's not allowed
-	updateResp.Value.EnablePartitioning = to.BoolPtr(true)
-	updateResp, err = adminClient.UpdateTopic(context.Background(), updateResp.Value)
+	updateResp.EnablePartitioning = to.BoolPtr(true)
+	updateResp, err = adminClient.UpdateTopic(context.Background(), topicName, updateResp.TopicProperties, nil)
 	require.Contains(t, err.Error(), "Partitioning cannot be changed for Topic. ")
 	require.Nil(t, updateResp)
 
-	addResp.Value.Name = "non-existent-topic"
-	updateResp, err = adminClient.UpdateTopic(context.Background(), addResp.Value)
+	updateResp, err = adminClient.UpdateTopic(context.Background(), "non-existent-topic", addResp.TopicProperties, nil)
 	// a little awkward, we'll make these programatically inspectable as we add in better error handling.
 	require.Contains(t, err.Error(), "error code: 404")
 	require.Nil(t, updateResp)
 }
 
 func TestAdminClient_TopicAndSubscriptionRuntimeProperties(t *testing.T) {
-	adminClient, err := NewAdminClientWithConnectionString(getConnectionString(t), nil)
+	adminClient, err := NewAdminClientFromConnectionString(getConnectionString(t), nil)
 	require.NoError(t, err)
 
 	client, err := NewClientFromConnectionString(getConnectionString(t), nil)
@@ -623,24 +557,24 @@ func TestAdminClient_TopicAndSubscriptionRuntimeProperties(t *testing.T) {
 	topicName := fmt.Sprintf("topic-%X", time.Now().UnixNano())
 	subscriptionName := fmt.Sprintf("sub-%X", time.Now().UnixNano())
 
-	_, err = adminClient.AddTopic(context.Background(), topicName)
+	_, err = adminClient.CreateTopic(context.Background(), topicName, nil, nil)
 	require.NoError(t, err)
 
-	addSubResp, err := adminClient.AddSubscription(context.Background(), topicName, subscriptionName)
+	addSubResp, err := adminClient.CreateSubscription(context.Background(), topicName, subscriptionName, nil, nil)
 	require.NoError(t, err)
 	require.NotNil(t, addSubResp)
-	require.EqualValues(t, subscriptionName, addSubResp.Value.Name)
+	require.EqualValues(t, 10, *addSubResp.MaxDeliveryCount)
 
 	defer deleteSubscription(t, adminClient, topicName, subscriptionName)
 
-	sender, err := client.NewSender(topicName)
+	sender, err := client.NewSender(topicName, nil)
 	require.NoError(t, err)
 
 	// trigger some stats
 
 	//  Scheduled messages are accounted for in the topic stats.
-	_, err = sender.ScheduleMessages(context.Background(), []SendableMessage{
-		&Message{Body: []byte("hello")},
+	_, err = sender.ScheduleMessages(context.Background(), []*Message{
+		{Body: []byte("hello")},
 	}, time.Now().Add(2*time.Hour))
 	require.NoError(t, err)
 
@@ -662,15 +596,14 @@ func TestAdminClient_TopicAndSubscriptionRuntimeProperties(t *testing.T) {
 	getSubResp, err := adminClient.GetSubscriptionRuntimeProperties(context.Background(), topicName, subscriptionName)
 	require.NoError(t, err)
 
-	require.EqualValues(t, subscriptionName, getSubResp.Value.Name)
-	require.EqualValues(t, 0, getSubResp.Value.ActiveMessageCount)
-	require.NotEqual(t, time.Time{}, getSubResp.Value.CreatedAt)
-	require.NotEqual(t, time.Time{}, getSubResp.Value.UpdatedAt)
-	require.NotEqual(t, time.Time{}, getSubResp.Value.AccessedAt)
+	require.EqualValues(t, 0, getSubResp.ActiveMessageCount)
+	require.NotEqual(t, time.Time{}, getSubResp.CreatedAt)
+	require.NotEqual(t, time.Time{}, getSubResp.UpdatedAt)
+	require.NotEqual(t, time.Time{}, getSubResp.AccessedAt)
 }
 
 func TestAdminClient_ListTopics(t *testing.T) {
-	adminClient, err := NewAdminClientWithConnectionString(getConnectionString(t), nil)
+	adminClient, err := NewAdminClientFromConnectionString(getConnectionString(t), nil)
 	require.NoError(t, err)
 
 	var expectedTopics []string
@@ -685,10 +618,9 @@ func TestAdminClient_ListTopics(t *testing.T) {
 
 		go func(i int) {
 			defer wg.Done()
-			_, err = adminClient.AddTopicWithProperties(context.Background(), &TopicProperties{
-				Name:                     topicName,
+			_, err = adminClient.CreateTopic(context.Background(), topicName, &TopicProperties{
 				DefaultMessageTimeToLive: toDurationPtr(time.Duration(i+1) * time.Minute),
-			})
+			}, nil)
 			require.NoError(t, err)
 		}(i)
 
@@ -699,17 +631,15 @@ func TestAdminClient_ListTopics(t *testing.T) {
 
 	// we skipped the first topic so it shouldn't come back in the results.
 	pager := adminClient.ListTopics(nil)
-	all := map[string]*TopicProperties{}
-	var allNames []string
+	all := map[string]*TopicItem{}
 
 	for pager.NextPage(context.Background()) {
 		page := pager.PageResponse()
 
-		for _, props := range page.Value {
-			_, exists := all[props.Name]
+		for _, topicItem := range page.Items {
+			_, exists := all[topicItem.TopicName]
 			require.False(t, exists, "Each topic result should be unique")
-			all[props.Name] = props
-			allNames = append(allNames, props.Name)
+			all[topicItem.TopicName] = topicItem
 		}
 	}
 
@@ -722,25 +652,10 @@ func TestAdminClient_ListTopics(t *testing.T) {
 		require.True(t, exists)
 		require.EqualValues(t, time.Duration(i+1)*time.Minute, *props.DefaultMessageTimeToLive)
 	}
-
-	// grab the second to last item
-	pager = adminClient.ListTopics(&ListTopicsOptions{
-		Skip: len(allNames) - 2,
-		Top:  1,
-	})
-
-	require.True(t, pager.NextPage(context.Background()))
-	require.EqualValues(t, 1, len(pager.PageResponse().Value))
-	require.EqualValues(t, allNames[len(allNames)-2], pager.PageResponse().Value[0].Name)
-	require.NoError(t, pager.Err())
-
-	require.True(t, pager.NextPage(context.Background()))
-	require.EqualValues(t, allNames[len(allNames)-1], pager.PageResponse().Value[0].Name)
-	require.False(t, pager.NextPage(context.Background()))
 }
 
 func TestAdminClient_ListTopicsRuntimeProperties(t *testing.T) {
-	adminClient, err := NewAdminClientWithConnectionString(getConnectionString(t), nil)
+	adminClient, err := NewAdminClientFromConnectionString(getConnectionString(t), nil)
 	require.NoError(t, err)
 
 	var expectedTopics []string
@@ -750,7 +665,7 @@ func TestAdminClient_ListTopicsRuntimeProperties(t *testing.T) {
 		topicName := strings.ToLower(fmt.Sprintf("topic-%d-%X", i, now))
 		expectedTopics = append(expectedTopics, topicName)
 
-		_, err = adminClient.AddTopic(context.Background(), topicName)
+		_, err = adminClient.CreateTopic(context.Background(), topicName, nil, nil)
 		require.NoError(t, err)
 
 		defer deleteTopic(t, adminClient, topicName)
@@ -759,7 +674,6 @@ func TestAdminClient_ListTopicsRuntimeProperties(t *testing.T) {
 	// we skipped the first topic so it shouldn't come back in the results.
 	pager := adminClient.ListTopicsRuntimeProperties(nil)
 	all := map[string]*TopicRuntimeProperties{}
-	var allNames []string
 
 	for pager.NextPage(context.Background()) {
 		page := pager.PageResponse()
@@ -768,7 +682,6 @@ func TestAdminClient_ListTopicsRuntimeProperties(t *testing.T) {
 			_, exists := all[props.Name]
 			require.False(t, exists, "Each topic result should be unique")
 			all[props.Name] = props
-			allNames = append(allNames, props.Name)
 		}
 	}
 
@@ -781,31 +694,16 @@ func TestAdminClient_ListTopicsRuntimeProperties(t *testing.T) {
 		require.True(t, exists)
 		require.NotEqualValues(t, time.Time{}, props.CreatedAt)
 	}
-
-	// grab the second to last item
-	pager = adminClient.ListTopicsRuntimeProperties(&ListTopicsRuntimePropertiesOptions{
-		Skip: len(allNames) - 2,
-		Top:  1,
-	})
-
-	require.True(t, pager.NextPage(context.Background()))
-	require.EqualValues(t, 1, len(pager.PageResponse().Value))
-	require.EqualValues(t, allNames[len(allNames)-2], pager.PageResponse().Value[0].Name)
-	require.NoError(t, pager.Err())
-
-	require.True(t, pager.NextPage(context.Background()))
-	require.EqualValues(t, allNames[len(allNames)-1], pager.PageResponse().Value[0].Name)
-	require.False(t, pager.NextPage(context.Background()))
 }
 
 func TestAdminClient_ListSubscriptions(t *testing.T) {
-	adminClient, err := NewAdminClientWithConnectionString(getConnectionString(t), nil)
+	adminClient, err := NewAdminClientFromConnectionString(getConnectionString(t), nil)
 	require.NoError(t, err)
 
 	now := time.Now().UnixNano()
 	topicName := strings.ToLower(fmt.Sprintf("topic-%X", now))
 
-	_, err = adminClient.AddTopic(context.Background(), topicName)
+	_, err = adminClient.CreateTopic(context.Background(), topicName, nil, nil)
 	require.NoError(t, err)
 
 	defer deleteTopic(t, adminClient, topicName)
@@ -816,10 +714,9 @@ func TestAdminClient_ListSubscriptions(t *testing.T) {
 		subName := strings.ToLower(fmt.Sprintf("sub-%d-%X", i, now))
 		expectedSubscriptions = append(expectedSubscriptions, subName)
 
-		_, err = adminClient.AddSubscriptionWithProperties(context.Background(), topicName, &SubscriptionProperties{
-			Name:                     subName,
+		_, err = adminClient.CreateSubscription(context.Background(), topicName, subName, &SubscriptionProperties{
 			DefaultMessageTimeToLive: toDurationPtr(time.Duration(i+1) * time.Minute),
-		})
+		}, nil)
 		require.NoError(t, err)
 
 		defer deleteSubscription(t, adminClient, topicName, subName)
@@ -827,17 +724,15 @@ func TestAdminClient_ListSubscriptions(t *testing.T) {
 
 	// we skipped the first topic so it shouldn't come back in the results.
 	pager := adminClient.ListSubscriptions(topicName, nil)
-	all := map[string]*SubscriptionProperties{}
-	var allNames []string
+	all := map[string]*SubscriptionPropertiesItem{}
 
 	for pager.NextPage(context.Background()) {
 		page := pager.PageResponse()
 
-		for _, props := range page.Value {
-			_, exists := all[props.Name]
+		for _, item := range page.Items {
+			_, exists := all[item.SubscriptionName]
 			require.False(t, exists, "Each subscription result should be unique")
-			all[props.Name] = props
-			allNames = append(allNames, props.Name)
+			all[item.SubscriptionName] = item
 		}
 	}
 
@@ -850,31 +745,16 @@ func TestAdminClient_ListSubscriptions(t *testing.T) {
 		require.True(t, exists)
 		require.EqualValues(t, time.Duration(i+1)*time.Minute, *props.DefaultMessageTimeToLive)
 	}
-
-	// grab the second to last item
-	pager = adminClient.ListSubscriptions(topicName, &ListSubscriptionsOptions{
-		Skip: len(allNames) - 2,
-		Top:  1,
-	})
-
-	require.True(t, pager.NextPage(context.Background()))
-	require.EqualValues(t, 1, len(pager.PageResponse().Value))
-	require.EqualValues(t, allNames[len(allNames)-2], pager.PageResponse().Value[0].Name)
-	require.NoError(t, pager.Err())
-
-	require.True(t, pager.NextPage(context.Background()))
-	require.EqualValues(t, allNames[len(allNames)-1], pager.PageResponse().Value[0].Name)
-	require.False(t, pager.NextPage(context.Background()))
 }
 
 func TestAdminClient_ListSubscriptionRuntimeProperties(t *testing.T) {
-	adminClient, err := NewAdminClientWithConnectionString(getConnectionString(t), nil)
+	adminClient, err := NewAdminClientFromConnectionString(getConnectionString(t), nil)
 	require.NoError(t, err)
 
 	now := time.Now().UnixNano()
 	topicName := strings.ToLower(fmt.Sprintf("topic-%X", now))
 
-	_, err = adminClient.AddTopic(context.Background(), topicName)
+	_, err = adminClient.CreateTopic(context.Background(), topicName, nil, nil)
 	require.NoError(t, err)
 
 	var expectedSubs []string
@@ -883,7 +763,7 @@ func TestAdminClient_ListSubscriptionRuntimeProperties(t *testing.T) {
 		subscriptionName := strings.ToLower(fmt.Sprintf("sub-%d-%X", i, now))
 		expectedSubs = append(expectedSubs, subscriptionName)
 
-		_, err = adminClient.AddSubscription(context.Background(), topicName, subscriptionName)
+		_, err = adminClient.CreateSubscription(context.Background(), topicName, subscriptionName, nil, nil)
 		require.NoError(t, err)
 
 		defer deleteSubscription(t, adminClient, topicName, subscriptionName)
@@ -891,17 +771,15 @@ func TestAdminClient_ListSubscriptionRuntimeProperties(t *testing.T) {
 
 	// we skipped the first subscription so it shouldn't come back in the results.
 	pager := adminClient.ListSubscriptionsRuntimeProperties(topicName, nil)
-	all := map[string]*SubscriptionRuntimeProperties{}
-	var allNames []string
+	all := map[string]*SubscriptionRuntimePropertiesItem{}
 
 	for pager.NextPage(context.Background()) {
 		page := pager.PageResponse()
 
-		for _, props := range page.Value {
-			_, exists := all[props.Name]
+		for _, subItem := range page.Items {
+			_, exists := all[subItem.SubscriptionName]
 			require.False(t, exists, "Each subscription result should be unique")
-			all[props.Name] = props
-			allNames = append(allNames, props.Name)
+			all[subItem.SubscriptionName] = subItem
 		}
 	}
 
@@ -914,53 +792,37 @@ func TestAdminClient_ListSubscriptionRuntimeProperties(t *testing.T) {
 		require.True(t, exists)
 		require.NotEqualValues(t, time.Time{}, props.CreatedAt)
 	}
-
-	// grab the second to last item
-	pager = adminClient.ListSubscriptionsRuntimeProperties(topicName, &ListSubscriptionsRuntimePropertiesOptions{
-		Skip: len(allNames) - 2,
-		Top:  1,
-	})
-
-	require.True(t, pager.NextPage(context.Background()))
-	require.EqualValues(t, 1, len(pager.PageResponse().Value))
-	require.EqualValues(t, allNames[len(allNames)-2], pager.PageResponse().Value[0].Name)
-	require.NoError(t, pager.Err())
-
-	require.True(t, pager.NextPage(context.Background()))
-	require.EqualValues(t, allNames[len(allNames)-1], pager.PageResponse().Value[0].Name)
-	require.False(t, pager.NextPage(context.Background()))
 }
 
 func TestAdminClient_UpdateSubscription(t *testing.T) {
-	adminClient, err := NewAdminClientWithConnectionString(getConnectionString(t), nil)
+	adminClient, err := NewAdminClientFromConnectionString(getConnectionString(t), nil)
 	require.NoError(t, err)
 
 	topicName := fmt.Sprintf("topic-%X", time.Now().UnixNano())
-	_, err = adminClient.AddTopic(context.Background(), topicName)
+	_, err = adminClient.CreateTopic(context.Background(), topicName, nil, nil)
 	require.NoError(t, err)
 
 	defer deleteTopic(t, adminClient, topicName)
 
 	subscriptionName := fmt.Sprintf("sub-%X", time.Now().UnixNano())
-	addResp, err := adminClient.AddSubscription(context.Background(), topicName, subscriptionName)
+	addResp, err := adminClient.CreateSubscription(context.Background(), topicName, subscriptionName, nil, nil)
 	require.NoError(t, err)
 
 	defer deleteSubscription(t, adminClient, topicName, subscriptionName)
 
-	addResp.Value.LockDuration = toDurationPtr(4 * time.Minute)
-	updateResp, err := adminClient.UpdateSubscription(context.Background(), topicName, addResp.Value)
+	addResp.LockDuration = toDurationPtr(4 * time.Minute)
+	updateResp, err := adminClient.UpdateSubscription(context.Background(), topicName, subscriptionName, addResp.SubscriptionProperties, nil)
 	require.NoError(t, err)
 
-	require.EqualValues(t, 4*time.Minute, *updateResp.Value.LockDuration)
+	require.EqualValues(t, 4*time.Minute, *updateResp.LockDuration)
 
 	// try changing a value that's not allowed
-	updateResp.Value.RequiresSession = to.BoolPtr(true)
-	updateResp, err = adminClient.UpdateSubscription(context.Background(), topicName, updateResp.Value)
+	updateResp.RequiresSession = to.BoolPtr(true)
+	updateResp, err = adminClient.UpdateSubscription(context.Background(), topicName, subscriptionName, updateResp.SubscriptionProperties, nil)
 	require.Contains(t, err.Error(), "The value for the RequiresSession property of an existing Subscription cannot be changed")
 	require.Nil(t, updateResp)
 
-	addResp.Value.Name = "non-existent-subscription"
-	updateResp, err = adminClient.UpdateSubscription(context.Background(), topicName, addResp.Value)
+	updateResp, err = adminClient.UpdateSubscription(context.Background(), topicName, "non-existent-subscription", addResp.CreateSubscriptionResult.SubscriptionProperties, nil)
 	// a little awkward, we'll make these programatically inspectable as we add in better error handling.
 	require.Contains(t, err.Error(), "error code: 404")
 	require.Nil(t, updateResp)
@@ -973,10 +835,10 @@ func setupLowPrivTest(t *testing.T) *struct {
 	QueueName string
 	Cleanup   func()
 } {
-	adminClient, err := NewAdminClientWithConnectionString(getConnectionString(t), nil)
+	adminClient, err := NewAdminClientFromConnectionString(getConnectionString(t), nil)
 	require.NoError(t, err)
 
-	lowPrivAdminClient, err := NewAdminClientWithConnectionString(getConnectionStringWithoutManagePerms(t), nil)
+	lowPrivAdminClient, err := NewAdminClientFromConnectionString(getConnectionStringWithoutManagePerms(t), nil)
 	require.NoError(t, err)
 
 	nanoSeconds := time.Now().UnixNano()
@@ -991,13 +853,13 @@ func setupLowPrivTest(t *testing.T) *struct {
 	// create some entities that we need (there's a diff between something not being
 	// found and something failing because of lack of authorization)
 	cleanup := func() func() {
-		_, err = adminClient.AddQueue(context.Background(), queueName)
+		_, err = adminClient.CreateQueue(context.Background(), queueName, nil, nil)
 		require.NoError(t, err)
 
-		_, err = adminClient.AddTopic(context.Background(), topicName)
+		_, err = adminClient.CreateTopic(context.Background(), topicName, nil, nil)
 		require.NoError(t, err)
 
-		_, err = adminClient.AddSubscription(context.Background(), topicName, subName)
+		_, err = adminClient.CreateSubscription(context.Background(), topicName, subName, nil, nil)
 		require.NoError(t, err)
 
 		// _, err = sm.PutRule(context.Background(), subName, ruleName, TrueFilter{})
@@ -1031,7 +893,9 @@ func TestAdminClient_LackPermissions_Queue(t *testing.T) {
 	ctx := context.Background()
 
 	_, err := testData.Client.GetQueue(ctx, "not-found-queue")
-	require.True(t, atom.NotFound(err))
+	notFound, resp := atom.NotFound(err)
+	require.True(t, notFound)
+	require.NotNil(t, resp)
 
 	_, err = testData.Client.GetQueue(ctx, testData.QueueName)
 	require.Contains(t, err.Error(), "error code: 401, Details: Manage,EntityRead claims")
@@ -1040,12 +904,10 @@ func TestAdminClient_LackPermissions_Queue(t *testing.T) {
 	require.False(t, pager.NextPage(context.Background()))
 	require.Contains(t, pager.Err().Error(), "error code: 401, Details: Manage,EntityRead claims required for this operation")
 
-	_, err = testData.Client.AddQueue(ctx, "canneverbecreated")
+	_, err = testData.Client.CreateQueue(ctx, "canneverbecreated", nil, nil)
 	require.Contains(t, err.Error(), "error code: 401, Details: Authorization failed for specified action: Manage,EntityWrite")
 
-	_, err = testData.Client.UpdateQueue(ctx, &QueueProperties{
-		Name: "canneverbecreated",
-	})
+	_, err = testData.Client.UpdateQueue(ctx, "canneverbecreated", QueueProperties{}, nil)
 	require.Contains(t, err.Error(), "error code: 401, Details: Authorization failed for specified action: Manage,EntityWrite")
 
 	_, err = testData.Client.DeleteQueue(ctx, testData.QueueName)
@@ -1058,22 +920,22 @@ func TestAdminClient_LackPermissions_Topic(t *testing.T) {
 
 	ctx := context.Background()
 
-	_, err := testData.Client.GetTopic(ctx, "not-found-topic")
-	require.True(t, atom.NotFound(err))
+	_, err := testData.Client.GetTopic(ctx, "not-found-topic", nil)
+	notFound, resp := atom.NotFound(err)
+	require.True(t, notFound)
+	require.NotNil(t, resp)
 
-	_, err = testData.Client.GetTopic(ctx, testData.TopicName)
+	_, err = testData.Client.GetTopic(ctx, testData.TopicName, nil)
 	require.Contains(t, err.Error(), "error code: 401, Details: Manage,EntityRead claims")
 
 	pager := testData.Client.ListTopics(nil)
 	require.False(t, pager.NextPage(context.Background()))
 	require.Contains(t, pager.Err().Error(), "error code: 401, Details: Manage,EntityRead claims required for this operation")
 
-	_, err = testData.Client.AddTopic(ctx, "canneverbecreated")
+	_, err = testData.Client.CreateTopic(ctx, "canneverbecreated", nil, nil)
 	require.Contains(t, err.Error(), "error code: 401, Details: Authorization failed for specified action")
 
-	_, err = testData.Client.UpdateTopic(ctx, &TopicProperties{
-		Name: "canneverbecreated",
-	})
+	_, err = testData.Client.UpdateTopic(ctx, "canneverbecreated", TopicProperties{}, nil)
 	require.Contains(t, err.Error(), "error code: 401, Details: Authorization failed for specified action")
 
 	_, err = testData.Client.DeleteTopic(ctx, testData.TopicName)
@@ -1091,25 +953,23 @@ func TestAdminClient_LackPermissions_Subscription(t *testing.T) {
 
 	ctx := context.Background()
 
-	_, err := testData.Client.GetSubscription(ctx, testData.TopicName, "not-found-sub")
+	_, err := testData.Client.GetSubscription(ctx, testData.TopicName, "not-found-sub", nil)
 	require.Contains(t, err.Error(), "401 SubCode=40100: Unauthorized : Unauthorized access for 'GetSubscription'")
 
-	_, err = testData.Client.GetSubscription(ctx, testData.TopicName, testData.SubName)
+	_, err = testData.Client.GetSubscription(ctx, testData.TopicName, testData.SubName, nil)
 	require.Contains(t, err.Error(), "401 SubCode=40100: Unauthorized : Unauthorized access for 'GetSubscription'")
 
 	pager := testData.Client.ListSubscriptions(testData.TopicName, nil)
 	require.False(t, pager.NextPage(context.Background()))
 	require.Contains(t, pager.Err().Error(), "401 SubCode=40100: Unauthorized : Unauthorized access for 'EnumerateSubscriptions' operation")
 
-	_, err = testData.Client.AddSubscription(ctx, testData.TopicName, "canneverbecreated")
+	_, err = testData.Client.CreateSubscription(ctx, testData.TopicName, "canneverbecreated", nil, nil)
 	require.Contains(t, err.Error(), "401 SubCode=40100: Unauthorized : Unauthorized access for 'CreateOrUpdateSubscription'")
 
-	_, err = testData.Client.UpdateSubscription(ctx, testData.TopicName, &SubscriptionProperties{
-		Name: "canneverbecreated",
-	})
+	_, err = testData.Client.UpdateSubscription(ctx, testData.TopicName, "canneverbecreated", SubscriptionProperties{}, nil)
 	require.Contains(t, err.Error(), "401 SubCode=40100: Unauthorized : Unauthorized access for 'CreateOrUpdateSubscription'")
 
-	_, err = testData.Client.DeleteSubscription(ctx, testData.TopicName, testData.SubName)
+	_, err = testData.Client.DeleteSubscription(ctx, testData.TopicName, testData.SubName, nil)
 	require.Contains(t, err.Error(), "401 SubCode=40100: Unauthorized : Unauthorized access for 'DeleteSubscription'")
 }
 
@@ -1128,6 +988,6 @@ func deleteTopic(t *testing.T, ac *AdminClient, topicName string) {
 }
 
 func deleteSubscription(t *testing.T, ac *AdminClient, topicName string, subscriptionName string) {
-	_, err := ac.DeleteSubscription(context.Background(), topicName, subscriptionName)
+	_, err := ac.DeleteSubscription(context.Background(), topicName, subscriptionName, nil)
 	require.NoError(t, err)
 }

@@ -23,7 +23,7 @@ func TestSessionReceiver_acceptSession(t *testing.T) {
 	ctx := context.Background()
 
 	// send a message to a specific session
-	sender, err := client.NewSender(queueName)
+	sender, err := client.NewSender(queueName, nil)
 	require.NoError(t, err)
 
 	err = sender.SendMessage(ctx, &Message{
@@ -38,7 +38,10 @@ func TestSessionReceiver_acceptSession(t *testing.T) {
 	msg, err := receiver.inner.receiveMessage(ctx, nil)
 	require.NoError(t, err)
 
-	require.EqualValues(t, "session-based message", msg.Body)
+	body, err := msg.Body()
+	require.NoError(t, err)
+
+	require.EqualValues(t, "session-based message", body)
 	require.EqualValues(t, "session-1", *msg.SessionID)
 	require.NoError(t, receiver.CompleteMessage(ctx, msg))
 
@@ -66,7 +69,7 @@ func TestSessionReceiver_blankSessionIDs(t *testing.T) {
 	ctx := context.Background()
 
 	// send a message to a specific session
-	sender, err := client.NewSender(queueName)
+	sender, err := client.NewSender(queueName, nil)
 	require.NoError(t, err)
 
 	err = sender.SendMessage(ctx, &Message{
@@ -115,7 +118,7 @@ func TestSessionReceiver_acceptNextSession(t *testing.T) {
 
 	ctx := context.Background()
 
-	sender, err := client.NewSender(queueName)
+	sender, err := client.NewSender(queueName, nil)
 	require.NoError(t, err)
 
 	err = sender.SendMessage(ctx, &Message{
@@ -132,7 +135,9 @@ func TestSessionReceiver_acceptNextSession(t *testing.T) {
 	msg, err := receiver.inner.receiveMessage(ctx, nil)
 	require.NoError(t, err)
 
-	require.EqualValues(t, "session-based message", msg.Body)
+	body, err := msg.Body()
+	require.NoError(t, err)
+	require.EqualValues(t, "session-based message", body)
 	require.EqualValues(t, "acceptnextsession-test", *msg.SessionID)
 	require.NoError(t, receiver.CompleteMessage(ctx, msg))
 
@@ -210,7 +215,7 @@ func TestSessionReceiver_RenewSessionLock(t *testing.T) {
 	sessionReceiver, err := client.AcceptSessionForQueue(context.Background(), queueName, "session-1", nil)
 	require.NoError(t, err)
 
-	sender, err := client.NewSender(queueName)
+	sender, err := client.NewSender(queueName, nil)
 	require.NoError(t, err)
 
 	err = sender.SendMessage(context.Background(), &Message{

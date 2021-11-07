@@ -97,19 +97,6 @@ func (s *Sender) ScheduleMessages(ctx context.Context, messages []*Message, sche
 	return s.scheduleAMQPMessages(ctx, amqpMessages, scheduledEnqueueTime)
 }
 
-// ScheduleMessages schedules a slice of AMQPAnnotatedMessages to appear on Service Bus Queue/Subscription at a later time.
-// Returns the sequence numbers of the messages that were scheduled.  Messages that haven't been
-// delivered can be cancelled using `Receiver.CancelScheduleMessage(s)`
-func (s *Sender) ScheduleAMQPMessages(ctx context.Context, messages []*AMQPAnnotatedMessage, scheduledEnqueueTime time.Time) ([]int64, error) {
-	var amqpMessages []*amqp.Message
-
-	for _, msg := range messages {
-		amqpMessages = append(amqpMessages, msg.toAMQPMessage())
-	}
-
-	return s.scheduleAMQPMessages(ctx, amqpMessages, scheduledEnqueueTime)
-}
-
 // MessageBatch changes
 
 // CancelScheduledMessages cancels multiple messages that were scheduled.

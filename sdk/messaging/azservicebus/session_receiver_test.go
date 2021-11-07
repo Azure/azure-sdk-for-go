@@ -9,13 +9,14 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/require"
 )
 
 func TestSessionReceiver_acceptSession(t *testing.T) {
-	client, cleanup, queueName := setupLiveTest(t, &QueueProperties{
+	client, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
 		RequiresSession: to.BoolPtr(true),
 	})
 	defer cleanup()
@@ -61,7 +62,7 @@ func TestSessionReceiver_blankSessionIDs(t *testing.T) {
 	t.Skip("Can't run blank session ID test because of issue")
 	// errors while closing links: amqp sender close error: *Error{Condition: amqp:not-allowed, Description: The SessionId was not set on a message, and it cannot be sent to the entity. Entities that have session support enabled can only receive messages that have the SessionId set to a valid value.
 
-	client, cleanup, queueName := setupLiveTest(t, &QueueProperties{
+	client, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
 		RequiresSession: to.BoolPtr(true),
 	})
 	defer cleanup()
@@ -92,7 +93,7 @@ func TestSessionReceiver_blankSessionIDs(t *testing.T) {
 }
 
 func TestSessionReceiver_acceptSessionButAlreadyLocked(t *testing.T) {
-	client, cleanup, queueName := setupLiveTest(t, &QueueProperties{
+	client, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
 		RequiresSession: to.BoolPtr(true),
 	})
 	defer cleanup()
@@ -111,7 +112,7 @@ func TestSessionReceiver_acceptSessionButAlreadyLocked(t *testing.T) {
 }
 
 func TestSessionReceiver_acceptNextSession(t *testing.T) {
-	client, cleanup, queueName := setupLiveTest(t, &QueueProperties{
+	client, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
 		RequiresSession: to.BoolPtr(true),
 	})
 	defer cleanup()
@@ -156,7 +157,7 @@ func TestSessionReceiver_acceptNextSession(t *testing.T) {
 func TestSessionReceiver_noSessionsAvailable(t *testing.T) {
 	t.Skip("Really slow test (since it has to wait for a timeout from the service)")
 
-	client, cleanup, queueName := setupLiveTest(t, &QueueProperties{
+	client, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
 		RequiresSession: to.BoolPtr(true),
 	})
 	defer cleanup()
@@ -179,7 +180,7 @@ func TestSessionReceiver_noSessionsAvailable(t *testing.T) {
 }
 
 func TestSessionReceiver_nonSessionReceiver(t *testing.T) {
-	client, cleanup, queueName := setupLiveTest(t, &QueueProperties{
+	client, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
 		RequiresSession: to.BoolPtr(true),
 	})
 	defer cleanup()
@@ -207,7 +208,7 @@ func TestSessionReceiver_nonSessionReceiver(t *testing.T) {
 }
 
 func TestSessionReceiver_RenewSessionLock(t *testing.T) {
-	client, cleanup, queueName := setupLiveTest(t, &QueueProperties{
+	client, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
 		RequiresSession: to.BoolPtr(true),
 	})
 	defer cleanup()

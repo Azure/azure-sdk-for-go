@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package azservicebus
+package admin
 
 import (
 	"context"
@@ -125,7 +125,7 @@ type CreateQueueResponse struct {
 }
 
 // CreateQueue creates a queue with configurable properties.
-func (ac *AdminClient) CreateQueue(ctx context.Context, queueName string, properties *QueueProperties, options *CreateQueueOptions) (*CreateQueueResponse, error) {
+func (ac *Client) CreateQueue(ctx context.Context, queueName string, properties *QueueProperties, options *CreateQueueOptions) (*CreateQueueResponse, error) {
 	newProps, resp, err := ac.createOrUpdateQueueImpl(ctx, queueName, properties, true)
 
 	if err != nil {
@@ -156,7 +156,7 @@ type UpdateQueueOptions struct {
 }
 
 // UpdateQueue updates an existing queue.
-func (ac *AdminClient) UpdateQueue(ctx context.Context, queueName string, properties QueueProperties, options *UpdateQueueOptions) (*UpdateQueueResponse, error) {
+func (ac *Client) UpdateQueue(ctx context.Context, queueName string, properties QueueProperties, options *UpdateQueueOptions) (*UpdateQueueResponse, error) {
 	newProps, resp, err := ac.createOrUpdateQueueImpl(ctx, queueName, &properties, false)
 
 	if err != nil {
@@ -183,7 +183,7 @@ type GetQueueResponse struct {
 }
 
 // GetQueue gets a queue by name.
-func (ac *AdminClient) GetQueue(ctx context.Context, queueName string) (*GetQueueResponse, error) {
+func (ac *Client) GetQueue(ctx context.Context, queueName string) (*GetQueueResponse, error) {
 	var atomResp *atom.QueueEnvelope
 	resp, err := ac.em.Get(ctx, "/"+queueName, &atomResp)
 
@@ -217,7 +217,7 @@ type GetQueueRuntimePropertiesResponse struct {
 }
 
 // GetQueueRuntimeProperties gets runtime properties of a queue, like the SizeInBytes, or ActiveMessageCount.
-func (ac *AdminClient) GetQueueRuntimeProperties(ctx context.Context, queueName string) (*GetQueueRuntimePropertiesResponse, error) {
+func (ac *Client) GetQueueRuntimeProperties(ctx context.Context, queueName string) (*GetQueueRuntimePropertiesResponse, error) {
 	var atomResp *atom.QueueEnvelope
 	resp, err := ac.em.Get(ctx, "/"+queueName, &atomResp)
 
@@ -248,7 +248,7 @@ type DeleteQueueOptions struct {
 }
 
 // DeleteQueue deletes a queue.
-func (ac *AdminClient) DeleteQueue(ctx context.Context, queueName string) (*DeleteQueueResponse, error) {
+func (ac *Client) DeleteQueue(ctx context.Context, queueName string, options *DeleteQueueOptions) (*DeleteQueueResponse, error) {
 	resp, err := ac.em.Delete(ctx, "/"+queueName)
 	defer atom.CloseRes(ctx, resp)
 	return &DeleteQueueResponse{RawResponse: resp}, err
@@ -288,7 +288,7 @@ type QueueItem struct {
 }
 
 // ListQueues lists queues.
-func (ac *AdminClient) ListQueues(options *ListQueuesOptions) QueueItemPager {
+func (ac *Client) ListQueues(options *ListQueuesOptions) QueueItemPager {
 	var pageSize int32
 
 	if options != nil {
@@ -330,7 +330,7 @@ type QueueRuntimePropertiesPager interface {
 }
 
 // ListQueuesRuntimeProperties lists runtime properties for queues.
-func (ac *AdminClient) ListQueuesRuntimeProperties(options *ListQueuesRuntimePropertiesOptions) QueueRuntimePropertiesPager {
+func (ac *Client) ListQueuesRuntimeProperties(options *ListQueuesRuntimePropertiesOptions) QueueRuntimePropertiesPager {
 	var pageSize int32
 
 	if options != nil {
@@ -342,7 +342,7 @@ func (ac *AdminClient) ListQueuesRuntimeProperties(options *ListQueuesRuntimePro
 	}
 }
 
-func (ac *AdminClient) createOrUpdateQueueImpl(ctx context.Context, queueName string, props *QueueProperties, creating bool) (*QueueProperties, *http.Response, error) {
+func (ac *Client) createOrUpdateQueueImpl(ctx context.Context, queueName string, props *QueueProperties, creating bool) (*QueueProperties, *http.Response, error) {
 	if props == nil {
 		props = &QueueProperties{}
 	}
@@ -483,7 +483,7 @@ func (p *queueRuntimePropertiesPager) Err() error {
 
 type queueFeedPagerFunc func(ctx context.Context) (*atom.QueueFeed, *http.Response, error)
 
-func (ac *AdminClient) getQueuePager(maxPageSize int32, skip int) queueFeedPagerFunc {
+func (ac *Client) getQueuePager(maxPageSize int32, skip int) queueFeedPagerFunc {
 	return func(ctx context.Context) (*atom.QueueFeed, *http.Response, error) {
 		url := "/$Resources/Queues?"
 		if maxPageSize > 0 {

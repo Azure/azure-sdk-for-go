@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package azservicebus_test
+package admin_test
 
 import (
 	"context"
@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
 )
 
 func ExampleNewAdminClient() {
@@ -19,7 +19,7 @@ func ExampleNewAdminClient() {
 	credential, err := azidentity.NewDefaultAzureCredential(nil)
 	exitOnError("Failed to create a DefaultAzureCredential", err)
 
-	adminClient, err = azservicebus.NewAdminClient("<ex: myservicebus.servicebus.windows.net>", credential, nil)
+	adminClient, err = admin.NewClient("<ex: myservicebus.servicebus.windows.net>", credential, nil)
 	exitOnError("Failed to create ServiceBusClient in example", err)
 }
 
@@ -27,7 +27,7 @@ func ExampleNewAdminClientFromConnectionString() {
 	// NOTE: If you'd like to authenticate via Azure Active Directory look at
 	// the `NewClient` function instead.
 
-	adminClient, err = azservicebus.NewAdminClientFromConnectionString(connectionString, nil)
+	adminClient, err = admin.NewClientFromConnectionString("<connection string>", nil)
 	exitOnError("Failed to create ServiceBusClient in example", err)
 }
 
@@ -44,7 +44,7 @@ func ExampleAdminClient_CreateQueue_usingproperties() {
 	lockDuration := time.Minute
 	maxDeliveryCount := int32(10)
 
-	resp, err := adminClient.CreateQueue(context.TODO(), "queue-name", &azservicebus.QueueProperties{
+	resp, err := adminClient.CreateQueue(context.TODO(), "queue-name", &admin.QueueProperties{
 		// some example properties
 		LockDuration:     &lockDuration,
 		MaxDeliveryCount: &maxDeliveryCount,
@@ -79,3 +79,9 @@ func ExampleAdminClient_ListQueuesRuntimeProperties() {
 
 	exitOnError("Failed when listing queues runtime properties", queuePager.Err())
 }
+
+// NOTE: these are just here to keep the examples succinct.
+var adminClient *admin.Client
+var err error
+
+func exitOnError(message string, err error) {}

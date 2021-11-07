@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
 	"github.com/stretchr/testify/require"
 )
 
@@ -76,7 +77,7 @@ func receiveAll(t *testing.T, receiver *Receiver, expected int) []*ReceivedMessa
 }
 
 func Test_Sender_UsingPartitionedQueue(t *testing.T) {
-	client, cleanup, queueName := setupLiveTest(t, &QueueProperties{
+	client, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
 		EnablePartitioning: to.BoolPtr(true),
 	})
 	defer cleanup()

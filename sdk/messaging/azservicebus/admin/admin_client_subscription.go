@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package azservicebus
+package admin
 
 import (
 	"context"
@@ -107,7 +107,7 @@ type CreateSubscriptionOptions struct {
 }
 
 // CreateSubscription creates a subscription to a topic with configurable properties
-func (ac *AdminClient) CreateSubscription(ctx context.Context, topicName string, subscriptionName string, properties *SubscriptionProperties, options *CreateSubscriptionOptions) (*CreateSubscriptionResponse, error) {
+func (ac *Client) CreateSubscription(ctx context.Context, topicName string, subscriptionName string, properties *SubscriptionProperties, options *CreateSubscriptionOptions) (*CreateSubscriptionResponse, error) {
 	newProps, resp, err := ac.createOrUpdateSubscriptionImpl(ctx, topicName, subscriptionName, properties, true)
 
 	if err != nil {
@@ -138,7 +138,7 @@ type GetSubscriptionOptions struct {
 }
 
 // GetSubscription gets a subscription by name.
-func (ac *AdminClient) GetSubscription(ctx context.Context, topicName string, subscriptionName string, options *GetSubscriptionOptions) (*GetSubscriptionResponse, error) {
+func (ac *Client) GetSubscription(ctx context.Context, topicName string, subscriptionName string, options *GetSubscriptionOptions) (*GetSubscriptionResponse, error) {
 	var atomResp *atom.SubscriptionEnvelope
 	resp, err := ac.em.Get(ctx, fmt.Sprintf("/%s/Subscriptions/%s", topicName, subscriptionName), &atomResp)
 
@@ -171,7 +171,7 @@ type GetSubscriptionRuntimePropertiesResponse struct {
 }
 
 // GetSubscriptionRuntimeProperties gets runtime properties of a subscription, like the SizeInBytes, or SubscriptionCount.
-func (ac *AdminClient) GetSubscriptionRuntimeProperties(ctx context.Context, topicName string, subscriptionName string) (*GetSubscriptionRuntimePropertiesResponse, error) {
+func (ac *Client) GetSubscriptionRuntimeProperties(ctx context.Context, topicName string, subscriptionName string) (*GetSubscriptionRuntimePropertiesResponse, error) {
 	var atomResp *atom.SubscriptionEnvelope
 	rawResp, err := ac.em.Get(ctx, fmt.Sprintf("/%s/Subscriptions/%s", topicName, subscriptionName), &atomResp)
 
@@ -221,7 +221,7 @@ type ListSubscriptionsResponse struct {
 }
 
 // ListSubscriptions lists subscriptions for a topic.
-func (ac *AdminClient) ListSubscriptions(topicName string, options *ListSubscriptionsOptions) SubscriptionPropertiesPager {
+func (ac *Client) ListSubscriptions(topicName string, options *ListSubscriptionsOptions) SubscriptionPropertiesPager {
 	var pageSize int32
 
 	if options != nil {
@@ -268,7 +268,7 @@ type SubscriptionRuntimePropertiesPager interface {
 }
 
 // ListSubscriptionsRuntimeProperties lists runtime properties for subscriptions for a topic.
-func (ac *AdminClient) ListSubscriptionsRuntimeProperties(topicName string, options *ListSubscriptionsRuntimePropertiesOptions) SubscriptionRuntimePropertiesPager {
+func (ac *Client) ListSubscriptionsRuntimeProperties(topicName string, options *ListSubscriptionsRuntimePropertiesOptions) SubscriptionRuntimePropertiesPager {
 	var pageSize int32
 
 	if options != nil {
@@ -296,7 +296,7 @@ type UpdateSubscriptionOptions struct {
 }
 
 // UpdateSubscription updates an existing subscription.
-func (ac *AdminClient) UpdateSubscription(ctx context.Context, topicName string, subscriptionName string, properties SubscriptionProperties, options *UpdateSubscriptionOptions) (*UpdateSubscriptionResponse, error) {
+func (ac *Client) UpdateSubscription(ctx context.Context, topicName string, subscriptionName string, properties SubscriptionProperties, options *UpdateSubscriptionOptions) (*UpdateSubscriptionResponse, error) {
 	newProps, resp, err := ac.createOrUpdateSubscriptionImpl(ctx, topicName, subscriptionName, &properties, false)
 
 	if err != nil {
@@ -321,7 +321,7 @@ type DeleteSubscriptionResponse struct {
 }
 
 // DeleteSubscription deletes a subscription.
-func (ac *AdminClient) DeleteSubscription(ctx context.Context, topicName string, subscriptionName string, options *DeleteSubscriptionOptions) (*DeleteSubscriptionResponse, error) {
+func (ac *Client) DeleteSubscription(ctx context.Context, topicName string, subscriptionName string, options *DeleteSubscriptionOptions) (*DeleteSubscriptionResponse, error) {
 	resp, err := ac.em.Delete(ctx, fmt.Sprintf("/%s/Subscriptions/%s", topicName, subscriptionName))
 	defer atom.CloseRes(ctx, resp)
 	return &DeleteSubscriptionResponse{
@@ -329,7 +329,7 @@ func (ac *AdminClient) DeleteSubscription(ctx context.Context, topicName string,
 	}, err
 }
 
-func (ac *AdminClient) createOrUpdateSubscriptionImpl(ctx context.Context, topicName string, subscriptionName string, props *SubscriptionProperties, creating bool) (*SubscriptionProperties, *http.Response, error) {
+func (ac *Client) createOrUpdateSubscriptionImpl(ctx context.Context, topicName string, subscriptionName string, props *SubscriptionProperties, creating bool) (*SubscriptionProperties, *http.Response, error) {
 	if props == nil {
 		props = &SubscriptionProperties{}
 	}
@@ -537,7 +537,7 @@ func (p *subscriptionRuntimePropertiesPager) getNextPage(ctx context.Context) (*
 
 type subscriptionFeedPagerFunc func(ctx context.Context) (*atom.SubscriptionFeed, *http.Response, error)
 
-func (ac *AdminClient) getSubscriptionPager(topicName string, maxPageSize int32, skip int) subscriptionFeedPagerFunc {
+func (ac *Client) getSubscriptionPager(topicName string, maxPageSize int32, skip int) subscriptionFeedPagerFunc {
 	return func(ctx context.Context) (*atom.SubscriptionFeed, *http.Response, error) {
 		url := fmt.Sprintf("%s/Subscriptions?", topicName)
 		if maxPageSize > 0 {

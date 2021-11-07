@@ -11,11 +11,12 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
 	"github.com/stretchr/testify/require"
 )
 
 func TestNewClientWithAzureIdentity(t *testing.T) {
-	queue, cleanup := createQueue(t, getConnectionString(t), nil)
+	queue, cleanup := createQueue(t, test.GetConnectionString(t), nil)
 	defer cleanup()
 
 	// test with azure identity support

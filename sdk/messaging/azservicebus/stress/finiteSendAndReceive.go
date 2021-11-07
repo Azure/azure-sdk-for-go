@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
 	"github.com/microsoft/ApplicationInsights-Go/appinsights"
 )
 
@@ -22,7 +23,7 @@ func finiteSendAndReceiveTest(cs string, telemetryClient appinsights.TelemetryCl
 	stats := &stats{}
 
 	// create a new queue
-	adminClient, err := azservicebus.NewAdminClientFromConnectionString(cs, nil)
+	adminClient, err := admin.NewClientFromConnectionString(cs, nil)
 
 	if err != nil {
 		trackError(stats, telemetryClient, "failed to create adminclient", err)
@@ -41,7 +42,7 @@ func finiteSendAndReceiveTest(cs string, telemetryClient appinsights.TelemetryCl
 	}
 
 	defer func() {
-		_, err = adminClient.DeleteQueue(context.Background(), queueName)
+		_, err = adminClient.DeleteQueue(context.Background(), queueName, nil)
 
 		if err != nil {
 			trackError(stats, telemetryClient, fmt.Sprintf("failed to create queue %s", queueName), err)

@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/devigned/tab"
@@ -239,7 +240,7 @@ func createSubscriptions(telemetryClient appinsights.TelemetryClient, connection
 	log.Printf("[BEGIN] Creating topic %s", topicName)
 	defer log.Printf("[END] Creating topic %s", topicName)
 
-	ac, err := azservicebus.NewAdminClientFromConnectionString(connectionString, nil)
+	ac, err := admin.NewClientFromConnectionString(connectionString, nil)
 
 	if err != nil {
 		trackError(nil, telemetryClient, "Failed to create a topic manager", err)
@@ -258,7 +259,7 @@ func createSubscriptions(telemetryClient appinsights.TelemetryClient, connection
 	}
 
 	return func() {
-		if _, err := ac.DeleteTopic(context.Background(), topicName); err != nil {
+		if _, err := ac.DeleteTopic(context.Background(), topicName, nil); err != nil {
 			trackError(nil, telemetryClient, fmt.Sprintf("Failed to delete topic %s", topicName), err)
 		}
 	}, nil

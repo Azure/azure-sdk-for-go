@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package azservicebus
+package admin
 
 import (
 	"context"
@@ -102,13 +102,6 @@ type ListTopicsRuntimePropertiesResponse struct {
 	RawResponse *http.Response
 }
 
-type DeleteTopicResponse struct {
-	// Value is the result of the request.
-	Value *TopicProperties
-	// RawResponse is the *http.Response for the request.
-	RawResponse *http.Response
-}
-
 type CreateTopicResult struct {
 	TopicProperties
 }
@@ -125,7 +118,7 @@ type CreateTopicOptions struct {
 }
 
 // CreateTopic creates a topic using defaults for all options.
-func (ac *AdminClient) CreateTopic(ctx context.Context, topicName string, properties *TopicProperties, options *CreateTopicOptions) (*CreateTopicResponse, error) {
+func (ac *Client) CreateTopic(ctx context.Context, topicName string, properties *TopicProperties, options *CreateTopicOptions) (*CreateTopicResponse, error) {
 	newProps, resp, err := ac.createOrUpdateTopicImpl(ctx, topicName, properties, true)
 
 	if err != nil {
@@ -156,7 +149,7 @@ type GetTopicOptions struct {
 }
 
 // GetTopic gets a topic by name.
-func (ac *AdminClient) GetTopic(ctx context.Context, topicName string, options *GetTopicOptions) (*GetTopicResponse, error) {
+func (ac *Client) GetTopic(ctx context.Context, topicName string, options *GetTopicOptions) (*GetTopicResponse, error) {
 	var atomResp *atom.TopicEnvelope
 	resp, err := ac.em.Get(ctx, "/"+topicName, &atomResp)
 
@@ -179,7 +172,7 @@ func (ac *AdminClient) GetTopic(ctx context.Context, topicName string, options *
 }
 
 // GetTopicRuntimeProperties gets runtime properties of a topic, like the SizeInBytes, or SubscriptionCount.
-func (ac *AdminClient) GetTopicRuntimeProperties(ctx context.Context, topicName string) (*GetTopicRuntimePropertiesResponse, error) {
+func (ac *Client) GetTopicRuntimeProperties(ctx context.Context, topicName string) (*GetTopicRuntimePropertiesResponse, error) {
 	var atomResp *atom.TopicEnvelope
 	resp, err := ac.em.Get(ctx, "/"+topicName, &atomResp)
 
@@ -213,7 +206,7 @@ type TopicPropertiesPager interface {
 }
 
 // ListTopics lists topics.
-func (ac *AdminClient) ListTopics(options *ListTopicsOptions) TopicPropertiesPager {
+func (ac *Client) ListTopics(options *ListTopicsOptions) TopicPropertiesPager {
 	var pageSize int32
 
 	if options != nil {
@@ -245,7 +238,7 @@ type TopicRuntimePropertiesPager interface {
 }
 
 // ListTopicsRuntimeProperties lists runtime properties for topics.
-func (ac *AdminClient) ListTopicsRuntimeProperties(options *ListTopicsRuntimePropertiesOptions) TopicRuntimePropertiesPager {
+func (ac *Client) ListTopicsRuntimeProperties(options *ListTopicsRuntimePropertiesOptions) TopicRuntimePropertiesPager {
 	var pageSize int32
 
 	if options != nil {
@@ -273,7 +266,7 @@ type UpdateTopicOptions struct {
 }
 
 // UpdateTopic updates an existing topic.
-func (ac *AdminClient) UpdateTopic(ctx context.Context, topicName string, properties TopicProperties, options *UpdateTopicOptions) (*UpdateTopicResponse, error) {
+func (ac *Client) UpdateTopic(ctx context.Context, topicName string, properties TopicProperties, options *UpdateTopicOptions) (*UpdateTopicResponse, error) {
 	newProps, resp, err := ac.createOrUpdateTopicImpl(ctx, topicName, &properties, false)
 
 	if err != nil {
@@ -288,8 +281,19 @@ func (ac *AdminClient) UpdateTopic(ctx context.Context, topicName string, proper
 	}, nil
 }
 
+type DeleteTopicResponse struct {
+	// Value is the result of the request.
+	Value *TopicProperties
+	// RawResponse is the *http.Response for the request.
+	RawResponse *http.Response
+}
+
+type DeleteTopicOptions struct {
+	// For future expansion
+}
+
 // DeleteTopic deletes a topic.
-func (ac *AdminClient) DeleteTopic(ctx context.Context, topicName string) (*DeleteTopicResponse, error) {
+func (ac *Client) DeleteTopic(ctx context.Context, topicName string, options *DeleteTopicOptions) (*DeleteTopicResponse, error) {
 	resp, err := ac.em.Delete(ctx, "/"+topicName)
 	defer atom.CloseRes(ctx, resp)
 	return &DeleteTopicResponse{
@@ -297,7 +301,7 @@ func (ac *AdminClient) DeleteTopic(ctx context.Context, topicName string) (*Dele
 	}, err
 }
 
-func (ac *AdminClient) getTopicPager(maxPageSize int32, skip int32) topicFeedPagerFunc {
+func (ac *Client) getTopicPager(maxPageSize int32, skip int32) topicFeedPagerFunc {
 	return func(ctx context.Context) (*atom.TopicFeed, *http.Response, error) {
 		url := "/$Resources/Topics?"
 		if maxPageSize > 0 {
@@ -324,7 +328,7 @@ func (ac *AdminClient) getTopicPager(maxPageSize int32, skip int32) topicFeedPag
 	}
 }
 
-func (ac *AdminClient) createOrUpdateTopicImpl(ctx context.Context, topicName string, props *TopicProperties, creating bool) (*TopicProperties, *http.Response, error) {
+func (ac *Client) createOrUpdateTopicImpl(ctx context.Context, topicName string, props *TopicProperties, creating bool) (*TopicProperties, *http.Response, error) {
 	if props == nil {
 		props = &TopicProperties{}
 	}

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package azservicebus
+package admin
 
 import (
 	"context"
@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/stretchr/testify/require"
 )
@@ -31,7 +32,7 @@ func TestAdminClient_UsingIdentity(t *testing.T) {
 		t.Skip("Azure Identity compatible credentials not configured")
 	}
 
-	adminClient, err := NewAdminClient(ns, envCred, nil)
+	adminClient, err := NewClient(ns, envCred, nil)
 	require.NoError(t, err)
 
 	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
@@ -40,13 +41,18 @@ func TestAdminClient_UsingIdentity(t *testing.T) {
 	require.EqualValues(t, 10, *props.MaxDeliveryCount)
 
 	defer func() {
-		_, err := adminClient.DeleteQueue(context.Background(), queueName)
-		require.NoError(t, err)
+		deleteQueue(t, adminClient, queueName)
 	}()
 }
 
+func TestAdminClient_GetNamespaceProperties(t *testing.T) {
+	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
+	require.NoError(t, err)
+	adminClient.GetNamespaceProperties()
+}
+
 func TestAdminClient_QueueWithMaxValues(t *testing.T) {
-	adminClient, err := NewAdminClientFromConnectionString(getConnectionString(t), nil)
+	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
 	require.NoError(t, err)
 
 	es := EntityStatusReceiveDisabled
@@ -96,7 +102,7 @@ func TestAdminClient_QueueWithMaxValues(t *testing.T) {
 }
 
 func TestAdminClient_CreateQueue(t *testing.T) {
-	adminClient, err := NewAdminClientFromConnectionString(getConnectionString(t), nil)
+	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
 	require.NoError(t, err)
 
 	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
@@ -121,8 +127,7 @@ func TestAdminClient_CreateQueue(t *testing.T) {
 	require.NoError(t, err)
 
 	defer func() {
-		_, err := adminClient.DeleteQueue(context.Background(), queueName)
-		require.NoError(t, err)
+		deleteQueue(t, adminClient, queueName)
 	}()
 
 	require.EqualValues(t, QueueProperties{
@@ -147,66 +152,8 @@ func TestAdminClient_CreateQueue(t *testing.T) {
 	require.EqualValues(t, getResp.QueueProperties, createResp.QueueProperties)
 }
 
-func TestAdminClient_Queue_Forwarding(t *testing.T) {
-	adminClient, err := NewAdminClientFromConnectionString(getConnectionString(t), nil)
-	require.NoError(t, err)
-
-	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
-	forwardToQueueName := fmt.Sprintf("queue-fwd-%X", time.Now().UnixNano())
-
-	_, err = adminClient.CreateQueue(context.Background(), forwardToQueueName, nil, nil)
-	require.NoError(t, err)
-
-	defer func() {
-		_, err := adminClient.DeleteQueue(context.Background(), forwardToQueueName)
-		require.NoError(t, err)
-	}()
-
-	formatted := fmt.Sprintf("%s%s", adminClient.em.Host, forwardToQueueName)
-
-	createResp, err := adminClient.CreateQueue(context.Background(), queueName, &QueueProperties{
-		ForwardTo:                     &formatted,
-		ForwardDeadLetteredMessagesTo: &formatted,
-	}, nil)
-
-	require.NoError(t, err)
-	defer func() {
-		_, err := adminClient.DeleteQueue(context.Background(), queueName)
-		require.NoError(t, err)
-	}()
-
-	require.EqualValues(t, formatted, *createResp.ForwardTo)
-	require.EqualValues(t, formatted, *createResp.ForwardDeadLetteredMessagesTo)
-
-	getResp, err := adminClient.GetQueue(context.Background(), queueName)
-
-	require.NoError(t, err)
-	require.EqualValues(t, createResp.QueueProperties, getResp.QueueProperties)
-
-	client, err := NewClientFromConnectionString(getConnectionString(t), nil)
-	require.NoError(t, err)
-
-	sender, err := client.NewSender(queueName, nil)
-	require.NoError(t, err)
-
-	err = sender.SendMessage(context.Background(), &Message{
-		Body: []byte("this message will be auto-forwarded"),
-	})
-	require.NoError(t, err)
-
-	receiver, err := client.NewReceiverForQueue(forwardToQueueName, nil)
-	require.NoError(t, err)
-
-	forwardedMessage, err := receiver.receiveMessage(context.Background(), nil)
-	require.NoError(t, err)
-
-	body, err := forwardedMessage.Body()
-	require.NoError(t, err)
-	require.EqualValues(t, "this message will be auto-forwarded", string(body))
-}
-
 func TestAdminClient_UpdateQueue(t *testing.T) {
-	adminClient, err := NewAdminClientFromConnectionString(getConnectionString(t), nil)
+	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
 	require.NoError(t, err)
 
 	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
@@ -214,8 +161,7 @@ func TestAdminClient_UpdateQueue(t *testing.T) {
 	require.NoError(t, err)
 
 	defer func() {
-		_, err := adminClient.DeleteQueue(context.Background(), queueName)
-		require.NoError(t, err)
+		deleteQueue(t, adminClient, queueName)
 	}()
 
 	createdProps.MaxDeliveryCount = to.Int32Ptr(101)
@@ -236,64 +182,8 @@ func TestAdminClient_UpdateQueue(t *testing.T) {
 	require.Nil(t, updatedProps)
 }
 
-func TestAdminClient_GetQueueRuntimeProperties(t *testing.T) {
-	adminClient, err := NewAdminClientFromConnectionString(getConnectionString(t), nil)
-	require.NoError(t, err)
-
-	client, err := NewClientFromConnectionString(getConnectionString(t), nil)
-	require.NoError(t, err)
-	defer client.Close(context.Background())
-
-	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
-	_, err = adminClient.CreateQueue(context.Background(), queueName, nil, nil)
-	require.NoError(t, err)
-
-	defer deleteQueue(t, adminClient, queueName)
-
-	sender, err := client.NewSender(queueName, nil)
-	require.NoError(t, err)
-
-	for i := 0; i < 3; i++ {
-		err = sender.SendMessage(context.Background(), &Message{
-			Body: []byte("hello"),
-		})
-		require.NoError(t, err)
-	}
-
-	sequenceNumbers, err := sender.ScheduleMessages(context.Background(), []*Message{
-		{Body: []byte("hello")},
-	}, time.Now().Add(2*time.Hour))
-	require.NoError(t, err)
-	require.NotEmpty(t, sequenceNumbers)
-
-	receiver, err := client.NewReceiverForQueue(queueName, nil)
-	require.NoError(t, err)
-
-	messages, err := receiver.ReceiveMessages(context.Background(), 2, nil)
-	require.NoError(t, err)
-
-	require.NoError(t, receiver.DeadLetterMessage(context.Background(), messages[0], nil))
-
-	props, err := adminClient.GetQueueRuntimeProperties(context.Background(), queueName)
-	require.NoError(t, err)
-
-	require.EqualValues(t, 4, props.TotalMessageCount)
-
-	require.EqualValues(t, 2, props.ActiveMessageCount)
-	require.EqualValues(t, 1, props.DeadLetterMessageCount)
-	require.EqualValues(t, 1, props.ScheduledMessageCount)
-	require.EqualValues(t, 0, props.TransferDeadLetterMessageCount)
-	require.EqualValues(t, 0, props.TransferMessageCount)
-
-	require.Greater(t, props.SizeInBytes, int64(0))
-
-	require.NotEqual(t, time.Time{}, props.CreatedAt)
-	require.NotEqual(t, time.Time{}, props.UpdatedAt)
-	require.NotEqual(t, time.Time{}, props.AccessedAt)
-}
-
 func TestAdminClient_ListQueues(t *testing.T) {
-	adminClient, err := NewAdminClientFromConnectionString(getConnectionString(t), nil)
+	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
 	require.NoError(t, err)
 
 	var expectedQueues []string
@@ -337,7 +227,7 @@ func TestAdminClient_ListQueues(t *testing.T) {
 }
 
 func TestAdminClient_ListQueuesRuntimeProperties(t *testing.T) {
-	adminClient, err := NewAdminClientFromConnectionString(getConnectionString(t), nil)
+	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
 	require.NoError(t, err)
 
 	var expectedQueues []string
@@ -425,7 +315,7 @@ func TestAdminClient_ISO8601StringToDuration(t *testing.T) {
 }
 
 func TestAdminClient_TopicAndSubscription(t *testing.T) {
-	adminClient, err := NewAdminClientFromConnectionString(getConnectionString(t), nil)
+	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
 	require.NoError(t, err)
 
 	topicName := fmt.Sprintf("topic-%X", time.Now().UnixNano())
@@ -520,7 +410,7 @@ func TestAdminClient_TopicAndSubscription(t *testing.T) {
 }
 
 func TestAdminClient_UpdateTopic(t *testing.T) {
-	adminClient, err := NewAdminClientFromConnectionString(getConnectionString(t), nil)
+	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
 	require.NoError(t, err)
 
 	topicName := fmt.Sprintf("topic-%X", time.Now().UnixNano())
@@ -547,63 +437,8 @@ func TestAdminClient_UpdateTopic(t *testing.T) {
 	require.Nil(t, updateResp)
 }
 
-func TestAdminClient_TopicAndSubscriptionRuntimeProperties(t *testing.T) {
-	adminClient, err := NewAdminClientFromConnectionString(getConnectionString(t), nil)
-	require.NoError(t, err)
-
-	client, err := NewClientFromConnectionString(getConnectionString(t), nil)
-	require.NoError(t, err)
-
-	topicName := fmt.Sprintf("topic-%X", time.Now().UnixNano())
-	subscriptionName := fmt.Sprintf("sub-%X", time.Now().UnixNano())
-
-	_, err = adminClient.CreateTopic(context.Background(), topicName, nil, nil)
-	require.NoError(t, err)
-
-	addSubResp, err := adminClient.CreateSubscription(context.Background(), topicName, subscriptionName, nil, nil)
-	require.NoError(t, err)
-	require.NotNil(t, addSubResp)
-	require.EqualValues(t, 10, *addSubResp.MaxDeliveryCount)
-
-	defer deleteSubscription(t, adminClient, topicName, subscriptionName)
-
-	sender, err := client.NewSender(topicName, nil)
-	require.NoError(t, err)
-
-	// trigger some stats
-
-	//  Scheduled messages are accounted for in the topic stats.
-	_, err = sender.ScheduleMessages(context.Background(), []*Message{
-		{Body: []byte("hello")},
-	}, time.Now().Add(2*time.Hour))
-	require.NoError(t, err)
-
-	// validate the topic runtime properties
-	getRuntimeResp, err := adminClient.GetTopicRuntimeProperties(context.Background(), topicName)
-	require.NoError(t, err)
-
-	require.EqualValues(t, topicName, getRuntimeResp.Value.Name)
-
-	require.EqualValues(t, 1, getRuntimeResp.Value.SubscriptionCount)
-	require.NotEqual(t, time.Time{}, getRuntimeResp.Value.CreatedAt)
-	require.NotEqual(t, time.Time{}, getRuntimeResp.Value.UpdatedAt)
-	require.NotEqual(t, time.Time{}, getRuntimeResp.Value.AccessedAt)
-
-	require.Greater(t, getRuntimeResp.Value.SizeInBytes, int64(0))
-	require.EqualValues(t, int32(1), getRuntimeResp.Value.ScheduledMessageCount)
-
-	// validate subscription runtime properties
-	getSubResp, err := adminClient.GetSubscriptionRuntimeProperties(context.Background(), topicName, subscriptionName)
-	require.NoError(t, err)
-
-	require.EqualValues(t, 0, getSubResp.ActiveMessageCount)
-	require.NotEqual(t, time.Time{}, getSubResp.CreatedAt)
-	require.NotEqual(t, time.Time{}, getSubResp.UpdatedAt)
-	require.NotEqual(t, time.Time{}, getSubResp.AccessedAt)
-}
-
 func TestAdminClient_ListTopics(t *testing.T) {
-	adminClient, err := NewAdminClientFromConnectionString(getConnectionString(t), nil)
+	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
 	require.NoError(t, err)
 
 	var expectedTopics []string
@@ -655,7 +490,7 @@ func TestAdminClient_ListTopics(t *testing.T) {
 }
 
 func TestAdminClient_ListTopicsRuntimeProperties(t *testing.T) {
-	adminClient, err := NewAdminClientFromConnectionString(getConnectionString(t), nil)
+	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
 	require.NoError(t, err)
 
 	var expectedTopics []string
@@ -697,7 +532,7 @@ func TestAdminClient_ListTopicsRuntimeProperties(t *testing.T) {
 }
 
 func TestAdminClient_ListSubscriptions(t *testing.T) {
-	adminClient, err := NewAdminClientFromConnectionString(getConnectionString(t), nil)
+	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
 	require.NoError(t, err)
 
 	now := time.Now().UnixNano()
@@ -748,7 +583,7 @@ func TestAdminClient_ListSubscriptions(t *testing.T) {
 }
 
 func TestAdminClient_ListSubscriptionRuntimeProperties(t *testing.T) {
-	adminClient, err := NewAdminClientFromConnectionString(getConnectionString(t), nil)
+	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
 	require.NoError(t, err)
 
 	now := time.Now().UnixNano()
@@ -795,7 +630,7 @@ func TestAdminClient_ListSubscriptionRuntimeProperties(t *testing.T) {
 }
 
 func TestAdminClient_UpdateSubscription(t *testing.T) {
-	adminClient, err := NewAdminClientFromConnectionString(getConnectionString(t), nil)
+	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
 	require.NoError(t, err)
 
 	topicName := fmt.Sprintf("topic-%X", time.Now().UnixNano())
@@ -829,16 +664,16 @@ func TestAdminClient_UpdateSubscription(t *testing.T) {
 }
 
 func setupLowPrivTest(t *testing.T) *struct {
-	Client    *AdminClient
+	Client    *Client
 	TopicName string
 	SubName   string
 	QueueName string
 	Cleanup   func()
 } {
-	adminClient, err := NewAdminClientFromConnectionString(getConnectionString(t), nil)
+	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
 	require.NoError(t, err)
 
-	lowPrivAdminClient, err := NewAdminClientFromConnectionString(getConnectionStringWithoutManagePerms(t), nil)
+	lowPrivAdminClient, err := NewClientFromConnectionString(test.GetConnectionStringWithoutManagePerms(t), nil)
 	require.NoError(t, err)
 
 	nanoSeconds := time.Now().UnixNano()
@@ -872,7 +707,7 @@ func setupLowPrivTest(t *testing.T) *struct {
 	}()
 
 	return &struct {
-		Client    *AdminClient
+		Client    *Client
 		TopicName string
 		SubName   string
 		QueueName string
@@ -910,7 +745,7 @@ func TestAdminClient_LackPermissions_Queue(t *testing.T) {
 	_, err = testData.Client.UpdateQueue(ctx, "canneverbecreated", QueueProperties{}, nil)
 	require.Contains(t, err.Error(), "error code: 401, Details: Authorization failed for specified action: Manage,EntityWrite")
 
-	_, err = testData.Client.DeleteQueue(ctx, testData.QueueName)
+	_, err = testData.Client.DeleteQueue(ctx, testData.QueueName, nil)
 	require.Contains(t, err.Error(), "error code: 401, Details: Authorization failed for specified action: Manage,EntityDelete.")
 }
 
@@ -938,7 +773,7 @@ func TestAdminClient_LackPermissions_Topic(t *testing.T) {
 	_, err = testData.Client.UpdateTopic(ctx, "canneverbecreated", TopicProperties{}, nil)
 	require.Contains(t, err.Error(), "error code: 401, Details: Authorization failed for specified action")
 
-	_, err = testData.Client.DeleteTopic(ctx, testData.TopicName)
+	_, err = testData.Client.DeleteTopic(ctx, testData.TopicName, nil)
 	require.Contains(t, err.Error(), "error code: 401, Details: Authorization failed for specified action: Manage,EntityDelete.")
 
 	// sanity check that the http response is getting bundled into these errors, should it be needed.
@@ -977,17 +812,17 @@ func toDurationPtr(d time.Duration) *time.Duration {
 	return &d
 }
 
-func deleteQueue(t *testing.T, ac *AdminClient, queueName string) {
-	_, err := ac.DeleteQueue(context.Background(), queueName)
+func deleteQueue(t *testing.T, ac *Client, queueName string) {
+	_, err := ac.DeleteQueue(context.Background(), queueName, nil)
 	require.NoError(t, err)
 }
 
-func deleteTopic(t *testing.T, ac *AdminClient, topicName string) {
-	_, err := ac.DeleteTopic(context.Background(), topicName)
+func deleteTopic(t *testing.T, ac *Client, topicName string) {
+	_, err := ac.DeleteTopic(context.Background(), topicName, nil)
 	require.NoError(t, err)
 }
 
-func deleteSubscription(t *testing.T, ac *AdminClient, topicName string, subscriptionName string) {
+func deleteSubscription(t *testing.T, ac *Client, topicName string, subscriptionName string) {
 	_, err := ac.DeleteSubscription(context.Background(), topicName, subscriptionName, nil)
 	require.NoError(t, err)
 }

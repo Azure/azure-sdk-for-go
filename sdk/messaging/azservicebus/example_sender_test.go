@@ -5,7 +5,7 @@ package azservicebus_test
 
 import (
 	"context"
-	"log"
+	"fmt"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
@@ -29,31 +29,28 @@ func ExampleSender_SendMessage_messageBatch() {
 	batch, err := sender.NewMessageBatch(context.TODO(), nil)
 	exitOnError("Failed to create message batch", err)
 
-	messagesToSend := []*azservicebus.Message{
-		{Body: []byte("hello world")},
-		{Body: []byte("hello world as well")},
-	}
+	// By calling AddMessage multiple times you can add multiple messages into a
+	// batch. This can help with message throughput, as you can send multiple
+	// messages in a single send.
+	err = batch.AddMessage(&azservicebus.Message{Body: []byte("hello world")})
 
-	for i := 0; i < len(messagesToSend); i++ {
-		err := batch.AddMessage(messagesToSend[i])
-
-		// feedback: check err != nil
-		if err != nil {
-			switch err {
-			case azservicebus.ErrMessageTooLarge:
-				// At this point you can do a few things:
-				// 1. Ignore this message
-				// 2. Send this batch (it's full) and create a new batch.
-				//
-				// The batch can still be used after this error.
-				log.Fatal("Failed to add message to batch (batch is full)")
-			default:
-				exitOnError("Error while trying to add message to batch", err)
-			}
+	if err != nil {
+		switch err {
+		case azservicebus.ErrMessageTooLarge:
+			// At this point you can do a few things:
+			// 1. Ignore this message
+			// 2. Send this batch (it's full) and create a new batch.
+			//
+			// The batch can still be used after this error if you have
+			// smaller messages you'd still like to add in.
+			fmt.Printf("Failed to add message to batch\n")
+		default:
+			exitOnError("Error while trying to add message to batch", err)
 		}
 	}
 
-	// now let's send the batch
+	// After you add all the messages to the batch you send it using
+	// Sender.SendMessageBatch()
 	err = sender.SendMessageBatch(context.TODO(), batch)
 	exitOnError("Failed to send message batch", err)
 }

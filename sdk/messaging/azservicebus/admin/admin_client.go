@@ -42,6 +42,9 @@ func NewClient(fullyQualifiedNamespace string, tokenCredential azcore.TokenCrede
 	return &Client{em: em}, nil
 }
 
+type NamespaceProperties struct {
+}
+
 func (ac *Client) GetNamespaceProperties() {
 	panic("not yet done")
 }

@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
 )
 
-func ExampleNewAdminClient() {
+func ExampleNewClient() {
 	// NOTE: If you'd like to authenticate using a Service Bus connection string
 	// look at `NewClientWithConnectionString` instead.
 
@@ -23,7 +23,7 @@ func ExampleNewAdminClient() {
 	exitOnError("Failed to create ServiceBusClient in example", err)
 }
 
-func ExampleNewAdminClientFromConnectionString() {
+func ExampleNewClientFromConnectionString() {
 	// NOTE: If you'd like to authenticate via Azure Active Directory look at
 	// the `NewClient` function instead.
 
@@ -31,7 +31,7 @@ func ExampleNewAdminClientFromConnectionString() {
 	exitOnError("Failed to create ServiceBusClient in example", err)
 }
 
-func ExampleAdminClient_CreateQueue() {
+func ExampleClient_CreateQueue() {
 	resp, err := adminClient.CreateQueue(context.TODO(), "queue-name", nil, nil)
 	exitOnError("Failed to add queue", err)
 
@@ -40,7 +40,7 @@ func ExampleAdminClient_CreateQueue() {
 	fmt.Printf("Lock duration: %s", resp.LockDuration)
 }
 
-func ExampleAdminClient_CreateQueue_usingproperties() {
+func ExampleClient_CreateQueue_usingproperties() {
 	lockDuration := time.Minute
 	maxDeliveryCount := int32(10)
 
@@ -56,7 +56,7 @@ func ExampleAdminClient_CreateQueue_usingproperties() {
 	fmt.Printf("Lock duration: %s", resp.LockDuration)
 }
 
-func ExampleAdminClient_ListQueues() {
+func ExampleClient_ListQueues() {
 	queuePager := adminClient.ListQueues(nil)
 
 	for queuePager.NextPage(context.TODO()) {
@@ -68,7 +68,7 @@ func ExampleAdminClient_ListQueues() {
 	exitOnError("Failed when listing queues", queuePager.Err())
 }
 
-func ExampleAdminClient_ListQueuesRuntimeProperties() {
+func ExampleClient_ListQueuesRuntimeProperties() {
 	queuePager := adminClient.ListQueuesRuntimeProperties(nil)
 
 	for queuePager.NextPage(context.TODO()) {

@@ -63,7 +63,7 @@ type ReceivedMessage struct {
 func (rm *ReceivedMessage) Body() ([]byte, error) {
 	// TODO: does this come back as a zero length array if the body is empty (which is allowed)
 	if rm.rawAMQPMessage.Data == nil || len(rm.rawAMQPMessage.Data) != 1 {
-		return nil, errors.New("message.Data is improperly formatted for ReceivedMessage")
+		return nil, errors.New("AMQP message Data section is improperly encoded for ReceivedMessage")
 	}
 
 	return rm.rawAMQPMessage.Data[0], nil

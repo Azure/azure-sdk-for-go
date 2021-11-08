@@ -33,8 +33,12 @@
             "CoverageGoal": 0.0
         },
         {
-            "Name": "internal",
+            "Name": "sdk/internal",
             "CoverageGoal": 0.70
+        },
+        {
+            "Name": "sdk/keyvault/internal",
+            "CoverageGoal": 0.30
         },
         {
             "Name": "messaging",

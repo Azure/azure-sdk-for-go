@@ -22,7 +22,7 @@ The first step in instrumenting a client to interact with recorded tests is to d
 
 The snippet below demonstrates an example test policy:
 
-```go
+```go Snippet: PolicyDefinition
 // This should be a 'testdata' directory in your module. `testdata` is ignored by the go tool, making it perfect for ancillary data
 var pathToPackage = "sdk/data/aztables/testdata"
 
@@ -46,13 +46,12 @@ func (p *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err erro
         req.Raw().URL.Host = p.options.Host
         req.Raw().Host = p.options.Host
 
-		req.Raw().Header.Set(recording.UpstreamURIHeader, fmt.Sprintf("%s://%s", p.options.Scheme, originalURLHost))
-		req.Raw().Header.Set(recording.ModeHeader, recording.GetRecordMode())
-		req.Raw().Header.Set(recording.IdHeader, recording.GetRecordingId(p.t))
+        req.Raw().Header.Set(recording.UpstreamURIHeader, fmt.Sprintf("%s://%s", p.options.Scheme, originalURLHost))
+        req.Raw().Header.Set(recording.ModeHeader, recording.GetRecordMode())
+        req.Raw().Header.Set(recording.IdHeader, recording.GetRecordingId(p.t))
     }
     return req.Next()
 }
-
 ```
 
 After creating a recording policy, it has to be added to the client on the `ClientOptions.PerCallPolicies` option:
@@ -119,4 +118,3 @@ func TestSomething(t *testing.T) {
 }
 ```
 In this snippet, if the test is running in live mode and we have the real account name, we want to add a URI sanitizer for the account name to ensure the value does not appear in any recordings.
-

@@ -300,15 +300,10 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 	if _, ok := entity[rowKey]; !ok {
 		return fmt.Errorf("entity properties must contain a %s property", rowKey)
 	}
-	// Consider empty ETags as '*'
-	// if transactionAction.IfMatch == nil {
-	// 	star := azcore.ETagAny
-	// 	transactionAction.IfMatch = &star
-	// }
 
 	switch transactionAction.ActionType {
 	case Delete:
-		ifMatch := "*"
+		ifMatch := string(azcore.ETagAny)
 		if transactionAction.IfMatch != nil {
 			ifMatch = string(*transactionAction.IfMatch)
 		}

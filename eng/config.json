@@ -33,7 +33,7 @@
             "CoverageGoal": 0.0
         },
         {
-            "Name": "sdk/internal",
+            "Name": "internal",
             "CoverageGoal": 0.70
         },
         {

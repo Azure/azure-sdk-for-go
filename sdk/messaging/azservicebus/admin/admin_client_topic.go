@@ -55,9 +55,6 @@ type TopicProperties struct {
 
 // TopicRuntimeProperties represent dynamic properties of a topic, such as the ActiveMessageCount.
 type TopicRuntimeProperties struct {
-	// Name is the name of the topic.
-	Name string
-
 	// SizeInBytes - The size of the topic, in bytes.
 	SizeInBytes int64
 
@@ -75,31 +72,6 @@ type TopicRuntimeProperties struct {
 
 	// ScheduledMessageCount is the number of messages that are scheduled to be entopicd.
 	ScheduledMessageCount int32
-}
-type GetTopicRuntimePropertiesResponse struct {
-	// Value is the result of the request.
-	Value *TopicRuntimeProperties
-	// RawResponse is the *http.Response for the request.
-	RawResponse *http.Response
-}
-
-type TopicItem struct {
-	TopicName string
-	TopicProperties
-}
-
-type ListTopicsResponse struct {
-	// Items is the result of the request.
-	Items []*TopicItem
-	// RawResponse is the *http.Response for the request.
-	RawResponse *http.Response
-}
-
-type ListTopicsRuntimePropertiesResponse struct {
-	// Value is the result of the request.
-	Value []*TopicRuntimeProperties
-	// RawResponse is the *http.Response for the request.
-	RawResponse *http.Response
 }
 
 type CreateTopicResult struct {
@@ -171,8 +143,24 @@ func (ac *Client) GetTopic(ctx context.Context, topicName string, options *GetTo
 	}, nil
 }
 
+type GetTopicRuntimePropertiesResult struct {
+	// Value is the result of the request.
+	TopicRuntimeProperties
+}
+
+type GetTopicRuntimePropertiesResponse struct {
+	GetTopicRuntimePropertiesResult
+
+	// RawResponse is the *http.Response for the request.
+	RawResponse *http.Response
+}
+
+type GetTopicRuntimePropertiesOptions struct {
+	// For future expansion
+}
+
 // GetTopicRuntimeProperties gets runtime properties of a topic, like the SizeInBytes, or SubscriptionCount.
-func (ac *Client) GetTopicRuntimeProperties(ctx context.Context, topicName string) (*GetTopicRuntimePropertiesResponse, error) {
+func (ac *Client) GetTopicRuntimeProperties(ctx context.Context, topicName string, options *GetTopicRuntimePropertiesOptions) (*GetTopicRuntimePropertiesResponse, error) {
 	var atomResp *atom.TopicEnvelope
 	resp, err := ac.em.Get(ctx, "/"+topicName, &atomResp)
 
@@ -182,8 +170,23 @@ func (ac *Client) GetTopicRuntimeProperties(ctx context.Context, topicName strin
 
 	return &GetTopicRuntimePropertiesResponse{
 		RawResponse: resp,
-		Value:       newTopicRuntimeProperties(atomResp.Title, &atomResp.Content.TopicDescription),
+		GetTopicRuntimePropertiesResult: GetTopicRuntimePropertiesResult{
+			TopicRuntimeProperties: *newTopicRuntimeProperties(&atomResp.Content.TopicDescription),
+		},
 	}, nil
+}
+
+type TopicItem struct {
+	TopicProperties
+
+	TopicName string
+}
+
+type ListTopicsResponse struct {
+	// Items is the result of the request.
+	Items []*TopicItem
+	// RawResponse is the *http.Response for the request.
+	RawResponse *http.Response
 }
 
 // ListTopicsOptions can be used to configure the ListTopics method.
@@ -216,6 +219,19 @@ func (ac *Client) ListTopics(options *ListTopicsOptions) TopicPropertiesPager {
 	return &topicPropertiesPager{
 		innerPager: ac.getTopicPager(pageSize, 0),
 	}
+}
+
+type TopicRuntimePropertiesItem struct {
+	TopicRuntimeProperties
+
+	TopicName string
+}
+
+type ListTopicsRuntimePropertiesResponse struct {
+	// Items is the result of the request.
+	Items []*TopicRuntimePropertiesItem
+	// RawResponse is the *http.Response for the request.
+	RawResponse *http.Response
 }
 
 // ListTopicsRuntimePropertiesOptions can be used to configure the ListTopicsRuntimeProperties method.
@@ -414,9 +430,8 @@ func newTopicProperties(td *atom.TopicDescription) (*TopicProperties, error) {
 	}, nil
 }
 
-func newTopicRuntimeProperties(name string, desc *atom.TopicDescription) *TopicRuntimeProperties {
+func newTopicRuntimeProperties(desc *atom.TopicDescription) *TopicRuntimeProperties {
 	return &TopicRuntimeProperties{
-		Name:                  name,
 		SizeInBytes:           int64OrZero(desc.SizeInBytes),
 		CreatedAt:             dateTimeToTime(desc.CreatedAt),
 		UpdatedAt:             dateTimeToTime(desc.UpdatedAt),
@@ -502,15 +517,18 @@ func (p *topicRuntimePropertiesPager) getNextPage(ctx context.Context) (*ListTop
 		return nil, err
 	}
 
-	var all []*TopicRuntimeProperties
+	var all []*TopicRuntimePropertiesItem
 
 	for _, entry := range feed.Entries {
-		all = append(all, newTopicRuntimeProperties(entry.Title, &entry.Content.TopicDescription))
+		all = append(all, &TopicRuntimePropertiesItem{
+			TopicName:              entry.Title,
+			TopicRuntimeProperties: *newTopicRuntimeProperties(&entry.Content.TopicDescription),
+		})
 	}
 
 	return &ListTopicsRuntimePropertiesResponse{
 		RawResponse: resp,
-		Value:       all,
+		Items:       all,
 	}, nil
 }
 

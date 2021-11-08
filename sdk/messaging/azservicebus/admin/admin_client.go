@@ -20,12 +20,12 @@ type Client struct {
 	em *atom.EntityManager
 }
 
-type AdminClientOptions struct {
+type ClientOptions struct {
 	// for future expansion
 }
 
 // NewClientFromConnectionString creates an Client authenticating using a connection string.
-func NewClientFromConnectionString(connectionString string, options *AdminClientOptions) (*Client, error) {
+func NewClientFromConnectionString(connectionString string, options *ClientOptions) (*Client, error) {
 	em, err := atom.NewEntityManagerWithConnectionString(connectionString, internal.Version)
 
 	if err != nil {
@@ -36,7 +36,7 @@ func NewClientFromConnectionString(connectionString string, options *AdminClient
 }
 
 // NewClient creates an Client authenticating using a TokenCredential.
-func NewClient(fullyQualifiedNamespace string, tokenCredential azcore.TokenCredential, options *AdminClientOptions) (*Client, error) {
+func NewClient(fullyQualifiedNamespace string, tokenCredential azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	em, err := atom.NewEntityManager(fullyQualifiedNamespace, tokenCredential, internal.Version)
 
 	if err != nil {

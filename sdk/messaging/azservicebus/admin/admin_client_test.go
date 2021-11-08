@@ -205,7 +205,7 @@ func TestAdminClient_ListQueues(t *testing.T) {
 	now := time.Now().UnixNano()
 
 	for i := 0; i < 3; i++ {
-		queueName := strings.ToLower(fmt.Sprintf("queue-%d-%X", i, now))
+		queueName := strings.ToLower(fmt.Sprintf("list-queues-%d-%X", i, now))
 		expectedQueues = append(expectedQueues, queueName)
 
 		_, err = adminClient.CreateQueue(context.Background(), queueName, &QueueProperties{
@@ -217,11 +217,19 @@ func TestAdminClient_ListQueues(t *testing.T) {
 	}
 
 	// we skipped the first queue so it shouldn't come back in the results.
-	pager := adminClient.ListQueues(nil)
+	pager := adminClient.ListQueues(&ListQueuesOptions{
+		MaxPageSize: 2,
+	})
 	all := map[string]*QueueItem{}
 
+	times := 0
+
 	for pager.NextPage(context.Background()) {
+		times++
 		page := pager.PageResponse()
+
+		// should never exceed page size
+		require.LessOrEqual(t, len(page.Items), 2)
 
 		for _, props := range page.Items {
 			_, exists := all[props.QueueName]
@@ -231,6 +239,7 @@ func TestAdminClient_ListQueues(t *testing.T) {
 	}
 
 	require.NoError(t, pager.Err())
+	require.GreaterOrEqual(t, times, 2)
 
 	// sanity check - the queues we created exist and their deserialization is
 	// working.
@@ -249,7 +258,7 @@ func TestAdminClient_ListQueuesRuntimeProperties(t *testing.T) {
 	now := time.Now().UnixNano()
 
 	for i := 0; i < 3; i++ {
-		queueName := strings.ToLower(fmt.Sprintf("queue-%d-%X", i, now))
+		queueName := strings.ToLower(fmt.Sprintf("list-queuert-%d-%X", i, now))
 		expectedQueues = append(expectedQueues, queueName)
 
 		_, err = adminClient.CreateQueue(context.Background(), queueName, &QueueProperties{
@@ -261,11 +270,18 @@ func TestAdminClient_ListQueuesRuntimeProperties(t *testing.T) {
 	}
 
 	// we skipped the first queue so it shouldn't come back in the results.
-	pager := adminClient.ListQueuesRuntimeProperties(nil)
+	pager := adminClient.ListQueuesRuntimeProperties(&ListQueuesRuntimePropertiesOptions{
+		MaxPageSize: 2,
+	})
 	all := map[string]*QueueRuntimePropertiesItem{}
 
+	times := 0
+
 	for pager.NextPage(context.Background()) {
+		times++
 		page := pager.PageResponse()
+
+		require.LessOrEqual(t, len(page.Items), 2)
 
 		for _, queueRuntimeItem := range page.Items {
 			_, exists := all[queueRuntimeItem.QueueName]
@@ -275,6 +291,7 @@ func TestAdminClient_ListQueuesRuntimeProperties(t *testing.T) {
 	}
 
 	require.NoError(t, pager.Err())
+	require.GreaterOrEqual(t, times, 2)
 
 	// sanity check - the queues we created exist and their deserialization is
 	// working.
@@ -462,7 +479,7 @@ func TestAdminClient_ListTopics(t *testing.T) {
 	wg := sync.WaitGroup{}
 
 	for i := 0; i < 3; i++ {
-		topicName := strings.ToLower(fmt.Sprintf("topic-%d-%X", i, now))
+		topicName := strings.ToLower(fmt.Sprintf("list-topic-%d-%X", i, now))
 		expectedTopics = append(expectedTopics, topicName)
 		wg.Add(1)
 
@@ -480,11 +497,18 @@ func TestAdminClient_ListTopics(t *testing.T) {
 	wg.Wait()
 
 	// we skipped the first topic so it shouldn't come back in the results.
-	pager := adminClient.ListTopics(nil)
+	pager := adminClient.ListTopics(&ListTopicsOptions{
+		MaxPageSize: 2,
+	})
 	all := map[string]*TopicItem{}
 
+	times := 0
+
 	for pager.NextPage(context.Background()) {
+		times++
 		page := pager.PageResponse()
+
+		require.LessOrEqual(t, len(page.Items), 2)
 
 		for _, topicItem := range page.Items {
 			_, exists := all[topicItem.TopicName]
@@ -494,6 +518,7 @@ func TestAdminClient_ListTopics(t *testing.T) {
 	}
 
 	require.NoError(t, pager.Err())
+	require.GreaterOrEqual(t, times, 2)
 
 	// sanity check - the topics we created exist and their deserialization is
 	// working.
@@ -512,7 +537,7 @@ func TestAdminClient_ListTopicsRuntimeProperties(t *testing.T) {
 	now := time.Now().UnixNano()
 
 	for i := 0; i < 3; i++ {
-		topicName := strings.ToLower(fmt.Sprintf("topic-%d-%X", i, now))
+		topicName := strings.ToLower(fmt.Sprintf("list-topicrt-%d-%X", i, now))
 		expectedTopics = append(expectedTopics, topicName)
 
 		_, err = adminClient.CreateTopic(context.Background(), topicName, nil, nil)
@@ -521,21 +546,29 @@ func TestAdminClient_ListTopicsRuntimeProperties(t *testing.T) {
 		defer deleteTopic(t, adminClient, topicName)
 	}
 
+	times := 0
+
 	// we skipped the first topic so it shouldn't come back in the results.
-	pager := adminClient.ListTopicsRuntimeProperties(nil)
-	all := map[string]*TopicRuntimeProperties{}
+	pager := adminClient.ListTopicsRuntimeProperties(&ListTopicsRuntimePropertiesOptions{
+		MaxPageSize: 2,
+	})
+	all := map[string]*TopicRuntimePropertiesItem{}
 
 	for pager.NextPage(context.Background()) {
+		times++
 		page := pager.PageResponse()
 
-		for _, props := range page.Value {
-			_, exists := all[props.Name]
+		require.LessOrEqual(t, len(page.Items), 2)
+
+		for _, item := range page.Items {
+			_, exists := all[item.TopicName]
 			require.False(t, exists, "Each topic result should be unique")
-			all[props.Name] = props
+			all[item.TopicName] = item
 		}
 	}
 
 	require.NoError(t, pager.Err())
+	require.GreaterOrEqual(t, times, 2)
 
 	// sanity check - the topics we created exist and their deserialization is
 	// working.
@@ -551,7 +584,7 @@ func TestAdminClient_ListSubscriptions(t *testing.T) {
 	require.NoError(t, err)
 
 	now := time.Now().UnixNano()
-	topicName := strings.ToLower(fmt.Sprintf("topic-%X", now))
+	topicName := strings.ToLower(fmt.Sprintf("listsub-%X", now))
 
 	_, err = adminClient.CreateTopic(context.Background(), topicName, nil, nil)
 	require.NoError(t, err)
@@ -573,11 +606,18 @@ func TestAdminClient_ListSubscriptions(t *testing.T) {
 	}
 
 	// we skipped the first topic so it shouldn't come back in the results.
-	pager := adminClient.ListSubscriptions(topicName, nil)
+	pager := adminClient.ListSubscriptions(topicName, &ListSubscriptionsOptions{
+		MaxPageSize: 2,
+	})
 	all := map[string]*SubscriptionPropertiesItem{}
 
+	times := 0
+
 	for pager.NextPage(context.Background()) {
+		times++
 		page := pager.PageResponse()
+
+		require.LessOrEqual(t, len(page.Items), 2)
 
 		for _, item := range page.Items {
 			_, exists := all[item.SubscriptionName]
@@ -587,6 +627,7 @@ func TestAdminClient_ListSubscriptions(t *testing.T) {
 	}
 
 	require.NoError(t, pager.Err())
+	require.GreaterOrEqual(t, times, 2)
 
 	// sanity check - the subscriptions we created exist and their deserialization is
 	// working.
@@ -602,7 +643,7 @@ func TestAdminClient_ListSubscriptionRuntimeProperties(t *testing.T) {
 	require.NoError(t, err)
 
 	now := time.Now().UnixNano()
-	topicName := strings.ToLower(fmt.Sprintf("topic-%X", now))
+	topicName := strings.ToLower(fmt.Sprintf("listsubrt-%X", now))
 
 	_, err = adminClient.CreateTopic(context.Background(), topicName, nil, nil)
 	require.NoError(t, err)
@@ -620,11 +661,17 @@ func TestAdminClient_ListSubscriptionRuntimeProperties(t *testing.T) {
 	}
 
 	// we skipped the first subscription so it shouldn't come back in the results.
-	pager := adminClient.ListSubscriptionsRuntimeProperties(topicName, nil)
+	pager := adminClient.ListSubscriptionsRuntimeProperties(topicName, &ListSubscriptionsRuntimePropertiesOptions{
+		MaxPageSize: 2,
+	})
 	all := map[string]*SubscriptionRuntimePropertiesItem{}
+	times := 0
 
 	for pager.NextPage(context.Background()) {
+		times++
 		page := pager.PageResponse()
+
+		require.LessOrEqual(t, len(page.Items), 2)
 
 		for _, subItem := range page.Items {
 			_, exists := all[subItem.SubscriptionName]
@@ -634,6 +681,7 @@ func TestAdminClient_ListSubscriptionRuntimeProperties(t *testing.T) {
 	}
 
 	require.NoError(t, pager.Err())
+	require.GreaterOrEqual(t, times, 2)
 
 	// sanity check - the topics we created exist and their deserialization is
 	// working.

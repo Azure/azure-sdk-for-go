@@ -24,7 +24,7 @@ The snippet below demonstrates an example test policy:
 
 ```go Snippet:PolicyDefinition
 // This should be a 'testdata' directory in your module. `testdata` is ignored by the go tool, making it perfect for ancillary data
-var pathToPackage = "sdk/data/aztables/testdata"
+var pathToPackage = "sdk/packageToTest/testdata"
 
 type recordingPolicy struct {
     options recording.RecordingOptions

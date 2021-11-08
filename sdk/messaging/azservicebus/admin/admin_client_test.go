@@ -48,7 +48,22 @@ func TestAdminClient_UsingIdentity(t *testing.T) {
 func TestAdminClient_GetNamespaceProperties(t *testing.T) {
 	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
 	require.NoError(t, err)
-	adminClient.GetNamespaceProperties()
+	resp, err := adminClient.GetNamespaceProperties(context.Background(), nil)
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+
+	require.True(t, resp.SKU == "Standard" || resp.SKU == "Premium" || resp.SKU == "Basic")
+
+	if resp.SKU == "Standard" || resp.SKU == "Basic" {
+		// messaging units don't exist in the lower tiers
+		require.Nil(t, resp.MessagingUnits)
+	} else {
+		require.NotNil(t, resp.MessagingUnits)
+	}
+
+	require.NotEmpty(t, resp.Name)
+	require.False(t, resp.CreatedTime.IsZero())
+	require.False(t, resp.ModifiedTime.IsZero())
 }
 
 func TestAdminClient_QueueWithMaxValues(t *testing.T) {

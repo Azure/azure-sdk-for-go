@@ -442,7 +442,6 @@ func deserializeBody(resp *http.Response, respObj interface{}) (*http.Response, 
 	}
 
 	if err := xml.Unmarshal(bytes, respObj); err != nil {
-
 		// ATOM does this interesting thing where, when something doesn't exist, it gives you back an empty feed
 		// check:
 		if isEmptyFeed(bytes) {

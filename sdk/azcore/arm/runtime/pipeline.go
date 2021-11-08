@@ -29,11 +29,15 @@ func NewPipeline(module, version string, cred azcore.TokenCredential, plOpts azr
 		Scopes:           []string{shared.EndpointToScope(string(ep))},
 		AuxiliaryTenants: options.AuxiliaryTenants,
 	})
-	o := plOpts
-	o.PerRetry = append(o.PerRetry, authPolicy)
+	perRetry := make([]pipeline.Policy, 0, len(plOpts.PerRetry)+1)
+	copy(perRetry, plOpts.PerRetry)
+	plOpts.PerRetry = append(perRetry, authPolicy)
 	if !options.DisableRPRegistration {
 		regRPOpts := armpolicy.RegistrationOptions{ClientOptions: options.ClientOptions}
-		o.PerCall = append(o.PerCall, NewRPRegistrationPolicy(string(ep), cred, &regRPOpts))
+		regPolicy := NewRPRegistrationPolicy(string(ep), cred, &regRPOpts)
+		perCall := make([]pipeline.Policy, 0, len(plOpts.PerCall)+1)
+		copy(perCall, plOpts.PerCall)
+		plOpts.PerCall = append(perCall, regPolicy)
 	}
-	return azruntime.NewPipeline(module, version, o, &options.ClientOptions)
+	return azruntime.NewPipeline(module, version, plOpts, &options.ClientOptions)
 }

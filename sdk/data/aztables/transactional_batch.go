@@ -301,10 +301,10 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 		return fmt.Errorf("entity properties must contain a %s property", rowKey)
 	}
 	// Consider empty ETags as '*'
-	if transactionAction.IfMatch == nil {
-		star := azcore.ETagAny
-		transactionAction.IfMatch = &star
-	}
+	// if transactionAction.IfMatch == nil {
+	// 	star := azcore.ETagAny
+	// 	transactionAction.IfMatch = &star
+	// }
 
 	switch transactionAction.ActionType {
 	case Delete:
@@ -346,7 +346,7 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 			entity[partitionKey].(string),
 			entity[rowKey].(string),
 			opts,
-			qo,
+			&generated.QueryOptions{},
 		)
 		if err != nil {
 			return err
@@ -357,13 +357,18 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 	case UpdateReplace:
 		fallthrough
 	case InsertReplace:
+		opts := &generated.TableUpdateEntityOptions{TableEntityProperties: entity}
+		if transactionAction.IfMatch != nil {
+			opts.IfMatch = to.StringPtr(string(*transactionAction.IfMatch))
+		}
 		req, err = t.client.UpdateEntityCreateRequest(
 			ctx,
 			generated.Enum1Three0,
 			t.name,
-			entity[partitionKey].(string), entity[rowKey].(string),
-			&generated.TableUpdateEntityOptions{TableEntityProperties: entity, IfMatch: to.StringPtr(string(*transactionAction.IfMatch))},
-			qo,
+			entity[partitionKey].(string),
+			entity[rowKey].(string),
+			opts,
+			&generated.QueryOptions{},
 		)
 		if err != nil {
 			return err

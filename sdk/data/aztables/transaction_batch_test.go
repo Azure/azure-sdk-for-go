@@ -55,6 +55,51 @@ func TestBatchAdd(t *testing.T) {
 	}
 }
 
+func TestBatchInsert(t *testing.T) {
+	recording.LiveOnly(t)
+	for _, service := range services {
+		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
+			client, delete := initClientTest(t, service, true)
+			defer delete()
+
+			entitiesToCreate := createComplexEntities(1, "partition")
+			var batch []TransactionAction
+
+			for _, e := range *entitiesToCreate {
+				marshalled, err := json.Marshal(e)
+				require.NoError(t, err)
+				batch = append(
+					batch,
+					TransactionAction{
+						ActionType: InsertMerge,
+						Entity:     marshalled,
+					},
+				)
+			}
+
+			u1, err := uuid.New()
+			require.NoError(t, err)
+			u2, err := uuid.New()
+			require.NoError(t, err)
+			resp, err := client.submitTransactionInternal(ctx, &batch, u1, u2, nil)
+			require.NoError(t, err)
+			for i := 1; i < len(*resp.TransactionResponses); i++ {
+				r := (*resp.TransactionResponses)[i]
+				require.Equal(t, r.StatusCode, http.StatusNoContent)
+			}
+
+			pager := client.List(nil)
+			count := 0
+			for pager.NextPage(ctx) {
+				response := pager.PageResponse()
+				count += len(response.Entities)
+			}
+
+			require.Equal(t, count, 1)
+		})
+	}
+}
+
 func TestBatchMixed(t *testing.T) {
 	recording.LiveOnly(t)
 	for _, service := range services {

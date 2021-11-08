@@ -332,7 +332,7 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 			t.name,
 			&generated.TableInsertEntityOptions{
 				TableEntityProperties: entity,
-				ResponsePreference: generated.ResponseFormatReturnNoContent.ToPtr(),
+				ResponsePreference:    generated.ResponseFormatReturnNoContent.ToPtr(),
 			},
 			qo,
 		)

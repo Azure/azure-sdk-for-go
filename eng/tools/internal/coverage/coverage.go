@@ -68,13 +68,10 @@ func readConfigData(coverageConfig string) *codeCoverage {
 
 // This supports doing a single package at a time. If this needs to be expanded in the future
 // this method will have to return a []float64 for each packages goal
-func findCoverageGoal(covFiles []string, configData *codeCoverage) float64 {
-	for _, covFile := range covFiles {
-		for _, p := range configData.Packages {
-			fmt.Println(covFile, p.Name)
-			if strings.Contains(covFile, p.Name) {
-				return p.CoverageGoal
-			}
+func findCoverageGoal(covFile string, configData *codeCoverage) float64 {
+	for _, p := range configData.Packages {
+		if strings.Contains(covFile, p.Name) {
+			return p.CoverageGoal
 		}
 	}
 	fmt.Println("WARNING: Could not find a coverage goal, defaulting to 95%.")
@@ -101,7 +98,6 @@ func parseCoverageFiles(coverageFiles []string) []float64 {
 	coverageValues := make([]float64, 0)
 
 	for _, coverageFile := range coverageFiles {
-		fmt.Println(coverageFile)
 		xmlFile, err := os.Open(coverageFile)
 		check(err)
 		defer xmlFile.Close()
@@ -129,7 +125,7 @@ func CheckCoverage(serviceDir string, coverageConfig string, searchDirectory str
 	}
 
 	configData := readConfigData(coverageConfig)
-	coverageGoal := findCoverageGoal([]string{serviceDir}, configData)
+	coverageGoal := findCoverageGoal(serviceDir, configData)
 
 	fmt.Printf("Failing if the coverage is below %.2f\n", coverageGoal)
 

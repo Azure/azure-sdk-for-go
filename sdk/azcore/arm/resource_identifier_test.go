@@ -8,8 +8,36 @@ package arm
 
 import "testing"
 
-var (
-	testData = map[string]*ResourceID{
+func TestParseResourceIdentifier(t *testing.T) {
+	testData := map[string]*ResourceID{
+		"/subscriptions/17fecd63-33d8-4e43-ac6f-0aafa111b38d/resourceGroups/myRg/providers/Microsoft.ApiManagement/service/myServiceName/subscriptions/mySubs": {
+			Parent: &ResourceID{
+				Parent: &ResourceID{
+					Parent: &ResourceID{
+						Parent: RootResourceID,
+						SubscriptionID: "17fecd63-33d8-4e43-ac6f-0aafa111b38d",
+						ResourceType: SubscriptionResourceType,
+						Name: "17fecd63-33d8-4e43-ac6f-0aafa111b38d",
+						isChild: true,
+					},
+					SubscriptionID: "17fecd63-33d8-4e43-ac6f-0aafa111b38d",
+					ResourceType: ResourceGroupResourceType,
+					ResourceGroupName: "myRg",
+					Name: "myRg",
+					isChild: true,
+				},
+				SubscriptionID: "17fecd63-33d8-4e43-ac6f-0aafa111b38d",
+				ResourceGroupName: "myRg",
+				ResourceType: NewResourceType("Microsoft.ApiManagement", "service"),
+				Name: "myServiceName",
+				isChild: false,
+			},
+			SubscriptionID: "17fecd63-33d8-4e43-ac6f-0aafa111b38d",
+			ResourceGroupName: "myRg",
+			ResourceType: NewResourceType("Microsoft.ApiManagement", "service/subscriptions"),
+			Name: "mySubs",
+			isChild: true,
+		},
 		// valid resource identifiers
 		"/subscriptions/db1ab6f0-4769-4b27-930e-01e2ef9c123c": {
 			Parent:         RootResourceID,
@@ -177,9 +205,6 @@ var (
 		"/0c2f6471-1bf0-4dda-aec3-cb9272f09575/myRg/":                                   nil,
 		"/providers/Company.MyProvider/myResources/myResourceName/providers/incomplete": nil,
 	}
-)
-
-func TestParseResourceIdentifier(t *testing.T) {
 	for input, expected := range testData {
 		t.Logf("testing %s...", input)
 		id, err := ParseResourceID(input)

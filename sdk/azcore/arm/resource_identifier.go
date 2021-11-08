@@ -111,14 +111,13 @@ func newResourceIDWithProvider(parent *ResourceID, providerNamespace, resourceTy
 }
 
 func chooseResourceType(resourceTypeName string, parent *ResourceID) ResourceType {
-	switch strings.ToLower(resourceTypeName) {
-	case resourceGroupsLowerKey:
+	if strings.EqualFold(resourceTypeName, resourceGroupsLowerKey) {
 		return ResourceGroupResourceType
-	case subscriptionsKey:
+	} else if strings.EqualFold(resourceTypeName, subscriptionsKey) && parent != nil && parent.ResourceType.String() == TenantResourceType.String() {
 		return SubscriptionResourceType
-	default:
-		return parent.ResourceType.AppendChild(resourceTypeName)
 	}
+
+	return parent.ResourceType.AppendChild(resourceTypeName)
 }
 
 func (id *ResourceID) init(parent *ResourceID, resourceType ResourceType, name string, isChild bool) {

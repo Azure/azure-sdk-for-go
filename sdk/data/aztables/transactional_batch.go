@@ -308,13 +308,17 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 
 	switch transactionAction.ActionType {
 	case Delete:
+		ifMatch := "*"
+		if transactionAction.IfMatch != nil {
+			ifMatch = string(*transactionAction.IfMatch)
+		}
 		req, err = t.client.DeleteEntityCreateRequest(
 			ctx,
 			generated.Enum1Three0,
 			t.name,
 			entity[partitionKey].(string),
 			entity[rowKey].(string),
-			string(*transactionAction.IfMatch),
+			ifMatch,
 			&generated.TableDeleteEntityOptions{},
 			qo,
 		)
@@ -326,7 +330,10 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 			ctx,
 			generated.Enum1Three0,
 			t.name,
-			&generated.TableInsertEntityOptions{TableEntityProperties: entity, ResponsePreference: generated.ResponseFormatReturnNoContent.ToPtr()},
+			&generated.TableInsertEntityOptions{
+				TableEntityProperties: entity,
+				ResponsePreference: generated.ResponseFormatReturnNoContent.ToPtr(),
+			},
 			qo,
 		)
 		if err != nil {

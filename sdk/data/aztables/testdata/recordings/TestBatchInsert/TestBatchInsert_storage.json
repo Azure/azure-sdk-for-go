@@ -15,7 +15,7 @@
         "Content-Type": "application/json",
         "dataserviceversion": "3.0",
         "User-Agent": "azsdk-go-aztables/v0.4.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
-        "x-ms-date": "Mon, 08 Nov 2021 18:48:00 GMT",
+        "x-ms-date": "Mon, 08 Nov 2021 18:50:30 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": {
@@ -25,7 +25,7 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Type": "application/json; odata=minimalmetadata; streaming=true; charset=utf-8",
-        "Date": "Mon, 08 Nov 2021 18:48:01 GMT",
+        "Date": "Mon, 08 Nov 2021 18:50:31 GMT",
         "Location": "https://rosebudprim.table.core.windows.net/Tables(\u0027tableName2396278222\u0027)",
         "Server": [
           "Windows-Azure-Table/1.0",
@@ -33,7 +33,7 @@
         ],
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-request-id": "2b044b96-d002-00a6-46d1-d41407000000",
+        "x-ms-request-id": "2b04bd4b-d002-00a6-21d1-d41407000000",
         "x-ms-version": "2019-02-02"
       },
       "ResponseBody": {
@@ -53,28 +53,28 @@
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "Content-Length": "801",
-        "Content-Type": "multipart/mixed; boundary=batch_52733869-ce88-491f-750e-172f5053a9c1",
+        "Content-Type": "multipart/mixed; boundary=batch_f55bfaa9-4927-4a62-72f0-f43de0950ad0",
         "dataserviceversion": "3.0",
         "User-Agent": "azsdk-go-aztables/v0.4.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
-        "x-ms-date": "Mon, 08 Nov 2021 18:48:00 GMT",
+        "x-ms-date": "Mon, 08 Nov 2021 18:50:30 GMT",
         "x-ms-version": "2019-02-02"
       },
-      "RequestBody": "LS1iYXRjaF81MjczMzg2OS1jZTg4LTQ5MWYtNzUwZS0xNzJmNTA1M2E5YzENCkNvbnRlbnQtVHlwZTogbXVsdGlwYXJ0L21peGVkOyBib3VuZGFyeT1jaGFuZ2VzZXRfYmJjZTdlOWItOTA2MS00NjIzLTU5OTItY2Q5NTk3Y2ZiYjQ5DQoNCi0tY2hhbmdlc2V0X2JiY2U3ZTliLTkwNjEtNDYyMy01OTkyLWNkOTU5N2NmYmI0OQ0KQ29udGVudC1UcmFuc2Zlci1FbmNvZGluZzogYmluYXJ5DQpDb250ZW50LVR5cGU6IGFwcGxpY2F0aW9uL2h0dHANCg0KUEFUQ0ggaHR0cHM6Ly9yb3NlYnVkcHJpbS50YWJsZS5jb3JlLndpbmRvd3MubmV0L3RhYmxlTmFtZTIzOTYyNzgyMjIoUGFydGl0aW9uS2V5PSdwYXJ0aXRpb24nLFJvd0tleT0nMScpIEhUVFAvMS4xDQpBY2NlcHQ6IGFwcGxpY2F0aW9uL2pzb24NCkNvbnRlbnQtTGVuZ3RoOiAxOTQNCkNvbnRlbnQtVHlwZTogYXBwbGljYXRpb24vanNvbg0KRGF0YXNlcnZpY2V2ZXJzaW9uOiAzLjANClgtTXMtVmVyc2lvbjogMjAxOS0wMi0wMg0KDQp7IkJvb2wiOnRydWUsIkJ5dGUiOiJjMjl0WldKNWRHVnoiLCJEYXRlVGltZSI6IjIwMjEtMDctMTNUMDA6MDA6MDBaIiwiRmxvYXQiOjMuMTQxNTksIkludGVnZXIiOjEsIlBhcnRpdGlvbktleSI6InBhcnRpdGlvbiIsIlJvd0tleSI6IjEiLCJTdHJpbmciOiJzb21lU3RyaW5nIiwiVGltZXN0YW1wIjoiMDAwMS0wMS0wMVQwMDowMDowMFoifQ0KLS1jaGFuZ2VzZXRfYmJjZTdlOWItOTA2MS00NjIzLTU5OTItY2Q5NTk3Y2ZiYjQ5LS0NCg0KLS1iYXRjaF81MjczMzg2OS1jZTg4LTQ5MWYtNzUwZS0xNzJmNTA1M2E5YzEtLQ0K",
+      "RequestBody": "LS1iYXRjaF9mNTViZmFhOS00OTI3LTRhNjItNzJmMC1mNDNkZTA5NTBhZDANCkNvbnRlbnQtVHlwZTogbXVsdGlwYXJ0L21peGVkOyBib3VuZGFyeT1jaGFuZ2VzZXRfZWJiYTBlMmUtYzQyNy00NWI0LTQxZjMtNTQ0MWZhMWEzZmNlDQoNCi0tY2hhbmdlc2V0X2ViYmEwZTJlLWM0MjctNDViNC00MWYzLTU0NDFmYTFhM2ZjZQ0KQ29udGVudC1UcmFuc2Zlci1FbmNvZGluZzogYmluYXJ5DQpDb250ZW50LVR5cGU6IGFwcGxpY2F0aW9uL2h0dHANCg0KUEFUQ0ggaHR0cHM6Ly9yb3NlYnVkcHJpbS50YWJsZS5jb3JlLndpbmRvd3MubmV0L3RhYmxlTmFtZTIzOTYyNzgyMjIoUGFydGl0aW9uS2V5PSdwYXJ0aXRpb24nLFJvd0tleT0nMScpIEhUVFAvMS4xDQpBY2NlcHQ6IGFwcGxpY2F0aW9uL2pzb24NCkNvbnRlbnQtTGVuZ3RoOiAxOTQNCkNvbnRlbnQtVHlwZTogYXBwbGljYXRpb24vanNvbg0KRGF0YXNlcnZpY2V2ZXJzaW9uOiAzLjANClgtTXMtVmVyc2lvbjogMjAxOS0wMi0wMg0KDQp7IkJvb2wiOnRydWUsIkJ5dGUiOiJjMjl0WldKNWRHVnoiLCJEYXRlVGltZSI6IjIwMjEtMDctMTNUMDA6MDA6MDBaIiwiRmxvYXQiOjMuMTQxNTksIkludGVnZXIiOjEsIlBhcnRpdGlvbktleSI6InBhcnRpdGlvbiIsIlJvd0tleSI6IjEiLCJTdHJpbmciOiJzb21lU3RyaW5nIiwiVGltZXN0YW1wIjoiMDAwMS0wMS0wMVQwMDowMDowMFoifQ0KLS1jaGFuZ2VzZXRfZWJiYTBlMmUtYzQyNy00NWI0LTQxZjMtNTQ0MWZhMWEzZmNlLS0NCg0KLS1iYXRjaF9mNTViZmFhOS00OTI3LTRhNjItNzJmMC1mNDNkZTA5NTBhZDAtLQ0K",
       "StatusCode": 202,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Type": "multipart/mixed; boundary=batchresponse_3840f64e-c984-4b85-92ca-81ce0ae00568",
-        "Date": "Mon, 08 Nov 2021 18:48:01 GMT",
+        "Content-Type": "multipart/mixed; boundary=batchresponse_0e064622-1b1e-4e9b-99d8-057f0871e53b",
+        "Date": "Mon, 08 Nov 2021 18:50:31 GMT",
         "Server": [
           "Windows-Azure-Table/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-request-id": "2b044bc2-d002-00a6-68d1-d41407000000",
+        "x-ms-request-id": "2b04bd5d-d002-00a6-31d1-d41407000000",
         "x-ms-version": "2019-02-02"
       },
-      "ResponseBody": "LS1iYXRjaHJlc3BvbnNlXzM4NDBmNjRlLWM5ODQtNGI4NS05MmNhLTgxY2UwYWUwMDU2OA0KQ29udGVudC1UeXBlOiBtdWx0aXBhcnQvbWl4ZWQ7IGJvdW5kYXJ5PWNoYW5nZXNldHJlc3BvbnNlXzdkNzkzYWQ0LWQwM2MtNGFjOC1hZGUxLWM3NDZmODJlMzc1OQ0KDQotLWNoYW5nZXNldHJlc3BvbnNlXzdkNzkzYWQ0LWQwM2MtNGFjOC1hZGUxLWM3NDZmODJlMzc1OQ0KQ29udGVudC1UeXBlOiBhcHBsaWNhdGlvbi9odHRwDQpDb250ZW50LVRyYW5zZmVyLUVuY29kaW5nOiBiaW5hcnkNCg0KSFRUUC8xLjEgMjA0IE5vIENvbnRlbnQNClgtQ29udGVudC1UeXBlLU9wdGlvbnM6IG5vc25pZmYNCkNhY2hlLUNvbnRyb2w6IG5vLWNhY2hlDQpEYXRhU2VydmljZVZlcnNpb246IDEuMDsNCkVUYWc6IFcvImRhdGV0aW1lJzIwMjEtMTEtMDhUMTglM0E0OCUzQTAyLjAxNDUwNDNaJyINCg0KDQotLWNoYW5nZXNldHJlc3BvbnNlXzdkNzkzYWQ0LWQwM2MtNGFjOC1hZGUxLWM3NDZmODJlMzc1OS0tDQotLWJhdGNocmVzcG9uc2VfMzg0MGY2NGUtYzk4NC00Yjg1LTkyY2EtODFjZTBhZTAwNTY4LS0NCg=="
+      "ResponseBody": "LS1iYXRjaHJlc3BvbnNlXzBlMDY0NjIyLTFiMWUtNGU5Yi05OWQ4LTA1N2YwODcxZTUzYg0KQ29udGVudC1UeXBlOiBtdWx0aXBhcnQvbWl4ZWQ7IGJvdW5kYXJ5PWNoYW5nZXNldHJlc3BvbnNlX2VhZGM1ZTBlLWY0YzctNDU3NC05NmQyLTE2NTNjOTI2ZWNjNw0KDQotLWNoYW5nZXNldHJlc3BvbnNlX2VhZGM1ZTBlLWY0YzctNDU3NC05NmQyLTE2NTNjOTI2ZWNjNw0KQ29udGVudC1UeXBlOiBhcHBsaWNhdGlvbi9odHRwDQpDb250ZW50LVRyYW5zZmVyLUVuY29kaW5nOiBiaW5hcnkNCg0KSFRUUC8xLjEgMjA0IE5vIENvbnRlbnQNClgtQ29udGVudC1UeXBlLU9wdGlvbnM6IG5vc25pZmYNCkNhY2hlLUNvbnRyb2w6IG5vLWNhY2hlDQpEYXRhU2VydmljZVZlcnNpb246IDEuMDsNCkVUYWc6IFcvImRhdGV0aW1lJzIwMjEtMTEtMDhUMTglM0E1MCUzQTMyLjE5NDcxMzZaJyINCg0KDQotLWNoYW5nZXNldHJlc3BvbnNlX2VhZGM1ZTBlLWY0YzctNDU3NC05NmQyLTE2NTNjOTI2ZWNjNy0tDQotLWJhdGNocmVzcG9uc2VfMGUwNjQ2MjItMWIxZS00ZTliLTk5ZDgtMDU3ZjA4NzFlNTNiLS0NCg=="
     },
     {
       "RequestUri": "https://fakeaccount.table.core.windows.net/tableName2396278222()?%24format=application%2Fjson%3Bodata%3Dminimalmetadata",
@@ -89,7 +89,7 @@
         "Authorization": "Sanitized",
         "dataserviceversion": "3.0",
         "User-Agent": "azsdk-go-aztables/v0.4.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
-        "x-ms-date": "Mon, 08 Nov 2021 18:48:00 GMT",
+        "x-ms-date": "Mon, 08 Nov 2021 18:50:30 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": null,
@@ -97,24 +97,24 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Type": "application/json; odata=minimalmetadata; streaming=true; charset=utf-8",
-        "Date": "Mon, 08 Nov 2021 18:48:01 GMT",
+        "Date": "Mon, 08 Nov 2021 18:50:31 GMT",
         "Server": [
           "Windows-Azure-Table/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-request-id": "2b044bea-d002-00a6-0dd1-d41407000000",
+        "x-ms-request-id": "2b04bd79-d002-00a6-4bd1-d41407000000",
         "x-ms-version": "2019-02-02"
       },
       "ResponseBody": {
         "odata.metadata": "https://rosebudprim.table.core.windows.net/$metadata#tableName2396278222",
         "value": [
           {
-            "odata.etag": "W/\u0022datetime\u00272021-11-08T18%3A48%3A02.0145043Z\u0027\u0022",
+            "odata.etag": "W/\u0022datetime\u00272021-11-08T18%3A50%3A32.1947136Z\u0027\u0022",
             "PartitionKey": "partition",
             "RowKey": "1",
-            "Timestamp": "2021-11-08T18:48:02.0145043Z",
+            "Timestamp": "2021-11-08T18:50:32.1947136Z",
             "Bool": true,
             "Byte": "c29tZWJ5dGVz",
             "DateTime": "2021-07-13T00:00:00Z",
@@ -137,7 +137,7 @@
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "User-Agent": "azsdk-go-aztables/v0.4.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
-        "x-ms-date": "Mon, 08 Nov 2021 18:48:00 GMT",
+        "x-ms-date": "Mon, 08 Nov 2021 18:50:31 GMT",
         "x-ms-version": "2019-02-02"
       },
       "RequestBody": null,
@@ -145,13 +145,13 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "Date": "Mon, 08 Nov 2021 18:48:01 GMT",
+        "Date": "Mon, 08 Nov 2021 18:50:31 GMT",
         "Server": [
           "Windows-Azure-Table/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "X-Content-Type-Options": "nosniff",
-        "x-ms-request-id": "2b044bfd-d002-00a6-20d1-d41407000000",
+        "x-ms-request-id": "2b04bd8f-d002-00a6-5ed1-d41407000000",
         "x-ms-version": "2019-02-02"
       },
       "ResponseBody": null

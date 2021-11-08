@@ -54,27 +54,6 @@ func TestNewClient(t *testing.T) {
 	}
 }
 
-func TestClient_Encrypt(t *testing.T) {
-	stop := startTest(t)
-	defer stop()
-
-	keyName, err := createRandomName(t, "key")
-	require.NoError(t, err)
-
-	keyClient, err := createKeyClient(t)
-	require.NoError(t, err)
-	resp, err := keyClient.CreateRSAKey(ctx, keyName, nil)
-	require.NoError(t, err)
-	key := resp.Key
-
-	cryptoClient, err := createClient(t, *key.ID)
-	require.NoError(t, err)
-
-	encryptResponse, err := cryptoClient.Encrypt(ctx, AlgorithmRSAOAEP, []byte("plaintext"), nil)
-	require.NoError(t, err)
-	require.NotNil(t, encryptResponse)
-}
-
 func TestClient_Decrypt(t *testing.T) {
 	stop := startTest(t)
 	defer stop()

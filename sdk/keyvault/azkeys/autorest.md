@@ -11,7 +11,7 @@ input-file:
 - https://github.com/Azure/azure-rest-api-specs/blob/ecdce42924ed0f7e60a32c74bc0eb674ca6d4aae/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.3-preview/rbac.json
 - https://github.com/Azure/azure-rest-api-specs/blob/ecdce42924ed0f7e60a32c74bc0eb674ca6d4aae/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.3-preview/securitydomain.json
 license-header: MICROSOFT_MIT_NO_VERSION
-clear-output-folder: false
+clear-output-folder: true
 output-folder: internal/generated
 module: azkeys
 openapi-type: "data-plane"

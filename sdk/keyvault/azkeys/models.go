@@ -33,7 +33,7 @@ type Attributes struct {
 // KeyAttributes - The attributes of a key managed by the key vault service.
 type KeyAttributes struct {
 	Attributes
-	// READ-ONLY; softDelete data retention days. Value should be >=7 and <=90 when softDelete enabled, otherwise 0.
+	// READ-ONLY; softDelete data retention days.
 	RecoverableDays *int32 `json:"recoverableDays,omitempty" azure:"ro"`
 
 	// READ-ONLY; Reflects the deletion recovery level currently in effect for keys in the current vault. If it contains 'Purgeable' the key can be permanently

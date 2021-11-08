@@ -133,6 +133,9 @@ func ExampleClient_Sign() {
 
 	hasher := sha256.New()
 	_, err = hasher.Write([]byte("plaintext"))
+	if err != nil {
+		panic(err)
+	}
 	digest := hasher.Sum(nil)
 
 	signResponse, err := client.Sign(context.TODO(), azcrypto.RS256, digest, nil)
@@ -155,6 +158,9 @@ func ExampleClient_Verify() {
 
 	hasher := sha256.New()
 	_, err = hasher.Write([]byte("plaintext"))
+	if err != nil {
+		panic(err)
+	}
 	digest := hasher.Sum(nil)
 
 	signResponse, err := client.Sign(context.TODO(), azcrypto.RS256, digest, nil)

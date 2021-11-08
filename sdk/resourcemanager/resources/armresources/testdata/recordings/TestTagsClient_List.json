@@ -1,0 +1,528 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/tag529323608?api-version=2021-04-01",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "PUT",
+        ":path": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/tag529323608?api-version=2021-04-01",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-armresources/v0.2.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 08 Nov 2021 03:13:45 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "0ec0416f-8163-4ea0-b00d-0fa5b5799f91",
+        "x-ms-ratelimit-remaining-subscription-writes": "1196",
+        "x-ms-request-id": "0ec0416f-8163-4ea0-b00d-0fa5b5799f91",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20211108T031345Z:0ec0416f-8163-4ea0-b00d-0fa5b5799f91"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/tag529323608",
+        "tagName": "tag529323608",
+        "count": {
+          "type": "Total",
+          "value": 0
+        },
+        "values": []
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/tagNames?api-version=2021-04-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "GET",
+        ":path": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames?api-version=2021-04-01",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armresources/v0.2.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Length": "8646",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 08 Nov 2021 03:13:45 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "dee38e36-9b67-44c0-886c-9e3d7f998b91",
+        "x-ms-ratelimit-remaining-subscription-reads": "11998",
+        "x-ms-request-id": "dee38e36-9b67-44c0-886c-9e3d7f998b91",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20211108T031346Z:dee38e36-9b67-44c0-886c-9e3d7f998b91"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/tag1",
+            "tagName": "tag1",
+            "count": {
+              "type": "Total",
+              "value": 1
+            },
+            "values": [
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/tag1/tagValues/value1",
+                "tagValue": "value1",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/tag2",
+            "tagName": "tag2",
+            "count": {
+              "type": "Total",
+              "value": 1
+            },
+            "values": [
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/tag2/tagValues/value2",
+                "tagValue": "value2",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/key",
+            "tagName": "key",
+            "count": {
+              "type": "Total",
+              "value": 1
+            },
+            "values": [
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/key/tagValues/value1",
+                "tagValue": "value1",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/Creator",
+            "tagName": "Creator",
+            "count": {
+              "type": "Total",
+              "value": 17
+            },
+            "values": [
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/Creator/tagValues/Automatically added by NRMS Azure Policy",
+                "tagValue": "Automatically added by NRMS Azure Policy",
+                "count": {
+                  "type": "Total",
+                  "value": 17
+                }
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/NRMS-Info",
+            "tagName": "NRMS-Info",
+            "count": {
+              "type": "Total",
+              "value": 17
+            },
+            "values": [
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/NRMS-Info/tagValues/http://aka.ms/nrms",
+                "tagValue": "http://aka.ms/nrms",
+                "count": {
+                  "type": "Total",
+                  "value": 17
+                }
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/NRMS-Version",
+            "tagName": "NRMS-Version",
+            "count": {
+              "type": "Total",
+              "value": 17
+            },
+            "values": [
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/NRMS-Version/tagValues/2019-03-20",
+                "tagValue": "2019-03-20",
+                "count": {
+                  "type": "Total",
+                  "value": 17
+                }
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/key1",
+            "tagName": "key1",
+            "count": {
+              "type": "Total",
+              "value": 3
+            },
+            "values": [
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/key1/tagValues/value1",
+                "tagValue": "value1",
+                "count": {
+                  "type": "Total",
+                  "value": 3
+                }
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/tag2597940633",
+            "tagName": "tag2597940633",
+            "count": {
+              "type": "Total",
+              "value": 0
+            },
+            "values": [
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/tag2597940633/tagValues/value2597940633",
+                "tagValue": "value2597940633",
+                "count": {
+                  "type": "Total",
+                  "value": 0
+                }
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter",
+            "tagName": "DeleteAfter",
+            "count": {
+              "type": "Total",
+              "value": 24
+            },
+            "values": [
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2020-08-15T07:02:26.327834",
+                "tagValue": "2020-08-15T07:02:26.327834",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-09T14:10:31",
+                "tagValue": "2021-10-09T14:10:31",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-09T14:10:41",
+                "tagValue": "2021-10-09T14:10:41",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-09T14:56:38",
+                "tagValue": "2021-10-09T14:56:38",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-09T14:57:36",
+                "tagValue": "2021-10-09T14:57:36",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-09T15:01:16",
+                "tagValue": "2021-10-09T15:01:16",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-15T10:35:54",
+                "tagValue": "2021-10-15T10:35:54",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-09T15:29:03",
+                "tagValue": "2021-10-09T15:29:03",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-09T15:30:03",
+                "tagValue": "2021-10-09T15:30:03",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-09T15:30:32",
+                "tagValue": "2021-10-09T15:30:32",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-09T15:31:25",
+                "tagValue": "2021-10-09T15:31:25",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-09T15:33:20",
+                "tagValue": "2021-10-09T15:33:20",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-09T15:34:16",
+                "tagValue": "2021-10-09T15:34:16",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-09T15:34:23",
+                "tagValue": "2021-10-09T15:34:23",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-09T15:35:37",
+                "tagValue": "2021-10-09T15:35:37",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-09T15:36:40",
+                "tagValue": "2021-10-09T15:36:40",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-09T16:51:51",
+                "tagValue": "2021-10-09T16:51:51",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-14T17:11:14",
+                "tagValue": "2021-10-14T17:11:14",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-14T17:11:22",
+                "tagValue": "2021-10-14T17:11:22",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-15T09:42:47",
+                "tagValue": "2021-10-15T09:42:47",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-15T09:42:54",
+                "tagValue": "2021-10-15T09:42:54",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-15T10:30:32",
+                "tagValue": "2021-10-15T10:30:32",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-15T10:31:28",
+                "tagValue": "2021-10-15T10:31:28",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              },
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/DeleteAfter/tagValues/2021-10-15T10:34:51",
+                "tagValue": "2021-10-15T10:34:51",
+                "count": {
+                  "type": "Total",
+                  "value": 1
+                }
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/BuildId",
+            "tagName": "BuildId",
+            "count": {
+              "type": "Total",
+              "value": 23
+            },
+            "values": [
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/BuildId/tagValues/local",
+                "tagValue": "local",
+                "count": {
+                  "type": "Total",
+                  "value": 23
+                }
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/BuildJob",
+            "tagName": "BuildJob",
+            "count": {
+              "type": "Total",
+              "value": 23
+            },
+            "values": [
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/BuildJob/tagValues/local",
+                "tagValue": "local",
+                "count": {
+                  "type": "Total",
+                  "value": 23
+                }
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/BuildNumber",
+            "tagName": "BuildNumber",
+            "count": {
+              "type": "Total",
+              "value": 23
+            },
+            "values": [
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/BuildNumber/tagValues/local",
+                "tagValue": "local",
+                "count": {
+                  "type": "Total",
+                  "value": 23
+                }
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/BuildReason",
+            "tagName": "BuildReason",
+            "count": {
+              "type": "Total",
+              "value": 23
+            },
+            "values": [
+              {
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/BuildReason/tagValues/local",
+                "tagValue": "local",
+                "count": {
+                  "type": "Total",
+                  "value": 23
+                }
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/tag3175540232",
+            "tagName": "tag3175540232",
+            "count": {
+              "type": "Total",
+              "value": 0
+            },
+            "values": []
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/tag4234309224",
+            "tagName": "tag4234309224",
+            "count": {
+              "type": "Total",
+              "value": 0
+            },
+            "values": []
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/tagNames/tag529323608",
+            "tagName": "tag529323608",
+            "count": {
+              "type": "Total",
+              "value": 0
+            },
+            "values": []
+          }
+        ]
+      }
+    }
+  ],
+  "Variables": {}
+}

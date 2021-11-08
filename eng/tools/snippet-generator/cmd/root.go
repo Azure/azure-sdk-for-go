@@ -15,6 +15,12 @@ import (
 func Command() *cobra.Command {
 	rootCmd := &cobra.Command{
 		Use:  "snippet-generator <base-directory> [strict-mode]",
+		Short: `This CLI tool will let you embed your sample code snippets from your test files to your markdown files`,
+		Long: `This CLI tool will let you embed your sample code snippets from your test files to your markdown files.
+
+You need to use magic comments "// Snippet: Name" and "// EndSnippet" to define code snippets with names in your go test files,
+and then reference them in your markdown files using "Snippet:Name" right after your code block declarations. 
+`,
 		Args: cobra.RangeArgs(1, 2),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			baseDir := args[0]

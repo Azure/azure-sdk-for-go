@@ -32,6 +32,12 @@ func NewPipeline(module, version string, plOpts PipelineOptions, options *policy
 		headers = append(headers, cp.Logging.AllowedHeaders...)
 		cp.Logging.AllowedHeaders = headers
 	}
+	if len(plOpts.AllowedQueryParameters) > 0 {
+		qp := make([]string, 0, len(plOpts.AllowedQueryParameters)+len(cp.Logging.AllowedQueryParams))
+		copy(qp, plOpts.AllowedQueryParameters)
+		qp = append(qp, cp.Logging.AllowedQueryParams...)
+		cp.Logging.AllowedQueryParams = qp
+	}
 	policies := []policy.Policy{}
 	if !cp.Telemetry.Disabled {
 		policies = append(policies, NewTelemetryPolicy(module, version, &cp.Telemetry))

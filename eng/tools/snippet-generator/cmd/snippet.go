@@ -22,9 +22,30 @@ func NewSnippet(name string, content []string, filepath string) *Snippet {
 	return &Snippet{
 		Name:       name,
 		IsUsed:     false,
-		SourceText: trimCommonIndent(content),
+		SourceText: trimCommonIndent(trimEmptyLines(content)),
 		FilePath:   filepath,
 	}
+}
+
+func trimEmptyLines(content []string) []string {
+	// remove leading empty lines
+	start := 0
+	end := len(content)-1
+	for i := 0; i < len(content); i++ {
+		if strings.TrimSpace(content[i]) != "" {
+			start = i
+			break
+		}
+	}
+
+	for i := len(content)-1; i >= 0; i-- {
+		if strings.TrimSpace(content[i]) != "" {
+			end = i
+			break
+		}
+	}
+
+	return content[start:end+1]
 }
 
 func trimCommonIndent(content []string) []string {
@@ -68,5 +89,8 @@ func commonIndent(left, right string) int {
 }
 
 func countLeadingSpaces(s string) int {
+	if s == "" {
+		return math.MaxUint32 // use this to ignore empty lines
+	}
 	return len(s) - len(strings.TrimLeft(s, " "))
 }

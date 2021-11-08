@@ -14,6 +14,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"strconv"
 	"strings"
 
 	"github.com/hashicorp/go-multierror"
@@ -29,6 +30,8 @@ var (
 	snippetEndRegex   = regexp.MustCompile(`^\s*//\s*EndSnippet\s*$`)
 	replaceStartRegex = regexp.MustCompile("^\\s*```\\s*go\\s+Snippet:\\s*([A-Za-z0-9-_]+)\\s*$")
 	replaceEndRegex   = regexp.MustCompile("^\\s*```\\s*$")
+	ignoreStartRegex = regexp.MustCompile(`^\s*//\s*SnippetIgnore\s*$`)
+	ignoreEndRegex = regexp.MustCompile(`^\s*//\s*EndSnippetIgnore`)
 )
 
 type directoryProcessor struct {
@@ -91,37 +94,56 @@ func (p *directoryProcessor) Process() error {
 }
 
 func (p *directoryProcessor) processGoSourceFile(path string) error {
-	stack := NewStack() // need a stack to store the name of regions and ensure the regions are properly paired with each other
+	snippetStack := NewStack() // need a stack to store the name of regions and ensure the regions are properly paired with each other
+	ignoreStack := NewStack()
 	file, err := os.Open(path)
 	if err != nil {
 		return fmt.Errorf("cannot open file '%s': %+v", path, err)
 	}
 	defer file.Close()
 	scanner := bufio.NewScanner(file)
+	ignoreCounter := 0
 	var snippetLines []string
 	for scanner.Scan() {
 		line := scanner.Text()
-		if stack.Len() == 0 {
+		if snippetStack.Len() == 0 {
 			matches := snippetStartRegex.FindStringSubmatch(line)
 			if len(matches) < 1 {
 				continue
 			}
-			stack.Push(matches[1])
+			snippetStack.Push(matches[1])
 		} else {
 			// if the stack is not empty, we also need to ensure that the snippet definition cannot nest with each other
 			if snippetStartRegex.MatchString(line) {
 				return fmt.Errorf("snippet definition cannot be nested with each other. Filepath '%s'", path)
 			}
-			// if the stack is not empty, we need to check if current line is an end of a region
+			// we need to check if current line is an end of a region
 			if snippetEndRegex.MatchString(line) {
-				name, _ := stack.Pop() // we have checked the len of the stack, there will never be an error here
+				name, _ := snippetStack.Pop() // we have checked the len of the stack, there will never be an error here
+				if ignoreStack.Len() != 0 {
+					return fmt.Errorf("ignore region is not properly enclosed in the Snippet `%s` in file `%s`", name, path)
+				}
 				p.snippets[name] = NewSnippet(name, snippetLines, path)
 				// clean our lines
 				snippetLines = nil
 				continue
 			}
-			// other cases
-			snippetLines = append(snippetLines, line)
+			// also we need to check if it is a region that we ignore in a snippet
+			if ignoreStack.Len() == 0 {
+				if ignoreStartRegex.MatchString(line) {
+					ignoreStack.Push(strconv.Itoa(ignoreCounter))
+					ignoreCounter++
+					continue
+				}
+
+				// only add new lines to the snippet when we are in a region and not in an ignore region
+				snippetLines = append(snippetLines, line)
+			} else {
+				if ignoreEndRegex.MatchString(line) {
+					_, _ = ignoreStack.Pop()
+					continue
+				}
+			}
 		}
 	}
 
@@ -129,8 +151,8 @@ func (p *directoryProcessor) processGoSourceFile(path string) error {
 		return err
 	}
 
-	if stack.Len() > 0 {
-		name, _ := stack.Pop()
+	if snippetStack.Len() > 0 {
+		name, _ := snippetStack.Pop()
 		return fmt.Errorf("at least one snippet scope ('%s') does not have its corresponding closing", name)
 	}
 

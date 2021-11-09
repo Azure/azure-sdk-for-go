@@ -233,7 +233,7 @@ func TestAdminClient_ListQueues(t *testing.T) {
 
 		for _, props := range page.Items {
 			_, exists := all[props.QueueName]
-			require.False(t, exists, "Each queue result should be unique")
+			require.False(t, exists, fmt.Sprintf("Each queue result should be unique but found more than one of '%s'", props.QueueName))
 			all[props.QueueName] = props
 		}
 	}
@@ -285,7 +285,7 @@ func TestAdminClient_ListQueuesRuntimeProperties(t *testing.T) {
 
 		for _, queueRuntimeItem := range page.Items {
 			_, exists := all[queueRuntimeItem.QueueName]
-			require.False(t, exists, "Each queue result should be unique")
+			require.False(t, exists, fmt.Sprintf("Each queue result should be unique but found more than one of '%s'", queueRuntimeItem.QueueName))
 			all[queueRuntimeItem.QueueName] = queueRuntimeItem
 		}
 	}
@@ -512,7 +512,7 @@ func TestAdminClient_ListTopics(t *testing.T) {
 
 		for _, topicItem := range page.Items {
 			_, exists := all[topicItem.TopicName]
-			require.False(t, exists, "Each topic result should be unique")
+			require.False(t, exists, fmt.Sprintf("Each topic result should be unique but found more than one of '%s'", topicItem.TopicName))
 			all[topicItem.TopicName] = topicItem
 		}
 	}
@@ -562,7 +562,7 @@ func TestAdminClient_ListTopicsRuntimeProperties(t *testing.T) {
 
 		for _, item := range page.Items {
 			_, exists := all[item.TopicName]
-			require.False(t, exists, "Each topic result should be unique")
+			require.False(t, exists, fmt.Sprintf("Each topic result should be unique but found more than one of '%s'", item.TopicName))
 			all[item.TopicName] = item
 		}
 	}
@@ -621,7 +621,7 @@ func TestAdminClient_ListSubscriptions(t *testing.T) {
 
 		for _, item := range page.Items {
 			_, exists := all[item.SubscriptionName]
-			require.False(t, exists, "Each subscription result should be unique")
+			require.False(t, exists, fmt.Sprintf("Each subscription result should be unique but found more than one of '%s'", item.SubscriptionName))
 			all[item.SubscriptionName] = item
 		}
 	}
@@ -675,7 +675,7 @@ func TestAdminClient_ListSubscriptionRuntimeProperties(t *testing.T) {
 
 		for _, subItem := range page.Items {
 			_, exists := all[subItem.SubscriptionName]
-			require.False(t, exists, "Each subscription result should be unique")
+			require.False(t, exists, fmt.Sprintf("Each subscription result should be unique but found more than one of '%s'", subItem.SubscriptionName))
 			all[subItem.SubscriptionName] = subItem
 		}
 	}

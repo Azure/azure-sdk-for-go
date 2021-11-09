@@ -344,7 +344,7 @@ func TestBackupSecret(t *testing.T) {
 	client, err := createClient(t)
 	require.NoError(t, err)
 
-	secret, err := createRandomName(t, "backupsecret")
+	secret, err := createRandomName(t, "secrets")
 	require.NoError(t, err)
 	value, err := createRandomName(t, "value")
 	require.NoError(t, err)

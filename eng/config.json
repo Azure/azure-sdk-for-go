@@ -33,6 +33,10 @@
             "CoverageGoal": 0.0
         },
         {
+            "Name": "keyvault/internal",
+            "CoverageGoal": 0.40
+        },
+        {
             "Name": "internal",
             "CoverageGoal": 0.70
         },

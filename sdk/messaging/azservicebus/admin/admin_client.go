@@ -15,7 +15,7 @@ import (
 
 // Client allows you to administer resources in a Service Bus Namespace.
 // For example, you can create queues, enabling capabilities like partitioning, duplicate detection, etc..
-// NOTE: For sending and receiving messages you'll need to use the `Client` type instead.
+// NOTE: For sending and receiving messages you'll need to use the `azservicebus.Client` type instead.
 type Client struct {
 	em atom.EntityManager
 }

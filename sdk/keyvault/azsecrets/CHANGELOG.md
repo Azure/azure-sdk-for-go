@@ -1,15 +1,9 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 0.3.0 (2021-11-09)
 
 ### Features Added
 * Clients can now connect to Key Vaults in any cloud
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.2.0 (2021-11-02)
 

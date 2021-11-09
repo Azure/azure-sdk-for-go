@@ -17,7 +17,7 @@ import (
 )
 
 func newTestPipeline(opts *policy.ClientOptions) Pipeline {
-	return NewPipeline("testmodule", "v0.1.0", nil, nil, opts)
+	return NewPipeline("testmodule", "v0.1.0", PipelineOptions{}, opts)
 }
 
 func TestAddCustomHTTPHeaderSuccess(t *testing.T) {

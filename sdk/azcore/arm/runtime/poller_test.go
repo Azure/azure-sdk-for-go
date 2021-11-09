@@ -54,8 +54,7 @@ func getPipeline(srv *mock.Server) pipeline.Pipeline {
 	return runtime.NewPipeline(
 		"test",
 		"v0.1.0",
-		nil,
-		[]pipeline.Policy{runtime.NewLogPolicy(nil)},
+		runtime.PipelineOptions{PerRetry: []pipeline.Policy{runtime.NewLogPolicy(nil)}},
 		&policy.ClientOptions{Transport: srv},
 	)
 }

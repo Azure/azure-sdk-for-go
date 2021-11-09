@@ -21,11 +21,7 @@ func unmarshalFunctionBindingClassification(rawMsg json.RawMessage) (FunctionBin
 	var b FunctionBindingClassification
 	switch m["type"] {
 	case "Microsoft.MachineLearning/WebService":
-		b = &AzureMachineLearningStudioFunctionBinding{}
-	case "Microsoft.MachineLearningServices":
-		b = &AzureMachineLearningServiceFunctionBinding{}
-	case "Microsoft.StreamAnalytics/CLRUdf":
-		b = &CSharpFunctionBinding{}
+		b = &AzureMachineLearningWebServiceFunctionBinding{}
 	case "Microsoft.StreamAnalytics/JavascriptUdf":
 		b = &JavaScriptFunctionBinding{}
 	default:
@@ -82,8 +78,6 @@ func unmarshalFunctionPropertiesClassification(rawMsg json.RawMessage) (Function
 	}
 	var b FunctionPropertiesClassification
 	switch m["type"] {
-	case "Aggregate":
-		b = &AggregateFunctionProperties{}
 	case "Scalar":
 		b = &ScalarFunctionProperties{}
 	default:
@@ -141,11 +135,7 @@ func unmarshalFunctionRetrieveDefaultDefinitionParametersClassification(rawMsg j
 	var b FunctionRetrieveDefaultDefinitionParametersClassification
 	switch m["bindingType"] {
 	case "Microsoft.MachineLearning/WebService":
-		b = &AzureMachineLearningStudioFunctionRetrieveDefaultDefinitionParameters{}
-	case "Microsoft.MachineLearningServices":
-		b = &AzureMachineLearningServiceFunctionRetrieveDefaultDefinitionParameters{}
-	case "Microsoft.StreamAnalytics/CLRUdf":
-		b = &CSharpFunctionRetrieveDefaultDefinitionParameters{}
+		b = &AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters{}
 	case "Microsoft.StreamAnalytics/JavascriptUdf":
 		b = &JavaScriptFunctionRetrieveDefaultDefinitionParameters{}
 	default:
@@ -260,8 +250,6 @@ func unmarshalOutputDataSourceClassification(rawMsg json.RawMessage) (OutputData
 	}
 	var b OutputDataSourceClassification
 	switch m["type"] {
-	case "Microsoft.AzureFunction":
-		b = &AzureFunctionOutputDataSource{}
 	case "Microsoft.DataLake/Accounts":
 		b = &AzureDataLakeStoreOutputDataSource{}
 	case "Microsoft.EventHub/EventHub":
@@ -284,8 +272,6 @@ func unmarshalOutputDataSourceClassification(rawMsg json.RawMessage) (OutputData
 		b = &AzureTableOutputDataSource{}
 	case "PowerBI":
 		b = &PowerBIOutputDataSource{}
-	case "Raw":
-		b = &RawOutputDatasource{}
 	default:
 		b = &OutputDataSource{}
 	}
@@ -344,8 +330,6 @@ func unmarshalReferenceInputDataSourceClassification(rawMsg json.RawMessage) (Re
 		b = &AzureSQLReferenceInputDataSource{}
 	case "Microsoft.Storage/Blob":
 		b = &BlobReferenceInputDataSource{}
-	case "Raw":
-		b = &RawReferenceInputDataSource{}
 	default:
 		b = &ReferenceInputDataSource{}
 	}
@@ -404,8 +388,6 @@ func unmarshalSerializationClassification(rawMsg json.RawMessage) (Serialization
 		b = &AvroSerialization{}
 	case string(EventSerializationTypeCSV):
 		b = &CSVSerialization{}
-	case string(EventSerializationTypeCustomClr):
-		b = &CustomClrSerialization{}
 	case string(EventSerializationTypeJSON):
 		b = &JSONSerialization{}
 	case string(EventSerializationTypeParquet):
@@ -472,8 +454,6 @@ func unmarshalStreamInputDataSourceClassification(rawMsg json.RawMessage) (Strea
 		b = &EventHubStreamInputDataSource{}
 	case "Microsoft.Storage/Blob":
 		b = &BlobStreamInputDataSource{}
-	case "Raw":
-		b = &RawStreamInputDataSource{}
 	default:
 		b = &StreamInputDataSource{}
 	}

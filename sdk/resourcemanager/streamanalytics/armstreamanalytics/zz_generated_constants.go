@@ -10,7 +10,7 @@ package armstreamanalytics
 
 const (
 	module  = "armstreamanalytics"
-	version = "v0.2.1"
+	version = "v0.3.0"
 )
 
 // AuthenticationMode - Authentication Mode. Valid modes are ConnectionString, Msi and 'UserToken'.
@@ -36,71 +36,47 @@ func (c AuthenticationMode) ToPtr() *AuthenticationMode {
 	return &c
 }
 
-// ClusterProvisioningState - The status of the cluster provisioning. The three terminal states are: Succeeded, Failed and Canceled
-type ClusterProvisioningState string
-
-const (
-	// ClusterProvisioningStateCanceled - The cluster provisioning was canceled.
-	ClusterProvisioningStateCanceled ClusterProvisioningState = "Canceled"
-	// ClusterProvisioningStateFailed - The cluster provisioning failed.
-	ClusterProvisioningStateFailed ClusterProvisioningState = "Failed"
-	// ClusterProvisioningStateInProgress - The cluster provisioning was inprogress.
-	ClusterProvisioningStateInProgress ClusterProvisioningState = "InProgress"
-	// ClusterProvisioningStateSucceeded - The cluster provisioning succeeded.
-	ClusterProvisioningStateSucceeded ClusterProvisioningState = "Succeeded"
-)
-
-// PossibleClusterProvisioningStateValues returns the possible values for the ClusterProvisioningState const type.
-func PossibleClusterProvisioningStateValues() []ClusterProvisioningState {
-	return []ClusterProvisioningState{
-		ClusterProvisioningStateCanceled,
-		ClusterProvisioningStateFailed,
-		ClusterProvisioningStateInProgress,
-		ClusterProvisioningStateSucceeded,
-	}
-}
-
-// ToPtr returns a *ClusterProvisioningState pointing to the current value.
-func (c ClusterProvisioningState) ToPtr() *ClusterProvisioningState {
-	return &c
-}
-
-// ClusterSKUName - Specifies the SKU name of the cluster. Required on PUT (CreateOrUpdate) requests.
-type ClusterSKUName string
-
-const (
-	// ClusterSKUNameDefault - The default SKU.
-	ClusterSKUNameDefault ClusterSKUName = "Default"
-)
-
-// PossibleClusterSKUNameValues returns the possible values for the ClusterSKUName const type.
-func PossibleClusterSKUNameValues() []ClusterSKUName {
-	return []ClusterSKUName{
-		ClusterSKUNameDefault,
-	}
-}
-
-// ToPtr returns a *ClusterSKUName pointing to the current value.
-func (c ClusterSKUName) ToPtr() *ClusterSKUName {
-	return &c
-}
-
 // CompatibilityLevel - Controls certain runtime behaviors of the streaming job.
 type CompatibilityLevel string
 
 const (
 	CompatibilityLevelOne0 CompatibilityLevel = "1.0"
+	CompatibilityLevelOne2 CompatibilityLevel = "1.2"
 )
 
 // PossibleCompatibilityLevelValues returns the possible values for the CompatibilityLevel const type.
 func PossibleCompatibilityLevelValues() []CompatibilityLevel {
 	return []CompatibilityLevel{
 		CompatibilityLevelOne0,
+		CompatibilityLevelOne2,
 	}
 }
 
 // ToPtr returns a *CompatibilityLevel pointing to the current value.
 func (c CompatibilityLevel) ToPtr() *CompatibilityLevel {
+	return &c
+}
+
+// CompressionType - Indicates the type of compression that the input uses. Required on PUT (CreateOrReplace) requests.
+type CompressionType string
+
+const (
+	CompressionTypeDeflate CompressionType = "Deflate"
+	CompressionTypeGZip    CompressionType = "GZip"
+	CompressionTypeNone    CompressionType = "None"
+)
+
+// PossibleCompressionTypeValues returns the possible values for the CompressionType const type.
+func PossibleCompressionTypeValues() []CompressionType {
+	return []CompressionType{
+		CompressionTypeDeflate,
+		CompressionTypeGZip,
+		CompressionTypeNone,
+	}
+}
+
+// ToPtr returns a *CompressionType pointing to the current value.
+func (c CompressionType) ToPtr() *CompressionType {
 	return &c
 }
 
@@ -149,11 +125,10 @@ func (c Encoding) ToPtr() *Encoding {
 type EventSerializationType string
 
 const (
-	EventSerializationTypeAvro      EventSerializationType = "Avro"
-	EventSerializationTypeCSV       EventSerializationType = "Csv"
-	EventSerializationTypeCustomClr EventSerializationType = "CustomClr"
-	EventSerializationTypeJSON      EventSerializationType = "Json"
-	EventSerializationTypeParquet   EventSerializationType = "Parquet"
+	EventSerializationTypeAvro    EventSerializationType = "Avro"
+	EventSerializationTypeCSV     EventSerializationType = "Csv"
+	EventSerializationTypeJSON    EventSerializationType = "Json"
+	EventSerializationTypeParquet EventSerializationType = "Parquet"
 )
 
 // PossibleEventSerializationTypeValues returns the possible values for the EventSerializationType const type.
@@ -161,7 +136,6 @@ func PossibleEventSerializationTypeValues() []EventSerializationType {
 	return []EventSerializationType{
 		EventSerializationTypeAvro,
 		EventSerializationTypeCSV,
-		EventSerializationTypeCustomClr,
 		EventSerializationTypeJSON,
 		EventSerializationTypeParquet,
 	}
@@ -213,53 +187,6 @@ func PossibleJSONOutputSerializationFormatValues() []JSONOutputSerializationForm
 
 // ToPtr returns a *JSONOutputSerializationFormat pointing to the current value.
 func (c JSONOutputSerializationFormat) ToPtr() *JSONOutputSerializationFormat {
-	return &c
-}
-
-// JobState - The current execution state of the streaming job.
-type JobState string
-
-const (
-	// JobStateCreated - The job is currently in the Created state.
-	JobStateCreated JobState = "Created"
-	// JobStateDegraded - The job is currently in the Degraded state.
-	JobStateDegraded JobState = "Degraded"
-	// JobStateDeleting - The job is currently in the Deleting state.
-	JobStateDeleting JobState = "Deleting"
-	// JobStateFailed - The job is currently in the Failed state.
-	JobStateFailed JobState = "Failed"
-	// JobStateRestarting - The job is currently in the Restarting state.
-	JobStateRestarting JobState = "Restarting"
-	// JobStateRunning - The job is currently in the Running state.
-	JobStateRunning JobState = "Running"
-	// JobStateScaling - The job is currently in the Scaling state.
-	JobStateScaling JobState = "Scaling"
-	// JobStateStarting - The job is currently in the Starting state.
-	JobStateStarting JobState = "Starting"
-	// JobStateStopped - The job is currently in the Stopped state.
-	JobStateStopped JobState = "Stopped"
-	// JobStateStopping - The job is currently in the Stopping state.
-	JobStateStopping JobState = "Stopping"
-)
-
-// PossibleJobStateValues returns the possible values for the JobState const type.
-func PossibleJobStateValues() []JobState {
-	return []JobState{
-		JobStateCreated,
-		JobStateDegraded,
-		JobStateDeleting,
-		JobStateFailed,
-		JobStateRestarting,
-		JobStateRunning,
-		JobStateScaling,
-		JobStateStarting,
-		JobStateStopped,
-		JobStateStopping,
-	}
-}
-
-// ToPtr returns a *JobState pointing to the current value.
-func (c JobState) ToPtr() *JobState {
 	return &c
 }
 
@@ -331,105 +258,44 @@ func (c OutputStartMode) ToPtr() *OutputStartMode {
 	return &c
 }
 
-// QueryTestingResultStatus - The status of the query testing request.
-type QueryTestingResultStatus string
+// RefreshType - Indicates the type of data refresh option.
+type RefreshType string
 
 const (
-	// QueryTestingResultStatusCompilerError - The query testing operation failed due to a compiler error.
-	QueryTestingResultStatusCompilerError QueryTestingResultStatus = "CompilerError"
-	// QueryTestingResultStatusRuntimeError - The query testing operation failed due to a runtime error.
-	QueryTestingResultStatusRuntimeError QueryTestingResultStatus = "RuntimeError"
-	// QueryTestingResultStatusStarted - The query testing operation was initiated.
-	QueryTestingResultStatusStarted QueryTestingResultStatus = "Started"
-	// QueryTestingResultStatusSuccess - The query testing operation succeeded.
-	QueryTestingResultStatusSuccess QueryTestingResultStatus = "Success"
-	// QueryTestingResultStatusTimeout - The query testing operation failed due to a timeout.
-	QueryTestingResultStatusTimeout QueryTestingResultStatus = "Timeout"
-	// QueryTestingResultStatusUnknownError - The query testing operation failed due to an unknown error .
-	QueryTestingResultStatusUnknownError QueryTestingResultStatus = "UnknownError"
+	RefreshTypeRefreshPeriodicallyWithDelta RefreshType = "RefreshPeriodicallyWithDelta"
+	RefreshTypeRefreshPeriodicallyWithFull  RefreshType = "RefreshPeriodicallyWithFull"
+	RefreshTypeStatic                       RefreshType = "Static"
 )
 
-// PossibleQueryTestingResultStatusValues returns the possible values for the QueryTestingResultStatus const type.
-func PossibleQueryTestingResultStatusValues() []QueryTestingResultStatus {
-	return []QueryTestingResultStatus{
-		QueryTestingResultStatusCompilerError,
-		QueryTestingResultStatusRuntimeError,
-		QueryTestingResultStatusStarted,
-		QueryTestingResultStatusSuccess,
-		QueryTestingResultStatusTimeout,
-		QueryTestingResultStatusUnknownError,
+// PossibleRefreshTypeValues returns the possible values for the RefreshType const type.
+func PossibleRefreshTypeValues() []RefreshType {
+	return []RefreshType{
+		RefreshTypeRefreshPeriodicallyWithDelta,
+		RefreshTypeRefreshPeriodicallyWithFull,
+		RefreshTypeStatic,
 	}
 }
 
-// ToPtr returns a *QueryTestingResultStatus pointing to the current value.
-func (c QueryTestingResultStatus) ToPtr() *QueryTestingResultStatus {
+// ToPtr returns a *RefreshType pointing to the current value.
+func (c RefreshType) ToPtr() *RefreshType {
 	return &c
 }
 
-// SampleInputResultStatus - The status of the sample input request.
-type SampleInputResultStatus string
+// SKUName - The name of the SKU. Required on PUT (CreateOrReplace) requests.
+type SKUName string
 
 const (
-	// SampleInputResultStatusErrorConnectingToInput - The sample input operation failed to connect to the input.
-	SampleInputResultStatusErrorConnectingToInput SampleInputResultStatus = "ErrorConnectingToInput"
-	// SampleInputResultStatusNoEventsFoundInRange - The sample input operation found no events in the range.
-	SampleInputResultStatusNoEventsFoundInRange SampleInputResultStatus = "NoEventsFoundInRange"
-	// SampleInputResultStatusReadAllEventsInRange - The sample input operation successfully read all the events in the range.
-	SampleInputResultStatusReadAllEventsInRange SampleInputResultStatus = "ReadAllEventsInRange"
+	SKUNameStandard SKUName = "Standard"
 )
 
-// PossibleSampleInputResultStatusValues returns the possible values for the SampleInputResultStatus const type.
-func PossibleSampleInputResultStatusValues() []SampleInputResultStatus {
-	return []SampleInputResultStatus{
-		SampleInputResultStatusErrorConnectingToInput,
-		SampleInputResultStatusNoEventsFoundInRange,
-		SampleInputResultStatusReadAllEventsInRange,
+// PossibleSKUNameValues returns the possible values for the SKUName const type.
+func PossibleSKUNameValues() []SKUName {
+	return []SKUName{
+		SKUNameStandard,
 	}
 }
 
-// ToPtr returns a *SampleInputResultStatus pointing to the current value.
-func (c SampleInputResultStatus) ToPtr() *SampleInputResultStatus {
-	return &c
-}
-
-// StreamingJobSKUName - The name of the SKU. Required on PUT (CreateOrReplace) requests.
-type StreamingJobSKUName string
-
-const (
-	StreamingJobSKUNameStandard StreamingJobSKUName = "Standard"
-)
-
-// PossibleStreamingJobSKUNameValues returns the possible values for the StreamingJobSKUName const type.
-func PossibleStreamingJobSKUNameValues() []StreamingJobSKUName {
-	return []StreamingJobSKUName{
-		StreamingJobSKUNameStandard,
-	}
-}
-
-// ToPtr returns a *StreamingJobSKUName pointing to the current value.
-func (c StreamingJobSKUName) ToPtr() *StreamingJobSKUName {
-	return &c
-}
-
-// TestDatasourceResultStatus - The status of the test input or output request.
-type TestDatasourceResultStatus string
-
-const (
-	// TestDatasourceResultStatusTestFailed - The test datasource operation failed.
-	TestDatasourceResultStatusTestFailed TestDatasourceResultStatus = "TestFailed"
-	// TestDatasourceResultStatusTestSucceeded - The test datasource operation succeeded.
-	TestDatasourceResultStatusTestSucceeded TestDatasourceResultStatus = "TestSucceeded"
-)
-
-// PossibleTestDatasourceResultStatusValues returns the possible values for the TestDatasourceResultStatus const type.
-func PossibleTestDatasourceResultStatusValues() []TestDatasourceResultStatus {
-	return []TestDatasourceResultStatus{
-		TestDatasourceResultStatusTestFailed,
-		TestDatasourceResultStatusTestSucceeded,
-	}
-}
-
-// ToPtr returns a *TestDatasourceResultStatus pointing to the current value.
-func (c TestDatasourceResultStatus) ToPtr() *TestDatasourceResultStatus {
+// ToPtr returns a *SKUName pointing to the current value.
+func (c SKUName) ToPtr() *SKUName {
 	return &c
 }

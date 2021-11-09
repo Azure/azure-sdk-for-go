@@ -1,5 +1,355 @@
 # Release History
 
+## 0.3.0 (2021-11-09)
+### Breaking Changes
+
+- Type of `StreamingJobProperties.SKU` has been changed from `*StreamingJobSKU` to `*SKU`
+- Type of `AzureSQLReferenceInputDataSourceProperties.RefreshType` has been changed from `*string` to `*RefreshType`
+- Type of `ServiceBusQueueOutputDataSourceProperties.SystemPropertyColumns` has been changed from `map[string]*string` to `map[string]interface{}`
+- Type of `Compression.Type` has been changed from `*string` to `*CompressionType`
+- Const `ClusterProvisioningStateSucceeded` has been removed
+- Const `ClusterProvisioningStateInProgress` has been removed
+- Const `JobStateRestarting` has been removed
+- Const `QueryTestingResultStatusSuccess` has been removed
+- Const `JobStateStarting` has been removed
+- Const `QueryTestingResultStatusStarted` has been removed
+- Const `TestDatasourceResultStatusTestSucceeded` has been removed
+- Const `TestDatasourceResultStatusTestFailed` has been removed
+- Const `SampleInputResultStatusNoEventsFoundInRange` has been removed
+- Const `SampleInputResultStatusReadAllEventsInRange` has been removed
+- Const `JobStateStopping` has been removed
+- Const `ClusterProvisioningStateCanceled` has been removed
+- Const `EventSerializationTypeCustomClr` has been removed
+- Const `QueryTestingResultStatusUnknownError` has been removed
+- Const `QueryTestingResultStatusRuntimeError` has been removed
+- Const `JobStateDegraded` has been removed
+- Const `JobStateDeleting` has been removed
+- Const `JobStateScaling` has been removed
+- Const `JobStateFailed` has been removed
+- Const `StreamingJobSKUNameStandard` has been removed
+- Const `ClusterProvisioningStateFailed` has been removed
+- Const `JobStateCreated` has been removed
+- Const `SampleInputResultStatusErrorConnectingToInput` has been removed
+- Const `ClusterSKUNameDefault` has been removed
+- Const `QueryTestingResultStatusCompilerError` has been removed
+- Const `QueryTestingResultStatusTimeout` has been removed
+- Const `JobStateRunning` has been removed
+- Const `JobStateStopped` has been removed
+- Function `AzureMachineLearningServiceFunctionBindingProperties.MarshalJSON` has been removed
+- Function `*SubscriptionsClient.BeginTestOutput` has been removed
+- Function `*ClustersClient.ListByResourceGroup` has been removed
+- Function `PossibleClusterSKUNameValues` has been removed
+- Function `RawStreamInputDataSource.MarshalJSON` has been removed
+- Function `*SubscriptionsClient.BeginTestQuery` has been removed
+- Function `AzureMachineLearningStudioFunctionRetrieveDefaultDefinitionParameters.MarshalJSON` has been removed
+- Function `*SubscriptionsSampleInputPollerResponse.Resume` has been removed
+- Function `AzureFunctionOutputDataSource.MarshalJSON` has been removed
+- Function `*SubscriptionsClient.BeginSampleInput` has been removed
+- Function `*ClustersClient.BeginUpdate` has been removed
+- Function `*ClustersListBySubscriptionPager.NextPage` has been removed
+- Function `*ClustersDeletePollerResponse.Resume` has been removed
+- Function `SubscriptionsTestQueryPollerResponse.PollUntilDone` has been removed
+- Function `ClusterJobListResult.MarshalJSON` has been removed
+- Function `AzureMachineLearningStudioFunctionBindingProperties.MarshalJSON` has been removed
+- Function `JobState.ToPtr` has been removed
+- Function `CSharpFunctionRetrieveDefaultDefinitionParameters.MarshalJSON` has been removed
+- Function `*PrivateEndpointsDeletePoller.Done` has been removed
+- Function `*ClustersListStreamingJobsPager.NextPage` has been removed
+- Function `*ClustersClient.Get` has been removed
+- Function `*ClustersUpdatePoller.FinalResponse` has been removed
+- Function `*CSharpFunctionRetrieveDefaultDefinitionParameters.UnmarshalJSON` has been removed
+- Function `PrivateEndpointProperties.MarshalJSON` has been removed
+- Function `PossibleStreamingJobSKUNameValues` has been removed
+- Function `PossibleQueryTestingResultStatusValues` has been removed
+- Function `*RawReferenceInputDataSource.UnmarshalJSON` has been removed
+- Function `PossibleSampleInputResultStatusValues` has been removed
+- Function `TestDatasourceResultStatus.ToPtr` has been removed
+- Function `*ClustersCreateOrUpdatePoller.Poll` has been removed
+- Function `*PrivateEndpointsDeletePoller.ResumeToken` has been removed
+- Function `PrivateEndpointListResult.MarshalJSON` has been removed
+- Function `*AzureFunctionOutputDataSource.UnmarshalJSON` has been removed
+- Function `CSharpFunctionBinding.MarshalJSON` has been removed
+- Function `NewPrivateEndpointsClient` has been removed
+- Function `*SubscriptionsTestOutputPoller.FinalResponse` has been removed
+- Function `*ClustersCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*SubscriptionsTestInputPoller.FinalResponse` has been removed
+- Function `*ClustersUpdatePoller.Done` has been removed
+- Function `*AzureMachineLearningServiceFunctionBinding.UnmarshalJSON` has been removed
+- Function `*SubscriptionsTestOutputPoller.ResumeToken` has been removed
+- Function `AzureMachineLearningServiceFunctionBinding.MarshalJSON` has been removed
+- Function `*ClustersListByResourceGroupPager.Err` has been removed
+- Function `QueryFunction.MarshalJSON` has been removed
+- Function `*RawOutputDatasource.UnmarshalJSON` has been removed
+- Function `*PrivateEndpointsDeletePollerResponse.Resume` has been removed
+- Function `CompileQuery.MarshalJSON` has been removed
+- Function `QueryCompilationResult.MarshalJSON` has been removed
+- Function `*SubscriptionsTestOutputPoller.Poll` has been removed
+- Function `*ClustersClient.BeginCreateOrUpdate` has been removed
+- Function `AggregateFunctionProperties.MarshalJSON` has been removed
+- Function `*ClustersDeletePoller.Done` has been removed
+- Function `PossibleJobStateValues` has been removed
+- Function `PrivateLinkServiceConnectionProperties.MarshalJSON` has been removed
+- Function `*PrivateEndpointsListByClusterPager.Err` has been removed
+- Function `*PrivateEndpointsClient.ListByCluster` has been removed
+- Function `*ClustersCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ClustersListStreamingJobsPager.PageResponse` has been removed
+- Function `*SubscriptionsTestInputPoller.Done` has been removed
+- Function `StreamingJobSKUName.ToPtr` has been removed
+- Function `*ClustersClient.ListStreamingJobs` has been removed
+- Function `*SubscriptionsTestQueryPoller.Poll` has been removed
+- Function `*SubscriptionsTestInputPoller.ResumeToken` has been removed
+- Function `ClusterProvisioningState.ToPtr` has been removed
+- Function `ClusterSKUName.ToPtr` has been removed
+- Function `PossibleTestDatasourceResultStatusValues` has been removed
+- Function `*SubscriptionsSampleInputPoller.Poll` has been removed
+- Function `PrivateEndpointsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ClustersListByResourceGroupPager.NextPage` has been removed
+- Function `*PrivateEndpointsClient.BeginDelete` has been removed
+- Function `*SubscriptionsTestInputPollerResponse.Resume` has been removed
+- Function `PrivateEndpoint.MarshalJSON` has been removed
+- Function `*ClustersCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ClustersListBySubscriptionPager.Err` has been removed
+- Function `*SubscriptionsTestOutputPollerResponse.Resume` has been removed
+- Function `*SubscriptionsClient.BeginTestInput` has been removed
+- Function `NewClustersClient` has been removed
+- Function `ClustersCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateEndpointsDeletePoller.Poll` has been removed
+- Function `Cluster.MarshalJSON` has been removed
+- Function `*SubscriptionsTestQueryPoller.ResumeToken` has been removed
+- Function `*PrivateEndpointsListByClusterPager.PageResponse` has been removed
+- Function `SampleInputResultStatus.ToPtr` has been removed
+- Function `*SubscriptionsSampleInputPoller.ResumeToken` has been removed
+- Function `RawOutputDatasource.MarshalJSON` has been removed
+- Function `*SubscriptionsSampleInputPoller.FinalResponse` has been removed
+- Function `RawReferenceInputDataSource.MarshalJSON` has been removed
+- Function `*AzureMachineLearningStudioFunctionBinding.UnmarshalJSON` has been removed
+- Function `AzureMachineLearningStudioFunctionBinding.MarshalJSON` has been removed
+- Function `*ClustersListByResourceGroupPager.PageResponse` has been removed
+- Function `*AzureMachineLearningStudioFunctionRetrieveDefaultDefinitionParameters.UnmarshalJSON` has been removed
+- Function `*ClustersListBySubscriptionPager.PageResponse` has been removed
+- Function `ClustersDeletePollerResponse.PollUntilDone` has been removed
+- Function `AzureMachineLearningServiceFunctionRetrieveDefaultDefinitionParameters.MarshalJSON` has been removed
+- Function `*ClustersUpdatePollerResponse.Resume` has been removed
+- Function `ClustersUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ClustersDeletePoller.ResumeToken` has been removed
+- Function `*ClustersListStreamingJobsPager.Err` has been removed
+- Function `ClusterListResult.MarshalJSON` has been removed
+- Function `QueryTestingResultStatus.ToPtr` has been removed
+- Function `AzureMachineLearningServiceInputs.MarshalJSON` has been removed
+- Function `*SubscriptionsSampleInputPoller.Done` has been removed
+- Function `*SubscriptionsClient.CompileQuery` has been removed
+- Function `SubscriptionsTestInputPollerResponse.PollUntilDone` has been removed
+- Function `ClusterProperties.MarshalJSON` has been removed
+- Function `*PrivateEndpointsListByClusterPager.NextPage` has been removed
+- Function `*SubscriptionsTestInputPoller.Poll` has been removed
+- Function `*PrivateEndpointsClient.Get` has been removed
+- Function `*ClustersDeletePoller.Poll` has been removed
+- Function `*SubscriptionsTestOutputPoller.Done` has been removed
+- Function `*ClustersClient.BeginDelete` has been removed
+- Function `*SubscriptionsTestQueryPoller.Done` has been removed
+- Function `*FunctionConfiguration.UnmarshalJSON` has been removed
+- Function `*ClustersCreateOrUpdatePoller.Done` has been removed
+- Function `*ClustersUpdatePoller.Poll` has been removed
+- Function `*PrivateEndpointsDeletePoller.FinalResponse` has been removed
+- Function `SubscriptionsTestOutputPollerResponse.PollUntilDone` has been removed
+- Function `*CustomClrSerialization.UnmarshalJSON` has been removed
+- Function `CustomClrSerialization.MarshalJSON` has been removed
+- Function `*RawStreamInputDataSource.UnmarshalJSON` has been removed
+- Function `AzureMachineLearningStudioInputs.MarshalJSON` has been removed
+- Function `PossibleClusterProvisioningStateValues` has been removed
+- Function `*ClusterProperties.UnmarshalJSON` has been removed
+- Function `FunctionConfiguration.MarshalJSON` has been removed
+- Function `*ClustersDeletePoller.FinalResponse` has been removed
+- Function `*CSharpFunctionBinding.UnmarshalJSON` has been removed
+- Function `*ClustersClient.ListBySubscription` has been removed
+- Function `*AzureMachineLearningServiceFunctionRetrieveDefaultDefinitionParameters.UnmarshalJSON` has been removed
+- Function `*SubscriptionsTestQueryPoller.FinalResponse` has been removed
+- Function `*PrivateEndpointsClient.CreateOrUpdate` has been removed
+- Function `*SubscriptionsTestQueryPollerResponse.Resume` has been removed
+- Function `SubscriptionsSampleInputPollerResponse.PollUntilDone` has been removed
+- Function `*ClustersUpdatePoller.ResumeToken` has been removed
+- Struct `AggregateFunctionProperties` has been removed
+- Struct `AzureFunctionOutputDataSource` has been removed
+- Struct `AzureFunctionOutputDataSourceProperties` has been removed
+- Struct `AzureMachineLearningServiceFunctionBinding` has been removed
+- Struct `AzureMachineLearningServiceFunctionBindingProperties` has been removed
+- Struct `AzureMachineLearningServiceFunctionBindingRetrievalProperties` has been removed
+- Struct `AzureMachineLearningServiceFunctionRetrieveDefaultDefinitionParameters` has been removed
+- Struct `AzureMachineLearningServiceInputColumn` has been removed
+- Struct `AzureMachineLearningServiceInputs` has been removed
+- Struct `AzureMachineLearningServiceOutputColumn` has been removed
+- Struct `AzureMachineLearningStudioFunctionBinding` has been removed
+- Struct `AzureMachineLearningStudioFunctionBindingProperties` has been removed
+- Struct `AzureMachineLearningStudioFunctionBindingRetrievalProperties` has been removed
+- Struct `AzureMachineLearningStudioFunctionRetrieveDefaultDefinitionParameters` has been removed
+- Struct `AzureMachineLearningStudioInputColumn` has been removed
+- Struct `AzureMachineLearningStudioInputs` has been removed
+- Struct `AzureMachineLearningStudioOutputColumn` has been removed
+- Struct `CSharpFunctionBinding` has been removed
+- Struct `CSharpFunctionBindingProperties` has been removed
+- Struct `CSharpFunctionBindingRetrievalProperties` has been removed
+- Struct `CSharpFunctionRetrieveDefaultDefinitionParameters` has been removed
+- Struct `Cluster` has been removed
+- Struct `ClusterJob` has been removed
+- Struct `ClusterJobListResult` has been removed
+- Struct `ClusterListResult` has been removed
+- Struct `ClusterProperties` has been removed
+- Struct `ClusterSKU` has been removed
+- Struct `ClustersBeginCreateOrUpdateOptions` has been removed
+- Struct `ClustersBeginDeleteOptions` has been removed
+- Struct `ClustersBeginUpdateOptions` has been removed
+- Struct `ClustersClient` has been removed
+- Struct `ClustersCreateOrUpdatePoller` has been removed
+- Struct `ClustersCreateOrUpdatePollerResponse` has been removed
+- Struct `ClustersCreateOrUpdateResponse` has been removed
+- Struct `ClustersCreateOrUpdateResult` has been removed
+- Struct `ClustersDeletePoller` has been removed
+- Struct `ClustersDeletePollerResponse` has been removed
+- Struct `ClustersDeleteResponse` has been removed
+- Struct `ClustersGetOptions` has been removed
+- Struct `ClustersGetResponse` has been removed
+- Struct `ClustersGetResult` has been removed
+- Struct `ClustersListByResourceGroupOptions` has been removed
+- Struct `ClustersListByResourceGroupPager` has been removed
+- Struct `ClustersListByResourceGroupResponse` has been removed
+- Struct `ClustersListByResourceGroupResult` has been removed
+- Struct `ClustersListBySubscriptionOptions` has been removed
+- Struct `ClustersListBySubscriptionPager` has been removed
+- Struct `ClustersListBySubscriptionResponse` has been removed
+- Struct `ClustersListBySubscriptionResult` has been removed
+- Struct `ClustersListStreamingJobsOptions` has been removed
+- Struct `ClustersListStreamingJobsPager` has been removed
+- Struct `ClustersListStreamingJobsResponse` has been removed
+- Struct `ClustersListStreamingJobsResult` has been removed
+- Struct `ClustersUpdatePoller` has been removed
+- Struct `ClustersUpdatePollerResponse` has been removed
+- Struct `ClustersUpdateResponse` has been removed
+- Struct `ClustersUpdateResult` has been removed
+- Struct `CompileQuery` has been removed
+- Struct `CustomClrSerialization` has been removed
+- Struct `CustomClrSerializationProperties` has been removed
+- Struct `External` has been removed
+- Struct `FunctionConfiguration` has been removed
+- Struct `PrivateEndpoint` has been removed
+- Struct `PrivateEndpointListResult` has been removed
+- Struct `PrivateEndpointProperties` has been removed
+- Struct `PrivateEndpointsBeginDeleteOptions` has been removed
+- Struct `PrivateEndpointsClient` has been removed
+- Struct `PrivateEndpointsCreateOrUpdateOptions` has been removed
+- Struct `PrivateEndpointsCreateOrUpdateResponse` has been removed
+- Struct `PrivateEndpointsCreateOrUpdateResult` has been removed
+- Struct `PrivateEndpointsDeletePoller` has been removed
+- Struct `PrivateEndpointsDeletePollerResponse` has been removed
+- Struct `PrivateEndpointsDeleteResponse` has been removed
+- Struct `PrivateEndpointsGetOptions` has been removed
+- Struct `PrivateEndpointsGetResponse` has been removed
+- Struct `PrivateEndpointsGetResult` has been removed
+- Struct `PrivateEndpointsListByClusterOptions` has been removed
+- Struct `PrivateEndpointsListByClusterPager` has been removed
+- Struct `PrivateEndpointsListByClusterResponse` has been removed
+- Struct `PrivateEndpointsListByClusterResult` has been removed
+- Struct `PrivateLinkConnectionState` has been removed
+- Struct `PrivateLinkServiceConnection` has been removed
+- Struct `PrivateLinkServiceConnectionProperties` has been removed
+- Struct `ProxyResource` has been removed
+- Struct `QueryCompilationError` has been removed
+- Struct `QueryCompilationResult` has been removed
+- Struct `QueryFunction` has been removed
+- Struct `QueryInput` has been removed
+- Struct `QueryTestingResult` has been removed
+- Struct `RawInputDatasourceProperties` has been removed
+- Struct `RawOutputDatasource` has been removed
+- Struct `RawOutputDatasourceProperties` has been removed
+- Struct `RawReferenceInputDataSource` has been removed
+- Struct `RawStreamInputDataSource` has been removed
+- Struct `SampleInput` has been removed
+- Struct `SampleInputResult` has been removed
+- Struct `StreamingJobSKU` has been removed
+- Struct `SubscriptionsBeginSampleInputOptions` has been removed
+- Struct `SubscriptionsBeginTestInputOptions` has been removed
+- Struct `SubscriptionsBeginTestOutputOptions` has been removed
+- Struct `SubscriptionsBeginTestQueryOptions` has been removed
+- Struct `SubscriptionsCompileQueryOptions` has been removed
+- Struct `SubscriptionsCompileQueryResponse` has been removed
+- Struct `SubscriptionsCompileQueryResult` has been removed
+- Struct `SubscriptionsSampleInputPoller` has been removed
+- Struct `SubscriptionsSampleInputPollerResponse` has been removed
+- Struct `SubscriptionsSampleInputResponse` has been removed
+- Struct `SubscriptionsSampleInputResult` has been removed
+- Struct `SubscriptionsTestInputPoller` has been removed
+- Struct `SubscriptionsTestInputPollerResponse` has been removed
+- Struct `SubscriptionsTestInputResponse` has been removed
+- Struct `SubscriptionsTestInputResult` has been removed
+- Struct `SubscriptionsTestOutputPoller` has been removed
+- Struct `SubscriptionsTestOutputPollerResponse` has been removed
+- Struct `SubscriptionsTestOutputResponse` has been removed
+- Struct `SubscriptionsTestOutputResult` has been removed
+- Struct `SubscriptionsTestQueryPoller` has been removed
+- Struct `SubscriptionsTestQueryPollerResponse` has been removed
+- Struct `SubscriptionsTestQueryResponse` has been removed
+- Struct `SubscriptionsTestQueryResult` has been removed
+- Struct `TestDatasourceResult` has been removed
+- Struct `TestInput` has been removed
+- Struct `TestOutput` has been removed
+- Struct `TestQuery` has been removed
+- Struct `TestQueryDiagnostics` has been removed
+- Field `Externals` of struct `StreamingJobProperties` has been removed
+- Field `Properties` of struct `FunctionProperties` has been removed
+
+### New Content
+
+- New const `RefreshTypeStatic`
+- New const `CompressionTypeNone`
+- New const `RefreshTypeRefreshPeriodicallyWithFull`
+- New const `CompressionTypeGZip`
+- New const `RefreshTypeRefreshPeriodicallyWithDelta`
+- New const `SKUNameStandard`
+- New const `CompressionTypeDeflate`
+- New const `CompatibilityLevelOne2`
+- New function `*StreamingJobsScalePoller.FinalResponse(context.Context) (StreamingJobsScaleResponse, error)`
+- New function `ScalarFunctionConfiguration.MarshalJSON() ([]byte, error)`
+- New function `*AzureMachineLearningWebServiceFunctionBinding.UnmarshalJSON([]byte) error`
+- New function `AzureMachineLearningWebServiceFunctionBinding.MarshalJSON() ([]byte, error)`
+- New function `PossibleSKUNameValues() []SKUName`
+- New function `AzureMachineLearningWebServiceFunctionBindingProperties.MarshalJSON() ([]byte, error)`
+- New function `*ScalarFunctionConfiguration.UnmarshalJSON([]byte) error`
+- New function `TransformationProperties.MarshalJSON() ([]byte, error)`
+- New function `*StreamingJobsClient.BeginScale(context.Context, string, string, *StreamingJobsBeginScaleOptions) (StreamingJobsScalePollerResponse, error)`
+- New function `PossibleRefreshTypeValues() []RefreshType`
+- New function `*AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters.UnmarshalJSON([]byte) error`
+- New function `AzureMachineLearningWebServiceInputs.MarshalJSON() ([]byte, error)`
+- New function `*StreamingJobsScalePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*StreamingJobsScalePoller.Done() bool`
+- New function `CompressionType.ToPtr() *CompressionType`
+- New function `RefreshType.ToPtr() *RefreshType`
+- New function `AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters.MarshalJSON() ([]byte, error)`
+- New function `*ScalarFunctionProperties.UnmarshalJSON([]byte) error`
+- New function `*StreamingJobsScalePollerResponse.Resume(context.Context, *StreamingJobsClient, string) error`
+- New function `*StreamingJobsScalePoller.ResumeToken() (string, error)`
+- New function `PossibleCompressionTypeValues() []CompressionType`
+- New function `SKUName.ToPtr() *SKUName`
+- New function `StreamingJobsScalePollerResponse.PollUntilDone(context.Context, time.Duration) (StreamingJobsScaleResponse, error)`
+- New struct `AzureMachineLearningWebServiceFunctionBinding`
+- New struct `AzureMachineLearningWebServiceFunctionBindingProperties`
+- New struct `AzureMachineLearningWebServiceFunctionBindingRetrievalProperties`
+- New struct `AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters`
+- New struct `AzureMachineLearningWebServiceInputColumn`
+- New struct `AzureMachineLearningWebServiceInputs`
+- New struct `AzureMachineLearningWebServiceOutputColumn`
+- New struct `SKU`
+- New struct `ScalarFunctionConfiguration`
+- New struct `ScaleStreamingJobParameters`
+- New struct `StreamingJobsBeginScaleOptions`
+- New struct `StreamingJobsScalePoller`
+- New struct `StreamingJobsScalePollerResponse`
+- New struct `StreamingJobsScaleResponse`
+- New field `IsDataAction` in struct `Operation`
+- New field `Properties` in struct `ScalarFunctionProperties`
+- New field `ValidStreamingUnits` in struct `TransformationProperties`
+
+Total 417 breaking change(s), 62 additive change(s).
+
+
 ## 0.2.1 (Unreleased)
 
 ### Features Added

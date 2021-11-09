@@ -99,7 +99,7 @@ func (client *StreamingJobsClient) createOrReplaceCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01-preview")
+	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header.Set("If-Match", *options.IfMatch)
@@ -181,7 +181,7 @@ func (client *StreamingJobsClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01-preview")
+	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -240,7 +240,7 @@ func (client *StreamingJobsClient) getCreateRequest(ctx context.Context, resourc
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2017-04-01-preview")
+	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -300,7 +300,7 @@ func (client *StreamingJobsClient) listCreateRequest(ctx context.Context, option
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2017-04-01-preview")
+	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -361,7 +361,7 @@ func (client *StreamingJobsClient) listByResourceGroupCreateRequest(ctx context.
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2017-04-01-preview")
+	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -378,6 +378,85 @@ func (client *StreamingJobsClient) listByResourceGroupHandleResponse(resp *http.
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
 func (client *StreamingJobsClient) listByResourceGroupHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
+	if err != nil {
+		return runtime.NewResponseError(err, resp)
+	}
+	errType := Error{raw: string(body)}
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
+	}
+	return runtime.NewResponseError(&errType, resp)
+}
+
+// BeginScale - Scales a streaming job when the job is running.
+// If the operation fails it returns the *Error error type.
+func (client *StreamingJobsClient) BeginScale(ctx context.Context, resourceGroupName string, jobName string, options *StreamingJobsBeginScaleOptions) (StreamingJobsScalePollerResponse, error) {
+	resp, err := client.scale(ctx, resourceGroupName, jobName, options)
+	if err != nil {
+		return StreamingJobsScalePollerResponse{}, err
+	}
+	result := StreamingJobsScalePollerResponse{
+		RawResponse: resp,
+	}
+	pt, err := armruntime.NewPoller("StreamingJobsClient.Scale", "", resp, client.pl, client.scaleHandleError)
+	if err != nil {
+		return StreamingJobsScalePollerResponse{}, err
+	}
+	result.Poller = &StreamingJobsScalePoller{
+		pt: pt,
+	}
+	return result, nil
+}
+
+// Scale - Scales a streaming job when the job is running.
+// If the operation fails it returns the *Error error type.
+func (client *StreamingJobsClient) scale(ctx context.Context, resourceGroupName string, jobName string, options *StreamingJobsBeginScaleOptions) (*http.Response, error) {
+	req, err := client.scaleCreateRequest(ctx, resourceGroupName, jobName, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
+		return nil, client.scaleHandleError(resp)
+	}
+	return resp, nil
+}
+
+// scaleCreateRequest creates the Scale request.
+func (client *StreamingJobsClient) scaleCreateRequest(ctx context.Context, resourceGroupName string, jobName string, options *StreamingJobsBeginScaleOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics/streamingjobs/{jobName}/scale"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if jobName == "" {
+		return nil, errors.New("parameter jobName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2020-03-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	if options != nil && options.ScaleJobParameters != nil {
+		return req, runtime.MarshalAsJSON(req, *options.ScaleJobParameters)
+	}
+	return req, nil
+}
+
+// scaleHandleError handles the Scale error response.
+func (client *StreamingJobsClient) scaleHandleError(resp *http.Response) error {
 	body, err := runtime.Payload(resp)
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
@@ -446,7 +525,7 @@ func (client *StreamingJobsClient) startCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01-preview")
+	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	if options != nil && options.StartJobParameters != nil {
@@ -525,7 +604,7 @@ func (client *StreamingJobsClient) stopCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01-preview")
+	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -582,7 +661,7 @@ func (client *StreamingJobsClient) updateCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01-preview")
+	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header.Set("If-Match", *options.IfMatch)

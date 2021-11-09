@@ -375,10 +375,12 @@ func TestBackupSecret(t *testing.T) {
 	require.True(t, errors.As(err, &httpErr))
 	require.Equal(t, httpErr.RawResponse().StatusCode, http.StatusNotFound)
 
+	time.Sleep(20 * delay())
+
 	// Poll this operation manually
 	var restoreResp RestoreSecretBackupResponse
 	var i int
-	for i = 0; i < 10; i++ {
+	for i = 0; i < 20; i++ {
 		restoreResp, err = client.RestoreSecretBackup(context.Background(), backupResp.Value, nil)
 		if err == nil {
 			break

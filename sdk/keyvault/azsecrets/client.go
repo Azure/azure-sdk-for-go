@@ -14,8 +14,8 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets/internal"
+	shared "github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 )
 
 // Client is the struct for interacting with a KeyVault Secrets instance
@@ -54,11 +54,7 @@ func NewClient(vaultUrl string, credential azcore.TokenCredential, options *Clie
 
 	conOptions.PerRetryPolicies = append(
 		conOptions.PerRetryPolicies,
-		runtime.NewBearerTokenPolicy(
-			credential,
-			[]string{"https://vault.azure.net/.default"},
-			nil,
-		),
+		shared.NewKeyVaultChallengePolicy(credential),
 	)
 
 	conn := internal.NewConnection(conOptions)

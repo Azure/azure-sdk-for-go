@@ -49,7 +49,7 @@ type (
 
 type MgmtClient interface {
 	Close(ctx context.Context) error
-	SendDisposition(ctx context.Context, lockToken *amqp.UUID, state Disposition, propertiesToModify *map[string]interface{}) error
+	SendDisposition(ctx context.Context, lockToken *amqp.UUID, state Disposition, propertiesToModify map[string]interface{}) error
 	ReceiveDeferred(ctx context.Context, mode ReceiveMode, sequenceNumbers []int64) ([]*amqp.Message, error)
 	PeekMessages(ctx context.Context, fromSequenceNumber int64, messageCount int32) ([]*amqp.Message, error)
 
@@ -562,7 +562,7 @@ func (mc *mgmtClient) SetSessionState(ctx context.Context, sessionID string, sta
 // SendDisposition allows you settle a message using the management link, rather than via your
 // *amqp.Receiver. Use this if the receiver has been closed/lost or if the message isn't associated
 // with a link (ex: deferred messages).
-func (mc *mgmtClient) SendDisposition(ctx context.Context, lockToken *amqp.UUID, state Disposition, propertiesToModify *map[string]interface{}) error {
+func (mc *mgmtClient) SendDisposition(ctx context.Context, lockToken *amqp.UUID, state Disposition, propertiesToModify map[string]interface{}) error {
 	ctx, span := tracing.StartConsumerSpanFromContext(ctx, tracing.SpanSendDisposition, Version)
 	defer span.End()
 
@@ -587,7 +587,7 @@ func (mc *mgmtClient) SendDisposition(ctx context.Context, lockToken *amqp.UUID,
 	}
 
 	if propertiesToModify != nil {
-		value["properties-to-modify"] = *propertiesToModify
+		value["properties-to-modify"] = propertiesToModify
 	}
 
 	msg := &amqp.Message{

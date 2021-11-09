@@ -165,18 +165,16 @@ func TestAdminClient_TopicAndSubscriptionRuntimeProperties(t *testing.T) {
 	require.NoError(t, err)
 
 	// validate the topic runtime properties
-	getRuntimeResp, err := adminClient.GetTopicRuntimeProperties(context.Background(), topicName)
+	getRuntimeResp, err := adminClient.GetTopicRuntimeProperties(context.Background(), topicName, nil)
 	require.NoError(t, err)
 
-	require.EqualValues(t, topicName, getRuntimeResp.Value.Name)
+	require.EqualValues(t, 1, getRuntimeResp.SubscriptionCount)
+	require.NotEqual(t, time.Time{}, getRuntimeResp.CreatedAt)
+	require.NotEqual(t, time.Time{}, getRuntimeResp.UpdatedAt)
+	require.NotEqual(t, time.Time{}, getRuntimeResp.AccessedAt)
 
-	require.EqualValues(t, 1, getRuntimeResp.Value.SubscriptionCount)
-	require.NotEqual(t, time.Time{}, getRuntimeResp.Value.CreatedAt)
-	require.NotEqual(t, time.Time{}, getRuntimeResp.Value.UpdatedAt)
-	require.NotEqual(t, time.Time{}, getRuntimeResp.Value.AccessedAt)
-
-	require.Greater(t, getRuntimeResp.Value.SizeInBytes, int64(0))
-	require.EqualValues(t, int32(1), getRuntimeResp.Value.ScheduledMessageCount)
+	require.Greater(t, getRuntimeResp.SizeInBytes, int64(0))
+	require.EqualValues(t, int32(1), getRuntimeResp.ScheduledMessageCount)
 
 	// validate subscription runtime properties
 	getSubResp, err := adminClient.GetSubscriptionRuntimeProperties(context.Background(), topicName, subscriptionName)

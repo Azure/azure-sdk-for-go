@@ -726,64 +726,6 @@ func TestAdminClient_UpdateSubscription(t *testing.T) {
 	require.Nil(t, updateResp)
 }
 
-func setupLowPrivTest(t *testing.T) *struct {
-	Client    *Client
-	TopicName string
-	SubName   string
-	QueueName string
-	Cleanup   func()
-} {
-	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
-	require.NoError(t, err)
-
-	lowPrivAdminClient, err := NewClientFromConnectionString(test.GetConnectionStringWithoutManagePerms(t), nil)
-	require.NoError(t, err)
-
-	nanoSeconds := time.Now().UnixNano()
-
-	topicName := fmt.Sprintf("topic-%d", nanoSeconds)
-	queueName := fmt.Sprintf("queue-%d", nanoSeconds)
-	subName := "subscription1"
-
-	// TODO: add in rule management
-	//ruleName := "rule"
-
-	// create some entities that we need (there's a diff between something not being
-	// found and something failing because of lack of authorization)
-	cleanup := func() func() {
-		_, err = adminClient.CreateQueue(context.Background(), queueName, nil, nil)
-		require.NoError(t, err)
-
-		_, err = adminClient.CreateTopic(context.Background(), topicName, nil, nil)
-		require.NoError(t, err)
-
-		_, err = adminClient.CreateSubscription(context.Background(), topicName, subName, nil, nil)
-		require.NoError(t, err)
-
-		// _, err = sm.PutRule(context.Background(), subName, ruleName, TrueFilter{})
-		// require.NoError(t, err)
-
-		return func() {
-			deleteTopic(t, adminClient, topicName) // will also delete the subscription
-			deleteQueue(t, adminClient, queueName)
-		}
-	}()
-
-	return &struct {
-		Client    *Client
-		TopicName string
-		SubName   string
-		QueueName string
-		Cleanup   func()
-	}{
-		Client:    lowPrivAdminClient,
-		QueueName: queueName,
-		TopicName: topicName,
-		SubName:   subName,
-		Cleanup:   cleanup,
-	}
-}
-
 func TestAdminClient_LackPermissions_Queue(t *testing.T) {
 	testData := setupLowPrivTest(t)
 	defer testData.Cleanup()
@@ -871,6 +813,169 @@ func TestAdminClient_LackPermissions_Subscription(t *testing.T) {
 	require.Contains(t, err.Error(), "401 SubCode=40100: Unauthorized : Unauthorized access for 'DeleteSubscription'")
 }
 
+type entityManagerForPagerTests struct {
+	atom.EntityManager
+	getPaths []string
+}
+
+func (em *entityManagerForPagerTests) Get(ctx context.Context, entityPath string, respObj interface{}, mw ...atom.MiddlewareFunc) (*http.Response, error) {
+	em.getPaths = append(em.getPaths, entityPath)
+
+	switch feedPtrPtr := respObj.(type) {
+	case **atom.QueueFeed:
+		*feedPtrPtr = &atom.QueueFeed{
+			Entries: []atom.QueueEnvelope{
+				{},
+				{},
+				{},
+			},
+		}
+	case **atom.TopicFeed:
+		*feedPtrPtr = &atom.TopicFeed{
+			Entries: []atom.TopicEnvelope{
+				{},
+				{},
+				{},
+			},
+		}
+	case **atom.SubscriptionFeed:
+		*feedPtrPtr = &atom.SubscriptionFeed{
+			Entries: []atom.SubscriptionEnvelope{
+				{},
+				{},
+				{},
+			},
+		}
+	default:
+		panic(fmt.Sprintf("Unknown feed type: %T", respObj))
+	}
+
+	return &http.Response{}, nil
+}
+
+func TestAdminClient_getQueuePager(t *testing.T) {
+	adminClient, err := NewClientFromConnectionString("Endpoint=sb://fakeendpoint.something/;SharedAccessKeyName=fakekeyname;SharedAccessKey=CHANGEME", nil)
+	require.NoError(t, err)
+
+	em := &entityManagerForPagerTests{}
+	adminClient.em = em
+
+	pager := adminClient.getQueuePager(101, 0)
+	require.Empty(t, em.getPaths)
+
+	feed, resp, err := pager(context.Background())
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+	require.NotNil(t, feed)
+
+	require.EqualValues(t, []string{
+		"/$Resources/Queues?&$top=101",
+	}, em.getPaths)
+
+	feed, resp, err = pager(context.Background())
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+	require.NotNil(t, feed)
+
+	require.EqualValues(t, []string{
+		"/$Resources/Queues?&$top=101",
+		"/$Resources/Queues?&$top=101&$skip=3",
+	}, em.getPaths)
+
+	feed, resp, err = pager(context.Background())
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+	require.NotNil(t, feed)
+
+	require.EqualValues(t, []string{
+		"/$Resources/Queues?&$top=101",
+		"/$Resources/Queues?&$top=101&$skip=3",
+		"/$Resources/Queues?&$top=101&$skip=6",
+	}, em.getPaths)
+}
+
+func TestAdminClient_getTopicPager(t *testing.T) {
+	adminClient, err := NewClientFromConnectionString("Endpoint=sb://fakeendpoint.something/;SharedAccessKeyName=fakekeyname;SharedAccessKey=CHANGEME", nil)
+	require.NoError(t, err)
+
+	em := &entityManagerForPagerTests{}
+	adminClient.em = em
+
+	pager := adminClient.getTopicPager(101, 0)
+	require.Empty(t, em.getPaths)
+
+	feed, resp, err := pager(context.Background())
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+	require.NotNil(t, feed)
+
+	require.EqualValues(t, []string{
+		"/$Resources/Topics?&$top=101",
+	}, em.getPaths)
+
+	feed, resp, err = pager(context.Background())
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+	require.NotNil(t, feed)
+
+	require.EqualValues(t, []string{
+		"/$Resources/Topics?&$top=101",
+		"/$Resources/Topics?&$top=101&$skip=3",
+	}, em.getPaths)
+
+	feed, resp, err = pager(context.Background())
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+	require.NotNil(t, feed)
+
+	require.EqualValues(t, []string{
+		"/$Resources/Topics?&$top=101",
+		"/$Resources/Topics?&$top=101&$skip=3",
+		"/$Resources/Topics?&$top=101&$skip=6",
+	}, em.getPaths)
+}
+
+func TestAdminClient_getSubscriptionPager(t *testing.T) {
+	adminClient, err := NewClientFromConnectionString("Endpoint=sb://fakeendpoint.something/;SharedAccessKeyName=fakekeyname;SharedAccessKey=CHANGEME", nil)
+	require.NoError(t, err)
+
+	em := &entityManagerForPagerTests{}
+	adminClient.em = em
+
+	pager := adminClient.getSubscriptionPager("topicName", 101, 0)
+	require.Empty(t, em.getPaths)
+
+	feed, resp, err := pager(context.Background())
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+	require.NotNil(t, feed)
+
+	require.EqualValues(t, []string{
+		"topicName/Subscriptions?&$top=101",
+	}, em.getPaths)
+
+	feed, resp, err = pager(context.Background())
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+	require.NotNil(t, feed)
+
+	require.EqualValues(t, []string{
+		"topicName/Subscriptions?&$top=101",
+		"topicName/Subscriptions?&$top=101&$skip=3",
+	}, em.getPaths)
+
+	feed, resp, err = pager(context.Background())
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+	require.NotNil(t, feed)
+
+	require.EqualValues(t, []string{
+		"topicName/Subscriptions?&$top=101",
+		"topicName/Subscriptions?&$top=101&$skip=3",
+		"topicName/Subscriptions?&$top=101&$skip=6",
+	}, em.getPaths)
+}
+
 func toDurationPtr(d time.Duration) *time.Duration {
 	return &d
 }
@@ -888,4 +993,62 @@ func deleteTopic(t *testing.T, ac *Client, topicName string) {
 func deleteSubscription(t *testing.T, ac *Client, topicName string, subscriptionName string) {
 	_, err := ac.DeleteSubscription(context.Background(), topicName, subscriptionName, nil)
 	require.NoError(t, err)
+}
+
+func setupLowPrivTest(t *testing.T) *struct {
+	Client    *Client
+	TopicName string
+	SubName   string
+	QueueName string
+	Cleanup   func()
+} {
+	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
+	require.NoError(t, err)
+
+	lowPrivAdminClient, err := NewClientFromConnectionString(test.GetConnectionStringWithoutManagePerms(t), nil)
+	require.NoError(t, err)
+
+	nanoSeconds := time.Now().UnixNano()
+
+	topicName := fmt.Sprintf("topic-%d", nanoSeconds)
+	queueName := fmt.Sprintf("queue-%d", nanoSeconds)
+	subName := "subscription1"
+
+	// TODO: add in rule management
+	//ruleName := "rule"
+
+	// create some entities that we need (there's a diff between something not being
+	// found and something failing because of lack of authorization)
+	cleanup := func() func() {
+		_, err = adminClient.CreateQueue(context.Background(), queueName, nil, nil)
+		require.NoError(t, err)
+
+		_, err = adminClient.CreateTopic(context.Background(), topicName, nil, nil)
+		require.NoError(t, err)
+
+		_, err = adminClient.CreateSubscription(context.Background(), topicName, subName, nil, nil)
+		require.NoError(t, err)
+
+		// _, err = sm.PutRule(context.Background(), subName, ruleName, TrueFilter{})
+		// require.NoError(t, err)
+
+		return func() {
+			deleteTopic(t, adminClient, topicName) // will also delete the subscription
+			deleteQueue(t, adminClient, queueName)
+		}
+	}()
+
+	return &struct {
+		Client    *Client
+		TopicName string
+		SubName   string
+		QueueName string
+		Cleanup   func()
+	}{
+		Client:    lowPrivAdminClient,
+		QueueName: queueName,
+		TopicName: topicName,
+		SubName:   subName,
+		Cleanup:   cleanup,
+	}
 }

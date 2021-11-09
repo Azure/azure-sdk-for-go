@@ -17,7 +17,7 @@ import (
 // For example, you can create queues, enabling capabilities like partitioning, duplicate detection, etc..
 // NOTE: For sending and receiving messages you'll need to use the `Client` type instead.
 type Client struct {
-	em *atom.EntityManager
+	em atom.EntityManager
 }
 
 type ClientOptions struct {

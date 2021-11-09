@@ -98,10 +98,10 @@ func (s *messageSettler) AbandonMessage(ctx context.Context, message *ReceivedMe
 				Status: internal.AbandonedDisposition,
 			}
 
-			var propertiesToModify *map[string]interface{}
+			var propertiesToModify map[string]interface{}
 
 			if options != nil && options.PropertiesToModify != nil {
-				propertiesToModify = &options.PropertiesToModify
+				propertiesToModify = options.PropertiesToModify
 			}
 
 			return mgmt.SendDisposition(ctx, bytesToAMQPUUID(message.LockToken), d, propertiesToModify)
@@ -131,10 +131,10 @@ func (s *messageSettler) DeferMessage(ctx context.Context, message *ReceivedMess
 				Status: internal.DeferredDisposition,
 			}
 
-			var propertiesToModify *map[string]interface{}
+			var propertiesToModify map[string]interface{}
 
 			if options != nil && options.PropertiesToModify != nil {
-				propertiesToModify = &options.PropertiesToModify
+				propertiesToModify = options.PropertiesToModify
 			}
 
 			return mgmt.SendDisposition(ctx, bytesToAMQPUUID(message.LockToken), d, propertiesToModify)
@@ -188,10 +188,10 @@ func (s *messageSettler) DeadLetterMessage(ctx context.Context, message *Receive
 				DeadLetterReason:      &reason,
 			}
 
-			var propertiesToModify *map[string]interface{}
+			var propertiesToModify map[string]interface{}
 
 			if options != nil && options.PropertiesToModify != nil {
-				propertiesToModify = &options.PropertiesToModify
+				propertiesToModify = options.PropertiesToModify
 			}
 
 			return mgmt.SendDisposition(ctx, bytesToAMQPUUID(message.LockToken), d, propertiesToModify)

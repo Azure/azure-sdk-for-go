@@ -19,36 +19,34 @@ import (
 	"golang.org/x/crypto/pkcs12"
 )
 
-// ClientCertificateCredentialOptions contain optional parameters that can be used when configuring a ClientCertificateCredential.
-// All zero-value fields will be initialized with their default values.
+// ClientCertificateCredentialOptions contains optional parameters for ClientCertificateCredential.
 type ClientCertificateCredentialOptions struct {
 	azcore.ClientOptions
 
-	// Set to true to include x5c header in client claims when acquiring a token to enable
-	// SubjectName and Issuer based authentication for ClientCertificateCredential.
+	// SendCertificateChain controls whether the credential sends the public certificate chain in the x5c
+	// header of each token request's JWT. This is required for Subject Name/Issuer (SNI) authentication.
+	// Defaults to False.
 	SendCertificateChain bool
-	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
-	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
+	// AuthorityHost is the base URL of an Azure Active Directory authority. Defaults
+	// to the value of environment variable AZURE_AUTHORITY_HOST, if set, or AzurePublicCloud.
 	AuthorityHost AuthorityHost
 }
 
-// ClientCertificateCredential enables authentication of a service principal to Azure Active Directory using a certificate that is assigned to its App Registration. More information
-// on how to configure certificate authentication can be found here:
-// https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-certificate-credentials#register-your-certificate-with-azure-ad
+// ClientCertificateCredential authenticates a service principal with a certificate.
 type ClientCertificateCredential struct {
 	client               *aadIdentityClient
-	tenantID             string        // The Azure Active Directory tenant (directory) ID of the service principal
-	clientID             string        // The client (application) ID of the service principal
-	cert                 *certContents // The contents of the certificate file
-	sendCertificateChain bool          // Determines whether to include the certificate chain in the claims to retreive a token
+	tenantID             string
+	clientID             string
+	cert                 *certContents
+	sendCertificateChain bool
 }
 
-// NewClientCertificateCredential creates an instance of ClientCertificateCredential with the details needed to authenticate against Azure Active Directory with the specified certificate.
-// tenantID: The Azure Active Directory tenant (directory) ID of the service principal.
-// clientID: The client (application) ID of the service principal.
+// NewClientCertificateCredential constructs a ClientCertificateCredential.
+// tenantID: The application's Azure Active Directory tenant or directory ID.
+// clientID: The application's client ID.
 // certs: one or more certificates, for example as returned by ParseCertificates()
 // key: the signing certificate's private key, for example as returned by ParseCertificates()
-// options: ClientCertificateCredentialOptions that can be used to provide additional configurations for the credential, such as the certificate password.
+// options: Optional configuration.
 func NewClientCertificateCredential(tenantID string, clientID string, certs []*x509.Certificate, key crypto.PrivateKey, options *ClientCertificateCredentialOptions) (*ClientCertificateCredential, error) {
 	if len(certs) == 0 {
 		return nil, errors.New("at least one certificate is required")
@@ -80,10 +78,9 @@ func NewClientCertificateCredential(tenantID string, clientID string, certs []*x
 	return &ClientCertificateCredential{tenantID: tenantID, clientID: clientID, cert: cert, sendCertificateChain: cp.SendCertificateChain, client: c}, nil
 }
 
-// GetToken obtains a token from Azure Active Directory, using the provided certificate.
+// GetToken obtains a token from Azure Active Directory. This method is called automatically by Azure SDK clients.
 // ctx: Context controlling the request lifetime.
-// opts: details of the authentication request.
-// Returns an AccessToken which can be used to authenticate service client calls.
+// opts: Options for the token request, in particular the desired scope of the access token.
 func (c *ClientCertificateCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 	tk, err := c.client.authenticateCertificate(ctx, c.tenantID, c.clientID, c.cert, c.sendCertificateChain, opts.Scopes)
 	if err != nil {

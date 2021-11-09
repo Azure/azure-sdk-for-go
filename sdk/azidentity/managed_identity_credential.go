@@ -50,8 +50,7 @@ func (r ResourceID) String() string {
 	return string(r)
 }
 
-// ManagedIdentityCredentialOptions contains parameters that can be used to configure the pipeline used with Managed Identity Credential.
-// All zero-value fields will be initialized with their default values.
+// ManagedIdentityCredentialOptions contains optional parameters for ManagedIdentityCredential.
 type ManagedIdentityCredentialOptions struct {
 	azcore.ClientOptions
 
@@ -61,39 +60,35 @@ type ManagedIdentityCredentialOptions struct {
 	ID ManagedIDKind
 }
 
-// ManagedIdentityCredential attempts authentication using a managed identity that has been assigned to the deployment environment. This authentication type works in several
-// managed identity environments such as Azure VMs, App Service, Azure Functions, Azure CloudShell, among others. More information about configuring managed identities can be found here:
-// https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview
+// ManagedIdentityCredential authenticates with an Azure managed identity in any hosting environment which supports managed identities.
+// This credential defaults to using a system-assigned identity. Use ManagedIdentityCredentialOptions.ID to specify a user-assigned identity.
+// See Azure Active Directory documentation for more information about managed identities:
+// https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
 type ManagedIdentityCredential struct {
 	id     ManagedIDKind
 	client *managedIdentityClient
 }
 
-// NewManagedIdentityCredential creates a credential instance capable of authenticating an Azure managed identity in any hosting environment
-// supporting managed identities. See https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview for more
-// information about Azure Managed Identity.
-// options: ManagedIdentityCredentialOptions that configure the pipeline for requests sent to Azure Active Directory.
+// NewManagedIdentityCredential creates a ManagedIdentityCredential.
+// options: Optional configuration.
 func NewManagedIdentityCredential(options *ManagedIdentityCredentialOptions) (*ManagedIdentityCredential, error) {
-	// Create a new Managed Identity Client with default options
 	cp := ManagedIdentityCredentialOptions{}
 	if options != nil {
 		cp = *options
 	}
 	client := newManagedIdentityClient(&cp)
 	msiType, err := client.getMSIType()
-	// If there is an error that means that the code is not running in a Managed Identity environment
 	if err != nil {
 		logCredentialError("Managed Identity Credential", err)
 		return nil, err
 	}
-	// Assign the msiType discovered onto the client
 	client.msiType = msiType
 	return &ManagedIdentityCredential{id: cp.ID, client: client}, nil
 }
 
-// GetToken obtains an AccessToken from the Managed Identity service if available.
-// scopes: The list of scopes for which the token will have access.
-// Returns an AccessToken which can be used to authenticate service client calls.
+// GetToken obtains a token from Azure Active Directory. This method is called automatically by Azure SDK clients.
+// ctx: Context used to control the request lifetime.
+// opts: Options for the token request, in particular the desired scope of the access token.
 func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 	if opts.Scopes == nil {
 		err := errors.New("must specify a resource in order to authenticate")

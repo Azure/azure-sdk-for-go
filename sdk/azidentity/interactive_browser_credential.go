@@ -20,26 +20,24 @@ import (
 	"github.com/pkg/browser"
 )
 
-// InteractiveBrowserCredentialOptions provides optional configuration.
-// Use these options to modify the default pipeline behavior if necessary.
-// All zero-value fields will be initialized with their default values. Please note, that both the TenantID or ClientID fields should
-// changed together if default values are not desired.
+// InteractiveBrowserCredentialOptions contains optional parameters for InteractiveBrowserCredential.
 type InteractiveBrowserCredentialOptions struct {
 	azcore.ClientOptions
 
-	// The Azure Active Directory tenant (directory) ID of the application. Defaults to "organizations".
+	// TenantID is the Azure Active Directory tenant the credential authenticates in. Defaults to the
+	// "organizations" tenant, which can authenticate work and school accounts.
 	TenantID string
-	// The ID of the application the user will sign in to. When not set, users will sign in to an Azure development application.
+	// ClientID is the ID of the application users will authenticate to.
+	// Defaults to the ID of an Azure development application.
 	ClientID string
 	// RedirectURL will be supported in a future version but presently doesn't work: https://github.com/Azure/azure-sdk-for-go/issues/15632.
 	// Applications which have "http://localhost" registered as a redirect URL need not set this option.
 	RedirectURL string
-	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
-	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
+	// AuthorityHost is the base URL of an Azure Active Directory authority. Defaults
+	// to the value of environment variable AZURE_AUTHORITY_HOST, if set, or AzurePublicCloud.
 	AuthorityHost AuthorityHost
 }
 
-// init returns an instance of InteractiveBrowserCredentialOptions initialized with default values.
 func (o *InteractiveBrowserCredentialOptions) init() {
 	if o.TenantID == "" {
 		o.TenantID = organizationsTenantID
@@ -49,15 +47,14 @@ func (o *InteractiveBrowserCredentialOptions) init() {
 	}
 }
 
-// InteractiveBrowserCredential enables authentication to Azure Active Directory using an interactive browser to log in.
+// InteractiveBrowserCredential opens a browser to interactively authenticate a user.
 type InteractiveBrowserCredential struct {
-	client *aadIdentityClient
-	// options contains data necessary to authenticate through an interactive browser window
+	client  *aadIdentityClient
 	options InteractiveBrowserCredentialOptions
 }
 
-// NewInteractiveBrowserCredential constructs a new InteractiveBrowserCredential with the details needed to authenticate against Azure Active Directory through an interactive browser window.
-// options: configure the management of the requests sent to Azure Active Directory, pass in nil or a zero-value options instance for default behavior.
+// NewInteractiveBrowserCredential constructs a new InteractiveBrowserCredential.
+// options: Optional configuration.
 func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOptions) (*InteractiveBrowserCredential, error) {
 	cp := InteractiveBrowserCredentialOptions{}
 	if options != nil {
@@ -78,10 +75,9 @@ func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOption
 	return &InteractiveBrowserCredential{options: cp, client: c}, nil
 }
 
-// GetToken obtains a token from Azure Active Directory using an interactive browser to authenticate.
+// GetToken obtains a token from Azure Active Directory. This method is called automatically by Azure SDK clients.
 // ctx: Context used to control the request lifetime.
-// opts: TokenRequestOptions contains the list of scopes for which the token will have access.
-// Returns an AccessToken which can be used to authenticate service client calls.
+// opts: Options for the token request, in particular the desired scope of the access token.
 func (c *InteractiveBrowserCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 	tk, err := c.client.authenticateInteractiveBrowser(ctx, &c.options, opts.Scopes)
 	if err != nil {

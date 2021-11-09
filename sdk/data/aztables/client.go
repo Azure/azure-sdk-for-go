@@ -528,10 +528,26 @@ func (t *Client) UpdateEntity(ctx context.Context, entity []byte, options *Updat
 
 	switch options.UpdateMode {
 	case MergeEntity:
-		resp, err := t.client.MergeEntity(ctx, generated.Enum1Three0, t.name, partKey, rowkey, options.toGeneratedMergeEntity(mapEntity), &generated.QueryOptions{})
+		resp, err := t.client.MergeEntity(
+			ctx,
+			generated.Enum1Three0,
+			t.name,
+			partKey,
+			rowkey,
+			options.toGeneratedMergeEntity(mapEntity),
+			&generated.QueryOptions{},
+		)
 		return updateEntityResponseFromMergeGenerated(&resp), err
 	case ReplaceEntity:
-		resp, err := t.client.UpdateEntity(ctx, generated.Enum1Three0, t.name, partKey, rowkey, options.toGeneratedUpdateEntity(mapEntity), &generated.QueryOptions{})
+		resp, err := t.client.UpdateEntity(
+			ctx,
+			generated.Enum1Three0,
+			t.name,
+			partKey,
+			rowkey,
+			options.toGeneratedUpdateEntity(mapEntity),
+			&generated.QueryOptions{},
+		)
 		return updateEntityResponseFromUpdateGenerated(&resp), err
 	}
 	if pk == "" || rk == "" {
@@ -604,10 +620,26 @@ func (t *Client) InsertEntity(ctx context.Context, entity []byte, options *Inser
 
 	switch options.UpdateMode {
 	case MergeEntity:
-		resp, err := t.client.MergeEntity(ctx, generated.Enum1Three0, t.name, partKey, rowkey, &generated.TableMergeEntityOptions{TableEntityProperties: mapEntity}, &generated.QueryOptions{})
+		resp, err := t.client.MergeEntity(
+			ctx,
+			generated.Enum1Three0,
+			t.name,
+			partKey,
+			rowkey,
+			&generated.TableMergeEntityOptions{TableEntityProperties: mapEntity},
+			&generated.QueryOptions{},
+		)
 		return insertEntityFromGeneratedMerge(&resp), err
 	case ReplaceEntity:
-		resp, err := t.client.UpdateEntity(ctx, generated.Enum1Three0, t.name, partKey, rowkey, &generated.TableUpdateEntityOptions{TableEntityProperties: mapEntity}, &generated.QueryOptions{})
+		resp, err := t.client.UpdateEntity(
+			ctx,
+			generated.Enum1Three0,
+			t.name,
+			partKey,
+			rowkey,
+			&generated.TableUpdateEntityOptions{TableEntityProperties: mapEntity},
+			&generated.QueryOptions{},
+		)
 		return insertEntityFromGeneratedUpdate(&resp), err
 	}
 	if pk == "" || rk == "" {

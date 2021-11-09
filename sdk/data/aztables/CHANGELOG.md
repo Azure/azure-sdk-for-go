@@ -6,6 +6,9 @@
 * Added `NextPagePartitionKey` and `NextPageRowKey` to `ListEntitiesPager` for retrieving continuation tokens.
 * Added `PartitionKey` and `RowKey` to `ListEntitiesOptions` for using exposed continuation tokens.
 
+### Bug Fixes
+* Fixed a bug on transactional batches where `InsertMerge` and `InsertReplace` failed if the entity did not exist.
+
 ## 0.3.0 (2021-11-02)
 
 ### Features Added

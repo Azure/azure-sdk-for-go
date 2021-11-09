@@ -15,9 +15,9 @@
 
 `DefaultAzureCredential` attempts to retrieve an access token by sequentially invoking a chain of credentials. An error from this credential signifies that every credential in the chain failed to acquire a token. To address this, follow the configuration instructions for the respective credential you intend to use. This document contains more guidance for handling errors from each credential type:
 
--  [Environment credential](#troubleshoot-environment-credential-authentication-issues) |
--  [Managed Identity](#troubleshoot-managed-identity-authentication-issues) |
--  [Azure CLI](#troubleshoot-azure-cli-authentication-issues) |
+-  [Environment credential](#troubleshoot-environment-credential-authentication-issues)
+-  [Managed Identity](#troubleshoot-managed-identity-authentication-issues)
+-  [Azure CLI](#troubleshoot-azure-cli-authentication-issues)
 
 ## Troubleshoot environment credential authentication issues
 
@@ -88,13 +88,12 @@ A client secret, also called an application password, is a secret string that an
 
 [Managed identity authentication](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview) requires support from the hosting environment, which may require configuration to expose a managed identity to your app. `azidentity` has been tested with managed identities on these Azure services:
 
-- [Azure Virtual Machines](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/qs-configure-portal-windows-vm)
 - [Azure App Service](https://docs.microsoft.com/azure/app-service/overview-managed-identity)
-- [Azure Kubernetes Service](https://docs.microsoft.com/azure/aks/use-managed-identity)
-- [Azure Cloud Shell](https://docs.microsoft.com/azure/cloud-shell/overview)
 - [Azure Arc](https://docs.microsoft.com/azure/azure-arc/servers/managed-identity-authentication)
+- [Azure Cloud Shell](https://docs.microsoft.com/azure/cloud-shell/overview)
+- [Azure Kubernetes Service](https://docs.microsoft.com/azure/aks/use-managed-identity)
 - [Azure Service Fabric](https://docs.microsoft.com/azure/service-fabric/configure-existing-cluster-enable-managed-identity-token-service)
-
+- [Azure Virtual Machines](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/qs-configure-portal-windows-vm)
 
 ## Troubleshoot Azure CLI authentication issues
 

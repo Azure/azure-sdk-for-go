@@ -1,0 +1,787 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/testRG-list2349988758?api-version=2021-04-01",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "PUT",
+        ":path": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/testRG-list2349988758?api-version=2021-04-01",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "21",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-armresources/v0.2.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+      },
+      "RequestBody": {
+        "location": "westus"
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "239",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 08 Nov 2021 07:12:37 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "b0367b54-874b-49ee-b270-a7d2a70ce162",
+        "x-ms-ratelimit-remaining-subscription-writes": "1186",
+        "x-ms-request-id": "b0367b54-874b-49ee-b270-a7d2a70ce162",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20211108T071238Z:b0367b54-874b-49ee-b270-a7d2a70ce162"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG-list2349988758",
+        "name": "testRG-list2349988758",
+        "type": "Microsoft.Resources/resourceGroups",
+        "location": "westus",
+        "properties": {
+          "provisioningState": "Succeeded"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/testRG-list2349988758/providers/Microsoft.Compute//availabilitySets/rs2349988758?api-version=2021-07-01",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "PUT",
+        ":path": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/testRG-list2349988758/providers/Microsoft.Compute//availabilitySets/rs2349988758?api-version=2021-07-01",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "21",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-armresources/v0.2.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+      },
+      "RequestBody": {
+        "location": "westus"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 08 Nov 2021 07:12:40 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Server": [
+          "Microsoft-HTTPAPI/2.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "2adc8611-e1ed-43ee-ac9c-27a29d87b409",
+        "x-ms-ratelimit-remaining-resource": "Microsoft.Compute/PutVM3Min;235,Microsoft.Compute/PutVM30Min;1180",
+        "x-ms-ratelimit-remaining-subscription-writes": "1185",
+        "x-ms-request-id": "de93fb9c-2bd5-4931-b26f-f88bba6cfa86",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20211108T071241Z:2adc8611-e1ed-43ee-ac9c-27a29d87b409"
+      },
+      "ResponseBody": [
+        "{\r\n",
+        "  \u0022name\u0022: \u0022rs2349988758\u0022,\r\n",
+        "  \u0022id\u0022: \u0022/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG-list2349988758/providers/Microsoft.Compute/availabilitySets/rs2349988758\u0022,\r\n",
+        "  \u0022type\u0022: \u0022Microsoft.Compute/availabilitySets\u0022,\r\n",
+        "  \u0022location\u0022: \u0022westus\u0022,\r\n",
+        "  \u0022properties\u0022: {\r\n",
+        "    \u0022platformUpdateDomainCount\u0022: 5,\r\n",
+        "    \u0022platformFaultDomainCount\u0022: 3\r\n",
+        "  },\r\n",
+        "  \u0022sku\u0022: {\r\n",
+        "    \u0022name\u0022: \u0022Classic\u0022\r\n",
+        "  }\r\n",
+        "}"
+      ]
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resources?api-version=2021-04-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "GET",
+        ":path": "/subscriptions/00000000-0000-0000-0000-000000000000/resources?api-version=2021-04-01",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armresources/v0.2.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Length": "24366",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 08 Nov 2021 07:12:40 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "6bc4298c-dc6f-450f-9897-4a8707b5d6e5",
+        "x-ms-ratelimit-remaining-subscription-reads": "11978",
+        "x-ms-request-id": "6bc4298c-dc6f-450f-9897-4a8707b5d6e5",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20211108T071241Z:6bc4298c-dc6f-450f-9897-4a8707b5d6e5"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/iyljd2wtoqh43dern43sawzmqxkeari3bcqiadgfste4outj7cdmmslvr4yfw2vmrsqeiogmitj/providers/Microsoft.ServiceBus/namespaces/myNamespacexxyyz",
+            "name": "myNamespacexxyyz",
+            "type": "Microsoft.ServiceBus/namespaces",
+            "sku": {
+              "name": "Standard",
+              "tier": "Standard"
+            },
+            "location": "eastus",
+            "tags": {
+              "tag1": "value1",
+              "tag2": "value2"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/iyljd2wtoqh43dern43sawzmqxkeari3bcqiadgfste4outj7cdmmslvr4yfw2vmrsqeiogmitj/providers/Microsoft.ServiceBus/namespaces/myNamespacexxyyzsecond",
+            "name": "myNamespacexxyyzsecond",
+            "type": "Microsoft.ServiceBus/namespaces",
+            "sku": {
+              "name": "Premium",
+              "tier": "Premium",
+              "capacity": 1
+            },
+            "location": "southcentralus",
+            "tags": {}
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/AzSecPackAutoConfigUA-eastus",
+            "name": "AzSecPackAutoConfigUA-eastus",
+            "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+            "location": "eastus",
+            "tags": {}
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/AzSecPackAutoConfigUA-eastus2",
+            "name": "AzSecPackAutoConfigUA-eastus2",
+            "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+            "location": "eastus2",
+            "tags": {}
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qiaozhatest/providers/Microsoft.Purview/accounts/jsteste2e",
+            "name": "jsteste2e",
+            "type": "Microsoft.Purview/accounts",
+            "sku": {
+              "name": "Standard",
+              "capacity": 1
+            },
+            "location": "westus2",
+            "identity": {
+              "principalId": "69eaef3f-d2d7-4d47-8418-2b6d94bf05b7",
+              "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+              "type": "SystemAssigned"
+            },
+            "tags": {}
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/AzSecPackAutoConfigRG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/AzSecPackAutoConfigUA-westus2",
+            "name": "AzSecPackAutoConfigUA-westus2",
+            "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+            "location": "westus2",
+            "tags": {}
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-ebm4jvnsvqpji5t6btyw7sxjg5s7ini3jsownblfy7ongu4yecaxhdfyg6pdhy3b7hbbfncvcmf/providers/Microsoft.Network/publicIPAddresses/publicipname",
+            "name": "publicipname",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "sku": {
+              "name": "Basic"
+            },
+            "location": "eastus"
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-ebm4jvnsvqpji5t6btyw7sxjg5s7ini3jsownblfy7ongu4yecaxhdfyg6pdhy3b7hbbfncvcmf/providers/Microsoft.Network/virtualNetworks/rmvirtualnetworkname",
+            "name": "rmvirtualnetworkname",
+            "type": "Microsoft.Network/virtualNetworks",
+            "location": "eastus"
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-ebm4jvnsvqpji5t6btyw7sxjg5s7ini3jsownblfy7ongu4yecaxhdfyg6pdhy3b7hbbfncvcmf/providers/Microsoft.Network/networkSecurityGroups/NRMS-27y33au6fux3krmvirtualnetworkname",
+            "name": "NRMS-27y33au6fux3krmvirtualnetworkname",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "location": "eastus",
+            "tags": {
+              "Creator": "Automatically added by NRMS Azure Policy",
+              "NRMS-Info": "http://aka.ms/nrms",
+              "NRMS-Version": "2019-03-20"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-ebm4jvnsvqpji5t6btyw7sxjg5s7ini3jsownblfy7ongu4yecaxhdfyg6pdhy3b7hbbfncvcmf/providers/Microsoft.Network/networkSecurityGroups/NRMS-kqbaonkswe7nuvirtualnetworkname-subnetname",
+            "name": "NRMS-kqbaonkswe7nuvirtualnetworkname-subnetname",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "location": "eastus",
+            "tags": {
+              "Creator": "Automatically added by NRMS Azure Policy",
+              "NRMS-Info": "http://aka.ms/nrms",
+              "NRMS-Version": "2019-03-20"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-ebm4jvnsvqpji5t6btyw7sxjg5s7ini3jsownblfy7ongu4yecaxhdfyg6pdhy3b7hbbfncvcmf/providers/Microsoft.Network/networkSecurityGroups/NRMS-csqbdyvdcpnd2virtualnetworkname",
+            "name": "NRMS-csqbdyvdcpnd2virtualnetworkname",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "location": "eastus",
+            "tags": {
+              "Creator": "Automatically added by NRMS Azure Policy",
+              "NRMS-Info": "http://aka.ms/nrms",
+              "NRMS-Version": "2019-03-20"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-diqm56fklrrnmikd4uj5fajkp52tc2cptmwa7wxpya3x7c4j53dww7mevkazbgoicntfsdhjdtz/providers/Microsoft.Network/virtualNetworks/virtualnetwork",
+            "name": "virtualnetwork",
+            "type": "Microsoft.Network/virtualNetworks",
+            "location": "eastus"
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-diqm56fklrrnmikd4uj5fajkp52tc2cptmwa7wxpya3x7c4j53dww7mevkazbgoicntfsdhjdtz/providers/Microsoft.Network/loadBalancers/loadbalancer",
+            "name": "loadbalancer",
+            "type": "Microsoft.Network/loadBalancers",
+            "sku": {
+              "name": "Standard"
+            },
+            "location": "eastus"
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-diqm56fklrrnmikd4uj5fajkp52tc2cptmwa7wxpya3x7c4j53dww7mevkazbgoicntfsdhjdtz/providers/Microsoft.Network/privateDnsZones/www.zone1.com",
+            "name": "www.zone1.com",
+            "type": "Microsoft.Network/privateDnsZones",
+            "location": "global"
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-test_cli_mgmt_network_firewall_test_network892411e1/providers/Microsoft.Network/virtualWans/virtualwan",
+            "name": "virtualwan",
+            "type": "Microsoft.Network/virtualWans",
+            "location": "westus",
+            "tags": {
+              "key1": "value1"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-test_cli_mgmt_network_firewall_test_network892411e1/providers/Microsoft.Network/virtualHubs/virtualhub",
+            "name": "virtualhub",
+            "type": "Microsoft.Network/virtualHubs",
+            "location": "westus",
+            "tags": {
+              "key1": "value1"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-diqm56fklrrnmikd4uj5fajkp52tc2cptmwa7wxpya3x7c4j53dww7mevkazbgoicntfsdhjdtz/providers/Microsoft.Network/networkSecurityGroups/NRMS-rnv4a5qskubngvirtualnetwork",
+            "name": "NRMS-rnv4a5qskubngvirtualnetwork",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "location": "eastus",
+            "tags": {
+              "Creator": "Automatically added by NRMS Azure Policy",
+              "NRMS-Info": "http://aka.ms/nrms",
+              "NRMS-Version": "2019-03-20"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-diqm56fklrrnmikd4uj5fajkp52tc2cptmwa7wxpya3x7c4j53dww7mevkazbgoicntfsdhjdtz/providers/Microsoft.Network/networkSecurityGroups/NRMS-6ydfkvrtk6tygvirtualnetwork-subnet1",
+            "name": "NRMS-6ydfkvrtk6tygvirtualnetwork-subnet1",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "location": "eastus",
+            "tags": {
+              "Creator": "Automatically added by NRMS Azure Policy",
+              "NRMS-Info": "http://aka.ms/nrms",
+              "NRMS-Version": "2019-03-20"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-diqm56fklrrnmikd4uj5fajkp52tc2cptmwa7wxpya3x7c4j53dww7mevkazbgoicntfsdhjdtz/providers/Microsoft.Network/networkSecurityGroups/NRMS-fdalchccxjge6virtualnetwork-subnet2",
+            "name": "NRMS-fdalchccxjge6virtualnetwork-subnet2",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "location": "eastus",
+            "tags": {
+              "Creator": "Automatically added by NRMS Azure Policy",
+              "NRMS-Info": "http://aka.ms/nrms",
+              "NRMS-Version": "2019-03-20"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-test_cli_mgmt_network_firewall_test_network892411e1/providers/Microsoft.Network/firewallPolicies/firewallpolicy",
+            "name": "firewallpolicy",
+            "type": "Microsoft.Network/firewallPolicies",
+            "location": "eastus",
+            "tags": {
+              "key1": "value1"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-hyyetnby7ajxgelebatz2vffy42hnh6uln7d7augkff5e3akdosozn46jahgabbs3xv7zugtfkx/providers/Microsoft.Network/publicIPAddresses/public_ip_address_name",
+            "name": "public_ip_address_name",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "sku": {
+              "name": "Standard"
+            },
+            "location": "eastus"
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-3ce4gnf77alvydtr6dsq6izl75hhgwex3wzmwr3h3mpg2gdo5rkssdopmaasfmpeouv7guynbl5/providers/Microsoft.Network/publicIPAddresses/publicipaddress",
+            "name": "publicipaddress",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "sku": {
+              "name": "Standard"
+            },
+            "location": "eastus"
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-3ce4gnf77alvydtr6dsq6izl75hhgwex3wzmwr3h3mpg2gdo5rkssdopmaasfmpeouv7guynbl5/providers/Microsoft.Network/publicIPPrefixes/publicipprefix",
+            "name": "publicipprefix",
+            "type": "Microsoft.Network/publicIPPrefixes",
+            "sku": {
+              "name": "Standard"
+            },
+            "location": "eastus"
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qiaozhatest/providers/Microsoft.Storage/storageAccounts/jssdktest",
+            "name": "jssdktest",
+            "type": "Microsoft.Storage/storageAccounts",
+            "sku": {
+              "name": "Standard_RAGRS",
+              "tier": "Standard"
+            },
+            "kind": "StorageV2",
+            "location": "eastus",
+            "tags": {}
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-5pqdgwdicsucg7sxfh4delzq5namxut3itefagilopwowhjpjbgqgeb35zvwdoywsdzuxmbkknf/providers/Microsoft.Network/publicIPAddresses/publicipname",
+            "name": "publicipname",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "sku": {
+              "name": "Basic"
+            },
+            "location": "eastus"
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-5pqdgwdicsucg7sxfh4delzq5namxut3itefagilopwowhjpjbgqgeb35zvwdoywsdzuxmbkknf/providers/Microsoft.Network/virtualNetworks/virtualnetworkname",
+            "name": "virtualnetworkname",
+            "type": "Microsoft.Network/virtualNetworks",
+            "location": "eastus"
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-5pqdgwdicsucg7sxfh4delzq5namxut3itefagilopwowhjpjbgqgeb35zvwdoywsdzuxmbkknf/providers/Microsoft.Network/virtualNetworks/rmvirtualnetworkname",
+            "name": "rmvirtualnetworkname",
+            "type": "Microsoft.Network/virtualNetworks",
+            "location": "eastus"
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-5pqdgwdicsucg7sxfh4delzq5namxut3itefagilopwowhjpjbgqgeb35zvwdoywsdzuxmbkknf/providers/Microsoft.Network/networkInterfaces/networkinterfacename",
+            "name": "networkinterfacename",
+            "type": "Microsoft.Network/networkInterfaces",
+            "location": "eastus"
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-5pqdgwdicsucg7sxfh4delzq5namxut3itefagilopwowhjpjbgqgeb35zvwdoywsdzuxmbkknf/providers/Microsoft.Network/localNetworkGateways/localnetworkgatewayname",
+            "name": "localnetworkgatewayname",
+            "type": "Microsoft.Network/localNetworkGateways",
+            "location": "eastus"
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-5pqdgwdicsucg7sxfh4delzq5namxut3itefagilopwowhjpjbgqgeb35zvwdoywsdzuxmbkknf/providers/Microsoft.Network/virtualNetworkGateways/virtualnetworkgatewayname",
+            "name": "virtualnetworkgatewayname",
+            "type": "Microsoft.Network/virtualNetworkGateways",
+            "location": "eastus"
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-5pqdgwdicsucg7sxfh4delzq5namxut3itefagilopwowhjpjbgqgeb35zvwdoywsdzuxmbkknf/providers/Microsoft.Network/networkSecurityGroups/NRMS-dmoojw7rorchkvirtualnetworkname",
+            "name": "NRMS-dmoojw7rorchkvirtualnetworkname",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "location": "eastus",
+            "tags": {
+              "Creator": "Automatically added by NRMS Azure Policy",
+              "NRMS-Info": "http://aka.ms/nrms",
+              "NRMS-Version": "2019-03-20"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-5pqdgwdicsucg7sxfh4delzq5namxut3itefagilopwowhjpjbgqgeb35zvwdoywsdzuxmbkknf/providers/Microsoft.Network/networkSecurityGroups/NRMS-b5x3hyw24qlr2rmvirtualnetworkname",
+            "name": "NRMS-b5x3hyw24qlr2rmvirtualnetworkname",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "location": "eastus",
+            "tags": {
+              "Creator": "Automatically added by NRMS Azure Policy",
+              "NRMS-Info": "http://aka.ms/nrms",
+              "NRMS-Version": "2019-03-20"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-5pqdgwdicsucg7sxfh4delzq5namxut3itefagilopwowhjpjbgqgeb35zvwdoywsdzuxmbkknf/providers/Microsoft.Network/networkSecurityGroups/NRMS-wc3eflkc7vygqvirtualnetworkname-subnetname",
+            "name": "NRMS-wc3eflkc7vygqvirtualnetworkname-subnetname",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "location": "eastus",
+            "tags": {
+              "Creator": "Automatically added by NRMS Azure Policy",
+              "NRMS-Info": "http://aka.ms/nrms",
+              "NRMS-Version": "2019-03-20"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-5pqdgwdicsucg7sxfh4delzq5namxut3itefagilopwowhjpjbgqgeb35zvwdoywsdzuxmbkknf/providers/Microsoft.Network/connections/connectionname",
+            "name": "connectionname",
+            "type": "Microsoft.Network/connections",
+            "location": "eastus"
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-wzre6wqmchfclvdsvmmz6nv66hmeisbbx2oyjas35j5acvk3yhnj3czy6flhmhpxvbg4biuwbbm/providers/Microsoft.Network/publicIPAddresses/publicipname",
+            "name": "publicipname",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "sku": {
+              "name": "Basic"
+            },
+            "location": "eastus"
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-wzre6wqmchfclvdsvmmz6nv66hmeisbbx2oyjas35j5acvk3yhnj3czy6flhmhpxvbg4biuwbbm/providers/Microsoft.Network/virtualNetworks/rmvirtualnetworkname",
+            "name": "rmvirtualnetworkname",
+            "type": "Microsoft.Network/virtualNetworks",
+            "location": "eastus"
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-wzre6wqmchfclvdsvmmz6nv66hmeisbbx2oyjas35j5acvk3yhnj3czy6flhmhpxvbg4biuwbbm/providers/Microsoft.Network/networkSecurityGroups/NRMS-uzwz5ewzji6dovirtualnetworkname",
+            "name": "NRMS-uzwz5ewzji6dovirtualnetworkname",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "location": "eastus",
+            "tags": {
+              "Creator": "Automatically added by NRMS Azure Policy",
+              "NRMS-Info": "http://aka.ms/nrms",
+              "NRMS-Version": "2019-03-20"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-wzre6wqmchfclvdsvmmz6nv66hmeisbbx2oyjas35j5acvk3yhnj3czy6flhmhpxvbg4biuwbbm/providers/Microsoft.Network/networkSecurityGroups/NRMS-rvzpt55cdylomvirtualnetworkname-subnetname",
+            "name": "NRMS-rvzpt55cdylomvirtualnetworkname-subnetname",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "location": "eastus",
+            "tags": {
+              "Creator": "Automatically added by NRMS Azure Policy",
+              "NRMS-Info": "http://aka.ms/nrms",
+              "NRMS-Version": "2019-03-20"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-wzre6wqmchfclvdsvmmz6nv66hmeisbbx2oyjas35j5acvk3yhnj3czy6flhmhpxvbg4biuwbbm/providers/Microsoft.Network/networkSecurityGroups/NRMS-nisgcsdkdjdg4rmvirtualnetworkname",
+            "name": "NRMS-nisgcsdkdjdg4rmvirtualnetworkname",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "location": "eastus",
+            "tags": {
+              "Creator": "Automatically added by NRMS Azure Policy",
+              "NRMS-Info": "http://aka.ms/nrms",
+              "NRMS-Version": "2019-03-20"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-4nnsyhv3odq2b4qbrd5tdyf5i55qaupcb4jpgccec3yd7ahzalhwf3p3626to6qocoztdkydmmu/providers/Microsoft.Network/virtualNetworks/virtualnetwork",
+            "name": "virtualnetwork",
+            "type": "Microsoft.Network/virtualNetworks",
+            "location": "eastus"
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-4nnsyhv3odq2b4qbrd5tdyf5i55qaupcb4jpgccec3yd7ahzalhwf3p3626to6qocoztdkydmmu/providers/Microsoft.Network/loadBalancers/loadbalancer",
+            "name": "loadbalancer",
+            "type": "Microsoft.Network/loadBalancers",
+            "sku": {
+              "name": "Standard"
+            },
+            "location": "eastus"
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-4nnsyhv3odq2b4qbrd5tdyf5i55qaupcb4jpgccec3yd7ahzalhwf3p3626to6qocoztdkydmmu/providers/Microsoft.Network/privateDnsZones/www.zone1.com",
+            "name": "www.zone1.com",
+            "type": "Microsoft.Network/privateDnsZones",
+            "location": "global"
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-4nnsyhv3odq2b4qbrd5tdyf5i55qaupcb4jpgccec3yd7ahzalhwf3p3626to6qocoztdkydmmu/providers/Microsoft.Network/networkSecurityGroups/NRMS-4swwqte4nibv6virtualnetwork-subnet1",
+            "name": "NRMS-4swwqte4nibv6virtualnetwork-subnet1",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "location": "eastus",
+            "tags": {
+              "Creator": "Automatically added by NRMS Azure Policy",
+              "NRMS-Info": "http://aka.ms/nrms",
+              "NRMS-Version": "2019-03-20"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-4nnsyhv3odq2b4qbrd5tdyf5i55qaupcb4jpgccec3yd7ahzalhwf3p3626to6qocoztdkydmmu/providers/Microsoft.Network/networkSecurityGroups/NRMS-jlrfjkbz2q676virtualnetwork-subnet2",
+            "name": "NRMS-jlrfjkbz2q676virtualnetwork-subnet2",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "location": "eastus",
+            "tags": {
+              "Creator": "Automatically added by NRMS Azure Policy",
+              "NRMS-Info": "http://aka.ms/nrms",
+              "NRMS-Version": "2019-03-20"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgpy-4nnsyhv3odq2b4qbrd5tdyf5i55qaupcb4jpgccec3yd7ahzalhwf3p3626to6qocoztdkydmmu/providers/Microsoft.Network/networkSecurityGroups/NRMS-twlrghvwtwlvqvirtualnetwork",
+            "name": "NRMS-twlrghvwtwlvqvirtualnetwork",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "location": "eastus",
+            "tags": {
+              "Creator": "Automatically added by NRMS Azure Policy",
+              "NRMS-Info": "http://aka.ms/nrms",
+              "NRMS-Version": "2019-03-20"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group2/providers/Microsoft.Network/virtualNetworks/sample-virtual-network",
+            "name": "sample-virtual-network",
+            "type": "Microsoft.Network/virtualNetworks",
+            "location": "eastus"
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group2/providers/Microsoft.Cache/Redis/sample-redis",
+            "name": "sample-redis",
+            "type": "Microsoft.Cache/Redis",
+            "location": "eastus",
+            "zones": [
+              "1"
+            ],
+            "tags": {}
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group2/providers/Microsoft.Network/networkSecurityGroups/NRMS-qoiljzlp7oghosample-virtual-network",
+            "name": "NRMS-qoiljzlp7oghosample-virtual-network",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "location": "eastus",
+            "tags": {
+              "Creator": "Automatically added by NRMS Azure Policy",
+              "NRMS-Info": "http://aka.ms/nrms",
+              "NRMS-Version": "2019-03-20"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group2/providers/Microsoft.Network/networkSecurityGroups/NRMS-6qhaj4rq6ti2ssample-virtual-network-sample-subnet",
+            "name": "NRMS-6qhaj4rq6ti2ssample-virtual-network-sample-subnet",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "location": "eastus",
+            "tags": {
+              "Creator": "Automatically added by NRMS Azure Policy",
+              "NRMS-Info": "http://aka.ms/nrms",
+              "NRMS-Version": "2019-03-20"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/DefaultResourceGroup-EUS/providers/Microsoft.OperationalInsights/workspaces/DefaultWorkspace-92f95d8f-3c67-4124-91c7-8cf07cdbf241-EUS",
+            "name": "DefaultWorkspace-92f95d8f-3c67-4124-91c7-8cf07cdbf241-EUS",
+            "type": "Microsoft.OperationalInsights/workspaces",
+            "location": "eastus"
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/DefaultResourceGroup-EUS/providers/Microsoft.OperationsManagement/solutions/ContainerInsights(DefaultWorkspace-92f95d8f-3c67-4124-91c7-8cf07cdbf241-EUS)",
+            "name": "ContainerInsights(DefaultWorkspace-92f95d8f-3c67-4124-91c7-8cf07cdbf241-EUS)",
+            "type": "Microsoft.OperationsManagement/solutions",
+            "location": "eastus",
+            "plan": {
+              "name": "ContainerInsights(DefaultWorkspace-92f95d8f-3c67-4124-91c7-8cf07cdbf241-EUS)",
+              "promotionCode": "",
+              "product": "OMSGallery/ContainerInsights",
+              "publisher": "Microsoft"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/defaultresourcegroup-eus/providers/Microsoft.OperationsManagement/solutions/SecurityCenterFree(DefaultWorkspace-92f95d8f-3c67-4124-91c7-8cf07cdbf241-EUS)",
+            "name": "SecurityCenterFree(DefaultWorkspace-92f95d8f-3c67-4124-91c7-8cf07cdbf241-EUS)",
+            "type": "Microsoft.OperationsManagement/solutions",
+            "location": "eastus",
+            "plan": {
+              "name": "SecurityCenterFree(DefaultWorkspace-92f95d8f-3c67-4124-91c7-8cf07cdbf241-EUS)",
+              "promotionCode": "",
+              "product": "OMSGallery/SecurityCenterFree",
+              "publisher": "Microsoft"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/defaultresourcegroup-eus/providers/Microsoft.OperationsManagement/solutions/Security(DefaultWorkspace-92f95d8f-3c67-4124-91c7-8cf07cdbf241-EUS)",
+            "name": "Security(DefaultWorkspace-92f95d8f-3c67-4124-91c7-8cf07cdbf241-EUS)",
+            "type": "Microsoft.OperationsManagement/solutions",
+            "location": "eastus",
+            "plan": {
+              "name": "Security(DefaultWorkspace-92f95d8f-3c67-4124-91c7-8cf07cdbf241-EUS)",
+              "promotionCode": "",
+              "product": "OMSGallery/Security",
+              "publisher": "Microsoft"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/defaultresourcegroup-eus/providers/Microsoft.OperationsManagement/solutions/SQLAdvancedThreatProtection(DefaultWorkspace-92f95d8f-3c67-4124-91c7-8cf07cdbf241-EUS)",
+            "name": "SQLAdvancedThreatProtection(DefaultWorkspace-92f95d8f-3c67-4124-91c7-8cf07cdbf241-EUS)",
+            "type": "Microsoft.OperationsManagement/solutions",
+            "location": "eastus",
+            "plan": {
+              "name": "SQLAdvancedThreatProtection(DefaultWorkspace-92f95d8f-3c67-4124-91c7-8cf07cdbf241-EUS)",
+              "promotionCode": "",
+              "product": "OMSGallery/SQLAdvancedThreatProtection",
+              "publisher": "Microsoft"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/defaultresourcegroup-eus/providers/Microsoft.OperationsManagement/solutions/SQLVulnerabilityAssessment(DefaultWorkspace-92f95d8f-3c67-4124-91c7-8cf07cdbf241-EUS)",
+            "name": "SQLVulnerabilityAssessment(DefaultWorkspace-92f95d8f-3c67-4124-91c7-8cf07cdbf241-EUS)",
+            "type": "Microsoft.OperationsManagement/solutions",
+            "location": "eastus",
+            "plan": {
+              "name": "SQLVulnerabilityAssessment(DefaultWorkspace-92f95d8f-3c67-4124-91c7-8cf07cdbf241-EUS)",
+              "promotionCode": "",
+              "product": "OMSGallery/SQLVulnerabilityAssessment",
+              "publisher": "Microsoft"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/managed-rg-jsteste2e/providers/Microsoft.Storage/storageAccounts/scanwestus2vcoqsdg",
+            "name": "scanwestus2vcoqsdg",
+            "type": "Microsoft.Storage/storageAccounts",
+            "sku": {
+              "name": "Standard_LRS",
+              "tier": "Standard"
+            },
+            "kind": "StorageV2",
+            "location": "westus2",
+            "tags": {}
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/managed-rg-jsteste2e/providers/Microsoft.EventHub/namespaces/Atlas-50046ffe-98f6-4c7b-b071-21e9774c3cb0",
+            "name": "Atlas-50046ffe-98f6-4c7b-b071-21e9774c3cb0",
+            "type": "Microsoft.EventHub/namespaces",
+            "sku": {
+              "name": "Standard",
+              "tier": "Standard",
+              "capacity": 1
+            },
+            "location": "westus2",
+            "tags": {}
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group3/providers/Microsoft.Web/serverFarms/sample-web-plan",
+            "name": "sample-web-plan",
+            "type": "Microsoft.Web/serverFarms",
+            "sku": {
+              "name": "P1v2",
+              "tier": "PremiumV2",
+              "size": "P1v2",
+              "family": "Pv2",
+              "capacity": 1
+            },
+            "kind": "app",
+            "location": "westus"
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group/providers/Microsoft.Web/serverFarms/sample-web-plan",
+            "name": "sample-web-plan",
+            "type": "Microsoft.Web/serverFarms",
+            "sku": {
+              "name": "S1",
+              "tier": "Standard",
+              "size": "S1",
+              "family": "S",
+              "capacity": 1
+            },
+            "kind": "app",
+            "location": "westus"
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG-createByID2655937903/providers/Microsoft.Compute/availabilitySets/rs2655937903",
+            "name": "rs2655937903",
+            "type": "Microsoft.Compute/availabilitySets",
+            "sku": {
+              "name": "Classic"
+            },
+            "location": "westus"
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG-list2349988758/providers/Microsoft.Compute/availabilitySets/rs2349988758",
+            "name": "rs2349988758",
+            "type": "Microsoft.Compute/availabilitySets",
+            "sku": {
+              "name": "Classic"
+            },
+            "location": "westus"
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qiaozhatest/providers/Microsoft.Devices/IotHubs/myiothubxxxxyyyjjxx",
+            "name": "myiothubxxxxyyyjjxx",
+            "type": "Microsoft.Devices/IotHubs",
+            "sku": {
+              "name": "S1",
+              "tier": "Standard",
+              "capacity": 1
+            },
+            "location": "eastus",
+            "identity": {
+              "type": "None"
+            },
+            "tags": {
+              "key": "value1"
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sdk-net-test-qa2/providers/Microsoft.Network/virtualNetworks/sdknettestqa2vnet464",
+            "name": "sdknettestqa2vnet464",
+            "type": "Microsoft.Network/virtualNetworks",
+            "location": "eastus",
+            "tags": {}
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sdk-net-test-qa2/providers/Microsoft.Network/networkInterfaces/anf-sdknettestqa2vnet464-nic-2JBDNX",
+            "name": "anf-sdknettestqa2vnet464-nic-2JBDNX",
+            "type": "Microsoft.Network/networkInterfaces",
+            "location": "eastus"
+          }
+        ]
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/testRG-list2349988758?api-version=2021-04-01",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "DELETE",
+        ":path": "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/testRG-list2349988758?api-version=2021-04-01",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armresources/v0.2.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "0",
+        "Date": "Mon, 08 Nov 2021 07:12:42 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1URVNUUkc6MkRMSVNUMjM0OTk4ODc1OC1XRVNUVVMiLCJqb2JMb2NhdGlvbiI6Indlc3R1cyJ9?api-version=2021-04-01",
+        "Pragma": "no-cache",
+        "Retry-After": "15",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "2b66919c-88b6-449a-9077-b4bab141a304",
+        "x-ms-ratelimit-remaining-subscription-deletes": "14991",
+        "x-ms-request-id": "2b66919c-88b6-449a-9077-b4bab141a304",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20211108T071243Z:2b66919c-88b6-449a-9077-b4bab141a304"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {}
+}

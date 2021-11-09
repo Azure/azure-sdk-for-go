@@ -15,6 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/armmanagementgroups"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/stretchr/testify/require"
 	"hash/fnv"
@@ -132,5 +133,10 @@ func createResourceGroup(t *testing.T,cred azcore.TokenCredential,option *arm.Cl
 
 func cleanup(t *testing.T, client *armresources.ResourceGroupsClient, resourceGroupName string) {
 	_, err := client.BeginDelete(context.Background(), resourceGroupName, nil)
+	require.NoError(t, err)
+}
+
+func cleanupManagement(t *testing.T, client *armmanagementgroups.ManagementGroupsClient, groupName string) {
+	_, err := client.BeginDelete(context.Background(), groupName, nil)
 	require.NoError(t, err)
 }

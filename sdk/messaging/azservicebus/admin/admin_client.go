@@ -61,7 +61,7 @@ type GetNamespacePropertiesResult struct {
 
 type GetNamespacePropertiesResponse struct {
 	GetNamespacePropertiesResult
-	RawResult *http.Response
+	RawResponse *http.Response
 }
 
 type GetNamespacePropertiesOptions struct {
@@ -78,7 +78,7 @@ func (ac *Client) GetNamespaceProperties(ctx context.Context, options *GetNamesp
 	}
 
 	return &GetNamespacePropertiesResponse{
-		RawResult: resp,
+		RawResponse: resp,
 		GetNamespacePropertiesResult: GetNamespacePropertiesResult{
 			NamespaceProperties: NamespaceProperties{
 				Name:           body.NamespaceInfo.Name,

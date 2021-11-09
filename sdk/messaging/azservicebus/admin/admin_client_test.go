@@ -51,6 +51,7 @@ func TestAdminClient_GetNamespaceProperties(t *testing.T) {
 	resp, err := adminClient.GetNamespaceProperties(context.Background(), nil)
 	require.NoError(t, err)
 	require.NotNil(t, resp)
+	require.NotNil(t, resp.RawResponse)
 
 	require.True(t, resp.SKU == "Standard" || resp.SKU == "Premium" || resp.SKU == "Basic")
 

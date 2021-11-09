@@ -5,6 +5,7 @@ $LanguageDisplayName = "go"
 # get version from specific files (*constants.go, *version.go)
 function Get-GoModuleVersionInfo($modPath)
 {
+  $NO_PREFIX_VERSION_LINE_REGEX = ".+\s*=\s*`"(?<bad_version>$([AzureEngSemanticVersion]::SEMVER_REGEX))`""
   $VERSION_LINE_REGEX = ".+\s*=\s*`".*v(?<version>$([AzureEngSemanticVersion]::SEMVER_REGEX))`""
 
   $versionFiles = Get-ChildItem -Recurse -Path $modPath -Filter *.go
@@ -17,9 +18,15 @@ function Get-GoModuleVersionInfo($modPath)
       continue
     }
     $content = Get-Content $versionFile -Raw
+
     # finding where the version number are
     if ($content -match $VERSION_LINE_REGEX) {
         return "$($matches["version"])", $versionFile
+    }
+
+    # This is an easy mistake to make (X.Y.Z instead of vX.Y.Z) so add a very clear error log to make debugging easier
+    if ($content -match $NO_PREFIX_VERSION_LINE_REGEX) {
+        LogError "Version in $versionFile should be 'v$($matches["bad_version"])' not '$($matches["bad_version"])'"
     }
   }
 

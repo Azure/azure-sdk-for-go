@@ -10,6 +10,8 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 var fakeTenant = "00000000-0000-0000-0000-000000000000"
@@ -41,7 +43,8 @@ func TestFindScopeAndTenant(t *testing.T) {
 		"WWW-Authenticate",
 		fmt.Sprintf(authResource, fakeTenant, mhsmResource),
 	)
-	p.findScopeAndTenant(&resp)
+	err := p.findScopeAndTenant(&resp)
+	require.NoError(t, err)
 	if *p.scope != mhsmScope {
 		t.Fatalf("scope was not properly parsed, got %s, expected %s", *p.scope, mhsmScope)
 	}
@@ -53,7 +56,8 @@ func TestFindScopeAndTenant(t *testing.T) {
 		"WWW-Authenticate",
 		fmt.Sprintf(authResourceScope, fakeTenant, resource, scope),
 	)
-	p.findScopeAndTenant(&resp)
+	err = p.findScopeAndTenant(&resp)
+	require.NoError(t, err)
 	if *p.scope != scope {
 		t.Fatalf("scope was not properly parsed, got %s, expected %s", *p.scope, scope)
 	}
@@ -65,7 +69,8 @@ func TestFindScopeAndTenant(t *testing.T) {
 		"WWW-Authenticate",
 		fmt.Sprintf(authScope, fakeTenant, scope),
 	)
-	p.findScopeAndTenant(&resp)
+	err = p.findScopeAndTenant(&resp)
+	require.NoError(t, err)
 	if *p.scope != scope {
 		t.Fatalf("scope was not properly parsed, got %s, expected %s", *p.scope, scope)
 	}
@@ -77,7 +82,8 @@ func TestFindScopeAndTenant(t *testing.T) {
 		"WWW-Authenticate",
 		fmt.Sprintf(resourceScopeAuth, mhsmResource, mhsmScope, fakeTenant),
 	)
-	p.findScopeAndTenant(&resp)
+	err = p.findScopeAndTenant(&resp)
+	require.NoError(t, err)
 	if *p.scope != mhsmScope {
 		t.Fatalf("scope was not properly parsed, got %s, expected %s", *p.scope, "https://vault.azure.net/.default")
 	}
@@ -89,7 +95,8 @@ func TestFindScopeAndTenant(t *testing.T) {
 		"WWW-Authenticate",
 		"Bearer authorization=\"https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000\", unimportantkey=\"unimportantvalue\" resource=\"https://vault.azure.net/.default\"",
 	)
-	p.findScopeAndTenant(&resp)
+	err = p.findScopeAndTenant(&resp)
+	require.NoError(t, err)
 	if *p.scope != scope {
 		t.Fatalf("scope was not properly parsed, got %s, expected %s", *p.scope, scope)
 	}
@@ -101,7 +108,8 @@ func TestFindScopeAndTenant(t *testing.T) {
 		"WWW-Authenticate",
 		"Bearer   authorization=\"https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000\",    unimportantkey=\"unimportantvalue\"   resource=\"https://vault.azure.net/.default\"    fakekey=\"fakevalue\"			",
 	)
-	p.findScopeAndTenant(&resp)
+	err = p.findScopeAndTenant(&resp)
+	require.NoError(t, err)
 	if *p.scope != "https://vault.azure.net/.default" {
 		t.Fatalf("scope was not properly parsed, got %s, expected %s", *p.scope, "https://vault.azure.net/.default")
 	}

@@ -3,7 +3,7 @@
 ## 0.2.1 (Unreleased)
 
 ### Features Added
-* Uses a challenge authentication policy
+* Clients can now connect to Key Vaults in any cloud
 
 ### Breaking Changes
 

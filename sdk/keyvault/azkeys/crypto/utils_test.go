@@ -4,7 +4,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package azcrypto
+package crypto
 
 import (
 	"context"
@@ -23,7 +23,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-var pathToPackage = "sdk/keyvault/azkeys/azcrypto/testdata"
+var pathToPackage = "sdk/keyvault/azkeys/crypto/testdata"
 
 const fakeKvURL = "https://fakekvurl.vault.azure.net/"
 

@@ -344,13 +344,13 @@ enables cryptographic operations (encrypt/decrypt, wrap/unwrap, sign/verify) usi
 
 ```go
 import (
-    "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/azcrypto"
+    "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/crypto"
     "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
 credential, err := azidentity.NewDefaultAzureCredential(nil)
 
-client, err = azcrypto.NewClient("https://my-key-vault.vault.azure.net/keys/<my-key>", credential, nil)
+client, err = crypto.NewClient("https://my-key-vault.vault.azure.net/keys/<my-key>", credential, nil)
 
 encryptResponse, err := cryptoClient.Encrypt(ctx, AlgorithmRSAOAEP, []byte("plaintext"), nil)
 ```

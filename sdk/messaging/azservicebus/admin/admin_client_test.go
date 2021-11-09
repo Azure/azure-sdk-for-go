@@ -951,7 +951,7 @@ func TestAdminClient_getSubscriptionPager(t *testing.T) {
 	require.NotNil(t, feed)
 
 	require.EqualValues(t, []string{
-		"topicName/Subscriptions?&$top=101",
+		"/topicName/Subscriptions?&$top=101",
 	}, em.getPaths)
 
 	feed, resp, err = pager(context.Background())
@@ -960,8 +960,8 @@ func TestAdminClient_getSubscriptionPager(t *testing.T) {
 	require.NotNil(t, feed)
 
 	require.EqualValues(t, []string{
-		"topicName/Subscriptions?&$top=101",
-		"topicName/Subscriptions?&$top=101&$skip=3",
+		"/topicName/Subscriptions?&$top=101",
+		"/topicName/Subscriptions?&$top=101&$skip=3",
 	}, em.getPaths)
 
 	feed, resp, err = pager(context.Background())
@@ -970,9 +970,9 @@ func TestAdminClient_getSubscriptionPager(t *testing.T) {
 	require.NotNil(t, feed)
 
 	require.EqualValues(t, []string{
-		"topicName/Subscriptions?&$top=101",
-		"topicName/Subscriptions?&$top=101&$skip=3",
-		"topicName/Subscriptions?&$top=101&$skip=6",
+		"/topicName/Subscriptions?&$top=101",
+		"/topicName/Subscriptions?&$top=101&$skip=3",
+		"/topicName/Subscriptions?&$top=101&$skip=6",
 	}, em.getPaths)
 }
 

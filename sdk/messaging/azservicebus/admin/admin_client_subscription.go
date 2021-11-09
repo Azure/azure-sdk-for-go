@@ -539,7 +539,7 @@ type subscriptionFeedPagerFunc func(ctx context.Context) (*atom.SubscriptionFeed
 
 func (ac *Client) getSubscriptionPager(topicName string, maxPageSize int32, skip int) subscriptionFeedPagerFunc {
 	return func(ctx context.Context) (*atom.SubscriptionFeed, *http.Response, error) {
-		url := fmt.Sprintf("%s/Subscriptions?", topicName)
+		url := fmt.Sprintf("/%s/Subscriptions?", topicName)
 		if maxPageSize > 0 {
 			url += fmt.Sprintf("&$top=%d", maxPageSize)
 		}

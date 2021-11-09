@@ -65,12 +65,12 @@ an Azure AD access token. See [Credential Types](#credential-types "Credential T
 `DefaultAzureCredential` and `ManagedIdentityCredential` support
 [managed identity authentication](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview)
 in any hosting environment which supports managed identities, such as (this list is not exhaustive):
-* [Azure Virtual Machines](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/how-to-use-vm-token)
-* [Azure App Service](https://docs.microsoft.com/azure/app-service/overview-managed-identity?tabs=dotnet)
-* [Azure Kubernetes Service](https://docs.microsoft.com/azure/aks/use-managed-identity)
-* [Azure Cloud Shell](https://docs.microsoft.com/azure/cloud-shell/msi-authorization)
+* [Azure App Service](https://docs.microsoft.com/azure/app-service/overview-managed-identity)
 * [Azure Arc](https://docs.microsoft.com/azure/azure-arc/servers/managed-identity-authentication)
+* [Azure Cloud Shell](https://docs.microsoft.com/azure/cloud-shell/msi-authorization)
+* [Azure Kubernetes Service](https://docs.microsoft.com/azure/aks/use-managed-identity)
 * [Azure Service Fabric](https://docs.microsoft.com/azure/service-fabric/concepts-managed-identity)
+* [Azure Virtual Machines](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/how-to-use-vm-token)
 
 ## Examples
 

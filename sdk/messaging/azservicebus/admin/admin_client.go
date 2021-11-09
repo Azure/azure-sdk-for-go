@@ -24,7 +24,7 @@ type ClientOptions struct {
 	// for future expansion
 }
 
-// NewClientFromConnectionString creates an Client authenticating using a connection string.
+// NewClientFromConnectionString creates a Client authenticating using a connection string.
 func NewClientFromConnectionString(connectionString string, options *ClientOptions) (*Client, error) {
 	em, err := atom.NewEntityManagerWithConnectionString(connectionString, internal.Version)
 
@@ -35,7 +35,7 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 	return &Client{em: em}, nil
 }
 
-// NewClient creates an Client authenticating using a TokenCredential.
+// NewClient creates a Client authenticating using a TokenCredential.
 func NewClient(fullyQualifiedNamespace string, tokenCredential azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	em, err := atom.NewEntityManager(fullyQualifiedNamespace, tokenCredential, internal.Version)
 

@@ -110,7 +110,6 @@ func (mb *MessageBatch) addAMQPMessage(msg *amqp.Message) error {
 func createBatchEnvelope(am *amqp.Message) *amqp.Message {
 	newAMQPMessage := *am
 
-	// TODO: we appear to be missing the .Sequence section
 	newAMQPMessage.Data = nil
 	newAMQPMessage.Value = nil
 

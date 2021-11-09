@@ -3,6 +3,7 @@
 ## 0.2.1 (Unreleased)
 
 ### Features Added
+* Uses a challenge authentication policy
 
 ### Breaking Changes
 

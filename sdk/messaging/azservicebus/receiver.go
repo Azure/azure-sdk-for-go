@@ -368,20 +368,22 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 
 // drainLink initiates a drainLink on the link. Service Bus will send whatever messages it might have still had and
 // set our link credit to 0.
-func (r *Receiver) drainLink(ctx context.Context, receiver internal.AMQPReceiver, messages []*ReceivedMessage) ([]*ReceivedMessage, error) {
+// ctxForLoggingOnly is literally only used for when we need to extract context for logging. This function will always attempt
+// to complete, ignoring cancellation, otherwise we can leave the link with messages that haven't been returned to the user.
+func (r *Receiver) drainLink(ctxForLoggingOnly context.Context, receiver internal.AMQPReceiver, messages []*ReceivedMessage) ([]*ReceivedMessage, error) {
 	// start the drain asynchronously. Note that we ignore the user's context at this point
 	// since draining makes sure we don't get messages when nobody is receiving.
 	if err := receiver.DrainCredit(context.Background()); err != nil {
-		tab.For(ctx).Debug(fmt.Sprintf("Draining of credit failed. link will be closed and will re-open on next receive: %s", err.Error()))
+		tab.For(ctxForLoggingOnly).Debug(fmt.Sprintf("Draining of credit failed. link will be closed and will re-open on next receive: %s", err.Error()))
 
 		// if the drain fails we just close the link so it'll re-open at the next receive.
 		if err := r.amqpLinks.Close(context.Background(), false); err != nil {
-			tab.For(ctx).Debug(fmt.Sprintf("Failed to close links on ReceiveMessages cleanup. Not fatal: %s", err.Error()))
+			tab.For(ctxForLoggingOnly).Debug(fmt.Sprintf("Failed to close links on ReceiveMessages cleanup. Not fatal: %s", err.Error()))
 		}
 	}
 
-	// Receive until the drain completes, at which point it'll cancel
-	// our context.
+	// Draining data from the receiver's prefetched queue. This won't wait for new messages to
+	// arrive, so it'll only receive messages that arrived prior to the drain.
 	for {
 		am, err := receiver.Prefetched(context.Background())
 
@@ -400,7 +402,7 @@ func (r *Receiver) drainLink(ctx context.Context, receiver internal.AMQPReceiver
 			}
 		}
 
-		messages = append(messages, newReceivedMessage(ctx, am))
+		messages = append(messages, newReceivedMessage(ctxForLoggingOnly, am))
 	}
 
 	return messages, nil

@@ -483,7 +483,7 @@ func (p *queueRuntimePropertiesPager) Err() error {
 
 type queueFeedPagerFunc func(ctx context.Context) (*atom.QueueFeed, *http.Response, error)
 
-func (ac *Client) getQueuePager(maxPageSize int32, skip int) queueFeedPagerFunc {
+func (ac *Client) getQueuePager(maxPageSize int32, skip int32) queueFeedPagerFunc {
 	return func(ctx context.Context) (*atom.QueueFeed, *http.Response, error) {
 		url := "/$Resources/Queues?"
 		if maxPageSize > 0 {
@@ -505,7 +505,7 @@ func (ac *Client) getQueuePager(maxPageSize int32, skip int) queueFeedPagerFunc 
 			return nil, nil, nil
 		}
 
-		skip += len(atomResp.Entries)
+		skip += maxPageSize
 		return atomResp, resp, nil
 	}
 }

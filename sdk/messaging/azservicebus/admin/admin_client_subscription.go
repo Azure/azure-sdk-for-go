@@ -537,7 +537,7 @@ func (p *subscriptionRuntimePropertiesPager) getNextPage(ctx context.Context) (*
 
 type subscriptionFeedPagerFunc func(ctx context.Context) (*atom.SubscriptionFeed, *http.Response, error)
 
-func (ac *Client) getSubscriptionPager(topicName string, maxPageSize int32, skip int) subscriptionFeedPagerFunc {
+func (ac *Client) getSubscriptionPager(topicName string, maxPageSize int32, skip int32) subscriptionFeedPagerFunc {
 	return func(ctx context.Context) (*atom.SubscriptionFeed, *http.Response, error) {
 		url := fmt.Sprintf("/%s/Subscriptions?", topicName)
 		if maxPageSize > 0 {
@@ -555,7 +555,7 @@ func (ac *Client) getSubscriptionPager(topicName string, maxPageSize int32, skip
 			return nil, nil, err
 		}
 
-		skip += len(atomResp.Entries)
+		skip += maxPageSize
 		return atomResp, resp, nil
 	}
 }

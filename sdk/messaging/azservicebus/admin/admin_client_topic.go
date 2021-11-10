@@ -339,7 +339,7 @@ func (ac *Client) getTopicPager(maxPageSize int32, skip int32) topicFeedPagerFun
 			return nil, nil, nil
 		}
 
-		skip += int32(len(atomResp.Entries))
+		skip += maxPageSize
 		return atomResp, resp, nil
 	}
 }

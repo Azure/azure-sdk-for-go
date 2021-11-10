@@ -823,25 +823,9 @@ func (em *entityManagerForPagerTests) Get(ctx context.Context, entityPath string
 	em.getPaths = append(em.getPaths, entityPath)
 
 	switch feedPtrPtr := respObj.(type) {
-	case **atom.QueueFeed:
-		*feedPtrPtr = &atom.QueueFeed{
-			Entries: []atom.QueueEnvelope{
-				{},
-				{},
-				{},
-			},
-		}
 	case **atom.TopicFeed:
 		*feedPtrPtr = &atom.TopicFeed{
 			Entries: []atom.TopicEnvelope{
-				{},
-				{},
-				{},
-			},
-		}
-	case **atom.SubscriptionFeed:
-		*feedPtrPtr = &atom.SubscriptionFeed{
-			Entries: []atom.SubscriptionEnvelope{
 				{},
 				{},
 				{},
@@ -854,58 +838,23 @@ func (em *entityManagerForPagerTests) Get(ctx context.Context, entityPath string
 	return &http.Response{}, nil
 }
 
-func TestAdminClient_getQueuePager(t *testing.T) {
+func TestAdminClient_pagerWithLightPage(t *testing.T) {
 	adminClient, err := NewClientFromConnectionString("Endpoint=sb://fakeendpoint.something/;SharedAccessKeyName=fakekeyname;SharedAccessKey=CHANGEME", nil)
 	require.NoError(t, err)
 
 	em := &entityManagerForPagerTests{}
 	adminClient.em = em
 
-	pager := adminClient.getQueuePager(10, 0)
-	require.Empty(t, em.getPaths)
+	pager := adminClient.newPagerFunc("/$Resources/Topics", 10, func(pv interface{}) int {
+		// note that we're returning fewer results than the max page size
+		// in ATOM < max page size means this is the last page of results.
+		return 3
+	})
 
-	feed, resp, err := pager(context.Background())
-	require.NoError(t, err)
-	require.NotNil(t, resp)
-	require.NotNil(t, feed)
+	var feed *atom.TopicFeed
+	resp, err := pager(context.Background(), &feed)
 
-	require.EqualValues(t, []string{
-		"/$Resources/Queues?&$top=10",
-	}, em.getPaths)
-
-	feed, resp, err = pager(context.Background())
-	require.NoError(t, err)
-	require.NotNil(t, resp)
-	require.NotNil(t, feed)
-
-	require.EqualValues(t, []string{
-		"/$Resources/Queues?&$top=10",
-		"/$Resources/Queues?&$top=10&$skip=10",
-	}, em.getPaths)
-
-	feed, resp, err = pager(context.Background())
-	require.NoError(t, err)
-	require.NotNil(t, resp)
-	require.NotNil(t, feed)
-
-	require.EqualValues(t, []string{
-		"/$Resources/Queues?&$top=10",
-		"/$Resources/Queues?&$top=10&$skip=10",
-		"/$Resources/Queues?&$top=10&$skip=20",
-	}, em.getPaths)
-}
-
-func TestAdminClient_getTopicPager(t *testing.T) {
-	adminClient, err := NewClientFromConnectionString("Endpoint=sb://fakeendpoint.something/;SharedAccessKeyName=fakekeyname;SharedAccessKey=CHANGEME", nil)
-	require.NoError(t, err)
-
-	em := &entityManagerForPagerTests{}
-	adminClient.em = em
-
-	pager := adminClient.getTopicPager(10, 0)
-	require.Empty(t, em.getPaths)
-
-	feed, resp, err := pager(context.Background())
+	// first page should be good
 	require.NoError(t, err)
 	require.NotNil(t, resp)
 	require.NotNil(t, feed)
@@ -914,7 +863,54 @@ func TestAdminClient_getTopicPager(t *testing.T) {
 		"/$Resources/Topics?&$top=10",
 	}, em.getPaths)
 
-	feed, resp, err = pager(context.Background())
+	// but from this point on it's considered EOF since the
+	// previous page of results was "light"
+	feed = nil
+
+	resp, err = pager(context.Background(), &feed)
+	require.Nil(t, resp)
+	require.Nil(t, err)
+	require.Nil(t, feed)
+
+	// no new calls will be made to the service
+	require.EqualValues(t, []string{
+		"/$Resources/Topics?&$top=10",
+	}, em.getPaths)
+}
+
+func TestAdminClient_pagerWithFullPage(t *testing.T) {
+	adminClient, err := NewClientFromConnectionString("Endpoint=sb://fakeendpoint.something/;SharedAccessKeyName=fakekeyname;SharedAccessKey=CHANGEME", nil)
+	require.NoError(t, err)
+
+	em := &entityManagerForPagerTests{}
+	adminClient.em = em
+
+	// first request - got 10 results back, not EOF
+	simulatedPageSize := 10
+
+	pager := adminClient.newPagerFunc("/$Resources/Topics", 10, func(pv interface{}) int {
+		return simulatedPageSize
+	})
+
+	var feed *atom.TopicFeed
+	simulatedPageSize = 10 // pretend the first page was full
+	resp, err := pager(context.Background(), &feed)
+
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+	require.NotNil(t, feed)
+
+	require.EqualValues(t, []string{
+		"/$Resources/Topics?&$top=10",
+	}, em.getPaths)
+
+	// grabbing the next page now, we'll also get 10 results back (still not EOF)
+	simulatedPageSize = 10
+	feed = nil
+
+	simulatedPageSize = 10 // pretend the first page was full
+	resp, err = pager(context.Background(), &feed)
+
 	require.NoError(t, err)
 	require.NotNil(t, resp)
 	require.NotNil(t, feed)
@@ -924,56 +920,36 @@ func TestAdminClient_getTopicPager(t *testing.T) {
 		"/$Resources/Topics?&$top=10&$skip=10",
 	}, em.getPaths)
 
-	feed, resp, err = pager(context.Background())
-	require.NoError(t, err)
-	require.NotNil(t, resp)
-	require.NotNil(t, feed)
+	// we'll return zero results for this next request, which should stop this pager.
+	simulatedPageSize = 0
+	feed = nil
 
+	// nil, nil across the board indicates there wasn't an error, but we're
+	// definitely done _now_, rather than having to check with another request.
+	resp, err = pager(context.Background(), &feed)
+	require.Nil(t, resp)
+	require.Nil(t, err)
+
+	// no new calls will be made to the service
 	require.EqualValues(t, []string{
 		"/$Resources/Topics?&$top=10",
 		"/$Resources/Topics?&$top=10&$skip=10",
 		"/$Resources/Topics?&$top=10&$skip=20",
 	}, em.getPaths)
-}
 
-func TestAdminClient_getSubscriptionPager(t *testing.T) {
-	adminClient, err := NewClientFromConnectionString("Endpoint=sb://fakeendpoint.something/;SharedAccessKeyName=fakekeyname;SharedAccessKey=CHANGEME", nil)
-	require.NoError(t, err)
+	// no more requests will be made, the pager is shut down after EOF.
+	simulatedPageSize = 10
+	feed = nil
 
-	em := &entityManagerForPagerTests{}
-	adminClient.em = em
+	resp, err = pager(context.Background(), &feed)
+	require.Nil(t, resp)
+	require.Nil(t, err)
 
-	pager := adminClient.getSubscriptionPager("topicName", 10, 0)
-	require.Empty(t, em.getPaths)
-
-	feed, resp, err := pager(context.Background())
-	require.NoError(t, err)
-	require.NotNil(t, resp)
-	require.NotNil(t, feed)
-
+	// no new calls will be made to the service
 	require.EqualValues(t, []string{
-		"/topicName/Subscriptions?&$top=10",
-	}, em.getPaths)
-
-	feed, resp, err = pager(context.Background())
-	require.NoError(t, err)
-	require.NotNil(t, resp)
-	require.NotNil(t, feed)
-
-	require.EqualValues(t, []string{
-		"/topicName/Subscriptions?&$top=10",
-		"/topicName/Subscriptions?&$top=10&$skip=10",
-	}, em.getPaths)
-
-	feed, resp, err = pager(context.Background())
-	require.NoError(t, err)
-	require.NotNil(t, resp)
-	require.NotNil(t, feed)
-
-	require.EqualValues(t, []string{
-		"/topicName/Subscriptions?&$top=10",
-		"/topicName/Subscriptions?&$top=10&$skip=10",
-		"/topicName/Subscriptions?&$top=10&$skip=20",
+		"/$Resources/Topics?&$top=10",
+		"/$Resources/Topics?&$top=10&$skip=10",
+		"/$Resources/Topics?&$top=10&$skip=20",
 	}, em.getPaths)
 }
 

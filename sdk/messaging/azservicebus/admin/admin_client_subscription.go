@@ -230,8 +230,13 @@ func (ac *Client) ListSubscriptions(topicName string, options *ListSubscriptions
 
 	return &subscriptionPropertiesPager{
 		topicName:  topicName,
-		innerPager: ac.getSubscriptionPager(topicName, pageSize, 0),
+		innerPager: ac.newPagerFunc(fmt.Sprintf("/%s/Subscriptions?", topicName), pageSize, subFeedLen),
 	}
+}
+
+func subFeedLen(v interface{}) int {
+	feed := v.(**atom.SubscriptionFeed)
+	return len((*feed).Entries)
 }
 
 // ListSubscriptionsRuntimePropertiesOptions can be used to configure the ListSubscriptionsRuntimeProperties method.
@@ -276,7 +281,7 @@ func (ac *Client) ListSubscriptionsRuntimeProperties(topicName string, options *
 	}
 
 	return &subscriptionRuntimePropertiesPager{
-		innerPager: ac.getSubscriptionPager(topicName, pageSize, 0),
+		innerPager: ac.newPagerFunc(fmt.Sprintf("/%s/Subscriptions?", topicName), pageSize, subFeedLen),
 	}
 }
 
@@ -435,7 +440,7 @@ func newSubscriptionRuntimeProperties(desc *atom.SubscriptionDescription) *Subsc
 // subscriptionPropertiesPager provides iteration over SubscriptionProperties pages.
 type subscriptionPropertiesPager struct {
 	topicName  string
-	innerPager subscriptionFeedPagerFunc
+	innerPager pagerFunc
 
 	lastErr      error
 	lastResponse *ListSubscriptionsResponse
@@ -459,9 +464,10 @@ func (p *subscriptionPropertiesPager) Err() error {
 }
 
 func (p *subscriptionPropertiesPager) getNext(ctx context.Context) (*ListSubscriptionsResponse, error) {
-	feed, resp, err := p.innerPager(ctx)
+	var feed *atom.SubscriptionFeed
+	resp, err := p.innerPager(ctx, &feed)
 
-	if err != nil || len(feed.Entries) == 0 {
+	if err != nil || feed == nil {
 		return nil, err
 	}
 
@@ -489,7 +495,7 @@ func (p *subscriptionPropertiesPager) getNext(ctx context.Context) (*ListSubscri
 // subscriptionRuntimePropertiesPager provides iteration over SubscriptionRuntimeProperties pages.
 type subscriptionRuntimePropertiesPager struct {
 	topicName  string
-	innerPager subscriptionFeedPagerFunc
+	innerPager pagerFunc
 
 	lastErr      error
 	lastResponse *ListSubscriptionsRuntimePropertiesResponse
@@ -513,9 +519,10 @@ func (p *subscriptionRuntimePropertiesPager) Err() error {
 }
 
 func (p *subscriptionRuntimePropertiesPager) getNextPage(ctx context.Context) (*ListSubscriptionsRuntimePropertiesResponse, error) {
-	feed, resp, err := p.innerPager(ctx)
+	var feed *atom.SubscriptionFeed
+	resp, err := p.innerPager(ctx, &feed)
 
-	if err != nil || len(feed.Entries) == 0 {
+	if err != nil || feed == nil {
 		return nil, err
 	}
 
@@ -533,29 +540,4 @@ func (p *subscriptionRuntimePropertiesPager) getNextPage(ctx context.Context) (*
 		RawResponse: resp,
 		Items:       all,
 	}, nil
-}
-
-type subscriptionFeedPagerFunc func(ctx context.Context) (*atom.SubscriptionFeed, *http.Response, error)
-
-func (ac *Client) getSubscriptionPager(topicName string, maxPageSize int32, skip int32) subscriptionFeedPagerFunc {
-	return func(ctx context.Context) (*atom.SubscriptionFeed, *http.Response, error) {
-		url := fmt.Sprintf("/%s/Subscriptions?", topicName)
-		if maxPageSize > 0 {
-			url += fmt.Sprintf("&$top=%d", maxPageSize)
-		}
-
-		if skip > 0 {
-			url += fmt.Sprintf("&$skip=%d", skip)
-		}
-
-		var atomResp *atom.SubscriptionFeed
-		resp, err := ac.em.Get(ctx, url, &atomResp)
-
-		if err != nil {
-			return nil, nil, err
-		}
-
-		skip += maxPageSize
-		return atomResp, resp, nil
-	}
 }

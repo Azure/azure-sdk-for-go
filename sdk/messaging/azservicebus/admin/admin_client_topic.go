@@ -5,7 +5,6 @@ package admin
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"time"
 
@@ -216,8 +215,10 @@ func (ac *Client) ListTopics(options *ListTopicsOptions) TopicPropertiesPager {
 		pageSize = options.MaxPageSize
 	}
 
+	pagerFunc := ac.newPagerFunc("/$Resources/Topics", pageSize, topicFeedLen)
+
 	return &topicPropertiesPager{
-		innerPager: ac.getTopicPager(pageSize, 0),
+		innerPager: pagerFunc,
 	}
 }
 
@@ -261,8 +262,10 @@ func (ac *Client) ListTopicsRuntimeProperties(options *ListTopicsRuntimeProperti
 		pageSize = options.MaxPageSize
 	}
 
+	pagerFunc := ac.newPagerFunc("/$Resources/Topics", pageSize, topicFeedLen)
+
 	return &topicRuntimePropertiesPager{
-		innerPager: ac.getTopicPager(pageSize, 0),
+		innerPager: pagerFunc,
 	}
 }
 
@@ -315,33 +318,6 @@ func (ac *Client) DeleteTopic(ctx context.Context, topicName string, options *De
 	return &DeleteTopicResponse{
 		RawResponse: resp,
 	}, err
-}
-
-func (ac *Client) getTopicPager(maxPageSize int32, skip int32) topicFeedPagerFunc {
-	return func(ctx context.Context) (*atom.TopicFeed, *http.Response, error) {
-		url := "/$Resources/Topics?"
-		if maxPageSize > 0 {
-			url += fmt.Sprintf("&$top=%d", maxPageSize)
-		}
-
-		if skip > 0 {
-			url += fmt.Sprintf("&$skip=%d", skip)
-		}
-
-		var atomResp *atom.TopicFeed
-		resp, err := ac.em.Get(ctx, url, &atomResp)
-
-		if err != nil {
-			return nil, nil, err
-		}
-
-		if len(atomResp.Entries) == 0 {
-			return nil, nil, nil
-		}
-
-		skip += maxPageSize
-		return atomResp, resp, nil
-	}
 }
 
 func (ac *Client) createOrUpdateTopicImpl(ctx context.Context, topicName string, props *TopicProperties, creating bool) (*TopicProperties, *http.Response, error) {
@@ -443,7 +419,7 @@ func newTopicRuntimeProperties(desc *atom.TopicDescription) *TopicRuntimePropert
 
 // topicPropertiesPager provides iteration over TopicProperties pages.
 type topicPropertiesPager struct {
-	innerPager topicFeedPagerFunc
+	innerPager pagerFunc
 
 	lastErr      error
 	lastResponse *ListTopicsResponse
@@ -467,7 +443,8 @@ func (p *topicPropertiesPager) Err() error {
 }
 
 func (p *topicPropertiesPager) getNextPage(ctx context.Context) (*ListTopicsResponse, error) {
-	feed, resp, err := p.innerPager(ctx)
+	var feed *atom.TopicFeed
+	resp, err := p.innerPager(ctx, &feed)
 
 	if err != nil || feed == nil {
 		return nil, err
@@ -494,11 +471,9 @@ func (p *topicPropertiesPager) getNextPage(ctx context.Context) (*ListTopicsResp
 	}, nil
 }
 
-type topicFeedPagerFunc func(ctx context.Context) (*atom.TopicFeed, *http.Response, error)
-
 // topicRuntimePropertiesPager provides iteration over TopicRuntimeProperties pages.
 type topicRuntimePropertiesPager struct {
-	innerPager   topicFeedPagerFunc
+	innerPager   pagerFunc
 	lastErr      error
 	lastResponse *ListTopicsRuntimePropertiesResponse
 }
@@ -511,7 +486,8 @@ func (p *topicRuntimePropertiesPager) NextPage(ctx context.Context) bool {
 }
 
 func (p *topicRuntimePropertiesPager) getNextPage(ctx context.Context) (*ListTopicsRuntimePropertiesResponse, error) {
-	feed, resp, err := p.innerPager(ctx)
+	var feed *atom.TopicFeed
+	resp, err := p.innerPager(ctx, &feed)
 
 	if err != nil || feed == nil {
 		return nil, err
@@ -540,4 +516,9 @@ func (p *topicRuntimePropertiesPager) PageResponse() *ListTopicsRuntimePropertie
 // Err returns the last error encountered while paging.
 func (p *topicRuntimePropertiesPager) Err() error {
 	return p.lastErr
+}
+
+func topicFeedLen(pv interface{}) int {
+	topicFeed := pv.(**atom.TopicFeed)
+	return len((*topicFeed).Entries)
 }

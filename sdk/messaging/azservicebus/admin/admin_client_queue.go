@@ -5,7 +5,6 @@ package admin
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"time"
 
@@ -296,8 +295,13 @@ func (ac *Client) ListQueues(options *ListQueuesOptions) QueueItemPager {
 	}
 
 	return &queuePropertiesPager{
-		innerPager: ac.getQueuePager(pageSize, 0),
+		innerPager: ac.newPagerFunc("/$Resources/Queues", pageSize, queueFeedLen),
 	}
+}
+
+func queueFeedLen(v interface{}) int {
+	feed := v.(**atom.QueueFeed)
+	return len((*feed).Entries)
 }
 
 // ListQueuesRuntimePropertiesOptions can be used to configure the ListQueuesRuntimeProperties method.
@@ -338,7 +342,7 @@ func (ac *Client) ListQueuesRuntimeProperties(options *ListQueuesRuntimeProperti
 	}
 
 	return &queueRuntimePropertiesPager{
-		innerPager: ac.getQueuePager(pageSize, 0),
+		innerPager: ac.newPagerFunc("/$Resources/Queues", pageSize, queueFeedLen),
 	}
 }
 
@@ -377,7 +381,7 @@ func (ac *Client) createOrUpdateQueueImpl(ctx context.Context, queueName string,
 
 // queuePropertiesPager provides iteration over QueueProperties pages.
 type queuePropertiesPager struct {
-	innerPager queueFeedPagerFunc
+	innerPager pagerFunc
 
 	lastErr      error
 	lastResponse *ListQueuesResponse
@@ -401,14 +405,11 @@ func (p *queuePropertiesPager) Err() error {
 }
 
 func (p *queuePropertiesPager) getNextPage(ctx context.Context) (*ListQueuesResponse, error) {
-	feed, resp, err := p.innerPager(ctx)
+	var feed *atom.QueueFeed
+	resp, err := p.innerPager(ctx, &feed)
 
-	if err != nil {
+	if err != nil || feed == nil {
 		return nil, err
-	}
-
-	if feed == nil {
-		return nil, nil
 	}
 
 	var all []*QueueItem
@@ -437,7 +438,7 @@ func (p *queuePropertiesPager) getNextPage(ctx context.Context) (*ListQueuesResp
 
 // queueRuntimePropertiesPager provides iteration over QueueRuntimeProperties pages.
 type queueRuntimePropertiesPager struct {
-	innerPager   queueFeedPagerFunc
+	innerPager   pagerFunc
 	lastErr      error
 	lastResponse *ListQueuesRuntimePropertiesResponse
 }
@@ -450,7 +451,8 @@ func (p *queueRuntimePropertiesPager) NextPage(ctx context.Context) bool {
 }
 
 func (p *queueRuntimePropertiesPager) getNextPage(ctx context.Context) (*ListQueuesRuntimePropertiesResponse, error) {
-	feed, resp, err := p.innerPager(ctx)
+	var feed *atom.QueueFeed
+	resp, err := p.innerPager(ctx, &feed)
 
 	if err != nil || feed == nil {
 		return nil, err
@@ -479,35 +481,6 @@ func (p *queueRuntimePropertiesPager) PageResponse() *ListQueuesRuntimePropertie
 // Err returns the last error encountered while paging.
 func (p *queueRuntimePropertiesPager) Err() error {
 	return p.lastErr
-}
-
-type queueFeedPagerFunc func(ctx context.Context) (*atom.QueueFeed, *http.Response, error)
-
-func (ac *Client) getQueuePager(maxPageSize int32, skip int32) queueFeedPagerFunc {
-	return func(ctx context.Context) (*atom.QueueFeed, *http.Response, error) {
-		url := "/$Resources/Queues?"
-		if maxPageSize > 0 {
-			url += fmt.Sprintf("&$top=%d", maxPageSize)
-		}
-
-		if skip > 0 {
-			url += fmt.Sprintf("&$skip=%d", skip)
-		}
-
-		var atomResp *atom.QueueFeed
-		resp, err := ac.em.Get(ctx, url, &atomResp)
-
-		if err != nil {
-			return nil, nil, err
-		}
-
-		if len(atomResp.Entries) == 0 {
-			return nil, nil, nil
-		}
-
-		skip += maxPageSize
-		return atomResp, resp, nil
-	}
 }
 
 func newQueueEnvelope(props *QueueProperties, tokenProvider auth.TokenProvider) (*atom.QueueEnvelope, []atom.MiddlewareFunc) {

@@ -35,7 +35,7 @@ func NewSQLPoolMaintenanceWindowsClientWithBaseURI(baseURI string, subscriptionI
 // CreateOrUpdate creates or updates a Sql pool's maintenance windows settings.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 // maintenanceWindowName - maintenance window name.
 // parameters - the required parameters for creating or updating Maintenance Windows settings
@@ -126,7 +126,7 @@ func (client SQLPoolMaintenanceWindowsClient) CreateOrUpdateResponder(resp *http
 // Get get a SQL pool's Maintenance Windows.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 // maintenanceWindowName - maintenance window name.
 func (client SQLPoolMaintenanceWindowsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, maintenanceWindowName string) (result MaintenanceWindows, err error) {

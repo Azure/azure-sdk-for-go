@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## `v59.2.0`
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/preview/synapse/mgmt/v2.0/synapse` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/preview/synapse/mgmt/v2.0/synapse/CHANGELOG.md) |
+
 ## `v59.1.0`
 
 ### New Packages
@@ -10,7 +18,7 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/preview/quota/mgmt/2021-03-15-preview/quota` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/preview/quota/mgmt/2021-03-15-preview/quota/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/quota/mgmt/2021-03-15-preview/quota` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v59.1.0/services/preview/quota/mgmt/2021-03-15-preview/quota/CHANGELOG.md) |
 
 ## `v59.0.0`
 

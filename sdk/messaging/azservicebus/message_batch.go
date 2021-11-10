@@ -18,8 +18,8 @@ type (
 	MessageBatch struct {
 		marshaledMessages [][]byte
 		batchEnvelope     *amqp.Message
-		maxBytes          int32
-		size              int32
+		maxBytes          uint64
+		size              uint64
 	}
 )
 
@@ -27,11 +27,11 @@ const (
 	batchMessageFormat uint32 = 0x80013700
 
 	// TODO: should be calculated, not just a constant.
-	batchMessageWrapperSize = int32(100)
+	batchMessageWrapperSize = uint64(100)
 )
 
 // NewMessageBatch builds a new message batch with a default standard max message size
-func newMessageBatch(maxBytes int32) *MessageBatch {
+func newMessageBatch(maxBytes uint64) *MessageBatch {
 	mb := &MessageBatch{
 		maxBytes: maxBytes,
 	}
@@ -49,9 +49,9 @@ func (mb *MessageBatch) AddMessage(m *Message) error {
 }
 
 // NumBytes is the number of bytes in the message batch
-func (mb *MessageBatch) NumBytes() int32 {
+func (mb *MessageBatch) NumBytes() uint64 {
 	// calculated data size + batch message wrapper + data wrapper portions of the message
-	return mb.size + batchMessageWrapperSize + (int32(len(mb.marshaledMessages)) * 5)
+	return mb.size + batchMessageWrapperSize + (uint64(len(mb.marshaledMessages)) * 5)
 }
 
 // NumMessages returns the # of messages in the batch.
@@ -92,7 +92,7 @@ func (mb *MessageBatch) addAMQPMessage(msg *amqp.Message) error {
 		return ErrMessageTooLarge
 	}
 
-	mb.size += int32(len(bin))
+	mb.size += uint64(len(bin))
 
 	if len(mb.marshaledMessages) == 0 {
 		// first message, store it since we need to copy attributes from it

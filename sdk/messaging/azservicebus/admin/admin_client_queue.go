@@ -259,19 +259,6 @@ type ListQueuesOptions struct {
 	MaxPageSize int32
 }
 
-// QueueItemPager provides iteration over ListQueueProperties pages.
-type QueueItemPager interface {
-	// NextPage returns true if the pager advanced to the next page.
-	// Returns false if there are no more pages or an error occurred.
-	NextPage(context.Context) bool
-
-	// PageResponse returns the current QueueProperties.
-	PageResponse() *ListQueuesResponse
-
-	// Err returns the last error encountered while paging.
-	Err() error
-}
-
 type ListQueuesResult struct {
 	Items []*QueueItem
 }
@@ -287,21 +274,16 @@ type QueueItem struct {
 }
 
 // ListQueues lists queues.
-func (ac *Client) ListQueues(options *ListQueuesOptions) QueueItemPager {
+func (ac *Client) ListQueues(options *ListQueuesOptions) *QueuePager {
 	var pageSize int32
 
 	if options != nil {
 		pageSize = options.MaxPageSize
 	}
 
-	return &queuePropertiesPager{
+	return &QueuePager{
 		innerPager: ac.newPagerFunc("/$Resources/Queues", pageSize, queueFeedLen),
 	}
-}
-
-func queueFeedLen(v interface{}) int {
-	feed := v.(**atom.QueueFeed)
-	return len((*feed).Entries)
 }
 
 // ListQueuesRuntimePropertiesOptions can be used to configure the ListQueuesRuntimeProperties method.
@@ -321,7 +303,7 @@ type QueueRuntimePropertiesItem struct {
 }
 
 // ListQueuesRuntimeProperties lists runtime properties for queues.
-func (ac *Client) ListQueuesRuntimeProperties(options *ListQueuesRuntimePropertiesOptions) QueueRuntimePropertiesPager {
+func (ac *Client) ListQueuesRuntimeProperties(options *ListQueuesRuntimePropertiesOptions) *QueueRuntimePropertiesPager {
 	var pageSize int32
 
 	if options != nil {
@@ -366,8 +348,8 @@ func (ac *Client) createOrUpdateQueueImpl(ctx context.Context, queueName string,
 	return newProps, resp, nil
 }
 
-// queuePropertiesPager provides iteration over QueueProperties pages.
-type queuePropertiesPager struct {
+// QueuePager provides iteration over ListQueues pages.
+type QueuePager struct {
 	innerPager pagerFunc
 
 	lastErr      error
@@ -376,22 +358,22 @@ type queuePropertiesPager struct {
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *queuePropertiesPager) NextPage(ctx context.Context) bool {
+func (p *QueuePager) NextPage(ctx context.Context) bool {
 	p.lastResponse, p.lastErr = p.getNextPage(ctx)
 	return p.lastResponse != nil
 }
 
 // PageResponse returns the current page.
-func (p *queuePropertiesPager) PageResponse() *ListQueuesResponse {
+func (p *QueuePager) PageResponse() *ListQueuesResponse {
 	return p.lastResponse
 }
 
 // Err returns the last error encountered while paging.
-func (p *queuePropertiesPager) Err() error {
+func (p *QueuePager) Err() error {
 	return p.lastErr
 }
 
-func (p *queuePropertiesPager) getNextPage(ctx context.Context) (*ListQueuesResponse, error) {
+func (p *QueuePager) getNextPage(ctx context.Context) (*ListQueuesResponse, error) {
 	var feed *atom.QueueFeed
 	resp, err := p.innerPager(ctx, &feed)
 
@@ -423,7 +405,7 @@ func (p *queuePropertiesPager) getNextPage(ctx context.Context) (*ListQueuesResp
 	}, nil
 }
 
-// QueueRuntimePropertiesPager provides iteration over QueueRuntimeProperties pages.
+// QueueRuntimePropertiesPager provides iteration over ListQueueRuntimeProperties pages.
 type QueueRuntimePropertiesPager struct {
 	innerPager   pagerFunc
 	lastErr      error
@@ -575,4 +557,9 @@ func int64OrZero(i *int64) int64 {
 	}
 
 	return *i
+}
+
+func queueFeedLen(v interface{}) int {
+	feed := v.(**atom.QueueFeed)
+	return len((*feed).Entries)
 }

@@ -861,7 +861,7 @@ func TestAdminClient_getQueuePager(t *testing.T) {
 	em := &entityManagerForPagerTests{}
 	adminClient.em = em
 
-	pager := adminClient.getQueuePager(101, 0)
+	pager := adminClient.getQueuePager(10, 0)
 	require.Empty(t, em.getPaths)
 
 	feed, resp, err := pager(context.Background())
@@ -870,7 +870,7 @@ func TestAdminClient_getQueuePager(t *testing.T) {
 	require.NotNil(t, feed)
 
 	require.EqualValues(t, []string{
-		"/$Resources/Queues?&$top=101",
+		"/$Resources/Queues?&$top=10",
 	}, em.getPaths)
 
 	feed, resp, err = pager(context.Background())
@@ -879,8 +879,8 @@ func TestAdminClient_getQueuePager(t *testing.T) {
 	require.NotNil(t, feed)
 
 	require.EqualValues(t, []string{
-		"/$Resources/Queues?&$top=101",
-		"/$Resources/Queues?&$top=101&$skip=3",
+		"/$Resources/Queues?&$top=10",
+		"/$Resources/Queues?&$top=10&$skip=10",
 	}, em.getPaths)
 
 	feed, resp, err = pager(context.Background())
@@ -889,9 +889,9 @@ func TestAdminClient_getQueuePager(t *testing.T) {
 	require.NotNil(t, feed)
 
 	require.EqualValues(t, []string{
-		"/$Resources/Queues?&$top=101",
-		"/$Resources/Queues?&$top=101&$skip=3",
-		"/$Resources/Queues?&$top=101&$skip=6",
+		"/$Resources/Queues?&$top=10",
+		"/$Resources/Queues?&$top=10&$skip=10",
+		"/$Resources/Queues?&$top=10&$skip=20",
 	}, em.getPaths)
 }
 
@@ -902,7 +902,7 @@ func TestAdminClient_getTopicPager(t *testing.T) {
 	em := &entityManagerForPagerTests{}
 	adminClient.em = em
 
-	pager := adminClient.getTopicPager(101, 0)
+	pager := adminClient.getTopicPager(10, 0)
 	require.Empty(t, em.getPaths)
 
 	feed, resp, err := pager(context.Background())
@@ -911,7 +911,7 @@ func TestAdminClient_getTopicPager(t *testing.T) {
 	require.NotNil(t, feed)
 
 	require.EqualValues(t, []string{
-		"/$Resources/Topics?&$top=101",
+		"/$Resources/Topics?&$top=10",
 	}, em.getPaths)
 
 	feed, resp, err = pager(context.Background())
@@ -920,8 +920,8 @@ func TestAdminClient_getTopicPager(t *testing.T) {
 	require.NotNil(t, feed)
 
 	require.EqualValues(t, []string{
-		"/$Resources/Topics?&$top=101",
-		"/$Resources/Topics?&$top=101&$skip=3",
+		"/$Resources/Topics?&$top=10",
+		"/$Resources/Topics?&$top=10&$skip=10",
 	}, em.getPaths)
 
 	feed, resp, err = pager(context.Background())
@@ -930,9 +930,9 @@ func TestAdminClient_getTopicPager(t *testing.T) {
 	require.NotNil(t, feed)
 
 	require.EqualValues(t, []string{
-		"/$Resources/Topics?&$top=101",
-		"/$Resources/Topics?&$top=101&$skip=3",
-		"/$Resources/Topics?&$top=101&$skip=6",
+		"/$Resources/Topics?&$top=10",
+		"/$Resources/Topics?&$top=10&$skip=10",
+		"/$Resources/Topics?&$top=10&$skip=20",
 	}, em.getPaths)
 }
 
@@ -943,7 +943,7 @@ func TestAdminClient_getSubscriptionPager(t *testing.T) {
 	em := &entityManagerForPagerTests{}
 	adminClient.em = em
 
-	pager := adminClient.getSubscriptionPager("topicName", 101, 0)
+	pager := adminClient.getSubscriptionPager("topicName", 10, 0)
 	require.Empty(t, em.getPaths)
 
 	feed, resp, err := pager(context.Background())
@@ -952,7 +952,7 @@ func TestAdminClient_getSubscriptionPager(t *testing.T) {
 	require.NotNil(t, feed)
 
 	require.EqualValues(t, []string{
-		"/topicName/Subscriptions?&$top=101",
+		"/topicName/Subscriptions?&$top=10",
 	}, em.getPaths)
 
 	feed, resp, err = pager(context.Background())
@@ -961,8 +961,8 @@ func TestAdminClient_getSubscriptionPager(t *testing.T) {
 	require.NotNil(t, feed)
 
 	require.EqualValues(t, []string{
-		"/topicName/Subscriptions?&$top=101",
-		"/topicName/Subscriptions?&$top=101&$skip=3",
+		"/topicName/Subscriptions?&$top=10",
+		"/topicName/Subscriptions?&$top=10&$skip=10",
 	}, em.getPaths)
 
 	feed, resp, err = pager(context.Background())
@@ -971,9 +971,9 @@ func TestAdminClient_getSubscriptionPager(t *testing.T) {
 	require.NotNil(t, feed)
 
 	require.EqualValues(t, []string{
-		"/topicName/Subscriptions?&$top=101",
-		"/topicName/Subscriptions?&$top=101&$skip=3",
-		"/topicName/Subscriptions?&$top=101&$skip=6",
+		"/topicName/Subscriptions?&$top=10",
+		"/topicName/Subscriptions?&$top=10&$skip=10",
+		"/topicName/Subscriptions?&$top=10&$skip=20",
 	}, em.getPaths)
 }
 

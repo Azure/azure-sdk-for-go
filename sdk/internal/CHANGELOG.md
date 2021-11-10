@@ -8,6 +8,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* When running in `LiveMode` the sanitizers will not send requests.
 
 ### Other Changes
 

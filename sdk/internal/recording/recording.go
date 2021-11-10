@@ -473,7 +473,7 @@ func defaultOptions() *RecordingOptions {
 	}
 }
 
-func (r RecordingOptions) RouteURL(t *testing.T, rawReq *http.Request) {
+func (r RecordingOptions) ReplaceAuthority(t *testing.T, rawReq *http.Request) {
 	if GetRecordMode() != LiveMode && !IsLiveOnly(t) {
 		originalURLHost := rawReq.URL.Host
 		rawReq.URL.Scheme = r.scheme()
@@ -500,7 +500,7 @@ func (r RecordingOptions) scheme() string {
 	return "http"
 }
 
-func (r RecordingOptions) hostScheme() string {
+func (r RecordingOptions) baseURL() string {
 	return fmt.Sprintf("%s://%s", r.scheme(), r.host())
 }
 
@@ -528,7 +528,7 @@ func Start(t *testing.T, pathToRecordings string, options *RecordingOptions) err
 
 	testId := getTestId(pathToRecordings, t)
 
-	url := fmt.Sprintf("%s/%s/start", options.hostScheme(), recordMode)
+	url := fmt.Sprintf("%s/%s/start", options.baseURL(), recordMode)
 
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
@@ -572,7 +572,7 @@ func Stop(t *testing.T, options *RecordingOptions) error {
 		}
 	}
 
-	url := fmt.Sprintf("%v/%v/stop", options.hostScheme(), recordMode)
+	url := fmt.Sprintf("%v/%v/stop", options.baseURL(), recordMode)
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		return err

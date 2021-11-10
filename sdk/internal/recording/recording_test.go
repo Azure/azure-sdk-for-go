@@ -381,10 +381,10 @@ func TestRecordingOptions(t *testing.T) {
 	r := RecordingOptions{
 		UseHTTPS: true,
 	}
-	require.Equal(t, r.hostScheme(), "https://localhost:5001")
+	require.Equal(t, r.baseURL(), "https://localhost:5001")
 
 	r.UseHTTPS = false
-	require.Equal(t, r.hostScheme(), "http://localhost:5000")
+	require.Equal(t, r.baseURL(), "http://localhost:5000")
 
 	require.Equal(t, GetEnvVariable("Nonexistentevnvar", "somefakevalue"), "somefakevalue")
 	temp := recordMode
@@ -393,10 +393,10 @@ func TestRecordingOptions(t *testing.T) {
 	recordMode = temp
 
 	r.UseHTTPS = false
-	require.Equal(t, r.hostScheme(), "http://localhost:5000")
+	require.Equal(t, r.baseURL(), "http://localhost:5000")
 
 	r.UseHTTPS = true
-	require.Equal(t, r.hostScheme(), "https://localhost:5001")
+	require.Equal(t, r.baseURL(), "https://localhost:5001")
 }
 
 var packagePath = "sdk/internal/recording/testdata"

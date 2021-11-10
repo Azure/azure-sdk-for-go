@@ -38,12 +38,6 @@ const (
 // defaultSuffix is the default AADv2 scope
 const defaultSuffix = "/.default"
 
-const (
-	headerUserAgent   = "User-Agent"
-	headerURLEncoded  = "application/x-www-form-urlencoded"
-	headerMetadata    = "Metadata"
-)
-
 const tenantIDValidationErr = "Invalid tenantID provided. You can locate your tenantID by following the instructions listed here: https://docs.microsoft.com/partner-center/find-ids-and-domain-names."
 
 var (

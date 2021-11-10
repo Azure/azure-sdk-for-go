@@ -378,7 +378,7 @@ func (c *managedIdentityClient) createCloudShellAuthRequest(ctx context.Context,
 	}
 	dataEncoded := data.Encode()
 	body := streaming.NopCloser(strings.NewReader(dataEncoded))
-	if err := request.SetBody(body, headerURLEncoded); err != nil {
+	if err := request.SetBody(body, "application/x-www-form-urlencoded"); err != nil {
 		return nil, err
 	}
 	return request, nil

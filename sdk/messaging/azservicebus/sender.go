@@ -51,7 +51,7 @@ func (s *Sender) NewMessageBatch(ctx context.Context, options *MessageBatchOptio
 		maxBytes = options.MaxBytes
 	}
 
-	return &MessageBatch{maxBytes: maxBytes}, nil
+	return newMessageBatch(maxBytes), nil
 }
 
 // SendMessage sends a Message to a queue or topic.

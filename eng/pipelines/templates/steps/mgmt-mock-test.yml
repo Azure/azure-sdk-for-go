@@ -37,6 +37,18 @@ steps:
       filePath: eng/scripts/Invoke-MgmtMockTest.ps1
       arguments: -filter '${{ parameters.ServiceDirectory }}'
 
+  - task: ArchiveFiles@2
+    inputs:
+      rootFolderOrFile: $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}/
+      includeRootFolder: true
+      archiveFile: '$(Build.ArtifactStagingDirectory)/MockTestCodeAndReport.zip'
+      
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Code and Report'
+    inputs:
+      pathToPublish: '$(Build.ArtifactStagingDirectory)/MockTestCodeAndReport.zip'
+      artifactName: MockTestCodeAndReport
+
   - task: PublishTestResults@2
     condition: succeededOrFailed()
     inputs:

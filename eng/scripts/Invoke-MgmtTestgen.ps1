@@ -12,7 +12,7 @@ param(
     [string]$config = "autorest.md",
     [string]$autorestVersion = "3.6.2",
     [string]$goExtension = "@autorest/go@4.0.0-preview.31",
-    [string]$testExtension = "@autorest/gotest@1.1.0",
+    [string]$testExtension = "@autorest/gotest@1.1.1",
     [string]$outputFolder
 )
 

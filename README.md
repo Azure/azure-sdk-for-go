@@ -28,24 +28,24 @@ Each service might have a number of libraries available from each of the followi
 
 We have a new wave of packages that are being announced as **GA** and several that are currently released in **preview**. These libraries allow you to use, consume, and interact with existing resources, for example, uploading a blob. These libraries share a number of core functionalities including retries, logging, transport protocols, authentication protocols, etc. that can be found in the [azcore](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/azcore) library. You can learn more about these libraries by reading about the [Azure SDK Go guidelines](https://azure.github.io/azure-sdk/golang_introduction.html).
 
-You can find the most up to date list of new packages on our [latest page](https://azure.github.io/azure-sdk/releases/latest/index.html#go). These new libraries can be identified by locating them under the [`sdk`](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk) directory in the repository.
+You can find the most up-to-date list of new packages on our [latest page](https://azure.github.io/azure-sdk/releases/latest/index.html#go). These new libraries can be identified by locating them under the [`sdk`](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk) directory in the repository.
 
-> NOTE: If you need to ensure your code is ready for production use one of the stable, non-preview libraries.
+> NOTE: If you need to ensure your code is ready for production use one of the stable, non-beta libraries.
 
 ### Client: Previous Versions
 
-The last stable versions of packages that have been provided for usage with Azure are production-ready. These libraries provide you with similar functionalities to the Preview ones as they allow you to use, consume, and interact with existing resources, for example, uploading a blob. They might not implement the [guidelines](https://azure.github.io/azure-sdk/golang_introduction.html) or have the same feature set as the New releases, however they do offer a wider coverage of services.
+The last stable versions of packages that have been provided for usage with Azure are production-ready. These libraries might not implement the [Azure Go SDK guidelines](https://azure.github.io/azure-sdk/golang_introduction.html) or have the same feature set as the New releases, however they do offer a wider coverage of services.
 
 Previous Go SDK packages are located under [/services folder](https://github.com/Azure/azure-sdk-for-go/tree/master/services), and you can see the full list [on this page](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services). They might not have the same feature set as the new releases but they do offer wider coverage of services.
 
 ### Management: New Releases
 A new set of management libraries that follow the [Azure SDK Design Guidelines for Go](https://azure.github.io/azure-sdk/golang_introduction.html) are available at `sdk/resourcemanagement`. These new libraries provide a number of core capabilities that are shared amongst all Azure SDKs, including the intuitive Azure Identity library, an HTTP Pipeline with custom policies, error-handling, distributed tracing, and much more.
 
-To get started, please follow the [quickstart guide here](https://aka.ms/azsdk/go/mgmt). To see the benefits of migrating and how to migrate to the new libraries, please visit the[migration guide](https://aka.ms/azsdk/go/mgmt/migration).
+To get started, please follow the [quickstart guide here](https://aka.ms/azsdk/go/mgmt). To see the benefits of migrating and how to migrate to the new libraries, please visit the [migration guide](https://aka.ms/azsdk/go/mgmt/migration).
 
 You can find the [most up to date list of all of the new packages on our page](https://azure.github.io/azure-sdk/releases/latest/mgmt/go.html)
 
-> NOTE: If you need to ensure your code is ready for production use one of the stable, non-preview libraries. Also, if you are experiencing authentication issues with the management libraries after upgrading certain packages, it's possible that you upgraded to the new versions of SDK without changing the authentication code, please refer to the migration guide for proper instructions.
+> NOTE: If you need to ensure your code is ready for production use one of the stable, non-beta libraries. Also, if you are experiencing authentication issues with the management libraries after upgrading certain packages, it's possible that you upgraded to the new versions of SDK without changing the authentication code. Please refer to the migration guide for proper instructions.
 
 * [Quickstart tutorial for new releases](https://aka.ms/azsdk/go/mgmt). Documentation is also available at each readme file of the individual module (Example: [Readme for Compute Module](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/compute/armcompute))
 

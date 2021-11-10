@@ -31,8 +31,15 @@ const (
 )
 
 type (
-	// EntityManager provides CRUD functionality for Service Bus entities (Queues, Topics, Subscriptions...)
-	EntityManager struct {
+	EntityManager interface {
+		Get(ctx context.Context, entityPath string, respObj interface{}, mw ...MiddlewareFunc) (*http.Response, error)
+		Put(ctx context.Context, entityPath string, body interface{}, respObj interface{}, mw ...MiddlewareFunc) (*http.Response, error)
+		Delete(ctx context.Context, entityPath string, mw ...MiddlewareFunc) (*http.Response, error)
+		TokenProvider() auth.TokenProvider
+	}
+
+	// entityManager provides CRUD functionality for Service Bus entities (Queues, Topics, Subscriptions...)
+	entityManager struct {
 		tokenProvider auth.TokenProvider
 		Host          string
 		mwStack       []MiddlewareFunc
@@ -145,7 +152,7 @@ func (m *managementError) String() string {
 // NewEntityManagerWithConnectionString creates an entity manager (a lower level HTTP client
 // for the ATOM endpoint). This is typically wrapped by an entity specific client (like
 // TopicManager, QueueManager or , SubscriptionManager).
-func NewEntityManagerWithConnectionString(connectionString string, version string) (*EntityManager, error) {
+func NewEntityManagerWithConnectionString(connectionString string, version string) (EntityManager, error) {
 	parsed, err := conn.ParsedConnectionFromStr(connectionString)
 
 	if err != nil {
@@ -158,7 +165,7 @@ func NewEntityManagerWithConnectionString(connectionString string, version strin
 		return nil, err
 	}
 
-	return &EntityManager{
+	return &entityManager{
 		Host:          fmt.Sprintf("https://%s.%s/", parsed.Namespace, parsed.Suffix),
 		version:       version,
 		tokenProvider: provider,
@@ -172,8 +179,8 @@ func NewEntityManagerWithConnectionString(connectionString string, version strin
 }
 
 // NewEntityManager creates an entity manager using a TokenCredential.
-func NewEntityManager(ns string, tokenCredential azcore.TokenCredential, version string) (*EntityManager, error) {
-	return &EntityManager{
+func NewEntityManager(ns string, tokenCredential azcore.TokenCredential, version string) (EntityManager, error) {
+	return &entityManager{
 		Host:          fmt.Sprintf("https://%s/", ns),
 		version:       version,
 		tokenProvider: sbauth.NewTokenProvider(tokenCredential),
@@ -187,7 +194,7 @@ func NewEntityManager(ns string, tokenCredential azcore.TokenCredential, version
 }
 
 // Get performs an HTTP Get for a given entity path, deserializing the returned XML into `respObj`
-func (em *EntityManager) Get(ctx context.Context, entityPath string, respObj interface{}, mw ...MiddlewareFunc) (*http.Response, error) {
+func (em *entityManager) Get(ctx context.Context, entityPath string, respObj interface{}, mw ...MiddlewareFunc) (*http.Response, error) {
 	ctx, span := em.startSpanFromContext(ctx, "sb.ATOM.Get")
 	defer span.End()
 
@@ -202,7 +209,7 @@ func (em *EntityManager) Get(ctx context.Context, entityPath string, respObj int
 }
 
 // Put performs an HTTP PUT for a given entity path and body, deserializing the returned XML into `respObj`
-func (em *EntityManager) Put(ctx context.Context, entityPath string, body interface{}, respObj interface{}, mw ...MiddlewareFunc) (*http.Response, error) {
+func (em *entityManager) Put(ctx context.Context, entityPath string, body interface{}, respObj interface{}, mw ...MiddlewareFunc) (*http.Response, error) {
 	ctx, span := em.startSpanFromContext(ctx, "sb.ATOM.Put")
 	defer span.End()
 
@@ -223,14 +230,14 @@ func (em *EntityManager) Put(ctx context.Context, entityPath string, body interf
 }
 
 // Delete performs an HTTP DELETE for a given entity path
-func (em *EntityManager) Delete(ctx context.Context, entityPath string, mw ...MiddlewareFunc) (*http.Response, error) {
+func (em *entityManager) Delete(ctx context.Context, entityPath string, mw ...MiddlewareFunc) (*http.Response, error) {
 	ctx, span := em.startSpanFromContext(ctx, "sb.ATOM.Delete")
 	defer span.End()
 
 	return em.execute(ctx, http.MethodDelete, entityPath, http.NoBody, mw...)
 }
 
-func (em *EntityManager) execute(ctx context.Context, method string, entityPath string, body io.Reader, mw ...MiddlewareFunc) (*http.Response, error) {
+func (em *entityManager) execute(ctx context.Context, method string, entityPath string, body io.Reader, mw ...MiddlewareFunc) (*http.Response, error) {
 	ctx, span := em.startSpanFromContext(ctx, "sb.ATOM.Execute")
 	defer span.End()
 
@@ -295,12 +302,12 @@ func (em *EntityManager) execute(ctx context.Context, method string, entityPath 
 }
 
 // Use adds middleware to the middleware mwStack
-func (em *EntityManager) Use(mw ...MiddlewareFunc) {
+func (em *entityManager) Use(mw ...MiddlewareFunc) {
 	em.mwStack = append(em.mwStack, mw...)
 }
 
 // TokenProvider generates authorization tokens for communicating with the Service Bus management API
-func (em *EntityManager) TokenProvider() auth.TokenProvider {
+func (em *entityManager) TokenProvider() auth.TokenProvider {
 	return em.tokenProvider
 }
 
@@ -314,7 +321,7 @@ func FormatManagementError(body []byte, origErr error) error {
 	return fmt.Errorf("error code: %d, Details: %s", mgmtError.Code, mgmtError.Detail)
 }
 
-func (em *EntityManager) startSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
+func (em *entityManager) startSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
 	ctx, span := tab.StartSpan(ctx, operationName)
 	tracing.ApplyComponentInfo(span, em.version)
 	span.AddAttributes(tab.StringAttribute("span.kind", "client"))
@@ -384,12 +391,42 @@ func TraceReqAndResponseMiddleware() MiddlewareFunc {
 	}
 }
 
-var errEntityDoesNotExist = errors.New("entity does not exist")
+type feedEmptyError struct {
+	azcore.HTTPResponse
+	response *http.Response
+}
 
-func NotFound(err error) bool {
+func (e feedEmptyError) RawResponse() *http.Response {
+	return e.response
+}
+func (e feedEmptyError) Error() string {
+	return "entity does not exist"
+}
+
+func NotFound(err error) (bool, *http.Response) {
+	var feedEmptyError feedEmptyError
+
+	if errors.As(err, &feedEmptyError) {
+		return true, feedEmptyError.RawResponse()
+	}
+
 	var httpResponse azcore.HTTPResponse
-	return errors.Is(err, errEntityDoesNotExist) ||
-		(errors.As(err, &httpResponse) && httpResponse.RawResponse().StatusCode == 404)
+
+	if errors.As(err, &httpResponse) {
+		return httpResponse.RawResponse().StatusCode == 404, httpResponse.RawResponse()
+	}
+
+	return false, nil
+}
+
+func AsHTTPResponse(err error) *http.Response {
+	var httpResponse azcore.HTTPResponse
+
+	if errors.As(err, &httpResponse) {
+		return httpResponse.RawResponse()
+	}
+
+	return nil
 }
 
 func isEmptyFeed(b []byte) bool {
@@ -412,11 +449,10 @@ func deserializeBody(resp *http.Response, respObj interface{}) (*http.Response, 
 	}
 
 	if err := xml.Unmarshal(bytes, respObj); err != nil {
-
 		// ATOM does this interesting thing where, when something doesn't exist, it gives you back an empty feed
 		// check:
 		if isEmptyFeed(bytes) {
-			return nil, errEntityDoesNotExist
+			return nil, feedEmptyError{response: resp}
 		}
 
 		return resp, err

@@ -24,6 +24,7 @@ type (
 		FilteringMessagesBeforePublishing   *bool         `xml:"FilteringMessagesBeforePublishing,omitempty"`
 		IsAnonymousAccessible               *bool         `xml:"IsAnonymousAccessible,omitempty"`
 		Status                              *EntityStatus `xml:"Status,omitempty"`
+		UserMetadata                        *string       `xml:"UserMetadata,omitempty"`
 		AccessedAt                          *date.Time    `xml:"AccessedAt,omitempty"`
 		CreatedAt                           *date.Time    `xml:"CreatedAt,omitempty"`
 		UpdatedAt                           *date.Time    `xml:"UpdatedAt,omitempty"`

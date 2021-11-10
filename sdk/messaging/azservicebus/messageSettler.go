@@ -15,8 +15,8 @@ var errReceiveAndDeleteReceiver = errors.New("messages that are received in rece
 
 type settler interface {
 	CompleteMessage(ctx context.Context, message *ReceivedMessage) error
-	AbandonMessage(ctx context.Context, message *ReceivedMessage) error
-	DeferMessage(ctx context.Context, message *ReceivedMessage) error
+	AbandonMessage(ctx context.Context, message *ReceivedMessage, options *AbandonMessageOptions) error
+	DeferMessage(ctx context.Context, message *ReceivedMessage, options *DeferMessageOptions) error
 	DeadLetterMessage(ctx context.Context, message *ReceivedMessage, options *DeadLetterOptions) error
 }
 
@@ -76,41 +76,77 @@ func (s *messageSettler) settleWithRetries(ctx context.Context, message *Receive
 func (s *messageSettler) CompleteMessage(ctx context.Context, message *ReceivedMessage) error {
 	return s.settleWithRetries(ctx, message, func(receiver internal.AMQPReceiver, mgmt internal.MgmtClient) error {
 		if s.useManagementLink(message, receiver) {
-			return mgmt.SendDisposition(ctx, bytesToAMQPUUID(message.LockToken), internal.Disposition{Status: internal.CompletedDisposition})
+			return mgmt.SendDisposition(ctx, bytesToAMQPUUID(message.LockToken), internal.Disposition{Status: internal.CompletedDisposition}, nil)
 		} else {
 			return receiver.AcceptMessage(ctx, message.rawAMQPMessage)
 		}
 	})
 }
 
+type AbandonMessageOptions struct {
+	// PropertiesToModify specifies properties to modify in the message when it is abandoned.
+	PropertiesToModify map[string]interface{}
+}
+
 // AbandonMessage will cause a message to be returned to the queue or subscription.
 // This will increment its delivery count, and potentially cause it to be dead lettered
 // depending on your queue or subscription's configuration.
-func (s *messageSettler) AbandonMessage(ctx context.Context, message *ReceivedMessage) error {
+func (s *messageSettler) AbandonMessage(ctx context.Context, message *ReceivedMessage, options *AbandonMessageOptions) error {
 	return s.settleWithRetries(ctx, message, func(receiver internal.AMQPReceiver, mgmt internal.MgmtClient) error {
 		if s.useManagementLink(message, receiver) {
 			d := internal.Disposition{
 				Status: internal.AbandonedDisposition,
 			}
-			return mgmt.SendDisposition(ctx, bytesToAMQPUUID(message.LockToken), d)
+
+			var propertiesToModify map[string]interface{}
+
+			if options != nil && options.PropertiesToModify != nil {
+				propertiesToModify = options.PropertiesToModify
+			}
+
+			return mgmt.SendDisposition(ctx, bytesToAMQPUUID(message.LockToken), d, propertiesToModify)
 		}
 
-		return receiver.ModifyMessage(ctx, message.rawAMQPMessage, false, false, nil)
+		var annotations amqp.Annotations
+
+		if options != nil {
+			annotations = newAnnotations(options.PropertiesToModify)
+		}
+
+		return receiver.ModifyMessage(ctx, message.rawAMQPMessage, false, false, annotations)
 	})
+}
+
+type DeferMessageOptions struct {
+	// PropertiesToModify specifies properties to modify in the message when it is deferred
+	PropertiesToModify map[string]interface{}
 }
 
 // DeferMessage will cause a message to be deferred. Deferred messages
 // can be received using `Receiver.ReceiveDeferredMessages`.
-func (s *messageSettler) DeferMessage(ctx context.Context, message *ReceivedMessage) error {
+func (s *messageSettler) DeferMessage(ctx context.Context, message *ReceivedMessage, options *DeferMessageOptions) error {
 	return s.settleWithRetries(ctx, message, func(receiver internal.AMQPReceiver, mgmt internal.MgmtClient) error {
 		if s.useManagementLink(message, receiver) {
 			d := internal.Disposition{
 				Status: internal.DeferredDisposition,
 			}
-			return mgmt.SendDisposition(ctx, bytesToAMQPUUID(message.LockToken), d)
+
+			var propertiesToModify map[string]interface{}
+
+			if options != nil && options.PropertiesToModify != nil {
+				propertiesToModify = options.PropertiesToModify
+			}
+
+			return mgmt.SendDisposition(ctx, bytesToAMQPUUID(message.LockToken), d, propertiesToModify)
 		}
 
-		return receiver.ModifyMessage(ctx, message.rawAMQPMessage, false, true, nil)
+		var annotations amqp.Annotations
+
+		if options != nil {
+			annotations = newAnnotations(options.PropertiesToModify)
+		}
+
+		return receiver.ModifyMessage(ctx, message.rawAMQPMessage, false, true, annotations)
 	})
 }
 
@@ -151,7 +187,14 @@ func (s *messageSettler) DeadLetterMessage(ctx context.Context, message *Receive
 				DeadLetterDescription: &description,
 				DeadLetterReason:      &reason,
 			}
-			return mgmt.SendDisposition(ctx, bytesToAMQPUUID(message.LockToken), d)
+
+			var propertiesToModify map[string]interface{}
+
+			if options != nil && options.PropertiesToModify != nil {
+				propertiesToModify = options.PropertiesToModify
+			}
+
+			return mgmt.SendDisposition(ctx, bytesToAMQPUUID(message.LockToken), d, propertiesToModify)
 		}
 
 		info := map[string]interface{}{
@@ -177,4 +220,18 @@ func (s *messageSettler) DeadLetterMessage(ctx context.Context, message *Receive
 func bytesToAMQPUUID(bytes [16]byte) *amqp.UUID {
 	uuid := amqp.UUID(bytes)
 	return &uuid
+}
+
+func newAnnotations(propertiesToModify map[string]interface{}) amqp.Annotations {
+	var annotations amqp.Annotations
+
+	for k, v := range propertiesToModify {
+		if annotations == nil {
+			annotations = amqp.Annotations{}
+		}
+
+		annotations[k] = v
+	}
+
+	return annotations
 }

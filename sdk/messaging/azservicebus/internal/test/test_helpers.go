@@ -8,6 +8,7 @@ import (
 	"io"
 	"math/rand"
 	"os"
+	"testing"
 	"time"
 
 	"github.com/Azure/azure-amqp-common-go/v3/conn"
@@ -195,4 +196,24 @@ func RandomString(prefix string, length int) string {
 		b[i] = letterRunes[rand.Intn(len(letterRunes))]
 	}
 	return prefix + string(b)
+}
+
+func GetConnectionString(t *testing.T) string {
+	cs := os.Getenv("SERVICEBUS_CONNECTION_STRING")
+
+	if cs == "" {
+		t.Skip()
+	}
+
+	return cs
+}
+
+func GetConnectionStringWithoutManagePerms(t *testing.T) string {
+	cs := os.Getenv("SERVICEBUS_CONNECTION_STRING_NO_MANAGE")
+
+	if cs == "" {
+		t.Skip()
+	}
+
+	return cs
 }

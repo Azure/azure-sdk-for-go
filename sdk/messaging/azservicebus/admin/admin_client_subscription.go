@@ -1,11 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package azservicebus
+package admin
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net/http"
 	"time"
@@ -17,9 +16,6 @@ import (
 
 // SubscriptionProperties represents the static properties of the subscription.
 type SubscriptionProperties struct {
-	// Name of the subscription relative to the namespace base address.
-	Name string
-
 	// LockDuration is the duration a message is locked when using the PeekLock receive mode.
 	// Default is 1 minute.
 	LockDuration *time.Duration
@@ -50,6 +46,9 @@ type SubscriptionProperties struct {
 	// Status is the current status of the queue.
 	Status *EntityStatus
 
+	// AutoDeleteOnIdle is the idle interval after which the subscription is automatically deleted.
+	AutoDeleteOnIdle *time.Duration
+
 	// ForwardTo is the name of the recipient entity to which all the messages sent to the queue
 	// are forwarded to.
 	ForwardTo *string
@@ -60,15 +59,12 @@ type SubscriptionProperties struct {
 	// EnableBatchedOperations indicates whether server-side batched operations are enabled.
 	EnableBatchedOperations *bool
 
-	// UserMetadata is custom metadata that user can associate with the description.
+	// UserMetadata is custom metadata that user can associate with the subscription.
 	UserMetadata *string
 }
 
 // SubscriptionRuntimeProperties represent dynamic properties of a subscription, such as the ActiveMessageCount.
 type SubscriptionRuntimeProperties struct {
-	// Name is the name of the subscription.
-	Name string
-
 	// TotalMessageCount is the number of messages in the subscription.
 	TotalMessageCount int64
 
@@ -95,76 +91,54 @@ type SubscriptionRuntimeProperties struct {
 	UpdatedAt time.Time
 }
 
-type AddSubscriptionResponse struct {
+type CreateSubscriptionResult struct {
+	SubscriptionProperties
+}
+
+type CreateSubscriptionResponse struct {
 	// Value is the result of the request.
-	Value *SubscriptionProperties
+	CreateSubscriptionResult
 	// RawResponse is the *http.Response for the request.
 	RawResponse *http.Response
 }
 
-type GetSubscriptionResponse struct {
-	// Value is the result of the request.
-	Value *SubscriptionProperties
-	// RawResponse is the *http.Response for the request.
-	RawResponse *http.Response
+type CreateSubscriptionOptions struct {
+	// For future expansion
 }
 
-type GetSubscriptionRuntimePropertiesResponse struct {
-	// Value is the result of the request.
-	Value *SubscriptionRuntimeProperties
-	// RawResponse is the *http.Response for the request.
-	RawResponse *http.Response
-}
-
-type ListSubscriptionsResponse struct {
-	// Value is the result of the request.
-	Value []*SubscriptionProperties
-	// RawResponse is the *http.Response for the request.
-	RawResponse *http.Response
-}
-
-type ListSubscriptionsRuntimePropertiesResponse struct {
-	// Value is the result of the request.
-	Value []*SubscriptionRuntimeProperties
-	// RawResponse is the *http.Response for the request.
-	RawResponse *http.Response
-}
-
-type UpdateSubscriptionResponse struct {
-	// Value is the result of the request.
-	Value *SubscriptionProperties
-	// RawResponse is the *http.Response for the request.
-	RawResponse *http.Response
-}
-
-type DeleteSubscriptionResponse struct {
-	// RawResponse is the *http.Response for the request.
-	RawResponse *http.Response
-}
-
-// AddSubscription creates a subscription to a topic using defaults for all options.
-func (ac *AdminClient) AddSubscription(ctx context.Context, topicName string, subscriptionName string) (*AddSubscriptionResponse, error) {
-	return ac.AddSubscriptionWithProperties(ctx, topicName, &SubscriptionProperties{
-		Name: subscriptionName,
-	})
-}
-
-// AddSubscriptionWithProperties creates a subscription to a topic with configurable properties
-func (ac *AdminClient) AddSubscriptionWithProperties(ctx context.Context, topicName string, properties *SubscriptionProperties) (*AddSubscriptionResponse, error) {
-	newProps, resp, err := ac.createOrUpdateSubscriptionImpl(ctx, topicName, properties, true)
+// CreateSubscription creates a subscription to a topic with configurable properties
+func (ac *Client) CreateSubscription(ctx context.Context, topicName string, subscriptionName string, properties *SubscriptionProperties, options *CreateSubscriptionOptions) (*CreateSubscriptionResponse, error) {
+	newProps, resp, err := ac.createOrUpdateSubscriptionImpl(ctx, topicName, subscriptionName, properties, true)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return &AddSubscriptionResponse{
+	return &CreateSubscriptionResponse{
 		RawResponse: resp,
-		Value:       newProps,
+		CreateSubscriptionResult: CreateSubscriptionResult{
+			SubscriptionProperties: *newProps,
+		},
 	}, nil
 }
 
+type GetSubscriptionResult struct {
+	SubscriptionProperties
+}
+
+type GetSubscriptionResponse struct {
+	GetSubscriptionResult
+
+	// RawResponse is the *http.Response for the request.
+	RawResponse *http.Response
+}
+
+type GetSubscriptionOptions struct {
+	// For future expansion
+}
+
 // GetSubscription gets a subscription by name.
-func (ac *AdminClient) GetSubscription(ctx context.Context, topicName string, subscriptionName string) (*GetSubscriptionResponse, error) {
+func (ac *Client) GetSubscription(ctx context.Context, topicName string, subscriptionName string, options *GetSubscriptionOptions) (*GetSubscriptionResponse, error) {
 	var atomResp *atom.SubscriptionEnvelope
 	resp, err := ac.em.Get(ctx, fmt.Sprintf("/%s/Subscriptions/%s", topicName, subscriptionName), &atomResp)
 
@@ -172,7 +146,7 @@ func (ac *AdminClient) GetSubscription(ctx context.Context, topicName string, su
 		return nil, err
 	}
 
-	props, err := newSubscriptionProperties(topicName, atomResp.Title, &atomResp.Content.SubscriptionDescription)
+	props, err := newSubscriptionProperties(&atomResp.Content.SubscriptionDescription)
 
 	if err != nil {
 		return nil, err
@@ -180,12 +154,24 @@ func (ac *AdminClient) GetSubscription(ctx context.Context, topicName string, su
 
 	return &GetSubscriptionResponse{
 		RawResponse: resp,
-		Value:       props,
+		GetSubscriptionResult: GetSubscriptionResult{
+			SubscriptionProperties: *props,
+		},
 	}, nil
 }
 
+type GetSubscriptionRuntimePropertiesResult struct {
+	SubscriptionRuntimeProperties
+}
+
+type GetSubscriptionRuntimePropertiesResponse struct {
+	GetSubscriptionRuntimePropertiesResult
+	// RawResponse is the *http.Response for the request.
+	RawResponse *http.Response
+}
+
 // GetSubscriptionRuntimeProperties gets runtime properties of a subscription, like the SizeInBytes, or SubscriptionCount.
-func (ac *AdminClient) GetSubscriptionRuntimeProperties(ctx context.Context, topicName string, subscriptionName string) (*GetSubscriptionRuntimePropertiesResponse, error) {
+func (ac *Client) GetSubscriptionRuntimeProperties(ctx context.Context, topicName string, subscriptionName string) (*GetSubscriptionRuntimePropertiesResponse, error) {
 	var atomResp *atom.SubscriptionEnvelope
 	rawResp, err := ac.em.Get(ctx, fmt.Sprintf("/%s/Subscriptions/%s", topicName, subscriptionName), &atomResp)
 
@@ -195,16 +181,16 @@ func (ac *AdminClient) GetSubscriptionRuntimeProperties(ctx context.Context, top
 
 	return &GetSubscriptionRuntimePropertiesResponse{
 		RawResponse: rawResp,
-		Value:       newSubscriptionRuntimeProperties(topicName, atomResp.Title, &atomResp.Content.SubscriptionDescription),
+		GetSubscriptionRuntimePropertiesResult: GetSubscriptionRuntimePropertiesResult{
+			SubscriptionRuntimeProperties: *newSubscriptionRuntimeProperties(&atomResp.Content.SubscriptionDescription),
+		},
 	}, nil
 }
 
 // ListSubscriptionsOptions can be used to configure the ListSusbscriptions method.
 type ListSubscriptionsOptions struct {
-	// Top is the maximum size of each page of results.
-	Top int
-	// Skip is the starting index for the paging operation.
-	Skip int
+	// MaxPageSize is the maximum size of each page of results.
+	MaxPageSize int32
 }
 
 // SubscriptionPropertiesPager provides iteration over ListSubscriptionProperties pages.
@@ -220,28 +206,57 @@ type SubscriptionPropertiesPager interface {
 	Err() error
 }
 
+type SubscriptionPropertiesItem struct {
+	SubscriptionProperties
+
+	TopicName        string
+	SubscriptionName string
+}
+
+type ListSubscriptionsResponse struct {
+	// Value is the result of the request.
+	Items []*SubscriptionPropertiesItem
+	// RawResponse is the *http.Response for the request.
+	RawResponse *http.Response
+}
+
 // ListSubscriptions lists subscriptions for a topic.
-func (ac *AdminClient) ListSubscriptions(topicName string, options *ListSubscriptionsOptions) SubscriptionPropertiesPager {
-	var pageSize int
-	var skip int
+func (ac *Client) ListSubscriptions(topicName string, options *ListSubscriptionsOptions) SubscriptionPropertiesPager {
+	var pageSize int32
 
 	if options != nil {
-		skip = options.Skip
-		pageSize = options.Top
+		pageSize = options.MaxPageSize
 	}
 
 	return &subscriptionPropertiesPager{
 		topicName:  topicName,
-		innerPager: ac.getSubscriptionPager(topicName, pageSize, skip),
+		innerPager: ac.newPagerFunc(fmt.Sprintf("/%s/Subscriptions?", topicName), pageSize, subFeedLen),
 	}
+}
+
+func subFeedLen(v interface{}) int {
+	feed := v.(**atom.SubscriptionFeed)
+	return len((*feed).Entries)
 }
 
 // ListSubscriptionsRuntimePropertiesOptions can be used to configure the ListSubscriptionsRuntimeProperties method.
 type ListSubscriptionsRuntimePropertiesOptions struct {
-	// Top is the maximum size of each page of results.
-	Top int
-	// Skip is the starting index for the paging operation.
-	Skip int
+	// MaxPageSize is the maximum size of each page of results.
+	MaxPageSize int32
+}
+
+type SubscriptionRuntimePropertiesItem struct {
+	SubscriptionRuntimeProperties
+
+	TopicName        string
+	SubscriptionName string
+}
+
+type ListSubscriptionsRuntimePropertiesResponse struct {
+	// Value is the result of the request.
+	Items []*SubscriptionRuntimePropertiesItem
+	// RawResponse is the *http.Response for the request.
+	RawResponse *http.Response
 }
 
 // SubscriptionRuntimePropertiesPager provides iteration over ListTopicRuntimeProperties pages.
@@ -258,41 +273,36 @@ type SubscriptionRuntimePropertiesPager interface {
 }
 
 // ListSubscriptionsRuntimeProperties lists runtime properties for subscriptions for a topic.
-func (ac *AdminClient) ListSubscriptionsRuntimeProperties(topicName string, options *ListSubscriptionsRuntimePropertiesOptions) SubscriptionRuntimePropertiesPager {
-	var pageSize int
-	var skip int
+func (ac *Client) ListSubscriptionsRuntimeProperties(topicName string, options *ListSubscriptionsRuntimePropertiesOptions) SubscriptionRuntimePropertiesPager {
+	var pageSize int32
 
 	if options != nil {
-		skip = options.Skip
-		pageSize = options.Top
+		pageSize = options.MaxPageSize
 	}
 
 	return &subscriptionRuntimePropertiesPager{
-		innerPager: ac.getSubscriptionPager(topicName, pageSize, skip),
+		innerPager: ac.newPagerFunc(fmt.Sprintf("/%s/Subscriptions?", topicName), pageSize, subFeedLen),
 	}
 }
 
-// SubscriptionExists checks if a subscription exists.
-// Returns true if the subscription is found
-// (false, nil) if the subscription is not found
-// (false, err) if an error occurred while trying to check if the subscription exists.
-func (ac *AdminClient) SubscriptionExists(ctx context.Context, topicName string, subscriptionName string) (bool, error) {
-	_, err := ac.GetSubscription(ctx, topicName, subscriptionName)
+type UpdateSubscriptionResult struct {
+	SubscriptionProperties
+}
 
-	if err == nil {
-		return true, nil
-	}
+type UpdateSubscriptionResponse struct {
+	UpdateSubscriptionResult
 
-	if atom.NotFound(err) {
-		return false, nil
-	}
+	// RawResponse is the *http.Response for the request.
+	RawResponse *http.Response
+}
 
-	return false, err
+type UpdateSubscriptionOptions struct {
+	// For future expansion
 }
 
 // UpdateSubscription updates an existing subscription.
-func (ac *AdminClient) UpdateSubscription(ctx context.Context, topicName string, properties *SubscriptionProperties) (*UpdateSubscriptionResponse, error) {
-	newProps, resp, err := ac.createOrUpdateSubscriptionImpl(ctx, topicName, properties, false)
+func (ac *Client) UpdateSubscription(ctx context.Context, topicName string, subscriptionName string, properties SubscriptionProperties, options *UpdateSubscriptionOptions) (*UpdateSubscriptionResponse, error) {
+	newProps, resp, err := ac.createOrUpdateSubscriptionImpl(ctx, topicName, subscriptionName, &properties, false)
 
 	if err != nil {
 		return nil, err
@@ -300,12 +310,23 @@ func (ac *AdminClient) UpdateSubscription(ctx context.Context, topicName string,
 
 	return &UpdateSubscriptionResponse{
 		RawResponse: resp,
-		Value:       newProps,
+		UpdateSubscriptionResult: UpdateSubscriptionResult{
+			SubscriptionProperties: *newProps,
+		},
 	}, nil
 }
 
+type DeleteSubscriptionOptions struct {
+	// For future expansion
+}
+
+type DeleteSubscriptionResponse struct {
+	// RawResponse is the *http.Response for the request.
+	RawResponse *http.Response
+}
+
 // DeleteSubscription deletes a subscription.
-func (ac *AdminClient) DeleteSubscription(ctx context.Context, topicName string, subscriptionName string) (*DeleteSubscriptionResponse, error) {
+func (ac *Client) DeleteSubscription(ctx context.Context, topicName string, subscriptionName string, options *DeleteSubscriptionOptions) (*DeleteSubscriptionResponse, error) {
 	resp, err := ac.em.Delete(ctx, fmt.Sprintf("/%s/Subscriptions/%s", topicName, subscriptionName))
 	defer atom.CloseRes(ctx, resp)
 	return &DeleteSubscriptionResponse{
@@ -313,9 +334,9 @@ func (ac *AdminClient) DeleteSubscription(ctx context.Context, topicName string,
 	}, err
 }
 
-func (ac *AdminClient) createOrUpdateSubscriptionImpl(ctx context.Context, topicName string, props *SubscriptionProperties, creating bool) (*SubscriptionProperties, *http.Response, error) {
+func (ac *Client) createOrUpdateSubscriptionImpl(ctx context.Context, topicName string, subscriptionName string, props *SubscriptionProperties, creating bool) (*SubscriptionProperties, *http.Response, error) {
 	if props == nil {
-		return nil, nil, errors.New("properties are required and cannot be nil")
+		props = &SubscriptionProperties{}
 	}
 
 	env := newSubscriptionEnvelope(props, ac.em.TokenProvider())
@@ -332,13 +353,13 @@ func (ac *AdminClient) createOrUpdateSubscriptionImpl(ctx context.Context, topic
 	}
 
 	var atomResp *atom.SubscriptionEnvelope
-	resp, err := ac.em.Put(ctx, fmt.Sprintf("/%s/Subscriptions/%s", topicName, props.Name), env, &atomResp, mw...)
+	resp, err := ac.em.Put(ctx, fmt.Sprintf("/%s/Subscriptions/%s", topicName, subscriptionName), env, &atomResp, mw...)
 
 	if err != nil {
 		return nil, nil, err
 	}
 
-	newProps, err := newSubscriptionProperties(topicName, props.Name, &atomResp.Content.SubscriptionDescription)
+	newProps, err := newSubscriptionProperties(&atomResp.Content.SubscriptionDescription)
 
 	if err != nil {
 		return nil, nil, err
@@ -359,6 +380,7 @@ func newSubscriptionEnvelope(props *SubscriptionProperties, tokenProvider auth.T
 		ForwardDeadLetteredMessagesTo:             props.ForwardDeadLetteredMessagesTo,
 		UserMetadata:                              props.UserMetadata,
 		EnableBatchedOperations:                   props.EnableBatchedOperations,
+		AutoDeleteOnIdle:                          utils.DurationToStringPtr(props.AutoDeleteOnIdle),
 		// TODO: when we get rule serialization in place.
 		// DefaultRuleDescription:                    props.DefaultRuleDescription,
 		// are these attributes just not valid anymore?
@@ -367,7 +389,7 @@ func newSubscriptionEnvelope(props *SubscriptionProperties, tokenProvider auth.T
 	return atom.WrapWithSubscriptionEnvelope(desc)
 }
 
-func newSubscriptionProperties(topicName string, subscriptionName string, desc *atom.SubscriptionDescription) (*SubscriptionProperties, error) {
+func newSubscriptionProperties(desc *atom.SubscriptionDescription) (*SubscriptionProperties, error) {
 	defaultMessageTimeToLive, err := utils.ISO8601StringToDuration(desc.DefaultMessageTimeToLive)
 
 	if err != nil {
@@ -380,25 +402,30 @@ func newSubscriptionProperties(topicName string, subscriptionName string, desc *
 		return nil, err
 	}
 
+	autoDeleteOnIdle, err := utils.ISO8601StringToDuration(desc.AutoDeleteOnIdle)
+
+	if err != nil {
+		return nil, err
+	}
+
 	return &SubscriptionProperties{
-		Name:                             subscriptionName,
-		RequiresSession:                  desc.RequiresSession,
-		DeadLetteringOnMessageExpiration: desc.DeadLetteringOnMessageExpiration,
+		RequiresSession:                                 desc.RequiresSession,
+		DeadLetteringOnMessageExpiration:                desc.DeadLetteringOnMessageExpiration,
 		EnableDeadLetteringOnFilterEvaluationExceptions: desc.DeadLetteringOnFilterEvaluationExceptions,
-		MaxDeliveryCount:              desc.MaxDeliveryCount,
-		ForwardTo:                     desc.ForwardTo,
-		ForwardDeadLetteredMessagesTo: desc.ForwardDeadLetteredMessagesTo,
-		UserMetadata:                  desc.UserMetadata,
-		LockDuration:                  lockDuration,
-		DefaultMessageTimeToLive:      defaultMessageTimeToLive,
-		EnableBatchedOperations:       desc.EnableBatchedOperations,
-		Status:                        (*EntityStatus)(desc.Status),
+		MaxDeliveryCount:                                desc.MaxDeliveryCount,
+		ForwardTo:                                       desc.ForwardTo,
+		ForwardDeadLetteredMessagesTo:                   desc.ForwardDeadLetteredMessagesTo,
+		UserMetadata:                                    desc.UserMetadata,
+		LockDuration:                                    lockDuration,
+		DefaultMessageTimeToLive:                        defaultMessageTimeToLive,
+		EnableBatchedOperations:                         desc.EnableBatchedOperations,
+		Status:                                          (*EntityStatus)(desc.Status),
+		AutoDeleteOnIdle:                                autoDeleteOnIdle,
 	}, nil
 }
 
-func newSubscriptionRuntimeProperties(topicName string, subscriptionName string, desc *atom.SubscriptionDescription) *SubscriptionRuntimeProperties {
+func newSubscriptionRuntimeProperties(desc *atom.SubscriptionDescription) *SubscriptionRuntimeProperties {
 	return &SubscriptionRuntimeProperties{
-		Name:                           subscriptionName,
 		TotalMessageCount:              *desc.MessageCount,
 		ActiveMessageCount:             *desc.CountDetails.ActiveMessageCount,
 		DeadLetterMessageCount:         *desc.CountDetails.DeadLetterMessageCount,
@@ -413,7 +440,7 @@ func newSubscriptionRuntimeProperties(topicName string, subscriptionName string,
 // subscriptionPropertiesPager provides iteration over SubscriptionProperties pages.
 type subscriptionPropertiesPager struct {
 	topicName  string
-	innerPager subscriptionFeedPagerFunc
+	innerPager pagerFunc
 
 	lastErr      error
 	lastResponse *ListSubscriptionsResponse
@@ -437,34 +464,38 @@ func (p *subscriptionPropertiesPager) Err() error {
 }
 
 func (p *subscriptionPropertiesPager) getNext(ctx context.Context) (*ListSubscriptionsResponse, error) {
-	feed, resp, err := p.innerPager(ctx)
+	var feed *atom.SubscriptionFeed
+	resp, err := p.innerPager(ctx, &feed)
 
-	if err != nil || len(feed.Entries) == 0 {
+	if err != nil || feed == nil {
 		return nil, err
 	}
 
-	var all []*SubscriptionProperties
+	var all []*SubscriptionPropertiesItem
 
 	for _, env := range feed.Entries {
-		props, err := newSubscriptionProperties(p.topicName, env.Title, &env.Content.SubscriptionDescription)
+		props, err := newSubscriptionProperties(&env.Content.SubscriptionDescription)
 
 		if err != nil {
 			return nil, err
 		}
 
-		all = append(all, props)
+		all = append(all, &SubscriptionPropertiesItem{
+			SubscriptionName:       env.Title,
+			SubscriptionProperties: *props,
+		})
 	}
 
 	return &ListSubscriptionsResponse{
 		RawResponse: resp,
-		Value:       all,
+		Items:       all,
 	}, nil
 }
 
 // subscriptionRuntimePropertiesPager provides iteration over SubscriptionRuntimeProperties pages.
 type subscriptionRuntimePropertiesPager struct {
 	topicName  string
-	innerPager subscriptionFeedPagerFunc
+	innerPager pagerFunc
 
 	lastErr      error
 	lastResponse *ListSubscriptionsRuntimePropertiesResponse
@@ -488,45 +519,25 @@ func (p *subscriptionRuntimePropertiesPager) Err() error {
 }
 
 func (p *subscriptionRuntimePropertiesPager) getNextPage(ctx context.Context) (*ListSubscriptionsRuntimePropertiesResponse, error) {
-	feed, resp, err := p.innerPager(ctx)
+	var feed *atom.SubscriptionFeed
+	resp, err := p.innerPager(ctx, &feed)
 
-	if err != nil || len(feed.Entries) == 0 {
+	if err != nil || feed == nil {
 		return nil, err
 	}
 
-	var all []*SubscriptionRuntimeProperties
+	var all []*SubscriptionRuntimePropertiesItem
 
 	for _, entry := range feed.Entries {
-		all = append(all, newSubscriptionRuntimeProperties(p.topicName, entry.Title, &entry.Content.SubscriptionDescription))
+		all = append(all, &SubscriptionRuntimePropertiesItem{
+			TopicName:                     p.topicName,
+			SubscriptionName:              entry.Title,
+			SubscriptionRuntimeProperties: *newSubscriptionRuntimeProperties(&entry.Content.SubscriptionDescription),
+		})
 	}
 
 	return &ListSubscriptionsRuntimePropertiesResponse{
 		RawResponse: resp,
-		Value:       all,
+		Items:       all,
 	}, nil
-}
-
-type subscriptionFeedPagerFunc func(ctx context.Context) (*atom.SubscriptionFeed, *http.Response, error)
-
-func (ac *AdminClient) getSubscriptionPager(topicName string, top int, skip int) subscriptionFeedPagerFunc {
-	return func(ctx context.Context) (*atom.SubscriptionFeed, *http.Response, error) {
-		url := fmt.Sprintf("%s/Subscriptions?", topicName)
-		if top > 0 {
-			url += fmt.Sprintf("&$top=%d", top)
-		}
-
-		if skip > 0 {
-			url += fmt.Sprintf("&$skip=%d", skip)
-		}
-
-		var atomResp *atom.SubscriptionFeed
-		resp, err := ac.em.Get(ctx, url, &atomResp)
-
-		if err != nil {
-			return nil, nil, err
-		}
-
-		skip += len(atomResp.Entries)
-		return atomResp, resp, nil
-	}
 }

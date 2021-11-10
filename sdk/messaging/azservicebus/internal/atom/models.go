@@ -5,6 +5,7 @@ package atom
 
 import (
 	"encoding/xml"
+	"time"
 
 	"github.com/Azure/go-autorest/autorest/date"
 )
@@ -63,6 +64,7 @@ type (
 		CountDetails                        *CountDetails `xml:"CountDetails,omitempty"`
 		ForwardTo                           *string       `xml:"ForwardTo,omitempty"`
 		ForwardDeadLetteredMessagesTo       *string       `xml:"ForwardDeadLetteredMessagesTo,omitempty"` // ForwardDeadLetteredMessagesTo - absolute URI of the entity to forward dead letter messages
+		UserMetadata                        *string       `xml:"UserMetadata,omitempty"`
 	}
 )
 
@@ -224,5 +226,40 @@ type (
 	Entity struct {
 		Name string
 		ID   string
+	}
+)
+
+type (
+	/*
+		<entry xmlns="http://www.w3.org/2005/Atom">
+			<id>https://<my servicebus name>.servicebus.windows.net/$namespaceinfo?api-version=2017-04</id>
+			<title type="text"><my servicebus name></title>
+			<updated>2021-11-07T23:41:24Z</updated>
+			<author>
+				<name><my servicebus name></name>
+			</author>
+			<link rel="self" href="https://<my servicebus name>.servicebus.windows.net/$namespaceinfo?api-version=2017-04"></link>
+			<content type="application/xml">
+				<NamespaceInfo xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+					<CreatedTime>2019-12-03T22:18:04.09Z</CreatedTime>
+					<MessagingSKU>Standard</MessagingSKU>
+					<ModifiedTime>2021-08-19T23:37:00.75Z</ModifiedTime>
+					<Name><my servicebus name></Name>
+					<NamespaceType>Messaging</NamespaceType>
+				</NamespaceInfo>
+			</content>
+		</entry>
+	*/
+
+	NamespaceEntry struct {
+		NamespaceInfo *NamespaceInfo `xml:"content>NamespaceInfo"`
+	}
+
+	NamespaceInfo struct {
+		CreatedTime    time.Time `xml:"CreatedTime"`
+		MessagingSKU   string    `xml:"MessagingSKU"`
+		MessagingUnits *int64    `xml:"MessagingUnits"`
+		ModifiedTime   time.Time `xml:"ModifiedTime"`
+		Name           string    `xml:"Name"`
 	}
 )

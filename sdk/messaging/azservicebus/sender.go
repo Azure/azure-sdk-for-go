@@ -5,8 +5,6 @@ package azservicebus
 
 import (
 	"context"
-	"errors"
-	"fmt"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
@@ -22,25 +20,19 @@ type (
 		cleanupOnClose func()
 		links          internal.AMQPLinks
 	}
-
-	// SendableMessage can be sent using `Sender.SendMessage` or `Sender.SendMessages`.
-	// Message implements this interface.
-	SendableMessage interface {
-		toAMQPMessage() *amqp.Message
-		messageType() string
-	}
 )
 
 // tracing
 const (
-	spanNameSendMessageFmt string = "sb.sender.SendMessage.%s"
+	spanNameSendMessage string = "sb.sender.SendMessage"
+	spanNameSendBatch   string = "sb.sender.SendBatch"
 )
 
 // MessageBatchOptions contains options for the `Sender.NewMessageBatch` function.
 type MessageBatchOptions struct {
-	// MaxSizeInBytes overrides the max size (in bytes) for a batch.
+	// MaxBytes overrides the max size (in bytes) for a batch.
 	// By default NewMessageBatch will use the max message size provided by the service.
-	MaxSizeInBytes int
+	MaxBytes int32
 }
 
 // NewMessageBatch can be used to create a batch that contain multiple
@@ -53,18 +45,18 @@ func (s *Sender) NewMessageBatch(ctx context.Context, options *MessageBatchOptio
 		return nil, err
 	}
 
-	maxBytes := int(sender.MaxMessageSize())
+	maxBytes := int32(sender.MaxMessageSize())
 
-	if options != nil && options.MaxSizeInBytes != 0 {
-		maxBytes = options.MaxSizeInBytes
+	if options != nil && options.MaxBytes != 0 {
+		maxBytes = options.MaxBytes
 	}
 
 	return &MessageBatch{maxBytes: maxBytes}, nil
 }
 
-// SendMessage sends a SendableMessage (Message) to a queue or topic.
-func (s *Sender) SendMessage(ctx context.Context, message SendableMessage) error {
-	ctx, span := s.startProducerSpanFromContext(ctx, fmt.Sprintf(spanNameSendMessageFmt, message.messageType()))
+// SendMessage sends a Message to a queue or topic.
+func (s *Sender) SendMessage(ctx context.Context, message *Message) error {
+	ctx, span := s.startProducerSpanFromContext(ctx, spanNameSendMessage)
 	defer span.End()
 
 	sender, _, _, _, err := s.links.Get(ctx)
@@ -79,7 +71,7 @@ func (s *Sender) SendMessage(ctx context.Context, message SendableMessage) error
 // SendMessageBatch sends a MessageBatch to a queue or topic.
 // Message batches can be created using `Sender.NewMessageBatch`.
 func (s *Sender) SendMessageBatch(ctx context.Context, batch *MessageBatch) error {
-	ctx, span := s.startProducerSpanFromContext(ctx, fmt.Sprintf(spanNameSendMessageFmt, "batch"))
+	ctx, span := s.startProducerSpanFromContext(ctx, spanNameSendBatch)
 	defer span.End()
 
 	sender, _, _, _, err := s.links.Get(ctx)
@@ -91,74 +83,20 @@ func (s *Sender) SendMessageBatch(ctx context.Context, batch *MessageBatch) erro
 	return sender.Send(ctx, batch.toAMQPMessage())
 }
 
-// SendMessages sends messages to a queue or topic, using a single MessageBatch.
-// If the messages cannot fit into a single MessageBatch this function will fail.
-func (s *Sender) SendMessages(ctx context.Context, messages []*Message) error {
-	batch, err := s.NewMessageBatch(ctx, nil)
-
-	if err != nil {
-		return err
-	}
-
-	for _, m := range messages {
-		added, err := batch.Add(m)
-
-		if err != nil {
-			return err
-		}
-
-		if !added {
-			// to avoid partial failure scenarios we just bail if the messages are too large to fit
-			// into a single batch.
-			return errors.New("Messages were too big to fit in a single batch. Remove some messages and try again or create your own batch using Sender.NewMessageBatch(), which gives more fine-grained control.")
-		}
-	}
-
-	return s.SendMessageBatch(ctx, batch)
-}
-
-// ScheduleMessage schedules a message to appear on Service Bus Queue/Subscription at a later time.
-// Returns the sequence number of the message that was scheduled. If the message hasn't been
-// delivered you can cancel using `Receiver.CancelScheduleMessage(s)`
-func (s *Sender) ScheduleMessage(ctx context.Context, message SendableMessage, scheduledEnqueueTime time.Time) (int64, error) {
-	sequenceNumbers, err := s.ScheduleMessages(ctx, []SendableMessage{message}, scheduledEnqueueTime)
-
-	if err != nil {
-		return 0, err
-	}
-
-	return sequenceNumbers[0], nil
-}
-
-// ScheduleMessages schedules a slice of messages to appear on Service Bus Queue/Subscription at a later time.
+// ScheduleMessages schedules a slice of Messages to appear on Service Bus Queue/Subscription at a later time.
 // Returns the sequence numbers of the messages that were scheduled.  Messages that haven't been
 // delivered can be cancelled using `Receiver.CancelScheduleMessage(s)`
-func (s *Sender) ScheduleMessages(ctx context.Context, messages []SendableMessage, scheduledEnqueueTime time.Time) ([]int64, error) {
-	_, _, mgmt, _, err := s.links.Get(ctx)
-
-	if err != nil {
-		return nil, err
-	}
-
+func (s *Sender) ScheduleMessages(ctx context.Context, messages []*Message, scheduledEnqueueTime time.Time) ([]int64, error) {
 	var amqpMessages []*amqp.Message
 
 	for _, m := range messages {
 		amqpMessages = append(amqpMessages, m.toAMQPMessage())
 	}
 
-	return mgmt.ScheduleMessages(ctx, scheduledEnqueueTime, amqpMessages...)
+	return s.scheduleAMQPMessages(ctx, amqpMessages, scheduledEnqueueTime)
 }
 
-// CancelScheduledMessage cancels a message that was scheduled.
-func (s *Sender) CancelScheduledMessage(ctx context.Context, sequenceNumber int64) error {
-	_, _, mgmt, _, err := s.links.Get(ctx)
-
-	if err != nil {
-		return err
-	}
-
-	return mgmt.CancelScheduled(ctx, sequenceNumber)
-}
+// MessageBatch changes
 
 // CancelScheduledMessages cancels multiple messages that were scheduled.
 func (s *Sender) CancelScheduledMessages(ctx context.Context, sequenceNumber []int64) error {
@@ -175,6 +113,16 @@ func (s *Sender) CancelScheduledMessages(ctx context.Context, sequenceNumber []i
 func (s *Sender) Close(ctx context.Context) error {
 	s.cleanupOnClose()
 	return s.links.Close(ctx, true)
+}
+
+func (s *Sender) scheduleAMQPMessages(ctx context.Context, messages []*amqp.Message, scheduledEnqueueTime time.Time) ([]int64, error) {
+	_, _, mgmt, _, err := s.links.Get(ctx)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return mgmt.ScheduleMessages(ctx, scheduledEnqueueTime, messages...)
 }
 
 func (sender *Sender) createSenderLink(ctx context.Context, session internal.AMQPSession) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error) {

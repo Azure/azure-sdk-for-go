@@ -1,12 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package azservicebus
+package admin
 
 import (
 	"context"
-	"errors"
-	"fmt"
 	"net/http"
 	"time"
 
@@ -18,9 +16,6 @@ import (
 
 // QueueProperties represents the static properties of the queue.
 type QueueProperties struct {
-	// Name of the queue relative to the namespace base address.
-	Name string
-
 	// LockDuration is the duration a message is locked when using the PeekLock receive mode.
 	// Default is 1 minute.
 	LockDuration *time.Duration
@@ -74,13 +69,13 @@ type QueueProperties struct {
 
 	// ForwardDeadLetteredMessagesTo is the absolute URI of the entity to forward dead letter messages
 	ForwardDeadLetteredMessagesTo *string
+
+	// UserMetadata is custom metadata that user can associate with the queue.
+	UserMetadata *string
 }
 
 // QueueRuntimeProperties represent dynamic properties of a queue, such as the ActiveMessageCount.
 type QueueRuntimeProperties struct {
-	// Name is the name of the queue.
-	Name string
-
 	// SizeInBytes - The size of the queue, in bytes.
 	SizeInBytes int64
 
@@ -113,125 +108,55 @@ type QueueRuntimeProperties struct {
 	TransferMessageCount int32
 }
 
-type AddQueueResponse struct {
-	// Value is the result of the request.
-	Value *QueueProperties
+type CreateQueueOptions struct {
+	// for future expansion
+}
+
+type CreateQueueResult struct {
+	QueueProperties
+}
+
+type CreateQueueResponse struct {
+	CreateQueueResult
+
 	// RawResponse is the *http.Response for the request.
 	RawResponse *http.Response
-}
-
-type AddQueueWithPropertiesResponse struct {
-	// Value is the result of the request.
-	Value *QueueProperties
-	// RawResponse is the *http.Response for the request.
-	RawResponse *http.Response
-}
-
-type GetQueueResponse struct {
-	// Value is the result of the request.
-	Value *QueueProperties
-	// RawResponse is the *http.Response for the request.
-	RawResponse *http.Response
-}
-
-type UpdateQueueResponse struct {
-	// Value is the result of the request.
-	Value *QueueProperties
-	// RawResponse is the *http.Response for the request.
-	RawResponse *http.Response
-}
-
-type GetQueueRuntimePropertiesResponse struct {
-	// Value is the result of the request.
-	Value *QueueRuntimeProperties
-	// RawResponse is the *http.Response for the request.
-	RawResponse *http.Response
-}
-
-type DeleteQueueResponse struct {
-	RawResponse *http.Response
-}
-
-// AddQueue creates a queue using defaults for all options.
-func (ac *AdminClient) AddQueue(ctx context.Context, queueName string) (*AddQueueResponse, error) {
-	return ac.AddQueueWithProperties(ctx, &QueueProperties{
-		Name: queueName,
-	})
 }
 
 // CreateQueue creates a queue with configurable properties.
-func (ac *AdminClient) AddQueueWithProperties(ctx context.Context, properties *QueueProperties) (*AddQueueResponse, error) {
-	props, resp, err := ac.createOrUpdateQueueImpl(ctx, properties, true)
-
-	return &AddQueueResponse{
-		RawResponse: resp,
-		Value:       props,
-	}, err
-}
-
-// GetQueue gets a queue by name.
-func (ac *AdminClient) GetQueue(ctx context.Context, queueName string) (*GetQueueResponse, error) {
-	var atomResp *atom.QueueEnvelope
-	resp, err := ac.em.Get(ctx, "/"+queueName, &atomResp)
+func (ac *Client) CreateQueue(ctx context.Context, queueName string, properties *QueueProperties, options *CreateQueueOptions) (*CreateQueueResponse, error) {
+	newProps, resp, err := ac.createOrUpdateQueueImpl(ctx, queueName, properties, true)
 
 	if err != nil {
 		return nil, err
 	}
 
-	props, err := newQueueProperties(atomResp.Title, &atomResp.Content.QueueDescription)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return &GetQueueResponse{
+	return &CreateQueueResponse{
 		RawResponse: resp,
-		Value:       props,
+		CreateQueueResult: CreateQueueResult{
+			QueueProperties: *newProps,
+		},
 	}, nil
 }
 
-// GetQueueRuntimeProperties gets runtime properties of a queue, like the SizeInBytes, or ActiveMessageCount.
-func (ac *AdminClient) GetQueueRuntimeProperties(ctx context.Context, queueName string) (*GetQueueRuntimePropertiesResponse, error) {
-	var atomResp *atom.QueueEnvelope
-	resp, err := ac.em.Get(ctx, "/"+queueName, &atomResp)
-
-	if err != nil {
-		return nil, err
-	}
-
-	props, err := newQueueRuntimeProperties(atomResp.Title, &atomResp.Content.QueueDescription), nil
-
-	if err != nil {
-		return nil, err
-	}
-
-	return &GetQueueRuntimePropertiesResponse{
-		RawResponse: resp,
-		Value:       props,
-	}, nil
+type UpdateQueueResult struct {
+	QueueProperties
 }
 
-// QueueExists checks if a queue exists.
-// Returns true if the queue is found
-// (false, nil) if the queue is not found
-// (false, err) if an error occurred while trying to check if the queue exists.
-func (ac *AdminClient) QueueExists(ctx context.Context, queueName string) (bool, error) {
-	_, err := ac.GetQueue(ctx, queueName)
+type UpdateQueueResponse struct {
+	UpdateQueueResult
 
-	if err == nil {
-		return true, nil
-	}
+	// RawResponse is the *http.Response for the request.
+	RawResponse *http.Response
+}
 
-	if atom.NotFound(err) {
-		return false, nil
-	}
-
-	return false, err
+type UpdateQueueOptions struct {
+	// for future expansion
 }
 
 // UpdateQueue updates an existing queue.
-func (ac *AdminClient) UpdateQueue(ctx context.Context, properties *QueueProperties) (*UpdateQueueResponse, error) {
-	newProps, resp, err := ac.createOrUpdateQueueImpl(ctx, properties, false)
+func (ac *Client) UpdateQueue(ctx context.Context, queueName string, properties QueueProperties, options *UpdateQueueOptions) (*UpdateQueueResponse, error) {
+	newProps, resp, err := ac.createOrUpdateQueueImpl(ctx, queueName, &properties, false)
 
 	if err != nil {
 		return nil, err
@@ -239,12 +164,90 @@ func (ac *AdminClient) UpdateQueue(ctx context.Context, properties *QueuePropert
 
 	return &UpdateQueueResponse{
 		RawResponse: resp,
-		Value:       newProps,
+		UpdateQueueResult: UpdateQueueResult{
+			QueueProperties: *newProps,
+		},
 	}, err
 }
 
+type GetQueueResult struct {
+	QueueProperties
+}
+
+type GetQueueResponse struct {
+	GetQueueResult
+
+	// RawResponse is the *http.Response for the request.
+	RawResponse *http.Response
+}
+
+// GetQueue gets a queue by name.
+func (ac *Client) GetQueue(ctx context.Context, queueName string) (*GetQueueResponse, error) {
+	var atomResp *atom.QueueEnvelope
+	resp, err := ac.em.Get(ctx, "/"+queueName, &atomResp)
+
+	if err != nil {
+		return nil, err
+	}
+
+	props, err := newQueueProperties(&atomResp.Content.QueueDescription)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &GetQueueResponse{
+		RawResponse: resp,
+		GetQueueResult: GetQueueResult{
+			QueueProperties: *props,
+		},
+	}, nil
+}
+
+type GetQueueRuntimePropertiesResult struct {
+	QueueRuntimeProperties
+}
+
+type GetQueueRuntimePropertiesResponse struct {
+	GetQueueRuntimePropertiesResult
+
+	// RawResponse is the *http.Response for the request.
+	RawResponse *http.Response
+}
+
+// GetQueueRuntimeProperties gets runtime properties of a queue, like the SizeInBytes, or ActiveMessageCount.
+func (ac *Client) GetQueueRuntimeProperties(ctx context.Context, queueName string) (*GetQueueRuntimePropertiesResponse, error) {
+	var atomResp *atom.QueueEnvelope
+	resp, err := ac.em.Get(ctx, "/"+queueName, &atomResp)
+
+	if err != nil {
+		return nil, err
+	}
+
+	props, err := newQueueRuntimeProperties(&atomResp.Content.QueueDescription), nil
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &GetQueueRuntimePropertiesResponse{
+		RawResponse: resp,
+		GetQueueRuntimePropertiesResult: GetQueueRuntimePropertiesResult{
+			QueueRuntimeProperties: *props,
+		},
+	}, nil
+}
+
+type DeleteQueueResponse struct {
+	RawResponse *http.Response
+}
+
+type DeleteQueueOptions struct {
+	// for future expansion
+}
+
 // DeleteQueue deletes a queue.
-func (ac *AdminClient) DeleteQueue(ctx context.Context, queueName string) (*DeleteQueueResponse, error) {
+func (ac *Client) DeleteQueue(ctx context.Context, queueName string, options *DeleteQueueOptions) (*DeleteQueueResponse, error) {
 	resp, err := ac.em.Delete(ctx, "/"+queueName)
 	defer atom.CloseRes(ctx, resp)
 	return &DeleteQueueResponse{RawResponse: resp}, err
@@ -252,14 +255,12 @@ func (ac *AdminClient) DeleteQueue(ctx context.Context, queueName string) (*Dele
 
 // ListQueuesOptions can be used to configure the ListQueues method.
 type ListQueuesOptions struct {
-	// Top is the maximum size of each page of results.
-	Top int
-	// Skip is the starting index for the paging operation.
-	Skip int
+	// MaxPageSize is the maximum size of each page of results.
+	MaxPageSize int32
 }
 
-// QueuePropertiesPager provides iteration over ListQueueProperties pages.
-type QueuePropertiesPager interface {
+// QueueItemPager provides iteration over ListQueueProperties pages.
+type QueueItemPager interface {
 	// NextPage returns true if the pager advanced to the next page.
 	// Returns false if there are no more pages or an error occurred.
 	NextPage(context.Context) bool
@@ -271,37 +272,52 @@ type QueuePropertiesPager interface {
 	Err() error
 }
 
+type ListQueuesResult struct {
+	Items []*QueueItem
+}
+
 type ListQueuesResponse struct {
+	ListQueuesResult
 	RawResponse *http.Response
-	Value       []*QueueProperties
+}
+
+type QueueItem struct {
+	QueueName string
+	QueueProperties
 }
 
 // ListQueues lists queues.
-func (ac *AdminClient) ListQueues(options *ListQueuesOptions) QueuePropertiesPager {
-	var pageSize int
-	var skip int
+func (ac *Client) ListQueues(options *ListQueuesOptions) QueueItemPager {
+	var pageSize int32
 
 	if options != nil {
-		skip = options.Skip
-		pageSize = options.Top
+		pageSize = options.MaxPageSize
 	}
 
 	return &queuePropertiesPager{
-		innerPager: ac.getQueuePager(pageSize, skip),
+		innerPager: ac.newPagerFunc("/$Resources/Queues", pageSize, queueFeedLen),
 	}
+}
+
+func queueFeedLen(v interface{}) int {
+	feed := v.(**atom.QueueFeed)
+	return len((*feed).Entries)
 }
 
 // ListQueuesRuntimePropertiesOptions can be used to configure the ListQueuesRuntimeProperties method.
 type ListQueuesRuntimePropertiesOptions struct {
-	// Top is the maximum size of each page of results.
-	Top int
-	// Skip is the starting index for the paging operation.
-	Skip int
+	// MaxPageSize is the maximum size of each page of results.
+	MaxPageSize int32
 }
 
 type ListQueuesRuntimePropertiesResponse struct {
-	Value       []*QueueRuntimeProperties
+	Items       []*QueueRuntimePropertiesItem
 	RawResponse *http.Response
+}
+
+type QueueRuntimePropertiesItem struct {
+	QueueName string
+	QueueRuntimeProperties
 }
 
 // QueueRuntimePropertiesPager provides iteration over ListQueueRuntimeProperties pages.
@@ -318,23 +334,21 @@ type QueueRuntimePropertiesPager interface {
 }
 
 // ListQueuesRuntimeProperties lists runtime properties for queues.
-func (ac *AdminClient) ListQueuesRuntimeProperties(options *ListQueuesRuntimePropertiesOptions) QueueRuntimePropertiesPager {
-	var pageSize int
-	var skip int
+func (ac *Client) ListQueuesRuntimeProperties(options *ListQueuesRuntimePropertiesOptions) QueueRuntimePropertiesPager {
+	var pageSize int32
 
 	if options != nil {
-		skip = options.Skip
-		pageSize = options.Top
+		pageSize = options.MaxPageSize
 	}
 
 	return &queueRuntimePropertiesPager{
-		innerPager: ac.getQueuePager(pageSize, skip),
+		innerPager: ac.newPagerFunc("/$Resources/Queues", pageSize, queueFeedLen),
 	}
 }
 
-func (ac *AdminClient) createOrUpdateQueueImpl(ctx context.Context, props *QueueProperties, creating bool) (*QueueProperties, *http.Response, error) {
+func (ac *Client) createOrUpdateQueueImpl(ctx context.Context, queueName string, props *QueueProperties, creating bool) (*QueueProperties, *http.Response, error) {
 	if props == nil {
-		return nil, nil, errors.New("properties are required and cannot be nil")
+		props = &QueueProperties{}
 	}
 
 	env, mw := newQueueEnvelope(props, ac.em.TokenProvider())
@@ -350,13 +364,13 @@ func (ac *AdminClient) createOrUpdateQueueImpl(ctx context.Context, props *Queue
 	}
 
 	var atomResp *atom.QueueEnvelope
-	resp, err := ac.em.Put(ctx, "/"+props.Name, env, &atomResp, mw...)
+	resp, err := ac.em.Put(ctx, "/"+queueName, env, &atomResp, mw...)
 
 	if err != nil {
 		return nil, nil, err
 	}
 
-	newProps, err := newQueueProperties(props.Name, &atomResp.Content.QueueDescription)
+	newProps, err := newQueueProperties(&atomResp.Content.QueueDescription)
 
 	if err != nil {
 		return nil, nil, err
@@ -367,7 +381,7 @@ func (ac *AdminClient) createOrUpdateQueueImpl(ctx context.Context, props *Queue
 
 // queuePropertiesPager provides iteration over QueueProperties pages.
 type queuePropertiesPager struct {
-	innerPager queueFeedPagerFunc
+	innerPager pagerFunc
 
 	lastErr      error
 	lastResponse *ListQueuesResponse
@@ -391,37 +405,40 @@ func (p *queuePropertiesPager) Err() error {
 }
 
 func (p *queuePropertiesPager) getNextPage(ctx context.Context) (*ListQueuesResponse, error) {
-	feed, resp, err := p.innerPager(ctx)
+	var feed *atom.QueueFeed
+	resp, err := p.innerPager(ctx, &feed)
 
-	if err != nil {
+	if err != nil || feed == nil {
 		return nil, err
 	}
 
-	if feed == nil {
-		return nil, nil
-	}
-
-	var all []*QueueProperties
+	var all []*QueueItem
 
 	for _, env := range feed.Entries {
-		props, err := newQueueProperties(env.Title, &env.Content.QueueDescription)
+		queueName := env.Title
+		props, err := newQueueProperties(&env.Content.QueueDescription)
 
 		if err != nil {
 			return nil, err
 		}
 
-		all = append(all, props)
+		all = append(all, &QueueItem{
+			QueueName:       queueName,
+			QueueProperties: *props,
+		})
 	}
 
 	return &ListQueuesResponse{
 		RawResponse: resp,
-		Value:       all,
+		ListQueuesResult: ListQueuesResult{
+			Items: all,
+		},
 	}, nil
 }
 
 // queueRuntimePropertiesPager provides iteration over QueueRuntimeProperties pages.
 type queueRuntimePropertiesPager struct {
-	innerPager   queueFeedPagerFunc
+	innerPager   pagerFunc
 	lastErr      error
 	lastResponse *ListQueuesRuntimePropertiesResponse
 }
@@ -434,21 +451,25 @@ func (p *queueRuntimePropertiesPager) NextPage(ctx context.Context) bool {
 }
 
 func (p *queueRuntimePropertiesPager) getNextPage(ctx context.Context) (*ListQueuesRuntimePropertiesResponse, error) {
-	feed, resp, err := p.innerPager(ctx)
+	var feed *atom.QueueFeed
+	resp, err := p.innerPager(ctx, &feed)
 
 	if err != nil || feed == nil {
 		return nil, err
 	}
 
-	var all []*QueueRuntimeProperties
+	var all []*QueueRuntimePropertiesItem
 
 	for _, entry := range feed.Entries {
-		all = append(all, newQueueRuntimeProperties(entry.Title, &entry.Content.QueueDescription))
+		all = append(all, &QueueRuntimePropertiesItem{
+			QueueName:              entry.Title,
+			QueueRuntimeProperties: *newQueueRuntimeProperties(&entry.Content.QueueDescription),
+		})
 	}
 
 	return &ListQueuesRuntimePropertiesResponse{
 		RawResponse: resp,
-		Value:       all,
+		Items:       all,
 	}, nil
 }
 
@@ -460,35 +481,6 @@ func (p *queueRuntimePropertiesPager) PageResponse() *ListQueuesRuntimePropertie
 // Err returns the last error encountered while paging.
 func (p *queueRuntimePropertiesPager) Err() error {
 	return p.lastErr
-}
-
-type queueFeedPagerFunc func(ctx context.Context) (*atom.QueueFeed, *http.Response, error)
-
-func (ac *AdminClient) getQueuePager(top int, skip int) queueFeedPagerFunc {
-	return func(ctx context.Context) (*atom.QueueFeed, *http.Response, error) {
-		url := "/$Resources/Queues?"
-		if top > 0 {
-			url += fmt.Sprintf("&$top=%d", top)
-		}
-
-		if skip > 0 {
-			url += fmt.Sprintf("&$skip=%d", skip)
-		}
-
-		var atomResp *atom.QueueFeed
-		resp, err := ac.em.Get(ctx, url, &atomResp)
-
-		if err != nil {
-			return nil, nil, err
-		}
-
-		if len(atomResp.Entries) == 0 {
-			return nil, nil, nil
-		}
-
-		skip += len(atomResp.Entries)
-		return atomResp, resp, nil
-	}
 }
 
 func newQueueEnvelope(props *QueueProperties, tokenProvider auth.TokenProvider) (*atom.QueueEnvelope, []atom.MiddlewareFunc) {
@@ -507,12 +499,13 @@ func newQueueEnvelope(props *QueueProperties, tokenProvider auth.TokenProvider) 
 		EnablePartitioning:                  props.EnablePartitioning,
 		ForwardTo:                           props.ForwardTo,
 		ForwardDeadLetteredMessagesTo:       props.ForwardDeadLetteredMessagesTo,
+		UserMetadata:                        props.UserMetadata,
 	}
 
 	return atom.WrapWithQueueEnvelope(qpr, tokenProvider)
 }
 
-func newQueueProperties(name string, desc *atom.QueueDescription) (*QueueProperties, error) {
+func newQueueProperties(desc *atom.QueueDescription) (*QueueProperties, error) {
 	lockDuration, err := utils.ISO8601StringToDuration(desc.LockDuration)
 
 	if err != nil {
@@ -538,7 +531,6 @@ func newQueueProperties(name string, desc *atom.QueueDescription) (*QueuePropert
 	}
 
 	queuePropsResult := &QueueProperties{
-		Name:                                name,
 		LockDuration:                        lockDuration,
 		MaxSizeInMegabytes:                  desc.MaxSizeInMegabytes,
 		RequiresDuplicateDetection:          desc.RequiresDuplicateDetection,
@@ -553,14 +545,14 @@ func newQueueProperties(name string, desc *atom.QueueDescription) (*QueuePropert
 		EnablePartitioning:                  desc.EnablePartitioning,
 		ForwardTo:                           desc.ForwardTo,
 		ForwardDeadLetteredMessagesTo:       desc.ForwardDeadLetteredMessagesTo,
+		UserMetadata:                        desc.UserMetadata,
 	}
 
 	return queuePropsResult, nil
 }
 
-func newQueueRuntimeProperties(name string, desc *atom.QueueDescription) *QueueRuntimeProperties {
+func newQueueRuntimeProperties(desc *atom.QueueDescription) *QueueRuntimeProperties {
 	return &QueueRuntimeProperties{
-		Name:                           name,
 		SizeInBytes:                    int64OrZero(desc.SizeInBytes),
 		CreatedAt:                      dateTimeToTime(desc.CreatedAt),
 		UpdatedAt:                      dateTimeToTime(desc.UpdatedAt),

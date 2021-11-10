@@ -1,14 +1,24 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 0.3.0 (Unreleased)
 
 ### Features Added
 
+- AbandonMessage and DeferMessage now take an additional `PropertiesToModify` option, allowing
+  the message properties to be modified when they are settled.
+
 ### Breaking Changes
 
-### Bugs Fixed
-
-### Other Changes
+- ReceivedMessage.Body is now a function that returns a ([]byte, error), rather than being a field.
+  This protects against a potential data-loss scenario where a message is received with a payload 
+  encoded in the sequence or value sections of an AMQP message, which cannot be prpoerly represented
+  in the .Body. This will now return an error.
+- Functions that have options or might have options in the future have an additional *options parameter.
+  As usual, passing 'nil' ignores the options, and will cause the function to use defaults.
+- MessageBatch.Add() has been renamed to MessageBatch.AddMessage(). AddMessage() now returns only an `error`, 
+  with a sentinel error (ErrMessageTooLarge) signaling that the batch cannot fit a new message.
+- Sender.SendMessages() has been removed in favor of simplifications made in MessageBatch.
+- AdminClient has been moved into the `admin` subpackage.
 
 ## 0.2.0 (2021-11-02)
 

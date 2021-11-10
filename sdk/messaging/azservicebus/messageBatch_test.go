@@ -13,24 +13,22 @@ func TestMessageBatchUnitTests(t *testing.T) {
 	t.Run("addMessages", func(t *testing.T) {
 		mb := newMessageBatch(1000)
 
-		added, err := mb.Add(&Message{
+		err := mb.AddMessage(&Message{
 			Body: []byte("hello world"),
 		})
 
 		require.NoError(t, err)
-		require.True(t, added)
-		require.EqualValues(t, 1, mb.Len())
-		require.EqualValues(t, 195, mb.Size())
+		require.EqualValues(t, 1, mb.NumMessages())
+		require.EqualValues(t, 195, mb.NumBytes())
 	})
 
 	t.Run("addTooManyMessages", func(t *testing.T) {
 		mb := newMessageBatch(1)
 
-		added, err := mb.Add(&Message{
+		err := mb.AddMessage(&Message{
 			Body: []byte("hello world"),
 		})
 
-		require.False(t, added)
-		require.Nil(t, err)
+		require.EqualError(t, err, ErrMessageTooLarge.Error())
 	})
 }

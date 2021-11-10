@@ -25,7 +25,7 @@ func TestMessageUnitTest(t *testing.T) {
 		scheduledEnqueuedTime := time.Now()
 
 		message = &Message{
-			ID:                      "message id",
+			MessageID:               "message id",
 			Body:                    []byte("the body"),
 			PartitionKey:            to.StringPtr("partition key"),
 			TransactionPartitionKey: to.StringPtr("via partition key"),
@@ -132,7 +132,7 @@ func TestAMQPMessageToMessage(t *testing.T) {
 
 	msg := newReceivedMessage(context.Background(), amqpMsg)
 
-	require.EqualValues(t, msg.ID, amqpMsg.Properties.MessageID, "messageID")
+	require.EqualValues(t, msg.MessageID, amqpMsg.Properties.MessageID, "messageID")
 	require.EqualValues(t, *msg.SessionID, amqpMsg.Properties.GroupID, "groupID")
 	require.EqualValues(t, msg.ContentType, amqpMsg.Properties.ContentType, "contentType")
 	require.EqualValues(t, msg.CorrelationID, amqpMsg.Properties.CorrelationID, "correlation")
@@ -141,7 +141,10 @@ func TestAMQPMessageToMessage(t *testing.T) {
 	require.EqualValues(t, *msg.TimeToLive, amqpMsg.Header.TTL, "ttl")
 	require.EqualValues(t, msg.Subject, amqpMsg.Properties.Subject, "subject")
 	require.EqualValues(t, msg.To, amqpMsg.Properties.To, "to")
-	require.EqualValues(t, msg.Body, amqpMsg.Data[0], "data")
+
+	body, err := msg.Body()
+	require.NoError(t, err)
+	require.EqualValues(t, body, amqpMsg.Data[0], "data")
 
 	expectedAMQPEncodedLockTokenGUID := [16]byte{187, 49, 89, 205, 253, 254, 205, 77, 162, 38, 172, 76, 45, 235, 91, 225}
 

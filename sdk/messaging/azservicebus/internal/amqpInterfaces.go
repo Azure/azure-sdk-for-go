@@ -16,6 +16,7 @@ type AMQPReceiver interface {
 	IssueCredit(credit uint32) error
 	DrainCredit(ctx context.Context) error
 	Receive(ctx context.Context) (*amqp.Message, error)
+	Prefetched(ctx context.Context) (*amqp.Message, error)
 
 	// settlement functions
 	AcceptMessage(ctx context.Context, msg *amqp.Message) error

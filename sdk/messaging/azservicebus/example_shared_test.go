@@ -26,7 +26,6 @@ func exitOnError(message string, err error) {
 var connectionString string
 
 var client *azservicebus.Client
-var adminClient *azservicebus.AdminClient
 var sender *azservicebus.Sender
 var receiver *azservicebus.Receiver
 

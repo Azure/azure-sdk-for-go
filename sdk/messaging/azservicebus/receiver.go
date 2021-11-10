@@ -33,8 +33,6 @@ const (
 type SubQueue int
 
 const (
-	// SubQueueNone means no sub queue.
-	SubQueueNone SubQueue = 0
 	// SubQueueDeadLetter targets the dead letter queue for a queue or subscription.
 	SubQueueDeadLetter SubQueue = 1
 	// SubQueueTransfer targets the transfer dead letter queue for a queue or subscription.
@@ -140,9 +138,9 @@ func newReceiver(ns internal.NamespaceWithNewAMQPLinks, entity *entity, cleanupO
 	return receiver, nil
 }
 
-// ReceiveOptions are options for the ReceiveMessages function.
-type ReceiveOptions struct {
-	maxWaitTimeAfterFirstMessage time.Duration
+// ReceiveMessagesOptions are options for the ReceiveMessages function.
+type ReceiveMessagesOptions struct {
+	// For future expansion
 }
 
 // ReceiveMessages receives a fixed number of messages, up to numMessages.
@@ -150,7 +148,7 @@ type ReceiveOptions struct {
 // 1. Cancelling the `ctx` parameter.
 // 2. An implicit timeout (default: 1 second) that starts after the first
 //    message has been received.
-func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options *ReceiveOptions) ([]*ReceivedMessage, error) {
+func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options *ReceiveMessagesOptions) ([]*ReceivedMessage, error) {
 	r.mu.Lock()
 	isReceiving := r.receiving
 
@@ -278,14 +276,14 @@ func (r *Receiver) CompleteMessage(ctx context.Context, message *ReceivedMessage
 // AbandonMessage will cause a message to be returned to the queue or subscription.
 // This will increment its delivery count, and potentially cause it to be dead lettered
 // depending on your queue or subscription's configuration.
-func (r *Receiver) AbandonMessage(ctx context.Context, message *ReceivedMessage) error {
-	return r.settler.AbandonMessage(ctx, message)
+func (r *Receiver) AbandonMessage(ctx context.Context, message *ReceivedMessage, options *AbandonMessageOptions) error {
+	return r.settler.AbandonMessage(ctx, message, options)
 }
 
 // DeferMessage will cause a message to be deferred. Deferred messages
 // can be received using `Receiver.ReceiveDeferredMessages`.
-func (r *Receiver) DeferMessage(ctx context.Context, message *ReceivedMessage) error {
-	return r.settler.DeferMessage(ctx, message)
+func (r *Receiver) DeferMessage(ctx context.Context, message *ReceivedMessage, options *DeferMessageOptions) error {
+	return r.settler.DeferMessage(ctx, message, options)
 }
 
 // DeadLetterMessage settles a message by moving it to the dead letter queue for a
@@ -311,7 +309,7 @@ func (r *Receiver) receiveDeferredMessage(ctx context.Context, sequenceNumber in
 }
 
 // receiveMessage receives a single message, waiting up to `ReceiveOptions.MaxWaitTime` (default: 60 seconds)
-func (r *Receiver) receiveMessage(ctx context.Context, options *ReceiveOptions) (*ReceivedMessage, error) {
+func (r *Receiver) receiveMessage(ctx context.Context, options *ReceiveMessagesOptions) (*ReceivedMessage, error) {
 	messages, err := r.ReceiveMessages(ctx, 1, options)
 
 	if err != nil {
@@ -325,7 +323,7 @@ func (r *Receiver) receiveMessage(ctx context.Context, options *ReceiveOptions) 
 	return messages[0], nil
 }
 
-func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, options *ReceiveOptions) ([]*ReceivedMessage, error) {
+func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, options *ReceiveMessagesOptions) ([]*ReceivedMessage, error) {
 	// There are three phases for this function:
 	// Phase 1. <receive, respecting user cancellation>
 	// Phase 2. <check error and exit if fatal>
@@ -333,16 +331,6 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 	//    user isn't actually waiting for anymore. So we make sure that #3 runs if the
 	//    link is still valid.
 	// Phase 3. <drain the link and leave it in a good state>
-	localOpts := &ReceiveOptions{
-		maxWaitTimeAfterFirstMessage: time.Second,
-	}
-
-	if options != nil {
-		if options.maxWaitTimeAfterFirstMessage != 0 {
-			localOpts.maxWaitTimeAfterFirstMessage = options.maxWaitTimeAfterFirstMessage
-		}
-	}
-
 	_, receiver, _, linksRevision, err := r.amqpLinks.Get(ctx)
 
 	if err != nil {
@@ -358,7 +346,13 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 		return nil, err
 	}
 
-	messages, err := r.getMessages(ctx, receiver, maxMessages, localOpts)
+	defaultTimeAfterFirstMessage := 20 * time.Millisecond
+
+	if r.receiveMode == ReceiveModeReceiveAndDelete {
+		defaultTimeAfterFirstMessage = time.Second
+	}
+
+	messages, err := r.getMessages(ctx, receiver, maxMessages, defaultTimeAfterFirstMessage)
 
 	if err != nil {
 		return nil, err
@@ -369,38 +363,35 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 		return messages, nil
 	}
 
-	return r.drainLink(receiver, messages)
+	return r.drainLink(ctx, receiver, messages)
 }
 
 // drainLink initiates a drainLink on the link. Service Bus will send whatever messages it might have still had and
 // set our link credit to 0.
-func (r *Receiver) drainLink(receiver internal.AMQPReceiver, messages []*ReceivedMessage) ([]*ReceivedMessage, error) {
-	receiveCtx, cancelReceive := context.WithCancel(context.Background())
-
+// ctxForLoggingOnly is literally only used for when we need to extract context for logging. This function will always attempt
+// to complete, ignoring cancellation, otherwise we can leave the link with messages that haven't been returned to the user.
+func (r *Receiver) drainLink(ctxForLoggingOnly context.Context, receiver internal.AMQPReceiver, messages []*ReceivedMessage) ([]*ReceivedMessage, error) {
 	// start the drain asynchronously. Note that we ignore the user's context at this point
 	// since draining makes sure we don't get messages when nobody is receiving.
-	go func() {
-		if err := receiver.DrainCredit(context.Background()); err != nil {
-			tab.For(receiveCtx).Debug(fmt.Sprintf("Draining of credit failed. link will be closed and will re-open on next receive: %s", err.Error()))
+	if err := receiver.DrainCredit(context.Background()); err != nil {
+		tab.For(ctxForLoggingOnly).Debug(fmt.Sprintf("Draining of credit failed. link will be closed and will re-open on next receive: %s", err.Error()))
 
-			// if the drain fails we just close the link so it'll re-open at the next receive.
-			if err := r.amqpLinks.Close(context.Background(), false); err != nil {
-				tab.For(receiveCtx).Debug(fmt.Sprintf("Failed to close links on ReceiveMessages cleanup. Not fatal: %s", err.Error()))
-			}
+		// if the drain fails we just close the link so it'll re-open at the next receive.
+		if err := r.amqpLinks.Close(context.Background(), false); err != nil {
+			tab.For(ctxForLoggingOnly).Debug(fmt.Sprintf("Failed to close links on ReceiveMessages cleanup. Not fatal: %s", err.Error()))
 		}
-		cancelReceive()
-	}()
+	}
 
-	// Receive until the drain completes, at which point it'll cancel
-	// our context.
-	// NOTE: That's a gap here where we need to be able to drain _only_ the internally cached messages
-	// in the receiver. Filed as https://github.com/Azure/go-amqp/issues/71
+	// Draining data from the receiver's prefetched queue. This won't wait for new messages to
+	// arrive, so it'll only receive messages that arrived prior to the drain.
 	for {
-		am, err := receiver.Receive(receiveCtx)
+		am, err := receiver.Prefetched(context.Background())
 
-		if internal.IsCancelError(err) {
+		if am == nil || internal.IsCancelError(err) {
 			break
-		} else if err != nil {
+		}
+
+		if err != nil {
 			// something fatal happened, we will just
 			_ = r.amqpLinks.Close(context.TODO(), false)
 
@@ -411,7 +402,7 @@ func (r *Receiver) drainLink(receiver internal.AMQPReceiver, messages []*Receive
 			}
 		}
 
-		messages = append(messages, newReceivedMessage(receiveCtx, am))
+		messages = append(messages, newReceivedMessage(ctxForLoggingOnly, am))
 	}
 
 	return messages, nil
@@ -419,7 +410,7 @@ func (r *Receiver) drainLink(receiver internal.AMQPReceiver, messages []*Receive
 
 // getMessages receives messages until a link failure, timeout or the user
 // cancels their context.
-func (r *Receiver) getMessages(ctx context.Context, receiver internal.AMQPReceiver, maxMessages int, ropts *ReceiveOptions) ([]*ReceivedMessage, error) {
+func (r *Receiver) getMessages(ctx context.Context, receiver internal.AMQPReceiver, maxMessages int, maxWaitTimeAfterFirstMessage time.Duration) ([]*ReceivedMessage, error) {
 	var messages []*ReceivedMessage
 
 	for {
@@ -448,7 +439,7 @@ func (r *Receiver) getMessages(ctx context.Context, receiver internal.AMQPReceiv
 
 		if len(messages) == 1 {
 			var cancel context.CancelFunc
-			ctx, cancel = context.WithTimeout(ctx, time.Second)
+			ctx, cancel = context.WithTimeout(ctx, maxWaitTimeAfterFirstMessage)
 			defer cancel()
 		}
 	}
@@ -482,7 +473,7 @@ func (e *entity) String() (string, error) {
 }
 
 func (e *entity) SetSubQueue(subQueue SubQueue) error {
-	if subQueue == SubQueueNone {
+	if subQueue == 0 {
 		return nil
 	} else if subQueue == SubQueueDeadLetter || subQueue == SubQueueTransfer {
 		e.subqueue = subQueue

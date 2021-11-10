@@ -1,4 +1,4 @@
-# Guide to migrate from `azure-service-bus-go` to `azservicebus` 0.1.0
+# Guide to migrate from `azure-service-bus-go` to `azservicebus` 0.3.0
 
 This guide is intended to assist in the migration from the pre-release `azure-service-bus-go` package to the latest beta releases (and eventual GA) of the `github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus`.
 
@@ -33,7 +33,7 @@ New (using `azservicebus`):
 ```go
 // new code
 
-client, err = azservicebus.NewClientWithConnectionString(connectionString, nil)
+client, err = azservicebus.NewClientFromConnectionString(connectionString, nil)
 ```
 
 ### Sending messages
@@ -58,11 +58,26 @@ towards giving the user full control using the `MessageBatch` type.
 batch, err := sender.NewMessageBatch(ctx, nil)
 
 // can be called multiple times
-added, err := batch.Add(&azservicebus.Message{
+err := batch.AddMessage(&azservicebus.Message{
   Body: []byte("hello world")
 })
 
-sender.SendMessage(ctx, batch)
+if err != nil {
+  switch err {
+  case azservicebus.ErrMessageTooLarge:
+    // At this point you can do a few things:
+    // 1. Ignore this message
+    // 2. Send this batch (it's full) and create a new batch.
+    //
+    // The batch can still be used after this error if you have
+    // smaller messages you'd still like to add in.
+    fmt.Printf("Failed to add message to batch\n")
+  default:
+    exitOnError("Error while trying to add message to batch", err)
+  }
+}
+
+sender.SendMessageBatch(ctx, batch)
 ```
 
 ### Processing and receiving messages
@@ -152,7 +167,7 @@ Now, using `azservicebus`:
 // new code
 
 // with a Receiver
-message, err := receiver.ReceiveMessage(ctx)   // or ReceiveMessages()
+message, err := receiver.ReceiveMessages(ctx, 10, nil)
 receiver.CompleteMessage(ctx, message)
 ```
 
@@ -167,10 +182,44 @@ credential, err := azidentity.NewDefaultAzureCredential(nil)
 client, err = azservicebus.NewClient("<ex: myservicebus.servicebus.windows.net>", credential, nil)
 ```
 
+# Entity management using admin.Client
+
+Administration features, like creating queues, topics and subscriptions, has been moved into a dedicated client (admin.Client).
+
+```go
+adminClient := admin.NewClient()
+
+// create a queue with default properties
+err := adminClient.CreateQueue(context.TODO(), "queue-name", nil, nil)
+
+// or create a queue and configure some properties
+```
+
+# Receiving with session entities
+
+Entities that use sessions can now be be received from:
+
+```go
+// to get a specific session by ID
+sessionReceiver, err := client.AcceptSessionForQueue("queue", "session-id", nil)
+// or client.AcceptSessionForSubscription
+
+// to get the next available session from Service Bus (service-assigned)
+sessionReceiver, err := client.AcceptNextSessionForQueue("queue", nil)
+
+// SessionReceiver's are similar to Receiver's with some additional functions:
+
+// managing session state
+sessionData, err := sessionReceiver.GetSessionState(context.TODO())
+err := sessionReceiver.SetSessionState(context.TODO(), []byte("data"))
+
+// renewing the lock associated with the session
+err := sessionReceiver.RenewSessionLock(context.TODO())
+```
+
 # Upcoming features
 
 Some features that are coming in the next beta:
-- Management of entities (AdministrationClient) within Service Bus.
-- Scheduling and cancellation of messages.
-- Sending and receiving to Service Bus session enabled entities.
 
+- Authorization rules
+- Topic filters/actions

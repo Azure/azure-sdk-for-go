@@ -6,15 +6,16 @@ package azservicebus
 import (
 	"context"
 	"fmt"
-	"os"
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
 	"github.com/stretchr/testify/require"
 )
 
-func setupLiveTest(t *testing.T, props *QueueProperties) (*Client, func(), string) {
-	cs := getConnectionString(t)
+func setupLiveTest(t *testing.T, props *admin.QueueProperties) (*Client, func(), string) {
+	cs := test.GetConnectionString(t)
 
 	serviceBusClient, err := NewClientFromConnectionString(cs, nil)
 	require.NoError(t, err)
@@ -30,47 +31,34 @@ func setupLiveTest(t *testing.T, props *QueueProperties) (*Client, func(), strin
 	return serviceBusClient, testCleanup, queueName
 }
 
-func getConnectionString(t *testing.T) string {
-	cs := os.Getenv("SERVICEBUS_CONNECTION_STRING")
-
-	if cs == "" {
-		t.Skip()
-	}
-
-	return cs
-}
-
-func getConnectionStringWithoutManagePerms(t *testing.T) string {
-	cs := os.Getenv("SERVICEBUS_CONNECTION_STRING_NO_MANAGE")
-
-	if cs == "" {
-		t.Skip()
-	}
-
-	return cs
-}
-
 // createQueue creates a queue using a subset of entries in 'queueDescription':
 // - EnablePartitioning
 // - RequiresSession
-func createQueue(t *testing.T, connectionString string, queueProperties *QueueProperties) (string, func()) {
+func createQueue(t *testing.T, connectionString string, queueProperties *admin.QueueProperties) (string, func()) {
 	nanoSeconds := time.Now().UnixNano()
 	queueName := fmt.Sprintf("queue-%X", nanoSeconds)
 
-	adminClient, err := NewAdminClientWithConnectionString(connectionString, nil)
+	adminClient, err := admin.NewClientFromConnectionString(connectionString, nil)
 	require.NoError(t, err)
 
 	if queueProperties == nil {
-		queueProperties = &QueueProperties{}
+		queueProperties = &admin.QueueProperties{}
 	}
 
-	queueProperties.Name = queueName
-	_, err = adminClient.AddQueueWithProperties(context.Background(), queueProperties)
+	_, err = adminClient.CreateQueue(context.Background(), queueName, queueProperties, nil)
 	require.NoError(t, err)
 
 	return queueName, func() {
-		if _, err := adminClient.DeleteQueue(context.TODO(), queueProperties.Name); err != nil {
-			require.NoError(t, err)
-		}
+		deleteQueue(t, adminClient, queueName)
 	}
+}
+
+func deleteQueue(t *testing.T, ac *admin.Client, queueName string) {
+	_, err := ac.DeleteQueue(context.Background(), queueName, nil)
+	require.NoError(t, err)
+}
+
+func deleteSubscription(t *testing.T, ac *admin.Client, topicName string, subscriptionName string) {
+	_, err := ac.DeleteSubscription(context.Background(), topicName, subscriptionName, nil)
+	require.NoError(t, err)
 }

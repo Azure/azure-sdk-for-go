@@ -11,11 +11,12 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
 	"github.com/stretchr/testify/require"
 )
 
 func TestNewClientWithAzureIdentity(t *testing.T) {
-	queue, cleanup := createQueue(t, getConnectionString(t), nil)
+	queue, cleanup := createQueue(t, test.GetConnectionString(t), nil)
 	defer cleanup()
 
 	// test with azure identity support
@@ -29,7 +30,7 @@ func TestNewClientWithAzureIdentity(t *testing.T) {
 	client, err := NewClient(ns, envCred, nil)
 	require.NoError(t, err)
 
-	sender, err := client.NewSender(queue)
+	sender, err := client.NewSender(queue, nil)
 	require.NoError(t, err)
 
 	err = sender.SendMessage(context.TODO(), &Message{Body: []byte("hello - authenticating with a TokenCredential")})
@@ -109,7 +110,7 @@ func TestNewClientUnitTests(t *testing.T) {
 		}
 
 		client, ns := setupClient()
-		_, err := client.NewSender("hello")
+		_, err := client.NewSender("hello", nil)
 
 		require.NoError(t, err)
 		require.EqualValues(t, 1, len(client.links))

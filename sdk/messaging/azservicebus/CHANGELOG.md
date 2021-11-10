@@ -18,11 +18,7 @@
 - MessageBatch.Add() has been renamed to MessageBatch.AddMessage(). AddMessage() now returns only an `error`, 
   with a sentinel error (ErrMessageTooLarge) signaling that the batch cannot fit a new message.
 - Sender.SendMessages() has been removed in favor of simplifications made in MessageBatch.
-
-### Bugs Fixed
-
-
-### Other Changes
+- AdminClient has been moved into the `admin` subpackage.
 
 ## 0.2.0 (2021-11-02)
 

@@ -125,7 +125,7 @@ stages:
       - job: MgmtMockTest
         displayName: Mock Test For Mgmt Plane
         variables:
-          - template: ../variables/globals.yml
+          - template: /eng/pipelines/templates/variables/globals.yml
         pool:
           name: azsdk-pool-mms-ubuntu-2004-general
         steps:
@@ -137,9 +137,9 @@ stages:
             version: '1.17'
           displayName: "Select Go Version"
 
-        - template: ../steps/create-go-workspace.yml
+        - template: /eng/pipelines/templates/steps/create-go-workspace.yml
 
-        - template: ../steps/mgmt-mock-test.yml
+        - template: /eng/pipelines/templates/steps/mgmt-mock-test.yml
           parameters:
             ServiceDirectory: ${{ parameters.ServiceDirectory }}
             GoWorkspace: $(GO_WORKSPACE_PATH)

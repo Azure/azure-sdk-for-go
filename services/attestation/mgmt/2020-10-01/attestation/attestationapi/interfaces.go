@@ -32,3 +32,13 @@ type ProvidersClientAPI interface {
 }
 
 var _ ProvidersClientAPI = (*attestation.ProvidersClient)(nil)
+
+// PrivateEndpointConnectionsClientAPI contains the set of methods on the PrivateEndpointConnectionsClient type.
+type PrivateEndpointConnectionsClientAPI interface {
+	Create(ctx context.Context, resourceGroupName string, providerName string, privateEndpointConnectionName string, properties attestation.PrivateEndpointConnection) (result attestation.PrivateEndpointConnection, err error)
+	Delete(ctx context.Context, resourceGroupName string, providerName string, privateEndpointConnectionName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, providerName string, privateEndpointConnectionName string) (result attestation.PrivateEndpointConnection, err error)
+	List(ctx context.Context, resourceGroupName string, providerName string) (result attestation.PrivateEndpointConnectionListResult, err error)
+}
+
+var _ PrivateEndpointConnectionsClientAPI = (*attestation.PrivateEndpointConnectionsClient)(nil)

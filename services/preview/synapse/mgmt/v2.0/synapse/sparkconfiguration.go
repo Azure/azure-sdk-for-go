@@ -36,7 +36,7 @@ func NewSparkConfigurationClientWithBaseURI(baseURI string, subscriptionID strin
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // sparkConfigurationName - sparkConfiguration name
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 func (client SparkConfigurationClient) Get(ctx context.Context, resourceGroupName string, sparkConfigurationName string, workspaceName string) (result SparkConfigurationResource, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SparkConfigurationClient.Get")

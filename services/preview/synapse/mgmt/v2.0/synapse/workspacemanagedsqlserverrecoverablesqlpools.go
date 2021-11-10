@@ -36,7 +36,7 @@ func NewWorkspaceManagedSQLServerRecoverableSQLPoolsClientWithBaseURI(baseURI st
 // Get get recoverable sql pools for workspace managed sql server.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - the name of the sql pool
 func (client WorkspaceManagedSQLServerRecoverableSQLPoolsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result RecoverableSQLPool, err error) {
 	if tracing.IsEnabled() {
@@ -123,7 +123,7 @@ func (client WorkspaceManagedSQLServerRecoverableSQLPoolsClient) GetResponder(re
 // List get list of recoverable sql pools for workspace managed sql server.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 func (client WorkspaceManagedSQLServerRecoverableSQLPoolsClient) List(ctx context.Context, resourceGroupName string, workspaceName string) (result RecoverableSQLPoolListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspaceManagedSQLServerRecoverableSQLPoolsClient.List")

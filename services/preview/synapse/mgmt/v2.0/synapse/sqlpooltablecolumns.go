@@ -35,7 +35,7 @@ func NewSQLPoolTableColumnsClientWithBaseURI(baseURI string, subscriptionID stri
 // ListByTableName gets columns in a given table in a SQL pool.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 // schemaName - the name of the schema.
 // tableName - the name of the table.

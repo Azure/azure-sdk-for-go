@@ -35,7 +35,7 @@ func NewWorkspaceAadAdminsClientWithBaseURI(baseURI string, subscriptionID strin
 // CreateOrUpdate creates or updates a workspace active directory admin
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // aadAdminInfo - workspace active directory administrator properties
 func (client WorkspaceAadAdminsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, aadAdminInfo WorkspaceAadAdminInfo) (result WorkspaceAadAdminsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
@@ -126,7 +126,7 @@ func (client WorkspaceAadAdminsClient) CreateOrUpdateResponder(resp *http.Respon
 // Delete deletes a workspace active directory admin
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 func (client WorkspaceAadAdminsClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string) (result WorkspaceAadAdminsDeleteFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspaceAadAdminsClient.Delete")
@@ -213,7 +213,7 @@ func (client WorkspaceAadAdminsClient) DeleteResponder(resp *http.Response) (res
 // Get gets a workspace active directory admin
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 func (client WorkspaceAadAdminsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string) (result WorkspaceAadAdminInfo, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspaceAadAdminsClient.Get")

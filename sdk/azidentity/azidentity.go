@@ -12,7 +12,6 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"path"
 	"regexp"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -43,7 +42,6 @@ const (
 	headerUserAgent   = "User-Agent"
 	headerURLEncoded  = "application/x-www-form-urlencoded"
 	headerMetadata    = "Metadata"
-	headerContentType = "Content-Type"
 )
 
 const tenantIDValidationErr = "Invalid tenantID provided. You can locate your tenantID by following the instructions listed here: https://docs.microsoft.com/partner-center/find-ids-and-domain-names."
@@ -54,11 +52,6 @@ var (
 		http.StatusCreated, // 201
 	}
 )
-
-type tokenResponse struct {
-	token        *azcore.AccessToken
-	refreshToken string
-}
 
 // setAuthorityHost initializes the authority host for credentials.
 func setAuthorityHost(authorityHost AuthorityHost) (string, error) {
@@ -86,19 +79,6 @@ func validTenantID(tenantID string) bool {
 		return false
 	}
 	return match
-}
-
-// tokenEndpoint takes a given path and appends "/token" to the end of the path
-func tokenEndpoint(p string) string {
-	return path.Join(p, "/token")
-}
-
-// oauthPath returns the oauth path for AAD or ADFS
-func oauthPath(tenantID string) string {
-	if tenantID == "adfs" {
-		return "/oauth2"
-	}
-	return "/oauth2/v2.0"
 }
 
 func newPipelineAdapter(opts *azcore.ClientOptions) pipelineAdapter {

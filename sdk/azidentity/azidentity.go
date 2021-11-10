@@ -101,6 +101,11 @@ func oauthPath(tenantID string) string {
 	return "/oauth2/v2.0"
 }
 
+func newPipelineAdapter(opts *azcore.ClientOptions) pipelineAdapter {
+	pl := runtime.NewPipeline(component, version, runtime.PipelineOptions{}, opts)
+	return pipelineAdapter{pl: pl}
+}
+
 type pipelineAdapter struct {
 	pl runtime.Pipeline
 }

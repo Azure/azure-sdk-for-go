@@ -23,7 +23,8 @@ import (
 )
 
 const (
-	imdsEndpoint = "http://169.254.169.254/metadata/identity/oauth2/token"
+	headerMetadata = "Metadata"
+	imdsEndpoint   = "http://169.254.169.254/metadata/identity/oauth2/token"
 )
 
 const (
@@ -36,6 +37,9 @@ const (
 	imdsAPIVersion           = "2018-02-01"
 	azureArcAPIVersion       = "2019-08-15"
 	serviceFabricAPIVersion  = "2019-07-01-preview"
+
+	qpClientID = "client_id"
+	qpResID    = "mi_res_id"
 )
 
 type msiType int
@@ -112,7 +116,7 @@ func setRetryOptionDefaults(o *policy.RetryOptions) {
 func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) runtime.Pipeline {
 	cp := o.ClientOptions
 	setRetryOptionDefaults(&cp.Retry)
-	return runtime.NewPipeline(component, version, nil, nil, &cp)
+	return runtime.NewPipeline(component, version, runtime.PipelineOptions{}, &cp)
 }
 
 // newManagedIdentityClient creates a new instance of the ManagedIdentityClient with the ManagedIdentityCredentialOptions

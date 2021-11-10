@@ -13,9 +13,6 @@ This repository is for active development of the Azure SDK for Go. For consumers
 ## Getting Started
 
 To get started with a library, see the README.md file located in the library's project folder.  You can find these library folders grouped by service in the `/sdk` directory.
-
-For tutorials, samples, quick starts, and other documentation, go to 
-
 ## Packages available
 
 Each service might have a number of libraries available from each of the following categories:
@@ -36,7 +33,7 @@ You can find the most up-to-date list of new packages on our [latest page](https
 
 The last stable versions of packages that have been provided for usage with Azure are production-ready. These libraries might not implement the [Azure Go SDK guidelines](https://azure.github.io/azure-sdk/golang_introduction.html) or have the same feature set as the New releases, however they do offer a wider coverage of services.
 
-Previous Go SDK packages are located under [/services folder](https://github.com/Azure/azure-sdk-for-go/tree/master/services), and you can see the full list [on this page](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services). They might not have the same feature set as the new releases but they do offer wider coverage of services.
+Previous Go SDK packages are located under [/services folder](https://github.com/Azure/azure-sdk-for-go/tree/master/services), and you can see the full list [on this page](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services). 
 
 ### Management: New Releases
 A new set of management libraries that follow the [Azure SDK Design Guidelines for Go](https://azure.github.io/azure-sdk/golang_introduction.html) are available at `sdk/resourcemanagement`. These new libraries provide a number of core capabilities that are shared amongst all Azure SDKs, including the intuitive Azure Identity library, an HTTP Pipeline with custom policies, error-handling, distributed tracing, and much more.
@@ -68,8 +65,6 @@ Azure provides several other packages for using services from Go, listed below. 
 | Service Bus          | [github.com/Azure/azure-service-bus-go](https://github.com/Azure/azure-service-bus-go)             |
 | Event Hubs           | [github.com/Azure/azure-event-hubs-go](https://github.com/Azure/azure-event-hubs-go)               |
 | Application Insights | [github.com/Microsoft/ApplicationInsights-go](https://github.com/Microsoft/ApplicationInsights-go) |
-
-Packages that are still in public preview can be found under the `services/preview` directory. Please be aware that since these packages are in preview they are subject to change, including breaking changes, outside of a major semver bump.
 
 ## Samples
 

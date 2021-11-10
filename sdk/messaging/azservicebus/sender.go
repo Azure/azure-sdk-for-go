@@ -66,7 +66,6 @@ func (s *Sender) SendMessage(ctx context.Context, message *Message) error {
 	}
 
 	return sender.Send(ctx, message.toAMQPMessage())
-	// func (s *Sender) SendAMQPAnnotatedMessage(ctx context.Context, message *AMQPAnnotatedMessage) error {
 }
 
 // SendMessageBatch sends a MessageBatch to a queue or topic.

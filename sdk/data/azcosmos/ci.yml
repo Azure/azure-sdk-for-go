@@ -71,7 +71,6 @@ stages:
     - template:  /eng/pipelines/templates/steps/build-test.yml
       parameters:
         ServiceDirectory: 'data/azcosmos'
-        GoWorkspace: $(GO_WORKSPACE_PATH)
         Image: $(vm.image)
         GoVersion: $(go.version)
         EnvVars:

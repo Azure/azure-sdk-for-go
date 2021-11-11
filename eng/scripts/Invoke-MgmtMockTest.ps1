@@ -85,24 +85,24 @@ function StopMockServer()
     }
 }
 
-function GetSwaggerCommitID($dir)
+function GetSwaggerInfo($dir)
 {
     Set-Location $dir
-    $commitIDRegex = "(?<commitID>[0-9a-f]{40})"
+    $swaggerInfoRegex = "(?<commitID>[0-9a-f]{40})\/specification\/(?<specName>.*)\/resource-manager\/readme.md"
     try
     {
         $content = Get-Content .\$AUTOREST_CONFIG_FILE -Raw
-        if ($content -match $commitIDRegex)
+        if ($content -match $swaggerInfoRegex)
         {
-            return $matches["commitID"]
+            return $matches["specName"], $matches["commitID"]
         }
     }
     catch
     {
-        Write-Error "Error parsing commitid"
+        Write-Error "Error parsing swagger info"
         Write-Error $_
     }
-    Write-Host "Cannot find commitid"
+    Write-Host "Cannot find swagger info"
     exit 1
 }
 
@@ -146,7 +146,8 @@ function JudgeExitCode($errorMsg = "execution error")
 function ExecuteSingleTest($sdk)
 {
     Write-Host "Start mock server"
-    StartMockServer $sdk.ServiceDirectory $(GetSwaggerCommitID $sdk.DirectoryPath)
+    $swaggerInfo = GetSwaggerInfo $sdk.DirectoryPath
+    StartMockServer $swaggerInfo[0] $swaggerInfo[1]
     Write-Host "Execute mock test for $($sdk.Name)"
     TestAndGenerateReport $sdk.DirectoryPath
     Write-Host "Stop mock server"

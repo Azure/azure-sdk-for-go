@@ -12,6 +12,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"math/rand"
 	"net/http"
 	"os"
@@ -513,7 +514,8 @@ func Start(t *testing.T, pathToRecordings string, options *RecordingOptions) err
 		options = defaultOptions()
 	}
 	if !(recordMode == RecordingMode || recordMode == PlaybackMode || recordMode == LiveMode) {
-		return fmt.Errorf("AZURE_RECORD_MODE was not understood, options are %s, %s, or %s Received: %v", RecordingMode, PlaybackMode, LiveMode, recordMode)
+		log.Printf("AZURE_RECORD_MODE was not understood, options are %s, %s, or %s Received: %v. Defaulting to playback", RecordingMode, PlaybackMode, LiveMode, recordMode)
+		recordMode = PlaybackMode
 	}
 	if recordMode == LiveMode {
 		return nil
@@ -624,22 +626,43 @@ func GetRecordingId(t *testing.T) string {
 }
 
 func GetRecordMode() string {
+	if !(recordMode == RecordingMode || recordMode == PlaybackMode || recordMode == LiveMode) {
+		recordMode = PlaybackMode
+	}
 	return recordMode
 }
 
+func findProxyCertLocation() (string, error) {
+	fileLocation, ok := os.LookupEnv("PROXY_CERT")
+	if ok {
+		return fileLocation, nil
+	}
+
+	// Couldn't be found, lets try to find it from the GOPATH location
+	var err error
+	goPath, ok := os.LookupEnv("GOPATH")
+	if !ok {
+		goPath, err = os.UserHomeDir()
+		if err != nil {
+			return "", err
+		}
+	}
+
+	goPath = filepath.Join(goPath, "src", "github.com", "Azure", "azure-sdk-for-go", "eng", "common", "testproxy", "dotnet-devcert.crt")
+	return goPath, nil
+}
+
 func getRootCas(t *testing.T) (*x509.CertPool, error) {
-	localFile, ok := os.LookupEnv("PROXY_CERT")
+	localFile, err := findProxyCertLocation()
+	if err != nil {
+		log.Println("Could not find the PROXY_CERT environment variable and was unable to locate the path in eng/common")
+	}
 
 	rootCAs, err := x509.SystemCertPool()
 	if err != nil && strings.Contains(err.Error(), "system root pool is not available on Windows") {
 		rootCAs = x509.NewCertPool()
 	} else if err != nil {
 		return rootCAs, err
-	}
-
-	if !ok {
-		t.Log("Could not find path to proxy certificate, set the environment variable 'PROXY_CERT' to the location of your certificate")
-		return rootCAs, nil
 	}
 
 	cert, err := ioutil.ReadFile(localFile)

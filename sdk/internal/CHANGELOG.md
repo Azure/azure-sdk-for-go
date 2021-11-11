@@ -3,6 +3,7 @@
 ## 0.8.3 (Unreleased)
 
 ### Features Added
+* If `AZURE_RECORD_MODE` is not set, default to 
 
 ### Breaking Changes
 

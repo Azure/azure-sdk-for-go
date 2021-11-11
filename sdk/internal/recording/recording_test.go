@@ -525,3 +525,41 @@ func TestHostAndScheme(t *testing.T) {
 	require.Equal(t, r.scheme(), "http")
 	require.Equal(t, r.host(), "localhost:5000")
 }
+
+func TestFindProxyCertLocation(t *testing.T) {
+	savedValue, ok := os.LookupEnv("PROXY_CERT")
+	if ok {
+		defer os.Setenv("PROXY_CERT", savedValue)
+	}
+
+	if ok {
+		location, err := findProxyCertLocation()
+		require.NoError(t, err)
+		require.Contains(t, location, "dotnet-devcert.crt")
+	}
+
+	err := os.Unsetenv("PROXY_CERT")
+	require.NoError(t, err)
+
+	location, err := findProxyCertLocation()
+	require.NoError(t, err)
+	require.Contains(t, location, filepath.Join("eng", "common", "testproxy", "dotnet-devcert.crt"))
+}
+
+func TestModeNotSet(t *testing.T) {
+	proxyMode, _ := os.LookupEnv("AZURE_RECORD_MODE")
+	defer os.Setenv("AZURE_RECORD_MODE", proxyMode)
+
+	os.Unsetenv("AZURE_RECORD_MODE")
+	require.Equal(t, PlaybackMode, GetRecordMode())
+}
+
+func TestModeNotSetStartStop(t *testing.T) {
+	proxyMode, _ := os.LookupEnv("AZURE_RECORD_MODE")
+	defer os.Setenv("AZURE_RECORD_MODE", proxyMode)
+
+	os.Unsetenv("AZURE_RECORD_MODE")
+	Start(t, packagePath, nil)
+	require.Equal(t, PlaybackMode, GetRecordMode())
+	Stop(t, nil)
+}

@@ -30,6 +30,6 @@ type ClientOptions struct {
 	// DisableRPRegistration disables the auto-RP registration policy. Defaults to false.
 	DisableRPRegistration bool
 
-	// Host is the base URL for Azure Resource Manager. Defaults to AzurePublicCloud.
-	Host Endpoint
+	// Endpoint is the base URL for Azure Resource Manager. Defaults to AzurePublicCloud.
+	Endpoint Endpoint
 }

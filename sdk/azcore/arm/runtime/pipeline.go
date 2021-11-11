@@ -21,7 +21,7 @@ func NewPipeline(module, version string, cred azcore.TokenCredential, plOpts azr
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Host
+	ep := options.Endpoint
 	if len(ep) == 0 {
 		ep = arm.AzurePublicCloud
 	}

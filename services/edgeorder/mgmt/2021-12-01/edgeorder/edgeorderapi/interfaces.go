@@ -8,7 +8,7 @@ package edgeorderapi
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/services/preview/edgeorder/mgmt/2020-12-01-preview/edgeorder"
+	"github.com/Azure/azure-sdk-for-go/services/edgeorder/mgmt/2021-12-01/edgeorder"
 	"github.com/Azure/go-autorest/autorest"
 )
 

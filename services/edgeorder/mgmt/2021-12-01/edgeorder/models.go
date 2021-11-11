@@ -18,7 +18,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/edgeorder/mgmt/2020-12-01-preview/edgeorder"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/edgeorder/mgmt/2021-12-01/edgeorder"
 
 // AddressDetails address details for an order item.
 type AddressDetails struct {
@@ -43,6 +43,20 @@ type AddressProperties struct {
 	ShippingAddress *ShippingAddress `json:"shippingAddress,omitempty"`
 	// ContactDetails - Contact details for the address
 	ContactDetails *ContactDetails `json:"contactDetails,omitempty"`
+	// AddressValidationStatus - READ-ONLY; Status of address validation. Possible values include: 'Valid', 'Invalid', 'Ambiguous'
+	AddressValidationStatus AddressValidationStatus `json:"addressValidationStatus,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AddressProperties.
+func (ap AddressProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ap.ShippingAddress != nil {
+		objectMap["shippingAddress"] = ap.ShippingAddress
+	}
+	if ap.ContactDetails != nil {
+		objectMap["contactDetails"] = ap.ContactDetails
+	}
+	return json.Marshal(objectMap)
 }
 
 // AddressResource address Resource.
@@ -388,7 +402,7 @@ type AddressUpdateProperties struct {
 
 // AvailabilityInformation availability information of a product system.
 type AvailabilityInformation struct {
-	// AvailabilityStage - READ-ONLY; Current availability stage of the product. Availability stage. Possible values include: 'AvailabilityStageAvailable', 'AvailabilityStageComingSoon', 'AvailabilityStagePreview', 'AvailabilityStageDeprecated', 'AvailabilityStageSignup', 'AvailabilityStageUnavailable'
+	// AvailabilityStage - READ-ONLY; Current availability stage of the product. Availability stage. Possible values include: 'Available', 'ComingSoon', 'Preview', 'Deprecated', 'Signup', 'Unavailable'
 	AvailabilityStage AvailabilityStage `json:"availabilityStage,omitempty"`
 	// DisabledReason - READ-ONLY; Reason why the product is disabled. Possible values include: 'DisabledReasonNone', 'DisabledReasonCountry', 'DisabledReasonRegion', 'DisabledReasonFeature', 'DisabledReasonOfferType', 'DisabledReasonNoSubscriptionInfo', 'DisabledReasonNotAvailable', 'DisabledReasonOutOfStock'
 	DisabledReason DisabledReason `json:"disabledReason,omitempty"`
@@ -448,7 +462,7 @@ type BillingMeterDetails struct {
 	Name *string `json:"name,omitempty"`
 	// MeterDetails - READ-ONLY; Represents MeterDetails
 	MeterDetails BasicMeterDetails `json:"meterDetails,omitempty"`
-	// MeteringType - READ-ONLY; Represents Metering type (eg one-time or recurrent). Possible values include: 'MeteringTypeOneTime', 'MeteringTypeRecurring', 'MeteringTypeAdhoc'
+	// MeteringType - READ-ONLY; Represents Metering type (eg one-time or recurrent). Possible values include: 'OneTime', 'Recurring', 'Adhoc'
 	MeteringType MeteringType `json:"meteringType,omitempty"`
 	// Frequency - READ-ONLY; Frequency of recurrence
 	Frequency *string `json:"frequency,omitempty"`
@@ -997,7 +1011,7 @@ func (future *DeleteOrderItemByNameFuture) result(client BaseClient) (ar autores
 
 // Description description related properties of a product system.
 type Description struct {
-	// DescriptionType - READ-ONLY; Type of description. Possible values include: 'DescriptionTypeBase'
+	// DescriptionType - READ-ONLY; Type of description. Possible values include: 'Base'
 	DescriptionType DescriptionType `json:"descriptionType,omitempty"`
 	// ShortDescription - READ-ONLY; Short description of the product system.
 	ShortDescription *string `json:"shortDescription,omitempty"`
@@ -1041,13 +1055,13 @@ type Dimensions struct {
 	Height *float64 `json:"height,omitempty"`
 	// Width - READ-ONLY; Width of the device.
 	Width *float64 `json:"width,omitempty"`
-	// LengthHeightUnit - READ-ONLY; Unit for the dimensions of length, height and width. Possible values include: 'LengthHeightUnitIN', 'LengthHeightUnitCM'
+	// LengthHeightUnit - READ-ONLY; Unit for the dimensions of length, height and width. Possible values include: 'IN', 'CM'
 	LengthHeightUnit LengthHeightUnit `json:"lengthHeightUnit,omitempty"`
 	// Weight - READ-ONLY; Weight of the device.
 	Weight *float64 `json:"weight,omitempty"`
 	// Depth - READ-ONLY; Depth of the device.
 	Depth *float64 `json:"depth,omitempty"`
-	// WeightUnit - READ-ONLY; Unit for the dimensions of weight. Possible values include: 'WeightMeasurementUnitLBS', 'WeightMeasurementUnitKGS'
+	// WeightUnit - READ-ONLY; Unit for the dimensions of weight. Possible values include: 'LBS', 'KGS'
 	WeightUnit WeightMeasurementUnit `json:"weightUnit,omitempty"`
 }
 
@@ -1073,7 +1087,7 @@ func (di DisplayInfo) MarshalJSON() ([]byte, error) {
 
 // EncryptionPreferences preferences related to the double encryption
 type EncryptionPreferences struct {
-	// DoubleEncryptionStatus - Double encryption status as entered by the customer. It is compulsory to give this parameter if the 'Deny' or 'Disabled' policy is configured. Possible values include: 'DoubleEncryptionStatusDisabled', 'DoubleEncryptionStatusEnabled'
+	// DoubleEncryptionStatus - Double encryption status as entered by the customer. It is compulsory to give this parameter if the 'Deny' or 'Disabled' policy is configured. Possible values include: 'Disabled', 'Enabled'
 	DoubleEncryptionStatus DoubleEncryptionStatus `json:"doubleEncryptionStatus,omitempty"`
 }
 
@@ -1158,7 +1172,7 @@ type HierarchyInformation struct {
 
 // ImageInformation image for the product
 type ImageInformation struct {
-	// ImageType - READ-ONLY; Type of the image. Possible values include: 'ImageTypeMainImage', 'ImageTypeBulletImage', 'ImageTypeGenericImage'
+	// ImageType - READ-ONLY; Type of the image. Possible values include: 'MainImage', 'BulletImage', 'GenericImage'
 	ImageType ImageType `json:"imageType,omitempty"`
 	// ImageURL - READ-ONLY; Url of the image
 	ImageURL *string `json:"imageUrl,omitempty"`
@@ -1201,7 +1215,7 @@ type BasicMeterDetails interface {
 type MeterDetails struct {
 	// Multiplier - READ-ONLY; Billing unit applicable for Pav2 billing
 	Multiplier *float64 `json:"multiplier,omitempty"`
-	// ChargingType - READ-ONLY; Charging type. Possible values include: 'ChargingTypePerOrder', 'ChargingTypePerDevice'
+	// ChargingType - READ-ONLY; Charging type. Possible values include: 'PerOrder', 'PerDevice'
 	ChargingType ChargingType `json:"chargingType,omitempty"`
 	// BillingType - Possible values include: 'BillingTypeMeterDetails', 'BillingTypePav2', 'BillingTypePurchase'
 	BillingType BillingType `json:"billingType,omitempty"`
@@ -1280,7 +1294,7 @@ func (md MeterDetails) AsBasicMeterDetails() (BasicMeterDetails, bool) {
 
 // NotificationPreference notification preference for a job stage.
 type NotificationPreference struct {
-	// StageName - Name of the stage. Possible values include: 'NotificationStageNameShipped', 'NotificationStageNameDelivered'
+	// StageName - Name of the stage. Possible values include: 'Shipped', 'Delivered'
 	StageName NotificationStageName `json:"stageName,omitempty"`
 	// SendNotification - Notification is required or not.
 	SendNotification *bool `json:"sendNotification,omitempty"`
@@ -1296,7 +1310,7 @@ type Operation struct {
 	Display *OperationDisplay `json:"display,omitempty"`
 	// Origin - READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default value is "user,system". Possible values include: 'OriginUser', 'OriginSystem', 'OriginUsersystem'
 	Origin Origin `json:"origin,omitempty"`
-	// ActionType - READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs. Possible values include: 'ActionTypeInternal'
+	// ActionType - READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs. Possible values include: 'Internal'
 	ActionType ActionType `json:"actionType,omitempty"`
 }
 
@@ -1497,7 +1511,7 @@ func NewOperationListResultPage(cur OperationListResult, getNextPage func(contex
 type OrderItemDetails struct {
 	// ProductDetails - Unique identifier for configuration.
 	ProductDetails *ProductDetails `json:"productDetails,omitempty"`
-	// OrderItemType - Order item type. Possible values include: 'OrderItemTypePurchase', 'OrderItemTypeRental'
+	// OrderItemType - Order item type. Possible values include: 'Purchase', 'Rental'
 	OrderItemType OrderItemType `json:"orderItemType,omitempty"`
 	// CurrentStage - READ-ONLY; Current Order item Status
 	CurrentStage *StageDetails `json:"currentStage,omitempty"`
@@ -1513,13 +1527,13 @@ type OrderItemDetails struct {
 	NotificationEmailList *[]string `json:"notificationEmailList,omitempty"`
 	// CancellationReason - READ-ONLY; Cancellation reason.
 	CancellationReason *string `json:"cancellationReason,omitempty"`
-	// CancellationStatus - READ-ONLY; Describes whether the order item is cancellable or not. Possible values include: 'OrderItemCancellationEnumCancellable', 'OrderItemCancellationEnumCancellableWithFee', 'OrderItemCancellationEnumNotCancellable'
+	// CancellationStatus - READ-ONLY; Describes whether the order item is cancellable or not. Possible values include: 'Cancellable', 'CancellableWithFee', 'NotCancellable'
 	CancellationStatus OrderItemCancellationEnum `json:"cancellationStatus,omitempty"`
-	// DeletionStatus - READ-ONLY; Describes whether the order item is deletable or not. Possible values include: 'ActionStatusEnumAllowed', 'ActionStatusEnumNotAllowed'
+	// DeletionStatus - READ-ONLY; Describes whether the order item is deletable or not. Possible values include: 'Allowed', 'NotAllowed'
 	DeletionStatus ActionStatusEnum `json:"deletionStatus,omitempty"`
 	// ReturnReason - READ-ONLY; Return reason.
 	ReturnReason *string `json:"returnReason,omitempty"`
-	// ReturnStatus - READ-ONLY; Describes whether the order item is returnable or not. Possible values include: 'OrderItemReturnEnumReturnable', 'OrderItemReturnEnumReturnableWithFee', 'OrderItemReturnEnumNotReturnable'
+	// ReturnStatus - READ-ONLY; Describes whether the order item is returnable or not. Possible values include: 'Returnable', 'ReturnableWithFee', 'NotReturnable'
 	ReturnStatus OrderItemReturnEnum `json:"returnStatus,omitempty"`
 	// ManagementRpDetails - READ-ONLY; Parent RP details - this returns only the first or default parent RP from the entire list
 	ManagementRpDetails *ResourceProviderDetails `json:"managementRpDetails,omitempty"`
@@ -2192,7 +2206,7 @@ type Pav2MeterDetails struct {
 	MeterGUID *string `json:"meterGuid,omitempty"`
 	// Multiplier - READ-ONLY; Billing unit applicable for Pav2 billing
 	Multiplier *float64 `json:"multiplier,omitempty"`
-	// ChargingType - READ-ONLY; Charging type. Possible values include: 'ChargingTypePerOrder', 'ChargingTypePerDevice'
+	// ChargingType - READ-ONLY; Charging type. Possible values include: 'PerOrder', 'PerDevice'
 	ChargingType ChargingType `json:"chargingType,omitempty"`
 	// BillingType - Possible values include: 'BillingTypeMeterDetails', 'BillingTypePav2', 'BillingTypePurchase'
 	BillingType BillingType `json:"billingType,omitempty"`
@@ -2284,7 +2298,7 @@ type ProductDetails struct {
 	HierarchyInformation *HierarchyInformation `json:"hierarchyInformation,omitempty"`
 	// Count - READ-ONLY; Quantity of the product
 	Count *int32 `json:"count,omitempty"`
-	// ProductDoubleEncryptionStatus - READ-ONLY; Double encryption status of the configuration. Read-only field. Possible values include: 'DoubleEncryptionStatusDisabled', 'DoubleEncryptionStatusEnabled'
+	// ProductDoubleEncryptionStatus - READ-ONLY; Double encryption status of the configuration. Read-only field. Possible values include: 'Disabled', 'Enabled'
 	ProductDoubleEncryptionStatus DoubleEncryptionStatus `json:"productDoubleEncryptionStatus,omitempty"`
 	// DeviceDetails - READ-ONLY; list of device details
 	DeviceDetails *[]DeviceDetails `json:"deviceDetails,omitempty"`
@@ -2874,7 +2888,7 @@ type PurchaseMeterDetails struct {
 	TermID *string `json:"termId,omitempty"`
 	// Multiplier - READ-ONLY; Billing unit applicable for Pav2 billing
 	Multiplier *float64 `json:"multiplier,omitempty"`
-	// ChargingType - READ-ONLY; Charging type. Possible values include: 'ChargingTypePerOrder', 'ChargingTypePerDevice'
+	// ChargingType - READ-ONLY; Charging type. Possible values include: 'PerOrder', 'PerDevice'
 	ChargingType ChargingType `json:"chargingType,omitempty"`
 	// BillingType - Possible values include: 'BillingTypeMeterDetails', 'BillingTypePav2', 'BillingTypePurchase'
 	BillingType BillingType `json:"billingType,omitempty"`
@@ -3046,7 +3060,7 @@ type ShippingAddress struct {
 	ZipExtendedCode *string `json:"zipExtendedCode,omitempty"`
 	// CompanyName - Name of the company.
 	CompanyName *string `json:"companyName,omitempty"`
-	// AddressType - Type of address. Possible values include: 'AddressTypeNone', 'AddressTypeResidential', 'AddressTypeCommercial'
+	// AddressType - Type of address. Possible values include: 'None', 'Residential', 'Commercial'
 	AddressType AddressType `json:"addressType,omitempty"`
 }
 
@@ -3104,13 +3118,13 @@ func (sd StageDetails) MarshalJSON() ([]byte, error) {
 type SystemData struct {
 	// CreatedBy - The identity that created the resource.
 	CreatedBy *string `json:"createdBy,omitempty"`
-	// CreatedByType - The type of identity that created the resource. Possible values include: 'CreatedByTypeUser', 'CreatedByTypeApplication', 'CreatedByTypeManagedIdentity', 'CreatedByTypeKey'
+	// CreatedByType - The type of identity that created the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
 	CreatedByType CreatedByType `json:"createdByType,omitempty"`
 	// CreatedAt - The timestamp of resource creation (UTC).
 	CreatedAt *date.Time `json:"createdAt,omitempty"`
 	// LastModifiedBy - The identity that last modified the resource.
 	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
-	// LastModifiedByType - The type of identity that last modified the resource. Possible values include: 'CreatedByTypeUser', 'CreatedByTypeApplication', 'CreatedByTypeManagedIdentity', 'CreatedByTypeKey'
+	// LastModifiedByType - The type of identity that last modified the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
 	LastModifiedByType CreatedByType `json:"lastModifiedByType,omitempty"`
 	// LastModifiedAt - The timestamp of resource last modification (UTC)
 	LastModifiedAt *date.Time `json:"lastModifiedAt,omitempty"`
@@ -3145,7 +3159,7 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 
 // TransportPreferences preferences related to the shipment logistics of the sku
 type TransportPreferences struct {
-	// PreferredShipmentType - Indicates Shipment Logistics type that the customer preferred. Possible values include: 'TransportShipmentTypesCustomerManaged', 'TransportShipmentTypesMicrosoftManaged'
+	// PreferredShipmentType - Indicates Shipment Logistics type that the customer preferred. Possible values include: 'CustomerManaged', 'MicrosoftManaged'
 	PreferredShipmentType TransportShipmentTypes `json:"preferredShipmentType,omitempty"`
 }
 

@@ -1,5 +1,5 @@
 {
-  "commit": "f9883569df850be792a37df17a1a28a5bdcdfc39",
+  "commit": "34018925632ef75ef5416e3add65324e0a12489f",
   "readme": "/_/azure-rest-api-specs/specification/edgeorder/resource-manager/readme.md",
   "tag": "package-2020-12-preview",
   "use": "@microsoft.azure/autorest.go@2.1.187",

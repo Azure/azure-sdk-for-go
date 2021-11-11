@@ -1,4 +1,4 @@
-// Package edgeorder implements the Azure ARM Edgeorder service API version 2020-12-01-preview.
+// Package edgeorder implements the Azure ARM Edgeorder service API version 2021-12-01.
 //
 // Edge Order API's
 package edgeorder
@@ -102,7 +102,7 @@ func (client BaseClient) CancelOrderItemPreparer(ctx context.Context, orderItemN
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-12-01-preview"
+	const APIVersion = "2021-12-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -134,8 +134,7 @@ func (client BaseClient) CancelOrderItemResponder(resp *http.Response) (result a
 	return
 }
 
-// CreateAddress creates a new address with the specified parameters. Existing address cannot be updated with this API
-// and should instead be updated with the Update address API.
+// CreateAddress creates a new address with the specified parameters. Existing address can be updated with this API
 // Parameters:
 // addressName - the name of the address Resource within the specified resource group. address names must be
 // between 3 and 24 characters in length and use any alphanumeric and underscore only
@@ -200,7 +199,7 @@ func (client BaseClient) CreateAddressPreparer(ctx context.Context, addressName 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-12-01-preview"
+	const APIVersion = "2021-12-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -325,7 +324,7 @@ func (client BaseClient) CreateOrderItemPreparer(ctx context.Context, orderItemN
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-12-01-preview"
+	const APIVersion = "2021-12-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -421,7 +420,7 @@ func (client BaseClient) DeleteAddressByNamePreparer(ctx context.Context, addres
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-12-01-preview"
+	const APIVersion = "2021-12-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -508,7 +507,7 @@ func (client BaseClient) DeleteOrderItemByNamePreparer(ctx context.Context, orde
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-12-01-preview"
+	const APIVersion = "2021-12-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -607,7 +606,7 @@ func (client BaseClient) GetAddressByNamePreparer(ctx context.Context, addressNa
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-12-01-preview"
+	const APIVersion = "2021-12-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -696,7 +695,7 @@ func (client BaseClient) GetOrderByNamePreparer(ctx context.Context, orderName s
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-12-01-preview"
+	const APIVersion = "2021-12-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -785,7 +784,7 @@ func (client BaseClient) GetOrderItemByNamePreparer(ctx context.Context, orderIt
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-12-01-preview"
+	const APIVersion = "2021-12-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -880,7 +879,7 @@ func (client BaseClient) ListAddressesAtResourceGroupLevelPreparer(ctx context.C
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-12-01-preview"
+	const APIVersion = "2021-12-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1010,7 +1009,7 @@ func (client BaseClient) ListAddressesAtSubscriptionLevelPreparer(ctx context.Co
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-12-01-preview"
+	const APIVersion = "2021-12-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1145,7 +1144,7 @@ func (client BaseClient) ListConfigurationsPreparer(ctx context.Context, configu
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-12-01-preview"
+	const APIVersion = "2021-12-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1259,7 +1258,7 @@ func (client BaseClient) ListOperations(ctx context.Context) (result OperationLi
 
 // ListOperationsPreparer prepares the ListOperations request.
 func (client BaseClient) ListOperationsPreparer(ctx context.Context) (*http.Request, error) {
-	const APIVersion = "2020-12-01-preview"
+	const APIVersion = "2021-12-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1385,7 +1384,7 @@ func (client BaseClient) ListOrderAtResourceGroupLevelPreparer(ctx context.Conte
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-12-01-preview"
+	const APIVersion = "2021-12-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1509,7 +1508,7 @@ func (client BaseClient) ListOrderAtSubscriptionLevelPreparer(ctx context.Contex
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-12-01-preview"
+	const APIVersion = "2021-12-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1644,7 +1643,7 @@ func (client BaseClient) ListOrderItemsAtResourceGroupLevelPreparer(ctx context.
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-12-01-preview"
+	const APIVersion = "2021-12-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1780,7 +1779,7 @@ func (client BaseClient) ListOrderItemsAtSubscriptionLevelPreparer(ctx context.C
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-12-01-preview"
+	const APIVersion = "2021-12-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1918,7 +1917,7 @@ func (client BaseClient) ListProductFamiliesPreparer(ctx context.Context, produc
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-12-01-preview"
+	const APIVersion = "2021-12-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -2048,7 +2047,7 @@ func (client BaseClient) ListProductFamiliesMetadataPreparer(ctx context.Context
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-12-01-preview"
+	const APIVersion = "2021-12-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -2180,7 +2179,7 @@ func (client BaseClient) ReturnOrderItemPreparer(ctx context.Context, orderItemN
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-12-01-preview"
+	const APIVersion = "2021-12-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -2277,7 +2276,7 @@ func (client BaseClient) UpdateAddressPreparer(ctx context.Context, addressName 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-12-01-preview"
+	const APIVersion = "2021-12-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -2374,7 +2373,7 @@ func (client BaseClient) UpdateOrderItemPreparer(ctx context.Context, orderItemN
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-12-01-preview"
+	const APIVersion = "2021-12-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

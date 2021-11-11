@@ -8,7 +8,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
-* When running in `LiveMode` the sanitizers will not send requests.
+* Adding recording sanitizers has no effect when running in `LiveMode`
 
 ### Other Changes
 

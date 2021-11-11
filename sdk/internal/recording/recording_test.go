@@ -559,7 +559,9 @@ func TestModeNotSetStartStop(t *testing.T) {
 	defer os.Setenv("AZURE_RECORD_MODE", proxyMode)
 
 	os.Unsetenv("AZURE_RECORD_MODE")
-	Start(t, packagePath, nil)
+	err := Start(t, packagePath, nil)
+	require.NoError(t, err)
 	require.Equal(t, PlaybackMode, GetRecordMode())
-	Stop(t, nil)
+	err = Stop(t, nil)
+	require.NoError(t, err)
 }

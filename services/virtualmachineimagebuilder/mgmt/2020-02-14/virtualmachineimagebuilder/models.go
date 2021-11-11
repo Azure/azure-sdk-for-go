@@ -1475,7 +1475,7 @@ func (itvd ImageTemplateVhdDistributor) AsBasicImageTemplateDistributor() (Basic
 
 // ImageTemplateVMProfile describes the virtual machine used to build, customize and capture images
 type ImageTemplateVMProfile struct {
-	// VMSize - Size of the virtual machine used to build, customize and capture images. Omit or specify empty string to use the default (Standard_D1_v2).
+	// VMSize - Size of the virtual machine used to build, customize and capture images. Omit or specify empty string to use the default (Standard_D1_v2 for Gen1 images and Standard_D2ds_v4 for Gen2 images).
 	VMSize *string `json:"vmSize,omitempty"`
 	// OsDiskSizeGB - Size of the OS disk in GB. Omit or specify 0 to use Azure's default OS disk size.
 	OsDiskSizeGB *int32 `json:"osDiskSizeGB,omitempty"`

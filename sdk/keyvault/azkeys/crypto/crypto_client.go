@@ -4,7 +4,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package azcrypto
+package crypto
 
 import (
 	"context"
@@ -113,7 +113,7 @@ func NewClient(keyURL string, credential azcore.TokenCredential, options *Client
 	}, nil
 }
 
-// Optional parameters for the azcrypto.Client.EncryptOptions method
+// Optional parameters for the crypto.Client.EncryptOptions method
 type EncryptOptions struct {
 	// Additional data to authenticate but not encrypt/decrypt when using authenticated crypto algorithms.
 	AAD []byte `json:"aad,omitempty"`

@@ -1,16 +1,12 @@
 # Release History
 
-## 0.8.2 (Unreleased)
+## 0.8.2 (2021-11-11)
 
 ### Features Added
 * Adding `RecordingOptions.RouteURL` to handle routing requests to the test proxy
 
-### Breaking Changes
-
 ### Bugs Fixed
 * Adding recording sanitizers has no effect when running in `LiveMode`
-
-### Other Changes
 
 ## 0.8.1 (2021-10-21)
 

@@ -1,5 +1,8 @@
 # Release History
 
+## 0.2.1 (2021-11-11)
+No exported changes
+
 ## 0.2.1 (Unreleased)
 
 ### Features Added

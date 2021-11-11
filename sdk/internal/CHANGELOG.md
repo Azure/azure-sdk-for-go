@@ -3,7 +3,8 @@
 ## 0.8.3 (Unreleased)
 
 ### Features Added
-* If `AZURE_RECORD_MODE` is not set, default to 
+* If `AZURE_RECORD_MODE` is not set, default to `playback`
+* If `PROXY_CERT` is not set, try to find it based on the `GOPATH` environment variable and the path to `eng/common/testproxy/dotnet-devcert.crt`
 
 ### Breaking Changes
 

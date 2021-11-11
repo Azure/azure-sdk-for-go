@@ -381,10 +381,10 @@ func TestRecordingOptions(t *testing.T) {
 	r := RecordingOptions{
 		UseHTTPS: true,
 	}
-	require.Equal(t, r.hostScheme(), "https://localhost:5001")
+	require.Equal(t, r.baseURL(), "https://localhost:5001")
 
 	r.UseHTTPS = false
-	require.Equal(t, r.hostScheme(), "http://localhost:5000")
+	require.Equal(t, r.baseURL(), "http://localhost:5000")
 
 	require.Equal(t, GetEnvVariable("Nonexistentevnvar", "somefakevalue"), "somefakevalue")
 	temp := recordMode
@@ -393,10 +393,10 @@ func TestRecordingOptions(t *testing.T) {
 	recordMode = temp
 
 	r.UseHTTPS = false
-	require.Equal(t, r.hostScheme(), "http://localhost:5000")
+	require.Equal(t, r.baseURL(), "http://localhost:5000")
 
 	r.UseHTTPS = true
-	require.Equal(t, r.hostScheme(), "https://localhost:5001")
+	require.Equal(t, r.baseURL(), "https://localhost:5001")
 }
 
 var packagePath = "sdk/internal/recording/testdata"
@@ -514,4 +514,14 @@ func TestLiveOnly(t *testing.T) {
 	require.Equal(t, IsLiveOnly(t), false)
 	LiveOnly(t)
 	require.Equal(t, IsLiveOnly(t), true)
+}
+
+func TestHostAndScheme(t *testing.T) {
+	r := RecordingOptions{UseHTTPS: true}
+	require.Equal(t, r.scheme(), "https")
+	require.Equal(t, r.host(), "localhost:5001")
+
+	r.UseHTTPS = false
+	require.Equal(t, r.scheme(), "http")
+	require.Equal(t, r.host(), "localhost:5000")
 }

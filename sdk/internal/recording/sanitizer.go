@@ -112,10 +112,13 @@ func handleProxyResponse(resp *http.Response, err error) error {
 // is the value to replace with, and regex is the string to match in the body. If your regex includes a group
 // options.GroupForReplace specifies which group to replace
 func AddBodyKeySanitizer(jsonPath, value, regex string, options *RecordingOptions) error {
+	if recordMode == LiveMode {
+		return nil
+	}
 	if options == nil {
 		options = defaultOptions()
 	}
-	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.hostScheme())
+	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.baseURL())
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		return err
@@ -146,10 +149,13 @@ func AddBodyKeySanitizer(jsonPath, value, regex string, options *RecordingOption
 // substitution value, regex can be a simple regex or a substitution operation if
 // options.GroupForReplace is set.
 func AddBodyRegexSanitizer(value, regex string, options *RecordingOptions) error {
+	if recordMode == LiveMode {
+		return nil
+	}
 	if options == nil {
 		options = defaultOptions()
 	}
-	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.hostScheme())
+	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.baseURL())
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		return err
@@ -179,10 +185,13 @@ func AddBodyRegexSanitizer(value, regex string, options *RecordingOptions) error
 // method: the method by which the value of the targeted key will be replaced. Defaults to GUID replacement
 // resetAfterFirt: Do we need multiple pairs replaced? Or do we want to replace each value with the same value.
 func AddContinuationSanitizer(key, method string, resetAfterFirst bool, options *RecordingOptions) error {
+	if recordMode == LiveMode {
+		return nil
+	}
 	if options == nil {
 		options = defaultOptions()
 	}
-	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.hostScheme())
+	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.baseURL())
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		return err
@@ -211,10 +220,13 @@ func AddContinuationSanitizer(key, method string, resetAfterFirst bool, options 
 // value is the substitution value, regex can be defined as a simple regex replace or a substition
 // operation if options.GroupForReplace specifies which group to replace.
 func AddGeneralRegexSanitizer(value, regex string, options *RecordingOptions) error {
+	if recordMode == LiveMode {
+		return nil
+	}
 	if options == nil {
 		options = defaultOptions()
 	}
-	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.hostScheme())
+	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.baseURL())
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		return err
@@ -246,10 +258,13 @@ func AddGeneralRegexSanitizer(value, regex string, options *RecordingOptions) er
 // value. regex can be defined as a simple regex replace or a substitution operation if
 // options.GroupForReplace is set.
 func AddHeaderRegexSanitizer(key, value, regex string, options *RecordingOptions) error {
+	if recordMode == LiveMode {
+		return nil
+	}
 	if options == nil {
 		options = defaultOptions()
 	}
-	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.hostScheme())
+	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.baseURL())
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		return err
@@ -278,10 +293,13 @@ func AddHeaderRegexSanitizer(key, value, regex string, options *RecordingOptions
 
 // AddOAuthResponseSanitizer cleans all request/response pairs taht match an oauth regex in their URI
 func AddOAuthResponseSanitizer(options *RecordingOptions) error {
+	if recordMode == LiveMode {
+		return nil
+	}
 	if options == nil {
 		options = defaultOptions()
 	}
-	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.hostScheme())
+	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.baseURL())
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		return err
@@ -292,10 +310,13 @@ func AddOAuthResponseSanitizer(options *RecordingOptions) error {
 
 // AddRemoveHeaderSanitizer removes a list of headers from request/responses.
 func AddRemoveHeaderSanitizer(headersForRemoval []string, options *RecordingOptions) error {
+	if recordMode == LiveMode {
+		return nil
+	}
 	if options == nil {
 		options = defaultOptions()
 	}
-	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.hostScheme())
+	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.baseURL())
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		return err
@@ -319,10 +340,13 @@ func AddRemoveHeaderSanitizer(headersForRemoval []string, options *RecordingOpti
 // AddURISanitizer sanitizes URIs via regex. value is the substition value, regex is
 // either a simple regex or a substitution operation if options.GroupForReplace is defined.
 func AddURISanitizer(value, regex string, options *RecordingOptions) error {
+	if recordMode == LiveMode {
+		return nil
+	}
 	if options == nil {
 		options = defaultOptions()
 	}
-	url := fmt.Sprintf("%v/Admin/AddSanitizer", options.hostScheme())
+	url := fmt.Sprintf("%v/Admin/AddSanitizer", options.baseURL())
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		return err
@@ -348,10 +372,13 @@ func AddURISanitizer(value, regex string, options *RecordingOptions) error {
 // AddURISubscriptionIDSanitizer replaces real subscriptionIDs within a URI with a default
 // or configured fake value. To use the default value set value to "", otherwise value specifies the replacement value.
 func AddURISubscriptionIDSanitizer(value string, options *RecordingOptions) error {
+	if recordMode == LiveMode {
+		return nil
+	}
 	if options == nil {
 		options = defaultOptions()
 	}
-	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.hostScheme())
+	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.baseURL())
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		return err
@@ -374,11 +401,15 @@ func AddURISubscriptionIDSanitizer(value string, options *RecordingOptions) erro
 	return handleProxyResponse(client.Do(req))
 }
 
+// ResetSanitizers deletes any existing sanitizers from the test proxy.
 func ResetSanitizers(options *RecordingOptions) error {
+	if recordMode == LiveMode {
+		return nil
+	}
 	if options == nil {
 		options = defaultOptions()
 	}
-	url := fmt.Sprintf("%v/Admin/Reset", options.hostScheme())
+	url := fmt.Sprintf("%v/Admin/Reset", options.baseURL())
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		return err

@@ -3,10 +3,12 @@
 ## 0.8.2 (Unreleased)
 
 ### Features Added
+* Adding `RecordingOptions.RouteURL` to handle routing requests to the test proxy
 
 ### Breaking Changes
 
 ### Bugs Fixed
+* Adding recording sanitizers has no effect when running in `LiveMode`
 
 ### Other Changes
 

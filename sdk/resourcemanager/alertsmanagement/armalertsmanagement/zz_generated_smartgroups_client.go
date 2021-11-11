@@ -159,7 +159,7 @@ func (client *SmartGroupsClient) getAllCreateRequest(ctx context.Context, option
 		reqQP.Set("timeRange", string(*options.TimeRange))
 	}
 	if options != nil && options.PageCount != nil {
-		reqQP.Set("pageCount", strconv.FormatInt(int64(*options.PageCount), 10))
+		reqQP.Set("pageCount", strconv.FormatInt(*options.PageCount, 10))
 	}
 	if options != nil && options.SortBy != nil {
 		reqQP.Set("sortBy", string(*options.SortBy))

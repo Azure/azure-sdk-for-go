@@ -15,147 +15,26 @@ import (
 	"time"
 )
 
-// ActionGroup - Action rule with action group configuration
-type ActionGroup struct {
-	ActionRuleProperties
-	// REQUIRED; Action group to trigger if action rule matches
-	ActionGroupID *string `json:"actionGroupId,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ActionGroup.
-func (a ActionGroup) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.ActionRuleProperties.marshalInternal(objectMap, ActionRuleTypeActionGroup)
-	populate(objectMap, "actionGroupId", a.ActionGroupID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ActionGroup.
-func (a *ActionGroup) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "actionGroupId":
-			err = unpopulate(val, &a.ActionGroupID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := a.ActionRuleProperties.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// ActionGroupsInformation - The Action Groups information, used by the alert rule.
-type ActionGroupsInformation struct {
-	// REQUIRED; The Action Group resource IDs.
-	GroupIDs []*string `json:"groupIds,omitempty"`
-
-	// An optional custom email subject to use in email notifications.
-	CustomEmailSubject *string `json:"customEmailSubject,omitempty"`
-
-	// An optional custom web-hook payload to use in web-hook notifications.
-	CustomWebhookPayload *string `json:"customWebhookPayload,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ActionGroupsInformation.
-func (a ActionGroupsInformation) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "customEmailSubject", a.CustomEmailSubject)
-	populate(objectMap, "customWebhookPayload", a.CustomWebhookPayload)
-	populate(objectMap, "groupIds", a.GroupIDs)
-	return json.Marshal(objectMap)
-}
-
-// ActionRule - Action rule object containing target scope, conditions and suppression logic
-type ActionRule struct {
-	ManagedResource
-	// action rule properties
-	Properties ActionRulePropertiesClassification `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ActionRule.
-func (a ActionRule) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.ManagedResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ActionRule.
-func (a *ActionRule) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			a.Properties, err = unmarshalActionRulePropertiesClassification(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := a.ManagedResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// ActionRulePropertiesClassification provides polymorphic access to related types.
-// Call the interface's GetActionRuleProperties() method to access the common type.
+// ActionClassification provides polymorphic access to related types.
+// Call the interface's GetAction() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *ActionGroup, *ActionRuleProperties, *Diagnostics, *Suppression
-type ActionRulePropertiesClassification interface {
-	// GetActionRuleProperties returns the ActionRuleProperties content of the underlying type.
-	GetActionRuleProperties() *ActionRuleProperties
+// - *Action, *AddActionGroups, *RemoveAllActionGroups
+type ActionClassification interface {
+	// GetAction returns the Action content of the underlying type.
+	GetAction() *Action
 }
 
-// ActionRuleProperties - Action rule properties defining scope, conditions, suppression logic for action rule
-type ActionRuleProperties struct {
-	// REQUIRED; Indicates type of action rule
-	Type *ActionRuleType `json:"type,omitempty"`
-
-	// conditions on which alerts will be filtered
-	Conditions *Conditions `json:"conditions,omitempty"`
-
-	// Description of action rule
-	Description *string `json:"description,omitempty"`
-
-	// scope on which action rule will apply
-	Scope *Scope `json:"scope,omitempty"`
-
-	// Indicates if the given action rule is enabled or disabled
-	Status *ActionRuleStatus `json:"status,omitempty"`
-
-	// READ-ONLY; Creation time of action rule. Date-Time in ISO-8601 format.
-	CreatedAt *time.Time `json:"createdAt,omitempty" azure:"ro"`
-
-	// READ-ONLY; Created by user name.
-	CreatedBy *string `json:"createdBy,omitempty" azure:"ro"`
-
-	// READ-ONLY; Last updated time of action rule. Date-Time in ISO-8601 format.
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty" azure:"ro"`
-
-	// READ-ONLY; Last modified by user name.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty" azure:"ro"`
+// Action to be applied.
+type Action struct {
+	// REQUIRED; Action that should be applied.
+	ActionType *ActionType `json:"actionType,omitempty"`
 }
 
-// GetActionRuleProperties implements the ActionRulePropertiesClassification interface for type ActionRuleProperties.
-func (a *ActionRuleProperties) GetActionRuleProperties() *ActionRuleProperties { return a }
+// GetAction implements the ActionClassification interface for type Action.
+func (a *Action) GetAction() *Action { return a }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ActionRuleProperties.
-func (a *ActionRuleProperties) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type Action.
+func (a *Action) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
@@ -163,49 +42,17 @@ func (a *ActionRuleProperties) UnmarshalJSON(data []byte) error {
 	return a.unmarshalInternal(rawMsg)
 }
 
-func (a ActionRuleProperties) marshalInternal(objectMap map[string]interface{}, discValue ActionRuleType) {
-	populate(objectMap, "conditions", a.Conditions)
-	populateTimeRFC3339(objectMap, "createdAt", a.CreatedAt)
-	populate(objectMap, "createdBy", a.CreatedBy)
-	populate(objectMap, "description", a.Description)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", a.LastModifiedAt)
-	populate(objectMap, "lastModifiedBy", a.LastModifiedBy)
-	populate(objectMap, "scope", a.Scope)
-	populate(objectMap, "status", a.Status)
-	a.Type = &discValue
-	objectMap["type"] = a.Type
+func (a Action) marshalInternal(objectMap map[string]interface{}, discValue ActionType) {
+	a.ActionType = &discValue
+	objectMap["actionType"] = a.ActionType
 }
 
-func (a *ActionRuleProperties) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
+func (a *Action) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "conditions":
-			err = unpopulate(val, &a.Conditions)
-			delete(rawMsg, key)
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &a.CreatedAt)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &a.CreatedBy)
-			delete(rawMsg, key)
-		case "description":
-			err = unpopulate(val, &a.Description)
-			delete(rawMsg, key)
-		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &a.LastModifiedAt)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &a.LastModifiedBy)
-			delete(rawMsg, key)
-		case "scope":
-			err = unpopulate(val, &a.Scope)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &a.Status)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &a.Type)
+		case "actionType":
+			err = unpopulate(val, &a.ActionType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -215,89 +62,42 @@ func (a *ActionRuleProperties) unmarshalInternal(rawMsg map[string]json.RawMessa
 	return nil
 }
 
-// ActionRulesCreateUpdateOptions contains the optional parameters for the ActionRules.CreateUpdate method.
-type ActionRulesCreateUpdateOptions struct {
-	// placeholder for future optional parameters
+// AddActionGroups - Add action groups to alert processing rule.
+type AddActionGroups struct {
+	Action
+	// REQUIRED; List of action group Ids to add to alert processing rule.
+	ActionGroupIDs []*string `json:"actionGroupIds,omitempty"`
 }
 
-// ActionRulesDeleteOptions contains the optional parameters for the ActionRules.Delete method.
-type ActionRulesDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ActionRulesGetByNameOptions contains the optional parameters for the ActionRules.GetByName method.
-type ActionRulesGetByNameOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ActionRulesList - List of action rules
-type ActionRulesList struct {
-	// URL to fetch the next set of action rules
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// List of action rules
-	Value []*ActionRule `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ActionRulesList.
-func (a ActionRulesList) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type AddActionGroups.
+func (a AddActionGroups) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
+	a.Action.marshalInternal(objectMap, ActionTypeAddActionGroups)
+	populate(objectMap, "actionGroupIds", a.ActionGroupIDs)
 	return json.Marshal(objectMap)
 }
 
-// ActionRulesListByResourceGroupOptions contains the optional parameters for the ActionRules.ListByResourceGroup method.
-type ActionRulesListByResourceGroupOptions struct {
-	// filter by action group configured as part of action rule
-	ActionGroup *string
-	// filter by alert rule id
-	AlertRuleID *string
-	// filter by alert rule description
-	Description *string
-	// filter by impacted/target scope (provide comma separated list for multiple scopes). The value should be an well constructed ARM id of the scope.
-	ImpactedScope *string
-	// Filter by monitor service which generates the alert instance. Default value is select all.
-	MonitorService *MonitorService
-	// filter by action rule name
-	Name *string
-	// Filter by severity. Default value is select all.
-	Severity *Severity
-	// Filter by target resource( which is full ARM ID) Default value is select all.
-	TargetResource *string
-	// Filter by target resource group name. Default value is select all.
-	TargetResourceGroup *string
-	// Filter by target resource type. Default value is select all.
-	TargetResourceType *string
-}
-
-// ActionRulesListBySubscriptionOptions contains the optional parameters for the ActionRules.ListBySubscription method.
-type ActionRulesListBySubscriptionOptions struct {
-	// filter by action group configured as part of action rule
-	ActionGroup *string
-	// filter by alert rule id
-	AlertRuleID *string
-	// filter by alert rule description
-	Description *string
-	// filter by impacted/target scope (provide comma separated list for multiple scopes). The value should be an well constructed ARM id of the scope.
-	ImpactedScope *string
-	// Filter by monitor service which generates the alert instance. Default value is select all.
-	MonitorService *MonitorService
-	// filter by action rule name
-	Name *string
-	// Filter by severity. Default value is select all.
-	Severity *Severity
-	// Filter by target resource( which is full ARM ID) Default value is select all.
-	TargetResource *string
-	// Filter by target resource group name. Default value is select all.
-	TargetResourceGroup *string
-	// Filter by target resource type. Default value is select all.
-	TargetResourceType *string
-}
-
-// ActionRulesUpdateOptions contains the optional parameters for the ActionRules.Update method.
-type ActionRulesUpdateOptions struct {
-	// placeholder for future optional parameters
+// UnmarshalJSON implements the json.Unmarshaller interface for type AddActionGroups.
+func (a *AddActionGroups) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "actionGroupIds":
+			err = unpopulate(val, &a.ActionGroupIDs)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	if err := a.Action.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // Alert - An alert created in alert management service.
@@ -315,29 +115,6 @@ func (a Alert) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type Alert.
-func (a *Alert) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := a.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
 // AlertModification - Alert Modification details
 type AlertModification struct {
 	Resource
@@ -351,29 +128,6 @@ func (a AlertModification) MarshalJSON() ([]byte, error) {
 	a.Resource.marshalInternal(objectMap)
 	populate(objectMap, "properties", a.Properties)
 	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AlertModification.
-func (a *AlertModification) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := a.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // AlertModificationItem - Alert modification item.
@@ -417,6 +171,140 @@ func (a AlertModificationProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// AlertProcessingRule - Alert processing rule object containing target scopes, conditions and scheduling logic.
+type AlertProcessingRule struct {
+	ManagedResource
+	// Alert processing rule properties.
+	Properties *AlertProcessingRuleProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Alert processing rule system data.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AlertProcessingRule.
+func (a AlertProcessingRule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	a.ManagedResource.marshalInternal(objectMap)
+	populate(objectMap, "properties", a.Properties)
+	populate(objectMap, "systemData", a.SystemData)
+	return json.Marshal(objectMap)
+}
+
+// AlertProcessingRuleProperties - Alert processing rule properties defining scopes, conditions and scheduling logic for alert processing rule.
+type AlertProcessingRuleProperties struct {
+	// REQUIRED; Actions to be applied.
+	Actions []ActionClassification `json:"actions,omitempty"`
+
+	// REQUIRED; Scopes on which alert processing rule will apply.
+	Scopes []*string `json:"scopes,omitempty"`
+
+	// Conditions on which alerts will be filtered.
+	Conditions []*Condition `json:"conditions,omitempty"`
+
+	// Description of alert processing rule.
+	Description *string `json:"description,omitempty"`
+
+	// Indicates if the given alert processing rule is enabled or disabled.
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Scheduling for alert processing rule.
+	Schedule *Schedule `json:"schedule,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AlertProcessingRuleProperties.
+func (a AlertProcessingRuleProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "actions", a.Actions)
+	populate(objectMap, "conditions", a.Conditions)
+	populate(objectMap, "description", a.Description)
+	populate(objectMap, "enabled", a.Enabled)
+	populate(objectMap, "schedule", a.Schedule)
+	populate(objectMap, "scopes", a.Scopes)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AlertProcessingRuleProperties.
+func (a *AlertProcessingRuleProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "actions":
+			a.Actions, err = unmarshalActionClassificationArray(val)
+			delete(rawMsg, key)
+		case "conditions":
+			err = unpopulate(val, &a.Conditions)
+			delete(rawMsg, key)
+		case "description":
+			err = unpopulate(val, &a.Description)
+			delete(rawMsg, key)
+		case "enabled":
+			err = unpopulate(val, &a.Enabled)
+			delete(rawMsg, key)
+		case "schedule":
+			err = unpopulate(val, &a.Schedule)
+			delete(rawMsg, key)
+		case "scopes":
+			err = unpopulate(val, &a.Scopes)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// AlertProcessingRulesCreateOrUpdateOptions contains the optional parameters for the AlertProcessingRules.CreateOrUpdate method.
+type AlertProcessingRulesCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AlertProcessingRulesDeleteOptions contains the optional parameters for the AlertProcessingRules.Delete method.
+type AlertProcessingRulesDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AlertProcessingRulesGetByNameOptions contains the optional parameters for the AlertProcessingRules.GetByName method.
+type AlertProcessingRulesGetByNameOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AlertProcessingRulesList - List of alert processing rules.
+type AlertProcessingRulesList struct {
+	// URL to fetch the next set of alert processing rules.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// List of alert processing rules.
+	Value []*AlertProcessingRule `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AlertProcessingRulesList.
+func (a AlertProcessingRulesList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", a.NextLink)
+	populate(objectMap, "value", a.Value)
+	return json.Marshal(objectMap)
+}
+
+// AlertProcessingRulesListByResourceGroupOptions contains the optional parameters for the AlertProcessingRules.ListByResourceGroup method.
+type AlertProcessingRulesListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AlertProcessingRulesListBySubscriptionOptions contains the optional parameters for the AlertProcessingRules.ListBySubscription method.
+type AlertProcessingRulesListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AlertProcessingRulesUpdateOptions contains the optional parameters for the AlertProcessingRules.Update method.
+type AlertProcessingRulesUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
 // AlertProperties - Alert property bag
 type AlertProperties struct {
 	// This object contains consistent fields across different monitor services.
@@ -427,129 +315,6 @@ type AlertProperties struct {
 
 	// READ-ONLY; Any object
 	EgressConfig map[string]interface{} `json:"egressConfig,omitempty" azure:"ro"`
-}
-
-// AlertRule - The alert rule information
-type AlertRule struct {
-	AzureResource
-	// The properties of the alert rule.
-	Properties *AlertRuleProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AlertRule.
-func (a AlertRule) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.AzureResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
-}
-
-// AlertRulePatchObject - The alert rule patch information
-type AlertRulePatchObject struct {
-	// The properties of the alert rule.
-	Properties *AlertRulePatchProperties `json:"properties,omitempty"`
-
-	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
-
-	// READ-ONLY; The resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AlertRulePatchObject.
-func (a AlertRulePatchObject) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", a.ID)
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "tags", a.Tags)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
-}
-
-// AlertRulePatchProperties - The alert rule properties.
-type AlertRulePatchProperties struct {
-	// The alert rule actions.
-	ActionGroups *ActionGroupsInformation `json:"actionGroups,omitempty"`
-
-	// The alert rule description.
-	Description *string `json:"description,omitempty"`
-
-	// The alert rule frequency in ISO8601 format. The time granularity must be in minutes and minimum value is 5 minutes.
-	Frequency *string `json:"frequency,omitempty"`
-
-	// The alert rule severity.
-	Severity *Severity `json:"severity,omitempty"`
-
-	// The alert rule state.
-	State *AlertRuleState `json:"state,omitempty"`
-
-	// The alert rule throttling information.
-	Throttling *ThrottlingInformation `json:"throttling,omitempty"`
-}
-
-// AlertRuleProperties - The alert rule properties.
-type AlertRuleProperties struct {
-	// REQUIRED; The alert rule actions.
-	ActionGroups *ActionGroupsInformation `json:"actionGroups,omitempty"`
-
-	// REQUIRED; The alert rule's detector.
-	Detector *Detector `json:"detector,omitempty"`
-
-	// REQUIRED; The alert rule frequency in ISO8601 format. The time granularity must be in minutes and minimum value is 5 minutes.
-	Frequency *string `json:"frequency,omitempty"`
-
-	// REQUIRED; The alert rule resources scope.
-	Scope []*string `json:"scope,omitempty"`
-
-	// REQUIRED; The alert rule severity.
-	Severity *Severity `json:"severity,omitempty"`
-
-	// REQUIRED; The alert rule state.
-	State *AlertRuleState `json:"state,omitempty"`
-
-	// The alert rule description.
-	Description *string `json:"description,omitempty"`
-
-	// The alert rule throttling information.
-	Throttling *ThrottlingInformation `json:"throttling,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AlertRuleProperties.
-func (a AlertRuleProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "actionGroups", a.ActionGroups)
-	populate(objectMap, "description", a.Description)
-	populate(objectMap, "detector", a.Detector)
-	populate(objectMap, "frequency", a.Frequency)
-	populate(objectMap, "scope", a.Scope)
-	populate(objectMap, "severity", a.Severity)
-	populate(objectMap, "state", a.State)
-	populate(objectMap, "throttling", a.Throttling)
-	return json.Marshal(objectMap)
-}
-
-// AlertRulesList - List of Smart Detector alert rules.
-type AlertRulesList struct {
-	// The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// List of Smart Detector alert rules.
-	Value []*AlertRule `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AlertRulesList.
-func (a AlertRulesList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
 }
 
 // AlertsChangeStateOptions contains the optional parameters for the Alerts.ChangeState method.
@@ -576,7 +341,7 @@ type AlertsGetAllOptions struct {
 	MonitorService *MonitorService
 	// Determines number of alerts returned per page in response. Permissible value is between 1 to 250. When the "includeContent" filter is selected, maximum
 	// value allowed is 25. Default value is 25.
-	PageCount *int32
+	PageCount *int64
 	// This filter allows to selection of the fields(comma separated) which would be part of the essential section. This would allow to project only the required
 	// fields rather than getting entire content. Default is to fetch all the fields in the essentials section.
 	Select *string
@@ -587,7 +352,7 @@ type AlertsGetAllOptions struct {
 	// Sort the query results by input field, Default value is 'lastModifiedDateTime'.
 	SortBy *AlertsSortByFields
 	// Sort the query results order in either ascending or descending. Default value is 'desc' for time fields and 'asc' for others.
-	SortOrder *Enum11
+	SortOrder *Enum12
 	// Filter by target resource( which is full ARM ID) Default value is select all.
 	TargetResource *string
 	// Filter by target resource group name. Default value is select all.
@@ -752,39 +517,16 @@ func (a AlertsSummary) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AlertsSummary.
-func (a *AlertsSummary) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := a.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
 // AlertsSummaryGroup - Group the result set.
 type AlertsSummaryGroup struct {
 	// Name of the field aggregated
 	Groupedby *string `json:"groupedby,omitempty"`
 
 	// Total count of the smart groups.
-	SmartGroupsCount *int32 `json:"smartGroupsCount,omitempty"`
+	SmartGroupsCount *int64 `json:"smartGroupsCount,omitempty"`
 
 	// Total count of the result set.
-	Total *int32 `json:"total,omitempty"`
+	Total *int64 `json:"total,omitempty"`
 
 	// List of the items
 	Values []*AlertsSummaryGroupItem `json:"values,omitempty"`
@@ -803,7 +545,7 @@ func (a AlertsSummaryGroup) MarshalJSON() ([]byte, error) {
 // AlertsSummaryGroupItem - Alerts summary group item
 type AlertsSummaryGroupItem struct {
 	// Count of the aggregated field
-	Count *int32 `json:"count,omitempty"`
+	Count *int64 `json:"count,omitempty"`
 
 	// Name of the field aggregated
 	Groupedby *string `json:"groupedby,omitempty"`
@@ -825,122 +567,36 @@ func (a AlertsSummaryGroupItem) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AzureResource - An Azure resource object
-type AzureResource struct {
-	// The resource location.
-	Location *string `json:"location,omitempty"`
-
-	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
-
-	// READ-ONLY; The resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AzureResource.
-func (a AzureResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (a AzureResource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", a.ID)
-	populate(objectMap, "location", a.Location)
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "tags", a.Tags)
-	populate(objectMap, "type", a.Type)
-}
-
-// Condition - condition to trigger an action rule
+// Condition to trigger an alert processing rule.
 type Condition struct {
-	// operator for a given condition
+	// Field for a given condition.
+	Field *Field `json:"field,omitempty"`
+
+	// Operator for a given condition.
 	Operator *Operator `json:"operator,omitempty"`
 
-	// list of values to match for a given condition.
+	// List of values to match for a given condition.
 	Values []*string `json:"values,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Condition.
 func (c Condition) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	populate(objectMap, "field", c.Field)
 	populate(objectMap, "operator", c.Operator)
 	populate(objectMap, "values", c.Values)
 	return json.Marshal(objectMap)
 }
 
-// Conditions in alert instance to be matched for a given action rule. Default value is all. Multiple values could be provided with comma separation.
-type Conditions struct {
-	// filter alerts by alert context (payload)
-	AlertContext *Condition `json:"alertContext,omitempty"`
-
-	// filter alerts by alert rule id
-	AlertRuleID *Condition `json:"alertRuleId,omitempty"`
-
-	// filter alerts by alert rule description
-	Description *Condition `json:"description,omitempty"`
-
-	// filter alerts by monitor condition
-	MonitorCondition *Condition `json:"monitorCondition,omitempty"`
-
-	// filter alerts by monitor service
-	MonitorService *Condition `json:"monitorService,omitempty"`
-
-	// filter alerts by severity
-	Severity *Condition `json:"severity,omitempty"`
-
-	// filter alerts by target resource type
-	TargetResourceType *Condition `json:"targetResourceType,omitempty"`
+// DailyRecurrence - Daily recurrence object.
+type DailyRecurrence struct {
+	Recurrence
 }
 
-// Detector - The detector information. By default this is not populated, unless it's specified in expandDetector
-type Detector struct {
-	// REQUIRED; The detector id.
-	ID *string `json:"id,omitempty"`
-
-	// The Smart Detector description. By default this is not populated, unless it's specified in expandDetector
-	Description *string `json:"description,omitempty"`
-
-	// The Smart Detector image path. By default this is not populated, unless it's specified in expandDetector
-	ImagePaths []*string `json:"imagePaths,omitempty"`
-
-	// The Smart Detector name. By default this is not populated, unless it's specified in expandDetector
-	Name *string `json:"name,omitempty"`
-
-	// The detector's parameters.'
-	Parameters map[string]map[string]interface{} `json:"parameters,omitempty"`
-
-	// The Smart Detector supported resource types. By default this is not populated, unless it's specified in expandDetector
-	SupportedResourceTypes []*string `json:"supportedResourceTypes,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Detector.
-func (d Detector) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type DailyRecurrence.
+func (d DailyRecurrence) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "description", d.Description)
-	populate(objectMap, "id", d.ID)
-	populate(objectMap, "imagePaths", d.ImagePaths)
-	populate(objectMap, "name", d.Name)
-	populate(objectMap, "parameters", d.Parameters)
-	populate(objectMap, "supportedResourceTypes", d.SupportedResourceTypes)
-	return json.Marshal(objectMap)
-}
-
-// Diagnostics - Action rule with diagnostics configuration
-type Diagnostics struct {
-	ActionRuleProperties
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Diagnostics.
-func (d Diagnostics) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.ActionRuleProperties.marshalInternal(objectMap, ActionRuleTypeDiagnostics)
+	d.Recurrence.marshalInternal(objectMap, RecurrenceTypeDaily)
 	return json.Marshal(objectMap)
 }
 
@@ -1208,7 +864,7 @@ func (e *Essentials) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// ManagedResource - An azure managed resource object
+// ManagedResource - An azure managed resource object.
 type ManagedResource struct {
 	Resource
 	// REQUIRED; Resource location
@@ -1225,40 +881,10 @@ func (m ManagedResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ManagedResource.
-func (m *ManagedResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return m.unmarshalInternal(rawMsg)
-}
-
 func (m ManagedResource) marshalInternal(objectMap map[string]interface{}) {
 	m.Resource.marshalInternal(objectMap)
 	populate(objectMap, "location", m.Location)
 	populate(objectMap, "tags", m.Tags)
-}
-
-func (m *ManagedResource) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "location":
-			err = unpopulate(val, &m.Location)
-			delete(rawMsg, key)
-		case "tags":
-			err = unpopulate(val, &m.Tags)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := m.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // MonitorServiceDetails - Details of a monitor service
@@ -1303,6 +929,44 @@ func (m *MonitorServiceList) UnmarshalJSON(data []byte) error {
 		}
 	}
 	if err := m.AlertsMetaDataProperties.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
+}
+
+// MonthlyRecurrence - Monthly recurrence object.
+type MonthlyRecurrence struct {
+	Recurrence
+	// REQUIRED; Specifies the values for monthly recurrence pattern.
+	DaysOfMonth []*int32 `json:"daysOfMonth,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type MonthlyRecurrence.
+func (m MonthlyRecurrence) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	m.Recurrence.marshalInternal(objectMap, RecurrenceTypeMonthly)
+	populate(objectMap, "daysOfMonth", m.DaysOfMonth)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type MonthlyRecurrence.
+func (m *MonthlyRecurrence) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "daysOfMonth":
+			err = unpopulate(val, &m.DaysOfMonth)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	if err := m.Recurrence.unmarshalInternal(rawMsg); err != nil {
 		return err
 	}
 	return nil
@@ -1354,13 +1018,13 @@ type OperationsListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PatchObject - Data contract for patch
+// PatchObject - Data contract for patch.
 type PatchObject struct {
-	// properties supported by patch operation
+	// Properties supported by patch operation.
 	Properties *PatchProperties `json:"properties,omitempty"`
 
-	// tags to be updated
-	Tags map[string]interface{} `json:"tags,omitempty"`
+	// Tags to be updated.
+	Tags map[string]*string `json:"tags,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type PatchObject.
@@ -1371,10 +1035,83 @@ func (p PatchObject) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// PatchProperties - Action rule properties supported by patch
+// PatchProperties - Alert processing rule properties supported by patch.
 type PatchProperties struct {
-	// Indicates if the given action rule is enabled or disabled
-	Status *ActionRuleStatus `json:"status,omitempty"`
+	// Indicates if the given alert processing rule is enabled or disabled.
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// RecurrenceClassification provides polymorphic access to related types.
+// Call the interface's GetRecurrence() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *DailyRecurrence, *MonthlyRecurrence, *Recurrence, *WeeklyRecurrence
+type RecurrenceClassification interface {
+	// GetRecurrence returns the Recurrence content of the underlying type.
+	GetRecurrence() *Recurrence
+}
+
+// Recurrence object.
+type Recurrence struct {
+	// REQUIRED; Specifies when the recurrence should be applied.
+	RecurrenceType *RecurrenceType `json:"recurrenceType,omitempty"`
+
+	// End time for recurrence.
+	EndTime *string `json:"endTime,omitempty"`
+
+	// Start time for recurrence.
+	StartTime *string `json:"startTime,omitempty"`
+}
+
+// GetRecurrence implements the RecurrenceClassification interface for type Recurrence.
+func (r *Recurrence) GetRecurrence() *Recurrence { return r }
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type Recurrence.
+func (r *Recurrence) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	return r.unmarshalInternal(rawMsg)
+}
+
+func (r Recurrence) marshalInternal(objectMap map[string]interface{}, discValue RecurrenceType) {
+	populate(objectMap, "endTime", r.EndTime)
+	r.RecurrenceType = &discValue
+	objectMap["recurrenceType"] = r.RecurrenceType
+	populate(objectMap, "startTime", r.StartTime)
+}
+
+func (r *Recurrence) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "endTime":
+			err = unpopulate(val, &r.EndTime)
+			delete(rawMsg, key)
+		case "recurrenceType":
+			err = unpopulate(val, &r.RecurrenceType)
+			delete(rawMsg, key)
+		case "startTime":
+			err = unpopulate(val, &r.StartTime)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// RemoveAllActionGroups - Indicates if all action groups should be removed.
+type RemoveAllActionGroups struct {
+	Action
+}
+
+// MarshalJSON implements the json.Marshaller interface for type RemoveAllActionGroups.
+func (r RemoveAllActionGroups) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	r.Action.marshalInternal(objectMap, ActionTypeRemoveAllActionGroups)
+	return json.Marshal(objectMap)
 }
 
 // Resource - An azure resource object
@@ -1396,33 +1133,57 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type Resource.
-func (r *Resource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return r.unmarshalInternal(rawMsg)
-}
-
 func (r Resource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "id", r.ID)
 	populate(objectMap, "name", r.Name)
 	populate(objectMap, "type", r.Type)
 }
 
-func (r *Resource) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
+// Schedule - Scheduling configuration for a given alert processing rule.
+type Schedule struct {
+	// Scheduling effective from time. Date-Time in ISO-8601 format without timezone suffix.
+	EffectiveFrom *string `json:"effectiveFrom,omitempty"`
+
+	// Scheduling effective until time. Date-Time in ISO-8601 format without timezone suffix.
+	EffectiveUntil *string `json:"effectiveUntil,omitempty"`
+
+	// List of recurrences.
+	Recurrences []RecurrenceClassification `json:"recurrences,omitempty"`
+
+	// Scheduling time zone.
+	TimeZone *string `json:"timeZone,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Schedule.
+func (s Schedule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "effectiveFrom", s.EffectiveFrom)
+	populate(objectMap, "effectiveUntil", s.EffectiveUntil)
+	populate(objectMap, "recurrences", s.Recurrences)
+	populate(objectMap, "timeZone", s.TimeZone)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type Schedule.
+func (s *Schedule) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "id":
-			err = unpopulate(val, &r.ID)
+		case "effectiveFrom":
+			err = unpopulate(val, &s.EffectiveFrom)
 			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &r.Name)
+		case "effectiveUntil":
+			err = unpopulate(val, &s.EffectiveUntil)
 			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &r.Type)
+		case "recurrences":
+			s.Recurrences, err = unmarshalRecurrenceClassificationArray(val)
+			delete(rawMsg, key)
+		case "timeZone":
+			err = unpopulate(val, &s.TimeZone)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1430,74 +1191,6 @@ func (r *Resource) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 		}
 	}
 	return nil
-}
-
-// Scope - Target scope for a given action rule. By default scope will be the subscription. User can also provide list of resource groups or list of resources
-// from the scope subscription as well.
-type Scope struct {
-	// type of target scope
-	ScopeType *ScopeType `json:"scopeType,omitempty"`
-
-	// list of ARM IDs of the given scope type which will be the target of the given action rule.
-	Values []*string `json:"values,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Scope.
-func (s Scope) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "scopeType", s.ScopeType)
-	populate(objectMap, "values", s.Values)
-	return json.Marshal(objectMap)
-}
-
-// SmartDetectorAlertRulesCreateOrUpdateOptions contains the optional parameters for the SmartDetectorAlertRules.CreateOrUpdate method.
-type SmartDetectorAlertRulesCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SmartDetectorAlertRulesDeleteOptions contains the optional parameters for the SmartDetectorAlertRules.Delete method.
-type SmartDetectorAlertRulesDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SmartDetectorAlertRulesGetOptions contains the optional parameters for the SmartDetectorAlertRules.Get method.
-type SmartDetectorAlertRulesGetOptions struct {
-	// Indicates if Smart Detector should be expanded.
-	ExpandDetector *bool
-}
-
-// SmartDetectorAlertRulesListByResourceGroupOptions contains the optional parameters for the SmartDetectorAlertRules.ListByResourceGroup method.
-type SmartDetectorAlertRulesListByResourceGroupOptions struct {
-	// Indicates if Smart Detector should be expanded.
-	ExpandDetector *bool
-}
-
-// SmartDetectorAlertRulesListOptions contains the optional parameters for the SmartDetectorAlertRules.List method.
-type SmartDetectorAlertRulesListOptions struct {
-	// Indicates if Smart Detector should be expanded.
-	ExpandDetector *bool
-}
-
-// SmartDetectorAlertRulesPatchOptions contains the optional parameters for the SmartDetectorAlertRules.Patch method.
-type SmartDetectorAlertRulesPatchOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SmartDetectorErrorResponse - Describe the format of an Error response.
-// Implements the error and azcore.HTTPResponse interfaces.
-type SmartDetectorErrorResponse struct {
-	raw string
-	// Error code
-	Code *string `json:"code,omitempty"`
-
-	// Error message indicating why the operation failed.
-	Message *string `json:"message,omitempty"`
-}
-
-// Error implements the error interface for type SmartDetectorErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e SmartDetectorErrorResponse) Error() string {
-	return e.raw
 }
 
 // SmartGroup - Set of related alerts grouped together smartly by AMS.
@@ -1515,33 +1208,10 @@ func (s SmartGroup) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type SmartGroup.
-func (s *SmartGroup) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &s.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := s.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
 // SmartGroupAggregatedProperty - Aggregated property of each type
 type SmartGroupAggregatedProperty struct {
 	// Total number of items of type.
-	Count *int32 `json:"count,omitempty"`
+	Count *int64 `json:"count,omitempty"`
 
 	// Name of the type.
 	Name *string `json:"name,omitempty"`
@@ -1560,29 +1230,6 @@ func (s SmartGroupModification) MarshalJSON() ([]byte, error) {
 	s.Resource.marshalInternal(objectMap)
 	populate(objectMap, "properties", s.Properties)
 	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SmartGroupModification.
-func (s *SmartGroupModification) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &s.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := s.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // SmartGroupModificationItem - smartGroup modification item.
@@ -1639,7 +1286,7 @@ type SmartGroupProperties struct {
 	AlertStates []*SmartGroupAggregatedProperty `json:"alertStates,omitempty"`
 
 	// Total number of alerts in smart group
-	AlertsCount *int32 `json:"alertsCount,omitempty"`
+	AlertsCount *int64 `json:"alertsCount,omitempty"`
 
 	// Summary of monitorConditions in the smart group
 	MonitorConditions []*SmartGroupAggregatedProperty `json:"monitorConditions,omitempty"`
@@ -1767,7 +1414,7 @@ type SmartGroupsGetAllOptions struct {
 	MonitorService *MonitorService
 	// Determines number of alerts returned per page in response. Permissible value is between 1 to 250. When the "includeContent" filter is selected, maximum
 	// value allowed is 25. Default value is 25.
-	PageCount *int32
+	PageCount *int64
 	// Filter by severity. Default value is select all.
 	Severity *Severity
 	// Filter by state of the smart group. Default value is to select all.
@@ -1775,7 +1422,7 @@ type SmartGroupsGetAllOptions struct {
 	// Sort the query results by input field. Default value is sort by 'lastModifiedDateTime'.
 	SortBy *SmartGroupsSortByFields
 	// Sort the query results order in either ascending or descending. Default value is 'desc' for time fields and 'asc' for others.
-	SortOrder *Enum11
+	SortOrder *Enum12
 	// Filter by target resource( which is full ARM ID) Default value is select all.
 	TargetResource *string
 	// Filter by target resource group name. Default value is select all.
@@ -1813,23 +1460,41 @@ func (s SmartGroupsList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// Suppression - Action rule with suppression configuration
-type Suppression struct {
-	ActionRuleProperties
-	// REQUIRED; suppression configuration for the action rule
-	SuppressionConfig *SuppressionConfig `json:"suppressionConfig,omitempty"`
+// SystemData - Metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// The timestamp of resource creation (UTC).
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
+
+	// The identity that created the resource.
+	CreatedBy *string `json:"createdBy,omitempty"`
+
+	// The type of identity that created the resource.
+	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+
+	// The timestamp of resource last modification (UTC)
+	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+
+	// The identity that last modified the resource.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+
+	// The type of identity that last modified the resource.
+	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Suppression.
-func (s Suppression) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type SystemData.
+func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.ActionRuleProperties.marshalInternal(objectMap, ActionRuleTypeSuppression)
-	populate(objectMap, "suppressionConfig", s.SuppressionConfig)
+	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
+	populate(objectMap, "createdBy", s.CreatedBy)
+	populate(objectMap, "createdByType", s.CreatedByType)
+	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
+	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
+	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type Suppression.
-func (s *Suppression) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
+func (s *SystemData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
@@ -1837,63 +1502,68 @@ func (s *Suppression) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "suppressionConfig":
-			err = unpopulate(val, &s.SuppressionConfig)
+		case "createdAt":
+			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
+			delete(rawMsg, key)
+		case "createdBy":
+			err = unpopulate(val, &s.CreatedBy)
+			delete(rawMsg, key)
+		case "createdByType":
+			err = unpopulate(val, &s.CreatedByType)
+			delete(rawMsg, key)
+		case "lastModifiedAt":
+			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
+			delete(rawMsg, key)
+		case "lastModifiedBy":
+			err = unpopulate(val, &s.LastModifiedBy)
+			delete(rawMsg, key)
+		case "lastModifiedByType":
+			err = unpopulate(val, &s.LastModifiedByType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := s.ActionRuleProperties.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
-// SuppressionConfig - Suppression logic for a given action rule
-type SuppressionConfig struct {
-	// REQUIRED; Specifies when the suppression should be applied
-	RecurrenceType *SuppressionType `json:"recurrenceType,omitempty"`
-
-	// suppression schedule configuration
-	Schedule *SuppressionSchedule `json:"schedule,omitempty"`
+// WeeklyRecurrence - Weekly recurrence object.
+type WeeklyRecurrence struct {
+	Recurrence
+	// REQUIRED; Specifies the values for weekly recurrence pattern.
+	DaysOfWeek []*DaysOfWeek `json:"daysOfWeek,omitempty"`
 }
 
-// SuppressionSchedule - Schedule for a given suppression configuration.
-type SuppressionSchedule struct {
-	// End date for suppression
-	EndDate *string `json:"endDate,omitempty"`
-
-	// End date for suppression
-	EndTime *string `json:"endTime,omitempty"`
-
-	// Specifies the values for recurrence pattern
-	RecurrenceValues []*int32 `json:"recurrenceValues,omitempty"`
-
-	// Start date for suppression
-	StartDate *string `json:"startDate,omitempty"`
-
-	// Start time for suppression
-	StartTime *string `json:"startTime,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SuppressionSchedule.
-func (s SuppressionSchedule) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type WeeklyRecurrence.
+func (w WeeklyRecurrence) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "endDate", s.EndDate)
-	populate(objectMap, "endTime", s.EndTime)
-	populate(objectMap, "recurrenceValues", s.RecurrenceValues)
-	populate(objectMap, "startDate", s.StartDate)
-	populate(objectMap, "startTime", s.StartTime)
+	w.Recurrence.marshalInternal(objectMap, RecurrenceTypeWeekly)
+	populate(objectMap, "daysOfWeek", w.DaysOfWeek)
 	return json.Marshal(objectMap)
 }
 
-// ThrottlingInformation - Optional throttling information for the alert rule.
-type ThrottlingInformation struct {
-	// The required duration (in ISO8601 format) to wait before notifying on the alert rule again. The time granularity must be in minutes and minimum value
-	// is 0 minutes
-	Duration *string `json:"duration,omitempty"`
+// UnmarshalJSON implements the json.Unmarshaller interface for type WeeklyRecurrence.
+func (w *WeeklyRecurrence) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "daysOfWeek":
+			err = unpopulate(val, &w.DaysOfWeek)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	if err := w.Recurrence.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 func populate(m map[string]interface{}, k string, v interface{}) {

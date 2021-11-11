@@ -1,5 +1,278 @@
 # Release History
 
+## 0.3.0 (2021-11-11)
+### Breaking Changes
+
+- Type of `AlertsGetAllOptions.PageCount` has been changed from `*int32` to `*int64`
+- Type of `AlertsGetAllOptions.SortOrder` has been changed from `*Enum11` to `*Enum12`
+- Type of `PatchObject.Tags` has been changed from `map[string]interface{}` to `map[string]*string`
+- Type of `SmartGroupsGetAllOptions.SortOrder` has been changed from `*Enum11` to `*Enum12`
+- Type of `SmartGroupsGetAllOptions.PageCount` has been changed from `*int32` to `*int64`
+- Type of `AlertsSummaryGroupItem.Count` has been changed from `*int32` to `*int64`
+- Type of `SmartGroupProperties.AlertsCount` has been changed from `*int32` to `*int64`
+- Type of `AlertsSummaryGroup.SmartGroupsCount` has been changed from `*int32` to `*int64`
+- Type of `AlertsSummaryGroup.Total` has been changed from `*int32` to `*int64`
+- Type of `SmartGroupAggregatedProperty.Count` has been changed from `*int32` to `*int64`
+- Const `SuppressionTypeDaily` has been removed
+- Const `ActionRuleStatusDisabled` has been removed
+- Const `Enum11Desc` has been removed
+- Const `ActionRuleTypeActionGroup` has been removed
+- Const `ActionRuleTypeSuppression` has been removed
+- Const `SuppressionTypeOnce` has been removed
+- Const `SuppressionTypeWeekly` has been removed
+- Const `ActionRuleTypeDiagnostics` has been removed
+- Const `AlertRuleStateDisabled` has been removed
+- Const `ScopeTypeResource` has been removed
+- Const `Enum11Asc` has been removed
+- Const `ScopeTypeResourceGroup` has been removed
+- Const `SuppressionTypeAlways` has been removed
+- Const `AlertRuleStateEnabled` has been removed
+- Const `ActionRuleStatusEnabled` has been removed
+- Const `ScopeTypeSubscription` has been removed
+- Const `SuppressionTypeMonthly` has been removed
+- Function `*SmartDetectorAlertRulesClient.Patch` has been removed
+- Function `*AlertsSummary.UnmarshalJSON` has been removed
+- Function `*ActionRulesListBySubscriptionPager.NextPage` has been removed
+- Function `AlertRuleProperties.MarshalJSON` has been removed
+- Function `ActionRuleType.ToPtr` has been removed
+- Function `SuppressionSchedule.MarshalJSON` has been removed
+- Function `*ActionRuleProperties.UnmarshalJSON` has been removed
+- Function `PossibleSuppressionTypeValues` has been removed
+- Function `AzureResource.MarshalJSON` has been removed
+- Function `ActionRule.MarshalJSON` has been removed
+- Function `*SmartDetectorAlertRulesListPager.NextPage` has been removed
+- Function `*ActionRulesClient.Update` has been removed
+- Function `*ActionRulesListByResourceGroupPager.Err` has been removed
+- Function `SuppressionType.ToPtr` has been removed
+- Function `AlertRuleState.ToPtr` has been removed
+- Function `PossibleEnum11Values` has been removed
+- Function `*ActionRulesListByResourceGroupPager.PageResponse` has been removed
+- Function `AlertRulePatchObject.MarshalJSON` has been removed
+- Function `*ManagedResource.UnmarshalJSON` has been removed
+- Function `*SmartDetectorAlertRulesClient.List` has been removed
+- Function `*ActionRulesListBySubscriptionPager.PageResponse` has been removed
+- Function `*ActionRulesClient.ListBySubscription` has been removed
+- Function `*Resource.UnmarshalJSON` has been removed
+- Function `NewActionRulesClient` has been removed
+- Function `*SmartDetectorAlertRulesListPager.PageResponse` has been removed
+- Function `Diagnostics.MarshalJSON` has been removed
+- Function `PossibleScopeTypeValues` has been removed
+- Function `PossibleActionRuleStatusValues` has been removed
+- Function `*SmartDetectorAlertRulesClient.Delete` has been removed
+- Function `PossibleAlertRuleStateValues` has been removed
+- Function `*Alert.UnmarshalJSON` has been removed
+- Function `ScopeType.ToPtr` has been removed
+- Function `NewSmartDetectorAlertRulesClient` has been removed
+- Function `*ActionRuleProperties.GetActionRuleProperties` has been removed
+- Function `ActionGroupsInformation.MarshalJSON` has been removed
+- Function `AlertRulesList.MarshalJSON` has been removed
+- Function `Detector.MarshalJSON` has been removed
+- Function `*ActionRulesClient.ListByResourceGroup` has been removed
+- Function `Scope.MarshalJSON` has been removed
+- Function `*ActionRulesClient.Delete` has been removed
+- Function `*SmartDetectorAlertRulesClient.ListByResourceGroup` has been removed
+- Function `*ActionRulesListByResourceGroupPager.NextPage` has been removed
+- Function `*SmartDetectorAlertRulesListByResourceGroupPager.NextPage` has been removed
+- Function `*ActionRulesListBySubscriptionPager.Err` has been removed
+- Function `*SmartGroup.UnmarshalJSON` has been removed
+- Function `*Suppression.UnmarshalJSON` has been removed
+- Function `Suppression.MarshalJSON` has been removed
+- Function `*SmartDetectorAlertRulesListByResourceGroupPager.Err` has been removed
+- Function `*SmartDetectorAlertRulesClient.CreateOrUpdate` has been removed
+- Function `AlertRule.MarshalJSON` has been removed
+- Function `*SmartDetectorAlertRulesClient.Get` has been removed
+- Function `SmartDetectorErrorResponse.Error` has been removed
+- Function `*AlertModification.UnmarshalJSON` has been removed
+- Function `*ActionGroup.UnmarshalJSON` has been removed
+- Function `ActionRuleStatus.ToPtr` has been removed
+- Function `*SmartGroupModification.UnmarshalJSON` has been removed
+- Function `ActionRulesList.MarshalJSON` has been removed
+- Function `ActionGroup.MarshalJSON` has been removed
+- Function `Enum11.ToPtr` has been removed
+- Function `*ActionRulesClient.GetByName` has been removed
+- Function `*ActionRulesClient.CreateUpdate` has been removed
+- Function `PossibleActionRuleTypeValues` has been removed
+- Function `*SmartDetectorAlertRulesListByResourceGroupPager.PageResponse` has been removed
+- Function `*SmartDetectorAlertRulesListPager.Err` has been removed
+- Function `*ActionRule.UnmarshalJSON` has been removed
+- Struct `ActionGroup` has been removed
+- Struct `ActionGroupsInformation` has been removed
+- Struct `ActionRule` has been removed
+- Struct `ActionRuleProperties` has been removed
+- Struct `ActionRulesClient` has been removed
+- Struct `ActionRulesCreateUpdateOptions` has been removed
+- Struct `ActionRulesCreateUpdateResponse` has been removed
+- Struct `ActionRulesCreateUpdateResult` has been removed
+- Struct `ActionRulesDeleteOptions` has been removed
+- Struct `ActionRulesDeleteResponse` has been removed
+- Struct `ActionRulesDeleteResult` has been removed
+- Struct `ActionRulesGetByNameOptions` has been removed
+- Struct `ActionRulesGetByNameResponse` has been removed
+- Struct `ActionRulesGetByNameResult` has been removed
+- Struct `ActionRulesList` has been removed
+- Struct `ActionRulesListByResourceGroupOptions` has been removed
+- Struct `ActionRulesListByResourceGroupPager` has been removed
+- Struct `ActionRulesListByResourceGroupResponse` has been removed
+- Struct `ActionRulesListByResourceGroupResult` has been removed
+- Struct `ActionRulesListBySubscriptionOptions` has been removed
+- Struct `ActionRulesListBySubscriptionPager` has been removed
+- Struct `ActionRulesListBySubscriptionResponse` has been removed
+- Struct `ActionRulesListBySubscriptionResult` has been removed
+- Struct `ActionRulesUpdateOptions` has been removed
+- Struct `ActionRulesUpdateResponse` has been removed
+- Struct `ActionRulesUpdateResult` has been removed
+- Struct `AlertRule` has been removed
+- Struct `AlertRulePatchObject` has been removed
+- Struct `AlertRulePatchProperties` has been removed
+- Struct `AlertRuleProperties` has been removed
+- Struct `AlertRulesList` has been removed
+- Struct `AzureResource` has been removed
+- Struct `Conditions` has been removed
+- Struct `Detector` has been removed
+- Struct `Diagnostics` has been removed
+- Struct `Scope` has been removed
+- Struct `SmartDetectorAlertRulesClient` has been removed
+- Struct `SmartDetectorAlertRulesCreateOrUpdateOptions` has been removed
+- Struct `SmartDetectorAlertRulesCreateOrUpdateResponse` has been removed
+- Struct `SmartDetectorAlertRulesCreateOrUpdateResult` has been removed
+- Struct `SmartDetectorAlertRulesDeleteOptions` has been removed
+- Struct `SmartDetectorAlertRulesDeleteResponse` has been removed
+- Struct `SmartDetectorAlertRulesGetOptions` has been removed
+- Struct `SmartDetectorAlertRulesGetResponse` has been removed
+- Struct `SmartDetectorAlertRulesGetResult` has been removed
+- Struct `SmartDetectorAlertRulesListByResourceGroupOptions` has been removed
+- Struct `SmartDetectorAlertRulesListByResourceGroupPager` has been removed
+- Struct `SmartDetectorAlertRulesListByResourceGroupResponse` has been removed
+- Struct `SmartDetectorAlertRulesListByResourceGroupResult` has been removed
+- Struct `SmartDetectorAlertRulesListOptions` has been removed
+- Struct `SmartDetectorAlertRulesListPager` has been removed
+- Struct `SmartDetectorAlertRulesListResponse` has been removed
+- Struct `SmartDetectorAlertRulesListResult` has been removed
+- Struct `SmartDetectorAlertRulesPatchOptions` has been removed
+- Struct `SmartDetectorAlertRulesPatchResponse` has been removed
+- Struct `SmartDetectorAlertRulesPatchResult` has been removed
+- Struct `SmartDetectorErrorResponse` has been removed
+- Struct `Suppression` has been removed
+- Struct `SuppressionConfig` has been removed
+- Struct `SuppressionSchedule` has been removed
+- Struct `ThrottlingInformation` has been removed
+- Field `Status` of struct `PatchProperties` has been removed
+
+### New Content
+
+- New const `FieldMonitorService`
+- New const `FieldDescription`
+- New const `DaysOfWeekMonday`
+- New const `FieldMonitorCondition`
+- New const `DaysOfWeekThursday`
+- New const `DaysOfWeekFriday`
+- New const `DaysOfWeekTuesday`
+- New const `RecurrenceTypeDaily`
+- New const `ActionTypeRemoveAllActionGroups`
+- New const `FieldAlertRuleName`
+- New const `DaysOfWeekSaturday`
+- New const `ActionTypeAddActionGroups`
+- New const `CreatedByTypeUser`
+- New const `CreatedByTypeManagedIdentity`
+- New const `CreatedByTypeKey`
+- New const `FieldAlertContext`
+- New const `RecurrenceTypeWeekly`
+- New const `Enum12Asc`
+- New const `CreatedByTypeApplication`
+- New const `FieldSeverity`
+- New const `RecurrenceTypeMonthly`
+- New const `FieldTargetResource`
+- New const `DaysOfWeekWednesday`
+- New const `DaysOfWeekSunday`
+- New const `FieldTargetResourceType`
+- New const `FieldTargetResourceGroup`
+- New const `FieldAlertRuleID`
+- New const `FieldSignalType`
+- New const `Enum12Desc`
+- New function `*AlertProcessingRulesClient.Update(context.Context, string, string, PatchObject, *AlertProcessingRulesUpdateOptions) (AlertProcessingRulesUpdateResponse, error)`
+- New function `*AlertProcessingRulesListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*AlertProcessingRulesListBySubscriptionPager.Err() error`
+- New function `AddActionGroups.MarshalJSON() ([]byte, error)`
+- New function `DailyRecurrence.MarshalJSON() ([]byte, error)`
+- New function `*SystemData.UnmarshalJSON([]byte) error`
+- New function `PossibleFieldValues() []Field`
+- New function `PossibleCreatedByTypeValues() []CreatedByType`
+- New function `PossibleActionTypeValues() []ActionType`
+- New function `CreatedByType.ToPtr() *CreatedByType`
+- New function `*AlertProcessingRulesClient.GetByName(context.Context, string, string, *AlertProcessingRulesGetByNameOptions) (AlertProcessingRulesGetByNameResponse, error)`
+- New function `*AddActionGroups.UnmarshalJSON([]byte) error`
+- New function `*Recurrence.GetRecurrence() *Recurrence`
+- New function `*AlertProcessingRuleProperties.UnmarshalJSON([]byte) error`
+- New function `*AlertProcessingRulesListByResourceGroupPager.PageResponse() AlertProcessingRulesListByResourceGroupResponse`
+- New function `AlertProcessingRuleProperties.MarshalJSON() ([]byte, error)`
+- New function `Enum12.ToPtr() *Enum12`
+- New function `DaysOfWeek.ToPtr() *DaysOfWeek`
+- New function `*AlertProcessingRulesListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `PossibleDaysOfWeekValues() []DaysOfWeek`
+- New function `Field.ToPtr() *Field`
+- New function `*AlertProcessingRulesClient.CreateOrUpdate(context.Context, string, string, AlertProcessingRule, *AlertProcessingRulesCreateOrUpdateOptions) (AlertProcessingRulesCreateOrUpdateResponse, error)`
+- New function `RemoveAllActionGroups.MarshalJSON() ([]byte, error)`
+- New function `*Action.GetAction() *Action`
+- New function `SystemData.MarshalJSON() ([]byte, error)`
+- New function `*AlertProcessingRulesListByResourceGroupPager.Err() error`
+- New function `*Action.UnmarshalJSON([]byte) error`
+- New function `NewAlertProcessingRulesClient(string, azcore.TokenCredential, *arm.ClientOptions) *AlertProcessingRulesClient`
+- New function `*WeeklyRecurrence.UnmarshalJSON([]byte) error`
+- New function `*AlertProcessingRulesListBySubscriptionPager.PageResponse() AlertProcessingRulesListBySubscriptionResponse`
+- New function `*AlertProcessingRulesClient.Delete(context.Context, string, string, *AlertProcessingRulesDeleteOptions) (AlertProcessingRulesDeleteResponse, error)`
+- New function `*MonthlyRecurrence.UnmarshalJSON([]byte) error`
+- New function `PossibleEnum12Values() []Enum12`
+- New function `*Schedule.UnmarshalJSON([]byte) error`
+- New function `WeeklyRecurrence.MarshalJSON() ([]byte, error)`
+- New function `MonthlyRecurrence.MarshalJSON() ([]byte, error)`
+- New function `*AlertProcessingRulesClient.ListByResourceGroup(string, *AlertProcessingRulesListByResourceGroupOptions) *AlertProcessingRulesListByResourceGroupPager`
+- New function `PossibleRecurrenceTypeValues() []RecurrenceType`
+- New function `*Recurrence.UnmarshalJSON([]byte) error`
+- New function `AlertProcessingRule.MarshalJSON() ([]byte, error)`
+- New function `RecurrenceType.ToPtr() *RecurrenceType`
+- New function `AlertProcessingRulesList.MarshalJSON() ([]byte, error)`
+- New function `ActionType.ToPtr() *ActionType`
+- New function `Schedule.MarshalJSON() ([]byte, error)`
+- New function `*AlertProcessingRulesClient.ListBySubscription(*AlertProcessingRulesListBySubscriptionOptions) *AlertProcessingRulesListBySubscriptionPager`
+- New struct `Action`
+- New struct `AddActionGroups`
+- New struct `AlertProcessingRule`
+- New struct `AlertProcessingRuleProperties`
+- New struct `AlertProcessingRulesClient`
+- New struct `AlertProcessingRulesCreateOrUpdateOptions`
+- New struct `AlertProcessingRulesCreateOrUpdateResponse`
+- New struct `AlertProcessingRulesCreateOrUpdateResult`
+- New struct `AlertProcessingRulesDeleteOptions`
+- New struct `AlertProcessingRulesDeleteResponse`
+- New struct `AlertProcessingRulesDeleteResult`
+- New struct `AlertProcessingRulesGetByNameOptions`
+- New struct `AlertProcessingRulesGetByNameResponse`
+- New struct `AlertProcessingRulesGetByNameResult`
+- New struct `AlertProcessingRulesList`
+- New struct `AlertProcessingRulesListByResourceGroupOptions`
+- New struct `AlertProcessingRulesListByResourceGroupPager`
+- New struct `AlertProcessingRulesListByResourceGroupResponse`
+- New struct `AlertProcessingRulesListByResourceGroupResult`
+- New struct `AlertProcessingRulesListBySubscriptionOptions`
+- New struct `AlertProcessingRulesListBySubscriptionPager`
+- New struct `AlertProcessingRulesListBySubscriptionResponse`
+- New struct `AlertProcessingRulesListBySubscriptionResult`
+- New struct `AlertProcessingRulesUpdateOptions`
+- New struct `AlertProcessingRulesUpdateResponse`
+- New struct `AlertProcessingRulesUpdateResult`
+- New struct `DailyRecurrence`
+- New struct `MonthlyRecurrence`
+- New struct `Recurrence`
+- New struct `RemoveAllActionGroups`
+- New struct `Schedule`
+- New struct `SystemData`
+- New struct `WeeklyRecurrence`
+- New field `Enabled` in struct `PatchProperties`
+- New field `Field` in struct `Condition`
+
+Total 213 breaking change(s), 144 additive change(s).
+
+
 ## 0.2.1 (Unreleased)
 
 ### Features Added

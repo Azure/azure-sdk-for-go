@@ -10,87 +10,85 @@ package armalertsmanagement
 
 import "net/http"
 
-// ActionRulesCreateUpdateResponse contains the response from method ActionRules.CreateUpdate.
-type ActionRulesCreateUpdateResponse struct {
-	ActionRulesCreateUpdateResult
+// AlertProcessingRulesCreateOrUpdateResponse contains the response from method AlertProcessingRules.CreateOrUpdate.
+type AlertProcessingRulesCreateOrUpdateResponse struct {
+	AlertProcessingRulesCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ActionRulesCreateUpdateResult contains the result from method ActionRules.CreateUpdate.
-type ActionRulesCreateUpdateResult struct {
-	ActionRule
+// AlertProcessingRulesCreateOrUpdateResult contains the result from method AlertProcessingRules.CreateOrUpdate.
+type AlertProcessingRulesCreateOrUpdateResult struct {
+	AlertProcessingRule
 	// XMSRequestID contains the information returned from the x-ms-request-id header response.
 	XMSRequestID *string
 }
 
-// ActionRulesDeleteResponse contains the response from method ActionRules.Delete.
-type ActionRulesDeleteResponse struct {
-	ActionRulesDeleteResult
+// AlertProcessingRulesDeleteResponse contains the response from method AlertProcessingRules.Delete.
+type AlertProcessingRulesDeleteResponse struct {
+	AlertProcessingRulesDeleteResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ActionRulesDeleteResult contains the result from method ActionRules.Delete.
-type ActionRulesDeleteResult struct {
-	Value *bool
-
+// AlertProcessingRulesDeleteResult contains the result from method AlertProcessingRules.Delete.
+type AlertProcessingRulesDeleteResult struct {
 	// XMSRequestID contains the information returned from the x-ms-request-id header response.
 	XMSRequestID *string
 }
 
-// ActionRulesGetByNameResponse contains the response from method ActionRules.GetByName.
-type ActionRulesGetByNameResponse struct {
-	ActionRulesGetByNameResult
+// AlertProcessingRulesGetByNameResponse contains the response from method AlertProcessingRules.GetByName.
+type AlertProcessingRulesGetByNameResponse struct {
+	AlertProcessingRulesGetByNameResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ActionRulesGetByNameResult contains the result from method ActionRules.GetByName.
-type ActionRulesGetByNameResult struct {
-	ActionRule
+// AlertProcessingRulesGetByNameResult contains the result from method AlertProcessingRules.GetByName.
+type AlertProcessingRulesGetByNameResult struct {
+	AlertProcessingRule
 	// XMSRequestID contains the information returned from the x-ms-request-id header response.
 	XMSRequestID *string
 }
 
-// ActionRulesListByResourceGroupResponse contains the response from method ActionRules.ListByResourceGroup.
-type ActionRulesListByResourceGroupResponse struct {
-	ActionRulesListByResourceGroupResult
+// AlertProcessingRulesListByResourceGroupResponse contains the response from method AlertProcessingRules.ListByResourceGroup.
+type AlertProcessingRulesListByResourceGroupResponse struct {
+	AlertProcessingRulesListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ActionRulesListByResourceGroupResult contains the result from method ActionRules.ListByResourceGroup.
-type ActionRulesListByResourceGroupResult struct {
-	ActionRulesList
+// AlertProcessingRulesListByResourceGroupResult contains the result from method AlertProcessingRules.ListByResourceGroup.
+type AlertProcessingRulesListByResourceGroupResult struct {
+	AlertProcessingRulesList
 	// XMSRequestID contains the information returned from the x-ms-request-id header response.
 	XMSRequestID *string
 }
 
-// ActionRulesListBySubscriptionResponse contains the response from method ActionRules.ListBySubscription.
-type ActionRulesListBySubscriptionResponse struct {
-	ActionRulesListBySubscriptionResult
+// AlertProcessingRulesListBySubscriptionResponse contains the response from method AlertProcessingRules.ListBySubscription.
+type AlertProcessingRulesListBySubscriptionResponse struct {
+	AlertProcessingRulesListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ActionRulesListBySubscriptionResult contains the result from method ActionRules.ListBySubscription.
-type ActionRulesListBySubscriptionResult struct {
-	ActionRulesList
+// AlertProcessingRulesListBySubscriptionResult contains the result from method AlertProcessingRules.ListBySubscription.
+type AlertProcessingRulesListBySubscriptionResult struct {
+	AlertProcessingRulesList
 	// XMSRequestID contains the information returned from the x-ms-request-id header response.
 	XMSRequestID *string
 }
 
-// ActionRulesUpdateResponse contains the response from method ActionRules.Update.
-type ActionRulesUpdateResponse struct {
-	ActionRulesUpdateResult
+// AlertProcessingRulesUpdateResponse contains the response from method AlertProcessingRules.Update.
+type AlertProcessingRulesUpdateResponse struct {
+	AlertProcessingRulesUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ActionRulesUpdateResult contains the result from method ActionRules.Update.
-type ActionRulesUpdateResult struct {
-	ActionRule
+// AlertProcessingRulesUpdateResult contains the result from method AlertProcessingRules.Update.
+type AlertProcessingRulesUpdateResult struct {
+	AlertProcessingRule
 	// XMSRequestID contains the information returned from the x-ms-request-id header response.
 	XMSRequestID *string
 }
@@ -177,72 +175,6 @@ type OperationsListResponse struct {
 // OperationsListResult contains the result from method Operations.List.
 type OperationsListResult struct {
 	OperationsList
-}
-
-// SmartDetectorAlertRulesCreateOrUpdateResponse contains the response from method SmartDetectorAlertRules.CreateOrUpdate.
-type SmartDetectorAlertRulesCreateOrUpdateResponse struct {
-	SmartDetectorAlertRulesCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SmartDetectorAlertRulesCreateOrUpdateResult contains the result from method SmartDetectorAlertRules.CreateOrUpdate.
-type SmartDetectorAlertRulesCreateOrUpdateResult struct {
-	AlertRule
-}
-
-// SmartDetectorAlertRulesDeleteResponse contains the response from method SmartDetectorAlertRules.Delete.
-type SmartDetectorAlertRulesDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SmartDetectorAlertRulesGetResponse contains the response from method SmartDetectorAlertRules.Get.
-type SmartDetectorAlertRulesGetResponse struct {
-	SmartDetectorAlertRulesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SmartDetectorAlertRulesGetResult contains the result from method SmartDetectorAlertRules.Get.
-type SmartDetectorAlertRulesGetResult struct {
-	AlertRule
-}
-
-// SmartDetectorAlertRulesListByResourceGroupResponse contains the response from method SmartDetectorAlertRules.ListByResourceGroup.
-type SmartDetectorAlertRulesListByResourceGroupResponse struct {
-	SmartDetectorAlertRulesListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SmartDetectorAlertRulesListByResourceGroupResult contains the result from method SmartDetectorAlertRules.ListByResourceGroup.
-type SmartDetectorAlertRulesListByResourceGroupResult struct {
-	AlertRulesList
-}
-
-// SmartDetectorAlertRulesListResponse contains the response from method SmartDetectorAlertRules.List.
-type SmartDetectorAlertRulesListResponse struct {
-	SmartDetectorAlertRulesListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SmartDetectorAlertRulesListResult contains the result from method SmartDetectorAlertRules.List.
-type SmartDetectorAlertRulesListResult struct {
-	AlertRulesList
-}
-
-// SmartDetectorAlertRulesPatchResponse contains the response from method SmartDetectorAlertRules.Patch.
-type SmartDetectorAlertRulesPatchResponse struct {
-	SmartDetectorAlertRulesPatchResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SmartDetectorAlertRulesPatchResult contains the result from method SmartDetectorAlertRules.Patch.
-type SmartDetectorAlertRulesPatchResult struct {
-	AlertRule
 }
 
 // SmartGroupsChangeStateResponse contains the response from method SmartGroups.ChangeState.

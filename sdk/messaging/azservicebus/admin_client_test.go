@@ -50,7 +50,7 @@ func TestAdminClient_Queue_Forwarding(t *testing.T) {
 	require.EqualValues(t, formatted, *createResp.ForwardTo)
 	require.EqualValues(t, formatted, *createResp.ForwardDeadLetteredMessagesTo)
 
-	getResp, err := adminClient.GetQueue(context.Background(), queueName)
+	getResp, err := adminClient.GetQueue(context.Background(), queueName, nil)
 
 	require.NoError(t, err)
 	require.EqualValues(t, createResp.QueueProperties, getResp.QueueProperties)
@@ -115,7 +115,7 @@ func TestAdminClient_GetQueueRuntimeProperties(t *testing.T) {
 
 	require.NoError(t, receiver.DeadLetterMessage(context.Background(), messages[0], nil))
 
-	props, err := adminClient.GetQueueRuntimeProperties(context.Background(), queueName)
+	props, err := adminClient.GetQueueRuntimeProperties(context.Background(), queueName, nil)
 	require.NoError(t, err)
 
 	require.EqualValues(t, 4, props.TotalMessageCount)
@@ -177,7 +177,7 @@ func TestAdminClient_TopicAndSubscriptionRuntimeProperties(t *testing.T) {
 	require.EqualValues(t, int32(1), getRuntimeResp.ScheduledMessageCount)
 
 	// validate subscription runtime properties
-	getSubResp, err := adminClient.GetSubscriptionRuntimeProperties(context.Background(), topicName, subscriptionName)
+	getSubResp, err := adminClient.GetSubscriptionRuntimeProperties(context.Background(), topicName, subscriptionName, nil)
 	require.NoError(t, err)
 
 	require.EqualValues(t, 0, getSubResp.ActiveMessageCount)

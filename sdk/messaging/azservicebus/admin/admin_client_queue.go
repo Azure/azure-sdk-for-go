@@ -181,8 +181,12 @@ type GetQueueResponse struct {
 	RawResponse *http.Response
 }
 
+type GetQueueOptions struct {
+	// For future expansion
+}
+
 // GetQueue gets a queue by name.
-func (ac *Client) GetQueue(ctx context.Context, queueName string) (*GetQueueResponse, error) {
+func (ac *Client) GetQueue(ctx context.Context, queueName string, options *GetQueueOptions) (*GetQueueResponse, error) {
 	var atomResp *atom.QueueEnvelope
 	resp, err := ac.em.Get(ctx, "/"+queueName, &atomResp)
 
@@ -215,8 +219,12 @@ type GetQueueRuntimePropertiesResponse struct {
 	RawResponse *http.Response
 }
 
+type GetQueueRuntimePropertiesOptions struct {
+	// For future expansion
+}
+
 // GetQueueRuntimeProperties gets runtime properties of a queue, like the SizeInBytes, or ActiveMessageCount.
-func (ac *Client) GetQueueRuntimeProperties(ctx context.Context, queueName string) (*GetQueueRuntimePropertiesResponse, error) {
+func (ac *Client) GetQueueRuntimeProperties(ctx context.Context, queueName string, options *GetQueueRuntimePropertiesOptions) (*GetQueueRuntimePropertiesResponse, error) {
 	var atomResp *atom.QueueEnvelope
 	resp, err := ac.em.Get(ctx, "/"+queueName, &atomResp)
 

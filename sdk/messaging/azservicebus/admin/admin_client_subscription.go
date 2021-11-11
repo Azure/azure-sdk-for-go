@@ -170,8 +170,12 @@ type GetSubscriptionRuntimePropertiesResponse struct {
 	RawResponse *http.Response
 }
 
+type GetSubscriptionRuntimePropertiesOptions struct {
+	// For future expansion
+}
+
 // GetSubscriptionRuntimeProperties gets runtime properties of a subscription, like the SizeInBytes, or SubscriptionCount.
-func (ac *Client) GetSubscriptionRuntimeProperties(ctx context.Context, topicName string, subscriptionName string) (*GetSubscriptionRuntimePropertiesResponse, error) {
+func (ac *Client) GetSubscriptionRuntimeProperties(ctx context.Context, topicName string, subscriptionName string, options *GetSubscriptionRuntimePropertiesOptions) (*GetSubscriptionRuntimePropertiesResponse, error) {
 	var atomResp *atom.SubscriptionEnvelope
 	rawResp, err := ac.em.Get(ctx, fmt.Sprintf("/%s/Subscriptions/%s", topicName, subscriptionName), &atomResp)
 

@@ -129,7 +129,7 @@ func (ac *Client) newPagerFunc(baseFragment string, maxPageSize int32, lenV func
 			eof = true
 		}
 
-		skip += maxPageSize
+		skip += int32(lenV(pv))
 		return resp, nil
 	}
 }

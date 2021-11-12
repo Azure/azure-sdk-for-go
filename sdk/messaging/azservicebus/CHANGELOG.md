@@ -1,14 +1,16 @@
 # Release History
 
-## 0.3.0 (Unreleased)
+## 0.3.0 (2021-11-12)
 
 ### Features Added
 
 - AbandonMessage and DeferMessage now take an additional `PropertiesToModify` option, allowing
   the message properties to be modified when they are settled.
+- Missing fields for entities in the admin.Client have been added (UserMetadata, etc..)
 
 ### Breaking Changes
 
+- AdminClient has been moved into the `admin` subpackage.
 - ReceivedMessage.Body is now a function that returns a ([]byte, error), rather than being a field.
   This protects against a potential data-loss scenario where a message is received with a payload 
   encoded in the sequence or value sections of an AMQP message, which cannot be prpoerly represented
@@ -18,7 +20,11 @@
 - MessageBatch.Add() has been renamed to MessageBatch.AddMessage(). AddMessage() now returns only an `error`, 
   with a sentinel error (ErrMessageTooLarge) signaling that the batch cannot fit a new message.
 - Sender.SendMessages() has been removed in favor of simplifications made in MessageBatch.
-- AdminClient has been moved into the `admin` subpackage.
+
+### Bugs Fixed
+
+- ReceiveMessages has been tuned to match the .NET limits (which has worked well in practice). This partly addresses #15963, 
+  as our default limit was far higher than needed.
 
 ## 0.2.0 (2021-11-02)
 

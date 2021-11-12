@@ -1,6 +1,6 @@
 # Release History
 
-## 0.3.0 (Unreleased)
+## 0.3.0 (2021-11-11)
 
 ### Features Added
 
@@ -19,6 +19,7 @@
   with a sentinel error (ErrMessageTooLarge) signaling that the batch cannot fit a new message.
 - Sender.SendMessages() has been removed in favor of simplifications made in MessageBatch.
 - AdminClient has been moved into the `admin` subpackage.
+- Some types have been migrated from int to size specific int32/64's.
 
 ## 0.2.0 (2021-11-02)
 

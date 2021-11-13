@@ -24,7 +24,7 @@ scattered throughout the consumer's code.
 The simplest version of installation is very easy but not stable, just run the following command:
 
 ``` bash
-go get -u github.com/Azure/azure-sdk-for-go/eng/tools/profileBuilder
+go install github.com/Azure/azure-sdk-for-go/eng/tools/profileBuilder
 ```
 
 If that causes you trouble, run the following commands:

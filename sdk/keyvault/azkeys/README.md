@@ -7,10 +7,10 @@ access to the keys used to encrypt your data
 
 ## Getting started
 ### Install packages
-Install [azkeys][goget_azkeys] and [azidentity][goget_azidentity] with `go get`:
+Install [azkeys][goget_azkeys] and [azidentity][goget_azidentity] with `go install`:
 ```Bash
-go get github.com/Azure/azure-sdk-for-go/sdk/keys/azkeys
-go get github.com/Azure/azure-sdk-for-go/sdk/azidentity
+go install github.com/Azure/azure-sdk-for-go/sdk/keys/azkeys
+go install github.com/Azure/azure-sdk-for-go/sdk/azidentity
 ```
 [azidentity][azure_identity] is used for Azure Active Directory authentication as demonstrated below.
 

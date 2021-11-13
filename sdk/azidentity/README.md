@@ -15,7 +15,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Identity module:
 
 ```sh
-go get -u github.com/Azure/azure-sdk-for-go/sdk/azidentity
+go install github.com/Azure/azure-sdk-for-go/sdk/azidentity
 ```
 
 ## Prerequisites

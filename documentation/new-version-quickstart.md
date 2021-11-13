@@ -80,14 +80,14 @@ This project uses Go modules for versioning and dependency management.
 As an example, to install the Azure Compute module, you would run :
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute
+go install github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute
 ```
 
 We also recommend installing other packages for authentication and core functionalities :
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/azcore
-go get github.com/Azure/azure-sdk-for-go/sdk/azidentity
+go install github.com/Azure/azure-sdk-for-go/sdk/azcore
+go install github.com/Azure/azure-sdk-for-go/sdk/azidentity
 ```
 
 Authentication

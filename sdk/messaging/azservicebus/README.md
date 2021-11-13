@@ -19,10 +19,10 @@ Key links:
 
 ### Install the package
 
-Install the Azure Service Bus client module for Go with `go get`:
+Install the Azure Service Bus client module for Go with `go install`:
 
 ```bash
-go get github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus
+go install github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus
 ```
 
 ### Prerequisites

@@ -20,9 +20,9 @@ The Azure Tables SDK can access an Azure Storage or CosmosDB account.
 * To create a new Cosmos storage account, you can use the [Azure CLI][azure_cli_create_cosmos] or [Azure Portal][azure_portal_create_cosmos].
 
 ### Install the package
-Install the Azure Tables client library for Go with `go get`:
+Install the Azure Tables client library for Go with `go install`:
 ```bash
-go get github.com/Azure/azure-sdk-for-go/sdk/data/aztables
+go install github.com/Azure/azure-sdk-for-go/sdk/data/aztables
 ```
 
 #### Create the client

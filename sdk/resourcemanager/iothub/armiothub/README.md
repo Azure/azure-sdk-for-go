@@ -20,7 +20,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure IoT Hub module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iothub/armiothub
+go install github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iothub/armiothub
 ```
 
 ## Authorization

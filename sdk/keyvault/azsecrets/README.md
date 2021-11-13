@@ -8,11 +8,11 @@ Azure Key Vault helps securely store and control access to tokens, passwords, ce
 ### Install packages
 Install `azsecrets` and [azure-identity][azidentity_goget]:
 ```
-go get -u github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets
+go install github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets
 ```
 [azure-identity][azure_identity] is used for Azure Active Directory authentication as demonstrated below.
 ```
-go get -u github.com/Azure/azure-sdk-for-go/sdk/azidentity
+go install github.com/Azure/azure-sdk-for-go/sdk/azidentity
 ```
 
 

@@ -23,12 +23,12 @@ func ExecuteGoGenerate(path string) error {
 
 // execute `goimports` command and fetch result
 func ExecuteGoimports(path string) error {
-	cmd := exec.Command("go", "get", "golang.org/x/tools/cmd/goimports")
+	cmd := exec.Command("go", "install", "golang.org/x/tools/cmd/goimports")
 	cmd.Dir = path
 	output, err := cmd.CombinedOutput()
-	log.Printf("Result of `go get golang.org/x/tools/cmd/goimports` execution: \n%s", string(output))
+	log.Printf("Result of `go install golang.org/x/tools/cmd/goimports` execution: \n%s", string(output))
 	if err != nil {
-		return fmt.Errorf("failed to execute `go get golang.org/x/tools/cmd/goimports` '%s': %+v", string(output), err)
+		return fmt.Errorf("failed to execute `go install golang.org/x/tools/cmd/goimports` '%s': %+v", string(output), err)
 	}
 	cmd = exec.Command("goimports", "-w", ".")
 	cmd.Dir = path

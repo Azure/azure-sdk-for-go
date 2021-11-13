@@ -22,4 +22,4 @@ After going through a minimal architects board review and preparing your package
 1. Complete all steps of the Release Checklist shown above
 2. Mark the package as 'in-release' by running the `./eng/common/scripts/Prepare-Release.ps1` script and following the prompts. The script may update the version and/or `CHANGELOG.md` of the package. If changes are made, these changes need to be committed and merged before continuing with the release process.
 3. Run the pipeline from the `internal` Azure Devops. This will require you to approve the release after both the live and recorded test pipelines pass.
-4. Validate the package was released properly by running `go get <your-package>@<your-version>` (ie. `go get github.com/Azure/azure-sdk-for-go/sdk/azcore@v0.20.0`) and validating that pkg.go.dev has updated with the latest version.
+4. Validate the package was released properly by running `go install <your-package>@<your-version>` (ie. `go install github.com/Azure/azure-sdk-for-go/sdk/azcore@v0.20.0`) and validating that pkg.go.dev has updated with the latest version.

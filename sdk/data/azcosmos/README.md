@@ -24,10 +24,10 @@ You can create an Azure Cosmos account using:
 
 #### Install the package
 
-* Install the Azure Cosmos DB SDK for Go with `go get`:
+* Install the Azure Cosmos DB SDK for Go with `go install`:
 
   ```bash
-  go get -u github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos
+  go install github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos
   ```
 
 #### Authenticate the client

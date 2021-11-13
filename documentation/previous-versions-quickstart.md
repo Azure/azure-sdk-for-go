@@ -32,7 +32,7 @@ to change, including breaking changes outside of a major semver bump.
 ## Install
 
 ```sh
-$ go get -u github.com/Azure/azure-sdk-for-go/...
+$ go install github.com/Azure/azure-sdk-for-go/...
 ```
 
 and you should also make sure to include the minimum version of [`go-autorest`](https://github.com/Azure/go-autorest) that is specified in `Gopkg.toml` file.

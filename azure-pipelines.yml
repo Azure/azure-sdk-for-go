@@ -57,7 +57,7 @@ jobs:
         go version
         curl -sSL https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
         dep ensure -v
-        go get -u golang.org/x/lint/golint
+        go install golang.org/x/lint/golint
       workingDirectory: '$(sdkPath)'
       displayName: 'Install Dependencies'
 

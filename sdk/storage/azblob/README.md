@@ -19,9 +19,9 @@ The Azure Blob SDK can access an Azure Storage account.
 * To create a new Storage account, you can use [Azure Portal][azure_portal_create_account], [Azure PowerShell][azure_powershell_create_account], or [Azure CLI][azure_cli_create_account].
 
 ### Install the package
-* Install the Azure blob storage for Go with `go get`:
+* Install the Azure blob storage for Go with `go install`:
   ```bash
-  go get github.com/Azure/azure-sdk-for-go/sdk/storage/azblob
+  go install github.com/Azure/azure-sdk-for-go/sdk/storage/azblob
   ```
   
 #### Create the client

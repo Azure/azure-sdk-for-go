@@ -225,6 +225,54 @@ func TestReceiverDeferAndReceiveDeferredMessages(t *testing.T) {
 	}
 }
 
+func TestReceiverDeferWithReceiveAndDelete(t *testing.T) {
+	client, cleanup, queueName := setupLiveTest(t, nil)
+	defer cleanup()
+
+	sender, err := client.NewSender(queueName, nil)
+	require.NoError(t, err)
+
+	ctx := context.TODO()
+
+	defer sender.Close(ctx)
+
+	err = sender.SendMessage(ctx, &Message{
+		Body: []byte("deferring a message"),
+	})
+	require.NoError(t, err)
+
+	receiver, err := client.NewReceiverForQueue(queueName, nil)
+	require.NoError(t, err)
+
+	messages, err := receiver.ReceiveMessages(ctx, 1, nil)
+	require.NoError(t, err)
+
+	var sequenceNumbers []int64
+
+	for _, m := range messages {
+		err = receiver.DeferMessage(ctx, m, nil)
+		require.NoError(t, err)
+
+		sequenceNumbers = append(sequenceNumbers, *m.SequenceNumber)
+	}
+
+	receiveAndDeleteReceiver, err := client.NewReceiverForQueue(queueName, &ReceiverOptions{
+		ReceiveMode: ReceiveModeReceiveAndDelete,
+	})
+	require.NoError(t, err)
+
+	messages, err = receiveAndDeleteReceiver.ReceiveDeferredMessages(ctx, sequenceNumbers)
+	require.NoError(t, err)
+	require.EqualValues(t, len(sequenceNumbers), len(messages))
+
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
+	messages, err = receiveAndDeleteReceiver.ReceiveMessages(ctx, len(sequenceNumbers), nil)
+	require.NoError(t, err)
+	require.Empty(t, messages)
+}
+
 func TestReceiverPeek(t *testing.T) {
 	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
 	defer cleanup()

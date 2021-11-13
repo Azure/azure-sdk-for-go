@@ -6,6 +6,15 @@ This guide is intended to assist in the migration from the pre-release `azure-se
 
 The redesign of the Service Bus SDK offers better integration with Azure Identity, a simpler API surface that allows you to uniformly work with queues, topics, subscriptions and subqueues (for instance: dead letter queues).
 
+# Missing features
+
+NOTE: The `admin.Client`, which allows you to manage queues, topics and subscriptions is currently missing the following features:
+
+- Authorization rules
+- Topic filters/actions
+
+These will be added in the near-term.
+
 ## Simplified API surface
 
 The redesign for the API surface of Service Bus involves changing the way that clients are created. We wanted to simplify the number of types needed to get started, while also providing clarity on how, as a user of the SDK, to manage the resources the SDK creates (connections, links, etc...)
@@ -216,10 +225,3 @@ err := sessionReceiver.SetSessionState(context.TODO(), []byte("data"))
 // renewing the lock associated with the session
 err := sessionReceiver.RenewSessionLock(context.TODO())
 ```
-
-# Upcoming features
-
-Some features that are coming in the next beta:
-
-- Authorization rules
-- Topic filters/actions

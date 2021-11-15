@@ -35,7 +35,7 @@ var ctx = context.Background()
 const HSMTEST = "HSM"
 const REGULARTEST = "NON-HSM"
 
-var testTypes = []string{REGULARTEST, HSMTEST}
+var testTypes = []string{HSMTEST, REGULARTEST}
 
 func TestMain(m *testing.M) {
 	// Initialize
@@ -51,7 +51,6 @@ func TestMain(m *testing.M) {
 	exitVal := m.Run()
 
 	// cleanup
-
 	os.Exit(exitVal)
 }
 

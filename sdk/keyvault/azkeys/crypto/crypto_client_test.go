@@ -12,7 +12,6 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
 	"github.com/stretchr/testify/require"
 )
 
@@ -45,19 +44,19 @@ func TestClient_Decrypt(t *testing.T) {
 			keyClient, err := createKeyClient(t, testType)
 			require.NoError(t, err)
 
-			// importedKeyResp, err := importTestKey(t, keyClient, keyName, testType == HSMTEST)
-			// require.NoError(t, err)
-			// cryptoClient, err := createClient(t, *importedKeyResp.Key.ID)
-
-			opts := &azkeys.CreateRSAKeyOptions{}
-			if testType == HSMTEST {
-				opts.HardwareProtected = true
-			}
-			resp, err := keyClient.CreateRSAKey(ctx, keyName, opts)
+			importedKeyResp, err := importTestKey(t, keyClient, keyName, testType == HSMTEST)
 			require.NoError(t, err)
-			key := resp.Key
+			cryptoClient, err := createClient(t, *importedKeyResp.Key.ID)
 
-			cryptoClient, err := createClient(t, *key.ID)
+			// opts := &azkeys.CreateRSAKeyOptions{}
+			// if testType == HSMTEST {
+			// 	opts.HardwareProtected = true
+			// }
+			// resp, err := keyClient.CreateRSAKey(ctx, keyName, opts)
+			// require.NoError(t, err)
+			// key := resp.Key
+
+			// cryptoClient, err := createClient(t, *key.ID)
 			require.NoError(t, err)
 
 			encryptResponse, err := cryptoClient.Encrypt(ctx, AlgorithmRSAOAEP, []byte("plaintext"), nil)

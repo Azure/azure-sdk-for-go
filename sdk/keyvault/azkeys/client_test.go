@@ -31,14 +31,13 @@ var testTypes = []string{REGULARTEST, HSMTEST}
 func TestCreateKeyRSA(t *testing.T) {
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
-			skipHSM(t, testType)
 			stop := startTest(t)
 			defer stop()
 
 			client, err := createClient(t, testType)
 			require.NoError(t, err)
 
-			key, err := createRandomName(t, "key")
+			key, err := createRandomName(t, "key0")
 			require.NoError(t, err)
 
 			resp, err := client.CreateRSAKey(ctx, key, nil)
@@ -58,7 +57,6 @@ func TestCreateKeyRSA(t *testing.T) {
 func TestCreateECKey(t *testing.T) {
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
-			skipHSM(t, testType)
 			stop := startTest(t)
 			defer stop()
 
@@ -83,7 +81,6 @@ func TestCreateOCTKey(t *testing.T) {
 			if testType == REGULARTEST {
 				t.Skip("OCT Key is HSM only")
 			}
-			skipHSM(t, testType)
 			stop := startTest(t)
 			defer stop()
 
@@ -105,7 +102,6 @@ func TestCreateOCTKey(t *testing.T) {
 func TestListKeys(t *testing.T) {
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
-			skipHSM(t, testType)
 			stop := startTest(t)
 			defer stop()
 
@@ -144,7 +140,6 @@ func TestListKeys(t *testing.T) {
 func TestGetKey(t *testing.T) {
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
-			skipHSM(t, testType)
 			stop := startTest(t)
 			defer stop()
 
@@ -167,7 +162,6 @@ func TestGetKey(t *testing.T) {
 func TestDeleteKey(t *testing.T) {
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
-			skipHSM(t, testType)
 			stop := startTest(t)
 			defer stop()
 
@@ -210,7 +204,6 @@ func TestDeleteKey(t *testing.T) {
 func TestBackupKey(t *testing.T) {
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
-			skipHSM(t, testType)
 			stop := startTest(t)
 			defer stop()
 
@@ -270,7 +263,6 @@ func TestBackupKey(t *testing.T) {
 func TestRecoverDeletedKey(t *testing.T) {
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
-			skipHSM(t, testType)
 			stop := startTest(t)
 			defer stop()
 
@@ -307,7 +299,6 @@ func TestRecoverDeletedKey(t *testing.T) {
 func TestUpdateKeyProperties(t *testing.T) {
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
-			skipHSM(t, testType)
 			stop := startTest(t)
 			defer stop()
 
@@ -344,7 +335,6 @@ func TestUpdateKeyProperties(t *testing.T) {
 func TestListDeletedKeys(t *testing.T) {
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
-			skipHSM(t, testType)
 			stop := startTest(t)
 			defer stop()
 
@@ -398,7 +388,6 @@ func TestListDeletedKeys(t *testing.T) {
 func TestListKeyVersions(t *testing.T) {
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
-			skipHSM(t, testType)
 			stop := startTest(t)
 			defer stop()
 
@@ -430,7 +419,6 @@ func TestListKeyVersions(t *testing.T) {
 func TestImportKey(t *testing.T) {
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
-			skipHSM(t, testType)
 			stop := startTest(t)
 			defer stop()
 
@@ -464,7 +452,6 @@ func TestGetRandomBytes(t *testing.T) {
 			if testType == REGULARTEST {
 				t.Skip("Managed HSM Only")
 			}
-			skipHSM(t, testType)
 			stop := startTest(t)
 			defer stop()
 
@@ -528,7 +515,6 @@ func TestGetKeyRotationPolicy(t *testing.T) {
 func TestReleaseKey(t *testing.T) {
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
-			skipHSM(t, testType)
 			t.Skip("Release is not currently not enabled in API Version 7.3-preview")
 			stop := startTest(t)
 			defer stop()

@@ -107,7 +107,8 @@ func startTest(t *testing.T) func() {
 	}
 }
 
-func skipHSM(t *testing.T, testType string) {
+// Skips the test if in live mode and the HSM Vault URL could not be found
+func checkHSMTest(t *testing.T, testType string) {
 	if testType == HSMTEST && !enableHSM {
 		if recording.GetRecordMode() != recording.PlaybackMode {
 			t.Log("Skipping HSM Test")
@@ -181,6 +182,9 @@ func lookupEnvVar(s string) string {
 func createClient(t *testing.T, testType string) (*Client, error) {
 	vaultUrl := recording.GetEnvVariable("AZURE_KEYVAULT_URL", fakeKvURL)
 	if testType == HSMTEST {
+		if _, ok := os.LookupEnv("AZURE_MANAGEDHSM_URL"); !ok {
+			t.Skipf("could not find url for managed hsm in env var: AZURE_MANAGEDHSM_URL")
+		}
 		vaultUrl = recording.GetEnvVariable("AZURE_MANAGEDHSM_URL", fakeKvMHSMURL)
 	}
 

@@ -3780,13 +3780,13 @@ type DataTransferServiceResourceProperties struct {
 	InstanceCount *int32 `json:"instanceCount,omitempty"`
 	// Status - READ-ONLY; Possible values include: 'ServiceStatusCreating', 'ServiceStatusRunning', 'ServiceStatusUpdating', 'ServiceStatusDeleting', 'ServiceStatusError', 'ServiceStatusStopped'
 	Status ServiceStatus `json:"status,omitempty"`
-	// ServiceType - Possible values include: 'ServiceTypeBasicServiceResourcePropertiesServiceTypeServiceResourceProperties', 'ServiceTypeBasicServiceResourcePropertiesServiceTypeDataTransferServiceResourceProperties', 'ServiceTypeBasicServiceResourcePropertiesServiceTypeSQLDedicatedGatewayServiceResourceProperties'
+	// ServiceType - Possible values include: 'ServiceTypeBasicServiceResourcePropertiesServiceTypeServiceResourceProperties', 'ServiceTypeBasicServiceResourcePropertiesServiceTypeDataTransfer', 'ServiceTypeBasicServiceResourcePropertiesServiceTypeSQLDedicatedGateway'
 	ServiceType ServiceTypeBasicServiceResourceProperties `json:"serviceType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for DataTransferServiceResourceProperties.
 func (dtsrp DataTransferServiceResourceProperties) MarshalJSON() ([]byte, error) {
-	dtsrp.ServiceType = ServiceTypeBasicServiceResourcePropertiesServiceTypeDataTransferServiceResourceProperties
+	dtsrp.ServiceType = ServiceTypeBasicServiceResourcePropertiesServiceTypeDataTransfer
 	objectMap := make(map[string]interface{})
 	if dtsrp.InstanceSize != "" {
 		objectMap["instanceSize"] = dtsrp.InstanceSize
@@ -9037,6 +9037,54 @@ func (sr *ServiceResource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// ServiceResourceCreateUpdateParameters parameters for Create or Update Request for ServiceResource
+type ServiceResourceCreateUpdateParameters struct {
+	*ServiceResourceCreateUpdateProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ServiceResourceCreateUpdateParameters.
+func (srcup ServiceResourceCreateUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if srcup.ServiceResourceCreateUpdateProperties != nil {
+		objectMap["properties"] = srcup.ServiceResourceCreateUpdateProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ServiceResourceCreateUpdateParameters struct.
+func (srcup *ServiceResourceCreateUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var serviceResourceCreateUpdateProperties ServiceResourceCreateUpdateProperties
+				err = json.Unmarshal(*v, &serviceResourceCreateUpdateProperties)
+				if err != nil {
+					return err
+				}
+				srcup.ServiceResourceCreateUpdateProperties = &serviceResourceCreateUpdateProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// ServiceResourceCreateUpdateProperties properties in ServiceResourceCreateUpdateParameters.
+type ServiceResourceCreateUpdateProperties struct {
+	// InstanceSize - Possible values include: 'ServiceSizeCosmosD4s', 'ServiceSizeCosmosD8s', 'ServiceSizeCosmosD16s'
+	InstanceSize ServiceSize `json:"instanceSize,omitempty"`
+	// InstanceCount - Instance count for the service.
+	InstanceCount *int32 `json:"instanceCount,omitempty"`
+	// ServiceType - Possible values include: 'ServiceTypeSQLDedicatedGateway', 'ServiceTypeDataTransfer'
+	ServiceType ServiceType `json:"serviceType,omitempty"`
+}
+
 // ServiceResourceListResult the List operation response, that contains the Service Resource and their
 // properties.
 type ServiceResourceListResult struct {
@@ -9070,7 +9118,7 @@ type ServiceResourceProperties struct {
 	InstanceCount *int32 `json:"instanceCount,omitempty"`
 	// Status - READ-ONLY; Possible values include: 'ServiceStatusCreating', 'ServiceStatusRunning', 'ServiceStatusUpdating', 'ServiceStatusDeleting', 'ServiceStatusError', 'ServiceStatusStopped'
 	Status ServiceStatus `json:"status,omitempty"`
-	// ServiceType - Possible values include: 'ServiceTypeBasicServiceResourcePropertiesServiceTypeServiceResourceProperties', 'ServiceTypeBasicServiceResourcePropertiesServiceTypeDataTransferServiceResourceProperties', 'ServiceTypeBasicServiceResourcePropertiesServiceTypeSQLDedicatedGatewayServiceResourceProperties'
+	// ServiceType - Possible values include: 'ServiceTypeBasicServiceResourcePropertiesServiceTypeServiceResourceProperties', 'ServiceTypeBasicServiceResourcePropertiesServiceTypeDataTransfer', 'ServiceTypeBasicServiceResourcePropertiesServiceTypeSQLDedicatedGateway'
 	ServiceType ServiceTypeBasicServiceResourceProperties `json:"serviceType,omitempty"`
 }
 
@@ -9082,11 +9130,11 @@ func unmarshalBasicServiceResourceProperties(body []byte) (BasicServiceResourceP
 	}
 
 	switch m["serviceType"] {
-	case string(ServiceTypeBasicServiceResourcePropertiesServiceTypeDataTransferServiceResourceProperties):
+	case string(ServiceTypeBasicServiceResourcePropertiesServiceTypeDataTransfer):
 		var dtsrp DataTransferServiceResourceProperties
 		err := json.Unmarshal(body, &dtsrp)
 		return dtsrp, err
-	case string(ServiceTypeBasicServiceResourcePropertiesServiceTypeSQLDedicatedGatewayServiceResourceProperties):
+	case string(ServiceTypeBasicServiceResourcePropertiesServiceTypeSQLDedicatedGateway):
 		var sdgsrp SQLDedicatedGatewayServiceResourceProperties
 		err := json.Unmarshal(body, &sdgsrp)
 		return sdgsrp, err
@@ -9899,13 +9947,13 @@ type SQLDedicatedGatewayServiceResourceProperties struct {
 	InstanceCount *int32 `json:"instanceCount,omitempty"`
 	// Status - READ-ONLY; Possible values include: 'ServiceStatusCreating', 'ServiceStatusRunning', 'ServiceStatusUpdating', 'ServiceStatusDeleting', 'ServiceStatusError', 'ServiceStatusStopped'
 	Status ServiceStatus `json:"status,omitempty"`
-	// ServiceType - Possible values include: 'ServiceTypeBasicServiceResourcePropertiesServiceTypeServiceResourceProperties', 'ServiceTypeBasicServiceResourcePropertiesServiceTypeDataTransferServiceResourceProperties', 'ServiceTypeBasicServiceResourcePropertiesServiceTypeSQLDedicatedGatewayServiceResourceProperties'
+	// ServiceType - Possible values include: 'ServiceTypeBasicServiceResourcePropertiesServiceTypeServiceResourceProperties', 'ServiceTypeBasicServiceResourcePropertiesServiceTypeDataTransfer', 'ServiceTypeBasicServiceResourcePropertiesServiceTypeSQLDedicatedGateway'
 	ServiceType ServiceTypeBasicServiceResourceProperties `json:"serviceType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for SQLDedicatedGatewayServiceResourceProperties.
 func (sdgsrp SQLDedicatedGatewayServiceResourceProperties) MarshalJSON() ([]byte, error) {
-	sdgsrp.ServiceType = ServiceTypeBasicServiceResourcePropertiesServiceTypeSQLDedicatedGatewayServiceResourceProperties
+	sdgsrp.ServiceType = ServiceTypeBasicServiceResourcePropertiesServiceTypeSQLDedicatedGateway
 	objectMap := make(map[string]interface{})
 	if sdgsrp.SQLDedicatedGatewayEndpoint != nil {
 		objectMap["sqlDedicatedGatewayEndpoint"] = sdgsrp.SQLDedicatedGatewayEndpoint

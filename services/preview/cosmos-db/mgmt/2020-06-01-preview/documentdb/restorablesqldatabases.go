@@ -32,7 +32,9 @@ func NewRestorableSQLDatabasesClientWithBaseURI(baseURI string, subscriptionID s
 	return RestorableSQLDatabasesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// List lists all the restorable Azure Cosmos DB SQL databases available under the restorable account.
+// List show the event feed of all mutations done on all the Azure Cosmos DB SQL databases under the restorable
+// account.  This helps in scenario where database was accidentally deleted to get the deletion time.  This API
+// requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission
 // Parameters:
 // location - cosmos DB region, with spaces between words and each word capitalized.
 // instanceID - the instanceId GUID of a restorable database account.

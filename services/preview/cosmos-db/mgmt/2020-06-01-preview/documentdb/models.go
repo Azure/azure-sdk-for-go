@@ -1074,6 +1074,11 @@ type CassandraTableResource struct {
 	AnalyticalStorageTTL *int32 `json:"analyticalStorageTtl,omitempty"`
 }
 
+// CloudError an error response from the service.
+type CloudError struct {
+	Error *ErrorResponse `json:"error,omitempty"`
+}
+
 // ClusterKey cosmos DB Cassandra table cluster key
 type ClusterKey struct {
 	// Name - Name of the Cosmos DB Cassandra table cluster key
@@ -2853,11 +2858,6 @@ type DatabaseRestoreResource struct {
 	DatabaseName *string `json:"databaseName,omitempty"`
 	// CollectionNames - The names of the collections available for restore.
 	CollectionNames *[]string `json:"collectionNames,omitempty"`
-}
-
-// DefaultErrorResponse an error response from the service.
-type DefaultErrorResponse struct {
-	Error *ErrorResponse `json:"error,omitempty"`
 }
 
 // DefaultRequestDatabaseAccountCreateUpdateProperties properties for non-restore Azure Cosmos DB database
@@ -5888,6 +5888,8 @@ type PeriodicModeProperties struct {
 	BackupIntervalInMinutes *int32 `json:"backupIntervalInMinutes,omitempty"`
 	// BackupRetentionIntervalInHours - An integer representing the time (in hours) that each backup is retained
 	BackupRetentionIntervalInHours *int32 `json:"backupRetentionIntervalInHours,omitempty"`
+	// BackupStorageRedundancy - Enum to indicate type of backup residency. Possible values include: 'Geo', 'Local', 'Zone'
+	BackupStorageRedundancy BackupStorageRedundancy `json:"backupStorageRedundancy,omitempty"`
 }
 
 // Permission the set of data plane operations permitted through this Role Definition.
@@ -6245,9 +6247,7 @@ type RestorableDatabaseAccountGetResult struct {
 	// Type - READ-ONLY; The type of Azure resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource group to which the resource belongs.
-	Location *string                 `json:"location,omitempty"`
-	Tags     map[string]*string      `json:"tags"`
-	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+	Location *string `json:"location,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for RestorableDatabaseAccountGetResult.
@@ -6258,12 +6258,6 @@ func (rdagr RestorableDatabaseAccountGetResult) MarshalJSON() ([]byte, error) {
 	}
 	if rdagr.Location != nil {
 		objectMap["location"] = rdagr.Location
-	}
-	if rdagr.Tags != nil {
-		objectMap["tags"] = rdagr.Tags
-	}
-	if rdagr.Identity != nil {
-		objectMap["identity"] = rdagr.Identity
 	}
 	return json.Marshal(objectMap)
 }
@@ -6321,24 +6315,6 @@ func (rdagr *RestorableDatabaseAccountGetResult) UnmarshalJSON(body []byte) erro
 					return err
 				}
 				rdagr.Location = &location
-			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				rdagr.Tags = tags
-			}
-		case "identity":
-			if v != nil {
-				var identity ManagedServiceIdentity
-				err = json.Unmarshal(*v, &identity)
-				if err != nil {
-					return err
-				}
-				rdagr.Identity = &identity
 			}
 		}
 	}
@@ -6407,20 +6383,16 @@ func (rlr RestorableLocationResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// RestorableMongodbCollectionGetResult an Azure Cosmos DB restorable MongoDB collection
+// RestorableMongodbCollectionGetResult an Azure Cosmos DB MongoDB collection event
 type RestorableMongodbCollectionGetResult struct {
-	// RestorableMongodbCollectionProperties - The properties of a restorable MongoDB collection.
+	// RestorableMongodbCollectionProperties - The properties of a MongoDB collection event.
 	*RestorableMongodbCollectionProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; The unique resource identifier of the ARM resource.
+	// ID - READ-ONLY; The unique resource Identifier of the ARM resource.
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the ARM resource.
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of Azure resource.
 	Type *string `json:"type,omitempty"`
-	// Location - The location of the resource group to which the resource belongs.
-	Location *string                 `json:"location,omitempty"`
-	Tags     map[string]*string      `json:"tags"`
-	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for RestorableMongodbCollectionGetResult.
@@ -6428,15 +6400,6 @@ func (rmcgr RestorableMongodbCollectionGetResult) MarshalJSON() ([]byte, error) 
 	objectMap := make(map[string]interface{})
 	if rmcgr.RestorableMongodbCollectionProperties != nil {
 		objectMap["properties"] = rmcgr.RestorableMongodbCollectionProperties
-	}
-	if rmcgr.Location != nil {
-		objectMap["location"] = rmcgr.Location
-	}
-	if rmcgr.Tags != nil {
-		objectMap["tags"] = rmcgr.Tags
-	}
-	if rmcgr.Identity != nil {
-		objectMap["identity"] = rmcgr.Identity
 	}
 	return json.Marshal(objectMap)
 }
@@ -6486,55 +6449,30 @@ func (rmcgr *RestorableMongodbCollectionGetResult) UnmarshalJSON(body []byte) er
 				}
 				rmcgr.Type = &typeVar
 			}
-		case "location":
-			if v != nil {
-				var location string
-				err = json.Unmarshal(*v, &location)
-				if err != nil {
-					return err
-				}
-				rmcgr.Location = &location
-			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				rmcgr.Tags = tags
-			}
-		case "identity":
-			if v != nil {
-				var identity ManagedServiceIdentity
-				err = json.Unmarshal(*v, &identity)
-				if err != nil {
-					return err
-				}
-				rmcgr.Identity = &identity
-			}
 		}
 	}
 
 	return nil
 }
 
-// RestorableMongodbCollectionProperties the properties of an Azure Cosmos DB restorable MongoDB collection
+// RestorableMongodbCollectionProperties the properties of an Azure Cosmos DB MongoDB collection event
 type RestorableMongodbCollectionProperties struct {
+	// Resource - The resource of an Azure Cosmos DB MongoDB collection event
 	Resource *RestorableMongodbCollectionPropertiesResource `json:"resource,omitempty"`
 }
 
-// RestorableMongodbCollectionPropertiesResource ...
+// RestorableMongodbCollectionPropertiesResource the resource of an Azure Cosmos DB MongoDB collection
+// event
 type RestorableMongodbCollectionPropertiesResource struct {
 	// Rid - READ-ONLY; A system generated property. A unique identifier.
 	Rid *string `json:"_rid,omitempty"`
 	// OperationType - READ-ONLY; The operation type of this collection event. Possible values include: 'Create', 'Replace', 'Delete', 'SystemOperation'
 	OperationType OperationType `json:"operationType,omitempty"`
-	// EventTimestamp - READ-ONLY; The timestamp of this collection event.
+	// EventTimestamp - READ-ONLY; The time when this collection event happened.
 	EventTimestamp *string `json:"eventTimestamp,omitempty"`
-	// OwnerID - READ-ONLY; The name of this restorable MongoDB collection.
+	// OwnerID - READ-ONLY; The name of this MongoDB collection.
 	OwnerID *string `json:"ownerId,omitempty"`
-	// OwnerResourceID - READ-ONLY; The resource Id of this restorable MongoDB collection.
+	// OwnerResourceID - READ-ONLY; The resource ID of this MongoDB collection.
 	OwnerResourceID *string `json:"ownerResourceId,omitempty"`
 }
 
@@ -6544,11 +6482,11 @@ func (rmcp RestorableMongodbCollectionPropertiesResource) MarshalJSON() ([]byte,
 	return json.Marshal(objectMap)
 }
 
-// RestorableMongodbCollectionsListResult the List operation response, that contains the restorable MongoDB
-// collections and their properties.
+// RestorableMongodbCollectionsListResult the List operation response, that contains the MongoDB collection
+// events and their properties.
 type RestorableMongodbCollectionsListResult struct {
 	autorest.Response `json:"-"`
-	// Value - READ-ONLY; List of restorable MongoDB collections and their properties.
+	// Value - READ-ONLY; List of MongoDB collection events and their properties.
 	Value *[]RestorableMongodbCollectionGetResult `json:"value,omitempty"`
 }
 
@@ -6558,20 +6496,16 @@ func (rmclr RestorableMongodbCollectionsListResult) MarshalJSON() ([]byte, error
 	return json.Marshal(objectMap)
 }
 
-// RestorableMongodbDatabaseGetResult an Azure Cosmos DB restorable MongoDB database
+// RestorableMongodbDatabaseGetResult an Azure Cosmos DB MongoDB database event
 type RestorableMongodbDatabaseGetResult struct {
-	// RestorableMongodbDatabaseProperties - The properties of a restorable MongoDB database.
+	// RestorableMongodbDatabaseProperties - The properties of a MongoDB database event.
 	*RestorableMongodbDatabaseProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; The unique resource identifier of the ARM resource.
+	// ID - READ-ONLY; The unique resource Identifier of the ARM resource.
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the ARM resource.
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of Azure resource.
 	Type *string `json:"type,omitempty"`
-	// Location - The location of the resource group to which the resource belongs.
-	Location *string                 `json:"location,omitempty"`
-	Tags     map[string]*string      `json:"tags"`
-	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for RestorableMongodbDatabaseGetResult.
@@ -6579,15 +6513,6 @@ func (rmdgr RestorableMongodbDatabaseGetResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if rmdgr.RestorableMongodbDatabaseProperties != nil {
 		objectMap["properties"] = rmdgr.RestorableMongodbDatabaseProperties
-	}
-	if rmdgr.Location != nil {
-		objectMap["location"] = rmdgr.Location
-	}
-	if rmdgr.Tags != nil {
-		objectMap["tags"] = rmdgr.Tags
-	}
-	if rmdgr.Identity != nil {
-		objectMap["identity"] = rmdgr.Identity
 	}
 	return json.Marshal(objectMap)
 }
@@ -6637,55 +6562,29 @@ func (rmdgr *RestorableMongodbDatabaseGetResult) UnmarshalJSON(body []byte) erro
 				}
 				rmdgr.Type = &typeVar
 			}
-		case "location":
-			if v != nil {
-				var location string
-				err = json.Unmarshal(*v, &location)
-				if err != nil {
-					return err
-				}
-				rmdgr.Location = &location
-			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				rmdgr.Tags = tags
-			}
-		case "identity":
-			if v != nil {
-				var identity ManagedServiceIdentity
-				err = json.Unmarshal(*v, &identity)
-				if err != nil {
-					return err
-				}
-				rmdgr.Identity = &identity
-			}
 		}
 	}
 
 	return nil
 }
 
-// RestorableMongodbDatabaseProperties the properties of an Azure Cosmos DB restorable MongoDB database
+// RestorableMongodbDatabaseProperties the properties of an Azure Cosmos DB MongoDB database event
 type RestorableMongodbDatabaseProperties struct {
+	// Resource - The resource of an Azure Cosmos DB MongoDB database event
 	Resource *RestorableMongodbDatabasePropertiesResource `json:"resource,omitempty"`
 }
 
-// RestorableMongodbDatabasePropertiesResource ...
+// RestorableMongodbDatabasePropertiesResource the resource of an Azure Cosmos DB MongoDB database event
 type RestorableMongodbDatabasePropertiesResource struct {
 	// Rid - READ-ONLY; A system generated property. A unique identifier.
 	Rid *string `json:"_rid,omitempty"`
 	// OperationType - READ-ONLY; The operation type of this database event. Possible values include: 'Create', 'Replace', 'Delete', 'SystemOperation'
 	OperationType OperationType `json:"operationType,omitempty"`
-	// EventTimestamp - READ-ONLY; The timestamp of this database event.
+	// EventTimestamp - READ-ONLY; The time when this database event happened.
 	EventTimestamp *string `json:"eventTimestamp,omitempty"`
-	// OwnerID - READ-ONLY; The name of this restorable MongoDB database.
+	// OwnerID - READ-ONLY; The name of this MongoDB database.
 	OwnerID *string `json:"ownerId,omitempty"`
-	// OwnerResourceID - READ-ONLY; The resource Id of this restorable MongoDB database.
+	// OwnerResourceID - READ-ONLY; The resource ID of this MongoDB database.
 	OwnerResourceID *string `json:"ownerResourceId,omitempty"`
 }
 
@@ -6695,11 +6594,11 @@ func (rmdp RestorableMongodbDatabasePropertiesResource) MarshalJSON() ([]byte, e
 	return json.Marshal(objectMap)
 }
 
-// RestorableMongodbDatabasesListResult the List operation response, that contains the restorable MongoDB
-// databases and their properties.
+// RestorableMongodbDatabasesListResult the List operation response, that contains the MongoDB database
+// events and their properties.
 type RestorableMongodbDatabasesListResult struct {
 	autorest.Response `json:"-"`
-	// Value - READ-ONLY; List of restorable MongoDB databases and their properties.
+	// Value - READ-ONLY; List of MongoDB database events and their properties.
 	Value *[]RestorableMongodbDatabaseGetResult `json:"value,omitempty"`
 }
 
@@ -6723,20 +6622,16 @@ func (rmrlr RestorableMongodbResourcesListResult) MarshalJSON() ([]byte, error) 
 	return json.Marshal(objectMap)
 }
 
-// RestorableSQLContainerGetResult an Azure Cosmos DB restorable SQL container
+// RestorableSQLContainerGetResult an Azure Cosmos DB SQL container event
 type RestorableSQLContainerGetResult struct {
-	// RestorableSQLContainerProperties - The properties of a restorable SQL container.
+	// RestorableSQLContainerProperties - The properties of a SQL container event.
 	*RestorableSQLContainerProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; The unique resource identifier of the ARM resource.
+	// ID - READ-ONLY; The unique resource Identifier of the ARM resource.
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the ARM resource.
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of Azure resource.
 	Type *string `json:"type,omitempty"`
-	// Location - The location of the resource group to which the resource belongs.
-	Location *string                 `json:"location,omitempty"`
-	Tags     map[string]*string      `json:"tags"`
-	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for RestorableSQLContainerGetResult.
@@ -6744,15 +6639,6 @@ func (rscgr RestorableSQLContainerGetResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if rscgr.RestorableSQLContainerProperties != nil {
 		objectMap["properties"] = rscgr.RestorableSQLContainerProperties
-	}
-	if rscgr.Location != nil {
-		objectMap["location"] = rscgr.Location
-	}
-	if rscgr.Tags != nil {
-		objectMap["tags"] = rscgr.Tags
-	}
-	if rscgr.Identity != nil {
-		objectMap["identity"] = rscgr.Identity
 	}
 	return json.Marshal(objectMap)
 }
@@ -6802,57 +6688,32 @@ func (rscgr *RestorableSQLContainerGetResult) UnmarshalJSON(body []byte) error {
 				}
 				rscgr.Type = &typeVar
 			}
-		case "location":
-			if v != nil {
-				var location string
-				err = json.Unmarshal(*v, &location)
-				if err != nil {
-					return err
-				}
-				rscgr.Location = &location
-			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				rscgr.Tags = tags
-			}
-		case "identity":
-			if v != nil {
-				var identity ManagedServiceIdentity
-				err = json.Unmarshal(*v, &identity)
-				if err != nil {
-					return err
-				}
-				rscgr.Identity = &identity
-			}
 		}
 	}
 
 	return nil
 }
 
-// RestorableSQLContainerProperties the properties of an Azure Cosmos DB restorable SQL container
+// RestorableSQLContainerProperties the properties of an Azure Cosmos DB SQL container event
 type RestorableSQLContainerProperties struct {
+	// Resource - The resource of an Azure Cosmos DB SQL container event
 	Resource *RestorableSQLContainerPropertiesResource `json:"resource,omitempty"`
 }
 
-// RestorableSQLContainerPropertiesResource ...
+// RestorableSQLContainerPropertiesResource the resource of an Azure Cosmos DB SQL container event
 type RestorableSQLContainerPropertiesResource struct {
 	// Rid - READ-ONLY; A system generated property. A unique identifier.
 	Rid *string `json:"_rid,omitempty"`
 	// OperationType - READ-ONLY; The operation type of this container event. Possible values include: 'Create', 'Replace', 'Delete', 'SystemOperation'
 	OperationType OperationType `json:"operationType,omitempty"`
-	// EventTimestamp - READ-ONLY; The timestamp of this container event.
+	// EventTimestamp - READ-ONLY; The when this container event happened.
 	EventTimestamp *string `json:"eventTimestamp,omitempty"`
-	// OwnerID - READ-ONLY; The name of this restorable SQL container.
+	// OwnerID - READ-ONLY; The name of this SQL container.
 	OwnerID *string `json:"ownerId,omitempty"`
-	// OwnerResourceID - READ-ONLY; The resource Id of this restorable SQL container.
-	OwnerResourceID *string                                            `json:"ownerResourceId,omitempty"`
-	Container       *RestorableSQLContainerPropertiesResourceContainer `json:"container,omitempty"`
+	// OwnerResourceID - READ-ONLY; The resource ID of this SQL container.
+	OwnerResourceID *string `json:"ownerResourceId,omitempty"`
+	// Container - Cosmos DB SQL container resource object
+	Container *RestorableSQLContainerPropertiesResourceContainer `json:"container,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for RestorableSQLContainerPropertiesResource.
@@ -6864,7 +6725,7 @@ func (rscp RestorableSQLContainerPropertiesResource) MarshalJSON() ([]byte, erro
 	return json.Marshal(objectMap)
 }
 
-// RestorableSQLContainerPropertiesResourceContainer ...
+// RestorableSQLContainerPropertiesResourceContainer cosmos DB SQL container resource object
 type RestorableSQLContainerPropertiesResourceContainer struct {
 	// ID - Name of the Cosmos DB SQL container
 	ID *string `json:"id,omitempty"`
@@ -6912,11 +6773,11 @@ func (rscp RestorableSQLContainerPropertiesResourceContainer) MarshalJSON() ([]b
 	return json.Marshal(objectMap)
 }
 
-// RestorableSQLContainersListResult the List operation response, that contains the restorable SQL
-// containers and their properties.
+// RestorableSQLContainersListResult the List operation response, that contains the SQL container events
+// and their properties.
 type RestorableSQLContainersListResult struct {
 	autorest.Response `json:"-"`
-	// Value - READ-ONLY; List of restorable SQL containers and their properties.
+	// Value - READ-ONLY; List of SQL container events and their properties.
 	Value *[]RestorableSQLContainerGetResult `json:"value,omitempty"`
 }
 
@@ -6926,20 +6787,16 @@ func (rsclr RestorableSQLContainersListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// RestorableSQLDatabaseGetResult an Azure Cosmos DB restorable SQL database
+// RestorableSQLDatabaseGetResult an Azure Cosmos DB SQL database event
 type RestorableSQLDatabaseGetResult struct {
-	// RestorableSQLDatabaseProperties - The properties of a restorable SQL database.
+	// RestorableSQLDatabaseProperties - The properties of a SQL database event.
 	*RestorableSQLDatabaseProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; The unique resource identifier of the ARM resource.
+	// ID - READ-ONLY; The unique resource Identifier of the ARM resource.
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the ARM resource.
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of Azure resource.
 	Type *string `json:"type,omitempty"`
-	// Location - The location of the resource group to which the resource belongs.
-	Location *string                 `json:"location,omitempty"`
-	Tags     map[string]*string      `json:"tags"`
-	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for RestorableSQLDatabaseGetResult.
@@ -6947,15 +6804,6 @@ func (rsdgr RestorableSQLDatabaseGetResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if rsdgr.RestorableSQLDatabaseProperties != nil {
 		objectMap["properties"] = rsdgr.RestorableSQLDatabaseProperties
-	}
-	if rsdgr.Location != nil {
-		objectMap["location"] = rsdgr.Location
-	}
-	if rsdgr.Tags != nil {
-		objectMap["tags"] = rsdgr.Tags
-	}
-	if rsdgr.Identity != nil {
-		objectMap["identity"] = rsdgr.Identity
 	}
 	return json.Marshal(objectMap)
 }
@@ -7005,57 +6853,32 @@ func (rsdgr *RestorableSQLDatabaseGetResult) UnmarshalJSON(body []byte) error {
 				}
 				rsdgr.Type = &typeVar
 			}
-		case "location":
-			if v != nil {
-				var location string
-				err = json.Unmarshal(*v, &location)
-				if err != nil {
-					return err
-				}
-				rsdgr.Location = &location
-			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				rsdgr.Tags = tags
-			}
-		case "identity":
-			if v != nil {
-				var identity ManagedServiceIdentity
-				err = json.Unmarshal(*v, &identity)
-				if err != nil {
-					return err
-				}
-				rsdgr.Identity = &identity
-			}
 		}
 	}
 
 	return nil
 }
 
-// RestorableSQLDatabaseProperties the properties of an Azure Cosmos DB restorable SQL database
+// RestorableSQLDatabaseProperties the properties of an Azure Cosmos DB SQL database event
 type RestorableSQLDatabaseProperties struct {
+	// Resource - The resource of an Azure Cosmos DB SQL database event
 	Resource *RestorableSQLDatabasePropertiesResource `json:"resource,omitempty"`
 }
 
-// RestorableSQLDatabasePropertiesResource ...
+// RestorableSQLDatabasePropertiesResource the resource of an Azure Cosmos DB SQL database event
 type RestorableSQLDatabasePropertiesResource struct {
 	// Rid - READ-ONLY; A system generated property. A unique identifier.
 	Rid *string `json:"_rid,omitempty"`
 	// OperationType - READ-ONLY; The operation type of this database event. Possible values include: 'Create', 'Replace', 'Delete', 'SystemOperation'
 	OperationType OperationType `json:"operationType,omitempty"`
-	// EventTimestamp - READ-ONLY; The timestamp of this database event.
+	// EventTimestamp - READ-ONLY; The time when this database event happened.
 	EventTimestamp *string `json:"eventTimestamp,omitempty"`
-	// OwnerID - READ-ONLY; The name of this restorable SQL database.
+	// OwnerID - READ-ONLY; The name of the SQL database.
 	OwnerID *string `json:"ownerId,omitempty"`
-	// OwnerResourceID - READ-ONLY; The resource Id of this restorable SQL database.
-	OwnerResourceID *string                                          `json:"ownerResourceId,omitempty"`
-	Database        *RestorableSQLDatabasePropertiesResourceDatabase `json:"database,omitempty"`
+	// OwnerResourceID - READ-ONLY; The resource ID of the SQL database.
+	OwnerResourceID *string `json:"ownerResourceId,omitempty"`
+	// Database - Cosmos DB SQL database resource object
+	Database *RestorableSQLDatabasePropertiesResourceDatabase `json:"database,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for RestorableSQLDatabasePropertiesResource.
@@ -7067,7 +6890,7 @@ func (rsdp RestorableSQLDatabasePropertiesResource) MarshalJSON() ([]byte, error
 	return json.Marshal(objectMap)
 }
 
-// RestorableSQLDatabasePropertiesResourceDatabase ...
+// RestorableSQLDatabasePropertiesResourceDatabase cosmos DB SQL database resource object
 type RestorableSQLDatabasePropertiesResourceDatabase struct {
 	// ID - Name of the Cosmos DB SQL database
 	ID *string `json:"id,omitempty"`
@@ -7094,11 +6917,11 @@ func (rsdp RestorableSQLDatabasePropertiesResourceDatabase) MarshalJSON() ([]byt
 	return json.Marshal(objectMap)
 }
 
-// RestorableSQLDatabasesListResult the List operation response, that contains the restorable SQL databases
-// and their properties.
+// RestorableSQLDatabasesListResult the List operation response, that contains the SQL database events and
+// their properties.
 type RestorableSQLDatabasesListResult struct {
 	autorest.Response `json:"-"`
-	// Value - READ-ONLY; List of restorable SQL databases and their properties.
+	// Value - READ-ONLY; List of SQL database events and their properties.
 	Value *[]RestorableSQLDatabaseGetResult `json:"value,omitempty"`
 }
 
@@ -9905,7 +9728,7 @@ type SystemData struct {
 	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
 	// LastModifiedByType - The type of identity that last modified the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
 	LastModifiedByType CreatedByType `json:"lastModifiedByType,omitempty"`
-	// LastModifiedAt - The type of identity that last modified the resource.
+	// LastModifiedAt - The timestamp of resource last modification (UTC)
 	LastModifiedAt *date.Time `json:"lastModifiedAt,omitempty"`
 }
 

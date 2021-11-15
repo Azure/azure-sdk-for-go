@@ -107,15 +107,15 @@ func startTest(t *testing.T) func() {
 	}
 }
 
-// Skips the test if in live mode and the HSM Vault URL could not be found
-func checkHSMTest(t *testing.T, testType string) {
-	if testType == HSMTEST && !enableHSM {
-		if recording.GetRecordMode() != recording.PlaybackMode {
-			t.Log("Skipping HSM Test")
-			t.Skip()
-		}
-	}
-}
+// // Skips the test if in live mode and the HSM Vault URL could not be found
+// func checkHSMTest(t *testing.T, testType string) {
+// 	if testType == HSMTEST && !enableHSM {
+// 		if recording.GetRecordMode() != recording.PlaybackMode {
+// 			t.Log("Skipping HSM Test")
+// 			t.Skip()
+// 		}
+// 	}
+// }
 
 func alwaysSkipHSM(t *testing.T, testType string) {
 	if testType == HSMTEST {

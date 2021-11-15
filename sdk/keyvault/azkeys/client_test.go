@@ -37,7 +37,7 @@ func TestCreateKeyRSA(t *testing.T) {
 			client, err := createClient(t, testType)
 			require.NoError(t, err)
 
-			key, err := createRandomName(t, "key0")
+			key, err := createRandomName(t, "key")
 			require.NoError(t, err)
 
 			resp, err := client.CreateRSAKey(ctx, key, nil)

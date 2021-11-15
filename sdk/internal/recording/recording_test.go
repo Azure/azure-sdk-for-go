@@ -433,26 +433,6 @@ func TestStartStop(t *testing.T) {
 	defer jsonFile.Close()
 }
 
-func TestProxyCert(t *testing.T) {
-	_, err := getRootCas(t)
-	require.NoError(t, err)
-
-	tempProxyCert, ok := os.LookupEnv("PROXY_CERT")
-	require.True(t, ok)
-	err = os.Unsetenv("PROXY_CERT")
-	require.NoError(t, err)
-
-	_, err = getRootCas(t)
-	require.NoError(t, err)
-
-	err = os.Setenv("PROXY_CERT", "not/a/path.crt")
-	require.NoError(t, err)
-	_, err = GetHTTPClient(t)
-	require.Error(t, err)
-
-	os.Setenv("PROXY_CERT", tempProxyCert)
-}
-
 func TestStopRecordingNoStart(t *testing.T) {
 	os.Setenv("AZURE_RECORD_MODE", "record")
 	defer os.Unsetenv("AZURE_RECORD_MODE")

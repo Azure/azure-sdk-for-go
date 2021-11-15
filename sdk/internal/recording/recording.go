@@ -439,7 +439,37 @@ var modeMap = map[RecordMode]recorder.Mode{
 	Playback: recorder.ModeReplaying,
 }
 
-var recordMode = os.Getenv("AZURE_RECORD_MODE")
+func init() {
+	recordMode = os.Getenv("AZURE_RECORD_MODE")
+	if !(recordMode == RecordingMode || recordMode == PlaybackMode || recordMode == LiveMode) {
+		log.Printf("AZURE_RECORD_MODE was not understood, options are %s, %s, or %s Received: %v. Defaulting to playback", RecordingMode, PlaybackMode, LiveMode, recordMode)
+		recordMode = PlaybackMode
+	}
+
+	localFile, err := findProxyCertLocation()
+	if err != nil {
+		log.Println("Could not find the PROXY_CERT environment variable and was unable to locate the path in eng/common")
+	}
+
+	rootCAs, err = x509.SystemCertPool()
+	if err != nil && strings.Contains(err.Error(), "system root pool is not available on Windows") {
+		rootCAs = x509.NewCertPool()
+	} else if err != nil {
+		log.Println("could not create a system cert pool")
+	}
+
+	cert, err := ioutil.ReadFile(localFile)
+	if err != nil {
+		log.Printf("could not read file set in PROXY_CERT variable at %s.\n", localFile)
+	}
+
+	if ok := rootCAs.AppendCertsFromPEM(cert); !ok {
+		log.Println("no certs appended, using system certs only")
+	}
+}
+
+var recordMode string
+var rootCAs *x509.CertPool
 
 const (
 	RecordingMode     = "record"
@@ -512,10 +542,6 @@ func getTestId(pathToRecordings string, t *testing.T) string {
 func Start(t *testing.T, pathToRecordings string, options *RecordingOptions) error {
 	if options == nil {
 		options = defaultOptions()
-	}
-	if !(recordMode == RecordingMode || recordMode == PlaybackMode || recordMode == LiveMode) {
-		log.Printf("AZURE_RECORD_MODE was not understood, options are %s, %s, or %s Received: %v. Defaulting to playback", RecordingMode, PlaybackMode, LiveMode, recordMode)
-		recordMode = PlaybackMode
 	}
 	if recordMode == LiveMode {
 		return nil
@@ -644,7 +670,7 @@ func findProxyCertLocation() (string, error) {
 	if !ok {
 		goPath, err = os.UserHomeDir()
 		if err != nil {
-			return "", err
+			return "", fmt.Errorf("could not find the home directory using `os.UserHomeDir()`, %s", err.Error())
 		}
 	}
 
@@ -652,40 +678,8 @@ func findProxyCertLocation() (string, error) {
 	return goPath, nil
 }
 
-func getRootCas(t *testing.T) (*x509.CertPool, error) {
-	localFile, err := findProxyCertLocation()
-	if err != nil {
-		log.Println("Could not find the PROXY_CERT environment variable and was unable to locate the path in eng/common")
-	}
-
-	rootCAs, err := x509.SystemCertPool()
-	if err != nil && strings.Contains(err.Error(), "system root pool is not available on Windows") {
-		rootCAs = x509.NewCertPool()
-	} else if err != nil {
-		return rootCAs, err
-	}
-
-	cert, err := ioutil.ReadFile(localFile)
-	if err != nil {
-
-		return nil, err
-	}
-
-	if ok := rootCAs.AppendCertsFromPEM(cert); !ok {
-		t.Log("No certs appended, using system certs only")
-	}
-
-	return rootCAs, nil
-}
-
 func GetHTTPClient(t *testing.T) (*http.Client, error) {
 	transport := http.DefaultTransport.(*http.Transport).Clone()
-
-	rootCAs, err := getRootCas(t)
-	if err != nil {
-		return nil, err
-	}
-
 	transport.TLSClientConfig.RootCAs = rootCAs
 	transport.TLSClientConfig.MinVersion = tls.VersionTLS12
 	transport.TLSClientConfig.InsecureSkipVerify = true

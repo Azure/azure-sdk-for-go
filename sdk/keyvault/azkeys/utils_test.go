@@ -107,15 +107,14 @@ func startTest(t *testing.T) func() {
 	}
 }
 
-// // Skips the test if in live mode and the HSM Vault URL could not be found
-// func checkHSMTest(t *testing.T, testType string) {
-// 	if testType == HSMTEST && !enableHSM {
-// 		if recording.GetRecordMode() != recording.PlaybackMode {
-// 			t.Log("Skipping HSM Test")
-// 			t.Skip()
-// 		}
-// 	}
-// }
+func skipHSM(t *testing.T, testType string) {
+	if testType == HSMTEST && !enableHSM {
+		if recording.GetRecordMode() != recording.PlaybackMode {
+			t.Log("Skipping HSM Test")
+			t.Skip()
+		}
+	}
+}
 
 func alwaysSkipHSM(t *testing.T, testType string) {
 	if testType == HSMTEST {
@@ -181,10 +180,8 @@ func lookupEnvVar(s string) string {
 
 func createClient(t *testing.T, testType string) (*Client, error) {
 	vaultUrl := recording.GetEnvVariable("AZURE_KEYVAULT_URL", fakeKvURL)
+	var credOptions *azidentity.ClientSecretCredentialOptions
 	if testType == HSMTEST {
-		if _, ok := os.LookupEnv("AZURE_MANAGEDHSM_URL"); !ok {
-			t.Skipf("could not find url for managed hsm in env var: AZURE_MANAGEDHSM_URL")
-		}
 		vaultUrl = recording.GetEnvVariable("AZURE_MANAGEDHSM_URL", fakeKvMHSMURL)
 	}
 
@@ -204,7 +201,7 @@ func createClient(t *testing.T, testType string) (*Client, error) {
 		tenantId := lookupEnvVar("AZKEYS_TENANT_ID")
 		clientId := lookupEnvVar("AZKEYS_CLIENT_ID")
 		clientSecret := lookupEnvVar("AZKEYS_CLIENT_SECRET")
-		cred, err = azidentity.NewClientSecretCredential(tenantId, clientId, clientSecret, nil)
+		cred, err = azidentity.NewClientSecretCredential(tenantId, clientId, clientSecret, credOptions)
 		require.NoError(t, err)
 	} else {
 		cred = NewFakeCredential("fake", "fake")

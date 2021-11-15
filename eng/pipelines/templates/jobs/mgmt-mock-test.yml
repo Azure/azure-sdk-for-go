@@ -21,6 +21,7 @@ jobs:
 
     - task: Powershell@2
       displayName: 'Create Mock Test'
+      continueOnError: true
       env:
         GO111MODULE: 'on'
       inputs:
@@ -31,6 +32,7 @@ jobs:
 
     - task: Powershell@2
       displayName: 'Build and Vet'
+      continueOnError: true
       env:
         GO111MODULE: 'on'
       inputs:
@@ -41,6 +43,7 @@ jobs:
 
     - task: Powershell@2
       displayName: 'Mock Test'
+      continueOnError: true
       env:
         GO111MODULE: 'on'
       inputs:
@@ -50,18 +53,21 @@ jobs:
         arguments: -filter '${{ parameters.ServiceDirectory }}'
 
     - task: ArchiveFiles@2
+      continueOnError: true
       inputs:
         rootFolderOrFile: $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}/
         includeRootFolder: true
         archiveFile: '$(Build.ArtifactStagingDirectory)/MockTestCodeAndReport.zip'
         
     - task: PublishBuildArtifacts@1
+      continueOnError: true
       displayName: 'Publish Code and Report'
       inputs:
         pathToPublish: '$(Build.ArtifactStagingDirectory)/MockTestCodeAndReport.zip'
         artifactName: MockTestCodeAndReport
 
     - task: PublishTestResults@2
+      continueOnError: true
       condition: succeededOrFailed()
       inputs:
         testRunner: JUnit
@@ -70,6 +76,7 @@ jobs:
         failTaskOnFailedTests: true
 
     - task: PublishCodeCoverageResults@1
+      continueOnError: true
       condition: succeededOrFailed()
       inputs:
         codeCoverageTool: Cobertura

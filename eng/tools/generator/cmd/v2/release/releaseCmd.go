@@ -58,13 +58,14 @@ namespaceName: name of namespace to be released, default value is arm+rp-name
 }
 
 type Flags struct {
-	VersionNumber    string
-	SwaggerRepo      string
-	PackageTitle     string
-	SDKRepo          string
-	SpecRPName       string
-	ReleaseDate      string
-	SkipCreateBranch bool
+	VersionNumber       string
+	SwaggerRepo         string
+	PackageTitle        string
+	SDKRepo             string
+	SpecRPName          string
+	ReleaseDate         string
+	SkipCreateBranch    bool
+	SkipGenerateExample bool
 }
 
 func BindFlags(flagSet *pflag.FlagSet) {
@@ -75,17 +76,19 @@ func BindFlags(flagSet *pflag.FlagSet) {
 	flagSet.String("spec-rp-name", "", "Specifies the swagger spec RP name, default is RP name")
 	flagSet.String("release-date", "", "Specifies the release date in changelog")
 	flagSet.Bool("skip-create-branch", false, "Skip create release branch after generation")
+	flagSet.Bool("skip-generate-example", false, "Skip generate example for SDK in the same time")
 }
 
 func ParseFlags(flagSet *pflag.FlagSet) Flags {
 	return Flags{
-		VersionNumber:    flags.GetString(flagSet, "version-number"),
-		PackageTitle:     flags.GetString(flagSet, "package-title"),
-		SDKRepo:          flags.GetString(flagSet, "sdk-repo"),
-		SwaggerRepo:      flags.GetString(flagSet, "spec-repo"),
-		SpecRPName:       flags.GetString(flagSet, "spec-rp-name"),
-		ReleaseDate:      flags.GetString(flagSet, "release-date"),
-		SkipCreateBranch: flags.GetBool(flagSet, "skip-create-branch"),
+		VersionNumber:       flags.GetString(flagSet, "version-number"),
+		PackageTitle:        flags.GetString(flagSet, "package-title"),
+		SDKRepo:             flags.GetString(flagSet, "sdk-repo"),
+		SwaggerRepo:         flags.GetString(flagSet, "spec-repo"),
+		SpecRPName:          flags.GetString(flagSet, "spec-rp-name"),
+		ReleaseDate:         flags.GetString(flagSet, "release-date"),
+		SkipCreateBranch:    flags.GetBool(flagSet, "skip-create-branch"),
+		SkipGenerateExample: flags.GetBool(flagSet, "skip-generate-example"),
 	}
 }
 
@@ -153,6 +156,7 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 		SpecficVersion:      c.flags.VersionNumber,
 		SpecRPName:          c.flags.SpecRPName,
 		ReleaseDate:         c.flags.ReleaseDate,
+		SkipGenerateExample: c.flags.SkipGenerateExample,
 	})
 	if err != nil {
 		return fmt.Errorf("failed to finish release generation process: %+v", err)

@@ -14,6 +14,7 @@ Key links:
 - [API Reference Documentation][godoc]
 - [Product documentation](https://azure.microsoft.com/services/service-bus/)
 - [Samples][godoc_examples]
+- [Migration guide for `azure-service-bus-go` users](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azservicebus/migrationguide.md)
 
 ## Getting started
 

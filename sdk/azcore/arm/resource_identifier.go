@@ -32,19 +32,19 @@ var (
 // Don't create this type directly, use ParseResourceID instead.
 type ResourceID struct {
 	// Parent represents the parent ResourceID of this one
-	Parent            *ResourceID
+	Parent *ResourceID
 	// SubscriptionID is the subscription ID in this resource ID. The value can be empty if the resource ID does not have a subscription ID in it
-	SubscriptionID    string
+	SubscriptionID string
 	// ResourceGroupName is the resource group name in this resource ID. The value can be empty if the resource ID does not have a resource group name in it
 	ResourceGroupName string
 	// Provider represents the provider name of this resource ID. This is only valid when this resource ID represents a resource provider, for instance, `/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Insights`
-	Provider          string
+	Provider string
 	// Location is the location in this resource ID. The value can be empty if the resource ID does not have a location name in it
-	Location          string
+	Location string
 	// ResourceType represents the type of this resource ID
-	ResourceType      ResourceType
+	ResourceType ResourceType
 	// Name is the resource name of this resource ID
-	Name              string
+	Name string
 
 	isChild     bool
 	stringValue string

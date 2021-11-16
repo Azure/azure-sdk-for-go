@@ -26,7 +26,7 @@ var ctx = context.Background()
 const HSMTEST = "HSM"
 const REGULARTEST = "NON-HSM"
 
-var testTypes = []string{REGULARTEST, HSMTEST}
+var testTypes = []string{HSMTEST, REGULARTEST}
 
 func TestCreateKeyRSA(t *testing.T) {
 	for _, testType := range testTypes {

@@ -7,7 +7,6 @@
 package internal
 
 import (
-	"bytes"
 	"errors"
 	"fmt"
 	"net/http"
@@ -70,7 +69,7 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 	if token, ok := tk.(*azcore.AccessToken); ok {
 		req.Raw().Header.Set(
 			headerAuthorization,
-			fmt.Sprintf("%s %s", bearerHeader, token.Token),
+			fmt.Sprintf(bearerHeader+token.Token),
 		)
 	}
 
@@ -137,7 +136,7 @@ func (k *KeyVaultChallengePolicy) findScopeAndTenant(resp *http.Response) error 
 	// Strip down to auth and resource
 	// Format is "Bearer authorization=\"<site>\" resource=\"<site>\"" OR
 	// "Bearer authorization=\"<site>\" scope=\"<site>\" resource=\"<resource>\""
-	authHeader = strings.ReplaceAll(authHeader, "Bearer ", "")
+	authHeader = strings.ReplaceAll(authHeader, bearerHeader, "")
 
 	parts := strings.Split(authHeader, " ")
 
@@ -171,10 +170,6 @@ func (k KeyVaultChallengePolicy) getChallengeRequest(orig policy.Request) (*poli
 	if err != nil {
 		return nil, err
 	}
-
-	buffer := bytes.Buffer{}
-	buffer.ReadFrom(req.Raw().Body)
-	fmt.Println(buffer.String())
 
 	copied := orig.Clone(orig.Raw().Context())
 	copied.Raw().Body = req.Body()

@@ -423,3 +423,45 @@ func TestContinuationTokens(t *testing.T) {
 		})
 	}
 }
+
+func TestContinuationTokensFilters(t *testing.T) {
+	for _, service := range services {
+		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
+			client, delete := initClientTest(t, service, true)
+			defer delete()
+
+			err := insertNEntities("contToken", 10, client)
+			require.NoError(t, err)
+
+			pager := client.List(&ListEntitiesOptions{
+				Top:    to.Int32Ptr(1),
+				Filter: to.StringPtr("Value le 5"),
+			})
+			var pkContToken *string
+			var rkContToken *string
+			for pager.NextPage(ctx) {
+				require.Equal(t, 1, len(pager.PageResponse().Entities))
+				pkContToken = pager.NextPagePartitionKey()
+				rkContToken = pager.NextPageRowKey()
+				break
+			}
+
+			require.NoError(t, pager.Err())
+			require.NotNil(t, pkContToken)
+			require.NotNil(t, rkContToken)
+
+			newPager := client.List(&ListEntitiesOptions{
+				PartitionKey: pkContToken,
+				RowKey:       rkContToken,
+				Filter:       to.StringPtr("Value le 5"),
+			})
+			count := 0
+			for newPager.NextPage(ctx) {
+				count += len(newPager.PageResponse().Entities)
+			}
+
+			require.NoError(t, pager.Err())
+			require.Equal(t, 4, count)
+		})
+	}
+}

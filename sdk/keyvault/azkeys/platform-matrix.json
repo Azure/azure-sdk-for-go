@@ -10,7 +10,8 @@
                     "Pool": "azsdk-pool-mms-ubuntu-2004-general"
                 }
             },
-            "ArmTemplateParameters": "@{ enableHsm = $true }"
+            "ArmTemplateParameters": "@{ enableHsm = $true }",
+            "GoVersion": ["1.17"]
         }
     ]
 }

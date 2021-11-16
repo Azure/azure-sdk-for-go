@@ -175,7 +175,7 @@ func (k KeyVaultChallengePolicy) getChallengeRequest(orig policy.Request) (*poli
 	req.Raw().Header.Set("Content-Length", "0")
 
 	copied := orig.Clone(orig.Raw().Context())
-	copied.Raw().Body = req.Body()
+	// copied.Raw().Body = req.Body()
 
 	return copied, err
 }

@@ -14,6 +14,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
 
 const (
@@ -133,6 +134,9 @@ func TestClientSecretCredential_GetTokenUnexpectedJSON(t *testing.T) {
 }
 
 func TestClientSecretCredential_Live(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("this test isn't recorded yet")
+	}
 	if liveSP.tenantID == "" || liveSP.clientID == "" || liveSP.secret == "" {
 		t.Skip("missing live service principal configuration")
 	}

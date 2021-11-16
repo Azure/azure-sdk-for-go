@@ -41,7 +41,7 @@ func NewKeyVaultChallengePolicy(cred azcore.TokenCredential) *KeyVaultChallengeP
 func debug(req *http.Request, id string) {
 	h := req.Header.Get("Content-Length")
 	fmt.Println(id, h)
-	if h != "" {
+	if req.ContentLength > 0 {
 		b := new(bytes.Buffer)
 		b.ReadFrom(req.Body)
 		fmt.Println("BODY: ", b.String())

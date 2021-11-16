@@ -50,6 +50,7 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 			return nil, err
 		}
 
+		fmt.Println("CHALLENGE REQUEST CONTENT LENGTH: ", challengeReq.Raw().Header.Get("Content-Length"))
 		challengeResp, err := challengeReq.Next()
 		if err != nil {
 			return nil, err
@@ -75,6 +76,7 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 
 	// send a copy of the request
 	cloneReq := req.Clone(req.Raw().Context())
+	fmt.Println("CLONED REQ CONTENT LENGTH: ", cloneReq.Raw().Header.Get("Content-Length"))
 	resp, cloneReqErr := cloneReq.Next()
 	if cloneReqErr != nil {
 		return nil, cloneReqErr

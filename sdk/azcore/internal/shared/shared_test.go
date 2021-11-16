@@ -124,9 +124,6 @@ func TestHasStatusCode(t *testing.T) {
 }
 
 func TestEndpointToScope(t *testing.T) {
-	if s := EndpointToScope("https://management.microsoftazure.de/"); s != "https://management.microsoftazure.de//.default" {
-		t.Fatalf("unexpected scope %s", s)
-	}
 	if s := EndpointToScope("https://management.usgovcloudapi.net"); s != "https://management.usgovcloudapi.net//.default" {
 		t.Fatalf("unexpected scope %s", s)
 	}

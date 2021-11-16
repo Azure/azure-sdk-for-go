@@ -58,7 +58,7 @@ const requestEndpoint = "/subscriptions/00000000-0000-0000-0000-000000000000/res
 func newTestRPRegistrationPipeline(srv *mock.Server) pipeline.Pipeline {
 	opts := azcore.ClientOptions{Transport: srv}
 	rp := NewRPRegistrationPolicy(srv.URL(), mockTokenCred{}, testRPRegistrationOptions(srv))
-	return runtime.NewPipeline("test", "v0.1.0", []azpolicy.Policy{rp}, nil, &opts)
+	return runtime.NewPipeline("test", "v0.1.0", runtime.PipelineOptions{PerCall: []azpolicy.Policy{rp}}, &opts)
 }
 
 func testRPRegistrationOptions(t azpolicy.Transporter) *armpolicy.RegistrationOptions {
@@ -350,7 +350,7 @@ func TestRPRegistrationPolicyDisabled(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpUnregisteredResp)))
 	ops := testRPRegistrationOptions(srv)
 	ops.MaxAttempts = -1
-	pl := runtime.NewPipeline("test", "v0.1.0", []pipeline.Policy{NewRPRegistrationPolicy(srv.URL(), mockTokenCred{}, ops)}, nil, nil)
+	pl := runtime.NewPipeline("test", "v0.1.0", runtime.PipelineOptions{PerCall: []pipeline.Policy{NewRPRegistrationPolicy(srv.URL(), mockTokenCred{}, ops)}}, nil)
 	req, err := runtime.NewRequest(context.Background(), http.MethodGet, runtime.JoinPaths(srv.URL(), requestEndpoint))
 	if err != nil {
 		t.Fatal(err)

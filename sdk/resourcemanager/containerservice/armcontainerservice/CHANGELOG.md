@@ -1,5 +1,9 @@
 # Release History
 
+## 0.2.1 (2021-11-16)
+
+- Add example
+
 ## 0.2.0 (2021-10-29)
 
 ### Breaking Changes

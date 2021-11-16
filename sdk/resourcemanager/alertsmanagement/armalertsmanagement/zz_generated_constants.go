@@ -10,7 +10,7 @@ package armalertsmanagement
 
 const (
 	module  = "armalertsmanagement"
-	version = "v0.2.0"
+	version = "v0.2.1"
 )
 
 // ActionRuleStatus - Indicates if the given action rule is enabled or disabled

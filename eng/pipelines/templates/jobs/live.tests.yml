@@ -82,7 +82,6 @@ jobs:
       - template: ../steps/build-test.yml
         parameters:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
-          GoWorkspace: $(GO_WORKSPACE_PATH)
           Image: $(OSVmImage)
           GoVersion: $(GoVersion)
           EnvVars:

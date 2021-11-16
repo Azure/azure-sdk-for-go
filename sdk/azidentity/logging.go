@@ -14,14 +14,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
-// EventCredential entries contain information about authentication.
+// EventAuthentication entries contain information about authentication.
 // This includes information like the names of environment variables
 // used when obtaining credentials and the type of credential used.
-const EventCredential log.Event = "Credential"
+const EventAuthentication log.Event = "Authentication"
 
 // log environment variables that can be used for credential types
 func logEnvVars() {
-	if !log.Should(EventCredential) {
+	if !log.Should(EventAuthentication) {
 		return
 	}
 	// Log available environment variables
@@ -39,25 +39,25 @@ func logEnvVars() {
 		envVars = append(envVars, azureAuthorityHost)
 	}
 	if len(envVars) > 0 {
-		log.Writef(EventCredential, "Azure Identity => Found the following environment variables:\n\t%s", strings.Join(envVars, ", "))
+		log.Writef(EventAuthentication, "Azure Identity => Found the following environment variables:\n\t%s", strings.Join(envVars, ", "))
 	}
 }
 
 func logGetTokenSuccess(cred azcore.TokenCredential, opts policy.TokenRequestOptions) {
-	if !log.Should(EventCredential) {
+	if !log.Should(EventAuthentication) {
 		return
 	}
 	msg := fmt.Sprintf("Azure Identity => GetToken() result for %T: SUCCESS\n", cred)
 	msg += fmt.Sprintf("\tCredential Scopes: [%s]", strings.Join(opts.Scopes, ", "))
-	log.Write(EventCredential, msg)
+	log.Write(EventAuthentication, msg)
 }
 
 func logCredentialError(credName string, err error) {
-	log.Writef(EventCredential, "Azure Identity => ERROR in %s: %s", credName, err.Error())
+	log.Writef(EventAuthentication, "Azure Identity => ERROR in %s: %s", credName, err.Error())
 }
 
 func logMSIEnv(msi msiType) {
-	if !log.Should(EventCredential) {
+	if !log.Should(EventAuthentication) {
 		return
 	}
 	var msg string
@@ -71,11 +71,11 @@ func logMSIEnv(msi msiType) {
 	default:
 		msg = "Azure Identity => Managed Identity environment: Unknown"
 	}
-	log.Write(EventCredential, msg)
+	log.Write(EventAuthentication, msg)
 }
 
 func addGetTokenFailureLogs(credName string, err error, includeStack bool) {
-	if !log.Should(EventCredential) {
+	if !log.Should(EventAuthentication) {
 		return
 	}
 	stack := ""
@@ -83,5 +83,5 @@ func addGetTokenFailureLogs(credName string, err error, includeStack bool) {
 		// skip the stack trace frames and ourself
 		stack = "\n" + diag.StackTrace(3, 32)
 	}
-	log.Writef(EventCredential, "Azure Identity => ERROR in GetToken() call for %s: %s%s", credName, err.Error(), stack)
+	log.Writef(EventAuthentication, "Azure Identity => ERROR in GetToken() call for %s: %s%s", credName, err.Error(), stack)
 }

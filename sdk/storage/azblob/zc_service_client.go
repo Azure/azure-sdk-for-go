@@ -6,12 +6,13 @@ package azblob
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"net/url"
 	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 //nolint
@@ -25,9 +26,9 @@ const (
 
 // A ServiceClient represents a URL to the Azure Storage Blob service allowing you to manipulate blob containers.
 type ServiceClient struct {
-	client *serviceClient
-	u      url.URL
-	cred   azcore.Credential
+	client    *serviceClient
+	u         url.URL
+	sharedKey *SharedKeyCredential
 }
 
 // URL returns the URL endpoint used by the ServiceClient object.
@@ -35,17 +36,44 @@ func (s ServiceClient) URL() string {
 	return s.client.con.u
 }
 
-// NewServiceClient creates a ServiceClient object using the specified URL, credential, and options.
+// NewServiceClient creates a ServiceClient object using the specified URL, Azure AD credential, and options.
 // Example of serviceURL: https://<your_storage_account>.blob.core.windows.net
-func NewServiceClient(serviceURL string, cred azcore.Credential, options *ClientOptions) (ServiceClient, error) {
+func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (ServiceClient, error) {
+	u, err := url.Parse(serviceURL)
+	if err != nil {
+		return ServiceClient{}, err
+	}
+
+	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{tokenScope}, nil)
+	return ServiceClient{client: &serviceClient{
+		con: newConnection(serviceURL, authPolicy, options.getConnectionOptions()),
+	}, u: *u}, nil
+}
+
+// NewServiceClientWithNoCredential creates a ServiceClient object using the specified URL and options.
+// Example of serviceURL: https://<your_storage_account>.blob.core.windows.net?<SAS token>
+func NewServiceClientWithNoCredential(serviceURL string, options *ClientOptions) (ServiceClient, error) {
 	u, err := url.Parse(serviceURL)
 	if err != nil {
 		return ServiceClient{}, err
 	}
 
 	return ServiceClient{client: &serviceClient{
-		con: newConnection(serviceURL, cred, options.getConnectionOptions()),
-	}, u: *u, cred: cred}, nil
+		con: newConnection(serviceURL, nil, options.getConnectionOptions()),
+	}, u: *u}, nil
+}
+
+// NewServiceClientWithSharedKey creates a ServiceClient object using the specified URL, shared key, and options.
+// Example of serviceURL: https://<your_storage_account>.blob.core.windows.net
+func NewServiceClientWithSharedKey(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (ServiceClient, error) {
+	u, err := url.Parse(serviceURL)
+	if err != nil {
+		return ServiceClient{}, err
+	}
+	authPolicy := newSharedKeyCredPolicy(cred)
+	return ServiceClient{client: &serviceClient{
+		con: newConnection(serviceURL, authPolicy, options.getConnectionOptions()),
+	}, u: *u, sharedKey: cred}, nil
 }
 
 // NewServiceClientFromConnectionString creates a service client from the given connection string.
@@ -55,7 +83,7 @@ func NewServiceClientFromConnectionString(connectionString string, options *Clie
 	if err != nil {
 		return ServiceClient{}, err
 	}
-	return NewServiceClient(endpoint, credential, options)
+	return NewServiceClientWithSharedKey(endpoint, credential, options)
 }
 
 // NewContainerClient creates a new ContainerClient object by concatenating containerName to the end of
@@ -70,7 +98,7 @@ func (s ServiceClient) NewContainerClient(containerName string) ContainerClient 
 		client: &containerClient{
 			con: containerConnection,
 		},
-		cred: s.cred,
+		sharedKey: s.sharedKey,
 	}
 }
 
@@ -187,15 +215,14 @@ func (s ServiceClient) GetStatistics(ctx context.Context) (ServiceGetStatisticsR
 }
 
 func (s ServiceClient) CanGetAccountSASToken() bool {
-	return s.cred != nil
+	return s.sharedKey != nil
 }
 
 // GetSASToken is a convenience method for generating a SAS token for the currently pointed at account.
-// It can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.
+// It can only be used if the credential supplied during creation was a SharedKeyCredential.
 // This validity can be checked with CanGetAccountSASToken().
 func (s ServiceClient) GetSASToken(resources AccountSASResourceTypes, permissions AccountSASPermissions, services AccountSASServices, start time.Time, expiry time.Time) (string, error) {
-	cred, ok := s.cred.(*SharedKeyCredential)
-	if !ok {
+	if s.sharedKey == nil {
 		return "", errors.New("credential is not a SharedKeyCredential. SAS can only be signed with a SharedKeyCredential")
 	}
 
@@ -207,7 +234,7 @@ func (s ServiceClient) GetSASToken(resources AccountSASResourceTypes, permission
 		ResourceTypes: resources.String(),
 		StartTime:     start.UTC(),
 		ExpiryTime:    expiry.UTC(),
-	}.Sign(cred)
+	}.Sign(s.sharedKey)
 	if err != nil {
 		return "", err
 	}

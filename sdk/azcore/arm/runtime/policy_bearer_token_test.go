@@ -49,7 +49,7 @@ func (mc mockCredential) Do(req *azpolicy.Request) (*http.Response, error) {
 }
 
 func newTestPipeline(opts *azpolicy.ClientOptions) pipeline.Pipeline {
-	return runtime.NewPipeline("testmodule", "v0.1.0", nil, nil, opts)
+	return runtime.NewPipeline("testmodule", "v0.1.0", runtime.PipelineOptions{}, opts)
 }
 
 func defaultTestPipeline(srv azpolicy.Transporter, scope string) pipeline.Pipeline {
@@ -61,6 +61,7 @@ func defaultTestPipeline(srv azpolicy.Transporter, scope string) pipeline.Pipeli
 		"testmodule",
 		"v0.1.0",
 		mockCredential{},
+		runtime.PipelineOptions{},
 		&arm.ClientOptions{
 			ClientOptions: azcore.ClientOptions{
 				Retry:     retryOpts,

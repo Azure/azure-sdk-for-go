@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
 	"github.com/stretchr/testify/require"
 )
 
@@ -19,7 +20,7 @@ func Test_Sender_SendBatchOfTwo(t *testing.T) {
 
 	ctx := context.Background()
 
-	sender, err := client.NewSender(queueName)
+	sender, err := client.NewSender(queueName, nil)
 	require.NoError(t, err)
 
 	defer sender.Close(ctx)
@@ -27,17 +28,15 @@ func Test_Sender_SendBatchOfTwo(t *testing.T) {
 	batch, err := sender.NewMessageBatch(ctx, nil)
 	require.NoError(t, err)
 
-	added, err := batch.Add(&Message{
+	err = batch.AddMessage(&Message{
 		Body: []byte("[0] message in batch"),
 	})
 	require.NoError(t, err)
-	require.True(t, added)
 
-	added, err = batch.Add(&Message{
+	err = batch.AddMessage(&Message{
 		Body: []byte("[1] message in batch"),
 	})
 	require.NoError(t, err)
-	require.True(t, added)
 
 	err = sender.SendMessageBatch(ctx, batch)
 	require.NoError(t, err)
@@ -47,19 +46,43 @@ func Test_Sender_SendBatchOfTwo(t *testing.T) {
 	require.NoError(t, err)
 	defer receiver.Close(ctx)
 
-	messages, err := receiver.ReceiveMessages(ctx, 2, nil)
+	messages := receiveAll(t, receiver, 2)
 	require.NoError(t, err)
 
 	require.EqualValues(t, []string{"[0] message in batch", "[1] message in batch"}, getSortedBodies(messages))
 }
 
+func receiveAll(t *testing.T, receiver *Receiver, expected int) []*ReceivedMessage {
+	var all []*ReceivedMessage
+
+	ctx, cancel := context.WithDeadline(context.Background(), time.Now().Add(time.Minute))
+	defer cancel()
+
+	for {
+		messages, err := receiver.ReceiveMessages(ctx, 1+2, nil)
+		require.NoError(t, err)
+
+		if len(messages) == 0 {
+			break
+		}
+
+		all = append(all, messages...)
+
+		if len(all) == expected {
+			break
+		}
+	}
+
+	return all
+}
+
 func Test_Sender_UsingPartitionedQueue(t *testing.T) {
-	client, cleanup, queueName := setupLiveTest(t, &QueueProperties{
+	client, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
 		EnablePartitioning: to.BoolPtr(true),
 	})
 	defer cleanup()
 
-	sender, err := client.NewSender(queueName)
+	sender, err := client.NewSender(queueName, nil)
 	require.NoError(t, err)
 	defer sender.Close(context.Background())
 
@@ -68,36 +91,32 @@ func Test_Sender_UsingPartitionedQueue(t *testing.T) {
 	require.NoError(t, err)
 	defer receiver.Close(context.Background())
 
+	batch, err := sender.NewMessageBatch(context.Background(), nil)
+	require.NoError(t, err)
+
+	err = batch.AddMessage(&Message{
+		Body:         []byte("2. Message in batch"),
+		PartitionKey: to.StringPtr("partitionKey1"),
+	})
+	require.NoError(t, err)
+
+	err = batch.AddMessage(&Message{
+		Body:         []byte("3. Message in batch"),
+		PartitionKey: to.StringPtr("partitionKey1"),
+	})
+	require.NoError(t, err)
+
+	err = sender.SendMessageBatch(context.Background(), batch)
+	require.NoError(t, err)
+
 	err = sender.SendMessage(context.Background(), &Message{
-		ID:           "message ID",
+		MessageID:    "message ID",
 		Body:         []byte("1. single partitioned message"),
 		PartitionKey: to.StringPtr("partitionKey1"),
 	})
 	require.NoError(t, err)
 
-	batch, err := sender.NewMessageBatch(context.Background(), nil)
-	require.NoError(t, err)
-
-	added, err := batch.Add(&Message{
-		Body:         []byte("2. Message in batch"),
-		PartitionKey: to.StringPtr("partitionKey1"),
-	})
-	require.NoError(t, err)
-	require.True(t, added)
-
-	added, err = batch.Add(&Message{
-		Body:         []byte("3. Message in batch"),
-		PartitionKey: to.StringPtr("partitionKey1"),
-	})
-	require.NoError(t, err)
-	require.True(t, added)
-
-	err = sender.SendMessageBatch(context.Background(), batch)
-	require.NoError(t, err)
-
-	messages, err := receiver.ReceiveMessages(context.Background(), 1+2, nil)
-	require.NoError(t, err)
-
+	messages := receiveAll(t, receiver, 3)
 	sort.Sort(receivedMessages(messages))
 
 	require.EqualValues(t, 3, len(messages))
@@ -107,47 +126,13 @@ func Test_Sender_UsingPartitionedQueue(t *testing.T) {
 	require.EqualValues(t, "partitionKey1", *messages[2].PartitionKey)
 }
 
-func Test_Sender_SendMessages(t *testing.T) {
-	ctx := context.Background()
-
-	client, cleanup, queueName := setupLiveTest(t, &QueueProperties{
-		EnablePartitioning: to.BoolPtr(true),
-	})
-	defer cleanup()
-
-	receiver, err := client.NewReceiverForQueue(
-		queueName, &ReceiverOptions{ReceiveMode: ReceiveModeReceiveAndDelete})
-	require.NoError(t, err)
-	defer receiver.Close(context.Background())
-
-	sender, err := client.NewSender(queueName)
-	require.NoError(t, err)
-	defer sender.Close(context.Background())
-
-	err = sender.SendMessages(ctx, []*Message{
-		{
-			Body: []byte("hello"),
-		},
-		{
-			Body: []byte("world"),
-		},
-	})
-
-	require.NoError(t, err)
-
-	messages, err := receiver.ReceiveMessages(ctx, 2, nil)
-	require.NoError(t, err)
-
-	require.EqualValues(t, []string{"hello", "world"}, getSortedBodies(messages))
-}
-
 func Test_Sender_SendMessages_resend(t *testing.T) {
 	client, cleanup, queueName := setupLiveTest(t, nil)
 	defer cleanup()
 
 	ctx := context.Background()
 
-	sender, err := client.NewSender(queueName)
+	sender, err := client.NewSender(queueName, nil)
 	require.NoError(t, err)
 
 	peekLockReceiver, err := client.NewReceiverForQueue(queueName, &ReceiverOptions{
@@ -209,7 +194,7 @@ func Test_Sender_ScheduleMessages(t *testing.T) {
 	require.NoError(t, err)
 	defer receiver.Close(context.Background())
 
-	sender, err := client.NewSender(queueName)
+	sender, err := client.NewSender(queueName, nil)
 	require.NoError(t, err)
 	defer sender.Close(context.Background())
 
@@ -222,9 +207,9 @@ func Test_Sender_ScheduleMessages(t *testing.T) {
 	// `Scheduled`
 
 	sequenceNumbers, err := sender.ScheduleMessages(ctx,
-		[]SendableMessage{
-			&Message{Body: []byte("To the future (that will be cancelled!)")},
-			&Message{Body: []byte("To the future (not cancelled)")},
+		[]*Message{
+			{Body: []byte("To the future (that will be cancelled!)")},
+			{Body: []byte("To the future (not cancelled)")},
 		},
 		nearFuture)
 
@@ -264,7 +249,13 @@ func getSortedBodies(messages []*ReceivedMessage) []string {
 	var bodies []string
 
 	for _, msg := range messages {
-		bodies = append(bodies, string(msg.Body))
+		body, err := msg.Body()
+
+		if err != nil {
+			panic(err)
+		}
+
+		bodies = append(bodies, string(body))
 	}
 
 	return bodies
@@ -278,7 +269,19 @@ func (rm receivedMessages) Len() int {
 
 // Less compares the messages assuming the .Body field is a valid string.
 func (rm receivedMessages) Less(i, j int) bool {
-	return string(rm[i].Body) < string(rm[j].Body)
+	bodyI, err := rm[i].Body()
+
+	if err != nil {
+		panic(err)
+	}
+
+	bodyJ, err := rm[j].Body()
+
+	if err != nil {
+		panic(err)
+	}
+
+	return string(bodyI) < string(bodyJ)
 }
 
 func (rm receivedMessages) Swap(i, j int) {

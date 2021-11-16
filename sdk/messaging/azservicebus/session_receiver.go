@@ -105,7 +105,7 @@ func newSessionReceiver(ctx context.Context, sessionID *string, ns internal.Name
 // 1. Cancelling the `ctx` parameter.
 // 2. An implicit timeout (default: 1 second) that starts after the first
 //    message has been received.
-func (r *SessionReceiver) ReceiveMessages(ctx context.Context, maxMessages int, options *ReceiveOptions) ([]*ReceivedMessage, error) {
+func (r *SessionReceiver) ReceiveMessages(ctx context.Context, maxMessages int, options *ReceiveMessagesOptions) ([]*ReceivedMessage, error) {
 	return r.inner.ReceiveMessages(ctx, maxMessages, options)
 }
 
@@ -140,14 +140,14 @@ func (r *SessionReceiver) CompleteMessage(ctx context.Context, message *Received
 // AbandonMessage will cause a message to be returned to the queue or subscription.
 // This will increment its delivery count, and potentially cause it to be dead lettered
 // depending on your queue or subscription's configuration.
-func (r *SessionReceiver) AbandonMessage(ctx context.Context, message *ReceivedMessage) error {
-	return r.inner.AbandonMessage(ctx, message)
+func (r *SessionReceiver) AbandonMessage(ctx context.Context, message *ReceivedMessage, options *AbandonMessageOptions) error {
+	return r.inner.AbandonMessage(ctx, message, options)
 }
 
 // DeferMessage will cause a message to be deferred. Deferred messages
 // can be received using `Receiver.ReceiveDeferredMessages`.
-func (r *SessionReceiver) DeferMessage(ctx context.Context, message *ReceivedMessage) error {
-	return r.inner.DeferMessage(ctx, message)
+func (r *SessionReceiver) DeferMessage(ctx context.Context, message *ReceivedMessage, options *DeferMessageOptions) error {
+	return r.inner.DeferMessage(ctx, message, options)
 }
 
 // DeadLetterMessage settles a message by moving it to the dead letter queue for a

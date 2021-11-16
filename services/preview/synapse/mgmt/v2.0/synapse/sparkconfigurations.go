@@ -35,7 +35,7 @@ func NewSparkConfigurationsClientWithBaseURI(baseURI string, subscriptionID stri
 // ListByWorkspace list sparkConfigurations in a workspace.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 func (client SparkConfigurationsClient) ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result SparkConfigurationListResponsePage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SparkConfigurationsClient.ListByWorkspace")

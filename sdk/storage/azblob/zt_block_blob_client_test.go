@@ -9,7 +9,6 @@ import (
 	"crypto/md5"
 	"encoding/base64"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/assert"
@@ -347,7 +346,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobSASQueryParamOverrideResponseHeaders
 	blobURLWithSAS := blobParts.URL()
 	_assert.NotNil(blobURLWithSAS)
 
-	blobClientWithSAS, err := NewBlockBlobClient(blobURLWithSAS, azcore.NewAnonymousCredential(), nil)
+	blobClientWithSAS, err := NewBlockBlobClientWithNoCredential(blobURLWithSAS, nil)
 	_assert.Nil(err)
 
 	gResp, err := blobClientWithSAS.GetProperties(ctx, nil)

@@ -36,7 +36,7 @@ func NewSQLPoolRecommendedSensitivityLabelsClientWithBaseURI(baseURI string, sub
 // Update update recommended sensitivity labels states of a given SQL Pool using an operations batch.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 func (client SQLPoolRecommendedSensitivityLabelsClient) Update(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, parameters RecommendedSensitivityLabelUpdateList) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {

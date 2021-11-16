@@ -35,7 +35,7 @@ func NewSQLPoolMaintenanceWindowOptionsClientWithBaseURI(baseURI string, subscri
 // Get get list of SQL pool's available maintenance windows.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 // maintenanceWindowOptionsName - maintenance window options name.
 func (client SQLPoolMaintenanceWindowOptionsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, maintenanceWindowOptionsName string) (result MaintenanceWindowOptions, err error) {

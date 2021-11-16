@@ -16,22 +16,22 @@ const (
 	developerSignOnClientID = "04b07795-8ddb-461a-bbee-02f9e1bf7b46"
 )
 
-// DefaultAzureCredentialOptions contains options for configuring authentication. These options
-// may not apply to all credentials in the default chain.
+// DefaultAzureCredentialOptions contains optional parameters for DefaultAzureCredential.
+// These options may not apply to all credentials in the chain.
 type DefaultAzureCredentialOptions struct {
 	azcore.ClientOptions
 
-	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
-	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
+	// AuthorityHost is the base URL of an Azure Active Directory authority. Defaults
+	// to the value of environment variable AZURE_AUTHORITY_HOST, if set, or AzurePublicCloud.
 	AuthorityHost AuthorityHost
 	// TenantID identifies the tenant the Azure CLI should authenticate in.
 	// Defaults to the CLI's default tenant, which is typically the home tenant of the user logged in to the CLI.
 	TenantID string
 }
 
-// DefaultAzureCredential is a default credential chain for applications that will be deployed to Azure.
-// It combines credentials suitable for deployed applications with credentials suitable in local development.
-// It attempts to authenticate with each of these credential types, in the following order:
+// DefaultAzureCredential is a default credential chain for applications that will deploy to Azure.
+// It combines credentials suitable for deployment with credentials suitable for local development.
+// It attempts to authenticate with each of these credential types, in the following order, stopping when one provides a token:
 // - EnvironmentCredential
 // - ManagedIdentityCredential
 // - AzureCLICredential
@@ -40,7 +40,7 @@ type DefaultAzureCredential struct {
 	chain *ChainedTokenCredential
 }
 
-// NewDefaultAzureCredential creates a default credential chain for applications that will be deployed to Azure.
+// NewDefaultAzureCredential creates a DefaultAzureCredential.
 func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*DefaultAzureCredential, error) {
 	var creds []azcore.TokenCredential
 	errMsg := ""
@@ -85,7 +85,9 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 	return &DefaultAzureCredential{chain: chain}, nil
 }
 
-// GetToken attempts to acquire a token from each of the default chain's credentials, stopping when one provides a token.
+// GetToken obtains a token from Azure Active Directory. This method is called automatically by Azure SDK clients.
+// ctx: Context used to control the request lifetime.
+// opts: Options for the token request, in particular the desired scope of the access token.
 func (c *DefaultAzureCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (token *azcore.AccessToken, err error) {
 	return c.chain.GetToken(ctx, opts)
 }

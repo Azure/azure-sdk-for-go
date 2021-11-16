@@ -31,7 +31,7 @@ func TestNewPipelineWithOptions(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
-	resp, err := NewPipeline("armtest", "v1.2.3", mockTokenCred{}, &opt).Do(req)
+	resp, err := NewPipeline("armtest", "v1.2.3", mockTokenCred{}, azruntime.PipelineOptions{}, &opt).Do(req)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
@@ -58,7 +58,7 @@ func TestNewPipelineWithCustomTelemetry(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
-	resp, err := NewPipeline("armtest", "v1.2.3", mockTokenCred{}, &opt).Do(req)
+	resp, err := NewPipeline("armtest", "v1.2.3", mockTokenCred{}, azruntime.PipelineOptions{}, &opt).Do(req)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
@@ -90,7 +90,7 @@ func TestDisableAutoRPRegistration(t *testing.T) {
 	log.SetListener(func(cls log.Event, msg string) {
 		logEntries++
 	})
-	resp, err := NewPipeline("armtest", "v1.2.3", mockTokenCred{}, opts).Do(req)
+	resp, err := NewPipeline("armtest", "v1.2.3", mockTokenCred{}, azruntime.PipelineOptions{}, opts).Do(req)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -134,7 +134,7 @@ func TestPipelineWithCustomPolicies(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	resp, err := NewPipeline("armtest", "v1.2.3", mockTokenCred{}, opts).Do(req)
+	resp, err := NewPipeline("armtest", "v1.2.3", mockTokenCred{}, azruntime.PipelineOptions{}, opts).Do(req)
 	if err != nil {
 		t.Fatal(err)
 	}

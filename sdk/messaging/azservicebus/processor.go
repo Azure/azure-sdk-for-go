@@ -260,14 +260,14 @@ func (p *processor) CompleteMessage(ctx context.Context, message *ReceivedMessag
 // AbandonMessage will cause a message to be returned to the queue or subscription.
 // This will increment its delivery count, and potentially cause it to be dead lettered
 // depending on your queue or subscription's configuration.
-func (p *processor) AbandonMessage(ctx context.Context, message *ReceivedMessage) error {
-	return p.settler.AbandonMessage(ctx, message)
+func (p *processor) AbandonMessage(ctx context.Context, message *ReceivedMessage, options *AbandonMessageOptions) error {
+	return p.settler.AbandonMessage(ctx, message, options)
 }
 
 // DeferMessage will cause a message to be deferred. Deferred messages
 // can be received using `Receiver.ReceiveDeferredMessages`.
-func (p *processor) DeferMessage(ctx context.Context, message *ReceivedMessage) error {
-	return p.settler.DeferMessage(ctx, message)
+func (p *processor) DeferMessage(ctx context.Context, message *ReceivedMessage, options *DeferMessageOptions) error {
+	return p.settler.DeferMessage(ctx, message, options)
 }
 
 // DeadLetterMessage settles a message by moving it to the dead letter queue for a
@@ -344,13 +344,13 @@ func (p *processor) processMessage(ctx context.Context, receiver internal.AMQPRe
 		var settleErr error
 
 		if messageHandlerErr != nil {
-			settleErr = p.settler.AbandonMessage(ctx, receivedMessage)
+			settleErr = p.settler.AbandonMessage(ctx, receivedMessage, nil)
 		} else {
 			settleErr = p.settler.CompleteMessage(ctx, receivedMessage)
 		}
 
 		if settleErr != nil {
-			p.userErrorHandler(fmt.Errorf("failed to settle message with ID '%s': %w", receivedMessage.ID, settleErr))
+			p.userErrorHandler(fmt.Errorf("failed to settle message with ID '%s': %w", receivedMessage.MessageID, settleErr))
 			return settleErr
 		}
 	}
@@ -375,7 +375,7 @@ func checkReceiverMode(receiveMode ReceiveMode) error {
 	if receiveMode == ReceiveModePeekLock || receiveMode == ReceiveModeReceiveAndDelete {
 		return nil
 	} else {
-		return fmt.Errorf("Invalid receive mode %d, must be either azservicebus.PeekLock or azservicebus.ReceiveAndDelete", receiveMode)
+		return fmt.Errorf("invalid receive mode %d, must be either azservicebus.PeekLock or azservicebus.ReceiveAndDelete", receiveMode)
 	}
 }
 

@@ -40,7 +40,7 @@ Once you have the account URL, it can be used to create the service client:
 ```golang
 cred, err := aztables.NewSharedKeyCredential("myAccountName", "myAccountKey")
 handle(err)
-serviceClient, err := aztables.NewServiceClient("https://<myAccountName>.table.core.windows.net/", cred, nil)
+serviceClient, err := aztables.NewServiceClientWithSharedKeyCredential("https://<myAccountName>.table.core.windows.net/", cred, nil)
 handle(err)
 ```
 
@@ -194,7 +194,7 @@ myEntity := aztables.EDMEntity{
 marshalled, err := json.Marshal(myEntity)
 handle(err)
 
-resp, err := client.AddEntity(context.Background(), marshalled, nil)
+resp, err := client.AddEntity(context.TODO(), marshalled, nil)
 handle(err)
 ```
 
@@ -215,7 +215,7 @@ options := &ListEntitiesOptions{
 }
 
 pager := client.List(options) // pass in "nil" if you want to list all entities
-for pager.NextPage(context.Background()) {
+for pager.NextPage(context.TODO()) {
     resp := pager.PageResponse()
     fmt.Printf("Received: %v entities\n", len(resp.Entities))
 
@@ -232,13 +232,39 @@ err := pager.Err()
 handle(err)
 ```
 
+The pager exposes continuation tokens that can be used by a new pager instance to begin listing entities from a specific point. For example:
+```golang
+pager := client.List(&ListEntitiesOptions{Top: to.Int32Ptr(10)})
+count := 0
+for pager.NextPage(context.TODO()) {
+    count += len(pager.PageResponse().Entities)
+
+    if count > 20 {
+        break
+    }
+}
+handle(pager.Err())
+
+newPager := client.List(&ListEntitiesOptions{
+    Top:          to.Int32Ptr(10),
+    PartitionKey: pager.NextPagePartitionKey(),
+    RowKey:       pager.NextPageRowKey(),
+})
+
+for newPager.NextPage(context.TODO()) {
+    // begin paging where 'pager' left off
+}
+
+handle(newPager.Err())
+```
+
 ## Troubleshooting
 
 ### Error Handling
 
 All I/O operations will return an `error` that can be investigated to discover more information about the error. In addition, you can investigate the raw response of any response object:
 ```golang
-resp, err := client.CreateTable(context.Background(), nil)
+resp, err := client.CreateTable(context.TODO(), nil)
 if err != nil {
     err = errors.As(err, azcore.HTTPResponse)
     // handle err ...

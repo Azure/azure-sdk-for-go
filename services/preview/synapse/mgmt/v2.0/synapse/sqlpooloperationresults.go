@@ -35,7 +35,7 @@ func NewSQLPoolOperationResultsClientWithBaseURI(baseURI string, subscriptionID 
 // GetLocationHeaderResult get the status of a SQL pool operation
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 // operationID - operation ID
 func (client SQLPoolOperationResultsClient) GetLocationHeaderResult(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, operationID string) (result SetObject, err error) {

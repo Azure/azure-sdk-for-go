@@ -5,6 +5,7 @@ package azservicebus
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
@@ -14,53 +15,81 @@ import (
 	"github.com/devigned/tab"
 )
 
-type (
-	// ReceivedMessage is a received message from a Client.NewReceiver().
-	ReceivedMessage struct {
-		Message
+// ReceivedMessage is a received message from a Client.NewReceiver().
+type ReceivedMessage struct {
+	MessageID string
 
-		LockToken              [16]byte
-		DeliveryCount          uint32
-		LockedUntil            *time.Time // `mapstructure:"x-opt-locked-until"`
-		SequenceNumber         *int64     // :"x-opt-sequence-number"`
-		EnqueuedSequenceNumber *int64     // :"x-opt-enqueue-sequence-number"`
-		EnqueuedTime           *time.Time // :"x-opt-enqueued-time"`
-		DeadLetterSource       *string    // :"x-opt-deadletter-source"`
+	ContentType      string
+	CorrelationID    string
+	SessionID        *string
+	Subject          string
+	ReplyTo          string
+	ReplyToSessionID string
+	To               string
 
-		// available in the raw AMQP message, but not exported by default
-		// GroupSequence  *uint32
+	TimeToLive *time.Duration
 
-		rawAMQPMessage *amqp.Message
+	PartitionKey            *string
+	TransactionPartitionKey *string
+	ScheduledEnqueueTime    *time.Time
 
-		// deferred indicates we received it using ReceiveDeferredMessages. These messages
-		// will still go through the normal Receiver.Settle functions but internally will
-		// always be settled with the management link.
-		deferred bool
+	ApplicationProperties map[string]interface{}
+
+	LockToken              [16]byte
+	DeliveryCount          uint32
+	LockedUntil            *time.Time
+	SequenceNumber         *int64
+	EnqueuedSequenceNumber *int64
+	EnqueuedTime           *time.Time
+	ExpiresAt              *time.Time
+
+	DeadLetterErrorDescription *string
+	DeadLetterReason           *string
+	DeadLetterSource           *string
+
+	// available in the raw AMQP message, but not exported by default
+	// GroupSequence  *uint32
+
+	rawAMQPMessage *amqp.Message
+
+	// deferred indicates we received it using ReceiveDeferredMessages. These messages
+	// will still go through the normal Receiver.Settle functions but internally will
+	// always be settled with the management link.
+	deferred bool
+}
+
+// Body returns the body for this received message.
+// If the body not compatible with ReceivedMessage this function will return an error.
+func (rm *ReceivedMessage) Body() ([]byte, error) {
+	// TODO: does this come back as a zero length array if the body is empty (which is allowed)
+	if rm.rawAMQPMessage.Data == nil || len(rm.rawAMQPMessage.Data) != 1 {
+		return nil, errors.New("AMQP message Data section is improperly encoded for ReceivedMessage")
 	}
 
-	// Message is a SendableMessage which can be sent using a Client.NewSender().
-	Message struct {
-		ID string
+	return rm.rawAMQPMessage.Data[0], nil
+}
 
-		ContentType   string
-		CorrelationID string
-		// Body corresponds to the first []byte array in the Data section of an AMQP message.
-		Body             []byte
-		SessionID        *string
-		Subject          string
-		ReplyTo          string
-		ReplyToSessionID string
-		To               string
-		TimeToLive       *time.Duration
+// Message is a SendableMessage which can be sent using a Client.NewSender().
+type Message struct {
+	MessageID string
 
-		PartitionKey            *string
-		TransactionPartitionKey *string
-		ScheduledEnqueueTime    *time.Time
+	ContentType   string
+	CorrelationID string
+	// Body corresponds to the first []byte array in the Data section of an AMQP message.
+	Body             []byte
+	SessionID        *string
+	Subject          string
+	ReplyTo          string
+	ReplyToSessionID string
+	To               string
+	TimeToLive       *time.Duration
 
-		ApplicationProperties map[string]interface{}
-		Format                uint32
-	}
-)
+	PartitionKey            *string
+	TransactionPartitionKey *string
+	ScheduledEnqueueTime    *time.Time
+
+	ApplicationProperties map[string]interface{}
+}
 
 // Service Bus custom properties
 const (
@@ -78,10 +107,6 @@ const (
 	enqueuedSequenceNumberAnnotation = "x-opt-enqueue-sequence-number"
 )
 
-func (m *Message) messageType() string {
-	return "Message"
-}
-
 func (m *Message) toAMQPMessage() *amqp.Message {
 	amqpMsg := amqp.NewMessage(m.Body)
 
@@ -94,7 +119,7 @@ func (m *Message) toAMQPMessage() *amqp.Message {
 
 	// TODO: I don't think this should be strictly required. Need to
 	// look into why it won't send properly without one.
-	var messageID = m.ID
+	var messageID = m.MessageID
 
 	if messageID == "" {
 		uuid, err := uuid.NewV4()
@@ -174,15 +199,12 @@ func (m *Message) toAMQPMessage() *amqp.Message {
 // serialized byte array in the Data section of the messsage.
 func newReceivedMessage(ctxForLogging context.Context, amqpMsg *amqp.Message) *ReceivedMessage {
 	msg := &ReceivedMessage{
-		Message: Message{
-			Body: amqpMsg.GetData(),
-		},
 		rawAMQPMessage: amqpMsg,
 	}
 
 	if amqpMsg.Properties != nil {
 		if id, ok := amqpMsg.Properties.MessageID.(string); ok {
-			msg.ID = id
+			msg.MessageID = id
 		}
 		msg.SessionID = &amqpMsg.Properties.GroupID
 		//msg.GroupSequence = &amqpMsg.Properties.GroupSequence
@@ -205,6 +227,14 @@ func newReceivedMessage(ctxForLogging context.Context, amqpMsg *amqp.Message) *R
 		msg.ApplicationProperties = make(map[string]interface{}, len(amqpMsg.ApplicationProperties))
 		for key, value := range amqpMsg.ApplicationProperties {
 			msg.ApplicationProperties[key] = value
+		}
+
+		if deadLetterErrorDescription, ok := amqpMsg.ApplicationProperties["DeadLetterErrorDescription"]; ok {
+			msg.DeadLetterErrorDescription = to.StringPtr(deadLetterErrorDescription.(string))
+		}
+
+		if deadLetterReason, ok := amqpMsg.ApplicationProperties["DeadLetterReason"]; ok {
+			msg.DeadLetterReason = to.StringPtr(deadLetterReason.(string))
 		}
 	}
 
@@ -286,7 +316,11 @@ func newReceivedMessage(ctxForLogging context.Context, amqpMsg *amqp.Message) *R
 		}
 	}
 
-	msg.Format = amqpMsg.Format
+	if msg.EnqueuedTime != nil && msg.TimeToLive != nil {
+		expiresAt := msg.EnqueuedTime.Add(*msg.TimeToLive)
+		msg.ExpiresAt = &expiresAt
+	}
+
 	return msg
 }
 

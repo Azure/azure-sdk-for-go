@@ -20,7 +20,7 @@ func TestProcessorReceiveWithDefaults(t *testing.T) {
 	defer cleanup()
 
 	go func() {
-		sender, err := serviceBusClient.NewSender(queueName)
+		sender, err := serviceBusClient.NewSender(queueName, nil)
 		require.NoError(t, err)
 
 		defer sender.Close(context.Background())
@@ -52,7 +52,10 @@ func TestProcessorReceiveWithDefaults(t *testing.T) {
 		mu.Lock()
 		defer mu.Unlock()
 
-		messages = append(messages, string(m.Body))
+		body, err := m.Body()
+		require.NoError(t, err)
+
+		messages = append(messages, string(body))
 
 		if len(messages) == 5 {
 			cancel()
@@ -90,7 +93,7 @@ func TestProcessorReceiveWith100MessagesWithMaxConcurrency(t *testing.T) {
 	var expectedBodies []string
 
 	go func() {
-		sender, err := serviceBusClient.NewSender(queueName)
+		sender, err := serviceBusClient.NewSender(queueName, nil)
 		require.NoError(t, err)
 
 		defer sender.Close(context.Background())
@@ -102,11 +105,10 @@ func TestProcessorReceiveWith100MessagesWithMaxConcurrency(t *testing.T) {
 		// have been sent.
 		for i := 0; i < numMessages; i++ {
 			expectedBodies = append(expectedBodies, fmt.Sprintf("hello world %03d", i))
-			added, err := batch.Add(&Message{
+			err := batch.AddMessage(&Message{
 				Body: []byte(expectedBodies[len(expectedBodies)-1]),
 			})
 			require.NoError(t, err)
-			require.True(t, added)
 		}
 
 		require.NoError(t, sender.SendMessageBatch(context.Background(), batch))
@@ -135,7 +137,9 @@ func TestProcessorReceiveWith100MessagesWithMaxConcurrency(t *testing.T) {
 		mu.Lock()
 		defer mu.Unlock()
 
-		messages = append(messages, string(m.Body))
+		body, err := m.Body()
+		require.NoError(t, err)
+		messages = append(messages, string(body))
 
 		if len(messages) == 100 {
 			go processor.Close(context.Background())

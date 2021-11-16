@@ -10,7 +10,7 @@ package armsearch
 
 const (
 	module  = "armsearch"
-	version = "v0.2.0"
+	version = "v0.2.1"
 )
 
 type AdminKeyKind string

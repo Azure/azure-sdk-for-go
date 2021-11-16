@@ -15,7 +15,7 @@ import (
 )
 
 const scope = "https://dev.azuresynapse.net/.default"
-const telemetryInfo = "azsdk-go-azartifacts/v0.1.0"
+const telemetryInfo = "azsdk-go-azartifacts/v0.1.1"
 
 // ConnectionOptions contains configuration settings for the connection's pipeline.
 // All zero-value fields will be initialized with their default values.

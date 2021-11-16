@@ -1,5 +1,11 @@
 # Release History
 
+## 0.3.1 (2021-11-16)
+
+### Bugs Fixed
+
+- Updating go-amqp to v0.16.4 to fix a race condition found when running `go test -race`.  Thanks to @peterzeller for reporting this issue. PR: #16168
+
 ## 0.3.0 (2021-11-12)
 
 ### Features Added

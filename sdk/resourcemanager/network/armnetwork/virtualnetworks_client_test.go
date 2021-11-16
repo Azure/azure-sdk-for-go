@@ -14,7 +14,7 @@ func TestVirtualNetworksClient_BeginCreateOrUpdate(t *testing.T) {
 	stop := startTest(t)
 	defer stop()
 
-	cred, _ := authenticateTest(t)
+	cred, opt := authenticateTest(t)
 	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 
 	// create resource group
@@ -23,7 +23,7 @@ func TestVirtualNetworksClient_BeginCreateOrUpdate(t *testing.T) {
 	defer clean()
 
 	// create virtual network
-	vnClient := armnetwork.NewVirtualNetworksClient(subscriptionID,cred,nil)
+	vnClient := armnetwork.NewVirtualNetworksClient(subscriptionID,cred,opt)
 	vnName, err := createRandomName(t, "network")
 	require.NoError(t, err)
 	vnPoller, err := vnClient.BeginCreateOrUpdate(

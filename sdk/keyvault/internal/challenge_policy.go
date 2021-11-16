@@ -7,6 +7,7 @@
 package internal
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
 	"net/http"
@@ -170,6 +171,10 @@ func (k KeyVaultChallengePolicy) getChallengeRequest(orig policy.Request) (*poli
 	if err != nil {
 		return nil, err
 	}
+
+	buffer := bytes.Buffer{}
+	buffer.ReadFrom(req.Raw().Body)
+	fmt.Println(buffer.String())
 
 	copied := orig.Clone(orig.Raw().Context())
 	copied.Raw().Body = req.Body()

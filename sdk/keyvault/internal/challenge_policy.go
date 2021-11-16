@@ -171,13 +171,11 @@ func (k KeyVaultChallengePolicy) getChallengeRequest(orig policy.Request) (*poli
 		return nil, err
 	}
 
-	req.Raw().Header = orig.Raw().Header
-	req.Raw().Header.Set("Content-Length", "0")
-
 	copied := orig.Clone(orig.Raw().Context())
-	// copied.Raw().Body = req.Body()
+	copied.Raw().Body = req.Body()
+	copied.Raw().Header.Set("Content-Length", "0")
 
-	return copied, err
+	return copied, nil
 }
 
 type acquiringResourceState struct {

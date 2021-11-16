@@ -121,6 +121,7 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 		}
 
 		// send the original request now
+		debug(cloneReq.Raw(), "FINAL REQ CONTENT LENGTH")
 		return req.Next()
 	}
 
@@ -187,6 +188,7 @@ func (k KeyVaultChallengePolicy) getChallengeRequest(orig policy.Request) (*poli
 	copied := orig.Clone(orig.Raw().Context())
 	copied.Raw().Body = req.Body()
 	copied.Raw().Header.Set("Content-Length", "0")
+	copied.Raw().ContentLength = 0
 
 	return copied, nil
 }

@@ -43,6 +43,7 @@ type GenerateParam struct {
 	SpecficPackageTitle string
 	SpecRPName          string
 	ReleaseDate         string
+	SkipGenerateExample bool
 }
 
 func (ctx GenerateContext) GenerateForAutomation(readme, repo string) ([]GenerateResult, []error) {
@@ -65,9 +66,10 @@ func (ctx GenerateContext) GenerateForAutomation(readme, repo string) ([]Generat
 		for _, namespaceName := range namespaceNames {
 			log.Printf("Process rp: %s, namespace: %s", rpName, namespaceName)
 			singleResult, err := ctx.GenerateForSingleRPNamespace(&GenerateParam{
-				RPName:        rpName,
-				NamespaceName: namespaceName,
-				SpecRPName:    specRPName,
+				RPName:              rpName,
+				NamespaceName:       namespaceName,
+				SpecRPName:          specRPName,
+				SkipGenerateExample: true,
 			})
 			if err != nil {
 				errors = append(errors, err)
@@ -145,6 +147,13 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 	changelog, err := autorest.GetChangelogForPackage(&oriExports, &newExports)
 	if err != nil {
 		return nil, err
+	}
+
+	if !generateParam.SkipGenerateExample {
+		log.Printf("Generate examples...")
+		if err := ExecuteExampleGenerate(packagePath, filepath.Join("resourcemanager", generateParam.RPName, generateParam.NamespaceName)); err != nil {
+			return nil, err
+		}
 	}
 
 	if onBoard {

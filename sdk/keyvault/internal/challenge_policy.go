@@ -10,6 +10,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"io"
 	"net/http"
 	"strings"
 	"time"
@@ -61,7 +62,7 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 			return nil, err
 		}
 
-		debug(challengeReq.Raw(), "CHALLENGE REQUEST CONTENT LENGTH")
+		debug(challengeReq.Raw(), "Line 64: CHALLENGE REQUEST CONTENT LENGTH")
 		challengeResp, err := challengeReq.Next()
 		if err != nil {
 			return nil, err
@@ -87,7 +88,7 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 
 	// send a copy of the request
 	cloneReq := req.Clone(req.Raw().Context())
-	debug(cloneReq.Raw(), "CLONED REQ CONTENT LENGTH")
+	debug(cloneReq.Raw(), "Line 91 CLONED REQ CONTENT LENGTH")
 	resp, cloneReqErr := cloneReq.Next()
 	if cloneReqErr != nil {
 		return nil, cloneReqErr
@@ -121,7 +122,7 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 		}
 
 		// send the original request now
-		debug(cloneReq.Raw(), "FINAL REQ CONTENT LENGTH")
+		debug(cloneReq.Raw(), "Line 125: FINAL REQ CONTENT LENGTH")
 		return req.Next()
 	}
 
@@ -179,6 +180,21 @@ func (k *KeyVaultChallengePolicy) findScopeAndTenant(resp *http.Response) error 
 	return nil
 }
 
+// The next three methods are copied from azcore/internal/shared.go
+type nopCloser struct {
+	io.ReadSeeker
+}
+
+func (n nopCloser) Close() error {
+	return nil
+}
+
+// NopCloser returns a ReadSeekCloser with a no-op close method wrapping the provided io.ReadSeeker.
+func NopCloser(rs io.ReadSeeker) io.ReadSeekCloser {
+	return nopCloser{rs}
+}
+
+// TODO: Why is this sending with a body? Proxy fails here
 func (k KeyVaultChallengePolicy) getChallengeRequest(orig policy.Request) (*policy.Request, error) {
 	req, err := runtime.NewRequest(orig.Raw().Context(), orig.Raw().Method, orig.Raw().URL.String())
 	if err != nil {
@@ -187,6 +203,7 @@ func (k KeyVaultChallengePolicy) getChallengeRequest(orig policy.Request) (*poli
 
 	copied := orig.Clone(orig.Raw().Context())
 	copied.Raw().Body = req.Body()
+	copied.SetBody(NopCloser(strings.NewReader("")), copied.Raw().Header.Get("Content-Type"))
 	copied.Raw().Header.Set("Content-Length", "0")
 	copied.Raw().ContentLength = 0
 

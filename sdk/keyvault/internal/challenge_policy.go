@@ -30,12 +30,14 @@ type KeyVaultChallengePolicy struct {
 	cred         azcore.TokenCredential
 	scope        *string
 	tenantID     *string
+	pipeline     runtime.Pipeline
 }
 
-func NewKeyVaultChallengePolicy(cred azcore.TokenCredential) *KeyVaultChallengePolicy {
+func NewKeyVaultChallengePolicy(cred azcore.TokenCredential, pipeline runtime.Pipeline) *KeyVaultChallengePolicy {
 	return &KeyVaultChallengePolicy{
 		cred:         cred,
 		mainResource: NewExpiringResource(acquire),
+		pipeline:     pipeline,
 	}
 }
 
@@ -63,12 +65,13 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 		}
 
 		debug(challengeReq.Raw(), "Line 64: CHALLENGE REQUEST CONTENT LENGTH")
-		challengeResp, err := challengeReq.Next()
+		resp, err := k.pipeline.Do(challengeReq)
+		// challengeResp, err := challengeReq.Next()
 		if err != nil {
 			return nil, err
 		}
 
-		err = k.findScopeAndTenant(challengeResp)
+		err = k.findScopeAndTenant(resp)
 		if err != nil {
 			return nil, err
 		}
@@ -201,13 +204,10 @@ func (k KeyVaultChallengePolicy) getChallengeRequest(orig policy.Request) (*poli
 		return nil, err
 	}
 
-	copied := orig.Clone(orig.Raw().Context())
-	copied.Raw().Body = req.Body()
-	copied.SetBody(NopCloser(strings.NewReader("")), copied.Raw().Header.Get("Content-Type"))
-	copied.Raw().Header.Set("Content-Length", "0")
-	copied.Raw().ContentLength = 0
+	req.Raw().Header = orig.Raw().Header
+	req.Raw().Header.Set("Content-Length", "0")
 
-	return copied, nil
+	return req, err
 }
 
 type acquiringResourceState struct {

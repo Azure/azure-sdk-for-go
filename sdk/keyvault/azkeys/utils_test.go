@@ -191,8 +191,8 @@ func createClient(t *testing.T, testType string) (*Client, error) {
 
 	options := &ClientOptions{
 		ClientOptions: azcore.ClientOptions{
-			PerCallPolicies: []policy.Policy{p},
-			Transport:       client,
+			// PerCallPolicies: []policy.Policy{p},
+			Transport: client,
 		},
 	}
 
@@ -207,7 +207,8 @@ func createClient(t *testing.T, testType string) (*Client, error) {
 		cred = NewFakeCredential("fake", "fake")
 	}
 
-	return NewClient(vaultUrl, cred, options)
+	return createTestClient(vaultUrl, cred, options, p)
+	// return NewClient(vaultUrl, cred, options)
 }
 
 func delay() time.Duration {

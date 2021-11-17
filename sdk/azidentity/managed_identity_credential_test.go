@@ -708,6 +708,9 @@ func TestManagedIdentityCredential_CreateAccessTokenExpiresOnFail(t *testing.T) 
 }
 
 func TestManagedIdentityCredential_IMDSLive(t *testing.T) {
+	if recording.GetRecordMode() == recording.LiveMode {
+		t.Skip("this test doesn't run in live mode because it can't pass in CI")
+	}
 	opts, stop := initRecording(t)
 	defer stop()
 	cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ClientOptions: opts})
@@ -728,10 +731,15 @@ func TestManagedIdentityCredential_IMDSLive(t *testing.T) {
 
 func TestManagedIdentityCredential_IMDSClientIDLive(t *testing.T) {
 	id := os.Getenv("MANAGED_IDENTITY_CLIENT_ID")
-	if recording.GetRecordMode() == recording.PlaybackMode {
+	switch recording.GetRecordMode() {
+	case recording.LiveMode:
+		t.Skip("this test doesn't run in live mode because it can't pass in CI")
+	case recording.PlaybackMode:
 		id = fakeClientID
-	} else if id == "" {
-		t.Skip("MANAGED_IDENTITY_CLIENT_ID isn't set")
+	case recording.RecordingMode:
+		if id == "" {
+			t.Skip("MANAGED_IDENTITY_CLIENT_ID isn't set")
+		}
 	}
 	opts, stop := initRecording(t)
 	defer stop()
@@ -753,10 +761,15 @@ func TestManagedIdentityCredential_IMDSClientIDLive(t *testing.T) {
 
 func TestManagedIdentityCredential_IMDSResourceIDLive(t *testing.T) {
 	id := os.Getenv("MANAGED_IDENTITY_RESOURCE_ID")
-	if recording.GetRecordMode() == recording.PlaybackMode {
+	switch recording.GetRecordMode() {
+	case recording.LiveMode:
+		t.Skip("this test doesn't run in live mode because it can't pass in CI")
+	case recording.PlaybackMode:
 		id = fakeResourceID
-	} else if id == "" {
-		t.Skip("MANAGED_IDENTITY_RESOURCE_ID isn't set")
+	case recording.RecordingMode:
+		if id == "" {
+			t.Skip("MANAGED_IDENTITY_RESOURCE_ID isn't set")
+		}
 	}
 	opts, stop := initRecording(t)
 	defer stop()

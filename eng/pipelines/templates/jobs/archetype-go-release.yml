@@ -4,67 +4,86 @@ parameters:
   ServiceDirectory: ''
 
 stages:
-  - ${{if and(eq(variables['Build.Reason'], 'Manual'), eq(variables['System.TeamProject'], 'internal'))}}:
-    - stage: Release
-      displayName: 'Release: ${{ parameters.ServiceDirectory }}'
-      dependsOn: ${{ parameters.DependsOn }}
-      condition: and(succeeded(), ne(variables['SetDevVersion'], 'true'), ne(variables['Skip.Release'], 'true'), ne(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-go-pr'))
-      jobs:
-        - deployment: TagRepository
-          displayName: "Create release tag"
-          condition: and(succeeded(), ne(variables['Skip.TagRepository'], 'true'))
-          environment: github
+  - stage: CheckRelease
+    displayName: 'Check Release: ${{ parameters.ServiceDirectory }}'
+    dependsOn: ${{ parameters.DependsOn }}
+    condition: and(succeeded(), ne(variables['SetDevVersion'], 'true'), ne(variables['Skip.Release'], 'true'), ne(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-go-pr'))
+    jobs:
+      - job: CheckReleaseJob
+        displayName: "Check whether need to release"
+        steps:
+          - task: PowerShell@2
+            name: Verify
+            inputs:
+              filePath: ./eng/scripts/Verify-NeedToRelease.ps1
+              arguments: >
+                -PackageName 'sdk/${{ parameters.ServiceDirectory }}'
+                -ServiceDirectory '${{ parameters.ServiceDirectory }}'
+                -repoId Azure/azure-sdk-for-go
+                -workingDirectory $(System.DefaultWorkingDirectory)
+              pwsh: true
+            env:
+              GH_TOKEN: $(azuresdk-github-pat)
+  - stage: Release
+    displayName: 'Release: ${{ parameters.ServiceDirectory }}'
+    dependsOn: CheckRelease
+    condition: and(succeeded(), eq(dependencies.CheckRelease.outputs['CheckReleaseJob.Verify.NeedToRelease'], 'true'))
+    jobs: 
+      - deployment: TagRepository
+        displayName: "Create release tag"
+        condition: and(succeeded(), eq(variables['NeedToRelease'], 'true'), ne(variables['Skip.TagRepository'], 'true'))
+        environment: github
 
-          pool:
-            name: azsdk-pool-mms-ubuntu-2004-general
-            vmImage: MMSUbuntu20.04
+        pool:
+          name: azsdk-pool-mms-ubuntu-2004-general
+          vmImage: MMSUbuntu20.04
 
-          strategy:
-            runOnce:
-              deploy:
-                steps:
-                  - checkout: self
-                  - template: /eng/common/pipelines/templates/steps/retain-run.yml
-                  - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
-                    parameters:
-                      PackageName: 'sdk/${{ parameters.ServiceDirectory }}'
-                      ForRelease: true
-                  - task: PowerShell@2
-                    displayName: 'Verify no replace directives in go.mod file'
-                    inputs:
-                      targetType: 'filePath'
-                      filePath: ./eng/scripts/validate_go_mod.ps1
-                      arguments: '${{ parameters.ServiceDirectory }}'
-                      pwsh: true
-                  - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
-                    parameters:
-                      ArtifactLocation: $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }}
-                      ReleaseSha: $(Build.SourceVersion)
-                      RepoId: Azure/azure-sdk-for-go
-                      WorkingDirectory: $(System.DefaultWorkingDirectory)
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+                - template: /eng/common/pipelines/templates/steps/retain-run.yml
+                - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
+                  parameters:
+                    PackageName: 'sdk/${{ parameters.ServiceDirectory }}'
+                    ForRelease: true
+                - task: PowerShell@2
+                  displayName: 'Verify no replace directives in go.mod file'
+                  inputs:
+                    targetType: 'filePath'
+                    filePath: ./eng/scripts/validate_go_mod.ps1
+                    arguments: '${{ parameters.ServiceDirectory }}'
+                    pwsh: true
+                - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
+                  parameters:
+                    ArtifactLocation: $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }}
+                    ReleaseSha: $(Build.SourceVersion)
+                    RepoId: Azure/azure-sdk-for-go
+                    WorkingDirectory: $(System.DefaultWorkingDirectory)
 
-        - deployment: UpdatePackageVersion
-          displayName: "Update Package Version"
-          condition: and(succeeded(), ne(variables['Skip.UpdatePackageVersion'], 'true'))
-          environment: github
-          dependsOn: TagRepository
+      - deployment: UpdatePackageVersion
+        displayName: "Update Package Version"
+        condition: and(succeeded(), ne(variables['Skip.UpdatePackageVersion'], 'true'))
+        environment: github
+        dependsOn: TagRepository
 
-          pool:
-            name: azsdk-pool-mms-ubuntu-2004-general
-            vmImage: MMSUbuntu20.04
+        pool:
+          name: azsdk-pool-mms-ubuntu-2004-general
+          vmImage: MMSUbuntu20.04
 
-          strategy:
-            runOnce:
-              deploy:
-                steps:
-                  - checkout: self
-                  - pwsh: |
-                      eng/scripts/Update-ModuleVersion.ps1 -ModulePath 'sdk/${{parameters.ServiceDirectory}}'
-                    displayName: Increment package version
-                  - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
-                    parameters:
-                      PRBranchName: increment-package-version-${{ parameters.ServiceDirectory }}-$(Build.BuildId)
-                      CommitMsg: "Increment package version after release of ${{ parameters.ServiceDirectory }}"
-                      PRTitle: "Increment version for ${{ parameters.ServiceDirectory }} releases"
-                      PRLabels: "auto-merge"
-                      CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+                - pwsh: |
+                    eng/scripts/Update-ModuleVersion.ps1 -ModulePath 'sdk/${{parameters.ServiceDirectory}}'
+                  displayName: Increment package version
+                - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
+                  parameters:
+                    PRBranchName: increment-package-version-${{ parameters.ServiceDirectory }}-$(Build.BuildId)
+                    CommitMsg: "Increment package version after release of ${{ parameters.ServiceDirectory }}"
+                    PRTitle: "Increment version for ${{ parameters.ServiceDirectory }} releases"
+                    PRLabels: "auto-merge"
+                    CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'

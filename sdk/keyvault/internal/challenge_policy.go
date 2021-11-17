@@ -7,7 +7,6 @@
 package internal
 
 import (
-	"bytes"
 	"errors"
 	"fmt"
 	"io"
@@ -41,16 +40,6 @@ func NewKeyVaultChallengePolicy(cred azcore.TokenCredential, pipeline runtime.Pi
 	}
 }
 
-func debug(req *http.Request, id string) {
-	h := req.Header.Get("Content-Length")
-	fmt.Println(id, h)
-	if req.ContentLength > 0 {
-		b := new(bytes.Buffer)
-		b.ReadFrom(req.Body)
-		fmt.Println("BODY: ", b.String())
-	}
-}
-
 func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error) {
 	as := acquiringResourceState{
 		p:   k,
@@ -64,14 +53,12 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 			return nil, err
 		}
 
-		debug(challengeReq.Raw(), "Line 64: CHALLENGE REQUEST CONTENT LENGTH")
-		resp, err := k.pipeline.Do(challengeReq)
-		// challengeResp, err := challengeReq.Next()
+		challengeResp, err := k.pipeline.Do(challengeReq)
 		if err != nil {
 			return nil, err
 		}
 
-		err = k.findScopeAndTenant(resp)
+		err = k.findScopeAndTenant(challengeResp)
 		if err != nil {
 			return nil, err
 		}
@@ -91,7 +78,6 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 
 	// send a copy of the request
 	cloneReq := req.Clone(req.Raw().Context())
-	debug(cloneReq.Raw(), "Line 91 CLONED REQ CONTENT LENGTH")
 	resp, cloneReqErr := cloneReq.Next()
 	if cloneReqErr != nil {
 		return nil, cloneReqErr
@@ -125,7 +111,6 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 		}
 
 		// send the original request now
-		debug(cloneReq.Raw(), "Line 125: FINAL REQ CONTENT LENGTH")
 		return req.Next()
 	}
 
@@ -204,7 +189,7 @@ func (k KeyVaultChallengePolicy) getChallengeRequest(orig policy.Request) (*poli
 		return nil, err
 	}
 
-	req.Raw().Header = orig.Raw().Header
+	req.Raw().Header = orig.Raw().Header.Clone()
 	req.Raw().Header.Set("Content-Length", "0")
 
 	return req, err

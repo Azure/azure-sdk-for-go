@@ -101,14 +101,16 @@ func TestMain(m *testing.M) {
 				panic(err)
 			}
 		}
-		if liveSP.tenantID != "" {
-			err = recording.AddURISanitizer(fakeTenantID, liveSP.tenantID, nil)
-			if err != nil {
-				panic(err)
-			}
-			err = recording.AddHeaderRegexSanitizer(":path", fakeTenantID, liveSP.tenantID, nil)
-			if err != nil {
-				panic(err)
+		for _, tenantID := range []string{liveSP.tenantID, liveUser.tenantID} {
+			if tenantID != "" {
+				err = recording.AddURISanitizer(fakeTenantID, tenantID, nil)
+				if err != nil {
+					panic(err)
+				}
+				err = recording.AddHeaderRegexSanitizer(":path", fakeTenantID, tenantID, nil)
+				if err != nil {
+					panic(err)
+				}
 			}
 		}
 		// remove token request bodies (which are form encoded) because they contain

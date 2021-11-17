@@ -21,6 +21,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
 
 type certTest struct {
@@ -324,6 +325,9 @@ func TestBearerPolicy_ClientCertificateCredential(t *testing.T) {
 }
 
 func TestClientCertificateCredential_Live(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("this test isn't recorded yet")
+	}
 	if liveSP.clientID == "" || liveSP.tenantID == "" {
 		t.Skip("missing live service principal configuration")
 	}

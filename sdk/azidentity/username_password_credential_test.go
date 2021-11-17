@@ -15,6 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
 
 func TestUsernamePasswordCredential_InvalidTenantID(t *testing.T) {
@@ -132,6 +133,9 @@ func TestBearerPolicy_UsernamePasswordCredential(t *testing.T) {
 }
 
 func TestUsernamePasswordCredential_Live(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("this test isn't recorded yet")
+	}
 	username := os.Getenv("AZURE_IDENTITY_TEST_USERNAME")
 	password := os.Getenv("AZURE_IDENTITY_TEST_PASSWORD")
 	tenantID := os.Getenv("AZURE_IDENTITY_TEST_TENANTID")

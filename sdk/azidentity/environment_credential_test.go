@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
 
 func initEnvironmentVarsForTest() error {
@@ -174,6 +175,9 @@ func TestEnvironmentCredential_UsernamePasswordSet(t *testing.T) {
 }
 
 func TestEnvironmentCredential_ClientSecretLive(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("this test isn't recorded yet")
+	}
 	vars := map[string]string{
 		"AZURE_CLIENT_ID":     liveSP.clientID,
 		"AZURE_CLIENT_SECRET": liveSP.secret,
@@ -202,6 +206,9 @@ func TestEnvironmentCredential_ClientSecretLive(t *testing.T) {
 }
 
 func TestEnvironmentCredential_UserPasswordLive(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("this test isn't recorded yet")
+	}
 	vars := map[string]string{
 		"AZURE_CLIENT_ID": developerSignOnClientID,
 		"AZURE_TENANT_ID": os.Getenv("AZURE_IDENTITY_TEST_TENANTID"),

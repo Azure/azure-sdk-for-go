@@ -41,30 +41,46 @@ func NewServerConnectionPoliciesClient(subscriptionID string, credential azcore.
 	return &ServerConnectionPoliciesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
-// CreateOrUpdate - Creates or updates the server's connection policy.
+// BeginCreateOrUpdate - Updates a server connection policy
 // If the operation fails it returns a generic error.
-func (client *ServerConnectionPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, connectionPolicyName ConnectionPolicyName, parameters ServerConnectionPolicy, options *ServerConnectionPoliciesCreateOrUpdateOptions) (ServerConnectionPoliciesCreateOrUpdateResponse, error) {
+func (client *ServerConnectionPoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, connectionPolicyName ConnectionPolicyName, parameters ServerConnectionPolicy, options *ServerConnectionPoliciesBeginCreateOrUpdateOptions) (ServerConnectionPoliciesCreateOrUpdatePollerResponse, error) {
+	resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, connectionPolicyName, parameters, options)
+	if err != nil {
+		return ServerConnectionPoliciesCreateOrUpdatePollerResponse{}, err
+	}
+	result := ServerConnectionPoliciesCreateOrUpdatePollerResponse{
+		RawResponse: resp,
+	}
+	pt, err := armruntime.NewPoller("ServerConnectionPoliciesClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return ServerConnectionPoliciesCreateOrUpdatePollerResponse{}, err
+	}
+	result.Poller = &ServerConnectionPoliciesCreateOrUpdatePoller{
+		pt: pt,
+	}
+	return result, nil
+}
+
+// CreateOrUpdate - Updates a server connection policy
+// If the operation fails it returns a generic error.
+func (client *ServerConnectionPoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, connectionPolicyName ConnectionPolicyName, parameters ServerConnectionPolicy, options *ServerConnectionPoliciesBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, connectionPolicyName, parameters, options)
 	if err != nil {
-		return ServerConnectionPoliciesCreateOrUpdateResponse{}, err
+		return nil, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServerConnectionPoliciesCreateOrUpdateResponse{}, err
+		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return ServerConnectionPoliciesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return nil, client.createOrUpdateHandleError(resp)
 	}
-	return client.createOrUpdateHandleResponse(resp)
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ServerConnectionPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, connectionPolicyName ConnectionPolicyName, parameters ServerConnectionPolicy, options *ServerConnectionPoliciesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ServerConnectionPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, connectionPolicyName ConnectionPolicyName, parameters ServerConnectionPolicy, options *ServerConnectionPoliciesBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/connectionPolicies/{connectionPolicyName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -77,24 +93,19 @@ func (client *ServerConnectionPoliciesClient) createOrUpdateCreateRequest(ctx co
 		return nil, errors.New("parameter connectionPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{connectionPolicyName}", url.PathEscape(string(connectionPolicyName)))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2014-04-01")
+	reqQP.Set("api-version", "2021-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
-}
-
-// createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ServerConnectionPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (ServerConnectionPoliciesCreateOrUpdateResponse, error) {
-	result := ServerConnectionPoliciesCreateOrUpdateResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ServerConnectionPolicy); err != nil {
-		return ServerConnectionPoliciesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
-	}
-	return result, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -109,7 +120,7 @@ func (client *ServerConnectionPoliciesClient) createOrUpdateHandleError(resp *ht
 	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
-// Get - Gets the server's secure connection policy.
+// Get - Gets a server connection policy
 // If the operation fails it returns a generic error.
 func (client *ServerConnectionPoliciesClient) Get(ctx context.Context, resourceGroupName string, serverName string, connectionPolicyName ConnectionPolicyName, options *ServerConnectionPoliciesGetOptions) (ServerConnectionPoliciesGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, connectionPolicyName, options)
@@ -129,10 +140,6 @@ func (client *ServerConnectionPoliciesClient) Get(ctx context.Context, resourceG
 // getCreateRequest creates the Get request.
 func (client *ServerConnectionPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, connectionPolicyName ConnectionPolicyName, options *ServerConnectionPoliciesGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/connectionPolicies/{connectionPolicyName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -145,12 +152,16 @@ func (client *ServerConnectionPoliciesClient) getCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter connectionPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{connectionPolicyName}", url.PathEscape(string(connectionPolicyName)))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2014-04-01")
+	reqQP.Set("api-version", "2021-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -167,6 +178,67 @@ func (client *ServerConnectionPoliciesClient) getHandleResponse(resp *http.Respo
 
 // getHandleError handles the Get error response.
 func (client *ServerConnectionPoliciesClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
+	if err != nil {
+		return runtime.NewResponseError(err, resp)
+	}
+	if len(body) == 0 {
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
+	}
+	return runtime.NewResponseError(errors.New(string(body)), resp)
+}
+
+// ListByServer - Lists connection policy
+// If the operation fails it returns a generic error.
+func (client *ServerConnectionPoliciesClient) ListByServer(resourceGroupName string, serverName string, options *ServerConnectionPoliciesListByServerOptions) *ServerConnectionPoliciesListByServerPager {
+	return &ServerConnectionPoliciesListByServerPager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
+			return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
+		},
+		advancer: func(ctx context.Context, resp ServerConnectionPoliciesListByServerResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ServerConnectionPolicyListResult.NextLink)
+		},
+	}
+}
+
+// listByServerCreateRequest creates the ListByServer request.
+func (client *ServerConnectionPoliciesClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServerConnectionPoliciesListByServerOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/connectionPolicies"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if serverName == "" {
+		return nil, errors.New("parameter serverName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, nil
+}
+
+// listByServerHandleResponse handles the ListByServer response.
+func (client *ServerConnectionPoliciesClient) listByServerHandleResponse(resp *http.Response) (ServerConnectionPoliciesListByServerResponse, error) {
+	result := ServerConnectionPoliciesListByServerResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ServerConnectionPolicyListResult); err != nil {
+		return ServerConnectionPoliciesListByServerResponse{}, runtime.NewResponseError(err, resp)
+	}
+	return result, nil
+}
+
+// listByServerHandleError handles the ListByServer error response.
+func (client *ServerConnectionPoliciesClient) listByServerHandleError(resp *http.Response) error {
 	body, err := runtime.Payload(resp)
 	if err != nil {
 		return runtime.NewResponseError(err, resp)

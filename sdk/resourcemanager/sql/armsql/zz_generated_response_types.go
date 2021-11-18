@@ -7365,6 +7365,46 @@ type ServerCommunicationLinksListByServerResult struct {
 	ServerCommunicationLinkListResult
 }
 
+// ServerConnectionPoliciesCreateOrUpdatePollerResponse contains the response from method ServerConnectionPolicies.CreateOrUpdate.
+type ServerConnectionPoliciesCreateOrUpdatePollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *ServerConnectionPoliciesCreateOrUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l ServerConnectionPoliciesCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ServerConnectionPoliciesCreateOrUpdateResponse, error) {
+	respType := ServerConnectionPoliciesCreateOrUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ServerConnectionPolicy)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a ServerConnectionPoliciesCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *ServerConnectionPoliciesCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *ServerConnectionPoliciesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ServerConnectionPoliciesClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &ServerConnectionPoliciesCreateOrUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
 // ServerConnectionPoliciesCreateOrUpdateResponse contains the response from method ServerConnectionPolicies.CreateOrUpdate.
 type ServerConnectionPoliciesCreateOrUpdateResponse struct {
 	ServerConnectionPoliciesCreateOrUpdateResult
@@ -7387,6 +7427,18 @@ type ServerConnectionPoliciesGetResponse struct {
 // ServerConnectionPoliciesGetResult contains the result from method ServerConnectionPolicies.Get.
 type ServerConnectionPoliciesGetResult struct {
 	ServerConnectionPolicy
+}
+
+// ServerConnectionPoliciesListByServerResponse contains the response from method ServerConnectionPolicies.ListByServer.
+type ServerConnectionPoliciesListByServerResponse struct {
+	ServerConnectionPoliciesListByServerResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ServerConnectionPoliciesListByServerResult contains the result from method ServerConnectionPolicies.ListByServer.
+type ServerConnectionPoliciesListByServerResult struct {
+	ServerConnectionPolicyListResult
 }
 
 // ServerDNSAliasesAcquirePollerResponse contains the response from method ServerDNSAliases.Acquire.

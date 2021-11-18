@@ -476,7 +476,7 @@ func (client *SyncGroupsClient) listHubSchemasHandleError(resp *http.Response) e
 
 // ListLogs - Gets a collection of sync group logs.
 // If the operation fails it returns a generic error.
-func (client *SyncGroupsClient) ListLogs(resourceGroupName string, serverName string, databaseName string, syncGroupName string, startTime string, endTime string, typeParam Enum75, options *SyncGroupsListLogsOptions) *SyncGroupsListLogsPager {
+func (client *SyncGroupsClient) ListLogs(resourceGroupName string, serverName string, databaseName string, syncGroupName string, startTime string, endTime string, typeParam Enum74, options *SyncGroupsListLogsOptions) *SyncGroupsListLogsPager {
 	return &SyncGroupsListLogsPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
@@ -489,7 +489,7 @@ func (client *SyncGroupsClient) ListLogs(resourceGroupName string, serverName st
 }
 
 // listLogsCreateRequest creates the ListLogs request.
-func (client *SyncGroupsClient) listLogsCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, startTime string, endTime string, typeParam Enum75, options *SyncGroupsListLogsOptions) (*policy.Request, error) {
+func (client *SyncGroupsClient) listLogsCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, startTime string, endTime string, typeParam Enum74, options *SyncGroupsListLogsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/logs"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

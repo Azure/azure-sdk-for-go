@@ -5416,6 +5416,60 @@ func (p *ServerBlobAuditingPoliciesListByServerPager) PageResponse() ServerBlobA
 	return p.current
 }
 
+// ServerConnectionPoliciesListByServerPager provides operations for iterating over paged responses.
+type ServerConnectionPoliciesListByServerPager struct {
+	client    *ServerConnectionPoliciesClient
+	current   ServerConnectionPoliciesListByServerResponse
+	err       error
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, ServerConnectionPoliciesListByServerResponse) (*policy.Request, error)
+}
+
+// Err returns the last error encountered while paging.
+func (p *ServerConnectionPoliciesListByServerPager) Err() error {
+	return p.err
+}
+
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *ServerConnectionPoliciesListByServerPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.ServerConnectionPolicyListResult.NextLink == nil || len(*p.current.ServerConnectionPolicyListResult.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.pl.Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		p.err = p.client.listByServerHandleError(resp)
+		return false
+	}
+	result, err := p.client.listByServerHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+// PageResponse returns the current ServerConnectionPoliciesListByServerResponse page.
+func (p *ServerConnectionPoliciesListByServerPager) PageResponse() ServerConnectionPoliciesListByServerResponse {
+	return p.current
+}
+
 // ServerDNSAliasesListByServerPager provides operations for iterating over paged responses.
 type ServerDNSAliasesListByServerPager struct {
 	client    *ServerDNSAliasesClient

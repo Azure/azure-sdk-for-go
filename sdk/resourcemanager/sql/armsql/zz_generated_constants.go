@@ -10,7 +10,7 @@ package armsql
 
 const (
 	module  = "armsql"
-	version = "v0.2.1"
+	version = "v0.3.0"
 )
 
 type AdministratorName string
@@ -1011,27 +1011,27 @@ func (c EncryptionProtectorName) ToPtr() *EncryptionProtectorName {
 	return &c
 }
 
-type Enum75 string
+type Enum74 string
 
 const (
-	Enum75All     Enum75 = "All"
-	Enum75Error   Enum75 = "Error"
-	Enum75Success Enum75 = "Success"
-	Enum75Warning Enum75 = "Warning"
+	Enum74All     Enum74 = "All"
+	Enum74Error   Enum74 = "Error"
+	Enum74Success Enum74 = "Success"
+	Enum74Warning Enum74 = "Warning"
 )
 
-// PossibleEnum75Values returns the possible values for the Enum75 const type.
-func PossibleEnum75Values() []Enum75 {
-	return []Enum75{
-		Enum75All,
-		Enum75Error,
-		Enum75Success,
-		Enum75Warning,
+// PossibleEnum74Values returns the possible values for the Enum74 const type.
+func PossibleEnum74Values() []Enum74 {
+	return []Enum74{
+		Enum74All,
+		Enum74Error,
+		Enum74Success,
+		Enum74Warning,
 	}
 }
 
-// ToPtr returns a *Enum75 pointing to the current value.
-func (c Enum75) ToPtr() *Enum75 {
+// ToPtr returns a *Enum74 pointing to the current value.
+func (c Enum74) ToPtr() *Enum74 {
 	return &c
 }
 

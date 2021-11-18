@@ -10566,8 +10566,8 @@ type ServerCommunicationLinksListByServerOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServerConnectionPoliciesCreateOrUpdateOptions contains the optional parameters for the ServerConnectionPolicies.CreateOrUpdate method.
-type ServerConnectionPoliciesCreateOrUpdateOptions struct {
+// ServerConnectionPoliciesBeginCreateOrUpdateOptions contains the optional parameters for the ServerConnectionPolicies.BeginCreateOrUpdate method.
+type ServerConnectionPoliciesBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -10576,10 +10576,15 @@ type ServerConnectionPoliciesGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServerConnectionPolicy - A server secure connection policy.
+// ServerConnectionPoliciesListByServerOptions contains the optional parameters for the ServerConnectionPolicies.ListByServer method.
+type ServerConnectionPoliciesListByServerOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServerConnectionPolicy - A server connection policy
 type ServerConnectionPolicy struct {
 	ProxyResource
-	// The properties of the server secure connection policy.
+	// Resource properties.
 	Properties *ServerConnectionPolicyProperties `json:"properties,omitempty"`
 
 	// READ-ONLY; Metadata used for the Azure portal experience.
@@ -10599,7 +10604,24 @@ func (s ServerConnectionPolicy) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ServerConnectionPolicyProperties - The properties of a server secure connection policy.
+// ServerConnectionPolicyListResult - A list of server connection policy objects.
+type ServerConnectionPolicyListResult struct {
+	// READ-ONLY; Link to retrieve next page of results.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; Array of results.
+	Value []*ServerConnectionPolicy `json:"value,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ServerConnectionPolicyListResult.
+func (s ServerConnectionPolicyListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", s.NextLink)
+	populate(objectMap, "value", s.Value)
+	return json.Marshal(objectMap)
+}
+
+// ServerConnectionPolicyProperties - The properties of a server connection policy.
 type ServerConnectionPolicyProperties struct {
 	// REQUIRED; The server connection type.
 	ConnectionType *ServerConnectionType `json:"connectionType,omitempty"`

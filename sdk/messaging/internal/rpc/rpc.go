@@ -33,9 +33,9 @@ import (
 
 	"github.com/devigned/tab"
 
-	common "github.com/Azure/azure-amqp-common-go/v3"
-	"github.com/Azure/azure-amqp-common-go/v3/internal/tracing"
-	"github.com/Azure/azure-amqp-common-go/v3/uuid"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/tracing"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/uuid"
 	"github.com/Azure/go-amqp"
 )
 
@@ -183,8 +183,8 @@ func (l *Link) RetryableRPC(ctx context.Context, times int, delay time.Duration,
 	ctx, span := tracing.StartSpanFromContext(ctx, "az-amqp-common.rpc.RetryableRPC")
 	defer span.End()
 
-	res, err := common.Retry(times, delay, func() (interface{}, error) {
-		ctx, span := tracing.StartSpanFromContext(ctx, "az-amqp-common.rpc.RetryableRPC.retry")
+	res, err := internal.Retry(times, delay, func() (interface{}, error) {
+		ctx, span := tracing.StartSpanFromContext(ctx, "az-amqp-rpc.RetryableRPC.retry")
 		defer span.End()
 
 		res, err := l.RPC(ctx, msg)
@@ -201,11 +201,11 @@ func (l *Link) RetryableRPC(ctx context.Context, times int, delay time.Duration,
 		case res.Code >= 500:
 			errMessage := fmt.Sprintf("server error link %s: status code %d and description: %s", l.id, res.Code, res.Description)
 			tab.For(ctx).Error(errors.New(errMessage))
-			return nil, common.Retryable(errMessage)
+			return nil, internal.Retryable(errMessage)
 		default:
 			errMessage := fmt.Sprintf("unhandled error link %s: status code %d and description: %s", l.id, res.Code, res.Description)
 			tab.For(ctx).Error(errors.New(errMessage))
-			return nil, common.Retryable(errMessage)
+			return nil, internal.Retryable(errMessage)
 		}
 	})
 	if err != nil {

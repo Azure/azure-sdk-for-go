@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/v3/uuid"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/uuid"
 	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/require"
 )

@@ -4,9 +4,8 @@ import (
 	"context"
 	"os"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal"
 	"github.com/devigned/tab"
-
-	"github.com/Azure/azure-amqp-common-go/v3/internal"
 )
 
 // StartSpanFromContext starts a span given a context and applies common library information
@@ -20,7 +19,7 @@ func StartSpanFromContext(ctx context.Context, operationName string) (context.Co
 func ApplyComponentInfo(span tab.Spanner) {
 	span.AddAttributes(
 		tab.StringAttribute("component", "github.com/Azure/azure-amqp-common-go"),
-		tab.StringAttribute("version", common.Version))
+		tab.StringAttribute("version", internal.Version))
 	applyNetworkInfo(span)
 }
 

@@ -36,8 +36,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/v3/auth"
-	"github.com/Azure/azure-amqp-common-go/v3/conn"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/conn"
 )
 
 type (

@@ -26,7 +26,7 @@ func ExampleStop() {
 	}
 }
 
-func ExampleResetSanitizer() {
+func ExampleResetSanitizers() {
 	err := recording.ResetSanitizers(nil)
 	if err != nil {
 		panic(err)

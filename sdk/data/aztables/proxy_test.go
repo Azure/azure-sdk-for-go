@@ -114,13 +114,15 @@ func NewFakeCredential(accountName, accountKey string) *FakeCredential {
 }
 
 func createClientForRecording(t *testing.T, tableName string, serviceURL string, cred SharedKeyCredential) (*Client, error) {
-	p := NewRecordingPolicy(t, &recording.RecordingOptions{UseHTTPS: true})
-	client, err := recording.GetHTTPClient(t)
+	// p := NewRecordingPolicy(t, &recording.RecordingOptions{UseHTTPS: true})
+	// client, err := recording.GetHTTPClient(t)
+	fullClient, err := recording.GetRoutingHTTPClient(t, nil)
 	require.NoError(t, err)
 
 	options := &ClientOptions{ClientOptions: azcore.ClientOptions{
-		PerCallPolicies: []policy.Policy{p},
-		Transport:       client,
+		// PerCallPolicies: []policy.Policy{p},
+		// Transport:       client,
+		Transport: fullClient,
 	}}
 	if !strings.HasSuffix(serviceURL, "/") && tableName != "" {
 		serviceURL += "/"

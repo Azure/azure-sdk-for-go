@@ -667,6 +667,9 @@ func (c customHttpClient) Do(req *http.Request) (*http.Response, error) {
 }
 
 func GetRoutingHTTPClient(t *testing.T, options *RecordingOptions) (*customHttpClient, error) {
+	if options == nil {
+		options = &RecordingOptions{UseHTTPS: true}
+	}
 	c, err := GetHTTPClient(t)
 	if err != nil {
 		return nil, err

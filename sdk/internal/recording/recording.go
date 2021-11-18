@@ -18,6 +18,7 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"runtime"
 	"strconv"
 	"strings"
 	"testing"
@@ -441,9 +442,12 @@ var modeMap = map[RecordMode]recorder.Mode{
 
 func init() {
 	recordMode = os.Getenv("AZURE_RECORD_MODE")
-	if !(recordMode == RecordingMode || recordMode == PlaybackMode || recordMode == LiveMode) {
-		log.Printf("AZURE_RECORD_MODE was not understood, options are %s, %s, or %s Received: %v. Defaulting to playback", RecordingMode, PlaybackMode, LiveMode, recordMode)
+	if recordMode == "" {
+		log.Printf("AZURE_RECORD_MODE was not set, defaulting to playback")
 		recordMode = PlaybackMode
+	}
+	if !(recordMode == RecordingMode || recordMode == PlaybackMode || recordMode == LiveMode) {
+		log.Panicf("AZURE_RECORD_MODE was not understood, options are %s, %s, or %s Received: %v.\n", RecordingMode, PlaybackMode, LiveMode, recordMode)
 	}
 
 	localFile, err := findProxyCertLocation()
@@ -451,19 +455,22 @@ func init() {
 		log.Println("Could not find the PROXY_CERT environment variable and was unable to locate the path in eng/common")
 	}
 
-	rootCAs, err = x509.SystemCertPool()
-	if err != nil && strings.Contains(err.Error(), "system root pool is not available on Windows") {
-		rootCAs = x509.NewCertPool()
-	} else if err != nil {
-		log.Println("could not create a system cert pool")
+	var certPool *x509.CertPool
+	if runtime.GOOS == "windows" {
+		certPool = x509.NewCertPool()
+	} else {
+		certPool, err = x509.SystemCertPool()
+		if err != nil {
+			log.Println("could not create a system cert pool")
+			log.Panicf(err.Error())
+		}
 	}
-
 	cert, err := ioutil.ReadFile(localFile)
 	if err != nil {
 		log.Printf("could not read file set in PROXY_CERT variable at %s.\n", localFile)
 	}
 
-	if ok := rootCAs.AppendCertsFromPEM(cert); !ok {
+	if ok := certPool.AppendCertsFromPEM(cert); !ok {
 		log.Println("no certs appended, using system certs only")
 	}
 }

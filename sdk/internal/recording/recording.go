@@ -659,9 +659,6 @@ func GetRecordingId(t *testing.T) string {
 }
 
 func GetRecordMode() string {
-	if !(recordMode == RecordingMode || recordMode == PlaybackMode || recordMode == LiveMode) {
-		recordMode = PlaybackMode
-	}
 	return recordMode
 }
 

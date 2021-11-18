@@ -33,7 +33,7 @@ jobs:
   - job:
     displayName: Live Test on
     dependsOn: ${{ parameters.DependsOn }}
-    condition: ne(${{ parameters.Matrix }}, '{}')
+    condition: and(succeededOrFailed(), ne(${{ parameters.Matrix }}, '{}'))
     strategy:
       maxParallel: 0
       matrix: $[ ${{ parameters.Matrix }} ]

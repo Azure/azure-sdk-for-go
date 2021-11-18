@@ -26,3 +26,8 @@ stages:
   parameters:
     ServiceDirectory: 'keyvault/azkeys'
     RunLiveTests: true
+    AdditionalMatrixConfigs:
+      - Name: keyvault_test_matrix_addons
+        Path: sdk/keyvault/azkeys/platform-matrix.json
+        Selection: sparse
+        GenerateVMJobs: true

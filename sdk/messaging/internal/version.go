@@ -4,5 +4,5 @@ package internal
 
 const (
 	// Version is the semantic version of the library
-	Version = "3.1.1"
+	Version = "0.1.0"
 )

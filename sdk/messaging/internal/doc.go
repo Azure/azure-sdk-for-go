@@ -5,6 +5,6 @@
 // Licensed under the MIT License.
 
 /*
-internal contains functions for messaging packages.
+internal contains shared code for messaging packages.
 */
 package internal

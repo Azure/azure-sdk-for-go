@@ -30315,6 +30315,12 @@ type PrepareNetworkPoliciesRequest struct {
 type PrivateDNSZoneConfig struct {
 	// Name - Name of the resource that is unique within a resource group. This name can be used to access the resource.
 	Name *string `json:"name,omitempty"`
+	// ID - READ-ONLY; The id of the privateDnsZoneConfig.
+	ID *string `json:"id,omitempty"`
+	// Type - READ-ONLY; Type of resource. Will be specified as private dns zone configurations.
+	Type *string `json:"type,omitempty"`
+	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
+	Etag *string `json:"etag,omitempty"`
 	// PrivateDNSZonePropertiesFormat - Properties of the private dns zone configuration.
 	*PrivateDNSZonePropertiesFormat `json:"properties,omitempty"`
 }
@@ -30349,6 +30355,33 @@ func (pdzc *PrivateDNSZoneConfig) UnmarshalJSON(body []byte) error {
 				}
 				pdzc.Name = &name
 			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				pdzc.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				pdzc.Type = &typeVar
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				pdzc.Etag = &etag
+			}
 		case "properties":
 			if v != nil {
 				var privateDNSZonePropertiesFormat PrivateDNSZonePropertiesFormat
@@ -30369,6 +30402,8 @@ type PrivateDNSZoneGroup struct {
 	autorest.Response `json:"-"`
 	// Name - Name of the resource that is unique within a resource group. This name can be used to access the resource.
 	Name *string `json:"name,omitempty"`
+	// Type - Type of resource. Will be specified as private dns zone groups.
+	Type *string `json:"type,omitempty"`
 	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
 	// PrivateDNSZoneGroupPropertiesFormat - Properties of the private dns zone group.
@@ -30382,6 +30417,9 @@ func (pdzg PrivateDNSZoneGroup) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if pdzg.Name != nil {
 		objectMap["name"] = pdzg.Name
+	}
+	if pdzg.Type != nil {
+		objectMap["type"] = pdzg.Type
 	}
 	if pdzg.PrivateDNSZoneGroupPropertiesFormat != nil {
 		objectMap["properties"] = pdzg.PrivateDNSZoneGroupPropertiesFormat
@@ -30409,6 +30447,15 @@ func (pdzg *PrivateDNSZoneGroup) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				pdzg.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				pdzg.Type = &typeVar
 			}
 		case "etag":
 			if v != nil {
@@ -30713,6 +30760,8 @@ func (future *PrivateDNSZoneGroupsDeleteFuture) result(client PrivateDNSZoneGrou
 type PrivateDNSZonePropertiesFormat struct {
 	// PrivateDNSZoneID - The resource id of the private dns zone.
 	PrivateDNSZoneID *string `json:"privateDnsZoneId,omitempty"`
+	// ProvisioningState - READ-ONLY; The provisioning state of the private dns zone group resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// RecordSets - READ-ONLY; A collection of information regarding a recordSet, holding information to identify private resources.
 	RecordSets *[]RecordSet `json:"recordSets,omitempty"`
 }
@@ -31305,6 +31354,8 @@ func NewPrivateEndpointListResultPage(cur PrivateEndpointListResult, getNextPage
 
 // PrivateEndpointProperties properties of the private endpoint.
 type PrivateEndpointProperties struct {
+	// ResourceGUID - The resource id of private endpoint.
+	ResourceGUID *string `json:"resourceGuid,omitempty"`
 	// Subnet - The ID of the subnet from which the private IP will be allocated.
 	Subnet *Subnet `json:"subnet,omitempty"`
 	// NetworkInterfaces - READ-ONLY; An array of references to the network interfaces created for this private endpoint.
@@ -31322,6 +31373,9 @@ type PrivateEndpointProperties struct {
 // MarshalJSON is the custom marshaler for PrivateEndpointProperties.
 func (pep PrivateEndpointProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if pep.ResourceGUID != nil {
+		objectMap["resourceGuid"] = pep.ResourceGUID
+	}
 	if pep.Subnet != nil {
 		objectMap["subnet"] = pep.Subnet
 	}
@@ -31641,6 +31695,8 @@ type PrivateLinkServiceConnectionProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// PrivateLinkServiceID - The resource id of private link service.
 	PrivateLinkServiceID *string `json:"privateLinkServiceId,omitempty"`
+	// ResolvedPrivateLinkServiceLocation - The location for the resolved private link service.
+	ResolvedPrivateLinkServiceLocation *string `json:"resolvedPrivateLinkServiceLocation,omitempty"`
 	// GroupIds - The ID(s) of the group(s) obtained from the remote resource that this private endpoint should connect to.
 	GroupIds *[]string `json:"groupIds,omitempty"`
 	// RequestMessage - A message passed to the owner of the remote resource with this connection request. Restricted to 140 chars.
@@ -31654,6 +31710,9 @@ func (plscp PrivateLinkServiceConnectionProperties) MarshalJSON() ([]byte, error
 	objectMap := make(map[string]interface{})
 	if plscp.PrivateLinkServiceID != nil {
 		objectMap["privateLinkServiceId"] = plscp.PrivateLinkServiceID
+	}
+	if plscp.ResolvedPrivateLinkServiceLocation != nil {
+		objectMap["resolvedPrivateLinkServiceLocation"] = plscp.ResolvedPrivateLinkServiceLocation
 	}
 	if plscp.GroupIds != nil {
 		objectMap["groupIds"] = plscp.GroupIds
@@ -31976,6 +32035,8 @@ func NewPrivateLinkServiceListResultPage(cur PrivateLinkServiceListResult, getNe
 type PrivateLinkServiceProperties struct {
 	// LoadBalancerFrontendIPConfigurations - An array of references to the load balancer IP configurations.
 	LoadBalancerFrontendIPConfigurations *[]FrontendIPConfiguration `json:"loadBalancerFrontendIpConfigurations,omitempty"`
+	// ResourceGUID - The resource id of private link service.
+	ResourceGUID *string `json:"resourceGuid,omitempty"`
 	// IPConfigurations - An array of private link service IP configurations.
 	IPConfigurations *[]PrivateLinkServiceIPConfiguration `json:"ipConfigurations,omitempty"`
 	// NetworkInterfaces - READ-ONLY; An array of references to the network interfaces created for this private link service.
@@ -32001,6 +32062,9 @@ func (plsp PrivateLinkServiceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if plsp.LoadBalancerFrontendIPConfigurations != nil {
 		objectMap["loadBalancerFrontendIpConfigurations"] = plsp.LoadBalancerFrontendIPConfigurations
+	}
+	if plsp.ResourceGUID != nil {
+		objectMap["resourceGuid"] = plsp.ResourceGUID
 	}
 	if plsp.IPConfigurations != nil {
 		objectMap["ipConfigurations"] = plsp.IPConfigurations

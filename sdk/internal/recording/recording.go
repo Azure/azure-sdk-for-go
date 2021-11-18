@@ -7,6 +7,7 @@
 package recording
 
 import (
+	"bytes"
 	"crypto/tls"
 	"crypto/x509"
 	"errors"
@@ -16,6 +17,7 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"os/exec"
 	"path"
 	"path/filepath"
 	"runtime"
@@ -668,18 +670,17 @@ func findProxyCertLocation() (string, error) {
 		return fileLocation, nil
 	}
 
-	// Couldn't be found, lets try to find it from the GOPATH location
-	var err error
-	goPath, ok := os.LookupEnv("GOPATH")
-	if !ok {
-		goPath, err = os.UserHomeDir()
-		if err != nil {
-			return "", fmt.Errorf("could not find the home directory using `os.UserHomeDir()`, %s", err.Error())
-		}
+	out, err := exec.Command("git", "rev-parse", "--show-toplevel").Output()
+	if err != nil {
+		log.Print(bytes.NewBuffer(out).String())
+		log.Print(err.Error())
+		e := err.(*exec.ExitError)
+		log.Print(bytes.NewBuffer(e.Stderr).String())
+		log.Print("Could not find PROXY_CERT environment vaiable or toplevel of git repository, please set PROXY_CERT environment variable to location of certificate found in eng/common/testproxy/dotnet-devcert.crt")
+		return "", err
 	}
-
-	goPath = filepath.Join(goPath, "src", "github.com", "Azure", "azure-sdk-for-go", "eng", "common", "testproxy", "dotnet-devcert.crt")
-	return goPath, nil
+	topLevel := bytes.NewBuffer(out).String()
+	return filepath.Join(topLevel, "eng", "common", "testproxy", "dotnet-devcert.crt"), nil
 }
 
 func GetHTTPClient(t *testing.T) (*http.Client, error) {

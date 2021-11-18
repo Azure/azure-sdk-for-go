@@ -33,9 +33,9 @@ import (
 
 	"github.com/devigned/tab"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/tracing"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/uuid"
 	"github.com/Azure/go-amqp"
 )
 
@@ -116,7 +116,7 @@ func NewLink(conn *amqp.Client, address string, opts ...LinkOption) (*Link, erro
 
 // NewLinkWithSession will build a new request response link, but will reuse an existing AMQP session
 func NewLinkWithSession(session *amqp.Session, address string, opts ...LinkOption) (*Link, error) {
-	linkID, err := uuid.NewV4()
+	linkID, err := uuid.New()
 	if err != nil {
 		return nil, err
 	}
@@ -127,7 +127,7 @@ func NewLinkWithSession(session *amqp.Session, address string, opts ...LinkOptio
 		clientAddress: strings.Replace("$", "", address, -1) + replyPostfix + id,
 		id:            id,
 
-		uuidNewV4:               uuid.NewV4,
+		uuidNewV4:               uuid.New,
 		responseMap:             map[string]chan rpcResponse{},
 		startResponseRouterOnce: &sync.Once{},
 	}

@@ -672,10 +672,6 @@ func findProxyCertLocation() (string, error) {
 
 	out, err := exec.Command("git", "rev-parse", "--show-toplevel").Output()
 	if err != nil {
-		log.Print(bytes.NewBuffer(out).String())
-		log.Print(err.Error())
-		e := err.(*exec.ExitError)
-		log.Print(bytes.NewBuffer(e.Stderr).String())
 		log.Print("Could not find PROXY_CERT environment vaiable or toplevel of git repository, please set PROXY_CERT environment variable to location of certificate found in eng/common/testproxy/dotnet-devcert.crt")
 		return "", err
 	}

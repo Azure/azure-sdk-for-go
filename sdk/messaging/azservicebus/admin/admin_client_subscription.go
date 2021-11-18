@@ -9,9 +9,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/v3/auth"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
 )
 
 // SubscriptionProperties represents the static properties of the subscription.
@@ -509,9 +509,9 @@ func newSubscriptionRuntimeProperties(desc *atom.SubscriptionDescription) *Subsc
 		DeadLetterMessageCount:         *desc.CountDetails.DeadLetterMessageCount,
 		TransferMessageCount:           *desc.CountDetails.TransferMessageCount,
 		TransferDeadLetterMessageCount: *desc.CountDetails.TransferDeadLetterMessageCount,
-		CreatedAt:                      dateTimeToTime(desc.CreatedAt),
-		UpdatedAt:                      dateTimeToTime(desc.UpdatedAt),
-		AccessedAt:                     dateTimeToTime(desc.AccessedAt),
+		CreatedAt:                      atom.StringToTime(desc.CreatedAt),
+		UpdatedAt:                      atom.StringToTime(desc.UpdatedAt),
+		AccessedAt:                     atom.StringToTime(desc.AccessedAt),
 	}
 }
 

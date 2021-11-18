@@ -6,7 +6,7 @@ package azservicebus
 import (
 	"errors"
 
-	"github.com/Azure/azure-amqp-common-go/v3/uuid"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/Azure/go-amqp"
 )
 
@@ -72,7 +72,7 @@ func (mb *MessageBatch) toAMQPMessage() *amqp.Message {
 
 func (mb *MessageBatch) addAMQPMessage(msg *amqp.Message) error {
 	if msg.Properties.MessageID == nil || msg.Properties.MessageID == "" {
-		uid, err := uuid.NewV4()
+		uid, err := uuid.New()
 		if err != nil {
 			return err
 		}

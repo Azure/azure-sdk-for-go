@@ -8,10 +8,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/v3/auth"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
-	"github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
 )
 
 // QueueProperties represents the static properties of the queue.
@@ -531,9 +530,9 @@ func newQueueProperties(desc *atom.QueueDescription) (*QueueProperties, error) {
 func newQueueRuntimeProperties(desc *atom.QueueDescription) *QueueRuntimeProperties {
 	return &QueueRuntimeProperties{
 		SizeInBytes:                    int64OrZero(desc.SizeInBytes),
-		CreatedAt:                      dateTimeToTime(desc.CreatedAt),
-		UpdatedAt:                      dateTimeToTime(desc.UpdatedAt),
-		AccessedAt:                     dateTimeToTime(desc.AccessedAt),
+		CreatedAt:                      atom.StringToTime(desc.CreatedAt),
+		UpdatedAt:                      atom.StringToTime(desc.UpdatedAt),
+		AccessedAt:                     atom.StringToTime(desc.AccessedAt),
 		TotalMessageCount:              int64OrZero(desc.MessageCount),
 		ActiveMessageCount:             int32OrZero(desc.CountDetails.ActiveMessageCount),
 		DeadLetterMessageCount:         int32OrZero(desc.CountDetails.DeadLetterMessageCount),
@@ -541,14 +540,6 @@ func newQueueRuntimeProperties(desc *atom.QueueDescription) *QueueRuntimePropert
 		TransferDeadLetterMessageCount: int32OrZero(desc.CountDetails.TransferDeadLetterMessageCount),
 		TransferMessageCount:           int32OrZero(desc.CountDetails.TransferMessageCount),
 	}
-}
-
-func dateTimeToTime(t *date.Time) time.Time {
-	if t == nil {
-		return time.Time{}
-	}
-
-	return t.Time
 }
 
 func int32OrZero(i *int32) int32 {

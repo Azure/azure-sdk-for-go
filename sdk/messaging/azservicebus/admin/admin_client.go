@@ -83,8 +83,8 @@ func (ac *Client) GetNamespaceProperties(ctx context.Context, options *GetNamesp
 		GetNamespacePropertiesResult: GetNamespacePropertiesResult{
 			NamespaceProperties: NamespaceProperties{
 				Name:           body.NamespaceInfo.Name,
-				CreatedTime:    body.NamespaceInfo.CreatedTime,
-				ModifiedTime:   body.NamespaceInfo.ModifiedTime,
+				CreatedTime:    atom.StringToTime(body.NamespaceInfo.CreatedTime),
+				ModifiedTime:   atom.StringToTime(body.NamespaceInfo.ModifiedTime),
 				SKU:            body.NamespaceInfo.MessagingSKU,
 				MessagingUnits: body.NamespaceInfo.MessagingUnits,
 			},

@@ -9,8 +9,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/v3/uuid"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/Azure/go-amqp"
 	"github.com/devigned/tab"
 )
@@ -122,7 +122,7 @@ func (m *Message) toAMQPMessage() *amqp.Message {
 	var messageID = m.MessageID
 
 	if messageID == "" {
-		uuid, err := uuid.NewV4()
+		uuid, err := uuid.New()
 
 		if err == nil {
 			messageID = uuid.String()

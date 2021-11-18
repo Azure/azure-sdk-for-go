@@ -8,9 +8,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/v3/auth"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
 )
 
 // TopicProperties represents the static properties of the topic.
@@ -484,9 +484,9 @@ func newTopicProperties(td *atom.TopicDescription) (*TopicProperties, error) {
 func newTopicRuntimeProperties(desc *atom.TopicDescription) *TopicRuntimeProperties {
 	return &TopicRuntimeProperties{
 		SizeInBytes:           int64OrZero(desc.SizeInBytes),
-		CreatedAt:             dateTimeToTime(desc.CreatedAt),
-		UpdatedAt:             dateTimeToTime(desc.UpdatedAt),
-		AccessedAt:            dateTimeToTime(desc.AccessedAt),
+		CreatedAt:             atom.StringToTime(desc.CreatedAt),
+		UpdatedAt:             atom.StringToTime(desc.UpdatedAt),
+		AccessedAt:            atom.StringToTime(desc.AccessedAt),
 		ScheduledMessageCount: int32OrZero(desc.CountDetails.ScheduledMessageCount),
 		SubscriptionCount:     int32OrZero(desc.SubscriptionCount),
 	}

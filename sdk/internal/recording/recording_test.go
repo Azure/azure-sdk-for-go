@@ -433,6 +433,38 @@ func TestStartStop(t *testing.T) {
 	defer jsonFile.Close()
 }
 
+func TestStartStopRoutingClient(t *testing.T) {
+	os.Setenv("AZURE_RECORD_MODE", "record")
+	defer os.Unsetenv("AZURE_RECORD_MODE")
+
+	err := Start(t, packagePath, nil)
+	require.NoError(t, err)
+
+	client, err := GetRoutingHTTPClient(t, nil)
+	require.NoError(t, err)
+
+	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
+	require.NoError(t, err)
+
+	req.Header.Set(UpstreamURIHeader, "https://www.bing.com/")
+	req.Header.Set(ModeHeader, GetRecordMode())
+	req.Header.Set(IDHeader, GetRecordingId(t))
+
+	resp, err := client.Do(req)
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+
+	require.NotNil(t, GetRecordingId(t))
+
+	err = Stop(t, nil)
+	require.NoError(t, err)
+
+	// Make sure the file is there
+	jsonFile, err := os.Open("./testdata/recordings/TestStartStopRoutingClient.json")
+	require.NoError(t, err)
+	defer jsonFile.Close()
+}
+
 func TestProxyCert(t *testing.T) {
 	_, err := getRootCas(t)
 	require.NoError(t, err)

@@ -24,12 +24,12 @@ func TestVirtualNetworksClient_BeginCreateOrUpdate(t *testing.T) {
 	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 
 	// create resource group
-	rg,clean := createResourceGroup(t,cred,subscriptionID,"createVN","westus")
+	rg, clean := createResourceGroup(t, cred, opt, subscriptionID, "createVN", "westus")
 	rgName := *rg.Name
 	defer clean()
 
 	// create virtual network
-	vnClient := armnetwork.NewVirtualNetworksClient(subscriptionID,cred,opt)
+	vnClient := armnetwork.NewVirtualNetworksClient(subscriptionID, cred, opt)
 	vnName, err := createRandomName(t, "network")
 	require.NoError(t, err)
 	vnPoller, err := vnClient.BeginCreateOrUpdate(
@@ -64,7 +64,6 @@ func TestVirtualNetworksClient_BeginCreateOrUpdate(t *testing.T) {
         	Test:       	TestVirtualNetworksClient_BeginCreateOrUpdate
 --- FAIL: TestVirtualNetworksClient_BeginCreateOrUpdate (27.33s)
 */
-
 
 /* go env
 set GO111MODULE=auto

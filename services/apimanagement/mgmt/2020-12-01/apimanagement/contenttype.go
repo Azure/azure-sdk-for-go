@@ -31,7 +31,9 @@ func NewContentTypeClientWithBaseURI(baseURI string, subscriptionID string) Cont
 	return ContentTypeClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate creates or updates an Content Type.
+// CreateOrUpdate creates or updates the developer portal's content type. Content types describe content items'
+// properties, validation rules, and constraints. Custom content types' identifiers need to start with the `c-` prefix.
+// Built-in content types can't be modified.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
@@ -125,7 +127,9 @@ func (client ContentTypeClient) CreateOrUpdateResponder(resp *http.Response) (re
 	return
 }
 
-// Delete removes specified content type.
+// Delete removes the specified developer portal's content type. Content types describe content items' properties,
+// validation rules, and constraints. Built-in content types (with identifiers starting with the `c-` prefix) can't be
+// removed.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
@@ -216,7 +220,8 @@ func (client ContentTypeClient) DeleteResponder(resp *http.Response) (result aut
 	return
 }
 
-// Get gets API Management content type details.
+// Get gets the details of the developer portal's content type. Content types describe content items' properties,
+// validation rules, and constraints.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
@@ -305,7 +310,8 @@ func (client ContentTypeClient) GetResponder(resp *http.Response) (result Conten
 	return
 }
 
-// ListByService returns list of content types
+// ListByService lists the developer portal's content types. Content types describe content items' properties,
+// validation rules, and constraints.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.

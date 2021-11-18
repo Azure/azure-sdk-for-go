@@ -1739,7 +1739,7 @@ type APIVersionSetContractDetails struct {
 	Name *string `json:"name,omitempty"`
 	// Description - Description of API Version Set.
 	Description *string `json:"description,omitempty"`
-	// VersioningScheme - An value that determines where the API Version identifer will be located in a HTTP request. Possible values include: 'VersioningScheme1Segment', 'VersioningScheme1Query', 'VersioningScheme1Header'
+	// VersioningScheme - An value that determines where the API Version identifier will be located in a HTTP request. Possible values include: 'VersioningScheme1Segment', 'VersioningScheme1Query', 'VersioningScheme1Header'
 	VersioningScheme VersioningScheme1 `json:"versioningScheme,omitempty"`
 	// VersionQueryName - Name of query parameter that indicates the API Version if versioningScheme is set to `query`.
 	VersionQueryName *string `json:"versionQueryName,omitempty"`
@@ -1751,7 +1751,7 @@ type APIVersionSetContractDetails struct {
 type APIVersionSetContractProperties struct {
 	// DisplayName - Name of API Version Set
 	DisplayName *string `json:"displayName,omitempty"`
-	// VersioningScheme - An value that determines where the API Version identifer will be located in a HTTP request. Possible values include: 'VersioningSchemeSegment', 'VersioningSchemeQuery', 'VersioningSchemeHeader'
+	// VersioningScheme - An value that determines where the API Version identifier will be located in a HTTP request. Possible values include: 'VersioningSchemeSegment', 'VersioningSchemeQuery', 'VersioningSchemeHeader'
 	VersioningScheme VersioningScheme `json:"versioningScheme,omitempty"`
 	// Description - Description of API Version Set.
 	Description *string `json:"description,omitempty"`
@@ -1814,7 +1814,7 @@ func (avsup *APIVersionSetUpdateParameters) UnmarshalJSON(body []byte) error {
 type APIVersionSetUpdateParametersProperties struct {
 	// DisplayName - Name of API Version Set
 	DisplayName *string `json:"displayName,omitempty"`
-	// VersioningScheme - An value that determines where the API Version identifer will be located in a HTTP request. Possible values include: 'VersioningSchemeSegment', 'VersioningSchemeQuery', 'VersioningSchemeHeader'
+	// VersioningScheme - An value that determines where the API Version identifier will be located in a HTTP request. Possible values include: 'VersioningSchemeSegment', 'VersioningSchemeQuery', 'VersioningSchemeHeader'
 	VersioningScheme VersioningScheme `json:"versioningScheme,omitempty"`
 	// Description - Description of API Version Set.
 	Description *string `json:"description,omitempty"`

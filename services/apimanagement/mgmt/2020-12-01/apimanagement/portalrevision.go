@@ -31,7 +31,8 @@ func NewPortalRevisionClientWithBaseURI(baseURI string, subscriptionID string) P
 	return PortalRevisionClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate creates a new developer portal revision.
+// CreateOrUpdate creates a new developer portal's revision by running the portal's publishing. The `isCurrent`
+// property indicates if the revision is publicly accessible.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
@@ -133,7 +134,7 @@ func (client PortalRevisionClient) CreateOrUpdateResponder(resp *http.Response) 
 	return
 }
 
-// Get gets developer portal revision specified by its identifier.
+// Get gets the developer portal's revision specified by its identifier.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
@@ -223,7 +224,7 @@ func (client PortalRevisionClient) GetResponder(resp *http.Response) (result Por
 	return
 }
 
-// GetEntityTag gets developer portal revision specified by its identifier.
+// GetEntityTag gets the developer portal revision specified by its identifier.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
@@ -312,7 +313,7 @@ func (client PortalRevisionClient) GetEntityTagResponder(resp *http.Response) (r
 	return
 }
 
-// ListByService lists a collection of developer portal revision entities.
+// ListByService lists developer portal's revisions.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.

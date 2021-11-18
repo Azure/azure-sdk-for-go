@@ -49,20 +49,71 @@ type AgreementResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the agreement.
 	Type *string `json:"type,omitempty"`
-	// Properties - Represents the properties of the resource.
-	Properties *AgreementProperties `json:"properties,omitempty"`
+	// AgreementProperties - Represents the properties of the resource.
+	*AgreementProperties `json:"properties,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AgreementResource.
 func (ar AgreementResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if ar.Properties != nil {
-		objectMap["properties"] = ar.Properties
+	if ar.AgreementProperties != nil {
+		objectMap["properties"] = ar.AgreementProperties
 	}
 	return json.Marshal(objectMap)
 }
 
-// AgreementResourceListResponse response of a agreements operation.
+// UnmarshalJSON is the custom unmarshaler for AgreementResource struct.
+func (ar *AgreementResource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ar.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ar.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ar.Type = &typeVar
+			}
+		case "properties":
+			if v != nil {
+				var agreementProperties AgreementProperties
+				err = json.Unmarshal(*v, &agreementProperties)
+				if err != nil {
+					return err
+				}
+				ar.AgreementProperties = &agreementProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// AgreementResourceListResponse response of a list operation.
 type AgreementResourceListResponse struct {
 	autorest.Response `json:"-"`
 	// Value - Results of a list operation.
@@ -432,6 +483,8 @@ type OperationResult struct {
 	Name *string `json:"name,omitempty"`
 	// Display - The object that represents the operation.
 	Display *OperationDisplay `json:"display,omitempty"`
+	// IsDataAction - Indicates whether the operation is a data action
+	IsDataAction *bool `json:"isDataAction,omitempty"`
 }
 
 // OrganizationCreateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -779,7 +832,7 @@ func NewOrganizationResourceListResultPage(cur OrganizationResourceListResult, g
 type OrganizationResourceProperties struct {
 	// CreatedTime - READ-ONLY; The creation time of the resource.
 	CreatedTime *date.Time `json:"createdTime,omitempty"`
-	// ProvisioningState - Provision states for confluent RP. Possible values include: 'Accepted', 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled', 'Deleted', 'NotSpecified'
+	// ProvisioningState - READ-ONLY; Provision states for confluent RP. Possible values include: 'Accepted', 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled', 'Deleted', 'NotSpecified'
 	ProvisioningState ProvisionState `json:"provisioningState,omitempty"`
 	// OrganizationID - READ-ONLY; Id of the Confluent organization.
 	OrganizationID *string `json:"organizationId,omitempty"`
@@ -794,9 +847,6 @@ type OrganizationResourceProperties struct {
 // MarshalJSON is the custom marshaler for OrganizationResourceProperties.
 func (orp OrganizationResourceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if orp.ProvisioningState != "" {
-		objectMap["provisioningState"] = orp.ProvisioningState
-	}
 	if orp.OfferDetail != nil {
 		objectMap["offerDetail"] = orp.OfferDetail
 	}
@@ -810,7 +860,7 @@ func (orp OrganizationResourceProperties) MarshalJSON() ([]byte, error) {
 type OrganizationResourcePropertiesModel struct {
 	// CreatedTime - READ-ONLY; The creation time of the resource.
 	CreatedTime *date.Time `json:"createdTime,omitempty"`
-	// ProvisioningState - Provision states for confluent RP. Possible values include: 'Accepted', 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled', 'Deleted', 'NotSpecified'
+	// ProvisioningState - READ-ONLY; Provision states for confluent RP. Possible values include: 'Accepted', 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled', 'Deleted', 'NotSpecified'
 	ProvisioningState ProvisionState `json:"provisioningState,omitempty"`
 	// OrganizationID - READ-ONLY; Id of the Confluent organization.
 	OrganizationID *string `json:"organizationId,omitempty"`
@@ -825,9 +875,6 @@ type OrganizationResourcePropertiesModel struct {
 // MarshalJSON is the custom marshaler for OrganizationResourcePropertiesModel.
 func (orpm OrganizationResourcePropertiesModel) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if orpm.ProvisioningState != "" {
-		objectMap["provisioningState"] = orpm.ProvisioningState
-	}
 	if orpm.OfferDetail != nil {
 		objectMap["offerDetail"] = orpm.OfferDetail
 	}

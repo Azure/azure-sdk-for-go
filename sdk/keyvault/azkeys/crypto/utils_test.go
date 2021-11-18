@@ -105,20 +105,20 @@ func getCredential(t *testing.T) azcore.TokenCredential {
 }
 
 func createClient(t *testing.T, key string) (*Client, error) {
-	p := NewRecordingPolicy(t, &recording.RecordingOptions{UseHTTPS: true})
-	client, err := recording.GetHTTPClient(t)
-	require.NoError(t, err)
+	// p := NewRecordingPolicy(t, &recording.RecordingOptions{UseHTTPS: true})
+	// client, err := recording.GetHTTPClient(t)
+	// require.NoError(t, err)
 
-	options := &ClientOptions{
-		azcore.ClientOptions{
-			PerCallPolicies: []policy.Policy{p},
-			Transport:       client,
-		},
-	}
+	// options := &ClientOptions{
+	// 	azcore.ClientOptions{
+	// 		PerCallPolicies: []policy.Policy{p},
+	// 		Transport:       client,
+	// 	},
+	// }
 
 	cred := getCredential(t)
 
-	return NewClient(key, cred, options)
+	return NewClient(key, cred, nil)
 }
 
 func createKeyClient(t *testing.T) (*azkeys.Client, error) {
@@ -127,20 +127,20 @@ func createKeyClient(t *testing.T) (*azkeys.Client, error) {
 		vaultUrl = fakeKvURL
 	}
 
-	p := NewRecordingPolicy(t, &recording.RecordingOptions{UseHTTPS: true})
-	client, err := recording.GetHTTPClient(t)
-	require.NoError(t, err)
+	// p := NewRecordingPolicy(t, &recording.RecordingOptions{UseHTTPS: true})
+	// client, err := recording.GetHTTPClient(t)
+	// require.NoError(t, err)
 
-	options := &azkeys.ClientOptions{
-		ClientOptions: azcore.ClientOptions{
-			PerCallPolicies: []policy.Policy{p},
-			Transport:       client,
-		},
-	}
+	// options := &azkeys.ClientOptions{
+	// 	ClientOptions: azcore.ClientOptions{
+	// 		PerCallPolicies: []policy.Policy{p},
+	// 		Transport:       client,
+	// 	},
+	// }
 
 	cred := getCredential(t)
 
-	return azkeys.NewClient(vaultUrl, cred, options)
+	return azkeys.NewClient(vaultUrl, cred, nil)
 }
 
 type FakeCredential struct {

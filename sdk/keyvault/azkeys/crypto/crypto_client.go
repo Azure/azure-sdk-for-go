@@ -114,6 +114,39 @@ func NewClient(keyURL string, credential azcore.TokenCredential, options *Client
 	}, nil
 }
 
+func createTestClient(keyURL string, credential azcore.TokenCredential, options *ClientOptions, recordingPolicy policy.Policy) (*Client, error) {
+	if options == nil {
+		options = &ClientOptions{}
+	}
+
+	genOptions := options.toConnectionOptions()
+
+	genOptions.PerRetryPolicies = append(
+		genOptions.PerRetryPolicies,
+		shared.NewKeyVaultChallengePolicy(credential, runtime.NewPipeline("azkeys", "0.1.0", nil, nil, genOptions)),
+	)
+	genOptions.PerCallPolicies = append(genOptions.PerCallPolicies, recordingPolicy)
+
+	conn := generated.NewConnection(genOptions)
+
+	vaultURL, err := parseVaultURL(keyURL)
+	if err != nil {
+		return nil, err
+	}
+
+	keyID, keyVersion, err := parseKeyIDAndVersion(keyURL)
+	if err != nil {
+		return nil, err
+	}
+
+	return &Client{
+		kvClient:   generated.NewKeyVaultClient(conn),
+		vaultURL:   vaultURL,
+		keyID:      keyID,
+		keyVersion: keyVersion,
+	}, nil
+}
+
 // Optional parameters for the crypto.Client.EncryptOptions method
 type EncryptOptions struct {
 	// Additional data to authenticate but not encrypt/decrypt when using authenticated crypto algorithms.

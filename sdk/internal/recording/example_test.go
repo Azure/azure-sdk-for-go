@@ -96,7 +96,7 @@ func ExampleAddURISubscriptionIDSanitizer() {
 	}
 }
 
-func ExampleEndToEnd() {
+func ExampleStart_second() {
 	func(t *testing.T) {
 		err := recording.Start(t, "sdk/internal/recording/testdata", nil)
 		if err != nil {

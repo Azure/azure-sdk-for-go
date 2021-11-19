@@ -166,7 +166,7 @@ func NewEntityManagerWithConnectionString(connectionString string, version strin
 	}
 
 	return &entityManager{
-		Host:          fmt.Sprintf("https://%s.%s/", parsed.Namespace, parsed.Suffix),
+		Host:          fmt.Sprintf("https://%s/", parsed.Namespace),
 		version:       version,
 		tokenProvider: provider,
 		mwStack: []MiddlewareFunc{

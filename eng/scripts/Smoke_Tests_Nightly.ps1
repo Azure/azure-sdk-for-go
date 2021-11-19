@@ -9,7 +9,7 @@ $smokeTestsDir = (Join-Path $pwd "sdk" "smoketests").ToString()
 # 3. Run `go mod tidy` and ensure it succeeds
 
 # Create new module directory
-New-Item $smokeTestsDir
+New-Item $smokeTestsDir -ItemType Directory
 Push-Location $smokeTestsDir
 go mod init
 Pop-Location
@@ -23,21 +23,26 @@ $ReplacePaths = $("")
 
 foreach ($module in $modules) {
     Write-Host $module
-    $Array = $module.ToString().Split("/sdk")
+    $Array = $module.ToString().Split("\sdk\")
+    Write-Host $Array $Array.Length
+    Write-Host $Array.ToString()
     if ($Array.Length -ne 2) {
         Write-Host "There was an error parsing the path of the module ($module)"
+        break
     }
-    # Remove the '/go.mod' portion
-    $Array[1] = $Array[1] -Replace "/go.mod"
-    Write-Host "Array[1] $Array[1]"
 
-    $path = "github.com/Azure/azure-sdk-for-go/sdk/$Array[1]"
+    $secondPart = "sdk/" + ($Array[1] -Replace "\\go.mod")
+    Write-Host "`nSECOND PART: " $secondPart "`n`n"
+
+    $path = "github.com/Azure/azure-sdk-for-go/sdk/$secondPart"
     Write-Host $path
-    $Paths += $path
+    $Paths += ($path + "@latest")
 
-    $replacePath = "replace $path => ../$Array[1]"
-    Write-Host $replacePath
+    $replacePath = "replace $path => ../$secondPart"
+    Write-Host "`n REPLACE PATH: $replacePath`n"
     $ReplacePaths += $replacePath
+
+    break
 }
 
 Pop-Location

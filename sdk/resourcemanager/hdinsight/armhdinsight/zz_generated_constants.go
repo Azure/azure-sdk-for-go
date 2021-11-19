@@ -10,7 +10,7 @@ package armhdinsight
 
 const (
 	module  = "armhdinsight"
-	version = "v0.1.0"
+	version = "v0.1.1"
 )
 
 // AsyncOperationState - The async operation state.

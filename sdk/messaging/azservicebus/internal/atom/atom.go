@@ -13,17 +13,14 @@ type (
 		XMLName xml.Name `xml:"feed"`
 		ID      string   `xml:"id"`
 		Title   string   `xml:"title"`
-		//Updated *date.Time `xml:"updated,omitempty"`
-		Entries []Entry `xml:"entry"`
+		Entries []Entry  `xml:"entry"`
 	}
 
 	// Entry is the Atom wrapper for a management request
 	Entry struct {
-		XMLName xml.Name `xml:"entry"`
-		ID      string   `xml:"id,omitempty"`
-		Title   string   `xml:"title,omitempty"`
-		// Published                 *date.Time `xml:"published,omitempty"`
-		// Updated                   *date.Time `xml:"updated,omitempty"`
+		XMLName                   xml.Name `xml:"entry"`
+		ID                        string   `xml:"id,omitempty"`
+		Title                     string   `xml:"title,omitempty"`
 		Author                    *Author  `xml:"author,omitempty"`
 		Link                      *Link    `xml:"link,omitempty"`
 		Content                   *Content `xml:"content"`

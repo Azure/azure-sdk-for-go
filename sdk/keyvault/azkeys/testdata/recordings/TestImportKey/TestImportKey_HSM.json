@@ -12,7 +12,7 @@
         "Accept-Encoding": "gzip",
         "Content-Length": "0",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+        "User-Agent": "azsdk-go-internal/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 401,
@@ -25,8 +25,8 @@
         "WWW-Authenticate": "Bearer authorization=\u0022https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000\u0022, resource=\u0022https://managedhsm.azure.net\u0022",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
-        "x-ms-request-id": "4bb354b0-381c-11ec-8f32-000d3aed998e",
-        "x-ms-server-latency": "1"
+        "x-ms-request-id": "51eaf062-47ef-11ec-bf7c-000d3a5f7959",
+        "x-ms-server-latency": "0"
       },
       "ResponseBody": null
     },
@@ -43,7 +43,7 @@
         "Authorization": "Sanitized",
         "Content-Length": "1699",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+        "User-Agent": "azsdk-go-internal/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
       },
       "RequestBody": {
         "key": {
@@ -77,29 +77,29 @@
         "X-Frame-Options": "SAMEORIGIN",
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=Ipv4;",
         "x-ms-keyvault-region": "southcentralus",
-        "x-ms-request-id": "4bc9b0de-381c-11ec-8f32-000d3aed998e",
-        "x-ms-server-latency": "333"
+        "x-ms-request-id": "520e4936-47ef-11ec-bf7c-000d3a5f7959",
+        "x-ms-server-latency": "254"
       },
       "ResponseBody": {
         "attributes": {
-          "created": 1635445472,
+          "created": 1637185374,
           "enabled": true,
           "exportable": false,
           "recoverableDays": 7,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-          "updated": 1635445472
+          "updated": 1637185374
         },
         "key": {
           "e": "AQAB",
           "key_ops": [
+            "decrypt",
+            "encrypt",
+            "unwrapKey",
             "sign",
             "verify",
-            "encrypt",
-            "decrypt",
-            "unwrapKey",
             "wrapKey"
           ],
-          "kid": "https://fakekvurl.managedhsm.azure.net/keys/importedKey/80e61c945446457d33e08c25d80935d7",
+          "kid": "https://rosebudhsm.managedhsm.azure.net/keys/importedKey/a2095d06fc4202ee0e018125d29f792c",
           "kty": "RSA-HSM",
           "n": "oJFNACNKxoOyG0wV1b7Yh73JWcLlevVK5zTo8Acg13XSdeRVIH43hM7rYKUKRlXdcqepTScejuj3lZpmnKbndb8OI7ra6ZG0Up2XhSi0vZBSHTLdJlZ5a6gra7_HZoyPXutQU3R_0ZkxnSmoRA0I9EEtUn_5MR7acYJZILR7HEaxGrPpHXMWQH6Jx_NA97haNAQs5RdDsn1HGEA9NMe0OK9hgb4F5NEeuYXTglPX_pv1P8LxsALSLS15P6eaUEtqtC0EkoBNcHHXJ6Bs86iJOqVCsVA_gyspY3G2cH1NxuNy-P5n2N7RyQj95FzgO8CGpxSH-nXkOqDgZ5qg0g7-NQ"
         }

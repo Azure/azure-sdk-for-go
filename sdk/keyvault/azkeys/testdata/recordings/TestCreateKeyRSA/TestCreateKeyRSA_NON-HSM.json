@@ -1,7 +1,7 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/hhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/:https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/bhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/zhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/6https://fakekvurl.vault.azure.net/1https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/chttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/?https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/=https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/whttps://fakekvurl.vault.azure.net/",
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key3359961573/create?api-version=7.3-preview",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":authority": "localhost:5001",
@@ -12,7 +12,7 @@
         "Accept-Encoding": "gzip",
         "Content-Length": "0",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-azkeys/0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT) azsdk-go-internal/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+        "User-Agent": "azsdk-go-internal/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 401,
@@ -20,7 +20,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "97",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 17 Nov 2021 19:31:44 GMT",
+        "Date": "Wed, 17 Nov 2021 21:40:46 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -29,7 +29,7 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "7ef96f62-9436-4d2c-bda3-89025f17de60",
+        "x-ms-request-id": "1c4b301c-5bb3-4446-8a6b-8a297fdba01e",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -40,7 +40,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/hhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/:https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/bhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/zhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/6https://fakekvurl.vault.azure.net/1https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/chttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/?https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/=https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/whttps://fakekvurl.vault.azure.net/",
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key3359961573/create?api-version=7.3-preview",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":authority": "localhost:5001",
@@ -52,7 +52,7 @@
         "Authorization": "Sanitized",
         "Content-Length": "13",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-azkeys/0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT) azsdk-go-internal/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+        "User-Agent": "azsdk-go-internal/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
       },
       "RequestBody": {
         "kty": "RSA"
@@ -60,9 +60,9 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "636",
+        "Content-Length": "687",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 17 Nov 2021 19:31:45 GMT",
+        "Date": "Wed, 17 Nov 2021 21:40:47 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -70,12 +70,12 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "f1deb63a-00d3-43bb-b512-5289304ad69a",
+        "x-ms-request-id": "3a09d307-6c15-4526-ae01-fd7a97418a65",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
         "key": {
-          "kid": "https://fakekvurl.vault.azure.net/",
+          "kid": "https://fakekvurl.vault.azure.net/keys/key3359961573/82763f763ccb421981242b0de4fac08a",
           "kty": "RSA",
           "key_ops": [
             "encrypt",
@@ -85,20 +85,20 @@
             "wrapKey",
             "unwrapKey"
           ],
-          "n": "tzXhHwKSXOxe-WhkJTbtHzZTm59S332TG6ctzYwOVkMPC-t01hepp6vNaYMCrnB0rnV1qtHOxnuHf4C3HOQJYVouBXmzE2NWUAH5qa8yd-UW_RLCCv4lcWMZDB_NdtzN0VaQ0ryR3ssraqGZyRrgR8mzIzkSwqXm6JaLc9oyU-OshaU1QjG2qbXiH_oxWjd8BLcdV3HpOUv-j7mrUrGIcfIsGGTc6cR9EBXmVwqRI8yKpumhXc49qBkZhstwqI0GMcw5mb1xMrwkiOfujqHcblzE4TUytvaxYyNMoOw7WHNgp56jWC7uh-pxWbhq1__W5QMLnCU49Pbx9me4Y925aQ",
+          "n": "r-_EgUaJtFqfGG6MrkvR5iF9poIKwn7LhG4w-W9TOZHl1YjFGXgT9vvXG6wpN_6g_y7P9fDnPRKTyKSfxQwol7fWZOKNP--jEpJCUZ1ipJmRHMU1NI5XDpeOzFH-bollnpz8JcHU8od4gXTgFQrpJZGVEvs9H1L-mhTtmY5gOVO5tdejLU_6qwA1_pR4NTVhneIxroF0JpUqQSmKTLf6yyCBsPRmOG3IwvccacJ68pF7jxo7bTTdlb6OhFaISWD0NUjRjiHxDlCgumrSaI8MAqUiaKnbAgADfR4i5c9OyPKRoIcL0hbmKSZqyZ3X4qk0CHDeeqhOxz1z2UCaljLd6Q",
           "e": "AQAB"
         },
         "attributes": {
           "enabled": true,
-          "created": 1637177505,
-          "updated": 1637177505,
+          "created": 1637185247,
+          "updated": 1637185247,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
           "recoverableDays": 7
         }
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/hhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/:https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/bhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/zhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/6https://fakekvurl.vault.azure.net/1https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/hhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/mhttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/chttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/?https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/=https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/whttps://fakekvurl.vault.azure.net/",
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key3359961573hsm/create?api-version=7.3-preview",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":authority": "localhost:5001",
@@ -118,9 +118,9 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "642",
+        "Content-Length": "696",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 17 Nov 2021 19:31:46 GMT",
+        "Date": "Wed, 17 Nov 2021 21:40:47 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -128,12 +128,12 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "4f8217b1-63af-472a-8613-88647afe5b43",
+        "x-ms-request-id": "bdd5b1ca-d061-4171-8d4c-5b5f9002bd79",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
         "key": {
-          "kid": "https://fakekvurl.vault.azure.net/",
+          "kid": "https://fakekvurl.vault.azure.net/keys/key3359961573hsm/58b89746d6e64920b88a8396a48aacd5",
           "kty": "RSA-HSM",
           "key_ops": [
             "encrypt",
@@ -143,20 +143,20 @@
             "wrapKey",
             "unwrapKey"
           ],
-          "n": "zJ1Ie7uOtKzgu7n0aAYhfuRAn3ctmwoCXKOw8kxM4Onu4lPRKVRgNmZ96Q4fddPpp7My5z9fmjr6SXDha9_mbodPWZPHtN9j-dFlCb_ae_O49rWgMoAyj0zevY8qvuHoD3zB9hEk0t57Y-TbFOL9z0HB9eAteHZHxhc5VBaMPbcENn0RBjfGCT3IP2sGoUeWhohx1Zy1mwMjRK5TgYUVksmDxy9Z71yOAPQHIQOMe6uXH55B1X3viCPnLAXzG_QKvUdYMNXyc4LZNHt6G51SrB-rj7vz7sz8mbtY8UtDTvG72xLItddrJaKxv6NMmhgqQDp9Dau-tRNFyYglhYzapQ",
+          "n": "xj_eUjal65Vh1tuoswwTAE3yK8bSay7ljz7fXk3Ya8qSKdoCnPEVGd_IG8x-DnbqB-QVOglorOLNCFlY37I7F91Pkzq3LhKtco4qMFWyL5XtL8RMSeR7rRL7a5_Av_AL4acItn_2zuCyKTQT_4EyjwzEy3BSg3MDMck-lj-piJYKoBd-vcWIx0ZWPiK3zHwfW0d6mbwxiKZIOyMLcNf7c3SdabTz2Hu2tW0Pqpudk1byAsPPxK_sFDGII5MNaz0_L3DiDf-nbduh4c8oygm6iO3PnXDB_9iCq4lvLcA6hi0UrfyiNc7HE_7MePSdY9MWmgkAVo0dmBLT60oXVtJiCQ",
           "e": "AAEAAQ"
         },
         "attributes": {
           "enabled": true,
-          "created": 1637177506,
-          "updated": 1637177506,
+          "created": 1637185248,
+          "updated": 1637185248,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
           "recoverableDays": 7
         }
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/hhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/:https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/bhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/zhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/6https://fakekvurl.vault.azure.net/1https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/?https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/=https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/whttps://fakekvurl.vault.azure.net/",
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key3359961573?api-version=7.3-preview",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         ":authority": "localhost:5001",
@@ -172,9 +172,9 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "743",
+        "Content-Length": "819",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 17 Nov 2021 19:31:46 GMT",
+        "Date": "Wed, 17 Nov 2021 21:40:48 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -182,15 +182,15 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "dddc5fab-e693-4799-bfae-cb6dcfc7d1b2",
+        "x-ms-request-id": "d2309b12-f952-4f01-a40b-5654cc98e867",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
-        "recoveryId": "https://fakekvurl.vault.azure.net/",
-        "deletedDate": 1637177506,
-        "scheduledPurgeDate": 1637782306,
+        "recoveryId": "https://fakekvurl.vault.azure.net/deletedkeys/key3359961573",
+        "deletedDate": 1637185248,
+        "scheduledPurgeDate": 1637790048,
         "key": {
-          "kid": "https://fakekvurl.vault.azure.net/",
+          "kid": "https://fakekvurl.vault.azure.net/keys/key3359961573/82763f763ccb421981242b0de4fac08a",
           "kty": "RSA",
           "key_ops": [
             "encrypt",
@@ -200,20 +200,20 @@
             "wrapKey",
             "unwrapKey"
           ],
-          "n": "tzXhHwKSXOxe-WhkJTbtHzZTm59S332TG6ctzYwOVkMPC-t01hepp6vNaYMCrnB0rnV1qtHOxnuHf4C3HOQJYVouBXmzE2NWUAH5qa8yd-UW_RLCCv4lcWMZDB_NdtzN0VaQ0ryR3ssraqGZyRrgR8mzIzkSwqXm6JaLc9oyU-OshaU1QjG2qbXiH_oxWjd8BLcdV3HpOUv-j7mrUrGIcfIsGGTc6cR9EBXmVwqRI8yKpumhXc49qBkZhstwqI0GMcw5mb1xMrwkiOfujqHcblzE4TUytvaxYyNMoOw7WHNgp56jWC7uh-pxWbhq1__W5QMLnCU49Pbx9me4Y925aQ",
+          "n": "r-_EgUaJtFqfGG6MrkvR5iF9poIKwn7LhG4w-W9TOZHl1YjFGXgT9vvXG6wpN_6g_y7P9fDnPRKTyKSfxQwol7fWZOKNP--jEpJCUZ1ipJmRHMU1NI5XDpeOzFH-bollnpz8JcHU8od4gXTgFQrpJZGVEvs9H1L-mhTtmY5gOVO5tdejLU_6qwA1_pR4NTVhneIxroF0JpUqQSmKTLf6yyCBsPRmOG3IwvccacJ68pF7jxo7bTTdlb6OhFaISWD0NUjRjiHxDlCgumrSaI8MAqUiaKnbAgADfR4i5c9OyPKRoIcL0hbmKSZqyZ3X4qk0CHDeeqhOxz1z2UCaljLd6Q",
           "e": "AQAB"
         },
         "attributes": {
           "enabled": true,
-          "created": 1637177505,
-          "updated": 1637177505,
+          "created": 1637185247,
+          "updated": 1637185247,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
           "recoverableDays": 7
         }
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/hhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/:https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/bhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/zhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/6https://fakekvurl.vault.azure.net/1https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/?https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/=https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/whttps://fakekvurl.vault.azure.net/",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key3359961573?api-version=7.3-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
@@ -231,7 +231,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "81",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 17 Nov 2021 19:31:46 GMT",
+        "Date": "Wed, 17 Nov 2021 21:40:48 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -239,7 +239,7 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "977e1337-13ab-4956-a730-f7873675a50e",
+        "x-ms-request-id": "c7d4ca9e-77bf-4211-92e3-6059d19d8e47",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -250,7 +250,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/hhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/:https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/bhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/zhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/6https://fakekvurl.vault.azure.net/1https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/?https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/=https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/whttps://fakekvurl.vault.azure.net/",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key3359961573?api-version=7.3-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
@@ -268,7 +268,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "81",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 17 Nov 2021 19:31:46 GMT",
+        "Date": "Wed, 17 Nov 2021 21:40:48 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -276,7 +276,7 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "c1afb197-9b66-4987-9310-1ed15ec4c381",
+        "x-ms-request-id": "41c5e1bb-3274-455e-9cc4-cc453b5eb760",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -287,7 +287,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/hhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/:https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/bhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/zhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/6https://fakekvurl.vault.azure.net/1https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/?https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/=https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/whttps://fakekvurl.vault.azure.net/",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key3359961573?api-version=7.3-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
@@ -305,7 +305,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "81",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 17 Nov 2021 19:31:46 GMT",
+        "Date": "Wed, 17 Nov 2021 21:40:48 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -313,7 +313,7 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "2554d80e-f7e4-47c1-a1a9-5ba5a97e708f",
+        "x-ms-request-id": "ba9f4673-58b0-4029-bf75-b2f5171b82d0",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -324,7 +324,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/hhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/:https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/bhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/zhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/6https://fakekvurl.vault.azure.net/1https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/?https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/=https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/whttps://fakekvurl.vault.azure.net/",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key3359961573?api-version=7.3-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
@@ -342,7 +342,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "81",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 17 Nov 2021 19:31:47 GMT",
+        "Date": "Wed, 17 Nov 2021 21:40:49 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -350,7 +350,7 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "e6ed88b2-8fa1-4412-b487-2202a9a0bc3c",
+        "x-ms-request-id": "bf4c2c41-916a-49de-809d-6b25b8d96a5a",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -361,7 +361,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/hhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/:https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/bhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/zhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/6https://fakekvurl.vault.azure.net/1https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/?https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/=https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/whttps://fakekvurl.vault.azure.net/",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key3359961573?api-version=7.3-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
@@ -379,7 +379,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "81",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 17 Nov 2021 19:31:47 GMT",
+        "Date": "Wed, 17 Nov 2021 21:40:49 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -387,7 +387,7 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "99ba29ba-a29d-4beb-a964-a9d82d2a4278",
+        "x-ms-request-id": "2141ab60-eb35-48f6-82c5-6414f4fb82d0",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -398,7 +398,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/hhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/:https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/bhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/zhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/6https://fakekvurl.vault.azure.net/1https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/?https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/=https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/whttps://fakekvurl.vault.azure.net/",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key3359961573?api-version=7.3-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
@@ -416,7 +416,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "81",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 17 Nov 2021 19:31:47 GMT",
+        "Date": "Wed, 17 Nov 2021 21:40:49 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -424,7 +424,7 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "cb73aa0e-e4d4-465e-b2fe-e67a1759c6d1",
+        "x-ms-request-id": "45c702a1-a5d6-4812-aeec-60ea7e6841b9",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -435,7 +435,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/hhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/:https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/bhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/zhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/6https://fakekvurl.vault.azure.net/1https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/?https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/=https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/whttps://fakekvurl.vault.azure.net/",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key3359961573?api-version=7.3-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
@@ -453,7 +453,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "81",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 17 Nov 2021 19:31:48 GMT",
+        "Date": "Wed, 17 Nov 2021 21:40:50 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -461,7 +461,7 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "d8ff5318-02a8-43af-8697-d83e7451f96d",
+        "x-ms-request-id": "af9d9c71-0808-429d-b6fd-caa437c3227c",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -472,7 +472,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/hhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/:https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/bhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/zhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/6https://fakekvurl.vault.azure.net/1https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/?https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/=https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/whttps://fakekvurl.vault.azure.net/",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key3359961573?api-version=7.3-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
@@ -490,7 +490,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "81",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 17 Nov 2021 19:31:48 GMT",
+        "Date": "Wed, 17 Nov 2021 21:40:50 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -498,7 +498,7 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "5f8d515e-9043-420c-95ee-1dd152d32c50",
+        "x-ms-request-id": "9b90275b-5dd9-469a-8ed4-df181b45d2a8",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -509,7 +509,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/hhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/:https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/bhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/zhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/6https://fakekvurl.vault.azure.net/1https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/?https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/=https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/whttps://fakekvurl.vault.azure.net/",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key3359961573?api-version=7.3-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
@@ -527,7 +527,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "81",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 17 Nov 2021 19:31:48 GMT",
+        "Date": "Wed, 17 Nov 2021 21:40:50 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -535,7 +535,7 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "f743de0d-1f7c-4cf2-8674-c5b06ee156fa",
+        "x-ms-request-id": "185cc09f-c041-4c86-8644-e5ecd6b4d83d",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -546,7 +546,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/hhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/:https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/bhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/zhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/6https://fakekvurl.vault.azure.net/1https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/?https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/=https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/whttps://fakekvurl.vault.azure.net/",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key3359961573?api-version=7.3-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
@@ -564,7 +564,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "81",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 17 Nov 2021 19:31:49 GMT",
+        "Date": "Wed, 17 Nov 2021 21:40:51 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -572,7 +572,7 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "ee7f5385-7233-498f-8605-3b1f7abb5cab",
+        "x-ms-request-id": "c4b3d257-21c0-4d3f-891a-7169f3f2acee",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -583,7 +583,155 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/hhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/:https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/bhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/zhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/6https://fakekvurl.vault.azure.net/1https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/?https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/=https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/whttps://fakekvurl.vault.azure.net/",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key3359961573?api-version=7.3-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "GET",
+        ":path": "/deletedkeys/key3359961573?api-version=7.3-preview",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-internal/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "81",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 17 Nov 2021 21:40:51 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus2",
+        "x-ms-keyvault-service-version": "1.9.150.1",
+        "x-ms-request-id": "3b2af610-dfd8-4b0b-b743-8ecbab1876ef",
+        "X-Powered-By": "ASP.NET"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "KeyNotFound",
+          "message": "Deleted Key not found: key3359961573"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key3359961573?api-version=7.3-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "GET",
+        ":path": "/deletedkeys/key3359961573?api-version=7.3-preview",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-internal/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "81",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 17 Nov 2021 21:40:51 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus2",
+        "x-ms-keyvault-service-version": "1.9.150.1",
+        "x-ms-request-id": "e4e062ef-7f15-477b-8e2b-0ad078f043b5",
+        "X-Powered-By": "ASP.NET"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "KeyNotFound",
+          "message": "Deleted Key not found: key3359961573"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key3359961573?api-version=7.3-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "GET",
+        ":path": "/deletedkeys/key3359961573?api-version=7.3-preview",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-internal/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "81",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 17 Nov 2021 21:40:52 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus2",
+        "x-ms-keyvault-service-version": "1.9.150.1",
+        "x-ms-request-id": "a3a953c4-2c83-41fb-97b2-dd9a9c282b75",
+        "X-Powered-By": "ASP.NET"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "KeyNotFound",
+          "message": "Deleted Key not found: key3359961573"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key3359961573?api-version=7.3-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "GET",
+        ":path": "/deletedkeys/key3359961573?api-version=7.3-preview",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-internal/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "81",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 17 Nov 2021 21:40:52 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus2",
+        "x-ms-keyvault-service-version": "1.9.150.1",
+        "x-ms-request-id": "a7f59627-9857-43f9-8ba4-e092b10e59e5",
+        "X-Powered-By": "ASP.NET"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "KeyNotFound",
+          "message": "Deleted Key not found: key3359961573"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key3359961573?api-version=7.3-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
@@ -599,9 +747,9 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "743",
+        "Content-Length": "819",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 17 Nov 2021 19:31:49 GMT",
+        "Date": "Wed, 17 Nov 2021 21:40:52 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -609,15 +757,15 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "a6d7f1af-915c-48c8-9a63-66649a4dd2e2",
+        "x-ms-request-id": "a23b5c74-bdfb-4fd4-ae83-aaee5b88420d",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
-        "recoveryId": "https://fakekvurl.vault.azure.net/",
-        "deletedDate": 1637177506,
-        "scheduledPurgeDate": 1637782306,
+        "recoveryId": "https://fakekvurl.vault.azure.net/deletedkeys/key3359961573",
+        "deletedDate": 1637185248,
+        "scheduledPurgeDate": 1637790048,
         "key": {
-          "kid": "https://fakekvurl.vault.azure.net/",
+          "kid": "https://fakekvurl.vault.azure.net/keys/key3359961573/82763f763ccb421981242b0de4fac08a",
           "kty": "RSA",
           "key_ops": [
             "encrypt",
@@ -627,20 +775,20 @@
             "wrapKey",
             "unwrapKey"
           ],
-          "n": "tzXhHwKSXOxe-WhkJTbtHzZTm59S332TG6ctzYwOVkMPC-t01hepp6vNaYMCrnB0rnV1qtHOxnuHf4C3HOQJYVouBXmzE2NWUAH5qa8yd-UW_RLCCv4lcWMZDB_NdtzN0VaQ0ryR3ssraqGZyRrgR8mzIzkSwqXm6JaLc9oyU-OshaU1QjG2qbXiH_oxWjd8BLcdV3HpOUv-j7mrUrGIcfIsGGTc6cR9EBXmVwqRI8yKpumhXc49qBkZhstwqI0GMcw5mb1xMrwkiOfujqHcblzE4TUytvaxYyNMoOw7WHNgp56jWC7uh-pxWbhq1__W5QMLnCU49Pbx9me4Y925aQ",
+          "n": "r-_EgUaJtFqfGG6MrkvR5iF9poIKwn7LhG4w-W9TOZHl1YjFGXgT9vvXG6wpN_6g_y7P9fDnPRKTyKSfxQwol7fWZOKNP--jEpJCUZ1ipJmRHMU1NI5XDpeOzFH-bollnpz8JcHU8od4gXTgFQrpJZGVEvs9H1L-mhTtmY5gOVO5tdejLU_6qwA1_pR4NTVhneIxroF0JpUqQSmKTLf6yyCBsPRmOG3IwvccacJ68pF7jxo7bTTdlb6OhFaISWD0NUjRjiHxDlCgumrSaI8MAqUiaKnbAgADfR4i5c9OyPKRoIcL0hbmKSZqyZ3X4qk0CHDeeqhOxz1z2UCaljLd6Q",
           "e": "AQAB"
         },
         "attributes": {
           "enabled": true,
-          "created": 1637177505,
-          "updated": 1637177505,
+          "created": 1637185247,
+          "updated": 1637185247,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
           "recoverableDays": 7
         }
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/hhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/:https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/bhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/zhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/6https://fakekvurl.vault.azure.net/1https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/?https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/=https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/whttps://fakekvurl.vault.azure.net/",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key3359961573?api-version=7.3-preview",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         ":authority": "localhost:5001",
@@ -656,7 +804,7 @@
       "StatusCode": 204,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Date": "Wed, 17 Nov 2021 19:31:49 GMT",
+        "Date": "Wed, 17 Nov 2021 21:40:53 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -664,13 +812,13 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "3cfd811c-51b5-4aa4-b4c3-08c03256bcab",
+        "x-ms-request-id": "6a63855f-f9cd-4399-96bb-2591baf82e0a",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/hhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/:https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/bhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/zhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/6https://fakekvurl.vault.azure.net/1https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/hhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/mhttps://fakekvurl.vault.azure.net/?https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/=https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/whttps://fakekvurl.vault.azure.net/",
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key3359961573hsm?api-version=7.3-preview",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         ":authority": "localhost:5001",
@@ -686,9 +834,9 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "749",
+        "Content-Length": "831",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 17 Nov 2021 19:31:50 GMT",
+        "Date": "Wed, 17 Nov 2021 21:40:53 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -696,15 +844,15 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "7f25e2c2-cad4-4884-a96c-d4087b44b0af",
+        "x-ms-request-id": "7c482121-9b0c-41c5-a7d1-5e89125afee9",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
-        "recoveryId": "https://fakekvurl.vault.azure.net/",
-        "deletedDate": 1637177510,
-        "scheduledPurgeDate": 1637782310,
+        "recoveryId": "https://fakekvurl.vault.azure.net/deletedkeys/key3359961573hsm",
+        "deletedDate": 1637185253,
+        "scheduledPurgeDate": 1637790053,
         "key": {
-          "kid": "https://fakekvurl.vault.azure.net/",
+          "kid": "https://fakekvurl.vault.azure.net/keys/key3359961573hsm/58b89746d6e64920b88a8396a48aacd5",
           "kty": "RSA-HSM",
           "key_ops": [
             "encrypt",
@@ -714,20 +862,20 @@
             "wrapKey",
             "unwrapKey"
           ],
-          "n": "zJ1Ie7uOtKzgu7n0aAYhfuRAn3ctmwoCXKOw8kxM4Onu4lPRKVRgNmZ96Q4fddPpp7My5z9fmjr6SXDha9_mbodPWZPHtN9j-dFlCb_ae_O49rWgMoAyj0zevY8qvuHoD3zB9hEk0t57Y-TbFOL9z0HB9eAteHZHxhc5VBaMPbcENn0RBjfGCT3IP2sGoUeWhohx1Zy1mwMjRK5TgYUVksmDxy9Z71yOAPQHIQOMe6uXH55B1X3viCPnLAXzG_QKvUdYMNXyc4LZNHt6G51SrB-rj7vz7sz8mbtY8UtDTvG72xLItddrJaKxv6NMmhgqQDp9Dau-tRNFyYglhYzapQ",
+          "n": "xj_eUjal65Vh1tuoswwTAE3yK8bSay7ljz7fXk3Ya8qSKdoCnPEVGd_IG8x-DnbqB-QVOglorOLNCFlY37I7F91Pkzq3LhKtco4qMFWyL5XtL8RMSeR7rRL7a5_Av_AL4acItn_2zuCyKTQT_4EyjwzEy3BSg3MDMck-lj-piJYKoBd-vcWIx0ZWPiK3zHwfW0d6mbwxiKZIOyMLcNf7c3SdabTz2Hu2tW0Pqpudk1byAsPPxK_sFDGII5MNaz0_L3DiDf-nbduh4c8oygm6iO3PnXDB_9iCq4lvLcA6hi0UrfyiNc7HE_7MePSdY9MWmgkAVo0dmBLT60oXVtJiCQ",
           "e": "AAEAAQ"
         },
         "attributes": {
           "enabled": true,
-          "created": 1637177506,
-          "updated": 1637177506,
+          "created": 1637185248,
+          "updated": 1637185248,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
           "recoverableDays": 7
         }
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/hhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/:https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/bhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/zhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/6https://fakekvurl.vault.azure.net/1https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/hhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/mhttps://fakekvurl.vault.azure.net/?https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/=https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/whttps://fakekvurl.vault.azure.net/",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key3359961573hsm?api-version=7.3-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
@@ -745,7 +893,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "84",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 17 Nov 2021 19:31:50 GMT",
+        "Date": "Wed, 17 Nov 2021 21:40:53 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -753,7 +901,7 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "f9bb9713-06fc-47ce-b248-2f37d4e0e911",
+        "x-ms-request-id": "bbabef7d-8219-41e0-b3c3-ac646a74cd95",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -764,7 +912,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/hhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/:https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/bhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/zhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/6https://fakekvurl.vault.azure.net/1https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/hhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/mhttps://fakekvurl.vault.azure.net/?https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/=https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/whttps://fakekvurl.vault.azure.net/",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key3359961573hsm?api-version=7.3-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
@@ -782,7 +930,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "84",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 17 Nov 2021 19:31:50 GMT",
+        "Date": "Wed, 17 Nov 2021 21:40:53 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -790,7 +938,7 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "fc01896d-5911-4ca2-a4bd-1cd29fa3cb5d",
+        "x-ms-request-id": "2ebcbd38-4a9a-410a-b530-b5973f9405f3",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -801,7 +949,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/hhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/:https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/bhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/zhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/6https://fakekvurl.vault.azure.net/1https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/hhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/mhttps://fakekvurl.vault.azure.net/?https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/=https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/whttps://fakekvurl.vault.azure.net/",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key3359961573hsm?api-version=7.3-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
@@ -819,7 +967,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "84",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 17 Nov 2021 19:31:50 GMT",
+        "Date": "Wed, 17 Nov 2021 21:40:53 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -827,7 +975,7 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "9c5d490a-f3dd-42f4-8faf-b0b409ff82a0",
+        "x-ms-request-id": "280edbd0-ab3c-4b5a-974e-be46a7fc9aa3",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -838,7 +986,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/hhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/:https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/bhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/zhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/6https://fakekvurl.vault.azure.net/1https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/hhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/mhttps://fakekvurl.vault.azure.net/?https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/=https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/whttps://fakekvurl.vault.azure.net/",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key3359961573hsm?api-version=7.3-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
@@ -856,7 +1004,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "84",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 17 Nov 2021 19:31:50 GMT",
+        "Date": "Wed, 17 Nov 2021 21:40:54 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -864,7 +1012,7 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "51e6387c-cb37-4b3d-8764-ae3271f22752",
+        "x-ms-request-id": "454344b0-e63e-470a-b096-3fa6bc556939",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -875,7 +1023,7 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/hhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/:https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/bhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/zhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/6https://fakekvurl.vault.azure.net/1https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/hhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/mhttps://fakekvurl.vault.azure.net/?https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/=https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/whttps://fakekvurl.vault.azure.net/",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key3359961573hsm?api-version=7.3-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
@@ -893,7 +1041,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "84",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 17 Nov 2021 19:31:52 GMT",
+        "Date": "Wed, 17 Nov 2021 21:40:54 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -901,7 +1049,7 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "a8243570-fa6e-4213-b18d-2206404e94d7",
+        "x-ms-request-id": "499e4967-6f06-4a16-bdb9-aa806aa6e76f",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -912,7 +1060,192 @@
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/hhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/:https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/bhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/zhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/6https://fakekvurl.vault.azure.net/1https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/hhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/mhttps://fakekvurl.vault.azure.net/?https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/=https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/whttps://fakekvurl.vault.azure.net/",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key3359961573hsm?api-version=7.3-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "GET",
+        ":path": "/deletedkeys/key3359961573hsm?api-version=7.3-preview",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-internal/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "84",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 17 Nov 2021 21:40:54 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus2",
+        "x-ms-keyvault-service-version": "1.9.150.1",
+        "x-ms-request-id": "16a37b36-3fa3-4516-a01b-1fc9e59991be",
+        "X-Powered-By": "ASP.NET"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "KeyNotFound",
+          "message": "Deleted Key not found: key3359961573hsm"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key3359961573hsm?api-version=7.3-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "GET",
+        ":path": "/deletedkeys/key3359961573hsm?api-version=7.3-preview",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-internal/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "84",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 17 Nov 2021 21:40:55 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus2",
+        "x-ms-keyvault-service-version": "1.9.150.1",
+        "x-ms-request-id": "b31637e5-d71f-4f05-8ead-ec7bf2c62bf5",
+        "X-Powered-By": "ASP.NET"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "KeyNotFound",
+          "message": "Deleted Key not found: key3359961573hsm"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key3359961573hsm?api-version=7.3-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "GET",
+        ":path": "/deletedkeys/key3359961573hsm?api-version=7.3-preview",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-internal/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "84",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 17 Nov 2021 21:40:55 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus2",
+        "x-ms-keyvault-service-version": "1.9.150.1",
+        "x-ms-request-id": "6d6c6e1c-ff4f-4273-a981-81c535da13aa",
+        "X-Powered-By": "ASP.NET"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "KeyNotFound",
+          "message": "Deleted Key not found: key3359961573hsm"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key3359961573hsm?api-version=7.3-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "GET",
+        ":path": "/deletedkeys/key3359961573hsm?api-version=7.3-preview",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-internal/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "84",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 17 Nov 2021 21:40:56 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus2",
+        "x-ms-keyvault-service-version": "1.9.150.1",
+        "x-ms-request-id": "d28935f2-e447-4153-9f08-aef16a7e56c6",
+        "X-Powered-By": "ASP.NET"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "KeyNotFound",
+          "message": "Deleted Key not found: key3359961573hsm"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key3359961573hsm?api-version=7.3-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "GET",
+        ":path": "/deletedkeys/key3359961573hsm?api-version=7.3-preview",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-internal/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "84",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 17 Nov 2021 21:40:56 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus2",
+        "x-ms-keyvault-service-version": "1.9.150.1",
+        "x-ms-request-id": "e425f2a6-d16d-4dff-84bc-08f3ca3ef06d",
+        "X-Powered-By": "ASP.NET"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "KeyNotFound",
+          "message": "Deleted Key not found: key3359961573hsm"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key3359961573hsm?api-version=7.3-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         ":authority": "localhost:5001",
@@ -928,9 +1261,9 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "749",
+        "Content-Length": "831",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 17 Nov 2021 19:31:52 GMT",
+        "Date": "Wed, 17 Nov 2021 21:40:56 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -938,15 +1271,15 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "d783895f-b593-41cb-a86c-6b434363d896",
+        "x-ms-request-id": "31bc070a-439d-4468-8056-434e81ce1de5",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
-        "recoveryId": "https://fakekvurl.vault.azure.net/",
-        "deletedDate": 1637177510,
-        "scheduledPurgeDate": 1637782310,
+        "recoveryId": "https://fakekvurl.vault.azure.net/deletedkeys/key3359961573hsm",
+        "deletedDate": 1637185253,
+        "scheduledPurgeDate": 1637790053,
         "key": {
-          "kid": "https://fakekvurl.vault.azure.net/",
+          "kid": "https://fakekvurl.vault.azure.net/keys/key3359961573hsm/58b89746d6e64920b88a8396a48aacd5",
           "kty": "RSA-HSM",
           "key_ops": [
             "encrypt",
@@ -956,20 +1289,20 @@
             "wrapKey",
             "unwrapKey"
           ],
-          "n": "zJ1Ie7uOtKzgu7n0aAYhfuRAn3ctmwoCXKOw8kxM4Onu4lPRKVRgNmZ96Q4fddPpp7My5z9fmjr6SXDha9_mbodPWZPHtN9j-dFlCb_ae_O49rWgMoAyj0zevY8qvuHoD3zB9hEk0t57Y-TbFOL9z0HB9eAteHZHxhc5VBaMPbcENn0RBjfGCT3IP2sGoUeWhohx1Zy1mwMjRK5TgYUVksmDxy9Z71yOAPQHIQOMe6uXH55B1X3viCPnLAXzG_QKvUdYMNXyc4LZNHt6G51SrB-rj7vz7sz8mbtY8UtDTvG72xLItddrJaKxv6NMmhgqQDp9Dau-tRNFyYglhYzapQ",
+          "n": "xj_eUjal65Vh1tuoswwTAE3yK8bSay7ljz7fXk3Ya8qSKdoCnPEVGd_IG8x-DnbqB-QVOglorOLNCFlY37I7F91Pkzq3LhKtco4qMFWyL5XtL8RMSeR7rRL7a5_Av_AL4acItn_2zuCyKTQT_4EyjwzEy3BSg3MDMck-lj-piJYKoBd-vcWIx0ZWPiK3zHwfW0d6mbwxiKZIOyMLcNf7c3SdabTz2Hu2tW0Pqpudk1byAsPPxK_sFDGII5MNaz0_L3DiDf-nbduh4c8oygm6iO3PnXDB_9iCq4lvLcA6hi0UrfyiNc7HE_7MePSdY9MWmgkAVo0dmBLT60oXVtJiCQ",
           "e": "AAEAAQ"
         },
         "attributes": {
           "enabled": true,
-          "created": 1637177506,
-          "updated": 1637177506,
+          "created": 1637185248,
+          "updated": 1637185248,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
           "recoverableDays": 7
         }
       }
     },
     {
-      "RequestUri": "https://fakekvurl.vault.azure.net/hhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/:https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/bhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/zhttps://fakekvurl.vault.azure.net/uhttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/lhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/thttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/dhttps://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net//https://fakekvurl.vault.azure.net/khttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/yhttps://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/9https://fakekvurl.vault.azure.net/6https://fakekvurl.vault.azure.net/1https://fakekvurl.vault.azure.net/5https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/hhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/mhttps://fakekvurl.vault.azure.net/?https://fakekvurl.vault.azure.net/ahttps://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/shttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ohttps://fakekvurl.vault.azure.net/nhttps://fakekvurl.vault.azure.net/=https://fakekvurl.vault.azure.net/7https://fakekvurl.vault.azure.net/.https://fakekvurl.vault.azure.net/3https://fakekvurl.vault.azure.net/-https://fakekvurl.vault.azure.net/phttps://fakekvurl.vault.azure.net/rhttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/vhttps://fakekvurl.vault.azure.net/ihttps://fakekvurl.vault.azure.net/ehttps://fakekvurl.vault.azure.net/whttps://fakekvurl.vault.azure.net/",
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key3359961573hsm?api-version=7.3-preview",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         ":authority": "localhost:5001",
@@ -985,7 +1318,7 @@
       "StatusCode": 204,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Date": "Wed, 17 Nov 2021 19:31:52 GMT",
+        "Date": "Wed, 17 Nov 2021 21:40:56 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -993,7 +1326,7 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "d41175ca-4ba5-43bc-8e3d-c973e73dcd96",
+        "x-ms-request-id": "31a1d124-7899-447c-abb1-6032990a8a40",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": null

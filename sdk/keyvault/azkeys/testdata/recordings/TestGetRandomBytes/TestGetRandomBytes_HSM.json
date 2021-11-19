@@ -12,7 +12,7 @@
         "Accept-Encoding": "gzip",
         "Content-Length": "0",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+        "User-Agent": "azsdk-go-internal/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 401,
@@ -25,7 +25,7 @@
         "WWW-Authenticate": "Bearer authorization=\u0022https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000\u0022, resource=\u0022https://managedhsm.azure.net\u0022",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
-        "x-ms-request-id": "4c0bd48c-381c-11ec-8f32-000d3aed998e",
+        "x-ms-request-id": "52459468-47ef-11ec-bf7c-000d3a5f7959",
         "x-ms-server-latency": "0"
       },
       "ResponseBody": null
@@ -43,7 +43,7 @@
         "Authorization": "Sanitized",
         "Content-Length": "13",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+        "User-Agent": "azsdk-go-internal/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
       },
       "RequestBody": {
         "count": 100
@@ -59,11 +59,11 @@
         "X-Frame-Options": "SAMEORIGIN",
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=Ipv4;",
         "x-ms-keyvault-region": "southcentralus",
-        "x-ms-request-id": "4c2a586c-381c-11ec-8f32-000d3aed998e",
+        "x-ms-request-id": "52682dde-47ef-11ec-bf7c-000d3a5f7959",
         "x-ms-server-latency": "1"
       },
       "ResponseBody": {
-        "value": "tqhtLAVSZSextqz5ywpE4G1qyXPLHU7onMG9TlHUYTw-jdcJBPyVbpg2kX3Tok6VoJBwYRsFKk9PMi5xEq5V_siwyn53YRqIBLfdcOg9XSHmN0aIHwbRNpH9aRn5dreqkzuyxA"
+        "value": "qJd_Hk4Wac0-k62RlbssIIJYjAIfL89XxAQw94kDuobejgjc2j_XoiNHsdP7_W5XzezrUzwsDlRG0CGB4Hb024jxY4Z4xZUV0NZNPwGsTBq9FsBtHQylpsmN0YWAlAkiFRFXCA"
       }
     }
   ],

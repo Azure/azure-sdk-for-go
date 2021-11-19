@@ -38,7 +38,7 @@ func TestMain(m *testing.M) {
 			panic(err)
 		}
 
-		vaultUrl := os.Getenv("AZKEYS_KEYVAULT_URL")
+		vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
 		err = recording.AddURISanitizer(fakeKvURL, vaultUrl, nil)
 		if err != nil {
 			panic(err)

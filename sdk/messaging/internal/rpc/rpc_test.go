@@ -135,7 +135,7 @@ func TestResponseRouterNoResponse(t *testing.T) {
 }
 
 func TestAddMessageID(t *testing.T) {
-	message, id, err := addMessageID(&amqp.Message{}, uuid.NewV4)
+	message, id, err := addMessageID(&amqp.Message{}, uuid.New)
 	require.NoError(t, err)
 	require.NotEmpty(t, id)
 	require.EqualValues(t, message.Properties.MessageID, id)
@@ -146,7 +146,7 @@ func TestAddMessageID(t *testing.T) {
 			UserID:    []byte("my user ID"),
 			MessageID: "is that will not be copied"},
 	}
-	message, id, err = addMessageID(m, uuid.NewV4)
+	message, id, err = addMessageID(m, uuid.New)
 	require.NoError(t, err)
 	require.NotEmpty(t, id)
 	require.EqualValues(t, message.Properties.MessageID, id)
@@ -259,7 +259,7 @@ func TestRPCNilMessageMap(t *testing.T) {
 		// there.
 		responseMap:             nil,
 		startResponseRouterOnce: &sync.Once{},
-		uuidNewV4:               uuid.NewV4,
+		uuidNewV4:               uuid.New,
 	}
 
 	// sanity check - all the map/channel functions are returning nil

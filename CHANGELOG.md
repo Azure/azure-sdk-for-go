@@ -1,12 +1,20 @@
 # CHANGELOG
 
+## `v59.3.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2021-08-01/apimanagement`
+- `github.com/Azure/azure-sdk-for-go/services/preview/appinsights/mgmt/2021-11-01-preview/insights`
+- `github.com/Azure/azure-sdk-for-go/services/preview/confluent/mgmt/2021-09-01-preview/confluent`
+
 ## `v59.2.0`
 
 ### Breaking Changes
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/preview/synapse/mgmt/v2.0/synapse` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/preview/synapse/mgmt/v2.0/synapse/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/synapse/mgmt/v2.0/synapse` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v59.2.0/services/preview/synapse/mgmt/v2.0/synapse/CHANGELOG.md) |
 
 ## `v59.1.0`
 

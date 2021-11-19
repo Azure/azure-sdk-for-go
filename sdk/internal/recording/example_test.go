@@ -95,3 +95,33 @@ func ExampleAddURISubscriptionIDSanitizer() {
 		panic(err)
 	}
 }
+
+func ExampleEndToEnd() {
+	func(t *testing.T) {
+		err := recording.Start(t, "sdk/internal/recording/testdata", nil)
+		if err != nil {
+			panic(err)
+		}
+		defer func() {
+			err := recording.Stop(t, nil)
+			if err != nil {
+				panic(err)
+			}
+		}()
+
+		// Add single test recordings here if necessary
+		accountURL := recording.GetEnvVariable("TABLES_ACCOUNT_URL", "https://fakeurl.tables.core.windows.net")
+		err = recording.AddURISanitizer(accountURL, "https://fakeurl.tables.core.windows.net", nil)
+		if err != nil {
+			panic(err)
+		}
+
+		// Test functionality
+
+		// Reset Sanitizers IF only for a single session
+		err = recording.ResetSanitizers(nil)
+		if err != nil {
+			panic(err)
+		}
+	}(&testing.T{})
+}

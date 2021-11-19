@@ -236,7 +236,7 @@ func AddGeneralRegexSanitizer(value, regex string, options *RecordingOptions) er
 	marshalled, err := json.MarshalIndent(struct {
 		Value           string `json:"value"`
 		Regex           string `json:"regex"`
-		GroupForReplace string `json:"groupForReplace"`
+		GroupForReplace string `json:"groupForReplace,omitempty"`
 	}{
 		Value:           value,
 		Regex:           regex,

@@ -1,19 +1,21 @@
 #Requires -Version 7.0
 
-Write-Host $PSScriptRoot
+Write-Host "PWD: $pwd"
+$rootDir = $pwd
+$smokeTestsDir = (Join-Path $pwd "sdk" "smoketests").ToString()
 
 # 1. Every module uses a replace directive to the local version
 # 2. Include every module (data & mgmt) in a go.mod file
 # 3. Run `go mod tidy` and ensure it succeeds
 
 # Create new module directory
-New-Item -Path "$PSScriptRoot/sdk/smoketests"
-Push-Location "$PSScriptRoot/sdk/smoketests"
+New-Item $smokeTestsDir
+Push-Location $smokeTestsDir
 go mod init
 Pop-Location
 
 # From sdk directory, find all packages with go.mod file
-Push-Location "$PSScriptRoot/sdk"
+Push-Location "$rootDir/sdk"
 
 $modules = Get-ChildItem -Path . -Recurse -Include go.mod
 $Paths = $("")
@@ -41,9 +43,9 @@ foreach ($module in $modules) {
 Pop-Location
 
 # Add files to go.mod file in sdk/smoketests
-Push-Location "$PSScriptRoot/sdk/smoketests"
+Push-Location "$rootDir/sdk/smoketests"
 
-Write-Host "Writing modules to go.mod at $PSScriptRoot/sdk/smoketests starting with replace directives"
+Write-Host "Writing modules to go.mod at $rootDir/sdk/smoketests starting with replace directives"
 
 foreach ($replace in $ReplacePaths) {
     Add-Content -Path ./go.mod "$replace`n"

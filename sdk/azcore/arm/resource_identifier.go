@@ -31,19 +31,31 @@ var (
 // ResourceID represents a resource ID such as `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRg`.
 // Don't create this type directly, use ParseResourceID instead.
 type ResourceID struct {
-	// Parent represents the parent ResourceID of this one
+	// Parent is the parent ResourceID of this instance.
+	// Can be nil if there is no parent.
 	Parent *ResourceID
-	// SubscriptionID is the subscription ID in this resource ID. The value can be empty if the resource ID does not have a subscription ID in it
+
+	// SubscriptionID is the subscription ID in this resource ID.
+	// The value can be empty if the resource ID does not contain a subscription ID.
 	SubscriptionID string
-	// ResourceGroupName is the resource group name in this resource ID. The value can be empty if the resource ID does not have a resource group name in it
+
+	// ResourceGroupName is the resource group name in this resource ID.
+	// The value can be empty if the resource ID does not contain a resource group name.
 	ResourceGroupName string
-	// Provider represents the provider name of this resource ID. This is only valid when this resource ID represents a resource provider, for instance, `/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Insights`
+
+	// Provider represents the provider name in this resource ID.
+	// This is only valid when the resource ID represents a resource provider.
+	// Example: `/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Insights`
 	Provider string
-	// Location is the location in this resource ID. The value can be empty if the resource ID does not have a location name in it
+
+	// Location is the location in this resource ID.
+	// The value can be empty if the resource ID does not contain a location name.
 	Location string
-	// ResourceType represents the type of this resource ID
+
+	// ResourceType represents the type of this resource ID.
 	ResourceType ResourceType
-	// Name is the resource name of this resource ID
+
+	// Name is the resource name of this resource ID.
 	Name string
 
 	isChild     bool

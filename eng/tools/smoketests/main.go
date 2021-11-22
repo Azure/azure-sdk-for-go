@@ -201,7 +201,6 @@ func BuildModFile(modules []Module) {
 	_, err = f.WriteString("\n\nrequire (\n")
 	handle(err)
 
-
 	requireString := "\t%s %s\n"
 	for _, module := range modules {
 		s := fmt.Sprintf(requireString, module.Name, module.Version)

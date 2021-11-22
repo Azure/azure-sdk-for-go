@@ -188,17 +188,24 @@ func TestAdminClient_TopicAndSubscriptionRuntimeProperties(t *testing.T) {
 }
 
 func TestAdminClient_StringToTime(t *testing.T) {
-	tm := atom.StringToTime("2021-11-22T23:07:33.08708Z")
+	tm, err := atom.StringToTime("2021-11-22T23:07:33.08708Z")
 	require.False(t, tm.IsZero())
+	require.NoError(t, err)
 
 	// You'll see this uninitialized timestamp when you look at the response from a PUT request.
 	// It's the reason we can't use the much simpler method of just declaring a field as  time.Time in the various
 	// <Entity>Description structs.
 	// We don't even return AccessedTime in in that context so any value will be fine.
-	tm = atom.StringToTime("0001-01-01T00:00:00")
+	tm, err = atom.StringToTime("0001-01-01T00:00:00")
 	require.True(t, tm.IsZero())
+	require.Nil(t, err)
 
 	// and if it's just some ill-f0rmed timestamp we'll just fallback to giving them the zero time.
-	tm = atom.StringToTime("Not a timestamp")
+	tm, err = atom.StringToTime("Not a timestamp")
+	require.Error(t, err)
+	require.True(t, tm.IsZero())
+
+	tm, err = atom.StringToTime("")
+	require.Error(t, err)
 	require.True(t, tm.IsZero())
 }

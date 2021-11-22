@@ -282,20 +282,14 @@ func (em *entityManager) execute(ctx context.Context, method string, entityPath 
 				err = FormatManagementError(bytes, err)
 			}
 
-			return nil, ResponseError{
-				inner: err,
-				resp:  resp,
-			}
+			return nil, NewResponseError(err, resp)
 		}
 
 		return resp, nil
 	}
 
 	if resp != nil {
-		return nil, ResponseError{
-			inner: err,
-			resp:  resp,
-		}
+		return nil, NewResponseError(err, resp)
 	}
 
 	return nil, err

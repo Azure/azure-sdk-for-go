@@ -289,16 +289,20 @@ type (
 	}
 )
 
-func StringToTime(timeStr string) time.Time {
-	if timeStr == "" {
-		return time.Time{}
+func StringToTime(timeStr string) (time.Time, error) {
+	// The ATOM API can return `0001-01-01T00:00:00` as the 'zero' value for the AccessedAt
+	// value when you first create an entity. In those cases we actually don't care about this value - it's
+	// not returned in the user-facing models (we do use it in other contexts, and the value is valid there).
+	// So we'll just fallback to letting it be time.Zero.
+	if timeStr == "0001-01-01T00:00:00" {
+		return time.Time{}, nil
 	}
 
 	parsedTime, err := time.Parse(time.RFC3339, timeStr)
 
 	if err != nil {
-		return time.Time{}
+		return time.Time{}, err
 	}
 
-	return parsedTime
+	return parsedTime, nil
 }

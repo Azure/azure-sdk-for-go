@@ -54,7 +54,7 @@ works the same for queues or topics:
 sender, err := client.NewSender(queueOrTopicName, nil)
 
 sender.SendMessage(context.TODO(), &azservicebus.Message{
-		Body: []byte("hello world"),
+  Body: []byte("hello world"),
 })
 ```
 

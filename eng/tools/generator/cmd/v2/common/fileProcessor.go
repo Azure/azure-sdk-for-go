@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"path"
 	"path/filepath"
 	"regexp"
 	"strings"
@@ -108,7 +109,7 @@ func CleanSDKGeneratedFiles(path string) error {
 	return nil
 }
 
-// replace repo commit with local path in autorest.md files
+// replace repo commit with local path in autorest.md file
 func ChangeConfigWithLocalPath(path, specPath, specRPName string) error {
 	log.Printf("Replacing repo commit with local path in autorest.md ...")
 	b, err := ioutil.ReadFile(path)
@@ -133,7 +134,7 @@ func ChangeConfigWithLocalPath(path, specPath, specRPName string) error {
 	return ioutil.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
 }
 
-// replace repo URL and commit id in autorest.md files
+// replace repo URL and commit id in autorest.md file
 func ChangeConfigWithCommitID(path, repoURL, commitID, specRPName string) error {
 	log.Printf("Replacing repo URL and commit id in autorest.md ...")
 	b, err := ioutil.ReadFile(path)
@@ -151,6 +152,27 @@ func ChangeConfigWithCommitID(path, repoURL, commitID, specRPName string) error 
 	}
 
 	return ioutil.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
+}
+
+// get swagger rp folder name from autorest.md file
+func GetSpecRpName(packageRootPath string) (string, error) {
+	b, err := ioutil.ReadFile(path.Join(packageRootPath, "autorest.md"))
+	if err != nil {
+		return "", err
+	}
+
+	lines := strings.Split(string(b), "\n")
+	for _, line := range lines {
+		if strings.Contains(line, autorest_md_file_suffix) {
+			allParts := strings.Split(line, "/")
+			for i, part := range allParts {
+				if part == "specification" {
+					return allParts[i+1], nil
+				}
+			}
+		}
+	}
+	return "", fmt.Errorf("cannot get sepc rp name from config")
 }
 
 // get latest version from changelog file according to first line with: `## 0.2.1 (2021-11-22)`

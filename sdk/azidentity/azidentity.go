@@ -21,6 +21,13 @@ import (
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/public"
 )
 
+const (
+	organizationsTenantID   = "organizations"
+	developerSignOnClientID = "04b07795-8ddb-461a-bbee-02f9e1bf7b46"
+	defaultSuffix           = "/.default"
+	tenantIDValidationErr   = "invalid tenantID. You can locate your tenantID by following the instructions listed here: https://docs.microsoft.com/partner-center/find-ids-and-domain-names"
+)
+
 const azureAuthorityHost = "AZURE_AUTHORITY_HOST"
 
 // AuthorityHost is the base URL for Azure Active Directory
@@ -34,11 +41,6 @@ const (
 	// AzurePublicCloud is a global constant to use in order to access the Azure public cloud.
 	AzurePublicCloud AuthorityHost = "https://login.microsoftonline.com/"
 )
-
-// defaultSuffix is the default AADv2 scope
-const defaultSuffix = "/.default"
-
-const tenantIDValidationErr = "Invalid tenantID provided. You can locate your tenantID by following the instructions listed here: https://docs.microsoft.com/partner-center/find-ids-and-domain-names."
 
 var (
 	successStatusCodes = [2]int{

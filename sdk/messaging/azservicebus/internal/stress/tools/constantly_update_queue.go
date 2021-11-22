@@ -19,7 +19,11 @@ func ConstantlyUpdateQueue(remainingArgs []string) int {
 	interval := fs.String("interval", "5s", "How often to update the entity")
 	clientCreator := shared.AddAuthFlags(fs)
 
-	fs.Parse(remainingArgs)
+	if err := fs.Parse(remainingArgs); err != nil {
+		fmt.Printf("ERROR: %s", err.Error())
+		fs.PrintDefaults()
+		return 1
+	}
 
 	duration, err := time.ParseDuration(*interval)
 

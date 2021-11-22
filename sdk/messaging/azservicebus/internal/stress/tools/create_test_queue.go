@@ -22,7 +22,11 @@ func CreateTempQueue(remainingArgs []string) int {
 	clientCreator := shared.AddAuthFlags(fs)
 	duration := fs.String("duration", "10m", "Amount of time until the queue deletes itself due to inactivity")
 
-	fs.Parse(remainingArgs)
+	if err := fs.Parse(remainingArgs); err != nil {
+		fmt.Printf("ERROR: %s", err.Error())
+		fs.PrintDefaults()
+		return 1
+	}
 
 	_, adminClient, err := clientCreator()
 

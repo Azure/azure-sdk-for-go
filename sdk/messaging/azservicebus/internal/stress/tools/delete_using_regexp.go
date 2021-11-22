@@ -20,7 +20,11 @@ func DeleteUsingRegexp(remainingArgs []string) int {
 	entityRegex := fs.String("re", "", "The regex to match against the entity name")
 	clientCreator := shared.AddAuthFlags(fs)
 
-	fs.Parse(remainingArgs)
+	if err := fs.Parse(remainingArgs); err != nil {
+		fmt.Printf("ERROR: %s", err.Error())
+		fs.PrintDefaults()
+		return 1
+	}
 
 	entityType, err := entityTypeFn()
 

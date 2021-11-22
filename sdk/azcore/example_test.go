@@ -81,7 +81,11 @@ func ExampleHTTPResponse() {
 		} else {
 			// ...
 		}
+	} else if err != nil {
+		// Handle non-HTTP error
+		fmt.Printf("There was a non-HTTP error that occurred: %s", err.Error())
 	}
+	
 	// Do something with response
 	fmt.Println(ioutil.ReadAll(resp.Body))
 }

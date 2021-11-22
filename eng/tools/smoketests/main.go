@@ -4,10 +4,12 @@ import (
 	"bytes"
 	"flag"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"regexp"
 	"runtime"
 	"strconv"
 	"strings"
@@ -156,18 +158,23 @@ func matchModulesAndTags(goModFiles []string, tags []string) []Module {
 	return m
 }
 
+// GetTopLevel runs "git rev-parse --show-toplevel" to get the an absolute path to the current repo
+func GetTopLevel() string {
+	topLevel, err := exec.Command("git", "rev-parse", "--show-toplevel").CombinedOutput()
+	handle(err)
+	return strings.ReplaceAll(bytes.NewBuffer(topLevel).String(), "\n", "")
+}
+
 // Creates a smoketests directory and initializes a go.mod file by running go mod init.
 // It returns a function to clean up the created directory
 func buildSmokeTestDirectory() {
-	topLevel, err := exec.Command("git", "rev-parse", "--show-toplevel").Output()
-	handle(err)
-	root := strings.ReplaceAll(bytes.NewBuffer(topLevel).String(), "\n", "")
+	topLevel := GetTopLevel()
+	root := strings.ReplaceAll(topLevel, "\n", "")
 	smoketestDir = filepath.Join(root, "sdk", "smoketests")
 
 	_ = os.MkdirAll(smoketestDir, 0777)
-	handle(err)
 
-	err = os.Chdir(smoketestDir)
+	err := os.Chdir(smoketestDir)
 	handle(err)
 
 	// Create go.mod file
@@ -237,6 +244,37 @@ func CleanUp() {
 	}
 }
 
+// Find the example func which will be in the format func ExampleNewClient or ExampleNew***Client
+func FindClientExample(packageDir string) string {
+	// Open the example_test.go file which will have the examples
+	topLevel := GetTopLevel()
+	packageDir = strings.TrimPrefix(packageDir, "github.com/Azure/azure-sdk-for-go")
+	exampleFile := filepath.Join(topLevel, packageDir, "example_test.go")
+
+	f, err := os.OpenFile(exampleFile, os.O_RDONLY, 0666)
+	defer func() {
+		err = f.Close()
+		if err != nil {
+			log.Println(err.Error())
+		}
+	}()
+
+	srcBytes, err := ioutil.ReadFile(exampleFile)
+	if err != nil {
+		log.Printf("Could not read example file at %s. Failed with error: \n%s", exampleFile, err.Error())
+		panic(err)
+	}
+	src := bytes.NewBuffer(srcBytes).String()
+
+	// Rename the package portion to `package smoketests`
+	m := regexp.MustCompile("package [a-zA-Z_]*")
+	replaceString := "package smoketests"
+	res := m.ReplaceAllString(src, replaceString)
+	fmt.Println(res[:300])
+
+	return ""
+}
+
 func main() {
 	fmt.Println("Running smoketest")
 
@@ -262,14 +300,17 @@ func main() {
 	modules := matchModulesAndTags(moduleDirectories, allTags)
 
 	buildSmokeTestDirectory()
+	/*
+		// Build go.mod file
+		BuildModFile(modules)
 
-	// Build go.mod file
-	BuildModFile(modules)
+		// Run go.mod tidy
+		VerifyGoMod()
 
-	// Run go.mod tidy
-	VerifyGoMod()
+		fmt.Println("Successfully ran smoketests")
 
-	fmt.Println("Successfully ran smoketests")
-
-	CleanUp()
+		CleanUp()
+	*/
+	f := FindClientExample(modules[0].Name)
+	fmt.Println(f)
 }

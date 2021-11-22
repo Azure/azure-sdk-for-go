@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/conn"
 	"github.com/stretchr/testify/require"
@@ -128,9 +129,9 @@ func TestAdminClient_GetQueueRuntimeProperties(t *testing.T) {
 
 	require.Greater(t, props.SizeInBytes, int64(0))
 
-	require.NotEqual(t, time.Time{}, props.CreatedAt)
-	require.NotEqual(t, time.Time{}, props.UpdatedAt)
-	require.NotEqual(t, time.Time{}, props.AccessedAt)
+	require.False(t, props.CreatedAt.IsZero())
+	require.False(t, props.UpdatedAt.IsZero())
+	require.False(t, props.AccessedAt.IsZero())
 }
 
 func TestAdminClient_TopicAndSubscriptionRuntimeProperties(t *testing.T) {
@@ -169,9 +170,9 @@ func TestAdminClient_TopicAndSubscriptionRuntimeProperties(t *testing.T) {
 	require.NoError(t, err)
 
 	require.EqualValues(t, 1, getRuntimeResp.SubscriptionCount)
-	require.NotEqual(t, time.Time{}, getRuntimeResp.CreatedAt)
-	require.NotEqual(t, time.Time{}, getRuntimeResp.UpdatedAt)
-	require.NotEqual(t, time.Time{}, getRuntimeResp.AccessedAt)
+	require.False(t, getRuntimeResp.CreatedAt.IsZero())
+	require.False(t, getRuntimeResp.UpdatedAt.IsZero())
+	require.False(t, getRuntimeResp.AccessedAt.IsZero())
 
 	require.Greater(t, getRuntimeResp.SizeInBytes, int64(0))
 	require.EqualValues(t, int32(1), getRuntimeResp.ScheduledMessageCount)
@@ -181,7 +182,23 @@ func TestAdminClient_TopicAndSubscriptionRuntimeProperties(t *testing.T) {
 	require.NoError(t, err)
 
 	require.EqualValues(t, 0, getSubResp.ActiveMessageCount)
-	require.NotEqual(t, time.Time{}, getSubResp.CreatedAt)
-	require.NotEqual(t, time.Time{}, getSubResp.UpdatedAt)
-	require.NotEqual(t, time.Time{}, getSubResp.AccessedAt)
+	require.False(t, getSubResp.CreatedAt.IsZero())
+	require.False(t, getSubResp.UpdatedAt.IsZero())
+	require.False(t, getSubResp.AccessedAt.IsZero())
+}
+
+func TestAdminClient_StringToTime(t *testing.T) {
+	tm := atom.StringToTime("2021-11-22T23:07:33.08708Z")
+	require.False(t, tm.IsZero())
+
+	// You'll see this uninitialized timestamp when you look at the response from a PUT request.
+	// It's the reason we can't use the much simpler method of just declaring a field as  time.Time in the various
+	// <Entity>Description structs.
+	// We don't even return AccessedTime in in that context so any value will be fine.
+	tm = atom.StringToTime("0001-01-01T00:00:00")
+	require.True(t, tm.IsZero())
+
+	// and if it's just some ill-f0rmed timestamp we'll just fallback to giving them the zero time.
+	tm = atom.StringToTime("Not a timestamp")
+	require.True(t, tm.IsZero())
 }

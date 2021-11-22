@@ -192,18 +192,8 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 			return nil, err
 		}
 
-		log.Printf("Remove all the files that start with `zz_generated_`...")
-		if err = CleanSDKGeneratedFiles(packagePath); err != nil {
-			return nil, err
-		}
-
-		log.Printf("Replace version in autorest.md...")
+		log.Printf("Replace version in autorest.md and constants...")
 		if err = ReplaceVersion(packagePath, version.String()); err != nil {
-			return nil, err
-		}
-
-		log.Printf("Run `go generate` to regenerate the code for new version...")
-		if err = ExecuteGoGenerate(packagePath); err != nil {
 			return nil, err
 		}
 

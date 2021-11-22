@@ -30,6 +30,8 @@ var (
 	v2BeginRegex             = regexp.MustCompile("^```\\s*yaml\\s*\\$\\(go\\)\\s*&&\\s*\\$\\((track2|v2)\\)")
 	v2EndRegex               = regexp.MustCompile("^\\s*```\\s*$")
 	newClientMethodNameRegex = regexp.MustCompile("^New.+Client$")
+	versionLineRegex         = regexp.MustCompile(`version\s*=\s*\".*v\d+\.\d+\.\d+\"`)
+	changelogVersionRegex    = regexp.MustCompile(`##\s*(?P<version>\d+\.\d+\.\d+)\s*\((\d{4}-\d{2}-\d{2}|Unreleased)\)`)
 )
 
 // reads from readme.go.md, parses the `track2` section to get module and package name
@@ -151,25 +153,28 @@ func ChangeConfigWithCommitID(path, repoURL, commitID, specRPName string) error 
 	return ioutil.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
 }
 
-// get latest version according to `module-version: ` prefix in autorest.md file
+// get latest version from changelog file according to first line with: `## 0.2.1 (2021-11-22)`
 func GetLatestVersion(packageRootPath string) (*semver.Version, error) {
-	b, err := ioutil.ReadFile(filepath.Join(packageRootPath, "autorest.md"))
+	path := filepath.Join(packageRootPath, common.ChangelogFilename)
+	b, err := ioutil.ReadFile(path)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("cannot parse version from changelog")
 	}
 
 	lines := strings.Split(string(b), "\n")
 	for _, line := range lines {
-		if strings.HasPrefix(line, autorest_md_module_version_prefix) {
-			versionString := strings.TrimSuffix(strings.TrimSuffix(line[len(autorest_md_module_version_prefix):], "\n"), "\r")
-			return semver.NewVersion(versionString)
+		matchResults := changelogVersionRegex.FindAllStringSubmatch(line, -1)
+		for _, matchResult := range matchResults {
+			if matchResult[2] != "Unreleased" {
+				return semver.NewVersion(matchResult[1])
+			}
 		}
 	}
 
-	return nil, fmt.Errorf("cannot parse version from autorest.md")
+	return nil, fmt.Errorf("cannot parse version from changelog")
 }
 
-// replace version according to `module-version: ` prefix in autorest.md file
+// replace version: use `module-version: ` prefix to locate version in autorest.md file, use version = "v*.*.*" regrex to locate version in constants.go file
 func ReplaceVersion(packageRootPath string, newVersion string) error {
 	path := filepath.Join(packageRootPath, "autorest.md")
 	b, err := ioutil.ReadFile(path)
@@ -185,7 +190,17 @@ func ReplaceVersion(packageRootPath string, newVersion string) error {
 		}
 	}
 
-	return ioutil.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
+	if err = ioutil.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644); err != nil {
+		return err
+	}
+
+	path = filepath.Join(packageRootPath, sdk_generated_file_prefix+"constants.go")
+	if b, err = ioutil.ReadFile(path); err != nil {
+		return err
+	}
+	contents := versionLineRegex.ReplaceAllString(string(b), "version = \"v"+newVersion+"\"")
+
+	return ioutil.WriteFile(path, []byte(contents), 0644)
 }
 
 // calculate new version by changelog using semver package
@@ -226,13 +241,27 @@ func AddChangelogToFile(changelog *model.Changelog, version *semver.Version, pac
 	if err != nil {
 		return "", err
 	}
+
 	oldChangelog := string(b)
-	insertPos := strings.Index(oldChangelog, "##")
+	newChangelog := ""
+	matchResults := changelogVersionRegex.FindAllStringSubmatchIndex(oldChangelog, -1)
 	additionalChangelog := changelog.ToCompactMarkdown()
 	if releaseDate == "" {
 		releaseDate = time.Now().Format("2006-01-02")
 	}
-	newChangelog := oldChangelog[:insertPos] + "## " + version.String() + " (" + releaseDate + ")\n" + additionalChangelog + "\n\n" + oldChangelog[insertPos:]
+
+	for _, matchResult := range matchResults {
+		if oldChangelog[matchResult[4]:matchResult[5]] == "Unreleased" {
+			newChangelog = newChangelog + oldChangelog[0:matchResult[0]]
+		} else {
+			if newChangelog == "" {
+				newChangelog = newChangelog + oldChangelog[0:matchResult[0]]
+			}
+			newChangelog = newChangelog + "## " + version.String() + " (" + releaseDate + ")\r\n" + additionalChangelog + "\r\n\r\n" + oldChangelog[matchResult[0]:]
+			break
+		}
+	}
+
 	err = ioutil.WriteFile(path, []byte(newChangelog), 0644)
 	if err != nil {
 		return "", err

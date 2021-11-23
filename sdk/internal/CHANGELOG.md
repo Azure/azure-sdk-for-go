@@ -3,7 +3,7 @@
 ## 0.8.3 (Unreleased)
 
 ### Features Added
-* Adds the `AddBodilessMatcher` method [#]
+* Adds the `AddBodilessMatcher` method [#16256](https://github.com/Azure/azure-sdk-for-go/pull/16256)
 ### Breaking Changes
 
 ### Bugs Fixed

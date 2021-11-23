@@ -105,7 +105,6 @@ func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts policy.To
 		return nil, err
 	}
 	logGetTokenSuccess(c, opts)
-	logMSIEnv(c.client.msiType)
 	return tk, err
 }
 

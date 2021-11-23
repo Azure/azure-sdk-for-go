@@ -54,11 +54,10 @@ const (
 // managedIdentityClient provides the base for authenticating in managed identity environments
 // This type includes an runtime.Pipeline and TokenCredentialOptions.
 type managedIdentityClient struct {
-	pipeline             runtime.Pipeline
-	msiType              msiType
-	endpoint             string
-	id                   ManagedIDKind
-	unavailableMessage   string
+	pipeline runtime.Pipeline
+	msiType  msiType
+	endpoint string
+	id       ManagedIDKind
 }
 
 type wrappedNumber json.Number
@@ -119,8 +118,8 @@ func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) runtime.Pipeline 
 // will be used to retrieve tokens and authenticate
 func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) (*managedIdentityClient, error) {
 	c := managedIdentityClient{
-		id:                   options.ID,
-		pipeline:             newDefaultMSIPipeline(*options), // a pipeline that includes the specific requirements for MSI authentication, such as custom retry policy options
+		id:       options.ID,
+		pipeline: newDefaultMSIPipeline(*options), // a pipeline that includes the specific requirements for MSI authentication, such as custom retry policy options
 	}
 
 	env := "IMDS"
@@ -138,7 +137,7 @@ func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) (*manag
 		if _, ok := os.LookupEnv(identityHeader); ok {
 			if _, ok := os.LookupEnv(identityServerThumbprint); ok {
 				c.msiType = msiTypeServiceFabric
-				env ="Service Fabric"
+				env = "Service Fabric"
 			}
 		} else if _, ok := os.LookupEnv(arcIMDSEndpoint); ok {
 			c.msiType = msiTypeAzureArc
@@ -164,10 +163,6 @@ func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) (*manag
 // clientID: The client (application) ID of the service principal.
 // scopes: The scopes required for the token.
 func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKind, scopes []string) (*azcore.AccessToken, error) {
-	if len(c.unavailableMessage) > 0 {
-		return nil, newCredentialUnavailableError("Managed Identity Credential", c.unavailableMessage)
-	}
-
 	msg, err := c.createAuthRequest(ctx, id, scopes)
 	if err != nil {
 		return nil, err
@@ -186,8 +181,7 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKi
 		if id != nil {
 			return nil, newAuthenticationFailedError(errors.New("the requested identity isn't assigned to this resource"), resp)
 		}
-		c.unavailableMessage = "No default identity is assigned to this resource."
-		return nil, newCredentialUnavailableError("Managed Identity Credential", c.unavailableMessage)
+		return nil, newCredentialUnavailableError("Managed Identity Credential", "no default identity is assigned to this resource")
 	}
 
 	return nil, newAuthenticationFailedError(errors.New("authentication failed"), resp)
@@ -254,15 +248,7 @@ func (c *managedIdentityClient) createAuthRequest(ctx context.Context, id Manage
 	case msiTypeCloudShell:
 		return c.createCloudShellAuthRequest(ctx, id, scopes)
 	default:
-		errorMsg := ""
-		switch c.msiType {
-		case msiTypeUnavailable:
-			errorMsg = "unavailable"
-		default:
-			errorMsg = "unknown"
-		}
-		c.unavailableMessage = "managed identity support is " + errorMsg
-		return nil, newCredentialUnavailableError("Managed Identity Credential", c.unavailableMessage)
+		return nil, newCredentialUnavailableError("Managed Identity Credential", "managed identity isn't supported in this environment")
 	}
 }
 

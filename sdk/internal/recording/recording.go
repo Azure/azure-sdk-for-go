@@ -583,10 +583,7 @@ func Stop(t *testing.T, options *RecordingOptions) error {
 		return errors.New("Recording ID was never set. Did you call StartRecording?")
 	}
 	req.Header.Set("x-recording-id", recTest.recordingId)
-	resp, err := client.Do(req)
-	if err != nil {
-		fmt.Println(resp)
-	}
+	_, err = client.Do(req)
 	return err
 }
 

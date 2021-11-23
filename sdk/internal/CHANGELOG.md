@@ -3,7 +3,7 @@
 ## 0.8.3 (Unreleased)
 
 ### Features Added
-
+* Adds the `AddBodilessMatcher` method [#]
 ### Breaking Changes
 
 ### Bugs Fixed

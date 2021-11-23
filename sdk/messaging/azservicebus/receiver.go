@@ -133,6 +133,8 @@ func newReceiver(ns internal.NamespaceWithNewAMQPLinks, entity *entity, cleanupO
 	// 'nil' settler handles returning an error message for receiveAndDelete links.
 	if receiver.receiveMode == ReceiveModePeekLock {
 		receiver.settler = newMessageSettler(receiver.amqpLinks, receiver.baseRetrier)
+	} else {
+		receiver.settler = (*messageSettler)(nil)
 	}
 
 	return receiver, nil

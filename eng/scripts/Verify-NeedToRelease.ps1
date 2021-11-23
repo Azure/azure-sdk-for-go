@@ -16,14 +16,14 @@ $changeLogEntry = $changeLogEntries[$PackageProp.Version]
 
 if (!$changeLogEntry)
 {
-  Write-Host "Changelog not existed for package: $PackageName, version: $($PackageProp.Version)."
+  Write-Host "Changelog does not exist for package: $PackageName, version: $($PackageProp.Version)."
   Write-Output "##vso[task.setvariable variable=NeedToRelease;isOutput=true]false"
   return
 }
 
 if ([System.String]::IsNullOrEmpty($changeLogEntry.ReleaseStatus) -or $changeLogEntry.ReleaseStatus -eq $CHANGELOG_UNRELEASED_STATUS)
 {
-  Write-Host "Changelog not in release status for package: $PackageName, version: $($PackageProp.Version)."
+  Write-Host "Changelog is not in release status for package: $PackageName, version: $($PackageProp.Version)."
   Write-Output "##vso[task.setvariable variable=NeedToRelease;isOutput=true]false"
   return
 }
@@ -32,7 +32,7 @@ if ([System.String]::IsNullOrEmpty($changeLogEntry.ReleaseStatus) -or $changeLog
 $existingTags = GetExistingTags($apiUrl)
 if ($existingTags -contains "$($PackageProp.Name)/v$($PackageProp.Version)")
 {
-  Write-Host "Package: $PackageName, version: $($PackageProp.Version) already released."
+  Write-Host "Package: $PackageName, version: $($PackageProp.Version) has already released."
   Write-Output "##vso[task.setvariable variable=NeedToRelease;isOutput=true]false"
 }
 else

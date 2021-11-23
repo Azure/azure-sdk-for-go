@@ -62,6 +62,7 @@ type Flags struct {
 	ReleaseDate         string
 	SkipCreateBranch    bool
 	SkipGenerateExample bool
+	PackageConfig       string
 }
 
 func BindFlags(flagSet *pflag.FlagSet) {
@@ -73,6 +74,7 @@ func BindFlags(flagSet *pflag.FlagSet) {
 	flagSet.String("release-date", "", "Specifies the release date in changelog")
 	flagSet.Bool("skip-create-branch", false, "Skip create release branch after generation")
 	flagSet.Bool("skip-generate-example", false, "Skip generate example for SDK in the same time")
+	flagSet.String("package-config", "", "Additional config for package")
 }
 
 func ParseFlags(flagSet *pflag.FlagSet) Flags {
@@ -85,6 +87,7 @@ func ParseFlags(flagSet *pflag.FlagSet) Flags {
 		ReleaseDate:         flags.GetString(flagSet, "release-date"),
 		SkipCreateBranch:    flags.GetBool(flagSet, "skip-create-branch"),
 		SkipGenerateExample: flags.GetBool(flagSet, "skip-generate-example"),
+		PackageConfig:       flags.GetString(flagSet, "package-config"),
 	}
 }
 
@@ -119,6 +122,7 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 	result, err := generateCtx.GenerateForSingleRPNamespace(&common.GenerateParam{
 		RPName:              c.rpName,
 		NamespaceName:       c.namespaceName,
+		NamespaceConfig:     c.flags.PackageConfig,
 		SpecficPackageTitle: c.flags.PackageTitle,
 		SpecficVersion:      c.flags.VersionNumber,
 		SpecRPName:          c.flags.SpecRPName,

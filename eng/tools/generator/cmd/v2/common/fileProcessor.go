@@ -33,11 +33,17 @@ var (
 	newClientMethodNameRegex = regexp.MustCompile("^New.+Client$")
 	versionLineRegex         = regexp.MustCompile(`version\s*=\s*\".*v\d+\.\d+\.\d+\"`)
 	changelogVersionRegex    = regexp.MustCompile(`##\s*(?P<version>\d+\.\d+\.\d+)\s*\((\d{4}-\d{2}-\d{2}|Unreleased)\)`)
+	packageConfigRegex       = regexp.MustCompile(`\$\((package-.+)\)`)
 )
 
+type PackageInfo struct {
+	Name   string
+	Config string
+}
+
 // reads from readme.go.md, parses the `track2` section to get module and package name
-func ReadV2ModuleNameToGetNamespace(path string) (map[string][]string, error) {
-	result := make(map[string][]string)
+func ReadV2ModuleNameToGetNamespace(path string) (map[string][]PackageInfo, error) {
+	result := make(map[string][]PackageInfo)
 	log.Printf("Reading from readme.go.md '%s'...", path)
 	file, err := os.Open(path)
 	if err != nil {
@@ -82,7 +88,12 @@ func ReadV2ModuleNameToGetNamespace(path string) (map[string][]string, error) {
 				}
 				namespaceName := strings.TrimSuffix(strings.TrimSuffix(modules[3], "\n"), "\r")
 				log.Printf("RP: %s Package: %s", modules[2], namespaceName)
-				result[modules[2]] = append(result[modules[2]], namespaceName)
+				packageConfig := ""
+				matchResults := packageConfigRegex.FindAllStringSubmatch(lines[start[i]], -1)
+				for _, matchResult := range matchResults {
+					packageConfig = matchResult[1] + ": true"
+				}
+				result[modules[2]] = append(result[modules[2]], PackageInfo{Name: namespaceName, Config: packageConfig})
 			}
 		}
 	}

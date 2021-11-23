@@ -26,7 +26,9 @@ func AddBodilessMatcher(t *testing.T, options *MatcherOptions) error {
 		panic(err)
 	}
 	req.Header["x-abstraction-identifier"] = []string{"BodilessMatcher"}
-	req.Header["x-recording-id"] = []string{GetRecordingId(t)}
+	if t != nil {
+		req.Header["x-recording-id"] = []string{GetRecordingId(t)}
+	}
 
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {

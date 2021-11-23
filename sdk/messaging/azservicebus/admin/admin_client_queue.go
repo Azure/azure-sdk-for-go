@@ -8,10 +8,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/v3/auth"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
-	"github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
 )
 
 // QueueProperties represents the static properties of the queue.
@@ -197,7 +196,7 @@ func (ac *Client) GetQueue(ctx context.Context, queueName string, options *GetQu
 	props, err := newQueueProperties(&atomResp.Content.QueueDescription)
 
 	if err != nil {
-		return nil, err
+		return nil, atom.NewResponseError(err, resp)
 	}
 
 	return &GetQueueResponse{
@@ -232,10 +231,10 @@ func (ac *Client) GetQueueRuntimeProperties(ctx context.Context, queueName strin
 		return nil, err
 	}
 
-	props, err := newQueueRuntimeProperties(&atomResp.Content.QueueDescription), nil
+	props, err := newQueueRuntimeProperties(&atomResp.Content.QueueDescription)
 
 	if err != nil {
-		return nil, err
+		return nil, atom.NewResponseError(err, resp)
 	}
 
 	return &GetQueueRuntimePropertiesResponse{
@@ -350,7 +349,7 @@ func (ac *Client) createOrUpdateQueueImpl(ctx context.Context, queueName string,
 	newProps, err := newQueueProperties(&atomResp.Content.QueueDescription)
 
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, atom.NewResponseError(err, resp)
 	}
 
 	return newProps, resp, nil
@@ -396,7 +395,7 @@ func (p *QueuePager) getNextPage(ctx context.Context) (*ListQueuesResponse, erro
 		props, err := newQueueProperties(&env.Content.QueueDescription)
 
 		if err != nil {
-			return nil, err
+			return nil, atom.NewResponseError(err, resp)
 		}
 
 		all = append(all, &QueueItem{
@@ -448,9 +447,15 @@ func (p *QueueRuntimePropertiesPager) getNextPage(ctx context.Context) (*ListQue
 	var all []*QueueRuntimePropertiesItem
 
 	for _, entry := range feed.Entries {
+		rt, err := newQueueRuntimeProperties(&entry.Content.QueueDescription)
+
+		if err != nil {
+			return nil, err
+		}
+
 		all = append(all, &QueueRuntimePropertiesItem{
 			QueueName:              entry.Title,
-			QueueRuntimeProperties: *newQueueRuntimeProperties(&entry.Content.QueueDescription),
+			QueueRuntimeProperties: *rt,
 		})
 	}
 
@@ -528,12 +533,9 @@ func newQueueProperties(desc *atom.QueueDescription) (*QueueProperties, error) {
 	return queuePropsResult, nil
 }
 
-func newQueueRuntimeProperties(desc *atom.QueueDescription) *QueueRuntimeProperties {
-	return &QueueRuntimeProperties{
+func newQueueRuntimeProperties(desc *atom.QueueDescription) (*QueueRuntimeProperties, error) {
+	qrt := &QueueRuntimeProperties{
 		SizeInBytes:                    int64OrZero(desc.SizeInBytes),
-		CreatedAt:                      dateTimeToTime(desc.CreatedAt),
-		UpdatedAt:                      dateTimeToTime(desc.UpdatedAt),
-		AccessedAt:                     dateTimeToTime(desc.AccessedAt),
 		TotalMessageCount:              int64OrZero(desc.MessageCount),
 		ActiveMessageCount:             int32OrZero(desc.CountDetails.ActiveMessageCount),
 		DeadLetterMessageCount:         int32OrZero(desc.CountDetails.DeadLetterMessageCount),
@@ -541,14 +543,22 @@ func newQueueRuntimeProperties(desc *atom.QueueDescription) *QueueRuntimePropert
 		TransferDeadLetterMessageCount: int32OrZero(desc.CountDetails.TransferDeadLetterMessageCount),
 		TransferMessageCount:           int32OrZero(desc.CountDetails.TransferMessageCount),
 	}
-}
 
-func dateTimeToTime(t *date.Time) time.Time {
-	if t == nil {
-		return time.Time{}
+	var err error
+
+	if qrt.CreatedAt, err = atom.StringToTime(desc.CreatedAt); err != nil {
+		return nil, err
 	}
 
-	return t.Time
+	if qrt.UpdatedAt, err = atom.StringToTime(desc.UpdatedAt); err != nil {
+		return nil, err
+	}
+
+	if qrt.AccessedAt, err = atom.StringToTime(desc.AccessedAt); err != nil {
+		return nil, err
+	}
+
+	return qrt, nil
 }
 
 func int32OrZero(i *int32) int32 {

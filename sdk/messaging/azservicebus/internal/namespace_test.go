@@ -6,34 +6,16 @@ package internal
 import (
 	"context"
 	"errors"
-	"strings"
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/v3/auth"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/sbauth"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
 	"github.com/Azure/go-amqp"
-	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/stretchr/testify/require"
 )
-
-func TestNewNamespaceWithAzureEnvironment(t *testing.T) {
-	ns, err := NewNamespace(NamespaceWithAzureEnvironment("namespaceName", "AzureGermanCloud"))
-	if err != nil {
-		t.Fatalf("unexpected error creating namespace: %s", err)
-	}
-	if ns.Environment != azure.GermanCloud {
-		t.Fatalf("expected namespace environment to be %q but was %q", azure.GermanCloud, ns.Environment)
-	}
-	if !strings.EqualFold(ns.Suffix, azure.GermanCloud.ServiceBusEndpointSuffix) {
-		t.Fatalf("expected suffix to be %q but was %q", azure.GermanCloud.ServiceBusEndpointSuffix, ns.Suffix)
-	}
-	if ns.Name != "namespaceName" {
-		t.Fatalf("expected namespace name to be %q but was %q", "namespaceName", ns.Name)
-	}
-}
 
 // implements `Retrier` interface.
 type fakeRetrier struct {

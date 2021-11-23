@@ -5,33 +5,28 @@ package atom
 
 import (
 	"encoding/xml"
-
-	"github.com/Azure/go-autorest/autorest/date"
 )
 
 type (
 	// Feed is an Atom feed which contains entries
 	Feed struct {
-		XMLName xml.Name   `xml:"feed"`
-		ID      string     `xml:"id"`
-		Title   string     `xml:"title"`
-		Updated *date.Time `xml:"updated,omitempty"`
-		Entries []Entry    `xml:"entry"`
+		XMLName xml.Name `xml:"feed"`
+		ID      string   `xml:"id"`
+		Title   string   `xml:"title"`
+		Entries []Entry  `xml:"entry"`
 	}
 
 	// Entry is the Atom wrapper for a management request
 	Entry struct {
-		XMLName                   xml.Name   `xml:"entry"`
-		ID                        string     `xml:"id,omitempty"`
-		Title                     string     `xml:"title,omitempty"`
-		Published                 *date.Time `xml:"published,omitempty"`
-		Updated                   *date.Time `xml:"updated,omitempty"`
-		Author                    *Author    `xml:"author,omitempty"`
-		Link                      *Link      `xml:"link,omitempty"`
-		Content                   *Content   `xml:"content"`
-		DataServiceSchema         string     `xml:"xmlns:d,attr,omitempty"`
-		DataServiceMetadataSchema string     `xml:"xmlns:m,attr,omitempty"`
-		AtomSchema                string     `xml:"xmlns,attr"`
+		XMLName                   xml.Name `xml:"entry"`
+		ID                        string   `xml:"id,omitempty"`
+		Title                     string   `xml:"title,omitempty"`
+		Author                    *Author  `xml:"author,omitempty"`
+		Link                      *Link    `xml:"link,omitempty"`
+		Content                   *Content `xml:"content"`
+		DataServiceSchema         string   `xml:"xmlns:d,attr,omitempty"`
+		DataServiceMetadataSchema string   `xml:"xmlns:m,attr,omitempty"`
+		AtomSchema                string   `xml:"xmlns,attr"`
 	}
 
 	// Author is an Atom author used in an entry

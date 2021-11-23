@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+- Removed legacy dependencies, resulting in a much smaller package.
 
 ## 0.3.1 (2021-11-16)
 

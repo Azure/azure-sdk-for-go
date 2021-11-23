@@ -5,6 +5,7 @@ package atom
 
 import (
 	"context"
+	"errors"
 	"io"
 	"net/http"
 	"strings"
@@ -14,10 +15,20 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// sanity check to make sure my error conforms to azcore's interface
 func TestResponseError(t *testing.T) {
+	// sanity check to make sure my error conforms to azcore's interface
 	var err azcore.HTTPResponse = ResponseError{}
 	require.NotNil(t, err)
+
+	require.EqualValues(t, "this is now the error message: 409", NewResponseError(nil, &http.Response{
+		StatusCode: http.StatusConflict,
+		Status:     "this is now the error message",
+	}).Error())
+
+	require.EqualValues(t, "inner errors message takes precedence", NewResponseError(errors.New("inner errors message takes precedence"), &http.Response{
+		StatusCode: http.StatusConflict,
+		Status:     "going to be ignored",
+	}).Error())
 }
 
 type FakeReader struct {

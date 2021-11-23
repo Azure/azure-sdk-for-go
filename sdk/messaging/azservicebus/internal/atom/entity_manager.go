@@ -16,11 +16,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/v3/auth"
-	"github.com/Azure/azure-amqp-common-go/v3/conn"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/sbauth"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/conn"
 	"github.com/devigned/tab"
 )
 
@@ -166,7 +166,7 @@ func NewEntityManagerWithConnectionString(connectionString string, version strin
 	}
 
 	return &entityManager{
-		Host:          fmt.Sprintf("https://%s.%s/", parsed.Namespace, parsed.Suffix),
+		Host:          fmt.Sprintf("https://%s/", parsed.Namespace),
 		version:       version,
 		tokenProvider: provider,
 		mwStack: []MiddlewareFunc{
@@ -282,20 +282,14 @@ func (em *entityManager) execute(ctx context.Context, method string, entityPath 
 				err = FormatManagementError(bytes, err)
 			}
 
-			return nil, ResponseError{
-				inner: err,
-				resp:  resp,
-			}
+			return nil, NewResponseError(err, resp)
 		}
 
 		return resp, nil
 	}
 
 	if resp != nil {
-		return nil, ResponseError{
-			inner: err,
-			resp:  resp,
-		}
+		return nil, NewResponseError(err, resp)
 	}
 
 	return nil, err

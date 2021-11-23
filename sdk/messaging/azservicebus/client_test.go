@@ -76,9 +76,6 @@ func TestNewClientUnitTests(t *testing.T) {
 		_, err = NewClient("", fakeTokenCredential, nil)
 		require.EqualError(t, err, "fullyQualifiedNamespace must not be empty")
 
-		_, err = NewClient("mysb", fakeTokenCredential, nil)
-		require.EqualError(t, err, "fullyQualifiedNamespace is not properly formed. Should be similar to 'myservicebus.servicebus.windows.net'")
-
 		_, err = NewClient("fake.something", nil, nil)
 		require.EqualError(t, err, "credential was nil")
 
@@ -87,11 +84,7 @@ func TestNewClientUnitTests(t *testing.T) {
 		require.NoError(t, internal.NamespacesWithTokenCredential("mysb.windows.servicebus.net",
 			fakeTokenCredential)(ns))
 
-		require.EqualValues(t, ns.Name, "mysb")
-		require.EqualValues(t, ns.Suffix, "windows.servicebus.net")
-
-		err = internal.NamespacesWithTokenCredential("mysb", fakeTokenCredential)(&internal.Namespace{})
-		require.EqualError(t, err, "fullyQualifiedNamespace is not properly formed. Should be similar to 'myservicebus.servicebus.windows.net'")
+		require.EqualValues(t, ns.FQDN, "mysb.windows.servicebus.net")
 	})
 
 	t.Run("CloseAndLinkTracking", func(t *testing.T) {

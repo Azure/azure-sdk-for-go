@@ -83,6 +83,38 @@ func TestMessageSettlementUsingReceiver(t *testing.T) {
 	require.NoError(t, err)
 }
 
+// TestMessageSettlementUsingReceiverWithReceiveAndDelete checks that we don't do anything
+// bad if you attempt to settle a message received in ReceiveModeReceiveAndDelete. It should give
+// back an error message, but otherwise cause no harm.
+func TestMessageSettlementUsingReceiverWithReceiveAndDelete(t *testing.T) {
+	client, cleanup, queueName := setupLiveTest(t, nil)
+	defer cleanup()
+
+	sender, err := client.NewSender(queueName, nil)
+	require.NoError(t, err)
+
+	ctx := context.Background()
+
+	err = sender.SendMessage(context.Background(), &Message{
+		Body: []byte("hello"),
+	})
+	require.NoError(t, err)
+
+	receiver, err := client.NewReceiverForQueue(queueName, &ReceiverOptions{
+		ReceiveMode: ReceiveModeReceiveAndDelete,
+	})
+	require.NoError(t, err)
+
+	messages, err := receiver.ReceiveMessages(ctx, 1, nil)
+	require.NoError(t, err)
+	require.NotEmpty(t, messages)
+
+	require.EqualError(t, receiver.AbandonMessage(ctx, messages[0], nil), "messages that are received in `ReceiveModeReceiveAndDelete` mode are not settleable")
+	require.EqualError(t, receiver.CompleteMessage(ctx, messages[0]), "messages that are received in `ReceiveModeReceiveAndDelete` mode are not settleable")
+	require.EqualError(t, receiver.DeadLetterMessage(ctx, messages[0], nil), "messages that are received in `ReceiveModeReceiveAndDelete` mode are not settleable")
+	require.EqualError(t, receiver.DeferMessage(ctx, messages[0], nil), "messages that are received in `ReceiveModeReceiveAndDelete` mode are not settleable")
+}
+
 func TestDeferredMessages(t *testing.T) {
 	ctx := context.TODO()
 

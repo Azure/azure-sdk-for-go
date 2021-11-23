@@ -75,13 +75,11 @@ func NewManagedIdentityCredential(options *ManagedIdentityCredentialOptions) (*M
 	if options == nil {
 		options = &ManagedIdentityCredentialOptions{}
 	}
-	client := newManagedIdentityClient(options)
-	msiType, err := client.getMSIType()
+	client, err := newManagedIdentityClient(options)
 	if err != nil {
 		logCredentialError("Managed Identity Credential", err)
 		return nil, err
 	}
-	client.msiType = msiType
 	return &ManagedIdentityCredential{id: options.ID, client: client}, nil
 }
 

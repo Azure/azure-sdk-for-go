@@ -3,7 +3,7 @@
 ## 0.8.3 (Unreleased)
 
 ### Features Added
-* Adds `RecordingHTTPClient` to implement `azcore.Transporter` interface and route requests to the test proxy.
+* Adds `NewRecordingHTTPClient()` method which returns an `azcore.Transporter` interface that routes requests to the test proxy.
 
 ### Breaking Changes
 

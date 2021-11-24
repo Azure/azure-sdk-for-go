@@ -666,7 +666,7 @@ func (c RecordingHTTPClient) Do(req *http.Request) (*http.Response, error) {
 	return c.defaultClient.Do(req)
 }
 
-func GetRoutingHTTPClient(t *testing.T, options *RecordingOptions) (*RecordingHTTPClient, error) {
+func NewRecordingHTTPClient(t *testing.T, options *RecordingOptions) (*RecordingHTTPClient, error) {
 	if options == nil {
 		options = &RecordingOptions{UseHTTPS: true}
 	}

@@ -7,6 +7,7 @@
 package recording
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -433,22 +434,18 @@ func TestStartStop(t *testing.T) {
 	defer jsonFile.Close()
 }
 
-func TestStartStopRoutingClient(t *testing.T) {
+func TestStartStopRecordingClient(t *testing.T) {
 	os.Setenv("AZURE_RECORD_MODE", "record")
 	defer os.Unsetenv("AZURE_RECORD_MODE")
 
 	err := Start(t, packagePath, nil)
 	require.NoError(t, err)
 
-	client, err := GetRoutingHTTPClient(t, nil)
+	client, err := NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 
-	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
+	req, err := http.NewRequest("POST", "https://azsdkengsys.azurecr.io/acr/v1/some_registry/_tags", nil)
 	require.NoError(t, err)
-
-	req.Header.Set(UpstreamURIHeader, "https://www.bing.com/")
-	req.Header.Set(ModeHeader, GetRecordMode())
-	req.Header.Set(IDHeader, GetRecordingId(t))
 
 	resp, err := client.Do(req)
 	require.NoError(t, err)
@@ -460,9 +457,17 @@ func TestStartStopRoutingClient(t *testing.T) {
 	require.NoError(t, err)
 
 	// Make sure the file is there
-	jsonFile, err := os.Open("./testdata/recordings/TestStartStopRoutingClient.json")
+	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", t.Name()))
 	require.NoError(t, err)
 	defer jsonFile.Close()
+
+	var data RecordingFileStruct
+	byteValue, err := ioutil.ReadAll(jsonFile)
+	require.NoError(t, err)
+	err = json.Unmarshal(byteValue, &data)
+	require.NoError(t, err)
+	require.Equal(t, "https://azsdkengsys.azurecr.io/acr/v1/some_registry/_tags", data.Entries[0].RequestURI)
+	require.Equal(t, req.URL.String(), "https://localhost:5001/acr/v1/some_registry/_tags")
 }
 
 func TestProxyCert(t *testing.T) {

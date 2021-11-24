@@ -87,8 +87,8 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 	}
 
 	generateCtx := common.GenerateContext{
-		SDKPath:        (*sdkRepo).Root(),
-		SDKRepo:        sdkRepo,
+		SDKPath:        sdkRepo.Root(),
+		SDKRepo:        &sdkRepo,
 		SpecCommitHash: specCommitHash,
 		SpecRepoURL:    c.flags.SwaggerRepo,
 	}
@@ -101,7 +101,7 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 	if !c.flags.SkipCreateBranch {
 		log.Printf("Create new branch for release")
 		releaseBranchName := fmt.Sprintf(releaseBranchNamePattern, "refresh", "all", "package", time.Now().Unix())
-		if err := (*sdkRepo).CreateReleaseBranch(releaseBranchName); err != nil {
+		if err := sdkRepo.CreateReleaseBranch(releaseBranchName); err != nil {
 			return fmt.Errorf("failed to create release branch: %+v", err)
 		}
 	}
@@ -137,7 +137,7 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 			if !c.flags.SkipCreateBranch {
 				log.Printf("Include the packages that is about to release in this release and do release commit...")
 				// append a time in long to avoid collision of branch names
-				if err := (*sdkRepo).AddReleaseCommit(rp.Name(), namespace.Name(), generateCtx.SpecCommitHash, result.Version); err != nil {
+				if err := sdkRepo.AddReleaseCommit(rp.Name(), namespace.Name(), generateCtx.SpecCommitHash, result.Version); err != nil {
 					return fmt.Errorf("failed to add release package or do release commit: %+v", err)
 				}
 			}

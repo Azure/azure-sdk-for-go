@@ -15,7 +15,7 @@ var (
 	commitIDRegex = regexp.MustCompile("^[0-9a-f]{40}$")
 )
 
-func GetSDKRepo(sdkRepoParam, sdkRepoURL string) (*repo.SDKRepository, error) {
+func GetSDKRepo(sdkRepoParam, sdkRepoURL string) (repo.SDKRepository, error) {
 	var err error
 	var sdkRepo repo.SDKRepository
 	// create sdk git repo ref
@@ -35,7 +35,7 @@ func GetSDKRepo(sdkRepoParam, sdkRepoURL string) (*repo.SDKRepository, error) {
 			return nil, fmt.Errorf("failed to get sdk repo: %+v", err)
 		}
 	}
-	return &sdkRepo, nil
+	return sdkRepo, nil
 }
 
 func GetSpecCommit(specRepoParam string) (string, error) {

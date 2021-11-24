@@ -7,24 +7,69 @@
 package recording
 
 import (
-	"encoding/json"
-	"fmt"
-	"io/ioutil"
+	"bytes"
 	"net/http"
-	"os"
 	"testing"
 
 	"github.com/stretchr/testify/require"
 )
 
 func TestAddBodilessMatcher(t *testing.T) {
+	temp := recordMode
+	recordMode = RecordingMode
+	defer func() { recordMode = temp }()
+
 	err := Start(t, packagePath, nil)
+	require.NoError(t, err)
+
+	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
+	require.NoError(t, err)
+
+	req.Header.Set(UpstreamURIHeader, "https://bing.com")
+	req.Header.Set(ModeHeader, GetRecordMode())
+	req.Header.Set(IDHeader, GetRecordingId(t))
+
+	client, err := GetHTTPClient(t)
+	require.NoError(t, err)
+
+	_, err = client.Do(req)
+	require.NoError(t, err)
+
+	err = Stop(t, nil)
+	require.NoError(t, err)
+
+	// Run a second request to with different body to verify it works
+	recordMode = PlaybackMode
+
+	err = Start(t, packagePath, nil)
 	require.NoError(t, err)
 
 	err = AddBodilessMatcher(t, nil)
 	require.NoError(t, err)
 
-	err = AddBodyRegexSanitizer("*", "", nil)
+	req, err = http.NewRequest("POST", "https://localhost:5001", bytes.NewReader([]byte("abcdef")))
+	require.NoError(t, err)
+
+	req.Header.Set(UpstreamURIHeader, "https://bing.com")
+	req.Header.Set(ModeHeader, GetRecordMode())
+	req.Header.Set(IDHeader, GetRecordingId(t))
+
+	_, err = client.Do(req)
+	require.NoError(t, err)
+
+	err = Stop(t, nil)
+	require.NoError(t, err)
+
+	err = ResetProxy(nil)
+	require.NoError(t, err)
+}
+
+func TestAddBodilessMatcherNilTest(t *testing.T) {
+	temp := recordMode
+	recordMode = RecordingMode
+	defer func() { recordMode = temp }()
+
+	err := Start(t, packagePath, nil)
 	require.NoError(t, err)
 
 	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
@@ -43,54 +88,27 @@ func TestAddBodilessMatcher(t *testing.T) {
 	err = Stop(t, nil)
 	require.NoError(t, err)
 
-	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", t.Name()))
-	require.NoError(t, err)
-	defer jsonFile.Close()
+	// Run a second request to with different body to verify it works
+	recordMode = PlaybackMode
 
-	var data RecordingFileStruct
-	byteValue, err := ioutil.ReadAll(jsonFile)
-	require.NoError(t, err)
-	err = json.Unmarshal(byteValue, &data)
-	require.NoError(t, err)
-	require.Equal(t, data.Entries[0].RequestBody, "")
-}
-
-func TestAddBodilessMatcherNilTest(t *testing.T) {
-	err := Start(t, packagePath, nil)
+	err = Start(t, packagePath, nil)
 	require.NoError(t, err)
 
 	err = AddBodilessMatcher(nil, nil)
 	require.NoError(t, err)
 
-	err = AddBodyRegexSanitizer("*", "", nil)
-	require.NoError(t, err)
-
-	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
+	req, err = http.NewRequest("POST", "https://localhost:5001", bytes.NewReader([]byte("abcdef")))
 	require.NoError(t, err)
 
 	req.Header.Set(UpstreamURIHeader, "https://bing.com")
 	req.Header.Set(ModeHeader, GetRecordMode())
 	req.Header.Set(IDHeader, GetRecordingId(t))
 
-	client, err := GetHTTPClient(t)
-	require.NoError(t, err)
-
 	_, err = client.Do(req)
 	require.NoError(t, err)
 
 	err = Stop(t, nil)
 	require.NoError(t, err)
-
-	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", t.Name()))
-	require.NoError(t, err)
-	defer jsonFile.Close()
-
-	var data RecordingFileStruct
-	byteValue, err := ioutil.ReadAll(jsonFile)
-	require.NoError(t, err)
-	err = json.Unmarshal(byteValue, &data)
-	require.NoError(t, err)
-	require.Equal(t, data.Entries[0].RequestBody, "")
 
 	err = ResetProxy(nil)
 	require.NoError(t, err)

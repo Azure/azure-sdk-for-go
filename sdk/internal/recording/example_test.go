@@ -26,7 +26,7 @@ func ExampleStop() {
 	}
 }
 
-func ExampleResetSanitizers() {
+func ExampleResetProxy() {
 	err := recording.ResetProxy(nil)
 	if err != nil {
 		panic(err)

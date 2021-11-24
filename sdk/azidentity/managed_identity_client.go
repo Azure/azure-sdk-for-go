@@ -54,10 +54,11 @@ const (
 // managedIdentityClient provides the base for authenticating in managed identity environments
 // This type includes an runtime.Pipeline and TokenCredentialOptions.
 type managedIdentityClient struct {
-	pipeline runtime.Pipeline
-	msiType  msiType
-	endpoint string
-	id       ManagedIDKind
+	pipeline    runtime.Pipeline
+	msiType     msiType
+	endpoint    string
+	id          ManagedIDKind
+	imdsTimeout time.Duration
 }
 
 type wrappedNumber json.Number
@@ -113,8 +114,7 @@ func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) (*manag
 		options = &ManagedIdentityCredentialOptions{}
 	}
 	cp := options.ClientOptions
-	c := managedIdentityClient{id: options.ID}
-
+	c := managedIdentityClient{id: options.ID, endpoint: imdsEndpoint, msiType: msiTypeIMDS, imdsTimeout: options.imdsTimeout}
 	env := "IMDS"
 	if endpoint, ok := os.LookupEnv(msiEndpoint); ok {
 		c.endpoint = endpoint
@@ -158,6 +158,12 @@ func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) (*manag
 // clientID: The client (application) ID of the service principal.
 // scopes: The scopes required for the token.
 func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKind, scopes []string) (*azcore.AccessToken, error) {
+	var cancel context.CancelFunc
+	if c.imdsTimeout > 0 && c.msiType == msiTypeIMDS {
+		ctx, cancel = context.WithTimeout(ctx, c.imdsTimeout)
+		defer cancel()
+	}
+
 	msg, err := c.createAuthRequest(ctx, id, scopes)
 	if err != nil {
 		return nil, err
@@ -165,8 +171,14 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKi
 
 	resp, err := c.pipeline.Do(msg)
 	if err != nil {
-		return nil, err
+		if cancel != nil && errors.Is(err, context.DeadlineExceeded) {
+			return nil, newCredentialUnavailableError("Managed Identity Credential", "IMDS token request timed out")
+		}
+		return nil, newAuthenticationFailedError(err, nil)
 	}
+
+	// got a response, remove the IMDS timeout so future requests use the transport's configuration
+	c.imdsTimeout = 0
 
 	if runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return c.createAccessToken(resp)

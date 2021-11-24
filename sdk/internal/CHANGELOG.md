@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Renames `ResetSanitizers` to `ResetProxy`
 
 ### Other Changes
 

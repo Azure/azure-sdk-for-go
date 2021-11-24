@@ -27,7 +27,7 @@ func ExampleStop() {
 }
 
 func ExampleResetSanitizers() {
-	err := recording.ResetSanitizers(nil)
+	err := recording.ResetProxy(nil)
 	if err != nil {
 		panic(err)
 	}
@@ -119,7 +119,7 @@ func ExampleStart_second() {
 		// Test functionality
 
 		// Reset Sanitizers IF only for a single session
-		err = recording.ResetSanitizers(nil)
+		err = recording.ResetProxy(nil)
 		if err != nil {
 			panic(err)
 		}

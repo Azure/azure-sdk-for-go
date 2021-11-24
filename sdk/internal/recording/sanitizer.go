@@ -401,8 +401,8 @@ func AddURISubscriptionIDSanitizer(value string, options *RecordingOptions) erro
 	return handleProxyResponse(client.Do(req))
 }
 
-// ResetSanitizers deletes any existing sanitizers from the test proxy.
-func ResetSanitizers(options *RecordingOptions) error {
+// ResetProxy deletes any existing sanitizers, matchers, and transforms from the current test proxy session
+func ResetProxy(options *RecordingOptions) error {
 	if recordMode == LiveMode {
 		return nil
 	}

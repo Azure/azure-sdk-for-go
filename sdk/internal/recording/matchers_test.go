@@ -92,6 +92,6 @@ func TestAddBodilessMatcherNilTest(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, data.Entries[0].RequestBody, "")
 
-	err = ResetSanitizers(nil)
+	err = ResetProxy(nil)
 	require.NoError(t, err)
 }

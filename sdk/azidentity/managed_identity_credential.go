@@ -87,13 +87,8 @@ func NewManagedIdentityCredential(options *ManagedIdentityCredentialOptions) (*M
 // ctx: Context used to control the request lifetime.
 // opts: Options for the token request, in particular the desired scope of the access token.
 func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
-	if opts.Scopes == nil {
-		err := errors.New("must specify a resource in order to authenticate")
-		addGetTokenFailureLogs("Managed Identity Credential", err, true)
-		return nil, err
-	}
-	if len(opts.Scopes) != 1 {
-		err := errors.New("can only specify one resource to authenticate with ManagedIdentityCredential")
+	if opts.Scopes == nil || len(opts.Scopes) != 1 {
+		err := errors.New("ManagedIdentityCredential.GetToken() requires exactly one scope")
 		addGetTokenFailureLogs("Managed Identity Credential", err, true)
 		return nil, err
 	}

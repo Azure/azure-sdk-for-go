@@ -1,6 +1,6 @@
 module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automanage/armautomanage
 
-go 1.13
+go 1.16
 
 require (
 	github.com/Azure/azure-sdk-for-go v59.3.0+incompatible

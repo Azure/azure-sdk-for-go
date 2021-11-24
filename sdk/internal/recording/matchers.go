@@ -17,6 +17,7 @@ type MatcherOptions struct {
 }
 
 // AddBodilessMatcher adjusts the "match" operation to exclude the body when matching a request to a recording's entries.
+// Pass in `nil` for `t` if you want the bodiless matcher to apply everywhere
 func AddBodilessMatcher(t *testing.T, options *MatcherOptions) error {
 	if recordMode != PlaybackMode {
 		return nil

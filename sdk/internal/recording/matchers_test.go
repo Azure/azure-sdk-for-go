@@ -24,11 +24,6 @@ func TestAddBodilessMatcher(t *testing.T) {
 	err = AddBodilessMatcher(t, nil)
 	require.NoError(t, err)
 
-	// TODO: Add more to the test to confirm it actually works
-
-	// 1. Add Body scrubber to remove entire body
-	// 2. Send a request with a body in it
-
 	err = AddBodyRegexSanitizer("*", "", nil)
 	require.NoError(t, err)
 

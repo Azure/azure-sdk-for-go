@@ -85,6 +85,7 @@ func (s *sdkRepository) AddReleaseCommit(rpName, namespaceName, specHash, versio
 
 	return nil
 }
+
 func (s *sdkRepository) CreateReleaseBranch(releaseBranchName string) error {
 	log.Printf("Checking out to %s", plumbing.NewBranchReferenceName(releaseBranchName))
 	return s.Checkout(&CheckoutOptions{

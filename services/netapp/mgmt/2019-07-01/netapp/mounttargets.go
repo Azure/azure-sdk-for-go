@@ -15,7 +15,7 @@ import (
 	"net/http"
 )
 
-// MountTargetsClient is the microsoft NetApp Azure Resource Provider specification
+// MountTargetsClient is the microsoft NetApp Files Azure Resource Provider specification
 type MountTargetsClient struct {
 	BaseClient
 }

@@ -34,6 +34,8 @@ type AccountsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, accountName string) (result netapp.Account, err error)
 	List(ctx context.Context, resourceGroupName string) (result netapp.AccountListPage, err error)
 	ListComplete(ctx context.Context, resourceGroupName string) (result netapp.AccountListIterator, err error)
+	ListBySubscription(ctx context.Context) (result netapp.AccountListPage, err error)
+	ListBySubscriptionComplete(ctx context.Context) (result netapp.AccountListIterator, err error)
 	Update(ctx context.Context, body netapp.AccountPatch, resourceGroupName string, accountName string) (result netapp.AccountsUpdateFuture, err error)
 }
 

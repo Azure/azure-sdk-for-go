@@ -347,6 +347,7 @@ func (client VolumesClient) CreateOrUpdatePreparer(ctx context.Context, body Vol
 
 	body.ID = nil
 	body.Name = nil
+	body.Etag = nil
 	body.Type = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),

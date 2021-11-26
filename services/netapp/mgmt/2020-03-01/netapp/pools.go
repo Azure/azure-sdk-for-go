@@ -15,7 +15,7 @@ import (
 	"net/http"
 )
 
-// PoolsClient is the microsoft NetApp Azure Resource Provider specification
+// PoolsClient is the microsoft NetApp Files Azure Resource Provider specification
 type PoolsClient struct {
 	BaseClient
 }

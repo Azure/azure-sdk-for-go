@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## `v59.4.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2021-10-01/containerservice`
+- `github.com/Azure/azure-sdk-for-go/services/preview/appplatform/mgmt/2021-09-01-preview/appplatform`
+- `github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2021-07-01/backup`
+
 ## `v59.3.0`
 
 ### New Packages

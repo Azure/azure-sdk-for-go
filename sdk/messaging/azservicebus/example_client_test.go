@@ -12,11 +12,19 @@ func ExampleNewClient() {
 	// NOTE: If you'd like to authenticate using a Service Bus connection string
 	// look at `NewClientFromConnectionString` instead.
 
+	// For more information about the DefaultAzureCredential:
+	// https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#NewDefaultAzureCredential
 	credential, err := azidentity.NewDefaultAzureCredential(nil)
-	exitOnError("Failed to create a DefaultAzureCredential", err)
+
+	if err != nil {
+		panic(err)
+	}
 
 	client, err = azservicebus.NewClient("<ex: myservicebus.servicebus.windows.net>", credential, nil)
-	exitOnError("Failed to create ServiceBusClient in example", err)
+
+	if err != nil {
+		panic(err)
+	}
 }
 
 func ExampleNewClientFromConnectionString() {
@@ -24,5 +32,8 @@ func ExampleNewClientFromConnectionString() {
 	// the `NewClient` function instead.
 
 	client, err = azservicebus.NewClientFromConnectionString(connectionString, nil)
-	exitOnError("Failed to create ServiceBusClient in example", err)
+
+	if err != nil {
+		panic(err)
+	}
 }

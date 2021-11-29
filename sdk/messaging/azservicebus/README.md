@@ -35,28 +35,10 @@ go get github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus
 
 The Service Bus [Client][godoc_client] can be created using a Service Bus connection string or a credential from the [Azure Identity package][azure_identity_pkg], like [DefaultAzureCredential][default_azure_credential].
 
-#### Using a connection string
-
-```go
-import (
-  "log"
-  "github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
-)
-
-func main() {
-  client, err := azservicebus.NewClientFromConnectionString("<Service Bus connection string>")
- 
-  if err != nil {
-    panic(err)
-  }
-}
-```
-
 #### Using an Azure Active Directory Credential
 
 ```go
 import (
-  "log"
   "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
   "github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
 )
@@ -64,13 +46,29 @@ import (
 func main() {
   // For more information about the DefaultAzureCredential:
   // https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#NewDefaultAzureCredential
-  cred, err := azidentity.NewDefaultAzureCredential(nil)
+  credential, err := azidentity.NewDefaultAzureCredential(nil)
 
   if err != nil {
     panic(err)
   }
 
-  client, err := azservicebus.NewClient("<ex: my-service-bus.servicebus.windows.net>", cred)
+  client, err = azservicebus.NewClient("<ex: myservicebus.servicebus.windows.net>", credential, nil)
+
+  if err != nil {
+    panic(err)
+  }
+}
+```
+
+#### Using a connection string
+
+```go
+import (
+  "github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
+)
+
+func main() {
+  client, err = azservicebus.NewClientFromConnectionString(connectionString, nil)
 
   if err != nil {
     panic(err)
@@ -207,7 +205,7 @@ Opening a dead letter queue is just a configuration option when creating a [Rece
 ```go
 deadLetterReceiver, err := client.NewReceiverForQueue("<queue>",
   &azservicebus.ReceiverOptions{
-	  SubQueue: azservicebus.SubQueueDeadLetter,
+    SubQueue: azservicebus.SubQueueDeadLetter,
   })
 // or 
 // client.NewReceiverForSubscription("<topic>", "<subscription>", 

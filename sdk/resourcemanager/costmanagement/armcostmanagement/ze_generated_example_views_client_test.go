@@ -120,7 +120,7 @@ func ExampleViewsClient_CreateOrUpdate() {
 					Type: armcostmanagement.ReportTypeUsage.ToPtr(),
 					DataSet: &armcostmanagement.ReportConfigDataset{
 						Aggregation: map[string]*armcostmanagement.ReportConfigAggregation{
-							"totalCost": &armcostmanagement.ReportConfigAggregation{
+							"totalCost": {
 								Name:     to.StringPtr("<name>"),
 								Function: armcostmanagement.FunctionTypeSum.ToPtr(),
 							},
@@ -226,7 +226,7 @@ func ExampleViewsClient_CreateOrUpdateByScope() {
 					Type: armcostmanagement.ReportTypeUsage.ToPtr(),
 					DataSet: &armcostmanagement.ReportConfigDataset{
 						Aggregation: map[string]*armcostmanagement.ReportConfigAggregation{
-							"totalCost": &armcostmanagement.ReportConfigAggregation{
+							"totalCost": {
 								Name:     to.StringPtr("<name>"),
 								Function: armcostmanagement.FunctionTypeSum.ToPtr(),
 							},

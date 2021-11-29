@@ -105,7 +105,7 @@ The following sections provide code snippets that cover some of the common tasks
 
 Once you've created a [Client][godoc_client] you can create a [Sender][godoc_sender], which will allow you to send messages.
 
-NOTE: Creating a `client` is covered in the ["Authenticate the client"](#authenticate-the-client) section of the readme.
+> NOTE: Creating a `azservicebus.Client` is covered in the ["Authenticate the client"](#authenticate-the-client) section of the readme, using either an [Azure Active Directory credential](#using-an-azure-active-directory-credential) or a [Service Bus connection string](#using-a-connection-string).
 
 ```go
 sender, err := client.NewSender("<queue or topic>", nil)
@@ -152,7 +152,7 @@ if err == azservicebus.ErrMessageTooLarge {
 
 Once you've created a [Client][godoc_client] you can create a [Receiver][godoc_receiver], which will allow you to receive messages.
 
-> NOTE: Creating a `client` is covered in the ["Authenticate the client"](#authenticate-the-client) section of the readme.
+> NOTE: Creating a `azservicebus.Client` is covered in the ["Authenticate the client"](#authenticate-the-client) section of the readme, using either an [Azure Active Directory credential](#using-an-azure-active-directory-credential) or a [Service Bus connection string](#using-a-connection-string).
 
 ```go
 receiver, err := client.NewReceiverForQueue(
@@ -200,7 +200,7 @@ messages that have been explicitly dead lettered using the [Receiver.DeadLetterM
 
 Opening a dead letter queue is just a configuration option when creating a [Receiver][godoc_receiver].
 
-> NOTE: Creating a `client` is covered in the ["Authenticate the client"](#authenticate-the-client) section of the readme.
+> NOTE: Creating a `azservicebus.Client` is covered in the ["Authenticate the client"](#authenticate-the-client) section of the readme, using either an [Azure Active Directory credential](#using-an-azure-active-directory-credential) or a [Service Bus connection string](#using-a-connection-string).
 
 ```go
 deadLetterReceiver, err := client.NewReceiverForQueue("<queue>",

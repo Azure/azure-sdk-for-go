@@ -12,8 +12,11 @@ import (
 )
 
 func ExampleClient_NewSender() {
-	sender, err = client.NewSender("exampleQueue", nil) // or topicName
-	exitOnError("Failed to create sender", err)
+	sender, err = client.NewSender("<queue or topic>", nil)
+
+	if err != nil {
+		panic(err)
+	}
 }
 
 func ExampleSender_SendMessage_message() {

@@ -3,10 +3,11 @@
 ## 0.8.3 (Unreleased)
 
 ### Features Added
-
+* Adds the `SetBodilessMatcher` method [#16256](https://github.com/Azure/azure-sdk-for-go/pull/16256)
 ### Breaking Changes
 
-### Bugs Fixed
+### Breaking Changes
+* Renames `ResetSanitizers` to `ResetProxy`
 
 ### Other Changes
 

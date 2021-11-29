@@ -584,10 +584,7 @@ func Stop(t *testing.T, options *RecordingOptions) error {
 	}
 	req.Header.Set("x-recording-id", recTest.recordingId)
 	_, err = client.Do(req)
-	if err != nil {
-		t.Errorf(err.Error())
-	}
-	return nil
+	return err
 }
 
 // This looks up an environment variable and if it is not found, returns the recordedValue

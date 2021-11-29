@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"flag"
 	"fmt"
+	"hash/fnv"
 	"io/ioutil"
 	"log"
 	"os"
@@ -56,7 +57,7 @@ func inIgnoredDirectories(path string) bool {
 func findModuleDirectories(root string) []string {
 	var ret []string
 
-	filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
+	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
 		handle(err)
 		if strings.Contains(info.Name(), "go.mod") && !inIgnoredDirectories(path) {
 			path = strings.ReplaceAll(path, "\\", "/")
@@ -67,6 +68,7 @@ func findModuleDirectories(root string) []string {
 		}
 		return nil
 	})
+	handle(err)
 
 	return ret
 }
@@ -143,7 +145,7 @@ func matchModulesAndTags(goModFiles []string, tags []string) []Module {
 	var m []Module
 
 	for _, goModFile := range goModFiles {
-		packagePath := strings.Split(goModFile, "github.com/Azure/azure-sdk-for-go/")
+		packagePath := strings.Split(goModFile, "github.com/Azure/azure-sdk-for-go/sdk/")
 		relativePackagePath := packagePath[1]
 		version, err := findLatestTag(relativePackagePath, tags)
 		handle(err)
@@ -165,8 +167,7 @@ func GetTopLevel() string {
 	return strings.ReplaceAll(bytes.NewBuffer(topLevel).String(), "\n", "")
 }
 
-// Creates a smoketests directory and initializes a go.mod file by running go mod init.
-// It returns a function to clean up the created directory
+// Creates a smoketests directory and creates a go.mod file
 func buildSmokeTestDirectory() {
 	topLevel := GetTopLevel()
 	root := strings.ReplaceAll(topLevel, "\n", "")
@@ -186,37 +187,51 @@ func buildSmokeTestDirectory() {
 	handle(err)
 }
 
-func BuildModFile(modules []Module) {
+func BuildModFile(modules []Module) error {
 	fmt.Println("Creating mod file manully...")
 
 	f, err := os.OpenFile(smoketestModFile, os.O_RDWR, 0666)
-	handle(err)
+	if err != nil {
+		return err
+	}
 	defer f.Close()
 
 	_, err = f.WriteString(fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/sdk/smoketests\n\n%s\n\n", getVersion()))
-	handle(err)
+
+	if err != nil {
+		return err
+	}
 
 	fmt.Println("Starting with replace")
 	replaceString := "replace %s => %s\n"
 	for _, module := range modules {
 		s := fmt.Sprintf(replaceString, module.Name, module.Replace)
 		_, err = f.Write([]byte(s))
-		handle(err)
+
+		if err != nil {
+			return err
+		}
 	}
 
 	fmt.Println("Require portion")
 	_, err = f.WriteString("\n\nrequire (\n")
-	handle(err)
+
+	if err != nil {
+		return err
+	}
 
 	requireString := "\t%s %s\n"
 	for _, module := range modules {
 		s := fmt.Sprintf(requireString, module.Name, module.Version)
 		_, err = f.Write([]byte(s))
-		handle(err)
+
+		if err != nil {
+			return err
+		}
 	}
 
 	_, err = f.WriteString(")")
-	handle(err)
+	return err
 }
 
 func VerifyGoMod() {
@@ -275,6 +290,90 @@ func FindClientExample(packageDir string) string {
 	return ""
 }
 
+// FindExampleFiles finds all files that are named "example_*.go".
+func FindExampleFiles(root string) ([]string, error) {
+	var ret []string
+
+	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
+		handle(err)
+		if strings.HasPrefix(info.Name(), "example_") && !inIgnoredDirectories(path) && strings.HasSuffix(info.Name(), ".go") {
+			fName := path
+			fName = strings.ReplaceAll(fName, "\\", "/")
+			ret = append(ret, fName)
+		}
+		return nil
+	})
+
+	return ret, err
+}
+
+// copyFile copies the contents from src to dest. Creating the dest file first
+func copyFile(src, dest string) error {
+	f, err := os.Create(dest)
+	if err != nil {
+		return err
+	}
+	err = f.Close()
+	if err != nil {
+		return err
+	}
+
+	data, err := ioutil.ReadFile(src)
+	if err != nil {
+		return err
+	}
+
+	err = ioutil.WriteFile(dest, data, 0644)
+	return err
+}
+
+// CopyExampleFiles copies all the example files to the destination directory.
+// This creates a hash of the fileName for the destination path
+func CopyExampleFiles(exFiles []string, dest string) error {
+	fmt.Printf("Copying %d example files to %s\n", len(exFiles), dest)
+
+	for _, exFile := range exFiles {
+		h := fnv.New32a()
+		_, err := h.Write([]byte(exFile))
+		if err != nil {
+			return err
+		}
+		destinationPath := filepath.Join(dest, fmt.Sprintf("%d.go", h.Sum32()))
+
+		err = copyFile(exFile, destinationPath)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+// ReplacePackageStatement replaces all "package ***" with a common "package smoketests" statement
+func ReplacePackageStatement(root string) error {
+	fmt.Println("Fixing package names in", root)
+	packageName := "smoketests"
+	return filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
+		if strings.HasSuffix(info.Name(), ".go") {
+			handle(err)
+			data, err := ioutil.ReadFile(path)
+			handle(err)
+
+			datastring := bytes.NewBuffer(data).String()
+
+			m := regexp.MustCompile("package (.*)&")
+			fmt.Println(m.FindAllStringIndex(datastring, -1))
+			datastring = m.ReplaceAllString(datastring, packageName)
+
+			err = ioutil.WriteFile(path, []byte(datastring), 0666)
+			if err != nil {
+				return err
+			}
+		}
+		return nil
+	})
+}
+
 func main() {
 	fmt.Println("Running smoketest")
 
@@ -287,30 +386,45 @@ func main() {
 		os.Exit(1)
 	}
 
-	absPath, err := filepath.Abs(fmt.Sprintf("%s/sdk", *rootDirectory))
+	absSDKPath, err := filepath.Abs(fmt.Sprintf("%s/sdk", *rootDirectory))
 	handle(err)
-	fmt.Println("Root directory: ", absPath)
+	fmt.Println("Root SDK directory: ", absSDKPath)
 
-	moduleDirectories := findModuleDirectories(absPath)
+	smoketestDir = filepath.Join(absSDKPath, "smoketests")
+	fmt.Println("Smoke test directory: ", smoketestDir)
+	err = os.Mkdir(smoketestDir, 0666)
+	if err != os.ErrExist {
+		handle(err)
+	}
+
+	smoketestModFile = filepath.Join(smoketestDir, "go.mod")
+	f, err := os.Create(smoketestModFile)
+	handle(err)
+	err = f.Close()
+	handle(err)
+
+	exampleFiles, err := FindExampleFiles(absSDKPath)
+	handle(err)
+	fmt.Printf("Found %d example files for smoke tests\n", len(exampleFiles))
+	for _, e := range exampleFiles {
+		fmt.Println(e)
+	}
+
+	moduleDirectories := findModuleDirectories(absSDKPath)
 	fmt.Printf("Found %d modules\n", len(moduleDirectories))
 
 	allTags := getAllTags()
 	fmt.Printf("Found %d tags\n", len(allTags))
 
 	modules := matchModulesAndTags(moduleDirectories, allTags)
+	_ = modules
 
-	buildSmokeTestDirectory()
-	/*
-		// Build go.mod file
-		BuildModFile(modules)
+	err = CopyExampleFiles(exampleFiles, smoketestDir)
+	handle(err)
 
-		// Run go.mod tidy
-		VerifyGoMod()
+	err = BuildModFile(modules)
+	handle(err)
 
-		fmt.Println("Successfully ran smoketests")
-
-		CleanUp()
-	*/
-	f := FindClientExample(modules[0].Name)
-	fmt.Println(f)
+	err = ReplacePackageStatement(smoketestDir)
+	handle(err)
 }

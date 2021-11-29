@@ -401,7 +401,7 @@ func AddURISubscriptionIDSanitizer(value string, options *RecordingOptions) erro
 	return handleProxyResponse(client.Do(req))
 }
 
-// ResetProxy deletes any existing sanitizers, matchers, and transforms from the current test proxy session
+// ResetProxy restores the proxy's default sanitizers, matchers, and transforms
 func ResetProxy(options *RecordingOptions) error {
 	if recordMode == LiveMode {
 		return nil

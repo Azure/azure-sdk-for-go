@@ -14,7 +14,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestAddBodilessMatcher(t *testing.T) {
+func TestSetBodilessMatcher(t *testing.T) {
 	temp := recordMode
 	recordMode = RecordingMode
 	defer func() { recordMode = temp }()
@@ -44,7 +44,7 @@ func TestAddBodilessMatcher(t *testing.T) {
 	err = Start(t, packagePath, nil)
 	require.NoError(t, err)
 
-	err = AddBodilessMatcher(t, nil)
+	err = SetBodilessMatcher(t, nil)
 	require.NoError(t, err)
 
 	req, err = http.NewRequest("POST", "https://localhost:5001", bytes.NewReader([]byte("abcdef")))
@@ -64,7 +64,7 @@ func TestAddBodilessMatcher(t *testing.T) {
 	require.NoError(t, err)
 }
 
-func TestAddBodilessMatcherNilTest(t *testing.T) {
+func TestSetBodilessMatcherNilTest(t *testing.T) {
 	temp := recordMode
 	recordMode = RecordingMode
 	defer func() { recordMode = temp }()
@@ -94,7 +94,7 @@ func TestAddBodilessMatcherNilTest(t *testing.T) {
 	err = Start(t, packagePath, nil)
 	require.NoError(t, err)
 
-	err = AddBodilessMatcher(nil, nil)
+	err = SetBodilessMatcher(nil, nil)
 	require.NoError(t, err)
 
 	req, err = http.NewRequest("POST", "https://localhost:5001", bytes.NewReader([]byte("abcdef")))

@@ -435,9 +435,9 @@ func TestStartStop(t *testing.T) {
 }
 
 func TestStartStopRecordingClient(t *testing.T) {
-	temp := os.Getenv("AZURE_RECORD_MODE")
-	os.Setenv("AZURE_RECORD_MODE", "record")
-	defer os.Setenv("AZURE_RECORD_MODE", temp)
+	temp := recordMode
+	recordMode = RecordingMode
+	defer func() { recordMode = temp }()
 
 	err := Start(t, packagePath, nil)
 	require.NoError(t, err)

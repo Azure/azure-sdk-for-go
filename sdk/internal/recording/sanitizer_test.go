@@ -168,7 +168,7 @@ func (m *mockRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) 
 }
 
 func reset(t *testing.T) {
-	err := ResetSanitizers(nil)
+	err := ResetProxy(nil)
 	require.NoError(t, err)
 }
 
@@ -194,7 +194,7 @@ func (e Entry) ResponseBodyByValue(k string) interface{} {
 func TestUriSanitizer(t *testing.T) {
 	defer reset(t)
 
-	err := ResetSanitizers(nil)
+	err := ResetProxy(nil)
 	require.NoError(t, err)
 
 	err = Start(t, packagePath, nil)
@@ -241,7 +241,7 @@ func TestUriSanitizer(t *testing.T) {
 func TestHeaderRegexSanitizer(t *testing.T) {
 	defer reset(t)
 
-	err := ResetSanitizers(nil)
+	err := ResetProxy(nil)
 	require.NoError(t, err)
 
 	err = Start(t, packagePath, nil)
@@ -300,7 +300,7 @@ func TestHeaderRegexSanitizer(t *testing.T) {
 func TestBodyKeySanitizer(t *testing.T) {
 	defer reset(t)
 
-	err := ResetSanitizers(nil)
+	err := ResetProxy(nil)
 	require.NoError(t, err)
 
 	err = Start(t, packagePath, nil)
@@ -355,7 +355,7 @@ func TestBodyKeySanitizer(t *testing.T) {
 func TestBodyRegexSanitizer(t *testing.T) {
 	defer reset(t)
 
-	err := ResetSanitizers(nil)
+	err := ResetProxy(nil)
 	require.NoError(t, err)
 
 	err = Start(t, packagePath, nil)
@@ -413,7 +413,7 @@ func TestBodyRegexSanitizer(t *testing.T) {
 func TestRemoveHeaderSanitizer(t *testing.T) {
 	defer reset(t)
 
-	err := ResetSanitizers(nil)
+	err := ResetProxy(nil)
 	require.NoError(t, err)
 
 	err = Start(t, packagePath, nil)
@@ -462,7 +462,7 @@ func TestRemoveHeaderSanitizer(t *testing.T) {
 func TestContinuationSanitizer(t *testing.T) {
 	defer reset(t)
 
-	err := ResetSanitizers(nil)
+	err := ResetProxy(nil)
 	require.NoError(t, err)
 
 	err = Start(t, packagePath, nil)
@@ -527,7 +527,7 @@ func TestContinuationSanitizer(t *testing.T) {
 func TestGeneralRegexSanitizer(t *testing.T) {
 	defer reset(t)
 
-	err := ResetSanitizers(nil)
+	err := ResetProxy(nil)
 	require.NoError(t, err)
 
 	err = Start(t, packagePath, nil)
@@ -573,7 +573,7 @@ func TestGeneralRegexSanitizer(t *testing.T) {
 func TestOAuthResponseSanitizer(t *testing.T) {
 	defer reset(t)
 
-	err := ResetSanitizers(nil)
+	err := ResetProxy(nil)
 	require.NoError(t, err)
 
 	err = Start(t, packagePath, nil)
@@ -617,7 +617,7 @@ func TestOAuthResponseSanitizer(t *testing.T) {
 func TestUriSubscriptionIdSanitizer(t *testing.T) {
 	defer reset(t)
 
-	err := ResetSanitizers(nil)
+	err := ResetProxy(nil)
 	require.NoError(t, err)
 
 	err = Start(t, packagePath, nil)
@@ -662,7 +662,7 @@ func TestUriSubscriptionIdSanitizer(t *testing.T) {
 func TestResetSanitizers(t *testing.T) {
 	defer reset(t)
 
-	err := ResetSanitizers(nil)
+	err := ResetProxy(nil)
 	require.NoError(t, err)
 
 	err = Start(t, packagePath, nil)
@@ -686,7 +686,7 @@ func TestResetSanitizers(t *testing.T) {
 	require.NoError(t, err)
 
 	// Remove all sanitizers
-	err = ResetSanitizers(nil)
+	err = ResetProxy(nil)
 	require.NoError(t, err)
 
 	resp, err := client.Do(req)

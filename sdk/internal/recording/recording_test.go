@@ -435,8 +435,9 @@ func TestStartStop(t *testing.T) {
 }
 
 func TestStartStopRecordingClient(t *testing.T) {
+	temp := os.Getenv("AZURE_RECORD_MODE")
 	os.Setenv("AZURE_RECORD_MODE", "record")
-	defer os.Unsetenv("AZURE_RECORD_MODE")
+	defer os.Setenv("AZURE_RECORD_MODE", temp)
 
 	err := Start(t, packagePath, nil)
 	require.NoError(t, err)
@@ -459,7 +460,12 @@ func TestStartStopRecordingClient(t *testing.T) {
 	// Make sure the file is there
 	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", t.Name()))
 	require.NoError(t, err)
-	defer jsonFile.Close()
+	defer func() {
+		err = jsonFile.Close()
+		require.NoError(t, err)
+		err = os.Remove(jsonFile.Name())
+		require.NoError(t, err)
+	}()
 
 	var data RecordingFileStruct
 	byteValue, err := ioutil.ReadAll(jsonFile)

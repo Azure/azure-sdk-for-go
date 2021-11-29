@@ -39,8 +39,6 @@ const (
 type (
 	// ParsedConn is the structure of a parsed Service Bus or Event Hub connection string.
 	ParsedConn struct {
-		Host      string
-		Suffix    string
 		Namespace string
 		HubName   string
 		KeyName   string
@@ -49,10 +47,9 @@ type (
 )
 
 // newParsedConnection is a constructor for a parsedConn and verifies each of the inputs is non-null.
-func newParsedConnection(namespace, suffix, hubName, keyName, key string) *ParsedConn {
+// namespace is the FQDN of the namespace
+func newParsedConnection(namespace, hubName, keyName, key string) *ParsedConn {
 	return &ParsedConn{
-		Host:      "amqps://" + namespace + "." + suffix,
-		Suffix:    suffix,
 		Namespace: namespace,
 		KeyName:   keyName,
 		Key:       key,
@@ -63,7 +60,7 @@ func newParsedConnection(namespace, suffix, hubName, keyName, key string) *Parse
 // ParsedConnectionFromStr takes a string connection string from the Azure portal and returns the parsed representation.
 // The method will return an error if the Endpoint, SharedAccessKeyName or SharedAccessKey is empty.
 func ParsedConnectionFromStr(connStr string) (*ParsedConn, error) {
-	var namespace, suffix, hubName, keyName, secret string
+	var namespace, hubName, keyName, secret string
 	splits := strings.Split(connStr, ";")
 	for _, split := range splits {
 		keyAndValue := strings.Split(split, "=")
@@ -80,12 +77,7 @@ func ParsedConnectionFromStr(connStr string) (*ParsedConn, error) {
 			if err != nil {
 				return nil, errors.New("failed parsing connection string due to an incorrectly formatted Endpoint value")
 			}
-			hostSplits := strings.Split(u.Host, ".")
-			if len(hostSplits) < 2 {
-				return nil, errors.New("failed parsing connection string due to Endpoint value not containing a URL with a namespace and a suffix")
-			}
-			namespace = hostSplits[0]
-			suffix = strings.Join(hostSplits[1:], ".")
+			namespace = u.Host
 		case strings.EqualFold(sharedAccessKeyNameKey, key):
 			keyName = value
 		case strings.EqualFold(sharedAccessKeyKey, key):
@@ -95,7 +87,7 @@ func ParsedConnectionFromStr(connStr string) (*ParsedConn, error) {
 		}
 	}
 
-	parsed := newParsedConnection(namespace, suffix, hubName, keyName, secret)
+	parsed := newParsedConnection(namespace, hubName, keyName, secret)
 	if namespace == "" {
 		return parsed, fmt.Errorf("key %q must not be empty", endpointKey)
 	}

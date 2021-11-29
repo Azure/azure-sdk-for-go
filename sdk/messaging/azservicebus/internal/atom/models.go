@@ -6,8 +6,6 @@ package atom
 import (
 	"encoding/xml"
 	"time"
-
-	"github.com/Azure/go-autorest/autorest/date"
 )
 
 // Queues
@@ -54,9 +52,9 @@ type (
 		MessageCount                        *int64        `xml:"MessageCount,omitempty"`                        // MessageCount - The number of messages in the queue.
 		IsAnonymousAccessible               *bool         `xml:"IsAnonymousAccessible,omitempty"`
 		Status                              *EntityStatus `xml:"Status,omitempty"`
-		AccessedAt                          *date.Time    `xml:"AccessedAt,omitempty"`
-		CreatedAt                           *date.Time    `xml:"CreatedAt,omitempty"`
-		UpdatedAt                           *date.Time    `xml:"UpdatedAt,omitempty"`
+		AccessedAt                          string        `xml:"AccessedAt,omitempty"`
+		CreatedAt                           string        `xml:"CreatedAt,omitempty"`
+		UpdatedAt                           string        `xml:"UpdatedAt,omitempty"`
 		SupportOrdering                     *bool         `xml:"SupportOrdering,omitempty"`
 		AutoDeleteOnIdle                    *string       `xml:"AutoDeleteOnIdle,omitempty"`
 		EnablePartitioning                  *bool         `xml:"EnablePartitioning,omitempty"`
@@ -94,6 +92,33 @@ type (
 		*Feed
 		Entries []TopicEnvelope `xml:"entry"`
 	}
+
+	// TopicDescription is the content type for Topic management requests
+	// Refer here for ordering constraints: https://github.com/Azure/azure-sdk-for-net/blob/ed2e86cb299e11a276dcf652a9db796efe2d2a27/sdk/servicebus/Azure.Messaging.ServiceBus/src/Administration/TopicPropertiesExtensions.cs#L178
+	TopicDescription struct {
+		XMLName xml.Name `xml:"TopicDescription"`
+		BaseEntityDescription
+		DefaultMessageTimeToLive            *string       `xml:"DefaultMessageTimeToLive,omitempty"`            // DefaultMessageTimeToLive - ISO 8601 default message time span to live value. This is the duration after which the message expires, starting from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a message itself.
+		MaxSizeInMegabytes                  *int32        `xml:"MaxSizeInMegabytes,omitempty"`                  // MaxSizeInMegabytes - The maximum size of the queue in megabytes, which is the size of memory allocated for the queue. Default is 1024.
+		RequiresDuplicateDetection          *bool         `xml:"RequiresDuplicateDetection,omitempty"`          // RequiresDuplicateDetection - A value indicating if this queue requires duplicate detection.
+		DuplicateDetectionHistoryTimeWindow *string       `xml:"DuplicateDetectionHistoryTimeWindow,omitempty"` // DuplicateDetectionHistoryTimeWindow - ISO 8601 timeSpan structure that defines the duration of the duplicate detection history. The default value is 10 minutes.
+		EnableBatchedOperations             *bool         `xml:"EnableBatchedOperations,omitempty"`             // EnableBatchedOperations - Value that indicates whether server-side batched operations are enabled.
+		SizeInBytes                         *int64        `xml:"SizeInBytes,omitempty"`                         // SizeInBytes - The size of the queue, in bytes.
+		FilteringMessagesBeforePublishing   *bool         `xml:"FilteringMessagesBeforePublishing,omitempty"`
+		IsAnonymousAccessible               *bool         `xml:"IsAnonymousAccessible,omitempty"`
+		Status                              *EntityStatus `xml:"Status,omitempty"`
+		UserMetadata                        *string       `xml:"UserMetadata,omitempty"`
+		AccessedAt                          string        `xml:"AccessedAt,omitempty"`
+		CreatedAt                           string        `xml:"CreatedAt,omitempty"`
+		UpdatedAt                           string        `xml:"UpdatedAt,omitempty"`
+		SupportOrdering                     *bool         `xml:"SupportOrdering,omitempty"`
+		AutoDeleteOnIdle                    *string       `xml:"AutoDeleteOnIdle,omitempty"`
+		EnablePartitioning                  *bool         `xml:"EnablePartitioning,omitempty"`
+		EnableSubscriptionPartitioning      *bool         `xml:"EnableSubscriptionPartitioning,omitempty"`
+		EnableExpress                       *bool         `xml:"EnableExpress,omitempty"`
+		CountDetails                        *CountDetails `xml:"CountDetails,omitempty"`
+		SubscriptionCount                   *int32        `xml:"SubscriptionCount,omitempty"`
+	}
 )
 
 // Subscriptions (and rules)
@@ -112,7 +137,7 @@ type (
 	RuleDescription struct {
 		XMLName xml.Name `xml:"RuleDescription"`
 		BaseEntityDescription
-		CreatedAt *date.Time         `xml:"CreatedAt,omitempty"`
+		CreatedAt string             `xml:"CreatedAt,omitempty"`
 		Filter    FilterDescription  `xml:"Filter"`
 		Action    *ActionDescription `xml:"Action,omitempty"`
 	}
@@ -191,9 +216,9 @@ type (
 		UserMetadata                              *string                 `xml:"UserMetadata,omitempty"`
 		ForwardDeadLetteredMessagesTo             *string                 `xml:"ForwardDeadLetteredMessagesTo,omitempty"` // ForwardDeadLetteredMessagesTo - absolute URI of the entity to forward dead letter messages
 		AutoDeleteOnIdle                          *string                 `xml:"AutoDeleteOnIdle,omitempty"`
-		CreatedAt                                 *date.Time              `xml:"CreatedAt,omitempty"`
-		UpdatedAt                                 *date.Time              `xml:"UpdatedAt,omitempty"`
-		AccessedAt                                *date.Time              `xml:"AccessedAt,omitempty"`
+		CreatedAt                                 string                  `xml:"CreatedAt,omitempty"`
+		UpdatedAt                                 string                  `xml:"UpdatedAt,omitempty"`
+		AccessedAt                                string                  `xml:"AccessedAt,omitempty"`
 		CountDetails                              *CountDetails           `xml:"CountDetails,omitempty"`
 	}
 
@@ -256,10 +281,28 @@ type (
 	}
 
 	NamespaceInfo struct {
-		CreatedTime    time.Time `xml:"CreatedTime"`
-		MessagingSKU   string    `xml:"MessagingSKU"`
-		MessagingUnits *int64    `xml:"MessagingUnits"`
-		ModifiedTime   time.Time `xml:"ModifiedTime"`
-		Name           string    `xml:"Name"`
+		CreatedTime    string `xml:"CreatedTime"`
+		MessagingSKU   string `xml:"MessagingSKU"`
+		MessagingUnits *int64 `xml:"MessagingUnits"`
+		ModifiedTime   string `xml:"ModifiedTime"`
+		Name           string `xml:"Name"`
 	}
 )
+
+func StringToTime(timeStr string) (time.Time, error) {
+	// The ATOM API can return `0001-01-01T00:00:00` as the 'zero' value for the AccessedAt
+	// value when you first create an entity. In those cases we actually don't care about this value - it's
+	// not returned in the user-facing models (we do use it in other contexts, and the value is valid there).
+	// So we'll just fallback to letting it be time.Zero.
+	if timeStr == "0001-01-01T00:00:00" {
+		return time.Time{}, nil
+	}
+
+	parsedTime, err := time.Parse(time.RFC3339, timeStr)
+
+	if err != nil {
+		return time.Time{}, err
+	}
+
+	return parsedTime, nil
+}

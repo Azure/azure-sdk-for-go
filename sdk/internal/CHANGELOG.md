@@ -4,12 +4,10 @@
 
 ### Features Added
 * Adds `NewRecordingHTTPClient()` method which returns an `azcore.Transporter` interface that routes requests to the test proxy.
+* Adds the `SetBodilessMatcher` method [#16256](https://github.com/Azure/azure-sdk-for-go/pull/16256)
 
 ### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+* Renames `ResetSanitizers` to `ResetProxy`
 
 ## 0.8.2 (2021-11-11)
 

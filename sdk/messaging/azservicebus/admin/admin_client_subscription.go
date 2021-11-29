@@ -9,9 +9,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/v3/auth"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
 )
 
 // SubscriptionProperties represents the static properties of the subscription.
@@ -149,7 +149,7 @@ func (ac *Client) GetSubscription(ctx context.Context, topicName string, subscri
 	props, err := newSubscriptionProperties(&atomResp.Content.SubscriptionDescription)
 
 	if err != nil {
-		return nil, err
+		return nil, atom.NewResponseError(err, resp)
 	}
 
 	return &GetSubscriptionResponse{
@@ -177,16 +177,22 @@ type GetSubscriptionRuntimePropertiesOptions struct {
 // GetSubscriptionRuntimeProperties gets runtime properties of a subscription, like the SizeInBytes, or SubscriptionCount.
 func (ac *Client) GetSubscriptionRuntimeProperties(ctx context.Context, topicName string, subscriptionName string, options *GetSubscriptionRuntimePropertiesOptions) (*GetSubscriptionRuntimePropertiesResponse, error) {
 	var atomResp *atom.SubscriptionEnvelope
-	rawResp, err := ac.em.Get(ctx, fmt.Sprintf("/%s/Subscriptions/%s", topicName, subscriptionName), &atomResp)
+	resp, err := ac.em.Get(ctx, fmt.Sprintf("/%s/Subscriptions/%s", topicName, subscriptionName), &atomResp)
 
 	if err != nil {
 		return nil, err
 	}
 
+	props, err := newSubscriptionRuntimeProperties(&atomResp.Content.SubscriptionDescription)
+
+	if err != nil {
+		return nil, atom.NewResponseError(err, resp)
+	}
+
 	return &GetSubscriptionRuntimePropertiesResponse{
-		RawResponse: rawResp,
+		RawResponse: resp,
 		GetSubscriptionRuntimePropertiesResult: GetSubscriptionRuntimePropertiesResult{
-			SubscriptionRuntimeProperties: *newSubscriptionRuntimeProperties(&atomResp.Content.SubscriptionDescription),
+			SubscriptionRuntimeProperties: *props,
 		},
 	}, nil
 }
@@ -251,7 +257,7 @@ func (p *SubscriptionPager) getNext(ctx context.Context) (*ListSubscriptionsResp
 		props, err := newSubscriptionProperties(&env.Content.SubscriptionDescription)
 
 		if err != nil {
-			return nil, err
+			return nil, atom.NewResponseError(err, resp)
 		}
 
 		all = append(all, &SubscriptionPropertiesItem{
@@ -337,10 +343,16 @@ func (p *SubscriptionRuntimePropertiesPager) getNextPage(ctx context.Context) (*
 	var all []*SubscriptionRuntimePropertiesItem
 
 	for _, entry := range feed.Entries {
+		props, err := newSubscriptionRuntimeProperties(&entry.Content.SubscriptionDescription)
+
+		if err != nil {
+			return nil, atom.NewResponseError(err, resp)
+		}
+
 		all = append(all, &SubscriptionRuntimePropertiesItem{
 			TopicName:                     p.topicName,
 			SubscriptionName:              entry.Title,
-			SubscriptionRuntimeProperties: *newSubscriptionRuntimeProperties(&entry.Content.SubscriptionDescription),
+			SubscriptionRuntimeProperties: *props,
 		})
 	}
 
@@ -440,7 +452,7 @@ func (ac *Client) createOrUpdateSubscriptionImpl(ctx context.Context, topicName 
 	newProps, err := newSubscriptionProperties(&atomResp.Content.SubscriptionDescription)
 
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, atom.NewResponseError(err, resp)
 	}
 
 	return newProps, resp, nil
@@ -502,17 +514,29 @@ func newSubscriptionProperties(desc *atom.SubscriptionDescription) (*Subscriptio
 	}, nil
 }
 
-func newSubscriptionRuntimeProperties(desc *atom.SubscriptionDescription) *SubscriptionRuntimeProperties {
-	return &SubscriptionRuntimeProperties{
+func newSubscriptionRuntimeProperties(desc *atom.SubscriptionDescription) (*SubscriptionRuntimeProperties, error) {
+	rtp := &SubscriptionRuntimeProperties{
 		TotalMessageCount:              *desc.MessageCount,
 		ActiveMessageCount:             *desc.CountDetails.ActiveMessageCount,
 		DeadLetterMessageCount:         *desc.CountDetails.DeadLetterMessageCount,
 		TransferMessageCount:           *desc.CountDetails.TransferMessageCount,
 		TransferDeadLetterMessageCount: *desc.CountDetails.TransferDeadLetterMessageCount,
-		CreatedAt:                      dateTimeToTime(desc.CreatedAt),
-		UpdatedAt:                      dateTimeToTime(desc.UpdatedAt),
-		AccessedAt:                     dateTimeToTime(desc.AccessedAt),
 	}
+
+	var err error
+
+	if rtp.CreatedAt, err = atom.StringToTime(desc.CreatedAt); err != nil {
+		return nil, err
+	}
+
+	if rtp.UpdatedAt, err = atom.StringToTime(desc.UpdatedAt); err != nil {
+		return nil, err
+	}
+
+	if rtp.AccessedAt, err = atom.StringToTime(desc.AccessedAt); err != nil {
+		return nil, err
+	}
+	return rtp, nil
 }
 
 func subFeedLen(v interface{}) int {

@@ -8,9 +8,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/v3/auth"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
 )
 
 // TopicProperties represents the static properties of the topic.
@@ -131,7 +131,7 @@ func (ac *Client) GetTopic(ctx context.Context, topicName string, options *GetTo
 	props, err := newTopicProperties(&atomResp.Content.TopicDescription)
 
 	if err != nil {
-		return nil, err
+		return nil, atom.NewResponseError(err, resp)
 	}
 
 	return &GetTopicResponse{
@@ -167,10 +167,16 @@ func (ac *Client) GetTopicRuntimeProperties(ctx context.Context, topicName strin
 		return nil, err
 	}
 
+	props, err := newTopicRuntimeProperties(&atomResp.Content.TopicDescription)
+
+	if err != nil {
+		return nil, atom.NewResponseError(err, resp)
+	}
+
 	return &GetTopicRuntimePropertiesResponse{
 		RawResponse: resp,
 		GetTopicRuntimePropertiesResult: GetTopicRuntimePropertiesResult{
-			TopicRuntimeProperties: *newTopicRuntimeProperties(&atomResp.Content.TopicDescription),
+			TopicRuntimeProperties: *props,
 		},
 	}, nil
 }
@@ -233,7 +239,7 @@ func (p *TopicsPager) getNextPage(ctx context.Context) (*ListTopicsResponse, err
 		props, err := newTopicProperties(&env.Content.TopicDescription)
 
 		if err != nil {
-			return nil, err
+			return nil, atom.NewResponseError(err, resp)
 		}
 
 		all = append(all, &TopicItem{
@@ -317,9 +323,15 @@ func (p *TopicRuntimePropertiesPager) getNextPage(ctx context.Context) (*ListTop
 	var all []*TopicRuntimePropertiesItem
 
 	for _, entry := range feed.Entries {
+		props, err := newTopicRuntimeProperties(&entry.Content.TopicDescription)
+
+		if err != nil {
+			return nil, atom.NewResponseError(err, resp)
+		}
+
 		all = append(all, &TopicRuntimePropertiesItem{
 			TopicName:              entry.Title,
-			TopicRuntimeProperties: *newTopicRuntimeProperties(&entry.Content.TopicDescription),
+			TopicRuntimeProperties: *props,
 		})
 	}
 
@@ -424,7 +436,7 @@ func (ac *Client) createOrUpdateTopicImpl(ctx context.Context, topicName string,
 	topicProps, err := newTopicProperties(&atomResp.Content.TopicDescription)
 
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, atom.NewResponseError(err, resp)
 	}
 
 	return topicProps, resp, nil
@@ -481,15 +493,28 @@ func newTopicProperties(td *atom.TopicDescription) (*TopicProperties, error) {
 	}, nil
 }
 
-func newTopicRuntimeProperties(desc *atom.TopicDescription) *TopicRuntimeProperties {
-	return &TopicRuntimeProperties{
+func newTopicRuntimeProperties(desc *atom.TopicDescription) (*TopicRuntimeProperties, error) {
+	props := &TopicRuntimeProperties{
 		SizeInBytes:           int64OrZero(desc.SizeInBytes),
-		CreatedAt:             dateTimeToTime(desc.CreatedAt),
-		UpdatedAt:             dateTimeToTime(desc.UpdatedAt),
-		AccessedAt:            dateTimeToTime(desc.AccessedAt),
 		ScheduledMessageCount: int32OrZero(desc.CountDetails.ScheduledMessageCount),
 		SubscriptionCount:     int32OrZero(desc.SubscriptionCount),
 	}
+
+	var err error
+
+	if props.CreatedAt, err = atom.StringToTime(desc.CreatedAt); err != nil {
+		return nil, err
+	}
+
+	if props.UpdatedAt, err = atom.StringToTime(desc.UpdatedAt); err != nil {
+		return nil, err
+	}
+
+	if props.AccessedAt, err = atom.StringToTime(desc.AccessedAt); err != nil {
+		return nil, err
+	}
+
+	return props, nil
 }
 
 func topicFeedLen(pv interface{}) int {

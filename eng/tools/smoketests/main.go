@@ -301,7 +301,7 @@ func CopyExampleFiles(exFiles []string, dest string) error {
 // ReplacePackageStatement replaces all "package ***" with a common "package smoketests" statement
 func ReplacePackageStatement(root string) error {
 	fmt.Println("Fixing package names in", root)
-	packageName := "smoketests"
+	packageName := "package smoketests"
 	return filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
 		if strings.HasSuffix(info.Name(), ".go") {
 			handle(err)
@@ -310,8 +310,7 @@ func ReplacePackageStatement(root string) error {
 
 			datastring := bytes.NewBuffer(data).String()
 
-			m := regexp.MustCompile("package (.*)&")
-			fmt.Println(m.FindAllStringIndex(datastring, -1))
+			m := regexp.MustCompile("(?m)^package (.*)$")
 			datastring = m.ReplaceAllString(datastring, packageName)
 
 			err = ioutil.WriteFile(path, []byte(datastring), 0666)
@@ -342,9 +341,9 @@ func main() {
 	smoketestDir = filepath.Join(absSDKPath, "smoketests")
 	fmt.Println("Smoke test directory: ", smoketestDir)
 	err = os.Mkdir(smoketestDir, 0666)
-	if err != os.ErrExist {
-		handle(err)
-	}
+	// if err != os.ErrExist {
+	// 	handle(err)
+	// }
 
 	smoketestModFile = filepath.Join(smoketestDir, "go.mod")
 	f, err := os.Create(smoketestModFile)

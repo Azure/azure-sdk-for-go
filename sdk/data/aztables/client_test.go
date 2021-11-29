@@ -6,7 +6,9 @@ package aztables
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/stretchr/testify/require"
@@ -464,4 +466,56 @@ func TestContinuationTokensFilters(t *testing.T) {
 			require.Equal(t, 4, count)
 		})
 	}
+}
+
+func TestAzurite(t *testing.T) {
+	// quick and dirty make sure azurite is running
+	req, err := http.NewRequest("POST", "http://localhost:10002", nil)
+	require.NoError(t, err)
+	_, err = http.DefaultClient.Do(req)
+	if err != nil {
+		t.Skip("Skipping Azurite test, azurite is not running")
+	}
+
+	connStr := "DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;TableEndpoint=http://127.0.0.1:10002/devstoreaccount1;"
+	svc, err := NewServiceClientFromConnectionString(connStr, nil)
+	require.NoError(t, err)
+
+	name, err := createRandomName(t, "Table")
+	require.NoError(t, err)
+	client, err := svc.CreateTable(ctx, name, nil)
+	defer func() {
+		_, err = client.Delete(ctx, nil)
+		require.NoError(t, err)
+	}()
+	require.NoError(t, err)
+
+	entity := EDMEntity{
+		Entity: Entity{
+			PartitionKey: "pencils",
+			RowKey:       "id-003",
+		},
+		Properties: map[string]interface{}{
+			"Product":      "Ticonderoga Pencils",
+			"Price":        5.00,
+			"Count":        EDMInt64(12345678901234),
+			"ProductGUID":  EDMGUID("some-guid-value"),
+			"DateReceived": EDMDateTime(time.Now()),
+			"ProductCode":  EDMBinary([]byte("somebinaryvalue")),
+		},
+	}
+
+	data, err := json.Marshal(entity)
+	require.NoError(t, err)
+
+	_, err = client.AddEntity(ctx, data, nil)
+	require.NoError(t, err)
+
+	count := 0
+	pager := client.List(nil)
+	for pager.NextPage(ctx) {
+		count += len(pager.PageResponse().Entities)
+	}
+	require.NoError(t, pager.Err())
+	require.Equal(t, 1, count)
 }

@@ -167,26 +167,6 @@ func GetTopLevel() string {
 	return strings.ReplaceAll(bytes.NewBuffer(topLevel).String(), "\n", "")
 }
 
-// Creates a smoketests directory and creates a go.mod file
-func buildSmokeTestDirectory() {
-	topLevel := GetTopLevel()
-	root := strings.ReplaceAll(topLevel, "\n", "")
-	smoketestDir = filepath.Join(root, "sdk", "smoketests")
-
-	_ = os.MkdirAll(smoketestDir, 0777)
-
-	err := os.Chdir(smoketestDir)
-	handle(err)
-
-	// Create go.mod file
-	f, err := os.Create(filepath.Join(smoketestDir, "go.mod"))
-	handle(err)
-	smoketestModFile = f.Name()
-
-	err = f.Close()
-	handle(err)
-}
-
 func BuildModFile(modules []Module) error {
 	fmt.Println("Creating mod file manully...")
 
@@ -257,37 +237,6 @@ func CleanUp() {
 	if err != nil {
 		log.Printf("Could not remove smoketest directory\n\t%s\n", err.Error())
 	}
-}
-
-// Find the example func which will be in the format func ExampleNewClient or ExampleNew***Client
-func FindClientExample(packageDir string) string {
-	// Open the example_test.go file which will have the examples
-	topLevel := GetTopLevel()
-	packageDir = strings.TrimPrefix(packageDir, "github.com/Azure/azure-sdk-for-go")
-	exampleFile := filepath.Join(topLevel, packageDir, "example_test.go")
-
-	f, err := os.OpenFile(exampleFile, os.O_RDONLY, 0666)
-	defer func() {
-		err = f.Close()
-		if err != nil {
-			log.Println(err.Error())
-		}
-	}()
-
-	srcBytes, err := ioutil.ReadFile(exampleFile)
-	if err != nil {
-		log.Printf("Could not read example file at %s. Failed with error: \n%s", exampleFile, err.Error())
-		panic(err)
-	}
-	src := bytes.NewBuffer(srcBytes).String()
-
-	// Rename the package portion to `package smoketests`
-	m := regexp.MustCompile("package [a-zA-Z_]*")
-	replaceString := "package smoketests"
-	res := m.ReplaceAllString(src, replaceString)
-	fmt.Println(res[:300])
-
-	return ""
 }
 
 // FindExampleFiles finds all files that are named "example_*.go".

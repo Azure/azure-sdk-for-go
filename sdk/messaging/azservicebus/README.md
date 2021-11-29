@@ -44,7 +44,7 @@ import (
 )
 
 func main() {
-  client, err := azservicebus.NewClientFromConnectionString("<Service Bus connection string>")
+  client, err := azservicebus.NewClientFromConnectionString("<Service Bus connection string>", nil)
  
   if err != nil {
     panic(err)
@@ -70,7 +70,7 @@ func main() {
     panic(err)
   }
 
-  client, err := azservicebus.NewClient("<ex: my-service-bus.servicebus.windows.net>", cred)
+  client, err := azservicebus.NewClient("<ex: my-service-bus.servicebus.windows.net>", cred, nil)
 
   if err != nil {
     panic(err)

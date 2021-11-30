@@ -367,3 +367,154 @@ func (client AssignmentsClient) ListResponder(resp *http.Response) (result Assig
 	result.Response = autorest.Response{Response: resp}
 	return
 }
+
+// RGList list all guest configuration assignments for a resource group.
+// Parameters:
+// resourceGroupName - the resource group name.
+func (client AssignmentsClient) RGList(ctx context.Context, resourceGroupName string) (result AssignmentList, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssignmentsClient.RGList")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("guestconfiguration.AssignmentsClient", "RGList", err.Error())
+	}
+
+	req, err := client.RGListPreparer(ctx, resourceGroupName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "guestconfiguration.AssignmentsClient", "RGList", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.RGListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "guestconfiguration.AssignmentsClient", "RGList", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.RGListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "guestconfiguration.AssignmentsClient", "RGList", resp, "Failure responding to request")
+		return
+	}
+
+	return
+}
+
+// RGListPreparer prepares the RGList request.
+func (client AssignmentsClient) RGListPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2021-01-25"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// RGListSender sends the RGList request. The method will close the
+// http.Response Body if it receives an error.
+func (client AssignmentsClient) RGListSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// RGListResponder handles the response to the RGList request. The method always
+// closes the http.Response Body.
+func (client AssignmentsClient) RGListResponder(resp *http.Response) (result AssignmentList, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// SubscriptionList list all guest configuration assignments for a subscription.
+func (client AssignmentsClient) SubscriptionList(ctx context.Context) (result AssignmentList, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssignmentsClient.SubscriptionList")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.SubscriptionListPreparer(ctx)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "guestconfiguration.AssignmentsClient", "SubscriptionList", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.SubscriptionListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "guestconfiguration.AssignmentsClient", "SubscriptionList", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.SubscriptionListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "guestconfiguration.AssignmentsClient", "SubscriptionList", resp, "Failure responding to request")
+		return
+	}
+
+	return
+}
+
+// SubscriptionListPreparer prepares the SubscriptionList request.
+func (client AssignmentsClient) SubscriptionListPreparer(ctx context.Context) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2021-01-25"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// SubscriptionListSender sends the SubscriptionList request. The method will close the
+// http.Response Body if it receives an error.
+func (client AssignmentsClient) SubscriptionListSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// SubscriptionListResponder handles the response to the SubscriptionList request. The method always
+// closes the http.Response Body.
+func (client AssignmentsClient) SubscriptionListResponder(resp *http.Response) (result AssignmentList, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}

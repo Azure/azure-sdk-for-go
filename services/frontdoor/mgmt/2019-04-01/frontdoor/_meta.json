@@ -1,5 +1,5 @@
 {
-  "commit": "3c764635e7d442b3e74caf593029fcd440b3ef82",
+  "commit": "cea6492a1e41b3f3b4f8b4f69bdcc10431e79c0e",
   "readme": "/_/azure-rest-api-specs/specification/frontdoor/resource-manager/readme.md",
   "tag": "package-2019-04",
   "use": "@microsoft.azure/autorest.go@2.1.187",

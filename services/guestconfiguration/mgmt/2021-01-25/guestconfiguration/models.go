@@ -83,6 +83,8 @@ type AssignmentProperties struct {
 	LastComplianceStatusChecked *date.Time `json:"lastComplianceStatusChecked,omitempty"`
 	// LatestReportID - READ-ONLY; Id of the latest report for the guest configuration assignment.
 	LatestReportID *string `json:"latestReportId,omitempty"`
+	// ParameterHash - READ-ONLY; parameter hash for the guest configuration assignment.
+	ParameterHash *string `json:"parameterHash,omitempty"`
 	// LatestAssignmentReport - Last reported guest configuration assignment report.
 	LatestAssignmentReport *AssignmentReport `json:"latestAssignmentReport,omitempty"`
 	// Context - The source which initiated the guest configuration assignment. Ex: Azure Policy
@@ -344,10 +346,47 @@ type Navigation struct {
 	ContentHash *string `json:"contentHash,omitempty"`
 	// AssignmentType - Specifies the assignment type and execution of the configuration. Possible values are Audit, DeployAndAutoCorrect, ApplyAndAutoCorrect and ApplyAndMonitor. Possible values include: 'AssignmentTypeAudit', 'AssignmentTypeDeployAndAutoCorrect', 'AssignmentTypeApplyAndAutoCorrect', 'AssignmentTypeApplyAndMonitor'
 	AssignmentType AssignmentType `json:"assignmentType,omitempty"`
+	// ContentType - READ-ONLY; Specifies the content type of the configuration. Possible values could be Builtin or Custom.
+	ContentType *string `json:"contentType,omitempty"`
 	// ConfigurationParameter - The configuration parameters for the guest configuration.
 	ConfigurationParameter *[]ConfigurationParameter `json:"configurationParameter,omitempty"`
+	// ConfigurationProtectedParameter - The protected configuration parameters for the guest configuration.
+	ConfigurationProtectedParameter *[]ConfigurationParameter `json:"configurationProtectedParameter,omitempty"`
 	// ConfigurationSetting - The configuration setting for the guest configuration.
 	ConfigurationSetting *ConfigurationSetting `json:"configurationSetting,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Navigation.
+func (n Navigation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if n.Kind != "" {
+		objectMap["kind"] = n.Kind
+	}
+	if n.Name != nil {
+		objectMap["name"] = n.Name
+	}
+	if n.Version != nil {
+		objectMap["version"] = n.Version
+	}
+	if n.ContentURI != nil {
+		objectMap["contentUri"] = n.ContentURI
+	}
+	if n.ContentHash != nil {
+		objectMap["contentHash"] = n.ContentHash
+	}
+	if n.AssignmentType != "" {
+		objectMap["assignmentType"] = n.AssignmentType
+	}
+	if n.ConfigurationParameter != nil {
+		objectMap["configurationParameter"] = n.ConfigurationParameter
+	}
+	if n.ConfigurationProtectedParameter != nil {
+		objectMap["configurationProtectedParameter"] = n.ConfigurationProtectedParameter
+	}
+	if n.ConfigurationSetting != nil {
+		objectMap["configurationSetting"] = n.ConfigurationSetting
+	}
+	return json.Marshal(objectMap)
 }
 
 // Operation guestConfiguration REST API operation

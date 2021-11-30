@@ -1023,6 +1023,8 @@ type DeviceDetails struct {
 	SerialNumber *string `json:"serialNumber,omitempty"`
 	// ManagementResourceID - READ-ONLY; Management Resource Id
 	ManagementResourceID *string `json:"managementResourceId,omitempty"`
+	// ManagementResourceTenantID - READ-ONLY; Management Resource Tenant ID
+	ManagementResourceTenantID *string `json:"managementResourceTenantId,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for DeviceDetails.
@@ -1071,7 +1073,7 @@ func (di DisplayInfo) MarshalJSON() ([]byte, error) {
 
 // EncryptionPreferences preferences related to the double encryption
 type EncryptionPreferences struct {
-	// DoubleEncryptionStatus - Defines secondary layer of software-based encryption enablement. Possible values include: 'DoubleEncryptionStatusDisabled', 'DoubleEncryptionStatusEnabled'
+	// DoubleEncryptionStatus - Double encryption status as entered by the customer. It is compulsory to give this parameter if the 'Deny' or 'Disabled' policy is configured. Possible values include: 'DoubleEncryptionStatusDisabled', 'DoubleEncryptionStatusEnabled'
 	DoubleEncryptionStatus DoubleEncryptionStatus `json:"doubleEncryptionStatus,omitempty"`
 }
 
@@ -1122,6 +1124,24 @@ type FilterableProperty struct {
 	Type SupportedFilterTypes `json:"type,omitempty"`
 	// SupportedValues - Values to be filtered.
 	SupportedValues *[]string `json:"supportedValues,omitempty"`
+}
+
+// ForwardShippingDetails forward shipment details.
+type ForwardShippingDetails struct {
+	// CarrierName - READ-ONLY; Name of the carrier.
+	CarrierName *string `json:"carrierName,omitempty"`
+	// CarrierDisplayName - READ-ONLY; Carrier Name for display purpose. Not to be used for any processing.
+	CarrierDisplayName *string `json:"carrierDisplayName,omitempty"`
+	// TrackingID - READ-ONLY; TrackingId of the package
+	TrackingID *string `json:"trackingId,omitempty"`
+	// TrackingURL - READ-ONLY; TrackingUrl of the package.
+	TrackingURL *string `json:"trackingUrl,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ForwardShippingDetails.
+func (fsd ForwardShippingDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // HierarchyInformation holds details about product hierarchy information
@@ -1486,23 +1506,25 @@ type OrderItemDetails struct {
 	// Preferences - Customer notification Preferences
 	Preferences *Preferences `json:"preferences,omitempty"`
 	// ForwardShippingDetails - READ-ONLY; Forward Package Shipping details
-	ForwardShippingDetails *ShippingDetails `json:"forwardShippingDetails,omitempty"`
+	ForwardShippingDetails *ForwardShippingDetails `json:"forwardShippingDetails,omitempty"`
 	// ReverseShippingDetails - READ-ONLY; Reverse Package Shipping details
-	ReverseShippingDetails *ShippingDetails `json:"reverseShippingDetails,omitempty"`
+	ReverseShippingDetails *ReverseShippingDetails `json:"reverseShippingDetails,omitempty"`
 	// NotificationEmailList - Additional notification email list
 	NotificationEmailList *[]string `json:"notificationEmailList,omitempty"`
 	// CancellationReason - READ-ONLY; Cancellation reason.
 	CancellationReason *string `json:"cancellationReason,omitempty"`
-	// CancellationStatus - READ-ONLY; Describes whether the orderItem is cancellable or not. Possible values include: 'OrderItemCancellationEnumCancellable', 'OrderItemCancellationEnumCancellableWithFee', 'OrderItemCancellationEnumNotCancellable'
+	// CancellationStatus - READ-ONLY; Describes whether the order item is cancellable or not. Possible values include: 'OrderItemCancellationEnumCancellable', 'OrderItemCancellationEnumCancellableWithFee', 'OrderItemCancellationEnumNotCancellable'
 	CancellationStatus OrderItemCancellationEnum `json:"cancellationStatus,omitempty"`
 	// DeletionStatus - READ-ONLY; Describes whether the order item is deletable or not. Possible values include: 'ActionStatusEnumAllowed', 'ActionStatusEnumNotAllowed'
 	DeletionStatus ActionStatusEnum `json:"deletionStatus,omitempty"`
 	// ReturnReason - READ-ONLY; Return reason.
 	ReturnReason *string `json:"returnReason,omitempty"`
-	// ReturnStatus - READ-ONLY; Describes whether the orderItem is returnable or not. Possible values include: 'OrderItemReturnEnumReturnable', 'OrderItemReturnEnumReturnableWithFee', 'OrderItemReturnEnumNotReturnable'
+	// ReturnStatus - READ-ONLY; Describes whether the order item is returnable or not. Possible values include: 'OrderItemReturnEnumReturnable', 'OrderItemReturnEnumReturnableWithFee', 'OrderItemReturnEnumNotReturnable'
 	ReturnStatus OrderItemReturnEnum `json:"returnStatus,omitempty"`
-	// ManagementRpDetails - READ-ONLY; parent RP details
-	ManagementRpDetails interface{} `json:"managementRpDetails,omitempty"`
+	// ManagementRpDetails - READ-ONLY; Parent RP details - this returns only the first or default parent RP from the entire list
+	ManagementRpDetails *ResourceProviderDetails `json:"managementRpDetails,omitempty"`
+	// ManagementRpDetailsList - READ-ONLY; List of parent RP details supported for configuration.
+	ManagementRpDetailsList *[]ResourceProviderDetails `json:"managementRpDetailsList,omitempty"`
 	// Error - READ-ONLY; Top level error for the job.
 	Error *ErrorDetail `json:"error,omitempty"`
 }
@@ -2260,8 +2282,10 @@ type ProductDetails struct {
 	DisplayInfo *DisplayInfo `json:"displayInfo,omitempty"`
 	// HierarchyInformation - Hierarchy of the product which uniquely identifies the product
 	HierarchyInformation *HierarchyInformation `json:"hierarchyInformation,omitempty"`
-	// Count - Quantity of the product
+	// Count - READ-ONLY; Quantity of the product
 	Count *int32 `json:"count,omitempty"`
+	// ProductDoubleEncryptionStatus - READ-ONLY; Double encryption status of the configuration. Read-only field. Possible values include: 'DoubleEncryptionStatusDisabled', 'DoubleEncryptionStatusEnabled'
+	ProductDoubleEncryptionStatus DoubleEncryptionStatus `json:"productDoubleEncryptionStatus,omitempty"`
 	// DeviceDetails - READ-ONLY; list of device details
 	DeviceDetails *[]DeviceDetails `json:"deviceDetails,omitempty"`
 }
@@ -2274,9 +2298,6 @@ func (pd ProductDetails) MarshalJSON() ([]byte, error) {
 	}
 	if pd.HierarchyInformation != nil {
 		objectMap["hierarchyInformation"] = pd.HierarchyInformation
-	}
-	if pd.Count != nil {
-		objectMap["count"] = pd.Count
 	}
 	return json.Marshal(objectMap)
 }
@@ -2711,6 +2732,8 @@ func (pf *ProductFamily) UnmarshalJSON(body []byte) error {
 type ProductFamilyProperties struct {
 	// ProductLines - READ-ONLY; List of product lines supported in the product family
 	ProductLines *[]ProductLine `json:"productLines,omitempty"`
+	// ResourceProviderDetails - Contains details related to resource provider
+	ResourceProviderDetails *[]ResourceProviderDetails `json:"resourceProviderDetails,omitempty"`
 	// FilterableProperties - READ-ONLY; list of filters supported for a product
 	FilterableProperties *[]FilterableProperty `json:"filterableProperties,omitempty"`
 	// DisplayName - READ-ONLY; Display Name for the product system.
@@ -2730,6 +2753,9 @@ type ProductFamilyProperties struct {
 // MarshalJSON is the custom marshaler for ProductFamilyProperties.
 func (pfp ProductFamilyProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if pfp.ResourceProviderDetails != nil {
+		objectMap["resourceProviderDetails"] = pfp.ResourceProviderDetails
+	}
 	return json.Marshal(objectMap)
 }
 
@@ -2919,12 +2945,28 @@ func (ri ResourceIdentity) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// ResourceProviderDetails management RP details
+type ResourceProviderDetails struct {
+	// ResourceProviderNamespace - READ-ONLY; Resource provider namespace
+	ResourceProviderNamespace *string `json:"resourceProviderNamespace,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ResourceProviderDetails.
+func (rpd ResourceProviderDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ReturnOrderItemDetails return order item request body
 type ReturnOrderItemDetails struct {
 	// ReturnAddress - customer return address.
 	ReturnAddress *AddressProperties `json:"returnAddress,omitempty"`
 	// ReturnReason - Return Reason.
 	ReturnReason *string `json:"returnReason,omitempty"`
+	// ServiceTag - Service tag (located on the bottom-right corner of the device)
+	ServiceTag *string `json:"serviceTag,omitempty"`
+	// ShippingBoxRequired - Shipping Box required
+	ShippingBoxRequired *bool `json:"shippingBoxRequired,omitempty"`
 }
 
 // ReturnOrderItemFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -2962,6 +3004,26 @@ func (future *ReturnOrderItemFuture) result(client BaseClient) (ar autorest.Resp
 	}
 	ar.Response = future.Response()
 	return
+}
+
+// ReverseShippingDetails reverse shipment details.
+type ReverseShippingDetails struct {
+	// SasKeyForLabel - READ-ONLY; SAS key to download the reverse shipment label of the package.
+	SasKeyForLabel *string `json:"sasKeyForLabel,omitempty"`
+	// CarrierName - READ-ONLY; Name of the carrier.
+	CarrierName *string `json:"carrierName,omitempty"`
+	// CarrierDisplayName - READ-ONLY; Carrier Name for display purpose. Not to be used for any processing.
+	CarrierDisplayName *string `json:"carrierDisplayName,omitempty"`
+	// TrackingID - READ-ONLY; TrackingId of the package
+	TrackingID *string `json:"trackingId,omitempty"`
+	// TrackingURL - READ-ONLY; TrackingUrl of the package.
+	TrackingURL *string `json:"trackingUrl,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ReverseShippingDetails.
+func (rsd ReverseShippingDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ShippingAddress shipping address where customer wishes to receive the device.

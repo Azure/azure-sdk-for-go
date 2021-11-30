@@ -3,6 +3,8 @@
 ## 0.8.3 (2021-11-30)
 
 ### Features Added
+* If `AZURE_RECORD_MODE` is not set, default to `playback`
+* If `PROXY_CERT` is not set, try to find it based on the `GOPATH` environment variable and the path to `eng/common/testproxy/dotnet-devcert.crt`
 * Adds `NewRecordingHTTPClient()` method which returns an `azcore.Transporter` interface that routes requests to the test proxy [#16221](https://github.com/Azure/azure-sdk-for-go/pull/16221).
 * Adds the `SetBodilessMatcher` method [#16256](https://github.com/Azure/azure-sdk-for-go/pull/16256)
 

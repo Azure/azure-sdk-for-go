@@ -476,26 +476,6 @@ func TestStartStopRecordingClient(t *testing.T) {
 	require.Equal(t, req.URL.String(), "https://localhost:5001/acr/v1/some_registry/_tags")
 }
 
-func TestProxyCert(t *testing.T) {
-	_, err := getRootCas(t)
-	require.NoError(t, err)
-
-	tempProxyCert, ok := os.LookupEnv("PROXY_CERT")
-	require.True(t, ok)
-	err = os.Unsetenv("PROXY_CERT")
-	require.NoError(t, err)
-
-	_, err = getRootCas(t)
-	require.NoError(t, err)
-
-	err = os.Setenv("PROXY_CERT", "not/a/path.crt")
-	require.NoError(t, err)
-	_, err = GetHTTPClient(t)
-	require.Error(t, err)
-
-	os.Setenv("PROXY_CERT", tempProxyCert)
-}
-
 func TestStopRecordingNoStart(t *testing.T) {
 	os.Setenv("AZURE_RECORD_MODE", "record")
 	defer os.Unsetenv("AZURE_RECORD_MODE")
@@ -567,4 +547,44 @@ func TestHostAndScheme(t *testing.T) {
 	r.UseHTTPS = false
 	require.Equal(t, r.scheme(), "http")
 	require.Equal(t, r.host(), "localhost:5000")
+}
+
+func TestFindProxyCertLocation(t *testing.T) {
+	savedValue, ok := os.LookupEnv("PROXY_CERT")
+	if ok {
+		defer os.Setenv("PROXY_CERT", savedValue)
+	}
+
+	if ok {
+		location, err := findProxyCertLocation()
+		require.NoError(t, err)
+		require.Contains(t, location, "dotnet-devcert.crt")
+	}
+
+	err := os.Unsetenv("PROXY_CERT")
+	require.NoError(t, err)
+
+	location, err := findProxyCertLocation()
+	require.NoError(t, err)
+	require.Contains(t, location, filepath.Join("eng", "common", "testproxy", "dotnet-devcert.crt"))
+}
+
+func TestModeNotSet(t *testing.T) {
+	proxyMode, _ := os.LookupEnv("AZURE_RECORD_MODE")
+	defer os.Setenv("AZURE_RECORD_MODE", proxyMode)
+
+	os.Unsetenv("AZURE_RECORD_MODE")
+	require.Equal(t, PlaybackMode, GetRecordMode())
+}
+
+func TestModeNotSetStartStop(t *testing.T) {
+	proxyMode, _ := os.LookupEnv("AZURE_RECORD_MODE")
+	defer os.Setenv("AZURE_RECORD_MODE", proxyMode)
+
+	os.Unsetenv("AZURE_RECORD_MODE")
+	err := Start(t, packagePath, nil)
+	require.NoError(t, err)
+	require.Equal(t, PlaybackMode, GetRecordMode())
+	err = Stop(t, nil)
+	require.NoError(t, err)
 }

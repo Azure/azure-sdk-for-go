@@ -19,38 +19,29 @@ func int64Ptr(i int64) *int64 {
 	return &i
 }
 
-func boolPtr(b bool) *bool {
-	return &b
+type perfTest struct {
+	counter  int
+	setup    bool
+	teardown bool
 }
+
+func (p *perfTest) Setup()    { p.setup = true }
+func (p *perfTest) Run()      { p.counter++ }
+func (p *perfTest) TearDown() { p.teardown = true }
 
 func TestPerf(t *testing.T) {
 	duration = int64Ptr(2)
 	warmUp = int64Ptr(1)
 	iterations = int64Ptr(3)
-	runPerf = boolPtr(true)
-
-	setupRan := false
-	teardownRan := false
-	GlobalSetup(t, func() error {
-		setupRan = true
-		return nil
-	})
 
 	start := time.Now()
-	counter := 0
-	RunFunc(t, func() {
-		counter += 1
-	})
+	p := &perfTest{counter: 0, setup: false, teardown: false}
+	RunPerfTest(p)
 
 	require.Greater(t, time.Since(start), time.Second*7)
-	require.Greater(t, counter, 1)
-	require.True(t, setupRan)
-
-	GlobalTeardown(t, func() error {
-		teardownRan = true
-		return nil
-	})
-	require.True(t, teardownRan)
+	require.Greater(t, p.counter, 1)
+	require.True(t, p.setup)
+	require.True(t, p.teardown)
 }
 
 func TestRandomStream(t *testing.T) {

@@ -340,10 +340,8 @@ func main() {
 
 	smoketestDir = filepath.Join(absSDKPath, "smoketests")
 	fmt.Println("Smoke test directory: ", smoketestDir)
-	err = os.Mkdir(smoketestDir, 0666)
-	// if err != os.ErrExist {
-	// 	handle(err)
-	// }
+	// Create directory if it does not exist
+	_ = os.Mkdir(smoketestDir, 0666)
 
 	smoketestModFile = filepath.Join(smoketestDir, "go.mod")
 	f, err := os.Create(smoketestModFile)

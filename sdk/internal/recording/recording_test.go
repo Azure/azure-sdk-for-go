@@ -7,6 +7,7 @@
 package recording
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -431,6 +432,48 @@ func TestStartStop(t *testing.T) {
 	jsonFile, err := os.Open("./testdata/recordings/TestStartStop.json")
 	require.NoError(t, err)
 	defer jsonFile.Close()
+}
+
+func TestStartStopRecordingClient(t *testing.T) {
+	temp := recordMode
+	recordMode = RecordingMode
+	defer func() { recordMode = temp }()
+
+	err := Start(t, packagePath, nil)
+	require.NoError(t, err)
+
+	client, err := NewRecordingHTTPClient(t, nil)
+	require.NoError(t, err)
+
+	req, err := http.NewRequest("POST", "https://azsdkengsys.azurecr.io/acr/v1/some_registry/_tags", nil)
+	require.NoError(t, err)
+
+	resp, err := client.Do(req)
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+
+	require.NotNil(t, GetRecordingId(t))
+
+	err = Stop(t, nil)
+	require.NoError(t, err)
+
+	// Make sure the file is there
+	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", t.Name()))
+	require.NoError(t, err)
+	defer func() {
+		err = jsonFile.Close()
+		require.NoError(t, err)
+		err = os.Remove(jsonFile.Name())
+		require.NoError(t, err)
+	}()
+
+	var data RecordingFileStruct
+	byteValue, err := ioutil.ReadAll(jsonFile)
+	require.NoError(t, err)
+	err = json.Unmarshal(byteValue, &data)
+	require.NoError(t, err)
+	require.Equal(t, "https://azsdkengsys.azurecr.io/acr/v1/some_registry/_tags", data.Entries[0].RequestURI)
+	require.Equal(t, req.URL.String(), "https://localhost:5001/acr/v1/some_registry/_tags")
 }
 
 func TestProxyCert(t *testing.T) {

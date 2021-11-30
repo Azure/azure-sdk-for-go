@@ -177,13 +177,13 @@ type RecordingFileStruct struct {
 }
 
 type Entry struct {
-	RequestURI      string            `json:"RequestUri"`
-	RequestMethod   string            `json:"RequestMethod"`
-	RequestHeaders  map[string]string `json:"RequestHeaders"`
-	RequestBody     string            `json:"RequestBody"`
-	StatusCode      int               `json:"StatusCode"`
-	ResponseBody    interface{}       `json:"ResponseBody"` // This should be a string, but proxy saves as an object when there is no body
-	ResponseHeaders map[string]string `json:"ResponseHeaders"`
+	RequestURI      string                 `json:"RequestUri"`
+	RequestMethod   string                 `json:"RequestMethod"`
+	RequestHeaders  map[string]string      `json:"RequestHeaders"`
+	RequestBody     string                 `json:"RequestBody"`
+	StatusCode      int                    `json:"StatusCode"`
+	ResponseBody    interface{}            `json:"ResponseBody"` // This should be a string, but proxy saves as an object when there is no body
+	ResponseHeaders map[string]interface{} `json:"ResponseHeaders"`
 }
 
 func (e Entry) ResponseBodyByValue(k string) interface{} {

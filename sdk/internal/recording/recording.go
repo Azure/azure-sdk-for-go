@@ -652,6 +652,33 @@ func getRootCas(t *testing.T) (*x509.CertPool, error) {
 	return rootCAs, nil
 }
 
+type RecordingHTTPClient struct {
+	defaultClient *http.Client
+	options       RecordingOptions
+	t             *testing.T
+}
+
+func (c RecordingHTTPClient) Do(req *http.Request) (*http.Response, error) {
+	c.options.ReplaceAuthority(c.t, req)
+	return c.defaultClient.Do(req)
+}
+
+func NewRecordingHTTPClient(t *testing.T, options *RecordingOptions) (*RecordingHTTPClient, error) {
+	if options == nil {
+		options = &RecordingOptions{UseHTTPS: true}
+	}
+	c, err := GetHTTPClient(t)
+	if err != nil {
+		return nil, err
+	}
+
+	return &RecordingHTTPClient{
+		defaultClient: c,
+		options:       *options,
+		t:             t,
+	}, nil
+}
+
 func GetHTTPClient(t *testing.T) (*http.Client, error) {
 	transport := http.DefaultTransport.(*http.Transport).Clone()
 

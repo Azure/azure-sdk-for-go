@@ -307,8 +307,7 @@ func NewDashboardListResultPage(cur DashboardListResult, getNextPage func(contex
 type DashboardParts struct {
 	// Position - The dashboard's part position.
 	Position *DashboardPartsPosition `json:"position,omitempty"`
-	// Metadata - The dashboard part's metadata.
-	Metadata map[string]interface{} `json:"metadata"`
+	Metadata map[string]interface{}  `json:"metadata"`
 }
 
 // MarshalJSON is the custom marshaler for DashboardParts.

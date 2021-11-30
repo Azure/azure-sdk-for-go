@@ -18,7 +18,7 @@ $ENV:PROXY_CERT="C:/ <path-to-repo> /azure-sdk-for-go/eng/common/testproxy/dotne
 
 ## Routing Traffic
 
-The first step in instrumenting a client to interact with recorded tests is to direct traffic to the proxy through a custom `policy`. In these examples we'll use testify's [`require`](https://pkg.go.dev/github.com/stretchr/testify/require) library but you can use the framework of your choice. Each test has to call `recording.StartRecording` and `recording.StopRecording`, the rest is taken care of by the `recording` library and the [`test-proxy`](https://github.com/Azure/azure-sdk-tools/tree/main/tools/test-proxy)
+The first step in instrumenting a client to interact with recorded tests is to direct traffic to the proxy through a custom `policy`. In these examples we'll use testify's [`require`](https://pkg.go.dev/github.com/stretchr/testify/require) library but you can use the framework of your choice. Each test has to call `recording.Start` and `recording.Stop`, the rest is taken care of by the `recording` library and the [`test-proxy`](https://github.com/Azure/azure-sdk-tools/tree/main/tools/test-proxy)
 
 The snippet below demonstrates an example test policy:
 
@@ -27,32 +27,38 @@ The snippet below demonstrates an example test policy:
 var pathToPackage = "sdk/data/aztables/testdata"
 
 type recordingPolicy struct {
-    options recording.RecordingOptions
-    t       *testing.T
+	options recording.RecordingOptions
+	t       *testing.T
+}
+
+func (r recordingPolicy) Host() string {
+	if r.options.UseHTTPS {
+		return "localhost:5001"
+	}
+	return "localhost:5000"
+}
+
+func (r recordingPolicy) Scheme() string {
+	if r.options.UseHTTPS {
+		return "https"
+	}
+	return "http"
 }
 
 func NewRecordingPolicy(t *testing.T, o *recording.RecordingOptions) policy.Policy {
-    if o == nil {
-        o = &recording.RecordingOptions{UseHTTPS: true}
-    }
-    p := &recordingPolicy{options: *o, t: t}
-    return p
+	if o == nil {
+		o = &recording.RecordingOptions{UseHTTPS: true}
+	}
+	p := &recordingPolicy{options: *o, t: t}
+	return p
 }
 
 func (p *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
-    if recording.GetRecordMode() != recording.LiveMode {
-        originalURLHost := req.Raw().URL.Host
-        req.Raw().URL.Scheme = "https"
-        req.Raw().URL.Host = p.options.Host
-        req.Raw().Host = p.options.Host
-
-		req.Raw().Header.Set(recording.UpstreamURIHeader, fmt.Sprintf("%s://%s", p.options.Scheme, originalURLHost))
-		req.Raw().Header.Set(recording.ModeHeader, recording.GetRecordMode())
-		req.Raw().Header.Set(recording.IdHeader, recording.GetRecordingId(p.t))
-    }
-    return req.Next()
+	if recording.GetRecordMode() != "live" {
+		p.options.ReplaceAuthority(t, req.Raw())
+	}
+	return req.Next()
 }
-
 ```
 
 After creating a recording policy, it has to be added to the client on the `ClientOptions.PerCallPolicies` option:
@@ -62,10 +68,12 @@ func TestSomething(t *testing.T) {
     httpClient, err := recording.GetHTTPClient(t)
     require.NoError(t, err)
 
-    options := &ClientOptions{
-        PerCallPolicies: []policy.Policy{*p},
-        Transport:       client,
-    }
+	options := &ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			PerCallPolicies: []policy.Policy{p},
+			Transport:       client,
+		},
+	}
 
     client, err := NewClient("https://mystorageaccount.table.core.windows.net", myCred, options)
     require.NoError(t, err)
@@ -74,11 +82,11 @@ func TestSomething(t *testing.T) {
 ```
 
 ## Starting and Stopping a Test
-To start and stop your tests use the `recording.StartRecording` and `recording.StopRecording` (make sure to use `defer recording.StopRecording` to ensure the proxy cleans up your test on failure) methods:
+To start and stop your tests use the `recording.Start` and `recording.Stop` (make sure to use `defer recording.Stop` to ensure the proxy cleans up your test on failure) methods:
 ```go
 func TestSomething(t *testing.T) {
-    err := recording.StartRecording(nil)
-    defer recording.StopRecording(nil)
+    err := recording.Start(nil)
+    defer recording.Stop(nil)
 
     // Continue test
 }
@@ -94,8 +102,8 @@ func TestSomething(t *testing.T) {
     // To remove the sanitizer after this test use the following:
     defer recording.ResetSanitizers(nil)
 
-    err := recording.StartRecording(nil)
-    defer recording.StopRecording(nil)
+    err := recording.Start(nil)
+    defer recording.Stop(nil)
 
     // Continue test
 }

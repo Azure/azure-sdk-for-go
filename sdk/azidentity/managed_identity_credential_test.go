@@ -13,11 +13,13 @@ import (
 	"os"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
 
 const (
@@ -702,5 +704,87 @@ func TestManagedIdentityCredential_CreateAccessTokenExpiresOnFail(t *testing.T) 
 	_, err = msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{msiScope}})
 	if err == nil {
 		t.Fatalf("expected to receive an error but received none")
+	}
+}
+
+func TestManagedIdentityCredential_IMDSLive(t *testing.T) {
+	if recording.GetRecordMode() == recording.LiveMode {
+		t.Skip("this test doesn't run in live mode because it can't pass in CI")
+	}
+	opts, stop := initRecording(t)
+	defer stop()
+	cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ClientOptions: opts})
+	if err != nil {
+		t.Fatal(err)
+	}
+	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if tk.Token == "" {
+		t.Fatal("GetToken returned an invalid token")
+	}
+	if !tk.ExpiresOn.After(time.Now().UTC()) {
+		t.Fatal("GetToken returned an invalid expiration time")
+	}
+}
+
+func TestManagedIdentityCredential_IMDSClientIDLive(t *testing.T) {
+	id := os.Getenv("MANAGED_IDENTITY_CLIENT_ID")
+	switch recording.GetRecordMode() {
+	case recording.LiveMode:
+		t.Skip("this test doesn't run in live mode because it can't pass in CI")
+	case recording.PlaybackMode:
+		id = fakeClientID
+	case recording.RecordingMode:
+		if id == "" {
+			t.Skip("MANAGED_IDENTITY_CLIENT_ID isn't set")
+		}
+	}
+	opts, stop := initRecording(t)
+	defer stop()
+	cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ClientOptions: opts, ID: ClientID(id)})
+	if err != nil {
+		t.Fatal(err)
+	}
+	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if tk.Token == "" {
+		t.Fatal("GetToken returned an invalid token")
+	}
+	if !tk.ExpiresOn.After(time.Now().UTC()) {
+		t.Fatal("GetToken returned an invalid expiration time")
+	}
+}
+
+func TestManagedIdentityCredential_IMDSResourceIDLive(t *testing.T) {
+	id := os.Getenv("MANAGED_IDENTITY_RESOURCE_ID")
+	switch recording.GetRecordMode() {
+	case recording.LiveMode:
+		t.Skip("this test doesn't run in live mode because it can't pass in CI")
+	case recording.PlaybackMode:
+		id = fakeResourceID
+	case recording.RecordingMode:
+		if id == "" {
+			t.Skip("MANAGED_IDENTITY_RESOURCE_ID isn't set")
+		}
+	}
+	opts, stop := initRecording(t)
+	defer stop()
+	cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ClientOptions: opts, ID: ResourceID(id)})
+	if err != nil {
+		t.Fatal(err)
+	}
+	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if tk.Token == "" {
+		t.Fatal("GetToken returned an invalid token")
+	}
+	if !tk.ExpiresOn.After(time.Now().UTC()) {
+		t.Fatal("GetToken returned an invalid expiration time")
 	}
 }

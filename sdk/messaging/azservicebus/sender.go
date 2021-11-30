@@ -32,7 +32,7 @@ const (
 type MessageBatchOptions struct {
 	// MaxBytes overrides the max size (in bytes) for a batch.
 	// By default NewMessageBatch will use the max message size provided by the service.
-	MaxBytes int32
+	MaxBytes uint64
 }
 
 // NewMessageBatch can be used to create a batch that contain multiple
@@ -45,13 +45,13 @@ func (s *Sender) NewMessageBatch(ctx context.Context, options *MessageBatchOptio
 		return nil, err
 	}
 
-	maxBytes := int32(sender.MaxMessageSize())
+	maxBytes := sender.MaxMessageSize()
 
 	if options != nil && options.MaxBytes != 0 {
 		maxBytes = options.MaxBytes
 	}
 
-	return &MessageBatch{maxBytes: maxBytes}, nil
+	return newMessageBatch(maxBytes), nil
 }
 
 // SendMessage sends a Message to a queue or topic.

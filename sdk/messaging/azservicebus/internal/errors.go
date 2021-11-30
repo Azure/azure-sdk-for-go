@@ -13,7 +13,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/v3/rpc"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/rpc"
 	"github.com/Azure/go-amqp"
 	"github.com/devigned/tab"
 )

@@ -6,9 +6,7 @@ package atom
 import (
 	"encoding/xml"
 	"testing"
-	"time"
 
-	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/stretchr/testify/require"
 )
 
@@ -106,12 +104,9 @@ func TestFeedUnmarshal(t *testing.T) {
 	var feed Feed
 	err := xml.Unmarshal([]byte(feedOfQueues), &feed)
 	require.Nil(t, err)
-	updated, err := date.ParseTime(time.RFC3339, "2018-05-03T00:21:15Z")
 	require.Nil(t, err)
 	require.Equal(t, "https://sbdjtest.servicebus.windows.net/$Resources/Queues", feed.ID)
 	require.Equal(t, "Queues", feed.Title)
-	require.WithinDuration(t, updated, feed.Updated.ToTime(), 100*time.Millisecond)
-	require.Equal(t, updated, (*feed.Updated).ToTime())
 	require.EqualValues(t, 2, len(feed.Entries))
 	require.NotNil(t, feed.Entries[0].Content)
 }

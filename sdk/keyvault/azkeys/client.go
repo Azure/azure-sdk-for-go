@@ -14,6 +14,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	generated "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
 	shared "github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 )
@@ -55,8 +56,28 @@ func NewClient(vaultUrl string, credential azcore.TokenCredential, options *Clie
 
 	genOptions.PerRetryPolicies = append(
 		genOptions.PerRetryPolicies,
-		shared.NewKeyVaultChallengePolicy(credential),
+		shared.NewKeyVaultChallengePolicy(credential, runtime.NewPipeline("azkeys", "0.1.0", nil, nil, genOptions)),
 	)
+
+	conn := generated.NewConnection(genOptions)
+	return &Client{
+		kvClient: generated.NewKeyVaultClient(conn),
+		vaultUrl: vaultUrl,
+	}, nil
+}
+
+func createTestClient(vaultUrl string, credential azcore.TokenCredential, options *ClientOptions, recordingPolicy policy.Policy) (*Client, error) {
+	if options == nil {
+		options = &ClientOptions{}
+	}
+
+	genOptions := options.toConnectionOptions()
+
+	genOptions.PerRetryPolicies = append(
+		genOptions.PerRetryPolicies,
+		shared.NewKeyVaultChallengePolicy(credential, runtime.NewPipeline("azkeys", "0.1.0", nil, nil, genOptions)),
+	)
+	genOptions.PerCallPolicies = append(genOptions.PerCallPolicies, recordingPolicy)
 
 	conn := generated.NewConnection(genOptions)
 	return &Client{

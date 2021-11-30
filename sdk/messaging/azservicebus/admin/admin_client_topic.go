@@ -8,9 +8,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/v3/auth"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
 )
 
 // TopicProperties represents the static properties of the topic.
@@ -131,7 +131,7 @@ func (ac *Client) GetTopic(ctx context.Context, topicName string, options *GetTo
 	props, err := newTopicProperties(&atomResp.Content.TopicDescription)
 
 	if err != nil {
-		return nil, err
+		return nil, atom.NewResponseError(err, resp)
 	}
 
 	return &GetTopicResponse{
@@ -167,10 +167,16 @@ func (ac *Client) GetTopicRuntimeProperties(ctx context.Context, topicName strin
 		return nil, err
 	}
 
+	props, err := newTopicRuntimeProperties(&atomResp.Content.TopicDescription)
+
+	if err != nil {
+		return nil, atom.NewResponseError(err, resp)
+	}
+
 	return &GetTopicRuntimePropertiesResponse{
 		RawResponse: resp,
 		GetTopicRuntimePropertiesResult: GetTopicRuntimePropertiesResult{
-			TopicRuntimeProperties: *newTopicRuntimeProperties(&atomResp.Content.TopicDescription),
+			TopicRuntimeProperties: *props,
 		},
 	}, nil
 }
@@ -194,21 +200,62 @@ type ListTopicsOptions struct {
 	MaxPageSize int32
 }
 
-// TopicPropertiesPager provides iteration over ListTopicProperties pages.
-type TopicPropertiesPager interface {
-	// NextPage returns true if the pager advanced to the next page.
-	// Returns false if there are no more pages or an error occurred.
-	NextPage(context.Context) bool
+// TopicsPager provides iteration over TopicProperties pages.
+type TopicsPager struct {
+	innerPager pagerFunc
 
-	// PageResponse returns the current TopicProperties.
-	PageResponse() *ListTopicsResponse
+	lastErr      error
+	lastResponse *ListTopicsResponse
+}
 
-	// Err returns the last error encountered while paging.
-	Err() error
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *TopicsPager) NextPage(ctx context.Context) bool {
+	p.lastResponse, p.lastErr = p.getNextPage(ctx)
+	return p.lastResponse != nil
+}
+
+// PageResponse returns the current page.
+func (p *TopicsPager) PageResponse() *ListTopicsResponse {
+	return p.lastResponse
+}
+
+// Err returns the last error encountered while paging.
+func (p *TopicsPager) Err() error {
+	return p.lastErr
+}
+
+func (p *TopicsPager) getNextPage(ctx context.Context) (*ListTopicsResponse, error) {
+	var feed *atom.TopicFeed
+	resp, err := p.innerPager(ctx, &feed)
+
+	if err != nil || feed == nil {
+		return nil, err
+	}
+
+	var all []*TopicItem
+
+	for _, env := range feed.Entries {
+		props, err := newTopicProperties(&env.Content.TopicDescription)
+
+		if err != nil {
+			return nil, atom.NewResponseError(err, resp)
+		}
+
+		all = append(all, &TopicItem{
+			TopicProperties: *props,
+			TopicName:       env.Title,
+		})
+	}
+
+	return &ListTopicsResponse{
+		RawResponse: resp,
+		Items:       all,
+	}, nil
 }
 
 // ListTopics lists topics.
-func (ac *Client) ListTopics(options *ListTopicsOptions) TopicPropertiesPager {
+func (ac *Client) ListTopics(options *ListTopicsOptions) *TopicsPager {
 	var pageSize int32
 
 	if options != nil {
@@ -217,7 +264,7 @@ func (ac *Client) ListTopics(options *ListTopicsOptions) TopicPropertiesPager {
 
 	pagerFunc := ac.newPagerFunc("/$Resources/Topics", pageSize, topicFeedLen)
 
-	return &topicPropertiesPager{
+	return &TopicsPager{
 		innerPager: pagerFunc,
 	}
 }
@@ -241,21 +288,61 @@ type ListTopicsRuntimePropertiesOptions struct {
 	MaxPageSize int32
 }
 
-// TopicRuntimePropertiesPager provides iteration over ListTopicRuntimeProperties pages.
-type TopicRuntimePropertiesPager interface {
-	// NextPage returns true if the pager advanced to the next page.
-	// Returns false if there are no more pages or an error occurred.
-	NextPage(context.Context) bool
+// TopicRuntimePropertiesPager provides iteration over TopicRuntimeProperties pages.
+type TopicRuntimePropertiesPager struct {
+	innerPager   pagerFunc
+	lastErr      error
+	lastResponse *ListTopicsRuntimePropertiesResponse
+}
 
-	// PageResponse returns the current TopicRuntimeProperties.
-	PageResponse() *ListTopicsRuntimePropertiesResponse
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *TopicRuntimePropertiesPager) NextPage(ctx context.Context) bool {
+	p.lastResponse, p.lastErr = p.getNextPage(ctx)
+	return p.lastResponse != nil
+}
 
-	// Err returns the last error encountered while paging.
-	Err() error
+// PageResponse returns the current page.
+func (p *TopicRuntimePropertiesPager) PageResponse() *ListTopicsRuntimePropertiesResponse {
+	return p.lastResponse
+}
+
+// Err returns the last error encountered while paging.
+func (p *TopicRuntimePropertiesPager) Err() error {
+	return p.lastErr
+}
+
+func (p *TopicRuntimePropertiesPager) getNextPage(ctx context.Context) (*ListTopicsRuntimePropertiesResponse, error) {
+	var feed *atom.TopicFeed
+	resp, err := p.innerPager(ctx, &feed)
+
+	if err != nil || feed == nil {
+		return nil, err
+	}
+
+	var all []*TopicRuntimePropertiesItem
+
+	for _, entry := range feed.Entries {
+		props, err := newTopicRuntimeProperties(&entry.Content.TopicDescription)
+
+		if err != nil {
+			return nil, atom.NewResponseError(err, resp)
+		}
+
+		all = append(all, &TopicRuntimePropertiesItem{
+			TopicName:              entry.Title,
+			TopicRuntimeProperties: *props,
+		})
+	}
+
+	return &ListTopicsRuntimePropertiesResponse{
+		RawResponse: resp,
+		Items:       all,
+	}, nil
 }
 
 // ListTopicsRuntimeProperties lists runtime properties for topics.
-func (ac *Client) ListTopicsRuntimeProperties(options *ListTopicsRuntimePropertiesOptions) TopicRuntimePropertiesPager {
+func (ac *Client) ListTopicsRuntimeProperties(options *ListTopicsRuntimePropertiesOptions) *TopicRuntimePropertiesPager {
 	var pageSize int32
 
 	if options != nil {
@@ -264,7 +351,7 @@ func (ac *Client) ListTopicsRuntimeProperties(options *ListTopicsRuntimeProperti
 
 	pagerFunc := ac.newPagerFunc("/$Resources/Topics", pageSize, topicFeedLen)
 
-	return &topicRuntimePropertiesPager{
+	return &TopicRuntimePropertiesPager{
 		innerPager: pagerFunc,
 	}
 }
@@ -349,7 +436,7 @@ func (ac *Client) createOrUpdateTopicImpl(ctx context.Context, topicName string,
 	topicProps, err := newTopicProperties(&atomResp.Content.TopicDescription)
 
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, atom.NewResponseError(err, resp)
 	}
 
 	return topicProps, resp, nil
@@ -406,116 +493,28 @@ func newTopicProperties(td *atom.TopicDescription) (*TopicProperties, error) {
 	}, nil
 }
 
-func newTopicRuntimeProperties(desc *atom.TopicDescription) *TopicRuntimeProperties {
-	return &TopicRuntimeProperties{
+func newTopicRuntimeProperties(desc *atom.TopicDescription) (*TopicRuntimeProperties, error) {
+	props := &TopicRuntimeProperties{
 		SizeInBytes:           int64OrZero(desc.SizeInBytes),
-		CreatedAt:             dateTimeToTime(desc.CreatedAt),
-		UpdatedAt:             dateTimeToTime(desc.UpdatedAt),
-		AccessedAt:            dateTimeToTime(desc.AccessedAt),
 		ScheduledMessageCount: int32OrZero(desc.CountDetails.ScheduledMessageCount),
 		SubscriptionCount:     int32OrZero(desc.SubscriptionCount),
 	}
-}
 
-// topicPropertiesPager provides iteration over TopicProperties pages.
-type topicPropertiesPager struct {
-	innerPager pagerFunc
+	var err error
 
-	lastErr      error
-	lastResponse *ListTopicsResponse
-}
-
-// NextPage returns true if the pager advanced to the next page.
-// Returns false if there are no more pages or an error occurred.
-func (p *topicPropertiesPager) NextPage(ctx context.Context) bool {
-	p.lastResponse, p.lastErr = p.getNextPage(ctx)
-	return p.lastResponse != nil
-}
-
-// PageResponse returns the current page.
-func (p *topicPropertiesPager) PageResponse() *ListTopicsResponse {
-	return p.lastResponse
-}
-
-// Err returns the last error encountered while paging.
-func (p *topicPropertiesPager) Err() error {
-	return p.lastErr
-}
-
-func (p *topicPropertiesPager) getNextPage(ctx context.Context) (*ListTopicsResponse, error) {
-	var feed *atom.TopicFeed
-	resp, err := p.innerPager(ctx, &feed)
-
-	if err != nil || feed == nil {
+	if props.CreatedAt, err = atom.StringToTime(desc.CreatedAt); err != nil {
 		return nil, err
 	}
 
-	var all []*TopicItem
-
-	for _, env := range feed.Entries {
-		props, err := newTopicProperties(&env.Content.TopicDescription)
-
-		if err != nil {
-			return nil, err
-		}
-
-		all = append(all, &TopicItem{
-			TopicProperties: *props,
-			TopicName:       env.Title,
-		})
-	}
-
-	return &ListTopicsResponse{
-		RawResponse: resp,
-		Items:       all,
-	}, nil
-}
-
-// topicRuntimePropertiesPager provides iteration over TopicRuntimeProperties pages.
-type topicRuntimePropertiesPager struct {
-	innerPager   pagerFunc
-	lastErr      error
-	lastResponse *ListTopicsRuntimePropertiesResponse
-}
-
-// NextPage returns true if the pager advanced to the next page.
-// Returns false if there are no more pages or an error occurred.
-func (p *topicRuntimePropertiesPager) NextPage(ctx context.Context) bool {
-	p.lastResponse, p.lastErr = p.getNextPage(ctx)
-	return p.lastResponse != nil
-}
-
-func (p *topicRuntimePropertiesPager) getNextPage(ctx context.Context) (*ListTopicsRuntimePropertiesResponse, error) {
-	var feed *atom.TopicFeed
-	resp, err := p.innerPager(ctx, &feed)
-
-	if err != nil || feed == nil {
+	if props.UpdatedAt, err = atom.StringToTime(desc.UpdatedAt); err != nil {
 		return nil, err
 	}
 
-	var all []*TopicRuntimePropertiesItem
-
-	for _, entry := range feed.Entries {
-		all = append(all, &TopicRuntimePropertiesItem{
-			TopicName:              entry.Title,
-			TopicRuntimeProperties: *newTopicRuntimeProperties(&entry.Content.TopicDescription),
-		})
+	if props.AccessedAt, err = atom.StringToTime(desc.AccessedAt); err != nil {
+		return nil, err
 	}
 
-	return &ListTopicsRuntimePropertiesResponse{
-		RawResponse: resp,
-		Items:       all,
-	}, nil
-}
-
-// PageResponse returns the current page.
-func (p *topicRuntimePropertiesPager) PageResponse() *ListTopicsRuntimePropertiesResponse {
-	return p.lastResponse
-}
-
-// Err returns the last error encountered while paging.
-func (p *topicRuntimePropertiesPager) Err() error {
-	return p.lastErr
+	return props, nil
 }
 
 func topicFeedLen(pv interface{}) int {

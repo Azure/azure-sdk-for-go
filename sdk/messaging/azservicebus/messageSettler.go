@@ -11,7 +11,7 @@ import (
 	"github.com/Azure/go-amqp"
 )
 
-var errReceiveAndDeleteReceiver = errors.New("messages that are received in receiveAndDelete mode are not settlable")
+var errReceiveAndDeleteReceiver = errors.New("messages that are received in `ReceiveModeReceiveAndDelete` mode are not settleable")
 
 type settler interface {
 	CompleteMessage(ctx context.Context, message *ReceivedMessage) error

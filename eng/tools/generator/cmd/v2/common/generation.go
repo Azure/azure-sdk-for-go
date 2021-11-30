@@ -39,10 +39,12 @@ type GenerateResult struct {
 type GenerateParam struct {
 	RPName              string
 	NamespaceName       string
+	NamespaceConfig     string
 	SpecficVersion      string
 	SpecficPackageTitle string
 	SpecRPName          string
 	ReleaseDate         string
+	SkipGenerateExample bool
 }
 
 func (ctx GenerateContext) GenerateForAutomation(readme, repo string) ([]GenerateResult, []error) {
@@ -61,13 +63,15 @@ func (ctx GenerateContext) GenerateForAutomation(readme, repo string) ([]Generat
 		}
 	}
 
-	for rpName, namespaceNames := range rpMap {
-		for _, namespaceName := range namespaceNames {
-			log.Printf("Process rp: %s, namespace: %s", rpName, namespaceName)
+	for rpName, packageInfos := range rpMap {
+		for _, packageInfo := range packageInfos {
+			log.Printf("Process rp: %s, namespace: %s", rpName, packageInfo.Name)
 			singleResult, err := ctx.GenerateForSingleRPNamespace(&GenerateParam{
-				RPName:        rpName,
-				NamespaceName: namespaceName,
-				SpecRPName:    specRPName,
+				RPName:              rpName,
+				NamespaceName:       packageInfo.Name,
+				SpecRPName:          specRPName,
+				SkipGenerateExample: true,
+				NamespaceConfig:     packageInfo.Config,
 			})
 			if err != nil {
 				errors = append(errors, err)
@@ -95,10 +99,11 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 
 		log.Printf("Use template to generate new rp folder and basic package files...")
 		if err = template.GeneratePackageByTemplate(generateParam.RPName, generateParam.NamespaceName, template.Flags{
-			SDKRoot:      ctx.SDKPath,
-			TemplatePath: "eng/tools/generator/template/rpName/packageName",
-			PackageTitle: generateParam.SpecficPackageTitle,
-			Commit:       ctx.SpecCommitHash,
+			SDKRoot:       ctx.SDKPath,
+			TemplatePath:  "eng/tools/generator/template/rpName/packageName",
+			PackageTitle:  generateParam.SpecficPackageTitle,
+			Commit:        ctx.SpecCommitHash,
+			PackageConfig: generateParam.NamespaceConfig,
 		}); err != nil {
 			return nil, err
 		}
@@ -147,6 +152,13 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 		return nil, err
 	}
 
+	if !generateParam.SkipGenerateExample {
+		log.Printf("Generate examples...")
+		if err := ExecuteExampleGenerate(packagePath, filepath.Join("resourcemanager", generateParam.RPName, generateParam.NamespaceName)); err != nil {
+			return nil, err
+		}
+	}
+
 	if onBoard {
 		log.Printf("Replace {{NewClientName}} placeholder in the README.md ")
 		if err = ReplaceNewClientNamePlaceholder(packagePath, newExports); err != nil {
@@ -183,18 +195,8 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 			return nil, err
 		}
 
-		log.Printf("Remove all the files that start with `zz_generated_`...")
-		if err = CleanSDKGeneratedFiles(packagePath); err != nil {
-			return nil, err
-		}
-
-		log.Printf("Replace version in autorest.md...")
+		log.Printf("Replace version in autorest.md and constants...")
 		if err = ReplaceVersion(packagePath, version.String()); err != nil {
-			return nil, err
-		}
-
-		log.Printf("Run `go generate` to regenerate the code for new version...")
-		if err = ExecuteGoGenerate(packagePath); err != nil {
 			return nil, err
 		}
 

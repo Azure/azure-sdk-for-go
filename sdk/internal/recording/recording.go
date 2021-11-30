@@ -621,10 +621,7 @@ func Stop(t *testing.T, options *RecordingOptions) error {
 	}
 	req.Header.Set("x-recording-id", recTest.recordingId)
 	_, err = client.Do(req)
-	if err != nil {
-		t.Errorf(err.Error())
-	}
-	return nil
+	return err
 }
 
 // This looks up an environment variable and if it is not found, returns the recordedValue
@@ -677,6 +674,33 @@ func findProxyCertLocation() (string, error) {
 	}
 	topLevel := bytes.NewBuffer(out).String()
 	return filepath.Join(topLevel, "eng", "common", "testproxy", "dotnet-devcert.crt"), nil
+}
+
+type RecordingHTTPClient struct {
+	defaultClient *http.Client
+	options       RecordingOptions
+	t             *testing.T
+}
+
+func (c RecordingHTTPClient) Do(req *http.Request) (*http.Response, error) {
+	c.options.ReplaceAuthority(c.t, req)
+	return c.defaultClient.Do(req)
+}
+
+func NewRecordingHTTPClient(t *testing.T, options *RecordingOptions) (*RecordingHTTPClient, error) {
+	if options == nil {
+		options = &RecordingOptions{UseHTTPS: true}
+	}
+	c, err := GetHTTPClient(t)
+	if err != nil {
+		return nil, err
+	}
+
+	return &RecordingHTTPClient{
+		defaultClient: c,
+		options:       *options,
+		t:             t,
+	}, nil
 }
 
 func GetHTTPClient(t *testing.T) (*http.Client, error) {

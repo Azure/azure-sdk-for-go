@@ -121,6 +121,11 @@ stages:
         displayName: "Show Docker Logs"
         condition: succeededOrFailed()
 
+    - ${{ if startsWith(parameters.ServiceDirectory, 'resourcemanager') }}:
+      - template: /eng/pipelines/templates/jobs/mgmt-mock-test.yml
+        parameters:
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+
     - job: Analyze
       displayName: Analyze
       variables:

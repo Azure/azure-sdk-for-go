@@ -12,7 +12,7 @@ package containerservice
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2021-09-01/containerservice"
+	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2021-10-01/containerservice"
 )
 
 const (
@@ -81,6 +81,13 @@ const (
 	GPUInstanceProfileMIG3g GPUInstanceProfile = original.GPUInstanceProfileMIG3g
 	GPUInstanceProfileMIG4g GPUInstanceProfile = original.GPUInstanceProfileMIG4g
 	GPUInstanceProfileMIG7g GPUInstanceProfile = original.GPUInstanceProfileMIG7g
+)
+
+type IPFamily = original.IPFamily
+
+const (
+	IPFamilyIPv4 IPFamily = original.IPFamilyIPv4
+	IPFamilyIPv6 IPFamily = original.IPFamilyIPv6
 )
 
 type KubeletDiskType = original.KubeletDiskType
@@ -681,6 +688,9 @@ func PossibleExtendedLocationTypesValues() []ExtendedLocationTypes {
 }
 func PossibleGPUInstanceProfileValues() []GPUInstanceProfile {
 	return original.PossibleGPUInstanceProfileValues()
+}
+func PossibleIPFamilyValues() []IPFamily {
+	return original.PossibleIPFamilyValues()
 }
 func PossibleKubeletDiskTypeValues() []KubeletDiskType {
 	return original.PossibleKubeletDiskTypeValues()

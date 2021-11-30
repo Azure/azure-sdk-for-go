@@ -12,7 +12,7 @@ package insights
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/appinsights/mgmt/2020-02-02-preview/insights"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/appinsights/mgmt/2021-11-01-preview/insights"
 )
 
 const (
@@ -33,6 +33,15 @@ const (
 	CategoryTypeRetention   CategoryType = original.CategoryTypeRetention
 	CategoryTypeTSG         CategoryType = original.CategoryTypeTSG
 	CategoryTypeWorkbook    CategoryType = original.CategoryTypeWorkbook
+)
+
+type CreatedByType = original.CreatedByType
+
+const (
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
 )
 
 type FavoriteSourceType = original.FavoriteSourceType
@@ -102,6 +111,22 @@ const (
 	ItemTypeParameterRecent   ItemTypeParameter = original.ItemTypeParameterRecent
 )
 
+type Kind = original.Kind
+
+const (
+	KindShared Kind = original.KindShared
+	KindUser   Kind = original.KindUser
+)
+
+type ManagedServiceIdentityType = original.ManagedServiceIdentityType
+
+const (
+	ManagedServiceIdentityTypeNone                       ManagedServiceIdentityType = original.ManagedServiceIdentityTypeNone
+	ManagedServiceIdentityTypeSystemAssigned             ManagedServiceIdentityType = original.ManagedServiceIdentityTypeSystemAssigned
+	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = original.ManagedServiceIdentityTypeSystemAssignedUserAssigned
+	ManagedServiceIdentityTypeUserAssigned               ManagedServiceIdentityType = original.ManagedServiceIdentityTypeUserAssigned
+)
+
 type PublicNetworkAccessType = original.PublicNetworkAccessType
 
 const (
@@ -127,6 +152,13 @@ type SharedTypeKind = original.SharedTypeKind
 const (
 	SharedTypeKindShared SharedTypeKind = original.SharedTypeKindShared
 	SharedTypeKindUser   SharedTypeKind = original.SharedTypeKindUser
+)
+
+type Type = original.Type
+
+const (
+	TypeNone         Type = original.TypeNone
+	TypeUserAssigned Type = original.TypeUserAssigned
 )
 
 type WebTestKind = original.WebTestKind
@@ -181,40 +213,52 @@ type ComponentPurgeStatusResponse = original.ComponentPurgeStatusResponse
 type ComponentQuotaStatusClient = original.ComponentQuotaStatusClient
 type ComponentsClient = original.ComponentsClient
 type ComponentsResource = original.ComponentsResource
-type ErrorFieldContract = original.ErrorFieldContract
+type ErrorDefinition = original.ErrorDefinition
 type ErrorResponse = original.ErrorResponse
-type ErrorResponseComponents = original.ErrorResponseComponents
-type ErrorResponseComponentsError = original.ErrorResponseComponentsError
 type ErrorResponseLinkedStorage = original.ErrorResponseLinkedStorage
 type ErrorResponseLinkedStorageError = original.ErrorResponseLinkedStorageError
 type ExportConfigurationsClient = original.ExportConfigurationsClient
 type FavoritesClient = original.FavoritesClient
 type InnerError = original.InnerError
-type LinkProperties = original.LinkProperties
+type InnerErrorTrace = original.InnerErrorTrace
 type LinkedStorageAccountsProperties = original.LinkedStorageAccountsProperties
 type ListAnnotation = original.ListAnnotation
 type ListApplicationInsightsComponentAnalyticsItem = original.ListApplicationInsightsComponentAnalyticsItem
 type ListApplicationInsightsComponentExportConfiguration = original.ListApplicationInsightsComponentExportConfiguration
 type ListApplicationInsightsComponentFavorite = original.ListApplicationInsightsComponentFavorite
 type ListApplicationInsightsComponentProactiveDetectionConfiguration = original.ListApplicationInsightsComponentProactiveDetectionConfiguration
+type LiveTokenClient = original.LiveTokenClient
+type LiveTokenResponse = original.LiveTokenResponse
+type ManagedServiceIdentity = original.ManagedServiceIdentity
 type MyWorkbook = original.MyWorkbook
 type MyWorkbookError = original.MyWorkbookError
+type MyWorkbookManagedIdentity = original.MyWorkbookManagedIdentity
 type MyWorkbookProperties = original.MyWorkbookProperties
 type MyWorkbookResource = original.MyWorkbookResource
+type MyWorkbookUserAssignedIdentities = original.MyWorkbookUserAssignedIdentities
 type MyWorkbooksClient = original.MyWorkbooksClient
 type MyWorkbooksListResult = original.MyWorkbooksListResult
+type MyWorkbooksListResultIterator = original.MyWorkbooksListResultIterator
+type MyWorkbooksListResultPage = original.MyWorkbooksListResultPage
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
+type OperationInfo = original.OperationInfo
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
+type OperationLive = original.OperationLive
 type OperationsClient = original.OperationsClient
+type OperationsListResult = original.OperationsListResult
+type OperationsListResultIterator = original.OperationsListResultIterator
+type OperationsListResultPage = original.OperationsListResultPage
 type PrivateLinkScopedResource = original.PrivateLinkScopedResource
 type ProactiveDetectionConfigurationsClient = original.ProactiveDetectionConfigurationsClient
 type ProxyResource = original.ProxyResource
 type Resource = original.Resource
+type SystemData = original.SystemData
 type TagsResource = original.TagsResource
 type TrackedResource = original.TrackedResource
+type UserAssignedIdentity = original.UserAssignedIdentity
 type WebTest = original.WebTest
 type WebTestGeolocation = original.WebTestGeolocation
 type WebTestListResult = original.WebTestListResult
@@ -232,10 +276,28 @@ type WorkItemConfigurationsListResult = original.WorkItemConfigurationsListResul
 type WorkItemCreateConfiguration = original.WorkItemCreateConfiguration
 type Workbook = original.Workbook
 type WorkbookError = original.WorkbookError
+type WorkbookErrorDefinition = original.WorkbookErrorDefinition
+type WorkbookInnerErrorTrace = original.WorkbookInnerErrorTrace
 type WorkbookProperties = original.WorkbookProperties
+type WorkbookPropertiesUpdateParameters = original.WorkbookPropertiesUpdateParameters
 type WorkbookResource = original.WorkbookResource
+type WorkbookResourceIdentity = original.WorkbookResourceIdentity
+type WorkbookTemplate = original.WorkbookTemplate
+type WorkbookTemplateError = original.WorkbookTemplateError
+type WorkbookTemplateErrorBody = original.WorkbookTemplateErrorBody
+type WorkbookTemplateErrorFieldContract = original.WorkbookTemplateErrorFieldContract
+type WorkbookTemplateGallery = original.WorkbookTemplateGallery
+type WorkbookTemplateLocalizedGallery = original.WorkbookTemplateLocalizedGallery
+type WorkbookTemplateProperties = original.WorkbookTemplateProperties
+type WorkbookTemplateResource = original.WorkbookTemplateResource
+type WorkbookTemplateUpdateParameters = original.WorkbookTemplateUpdateParameters
+type WorkbookTemplatesClient = original.WorkbookTemplatesClient
+type WorkbookTemplatesListResult = original.WorkbookTemplatesListResult
+type WorkbookUpdateParameters = original.WorkbookUpdateParameters
 type WorkbooksClient = original.WorkbooksClient
 type WorkbooksListResult = original.WorkbooksListResult
+type WorkbooksListResultIterator = original.WorkbooksListResultIterator
+type WorkbooksListResultPage = original.WorkbooksListResultPage
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -312,11 +374,23 @@ func NewFavoritesClient(subscriptionID string) FavoritesClient {
 func NewFavoritesClientWithBaseURI(baseURI string, subscriptionID string) FavoritesClient {
 	return original.NewFavoritesClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewLiveTokenClient(subscriptionID string) LiveTokenClient {
+	return original.NewLiveTokenClient(subscriptionID)
+}
+func NewLiveTokenClientWithBaseURI(baseURI string, subscriptionID string) LiveTokenClient {
+	return original.NewLiveTokenClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewMyWorkbooksClient(subscriptionID string) MyWorkbooksClient {
 	return original.NewMyWorkbooksClient(subscriptionID)
 }
 func NewMyWorkbooksClientWithBaseURI(baseURI string, subscriptionID string) MyWorkbooksClient {
 	return original.NewMyWorkbooksClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewMyWorkbooksListResultIterator(page MyWorkbooksListResultPage) MyWorkbooksListResultIterator {
+	return original.NewMyWorkbooksListResultIterator(page)
+}
+func NewMyWorkbooksListResultPage(cur MyWorkbooksListResult, getNextPage func(context.Context, MyWorkbooksListResult) (MyWorkbooksListResult, error)) MyWorkbooksListResultPage {
+	return original.NewMyWorkbooksListResultPage(cur, getNextPage)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
@@ -329,6 +403,12 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationsListResultIterator(page OperationsListResultPage) OperationsListResultIterator {
+	return original.NewOperationsListResultIterator(page)
+}
+func NewOperationsListResultPage(cur OperationsListResult, getNextPage func(context.Context, OperationsListResult) (OperationsListResult, error)) OperationsListResultPage {
+	return original.NewOperationsListResultPage(cur, getNextPage)
 }
 func NewProactiveDetectionConfigurationsClient(subscriptionID string) ProactiveDetectionConfigurationsClient {
 	return original.NewProactiveDetectionConfigurationsClient(subscriptionID)
@@ -363,17 +443,32 @@ func NewWorkItemConfigurationsClient(subscriptionID string) WorkItemConfiguratio
 func NewWorkItemConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) WorkItemConfigurationsClient {
 	return original.NewWorkItemConfigurationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewWorkbookTemplatesClient(subscriptionID string) WorkbookTemplatesClient {
+	return original.NewWorkbookTemplatesClient(subscriptionID)
+}
+func NewWorkbookTemplatesClientWithBaseURI(baseURI string, subscriptionID string) WorkbookTemplatesClient {
+	return original.NewWorkbookTemplatesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewWorkbooksClient(subscriptionID string) WorkbooksClient {
 	return original.NewWorkbooksClient(subscriptionID)
 }
 func NewWorkbooksClientWithBaseURI(baseURI string, subscriptionID string) WorkbooksClient {
 	return original.NewWorkbooksClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewWorkbooksListResultIterator(page WorkbooksListResultPage) WorkbooksListResultIterator {
+	return original.NewWorkbooksListResultIterator(page)
+}
+func NewWorkbooksListResultPage(cur WorkbooksListResult, getNextPage func(context.Context, WorkbooksListResult) (WorkbooksListResult, error)) WorkbooksListResultPage {
+	return original.NewWorkbooksListResultPage(cur, getNextPage)
+}
 func PossibleApplicationTypeValues() []ApplicationType {
 	return original.PossibleApplicationTypeValues()
 }
 func PossibleCategoryTypeValues() []CategoryType {
 	return original.PossibleCategoryTypeValues()
+}
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
 }
 func PossibleFavoriteSourceTypeValues() []FavoriteSourceType {
 	return original.PossibleFavoriteSourceTypeValues()
@@ -399,6 +494,12 @@ func PossibleItemTypeParameterValues() []ItemTypeParameter {
 func PossibleItemTypeValues() []ItemType {
 	return original.PossibleItemTypeValues()
 }
+func PossibleKindValues() []Kind {
+	return original.PossibleKindValues()
+}
+func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
+	return original.PossibleManagedServiceIdentityTypeValues()
+}
 func PossiblePublicNetworkAccessTypeValues() []PublicNetworkAccessType {
 	return original.PossiblePublicNetworkAccessTypeValues()
 }
@@ -410,6 +511,9 @@ func PossibleRequestSourceValues() []RequestSource {
 }
 func PossibleSharedTypeKindValues() []SharedTypeKind {
 	return original.PossibleSharedTypeKindValues()
+}
+func PossibleTypeValues() []Type {
+	return original.PossibleTypeValues()
 }
 func PossibleWebTestKindValues() []WebTestKind {
 	return original.PossibleWebTestKindValues()

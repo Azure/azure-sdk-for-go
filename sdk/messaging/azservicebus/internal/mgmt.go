@@ -10,10 +10,10 @@ import (
 	"sync"
 	"time"
 
-	common "github.com/Azure/azure-amqp-common-go/v3"
-	"github.com/Azure/azure-amqp-common-go/v3/rpc"
-	"github.com/Azure/azure-amqp-common-go/v3/uuid"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
+	common "github.com/Azure/azure-sdk-for-go/sdk/messaging/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/rpc"
 	"github.com/Azure/go-amqp"
 	"github.com/devigned/tab"
 )
@@ -529,7 +529,7 @@ func (mc *mgmtClient) GetSessionState(ctx context.Context, sessionID string) ([]
 
 // SetSessionState sets the state associated with the session.
 func (mc *mgmtClient) SetSessionState(ctx context.Context, sessionID string, state []byte) error {
-	uuid, err := uuid.NewV4()
+	uuid, err := uuid.New()
 
 	if err != nil {
 		return err
@@ -632,7 +632,7 @@ func (mc *mgmtClient) ScheduleMessages(ctx context.Context, enqueueTime time.Tim
 		// could potentially take the raw AMQP message we need to check it, and we assume
 		// that 'nil' is the only zero value that matters.
 		if messages[i].Properties.MessageID == nil {
-			id, err := uuid.NewV4()
+			id, err := uuid.New()
 			if err != nil {
 				return nil, err
 			}

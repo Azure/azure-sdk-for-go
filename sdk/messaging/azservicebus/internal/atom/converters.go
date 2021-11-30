@@ -4,8 +4,8 @@
 package atom
 
 import (
-	"github.com/Azure/azure-amqp-common-go/v3/auth"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
 )
 
 func WrapWithQueueEnvelope(qd *QueueDescription, tokenProvider auth.TokenProvider) (*QueueEnvelope, []MiddlewareFunc) {

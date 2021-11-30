@@ -9,7 +9,7 @@
 
 package backupapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2021-01-01/backup/backupapi"
+import original "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2021-07-01/backup/backupapi"
 
 type AadPropertiesClientAPI = original.AadPropertiesClientAPI
 type BMSPrepareDataMoveOperationResultClientAPI = original.BMSPrepareDataMoveOperationResultClientAPI
@@ -56,7 +56,10 @@ type RecoveryPointsClientAPI = original.RecoveryPointsClientAPI
 type RecoveryPointsCrrClientAPI = original.RecoveryPointsCrrClientAPI
 type RecoveryPointsRecommendedForMoveClientAPI = original.RecoveryPointsRecommendedForMoveClientAPI
 type ResourceEncryptionConfigsClientAPI = original.ResourceEncryptionConfigsClientAPI
+type ResourceGuardProxiesClientAPI = original.ResourceGuardProxiesClientAPI
+type ResourceGuardProxyClientAPI = original.ResourceGuardProxyClientAPI
 type ResourceStorageConfigsClientAPI = original.ResourceStorageConfigsClientAPI
+type ResourceStorageConfigsNonCRRClientAPI = original.ResourceStorageConfigsNonCRRClientAPI
 type ResourceVaultConfigsClientAPI = original.ResourceVaultConfigsClientAPI
 type RestoresClientAPI = original.RestoresClientAPI
 type SecurityPINsClientAPI = original.SecurityPINsClientAPI

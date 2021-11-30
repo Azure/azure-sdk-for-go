@@ -12,7 +12,7 @@ package backup
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2021-01-01/backup"
+	original "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2021-07-01/backup"
 )
 
 const (
@@ -336,12 +336,14 @@ const (
 type LastUpdateStatus = original.LastUpdateStatus
 
 const (
-	LastUpdateStatusFailed             LastUpdateStatus = original.LastUpdateStatusFailed
-	LastUpdateStatusInvalid            LastUpdateStatus = original.LastUpdateStatusInvalid
-	LastUpdateStatusNotEnabled         LastUpdateStatus = original.LastUpdateStatusNotEnabled
-	LastUpdateStatusPartiallyFailed    LastUpdateStatus = original.LastUpdateStatusPartiallyFailed
-	LastUpdateStatusPartiallySucceeded LastUpdateStatus = original.LastUpdateStatusPartiallySucceeded
-	LastUpdateStatusSucceeded          LastUpdateStatus = original.LastUpdateStatusSucceeded
+	LastUpdateStatusFailed              LastUpdateStatus = original.LastUpdateStatusFailed
+	LastUpdateStatusFirstInitialization LastUpdateStatus = original.LastUpdateStatusFirstInitialization
+	LastUpdateStatusInitialized         LastUpdateStatus = original.LastUpdateStatusInitialized
+	LastUpdateStatusInvalid             LastUpdateStatus = original.LastUpdateStatusInvalid
+	LastUpdateStatusNotEnabled          LastUpdateStatus = original.LastUpdateStatusNotEnabled
+	LastUpdateStatusPartiallyFailed     LastUpdateStatus = original.LastUpdateStatusPartiallyFailed
+	LastUpdateStatusPartiallySucceeded  LastUpdateStatus = original.LastUpdateStatusPartiallySucceeded
+	LastUpdateStatusSucceeded           LastUpdateStatus = original.LastUpdateStatusSucceeded
 )
 
 type MabServerType = original.MabServerType
@@ -1132,6 +1134,8 @@ type IaasVMILRRegistrationRequest = original.IaasVMILRRegistrationRequest
 type IaasVMRecoveryPoint = original.IaasVMRecoveryPoint
 type IaasVMRestoreRequest = original.IaasVMRestoreRequest
 type IaasVMRestoreWithRehydrationRequest = original.IaasVMRestoreWithRehydrationRequest
+type IdentityBasedRestoreDetails = original.IdentityBasedRestoreDetails
+type IdentityInfo = original.IdentityInfo
 type InquiryInfo = original.InquiryInfo
 type InquiryValidation = original.InquiryValidation
 type InstantItemRecoveryTarget = original.InstantItemRecoveryTarget
@@ -1266,11 +1270,22 @@ type Resource = original.Resource
 type ResourceConfig = original.ResourceConfig
 type ResourceConfigResource = original.ResourceConfigResource
 type ResourceEncryptionConfig = original.ResourceEncryptionConfig
+type ResourceEncryptionConfigExtended = original.ResourceEncryptionConfigExtended
+type ResourceEncryptionConfigExtendedResource = original.ResourceEncryptionConfigExtendedResource
 type ResourceEncryptionConfigResource = original.ResourceEncryptionConfigResource
 type ResourceEncryptionConfigsClient = original.ResourceEncryptionConfigsClient
+type ResourceGuardOperationDetail = original.ResourceGuardOperationDetail
+type ResourceGuardProxiesClient = original.ResourceGuardProxiesClient
+type ResourceGuardProxyBase = original.ResourceGuardProxyBase
+type ResourceGuardProxyBaseResource = original.ResourceGuardProxyBaseResource
+type ResourceGuardProxyBaseResourceList = original.ResourceGuardProxyBaseResourceList
+type ResourceGuardProxyBaseResourceListIterator = original.ResourceGuardProxyBaseResourceListIterator
+type ResourceGuardProxyBaseResourceListPage = original.ResourceGuardProxyBaseResourceListPage
+type ResourceGuardProxyClient = original.ResourceGuardProxyClient
 type ResourceHealthDetails = original.ResourceHealthDetails
 type ResourceList = original.ResourceList
 type ResourceStorageConfigsClient = original.ResourceStorageConfigsClient
+type ResourceStorageConfigsNonCRRClient = original.ResourceStorageConfigsNonCRRClient
 type ResourceVaultConfig = original.ResourceVaultConfig
 type ResourceVaultConfigResource = original.ResourceVaultConfigResource
 type ResourceVaultConfigsClient = original.ResourceVaultConfigsClient
@@ -1285,6 +1300,7 @@ type SQLDataDirectory = original.SQLDataDirectory
 type SQLDataDirectoryMapping = original.SQLDataDirectoryMapping
 type SchedulePolicy = original.SchedulePolicy
 type SecurityPINsClient = original.SecurityPINsClient
+type SecurityPinBase = original.SecurityPinBase
 type Settings = original.Settings
 type SimpleRetentionPolicy = original.SimpleRetentionPolicy
 type SimpleSchedulePolicy = original.SimpleSchedulePolicy
@@ -1296,6 +1312,8 @@ type TargetAFSRestoreInfo = original.TargetAFSRestoreInfo
 type TargetRestoreInfo = original.TargetRestoreInfo
 type TokenInformation = original.TokenInformation
 type TriggerDataMoveRequest = original.TriggerDataMoveRequest
+type UnlockDeleteRequest = original.UnlockDeleteRequest
+type UnlockDeleteResponse = original.UnlockDeleteResponse
 type UsageSummariesCRRClient = original.UsageSummariesCRRClient
 type UsageSummariesClient = original.UsageSummariesClient
 type ValidateIaasVMRestoreOperationRequest = original.ValidateIaasVMRestoreOperationRequest
@@ -1646,11 +1664,35 @@ func NewResourceEncryptionConfigsClient(subscriptionID string) ResourceEncryptio
 func NewResourceEncryptionConfigsClientWithBaseURI(baseURI string, subscriptionID string) ResourceEncryptionConfigsClient {
 	return original.NewResourceEncryptionConfigsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewResourceGuardProxiesClient(subscriptionID string) ResourceGuardProxiesClient {
+	return original.NewResourceGuardProxiesClient(subscriptionID)
+}
+func NewResourceGuardProxiesClientWithBaseURI(baseURI string, subscriptionID string) ResourceGuardProxiesClient {
+	return original.NewResourceGuardProxiesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewResourceGuardProxyBaseResourceListIterator(page ResourceGuardProxyBaseResourceListPage) ResourceGuardProxyBaseResourceListIterator {
+	return original.NewResourceGuardProxyBaseResourceListIterator(page)
+}
+func NewResourceGuardProxyBaseResourceListPage(cur ResourceGuardProxyBaseResourceList, getNextPage func(context.Context, ResourceGuardProxyBaseResourceList) (ResourceGuardProxyBaseResourceList, error)) ResourceGuardProxyBaseResourceListPage {
+	return original.NewResourceGuardProxyBaseResourceListPage(cur, getNextPage)
+}
+func NewResourceGuardProxyClient(subscriptionID string) ResourceGuardProxyClient {
+	return original.NewResourceGuardProxyClient(subscriptionID)
+}
+func NewResourceGuardProxyClientWithBaseURI(baseURI string, subscriptionID string) ResourceGuardProxyClient {
+	return original.NewResourceGuardProxyClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewResourceStorageConfigsClient(subscriptionID string) ResourceStorageConfigsClient {
 	return original.NewResourceStorageConfigsClient(subscriptionID)
 }
 func NewResourceStorageConfigsClientWithBaseURI(baseURI string, subscriptionID string) ResourceStorageConfigsClient {
 	return original.NewResourceStorageConfigsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewResourceStorageConfigsNonCRRClient(subscriptionID string) ResourceStorageConfigsNonCRRClient {
+	return original.NewResourceStorageConfigsNonCRRClient(subscriptionID)
+}
+func NewResourceStorageConfigsNonCRRClientWithBaseURI(baseURI string, subscriptionID string) ResourceStorageConfigsNonCRRClient {
+	return original.NewResourceStorageConfigsNonCRRClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewResourceVaultConfigsClient(subscriptionID string) ResourceVaultConfigsClient {
 	return original.NewResourceVaultConfigsClient(subscriptionID)

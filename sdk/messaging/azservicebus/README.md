@@ -14,6 +14,7 @@ Key links:
 - [API Reference Documentation][godoc]
 - [Product documentation](https://azure.microsoft.com/services/service-bus/)
 - [Samples][godoc_examples]
+- [Migration guide for `azure-service-bus-go` users](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azservicebus/migrationguide.md)
 
 ## Getting started
 
@@ -28,34 +29,17 @@ go get github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus
 ### Prerequisites
 - Go, version 1.16 or higher
 - An [Azure subscription](https://azure.microsoft.com/free/)
-- A [Service Bus Namespace](https://docs.microsoft.com/azure/service-bus-messaging/) 
+- A [Service Bus Namespace](https://docs.microsoft.com/azure/service-bus-messaging/).
+- A Service Bus Queue, Topic or Subscription. You can create an entity in your Service Bus Namespace using the [Azure Portal](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-quickstart-portal), or the [Azure CLI](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-quickstart-cli).
 
 ### Authenticate the client
 
 The Service Bus [Client][godoc_client] can be created using a Service Bus connection string or a credential from the [Azure Identity package][azure_identity_pkg], like [DefaultAzureCredential][default_azure_credential].
 
-#### Using a connection string
+#### Using a Service Principal
 
 ```go
 import (
-  "log"
-  "github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
-)
-
-func main() {
-  client, err := azservicebus.NewClientFromConnectionString("<Service Bus connection string>")
- 
-  if err != nil {
-    panic(err)
-  }
-}
-```
-
-#### Using an Azure Active Directory Credential
-
-```go
-import (
-  "log"
   "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
   "github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
 )
@@ -63,13 +47,34 @@ import (
 func main() {
   // For more information about the DefaultAzureCredential:
   // https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#NewDefaultAzureCredential
-  cred, err := azidentity.NewDefaultAzureCredential(nil)
+  credential, err := azidentity.NewDefaultAzureCredential(nil)
 
   if err != nil {
     panic(err)
   }
 
-  client, err := azservicebus.NewClient("<ex: my-service-bus.servicebus.windows.net>", cred)
+  // The service principal specified by the credential needs to be added to the appropriate Service Bus roles for your
+  // resource. More information about Service Bus roles can be found here:
+  // https://docs.microsoft.com/azure/service-bus-messaging/service-bus-managed-service-identity#azure-built-in-roles-for-azure-service-bus
+  client, err = azservicebus.NewClient("<ex: myservicebus.servicebus.windows.net>", credential, nil)
+
+  if err != nil {
+    panic(err)
+  }
+}
+```
+
+#### Using a connection string
+
+```go
+import (
+  "github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
+)
+
+func main() {
+  // See here for instructions on how to get a Service Bus connection string:
+  // https://docs.microsoft.com/azure/service-bus-messaging/service-bus-quickstart-portal#get-the-connection-string
+  client, err = azservicebus.NewClientFromConnectionString(connectionString, nil)
 
   if err != nil {
     panic(err)
@@ -96,7 +101,7 @@ Please note that the Queues, Topics and Subscriptions should be created prior to
 
 ## Examples
 
-The following sections provide code snippets that cover some of the common tasks using Azure Service Bus
+The following sections provide examples that cover common tasks using Azure Service Bus:
 
 - [Send messages](#send-messages)
 - [Receive messages](#receive-messages)
@@ -106,10 +111,10 @@ The following sections provide code snippets that cover some of the common tasks
 
 Once you've created a [Client][godoc_client] you can create a [Sender][godoc_sender], which will allow you to send messages.
 
-NOTE: Creating a `client` is covered in the ["Authenticate the client"](#authenticate-the-client) section of the readme.
+> NOTE: Creating a `azservicebus.Client` is covered in the ["Authenticate the client"](#authenticate-the-client) section of the readme, using a [Service Principal](#using-a-service-principal) or a [Service Bus connection string](#using-a-connection-string).
 
 ```go
-sender, err := client.NewSender("<queue or topic>")
+sender, err := client.NewSender("<queue or topic>", nil)
 
 if err != nil {
   panic(err)
@@ -153,36 +158,28 @@ if err == azservicebus.ErrMessageTooLarge {
 
 Once you've created a [Client][godoc_client] you can create a [Receiver][godoc_receiver], which will allow you to receive messages.
 
-> NOTE: Creating a `client` is covered in the ["Authenticate the client"](#authenticate-the-client) section of the readme.
+> NOTE: Creating a `azservicebus.Client` is covered in the ["Authenticate the client"](#authenticate-the-client) section of the readme, using a [Service Principal](#using-a-service-principal) or a [Service Bus connection string](#using-a-connection-string).
 
 ```go
 receiver, err := client.NewReceiverForQueue(
   "<queue>",
-  &azservicebus.ReceiverOptions{
-    ReceiveMode: azservicebus.PeekLock,
-  },
+  nil,
 )
 // or
 // client.NewReceiverForSubscription("<topic>", "<subscription>")
 
-if err != nil {
-  panic(err)
-}
+// ReceiveMessages respects the passed in context, and will gracefully stop
+// receiving when 'ctx' is cancelled.
+ctx, cancel := context.WithTimeout(context.TODO(), 60*time.Second)
+defer cancel()
 
-// Receive a fixed set of messages. Note that the number of messages
-// to receive and the amount of time to wait are upper bounds. 
-messages, err := receiver.ReceiveMessages(context.TODO(), 
+messages, err = receiver.ReceiveMessages(ctx,
   // The number of messages to receive. Note this is merely an upper
   // bound. It is possible to get fewer message (or zero), depending
   // on the contents of the remote queue or subscription and network
   // conditions.
-  10, 
-  &azservicebus.ReceiveOptions{
-		// This configures the amount of time to wait for messages to arrive.
-		// Note that this is merely an upper bound. It is possible to get messages
-		// faster than the duration specified.
-		MaxWaitTime: 60 * time.Second,
-	},
+  1,
+  nil,
 )
 
 if err != nil {
@@ -190,14 +187,15 @@ if err != nil {
 }
 
 for _, message := range messages {
-  // process the message here (or in parallel)
-  yourLogicForProcessing(message)  
-
   // For more information about settling messages:
   // https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#settling-receive-operations
-  if err := receiver.CompleteMessage(message); err != nil {
+  err = receiver.CompleteMessage(context.TODO(), message)
+
+  if err != nil {
     panic(err)
   }
+
+  fmt.Printf("Received and completed the message\n")
 }
 ```
 
@@ -208,12 +206,12 @@ messages that have been explicitly dead lettered using the [Receiver.DeadLetterM
 
 Opening a dead letter queue is just a configuration option when creating a [Receiver][godoc_receiver].
 
-> NOTE: Creating a `client` is covered in the ["Authenticate the client"](#authenticate-the-client) section of the readme.
+> NOTE: Creating a `azservicebus.Client` is covered in the ["Authenticate the client"](#authenticate-the-client) section of the readme, using a [Service Principal](#using-a-service-principal) or a [Service Bus connection string](#using-a-connection-string).
 
 ```go
 deadLetterReceiver, err := client.NewReceiverForQueue("<queue>",
   &azservicebus.ReceiverOptions{
-	  SubQueue: azservicebus.SubQueueDeadLetter,
+    SubQueue: azservicebus.SubQueueDeadLetter,
   })
 // or 
 // client.NewReceiverForSubscription("<topic>", "<subscription>", 

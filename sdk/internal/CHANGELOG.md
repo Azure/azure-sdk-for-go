@@ -1,6 +1,6 @@
 # Release History
 
-## 0.8.3 (Unreleased)
+## 0.8.3 (2021-11-30)
 
 ### Features Added
 * Adds `NewRecordingHTTPClient()` method which returns an `azcore.Transporter` interface that routes requests to the test proxy [#16221](https://github.com/Azure/azure-sdk-for-go/pull/16221).

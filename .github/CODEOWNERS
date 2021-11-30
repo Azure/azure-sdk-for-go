@@ -43,12 +43,12 @@
 ###########
 # Eng Sys
 ###########
-/eng/                    @benbp @azure/azure-sdk-eng
-/**/ci.yml               @benbp @azure/azure-sdk-eng
-/**/tests.yml            @benbp @azure/azure-sdk-eng
+/eng/                    @benbp @weshaggard
+/**/ci.yml               @benbp
+/**/tests.yml            @benbp
 
 # PRLabel: %EngSys
-/sdk/template/           @benbp @Azure/azure-sdk-eng
+/sdk/template/           @benbp @weshaggard
 
 #############
 # SDK (track1 and track1.5)

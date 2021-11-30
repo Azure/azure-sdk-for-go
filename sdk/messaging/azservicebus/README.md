@@ -29,13 +29,14 @@ go get github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus
 ### Prerequisites
 - Go, version 1.16 or higher
 - An [Azure subscription](https://azure.microsoft.com/free/)
-- A [Service Bus Namespace](https://docs.microsoft.com/azure/service-bus-messaging/) 
+- A [Service Bus Namespace](https://docs.microsoft.com/azure/service-bus-messaging/).
+- A Service Bus Queue, Topic or Subscription. You can create an entity in your Service Bus Namespace using the [Azure Portal](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-quickstart-portal), or the [Azure CLI](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-quickstart-cli).
 
 ### Authenticate the client
 
 The Service Bus [Client][godoc_client] can be created using a Service Bus connection string or a credential from the [Azure Identity package][azure_identity_pkg], like [DefaultAzureCredential][default_azure_credential].
 
-#### Using an Azure Active Directory Credential
+#### Using a Service Principal
 
 ```go
 import (
@@ -52,6 +53,9 @@ func main() {
     panic(err)
   }
 
+  // The service principal specified by the credential needs to be added to the appropriate Service Bus roles for your
+  // resource. More information about Service Bus roles can be found here:
+  // https://docs.microsoft.com/azure/service-bus-messaging/service-bus-managed-service-identity#azure-built-in-roles-for-azure-service-bus
   client, err = azservicebus.NewClient("<ex: myservicebus.servicebus.windows.net>", credential, nil)
 
   if err != nil {
@@ -68,6 +72,8 @@ import (
 )
 
 func main() {
+  // See here for instructions on how to get a Service Bus connection string:
+  // https://docs.microsoft.com/azure/service-bus-messaging/service-bus-quickstart-portal#get-the-connection-string
   client, err = azservicebus.NewClientFromConnectionString(connectionString, nil)
 
   if err != nil {
@@ -95,7 +101,7 @@ Please note that the Queues, Topics and Subscriptions should be created prior to
 
 ## Examples
 
-The following sections provide code snippets that cover some of the common tasks using Azure Service Bus
+The following sections provide examples that cover common tasks using Azure Service Bus:
 
 - [Send messages](#send-messages)
 - [Receive messages](#receive-messages)
@@ -105,7 +111,7 @@ The following sections provide code snippets that cover some of the common tasks
 
 Once you've created a [Client][godoc_client] you can create a [Sender][godoc_sender], which will allow you to send messages.
 
-> NOTE: Creating a `azservicebus.Client` is covered in the ["Authenticate the client"](#authenticate-the-client) section of the readme, using either an [Azure Active Directory credential](#using-an-azure-active-directory-credential) or a [Service Bus connection string](#using-a-connection-string).
+> NOTE: Creating a `azservicebus.Client` is covered in the ["Authenticate the client"](#authenticate-the-client) section of the readme, using a [Service Principal](#using-a-service-principal) or a [Service Bus connection string](#using-a-connection-string).
 
 ```go
 sender, err := client.NewSender("<queue or topic>", nil)
@@ -152,7 +158,7 @@ if err == azservicebus.ErrMessageTooLarge {
 
 Once you've created a [Client][godoc_client] you can create a [Receiver][godoc_receiver], which will allow you to receive messages.
 
-> NOTE: Creating a `azservicebus.Client` is covered in the ["Authenticate the client"](#authenticate-the-client) section of the readme, using either an [Azure Active Directory credential](#using-an-azure-active-directory-credential) or a [Service Bus connection string](#using-a-connection-string).
+> NOTE: Creating a `azservicebus.Client` is covered in the ["Authenticate the client"](#authenticate-the-client) section of the readme, using a [Service Principal](#using-a-service-principal) or a [Service Bus connection string](#using-a-connection-string).
 
 ```go
 receiver, err := client.NewReceiverForQueue(
@@ -200,7 +206,7 @@ messages that have been explicitly dead lettered using the [Receiver.DeadLetterM
 
 Opening a dead letter queue is just a configuration option when creating a [Receiver][godoc_receiver].
 
-> NOTE: Creating a `azservicebus.Client` is covered in the ["Authenticate the client"](#authenticate-the-client) section of the readme, using either an [Azure Active Directory credential](#using-an-azure-active-directory-credential) or a [Service Bus connection string](#using-a-connection-string).
+> NOTE: Creating a `azservicebus.Client` is covered in the ["Authenticate the client"](#authenticate-the-client) section of the readme, using a [Service Principal](#using-a-service-principal) or a [Service Bus connection string](#using-a-connection-string).
 
 ```go
 deadLetterReceiver, err := client.NewReceiverForQueue("<queue>",

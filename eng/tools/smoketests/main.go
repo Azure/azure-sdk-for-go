@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"hash/fnv"
 	"io/ioutil"
-	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -167,16 +166,13 @@ func GetTopLevel() string {
 }
 
 func BuildModFile(modules []Module) error {
-	fmt.Println("Creating mod file manully...")
+	fmt.Println("Creating mod file manully at ", smoketestModFile)
 
 	f, err := os.OpenFile(smoketestModFile, os.O_RDWR, 0666)
-	if err != nil {
-		return err
-	}
+	handle(err)
 	defer f.Close()
 
 	_, err = f.WriteString(fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/sdk/smoketests\n\n%s\n\n", getVersion()))
-
 	if err != nil {
 		return err
 	}
@@ -186,10 +182,7 @@ func BuildModFile(modules []Module) error {
 	for _, module := range modules {
 		s := fmt.Sprintf(replaceString, module.Name, module.Replace)
 		_, err = f.Write([]byte(s))
-
-		if err != nil {
-			return err
-		}
+		handle(err)
 	}
 
 	fmt.Println("Require portion")
@@ -203,39 +196,12 @@ func BuildModFile(modules []Module) error {
 	for _, module := range modules {
 		s := fmt.Sprintf(requireString, module.Name, module.Version)
 		_, err = f.Write([]byte(s))
-
-		if err != nil {
-			return err
-		}
+		handle(err)
 	}
 
 	_, err = f.WriteString(")")
-	return err
-}
-
-func VerifyGoMod() {
-	// Make sure in sdk/smoketests
-	dir, err := os.Getwd()
 	handle(err)
-	if !strings.Contains(dir, "sdk/smoketests") {
-		// Navigate to sdk/smoketests
-		os.Chdir(smoketestDir)
-	}
-
-	output, err := exec.Command("go", "mod", "tidy").CombinedOutput()
-	if err != nil {
-		fmt.Printf("Error running go mod tidy: %s\n", bytes.NewBuffer(output).String())
-		panic(err)
-	}
-}
-
-// CleanUp removes the sdk/moketests directory. We are okay with this failing (however it shouldn't)
-func CleanUp() {
-	fmt.Println("Cleaning up...")
-	err := os.RemoveAll(smoketestDir)
-	if err != nil {
-		log.Printf("Could not remove smoketest directory\n\t%s\n", err.Error())
-	}
+	return nil
 }
 
 // FindExampleFiles finds all files that are named "example_*.go".
@@ -333,13 +299,13 @@ func main() {
 	smoketestDir = filepath.Join(absSDKPath, "smoketests")
 	fmt.Println("Smoke test directory: ", smoketestDir)
 	// Create directory if it does not exist
-	_ = os.Mkdir(smoketestDir, 0666)
+	// _ = os.Mkdir(smoketestDir, 0666)
 
 	smoketestModFile = filepath.Join(smoketestDir, "go.mod")
-	f, err := os.Create(smoketestModFile)
-	handle(err)
-	err = f.Close()
-	handle(err)
+	// f, err := os.Create(smoketestModFile)
+	// handle(err)
+	// err = f.Close()
+	// handle(err)
 
 	exampleFiles, err := FindExampleFiles(absSDKPath)
 	handle(err)

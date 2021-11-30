@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"flag"
 	"fmt"
 	"hash/fnv"
 	"io/ioutil"
@@ -325,16 +324,9 @@ func ReplacePackageStatement(root string) error {
 func main() {
 	fmt.Println("Running smoketest")
 
-	rootDirectory := flag.String("rootDirectory", "", "root directory to find packages in")
+	rootDirectory := GetTopLevel()
 
-	flag.Parse()
-
-	if *rootDirectory == "" {
-		fmt.Println("-rootDirectory argument must be provided")
-		os.Exit(1)
-	}
-
-	absSDKPath, err := filepath.Abs(fmt.Sprintf("%s/sdk", *rootDirectory))
+	absSDKPath, err := filepath.Abs(fmt.Sprintf("%s/sdk", rootDirectory))
 	handle(err)
 	fmt.Println("Root SDK directory: ", absSDKPath)
 

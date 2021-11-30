@@ -124,6 +124,5 @@ jobs:
         targetType: 'filePath'
         filePath: '$(sdkPath)/eng/scripts/Smoke_Tests_Nightly.ps1'
         pwsh: true
-        arguments: -rootDirectory '$(system.defaultWorkingDirectory)'
       env:
         GO111MODULE: 'on'

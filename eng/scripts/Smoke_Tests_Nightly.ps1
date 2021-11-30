@@ -2,7 +2,11 @@
 
 $repoRoot = Resolve-Path "$PSScriptRoot/../../"
 
-go run $repoRoot/eng/common/smoketest/. -rootDirectory $repoRoot
+Push-Location $repoRoot/eng/common/smoketest/
+
+go run .
+
+Pop-Location
 
 Push-Location $repoRoot/sdk/smoketests
 

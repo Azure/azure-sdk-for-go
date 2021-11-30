@@ -21,6 +21,11 @@ if ($LASTEXITCODE) {
 
 Pop-Location
 
+$temp = 'on'
+if ($ENV:GO111MODULE -eq 'off') {
+    $temp = $ENV:GO111MODULE
+    $ENV:GO111MODULE = 'on'
+}
 # Run go mod tidy and go build. If these succeed the smoke tests pass
 Push-Location $smoketestsDir
 go mod tidy
@@ -30,3 +35,5 @@ Pop-Location
 
 # Clean-up the directory created
 Remove-Item -Path $smoketestsDir -Recurse -Force
+
+$ENV:GO111MODULE = $temp

@@ -146,13 +146,15 @@ func matchModulesAndTags(goModFiles []string, tags []string) []Module {
 		packagePath := strings.Split(goModFile, "github.com/Azure/azure-sdk-for-go/sdk/")
 		relativePackagePath := packagePath[1]
 		version, err := findLatestTag(relativePackagePath, tags)
-		handle(err)
-
-		m = append(m, Module{
-			Name:    goModFile,
-			Replace: fmt.Sprintf("../%s", relativePackagePath),
-			Version: version,
-		})
+		if err != nil {
+			fmt.Println(err.Error())
+		} else {
+			m = append(m, Module{
+				Name:    goModFile,
+				Replace: fmt.Sprintf("../%s", relativePackagePath),
+				Version: version,
+			})
+		}
 	}
 
 	return m

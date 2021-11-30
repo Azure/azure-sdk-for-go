@@ -15,6 +15,9 @@ Pop-Location
 
 # Run smoketests script
 go run .
+if ($LASTEXITCODE) {
+    exit $LASTEXITCODE
+}
 
 Pop-Location
 

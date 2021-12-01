@@ -7,6 +7,8 @@ import (
 	"context"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
@@ -166,6 +168,13 @@ func (c ContainerClient) ListBlobsFlat(listOptions *ContainerListBlobFlatSegment
 		return pager
 	}
 
+	// override the advancer
+	pager.advancer = func(ctx context.Context, response ContainerListBlobFlatSegmentResponse) (*policy.Request, error) {
+		return c.client.listBlobFlatSegmentCreateRequest(ctx, &ContainerListBlobFlatSegmentOptions{
+			Marker: response.NextMarker,
+		})
+	}
+
 	// TODO: Come Here
 	//pager.err = func(response *azcore.Response) error {
 	//	return handleError(c.client.listBlobFlatSegmentHandleError(response))
@@ -189,8 +198,14 @@ func (c ContainerClient) ListBlobsHierarchy(delimiter string, listOptions *Conta
 		return pager
 	}
 
-	// TODO: Come here
-	//p := pager.(*listBlobsHierarchySegmentResponsePager)
+	// override the advancer
+	pager.advancer = func(ctx context.Context, response ContainerListBlobHierarchySegmentResponse) (*policy.Request, error) {
+		return c.client.listBlobHierarchySegmentCreateRequest(ctx, delimiter, &ContainerListBlobHierarchySegmentOptions{
+			Marker: response.NextMarker,
+		})
+	}
+
+	// todo: come here
 	//p.errorer = func(response *azcore.Response) error {
 	//	return handleError(c.client.listBlobHierarchySegmentHandleError(response))
 	//}

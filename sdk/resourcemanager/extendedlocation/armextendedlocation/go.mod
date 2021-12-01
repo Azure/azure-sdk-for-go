@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/extenedlocation/armextenedlocation
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/extendedlocation/armextendedlocation
 
 go 1.16
 

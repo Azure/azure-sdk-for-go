@@ -10,12 +10,11 @@ package armextendedlocation_test
 
 import (
 	"context"
-	"log"
-
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/extenedlocation/armextenedlocation"
+	"log"
+	"time"
 )
 
 // x-ms-original-file: specification/extendedlocation/resource-manager/Microsoft.ExtendedLocation/stable/2021-08-15/examples/CustomLocationsListOperations.json

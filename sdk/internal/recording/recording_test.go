@@ -594,12 +594,14 @@ func TestVariables(t *testing.T) {
 
 	recordMode = PlaybackMode
 	err = Start(t, packagePath, nil)
-	defer Stop(t, nil)
 	require.NoError(t, err)
 
 	variables := GetVariables(t)
 	require.Equal(t, variables["key1"], "value1")
 	require.Equal(t, variables["key2"], "1")
+
+	err = Stop(t, nil)
+	require.NoError(t, err)
 
 	// Make sure the file is there
 	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", t.Name()))

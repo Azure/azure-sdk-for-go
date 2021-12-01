@@ -551,6 +551,7 @@ func getTestId(pathToRecordings string, t *testing.T) string {
 	return path.Join(pathToRecordings, "recordings", t.Name()+".json")
 }
 
+// Start tells the test proxy to begin accepting requests for a given test
 func Start(t *testing.T, pathToRecordings string, options *RecordingOptions) error {
 	if options == nil {
 		options = defaultOptions()
@@ -583,6 +584,7 @@ func Start(t *testing.T, pathToRecordings string, options *RecordingOptions) err
 	recId := resp.Header.Get(IDHeader)
 	if recId == "" {
 		b, err := ioutil.ReadAll(resp.Body)
+		defer resp.Body.Close()
 		if err != nil {
 			return err
 		}
@@ -592,6 +594,7 @@ func Start(t *testing.T, pathToRecordings string, options *RecordingOptions) err
 	// Unmarshal any variables returned by the proxy
 	var m map[string]interface{}
 	body, err := ioutil.ReadAll(resp.Body)
+	defer resp.Body.Close()
 	if err != nil {
 		return err
 	}
@@ -616,6 +619,7 @@ func Start(t *testing.T, pathToRecordings string, options *RecordingOptions) err
 	return nil
 }
 
+// Stop tells the test proxy to stop accepting requests for a given test
 func Stop(t *testing.T, options *RecordingOptions) error {
 	if options == nil {
 		options = defaultOptions()
@@ -636,7 +640,7 @@ func Stop(t *testing.T, options *RecordingOptions) error {
 	if err != nil {
 		return err
 	}
-	if options.Variables != nil && len(options.Variables) > 0 {
+	if len(options.Variables) > 0 {
 		req.Header.Set("Content-Type", "application/json")
 		marshalled, err := json.Marshal(options.Variables)
 		if err != nil {
@@ -655,6 +659,7 @@ func Stop(t *testing.T, options *RecordingOptions) error {
 	resp, err := client.Do(req)
 	if resp.StatusCode != 200 {
 		b, err := ioutil.ReadAll(resp.Body)
+		defer resp.Body.Close()
 		if err == nil {
 			return fmt.Errorf("proxy did not stop the recording properly: %s", string(b))
 		}
@@ -726,6 +731,7 @@ func (c RecordingHTTPClient) Do(req *http.Request) (*http.Response, error) {
 	return c.defaultClient.Do(req)
 }
 
+// NewRecordingHTTPClient returns a type that implements `azcore.Transporter`. This will automatically route tests on the `Do` call.
 func NewRecordingHTTPClient(t *testing.T, options *RecordingOptions) (*RecordingHTTPClient, error) {
 	if options == nil {
 		options = &RecordingOptions{UseHTTPS: true}
@@ -761,6 +767,7 @@ func IsLiveOnly(t *testing.T) bool {
 	return false
 }
 
+// GetVariables returns access to the variables stored by the test proxy for a specific test
 func GetVariables(t *testing.T) map[string]interface{} {
 	if s, ok := testSuite[t.Name()]; ok {
 		return s.variables

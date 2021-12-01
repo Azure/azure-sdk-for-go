@@ -589,31 +589,25 @@ func TestVariables(t *testing.T) {
 
 	require.NotNil(t, GetRecordingId(t))
 
-	err = Stop(t, &RecordingOptions{Variables: map[string]interface{}{"key1": "value1", "key2": 1}})
+	err = Stop(t, &RecordingOptions{Variables: map[string]interface{}{"key1": "value1", "key2": "1"}})
 	require.NoError(t, err)
 
+	recordMode = PlaybackMode
 	err = Start(t, packagePath, nil)
+	defer Stop(t, nil)
 	require.NoError(t, err)
 
 	variables := GetVariables(t)
 	require.Equal(t, variables["key1"], "value1")
-	require.Equal(t, variables["key2"], 1)
+	require.Equal(t, variables["key2"], "1")
 
-	// // Make sure the file is there
-	// jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", t.Name()))
-	// require.NoError(t, err)
-	// defer func() {
-	// 	err = jsonFile.Close()
-	// 	require.NoError(t, err)
-	// 	err = os.Remove(jsonFile.Name())
-	// 	require.NoError(t, err)
-	// }()
-
-	// var data RecordingFileStruct
-	// byteValue, err := ioutil.ReadAll(jsonFile)
-	// require.NoError(t, err)
-	// err = json.Unmarshal(byteValue, &data)
-	// require.NoError(t, err)
-	// require.Equal(t, "https://azsdkengsys.azurecr.io/acr/v1/some_registry/_tags", data.Entries[0].RequestURI)
-	// require.Equal(t, req.URL.String(), "https://localhost:5001/acr/v1/some_registry/_tags")
+	// Make sure the file is there
+	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", t.Name()))
+	require.NoError(t, err)
+	defer func() {
+		err = jsonFile.Close()
+		require.NoError(t, err)
+		err = os.Remove(jsonFile.Name())
+		require.NoError(t, err)
+	}()
 }

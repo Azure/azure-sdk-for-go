@@ -1,5 +1,9 @@
 # Release History
 
+## 0.8.4 (Unreleased)
+### Features Added
+* Added variables storage to the `Stop` function. Pass in a `map[string]interface{}` to the `Stop` method options and the values can be retrieved with the `GetVariables(t *testing.T)` function
+
 ## 0.8.3 (2021-11-30)
 
 ### Features Added

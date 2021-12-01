@@ -588,20 +588,25 @@ func Start(t *testing.T, pathToRecordings string, options *RecordingOptions) err
 		}
 		return fmt.Errorf("Recording ID was not returned by the response. Response body: %s", b)
 	}
-	if val, ok := testSuite[t.Name()]; ok {
-		val.recordingId = recId
-		testSuite[t.Name()] = val
-	} else {
-		var m map[string]interface{}
-		body, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			return err
-		}
+
+	// Unmarshal any variables returned by the proxy
+	var m map[string]interface{}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+	if len(body) > 0 {
 		err = json.Unmarshal(body, &m)
 		if err != nil {
 			return err
 		}
+	}
 
+	if val, ok := testSuite[t.Name()]; ok {
+		val.recordingId = recId
+		val.variables = m
+		testSuite[t.Name()] = val
+	} else {
 		testSuite[t.Name()] = recordedTest{
 			recordingId: recId,
 			liveOnly:    false,
@@ -631,13 +636,14 @@ func Stop(t *testing.T, options *RecordingOptions) error {
 	if err != nil {
 		return err
 	}
-	if options.Variables != nil {
+	if options.Variables != nil && len(options.Variables) > 0 {
 		req.Header.Set("Content-Type", "application/json")
 		marshalled, err := json.Marshal(options.Variables)
 		if err != nil {
 			return err
 		}
 		req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+		req.ContentLength = int64(len(marshalled))
 	}
 
 	var recTest recordedTest
@@ -646,7 +652,14 @@ func Stop(t *testing.T, options *RecordingOptions) error {
 		return errors.New("Recording ID was never set. Did you call StartRecording?")
 	}
 	req.Header.Set("x-recording-id", recTest.recordingId)
-	_, err = client.Do(req)
+	resp, err := client.Do(req)
+	if resp.StatusCode != 200 {
+		b, err := ioutil.ReadAll(resp.Body)
+		if err == nil {
+			return fmt.Errorf("proxy did not stop the recording properly: %s", string(b))
+		}
+		return errors.New("proxy did not stop the recording properly")
+	}
 	return err
 }
 

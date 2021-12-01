@@ -10,6 +10,7 @@ import (
 	"bytes"
 	"crypto/tls"
 	"crypto/x509"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io/ioutil"
@@ -492,6 +493,7 @@ const (
 type recordedTest struct {
 	recordingId string
 	liveOnly    bool
+	variables   map[string]interface{}
 }
 
 var testSuite = map[string]recordedTest{}
@@ -505,6 +507,7 @@ var client = http.Client{
 type RecordingOptions struct {
 	UseHTTPS        bool
 	GroupForReplace string
+	Variables       map[string]interface{}
 }
 
 func defaultOptions() *RecordingOptions {
@@ -589,7 +592,21 @@ func Start(t *testing.T, pathToRecordings string, options *RecordingOptions) err
 		val.recordingId = recId
 		testSuite[t.Name()] = val
 	} else {
-		testSuite[t.Name()] = recordedTest{recordingId: recId, liveOnly: false}
+		var m map[string]interface{}
+		body, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return err
+		}
+		err = json.Unmarshal(body, &m)
+		if err != nil {
+			return err
+		}
+
+		testSuite[t.Name()] = recordedTest{
+			recordingId: recId,
+			liveOnly:    false,
+			variables:   m,
+		}
 	}
 	return nil
 }
@@ -614,6 +631,15 @@ func Stop(t *testing.T, options *RecordingOptions) error {
 	if err != nil {
 		return err
 	}
+	if options.Variables != nil {
+		req.Header.Set("Content-Type", "application/json")
+		marshalled, err := json.Marshal(options.Variables)
+		if err != nil {
+			return err
+		}
+		req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+	}
+
 	var recTest recordedTest
 	var ok bool
 	if recTest, ok = testSuite[t.Name()]; !ok {
@@ -720,4 +746,11 @@ func IsLiveOnly(t *testing.T) bool {
 		return s.liveOnly
 	}
 	return false
+}
+
+func GetVariables(t *testing.T) map[string]interface{} {
+	if s, ok := testSuite[t.Name()]; ok {
+		return s.variables
+	}
+	return nil
 }

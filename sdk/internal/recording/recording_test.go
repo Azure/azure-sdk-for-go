@@ -569,22 +569,51 @@ func TestFindProxyCertLocation(t *testing.T) {
 	require.Contains(t, location, filepath.Join("eng", "common", "testproxy", "dotnet-devcert.crt"))
 }
 
-func TestModeNotSet(t *testing.T) {
-	proxyMode, _ := os.LookupEnv("AZURE_RECORD_MODE")
-	defer os.Setenv("AZURE_RECORD_MODE", proxyMode)
+func TestVariables(t *testing.T) {
+	temp := recordMode
+	recordMode = RecordingMode
+	defer func() { recordMode = temp }()
 
-	os.Unsetenv("AZURE_RECORD_MODE")
-	require.Equal(t, PlaybackMode, GetRecordMode())
-}
-
-func TestModeNotSetStartStop(t *testing.T) {
-	proxyMode, _ := os.LookupEnv("AZURE_RECORD_MODE")
-	defer os.Setenv("AZURE_RECORD_MODE", proxyMode)
-
-	os.Unsetenv("AZURE_RECORD_MODE")
 	err := Start(t, packagePath, nil)
 	require.NoError(t, err)
-	require.Equal(t, PlaybackMode, GetRecordMode())
-	err = Stop(t, nil)
+
+	client, err := NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
+
+	req, err := http.NewRequest("POST", "https://azsdkengsys.azurecr.io/acr/v1/some_registry/_tags", nil)
+	require.NoError(t, err)
+
+	resp, err := client.Do(req)
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+
+	require.NotNil(t, GetRecordingId(t))
+
+	err = Stop(t, &RecordingOptions{Variables: map[string]interface{}{"key1": "value1", "key2": 1}})
+	require.NoError(t, err)
+
+	err = Start(t, packagePath, nil)
+	require.NoError(t, err)
+
+	variables := GetVariables(t)
+	require.Equal(t, variables["key1"], "value1")
+	require.Equal(t, variables["key2"], 1)
+
+	// // Make sure the file is there
+	// jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", t.Name()))
+	// require.NoError(t, err)
+	// defer func() {
+	// 	err = jsonFile.Close()
+	// 	require.NoError(t, err)
+	// 	err = os.Remove(jsonFile.Name())
+	// 	require.NoError(t, err)
+	// }()
+
+	// var data RecordingFileStruct
+	// byteValue, err := ioutil.ReadAll(jsonFile)
+	// require.NoError(t, err)
+	// err = json.Unmarshal(byteValue, &data)
+	// require.NoError(t, err)
+	// require.Equal(t, "https://azsdkengsys.azurecr.io/acr/v1/some_registry/_tags", data.Entries[0].RequestURI)
+	// require.Equal(t, req.URL.String(), "https://localhost:5001/acr/v1/some_registry/_tags")
 }

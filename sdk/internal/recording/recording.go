@@ -663,8 +663,9 @@ func Stop(t *testing.T, options *RecordingOptions) error {
 		if err == nil {
 			return fmt.Errorf("proxy did not stop the recording properly: %s", string(b))
 		}
-		return errors.New("proxy did not stop the recording properly")
+		return fmt.Errorf("proxy did not stop the recording properly: %s", err.Error())
 	}
+	_ = resp.Body.Close()
 	return err
 }
 

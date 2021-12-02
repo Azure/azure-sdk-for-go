@@ -20,7 +20,7 @@ type ChainedTokenCredentialOptions struct {
 // ChainedTokenCredential is a chain of credentials that enables fallback behavior when a credential can't authenticate.
 type ChainedTokenCredential struct {
 	sources              []azcore.TokenCredential
-	successfulCredential *azcore.TokenCredential
+	successfulCredential azcore.TokenCredential
 }
 
 // NewChainedTokenCredential creates a ChainedTokenCredential.
@@ -47,7 +47,7 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.Token
 	var errList []CredentialUnavailableError
 
 	if c.successfulCredential != nil {
-		successfulCredential := *c.successfulCredential
+		successfulCredential := c.successfulCredential
 		token, err = successfulCredential.GetToken(ctx, opts)
 		if err != nil {
 			return nil, formatError(err, errList)
@@ -63,7 +63,7 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.Token
 				return nil, formatError(err, errList)
 			} else {
 				logGetTokenSuccess(c, opts)
-				c.successfulCredential = &cred
+				c.successfulCredential = cred
 				return token, nil
 			}
 		}

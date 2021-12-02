@@ -36,6 +36,13 @@ stages:
                       filePath: ./eng/scripts/validate_go_mod.ps1
                       arguments: '${{ parameters.ServiceDirectory }}'
                       pwsh: true
+                  - task: PowerShell@2
+                    displayName: 'Smoketests'
+                    inputs:
+                      targetType: 'filePath'
+                      filePath: ./eng/scripts/Smoke_Tests_Nightly.ps1
+                      arguments: '${{ parameters.ServiceDirectory }}'
+                      pwsh: true
                   - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
                     parameters:
                       ArtifactLocation: $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }}

@@ -1,5 +1,9 @@
 #Requires -Version 7.0
 
+Param(
+    [string] $serviceDirectory
+)
+
 $repoRoot = Resolve-Path "$PSScriptRoot/../../"
 
 Push-Location $repoRoot/eng/tools/smoketests
@@ -14,7 +18,8 @@ go mod init
 Pop-Location
 
 # Run smoketests script
-go run .
+Write-Host "Running 'go run . -serviceDirectory $serviceDirectory'"
+go run . -serviceDirectory $serviceDirectory
 if ($LASTEXITCODE) {
     exit $LASTEXITCODE
 }

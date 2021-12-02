@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"flag"
 	"fmt"
 	"hash/fnv"
 	"io/ioutil"
@@ -167,7 +168,9 @@ func GetTopLevel() string {
 	return strings.ReplaceAll(bytes.NewBuffer(topLevel).String(), "\n", "")
 }
 
-func BuildModFile(modules []Module) error {
+// BuildModFile creates a go.mod file and adds replace directives for the appropriate modules.
+// If serviceDirectory is a blank string it replaces all modules, otherwise it only replaces matching modules
+func BuildModFile(modules []Module, serviceDirectory string) error {
 	fmt.Println("Creating mod file manully at ", smoketestModFile)
 
 	f, err := os.OpenFile(smoketestModFile, os.O_RDWR, 0666)
@@ -179,12 +182,23 @@ func BuildModFile(modules []Module) error {
 		return err
 	}
 
-	fmt.Println("Starting with replace")
 	replaceString := "replace %s => %s\n"
-	for _, module := range modules {
-		s := fmt.Sprintf(replaceString, module.Name, module.Replace)
-		_, err = f.Write([]byte(s))
-		handle(err)
+	if serviceDirectory == "notset" {
+		fmt.Println("Starting with replace")
+		for _, module := range modules {
+			s := fmt.Sprintf(replaceString, module.Name, module.Replace)
+			_, err = f.Write([]byte(s))
+			handle(err)
+		}
+	} else {
+		fmt.Printf("Replace directive for %s\n", serviceDirectory)
+		for _, module := range modules {
+			if strings.Contains(module.Name, serviceDirectory) {
+				s := fmt.Sprintf(replaceString, module.Name, module.Replace)
+				_, err = f.Write([]byte(s))
+				handle(err)
+			}
+		}
 	}
 
 	fmt.Println("Require portion")
@@ -254,7 +268,10 @@ func CopyExampleFiles(exFiles []string, dest string) error {
 		if err != nil {
 			return err
 		}
-		destinationPath := filepath.Join(dest, fmt.Sprintf("%d.go", h.Sum32()))
+		newFileName := strings.ReplaceAll(exFile[10:], "/", "_")
+		newFileName = strings.ReplaceAll(newFileName, " ", "")
+		fmt.Println(newFileName)
+		destinationPath := filepath.Join(dest, fmt.Sprintf("%s.go", newFileName))
 
 		err = copyFile(exFile, destinationPath)
 		if err != nil {
@@ -290,6 +307,9 @@ func ReplacePackageStatement(root string) error {
 }
 
 func main() {
+	serviceDirectory := flag.String("serviceDirectory", "notset", "pass in a single service directory for nightly run")
+	flag.Parse()
+
 	fmt.Println("Running smoketest")
 
 	rootDirectory := GetTopLevel()
@@ -328,7 +348,7 @@ func main() {
 	err = CopyExampleFiles(exampleFiles, smoketestDir)
 	handle(err)
 
-	err = BuildModFile(modules)
+	err = BuildModFile(modules, *serviceDirectory)
 	handle(err)
 
 	err = ReplacePackageStatement(smoketestDir)

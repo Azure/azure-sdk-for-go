@@ -411,6 +411,7 @@ func TestTimeout(t *testing.T) {
 	start := time.Now()
 	_, err = client.GetSecret(c, "nonexistentsecret", nil)
 	require.Error(t, err)
+	require.ErrorIs(t, err, context.DeadlineExceeded)
 	require.Less(t, time.Since(start).Seconds(), 11.0)
 	require.Greater(t, time.Since(start).Seconds(), 9.0)
 }

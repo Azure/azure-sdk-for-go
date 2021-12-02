@@ -52,19 +52,18 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.Token
 			return nil, formatError(err, errList)
 		}
 		return token, nil
-	} else {
-		for _, cred := range c.sources {
-			token, err = cred.GetToken(ctx, opts)
-			var credErr CredentialUnavailableError
-			if errors.As(err, &credErr) {
-				errList = append(errList, credErr)
-			} else if err != nil {
-				return nil, formatError(err, errList)
-			} else {
-				logGetTokenSuccess(c, opts)
-				c.successfulCredential = cred
-				return token, nil
-			}
+	}
+	for _, cred := range c.sources {
+		token, err = cred.GetToken(ctx, opts)
+		var credErr CredentialUnavailableError
+		if errors.As(err, &credErr) {
+			errList = append(errList, credErr)
+		} else if err != nil {
+			return nil, formatError(err, errList)
+		} else {
+			logGetTokenSuccess(c, opts)
+			c.successfulCredential = cred
+			return token, nil
 		}
 	}
 

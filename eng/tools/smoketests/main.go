@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"flag"
 	"fmt"
-	"hash/fnv"
 	"io/ioutil"
+	"math/rand"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -17,6 +17,7 @@ import (
 
 var smoketestModFile string
 var smoketestDir string
+var exampleFuncs []string
 
 func handle(e error) {
 	if e != nil {
@@ -221,6 +222,7 @@ func BuildModFile(modules []Module, serviceDirectory string) error {
 }
 
 // FindExampleFiles finds all files that are named "example_*.go".
+// If serviceDirectory
 func FindExampleFiles(root, serviceDirectory string) ([]string, error) {
 	var ret []string
 
@@ -255,7 +257,29 @@ func copyFile(src, dest string) error {
 		return err
 	}
 
-	err = ioutil.WriteFile(dest, data, 0644)
+	stringData := bytes.NewBuffer(data).String()
+
+	functionRegex := regexp.MustCompile(`(?m)^func\sExampleNew(.*)\(\)\s{`)
+	functions := functionRegex.FindAllString(stringData, -1)
+	for i, l := range functions {
+		l = strings.ReplaceAll(l, "()", "")
+		parts := strings.Split(l, " ")
+		functions[i] = parts[1]
+	}
+	fmt.Println(functions)
+
+	// do a name change for clashing
+	var newNames []string
+	for _, f := range functions {
+		newNames = append(newNames, fmt.Sprintf("%s%d", f, rand.Intn(100000)))
+	}
+
+	for i := 0; i < len(functions); i++ {
+		stringData = strings.Replace(stringData, functions[i], newNames[i], 1)
+		exampleFuncs = append(exampleFuncs, newNames[i])
+	}
+
+	err = ioutil.WriteFile(dest, []byte(stringData), 0644)
 	return err
 }
 
@@ -265,17 +289,12 @@ func CopyExampleFiles(exFiles []string, dest string) error {
 	fmt.Printf("Copying %d example files to %s\n", len(exFiles), dest)
 
 	for _, exFile := range exFiles {
-		h := fnv.New32a()
-		_, err := h.Write([]byte(exFile))
-		if err != nil {
-			return err
-		}
 		newFileName := strings.ReplaceAll(exFile[10:], "/", "_")
 		newFileName = strings.ReplaceAll(newFileName, " ", "")
-		fmt.Println(newFileName)
+		fmt.Println(exFile, newFileName)
 		destinationPath := filepath.Join(dest, fmt.Sprintf("%s.go", newFileName))
 
-		err = copyFile(exFile, destinationPath)
+		err := copyFile(exFile, destinationPath)
 		if err != nil {
 			return err
 		}
@@ -284,10 +303,10 @@ func CopyExampleFiles(exFiles []string, dest string) error {
 	return nil
 }
 
-// ReplacePackageStatement replaces all "package ***" with a common "package smoketests" statement
+// ReplacePackageStatement replaces all "package ***" with a common "package main" statement
 func ReplacePackageStatement(root string) error {
 	fmt.Println("Fixing package names in", root)
-	packageName := "package smoketests"
+	packageName := "package main"
 	return filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
 		if strings.HasSuffix(info.Name(), ".go") {
 			handle(err)
@@ -306,6 +325,31 @@ func ReplacePackageStatement(root string) error {
 		}
 		return nil
 	})
+}
+
+func BuildMainFile(root string) error {
+	mainFile := filepath.Join(root, "main.go")
+	f, err := os.Create(mainFile)
+	if err != nil {
+		panic(err)
+	}
+	err = f.Close()
+	if err != nil {
+		panic(err)
+	}
+
+	// Write the main.go file
+
+	src := "package main\nfunc main() {"
+
+	for _, exampleFunc := range exampleFuncs {
+		src += fmt.Sprintf("%s()\n", exampleFunc)
+	}
+
+	src += "}"
+
+	err = ioutil.WriteFile(mainFile, []byte(src), 0666)
+	return err
 }
 
 func main() {
@@ -354,5 +398,10 @@ func main() {
 	handle(err)
 
 	err = ReplacePackageStatement(smoketestDir)
+	handle(err)
+
+	fmt.Println(exampleFuncs)
+
+	err = BuildMainFile(smoketestDir)
 	handle(err)
 }

@@ -42,8 +42,7 @@ const (
 func TestParsedConnectionFromStr(t *testing.T) {
 	parsed, err := ParsedConnectionFromStr(happyConnStr)
 	if assert.NoError(t, err) {
-		assert.Equal(t, "amqps://"+namespace+".servicebus.windows.net", parsed.Host)
-		assert.Equal(t, namespace, parsed.Namespace)
+		assert.Equal(t, namespace+".servicebus.windows.net", parsed.Namespace)
 		assert.Equal(t, keyName, parsed.KeyName)
 		assert.Equal(t, secret, parsed.Key)
 		assert.Equal(t, hubName, parsed.HubName)
@@ -53,8 +52,7 @@ func TestParsedConnectionFromStr(t *testing.T) {
 func TestParsedConnectionFromStrCaseIndifference(t *testing.T) {
 	parsed, err := ParsedConnectionFromStr(lowerCase)
 	if assert.NoError(t, err) {
-		assert.Equal(t, "amqps://"+namespace+".servicebus.windows.net", parsed.Host)
-		assert.Equal(t, namespace, parsed.Namespace)
+		assert.Equal(t, namespace+".servicebus.windows.net", parsed.Namespace)
 		assert.Equal(t, keyName, parsed.KeyName)
 		assert.Equal(t, secret, parsed.Key)
 		assert.Equal(t, hubName, parsed.HubName)
@@ -64,8 +62,7 @@ func TestParsedConnectionFromStrCaseIndifference(t *testing.T) {
 func TestParsedConnectionFromStrWithoutEntityPath(t *testing.T) {
 	parsed, err := ParsedConnectionFromStr(noEntityPath)
 	if assert.NoError(t, err) {
-		assert.Equal(t, "amqps://"+namespace+".servicebus.windows.net", parsed.Host)
-		assert.Equal(t, namespace, parsed.Namespace)
+		assert.Equal(t, namespace+".servicebus.windows.net", parsed.Namespace)
 		assert.Equal(t, keyName, parsed.KeyName)
 		assert.Equal(t, secret, parsed.Key)
 		assert.Equal(t, "", parsed.HubName)

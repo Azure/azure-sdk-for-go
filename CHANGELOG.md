@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## `v60.0.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/kubernetesconfiguration/mgmt/2021-09-01/kubernetesconfiguration`
+- `github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2021-08-01/netapp`
+- `github.com/Azure/azure-sdk-for-go/services/webpubsub/mgmt/2021-10-01/webpubsub`
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
+
 ## `v59.4.0`
 
 ### New Packages

@@ -14,16 +14,22 @@ import (
 
 // ChainedTokenCredentialOptions contains optional parameters for ChainedTokenCredential.
 type ChainedTokenCredentialOptions struct {
-	// placeholder for future options
+	// If true, it will not assume the first successful credential should be always used.
+	RetryAllSources bool
 }
 
 // ChainedTokenCredential is a chain of credentials that enables fallback behavior when a credential can't authenticate.
+// By default, this credential will assume that the first successful credential should be the only credential used on future requests.
+// When `retryAllSources` is true, it will always try to get a token with every credential available on the `sources` array.
 type ChainedTokenCredential struct {
 	sources              []azcore.TokenCredential
 	successfulCredential azcore.TokenCredential
+	retryAllSources      bool
 }
 
 // NewChainedTokenCredential creates a ChainedTokenCredential.
+// By default, this credential will assume that the first successful credential should be the only credential used on future requests.
+// If the `RetryAllSources` option is set to true, it will always try to get a token using all of the available credentials.
 // sources: Credential instances to comprise the chain. GetToken() will invoke them in the given order.
 // options: Optional configuration.
 func NewChainedTokenCredential(sources []azcore.TokenCredential, options *ChainedTokenCredentialOptions) (*ChainedTokenCredential, error) {
@@ -37,7 +43,11 @@ func NewChainedTokenCredential(sources []azcore.TokenCredential, options *Chaine
 	}
 	cp := make([]azcore.TokenCredential, len(sources))
 	copy(cp, sources)
-	return &ChainedTokenCredential{sources: cp}, nil
+	credentialOptions := ChainedTokenCredentialOptions{}
+	if options != nil {
+		credentialOptions = *options
+	}
+	return &ChainedTokenCredential{sources: cp, retryAllSources: credentialOptions.RetryAllSources}, nil
 }
 
 // GetToken calls GetToken on the chained credentials in turn, stopping when one returns a token. This method is called automatically by Azure SDK clients.
@@ -72,7 +82,9 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.Token
 			return nil, formatError(err)
 		} else {
 			logGetTokenSuccess(c, opts)
-			c.successfulCredential = cred
+			if !c.retryAllSources {
+				c.successfulCredential = cred
+			}
 			return token, nil
 		}
 	}

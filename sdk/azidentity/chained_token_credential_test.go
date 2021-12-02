@@ -153,6 +153,101 @@ func TestChainedTokenCredential_GetTokenWithUnavailableCredentialInChain(t *test
 	}
 }
 
+func TestChainedTokenCredential_ChecksThatSuccessfulCredentialIsSet(t *testing.T) {
+	err := initEnvironmentVarsForTest()
+	if err != nil {
+		t.Fatalf("Could not set environment variables for testing: %v", err)
+	}
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+	options := ClientSecretCredentialOptions{}
+	options.AuthorityHost = AuthorityHost(srv.URL())
+	options.Transport = srv
+	secCred, err := NewClientSecretCredential(tenantID, clientID, secret, &options)
+	if err != nil {
+		t.Fatalf("Unable to create credential. Received: %v", err)
+	}
+	envCred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{
+		ClientOptions: azcore.ClientOptions{Transport: srv},
+		AuthorityHost: AuthorityHost(srv.URL()),
+	})
+	if err != nil {
+		t.Fatalf("Failed to create environment credential: %v", err)
+	}
+	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{secCred, envCred}, nil)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{scope}})
+	if err != nil {
+		t.Fatalf("Received an error when attempting to get a token but expected none")
+	}
+	if tk.Token != tokenValue {
+		t.Fatalf("Received an incorrect access token")
+	}
+	if tk.ExpiresOn.IsZero() {
+		t.Fatalf("Received an incorrect time in the response")
+	}
+	if cred.successfulCredential == nil {
+		t.Fatalf("The successful credential pointer was not assigned")
+	}
+}
+
+func TestChainedTokenCredential_RepeatedGetTokenWithSuccessfulCredential(t *testing.T) {
+	fatalIf := func(err error, message string) {
+		if err != nil {
+			t.Fatalf("%s. Error: %v", message, err)
+		}
+	}
+
+	err := initEnvironmentVarsForTest()
+	fatalIf(err, "Could not set environment variables for testing")
+
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+	options := ClientSecretCredentialOptions{}
+	options.AuthorityHost = AuthorityHost(srv.URL())
+	options.Transport = srv
+
+	secCred, err := NewClientSecretCredential(tenantID, clientID, secret, &options)
+	fatalIf(err, "Unable to create credential")
+
+	envCred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{
+		ClientOptions: azcore.ClientOptions{Transport: srv},
+		AuthorityHost: AuthorityHost(srv.URL()),
+	})
+	fatalIf(err, "Failed to create environment credential")
+
+	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{secCred, envCred}, nil)
+	fatalIf(err, "Unexpected error")
+
+	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{scope}})
+	fatalIf(err, "Received an error when attempting to get a token but expected none")
+
+	if tk.Token != tokenValue {
+		t.Fatalf("Received an incorrect access token")
+	}
+	if tk.ExpiresOn.IsZero() {
+		t.Fatalf("Received an incorrect time in the response")
+	}
+	if cred.successfulCredential == nil {
+		t.Fatalf("The successful credential pointer was not assigned")
+	}
+
+	tk2, err2 := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{scope}})
+	fatalIf(err2, "Received an error when attempting to get a token but expected none")
+
+	if tk2.Token != tokenValue {
+		t.Fatalf("Received an incorrect access token")
+	}
+	if tk2.ExpiresOn.IsZero() {
+		t.Fatalf("Received an incorrect time in the response")
+	}
+}
+
 func TestBearerPolicy_ChainedTokenCredential(t *testing.T) {
 	err := initEnvironmentVarsForTest()
 	if err != nil {

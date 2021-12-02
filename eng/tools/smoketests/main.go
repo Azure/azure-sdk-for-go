@@ -221,15 +221,17 @@ func BuildModFile(modules []Module, serviceDirectory string) error {
 }
 
 // FindExampleFiles finds all files that are named "example_*.go".
-func FindExampleFiles(root string) ([]string, error) {
+func FindExampleFiles(root, serviceDirectory string) ([]string, error) {
 	var ret []string
 
 	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
 		handle(err)
 		if strings.HasPrefix(info.Name(), "example_") && !inIgnoredDirectories(path) && strings.HasSuffix(info.Name(), ".go") {
-			fName := path
-			fName = strings.ReplaceAll(fName, "\\", "/")
-			ret = append(ret, fName)
+			path = strings.ReplaceAll(path, "\\", "/")
+			if serviceDirectory == "" || strings.Contains(path, serviceDirectory) {
+				ret = append(ret, path)
+			}
+
 		}
 		return nil
 	})
@@ -307,7 +309,7 @@ func ReplacePackageStatement(root string) error {
 }
 
 func main() {
-	serviceDirectory := flag.String("serviceDirectory", "notset", "pass in a single service directory for nightly run")
+	serviceDirectory := flag.String("serviceDirectory", "", "pass in a single service directory for nightly run")
 	flag.Parse()
 
 	fmt.Println("Running smoketest")
@@ -329,7 +331,7 @@ func main() {
 	// err = f.Close()
 	// handle(err)
 
-	exampleFiles, err := FindExampleFiles(absSDKPath)
+	exampleFiles, err := FindExampleFiles(absSDKPath, *serviceDirectory)
 	handle(err)
 	fmt.Printf("Found %d example files for smoke tests\n", len(exampleFiles))
 	for _, e := range exampleFiles {

@@ -17,6 +17,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
@@ -393,4 +394,24 @@ func TestBackupSecret(t *testing.T) {
 	// Now the Secret should be Get-able
 	_, err = client.GetSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
+}
+
+func TestTimeout(t *testing.T) {
+	fakeKVUrl := "https://test-sync-time-dummy.vault.azure.net/"
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	require.NoError(t, err)
+
+	client, err := NewClient(fakeKVUrl, cred, nil)
+	require.NoError(t, err)
+
+	c := context.Background()
+	c, cancelFunc := context.WithTimeout(c, 10*time.Second)
+	defer cancelFunc()
+
+	start := time.Now()
+	_, err = client.GetSecret(c, "nonexistentsecret", nil)
+	require.Error(t, err)
+	require.ErrorIs(t, err, context.DeadlineExceeded)
+	require.Less(t, time.Since(start).Seconds(), 11.0)
+	require.Greater(t, time.Since(start).Seconds(), 9.0)
 }

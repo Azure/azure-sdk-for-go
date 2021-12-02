@@ -195,15 +195,10 @@ func TestChainedTokenCredential_ChecksThatSuccessfulCredentialIsSet(t *testing.T
 }
 
 func TestChainedTokenCredential_RepeatedGetTokenWithSuccessfulCredential(t *testing.T) {
-	fatalIf := func(err error, message string) {
-		if err != nil {
-			t.Fatalf("%s. Error: %v", message, err)
-		}
-	}
-
 	err := initEnvironmentVarsForTest()
-	fatalIf(err, "Could not set environment variables for testing")
-
+	if err != nil {
+		t.Fatalf("Could not set environment variables for testing: %v", err)
+	}
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
@@ -211,22 +206,25 @@ func TestChainedTokenCredential_RepeatedGetTokenWithSuccessfulCredential(t *test
 	options := ClientSecretCredentialOptions{}
 	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.Transport = srv
-
 	secCred, err := NewClientSecretCredential(tenantID, clientID, secret, &options)
-	fatalIf(err, "Unable to create credential")
-
+	if err != nil {
+		t.Fatalf("Unable to create credential. Received: %v", err)
+	}
 	envCred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{
 		ClientOptions: azcore.ClientOptions{Transport: srv},
 		AuthorityHost: AuthorityHost(srv.URL()),
 	})
-	fatalIf(err, "Failed to create environment credential")
-
+	if err != nil {
+		t.Fatalf("Failed to create environment credential: %v", err)
+	}
 	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{secCred, envCred}, nil)
-	fatalIf(err, "Unexpected error")
-
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
 	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{scope}})
-	fatalIf(err, "Received an error when attempting to get a token but expected none")
-
+	if err != nil {
+		t.Fatalf("Received an error when attempting to get a token but expected none")
+	}
 	if tk.Token != tokenValue {
 		t.Fatalf("Received an incorrect access token")
 	}
@@ -236,10 +234,10 @@ func TestChainedTokenCredential_RepeatedGetTokenWithSuccessfulCredential(t *test
 	if cred.successfulCredential == nil {
 		t.Fatalf("The successful credential pointer was not assigned")
 	}
-
 	tk2, err2 := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{scope}})
-	fatalIf(err2, "Received an error when attempting to get a token but expected none")
-
+	if err2 != nil {
+		t.Fatalf("Received an error when attempting to get a token but expected none. Error: %v", err2)
+	}
 	if tk2.Token != tokenValue {
 		t.Fatalf("Received an incorrect access token")
 	}

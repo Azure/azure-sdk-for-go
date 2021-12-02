@@ -52,6 +52,7 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.Token
 		if err != nil {
 			return nil, formatError(err, errList)
 		}
+		return token, nil
 	} else {
 		for _, cred := range c.sources {
 			token, err = cred.GetToken(ctx, opts)

@@ -6,6 +6,8 @@
 
 ### Breaking Changes
 
+- Instances of `ChainedTokenCredential` will now skip looping through the list of source credentials and re-use the last successful credential on subsequent calls to `GetToken`.
+
 ### Bugs Fixed
 
 ### Other Changes

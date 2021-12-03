@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"flag"
 	"fmt"
+	"io/fs"
 	"io/ioutil"
 	"math/rand"
 	"os"
@@ -18,6 +19,7 @@ import (
 var smoketestModFile string
 var smoketestDir string
 var exampleFuncs []string
+var envVars []string
 
 func handle(e error) {
 	if e != nil {
@@ -185,7 +187,6 @@ func BuildModFile(modules []Module, serviceDirectory string) error {
 
 	replaceString := "replace %s => %s\n"
 	if serviceDirectory == "notset" {
-		fmt.Println("Starting with replace")
 		for _, module := range modules {
 			s := fmt.Sprintf(replaceString, module.Name, module.Replace)
 			_, err = f.Write([]byte(s))
@@ -202,7 +203,6 @@ func BuildModFile(modules []Module, serviceDirectory string) error {
 		}
 	}
 
-	fmt.Println("Require portion")
 	_, err = f.WriteString("\n\nrequire (\n")
 
 	if err != nil {
@@ -266,7 +266,6 @@ func copyFile(src, dest string) error {
 		parts := strings.Split(l, " ")
 		functions[i] = parts[1]
 	}
-	fmt.Println(functions)
 
 	// do a name change for clashing
 	var newNames []string
@@ -291,7 +290,6 @@ func CopyExampleFiles(exFiles []string, dest string) error {
 	for _, exFile := range exFiles {
 		newFileName := strings.ReplaceAll(exFile[10:], "/", "_")
 		newFileName = strings.ReplaceAll(newFileName, " ", "")
-		fmt.Println(exFile, newFileName)
 		destinationPath := filepath.Join(dest, fmt.Sprintf("%s.go", newFileName))
 
 		err := copyFile(exFile, destinationPath)
@@ -352,6 +350,76 @@ func BuildMainFile(root string) error {
 	return err
 }
 
+func FindEnvVars(root string) error {
+	fmt.Println("Find all environment variables using `os.Getenv` or `os.LookupEnv`")
+
+	err := filepath.Walk(root, func(path string, info fs.FileInfo, err error) error {
+		if strings.HasSuffix(path, ".go") {
+			// Find Env Vars
+			searchFile(path)
+		}
+		return nil
+	})
+	return err
+}
+
+func searchFile(path string) error {
+	var envVarRegex *regexp.Regexp
+	if runtime.GOOS == "windows" {
+		envVarRegex = regexp.MustCompile(`(?m)os.LookupEnv(.*)\r\n`)
+	} else {
+		envVarRegex = regexp.MustCompile(`(?m)os.LookupEnv(.*)\n`)
+	}
+	data, err := ioutil.ReadFile(path)
+	if err != nil {
+		return err
+	}
+	stringData := bytes.NewBuffer(data).String()
+
+	LookupEnvs := envVarRegex.FindAllString(stringData, -1)
+	envVars = append(envVars, trimLookupEnvs(LookupEnvs)...)
+
+	if runtime.GOOS == "windows" {
+		envVarRegex = regexp.MustCompile(`(?m)os.Getenv(.*)\r\n`)
+	} else {
+		envVarRegex = regexp.MustCompile(`(?m)os.Getenv(.*)\n`)
+	}
+
+	Getenvs := envVarRegex.FindAllString(stringData, -1)
+	envVars = append(envVars, trimGetenvs(Getenvs)...)
+	return nil
+}
+
+func trimLookupEnvs(values []string) []string {
+	pseudoSet := make(map[string]struct{})
+
+	for _, value := range values {
+		value = strings.TrimSpace(value)
+		value = strings.TrimPrefix(value, `os.LookupEnv("`)
+		value = strings.TrimSuffix(value, `")`)
+		pseudoSet[value] = struct{}{}
+	}
+
+	var ret []string
+	for v := range pseudoSet {
+		ret = append(ret, v)
+	}
+
+	return ret
+}
+
+func trimGetenvs(values []string) []string {
+	var ret []string
+
+	for _, value := range values {
+		value = strings.TrimPrefix(value, `os.Getenv("`)
+		value = strings.TrimSuffix(value, `")`)
+		ret = append(ret, value)
+	}
+
+	return ret
+}
+
 func main() {
 	serviceDirectory := flag.String("serviceDirectory", "", "pass in a single service directory for nightly run")
 	flag.Parse()
@@ -366,14 +434,8 @@ func main() {
 
 	smoketestDir = filepath.Join(absSDKPath, "smoketests")
 	fmt.Println("Smoke test directory: ", smoketestDir)
-	// Create directory if it does not exist
-	// _ = os.Mkdir(smoketestDir, 0666)
 
 	smoketestModFile = filepath.Join(smoketestDir, "go.mod")
-	// f, err := os.Create(smoketestModFile)
-	// handle(err)
-	// err = f.Close()
-	// handle(err)
 
 	exampleFiles, err := FindExampleFiles(absSDKPath, *serviceDirectory)
 	handle(err)
@@ -400,8 +462,9 @@ func main() {
 	err = ReplacePackageStatement(smoketestDir)
 	handle(err)
 
-	fmt.Println(exampleFuncs)
-
 	err = BuildMainFile(smoketestDir)
 	handle(err)
+
+	// err = FindEnvVars(smoketestDir)
+	// handle(err)
 }

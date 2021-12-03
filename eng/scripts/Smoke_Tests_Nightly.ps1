@@ -29,6 +29,7 @@ Pop-Location
 
 # Run go mod tidy and go build. If these succeed the smoke tests pass
 Push-Location $smoketestsDir
+go fmt ./...
 Write-Host "Printing content of go.mod file:"
 Get-Content go.mod
 Write-Host "Printing content of main.go file"

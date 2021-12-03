@@ -62,7 +62,6 @@ func findModuleDirectories(root string) []string {
 		if strings.Contains(info.Name(), "go.mod") && !inIgnoredDirectories(path) {
 			path = strings.ReplaceAll(path, "\\", "/")
 			path = strings.ReplaceAll(path, "/go.mod", "")
-			fmt.Println("path: ", path)
 			parts := strings.Split(path, "/sdk/")
 			formatted := fmt.Sprintf("github.com/Azure/azure-sdk-for-go/sdk/%s", parts[1])
 			ret = append(ret, formatted)
@@ -146,7 +145,6 @@ func matchModulesAndTags(goModFiles []string, tags []string) []Module {
 	var m []Module
 
 	for _, goModFile := range goModFiles {
-		fmt.Println("MOD FILE: ", goModFile)
 		packagePath := strings.Split(goModFile, "github.com/Azure/azure-sdk-for-go/sdk/")
 		relativePackagePath := packagePath[1]
 		version, err := findLatestTag(relativePackagePath, tags)
@@ -174,7 +172,7 @@ func GetTopLevel() string {
 // BuildModFile creates a go.mod file and adds replace directives for the appropriate modules.
 // If serviceDirectory is a blank string it replaces all modules, otherwise it only replaces matching modules
 func BuildModFile(modules []Module, serviceDirectory string) error {
-	fmt.Println("Creating mod file manully at ", smoketestModFile)
+	fmt.Println("Creating mod file manually at ", smoketestModFile)
 
 	f, err := os.OpenFile(smoketestModFile, os.O_RDWR, 0666)
 	handle(err)

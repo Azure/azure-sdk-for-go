@@ -14,7 +14,8 @@ Write-Host "Creating a new directory for smoketests at $smoketestsDir"
 New-Item -Path $smoketestsDir -ItemType Directory
 
 Push-Location $smoketestsDir
-go mod init
+Write-Host "Running 'go mod init' in $pwd"
+go mod init github.com/Azure/azure-sdk-for-go/sdk/smoketests
 Pop-Location
 
 # Run smoketests script

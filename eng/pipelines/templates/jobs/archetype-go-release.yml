@@ -31,7 +31,6 @@ stages:
     jobs: 
       - deployment: TagRepository
         displayName: "Create release tag"
-        condition: and(succeeded(), eq(variables['NeedToRelease'], 'true'), ne(variables['Skip.TagRepository'], 'true'))
         environment: github
 
         pool:

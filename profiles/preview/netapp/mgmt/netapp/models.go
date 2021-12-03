@@ -12,7 +12,7 @@ package netapp
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2021-06-01/netapp"
+	original "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2021-08-01/netapp"
 )
 
 const (
@@ -27,6 +27,12 @@ const (
 	ActiveDirectoryStatusError    ActiveDirectoryStatus = original.ActiveDirectoryStatusError
 	ActiveDirectoryStatusInUse    ActiveDirectoryStatus = original.ActiveDirectoryStatusInUse
 	ActiveDirectoryStatusUpdating ActiveDirectoryStatus = original.ActiveDirectoryStatusUpdating
+)
+
+type ApplicationType = original.ApplicationType
+
+const (
+	ApplicationTypeSAPHANA ApplicationType = original.ApplicationTypeSAPHANA
 )
 
 type AvsDataStore = original.AvsDataStore
@@ -224,6 +230,7 @@ type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationProperties = original.OperationProperties
 type OperationsClient = original.OperationsClient
+type PlacementKeyValuePairs = original.PlacementKeyValuePairs
 type PoolChangeRequest = original.PoolChangeRequest
 type PoolPatchProperties = original.PoolPatchProperties
 type PoolProperties = original.PoolProperties
@@ -270,6 +277,16 @@ type VaultsClient = original.VaultsClient
 type Volume = original.Volume
 type VolumeBackupProperties = original.VolumeBackupProperties
 type VolumeBackups = original.VolumeBackups
+type VolumeGroup = original.VolumeGroup
+type VolumeGroupDetails = original.VolumeGroupDetails
+type VolumeGroupList = original.VolumeGroupList
+type VolumeGroupListProperties = original.VolumeGroupListProperties
+type VolumeGroupMetaData = original.VolumeGroupMetaData
+type VolumeGroupProperties = original.VolumeGroupProperties
+type VolumeGroupVolumeProperties = original.VolumeGroupVolumeProperties
+type VolumeGroupsClient = original.VolumeGroupsClient
+type VolumeGroupsCreateFuture = original.VolumeGroupsCreateFuture
+type VolumeGroupsDeleteFuture = original.VolumeGroupsDeleteFuture
 type VolumeList = original.VolumeList
 type VolumeListIterator = original.VolumeListIterator
 type VolumeListPage = original.VolumeListPage
@@ -376,6 +393,12 @@ func NewVaultsClient(subscriptionID string) VaultsClient {
 func NewVaultsClientWithBaseURI(baseURI string, subscriptionID string) VaultsClient {
 	return original.NewVaultsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewVolumeGroupsClient(subscriptionID string) VolumeGroupsClient {
+	return original.NewVolumeGroupsClient(subscriptionID)
+}
+func NewVolumeGroupsClientWithBaseURI(baseURI string, subscriptionID string) VolumeGroupsClient {
+	return original.NewVolumeGroupsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewVolumeListIterator(page VolumeListPage) VolumeListIterator {
 	return original.NewVolumeListIterator(page)
 }
@@ -393,6 +416,9 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 }
 func PossibleActiveDirectoryStatusValues() []ActiveDirectoryStatus {
 	return original.PossibleActiveDirectoryStatusValues()
+}
+func PossibleApplicationTypeValues() []ApplicationType {
+	return original.PossibleApplicationTypeValues()
 }
 func PossibleAvsDataStoreValues() []AvsDataStore {
 	return original.PossibleAvsDataStoreValues()

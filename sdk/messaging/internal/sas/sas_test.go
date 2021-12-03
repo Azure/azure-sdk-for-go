@@ -31,7 +31,8 @@ func TestNewSigner(t *testing.T) {
 	keyName, key := "foo", "superSecret"
 	signer := NewSigner(keyName, key)
 	before := time.Now().UTC().Add(-2 * time.Second)
-	sigStr, expiry := signer.SignWithDuration("http://microsoft.com", 1*time.Hour)
+	sigStr, expiry, err := signer.SignWithDuration("http://microsoft.com", 1*time.Hour)
+	require.NoError(t, err)
 	nixExpiry, err := strconv.ParseInt(expiry, 10, 64)
 	require.NoError(t, err)
 	assert.WithinDuration(t, before.Add(1*time.Hour), time.Unix(nixExpiry, 0), 10*time.Second, "signing expiry")

@@ -62,8 +62,11 @@ func TestNewClientWithWebsockets(t *testing.T) {
 	queue, cleanup := createQueue(t, connectionString, nil)
 	defer cleanup()
 
+	webSocketCreateCalled := false
+
 	client, err := NewClientFromConnectionString(connectionString, &ClientOptions{
 		NewWebSocketConn: func(ctx context.Context, wssHost string) (net.Conn, error) {
+			webSocketCreateCalled = true
 			opts := &websocket.DialOptions{Subprotocols: []string{"amqp"}}
 			wssConn, _, err := websocket.Dial(ctx, wssHost, opts)
 
@@ -83,6 +86,9 @@ func TestNewClientWithWebsockets(t *testing.T) {
 		Body: []byte("hello world"),
 	})
 	require.NoError(t, err)
+
+	// we have to test this down here since the connection is lazy initialized.
+	require.True(t, webSocketCreateCalled)
 
 	receiver, err := client.NewReceiverForQueue(queue, &ReceiverOptions{
 		ReceiveMode: ReceiveModeReceiveAndDelete,

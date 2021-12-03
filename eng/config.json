@@ -43,6 +43,10 @@
         {
             "Name": "messaging",
             "CoverageGoal": 0.10
+        },
+        {
+            "Name": "messaging/internal",
+            "CoverageGoal": 0.40
         }
     ]
 }

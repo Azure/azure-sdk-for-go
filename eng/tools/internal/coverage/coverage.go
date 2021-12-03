@@ -121,11 +121,15 @@ func CheckCoverage(serviceDir string, coverageConfig string, searchDirectory str
 	rootPath, err := filepath.Abs(searchDirectory)
 	check(err)
 
+	fmt.Printf("Searching for coverage files in %s\n", rootPath)
+
 	coverageFiles := findCoverageFiles(rootPath)
 	if len(coverageFiles) == 0 {
 		fmt.Println("No coverage files found in " + rootPath)
 		return
 	}
+
+	fmt.Printf("Reading config data from %s\n", coverageConfig)
 
 	configData := readConfigData(coverageConfig)
 	coverageGoal := findCoverageGoal([]string{serviceDir}, configData)

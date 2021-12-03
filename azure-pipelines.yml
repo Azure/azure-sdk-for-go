@@ -124,5 +124,6 @@ jobs:
         targetType: 'filePath'
         filePath: '$(sdkPath)/eng/scripts/Smoke_Tests_Nightly.ps1'
         pwsh: true
+        arguments: ''
       # env:
       #   GO111MODULE: 'on'

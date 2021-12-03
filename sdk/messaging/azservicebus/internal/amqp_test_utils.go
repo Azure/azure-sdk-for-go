@@ -7,7 +7,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/Azure/azure-amqp-common-go/v3/rpc"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/rpc"
 )
 
 type FakeNS struct {

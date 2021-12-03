@@ -70,11 +70,19 @@ func ExampleReceiver_ReceiveMessages() {
 		nil,
 	)
 
-	exitOnError("Failed to receive messages", err)
+	if err != nil {
+		panic(err)
+	}
 
 	for _, message := range messages {
+		// For more information about settling messages:
+		// https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#settling-receive-operations
 		err = receiver.CompleteMessage(context.TODO(), message)
-		fmt.Printf("Received and completed message\n")
-		exitOnError("Failed to complete message", err)
+
+		if err != nil {
+			panic(err)
+		}
+
+		fmt.Printf("Received and completed the message\n")
 	}
 }

@@ -8,10 +8,10 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/v3/auth"
-	"github.com/Azure/azure-amqp-common-go/v3/sas"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/sas"
 )
 
 // TokenProvider handles access tokens and expiration calculation for SAS

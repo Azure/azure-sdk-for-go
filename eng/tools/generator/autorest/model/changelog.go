@@ -81,7 +81,7 @@ func writeChangelogForPackage(r *report.Package) string {
 	}
 
 	// write additional changes
-	md.WriteHeader("New Content")
+	md.WriteHeader("Features Added")
 	for _, item := range getNewContents(r.AdditiveChanges) {
 		md.WriteListItem(item)
 	}

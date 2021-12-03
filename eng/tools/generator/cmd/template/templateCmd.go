@@ -59,26 +59,29 @@ func BindFlags(flagSet *pflag.FlagSet) {
 	flagSet.String("package-title", "", "Specifies the title of this package")
 	flagSet.String("commit", "", "Specifies the commit hash of azure-rest-api-specs")
 	flagSet.String("release-date", "", "Specifies the release date in changelog")
+	flagSet.String("package-config", "", "Additional config for package")
 }
 
 // ParseFlags parses the flags to a Flags struct
 func ParseFlags(flagSet *pflag.FlagSet) Flags {
 	return Flags{
-		SDKRoot:      flags.GetString(flagSet, "go-sdk-folder"),
-		TemplatePath: flags.GetString(flagSet, "template-path"),
-		PackageTitle: flags.GetString(flagSet, "package-title"),
-		Commit:       flags.GetString(flagSet, "commit"),
-		ReleaseDate:  flags.GetString(flagSet, "release-date"),
+		SDKRoot:       flags.GetString(flagSet, "go-sdk-folder"),
+		TemplatePath:  flags.GetString(flagSet, "template-path"),
+		PackageTitle:  flags.GetString(flagSet, "package-title"),
+		Commit:        flags.GetString(flagSet, "commit"),
+		ReleaseDate:   flags.GetString(flagSet, "release-date"),
+		PackageConfig: flags.GetString(flagSet, "package-config"),
 	}
 }
 
 // Flags ...
 type Flags struct {
-	SDKRoot      string
-	TemplatePath string
-	PackageTitle string
-	Commit       string
-	ReleaseDate  string
+	SDKRoot       string
+	TemplatePath  string
+	PackageTitle  string
+	Commit        string
+	ReleaseDate   string
+	PackageConfig string
 }
 
 // GeneratePackageByTemplate creates a new set of files based on the things in template directory
@@ -99,7 +102,7 @@ func GeneratePackageByTemplate(rpName, packageName string, flags Flags) error {
 	}
 
 	// build the replaceMap
-	buildReplaceMap(rpName, packageName, flags.PackageTitle, flags.Commit, flags.ReleaseDate)
+	buildReplaceMap(rpName, packageName, flags.PackageConfig, flags.PackageTitle, flags.Commit, flags.ReleaseDate)
 
 	// copy everything to destination directory
 	for _, file := range fileList {
@@ -123,11 +126,12 @@ func GeneratePackageByTemplate(rpName, packageName string, flags Flags) error {
 	return nil
 }
 
-func buildReplaceMap(rpName, packageName, packageTitle, commitID, releaseDate string) {
+func buildReplaceMap(rpName, packageName, packageConfig, packageTitle, commitID, releaseDate string) {
 	replaceMap = make(map[string]string)
 
 	replaceMap[RPNameKey] = rpName
 	replaceMap[PackageNameKey] = packageName
+	replaceMap[PackageConfigKey] = packageConfig
 	replaceMap[PackageTitleKey] = packageTitle
 	replaceMap[CommitIDKey] = commitID
 	if releaseDate == "" {
@@ -170,10 +174,11 @@ var (
 )
 
 const (
-	RPNameKey       = "{{rpName}}"
-	PackageNameKey  = "{{packageName}}"
-	PackageTitleKey = "{{PackageTitle}}"
-	CommitIDKey     = "{{commitID}}"
-	FilenameSuffix  = ".tpl"
-	ReleaseDate     = "{{releaseDate}}"
+	RPNameKey        = "{{rpName}}"
+	PackageNameKey   = "{{packageName}}"
+	PackageTitleKey  = "{{PackageTitle}}"
+	CommitIDKey      = "{{commitID}}"
+	FilenameSuffix   = ".tpl"
+	ReleaseDate      = "{{releaseDate}}"
+	PackageConfigKey = "{{packageConfig}}"
 )

@@ -78,18 +78,25 @@ func (ac *Client) GetNamespaceProperties(ctx context.Context, options *GetNamesp
 		return nil, err
 	}
 
-	return &GetNamespacePropertiesResponse{
+	props := &GetNamespacePropertiesResponse{
 		RawResponse: resp,
 		GetNamespacePropertiesResult: GetNamespacePropertiesResult{
 			NamespaceProperties: NamespaceProperties{
 				Name:           body.NamespaceInfo.Name,
-				CreatedTime:    body.NamespaceInfo.CreatedTime,
-				ModifiedTime:   body.NamespaceInfo.ModifiedTime,
 				SKU:            body.NamespaceInfo.MessagingSKU,
 				MessagingUnits: body.NamespaceInfo.MessagingUnits,
 			},
 		},
-	}, nil
+	}
+
+	if props.CreatedTime, err = atom.StringToTime(body.NamespaceInfo.CreatedTime); err != nil {
+		return nil, err
+	}
+
+	if props.ModifiedTime, err = atom.StringToTime(body.NamespaceInfo.ModifiedTime); err != nil {
+		return nil, err
+	}
+	return props, nil
 }
 
 type pagerFunc func(ctx context.Context, pv interface{}) (*http.Response, error)

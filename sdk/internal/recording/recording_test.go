@@ -7,6 +7,7 @@
 package recording
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -433,24 +434,46 @@ func TestStartStop(t *testing.T) {
 	defer jsonFile.Close()
 }
 
-func TestProxyCert(t *testing.T) {
-	_, err := getRootCas(t)
+func TestStartStopRecordingClient(t *testing.T) {
+	temp := recordMode
+	recordMode = RecordingMode
+	defer func() { recordMode = temp }()
+
+	err := Start(t, packagePath, nil)
 	require.NoError(t, err)
 
-	tempProxyCert, ok := os.LookupEnv("PROXY_CERT")
-	require.True(t, ok)
-	err = os.Unsetenv("PROXY_CERT")
+	client, err := NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 
-	_, err = getRootCas(t)
+	req, err := http.NewRequest("POST", "https://azsdkengsys.azurecr.io/acr/v1/some_registry/_tags", nil)
 	require.NoError(t, err)
 
-	err = os.Setenv("PROXY_CERT", "not/a/path.crt")
+	resp, err := client.Do(req)
 	require.NoError(t, err)
-	_, err = GetHTTPClient(t)
-	require.Error(t, err)
+	require.NotNil(t, resp)
 
-	os.Setenv("PROXY_CERT", tempProxyCert)
+	require.NotNil(t, GetRecordingId(t))
+
+	err = Stop(t, nil)
+	require.NoError(t, err)
+
+	// Make sure the file is there
+	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", t.Name()))
+	require.NoError(t, err)
+	defer func() {
+		err = jsonFile.Close()
+		require.NoError(t, err)
+		err = os.Remove(jsonFile.Name())
+		require.NoError(t, err)
+	}()
+
+	var data RecordingFileStruct
+	byteValue, err := ioutil.ReadAll(jsonFile)
+	require.NoError(t, err)
+	err = json.Unmarshal(byteValue, &data)
+	require.NoError(t, err)
+	require.Equal(t, "https://azsdkengsys.azurecr.io/acr/v1/some_registry/_tags", data.Entries[0].RequestURI)
+	require.Equal(t, req.URL.String(), "https://localhost:5001/acr/v1/some_registry/_tags")
 }
 
 func TestStopRecordingNoStart(t *testing.T) {
@@ -524,4 +547,44 @@ func TestHostAndScheme(t *testing.T) {
 	r.UseHTTPS = false
 	require.Equal(t, r.scheme(), "http")
 	require.Equal(t, r.host(), "localhost:5000")
+}
+
+func TestFindProxyCertLocation(t *testing.T) {
+	savedValue, ok := os.LookupEnv("PROXY_CERT")
+	if ok {
+		defer os.Setenv("PROXY_CERT", savedValue)
+	}
+
+	if ok {
+		location, err := findProxyCertLocation()
+		require.NoError(t, err)
+		require.Contains(t, location, "dotnet-devcert.crt")
+	}
+
+	err := os.Unsetenv("PROXY_CERT")
+	require.NoError(t, err)
+
+	location, err := findProxyCertLocation()
+	require.NoError(t, err)
+	require.Contains(t, location, filepath.Join("eng", "common", "testproxy", "dotnet-devcert.crt"))
+}
+
+func TestModeNotSet(t *testing.T) {
+	proxyMode, _ := os.LookupEnv("AZURE_RECORD_MODE")
+	defer os.Setenv("AZURE_RECORD_MODE", proxyMode)
+
+	os.Unsetenv("AZURE_RECORD_MODE")
+	require.Equal(t, PlaybackMode, GetRecordMode())
+}
+
+func TestModeNotSetStartStop(t *testing.T) {
+	proxyMode, _ := os.LookupEnv("AZURE_RECORD_MODE")
+	defer os.Setenv("AZURE_RECORD_MODE", proxyMode)
+
+	os.Unsetenv("AZURE_RECORD_MODE")
+	err := Start(t, packagePath, nil)
+	require.NoError(t, err)
+	require.Equal(t, PlaybackMode, GetRecordMode())
+	err = Stop(t, nil)
+	require.NoError(t, err)
 }

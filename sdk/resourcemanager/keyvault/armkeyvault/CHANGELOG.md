@@ -1,14 +1,10 @@
 # Release History
 
-## 0.2.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 0.2.1 (2021-11-26)
 
 ### Other Changes
+
+- Now use `github.com/Azure/azure-sdk-for-go/sdk/azidentity@v0.12.0` explicitly.
 
 ## 0.2.0 (2021-10-29)
 

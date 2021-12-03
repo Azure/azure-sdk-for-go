@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 const (
@@ -30,6 +31,7 @@ func TestNewSigner(t *testing.T) {
 	before := time.Now().UTC().Add(-2 * time.Second)
 	sigStr, expiry := signer.SignWithDuration("http://microsoft.com", 1*time.Hour)
 	nixExpiry, err := strconv.ParseInt(expiry, 10, 64)
+	require.NoError(t, err)
 	assert.WithinDuration(t, before.Add(1*time.Hour), time.Unix(nixExpiry, 0), 10*time.Second, "signing expiry")
 
 	sig, err := parseSig(sigStr)

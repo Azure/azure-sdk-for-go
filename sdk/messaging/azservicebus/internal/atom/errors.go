@@ -8,6 +8,10 @@ import (
 	"net/http"
 )
 
+func NewResponseError(inner error, resp *http.Response) error {
+	return ResponseError{inner, resp}
+}
+
 // ResponseError conforms to the azcore.HTTPResponse
 type ResponseError struct {
 	inner error

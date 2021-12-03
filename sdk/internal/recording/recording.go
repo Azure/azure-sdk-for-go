@@ -7,16 +7,20 @@
 package recording
 
 import (
+	"bytes"
 	"crypto/tls"
 	"crypto/x509"
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"math/rand"
 	"net/http"
 	"os"
+	"os/exec"
 	"path"
 	"path/filepath"
+	"runtime"
 	"strconv"
 	"strings"
 	"testing"
@@ -438,7 +442,43 @@ var modeMap = map[RecordMode]recorder.Mode{
 	Playback: recorder.ModeReplaying,
 }
 
-var recordMode = os.Getenv("AZURE_RECORD_MODE")
+func init() {
+	recordMode = os.Getenv("AZURE_RECORD_MODE")
+	if recordMode == "" {
+		log.Printf("AZURE_RECORD_MODE was not set, defaulting to playback")
+		recordMode = PlaybackMode
+	}
+	if !(recordMode == RecordingMode || recordMode == PlaybackMode || recordMode == LiveMode) {
+		log.Panicf("AZURE_RECORD_MODE was not understood, options are %s, %s, or %s Received: %v.\n", RecordingMode, PlaybackMode, LiveMode, recordMode)
+	}
+
+	localFile, err := findProxyCertLocation()
+	if err != nil {
+		log.Println("Could not find the PROXY_CERT environment variable and was unable to locate the path in eng/common")
+	}
+
+	var certPool *x509.CertPool
+	if runtime.GOOS == "windows" {
+		certPool = x509.NewCertPool()
+	} else {
+		certPool, err = x509.SystemCertPool()
+		if err != nil {
+			log.Println("could not create a system cert pool")
+			log.Panicf(err.Error())
+		}
+	}
+	cert, err := ioutil.ReadFile(localFile)
+	if err != nil {
+		log.Printf("could not read file set in PROXY_CERT variable at %s.\n", localFile)
+	}
+
+	if ok := certPool.AppendCertsFromPEM(cert); !ok {
+		log.Println("no certs appended, using system certs only")
+	}
+}
+
+var recordMode string
+var rootCAs *x509.CertPool
 
 const (
 	RecordingMode     = "record"
@@ -512,9 +552,6 @@ func Start(t *testing.T, pathToRecordings string, options *RecordingOptions) err
 	if options == nil {
 		options = defaultOptions()
 	}
-	if !(recordMode == RecordingMode || recordMode == PlaybackMode || recordMode == LiveMode) {
-		return fmt.Errorf("AZURE_RECORD_MODE was not understood, options are %s, %s, or %s Received: %v", RecordingMode, PlaybackMode, LiveMode, recordMode)
-	}
 	if recordMode == LiveMode {
 		return nil
 	}
@@ -584,10 +621,7 @@ func Stop(t *testing.T, options *RecordingOptions) error {
 	}
 	req.Header.Set("x-recording-id", recTest.recordingId)
 	_, err = client.Do(req)
-	if err != nil {
-		t.Errorf(err.Error())
-	}
-	return nil
+	return err
 }
 
 // This looks up an environment variable and if it is not found, returns the recordedValue
@@ -627,42 +661,50 @@ func GetRecordMode() string {
 	return recordMode
 }
 
-func getRootCas(t *testing.T) (*x509.CertPool, error) {
-	localFile, ok := os.LookupEnv("PROXY_CERT")
-
-	rootCAs, err := x509.SystemCertPool()
-	if err != nil && strings.Contains(err.Error(), "system root pool is not available on Windows") {
-		rootCAs = x509.NewCertPool()
-	} else if err != nil {
-		return rootCAs, err
+func findProxyCertLocation() (string, error) {
+	fileLocation, ok := os.LookupEnv("PROXY_CERT")
+	if ok {
+		return fileLocation, nil
 	}
 
-	if !ok {
-		t.Log("Could not find path to proxy certificate, set the environment variable 'PROXY_CERT' to the location of your certificate")
-		return rootCAs, nil
-	}
-
-	cert, err := ioutil.ReadFile(localFile)
+	out, err := exec.Command("git", "rev-parse", "--show-toplevel").Output()
 	if err != nil {
+		log.Print("Could not find PROXY_CERT environment variable or toplevel of git repository, please set PROXY_CERT to location of certificate found in eng/common/testproxy/dotnet-devcert.crt")
+		return "", err
+	}
+	topLevel := bytes.NewBuffer(out).String()
+	return filepath.Join(topLevel, "eng", "common", "testproxy", "dotnet-devcert.crt"), nil
+}
 
+type RecordingHTTPClient struct {
+	defaultClient *http.Client
+	options       RecordingOptions
+	t             *testing.T
+}
+
+func (c RecordingHTTPClient) Do(req *http.Request) (*http.Response, error) {
+	c.options.ReplaceAuthority(c.t, req)
+	return c.defaultClient.Do(req)
+}
+
+func NewRecordingHTTPClient(t *testing.T, options *RecordingOptions) (*RecordingHTTPClient, error) {
+	if options == nil {
+		options = &RecordingOptions{UseHTTPS: true}
+	}
+	c, err := GetHTTPClient(t)
+	if err != nil {
 		return nil, err
 	}
 
-	if ok := rootCAs.AppendCertsFromPEM(cert); !ok {
-		t.Log("No certs appended, using system certs only")
-	}
-
-	return rootCAs, nil
+	return &RecordingHTTPClient{
+		defaultClient: c,
+		options:       *options,
+		t:             t,
+	}, nil
 }
 
 func GetHTTPClient(t *testing.T) (*http.Client, error) {
 	transport := http.DefaultTransport.(*http.Transport).Clone()
-
-	rootCAs, err := getRootCas(t)
-	if err != nil {
-		return nil, err
-	}
-
 	transport.TLSClientConfig.RootCAs = rootCAs
 	transport.TLSClientConfig.MinVersion = tls.VersionTLS12
 	transport.TLSClientConfig.InsecureSkipVerify = true

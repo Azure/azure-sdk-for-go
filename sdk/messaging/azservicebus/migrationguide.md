@@ -51,9 +51,9 @@ Sending is done from a [Sender](https://pkg.go.dev/github.com/Azure/azure-sdk-fo
 works the same for queues or topics:
 
 ```go
-sender, err := client.NewSender(queueOrTopicName)
+sender, err := client.NewSender(queueOrTopicName, nil)
 
-sender.SendMessage(&azservicebus.Message{
+sender.SendMessage(context.TODO(), &azservicebus.Message{
   Body: []byte("hello world"),
 })
 ```
@@ -64,11 +64,11 @@ Sending messages in batches is similar, except that the focus has been moved mor
 towards giving the user full control using the `MessageBatch` type.
 
 ```go
-batch, err := sender.NewMessageBatch(ctx, nil)
+batch, err := sender.NewMessageBatch(context.TODO(), nil)
 
 // can be called multiple times
 err := batch.AddMessage(&azservicebus.Message{
-  Body: []byte("hello world")
+  Body: []byte("hello world"),
 })
 
 if err != nil {
@@ -86,7 +86,7 @@ if err != nil {
   }
 }
 
-sender.SendMessageBatch(ctx, batch)
+sender.SendMessageBatch(context.TODO(), batch)
 ```
 
 ### Processing and receiving messages
@@ -97,16 +97,16 @@ You can receive messages using the [Receiver](https://pkg.go.dev/github.com/Azur
 
 ### Receivers
 
-Receivers allow you to request messages in batches, or easily receive a single message.
+Receivers allow you to request messages in batches:
 
 ```go
-receiver, err := client.NewReceiverForQueue(queue)
+receiver, err := client.NewReceiverForQueue(queue, nil)
 // or for a subscription
-receiver, err := client.NewReceiverForSubscription(topicName, subscriptionName)
+receiver, err := client.NewReceiverForSubscription(topicName, subscriptionName, nil)
 
-// receiving multiple messages at a time, with a configurable timeout.
+// receiving multiple messages at a time. 
 var messages []*azservicebus.ReceivedMessage
-messages, err = receiver.ReceiveMessages(ctx, numMessages, nil)
+messages, err = receiver.ReceiveMessages(context.TODO(), numMessages, nil)
 ```
 
 ### Using dead letter queues
@@ -135,11 +135,11 @@ Now, in `azservicebus`:
 // new code
 
 receiver, err = client.NewReceiverForQueue(
-  queueName,
-  &azservicebus.ReceiverOptions{
-    ReceiveMode: azservicebus.PeekLock,
-    SubQueue:    azservicebus.SubQueueDeadLetter,
-  })
+	queueName,
+	&azservicebus.ReceiverOptions{
+		ReceiveMode: azservicebus.ReceiveModePeekLock,
+		SubQueue:    azservicebus.SubQueueDeadLetter,
+	})
 
 //or
 
@@ -147,7 +147,7 @@ receiver, err = client.NewReceiverForSubscription(
   topicName,
   subscriptionName,
   &azservicebus.ReceiverOptions{
-    ReceiveMode: azservicebus.PeekLock,
+    ReceiveMode: azservicebus.ReceiveModePeekLock,
     SubQueue:    azservicebus.SubQueueDeadLetter,
   })
 ```
@@ -176,8 +176,11 @@ Now, using `azservicebus`:
 // new code
 
 // with a Receiver
-message, err := receiver.ReceiveMessages(ctx, 10, nil)
-receiver.CompleteMessage(ctx, message)
+messages, err := receiver.ReceiveMessages(ctx, 10, nil)
+
+for _, m := range messages {
+  err = receiver.CompleteMessage(ctx, message)
+}
 ```
 
 # Azure Identity integration
@@ -196,10 +199,10 @@ client, err = azservicebus.NewClient("<ex: myservicebus.servicebus.windows.net>"
 Administration features, like creating queues, topics and subscriptions, has been moved into a dedicated client (admin.Client).
 
 ```go
-adminClient := admin.NewClient()
+adminClient, err := admin.NewClientFromConnectionString(connectionString, nil)
 
 // create a queue with default properties
-err := adminClient.CreateQueue(context.TODO(), "queue-name", nil, nil)
+resp, err := adminClient.CreateQueue(context.TODO(), "queue-name", nil, nil)
 
 // or create a queue and configure some properties
 ```
@@ -210,11 +213,11 @@ Entities that use sessions can now be be received from:
 
 ```go
 // to get a specific session by ID
-sessionReceiver, err := client.AcceptSessionForQueue("queue", "session-id", nil)
+sessionReceiver, err := client.AcceptSessionForQueue(context.TODO(), "queue", "session-id", nil)
 // or client.AcceptSessionForSubscription
 
 // to get the next available session from Service Bus (service-assigned)
-sessionReceiver, err := client.AcceptNextSessionForQueue("queue", nil)
+sessionReceiver, err := client.AcceptNextSessionForQueue(context.TODO(), "queue", nil)
 
 // SessionReceiver's are similar to Receiver's with some additional functions:
 

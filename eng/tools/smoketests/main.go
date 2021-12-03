@@ -60,6 +60,7 @@ func findModuleDirectories(root string) []string {
 	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
 		handle(err)
 		if strings.Contains(info.Name(), "go.mod") && !inIgnoredDirectories(path) {
+			fmt.Println("path: ", path)
 			path = strings.ReplaceAll(path, "\\", "/")
 			path = strings.ReplaceAll(path, "/go.mod", "")
 			parts := strings.Split(path, "github.com/")

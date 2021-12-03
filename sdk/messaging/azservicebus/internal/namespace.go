@@ -7,6 +7,7 @@ import (
 	"context"
 	"crypto/tls"
 	"fmt"
+	"net"
 	"runtime"
 	"sync"
 	"time"
@@ -20,7 +21,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/rpc"
 	"github.com/Azure/go-amqp"
 	"github.com/devigned/tab"
-	"nhooyr.io/websocket"
 )
 
 const (
@@ -35,7 +35,8 @@ type (
 		TokenProvider *sbauth.TokenProvider
 		tlsConfig     *tls.Config
 		userAgent     string
-		useWebSocket  bool
+
+		newWebSocketConn func(ctx context.Context, wssHost string) (net.Conn, error)
 
 		baseRetrier Retrier
 
@@ -108,9 +109,9 @@ func NamespaceWithUserAgent(userAgent string) NamespaceOption {
 }
 
 // NamespaceWithWebSocket configures the namespace and all entities to use wss:// rather than amqps://
-func NamespaceWithWebSocket() NamespaceOption {
+func NamespaceWithWebSocket(newWebSocketConn func(ctx context.Context, wssHost string) (net.Conn, error)) NamespaceOption {
 	return func(ns *Namespace) error {
-		ns.useWebSocket = true
+		ns.newWebSocketConn = newWebSocketConn
 		return nil
 	}
 }
@@ -173,15 +174,13 @@ func (ns *Namespace) newClient(ctx context.Context) (*amqp.Client, error) {
 		)
 	}
 
-	if ns.useWebSocket {
+	if ns.newWebSocketConn != nil {
 		wssHost := ns.getWSSHostURI() + "$servicebus/websocket"
-		opts := &websocket.DialOptions{Subprotocols: []string{"amqp"}}
-		wssConn, _, err := websocket.Dial(ctx, wssHost, opts)
+		nConn, err := ns.newWebSocketConn(ctx, wssHost)
 
 		if err != nil {
 			return nil, err
 		}
-		nConn := websocket.NetConn(context.Background(), wssConn, websocket.MessageBinary)
 
 		return amqp.New(nConn, append(defaultConnOptions, amqp.ConnServerHostname(ns.FQDN))...)
 	}

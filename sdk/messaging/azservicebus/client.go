@@ -8,6 +8,7 @@ import (
 	"crypto/tls"
 	"errors"
 	"fmt"
+	"net"
 	"sync"
 	"sync/atomic"
 
@@ -37,6 +38,10 @@ type Client struct {
 type ClientOptions struct {
 	// TLSConfig configures a client with a custom *tls.Config.
 	TLSConfig *tls.Config
+
+	// NewWebSocketConn is a function that can create a net.Conn for use with websockets.
+	// For an example, see ExampleNewClient_usingWebsockets() function in example_client_test.go.
+	NewWebSocketConn func(ctx context.Context, wssHost string) (net.Conn, error)
 }
 
 // NewClient creates a new Client for a Service Bus namespace, using a TokenCredential.
@@ -77,19 +82,10 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 
 type clientConfig struct {
 	connectionString string
-	credential       azcore.TokenCredential
+
 	// the Service Bus namespace name (ex: myservicebus.servicebus.windows.net)
 	fullyQualifiedNamespace string
-	tlsConfig               *tls.Config
-}
-
-func applyClientOptions(client *Client, options *ClientOptions) error {
-	if options == nil {
-		return nil
-	}
-
-	client.config.tlsConfig = options.TLSConfig
-	return nil
+	credential              azcore.TokenCredential
 }
 
 func newClientImpl(config clientConfig, options *ClientOptions) (*Client, error) {
@@ -97,10 +93,6 @@ func newClientImpl(config clientConfig, options *ClientOptions) (*Client, error)
 		linksMu: &sync.Mutex{},
 		config:  config,
 		links:   map[uint64]internal.Closeable{},
-	}
-
-	if err := applyClientOptions(client, options); err != nil {
-		return nil, err
 	}
 
 	var err error
@@ -116,8 +108,14 @@ func newClientImpl(config clientConfig, options *ClientOptions) (*Client, error)
 		nsOptions = append(nsOptions, option)
 	}
 
-	if client.config.tlsConfig != nil {
-		nsOptions = append(nsOptions, internal.NamespaceWithTLSConfig(client.config.tlsConfig))
+	if options != nil {
+		if options.TLSConfig != nil {
+			nsOptions = append(nsOptions, internal.NamespaceWithTLSConfig(options.TLSConfig))
+		}
+
+		if options.NewWebSocketConn != nil {
+			nsOptions = append(nsOptions, internal.NamespaceWithWebSocket(options.NewWebSocketConn))
+		}
 	}
 
 	client.namespace, err = internal.NewNamespace(nsOptions...)

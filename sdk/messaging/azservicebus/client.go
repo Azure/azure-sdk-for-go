@@ -20,7 +20,7 @@ import (
 // Client provides methods to create Sender and Receiver
 // instances to send and receive messages from Service Bus.
 type Client struct {
-	config    clientConfig
+	config    clientCreds
 	namespace interface {
 		// used internally by `Client`
 		internal.NamespaceWithNewAMQPLinks
@@ -57,7 +57,7 @@ func NewClient(fullyQualifiedNamespace string, credential azcore.TokenCredential
 		return nil, errors.New("credential was nil")
 	}
 
-	return newClientImpl(clientConfig{
+	return newClientImpl(clientCreds{
 		credential:              credential,
 		fullyQualifiedNamespace: fullyQualifiedNamespace,
 	}, options)
@@ -71,7 +71,7 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 		return nil, errors.New("connectionString must not be empty")
 	}
 
-	return newClientImpl(clientConfig{
+	return newClientImpl(clientCreds{
 		connectionString: connectionString,
 	}, options)
 }
@@ -80,7 +80,7 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 // func NewClientWithNamedKeyCredential(fullyQualifiedNamespace string, credential azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 // }
 
-type clientConfig struct {
+type clientCreds struct {
 	connectionString string
 
 	// the Service Bus namespace name (ex: myservicebus.servicebus.windows.net)
@@ -88,7 +88,7 @@ type clientConfig struct {
 	credential              azcore.TokenCredential
 }
 
-func newClientImpl(config clientConfig, options *ClientOptions) (*Client, error) {
+func newClientImpl(config clientCreds, options *ClientOptions) (*Client, error) {
 	client := &Client{
 		linksMu: &sync.Mutex{},
 		config:  config,

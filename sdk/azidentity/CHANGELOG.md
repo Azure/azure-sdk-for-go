@@ -7,7 +7,7 @@
 ### Breaking Changes
 
 * Instances of `ChainedTokenCredential` will now skip looping through the list of source credentials and re-use the first successful credential on subsequent calls to `GetToken`.
-  * If the `RetryAllSources` option is set to true, it will not assume the first successful credential should be always used.
+  * If the `RetryAllSources` option is set to true, it will not assume the first successful credential should be always used. It will continue to try all of the originally provided credentials each time the `GetToken` method is called.
 
 ### Bugs Fixed
 

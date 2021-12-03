@@ -27,7 +27,7 @@ type ChainedTokenCredential struct {
 
 // NewChainedTokenCredential creates a ChainedTokenCredential.
 // By default, this credential will assume that the first successful credential should be the only credential used on future requests.
-// If the `RetryAllSources` option is set to true, it will always try to get a token using all of the available credentials.
+// If the `RetryAllSources` option is set to true, it will always try to get a token using all of the originally provided credentials.
 // sources: Credential instances to comprise the chain. GetToken() will invoke them in the given order.
 // options: Optional configuration.
 func NewChainedTokenCredential(sources []azcore.TokenCredential, options *ChainedTokenCredentialOptions) (*ChainedTokenCredential, error) {

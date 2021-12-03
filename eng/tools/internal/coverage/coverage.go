@@ -130,7 +130,7 @@ func CheckCoverage(serviceDir string, coverageConfig string, searchDirectory str
 	configData := readConfigData(coverageConfig)
 	coverageGoal := findCoverageGoal([]string{serviceDir}, configData)
 
-	fmt.Printf("Failing if the coverage is below %.2f\n", coverageGoal)
+	fmt.Printf("(%s) Failing if the coverage is below %.2f\n", serviceDir, coverageGoal)
 
 	coverageValues := parseCoverageFiles(coverageFiles)
 

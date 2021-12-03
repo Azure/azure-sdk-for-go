@@ -19,8 +19,6 @@ type ChainedTokenCredentialOptions struct {
 }
 
 // ChainedTokenCredential is a chain of credentials that enables fallback behavior when a credential can't authenticate.
-// By default, this credential will assume that the first successful credential should be the only credential used on future requests.
-// When `retryAllSources` is true, it will always try to get a token with every credential available on the `sources` array.
 type ChainedTokenCredential struct {
 	sources              []azcore.TokenCredential
 	successfulCredential azcore.TokenCredential
@@ -66,7 +64,7 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.Token
 		return err
 	}
 
-	if c.successfulCredential != nil {
+	if c.successfulCredential != nil && !c.retryAllSources {
 		token, err = c.successfulCredential.GetToken(ctx, opts)
 		if err != nil {
 			return nil, formatError(err)
@@ -82,9 +80,7 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.Token
 			return nil, formatError(err)
 		} else {
 			logGetTokenSuccess(c, opts)
-			if !c.retryAllSources {
-				c.successfulCredential = cred
-			}
+			c.successfulCredential = cred
 			return token, nil
 		}
 	}

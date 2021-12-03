@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Enabling websocket support via `ClientOptions.NewWebSocketConn`. For an example, see the `ExampleNewClient_usingWebsockets` function in `example_client_test.go`.
+
 ### Breaking Changes
 
 ### Bugs Fixed

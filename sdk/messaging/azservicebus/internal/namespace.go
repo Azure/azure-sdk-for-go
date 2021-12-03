@@ -36,7 +36,7 @@ type (
 		tlsConfig     *tls.Config
 		userAgent     string
 
-		newWebSocketConn func(ctx context.Context, wssHost string) (net.Conn, error)
+		newWebSocketConn func(ctx context.Context, args NewWebSocketConnArgs) (net.Conn, error)
 
 		baseRetrier Retrier
 
@@ -108,8 +108,17 @@ func NamespaceWithUserAgent(userAgent string) NamespaceOption {
 	}
 }
 
+// NewWebSocketConnArgs are the arguments to the NewWebSocketConn function you pass if you want
+// to enable websockets.
+type NewWebSocketConnArgs struct {
+	// NOTE: this struct is exported via client.go:NewWebSocketConnArgs
+
+	// Host is the the `wss://<host>` to connect to
+	Host string
+}
+
 // NamespaceWithWebSocket configures the namespace and all entities to use wss:// rather than amqps://
-func NamespaceWithWebSocket(newWebSocketConn func(ctx context.Context, wssHost string) (net.Conn, error)) NamespaceOption {
+func NamespaceWithWebSocket(newWebSocketConn func(ctx context.Context, args NewWebSocketConnArgs) (net.Conn, error)) NamespaceOption {
 	return func(ns *Namespace) error {
 		ns.newWebSocketConn = newWebSocketConn
 		return nil
@@ -175,8 +184,9 @@ func (ns *Namespace) newClient(ctx context.Context) (*amqp.Client, error) {
 	}
 
 	if ns.newWebSocketConn != nil {
-		wssHost := ns.getWSSHostURI() + "$servicebus/websocket"
-		nConn, err := ns.newWebSocketConn(ctx, wssHost)
+		nConn, err := ns.newWebSocketConn(ctx, NewWebSocketConnArgs{
+			Host: ns.getWSSHostURI() + "$servicebus/websocket",
+		})
 
 		if err != nil {
 			return nil, err

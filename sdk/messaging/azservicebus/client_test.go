@@ -65,10 +65,10 @@ func TestNewClientWithWebsockets(t *testing.T) {
 	webSocketCreateCalled := false
 
 	client, err := NewClientFromConnectionString(connectionString, &ClientOptions{
-		NewWebSocketConn: func(ctx context.Context, wssHost string) (net.Conn, error) {
+		NewWebSocketConn: func(ctx context.Context, args NewWebSocketConnArgs) (net.Conn, error) {
 			webSocketCreateCalled = true
 			opts := &websocket.DialOptions{Subprotocols: []string{"amqp"}}
-			wssConn, _, err := websocket.Dial(ctx, wssHost, opts)
+			wssConn, _, err := websocket.Dial(ctx, args.Host, opts)
 
 			if err != nil {
 				return nil, err

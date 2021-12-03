@@ -46,9 +46,9 @@ func ExampleNewClient_usingWebsockets() {
 	// NOTE: If you'd like to authenticate via Azure Active Directory look at
 	// the `NewClient` function instead.
 	client, err = azservicebus.NewClientFromConnectionString(connectionString, &azservicebus.ClientOptions{
-		NewWebSocketConn: func(ctx context.Context, wssHost string) (net.Conn, error) {
+		NewWebSocketConn: func(ctx context.Context, args azservicebus.NewWebSocketConnArgs) (net.Conn, error) {
 			opts := &websocket.DialOptions{Subprotocols: []string{"amqp"}}
-			wssConn, _, err := websocket.Dial(ctx, wssHost, opts)
+			wssConn, _, err := websocket.Dial(ctx, args.Host, opts)
 
 			if err != nil {
 				return nil, err

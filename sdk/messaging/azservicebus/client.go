@@ -41,8 +41,11 @@ type ClientOptions struct {
 
 	// NewWebSocketConn is a function that can create a net.Conn for use with websockets.
 	// For an example, see ExampleNewClient_usingWebsockets() function in example_client_test.go.
-	NewWebSocketConn func(ctx context.Context, wssHost string) (net.Conn, error)
+	NewWebSocketConn func(ctx context.Context, args NewWebSocketConnArgs) (net.Conn, error)
 }
+
+// NewWebSocketConnArgs are passed to your web socket creation function (ClientOptions.NewWebSocketConn)
+type NewWebSocketConnArgs = internal.NewWebSocketConnArgs
 
 // NewClient creates a new Client for a Service Bus namespace, using a TokenCredential.
 // A Client allows you create receivers (for queues or subscriptions) and senders (for queues and topics).

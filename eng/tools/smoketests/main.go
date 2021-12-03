@@ -60,11 +60,11 @@ func findModuleDirectories(root string) []string {
 	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
 		handle(err)
 		if strings.Contains(info.Name(), "go.mod") && !inIgnoredDirectories(path) {
-			fmt.Println("path: ", path)
 			path = strings.ReplaceAll(path, "\\", "/")
 			path = strings.ReplaceAll(path, "/go.mod", "")
-			parts := strings.Split(path, "github.com/")
-			formatted := fmt.Sprintf("github.com/%s", parts[1])
+			fmt.Println("path: ", path)
+			parts := strings.Split(path, "/sdk/")
+			formatted := fmt.Sprintf("github.com/Azure/azure-sdk-for-go/sdk/%s", parts[1])
 			ret = append(ret, formatted)
 		}
 		return nil
@@ -146,6 +146,7 @@ func matchModulesAndTags(goModFiles []string, tags []string) []Module {
 	var m []Module
 
 	for _, goModFile := range goModFiles {
+		fmt.Println("MOD FILE: ", goModFile)
 		packagePath := strings.Split(goModFile, "github.com/Azure/azure-sdk-for-go/sdk/")
 		relativePackagePath := packagePath[1]
 		version, err := findLatestTag(relativePackagePath, tags)

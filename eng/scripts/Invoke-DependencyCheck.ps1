@@ -66,8 +66,8 @@ go mod tidy
 if ($LASTEXITCODE) { exit $LASTEXITCODE }
 
 ## Run go build and go vet
-Write-Host "##[command]Executing go build -x -v ./... in " $workingPath
-go build -x -v ./...
+Write-Host "##[command]Executing go build -v ./... in " $workingPath
+go build -v ./...
 if ($LASTEXITCODE) { exit $LASTEXITCODE }
 
 Write-Host "##[command]Executing go vet ./... in " $workingPath

@@ -36,7 +36,7 @@ func NewWorkspaceManagedSQLServerBlobAuditingPoliciesClientWithBaseURI(baseURI s
 // CreateOrUpdate create or Update a workspace managed sql server's blob auditing policy.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // parameters - properties of extended blob auditing policy.
 func (client WorkspaceManagedSQLServerBlobAuditingPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, parameters ServerBlobAuditingPolicy) (result WorkspaceManagedSQLServerBlobAuditingPoliciesCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
@@ -128,7 +128,7 @@ func (client WorkspaceManagedSQLServerBlobAuditingPoliciesClient) CreateOrUpdate
 // Get get a workspace managed sql server's blob auditing policy.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 func (client WorkspaceManagedSQLServerBlobAuditingPoliciesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string) (result ServerBlobAuditingPolicy, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspaceManagedSQLServerBlobAuditingPoliciesClient.Get")
@@ -214,7 +214,7 @@ func (client WorkspaceManagedSQLServerBlobAuditingPoliciesClient) GetResponder(r
 // ListByWorkspace list workspace managed sql server's blob auditing policies.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 func (client WorkspaceManagedSQLServerBlobAuditingPoliciesClient) ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result ServerBlobAuditingPolicyListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspaceManagedSQLServerBlobAuditingPoliciesClient.ListByWorkspace")

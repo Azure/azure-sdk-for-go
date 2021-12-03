@@ -35,7 +35,7 @@ func NewKustoPoolDatabasePrincipalAssignmentsClientWithBaseURI(baseURI string, s
 
 // CheckNameAvailability checks that the database principal assignment is valid and is not already in use.
 // Parameters:
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // kustoPoolName - the name of the Kusto pool.
 // databaseName - the name of the database in the Kusto pool.
 // resourceGroupName - the name of the resource group. The name is case insensitive.
@@ -130,7 +130,7 @@ func (client KustoPoolDatabasePrincipalAssignmentsClient) CheckNameAvailabilityR
 
 // CreateOrUpdate creates a Kusto pool database principalAssignment.
 // Parameters:
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // kustoPoolName - the name of the Kusto pool.
 // databaseName - the name of the database in the Kusto pool.
 // principalAssignmentName - the name of the Kusto principalAssignment.
@@ -231,7 +231,7 @@ func (client KustoPoolDatabasePrincipalAssignmentsClient) CreateOrUpdateResponde
 
 // Delete deletes a Kusto pool principalAssignment.
 // Parameters:
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // kustoPoolName - the name of the Kusto pool.
 // databaseName - the name of the database in the Kusto pool.
 // principalAssignmentName - the name of the Kusto principalAssignment.
@@ -324,7 +324,7 @@ func (client KustoPoolDatabasePrincipalAssignmentsClient) DeleteResponder(resp *
 
 // Get gets a Kusto pool database principalAssignment.
 // Parameters:
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // kustoPoolName - the name of the Kusto pool.
 // databaseName - the name of the database in the Kusto pool.
 // principalAssignmentName - the name of the Kusto principalAssignment.
@@ -415,7 +415,7 @@ func (client KustoPoolDatabasePrincipalAssignmentsClient) GetResponder(resp *htt
 
 // List lists all Kusto pool database principalAssignments.
 // Parameters:
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // kustoPoolName - the name of the Kusto pool.
 // databaseName - the name of the database in the Kusto pool.
 // resourceGroupName - the name of the resource group. The name is case insensitive.

@@ -9,13 +9,14 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/require"
 )
 
 func TestSessionReceiver_acceptSession(t *testing.T) {
-	client, cleanup, queueName := setupLiveTest(t, &QueueProperties{
+	client, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
 		RequiresSession: to.BoolPtr(true),
 	})
 	defer cleanup()
@@ -23,7 +24,7 @@ func TestSessionReceiver_acceptSession(t *testing.T) {
 	ctx := context.Background()
 
 	// send a message to a specific session
-	sender, err := client.NewSender(queueName)
+	sender, err := client.NewSender(queueName, nil)
 	require.NoError(t, err)
 
 	err = sender.SendMessage(ctx, &Message{
@@ -35,21 +36,33 @@ func TestSessionReceiver_acceptSession(t *testing.T) {
 	receiver, err := client.AcceptSessionForQueue(ctx, queueName, "session-1", nil)
 	require.NoError(t, err)
 
-	msg, err := receiver.ReceiveMessage(ctx, nil)
+	msg, err := receiver.inner.receiveMessage(ctx, nil)
 	require.NoError(t, err)
 
-	require.EqualValues(t, "session-based message", msg.Body)
+	body, err := msg.Body()
+	require.NoError(t, err)
+
+	require.EqualValues(t, "session-based message", body)
 	require.EqualValues(t, "session-1", *msg.SessionID)
 	require.NoError(t, receiver.CompleteMessage(ctx, msg))
 
 	require.EqualValues(t, "session-1", receiver.SessionID())
+
+	sessionState, err := receiver.GetSessionState(ctx)
+	require.NoError(t, err)
+	require.Nil(t, sessionState)
+
+	require.NoError(t, receiver.SetSessionState(ctx, []byte("hello")))
+	sessionState, err = receiver.GetSessionState(ctx)
+	require.NoError(t, err)
+	require.EqualValues(t, "hello", string(sessionState))
 }
 
 func TestSessionReceiver_blankSessionIDs(t *testing.T) {
 	t.Skip("Can't run blank session ID test because of issue")
 	// errors while closing links: amqp sender close error: *Error{Condition: amqp:not-allowed, Description: The SessionId was not set on a message, and it cannot be sent to the entity. Entities that have session support enabled can only receive messages that have the SessionId set to a valid value.
 
-	client, cleanup, queueName := setupLiveTest(t, &QueueProperties{
+	client, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
 		RequiresSession: to.BoolPtr(true),
 	})
 	defer cleanup()
@@ -57,7 +70,7 @@ func TestSessionReceiver_blankSessionIDs(t *testing.T) {
 	ctx := context.Background()
 
 	// send a message to a specific session
-	sender, err := client.NewSender(queueName)
+	sender, err := client.NewSender(queueName, nil)
 	require.NoError(t, err)
 
 	err = sender.SendMessage(ctx, &Message{
@@ -69,7 +82,7 @@ func TestSessionReceiver_blankSessionIDs(t *testing.T) {
 	receiver, err := client.AcceptSessionForQueue(ctx, queueName, "", nil)
 	require.NoError(t, err)
 
-	msg, err := receiver.ReceiveMessage(ctx, nil)
+	msg, err := receiver.inner.receiveMessage(ctx, nil)
 	require.NoError(t, err)
 
 	require.EqualValues(t, "session-based message", msg.Body)
@@ -80,7 +93,7 @@ func TestSessionReceiver_blankSessionIDs(t *testing.T) {
 }
 
 func TestSessionReceiver_acceptSessionButAlreadyLocked(t *testing.T) {
-	client, cleanup, queueName := setupLiveTest(t, &QueueProperties{
+	client, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
 		RequiresSession: to.BoolPtr(true),
 	})
 	defer cleanup()
@@ -99,14 +112,14 @@ func TestSessionReceiver_acceptSessionButAlreadyLocked(t *testing.T) {
 }
 
 func TestSessionReceiver_acceptNextSession(t *testing.T) {
-	client, cleanup, queueName := setupLiveTest(t, &QueueProperties{
+	client, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
 		RequiresSession: to.BoolPtr(true),
 	})
 	defer cleanup()
 
 	ctx := context.Background()
 
-	sender, err := client.NewSender(queueName)
+	sender, err := client.NewSender(queueName, nil)
 	require.NoError(t, err)
 
 	err = sender.SendMessage(ctx, &Message{
@@ -120,20 +133,31 @@ func TestSessionReceiver_acceptNextSession(t *testing.T) {
 	receiver, err := client.AcceptNextSessionForQueue(ctx, queueName, nil)
 	require.NoError(t, err)
 
-	msg, err := receiver.ReceiveMessage(ctx, nil)
+	msg, err := receiver.inner.receiveMessage(ctx, nil)
 	require.NoError(t, err)
 
-	require.EqualValues(t, "session-based message", msg.Body)
+	body, err := msg.Body()
+	require.NoError(t, err)
+	require.EqualValues(t, "session-based message", body)
 	require.EqualValues(t, "acceptnextsession-test", *msg.SessionID)
 	require.NoError(t, receiver.CompleteMessage(ctx, msg))
 
 	require.EqualValues(t, "acceptnextsession-test", receiver.SessionID())
+
+	sessionState, err := receiver.GetSessionState(ctx)
+	require.NoError(t, err)
+	require.Nil(t, sessionState)
+
+	require.NoError(t, receiver.SetSessionState(ctx, []byte("hello")))
+	sessionState, err = receiver.GetSessionState(ctx)
+	require.NoError(t, err)
+	require.EqualValues(t, "hello", string(sessionState))
 }
 
 func TestSessionReceiver_noSessionsAvailable(t *testing.T) {
 	t.Skip("Really slow test (since it has to wait for a timeout from the service)")
 
-	client, cleanup, queueName := setupLiveTest(t, &QueueProperties{
+	client, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
 		RequiresSession: to.BoolPtr(true),
 	})
 	defer cleanup()
@@ -156,7 +180,7 @@ func TestSessionReceiver_noSessionsAvailable(t *testing.T) {
 }
 
 func TestSessionReceiver_nonSessionReceiver(t *testing.T) {
-	client, cleanup, queueName := setupLiveTest(t, &QueueProperties{
+	client, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
 		RequiresSession: to.BoolPtr(true),
 	})
 	defer cleanup()
@@ -167,7 +191,7 @@ func TestSessionReceiver_nonSessionReceiver(t *testing.T) {
 
 	// normal receivers are lazy initialized so we need to do _something_ to make sure
 	// the link gets spun up (and thus fails)
-	message, err := receiver.ReceiveMessage(context.Background(), nil)
+	message, err := receiver.receiveMessage(context.Background(), nil)
 	require.Nil(t, message)
 
 	var amqpError *amqp.Error
@@ -183,12 +207,49 @@ func TestSessionReceiver_nonSessionReceiver(t *testing.T) {
 	require.Contains(t, amqpError.Description, "It is not possible for an entity that requires sessions to create a non-sessionful message receiver.")
 }
 
+func TestSessionReceiver_RenewSessionLock(t *testing.T) {
+	client, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
+		RequiresSession: to.BoolPtr(true),
+	})
+	defer cleanup()
+
+	sessionReceiver, err := client.AcceptSessionForQueue(context.Background(), queueName, "session-1", nil)
+	require.NoError(t, err)
+
+	sender, err := client.NewSender(queueName, nil)
+	require.NoError(t, err)
+
+	err = sender.SendMessage(context.Background(), &Message{
+		Body:      []byte("hello world"),
+		SessionID: to.StringPtr("session-1"),
+	})
+	require.NoError(t, err)
+
+	messages, err := sessionReceiver.ReceiveMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+	require.NotNil(t, messages)
+
+	// surprisingly this works. Not sure what it accomplishes though. C# has a manual check for it.
+	// err = sessionReceiver.RenewMessageLock(context.Background(), messages[0])
+	// require.NoError(t, err)
+
+	orig := sessionReceiver.LockedUntil()
+	require.NoError(t, sessionReceiver.RenewSessionLock(context.Background()))
+	require.Greater(t, sessionReceiver.LockedUntil().UnixNano(), orig.UnixNano())
+
+	// bogus renewal
+	sessionReceiver.sessionID = to.StringPtr("bogus")
+
+	err = sessionReceiver.RenewSessionLock(context.Background())
+	require.Contains(t, err.Error(), "status code 410 and description: The session lock has expired on the MessageSession")
+}
+
 func Test_toReceiverOptions(t *testing.T) {
 	require.Nil(t, toReceiverOptions(nil))
 
 	require.EqualValues(t, &ReceiverOptions{
-		ReceiveMode: ReceiveAndDelete,
+		ReceiveMode: ReceiveModeReceiveAndDelete,
 	}, toReceiverOptions(&SessionReceiverOptions{
-		ReceiveMode: ReceiveAndDelete,
+		ReceiveMode: ReceiveModeReceiveAndDelete,
 	}))
 }

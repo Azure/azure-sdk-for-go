@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // ApplicationTypeVersionsClient contains the methods for the ApplicationTypeVersions group.
@@ -31,8 +31,15 @@ type ApplicationTypeVersionsClient struct {
 }
 
 // NewApplicationTypeVersionsClient creates a new instance of ApplicationTypeVersionsClient with the specified values.
-func NewApplicationTypeVersionsClient(con *arm.Connection, subscriptionID string) *ApplicationTypeVersionsClient {
-	return &ApplicationTypeVersionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewApplicationTypeVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ApplicationTypeVersionsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ApplicationTypeVersionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Create or update a Service Fabric application type version resource with the specified name.
@@ -258,7 +265,7 @@ func (client *ApplicationTypeVersionsClient) getCreateRequest(ctx context.Contex
 func (client *ApplicationTypeVersionsClient) getHandleResponse(resp *http.Response) (ApplicationTypeVersionsGetResponse, error) {
 	result := ApplicationTypeVersionsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationTypeVersionResource); err != nil {
-		return ApplicationTypeVersionsGetResponse{}, err
+		return ApplicationTypeVersionsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -327,7 +334,7 @@ func (client *ApplicationTypeVersionsClient) listCreateRequest(ctx context.Conte
 func (client *ApplicationTypeVersionsClient) listHandleResponse(resp *http.Response) (ApplicationTypeVersionsListResponse, error) {
 	result := ApplicationTypeVersionsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationTypeVersionResourceList); err != nil {
-		return ApplicationTypeVersionsListResponse{}, err
+		return ApplicationTypeVersionsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

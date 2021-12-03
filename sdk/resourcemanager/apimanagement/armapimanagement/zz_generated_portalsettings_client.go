@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // PortalSettingsClient contains the methods for the PortalSettings group.
@@ -30,8 +31,15 @@ type PortalSettingsClient struct {
 }
 
 // NewPortalSettingsClient creates a new instance of PortalSettingsClient with the specified values.
-func NewPortalSettingsClient(con *arm.Connection, subscriptionID string) *PortalSettingsClient {
-	return &PortalSettingsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewPortalSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PortalSettingsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &PortalSettingsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // ListByService - Lists a collection of portalsettings defined within a service instance..
@@ -71,7 +79,7 @@ func (client *PortalSettingsClient) listByServiceCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -81,7 +89,7 @@ func (client *PortalSettingsClient) listByServiceCreateRequest(ctx context.Conte
 func (client *PortalSettingsClient) listByServiceHandleResponse(resp *http.Response) (PortalSettingsListByServiceResponse, error) {
 	result := PortalSettingsListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PortalSettingsCollection); err != nil {
-		return PortalSettingsListByServiceResponse{}, err
+		return PortalSettingsListByServiceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

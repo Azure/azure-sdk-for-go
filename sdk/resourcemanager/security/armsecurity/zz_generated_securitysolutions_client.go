@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // SecuritySolutionsClient contains the methods for the SecuritySolutions group.
@@ -31,8 +32,15 @@ type SecuritySolutionsClient struct {
 }
 
 // NewSecuritySolutionsClient creates a new instance of SecuritySolutionsClient with the specified values.
-func NewSecuritySolutionsClient(con *arm.Connection, subscriptionID string, ascLocation string) *SecuritySolutionsClient {
-	return &SecuritySolutionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID, ascLocation: ascLocation}
+func NewSecuritySolutionsClient(subscriptionID string, ascLocation string, credential azcore.TokenCredential, options *arm.ClientOptions) *SecuritySolutionsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &SecuritySolutionsClient{subscriptionID: subscriptionID, ascLocation: ascLocation, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Gets a specific Security Solution.
@@ -86,7 +94,7 @@ func (client *SecuritySolutionsClient) getCreateRequest(ctx context.Context, res
 func (client *SecuritySolutionsClient) getHandleResponse(resp *http.Response) (SecuritySolutionsGetResponse, error) {
 	result := SecuritySolutionsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecuritySolution); err != nil {
-		return SecuritySolutionsGetResponse{}, err
+		return SecuritySolutionsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -140,7 +148,7 @@ func (client *SecuritySolutionsClient) listCreateRequest(ctx context.Context, op
 func (client *SecuritySolutionsClient) listHandleResponse(resp *http.Response) (SecuritySolutionsListResponse, error) {
 	result := SecuritySolutionsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecuritySolutionList); err != nil {
-		return SecuritySolutionsListResponse{}, err
+		return SecuritySolutionsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // IotSecuritySolutionClient contains the methods for the IotSecuritySolution group.
@@ -30,8 +31,15 @@ type IotSecuritySolutionClient struct {
 }
 
 // NewIotSecuritySolutionClient creates a new instance of IotSecuritySolutionClient with the specified values.
-func NewIotSecuritySolutionClient(con *arm.Connection, subscriptionID string) *IotSecuritySolutionClient {
-	return &IotSecuritySolutionClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewIotSecuritySolutionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IotSecuritySolutionClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &IotSecuritySolutionClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Use this method to create or update yours IoT Security solution
@@ -81,7 +89,7 @@ func (client *IotSecuritySolutionClient) createOrUpdateCreateRequest(ctx context
 func (client *IotSecuritySolutionClient) createOrUpdateHandleResponse(resp *http.Response) (IotSecuritySolutionCreateOrUpdateResponse, error) {
 	result := IotSecuritySolutionCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IoTSecuritySolutionModel); err != nil {
-		return IotSecuritySolutionCreateOrUpdateResponse{}, err
+		return IotSecuritySolutionCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -202,7 +210,7 @@ func (client *IotSecuritySolutionClient) getCreateRequest(ctx context.Context, r
 func (client *IotSecuritySolutionClient) getHandleResponse(resp *http.Response) (IotSecuritySolutionGetResponse, error) {
 	result := IotSecuritySolutionGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IoTSecuritySolutionModel); err != nil {
-		return IotSecuritySolutionGetResponse{}, err
+		return IotSecuritySolutionGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -263,7 +271,7 @@ func (client *IotSecuritySolutionClient) listByResourceGroupCreateRequest(ctx co
 func (client *IotSecuritySolutionClient) listByResourceGroupHandleResponse(resp *http.Response) (IotSecuritySolutionListByResourceGroupResponse, error) {
 	result := IotSecuritySolutionListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IoTSecuritySolutionsList); err != nil {
-		return IotSecuritySolutionListByResourceGroupResponse{}, err
+		return IotSecuritySolutionListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -320,7 +328,7 @@ func (client *IotSecuritySolutionClient) listBySubscriptionCreateRequest(ctx con
 func (client *IotSecuritySolutionClient) listBySubscriptionHandleResponse(resp *http.Response) (IotSecuritySolutionListBySubscriptionResponse, error) {
 	result := IotSecuritySolutionListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IoTSecuritySolutionsList); err != nil {
-		return IotSecuritySolutionListBySubscriptionResponse{}, err
+		return IotSecuritySolutionListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -385,7 +393,7 @@ func (client *IotSecuritySolutionClient) updateCreateRequest(ctx context.Context
 func (client *IotSecuritySolutionClient) updateHandleResponse(resp *http.Response) (IotSecuritySolutionUpdateResponse, error) {
 	result := IotSecuritySolutionUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IoTSecuritySolutionModel); err != nil {
-		return IotSecuritySolutionUpdateResponse{}, err
+		return IotSecuritySolutionUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

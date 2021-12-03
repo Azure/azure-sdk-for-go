@@ -36,7 +36,7 @@ func NewWorkspaceManagedIdentitySQLControlSettingsClientWithBaseURI(baseURI stri
 // CreateOrUpdate sends the create or update request.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // managedIdentitySQLControlSettings - managed Identity Sql Control Settings
 func (client WorkspaceManagedIdentitySQLControlSettingsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, managedIdentitySQLControlSettings ManagedIdentitySQLControlSettingsModel) (result WorkspaceManagedIdentitySQLControlSettingsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
@@ -127,7 +127,7 @@ func (client WorkspaceManagedIdentitySQLControlSettingsClient) CreateOrUpdateRes
 // Get sends the get request.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 func (client WorkspaceManagedIdentitySQLControlSettingsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string) (result ManagedIdentitySQLControlSettingsModel, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspaceManagedIdentitySQLControlSettingsClient.Get")

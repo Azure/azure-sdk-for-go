@@ -4,11 +4,13 @@
 package aztables
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"testing"
+	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/stretchr/testify/require"
 )
 
@@ -33,7 +35,7 @@ func TestCreateTable(t *testing.T) {
 			client, delete := initClientTest(t, service, false)
 			defer delete()
 
-			resp, err := client.Create(context.Background(), nil)
+			resp, err := client.Create(ctx, nil)
 
 			require.NoError(t, err)
 			require.NotNil(t, resp.RawResponse)
@@ -109,7 +111,7 @@ func TestDeleteEntityWithETag(t *testing.T) {
 
 			marshalledEntity, err = json.Marshal(simpleEntity2)
 			require.NoError(t, err)
-			resp, err = client.AddEntity(context.Background(), marshalledEntity, nil)
+			resp, err = client.AddEntity(ctx, marshalledEntity, nil)
 			require.NoError(t, err)
 			newETag := resp.ETag
 
@@ -384,4 +386,136 @@ func TestInvalidEntity(t *testing.T) {
 			require.Contains(t, err.Error(), errPartitionKeyRowKeyError.Error())
 		})
 	}
+}
+
+func TestContinuationTokens(t *testing.T) {
+	for _, service := range services {
+		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
+			client, delete := initClientTest(t, service, true)
+			defer delete()
+
+			err := insertNEntities("contToken", 10, client)
+			require.NoError(t, err)
+
+			pager := client.List(&ListEntitiesOptions{Top: to.Int32Ptr(1)})
+			var pkContToken *string
+			var rkContToken *string
+			for pager.NextPage(ctx) {
+				require.Equal(t, 1, len(pager.PageResponse().Entities))
+				pkContToken = pager.NextPagePartitionKey()
+				rkContToken = pager.NextPageRowKey()
+				break
+			}
+
+			require.NoError(t, pager.Err())
+			require.NotNil(t, pkContToken)
+			require.NotNil(t, rkContToken)
+
+			newPager := client.List(&ListEntitiesOptions{
+				PartitionKey: pkContToken,
+				RowKey:       rkContToken,
+			})
+			count := 0
+			for newPager.NextPage(ctx) {
+				count += len(newPager.PageResponse().Entities)
+			}
+
+			require.NoError(t, pager.Err())
+			require.Equal(t, 9, count)
+		})
+	}
+}
+
+func TestContinuationTokensFilters(t *testing.T) {
+	for _, service := range services {
+		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
+			client, delete := initClientTest(t, service, true)
+			defer delete()
+
+			err := insertNEntities("contToken", 10, client)
+			require.NoError(t, err)
+
+			pager := client.List(&ListEntitiesOptions{
+				Top:    to.Int32Ptr(1),
+				Filter: to.StringPtr("Value le 5"),
+			})
+			var pkContToken *string
+			var rkContToken *string
+			for pager.NextPage(ctx) {
+				require.Equal(t, 1, len(pager.PageResponse().Entities))
+				pkContToken = pager.NextPagePartitionKey()
+				rkContToken = pager.NextPageRowKey()
+				break
+			}
+
+			require.NoError(t, pager.Err())
+			require.NotNil(t, pkContToken)
+			require.NotNil(t, rkContToken)
+
+			newPager := client.List(&ListEntitiesOptions{
+				PartitionKey: pkContToken,
+				RowKey:       rkContToken,
+				Filter:       to.StringPtr("Value le 5"),
+			})
+			count := 0
+			for newPager.NextPage(ctx) {
+				count += len(newPager.PageResponse().Entities)
+			}
+
+			require.NoError(t, pager.Err())
+			require.Equal(t, 4, count)
+		})
+	}
+}
+
+func TestAzurite(t *testing.T) {
+	// quick and dirty make sure azurite is running
+	req, err := http.NewRequest("POST", "http://localhost:10002", nil)
+	require.NoError(t, err)
+	_, err = http.DefaultClient.Do(req)
+	if err != nil {
+		t.Skip("Skipping Azurite test, azurite is not running")
+	}
+
+	connStr := "DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;TableEndpoint=http://127.0.0.1:10002/devstoreaccount1;"
+	svc, err := NewServiceClientFromConnectionString(connStr, nil)
+	require.NoError(t, err)
+
+	name, err := createRandomName(t, "Table")
+	require.NoError(t, err)
+	client, err := svc.CreateTable(ctx, name, nil)
+	defer func() {
+		_, err = client.Delete(ctx, nil)
+		require.NoError(t, err)
+	}()
+	require.NoError(t, err)
+
+	entity := EDMEntity{
+		Entity: Entity{
+			PartitionKey: "pencils",
+			RowKey:       "id-003",
+		},
+		Properties: map[string]interface{}{
+			"Product":      "Ticonderoga Pencils",
+			"Price":        5.00,
+			"Count":        EDMInt64(12345678901234),
+			"ProductGUID":  EDMGUID("some-guid-value"),
+			"DateReceived": EDMDateTime(time.Now()),
+			"ProductCode":  EDMBinary([]byte("somebinaryvalue")),
+		},
+	}
+
+	data, err := json.Marshal(entity)
+	require.NoError(t, err)
+
+	_, err = client.AddEntity(ctx, data, nil)
+	require.NoError(t, err)
+
+	count := 0
+	pager := client.List(nil)
+	for pager.NextPage(ctx) {
+		count += len(pager.PageResponse().Entities)
+	}
+	require.NoError(t, pager.Err())
+	require.Equal(t, 1, count)
 }

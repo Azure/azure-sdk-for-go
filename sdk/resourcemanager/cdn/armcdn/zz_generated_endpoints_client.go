@@ -12,6 +12,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -30,8 +31,15 @@ type EndpointsClient struct {
 }
 
 // NewEndpointsClient creates a new instance of EndpointsClient with the specified values.
-func NewEndpointsClient(con *arm.Connection, subscriptionID string) *EndpointsClient {
-	return &EndpointsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *EndpointsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &EndpointsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreate - Creates a new CDN endpoint with the specified endpoint name under the specified subscription, resource group and profile.
@@ -245,7 +253,7 @@ func (client *EndpointsClient) getCreateRequest(ctx context.Context, resourceGro
 func (client *EndpointsClient) getHandleResponse(resp *http.Response) (EndpointsGetResponse, error) {
 	result := EndpointsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Endpoint); err != nil {
-		return EndpointsGetResponse{}, err
+		return EndpointsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -307,7 +315,7 @@ func (client *EndpointsClient) listByProfileCreateRequest(ctx context.Context, r
 func (client *EndpointsClient) listByProfileHandleResponse(resp *http.Response) (EndpointsListByProfileResponse, error) {
 	result := EndpointsListByProfileResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EndpointListResult); err != nil {
-		return EndpointsListByProfileResponse{}, err
+		return EndpointsListByProfileResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -373,7 +381,7 @@ func (client *EndpointsClient) listResourceUsageCreateRequest(ctx context.Contex
 func (client *EndpointsClient) listResourceUsageHandleResponse(resp *http.Response) (EndpointsListResourceUsageResponse, error) {
 	result := EndpointsListResourceUsageResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceUsageListResult); err != nil {
-		return EndpointsListResourceUsageResponse{}, err
+		return EndpointsListResourceUsageResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -848,7 +856,7 @@ func (client *EndpointsClient) validateCustomDomainCreateRequest(ctx context.Con
 func (client *EndpointsClient) validateCustomDomainHandleResponse(resp *http.Response) (EndpointsValidateCustomDomainResponse, error) {
 	result := EndpointsValidateCustomDomainResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ValidateCustomDomainOutput); err != nil {
-		return EndpointsValidateCustomDomainResponse{}, err
+		return EndpointsValidateCustomDomainResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

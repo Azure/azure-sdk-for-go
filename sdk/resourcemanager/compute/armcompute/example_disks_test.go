@@ -11,7 +11,6 @@ import (
 	"log"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
@@ -22,7 +21,7 @@ func ExampleDisksClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armcompute.NewDisksClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armcompute.NewDisksClient("<subscription ID>", cred, nil)
 	poller, err := client.BeginCreateOrUpdate(
 		context.Background(),
 		"<resource group name>",
@@ -56,7 +55,7 @@ func ExampleDisksClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armcompute.NewDisksClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armcompute.NewDisksClient("<subscription ID>", cred, nil)
 	resp, err := client.Get(context.Background(), "<resource group name>", "<disk name>", nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a response: %v", err)

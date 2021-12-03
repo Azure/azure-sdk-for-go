@@ -11,14 +11,14 @@ package armcompute
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // DedicatedHostsClient contains the methods for the DedicatedHosts group.
@@ -30,8 +30,15 @@ type DedicatedHostsClient struct {
 }
 
 // NewDedicatedHostsClient creates a new instance of DedicatedHostsClient with the specified values.
-func NewDedicatedHostsClient(con *arm.Connection, subscriptionID string) *DedicatedHostsClient {
-	return &DedicatedHostsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewDedicatedHostsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DedicatedHostsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &DedicatedHostsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Create or update a dedicated host .
@@ -245,7 +252,7 @@ func (client *DedicatedHostsClient) getCreateRequest(ctx context.Context, resour
 func (client *DedicatedHostsClient) getHandleResponse(resp *http.Response) (DedicatedHostsGetResponse, error) {
 	result := DedicatedHostsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DedicatedHost); err != nil {
-		return DedicatedHostsGetResponse{}, err
+		return DedicatedHostsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -307,7 +314,7 @@ func (client *DedicatedHostsClient) listByHostGroupCreateRequest(ctx context.Con
 func (client *DedicatedHostsClient) listByHostGroupHandleResponse(resp *http.Response) (DedicatedHostsListByHostGroupResponse, error) {
 	result := DedicatedHostsListByHostGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DedicatedHostListResult); err != nil {
-		return DedicatedHostsListByHostGroupResponse{}, err
+		return DedicatedHostsListByHostGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

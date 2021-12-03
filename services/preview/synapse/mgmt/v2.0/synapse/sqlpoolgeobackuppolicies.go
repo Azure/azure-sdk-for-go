@@ -35,7 +35,7 @@ func NewSQLPoolGeoBackupPoliciesClientWithBaseURI(baseURI string, subscriptionID
 // CreateOrUpdate updates a SQL Pool geo backup policy.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 // parameters - the required parameters for creating or updating the geo backup policy.
 func (client SQLPoolGeoBackupPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, parameters GeoBackupPolicy) (result GeoBackupPolicy, err error) {
@@ -130,7 +130,7 @@ func (client SQLPoolGeoBackupPoliciesClient) CreateOrUpdateResponder(resp *http.
 // Get get the specified SQL pool geo backup policy
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 func (client SQLPoolGeoBackupPoliciesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result GeoBackupPolicy, err error) {
 	if tracing.IsEnabled() {
@@ -218,7 +218,7 @@ func (client SQLPoolGeoBackupPoliciesClient) GetResponder(resp *http.Response) (
 // List get list of SQL pool geo backup policies
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 func (client SQLPoolGeoBackupPoliciesClient) List(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result GeoBackupPolicyListResult, err error) {
 	if tracing.IsEnabled() {

@@ -11,13 +11,14 @@ package armcosmos
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // DatabaseClient contains the methods for the Database group.
@@ -29,8 +30,15 @@ type DatabaseClient struct {
 }
 
 // NewDatabaseClient creates a new instance of DatabaseClient with the specified values.
-func NewDatabaseClient(con *arm.Connection, subscriptionID string) *DatabaseClient {
-	return &DatabaseClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewDatabaseClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DatabaseClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &DatabaseClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // ListMetricDefinitions - Retrieves metric definitions for the given database.
@@ -74,7 +82,7 @@ func (client *DatabaseClient) listMetricDefinitionsCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -84,7 +92,7 @@ func (client *DatabaseClient) listMetricDefinitionsCreateRequest(ctx context.Con
 func (client *DatabaseClient) listMetricDefinitionsHandleResponse(resp *http.Response) (DatabaseListMetricDefinitionsResponse, error) {
 	result := DatabaseListMetricDefinitionsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricDefinitionsListResult); err != nil {
-		return DatabaseListMetricDefinitionsResponse{}, err
+		return DatabaseListMetricDefinitionsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -142,7 +150,7 @@ func (client *DatabaseClient) listMetricsCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	reqQP.Set("$filter", filter)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
@@ -153,7 +161,7 @@ func (client *DatabaseClient) listMetricsCreateRequest(ctx context.Context, reso
 func (client *DatabaseClient) listMetricsHandleResponse(resp *http.Response) (DatabaseListMetricsResponse, error) {
 	result := DatabaseListMetricsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricListResult); err != nil {
-		return DatabaseListMetricsResponse{}, err
+		return DatabaseListMetricsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -211,7 +219,7 @@ func (client *DatabaseClient) listUsagesCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -224,7 +232,7 @@ func (client *DatabaseClient) listUsagesCreateRequest(ctx context.Context, resou
 func (client *DatabaseClient) listUsagesHandleResponse(resp *http.Response) (DatabaseListUsagesResponse, error) {
 	result := DatabaseListUsagesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UsagesResult); err != nil {
-		return DatabaseListUsagesResponse{}, err
+		return DatabaseListUsagesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

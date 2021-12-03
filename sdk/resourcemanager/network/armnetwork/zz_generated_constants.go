@@ -10,7 +10,7 @@ package armnetwork
 
 const (
 	module  = "armnetwork"
-	version = "v0.1.0"
+	version = "v0.2.1"
 )
 
 // Access - Access to be allowed or denied.
@@ -613,6 +613,7 @@ func (c AzureFirewallSKUName) ToPtr() *AzureFirewallSKUName {
 type AzureFirewallSKUTier string
 
 const (
+	AzureFirewallSKUTierBasic    AzureFirewallSKUTier = "Basic"
 	AzureFirewallSKUTierPremium  AzureFirewallSKUTier = "Premium"
 	AzureFirewallSKUTierStandard AzureFirewallSKUTier = "Standard"
 )
@@ -620,6 +621,7 @@ const (
 // PossibleAzureFirewallSKUTierValues returns the possible values for the AzureFirewallSKUTier const type.
 func PossibleAzureFirewallSKUTierValues() []AzureFirewallSKUTier {
 	return []AzureFirewallSKUTier{
+		AzureFirewallSKUTierBasic,
 		AzureFirewallSKUTierPremium,
 		AzureFirewallSKUTierStandard,
 	}
@@ -1690,6 +1692,7 @@ func (c FirewallPolicyRuleType) ToPtr() *FirewallPolicyRuleType {
 type FirewallPolicySKUTier string
 
 const (
+	FirewallPolicySKUTierBasic    FirewallPolicySKUTier = "Basic"
 	FirewallPolicySKUTierPremium  FirewallPolicySKUTier = "Premium"
 	FirewallPolicySKUTierStandard FirewallPolicySKUTier = "Standard"
 )
@@ -1697,6 +1700,7 @@ const (
 // PossibleFirewallPolicySKUTierValues returns the possible values for the FirewallPolicySKUTier const type.
 func PossibleFirewallPolicySKUTierValues() []FirewallPolicySKUTier {
 	return []FirewallPolicySKUTier{
+		FirewallPolicySKUTierBasic,
 		FirewallPolicySKUTierPremium,
 		FirewallPolicySKUTierStandard,
 	}
@@ -2379,6 +2383,27 @@ func (c OfficeTrafficCategory) ToPtr() *OfficeTrafficCategory {
 	return &c
 }
 
+// OrderByOrder - Describes if results should be in ascending/descending order
+type OrderByOrder string
+
+const (
+	OrderByOrderAscending  OrderByOrder = "Ascending"
+	OrderByOrderDescending OrderByOrder = "Descending"
+)
+
+// PossibleOrderByOrderValues returns the possible values for the OrderByOrder const type.
+func PossibleOrderByOrderValues() []OrderByOrder {
+	return []OrderByOrder{
+		OrderByOrderAscending,
+		OrderByOrderDescending,
+	}
+}
+
+// ToPtr returns a *OrderByOrder pointing to the current value.
+func (c OrderByOrder) ToPtr() *OrderByOrder {
+	return &c
+}
+
 // Origin - The origin of the issue.
 type Origin string
 
@@ -2425,17 +2450,29 @@ func (c OutputType) ToPtr() *OutputType {
 type OwaspCrsExclusionEntryMatchVariable string
 
 const (
-	OwaspCrsExclusionEntryMatchVariableRequestArgNames    OwaspCrsExclusionEntryMatchVariable = "RequestArgNames"
-	OwaspCrsExclusionEntryMatchVariableRequestCookieNames OwaspCrsExclusionEntryMatchVariable = "RequestCookieNames"
-	OwaspCrsExclusionEntryMatchVariableRequestHeaderNames OwaspCrsExclusionEntryMatchVariable = "RequestHeaderNames"
+	OwaspCrsExclusionEntryMatchVariableRequestArgKeys      OwaspCrsExclusionEntryMatchVariable = "RequestArgKeys"
+	OwaspCrsExclusionEntryMatchVariableRequestArgNames     OwaspCrsExclusionEntryMatchVariable = "RequestArgNames"
+	OwaspCrsExclusionEntryMatchVariableRequestArgValues    OwaspCrsExclusionEntryMatchVariable = "RequestArgValues"
+	OwaspCrsExclusionEntryMatchVariableRequestCookieKeys   OwaspCrsExclusionEntryMatchVariable = "RequestCookieKeys"
+	OwaspCrsExclusionEntryMatchVariableRequestCookieNames  OwaspCrsExclusionEntryMatchVariable = "RequestCookieNames"
+	OwaspCrsExclusionEntryMatchVariableRequestCookieValues OwaspCrsExclusionEntryMatchVariable = "RequestCookieValues"
+	OwaspCrsExclusionEntryMatchVariableRequestHeaderKeys   OwaspCrsExclusionEntryMatchVariable = "RequestHeaderKeys"
+	OwaspCrsExclusionEntryMatchVariableRequestHeaderNames  OwaspCrsExclusionEntryMatchVariable = "RequestHeaderNames"
+	OwaspCrsExclusionEntryMatchVariableRequestHeaderValues OwaspCrsExclusionEntryMatchVariable = "RequestHeaderValues"
 )
 
 // PossibleOwaspCrsExclusionEntryMatchVariableValues returns the possible values for the OwaspCrsExclusionEntryMatchVariable const type.
 func PossibleOwaspCrsExclusionEntryMatchVariableValues() []OwaspCrsExclusionEntryMatchVariable {
 	return []OwaspCrsExclusionEntryMatchVariable{
+		OwaspCrsExclusionEntryMatchVariableRequestArgKeys,
 		OwaspCrsExclusionEntryMatchVariableRequestArgNames,
+		OwaspCrsExclusionEntryMatchVariableRequestArgValues,
+		OwaspCrsExclusionEntryMatchVariableRequestCookieKeys,
 		OwaspCrsExclusionEntryMatchVariableRequestCookieNames,
+		OwaspCrsExclusionEntryMatchVariableRequestCookieValues,
+		OwaspCrsExclusionEntryMatchVariableRequestHeaderKeys,
 		OwaspCrsExclusionEntryMatchVariableRequestHeaderNames,
+		OwaspCrsExclusionEntryMatchVariableRequestHeaderValues,
 	}
 }
 
@@ -3131,6 +3168,75 @@ func (c Severity) ToPtr() *Severity {
 	return &c
 }
 
+// SingleQueryResultDirection - Describes in which direction signature is being enforced: 0 - Inbound, 1 - OutBound, 2 - Bidirectional
+type SingleQueryResultDirection int32
+
+const (
+	SingleQueryResultDirectionOne  SingleQueryResultDirection = 1
+	SingleQueryResultDirectionTwo  SingleQueryResultDirection = 2
+	SingleQueryResultDirectionZero SingleQueryResultDirection = 0
+)
+
+// PossibleSingleQueryResultDirectionValues returns the possible values for the SingleQueryResultDirection const type.
+func PossibleSingleQueryResultDirectionValues() []SingleQueryResultDirection {
+	return []SingleQueryResultDirection{
+		SingleQueryResultDirectionOne,
+		SingleQueryResultDirectionTwo,
+		SingleQueryResultDirectionZero,
+	}
+}
+
+// ToPtr returns a *SingleQueryResultDirection pointing to the current value.
+func (c SingleQueryResultDirection) ToPtr() *SingleQueryResultDirection {
+	return &c
+}
+
+// SingleQueryResultMode - The current mode enforced, 0 - Disabled, 1 - Alert, 2 -Deny
+type SingleQueryResultMode int32
+
+const (
+	SingleQueryResultModeOne  SingleQueryResultMode = 1
+	SingleQueryResultModeTwo  SingleQueryResultMode = 2
+	SingleQueryResultModeZero SingleQueryResultMode = 0
+)
+
+// PossibleSingleQueryResultModeValues returns the possible values for the SingleQueryResultMode const type.
+func PossibleSingleQueryResultModeValues() []SingleQueryResultMode {
+	return []SingleQueryResultMode{
+		SingleQueryResultModeOne,
+		SingleQueryResultModeTwo,
+		SingleQueryResultModeZero,
+	}
+}
+
+// ToPtr returns a *SingleQueryResultMode pointing to the current value.
+func (c SingleQueryResultMode) ToPtr() *SingleQueryResultMode {
+	return &c
+}
+
+// SingleQueryResultSeverity - Describes the severity of signature: 1 - Low, 2 - Medium, 3 - High
+type SingleQueryResultSeverity int32
+
+const (
+	SingleQueryResultSeverityOne   SingleQueryResultSeverity = 1
+	SingleQueryResultSeverityThree SingleQueryResultSeverity = 3
+	SingleQueryResultSeverityTwo   SingleQueryResultSeverity = 2
+)
+
+// PossibleSingleQueryResultSeverityValues returns the possible values for the SingleQueryResultSeverity const type.
+func PossibleSingleQueryResultSeverityValues() []SingleQueryResultSeverity {
+	return []SingleQueryResultSeverity{
+		SingleQueryResultSeverityOne,
+		SingleQueryResultSeverityThree,
+		SingleQueryResultSeverityTwo,
+	}
+}
+
+// ToPtr returns a *SingleQueryResultSeverity pointing to the current value.
+func (c SingleQueryResultSeverity) ToPtr() *SingleQueryResultSeverity {
+	return &c
+}
+
 type SyncRemoteAddressSpace string
 
 const (
@@ -3437,6 +3543,27 @@ func PossibleVerbosityLevelValues() []VerbosityLevel {
 
 // ToPtr returns a *VerbosityLevel pointing to the current value.
 func (c VerbosityLevel) ToPtr() *VerbosityLevel {
+	return &c
+}
+
+// VirtualNetworkEncryptionEnforcement - If the encrypted VNet allows VM that does not support encryption
+type VirtualNetworkEncryptionEnforcement string
+
+const (
+	VirtualNetworkEncryptionEnforcementAllowUnencrypted VirtualNetworkEncryptionEnforcement = "AllowUnencrypted"
+	VirtualNetworkEncryptionEnforcementDropUnencrypted  VirtualNetworkEncryptionEnforcement = "DropUnencrypted"
+)
+
+// PossibleVirtualNetworkEncryptionEnforcementValues returns the possible values for the VirtualNetworkEncryptionEnforcement const type.
+func PossibleVirtualNetworkEncryptionEnforcementValues() []VirtualNetworkEncryptionEnforcement {
+	return []VirtualNetworkEncryptionEnforcement{
+		VirtualNetworkEncryptionEnforcementAllowUnencrypted,
+		VirtualNetworkEncryptionEnforcementDropUnencrypted,
+	}
+}
+
+// ToPtr returns a *VirtualNetworkEncryptionEnforcement pointing to the current value.
+func (c VirtualNetworkEncryptionEnforcement) ToPtr() *VirtualNetworkEncryptionEnforcement {
 	return &c
 }
 

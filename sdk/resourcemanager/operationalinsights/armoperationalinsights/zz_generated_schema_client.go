@@ -11,13 +11,14 @@ package armoperationalinsights
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // SchemaClient contains the methods for the Schema group.
@@ -29,8 +30,15 @@ type SchemaClient struct {
 }
 
 // NewSchemaClient creates a new instance of SchemaClient with the specified values.
-func NewSchemaClient(con *arm.Connection, subscriptionID string) *SchemaClient {
-	return &SchemaClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewSchemaClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SchemaClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &SchemaClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Gets the schema for a given workspace.
@@ -80,7 +88,7 @@ func (client *SchemaClient) getCreateRequest(ctx context.Context, resourceGroupN
 func (client *SchemaClient) getHandleResponse(resp *http.Response) (SchemaGetResponse, error) {
 	result := SchemaGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SearchGetSchemaResponse); err != nil {
-		return SchemaGetResponse{}, err
+		return SchemaGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

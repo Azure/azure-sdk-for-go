@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // IntegrationAccountAgreementsClient contains the methods for the IntegrationAccountAgreements group.
@@ -31,8 +32,15 @@ type IntegrationAccountAgreementsClient struct {
 }
 
 // NewIntegrationAccountAgreementsClient creates a new instance of IntegrationAccountAgreementsClient with the specified values.
-func NewIntegrationAccountAgreementsClient(con *arm.Connection, subscriptionID string) *IntegrationAccountAgreementsClient {
-	return &IntegrationAccountAgreementsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewIntegrationAccountAgreementsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IntegrationAccountAgreementsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &IntegrationAccountAgreementsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or updates an integration account agreement.
@@ -86,7 +94,7 @@ func (client *IntegrationAccountAgreementsClient) createOrUpdateCreateRequest(ct
 func (client *IntegrationAccountAgreementsClient) createOrUpdateHandleResponse(resp *http.Response) (IntegrationAccountAgreementsCreateOrUpdateResponse, error) {
 	result := IntegrationAccountAgreementsCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationAccountAgreement); err != nil {
-		return IntegrationAccountAgreementsCreateOrUpdateResponse{}, err
+		return IntegrationAccountAgreementsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -215,7 +223,7 @@ func (client *IntegrationAccountAgreementsClient) getCreateRequest(ctx context.C
 func (client *IntegrationAccountAgreementsClient) getHandleResponse(resp *http.Response) (IntegrationAccountAgreementsGetResponse, error) {
 	result := IntegrationAccountAgreementsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationAccountAgreement); err != nil {
-		return IntegrationAccountAgreementsGetResponse{}, err
+		return IntegrationAccountAgreementsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -283,7 +291,7 @@ func (client *IntegrationAccountAgreementsClient) listCreateRequest(ctx context.
 func (client *IntegrationAccountAgreementsClient) listHandleResponse(resp *http.Response) (IntegrationAccountAgreementsListResponse, error) {
 	result := IntegrationAccountAgreementsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationAccountAgreementListResult); err != nil {
-		return IntegrationAccountAgreementsListResponse{}, err
+		return IntegrationAccountAgreementsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -352,7 +360,7 @@ func (client *IntegrationAccountAgreementsClient) listContentCallbackURLCreateRe
 func (client *IntegrationAccountAgreementsClient) listContentCallbackURLHandleResponse(resp *http.Response) (IntegrationAccountAgreementsListContentCallbackURLResponse, error) {
 	result := IntegrationAccountAgreementsListContentCallbackURLResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowTriggerCallbackURL); err != nil {
-		return IntegrationAccountAgreementsListContentCallbackURLResponse{}, err
+		return IntegrationAccountAgreementsListContentCallbackURLResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

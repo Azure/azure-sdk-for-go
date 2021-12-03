@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // IotHubResourceClient contains the methods for the IotHubResource group.
@@ -31,8 +31,15 @@ type IotHubResourceClient struct {
 }
 
 // NewIotHubResourceClient creates a new instance of IotHubResourceClient with the specified values.
-func NewIotHubResourceClient(con *arm.Connection, subscriptionID string) *IotHubResourceClient {
-	return &IotHubResourceClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewIotHubResourceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IotHubResourceClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &IotHubResourceClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CheckNameAvailability - Check if an IoT hub name is available.
@@ -74,7 +81,7 @@ func (client *IotHubResourceClient) checkNameAvailabilityCreateRequest(ctx conte
 func (client *IotHubResourceClient) checkNameAvailabilityHandleResponse(resp *http.Response) (IotHubResourceCheckNameAvailabilityResponse, error) {
 	result := IotHubResourceCheckNameAvailabilityResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IotHubNameAvailabilityInfo); err != nil {
-		return IotHubResourceCheckNameAvailabilityResponse{}, err
+		return IotHubResourceCheckNameAvailabilityResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -147,7 +154,7 @@ func (client *IotHubResourceClient) createEventHubConsumerGroupCreateRequest(ctx
 func (client *IotHubResourceClient) createEventHubConsumerGroupHandleResponse(resp *http.Response) (IotHubResourceCreateEventHubConsumerGroupResponse, error) {
 	result := IotHubResourceCreateEventHubConsumerGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventHubConsumerGroupInfo); err != nil {
-		return IotHubResourceCreateEventHubConsumerGroupResponse{}, err
+		return IotHubResourceCreateEventHubConsumerGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -438,7 +445,7 @@ func (client *IotHubResourceClient) exportDevicesCreateRequest(ctx context.Conte
 func (client *IotHubResourceClient) exportDevicesHandleResponse(resp *http.Response) (IotHubResourceExportDevicesResponse, error) {
 	result := IotHubResourceExportDevicesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobResponse); err != nil {
-		return IotHubResourceExportDevicesResponse{}, err
+		return IotHubResourceExportDevicesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -503,7 +510,7 @@ func (client *IotHubResourceClient) getCreateRequest(ctx context.Context, resour
 func (client *IotHubResourceClient) getHandleResponse(resp *http.Response) (IotHubResourceGetResponse, error) {
 	result := IotHubResourceGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IotHubDescription); err != nil {
-		return IotHubResourceGetResponse{}, err
+		return IotHubResourceGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -565,7 +572,7 @@ func (client *IotHubResourceClient) getEndpointHealthCreateRequest(ctx context.C
 func (client *IotHubResourceClient) getEndpointHealthHandleResponse(resp *http.Response) (IotHubResourceGetEndpointHealthResponse, error) {
 	result := IotHubResourceGetEndpointHealthResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EndpointHealthDataListResult); err != nil {
-		return IotHubResourceGetEndpointHealthResponse{}, err
+		return IotHubResourceGetEndpointHealthResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -638,7 +645,7 @@ func (client *IotHubResourceClient) getEventHubConsumerGroupCreateRequest(ctx co
 func (client *IotHubResourceClient) getEventHubConsumerGroupHandleResponse(resp *http.Response) (IotHubResourceGetEventHubConsumerGroupResponse, error) {
 	result := IotHubResourceGetEventHubConsumerGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventHubConsumerGroupInfo); err != nil {
-		return IotHubResourceGetEventHubConsumerGroupResponse{}, err
+		return IotHubResourceGetEventHubConsumerGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -707,7 +714,7 @@ func (client *IotHubResourceClient) getJobCreateRequest(ctx context.Context, res
 func (client *IotHubResourceClient) getJobHandleResponse(resp *http.Response) (IotHubResourceGetJobResponse, error) {
 	result := IotHubResourceGetJobResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobResponse); err != nil {
-		return IotHubResourceGetJobResponse{}, err
+		return IotHubResourceGetJobResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -776,7 +783,7 @@ func (client *IotHubResourceClient) getKeysForKeyNameCreateRequest(ctx context.C
 func (client *IotHubResourceClient) getKeysForKeyNameHandleResponse(resp *http.Response) (IotHubResourceGetKeysForKeyNameResponse, error) {
 	result := IotHubResourceGetKeysForKeyNameResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SharedAccessSignatureAuthorizationRule); err != nil {
-		return IotHubResourceGetKeysForKeyNameResponse{}, err
+		return IotHubResourceGetKeysForKeyNameResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -838,7 +845,7 @@ func (client *IotHubResourceClient) getQuotaMetricsCreateRequest(ctx context.Con
 func (client *IotHubResourceClient) getQuotaMetricsHandleResponse(resp *http.Response) (IotHubResourceGetQuotaMetricsResponse, error) {
 	result := IotHubResourceGetQuotaMetricsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IotHubQuotaMetricInfoListResult); err != nil {
-		return IotHubResourceGetQuotaMetricsResponse{}, err
+		return IotHubResourceGetQuotaMetricsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -903,7 +910,7 @@ func (client *IotHubResourceClient) getStatsCreateRequest(ctx context.Context, r
 func (client *IotHubResourceClient) getStatsHandleResponse(resp *http.Response) (IotHubResourceGetStatsResponse, error) {
 	result := IotHubResourceGetStatsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegistryStatistics); err != nil {
-		return IotHubResourceGetStatsResponse{}, err
+		return IotHubResourceGetStatsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -965,7 +972,7 @@ func (client *IotHubResourceClient) getValidSKUsCreateRequest(ctx context.Contex
 func (client *IotHubResourceClient) getValidSKUsHandleResponse(resp *http.Response) (IotHubResourceGetValidSKUsResponse, error) {
 	result := IotHubResourceGetValidSKUsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IotHubSKUDescriptionListResult); err != nil {
-		return IotHubResourceGetValidSKUsResponse{}, err
+		return IotHubResourceGetValidSKUsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1031,7 +1038,7 @@ func (client *IotHubResourceClient) importDevicesCreateRequest(ctx context.Conte
 func (client *IotHubResourceClient) importDevicesHandleResponse(resp *http.Response) (IotHubResourceImportDevicesResponse, error) {
 	result := IotHubResourceImportDevicesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobResponse); err != nil {
-		return IotHubResourceImportDevicesResponse{}, err
+		return IotHubResourceImportDevicesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1089,7 +1096,7 @@ func (client *IotHubResourceClient) listByResourceGroupCreateRequest(ctx context
 func (client *IotHubResourceClient) listByResourceGroupHandleResponse(resp *http.Response) (IotHubResourceListByResourceGroupResponse, error) {
 	result := IotHubResourceListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IotHubDescriptionListResult); err != nil {
-		return IotHubResourceListByResourceGroupResponse{}, err
+		return IotHubResourceListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1143,7 +1150,7 @@ func (client *IotHubResourceClient) listBySubscriptionCreateRequest(ctx context.
 func (client *IotHubResourceClient) listBySubscriptionHandleResponse(resp *http.Response) (IotHubResourceListBySubscriptionResponse, error) {
 	result := IotHubResourceListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IotHubDescriptionListResult); err != nil {
-		return IotHubResourceListBySubscriptionResponse{}, err
+		return IotHubResourceListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1209,7 +1216,7 @@ func (client *IotHubResourceClient) listEventHubConsumerGroupsCreateRequest(ctx 
 func (client *IotHubResourceClient) listEventHubConsumerGroupsHandleResponse(resp *http.Response) (IotHubResourceListEventHubConsumerGroupsResponse, error) {
 	result := IotHubResourceListEventHubConsumerGroupsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventHubConsumerGroupsListResult); err != nil {
-		return IotHubResourceListEventHubConsumerGroupsResponse{}, err
+		return IotHubResourceListEventHubConsumerGroupsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1271,7 +1278,7 @@ func (client *IotHubResourceClient) listJobsCreateRequest(ctx context.Context, r
 func (client *IotHubResourceClient) listJobsHandleResponse(resp *http.Response) (IotHubResourceListJobsResponse, error) {
 	result := IotHubResourceListJobsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobResponseListResult); err != nil {
-		return IotHubResourceListJobsResponse{}, err
+		return IotHubResourceListJobsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1333,7 +1340,7 @@ func (client *IotHubResourceClient) listKeysCreateRequest(ctx context.Context, r
 func (client *IotHubResourceClient) listKeysHandleResponse(resp *http.Response) (IotHubResourceListKeysResponse, error) {
 	result := IotHubResourceListKeysResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SharedAccessSignatureAuthorizationRuleListResult); err != nil {
-		return IotHubResourceListKeysResponse{}, err
+		return IotHubResourceListKeysResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1398,7 +1405,7 @@ func (client *IotHubResourceClient) testAllRoutesCreateRequest(ctx context.Conte
 func (client *IotHubResourceClient) testAllRoutesHandleResponse(resp *http.Response) (IotHubResourceTestAllRoutesResponse, error) {
 	result := IotHubResourceTestAllRoutesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TestAllRoutesResult); err != nil {
-		return IotHubResourceTestAllRoutesResponse{}, err
+		return IotHubResourceTestAllRoutesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1463,7 +1470,7 @@ func (client *IotHubResourceClient) testRouteCreateRequest(ctx context.Context, 
 func (client *IotHubResourceClient) testRouteHandleResponse(resp *http.Response) (IotHubResourceTestRouteResponse, error) {
 	result := IotHubResourceTestRouteResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TestRouteResult); err != nil {
-		return IotHubResourceTestRouteResponse{}, err
+		return IotHubResourceTestRouteResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

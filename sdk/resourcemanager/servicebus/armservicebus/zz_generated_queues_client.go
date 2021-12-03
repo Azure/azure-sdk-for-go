@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // QueuesClient contains the methods for the Queues group.
@@ -31,8 +32,15 @@ type QueuesClient struct {
 }
 
 // NewQueuesClient creates a new instance of QueuesClient with the specified values.
-func NewQueuesClient(con *arm.Connection, subscriptionID string) *QueuesClient {
-	return &QueuesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewQueuesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *QueuesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &QueuesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or updates a Service Bus queue. This operation is idempotent.
@@ -86,7 +94,7 @@ func (client *QueuesClient) createOrUpdateCreateRequest(ctx context.Context, res
 func (client *QueuesClient) createOrUpdateHandleResponse(resp *http.Response) (QueuesCreateOrUpdateResponse, error) {
 	result := QueuesCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBQueue); err != nil {
-		return QueuesCreateOrUpdateResponse{}, err
+		return QueuesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -159,7 +167,7 @@ func (client *QueuesClient) createOrUpdateAuthorizationRuleCreateRequest(ctx con
 func (client *QueuesClient) createOrUpdateAuthorizationRuleHandleResponse(resp *http.Response) (QueuesCreateOrUpdateAuthorizationRuleResponse, error) {
 	result := QueuesCreateOrUpdateAuthorizationRuleResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBAuthorizationRule); err != nil {
-		return QueuesCreateOrUpdateAuthorizationRuleResponse{}, err
+		return QueuesCreateOrUpdateAuthorizationRuleResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -352,7 +360,7 @@ func (client *QueuesClient) getCreateRequest(ctx context.Context, resourceGroupN
 func (client *QueuesClient) getHandleResponse(resp *http.Response) (QueuesGetResponse, error) {
 	result := QueuesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBQueue); err != nil {
-		return QueuesGetResponse{}, err
+		return QueuesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -425,7 +433,7 @@ func (client *QueuesClient) getAuthorizationRuleCreateRequest(ctx context.Contex
 func (client *QueuesClient) getAuthorizationRuleHandleResponse(resp *http.Response) (QueuesGetAuthorizationRuleResponse, error) {
 	result := QueuesGetAuthorizationRuleResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBAuthorizationRule); err != nil {
-		return QueuesGetAuthorizationRuleResponse{}, err
+		return QueuesGetAuthorizationRuleResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -491,7 +499,7 @@ func (client *QueuesClient) listAuthorizationRulesCreateRequest(ctx context.Cont
 func (client *QueuesClient) listAuthorizationRulesHandleResponse(resp *http.Response) (QueuesListAuthorizationRulesResponse, error) {
 	result := QueuesListAuthorizationRulesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBAuthorizationRuleListResult); err != nil {
-		return QueuesListAuthorizationRulesResponse{}, err
+		return QueuesListAuthorizationRulesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -559,7 +567,7 @@ func (client *QueuesClient) listByNamespaceCreateRequest(ctx context.Context, re
 func (client *QueuesClient) listByNamespaceHandleResponse(resp *http.Response) (QueuesListByNamespaceResponse, error) {
 	result := QueuesListByNamespaceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBQueueListResult); err != nil {
-		return QueuesListByNamespaceResponse{}, err
+		return QueuesListByNamespaceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -632,7 +640,7 @@ func (client *QueuesClient) listKeysCreateRequest(ctx context.Context, resourceG
 func (client *QueuesClient) listKeysHandleResponse(resp *http.Response) (QueuesListKeysResponse, error) {
 	result := QueuesListKeysResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
-		return QueuesListKeysResponse{}, err
+		return QueuesListKeysResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -705,7 +713,7 @@ func (client *QueuesClient) regenerateKeysCreateRequest(ctx context.Context, res
 func (client *QueuesClient) regenerateKeysHandleResponse(resp *http.Response) (QueuesRegenerateKeysResponse, error) {
 	result := QueuesRegenerateKeysResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
-		return QueuesRegenerateKeysResponse{}, err
+		return QueuesRegenerateKeysResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -11,14 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // ServerCommunicationLinksClient contains the methods for the ServerCommunicationLinks group.
@@ -30,8 +30,15 @@ type ServerCommunicationLinksClient struct {
 }
 
 // NewServerCommunicationLinksClient creates a new instance of ServerCommunicationLinksClient with the specified values.
-func NewServerCommunicationLinksClient(con *arm.Connection, subscriptionID string) *ServerCommunicationLinksClient {
-	return &ServerCommunicationLinksClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewServerCommunicationLinksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServerCommunicationLinksClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ServerCommunicationLinksClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Creates a server communication link.
@@ -222,7 +229,7 @@ func (client *ServerCommunicationLinksClient) getCreateRequest(ctx context.Conte
 func (client *ServerCommunicationLinksClient) getHandleResponse(resp *http.Response) (ServerCommunicationLinksGetResponse, error) {
 	result := ServerCommunicationLinksGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerCommunicationLink); err != nil {
-		return ServerCommunicationLinksGetResponse{}, err
+		return ServerCommunicationLinksGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -286,7 +293,7 @@ func (client *ServerCommunicationLinksClient) listByServerCreateRequest(ctx cont
 func (client *ServerCommunicationLinksClient) listByServerHandleResponse(resp *http.Response) (ServerCommunicationLinksListByServerResponse, error) {
 	result := ServerCommunicationLinksListByServerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerCommunicationLinkListResult); err != nil {
-		return ServerCommunicationLinksListByServerResponse{}, err
+		return ServerCommunicationLinksListByServerResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -11,11 +11,12 @@ package armweb
 import (
 	"context"
 	"fmt"
-	"net/http"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
 )
 
 // CertificateRegistrationProviderClient contains the methods for the CertificateRegistrationProvider group.
@@ -26,8 +27,15 @@ type CertificateRegistrationProviderClient struct {
 }
 
 // NewCertificateRegistrationProviderClient creates a new instance of CertificateRegistrationProviderClient with the specified values.
-func NewCertificateRegistrationProviderClient(con *arm.Connection) *CertificateRegistrationProviderClient {
-	return &CertificateRegistrationProviderClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewCertificateRegistrationProviderClient(credential azcore.TokenCredential, options *arm.ClientOptions) *CertificateRegistrationProviderClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &CertificateRegistrationProviderClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // ListOperations - Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource provider
@@ -62,7 +70,7 @@ func (client *CertificateRegistrationProviderClient) listOperationsCreateRequest
 func (client *CertificateRegistrationProviderClient) listOperationsHandleResponse(resp *http.Response) (CertificateRegistrationProviderListOperationsResponse, error) {
 	result := CertificateRegistrationProviderListOperationsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CsmOperationCollection); err != nil {
-		return CertificateRegistrationProviderListOperationsResponse{}, err
+		return CertificateRegistrationProviderListOperationsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

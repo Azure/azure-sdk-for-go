@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // FieldsClient contains the methods for the Fields group.
@@ -30,8 +31,15 @@ type FieldsClient struct {
 }
 
 // NewFieldsClient creates a new instance of FieldsClient with the specified values.
-func NewFieldsClient(con *arm.Connection, subscriptionID string) *FieldsClient {
-	return &FieldsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewFieldsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *FieldsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &FieldsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // ListByType - Retrieve a list of fields of a given type identified by module name.
@@ -89,7 +97,7 @@ func (client *FieldsClient) listByTypeCreateRequest(ctx context.Context, resourc
 func (client *FieldsClient) listByTypeHandleResponse(resp *http.Response) (FieldsListByTypeResponse, error) {
 	result := FieldsListByTypeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TypeFieldListResult); err != nil {
-		return FieldsListByTypeResponse{}, err
+		return FieldsListByTypeResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

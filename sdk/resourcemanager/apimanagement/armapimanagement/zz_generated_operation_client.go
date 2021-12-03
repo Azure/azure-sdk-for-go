@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // OperationClient contains the methods for the Operation group.
@@ -31,8 +32,15 @@ type OperationClient struct {
 }
 
 // NewOperationClient creates a new instance of OperationClient with the specified values.
-func NewOperationClient(con *arm.Connection, subscriptionID string) *OperationClient {
-	return &OperationClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewOperationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *OperationClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &OperationClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // ListByTags - Lists a collection of operations associated with tags.
@@ -85,7 +93,7 @@ func (client *OperationClient) listByTagsCreateRequest(ctx context.Context, reso
 	if options != nil && options.IncludeNotTaggedOperations != nil {
 		reqQP.Set("includeNotTaggedOperations", strconv.FormatBool(*options.IncludeNotTaggedOperations))
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -95,7 +103,7 @@ func (client *OperationClient) listByTagsCreateRequest(ctx context.Context, reso
 func (client *OperationClient) listByTagsHandleResponse(resp *http.Response) (OperationListByTagsResponse, error) {
 	result := OperationListByTagsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagResourceCollection); err != nil {
-		return OperationListByTagsResponse{}, err
+		return OperationListByTagsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

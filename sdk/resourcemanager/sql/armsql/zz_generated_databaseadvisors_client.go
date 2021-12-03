@@ -11,13 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // DatabaseAdvisorsClient contains the methods for the DatabaseAdvisors group.
@@ -29,8 +30,15 @@ type DatabaseAdvisorsClient struct {
 }
 
 // NewDatabaseAdvisorsClient creates a new instance of DatabaseAdvisorsClient with the specified values.
-func NewDatabaseAdvisorsClient(con *arm.Connection, subscriptionID string) *DatabaseAdvisorsClient {
-	return &DatabaseAdvisorsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewDatabaseAdvisorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DatabaseAdvisorsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &DatabaseAdvisorsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Gets a database advisor.
@@ -88,7 +96,7 @@ func (client *DatabaseAdvisorsClient) getCreateRequest(ctx context.Context, reso
 func (client *DatabaseAdvisorsClient) getHandleResponse(resp *http.Response) (DatabaseAdvisorsGetResponse, error) {
 	result := DatabaseAdvisorsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Advisor); err != nil {
-		return DatabaseAdvisorsGetResponse{}, err
+		return DatabaseAdvisorsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -159,7 +167,7 @@ func (client *DatabaseAdvisorsClient) listByDatabaseCreateRequest(ctx context.Co
 func (client *DatabaseAdvisorsClient) listByDatabaseHandleResponse(resp *http.Response) (DatabaseAdvisorsListByDatabaseResponse, error) {
 	result := DatabaseAdvisorsListByDatabaseResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AdvisorArray); err != nil {
-		return DatabaseAdvisorsListByDatabaseResponse{}, err
+		return DatabaseAdvisorsListByDatabaseResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -231,7 +239,7 @@ func (client *DatabaseAdvisorsClient) updateCreateRequest(ctx context.Context, r
 func (client *DatabaseAdvisorsClient) updateHandleResponse(resp *http.Response) (DatabaseAdvisorsUpdateResponse, error) {
 	result := DatabaseAdvisorsUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Advisor); err != nil {
-		return DatabaseAdvisorsUpdateResponse{}, err
+		return DatabaseAdvisorsUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

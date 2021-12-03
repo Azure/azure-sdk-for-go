@@ -9,7 +9,7 @@
 
 package insightsapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/appinsights/mgmt/2020-02-02-preview/insights/insightsapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/appinsights/mgmt/2021-11-01-preview/insights/insightsapi"
 
 type APIKeysClientAPI = original.APIKeysClientAPI
 type AnalyticsItemsClientAPI = original.AnalyticsItemsClientAPI
@@ -22,10 +22,12 @@ type ComponentQuotaStatusClientAPI = original.ComponentQuotaStatusClientAPI
 type ComponentsClientAPI = original.ComponentsClientAPI
 type ExportConfigurationsClientAPI = original.ExportConfigurationsClientAPI
 type FavoritesClientAPI = original.FavoritesClientAPI
+type LiveTokenClientAPI = original.LiveTokenClientAPI
 type MyWorkbooksClientAPI = original.MyWorkbooksClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type ProactiveDetectionConfigurationsClientAPI = original.ProactiveDetectionConfigurationsClientAPI
 type WebTestLocationsClientAPI = original.WebTestLocationsClientAPI
 type WebTestsClientAPI = original.WebTestsClientAPI
 type WorkItemConfigurationsClientAPI = original.WorkItemConfigurationsClientAPI
+type WorkbookTemplatesClientAPI = original.WorkbookTemplatesClientAPI
 type WorkbooksClientAPI = original.WorkbooksClientAPI

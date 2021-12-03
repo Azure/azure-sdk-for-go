@@ -44,7 +44,6 @@ stages:
       - template: ../steps/build-test.yml
         parameters:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
-          GoWorkspace: $(GO_WORKSPACE_PATH)
           Image: $(vm.image)
           GoVersion: $(go.version)
 
@@ -66,7 +65,6 @@ stages:
       - template: ../steps/analyze.yml
         parameters:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
-          GoWorkspace: $(GO_WORKSPACE_PATH)
           LintVersion: $(GoLintCLIVersion)
 
 # Below stage won't work until the release stage is added/necessary.

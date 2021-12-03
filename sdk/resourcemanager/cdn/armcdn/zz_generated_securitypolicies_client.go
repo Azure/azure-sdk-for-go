@@ -12,6 +12,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -30,8 +31,15 @@ type SecurityPoliciesClient struct {
 }
 
 // NewSecurityPoliciesClient creates a new instance of SecurityPoliciesClient with the specified values.
-func NewSecurityPoliciesClient(con *arm.Connection, subscriptionID string) *SecurityPoliciesClient {
-	return &SecurityPoliciesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewSecurityPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SecurityPoliciesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &SecurityPoliciesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreate - Creates a new security policy within the specified profile.
@@ -245,7 +253,7 @@ func (client *SecurityPoliciesClient) getCreateRequest(ctx context.Context, reso
 func (client *SecurityPoliciesClient) getHandleResponse(resp *http.Response) (SecurityPoliciesGetResponse, error) {
 	result := SecurityPoliciesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityPolicy); err != nil {
-		return SecurityPoliciesGetResponse{}, err
+		return SecurityPoliciesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -307,7 +315,7 @@ func (client *SecurityPoliciesClient) listByProfileCreateRequest(ctx context.Con
 func (client *SecurityPoliciesClient) listByProfileHandleResponse(resp *http.Response) (SecurityPoliciesListByProfileResponse, error) {
 	result := SecurityPoliciesListByProfileResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityPolicyListResult); err != nil {
-		return SecurityPoliciesListByProfileResponse{}, err
+		return SecurityPoliciesListByProfileResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

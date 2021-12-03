@@ -6,188 +6,60 @@ package azservicebus
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
-	"os"
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/conn"
 	"github.com/stretchr/testify/require"
 )
 
-func TestAdminClient_UsingIdentity(t *testing.T) {
-	// test with azure identity support
-	ns := os.Getenv("SERVICEBUS_ENDPOINT")
-	envCred, err := azidentity.NewEnvironmentCredential(nil)
-
-	if err != nil || ns == "" {
-		t.Skip("Azure Identity compatible credentials not configured")
-	}
-
-	adminClient, err := NewAdminClient(ns, envCred, nil)
-	require.NoError(t, err)
-
-	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
-	props, err := adminClient.CreateQueue(context.Background(), queueName)
-	require.NoError(t, err)
-	require.EqualValues(t, queueName, props.Name)
-
-	defer func() {
-		_, err := adminClient.DeleteQueue(context.Background(), queueName)
-		require.NoError(t, err)
-	}()
-}
-
-func TestAdminClient_QueueWithMaxValues(t *testing.T) {
-	adminClient, err := NewAdminClientWithConnectionString(getConnectionString(t), nil)
-	require.NoError(t, err)
-
-	es := EntityStatusReceiveDisabled
-
-	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
-
-	_, err = adminClient.CreateQueueWithProperties(context.Background(), &QueueProperties{
-		Name:         queueName,
-		LockDuration: toDurationPtr(45 * time.Second),
-		// when you enable partitioning Service Bus will automatically create 16 partitions, each with the size
-		// of MaxSizeInMegabytes. This means when we retrieve this queue we'll get 16*4096 as the size (ie: 64GB)
-		EnablePartitioning:                  to.BoolPtr(true),
-		MaxSizeInMegabytes:                  to.Int32Ptr(4096),
-		RequiresDuplicateDetection:          to.BoolPtr(true),
-		RequiresSession:                     to.BoolPtr(true),
-		DefaultMessageTimeToLive:            toDurationPtr(time.Duration(1<<63 - 1)),
-		DeadLetteringOnMessageExpiration:    to.BoolPtr(true),
-		DuplicateDetectionHistoryTimeWindow: toDurationPtr(4 * time.Hour),
-		MaxDeliveryCount:                    to.Int32Ptr(100),
-		EnableBatchedOperations:             to.BoolPtr(false),
-		Status:                              &es,
-		AutoDeleteOnIdle:                    toDurationPtr(time.Duration(1<<63 - 1)),
-	})
-	require.NoError(t, err)
-
-	defer func() {
-		_, err := adminClient.DeleteQueue(context.Background(), queueName)
-		require.NoError(t, err)
-	}()
-
-	props, err := adminClient.GetQueue(context.Background(), queueName)
-	require.NoError(t, err)
-
-	require.EqualValues(t, &QueueProperties{
-		Name:         queueName,
-		LockDuration: toDurationPtr(45 * time.Second),
-		// ie: this response was from a partitioned queue so the size is the original max size * # of partitions
-		EnablePartitioning:                  to.BoolPtr(true),
-		MaxSizeInMegabytes:                  to.Int32Ptr(16 * 4096),
-		RequiresDuplicateDetection:          to.BoolPtr(true),
-		RequiresSession:                     to.BoolPtr(true),
-		DefaultMessageTimeToLive:            toDurationPtr(time.Duration(1<<63 - 1)),
-		DeadLetteringOnMessageExpiration:    to.BoolPtr(true),
-		DuplicateDetectionHistoryTimeWindow: toDurationPtr(4 * time.Hour),
-		MaxDeliveryCount:                    to.Int32Ptr(100),
-		EnableBatchedOperations:             to.BoolPtr(false),
-		Status:                              &es,
-		AutoDeleteOnIdle:                    toDurationPtr(time.Duration(1<<63 - 1)),
-	}, props)
-}
-
-func TestAdminClient_Queue(t *testing.T) {
-	adminClient, err := NewAdminClientWithConnectionString(getConnectionString(t), nil)
-	require.NoError(t, err)
-
-	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
-
-	es := EntityStatusReceiveDisabled
-	propsFromCreate, err := adminClient.CreateQueueWithProperties(context.Background(), &QueueProperties{
-		Name:         queueName,
-		LockDuration: toDurationPtr(45 * time.Second),
-		// when you enable partitioning Service Bus will automatically create 16 partitions, each with the size
-		// of MaxSizeInMegabytes. This means when we retrieve this queue we'll get 16*4096 as the size (ie: 64GB)
-		EnablePartitioning:                  to.BoolPtr(true),
-		MaxSizeInMegabytes:                  to.Int32Ptr(4096),
-		RequiresDuplicateDetection:          to.BoolPtr(true),
-		RequiresSession:                     to.BoolPtr(true),
-		DefaultMessageTimeToLive:            toDurationPtr(time.Hour * 6),
-		DeadLetteringOnMessageExpiration:    to.BoolPtr(true),
-		DuplicateDetectionHistoryTimeWindow: toDurationPtr(4 * time.Hour),
-		MaxDeliveryCount:                    to.Int32Ptr(100),
-		EnableBatchedOperations:             to.BoolPtr(false),
-		Status:                              &es,
-		AutoDeleteOnIdle:                    toDurationPtr(10 * time.Minute),
-	})
-	require.NoError(t, err)
-
-	defer func() {
-		_, err := adminClient.DeleteQueue(context.Background(), queueName)
-		require.NoError(t, err)
-	}()
-
-	require.EqualValues(t, &QueueProperties{
-		Name:         queueName,
-		LockDuration: toDurationPtr(45 * time.Second),
-		// ie: this response was from a partitioned queue so the size is the original max size * # of partitions
-		EnablePartitioning:                  to.BoolPtr(true),
-		MaxSizeInMegabytes:                  to.Int32Ptr(16 * 4096),
-		RequiresDuplicateDetection:          to.BoolPtr(true),
-		RequiresSession:                     to.BoolPtr(true),
-		DefaultMessageTimeToLive:            toDurationPtr(time.Hour * 6),
-		DeadLetteringOnMessageExpiration:    to.BoolPtr(true),
-		DuplicateDetectionHistoryTimeWindow: toDurationPtr(4 * time.Hour),
-		MaxDeliveryCount:                    to.Int32Ptr(100),
-		EnableBatchedOperations:             to.BoolPtr(false),
-		Status:                              &es,
-		AutoDeleteOnIdle:                    toDurationPtr(10 * time.Minute),
-	}, propsFromCreate)
-
-	propsFromGet, err := adminClient.GetQueue(context.Background(), queueName)
-	require.NoError(t, err)
-
-	require.EqualValues(t, propsFromGet, propsFromCreate)
-}
-
 func TestAdminClient_Queue_Forwarding(t *testing.T) {
-	adminClient, err := NewAdminClientWithConnectionString(getConnectionString(t), nil)
+	cs := test.GetConnectionString(t)
+	adminClient, err := admin.NewClientFromConnectionString(cs, nil)
 	require.NoError(t, err)
 
 	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
 	forwardToQueueName := fmt.Sprintf("queue-fwd-%X", time.Now().UnixNano())
 
-	_, err = adminClient.CreateQueue(context.Background(), forwardToQueueName)
+	_, err = adminClient.CreateQueue(context.Background(), forwardToQueueName, nil, nil)
 	require.NoError(t, err)
 
 	defer func() {
-		_, err := adminClient.DeleteQueue(context.Background(), forwardToQueueName)
+		_, err := adminClient.DeleteQueue(context.Background(), forwardToQueueName, nil)
 		require.NoError(t, err)
 	}()
 
-	formatted := fmt.Sprintf("%s%s", adminClient.em.Host, forwardToQueueName)
+	parsed, err := conn.ParsedConnectionFromStr(cs)
+	require.NoError(t, err)
 
-	propsFromCreate, err := adminClient.CreateQueueWithProperties(context.Background(), &QueueProperties{
-		Name:                          queueName,
+	formatted := fmt.Sprintf("%s%s", fmt.Sprintf("https://%s/", parsed.Namespace), forwardToQueueName)
+
+	createResp, err := adminClient.CreateQueue(context.Background(), queueName, &admin.QueueProperties{
 		ForwardTo:                     &formatted,
 		ForwardDeadLetteredMessagesTo: &formatted,
-	})
+	}, nil)
 
 	require.NoError(t, err)
 	defer func() {
-		_, err := adminClient.DeleteQueue(context.Background(), queueName)
+		_, err := adminClient.DeleteQueue(context.Background(), queueName, nil)
 		require.NoError(t, err)
 	}()
 
-	require.EqualValues(t, formatted, *propsFromCreate.ForwardTo)
-	require.EqualValues(t, formatted, *propsFromCreate.ForwardDeadLetteredMessagesTo)
+	require.EqualValues(t, formatted, *createResp.ForwardTo)
+	require.EqualValues(t, formatted, *createResp.ForwardDeadLetteredMessagesTo)
 
-	propsFromGet, err := adminClient.GetQueue(context.Background(), queueName)
+	getResp, err := adminClient.GetQueue(context.Background(), queueName, nil)
 
 	require.NoError(t, err)
-	require.EqualValues(t, propsFromCreate, propsFromGet)
+	require.EqualValues(t, createResp.QueueProperties, getResp.QueueProperties)
 
-	client, err := NewClientFromConnectionString(getConnectionString(t), nil)
+	client, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
 	require.NoError(t, err)
 
-	sender, err := client.NewSender(queueName)
+	sender, err := client.NewSender(queueName, nil)
 	require.NoError(t, err)
 
 	err = sender.SendMessage(context.Background(), &Message{
@@ -198,83 +70,142 @@ func TestAdminClient_Queue_Forwarding(t *testing.T) {
 	receiver, err := client.NewReceiverForQueue(forwardToQueueName, nil)
 	require.NoError(t, err)
 
-	forwardedMessage, err := receiver.ReceiveMessage(context.Background(), nil)
+	forwardedMessage, err := receiver.receiveMessage(context.Background(), nil)
 	require.NoError(t, err)
 
-	require.EqualValues(t, "this message will be auto-forwarded", string(forwardedMessage.Body))
+	body, err := forwardedMessage.Body()
+	require.NoError(t, err)
+	require.EqualValues(t, "this message will be auto-forwarded", string(body))
 }
 
-func TestAdminClient_deserializeATOMQueueEnvelope(t *testing.T) {
-	xmlBody, err := ioutil.ReadFile("testdata/queue_create_response.xml")
+func TestAdminClient_GetQueueRuntimeProperties(t *testing.T) {
+	adminClient, err := admin.NewClientFromConnectionString(test.GetConnectionString(t), nil)
 	require.NoError(t, err)
 
-	queueProps, err := deserializeQueueEnvelope("myqueuename", xmlBody)
+	client, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
 	require.NoError(t, err)
-	require.NotNil(t, queueProps)
+	defer client.Close(context.Background())
 
-	es := EntityStatusReceiveDisabled
+	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
+	_, err = adminClient.CreateQueue(context.Background(), queueName, nil, nil)
+	require.NoError(t, err)
 
-	require.EqualValues(t, &QueueProperties{
-		AutoDeleteOnIdle:                    toDurationPtr(10 * time.Minute),
-		DeadLetteringOnMessageExpiration:    to.BoolPtr(true),
-		DefaultMessageTimeToLive:            toDurationPtr(time.Hour * 6),
-		DuplicateDetectionHistoryTimeWindow: toDurationPtr(4 * time.Hour),
-		EnableBatchedOperations:             to.BoolPtr(false),
-		EnablePartitioning:                  to.BoolPtr(true),
-		LockDuration:                        toDurationPtr(45 * time.Second),
-		MaxDeliveryCount:                    to.Int32Ptr(100),
-		MaxSizeInMegabytes:                  to.Int32Ptr(16 * 4096),
-		Name:                                "myqueuename",
-		RequiresDuplicateDetection:          to.BoolPtr(true),
-		RequiresSession:                     to.BoolPtr(true),
-		Status:                              &es,
-	}, queueProps)
+	defer deleteQueue(t, adminClient, queueName)
+
+	sender, err := client.NewSender(queueName, nil)
+	require.NoError(t, err)
+
+	for i := 0; i < 3; i++ {
+		err = sender.SendMessage(context.Background(), &Message{
+			Body: []byte("hello"),
+		})
+		require.NoError(t, err)
+	}
+
+	sequenceNumbers, err := sender.ScheduleMessages(context.Background(), []*Message{
+		{Body: []byte("hello")},
+	}, time.Now().Add(2*time.Hour))
+	require.NoError(t, err)
+	require.NotEmpty(t, sequenceNumbers)
+
+	receiver, err := client.NewReceiverForQueue(queueName, nil)
+	require.NoError(t, err)
+
+	messages, err := receiver.ReceiveMessages(context.Background(), 2, nil)
+	require.NoError(t, err)
+
+	require.NoError(t, receiver.DeadLetterMessage(context.Background(), messages[0], nil))
+
+	props, err := adminClient.GetQueueRuntimeProperties(context.Background(), queueName, nil)
+	require.NoError(t, err)
+
+	require.EqualValues(t, 4, props.TotalMessageCount)
+
+	require.EqualValues(t, 2, props.ActiveMessageCount)
+	require.EqualValues(t, 1, props.DeadLetterMessageCount)
+	require.EqualValues(t, 1, props.ScheduledMessageCount)
+	require.EqualValues(t, 0, props.TransferDeadLetterMessageCount)
+	require.EqualValues(t, 0, props.TransferMessageCount)
+
+	require.Greater(t, props.SizeInBytes, int64(0))
+
+	require.False(t, props.CreatedAt.IsZero())
+	require.False(t, props.UpdatedAt.IsZero())
+	require.False(t, props.AccessedAt.IsZero())
 }
 
-func TestAdminClient_DurationToStringPtr(t *testing.T) {
-	// The actual value max is TimeSpan.Max so we just assume that's what the user wants if they specify our time.Duration value
-	require.EqualValues(t, "P10675199DT2H48M5.4775807S", utils.DurationTo8601Seconds(utils.MaxTimeDuration), "Max time.Duration gets converted to TimeSpan.Max")
+func TestAdminClient_TopicAndSubscriptionRuntimeProperties(t *testing.T) {
+	adminClient, err := admin.NewClientFromConnectionString(test.GetConnectionString(t), nil)
+	require.NoError(t, err)
 
-	require.EqualValues(t, "PT0M1S", utils.DurationTo8601Seconds(time.Second))
-	require.EqualValues(t, "PT1M0S", utils.DurationTo8601Seconds(time.Minute))
-	require.EqualValues(t, "PT1M1S", utils.DurationTo8601Seconds(time.Minute+time.Second))
-	require.EqualValues(t, "PT60M0S", utils.DurationTo8601Seconds(time.Hour))
-	require.EqualValues(t, "PT61M1S", utils.DurationTo8601Seconds(time.Hour+time.Minute+time.Second))
+	client, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
+	require.NoError(t, err)
+
+	topicName := fmt.Sprintf("topic-%X", time.Now().UnixNano())
+	subscriptionName := fmt.Sprintf("sub-%X", time.Now().UnixNano())
+
+	_, err = adminClient.CreateTopic(context.Background(), topicName, nil, nil)
+	require.NoError(t, err)
+
+	addSubResp, err := adminClient.CreateSubscription(context.Background(), topicName, subscriptionName, nil, nil)
+	require.NoError(t, err)
+	require.NotNil(t, addSubResp)
+	require.EqualValues(t, 10, *addSubResp.MaxDeliveryCount)
+
+	defer deleteSubscription(t, adminClient, topicName, subscriptionName)
+
+	sender, err := client.NewSender(topicName, nil)
+	require.NoError(t, err)
+
+	// trigger some stats
+
+	//  Scheduled messages are accounted for in the topic stats.
+	_, err = sender.ScheduleMessages(context.Background(), []*Message{
+		{Body: []byte("hello")},
+	}, time.Now().Add(2*time.Hour))
+	require.NoError(t, err)
+
+	// validate the topic runtime properties
+	getRuntimeResp, err := adminClient.GetTopicRuntimeProperties(context.Background(), topicName, nil)
+	require.NoError(t, err)
+
+	require.EqualValues(t, 1, getRuntimeResp.SubscriptionCount)
+	require.False(t, getRuntimeResp.CreatedAt.IsZero())
+	require.False(t, getRuntimeResp.UpdatedAt.IsZero())
+	require.False(t, getRuntimeResp.AccessedAt.IsZero())
+
+	require.Greater(t, getRuntimeResp.SizeInBytes, int64(0))
+	require.EqualValues(t, int32(1), getRuntimeResp.ScheduledMessageCount)
+
+	// validate subscription runtime properties
+	getSubResp, err := adminClient.GetSubscriptionRuntimeProperties(context.Background(), topicName, subscriptionName, nil)
+	require.NoError(t, err)
+
+	require.EqualValues(t, 0, getSubResp.ActiveMessageCount)
+	require.False(t, getSubResp.CreatedAt.IsZero())
+	require.False(t, getSubResp.UpdatedAt.IsZero())
+	require.False(t, getSubResp.AccessedAt.IsZero())
 }
 
-func TestAdminClient_ISO8601StringToDuration(t *testing.T) {
-	str := "PT10M1S"
-	duration, err := utils.ISO8601StringToDuration(&str)
+func TestAdminClient_StringToTime(t *testing.T) {
+	tm, err := atom.StringToTime("2021-11-22T23:07:33.08708Z")
+	require.False(t, tm.IsZero())
 	require.NoError(t, err)
-	require.EqualValues(t, (10*time.Minute)+time.Second, *duration)
 
-	duration, err = utils.ISO8601StringToDuration(nil)
-	require.NoError(t, err)
-	require.Nil(t, duration)
+	// You'll see this uninitialized timestamp when you look at the response from a PUT request.
+	// It's the reason we can't use the much simpler method of just declaring a field as  time.Time in the various
+	// <Entity>Description structs.
+	// We don't even return AccessedTime in in that context so any value will be fine.
+	tm, err = atom.StringToTime("0001-01-01T00:00:00")
+	require.True(t, tm.IsZero())
+	require.Nil(t, err)
 
-	str = "PT1S"
-	duration, err = utils.ISO8601StringToDuration(&str)
-	require.NoError(t, err)
-	require.EqualValues(t, time.Second, *duration)
+	// and if it's just some ill-f0rmed timestamp we'll just fallback to giving them the zero time.
+	tm, err = atom.StringToTime("Not a timestamp")
+	require.Error(t, err)
+	require.True(t, tm.IsZero())
 
-	str = "PT1M"
-	duration, err = utils.ISO8601StringToDuration(&str)
-	require.NoError(t, err)
-	require.EqualValues(t, time.Minute, *duration)
-
-	// this is the .NET timespan max
-	str = "P10675199DT2H48M5.4775807S"
-	duration, err = utils.ISO8601StringToDuration(&str)
-	require.NoError(t, err)
-	require.EqualValues(t, utils.MaxTimeDuration, *duration)
-
-	// this is the Java equivalent
-	str = "PT256204778H48M5.4775807S"
-	duration, err = utils.ISO8601StringToDuration(&str)
-	require.NoError(t, err)
-	require.EqualValues(t, utils.MaxTimeDuration, *duration)
-}
-
-func toDurationPtr(d time.Duration) *time.Duration {
-	return &d
+	tm, err = atom.StringToTime("")
+	require.Error(t, err)
+	require.True(t, tm.IsZero())
 }

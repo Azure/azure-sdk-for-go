@@ -16,7 +16,7 @@ type DatabaseResponse struct {
 	Response
 }
 
-func newDatabaseResponse(resp *http.Response, database *Database) (DatabaseResponse, error) {
+func newDatabaseResponse(resp *http.Response) (DatabaseResponse, error) {
 	response := DatabaseResponse{
 		Response: newResponse(resp),
 	}
@@ -26,6 +26,5 @@ func newDatabaseResponse(resp *http.Response, database *Database) (DatabaseRespo
 		return response, err
 	}
 	response.DatabaseProperties = properties
-	response.DatabaseProperties.Database = database
 	return response, nil
 }

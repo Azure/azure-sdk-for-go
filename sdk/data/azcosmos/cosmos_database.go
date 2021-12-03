@@ -8,38 +8,43 @@ import (
 	"errors"
 )
 
-// A Database lets you perform read, update, change throughput, and delete database operations.
-type Database struct {
+// A DatabaseClient lets you perform read, update, change throughput, and delete database operations.
+type DatabaseClient struct {
 	// The Id of the Cosmos database
-	Id string
+	id string
 	// The client associated with the Cosmos database
 	client *Client
 	// The resource link
 	link string
 }
 
-func newDatabase(id string, client *Client) *Database {
-	return &Database{
-		Id:     id,
+func newDatabase(id string, client *Client) (*DatabaseClient, error) {
+	return &DatabaseClient{
+		id:     id,
 		client: client,
-		link:   createLink("", pathSegmentDatabase, id)}
+		link:   createLink("", pathSegmentDatabase, id)}, nil
 }
 
-// GetContainer returns a Container object for the container.
+// ID returns the identifier of the Cosmos database.
+func (db *DatabaseClient) ID() string {
+	return db.id
+}
+
+// NewContainer returns a struct that represents the container and allows container level operations.
 // id - The id of the container.
-func (db *Database) GetContainer(id string) (*Container, error) {
+func (db *DatabaseClient) NewContainer(id string) (*ContainerClient, error) {
 	if id == "" {
 		return nil, errors.New("id is required")
 	}
 
-	return newContainer(id, db), nil
+	return newContainer(id, db)
 }
 
 // CreateContainer creates a container in the Cosmos database.
 // ctx - The context for the request.
 // containerProperties - The properties for the container.
 // o - Options for the create container operation.
-func (db *Database) CreateContainer(
+func (db *DatabaseClient) CreateContainer(
 	ctx context.Context,
 	containerProperties ContainerProperties,
 	o *CreateContainerOptions) (ContainerResponse, error) {
@@ -47,7 +52,7 @@ func (db *Database) CreateContainer(
 		o = &CreateContainerOptions{}
 	}
 
-	operationContext := cosmosOperationContext{
+	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeCollection,
 		resourceAddress: db.link,
 	}
@@ -57,12 +62,7 @@ func (db *Database) CreateContainer(
 		return ContainerResponse{}, err
 	}
 
-	container, err := db.GetContainer(containerProperties.Id)
-	if err != nil {
-		return ContainerResponse{}, err
-	}
-
-	azResponse, err := db.client.connection.sendPostRequest(
+	azResponse, err := db.client.sendPostRequest(
 		path,
 		ctx,
 		containerProperties,
@@ -73,20 +73,20 @@ func (db *Database) CreateContainer(
 		return ContainerResponse{}, err
 	}
 
-	return newContainerResponse(azResponse, container)
+	return newContainerResponse(azResponse)
 }
 
 // Read obtains the information for a Cosmos database.
 // ctx - The context for the request.
 // o - Options for Read operation.
-func (db *Database) Read(
+func (db *DatabaseClient) Read(
 	ctx context.Context,
 	o *ReadDatabaseOptions) (DatabaseResponse, error) {
 	if o == nil {
 		o = &ReadDatabaseOptions{}
 	}
 
-	operationContext := cosmosOperationContext{
+	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeDatabase,
 		resourceAddress: db.link,
 	}
@@ -96,7 +96,7 @@ func (db *Database) Read(
 		return DatabaseResponse{}, err
 	}
 
-	azResponse, err := db.client.connection.sendGetRequest(
+	azResponse, err := db.client.sendGetRequest(
 		path,
 		ctx,
 		operationContext,
@@ -106,13 +106,13 @@ func (db *Database) Read(
 		return DatabaseResponse{}, err
 	}
 
-	return newDatabaseResponse(azResponse, db)
+	return newDatabaseResponse(azResponse)
 }
 
 // ReadThroughput obtains the provisioned throughput information for the database.
 // ctx - The context for the request.
 // o - Options for the operation.
-func (db *Database) ReadThroughput(
+func (db *DatabaseClient) ReadThroughput(
 	ctx context.Context,
 	o *ThroughputOptions) (ThroughputResponse, error) {
 	if o == nil {
@@ -124,7 +124,7 @@ func (db *Database) ReadThroughput(
 		return ThroughputResponse{}, err
 	}
 
-	offers := &cosmosOffers{connection: db.client.connection}
+	offers := &cosmosOffers{client: db.client}
 	return offers.ReadThroughputIfExists(ctx, rid, o)
 }
 
@@ -132,7 +132,7 @@ func (db *Database) ReadThroughput(
 // ctx - The context for the request.
 // throughputProperties - The throughput configuration of the database.
 // o - Options for the operation.
-func (db *Database) ReplaceThroughput(
+func (db *DatabaseClient) ReplaceThroughput(
 	ctx context.Context,
 	throughputProperties ThroughputProperties,
 	o *ThroughputOptions) (ThroughputResponse, error) {
@@ -145,21 +145,21 @@ func (db *Database) ReplaceThroughput(
 		return ThroughputResponse{}, err
 	}
 
-	offers := &cosmosOffers{connection: db.client.connection}
+	offers := &cosmosOffers{client: db.client}
 	return offers.ReadThroughputIfExists(ctx, rid, o)
 }
 
 // Delete a Cosmos database.
 // ctx - The context for the request.
 // o - Options for Read operation.
-func (db *Database) Delete(
+func (db *DatabaseClient) Delete(
 	ctx context.Context,
 	o *DeleteDatabaseOptions) (DatabaseResponse, error) {
 	if o == nil {
 		o = &DeleteDatabaseOptions{}
 	}
 
-	operationContext := cosmosOperationContext{
+	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeDatabase,
 		resourceAddress: db.link,
 	}
@@ -169,7 +169,7 @@ func (db *Database) Delete(
 		return DatabaseResponse{}, err
 	}
 
-	azResponse, err := db.client.connection.sendDeleteRequest(
+	azResponse, err := db.client.sendDeleteRequest(
 		path,
 		ctx,
 		operationContext,
@@ -179,14 +179,14 @@ func (db *Database) Delete(
 		return DatabaseResponse{}, err
 	}
 
-	return newDatabaseResponse(azResponse, db)
+	return newDatabaseResponse(azResponse)
 }
 
-func (db *Database) getRID(ctx context.Context) (string, error) {
+func (db *DatabaseClient) getRID(ctx context.Context) (string, error) {
 	dbResponse, err := db.Read(ctx, nil)
 	if err != nil {
 		return "", err
 	}
 
-	return dbResponse.DatabaseProperties.ResourceId, nil
+	return dbResponse.DatabaseProperties.ResourceID, nil
 }

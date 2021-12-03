@@ -17,6 +17,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
@@ -25,7 +26,7 @@ func TestMain(m *testing.M) {
 	// Initialize
 	if recording.GetRecordMode() == "record" {
 		vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
-		err := recording.AddUriSanitizer("https://fakekvurl.vault.azure.net/", vaultUrl, nil)
+		err := recording.AddURISanitizer("https://fakekvurl.vault.azure.net/", vaultUrl, nil)
 		if err != nil {
 			panic(err)
 		}
@@ -40,10 +41,10 @@ func TestMain(m *testing.M) {
 }
 
 func startTest(t *testing.T) func() {
-	err := recording.StartRecording(t, pathToPackage, nil)
+	err := recording.Start(t, pathToPackage, nil)
 	require.NoError(t, err)
 	return func() {
-		err := recording.StopRecording(t, nil)
+		err := recording.Stop(t, nil)
 		require.NoError(t, err)
 	}
 }
@@ -375,10 +376,12 @@ func TestBackupSecret(t *testing.T) {
 	require.True(t, errors.As(err, &httpErr))
 	require.Equal(t, httpErr.RawResponse().StatusCode, http.StatusNotFound)
 
+	time.Sleep(20 * delay())
+
 	// Poll this operation manually
 	var restoreResp RestoreSecretBackupResponse
 	var i int
-	for i = 0; i < 10; i++ {
+	for i = 0; i < 20; i++ {
 		restoreResp, err = client.RestoreSecretBackup(context.Background(), backupResp.Value, nil)
 		if err == nil {
 			break
@@ -391,4 +394,24 @@ func TestBackupSecret(t *testing.T) {
 	// Now the Secret should be Get-able
 	_, err = client.GetSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
+}
+
+func TestTimeout(t *testing.T) {
+	fakeKVUrl := "https://test-sync-time-dummy.vault.azure.net/"
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	require.NoError(t, err)
+
+	client, err := NewClient(fakeKVUrl, cred, nil)
+	require.NoError(t, err)
+
+	c := context.Background()
+	c, cancelFunc := context.WithTimeout(c, 10*time.Second)
+	defer cancelFunc()
+
+	start := time.Now()
+	_, err = client.GetSecret(c, "nonexistentsecret", nil)
+	require.Error(t, err)
+	require.ErrorIs(t, err, context.DeadlineExceeded)
+	require.Less(t, time.Since(start).Seconds(), 11.0)
+	require.Greater(t, time.Since(start).Seconds(), 9.0)
 }

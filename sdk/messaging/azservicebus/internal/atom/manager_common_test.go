@@ -5,33 +5,30 @@ package atom
 
 import (
 	"context"
+	"errors"
 	"io"
 	"net/http"
 	"strings"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
-func TestConstructAtomPath(t *testing.T) {
-	basePath := constructAtomPath("/something", 1, 2)
-
-	// I'm assuming the ordering is non-deterministic since the underlying values are just a map
-	assert.Truef(t, basePath == "/something?%24skip=1&%24top=2" || basePath == "/something?%24top=2&%24skip=1", "%s wasn't one of our two variations", basePath)
-
-	basePath = constructAtomPath("/something", 0, -1)
-	assert.EqualValues(t, "/something", basePath, "Values <= 0 are ignored")
-
-	basePath = constructAtomPath("/something", -1, 0)
-	assert.EqualValues(t, "/something", basePath, "Values <= 0 are ignored")
-}
-
-// sanity check to make sure my error conforms to azcore's interface
 func TestResponseError(t *testing.T) {
+	// sanity check to make sure my error conforms to azcore's interface
 	var err azcore.HTTPResponse = ResponseError{}
 	require.NotNil(t, err)
+
+	require.EqualValues(t, "this is now the error message: 409", NewResponseError(nil, &http.Response{
+		StatusCode: http.StatusConflict,
+		Status:     "this is now the error message",
+	}).Error())
+
+	require.EqualValues(t, "inner errors message takes precedence", NewResponseError(errors.New("inner errors message takes precedence"), &http.Response{
+		StatusCode: http.StatusConflict,
+		Status:     "going to be ignored",
+	}).Error())
 }
 
 type FakeReader struct {

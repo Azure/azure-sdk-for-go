@@ -11,13 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ManagedDatabaseQueriesClient contains the methods for the ManagedDatabaseQueries group.
@@ -29,8 +30,15 @@ type ManagedDatabaseQueriesClient struct {
 }
 
 // NewManagedDatabaseQueriesClient creates a new instance of ManagedDatabaseQueriesClient with the specified values.
-func NewManagedDatabaseQueriesClient(con *arm.Connection, subscriptionID string) *ManagedDatabaseQueriesClient {
-	return &ManagedDatabaseQueriesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewManagedDatabaseQueriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagedDatabaseQueriesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ManagedDatabaseQueriesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Get query by query id.
@@ -88,7 +96,7 @@ func (client *ManagedDatabaseQueriesClient) getCreateRequest(ctx context.Context
 func (client *ManagedDatabaseQueriesClient) getHandleResponse(resp *http.Response) (ManagedDatabaseQueriesGetResponse, error) {
 	result := ManagedDatabaseQueriesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceQuery); err != nil {
-		return ManagedDatabaseQueriesGetResponse{}, err
+		return ManagedDatabaseQueriesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -166,7 +174,7 @@ func (client *ManagedDatabaseQueriesClient) listByQueryCreateRequest(ctx context
 func (client *ManagedDatabaseQueriesClient) listByQueryHandleResponse(resp *http.Response) (ManagedDatabaseQueriesListByQueryResponse, error) {
 	result := ManagedDatabaseQueriesListByQueryResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceQueryStatistics); err != nil {
-		return ManagedDatabaseQueriesListByQueryResponse{}, err
+		return ManagedDatabaseQueriesListByQueryResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

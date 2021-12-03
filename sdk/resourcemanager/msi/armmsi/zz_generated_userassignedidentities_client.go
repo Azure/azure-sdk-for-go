@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // UserAssignedIdentitiesClient contains the methods for the UserAssignedIdentities group.
@@ -30,8 +31,15 @@ type UserAssignedIdentitiesClient struct {
 }
 
 // NewUserAssignedIdentitiesClient creates a new instance of UserAssignedIdentitiesClient with the specified values.
-func NewUserAssignedIdentitiesClient(con *arm.Connection, subscriptionID string) *UserAssignedIdentitiesClient {
-	return &UserAssignedIdentitiesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewUserAssignedIdentitiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *UserAssignedIdentitiesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &UserAssignedIdentitiesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Create or update an identity in the specified subscription and resource group.
@@ -81,7 +89,7 @@ func (client *UserAssignedIdentitiesClient) createOrUpdateCreateRequest(ctx cont
 func (client *UserAssignedIdentitiesClient) createOrUpdateHandleResponse(resp *http.Response) (UserAssignedIdentitiesCreateOrUpdateResponse, error) {
 	result := UserAssignedIdentitiesCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Identity); err != nil {
-		return UserAssignedIdentitiesCreateOrUpdateResponse{}, err
+		return UserAssignedIdentitiesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -202,7 +210,7 @@ func (client *UserAssignedIdentitiesClient) getCreateRequest(ctx context.Context
 func (client *UserAssignedIdentitiesClient) getHandleResponse(resp *http.Response) (UserAssignedIdentitiesGetResponse, error) {
 	result := UserAssignedIdentitiesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Identity); err != nil {
-		return UserAssignedIdentitiesGetResponse{}, err
+		return UserAssignedIdentitiesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -260,7 +268,7 @@ func (client *UserAssignedIdentitiesClient) listByResourceGroupCreateRequest(ctx
 func (client *UserAssignedIdentitiesClient) listByResourceGroupHandleResponse(resp *http.Response) (UserAssignedIdentitiesListByResourceGroupResponse, error) {
 	result := UserAssignedIdentitiesListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UserAssignedIdentitiesListResult); err != nil {
-		return UserAssignedIdentitiesListByResourceGroupResponse{}, err
+		return UserAssignedIdentitiesListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -314,7 +322,7 @@ func (client *UserAssignedIdentitiesClient) listBySubscriptionCreateRequest(ctx 
 func (client *UserAssignedIdentitiesClient) listBySubscriptionHandleResponse(resp *http.Response) (UserAssignedIdentitiesListBySubscriptionResponse, error) {
 	result := UserAssignedIdentitiesListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UserAssignedIdentitiesListResult); err != nil {
-		return UserAssignedIdentitiesListBySubscriptionResponse{}, err
+		return UserAssignedIdentitiesListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -379,7 +387,7 @@ func (client *UserAssignedIdentitiesClient) updateCreateRequest(ctx context.Cont
 func (client *UserAssignedIdentitiesClient) updateHandleResponse(resp *http.Response) (UserAssignedIdentitiesUpdateResponse, error) {
 	result := UserAssignedIdentitiesUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Identity); err != nil {
-		return UserAssignedIdentitiesUpdateResponse{}, err
+		return UserAssignedIdentitiesUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

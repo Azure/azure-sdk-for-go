@@ -11,14 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // ReplicationLinksClient contains the methods for the ReplicationLinks group.
@@ -30,8 +30,15 @@ type ReplicationLinksClient struct {
 }
 
 // NewReplicationLinksClient creates a new instance of ReplicationLinksClient with the specified values.
-func NewReplicationLinksClient(con *arm.Connection, subscriptionID string) *ReplicationLinksClient {
-	return &ReplicationLinksClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewReplicationLinksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ReplicationLinksClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ReplicationLinksClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Delete - Deletes a database replication link. Cannot be done during failover.
@@ -317,7 +324,7 @@ func (client *ReplicationLinksClient) getCreateRequest(ctx context.Context, reso
 func (client *ReplicationLinksClient) getHandleResponse(resp *http.Response) (ReplicationLinksGetResponse, error) {
 	result := ReplicationLinksGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReplicationLink); err != nil {
-		return ReplicationLinksGetResponse{}, err
+		return ReplicationLinksGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -382,7 +389,7 @@ func (client *ReplicationLinksClient) listByDatabaseCreateRequest(ctx context.Co
 func (client *ReplicationLinksClient) listByDatabaseHandleResponse(resp *http.Response) (ReplicationLinksListByDatabaseResponse, error) {
 	result := ReplicationLinksListByDatabaseResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReplicationLinkListResult); err != nil {
-		return ReplicationLinksListByDatabaseResponse{}, err
+		return ReplicationLinksListByDatabaseResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -443,7 +450,7 @@ func (client *ReplicationLinksClient) listByServerCreateRequest(ctx context.Cont
 func (client *ReplicationLinksClient) listByServerHandleResponse(resp *http.Response) (ReplicationLinksListByServerResponse, error) {
 	result := ReplicationLinksListByServerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReplicationLinkListResult); err != nil {
-		return ReplicationLinksListByServerResponse{}, err
+		return ReplicationLinksListByServerResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

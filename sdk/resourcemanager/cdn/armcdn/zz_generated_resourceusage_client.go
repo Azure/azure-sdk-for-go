@@ -12,7 +12,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -29,8 +31,15 @@ type ResourceUsageClient struct {
 }
 
 // NewResourceUsageClient creates a new instance of ResourceUsageClient with the specified values.
-func NewResourceUsageClient(con *arm.Connection, subscriptionID string) *ResourceUsageClient {
-	return &ResourceUsageClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewResourceUsageClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ResourceUsageClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ResourceUsageClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // List - Check the quota and actual usage of the CDN profiles under the given subscription.
@@ -69,7 +78,7 @@ func (client *ResourceUsageClient) listCreateRequest(ctx context.Context, option
 func (client *ResourceUsageClient) listHandleResponse(resp *http.Response) (ResourceUsageListResponse, error) {
 	result := ResourceUsageListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceUsageListResult); err != nil {
-		return ResourceUsageListResponse{}, err
+		return ResourceUsageListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

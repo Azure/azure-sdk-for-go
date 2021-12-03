@@ -9,16 +9,21 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
 func TestThroughputResponseParsing(t *testing.T) {
 	properties := NewManualThroughputProperties(400)
+
+	etag := azcore.ETag("\"00000000-0000-0000-9b8c-8ea3e19601d7\"")
+
 	properties.offerId = "HFln"
 	properties.offerResourceId = "4SRTANCD3Dw="
-	properties.ETag = "\"00000000-0000-0000-9b8c-8ea3e19601d7\""
-	jsonString, err := json.Marshal(properties)
+	properties.ETag = &etag
+	jsonString, err := json.Marshal(&properties)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -35,8 +40,7 @@ func TestThroughputResponseParsing(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-
-	pl := azruntime.NewPipeline(srv)
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", []policy.Policy{}, []policy.Policy{}, &policy.ClientOptions{Transport: srv})
 	resp, _ := pl.Do(req)
 	parsedResponse, err := newThroughputResponse(resp, nil)
 	if err != nil {
@@ -59,12 +63,12 @@ func TestThroughputResponseParsing(t *testing.T) {
 		t.Fatalf("parsedResponse.ThroughputProperties.offerResourceId is %s, expected %s", parsedResponse.ThroughputProperties.offerResourceId, properties.offerResourceId)
 	}
 
-	if parsedResponse.ThroughputProperties.ETag != properties.ETag {
-		t.Fatalf("parsedResponse.ThroughputProperties.ETag is %s, expected %s", parsedResponse.ThroughputProperties.ETag, properties.ETag)
+	if *parsedResponse.ThroughputProperties.ETag != *properties.ETag {
+		t.Fatalf("parsedResponse.ThroughputProperties.ETag is %s, expected %s", *parsedResponse.ThroughputProperties.ETag, *properties.ETag)
 	}
 
-	if parsedResponse.ActivityId != "someActivityId" {
-		t.Errorf("Expected ActivityId to be %s, but got %s", "someActivityId", parsedResponse.ActivityId)
+	if parsedResponse.ActivityID != "someActivityId" {
+		t.Errorf("Expected ActivityId to be %s, but got %s", "someActivityId", parsedResponse.ActivityID)
 	}
 
 	if parsedResponse.RequestCharge != 13.42 {
@@ -79,11 +83,12 @@ func TestThroughputResponseParsing(t *testing.T) {
 func TestThroughputResponseParsingWithPreviousRU(t *testing.T) {
 	var queryRequestCharge float32 = 10.0
 
+	etag := azcore.ETag("\"00000000-0000-0000-9b8c-8ea3e19601d7\"")
 	properties := NewManualThroughputProperties(400)
 	properties.offerId = "HFln"
 	properties.offerResourceId = "4SRTANCD3Dw="
-	properties.ETag = "\"00000000-0000-0000-9b8c-8ea3e19601d7\""
-	jsonString, err := json.Marshal(properties)
+	properties.ETag = &etag
+	jsonString, err := json.Marshal(&properties)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -101,7 +106,7 @@ func TestThroughputResponseParsingWithPreviousRU(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	pl := azruntime.NewPipeline(srv)
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", []policy.Policy{}, []policy.Policy{}, &policy.ClientOptions{Transport: srv})
 	resp, _ := pl.Do(req)
 	parsedResponse, err := newThroughputResponse(resp, &queryRequestCharge)
 	if err != nil {
@@ -124,12 +129,12 @@ func TestThroughputResponseParsingWithPreviousRU(t *testing.T) {
 		t.Fatalf("parsedResponse.ThroughputProperties.offerResourceId is %s, expected %s", parsedResponse.ThroughputProperties.offerResourceId, properties.offerResourceId)
 	}
 
-	if parsedResponse.ThroughputProperties.ETag != properties.ETag {
-		t.Fatalf("parsedResponse.ThroughputProperties.ETag is %s, expected %s", parsedResponse.ThroughputProperties.ETag, properties.ETag)
+	if *parsedResponse.ThroughputProperties.ETag != *properties.ETag {
+		t.Fatalf("parsedResponse.ThroughputProperties.ETag is %s, expected %s", *parsedResponse.ThroughputProperties.ETag, *properties.ETag)
 	}
 
-	if parsedResponse.ActivityId != "someActivityId" {
-		t.Errorf("Expected ActivityId to be %s, but got %s", "someActivityId", parsedResponse.ActivityId)
+	if parsedResponse.ActivityID != "someActivityId" {
+		t.Errorf("Expected ActivityId to be %s, but got %s", "someActivityId", parsedResponse.ActivityID)
 	}
 
 	if parsedResponse.RequestCharge != 23.42 {

@@ -1,10 +1,19 @@
-# Guide to migrate from `azure-service-bus-go` to `azservicebus` 0.1.0
+# Guide to migrate from `azure-service-bus-go` to `azservicebus` 0.3.0
 
 This guide is intended to assist in the migration from the pre-release `azure-service-bus-go` package to the latest beta releases (and eventual GA) of the `github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus`.
 
 # Migration benefits
 
 The redesign of the Service Bus SDK offers better integration with Azure Identity, a simpler API surface that allows you to uniformly work with queues, topics, subscriptions and subqueues (for instance: dead letter queues).
+
+# Missing features
+
+NOTE: The `admin.Client`, which allows you to manage queues, topics and subscriptions is currently missing the following features:
+
+- Authorization rules
+- Topic filters/actions
+
+These will be added in the near-term.
 
 ## Simplified API surface
 
@@ -33,7 +42,7 @@ New (using `azservicebus`):
 ```go
 // new code
 
-client, err = azservicebus.NewClientWithConnectionString(connectionString, nil)
+client, err = azservicebus.NewClientFromConnectionString(connectionString, nil)
 ```
 
 ### Sending messages
@@ -42,9 +51,9 @@ Sending is done from a [Sender](https://pkg.go.dev/github.com/Azure/azure-sdk-fo
 works the same for queues or topics:
 
 ```go
-sender, err := client.NewSender(queueOrTopicName)
+sender, err := client.NewSender(queueOrTopicName, nil)
 
-sender.SendMessage(&azservicebus.Message{
+sender.SendMessage(context.TODO(), &azservicebus.Message{
   Body: []byte("hello world"),
 })
 ```
@@ -55,75 +64,49 @@ Sending messages in batches is similar, except that the focus has been moved mor
 towards giving the user full control using the `MessageBatch` type.
 
 ```go
-batch, err := sender.NewMessageBatch(ctx, nil)
+batch, err := sender.NewMessageBatch(context.TODO(), nil)
 
 // can be called multiple times
-added, err := batch.Add(&azservicebus.Message{
-  Body: []byte("hello world")
+err := batch.AddMessage(&azservicebus.Message{
+  Body: []byte("hello world"),
 })
 
-sender.SendMessage(ctx, batch)
+if err != nil {
+  switch err {
+  case azservicebus.ErrMessageTooLarge:
+    // At this point you can do a few things:
+    // 1. Ignore this message
+    // 2. Send this batch (it's full) and create a new batch.
+    //
+    // The batch can still be used after this error if you have
+    // smaller messages you'd still like to add in.
+    fmt.Printf("Failed to add message to batch\n")
+  default:
+    exitOnError("Error while trying to add message to batch", err)
+  }
+}
+
+sender.SendMessageBatch(context.TODO(), batch)
 ```
 
 ### Processing and receiving messages
 
-Receiving has split into two types:
-- the [Processor](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus#Processor), for continuously streaming messages to a user provided callback (similar to `Listen`).
-- the [Receiver](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus#Receiver), for receiving of messages in batches.
+Receiving has been changed to be pull-based, rather than using callbacks. 
 
-The `Processor` replaces the `Listen` functions on the previous Receiver type that could be created from a `Queue` or `Subscription`. It also adds in more robust error handling, which means that previous errors (like a link detaching) do not cause the Processor to exit. 
-
-The Processor will only exit when you call `Close`.
-
-```go
-// NOTE: there is also NewProcessorForSubscription for subscriptions.
-processor, err = client.NewProcessorForQueue(
-  queueName,
-  nil)
-
-handleMessage := func(message *azservicebus.ReceivedMessage) error {
-  log.Printf("Message arrived: %s", message.)
-  processor.CompleteMessage(ctx, message)
-}
-
-handleError := func(err error) {
-  // called whenever errors occur. Note, that unlike the
-  // Listen, errors are automatically recovered.
-}
-
-// blocks until the Processor is closed.
-processor.Start(ctx, handleMessage, handleError, nil)
-
-// close at a time of your choosing
-processor.Close(ctx)
-```
+You can receive messages using the [Receiver](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus#Receiver), for receiving of messages in batches.
 
 ### Receivers
 
-Receivers allow you to request messages in batches, or easily receive a single message. This can be useful
-for programs that need more control over when messages are received and when they are processed.
+Receivers allow you to request messages in batches:
 
 ```go
-receiver, err := client.NewReceiverForQueue(queue)
+receiver, err := client.NewReceiverForQueue(queue, nil)
 // or for a subscription
-receiver, err := client.NewReceiverForSubscription(topicName, subscriptionName)
-```
+receiver, err := client.NewReceiverForSubscription(topicName, subscriptionName, nil)
 
-`ReceiveOne` has been split into two functions to allow for receiving
-multiple messages at a time (`ReceiveMessages`) or a single message (`ReceiveMessage`).
-
-```go
-// new code
-
-// receiving multiple messages at a time, with a configurable timeout.
+// receiving multiple messages at a time. 
 var messages []*azservicebus.ReceivedMessage
-messages, err = receiver.ReceiveMessages(ctx, numMessages, nil)
-
-// receiving a single message time, with a configurable timeout.
-var message *azservicebus.ReceivedMessage
-
-// this is similar to the `ReceiveOne`
-message, err = receiver.ReceiveMessage(ctx, nil)
+messages, err = receiver.ReceiveMessages(context.TODO(), numMessages, nil)
 ```
 
 ### Using dead letter queues
@@ -152,11 +135,11 @@ Now, in `azservicebus`:
 // new code
 
 receiver, err = client.NewReceiverForQueue(
-  queueName,
-  &azservicebus.ReceiverOptions{
-    ReceiveMode: azservicebus.PeekLock,
-    SubQueue:    azservicebus.SubQueueDeadLetter,
-  })
+	queueName,
+	&azservicebus.ReceiverOptions{
+		ReceiveMode: azservicebus.ReceiveModePeekLock,
+		SubQueue:    azservicebus.SubQueueDeadLetter,
+	})
 
 //or
 
@@ -164,7 +147,7 @@ receiver, err = client.NewReceiverForSubscription(
   topicName,
   subscriptionName,
   &azservicebus.ReceiverOptions{
-    ReceiveMode: azservicebus.PeekLock,
+    ReceiveMode: azservicebus.ReceiveModePeekLock,
     SubQueue:    azservicebus.SubQueueDeadLetter,
   })
 ```
@@ -192,14 +175,12 @@ Now, using `azservicebus`:
 ```go
 // new code
 
-// with the Processor
-processor.Start(ctx, func(msg *azservicebus.ReceivedMessage) {
-  processor.CompleteMessage(ctx, msg)
-})
+// with a Receiver
+messages, err := receiver.ReceiveMessages(ctx, 10, nil)
 
-// or with a Receiver
-message, err := receiver.ReceiveMessage(ctx)   // or ReceiveMessages()
-receiver.CompleteMessage(ctx, message)
+for _, m := range messages {
+  err = receiver.CompleteMessage(ctx, message)
+}
 ```
 
 # Azure Identity integration
@@ -213,10 +194,37 @@ credential, err := azidentity.NewDefaultAzureCredential(nil)
 client, err = azservicebus.NewClient("<ex: myservicebus.servicebus.windows.net>", credential, nil)
 ```
 
-# Upcoming features
+# Entity management using admin.Client
 
-Some features that are coming in the next beta:
-- Management of entities (AdministrationClient) within Service Bus.
-- Scheduling and cancellation of messages.
-- Sending and receiving to Service Bus session enabled entities.
+Administration features, like creating queues, topics and subscriptions, has been moved into a dedicated client (admin.Client).
 
+```go
+adminClient, err := admin.NewClientFromConnectionString(connectionString, nil)
+
+// create a queue with default properties
+resp, err := adminClient.CreateQueue(context.TODO(), "queue-name", nil, nil)
+
+// or create a queue and configure some properties
+```
+
+# Receiving with session entities
+
+Entities that use sessions can now be be received from:
+
+```go
+// to get a specific session by ID
+sessionReceiver, err := client.AcceptSessionForQueue(context.TODO(), "queue", "session-id", nil)
+// or client.AcceptSessionForSubscription
+
+// to get the next available session from Service Bus (service-assigned)
+sessionReceiver, err := client.AcceptNextSessionForQueue(context.TODO(), "queue", nil)
+
+// SessionReceiver's are similar to Receiver's with some additional functions:
+
+// managing session state
+sessionData, err := sessionReceiver.GetSessionState(context.TODO())
+err := sessionReceiver.SetSessionState(context.TODO(), []byte("data"))
+
+// renewing the lock associated with the session
+err := sessionReceiver.RenewSessionLock(context.TODO())
+```

@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // UserClient contains the methods for the User group.
@@ -31,8 +32,15 @@ type UserClient struct {
 }
 
 // NewUserClient creates a new instance of UserClient with the specified values.
-func NewUserClient(con *arm.Connection, subscriptionID string) *UserClient {
-	return &UserClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewUserClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *UserClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &UserClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or Updates a user.
@@ -79,7 +87,7 @@ func (client *UserClient) createOrUpdateCreateRequest(ctx context.Context, resou
 	if options != nil && options.Notify != nil {
 		reqQP.Set("notify", strconv.FormatBool(*options.Notify))
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header.Set("If-Match", *options.IfMatch)
@@ -95,7 +103,7 @@ func (client *UserClient) createOrUpdateHandleResponse(resp *http.Response) (Use
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UserContract); err != nil {
-		return UserCreateOrUpdateResponse{}, err
+		return UserCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -160,7 +168,7 @@ func (client *UserClient) deleteCreateRequest(ctx context.Context, resourceGroup
 	if options != nil && options.Notify != nil {
 		reqQP.Set("notify", strconv.FormatBool(*options.Notify))
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	if options != nil && options.AppType != nil {
 		reqQP.Set("appType", string(*options.AppType))
 	}
@@ -224,7 +232,7 @@ func (client *UserClient) generateSsoURLCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -234,7 +242,7 @@ func (client *UserClient) generateSsoURLCreateRequest(ctx context.Context, resou
 func (client *UserClient) generateSsoURLHandleResponse(resp *http.Response) (UserGenerateSsoURLResponse, error) {
 	result := UserGenerateSsoURLResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GenerateSsoURLResult); err != nil {
-		return UserGenerateSsoURLResponse{}, err
+		return UserGenerateSsoURLResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -293,7 +301,7 @@ func (client *UserClient) getCreateRequest(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -306,7 +314,7 @@ func (client *UserClient) getHandleResponse(resp *http.Response) (UserGetRespons
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UserContract); err != nil {
-		return UserGetResponse{}, err
+		return UserGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -362,7 +370,7 @@ func (client *UserClient) getEntityTagCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -421,7 +429,7 @@ func (client *UserClient) getSharedAccessTokenCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -431,7 +439,7 @@ func (client *UserClient) getSharedAccessTokenCreateRequest(ctx context.Context,
 func (client *UserClient) getSharedAccessTokenHandleResponse(resp *http.Response) (UserGetSharedAccessTokenResponse, error) {
 	result := UserGetSharedAccessTokenResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UserTokenResult); err != nil {
-		return UserGetSharedAccessTokenResponse{}, err
+		return UserGetSharedAccessTokenResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -495,7 +503,7 @@ func (client *UserClient) listByServiceCreateRequest(ctx context.Context, resour
 	if options != nil && options.ExpandGroups != nil {
 		reqQP.Set("expandGroups", strconv.FormatBool(*options.ExpandGroups))
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -505,7 +513,7 @@ func (client *UserClient) listByServiceCreateRequest(ctx context.Context, resour
 func (client *UserClient) listByServiceHandleResponse(resp *http.Response) (UserListByServiceResponse, error) {
 	result := UserListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UserCollection); err != nil {
-		return UserListByServiceResponse{}, err
+		return UserListByServiceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -564,7 +572,7 @@ func (client *UserClient) updateCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("If-Match", ifMatch)
 	req.Raw().Header.Set("Accept", "application/json")
@@ -578,7 +586,7 @@ func (client *UserClient) updateHandleResponse(resp *http.Response) (UserUpdateR
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UserContract); err != nil {
-		return UserUpdateResponse{}, err
+		return UserUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

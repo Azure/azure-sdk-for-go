@@ -11,15 +11,15 @@ package armsql
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // ElasticPoolsClient contains the methods for the ElasticPools group.
@@ -31,8 +31,15 @@ type ElasticPoolsClient struct {
 }
 
 // NewElasticPoolsClient creates a new instance of ElasticPoolsClient with the specified values.
-func NewElasticPoolsClient(con *arm.Connection, subscriptionID string) *ElasticPoolsClient {
-	return &ElasticPoolsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewElasticPoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ElasticPoolsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ElasticPoolsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Creates or updates an elastic pool.
@@ -321,7 +328,7 @@ func (client *ElasticPoolsClient) getCreateRequest(ctx context.Context, resource
 func (client *ElasticPoolsClient) getHandleResponse(resp *http.Response) (ElasticPoolsGetResponse, error) {
 	result := ElasticPoolsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ElasticPool); err != nil {
-		return ElasticPoolsGetResponse{}, err
+		return ElasticPoolsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -385,7 +392,7 @@ func (client *ElasticPoolsClient) listByServerCreateRequest(ctx context.Context,
 func (client *ElasticPoolsClient) listByServerHandleResponse(resp *http.Response) (ElasticPoolsListByServerResponse, error) {
 	result := ElasticPoolsListByServerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ElasticPoolListResult); err != nil {
-		return ElasticPoolsListByServerResponse{}, err
+		return ElasticPoolsListByServerResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -453,7 +460,7 @@ func (client *ElasticPoolsClient) listMetricDefinitionsCreateRequest(ctx context
 func (client *ElasticPoolsClient) listMetricDefinitionsHandleResponse(resp *http.Response) (ElasticPoolsListMetricDefinitionsResponse, error) {
 	result := ElasticPoolsListMetricDefinitionsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricDefinitionListResult); err != nil {
-		return ElasticPoolsListMetricDefinitionsResponse{}, err
+		return ElasticPoolsListMetricDefinitionsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -522,7 +529,7 @@ func (client *ElasticPoolsClient) listMetricsCreateRequest(ctx context.Context, 
 func (client *ElasticPoolsClient) listMetricsHandleResponse(resp *http.Response) (ElasticPoolsListMetricsResponse, error) {
 	result := ElasticPoolsListMetricsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricListResult); err != nil {
-		return ElasticPoolsListMetricsResponse{}, err
+		return ElasticPoolsListMetricsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ManagementConfigurationsClient contains the methods for the ManagementConfigurations group.
@@ -30,8 +31,15 @@ type ManagementConfigurationsClient struct {
 }
 
 // NewManagementConfigurationsClient creates a new instance of ManagementConfigurationsClient with the specified values.
-func NewManagementConfigurationsClient(con *arm.Connection, subscriptionID string) *ManagementConfigurationsClient {
-	return &ManagementConfigurationsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewManagementConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagementConfigurationsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ManagementConfigurationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or updates the ManagementConfiguration.
@@ -81,7 +89,7 @@ func (client *ManagementConfigurationsClient) createOrUpdateCreateRequest(ctx co
 func (client *ManagementConfigurationsClient) createOrUpdateHandleResponse(resp *http.Response) (ManagementConfigurationsCreateOrUpdateResponse, error) {
 	result := ManagementConfigurationsCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagementConfiguration); err != nil {
-		return ManagementConfigurationsCreateOrUpdateResponse{}, err
+		return ManagementConfigurationsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -202,7 +210,7 @@ func (client *ManagementConfigurationsClient) getCreateRequest(ctx context.Conte
 func (client *ManagementConfigurationsClient) getHandleResponse(resp *http.Response) (ManagementConfigurationsGetResponse, error) {
 	result := ManagementConfigurationsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagementConfiguration); err != nil {
-		return ManagementConfigurationsGetResponse{}, err
+		return ManagementConfigurationsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -259,7 +267,7 @@ func (client *ManagementConfigurationsClient) listBySubscriptionCreateRequest(ct
 func (client *ManagementConfigurationsClient) listBySubscriptionHandleResponse(resp *http.Response) (ManagementConfigurationsListBySubscriptionResponse, error) {
 	result := ManagementConfigurationsListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagementConfigurationPropertiesList); err != nil {
-		return ManagementConfigurationsListBySubscriptionResponse{}, err
+		return ManagementConfigurationsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

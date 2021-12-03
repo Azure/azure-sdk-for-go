@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // IntegrationAccountMapsClient contains the methods for the IntegrationAccountMaps group.
@@ -31,8 +32,15 @@ type IntegrationAccountMapsClient struct {
 }
 
 // NewIntegrationAccountMapsClient creates a new instance of IntegrationAccountMapsClient with the specified values.
-func NewIntegrationAccountMapsClient(con *arm.Connection, subscriptionID string) *IntegrationAccountMapsClient {
-	return &IntegrationAccountMapsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewIntegrationAccountMapsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IntegrationAccountMapsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &IntegrationAccountMapsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or updates an integration account map.
@@ -86,7 +94,7 @@ func (client *IntegrationAccountMapsClient) createOrUpdateCreateRequest(ctx cont
 func (client *IntegrationAccountMapsClient) createOrUpdateHandleResponse(resp *http.Response) (IntegrationAccountMapsCreateOrUpdateResponse, error) {
 	result := IntegrationAccountMapsCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationAccountMap); err != nil {
-		return IntegrationAccountMapsCreateOrUpdateResponse{}, err
+		return IntegrationAccountMapsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -215,7 +223,7 @@ func (client *IntegrationAccountMapsClient) getCreateRequest(ctx context.Context
 func (client *IntegrationAccountMapsClient) getHandleResponse(resp *http.Response) (IntegrationAccountMapsGetResponse, error) {
 	result := IntegrationAccountMapsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationAccountMap); err != nil {
-		return IntegrationAccountMapsGetResponse{}, err
+		return IntegrationAccountMapsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -283,7 +291,7 @@ func (client *IntegrationAccountMapsClient) listCreateRequest(ctx context.Contex
 func (client *IntegrationAccountMapsClient) listHandleResponse(resp *http.Response) (IntegrationAccountMapsListResponse, error) {
 	result := IntegrationAccountMapsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationAccountMapListResult); err != nil {
-		return IntegrationAccountMapsListResponse{}, err
+		return IntegrationAccountMapsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -352,7 +360,7 @@ func (client *IntegrationAccountMapsClient) listContentCallbackURLCreateRequest(
 func (client *IntegrationAccountMapsClient) listContentCallbackURLHandleResponse(resp *http.Response) (IntegrationAccountMapsListContentCallbackURLResponse, error) {
 	result := IntegrationAccountMapsListContentCallbackURLResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowTriggerCallbackURL); err != nil {
-		return IntegrationAccountMapsListContentCallbackURLResponse{}, err
+		return IntegrationAccountMapsListContentCallbackURLResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -11,7 +11,6 @@ import (
 	"log"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
@@ -22,7 +21,7 @@ func ExampleSecurityRulesClient_BeginCreateOrUpdate_allowSSH() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armnetwork.NewSecurityRulesClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armnetwork.NewSecurityRulesClient("<subscription ID>", cred, nil)
 	poller, err := client.BeginCreateOrUpdate(
 		context.Background(),
 		"<resource group name>",
@@ -58,7 +57,7 @@ func ExampleSecurityRulesClient_BeginCreateOrUpdate_allowHTTP() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armnetwork.NewSecurityRulesClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armnetwork.NewSecurityRulesClient("<subscription ID>", cred, nil)
 	poller, err := client.BeginCreateOrUpdate(
 		context.Background(),
 		"<resource group name>",
@@ -94,7 +93,7 @@ func ExampleSecurityRulesClient_BeginCreateOrUpdate_allowSQL() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armnetwork.NewSecurityRulesClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armnetwork.NewSecurityRulesClient("<subscription ID>", cred, nil)
 	poller, err := client.BeginCreateOrUpdate(
 		context.Background(),
 		"<resource group name>",
@@ -130,7 +129,7 @@ func ExampleSecurityRulesClient_BeginCreateOrUpdate_denyOut() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armnetwork.NewSecurityRulesClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armnetwork.NewSecurityRulesClient("<subscription ID>", cred, nil)
 	poller, err := client.BeginCreateOrUpdate(
 		context.Background(),
 		"<resource group name>",

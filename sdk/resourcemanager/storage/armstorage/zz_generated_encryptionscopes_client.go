@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // EncryptionScopesClient contains the methods for the EncryptionScopes group.
@@ -30,8 +31,15 @@ type EncryptionScopesClient struct {
 }
 
 // NewEncryptionScopesClient creates a new instance of EncryptionScopesClient with the specified values.
-func NewEncryptionScopesClient(con *arm.Connection, subscriptionID string) *EncryptionScopesClient {
-	return &EncryptionScopesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewEncryptionScopesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *EncryptionScopesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &EncryptionScopesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Returns the properties for the specified encryption scope.
@@ -85,7 +93,7 @@ func (client *EncryptionScopesClient) getCreateRequest(ctx context.Context, reso
 func (client *EncryptionScopesClient) getHandleResponse(resp *http.Response) (EncryptionScopesGetResponse, error) {
 	result := EncryptionScopesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EncryptionScope); err != nil {
-		return EncryptionScopesGetResponse{}, err
+		return EncryptionScopesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -147,7 +155,7 @@ func (client *EncryptionScopesClient) listCreateRequest(ctx context.Context, res
 func (client *EncryptionScopesClient) listHandleResponse(resp *http.Response) (EncryptionScopesListResponse, error) {
 	result := EncryptionScopesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EncryptionScopeListResult); err != nil {
-		return EncryptionScopesListResponse{}, err
+		return EncryptionScopesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -215,7 +223,7 @@ func (client *EncryptionScopesClient) patchCreateRequest(ctx context.Context, re
 func (client *EncryptionScopesClient) patchHandleResponse(resp *http.Response) (EncryptionScopesPatchResponse, error) {
 	result := EncryptionScopesPatchResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EncryptionScope); err != nil {
-		return EncryptionScopesPatchResponse{}, err
+		return EncryptionScopesPatchResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -286,7 +294,7 @@ func (client *EncryptionScopesClient) putCreateRequest(ctx context.Context, reso
 func (client *EncryptionScopesClient) putHandleResponse(resp *http.Response) (EncryptionScopesPutResponse, error) {
 	result := EncryptionScopesPutResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EncryptionScope); err != nil {
-		return EncryptionScopesPutResponse{}, err
+		return EncryptionScopesPutResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

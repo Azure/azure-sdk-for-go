@@ -65,7 +65,7 @@ func ExampleNullValue() {
 }
 
 func ExampleHTTPResponse() {
-	pipeline := runtime.NewPipeline("module", "version", nil, nil, nil)
+	pipeline := runtime.NewPipeline("module", "version", runtime.PipelineOptions{}, nil)
 	req, err := runtime.NewRequest(context.Background(), "POST", "https://fakecontainerregisty.azurecr.io/acr/v1/nonexisteng/_tags")
 	if err != nil {
 		panic(err)

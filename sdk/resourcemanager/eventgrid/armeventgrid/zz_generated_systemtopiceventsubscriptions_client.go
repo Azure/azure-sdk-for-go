@@ -11,15 +11,15 @@ package armeventgrid
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // SystemTopicEventSubscriptionsClient contains the methods for the SystemTopicEventSubscriptions group.
@@ -31,8 +31,15 @@ type SystemTopicEventSubscriptionsClient struct {
 }
 
 // NewSystemTopicEventSubscriptionsClient creates a new instance of SystemTopicEventSubscriptionsClient with the specified values.
-func NewSystemTopicEventSubscriptionsClient(con *arm.Connection, subscriptionID string) *SystemTopicEventSubscriptionsClient {
-	return &SystemTopicEventSubscriptionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewSystemTopicEventSubscriptionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SystemTopicEventSubscriptionsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &SystemTopicEventSubscriptionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Asynchronously creates or updates an event subscription with the specified parameters. Existing event subscriptions will be updated
@@ -98,7 +105,7 @@ func (client *SystemTopicEventSubscriptionsClient) createOrUpdateCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, eventSubscriptionInfo)
@@ -177,7 +184,7 @@ func (client *SystemTopicEventSubscriptionsClient) deleteCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -235,7 +242,7 @@ func (client *SystemTopicEventSubscriptionsClient) getCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -245,7 +252,7 @@ func (client *SystemTopicEventSubscriptionsClient) getCreateRequest(ctx context.
 func (client *SystemTopicEventSubscriptionsClient) getHandleResponse(resp *http.Response) (SystemTopicEventSubscriptionsGetResponse, error) {
 	result := SystemTopicEventSubscriptionsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscription); err != nil {
-		return SystemTopicEventSubscriptionsGetResponse{}, err
+		return SystemTopicEventSubscriptionsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -303,7 +310,7 @@ func (client *SystemTopicEventSubscriptionsClient) getDeliveryAttributesCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -313,7 +320,7 @@ func (client *SystemTopicEventSubscriptionsClient) getDeliveryAttributesCreateRe
 func (client *SystemTopicEventSubscriptionsClient) getDeliveryAttributesHandleResponse(resp *http.Response) (SystemTopicEventSubscriptionsGetDeliveryAttributesResponse, error) {
 	result := SystemTopicEventSubscriptionsGetDeliveryAttributesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeliveryAttributeListResult); err != nil {
-		return SystemTopicEventSubscriptionsGetDeliveryAttributesResponse{}, err
+		return SystemTopicEventSubscriptionsGetDeliveryAttributesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -371,7 +378,7 @@ func (client *SystemTopicEventSubscriptionsClient) getFullURLCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -381,7 +388,7 @@ func (client *SystemTopicEventSubscriptionsClient) getFullURLCreateRequest(ctx c
 func (client *SystemTopicEventSubscriptionsClient) getFullURLHandleResponse(resp *http.Response) (SystemTopicEventSubscriptionsGetFullURLResponse, error) {
 	result := SystemTopicEventSubscriptionsGetFullURLResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionFullURL); err != nil {
-		return SystemTopicEventSubscriptionsGetFullURLResponse{}, err
+		return SystemTopicEventSubscriptionsGetFullURLResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -432,7 +439,7 @@ func (client *SystemTopicEventSubscriptionsClient) listBySystemTopicCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -448,7 +455,7 @@ func (client *SystemTopicEventSubscriptionsClient) listBySystemTopicCreateReques
 func (client *SystemTopicEventSubscriptionsClient) listBySystemTopicHandleResponse(resp *http.Response) (SystemTopicEventSubscriptionsListBySystemTopicResponse, error) {
 	result := SystemTopicEventSubscriptionsListBySystemTopicResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionsListResult); err != nil {
-		return SystemTopicEventSubscriptionsListBySystemTopicResponse{}, err
+		return SystemTopicEventSubscriptionsListBySystemTopicResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -526,7 +533,7 @@ func (client *SystemTopicEventSubscriptionsClient) updateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, eventSubscriptionUpdateParameters)

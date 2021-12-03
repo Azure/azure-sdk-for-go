@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // QueueClient contains the methods for the Queue group.
@@ -30,8 +31,15 @@ type QueueClient struct {
 }
 
 // NewQueueClient creates a new instance of QueueClient with the specified values.
-func NewQueueClient(con *arm.Connection, subscriptionID string) *QueueClient {
-	return &QueueClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewQueueClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *QueueClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &QueueClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Create - Creates a new queue with the specified queue name, under the specified account.
@@ -85,7 +93,7 @@ func (client *QueueClient) createCreateRequest(ctx context.Context, resourceGrou
 func (client *QueueClient) createHandleResponse(resp *http.Response) (QueueCreateResponse, error) {
 	result := QueueCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StorageQueue); err != nil {
-		return QueueCreateResponse{}, err
+		return QueueCreateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -214,7 +222,7 @@ func (client *QueueClient) getCreateRequest(ctx context.Context, resourceGroupNa
 func (client *QueueClient) getHandleResponse(resp *http.Response) (QueueGetResponse, error) {
 	result := QueueGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StorageQueue); err != nil {
-		return QueueGetResponse{}, err
+		return QueueGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -282,7 +290,7 @@ func (client *QueueClient) listCreateRequest(ctx context.Context, resourceGroupN
 func (client *QueueClient) listHandleResponse(resp *http.Response) (QueueListResponse, error) {
 	result := QueueListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListQueueResource); err != nil {
-		return QueueListResponse{}, err
+		return QueueListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -351,7 +359,7 @@ func (client *QueueClient) updateCreateRequest(ctx context.Context, resourceGrou
 func (client *QueueClient) updateHandleResponse(resp *http.Response) (QueueUpdateResponse, error) {
 	result := QueueUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StorageQueue); err != nil {
-		return QueueUpdateResponse{}, err
+		return QueueUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ActivityLogsClient contains the methods for the ActivityLogs group.
@@ -30,8 +31,15 @@ type ActivityLogsClient struct {
 }
 
 // NewActivityLogsClient creates a new instance of ActivityLogsClient with the specified values.
-func NewActivityLogsClient(con *arm.Connection, subscriptionID string) *ActivityLogsClient {
-	return &ActivityLogsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewActivityLogsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ActivityLogsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ActivityLogsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // List - Provides the list of records from the activity logs.
@@ -74,7 +82,7 @@ func (client *ActivityLogsClient) listCreateRequest(ctx context.Context, filter 
 func (client *ActivityLogsClient) listHandleResponse(resp *http.Response) (ActivityLogsListResponse, error) {
 	result := ActivityLogsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventDataCollection); err != nil {
-		return ActivityLogsListResponse{}, err
+		return ActivityLogsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

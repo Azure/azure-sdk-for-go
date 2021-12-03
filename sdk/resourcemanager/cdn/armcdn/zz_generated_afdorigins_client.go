@@ -12,6 +12,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -30,8 +31,15 @@ type AFDOriginsClient struct {
 }
 
 // NewAFDOriginsClient creates a new instance of AFDOriginsClient with the specified values.
-func NewAFDOriginsClient(con *arm.Connection, subscriptionID string) *AFDOriginsClient {
-	return &AFDOriginsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewAFDOriginsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AFDOriginsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &AFDOriginsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreate - Creates a new origin within the specified origin group.
@@ -257,7 +265,7 @@ func (client *AFDOriginsClient) getCreateRequest(ctx context.Context, resourceGr
 func (client *AFDOriginsClient) getHandleResponse(resp *http.Response) (AFDOriginsGetResponse, error) {
 	result := AFDOriginsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AFDOrigin); err != nil {
-		return AFDOriginsGetResponse{}, err
+		return AFDOriginsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -323,7 +331,7 @@ func (client *AFDOriginsClient) listByOriginGroupCreateRequest(ctx context.Conte
 func (client *AFDOriginsClient) listByOriginGroupHandleResponse(resp *http.Response) (AFDOriginsListByOriginGroupResponse, error) {
 	result := AFDOriginsListByOriginGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AFDOriginListResult); err != nil {
-		return AFDOriginsListByOriginGroupResponse{}, err
+		return AFDOriginsListByOriginGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

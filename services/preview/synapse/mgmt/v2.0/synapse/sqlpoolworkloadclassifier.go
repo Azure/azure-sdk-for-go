@@ -35,7 +35,7 @@ func NewSQLPoolWorkloadClassifierClientWithBaseURI(baseURI string, subscriptionI
 // CreateOrUpdate create Or Update workload classifier for a Sql pool's workload group.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 // workloadGroupName - the name of the workload group.
 // workloadClassifierName - the name of the workload classifier.
@@ -135,7 +135,7 @@ func (client SQLPoolWorkloadClassifierClient) CreateOrUpdateResponder(resp *http
 // Delete remove workload classifier of a Sql pool's workload group.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 // workloadGroupName - the name of the workload group.
 // workloadClassifierName - the name of the workload classifier.
@@ -228,7 +228,7 @@ func (client SQLPoolWorkloadClassifierClient) DeleteResponder(resp *http.Respons
 // Get get a workload classifier of Sql pool's workload group.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 // workloadGroupName - the name of the workload group.
 // workloadClassifierName - the name of the workload classifier.
@@ -319,7 +319,7 @@ func (client SQLPoolWorkloadClassifierClient) GetResponder(resp *http.Response) 
 // List get list of  Sql pool's workload classifier for workload groups.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 // workloadGroupName - the name of the workload group.
 func (client SQLPoolWorkloadClassifierClient) List(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, workloadGroupName string) (result WorkloadClassifierListResultPage, err error) {

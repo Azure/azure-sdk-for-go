@@ -8,7 +8,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"log"
 	"os"
 	"time"
 
@@ -16,36 +15,89 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos"
 )
 
-// This example shows you how to get started using the Azure Cosmos DB SDK for Go. NewCosmosClient creates a new instance of Cosmos client with the specified values. It uses the default pipeline configuration.
-func Example() {
+func ExampleNewClientWithKey() {
+	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
+	if !ok {
+		panic("AZURE_COSMOS_ENDPOINT could not be found")
+	}
 
-	endpoint, _ := os.LookupEnv("SOME_ENDPOINT")
-	key, _ := os.LookupEnv("SOME_KEY")
+	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
+	if !ok {
+		panic("AZURE_COSMOS_KEY could not be found")
+	}
 
 	// Create new Cosmos DB client.
-	cred, _ := azcosmos.NewKeyCredential(key)
+	cred, err := azcosmos.NewKeyCredential(key)
+	if err != nil {
+		panic(err)
+	}
+
 	client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
-	// All operations for Go operate on a context.Context, allowing you to control cancellation/timeout.
-	ctx := context.Background()
+	fmt.Println(client)
+}
 
-	// This example showcases several common operations to help you get started, such as:
+func ExampleClient_CreateDatabase() {
+	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
+	if !ok {
+		panic("AZURE_COSMOS_ENDPOINT could not be found")
+	}
 
-	// ===== 1. Creating a database =====
+	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
+	if !ok {
+		panic("AZURE_COSMOS_KEY could not be found")
+	}
 
-	databaseName := azcosmos.DatabaseProperties{Id: "databaseName"}
-	database, err := client.CreateDatabase(ctx, databaseName, nil)
+	cred, err := azcosmos.NewKeyCredential(key)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
-	// ===== 2. Creating a container =====
+	client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	databaseProperties := azcosmos.DatabaseProperties{ID: "databaseName"}
+	databaseResponse, err := client.CreateDatabase(context.Background(), databaseProperties, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("Database created. ActivityId %s", databaseResponse.ActivityID)
+}
+
+func ExampleDatabaseClient_CreateContainer() {
+	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
+	if !ok {
+		panic("AZURE_COSMOS_ENDPOINT could not be found")
+	}
+
+	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
+	if !ok {
+		panic("AZURE_COSMOS_KEY could not be found")
+	}
+
+	cred, err := azcosmos.NewKeyCredential(key)
+	if err != nil {
+		panic(err)
+	}
+
+	client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	database, err := client.NewDatabase("databaseName")
+	if err != nil {
+		panic(err)
+	}
 
 	properties := azcosmos.ContainerProperties{
-		Id: "aContainer",
+		ID: "aContainer",
 		PartitionKeyDefinition: azcosmos.PartitionKeyDefinition{
 			Paths: []string{"/myPartitionKey"},
 		},
@@ -53,161 +105,408 @@ func Example() {
 
 	throughput := azcosmos.NewManualThroughputProperties(400)
 
-	resp, err := database.DatabaseProperties.Database.CreateContainer(ctx, properties, &azcosmos.CreateContainerOptions{ThroughputProperties: throughput})
+	resp, err := database.CreateContainer(context.Background(), properties, &azcosmos.CreateContainerOptions{ThroughputProperties: &throughput})
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
-	container := resp.ContainerProperties.Container
+	fmt.Printf("Container created. ActivityId %s", resp.ActivityID)
+}
 
-	// ===== 3. Update container properties =====
-
-	resp, err = container.Read(ctx, nil)
-	if err != nil {
-		log.Fatal(err)
+func ExampleContainerClient_ReplaceThroughput() {
+	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
+	if !ok {
+		panic("AZURE_COSMOS_ENDPOINT could not be found")
 	}
 
-	updatedProperties := azcosmos.ContainerProperties{
-		Id: "aContainer",
-		PartitionKeyDefinition: azcosmos.PartitionKeyDefinition{
-			Paths: []string{"/myPartitionKey"},
-		},
-		ETag: "someEtag",
-		IndexingPolicy: &azcosmos.IndexingPolicy{
-			IncludedPaths: []azcosmos.IncludedPath{},
-			ExcludedPaths: []azcosmos.ExcludedPath{},
-			Automatic:     false,
-			IndexingMode:  azcosmos.IndexingModeNone,
-		},
+	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
+	if !ok {
+		panic("AZURE_COSMOS_KEY could not be found")
 	}
 
-	// Replace container properties
-	resp, err = container.Replace(ctx, updatedProperties, nil)
+	cred, err := azcosmos.NewKeyCredential(key)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
-	// Read the manual throughput property
-	throughputResponse, err := container.ReadThroughput(ctx, nil)
+	client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
-	manualThroughput, err := throughputResponse.ThroughputProperties.ManualThroughput()
+	container, err := client.NewContainer("databaseName", "aContainer")
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
+	}
+
+	throughputResponse, err := container.ReadThroughput(context.Background(), nil)
+	if err != nil {
+		panic(err)
+	}
+
+	manualThroughput, hasManual := throughputResponse.ThroughputProperties.ManualThroughput()
+	if !hasManual {
+		panic("Expected to have manual throughput")
 	}
 	fmt.Printf("Container is provisioned with %v RU/s", manualThroughput)
 
-	// Replace manual throughput property
-
+	// Replace manual throughput
 	newScale := azcosmos.NewManualThroughputProperties(500)
-	_, err = container.ReplaceThroughput(ctx, *newScale, nil)
+	replaceThroughputResponse, err := container.ReplaceThroughput(context.Background(), newScale, nil)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
-	// Migrate from manual throughput to autoscale
-	newScale = azcosmos.NewAutoscaleThroughputProperties(10000)
-	replaceThroughputResponse, err := container.ReplaceThroughput(ctx, *newScale, nil)
-	if err != nil {
-		log.Fatal(err)
+	fmt.Printf("Throughput updated. ActivityId %s", replaceThroughputResponse.ActivityID)
+}
+
+func ExampleContainerClient_Replace() {
+	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
+	if !ok {
+		panic("AZURE_COSMOS_ENDPOINT could not be found")
 	}
 
-	autoscaleMaxThroughputResponse, err := replaceThroughputResponse.ThroughputProperties.AutoscaleMaxThroughput()
-	if err != nil {
-		log.Fatal(err)
+	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
+	if !ok {
+		panic("AZURE_COSMOS_KEY could not be found")
 	}
 
-	fmt.Printf("Container is provisioned with %v RU/s", autoscaleMaxThroughputResponse)
+	cred, err := azcosmos.NewKeyCredential(key)
+	if err != nil {
+		panic(err)
+	}
 
-	// ===== 4. Item CRUD =====
+	client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
+	if err != nil {
+		panic(err)
+	}
 
-	// Items in an Azure Cosmos container are uniquely identified by their id and partition key value.
-	pk, err := azcosmos.NewPartitionKey("newPartitionKey")
+	container, err := client.NewContainer("databaseName", "aContainer")
+	if err != nil {
+		panic(err)
+	}
+
+	containerResponse, err := container.Read(context.Background(), nil)
+	if err != nil {
+		panic(err)
+	}
+
+	// Changing the indexing policy
+	containerResponse.ContainerProperties.IndexingPolicy = &azcosmos.IndexingPolicy{
+		IncludedPaths: []azcosmos.IncludedPath{},
+		ExcludedPaths: []azcosmos.ExcludedPath{},
+		Automatic:     false,
+		IndexingMode:  azcosmos.IndexingModeNone,
+	}
+
+	// Replace container properties
+	replaceResponse, err := container.Replace(context.Background(), *containerResponse.ContainerProperties, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("Container updated. ActivityId %s", replaceResponse.ActivityID)
+}
+
+func ExampleContainerClient_CreateItem() {
+	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
+	if !ok {
+		panic("AZURE_COSMOS_ENDPOINT could not be found")
+	}
+
+	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
+	if !ok {
+		panic("AZURE_COSMOS_KEY could not be found")
+	}
+
+	cred, err := azcosmos.NewKeyCredential(key)
+	if err != nil {
+		panic(err)
+	}
+
+	client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	container, err := client.NewContainer("databaseName", "aContainer")
+	if err != nil {
+		panic(err)
+	}
+
+	pk := azcosmos.NewPartitionKeyString("newPartitionKey")
 
 	item := map[string]string{
-		"id":             "1",
+		"id":             "anId",
 		"value":          "2",
 		"myPartitionKey": "newPartitionKey",
 	}
 
-	// Create item.
-	itemResponse, err := container.CreateItem(ctx, *pk, item, nil)
+	marshalled, err := json.Marshal(item)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
-	// Read item.
-	itemResponse, err = container.ReadItem(ctx, *pk, "1", nil)
+	itemResponse, err := container.CreateItem(context.Background(), pk, marshalled, nil)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
-	var itemResponseBody map[string]interface{}
+	fmt.Printf("Item created. ActivityId %s consuming %v RU", itemResponse.ActivityID, itemResponse.RequestCharge)
+}
+
+func ExampleContainerClient_ReadItem() {
+	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
+	if !ok {
+		panic("AZURE_COSMOS_ENDPOINT could not be found")
+	}
+
+	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
+	if !ok {
+		panic("AZURE_COSMOS_KEY could not be found")
+	}
+
+	cred, err := azcosmos.NewKeyCredential(key)
+	if err != nil {
+		panic(err)
+	}
+
+	client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	container, err := client.NewContainer("databaseName", "aContainer")
+	if err != nil {
+		panic(err)
+	}
+
+	pk := azcosmos.NewPartitionKeyString("newPartitionKey")
+
+	id := "anId"
+	itemResponse, err := container.ReadItem(context.Background(), pk, id, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	var itemResponseBody map[string]string
 	err = json.Unmarshal(itemResponse.Value, &itemResponseBody)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
+	}
+
+	fmt.Printf("Item read. ActivityId %s consuming %v RU", itemResponse.ActivityID, itemResponse.RequestCharge)
+}
+
+func ExampleContainerClient_ReplaceItem() {
+	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
+	if !ok {
+		panic("AZURE_COSMOS_ENDPOINT could not be found")
+	}
+
+	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
+	if !ok {
+		panic("AZURE_COSMOS_KEY could not be found")
+	}
+
+	cred, err := azcosmos.NewKeyCredential(key)
+	if err != nil {
+		panic(err)
+	}
+
+	client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	container, err := client.NewContainer("databaseName", "aContainer")
+	if err != nil {
+		panic(err)
+	}
+
+	pk := azcosmos.NewPartitionKeyString("newPartitionKey")
+
+	id := "anId"
+	itemResponse, err := container.ReadItem(context.Background(), pk, id, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	var itemResponseBody map[string]string
+	err = json.Unmarshal(itemResponse.Value, &itemResponseBody)
+	if err != nil {
+		panic(err)
 	}
 
 	// Modify some property
 	itemResponseBody["value"] = "newValue"
-
-	// Replace item
-	itemResponse, err = container.ReplaceItem(ctx, *pk, "1", itemResponseBody, nil)
+	marshalledReplace, err := json.Marshal(itemResponseBody)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
-	// Delete item.
-	itemResponse, err = container.DeleteItem(ctx, *pk, "1", nil)
+	itemResponse, err = container.ReplaceItem(context.Background(), pk, id, marshalledReplace, nil)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
-	// ===== 5. Session consistency =====
+	fmt.Printf("Item replaced. ActivityId %s consuming %v RU", itemResponse.ActivityID, itemResponse.RequestCharge)
+}
 
-	itemResponse, err = container.UpsertItem(ctx, *pk, item, nil)
+func ExampleContainerClient_DeleteItem() {
+	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
+	if !ok {
+		panic("AZURE_COSMOS_ENDPOINT could not be found")
+	}
+
+	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
+	if !ok {
+		panic("AZURE_COSMOS_KEY could not be found")
+	}
+
+	cred, err := azcosmos.NewKeyCredential(key)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
+	}
+
+	client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	container, err := client.NewContainer("databaseName", "aContainer")
+	if err != nil {
+		panic(err)
+	}
+
+	pk := azcosmos.NewPartitionKeyString("newPartitionKey")
+
+	id := "anId"
+	itemResponse, err := container.DeleteItem(context.Background(), pk, id, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("Item deleted. ActivityId %s consuming %v RU", itemResponse.ActivityID, itemResponse.RequestCharge)
+}
+
+func ExampleContainerClient_ReadItem_sessionConsistency() {
+	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
+	if !ok {
+		panic("AZURE_COSMOS_ENDPOINT could not be found")
+	}
+
+	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
+	if !ok {
+		panic("AZURE_COSMOS_KEY could not be found")
+	}
+
+	cred, err := azcosmos.NewKeyCredential(key)
+	if err != nil {
+		panic(err)
+	}
+
+	client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	container, err := client.NewContainer("databaseName", "aContainer")
+	if err != nil {
+		panic(err)
+	}
+
+	pk := azcosmos.NewPartitionKeyString("newPartitionKey")
+	id := "anId"
+	item := map[string]string{
+		"id":             "anId",
+		"value":          "2",
+		"myPartitionKey": "newPartitionKey",
+	}
+
+	marshalled, err := json.Marshal(item)
+	if err != nil {
+		panic(err)
+	}
+
+	itemResponse, err := container.CreateItem(context.Background(), pk, marshalled, nil)
+	if err != nil {
+		panic(err)
 	}
 
 	itemSessionToken := itemResponse.SessionToken
-	itemResponse, err = container.ReadItem(ctx, *pk, "1", &azcosmos.ItemOptions{SessionToken: itemSessionToken})
+	fmt.Printf("Create response contained session %s", itemSessionToken)
+
+	// In another client, maintain the session by passing the session token
+	itemResponse, err = container.ReadItem(context.Background(), pk, id, &azcosmos.ItemOptions{SessionToken: itemSessionToken})
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
-	// ===== 6. Optimistic Concurrency Etag PreConditionFail =====
+	fmt.Printf("Item read. ActivityId %s consuming %v RU", itemResponse.ActivityID, itemResponse.RequestCharge)
+}
 
-	// Azure Cosmos DB supports optimistic concurrency control to prevent lost updates or deletes and detection of conflicting operations.
-	// Check the item response status code. If an error is imitted and the response code is 412 then retry operation.
-	numberRetry := 3
-	err = retryOptimisticConcurrency(numberRetry, 1000*time.Millisecond, func() (bool, error) {
-		itemResponse, err = container.ReadItem(ctx, *pk, "1", nil)
+// Azure Cosmos DB supports optimistic concurrency control to prevent lost updates or deletes and detection of conflicting operations.
+// Check the item response status code. If an error is emitted and the response code is 412 then retry operation.
+func ExampleContainerClient_ReplaceItem_optimisticConcurrency() {
+	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
+	if !ok {
+		panic("AZURE_COSMOS_ENDPOINT could not be found")
+	}
+
+	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
+	if !ok {
+		panic("AZURE_COSMOS_KEY could not be found")
+	}
+
+	cred, err := azcosmos.NewKeyCredential(key)
+	if err != nil {
+		panic(err)
+	}
+
+	client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	container, err := client.NewContainer("databaseName", "aContainer")
+	if err != nil {
+		panic(err)
+	}
+
+	pk := azcosmos.NewPartitionKeyString("newPartitionKey")
+	id := "anId"
+
+	numberRetry := 3 // Defining a limit on retries
+	err = retryOptimisticConcurrency(numberRetry, 10*time.Millisecond, func() (bool, error) {
+		itemResponse, err := container.ReadItem(context.Background(), pk, id, nil)
 		if err != nil {
-			log.Fatal(err)
+			panic(err)
 		}
 
-		var itemResponseBody map[string]interface{}
+		var itemResponseBody map[string]string
 		err = json.Unmarshal(itemResponse.Value, &itemResponseBody)
 		if err != nil {
-			log.Fatal(err)
+			panic(err)
 		}
 
 		// Change a value in the item response body.
 		itemResponseBody["value"] = "newValue"
 
+		marshalledReplace, err := json.Marshal(itemResponseBody)
+		if err != nil {
+			panic(err)
+		}
+
 		// Replace with Etag
 		etag := itemResponse.ETag
-		itemResponse, err = container.ReplaceItem(ctx, *pk, "1", itemResponseBody, &azcosmos.ItemOptions{IfMatchEtag: &etag})
+		itemResponse, err = container.ReplaceItem(context.Background(), pk, id, marshalledReplace, &azcosmos.ItemOptions{IfMatchEtag: &etag})
 		var httpErr azcore.HTTPResponse
 
 		return (errors.As(err, &httpErr) && itemResponse.RawResponse.StatusCode == 412), err
 	})
 	if err != nil {
-		log.Println(err)
-		return
+		panic(err)
 	}
 }
 
@@ -215,7 +514,6 @@ func retryOptimisticConcurrency(retryAttempts int, wait time.Duration, retry fun
 	for i := 0; ; i++ {
 		retryResult, err := retry()
 		if err != nil {
-			log.Fatal(err)
 			break
 		}
 
@@ -227,7 +525,7 @@ func retryOptimisticConcurrency(retryAttempts int, wait time.Duration, retry fun
 			break
 		}
 
-		log.Fatal("retrying after error:", err)
+		fmt.Printf("retrying after error: %v", err)
 
 		time.Sleep(wait)
 	}

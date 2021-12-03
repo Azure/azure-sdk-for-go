@@ -11,13 +11,14 @@ package armeventgrid
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ExtensionTopicsClient contains the methods for the ExtensionTopics group.
@@ -28,8 +29,15 @@ type ExtensionTopicsClient struct {
 }
 
 // NewExtensionTopicsClient creates a new instance of ExtensionTopicsClient with the specified values.
-func NewExtensionTopicsClient(con *arm.Connection) *ExtensionTopicsClient {
-	return &ExtensionTopicsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewExtensionTopicsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *ExtensionTopicsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ExtensionTopicsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Get the properties of an extension topic.
@@ -61,7 +69,7 @@ func (client *ExtensionTopicsClient) getCreateRequest(ctx context.Context, scope
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -71,7 +79,7 @@ func (client *ExtensionTopicsClient) getCreateRequest(ctx context.Context, scope
 func (client *ExtensionTopicsClient) getHandleResponse(resp *http.Response) (ExtensionTopicsGetResponse, error) {
 	result := ExtensionTopicsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExtensionTopic); err != nil {
-		return ExtensionTopicsGetResponse{}, err
+		return ExtensionTopicsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

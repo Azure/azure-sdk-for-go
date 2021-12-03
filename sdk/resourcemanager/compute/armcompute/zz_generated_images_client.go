@@ -11,14 +11,14 @@ package armcompute
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // ImagesClient contains the methods for the Images group.
@@ -30,8 +30,15 @@ type ImagesClient struct {
 }
 
 // NewImagesClient creates a new instance of ImagesClient with the specified values.
-func NewImagesClient(con *arm.Connection, subscriptionID string) *ImagesClient {
-	return &ImagesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewImagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ImagesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ImagesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Create or update an image.
@@ -233,7 +240,7 @@ func (client *ImagesClient) getCreateRequest(ctx context.Context, resourceGroupN
 func (client *ImagesClient) getHandleResponse(resp *http.Response) (ImagesGetResponse, error) {
 	result := ImagesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Image); err != nil {
-		return ImagesGetResponse{}, err
+		return ImagesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -287,7 +294,7 @@ func (client *ImagesClient) listCreateRequest(ctx context.Context, options *Imag
 func (client *ImagesClient) listHandleResponse(resp *http.Response) (ImagesListResponse, error) {
 	result := ImagesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImageListResult); err != nil {
-		return ImagesListResponse{}, err
+		return ImagesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -344,7 +351,7 @@ func (client *ImagesClient) listByResourceGroupCreateRequest(ctx context.Context
 func (client *ImagesClient) listByResourceGroupHandleResponse(resp *http.Response) (ImagesListByResourceGroupResponse, error) {
 	result := ImagesListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImageListResult); err != nil {
-		return ImagesListByResourceGroupResponse{}, err
+		return ImagesListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

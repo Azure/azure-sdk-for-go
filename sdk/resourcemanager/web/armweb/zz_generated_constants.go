@@ -10,7 +10,7 @@ package armweb
 
 const (
 	module  = "armweb"
-	version = "v0.1.0"
+	version = "v0.2.1"
 )
 
 type AppServiceCertificateOrderPatchResourcePropertiesAppServiceCertificateNotRenewableReasonsItem string

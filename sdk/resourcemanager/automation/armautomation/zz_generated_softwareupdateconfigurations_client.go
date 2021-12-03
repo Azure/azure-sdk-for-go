@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // SoftwareUpdateConfigurationsClient contains the methods for the SoftwareUpdateConfigurations group.
@@ -30,8 +31,15 @@ type SoftwareUpdateConfigurationsClient struct {
 }
 
 // NewSoftwareUpdateConfigurationsClient creates a new instance of SoftwareUpdateConfigurationsClient with the specified values.
-func NewSoftwareUpdateConfigurationsClient(con *arm.Connection, subscriptionID string) *SoftwareUpdateConfigurationsClient {
-	return &SoftwareUpdateConfigurationsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewSoftwareUpdateConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SoftwareUpdateConfigurationsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &SoftwareUpdateConfigurationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Create - Create a new software update configuration with the name given in the URI.
@@ -88,7 +96,7 @@ func (client *SoftwareUpdateConfigurationsClient) createCreateRequest(ctx contex
 func (client *SoftwareUpdateConfigurationsClient) createHandleResponse(resp *http.Response) (SoftwareUpdateConfigurationsCreateResponse, error) {
 	result := SoftwareUpdateConfigurationsCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SoftwareUpdateConfiguration); err != nil {
-		return SoftwareUpdateConfigurationsCreateResponse{}, err
+		return SoftwareUpdateConfigurationsCreateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -223,7 +231,7 @@ func (client *SoftwareUpdateConfigurationsClient) getByNameCreateRequest(ctx con
 func (client *SoftwareUpdateConfigurationsClient) getByNameHandleResponse(resp *http.Response) (SoftwareUpdateConfigurationsGetByNameResponse, error) {
 	result := SoftwareUpdateConfigurationsGetByNameResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SoftwareUpdateConfiguration); err != nil {
-		return SoftwareUpdateConfigurationsGetByNameResponse{}, err
+		return SoftwareUpdateConfigurationsGetByNameResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -294,7 +302,7 @@ func (client *SoftwareUpdateConfigurationsClient) listCreateRequest(ctx context.
 func (client *SoftwareUpdateConfigurationsClient) listHandleResponse(resp *http.Response) (SoftwareUpdateConfigurationsListResponse, error) {
 	result := SoftwareUpdateConfigurationsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SoftwareUpdateConfigurationListResult); err != nil {
-		return SoftwareUpdateConfigurationsListResponse{}, err
+		return SoftwareUpdateConfigurationsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

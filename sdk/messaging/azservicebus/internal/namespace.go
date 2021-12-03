@@ -6,22 +6,19 @@ package internal
 import (
 	"context"
 	"crypto/tls"
-	"errors"
 	"fmt"
 	"runtime"
-	"strings"
 	"sync"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/v3/auth"
-	"github.com/Azure/azure-amqp-common-go/v3/cbs"
-	"github.com/Azure/azure-amqp-common-go/v3/conn"
-	"github.com/Azure/azure-amqp-common-go/v3/rpc"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/sbauth"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/cbs"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/conn"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/rpc"
 	"github.com/Azure/go-amqp"
-	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/devigned/tab"
 	"nhooyr.io/websocket"
 )
@@ -34,10 +31,8 @@ type (
 	// Namespace is an abstraction over an amqp.Client, allowing us to hold onto a single
 	// instance of a connection per ServiceBusClient.
 	Namespace struct {
-		Name          string
-		Suffix        string
+		FQDN          string
 		TokenProvider *sbauth.TokenProvider
-		Environment   azure.Environment
 		tlsConfig     *tls.Config
 		userAgent     string
 		useWebSocket  bool
@@ -83,11 +78,7 @@ func NamespaceWithConnectionString(connStr string) NamespaceOption {
 		}
 
 		if parsed.Namespace != "" {
-			ns.Name = parsed.Namespace
-		}
-
-		if parsed.Suffix != "" {
-			ns.Suffix = parsed.Suffix
+			ns.FQDN = parsed.Namespace
 		}
 
 		provider, err := sbauth.NewTokenProviderWithConnectionString(parsed.KeyName, parsed.Key)
@@ -124,37 +115,12 @@ func NamespaceWithWebSocket() NamespaceOption {
 	}
 }
 
-// NamespaceWithAzureEnvironment sets the namespace's Environment, Suffix and ResourceURI parameters according
-// to the Azure Environment defined in "github.com/Azure/go-autorest/autorest/azure" package.
-// This allows to configure the library to be used in the different Azure clouds.
-// environmentName is the name of the cloud as defined in autorest : https://github.com/Azure/go-autorest/blob/b076c1437d051bf4c328db428b70f4fe22ad38b0/autorest/azure/environments.go#L34-L39
-func NamespaceWithAzureEnvironment(namespaceName, environmentName string) NamespaceOption {
-	return func(ns *Namespace) error {
-		azureEnv, err := azure.EnvironmentFromName(environmentName)
-		if err != nil {
-			return err
-		}
-		ns.Environment = azureEnv
-		ns.Suffix = azureEnv.ServiceBusEndpointSuffix
-		ns.Name = namespaceName
-		return nil
-	}
-}
-
 // NamespacesWithTokenCredential sets the token provider on the namespace
 // fullyQualifiedNamespace is the Service Bus namespace name (ex: myservicebus.servicebus.windows.net)
 func NamespacesWithTokenCredential(fullyQualifiedNamespace string, tokenCredential azcore.TokenCredential) NamespaceOption {
 	return func(ns *Namespace) error {
 		ns.TokenProvider = sbauth.NewTokenProvider(tokenCredential)
-
-		parts := strings.SplitN(fullyQualifiedNamespace, ".", 2)
-
-		if len(parts) != 2 {
-			return errors.New("fullyQualifiedNamespace is not properly formed. Should be similar to 'myservicebus.servicebus.windows.net'")
-		} else {
-			ns.Name, ns.Suffix = parts[0], parts[1]
-		}
-
+		ns.FQDN = fullyQualifiedNamespace
 		return nil
 	}
 }
@@ -162,7 +128,6 @@ func NamespacesWithTokenCredential(fullyQualifiedNamespace string, tokenCredenti
 // NewNamespace creates a new namespace configured through NamespaceOption(s)
 func NewNamespace(opts ...NamespaceOption) (*Namespace, error) {
 	ns := &Namespace{
-		Environment: azure.PublicCloud,
 		baseRetrier: NewBackoffRetrier(struct {
 			MaxRetries int
 			Factor     float64
@@ -218,7 +183,7 @@ func (ns *Namespace) newClient(ctx context.Context) (*amqp.Client, error) {
 		}
 		nConn := websocket.NetConn(context.Background(), wssConn, websocket.MessageBinary)
 
-		return amqp.New(nConn, append(defaultConnOptions, amqp.ConnServerHostname(ns.GetHostname()))...)
+		return amqp.New(nConn, append(defaultConnOptions, amqp.ConnServerHostname(ns.FQDN))...)
 	}
 
 	return amqp.Dial(ns.getAMQPHostURI(), defaultConnOptions...)
@@ -444,27 +409,15 @@ func (ns *Namespace) getAMQPClientImpl(ctx context.Context) (*amqp.Client, uint6
 }
 
 func (ns *Namespace) getWSSHostURI() string {
-	suffix := ns.resolveSuffix()
-	if strings.HasSuffix(suffix, "onebox.windows-int.net") {
-		return fmt.Sprintf("wss://%s:4446/", ns.GetHostname())
-	}
-	return fmt.Sprintf("wss://%s/", ns.GetHostname())
+	return fmt.Sprintf("wss://%s/", ns.FQDN)
 }
 
 func (ns *Namespace) getAMQPHostURI() string {
-	return fmt.Sprintf("amqps://%s/", ns.GetHostname())
+	return fmt.Sprintf("amqps://%s/", ns.FQDN)
 }
 
 func (ns *Namespace) GetHTTPSHostURI() string {
-	suffix := ns.resolveSuffix()
-	if strings.HasSuffix(suffix, "onebox.windows-int.net") {
-		return fmt.Sprintf("https://%s:4446/", ns.GetHostname())
-	}
-	return fmt.Sprintf("https://%s/", ns.GetHostname())
-}
-
-func (ns *Namespace) GetHostname() string {
-	return strings.Join([]string{ns.Name, ns.resolveSuffix()}, ".")
+	return fmt.Sprintf("https://%s/", ns.FQDN)
 }
 
 func (ns *Namespace) GetEntityAudience(entityPath string) string {
@@ -477,13 +430,6 @@ func (ns *Namespace) getUserAgent() string {
 		userAgent = fmt.Sprintf("%s/%s", userAgent, ns.userAgent)
 	}
 	return userAgent
-}
-
-func (ns *Namespace) resolveSuffix() string {
-	if ns.Suffix != "" {
-		return ns.Suffix
-	}
-	return azure.PublicCloud.ServiceBusEndpointSuffix
 }
 
 func (ns *Namespace) startSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {

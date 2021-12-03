@@ -54,8 +54,7 @@ func getPipeline(srv *mock.Server) pipeline.Pipeline {
 	return runtime.NewPipeline(
 		"test",
 		"v0.1.0",
-		nil,
-		[]pipeline.Policy{runtime.NewLogPolicy(nil)},
+		runtime.PipelineOptions{PerRetry: []pipeline.Policy{runtime.NewLogPolicy(nil)}},
 		&policy.ClientOptions{Transport: srv},
 	)
 }
@@ -111,7 +110,7 @@ func TestNewPollerAsync(t *testing.T) {
 		t.Fatal(err)
 	}
 	var result mockType
-	_, err = poller.PollUntilDone(context.Background(), 10*time.Millisecond, &result)
+	_, err = poller.PollUntilDone(context.Background(), time.Second, &result)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -147,7 +146,7 @@ func TestNewPollerBody(t *testing.T) {
 		t.Fatal(err)
 	}
 	var result mockType
-	_, err = poller.PollUntilDone(context.Background(), 10*time.Millisecond, &result)
+	_, err = poller.PollUntilDone(context.Background(), time.Second, &result)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -184,7 +183,7 @@ func TestNewPollerLoc(t *testing.T) {
 		t.Fatal(err)
 	}
 	var result mockType
-	_, err = poller.PollUntilDone(context.Background(), 10*time.Millisecond, &result)
+	_, err = poller.PollUntilDone(context.Background(), time.Second, &result)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -215,7 +214,7 @@ func TestNewPollerInitialRetryAfter(t *testing.T) {
 		t.Fatalf("unexpected poller type %s", pt.String())
 	}
 	var result mockType
-	_, err = poller.PollUntilDone(context.Background(), 10*time.Millisecond, &result)
+	_, err = poller.PollUntilDone(context.Background(), time.Second, &result)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -273,7 +272,7 @@ func TestNewPollerFailedWithError(t *testing.T) {
 		t.Fatalf("unexpected poller type %s", pt.String())
 	}
 	var result mockType
-	_, err = poller.PollUntilDone(context.Background(), 10*time.Millisecond, &result)
+	_, err = poller.PollUntilDone(context.Background(), time.Second, &result)
 	if err == nil {
 		t.Fatal(err)
 	}
@@ -309,7 +308,7 @@ func TestNewPollerSuccessNoContent(t *testing.T) {
 		t.Fatal(err)
 	}
 	var result mockType
-	_, err = poller.PollUntilDone(context.Background(), 10*time.Millisecond, &result)
+	_, err = poller.PollUntilDone(context.Background(), time.Second, &result)
 	if err != nil {
 		t.Fatal(err)
 	}

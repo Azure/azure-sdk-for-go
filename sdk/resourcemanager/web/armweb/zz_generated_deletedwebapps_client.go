@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // DeletedWebAppsClient contains the methods for the DeletedWebApps group.
@@ -30,8 +31,15 @@ type DeletedWebAppsClient struct {
 }
 
 // NewDeletedWebAppsClient creates a new instance of DeletedWebAppsClient with the specified values.
-func NewDeletedWebAppsClient(con *arm.Connection, subscriptionID string) *DeletedWebAppsClient {
-	return &DeletedWebAppsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewDeletedWebAppsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DeletedWebAppsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &DeletedWebAppsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // GetDeletedWebAppByLocation - Description for Get deleted app for a subscription at location.
@@ -81,7 +89,7 @@ func (client *DeletedWebAppsClient) getDeletedWebAppByLocationCreateRequest(ctx 
 func (client *DeletedWebAppsClient) getDeletedWebAppByLocationHandleResponse(resp *http.Response) (DeletedWebAppsGetDeletedWebAppByLocationResponse, error) {
 	result := DeletedWebAppsGetDeletedWebAppByLocationResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedSite); err != nil {
-		return DeletedWebAppsGetDeletedWebAppByLocationResponse{}, err
+		return DeletedWebAppsGetDeletedWebAppByLocationResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -135,7 +143,7 @@ func (client *DeletedWebAppsClient) listCreateRequest(ctx context.Context, optio
 func (client *DeletedWebAppsClient) listHandleResponse(resp *http.Response) (DeletedWebAppsListResponse, error) {
 	result := DeletedWebAppsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedWebAppCollection); err != nil {
-		return DeletedWebAppsListResponse{}, err
+		return DeletedWebAppsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -193,7 +201,7 @@ func (client *DeletedWebAppsClient) listByLocationCreateRequest(ctx context.Cont
 func (client *DeletedWebAppsClient) listByLocationHandleResponse(resp *http.Response) (DeletedWebAppsListByLocationResponse, error) {
 	result := DeletedWebAppsListByLocationResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedWebAppCollection); err != nil {
-		return DeletedWebAppsListByLocationResponse{}, err
+		return DeletedWebAppsListByLocationResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

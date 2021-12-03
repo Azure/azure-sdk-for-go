@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // DataCollectionEndpointsClient contains the methods for the DataCollectionEndpoints group.
@@ -30,8 +31,15 @@ type DataCollectionEndpointsClient struct {
 }
 
 // NewDataCollectionEndpointsClient creates a new instance of DataCollectionEndpointsClient with the specified values.
-func NewDataCollectionEndpointsClient(con *arm.Connection, subscriptionID string) *DataCollectionEndpointsClient {
-	return &DataCollectionEndpointsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewDataCollectionEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DataCollectionEndpointsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &DataCollectionEndpointsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Create - Creates or updates a data collection endpoint.
@@ -84,7 +92,7 @@ func (client *DataCollectionEndpointsClient) createCreateRequest(ctx context.Con
 func (client *DataCollectionEndpointsClient) createHandleResponse(resp *http.Response) (DataCollectionEndpointsCreateResponse, error) {
 	result := DataCollectionEndpointsCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionEndpointResource); err != nil {
-		return DataCollectionEndpointsCreateResponse{}, err
+		return DataCollectionEndpointsCreateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -205,7 +213,7 @@ func (client *DataCollectionEndpointsClient) getCreateRequest(ctx context.Contex
 func (client *DataCollectionEndpointsClient) getHandleResponse(resp *http.Response) (DataCollectionEndpointsGetResponse, error) {
 	result := DataCollectionEndpointsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionEndpointResource); err != nil {
-		return DataCollectionEndpointsGetResponse{}, err
+		return DataCollectionEndpointsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -263,7 +271,7 @@ func (client *DataCollectionEndpointsClient) listByResourceGroupCreateRequest(ct
 func (client *DataCollectionEndpointsClient) listByResourceGroupHandleResponse(resp *http.Response) (DataCollectionEndpointsListByResourceGroupResponse, error) {
 	result := DataCollectionEndpointsListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionEndpointResourceListResult); err != nil {
-		return DataCollectionEndpointsListByResourceGroupResponse{}, err
+		return DataCollectionEndpointsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -317,7 +325,7 @@ func (client *DataCollectionEndpointsClient) listBySubscriptionCreateRequest(ctx
 func (client *DataCollectionEndpointsClient) listBySubscriptionHandleResponse(resp *http.Response) (DataCollectionEndpointsListBySubscriptionResponse, error) {
 	result := DataCollectionEndpointsListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionEndpointResourceListResult); err != nil {
-		return DataCollectionEndpointsListBySubscriptionResponse{}, err
+		return DataCollectionEndpointsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -385,7 +393,7 @@ func (client *DataCollectionEndpointsClient) updateCreateRequest(ctx context.Con
 func (client *DataCollectionEndpointsClient) updateHandleResponse(resp *http.Response) (DataCollectionEndpointsUpdateResponse, error) {
 	result := DataCollectionEndpointsUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionEndpointResource); err != nil {
-		return DataCollectionEndpointsUpdateResponse{}, err
+		return DataCollectionEndpointsUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -12,6 +12,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -30,8 +31,15 @@ type RoutesClient struct {
 }
 
 // NewRoutesClient creates a new instance of RoutesClient with the specified values.
-func NewRoutesClient(con *arm.Connection, subscriptionID string) *RoutesClient {
-	return &RoutesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewRoutesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RoutesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &RoutesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreate - Creates a new route with the specified route name under the specified subscription, resource group, profile, and AzureFrontDoor endpoint.
@@ -257,7 +265,7 @@ func (client *RoutesClient) getCreateRequest(ctx context.Context, resourceGroupN
 func (client *RoutesClient) getHandleResponse(resp *http.Response) (RoutesGetResponse, error) {
 	result := RoutesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Route); err != nil {
-		return RoutesGetResponse{}, err
+		return RoutesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -323,7 +331,7 @@ func (client *RoutesClient) listByEndpointCreateRequest(ctx context.Context, res
 func (client *RoutesClient) listByEndpointHandleResponse(resp *http.Response) (RoutesListByEndpointResponse, error) {
 	result := RoutesListByEndpointResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RouteListResult); err != nil {
-		return RoutesListByEndpointResponse{}, err
+		return RoutesListByEndpointResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -35,7 +35,7 @@ func NewWorkspaceManagedSQLServerUsagesClientWithBaseURI(baseURI string, subscri
 // List get list of server usages metric for workspace managed sql server.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 func (client WorkspaceManagedSQLServerUsagesClient) List(ctx context.Context, resourceGroupName string, workspaceName string) (result ServerUsageListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspaceManagedSQLServerUsagesClient.List")

@@ -10,27 +10,22 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
 func TestDatabaseResponseParsing(t *testing.T) {
-	nowAsUnix := time.Now().Unix()
+	nowAsUnix := time.Unix(time.Now().Unix(), 0)
 
-	now := UnixTime{
-		Time: time.Unix(nowAsUnix, 0),
-	}
-
-	properties := &DatabaseProperties{
-		Id:           "someId",
-		ETag:         "someEtag",
+	etag := azcore.ETag("someETag")
+	properties := DatabaseProperties{
+		ID:           "someId",
+		ETag:         &etag,
 		SelfLink:     "someSelfLink",
-		ResourceId:   "someResourceId",
-		LastModified: &now,
-	}
-
-	database := &Database{
-		Id: "someId",
+		ResourceID:   "someResourceId",
+		LastModified: nowAsUnix,
 	}
 
 	jsonString, err := json.Marshal(properties)
@@ -51,9 +46,9 @@ func TestDatabaseResponseParsing(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	pl := azruntime.NewPipeline(srv)
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", []policy.Policy{}, []policy.Policy{}, &policy.ClientOptions{Transport: srv})
 	resp, _ := pl.Do(req)
-	parsedResponse, err := newDatabaseResponse(resp, database)
+	parsedResponse, err := newDatabaseResponse(resp)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -66,28 +61,28 @@ func TestDatabaseResponseParsing(t *testing.T) {
 		t.Fatal("parsedResponse.DatabaseProperties is nil")
 	}
 
-	if properties.Id != parsedResponse.DatabaseProperties.Id {
-		t.Errorf("Expected properties.Id to be %s, but got %s", properties.Id, parsedResponse.DatabaseProperties.Id)
+	if properties.ID != parsedResponse.DatabaseProperties.ID {
+		t.Errorf("Expected properties.Id to be %s, but got %s", properties.ID, parsedResponse.DatabaseProperties.ID)
 	}
 
-	if properties.ETag != parsedResponse.DatabaseProperties.ETag {
-		t.Errorf("Expected properties.ETag to be %s, but got %s", properties.ETag, parsedResponse.DatabaseProperties.ETag)
+	if *properties.ETag != *parsedResponse.DatabaseProperties.ETag {
+		t.Errorf("Expected properties.ETag to be %s, but got %s", *properties.ETag, *parsedResponse.DatabaseProperties.ETag)
 	}
 
 	if properties.SelfLink != parsedResponse.DatabaseProperties.SelfLink {
 		t.Errorf("Expected properties.SelfLink to be %s, but got %s", properties.SelfLink, parsedResponse.DatabaseProperties.SelfLink)
 	}
 
-	if properties.ResourceId != parsedResponse.DatabaseProperties.ResourceId {
-		t.Errorf("Expected properties.ResourceId to be %s, but got %s", properties.ResourceId, parsedResponse.DatabaseProperties.ResourceId)
+	if properties.ResourceID != parsedResponse.DatabaseProperties.ResourceID {
+		t.Errorf("Expected properties.ResourceId to be %s, but got %s", properties.ResourceID, parsedResponse.DatabaseProperties.ResourceID)
 	}
 
-	if properties.LastModified.Time != parsedResponse.DatabaseProperties.LastModified.Time {
-		t.Errorf("Expected properties.LastModified.Time to be %s, but got %s", properties.LastModified.Time.UTC(), parsedResponse.DatabaseProperties.LastModified.Time.UTC())
+	if properties.LastModified != parsedResponse.DatabaseProperties.LastModified {
+		t.Errorf("Expected properties.LastModified.Time to be %v, but got %v", properties.LastModified, parsedResponse.DatabaseProperties.LastModified)
 	}
 
-	if parsedResponse.ActivityId != "someActivityId" {
-		t.Errorf("Expected ActivityId to be %s, but got %s", "someActivityId", parsedResponse.ActivityId)
+	if parsedResponse.ActivityID != "someActivityId" {
+		t.Errorf("Expected ActivityId to be %s, but got %s", "someActivityId", parsedResponse.ActivityID)
 	}
 
 	if parsedResponse.RequestCharge != 13.42 {
@@ -96,9 +91,5 @@ func TestDatabaseResponseParsing(t *testing.T) {
 
 	if parsedResponse.ETag != "someEtag" {
 		t.Errorf("Expected ETag to be %s, but got %s", "someEtag", parsedResponse.ETag)
-	}
-
-	if parsedResponse.DatabaseProperties.Database != database {
-		t.Errorf("Expected database to be %v, but got %v", database, parsedResponse.DatabaseProperties.Database)
 	}
 }

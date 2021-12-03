@@ -34,7 +34,7 @@ func NewBigDataPoolsClientWithBaseURI(baseURI string, subscriptionID string) Big
 // CreateOrUpdate create a new Big Data pool.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // bigDataPoolName - big Data pool name
 // bigDataPoolInfo - the Big Data pool to create.
 // force - whether to stop any running jobs in the Big Data pool
@@ -133,7 +133,7 @@ func (client BigDataPoolsClient) CreateOrUpdateResponder(resp *http.Response) (r
 // Delete delete a Big Data pool from the workspace.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // bigDataPoolName - big Data pool name
 func (client BigDataPoolsClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, bigDataPoolName string) (result BigDataPoolsDeleteFuture, err error) {
 	if tracing.IsEnabled() {
@@ -223,7 +223,7 @@ func (client BigDataPoolsClient) DeleteResponder(resp *http.Response) (result Se
 // Get get a Big Data pool.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // bigDataPoolName - big Data pool name
 func (client BigDataPoolsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, bigDataPoolName string) (result BigDataPoolResourceInfo, err error) {
 	if tracing.IsEnabled() {
@@ -310,7 +310,7 @@ func (client BigDataPoolsClient) GetResponder(resp *http.Response) (result BigDa
 // ListByWorkspace list Big Data pools in a workspace.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 func (client BigDataPoolsClient) ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result BigDataPoolResourceInfoListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BigDataPoolsClient.ListByWorkspace")
@@ -437,7 +437,7 @@ func (client BigDataPoolsClient) ListByWorkspaceComplete(ctx context.Context, re
 // Update patch a Big Data pool.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // bigDataPoolName - big Data pool name
 // bigDataPoolPatchInfo - the updated Big Data pool properties
 func (client BigDataPoolsClient) Update(ctx context.Context, resourceGroupName string, workspaceName string, bigDataPoolName string, bigDataPoolPatchInfo BigDataPoolPatchInfo) (result BigDataPoolResourceInfo, err error) {

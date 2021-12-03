@@ -35,7 +35,7 @@ func NewKustoPoolAttachedDatabaseConfigurationsClientWithBaseURI(baseURI string,
 
 // CreateOrUpdate creates or updates an attached database configuration.
 // Parameters:
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // kustoPoolName - the name of the Kusto pool.
 // attachedDatabaseConfigurationName - the name of the attached database configuration.
 // resourceGroupName - the name of the resource group. The name is case insensitive.
@@ -136,7 +136,7 @@ func (client KustoPoolAttachedDatabaseConfigurationsClient) CreateOrUpdateRespon
 
 // Delete deletes the attached database configuration with the given name.
 // Parameters:
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // kustoPoolName - the name of the Kusto pool.
 // attachedDatabaseConfigurationName - the name of the attached database configuration.
 // resourceGroupName - the name of the resource group. The name is case insensitive.
@@ -227,7 +227,7 @@ func (client KustoPoolAttachedDatabaseConfigurationsClient) DeleteResponder(resp
 
 // Get returns an attached database configuration.
 // Parameters:
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // kustoPoolName - the name of the Kusto pool.
 // attachedDatabaseConfigurationName - the name of the attached database configuration.
 // resourceGroupName - the name of the resource group. The name is case insensitive.
@@ -316,7 +316,7 @@ func (client KustoPoolAttachedDatabaseConfigurationsClient) GetResponder(resp *h
 
 // ListByKustoPool returns the list of attached database configurations of the given Kusto Pool.
 // Parameters:
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // kustoPoolName - the name of the Kusto pool.
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 func (client KustoPoolAttachedDatabaseConfigurationsClient) ListByKustoPool(ctx context.Context, workspaceName string, kustoPoolName string, resourceGroupName string) (result AttachedDatabaseConfigurationListResult, err error) {

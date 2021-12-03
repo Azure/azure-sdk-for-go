@@ -35,7 +35,7 @@ func NewSQLPoolConnectionPoliciesClientWithBaseURI(baseURI string, subscriptionI
 // Get get a Sql pool's connection policy, which is used with table auditing.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 func (client SQLPoolConnectionPoliciesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result SQLPoolConnectionPolicy, err error) {
 	if tracing.IsEnabled() {

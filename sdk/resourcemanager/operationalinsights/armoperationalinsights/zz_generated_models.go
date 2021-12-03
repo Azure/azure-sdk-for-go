@@ -10,10 +10,9 @@ package armoperationalinsights
 
 import (
 	"encoding/json"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // AssociatedWorkspace - The list of Log Analytics workspaces associated with the cluster.
@@ -732,8 +731,8 @@ type ManagementGroupProperties struct {
 // MarshalJSON implements the json.Marshaller interface for type ManagementGroupProperties.
 func (m ManagementGroupProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "created", (*timeRFC3339)(m.Created))
-	populate(objectMap, "dataReceived", (*timeRFC3339)(m.DataReceived))
+	populateTimeRFC3339(objectMap, "created", m.Created)
+	populateTimeRFC3339(objectMap, "dataReceived", m.DataReceived)
 	populate(objectMap, "id", m.ID)
 	populate(objectMap, "isGateway", m.IsGateway)
 	populate(objectMap, "name", m.Name)
@@ -753,14 +752,10 @@ func (m *ManagementGroupProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "created":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			m.Created = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &m.Created)
 			delete(rawMsg, key)
 		case "dataReceived":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			m.DataReceived = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &m.DataReceived)
 			delete(rawMsg, key)
 		case "id":
 			err = unpopulate(val, &m.ID)
@@ -1092,14 +1087,14 @@ func (s SearchMetadata) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "coreSummaries", s.CoreSummaries)
 	populate(objectMap, "eTag", s.ETag)
 	populate(objectMap, "id", s.ID)
-	populate(objectMap, "lastUpdated", (*timeRFC3339)(s.LastUpdated))
+	populateTimeRFC3339(objectMap, "lastUpdated", s.LastUpdated)
 	populate(objectMap, "max", s.Max)
 	populate(objectMap, "requestTime", s.RequestTime)
 	populate(objectMap, "resultType", s.ResultType)
 	populate(objectMap, "schema", s.Schema)
 	populate(objectMap, "requestId", s.SearchID)
 	populate(objectMap, "sort", s.Sort)
-	populate(objectMap, "startTime", (*timeRFC3339)(s.StartTime))
+	populateTimeRFC3339(objectMap, "startTime", s.StartTime)
 	populate(objectMap, "status", s.Status)
 	populate(objectMap, "sum", s.Sum)
 	populate(objectMap, "top", s.Top)
@@ -1132,9 +1127,7 @@ func (s *SearchMetadata) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &s.ID)
 			delete(rawMsg, key)
 		case "lastUpdated":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			s.LastUpdated = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &s.LastUpdated)
 			delete(rawMsg, key)
 		case "max":
 			err = unpopulate(val, &s.Max)
@@ -1155,9 +1148,7 @@ func (s *SearchMetadata) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &s.Sort)
 			delete(rawMsg, key)
 		case "startTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			s.StartTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &s.StartTime)
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, &s.Status)
@@ -1415,7 +1406,7 @@ func (u UsageMetric) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "currentValue", u.CurrentValue)
 	populate(objectMap, "limit", u.Limit)
 	populate(objectMap, "name", u.Name)
-	populate(objectMap, "nextResetTime", (*timeRFC3339)(u.NextResetTime))
+	populateTimeRFC3339(objectMap, "nextResetTime", u.NextResetTime)
 	populate(objectMap, "quotaPeriod", u.QuotaPeriod)
 	populate(objectMap, "unit", u.Unit)
 	return json.Marshal(objectMap)
@@ -1440,9 +1431,7 @@ func (u *UsageMetric) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &u.Name)
 			delete(rawMsg, key)
 		case "nextResetTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			u.NextResetTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &u.NextResetTime)
 			delete(rawMsg, key)
 		case "quotaPeriod":
 			err = unpopulate(val, &u.QuotaPeriod)

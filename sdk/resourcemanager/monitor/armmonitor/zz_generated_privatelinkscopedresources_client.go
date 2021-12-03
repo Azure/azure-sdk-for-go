@@ -11,14 +11,14 @@ package armmonitor
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // PrivateLinkScopedResourcesClient contains the methods for the PrivateLinkScopedResources group.
@@ -30,8 +30,15 @@ type PrivateLinkScopedResourcesClient struct {
 }
 
 // NewPrivateLinkScopedResourcesClient creates a new instance of PrivateLinkScopedResourcesClient with the specified values.
-func NewPrivateLinkScopedResourcesClient(con *arm.Connection, subscriptionID string) *PrivateLinkScopedResourcesClient {
-	return &PrivateLinkScopedResourcesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewPrivateLinkScopedResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateLinkScopedResourcesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &PrivateLinkScopedResourcesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Approve or reject a private endpoint connection with a given name.
@@ -242,7 +249,7 @@ func (client *PrivateLinkScopedResourcesClient) getCreateRequest(ctx context.Con
 func (client *PrivateLinkScopedResourcesClient) getHandleResponse(resp *http.Response) (PrivateLinkScopedResourcesGetResponse, error) {
 	result := PrivateLinkScopedResourcesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ScopedResource); err != nil {
-		return PrivateLinkScopedResourcesGetResponse{}, err
+		return PrivateLinkScopedResourcesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -303,7 +310,7 @@ func (client *PrivateLinkScopedResourcesClient) listByPrivateLinkScopeCreateRequ
 func (client *PrivateLinkScopedResourcesClient) listByPrivateLinkScopeHandleResponse(resp *http.Response) (PrivateLinkScopedResourcesListByPrivateLinkScopeResponse, error) {
 	result := PrivateLinkScopedResourcesListByPrivateLinkScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ScopedResourceListResult); err != nil {
-		return PrivateLinkScopedResourcesListByPrivateLinkScopeResponse{}, err
+		return PrivateLinkScopedResourcesListByPrivateLinkScopeResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

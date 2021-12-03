@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // LogFilesClient contains the methods for the LogFiles group.
@@ -30,8 +31,15 @@ type LogFilesClient struct {
 }
 
 // NewLogFilesClient creates a new instance of LogFilesClient with the specified values.
-func NewLogFilesClient(con *arm.Connection, subscriptionID string) *LogFilesClient {
-	return &LogFilesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewLogFilesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LogFilesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &LogFilesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // ListByServer - List all the log files in a given server.
@@ -81,7 +89,7 @@ func (client *LogFilesClient) listByServerCreateRequest(ctx context.Context, res
 func (client *LogFilesClient) listByServerHandleResponse(resp *http.Response) (LogFilesListByServerResponse, error) {
 	result := LogFilesListByServerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LogFileListResult); err != nil {
-		return LogFilesListByServerResponse{}, err
+		return LogFilesListByServerResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

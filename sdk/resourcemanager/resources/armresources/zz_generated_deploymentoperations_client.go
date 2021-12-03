@@ -12,7 +12,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -30,8 +32,15 @@ type DeploymentOperationsClient struct {
 }
 
 // NewDeploymentOperationsClient creates a new instance of DeploymentOperationsClient with the specified values.
-func NewDeploymentOperationsClient(con *arm.Connection, subscriptionID string) *DeploymentOperationsClient {
-	return &DeploymentOperationsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewDeploymentOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DeploymentOperationsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &DeploymentOperationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Gets a deployments operation.
@@ -85,7 +94,7 @@ func (client *DeploymentOperationsClient) getCreateRequest(ctx context.Context, 
 func (client *DeploymentOperationsClient) getHandleResponse(resp *http.Response) (DeploymentOperationsGetResponse, error) {
 	result := DeploymentOperationsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentOperation); err != nil {
-		return DeploymentOperationsGetResponse{}, err
+		return DeploymentOperationsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -150,7 +159,7 @@ func (client *DeploymentOperationsClient) getAtManagementGroupScopeCreateRequest
 func (client *DeploymentOperationsClient) getAtManagementGroupScopeHandleResponse(resp *http.Response) (DeploymentOperationsGetAtManagementGroupScopeResponse, error) {
 	result := DeploymentOperationsGetAtManagementGroupScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentOperation); err != nil {
-		return DeploymentOperationsGetAtManagementGroupScopeResponse{}, err
+		return DeploymentOperationsGetAtManagementGroupScopeResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -188,9 +197,6 @@ func (client *DeploymentOperationsClient) GetAtScope(ctx context.Context, scope 
 // getAtScopeCreateRequest creates the GetAtScope request.
 func (client *DeploymentOperationsClient) getAtScopeCreateRequest(ctx context.Context, scope string, deploymentName string, operationID string, options *DeploymentOperationsGetAtScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}/operations/{operationId}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if deploymentName == "" {
 		return nil, errors.New("parameter deploymentName cannot be empty")
@@ -215,7 +221,7 @@ func (client *DeploymentOperationsClient) getAtScopeCreateRequest(ctx context.Co
 func (client *DeploymentOperationsClient) getAtScopeHandleResponse(resp *http.Response) (DeploymentOperationsGetAtScopeResponse, error) {
 	result := DeploymentOperationsGetAtScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentOperation); err != nil {
-		return DeploymentOperationsGetAtScopeResponse{}, err
+		return DeploymentOperationsGetAtScopeResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -280,7 +286,7 @@ func (client *DeploymentOperationsClient) getAtSubscriptionScopeCreateRequest(ct
 func (client *DeploymentOperationsClient) getAtSubscriptionScopeHandleResponse(resp *http.Response) (DeploymentOperationsGetAtSubscriptionScopeResponse, error) {
 	result := DeploymentOperationsGetAtSubscriptionScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentOperation); err != nil {
-		return DeploymentOperationsGetAtSubscriptionScopeResponse{}, err
+		return DeploymentOperationsGetAtSubscriptionScopeResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -341,7 +347,7 @@ func (client *DeploymentOperationsClient) getAtTenantScopeCreateRequest(ctx cont
 func (client *DeploymentOperationsClient) getAtTenantScopeHandleResponse(resp *http.Response) (DeploymentOperationsGetAtTenantScopeResponse, error) {
 	result := DeploymentOperationsGetAtTenantScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentOperation); err != nil {
-		return DeploymentOperationsGetAtTenantScopeResponse{}, err
+		return DeploymentOperationsGetAtTenantScopeResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -406,7 +412,7 @@ func (client *DeploymentOperationsClient) listCreateRequest(ctx context.Context,
 func (client *DeploymentOperationsClient) listHandleResponse(resp *http.Response) (DeploymentOperationsListResponse, error) {
 	result := DeploymentOperationsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentOperationsListResult); err != nil {
-		return DeploymentOperationsListResponse{}, err
+		return DeploymentOperationsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -467,7 +473,7 @@ func (client *DeploymentOperationsClient) listAtManagementGroupScopeCreateReques
 func (client *DeploymentOperationsClient) listAtManagementGroupScopeHandleResponse(resp *http.Response) (DeploymentOperationsListAtManagementGroupScopeResponse, error) {
 	result := DeploymentOperationsListAtManagementGroupScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentOperationsListResult); err != nil {
-		return DeploymentOperationsListAtManagementGroupScopeResponse{}, err
+		return DeploymentOperationsListAtManagementGroupScopeResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -502,9 +508,6 @@ func (client *DeploymentOperationsClient) ListAtScope(scope string, deploymentNa
 // listAtScopeCreateRequest creates the ListAtScope request.
 func (client *DeploymentOperationsClient) listAtScopeCreateRequest(ctx context.Context, scope string, deploymentName string, options *DeploymentOperationsListAtScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}/operations"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if deploymentName == "" {
 		return nil, errors.New("parameter deploymentName cannot be empty")
@@ -528,7 +531,7 @@ func (client *DeploymentOperationsClient) listAtScopeCreateRequest(ctx context.C
 func (client *DeploymentOperationsClient) listAtScopeHandleResponse(resp *http.Response) (DeploymentOperationsListAtScopeResponse, error) {
 	result := DeploymentOperationsListAtScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentOperationsListResult); err != nil {
-		return DeploymentOperationsListAtScopeResponse{}, err
+		return DeploymentOperationsListAtScopeResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -589,7 +592,7 @@ func (client *DeploymentOperationsClient) listAtSubscriptionScopeCreateRequest(c
 func (client *DeploymentOperationsClient) listAtSubscriptionScopeHandleResponse(resp *http.Response) (DeploymentOperationsListAtSubscriptionScopeResponse, error) {
 	result := DeploymentOperationsListAtSubscriptionScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentOperationsListResult); err != nil {
-		return DeploymentOperationsListAtSubscriptionScopeResponse{}, err
+		return DeploymentOperationsListAtSubscriptionScopeResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -646,7 +649,7 @@ func (client *DeploymentOperationsClient) listAtTenantScopeCreateRequest(ctx con
 func (client *DeploymentOperationsClient) listAtTenantScopeHandleResponse(resp *http.Response) (DeploymentOperationsListAtTenantScopeResponse, error) {
 	result := DeploymentOperationsListAtTenantScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentOperationsListResult); err != nil {
-		return DeploymentOperationsListAtTenantScopeResponse{}, err
+		return DeploymentOperationsListAtTenantScopeResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

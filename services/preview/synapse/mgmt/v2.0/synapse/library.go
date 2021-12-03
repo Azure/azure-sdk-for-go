@@ -35,7 +35,7 @@ func NewLibraryClientWithBaseURI(baseURI string, subscriptionID string) LibraryC
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // libraryName - library name
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 func (client LibraryClient) Get(ctx context.Context, resourceGroupName string, libraryName string, workspaceName string) (result LibraryResource, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LibraryClient.Get")

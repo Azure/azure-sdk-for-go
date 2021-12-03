@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ProviderClient contains the methods for the Provider group.
@@ -30,8 +31,15 @@ type ProviderClient struct {
 }
 
 // NewProviderClient creates a new instance of ProviderClient with the specified values.
-func NewProviderClient(con *arm.Connection, subscriptionID string) *ProviderClient {
-	return &ProviderClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewProviderClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ProviderClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ProviderClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // GetAvailableStacks - Description for Get available application frameworks and their versions
@@ -69,7 +77,7 @@ func (client *ProviderClient) getAvailableStacksCreateRequest(ctx context.Contex
 func (client *ProviderClient) getAvailableStacksHandleResponse(resp *http.Response) (ProviderGetAvailableStacksResponse, error) {
 	result := ProviderGetAvailableStacksResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationStackCollection); err != nil {
-		return ProviderGetAvailableStacksResponse{}, err
+		return ProviderGetAvailableStacksResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -126,7 +134,7 @@ func (client *ProviderClient) getAvailableStacksOnPremCreateRequest(ctx context.
 func (client *ProviderClient) getAvailableStacksOnPremHandleResponse(resp *http.Response) (ProviderGetAvailableStacksOnPremResponse, error) {
 	result := ProviderGetAvailableStacksOnPremResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationStackCollection); err != nil {
-		return ProviderGetAvailableStacksOnPremResponse{}, err
+		return ProviderGetAvailableStacksOnPremResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -179,7 +187,7 @@ func (client *ProviderClient) getFunctionAppStacksCreateRequest(ctx context.Cont
 func (client *ProviderClient) getFunctionAppStacksHandleResponse(resp *http.Response) (ProviderGetFunctionAppStacksResponse, error) {
 	result := ProviderGetFunctionAppStacksResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FunctionAppStackCollection); err != nil {
-		return ProviderGetFunctionAppStacksResponse{}, err
+		return ProviderGetFunctionAppStacksResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -236,7 +244,7 @@ func (client *ProviderClient) getFunctionAppStacksForLocationCreateRequest(ctx c
 func (client *ProviderClient) getFunctionAppStacksForLocationHandleResponse(resp *http.Response) (ProviderGetFunctionAppStacksForLocationResponse, error) {
 	result := ProviderGetFunctionAppStacksForLocationResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FunctionAppStackCollection); err != nil {
-		return ProviderGetFunctionAppStacksForLocationResponse{}, err
+		return ProviderGetFunctionAppStacksForLocationResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -289,7 +297,7 @@ func (client *ProviderClient) getWebAppStacksCreateRequest(ctx context.Context, 
 func (client *ProviderClient) getWebAppStacksHandleResponse(resp *http.Response) (ProviderGetWebAppStacksResponse, error) {
 	result := ProviderGetWebAppStacksResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WebAppStackCollection); err != nil {
-		return ProviderGetWebAppStacksResponse{}, err
+		return ProviderGetWebAppStacksResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -346,7 +354,7 @@ func (client *ProviderClient) getWebAppStacksForLocationCreateRequest(ctx contex
 func (client *ProviderClient) getWebAppStacksForLocationHandleResponse(resp *http.Response) (ProviderGetWebAppStacksForLocationResponse, error) {
 	result := ProviderGetWebAppStacksForLocationResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WebAppStackCollection); err != nil {
-		return ProviderGetWebAppStacksForLocationResponse{}, err
+		return ProviderGetWebAppStacksForLocationResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -396,7 +404,7 @@ func (client *ProviderClient) listOperationsCreateRequest(ctx context.Context, o
 func (client *ProviderClient) listOperationsHandleResponse(resp *http.Response) (ProviderListOperationsResponse, error) {
 	result := ProviderListOperationsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CsmOperationCollection); err != nil {
-		return ProviderListOperationsResponse{}, err
+		return ProviderListOperationsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

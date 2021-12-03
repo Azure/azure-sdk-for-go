@@ -10,7 +10,7 @@ package armcontainerregistry
 
 const (
 	module  = "armcontainerregistry"
-	version = "v0.1.0"
+	version = "v0.2.1"
 )
 
 // Action - The action of virtual network rule.
@@ -187,14 +187,18 @@ func (c CertificateType) ToPtr() *CertificateType {
 type ConnectedRegistryMode string
 
 const (
-	ConnectedRegistryModeMirror   ConnectedRegistryMode = "Mirror"
-	ConnectedRegistryModeRegistry ConnectedRegistryMode = "Registry"
+	ConnectedRegistryModeMirror    ConnectedRegistryMode = "Mirror"
+	ConnectedRegistryModeReadOnly  ConnectedRegistryMode = "ReadOnly"
+	ConnectedRegistryModeReadWrite ConnectedRegistryMode = "ReadWrite"
+	ConnectedRegistryModeRegistry  ConnectedRegistryMode = "Registry"
 )
 
 // PossibleConnectedRegistryModeValues returns the possible values for the ConnectedRegistryMode const type.
 func PossibleConnectedRegistryModeValues() []ConnectedRegistryMode {
 	return []ConnectedRegistryMode{
 		ConnectedRegistryModeMirror,
+		ConnectedRegistryModeReadOnly,
+		ConnectedRegistryModeReadWrite,
 		ConnectedRegistryModeRegistry,
 	}
 }

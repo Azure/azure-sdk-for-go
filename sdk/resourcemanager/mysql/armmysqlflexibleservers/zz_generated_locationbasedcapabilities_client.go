@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // LocationBasedCapabilitiesClient contains the methods for the LocationBasedCapabilities group.
@@ -30,8 +31,15 @@ type LocationBasedCapabilitiesClient struct {
 }
 
 // NewLocationBasedCapabilitiesClient creates a new instance of LocationBasedCapabilitiesClient with the specified values.
-func NewLocationBasedCapabilitiesClient(con *arm.Connection, subscriptionID string) *LocationBasedCapabilitiesClient {
-	return &LocationBasedCapabilitiesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewLocationBasedCapabilitiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LocationBasedCapabilitiesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &LocationBasedCapabilitiesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // List - Get capabilities at specified location in a given subscription.
@@ -74,7 +82,7 @@ func (client *LocationBasedCapabilitiesClient) listCreateRequest(ctx context.Con
 func (client *LocationBasedCapabilitiesClient) listHandleResponse(resp *http.Response) (LocationBasedCapabilitiesListResponse, error) {
 	result := LocationBasedCapabilitiesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CapabilitiesListResult); err != nil {
-		return LocationBasedCapabilitiesListResponse{}, err
+		return LocationBasedCapabilitiesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

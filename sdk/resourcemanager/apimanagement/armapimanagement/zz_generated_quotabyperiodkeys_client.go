@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // QuotaByPeriodKeysClient contains the methods for the QuotaByPeriodKeys group.
@@ -30,8 +31,15 @@ type QuotaByPeriodKeysClient struct {
 }
 
 // NewQuotaByPeriodKeysClient creates a new instance of QuotaByPeriodKeysClient with the specified values.
-func NewQuotaByPeriodKeysClient(con *arm.Connection, subscriptionID string) *QuotaByPeriodKeysClient {
-	return &QuotaByPeriodKeysClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewQuotaByPeriodKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *QuotaByPeriodKeysClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &QuotaByPeriodKeysClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Gets the value of the quota counter associated with the counter-key in the policy for the specific period in service instance.
@@ -79,7 +87,7 @@ func (client *QuotaByPeriodKeysClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -89,7 +97,7 @@ func (client *QuotaByPeriodKeysClient) getCreateRequest(ctx context.Context, res
 func (client *QuotaByPeriodKeysClient) getHandleResponse(resp *http.Response) (QuotaByPeriodKeysGetResponse, error) {
 	result := QuotaByPeriodKeysGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QuotaCounterContract); err != nil {
-		return QuotaByPeriodKeysGetResponse{}, err
+		return QuotaByPeriodKeysGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -152,7 +160,7 @@ func (client *QuotaByPeriodKeysClient) updateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -162,7 +170,7 @@ func (client *QuotaByPeriodKeysClient) updateCreateRequest(ctx context.Context, 
 func (client *QuotaByPeriodKeysClient) updateHandleResponse(resp *http.Response) (QuotaByPeriodKeysUpdateResponse, error) {
 	result := QuotaByPeriodKeysUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QuotaCounterContract); err != nil {
-		return QuotaByPeriodKeysUpdateResponse{}, err
+		return QuotaByPeriodKeysUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

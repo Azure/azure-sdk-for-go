@@ -10,6 +10,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
@@ -28,13 +29,6 @@ func TestAzureChinaParse(t *testing.T) {
 	}
 }
 
-func TestAzureGermanyParse(t *testing.T) {
-	_, err := url.Parse(string(AzureGermany))
-	if err != nil {
-		t.Fatalf("Failed to parse AzureGermany authority host: %v", err)
-	}
-}
-
 func TestAzureGovernmentParse(t *testing.T) {
 	_, err := url.Parse(string(AzureGovernment))
 	if err != nil {
@@ -45,10 +39,8 @@ func TestTelemetryDefaultUserAgent(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	options := pipelineOptions{
-		HTTPClient: srv,
-	}
-	client, err := newAADIdentityClient(srv.URL(), options)
+	options := azcore.ClientOptions{Transport: srv}
+	client, err := newAADIdentityClient(srv.URL(), &options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
@@ -73,11 +65,9 @@ func TestTelemetryCustom(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	options := pipelineOptions{
-		HTTPClient: srv,
-	}
+	options := azcore.ClientOptions{Transport: srv}
 	options.Telemetry.ApplicationID = customTelemetry
-	client, err := newAADIdentityClient(srv.URL(), options)
+	client, err := newAADIdentityClient(srv.URL(), &options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}

@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // LinkedWorkspaceClient contains the methods for the LinkedWorkspace group.
@@ -30,8 +31,15 @@ type LinkedWorkspaceClient struct {
 }
 
 // NewLinkedWorkspaceClient creates a new instance of LinkedWorkspaceClient with the specified values.
-func NewLinkedWorkspaceClient(con *arm.Connection, subscriptionID string) *LinkedWorkspaceClient {
-	return &LinkedWorkspaceClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewLinkedWorkspaceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LinkedWorkspaceClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &LinkedWorkspaceClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Retrieve the linked workspace for the account id.
@@ -81,7 +89,7 @@ func (client *LinkedWorkspaceClient) getCreateRequest(ctx context.Context, resou
 func (client *LinkedWorkspaceClient) getHandleResponse(resp *http.Response) (LinkedWorkspaceGetResponse, error) {
 	result := LinkedWorkspaceGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LinkedWorkspace); err != nil {
-		return LinkedWorkspaceGetResponse{}, err
+		return LinkedWorkspaceGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

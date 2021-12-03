@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // StorageAccountsClient contains the methods for the StorageAccounts group.
@@ -31,8 +31,15 @@ type StorageAccountsClient struct {
 }
 
 // NewStorageAccountsClient creates a new instance of StorageAccountsClient with the specified values.
-func NewStorageAccountsClient(con *arm.Connection, subscriptionID string) *StorageAccountsClient {
-	return &StorageAccountsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewStorageAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *StorageAccountsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &StorageAccountsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginAbortHierarchicalNamespaceMigration - Abort live Migration of storage account to enable Hns
@@ -150,7 +157,7 @@ func (client *StorageAccountsClient) checkNameAvailabilityCreateRequest(ctx cont
 func (client *StorageAccountsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (StorageAccountsCheckNameAvailabilityResponse, error) {
 	result := StorageAccountsCheckNameAvailabilityResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityResult); err != nil {
-		return StorageAccountsCheckNameAvailabilityResponse{}, err
+		return StorageAccountsCheckNameAvailabilityResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -431,7 +438,7 @@ func (client *StorageAccountsClient) getPropertiesCreateRequest(ctx context.Cont
 func (client *StorageAccountsClient) getPropertiesHandleResponse(resp *http.Response) (StorageAccountsGetPropertiesResponse, error) {
 	result := StorageAccountsGetPropertiesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StorageAccount); err != nil {
-		return StorageAccountsGetPropertiesResponse{}, err
+		return StorageAccountsGetPropertiesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -561,7 +568,7 @@ func (client *StorageAccountsClient) listCreateRequest(ctx context.Context, opti
 func (client *StorageAccountsClient) listHandleResponse(resp *http.Response) (StorageAccountsListResponse, error) {
 	result := StorageAccountsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StorageAccountListResult); err != nil {
-		return StorageAccountsListResponse{}, err
+		return StorageAccountsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -625,7 +632,7 @@ func (client *StorageAccountsClient) listAccountSASCreateRequest(ctx context.Con
 func (client *StorageAccountsClient) listAccountSASHandleResponse(resp *http.Response) (StorageAccountsListAccountSASResponse, error) {
 	result := StorageAccountsListAccountSASResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListAccountSasResponse); err != nil {
-		return StorageAccountsListAccountSASResponse{}, err
+		return StorageAccountsListAccountSASResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -683,7 +690,7 @@ func (client *StorageAccountsClient) listByResourceGroupCreateRequest(ctx contex
 func (client *StorageAccountsClient) listByResourceGroupHandleResponse(resp *http.Response) (StorageAccountsListByResourceGroupResponse, error) {
 	result := StorageAccountsListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StorageAccountListResult); err != nil {
-		return StorageAccountsListByResourceGroupResponse{}, err
+		return StorageAccountsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -750,7 +757,7 @@ func (client *StorageAccountsClient) listKeysCreateRequest(ctx context.Context, 
 func (client *StorageAccountsClient) listKeysHandleResponse(resp *http.Response) (StorageAccountsListKeysResponse, error) {
 	result := StorageAccountsListKeysResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StorageAccountListKeysResult); err != nil {
-		return StorageAccountsListKeysResponse{}, err
+		return StorageAccountsListKeysResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -814,7 +821,7 @@ func (client *StorageAccountsClient) listServiceSASCreateRequest(ctx context.Con
 func (client *StorageAccountsClient) listServiceSASHandleResponse(resp *http.Response) (StorageAccountsListServiceSASResponse, error) {
 	result := StorageAccountsListServiceSASResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListServiceSasResponse); err != nil {
-		return StorageAccountsListServiceSASResponse{}, err
+		return StorageAccountsListServiceSASResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -878,7 +885,7 @@ func (client *StorageAccountsClient) regenerateKeyCreateRequest(ctx context.Cont
 func (client *StorageAccountsClient) regenerateKeyHandleResponse(resp *http.Response) (StorageAccountsRegenerateKeyResponse, error) {
 	result := StorageAccountsRegenerateKeyResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StorageAccountListKeysResult); err != nil {
-		return StorageAccountsRegenerateKeyResponse{}, err
+		return StorageAccountsRegenerateKeyResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1077,7 +1084,7 @@ func (client *StorageAccountsClient) updateCreateRequest(ctx context.Context, re
 func (client *StorageAccountsClient) updateHandleResponse(resp *http.Response) (StorageAccountsUpdateResponse, error) {
 	result := StorageAccountsUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StorageAccount); err != nil {
-		return StorageAccountsUpdateResponse{}, err
+		return StorageAccountsUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

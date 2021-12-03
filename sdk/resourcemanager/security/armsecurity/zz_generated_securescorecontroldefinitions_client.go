@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // SecureScoreControlDefinitionsClient contains the methods for the SecureScoreControlDefinitions group.
@@ -30,8 +31,15 @@ type SecureScoreControlDefinitionsClient struct {
 }
 
 // NewSecureScoreControlDefinitionsClient creates a new instance of SecureScoreControlDefinitionsClient with the specified values.
-func NewSecureScoreControlDefinitionsClient(con *arm.Connection, subscriptionID string) *SecureScoreControlDefinitionsClient {
-	return &SecureScoreControlDefinitionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewSecureScoreControlDefinitionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SecureScoreControlDefinitionsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &SecureScoreControlDefinitionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // List - List the available security controls, their assessments, and the max score
@@ -66,7 +74,7 @@ func (client *SecureScoreControlDefinitionsClient) listCreateRequest(ctx context
 func (client *SecureScoreControlDefinitionsClient) listHandleResponse(resp *http.Response) (SecureScoreControlDefinitionsListResponse, error) {
 	result := SecureScoreControlDefinitionsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecureScoreControlDefinitionList); err != nil {
-		return SecureScoreControlDefinitionsListResponse{}, err
+		return SecureScoreControlDefinitionsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -120,7 +128,7 @@ func (client *SecureScoreControlDefinitionsClient) listBySubscriptionCreateReque
 func (client *SecureScoreControlDefinitionsClient) listBySubscriptionHandleResponse(resp *http.Response) (SecureScoreControlDefinitionsListBySubscriptionResponse, error) {
 	result := SecureScoreControlDefinitionsListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecureScoreControlDefinitionList); err != nil {
-		return SecureScoreControlDefinitionsListBySubscriptionResponse{}, err
+		return SecureScoreControlDefinitionsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

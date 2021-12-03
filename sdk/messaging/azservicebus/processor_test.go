@@ -20,7 +20,7 @@ func TestProcessorReceiveWithDefaults(t *testing.T) {
 	defer cleanup()
 
 	go func() {
-		sender, err := serviceBusClient.NewSender(queueName)
+		sender, err := serviceBusClient.NewSender(queueName, nil)
 		require.NoError(t, err)
 
 		defer sender.Close(context.Background())
@@ -37,7 +37,7 @@ func TestProcessorReceiveWithDefaults(t *testing.T) {
 		require.NoError(t, err)
 	}()
 
-	processor, err := serviceBusClient.NewProcessorForQueue(queueName, nil)
+	processor, err := newProcessorForQueue(serviceBusClient, queueName, nil)
 	require.NoError(t, err)
 
 	defer processor.Close(context.Background()) // multiple close is fine
@@ -52,7 +52,10 @@ func TestProcessorReceiveWithDefaults(t *testing.T) {
 		mu.Lock()
 		defer mu.Unlock()
 
-		messages = append(messages, string(m.Body))
+		body, err := m.Body()
+		require.NoError(t, err)
+
+		messages = append(messages, string(body))
 
 		if len(messages) == 5 {
 			cancel()
@@ -90,7 +93,7 @@ func TestProcessorReceiveWith100MessagesWithMaxConcurrency(t *testing.T) {
 	var expectedBodies []string
 
 	go func() {
-		sender, err := serviceBusClient.NewSender(queueName)
+		sender, err := serviceBusClient.NewSender(queueName, nil)
 		require.NoError(t, err)
 
 		defer sender.Close(context.Background())
@@ -102,19 +105,19 @@ func TestProcessorReceiveWith100MessagesWithMaxConcurrency(t *testing.T) {
 		// have been sent.
 		for i := 0; i < numMessages; i++ {
 			expectedBodies = append(expectedBodies, fmt.Sprintf("hello world %03d", i))
-			added, err := batch.Add(&Message{
+			err := batch.AddMessage(&Message{
 				Body: []byte(expectedBodies[len(expectedBodies)-1]),
 			})
 			require.NoError(t, err)
-			require.True(t, added)
 		}
 
 		require.NoError(t, sender.SendMessageBatch(context.Background(), batch))
 	}()
 
-	processor, err := serviceBusClient.NewProcessorForQueue(
+	processor, err := newProcessorForQueue(
+		serviceBusClient,
 		queueName,
-		&ProcessorOptions{
+		&processorOptions{
 			MaxConcurrentCalls: 20,
 		})
 
@@ -134,7 +137,9 @@ func TestProcessorReceiveWith100MessagesWithMaxConcurrency(t *testing.T) {
 		mu.Lock()
 		defer mu.Unlock()
 
-		messages = append(messages, string(m.Body))
+		body, err := m.Body()
+		require.NoError(t, err)
+		messages = append(messages, string(body))
 
 		if len(messages) == 100 {
 			go processor.Close(context.Background())
@@ -158,29 +163,29 @@ func TestProcessorReceiveWith100MessagesWithMaxConcurrency(t *testing.T) {
 }
 
 func TestProcessorUnitTests(t *testing.T) {
-	p := &Processor{}
+	p := &processor{}
 	e := &entity{}
 
 	require.NoError(t, applyProcessorOptions(p, e, nil))
 	require.True(t, p.autoComplete)
 	require.EqualValues(t, 1, p.maxConcurrentCalls)
-	require.EqualValues(t, PeekLock, p.receiveMode)
+	require.EqualValues(t, ReceiveModePeekLock, p.receiveMode)
 
-	p = &Processor{}
+	p = &processor{}
 	e = &entity{
 		Queue: "queue",
 	}
 
-	require.NoError(t, applyProcessorOptions(p, e, &ProcessorOptions{
-		ReceiveMode:        ReceiveAndDelete,
-		SubQueue:           SubQueueDeadLetter,
-		ManualComplete:     true,
-		MaxConcurrentCalls: 101,
+	require.NoError(t, applyProcessorOptions(p, e, &processorOptions{
+		ReceiveMode:         ReceiveModeReceiveAndDelete,
+		SubQueue:            SubQueueDeadLetter,
+		DisableAutoComplete: true,
+		MaxConcurrentCalls:  101,
 	}))
 
 	require.False(t, p.autoComplete)
 	require.EqualValues(t, 101, p.maxConcurrentCalls)
-	require.EqualValues(t, ReceiveAndDelete, p.receiveMode)
+	require.EqualValues(t, ReceiveModeReceiveAndDelete, p.receiveMode)
 	fullEntityPath, err := e.String()
 	require.NoError(t, err)
 	require.EqualValues(t, "queue/$DeadLetterQueue", fullEntityPath)

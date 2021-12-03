@@ -11,13 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ServerOperationsClient contains the methods for the ServerOperations group.
@@ -29,8 +30,15 @@ type ServerOperationsClient struct {
 }
 
 // NewServerOperationsClient creates a new instance of ServerOperationsClient with the specified values.
-func NewServerOperationsClient(con *arm.Connection, subscriptionID string) *ServerOperationsClient {
-	return &ServerOperationsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewServerOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServerOperationsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ServerOperationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // ListByServer - Gets a list of operations performed on the server.
@@ -77,7 +85,7 @@ func (client *ServerOperationsClient) listByServerCreateRequest(ctx context.Cont
 func (client *ServerOperationsClient) listByServerHandleResponse(resp *http.Response) (ServerOperationsListByServerResponse, error) {
 	result := ServerOperationsListByServerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerOperationListResult); err != nil {
-		return ServerOperationsListByServerResponse{}, err
+		return ServerOperationsListByServerResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

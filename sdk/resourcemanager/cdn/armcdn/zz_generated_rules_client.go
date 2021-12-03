@@ -12,6 +12,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -30,8 +31,15 @@ type RulesClient struct {
 }
 
 // NewRulesClient creates a new instance of RulesClient with the specified values.
-func NewRulesClient(con *arm.Connection, subscriptionID string) *RulesClient {
-	return &RulesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RulesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &RulesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreate - Creates a new delivery rule within the specified rule set.
@@ -257,7 +265,7 @@ func (client *RulesClient) getCreateRequest(ctx context.Context, resourceGroupNa
 func (client *RulesClient) getHandleResponse(resp *http.Response) (RulesGetResponse, error) {
 	result := RulesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Rule); err != nil {
-		return RulesGetResponse{}, err
+		return RulesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -323,7 +331,7 @@ func (client *RulesClient) listByRuleSetCreateRequest(ctx context.Context, resou
 func (client *RulesClient) listByRuleSetHandleResponse(resp *http.Response) (RulesListByRuleSetResponse, error) {
 	result := RulesListByRuleSetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RuleListResult); err != nil {
-		return RulesListByRuleSetResponse{}, err
+		return RulesListByRuleSetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

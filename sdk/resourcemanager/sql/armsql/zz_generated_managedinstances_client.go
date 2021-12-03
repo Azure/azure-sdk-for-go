@@ -11,15 +11,15 @@ package armsql
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // ManagedInstancesClient contains the methods for the ManagedInstances group.
@@ -31,8 +31,15 @@ type ManagedInstancesClient struct {
 }
 
 // NewManagedInstancesClient creates a new instance of ManagedInstancesClient with the specified values.
-func NewManagedInstancesClient(con *arm.Connection, subscriptionID string) *ManagedInstancesClient {
-	return &ManagedInstancesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewManagedInstancesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagedInstancesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ManagedInstancesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Creates or updates a managed instance.
@@ -311,7 +318,7 @@ func (client *ManagedInstancesClient) getCreateRequest(ctx context.Context, reso
 func (client *ManagedInstancesClient) getHandleResponse(resp *http.Response) (ManagedInstancesGetResponse, error) {
 	result := ManagedInstancesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstance); err != nil {
-		return ManagedInstancesGetResponse{}, err
+		return ManagedInstancesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -367,7 +374,7 @@ func (client *ManagedInstancesClient) listCreateRequest(ctx context.Context, opt
 func (client *ManagedInstancesClient) listHandleResponse(resp *http.Response) (ManagedInstancesListResponse, error) {
 	result := ManagedInstancesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceListResult); err != nil {
-		return ManagedInstancesListResponse{}, err
+		return ManagedInstancesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -431,7 +438,7 @@ func (client *ManagedInstancesClient) listByInstancePoolCreateRequest(ctx contex
 func (client *ManagedInstancesClient) listByInstancePoolHandleResponse(resp *http.Response) (ManagedInstancesListByInstancePoolResponse, error) {
 	result := ManagedInstancesListByInstancePoolResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceListResult); err != nil {
-		return ManagedInstancesListByInstancePoolResponse{}, err
+		return ManagedInstancesListByInstancePoolResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -513,7 +520,7 @@ func (client *ManagedInstancesClient) listByManagedInstanceCreateRequest(ctx con
 func (client *ManagedInstancesClient) listByManagedInstanceHandleResponse(resp *http.Response) (ManagedInstancesListByManagedInstanceResponse, error) {
 	result := ManagedInstancesListByManagedInstanceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TopQueriesListResult); err != nil {
-		return ManagedInstancesListByManagedInstanceResponse{}, err
+		return ManagedInstancesListByManagedInstanceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -573,7 +580,7 @@ func (client *ManagedInstancesClient) listByResourceGroupCreateRequest(ctx conte
 func (client *ManagedInstancesClient) listByResourceGroupHandleResponse(resp *http.Response) (ManagedInstancesListByResourceGroupResponse, error) {
 	result := ManagedInstancesListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceListResult); err != nil {
-		return ManagedInstancesListByResourceGroupResponse{}, err
+		return ManagedInstancesListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

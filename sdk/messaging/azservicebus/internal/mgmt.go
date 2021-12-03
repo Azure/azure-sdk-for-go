@@ -10,10 +10,10 @@ import (
 	"sync"
 	"time"
 
-	common "github.com/Azure/azure-amqp-common-go/v3"
-	"github.com/Azure/azure-amqp-common-go/v3/rpc"
-	"github.com/Azure/azure-amqp-common-go/v3/uuid"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
+	common "github.com/Azure/azure-sdk-for-go/sdk/messaging/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/rpc"
 	"github.com/Azure/go-amqp"
 	"github.com/devigned/tab"
 )
@@ -49,12 +49,18 @@ type (
 
 type MgmtClient interface {
 	Close(ctx context.Context) error
-	SendDisposition(ctx context.Context, lockToken *amqp.UUID, state Disposition) error
+	SendDisposition(ctx context.Context, lockToken *amqp.UUID, state Disposition, propertiesToModify map[string]interface{}) error
 	ReceiveDeferred(ctx context.Context, mode ReceiveMode, sequenceNumbers []int64) ([]*amqp.Message, error)
 	PeekMessages(ctx context.Context, fromSequenceNumber int64, messageCount int32) ([]*amqp.Message, error)
 
 	ScheduleMessages(ctx context.Context, enqueueTime time.Time, messages ...*amqp.Message) ([]int64, error)
 	CancelScheduled(ctx context.Context, seq ...int64) error
+
+	RenewLocks(ctx context.Context, linkName string, lockTokens []amqp.UUID) ([]time.Time, error)
+	RenewSessionLock(ctx context.Context, sessionID string) (time.Time, error)
+
+	GetSessionState(ctx context.Context, sessionID string) ([]byte, error)
+	SetSessionState(ctx context.Context, sessionID string, state []byte) error
 }
 
 func newMgmtClient(ctx context.Context, links AMQPLinks, ns NamespaceForMgmtClient) (MgmtClient, error) {
@@ -391,13 +397,9 @@ func (mc *mgmtClient) PeekMessages(ctx context.Context, fromSequenceNumber int64
 
 // RenewLocks renews the locks in a single 'com.microsoft:renew-lock' operation.
 // NOTE: this function assumes all the messages received on the same link.
-func (mc *mgmtClient) RenewLocks(ctx context.Context, linkName string, lockTokens ...*amqp.UUID) (err error) {
+func (mc *mgmtClient) RenewLocks(ctx context.Context, linkName string, lockTokens []amqp.UUID) ([]time.Time, error) {
 	ctx, span := tracing.StartConsumerSpanFromContext(ctx, tracing.SpanRenewLock, Version)
 	defer span.End()
-
-	if len(lockTokens) == 0 {
-		return nil
-	}
 
 	renewRequestMsg := &amqp.Message{
 		ApplicationProperties: map[string]interface{}{
@@ -413,15 +415,145 @@ func (mc *mgmtClient) RenewLocks(ctx context.Context, linkName string, lockToken
 	}
 
 	response, err := mc.doRPCWithRetry(ctx, renewRequestMsg, 3, 1*time.Second)
+
 	if err != nil {
 		tab.For(ctx).Error(err)
-		return err
+		return nil, err
 	}
 
 	if response.Code != 200 {
 		err := fmt.Errorf("error renewing locks: %v", response.Description)
 		tab.For(ctx).Error(err)
+		return nil, err
+	}
+
+	// extract the new lock renewal times from the response
+	// response.Message.
+
+	val, ok := response.Message.Value.(map[string]interface{})
+	if !ok {
+		return nil, NewErrIncorrectType("Message.Value", map[string]interface{}{}, response.Message.Value)
+	}
+
+	expirations, ok := val["expirations"]
+
+	if !ok {
+		return nil, NewErrIncorrectType("Message.Value[\"expirations\"]", map[string]interface{}{}, response.Message.Value)
+	}
+
+	asTimes, ok := expirations.([]time.Time)
+
+	if !ok {
+		return nil, NewErrIncorrectType("Message.Value[\"expirations\"] as times", map[string]interface{}{}, response.Message.Value)
+	}
+
+	return asTimes, nil
+}
+
+// RenewSessionLocks renews a session lock.
+func (mc *mgmtClient) RenewSessionLock(ctx context.Context, sessionID string) (time.Time, error) {
+	body := map[string]interface{}{
+		"session-id": sessionID,
+	}
+
+	msg := &amqp.Message{
+		Value: body,
+		ApplicationProperties: map[string]interface{}{
+			"operation": "com.microsoft:renew-session-lock",
+		},
+	}
+
+	resp, err := mc.doRPCWithRetry(ctx, msg, 5, 5*time.Second)
+
+	if err != nil {
+		return time.Time{}, err
+	}
+
+	m, ok := resp.Message.Value.(map[string]interface{})
+
+	if !ok {
+		return time.Time{}, NewErrIncorrectType("Message.Value", map[string]interface{}{}, resp.Message.Value)
+	}
+
+	lockedUntil, ok := m["expiration"].(time.Time)
+
+	if !ok {
+		return time.Time{}, NewErrIncorrectType("Message.Value[\"expiration\"] as times", time.Time{}, resp.Message.Value)
+	}
+
+	return lockedUntil, nil
+}
+
+// GetSessionState retrieves state associated with the session.
+func (mc *mgmtClient) GetSessionState(ctx context.Context, sessionID string) ([]byte, error) {
+	amqpMsg := &amqp.Message{
+		Value: map[string]interface{}{
+			"session-id": sessionID,
+		},
+		ApplicationProperties: map[string]interface{}{
+			"operation": "com.microsoft:get-session-state",
+		},
+	}
+
+	resp, err := mc.doRPCWithRetry(ctx, amqpMsg, 5, 5*time.Second)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.Code != 200 {
+		return nil, ErrAMQP(*resp)
+	}
+
+	asMap, ok := resp.Message.Value.(map[string]interface{})
+
+	if !ok {
+		return nil, NewErrIncorrectType("Value", map[string]interface{}{}, resp.Message.Value)
+	}
+
+	val := asMap["session-state"]
+
+	if val == nil {
+		// no session state set
+		return nil, nil
+	}
+
+	asBytes, ok := val.([]byte)
+
+	if !ok {
+		return nil, NewErrIncorrectType("Value['session-state']", []byte{}, asMap["session-state"])
+	}
+
+	return asBytes, nil
+}
+
+// SetSessionState sets the state associated with the session.
+func (mc *mgmtClient) SetSessionState(ctx context.Context, sessionID string, state []byte) error {
+	uuid, err := uuid.New()
+
+	if err != nil {
 		return err
+	}
+
+	amqpMsg := &amqp.Message{
+		Value: map[string]interface{}{
+			"session-id":    sessionID,
+			"session-state": state,
+		},
+		ApplicationProperties: map[string]interface{}{
+			"operation":                 "com.microsoft:set-session-state",
+			"com.microsoft:tracking-id": uuid.String(),
+		},
+	}
+
+	resp, err := mc.doRPCWithRetry(ctx, amqpMsg, 5, 5*time.Second)
+
+	if err != nil {
+		return err
+	}
+
+	if resp.Code != 200 {
+		return ErrAMQP(*resp)
 	}
 
 	return nil
@@ -430,7 +562,7 @@ func (mc *mgmtClient) RenewLocks(ctx context.Context, linkName string, lockToken
 // SendDisposition allows you settle a message using the management link, rather than via your
 // *amqp.Receiver. Use this if the receiver has been closed/lost or if the message isn't associated
 // with a link (ex: deferred messages).
-func (mc *mgmtClient) SendDisposition(ctx context.Context, lockToken *amqp.UUID, state Disposition) error {
+func (mc *mgmtClient) SendDisposition(ctx context.Context, lockToken *amqp.UUID, state Disposition, propertiesToModify map[string]interface{}) error {
 	ctx, span := tracing.StartConsumerSpanFromContext(ctx, tracing.SpanSendDisposition, Version)
 	defer span.End()
 
@@ -452,6 +584,10 @@ func (mc *mgmtClient) SendDisposition(ctx context.Context, lockToken *amqp.UUID,
 
 	if state.DeadLetterDescription != nil {
 		value["deadletter-description"] = state.DeadLetterDescription
+	}
+
+	if propertiesToModify != nil {
+		value["properties-to-modify"] = propertiesToModify
 	}
 
 	msg := &amqp.Message{
@@ -496,7 +632,7 @@ func (mc *mgmtClient) ScheduleMessages(ctx context.Context, enqueueTime time.Tim
 		// could potentially take the raw AMQP message we need to check it, and we assume
 		// that 'nil' is the only zero value that matters.
 		if messages[i].Properties.MessageID == nil {
-			id, err := uuid.NewV4()
+			id, err := uuid.New()
 			if err != nil {
 				return nil, err
 			}

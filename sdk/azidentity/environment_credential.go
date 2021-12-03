@@ -5,6 +5,8 @@ package azidentity
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -12,71 +14,73 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
-// EnvironmentCredentialOptions configures the EnvironmentCredential with optional parameters.
-// All zero-value fields will be initialized with their default values.
+// EnvironmentCredentialOptions contains optional parameters for EnvironmentCredential
 type EnvironmentCredentialOptions struct {
-	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
-	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
+	azcore.ClientOptions
+
+	// AuthorityHost is the base URL of an Azure Active Directory authority. Defaults
+	// to the value of environment variable AZURE_AUTHORITY_HOST, if set, or AzurePublicCloud.
 	AuthorityHost AuthorityHost
-	// HTTPClient sets the transport for making HTTP requests
-	// Leave this as nil to use the default HTTP transport
-	HTTPClient policy.Transporter
-	// Retry configures the built-in retry policy behavior
-	Retry policy.RetryOptions
-	// Telemetry configures the built-in telemetry policy behavior
-	Telemetry policy.TelemetryOptions
-	// Logging configures the built-in logging policy behavior.
-	Logging policy.LogOptions
 }
 
-// EnvironmentCredential enables authentication to Azure Active Directory using either ClientSecretCredential, ClientCertificateCredential or UsernamePasswordCredential.
-// This credential type will check for the following environment variables in the same order as listed:
-// - AZURE_TENANT_ID
-// - AZURE_CLIENT_ID
-// - AZURE_CLIENT_SECRET
-// - AZURE_CLIENT_CERTIFICATE_PATH
-// - AZURE_USERNAME
-// - AZURE_PASSWORD
-// NOTE: EnvironmentCredential will stop checking environment variables as soon as it finds enough environment variables to
-// create a credential type.
+// EnvironmentCredential authenticates a service principal with a secret or certificate, or a user with a password, depending
+// on environment variable configuration. It reads configuration from these variables, in the following order:
+//
+// Service principal:
+// - AZURE_TENANT_ID: ID of the service principal's tenant. Also called its "directory" ID.
+// - AZURE_CLIENT_ID: the service principal's client ID
+// - AZURE_CLIENT_SECRET: one of the service principal's client secrets
+//
+// Service principal with certificate:
+// - AZURE_TENANT_ID: ID of the service principal's tenant. Also called its "directory" ID.
+// - AZURE_CLIENT_ID: the service principal's client ID
+// - AZURE_CLIENT_CERTIFICATE_PATH: path to a PEM or PKCS12 certificate file including the private key. The
+//   certificate must not be password-protected.
+//
+// User with username and password:
+// - AZURE_CLIENT_ID: the application's client ID
+// - AZURE_USERNAME: a username (usually an email address)
+// - AZURE_PASSWORD: that user's password
+// - AZURE_TENANT_ID: (optional) tenant to authenticate in. If not set, defaults to the "organizations" tenant, which
+//   can authenticate only Azure Active Directory work or school accounts.
 type EnvironmentCredential struct {
 	cred azcore.TokenCredential
 }
 
-// NewEnvironmentCredential creates an instance that implements the azcore.TokenCredential interface and reads credential details from environment variables.
-// If the expected environment variables are not found at this time, then a CredentialUnavailableError will be returned.
-// options: The options used to configure the management of the requests sent to Azure Active Directory.
+// NewEnvironmentCredential creates an EnvironmentCredential.
+// options: Optional configuration.
 func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*EnvironmentCredential, error) {
-	if options == nil {
-		options = &EnvironmentCredentialOptions{}
+	cp := EnvironmentCredentialOptions{}
+	if options != nil {
+		cp = *options
 	}
 	tenantID := os.Getenv("AZURE_TENANT_ID")
 	if tenantID == "" {
-		err := &CredentialUnavailableError{credentialType: "Environment Credential", message: "Missing environment variable AZURE_TENANT_ID"}
-		logCredentialError(err.credentialType, err)
-		return nil, err
+		return nil, errors.New("Missing environment variable AZURE_TENANT_ID")
 	}
 	clientID := os.Getenv("AZURE_CLIENT_ID")
 	if clientID == "" {
-		err := &CredentialUnavailableError{credentialType: "Environment Credential", message: "Missing environment variable AZURE_CLIENT_ID"}
-		logCredentialError(err.credentialType, err)
-		return nil, err
+		return nil, errors.New("Missing environment variable AZURE_CLIENT_ID")
 	}
 	if clientSecret := os.Getenv("AZURE_CLIENT_SECRET"); clientSecret != "" {
-		log.Write(LogCredential, "Azure Identity => NewEnvironmentCredential() invoking ClientSecretCredential")
-		cred, err := NewClientSecretCredential(tenantID, clientID, clientSecret, &ClientSecretCredentialOptions{AuthorityHost: options.AuthorityHost, HTTPClient: options.HTTPClient, Retry: options.Retry, Telemetry: options.Telemetry, Logging: options.Logging})
+		log.Write(EventAuthentication, "Azure Identity => NewEnvironmentCredential() invoking ClientSecretCredential")
+		cred, err := NewClientSecretCredential(tenantID, clientID, clientSecret, &ClientSecretCredentialOptions{AuthorityHost: cp.AuthorityHost, ClientOptions: cp.ClientOptions})
 		if err != nil {
 			return nil, err
 		}
 		return &EnvironmentCredential{cred: cred}, nil
 	}
 	if certPath := os.Getenv("AZURE_CLIENT_CERTIFICATE_PATH"); certPath != "" {
-		log.Write(LogCredential, "Azure Identity => NewEnvironmentCredential() invoking ClientCertificateCredential")
+		log.Write(EventAuthentication, "Azure Identity => NewEnvironmentCredential() invoking ClientCertificateCredential")
 		certData, err := os.ReadFile(certPath)
 		if err != nil {
-			return nil, &CredentialUnavailableError{credentialType: "Environment Credential", message: "Failed to read certificate file: " + err.Error()}
+			return nil, fmt.Errorf("Failed to read certificate file: %v", err)
 		}
-		cred, err := NewClientCertificateCredential(tenantID, clientID, certData, &ClientCertificateCredentialOptions{AuthorityHost: options.AuthorityHost, HTTPClient: options.HTTPClient, Retry: options.Retry, Telemetry: options.Telemetry, Logging: options.Logging})
+		certs, key, err := ParseCertificates(certData, nil)
+		if err != nil {
+			return nil, fmt.Errorf(`failed to load certificate from "%s": %v`, certPath, err)
+		}
+		cred, err := NewClientCertificateCredential(tenantID, clientID, certs, key, &ClientCertificateCredentialOptions{AuthorityHost: cp.AuthorityHost, ClientOptions: cp.ClientOptions})
 		if err != nil {
 			return nil, err
 		}
@@ -84,23 +88,20 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 	}
 	if username := os.Getenv("AZURE_USERNAME"); username != "" {
 		if password := os.Getenv("AZURE_PASSWORD"); password != "" {
-			log.Write(LogCredential, "Azure Identity => NewEnvironmentCredential() invoking UsernamePasswordCredential")
-			cred, err := NewUsernamePasswordCredential(tenantID, clientID, username, password, &UsernamePasswordCredentialOptions{AuthorityHost: options.AuthorityHost, HTTPClient: options.HTTPClient, Retry: options.Retry, Telemetry: options.Telemetry, Logging: options.Logging})
+			log.Write(EventAuthentication, "Azure Identity => NewEnvironmentCredential() invoking UsernamePasswordCredential")
+			cred, err := NewUsernamePasswordCredential(tenantID, clientID, username, password, &UsernamePasswordCredentialOptions{AuthorityHost: cp.AuthorityHost, ClientOptions: cp.ClientOptions})
 			if err != nil {
 				return nil, err
 			}
 			return &EnvironmentCredential{cred: cred}, nil
 		}
 	}
-	err := &CredentialUnavailableError{credentialType: "Environment Credential", message: "Missing environment variable AZURE_CLIENT_SECRET or AZURE_CLIENT_CERTIFICATE_PATH or AZURE_USERNAME and AZURE_PASSWORD"}
-	logCredentialError(err.credentialType, err)
-	return nil, err
+	return nil, errors.New("Missing environment variable AZURE_CLIENT_SECRET or AZURE_CLIENT_CERTIFICATE_PATH or AZURE_USERNAME and AZURE_PASSWORD")
 }
 
-// GetToken obtains a token from Azure Active Directory, using the underlying credential's GetToken method.
+// GetToken obtains a token from Azure Active Directory. This method is called automatically by Azure SDK clients.
 // ctx: Context used to control the request lifetime.
-// opts: TokenRequestOptions contains the list of scopes for which the token will have access.
-// Returns an AccessToken which can be used to authenticate service client calls.
+// opts: Options for the token request, in particular the desired scope of the access token.
 func (c *EnvironmentCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 	return c.cred.GetToken(ctx, opts)
 }

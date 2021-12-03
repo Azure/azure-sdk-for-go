@@ -11,13 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ManagedDatabaseTablesClient contains the methods for the ManagedDatabaseTables group.
@@ -29,8 +30,15 @@ type ManagedDatabaseTablesClient struct {
 }
 
 // NewManagedDatabaseTablesClient creates a new instance of ManagedDatabaseTablesClient with the specified values.
-func NewManagedDatabaseTablesClient(con *arm.Connection, subscriptionID string) *ManagedDatabaseTablesClient {
-	return &ManagedDatabaseTablesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewManagedDatabaseTablesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagedDatabaseTablesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ManagedDatabaseTablesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Get managed database table
@@ -92,7 +100,7 @@ func (client *ManagedDatabaseTablesClient) getCreateRequest(ctx context.Context,
 func (client *ManagedDatabaseTablesClient) getHandleResponse(resp *http.Response) (ManagedDatabaseTablesGetResponse, error) {
 	result := ManagedDatabaseTablesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseTable); err != nil {
-		return ManagedDatabaseTablesGetResponse{}, err
+		return ManagedDatabaseTablesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -164,7 +172,7 @@ func (client *ManagedDatabaseTablesClient) listBySchemaCreateRequest(ctx context
 func (client *ManagedDatabaseTablesClient) listBySchemaHandleResponse(resp *http.Response) (ManagedDatabaseTablesListBySchemaResponse, error) {
 	result := ManagedDatabaseTablesListBySchemaResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseTableListResult); err != nil {
-		return ManagedDatabaseTablesListBySchemaResponse{}, err
+		return ManagedDatabaseTablesListBySchemaResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

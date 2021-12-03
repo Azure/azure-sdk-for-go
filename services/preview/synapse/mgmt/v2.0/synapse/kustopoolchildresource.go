@@ -34,7 +34,7 @@ func NewKustoPoolChildResourceClientWithBaseURI(baseURI string, subscriptionID s
 
 // CheckNameAvailability checks that the Kusto Pool child resource name is valid and is not already in use.
 // Parameters:
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // kustoPoolName - the name of the Kusto pool.
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // resourceName - the name of the Kusto Pool child resource.

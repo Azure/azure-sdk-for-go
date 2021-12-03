@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // KeysClient contains the methods for the Keys group.
@@ -30,8 +31,15 @@ type KeysClient struct {
 }
 
 // NewKeysClient creates a new instance of KeysClient with the specified values.
-func NewKeysClient(con *arm.Connection, subscriptionID string) *KeysClient {
-	return &KeysClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *KeysClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &KeysClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateIfNotExist - Creates the first version of a new key if it does not exist. If it already exists, then the existing key is returned without any write
@@ -87,7 +95,7 @@ func (client *KeysClient) createIfNotExistCreateRequest(ctx context.Context, res
 func (client *KeysClient) createIfNotExistHandleResponse(resp *http.Response) (KeysCreateIfNotExistResponse, error) {
 	result := KeysCreateIfNotExistResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Key); err != nil {
-		return KeysCreateIfNotExistResponse{}, err
+		return KeysCreateIfNotExistResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -156,7 +164,7 @@ func (client *KeysClient) getCreateRequest(ctx context.Context, resourceGroupNam
 func (client *KeysClient) getHandleResponse(resp *http.Response) (KeysGetResponse, error) {
 	result := KeysGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Key); err != nil {
-		return KeysGetResponse{}, err
+		return KeysGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -229,7 +237,7 @@ func (client *KeysClient) getVersionCreateRequest(ctx context.Context, resourceG
 func (client *KeysClient) getVersionHandleResponse(resp *http.Response) (KeysGetVersionResponse, error) {
 	result := KeysGetVersionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Key); err != nil {
-		return KeysGetVersionResponse{}, err
+		return KeysGetVersionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -291,7 +299,7 @@ func (client *KeysClient) listCreateRequest(ctx context.Context, resourceGroupNa
 func (client *KeysClient) listHandleResponse(resp *http.Response) (KeysListResponse, error) {
 	result := KeysListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyListResult); err != nil {
-		return KeysListResponse{}, err
+		return KeysListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -357,7 +365,7 @@ func (client *KeysClient) listVersionsCreateRequest(ctx context.Context, resourc
 func (client *KeysClient) listVersionsHandleResponse(resp *http.Response) (KeysListVersionsResponse, error) {
 	result := KeysListVersionsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyListResult); err != nil {
-		return KeysListVersionsResponse{}, err
+		return KeysListVersionsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

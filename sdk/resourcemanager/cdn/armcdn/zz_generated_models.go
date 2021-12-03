@@ -1062,7 +1062,7 @@ type Components18OrqelSchemasWafmetricsresponsePropertiesSeriesItemsPropertiesDa
 // MarshalJSON implements the json.Marshaller interface for type Components18OrqelSchemasWafmetricsresponsePropertiesSeriesItemsPropertiesDataItems.
 func (c Components18OrqelSchemasWafmetricsresponsePropertiesSeriesItemsPropertiesDataItems) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "dateTime", (*timeRFC3339)(c.DateTime))
+	populateTimeRFC3339(objectMap, "dateTime", c.DateTime)
 	populate(objectMap, "value", c.Value)
 	return json.Marshal(objectMap)
 }
@@ -1077,9 +1077,7 @@ func (c *Components18OrqelSchemasWafmetricsresponsePropertiesSeriesItemsProperti
 		var err error
 		switch key {
 		case "dateTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			c.DateTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &c.DateTime)
 			delete(rawMsg, key)
 		case "value":
 			err = unpopulate(val, &c.Value)
@@ -1100,7 +1098,7 @@ type Components1Gs0LlpSchemasMetricsresponsePropertiesSeriesItemsPropertiesDataI
 // MarshalJSON implements the json.Marshaller interface for type Components1Gs0LlpSchemasMetricsresponsePropertiesSeriesItemsPropertiesDataItems.
 func (c Components1Gs0LlpSchemasMetricsresponsePropertiesSeriesItemsPropertiesDataItems) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "dateTime", (*timeRFC3339)(c.DateTime))
+	populateTimeRFC3339(objectMap, "dateTime", c.DateTime)
 	populate(objectMap, "value", c.Value)
 	return json.Marshal(objectMap)
 }
@@ -1115,9 +1113,7 @@ func (c *Components1Gs0LlpSchemasMetricsresponsePropertiesSeriesItemsPropertiesD
 		var err error
 		switch key {
 		case "dateTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			c.DateTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &c.DateTime)
 			delete(rawMsg, key)
 		case "value":
 			err = unpopulate(val, &c.Value)
@@ -1318,6 +1314,9 @@ type CustomDomainProperties struct {
 	// REQUIRED; The host name of the custom domain. Must be a domain name.
 	HostName *string `json:"hostName,omitempty"`
 
+	// Certificate parameters for securing custom HTTPS
+	CustomHTTPSParameters CustomDomainHTTPSParametersClassification `json:"customHttpsParameters,omitempty"`
+
 	// Special validation or data may be required when delivering CDN to some regions due to local compliance reasons. E.g. ICP license number of a custom domain
 	// is required to deliver content in China.
 	ValidationData *string `json:"validationData,omitempty"`
@@ -1333,6 +1332,57 @@ type CustomDomainProperties struct {
 
 	// READ-ONLY; Resource status of the custom domain.
 	ResourceState *CustomDomainResourceState `json:"resourceState,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CustomDomainProperties.
+func (c CustomDomainProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "customHttpsParameters", c.CustomHTTPSParameters)
+	populate(objectMap, "customHttpsProvisioningState", c.CustomHTTPSProvisioningState)
+	populate(objectMap, "customHttpsProvisioningSubstate", c.CustomHTTPSProvisioningSubstate)
+	populate(objectMap, "hostName", c.HostName)
+	populate(objectMap, "provisioningState", c.ProvisioningState)
+	populate(objectMap, "resourceState", c.ResourceState)
+	populate(objectMap, "validationData", c.ValidationData)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type CustomDomainProperties.
+func (c *CustomDomainProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "customHttpsParameters":
+			c.CustomHTTPSParameters, err = unmarshalCustomDomainHTTPSParametersClassification(val)
+			delete(rawMsg, key)
+		case "customHttpsProvisioningState":
+			err = unpopulate(val, &c.CustomHTTPSProvisioningState)
+			delete(rawMsg, key)
+		case "customHttpsProvisioningSubstate":
+			err = unpopulate(val, &c.CustomHTTPSProvisioningSubstate)
+			delete(rawMsg, key)
+		case "hostName":
+			err = unpopulate(val, &c.HostName)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, &c.ProvisioningState)
+			delete(rawMsg, key)
+		case "resourceState":
+			err = unpopulate(val, &c.ResourceState)
+			delete(rawMsg, key)
+		case "validationData":
+			err = unpopulate(val, &c.ValidationData)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // CustomDomainPropertiesParameters - The JSON object that contains the properties of the custom domain to create.
@@ -3224,8 +3274,8 @@ type MetricsResponse struct {
 // MarshalJSON implements the json.Marshaller interface for type MetricsResponse.
 func (m MetricsResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "dateTimeBegin", (*timeRFC3339)(m.DateTimeBegin))
-	populate(objectMap, "dateTimeEnd", (*timeRFC3339)(m.DateTimeEnd))
+	populateTimeRFC3339(objectMap, "dateTimeBegin", m.DateTimeBegin)
+	populateTimeRFC3339(objectMap, "dateTimeEnd", m.DateTimeEnd)
 	populate(objectMap, "granularity", m.Granularity)
 	populate(objectMap, "series", m.Series)
 	return json.Marshal(objectMap)
@@ -3241,14 +3291,10 @@ func (m *MetricsResponse) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "dateTimeBegin":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			m.DateTimeBegin = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &m.DateTimeBegin)
 			delete(rawMsg, key)
 		case "dateTimeEnd":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			m.DateTimeEnd = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &m.DateTimeEnd)
 			delete(rawMsg, key)
 		case "granularity":
 			err = unpopulate(val, &m.Granularity)
@@ -3863,8 +3909,8 @@ type RankingsResponse struct {
 // MarshalJSON implements the json.Marshaller interface for type RankingsResponse.
 func (r RankingsResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "dateTimeBegin", (*timeRFC3339)(r.DateTimeBegin))
-	populate(objectMap, "dateTimeEnd", (*timeRFC3339)(r.DateTimeEnd))
+	populateTimeRFC3339(objectMap, "dateTimeBegin", r.DateTimeBegin)
+	populateTimeRFC3339(objectMap, "dateTimeEnd", r.DateTimeEnd)
 	populate(objectMap, "tables", r.Tables)
 	return json.Marshal(objectMap)
 }
@@ -3879,14 +3925,10 @@ func (r *RankingsResponse) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "dateTimeBegin":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			r.DateTimeBegin = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &r.DateTimeBegin)
 			delete(rawMsg, key)
 		case "dateTimeEnd":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			r.DateTimeEnd = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &r.DateTimeEnd)
 			delete(rawMsg, key)
 		case "tables":
 			err = unpopulate(val, &r.Tables)
@@ -5085,10 +5127,10 @@ type SystemData struct {
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "createdAt", (*timeRFC3339)(s.CreatedAt))
+	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
 	populate(objectMap, "createdBy", s.CreatedBy)
 	populate(objectMap, "createdByType", s.CreatedByType)
-	populate(objectMap, "lastModifiedAt", (*timeRFC3339)(s.LastModifiedAt))
+	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
 	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
 	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
 	return json.Marshal(objectMap)
@@ -5104,9 +5146,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "createdAt":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			s.CreatedAt = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
 			delete(rawMsg, key)
 		case "createdBy":
 			err = unpopulate(val, &s.CreatedBy)
@@ -5115,9 +5155,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &s.CreatedByType)
 			delete(rawMsg, key)
 		case "lastModifiedAt":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			s.LastModifiedAt = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
 			delete(rawMsg, key)
 		case "lastModifiedBy":
 			err = unpopulate(val, &s.LastModifiedBy)
@@ -5647,8 +5685,8 @@ type WafMetricsResponse struct {
 // MarshalJSON implements the json.Marshaller interface for type WafMetricsResponse.
 func (w WafMetricsResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "dateTimeBegin", (*timeRFC3339)(w.DateTimeBegin))
-	populate(objectMap, "dateTimeEnd", (*timeRFC3339)(w.DateTimeEnd))
+	populateTimeRFC3339(objectMap, "dateTimeBegin", w.DateTimeBegin)
+	populateTimeRFC3339(objectMap, "dateTimeEnd", w.DateTimeEnd)
 	populate(objectMap, "granularity", w.Granularity)
 	populate(objectMap, "series", w.Series)
 	return json.Marshal(objectMap)
@@ -5664,14 +5702,10 @@ func (w *WafMetricsResponse) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "dateTimeBegin":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			w.DateTimeBegin = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &w.DateTimeBegin)
 			delete(rawMsg, key)
 		case "dateTimeEnd":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			w.DateTimeEnd = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &w.DateTimeEnd)
 			delete(rawMsg, key)
 		case "granularity":
 			err = unpopulate(val, &w.Granularity)
@@ -5721,8 +5755,8 @@ type WafRankingsResponse struct {
 func (w WafRankingsResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "data", w.Data)
-	populate(objectMap, "dateTimeBegin", (*timeRFC3339)(w.DateTimeBegin))
-	populate(objectMap, "dateTimeEnd", (*timeRFC3339)(w.DateTimeEnd))
+	populateTimeRFC3339(objectMap, "dateTimeBegin", w.DateTimeBegin)
+	populateTimeRFC3339(objectMap, "dateTimeEnd", w.DateTimeEnd)
 	populate(objectMap, "groups", w.Groups)
 	return json.Marshal(objectMap)
 }
@@ -5740,14 +5774,10 @@ func (w *WafRankingsResponse) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &w.Data)
 			delete(rawMsg, key)
 		case "dateTimeBegin":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			w.DateTimeBegin = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &w.DateTimeBegin)
 			delete(rawMsg, key)
 		case "dateTimeEnd":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			w.DateTimeEnd = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &w.DateTimeEnd)
 			delete(rawMsg, key)
 		case "groups":
 			err = unpopulate(val, &w.Groups)

@@ -10,31 +10,26 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
 func TestContainerResponseParsing(t *testing.T) {
-	nowAsUnix := time.Now().Unix()
+	nowAsUnix := time.Unix(time.Now().Unix(), 0)
 
-	now := UnixTime{
-		Time: time.Unix(nowAsUnix, 0),
-	}
-
-	properties := &ContainerProperties{
-		Id:           "someId",
-		ETag:         "someEtag",
+	etag := azcore.ETag("etag")
+	properties := ContainerProperties{
+		ID:           "someId",
+		ETag:         &etag,
 		SelfLink:     "someSelfLink",
-		ResourceId:   "someResourceId",
-		LastModified: &now,
+		ResourceID:   "someResourceId",
+		LastModified: nowAsUnix,
 		PartitionKeyDefinition: PartitionKeyDefinition{
 			Paths:   []string{"somePath"},
-			Version: PartitionKeyDefinitionVersion2,
+			Version: 2,
 		},
-	}
-
-	container := &Container{
-		Id: "someId",
 	}
 
 	jsonString, err := json.Marshal(properties)
@@ -55,9 +50,9 @@ func TestContainerResponseParsing(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	pl := azruntime.NewPipeline(srv)
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", []policy.Policy{}, []policy.Policy{}, &policy.ClientOptions{Transport: srv})
 	resp, _ := pl.Do(req)
-	parsedResponse, err := newContainerResponse(resp, container)
+	parsedResponse, err := newContainerResponse(resp)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -70,24 +65,24 @@ func TestContainerResponseParsing(t *testing.T) {
 		t.Fatal("parsedResponse.ContainerProperties is nil")
 	}
 
-	if properties.Id != parsedResponse.ContainerProperties.Id {
-		t.Errorf("Expected Id to be %s, but got %s", properties.Id, parsedResponse.ContainerProperties.Id)
+	if properties.ID != parsedResponse.ContainerProperties.ID {
+		t.Errorf("Expected Id to be %s, but got %s", properties.ID, parsedResponse.ContainerProperties.ID)
 	}
 
-	if properties.ETag != parsedResponse.ContainerProperties.ETag {
-		t.Errorf("Expected ETag to be %s, but got %s", properties.ETag, parsedResponse.ContainerProperties.ETag)
+	if *properties.ETag != *parsedResponse.ContainerProperties.ETag {
+		t.Errorf("Expected ETag to be %s, but got %s", *properties.ETag, *parsedResponse.ContainerProperties.ETag)
 	}
 
 	if properties.SelfLink != parsedResponse.ContainerProperties.SelfLink {
 		t.Errorf("Expected SelfLink to be %s, but got %s", properties.SelfLink, parsedResponse.ContainerProperties.SelfLink)
 	}
 
-	if properties.ResourceId != parsedResponse.ContainerProperties.ResourceId {
-		t.Errorf("Expected ResourceId to be %s, but got %s", properties.ResourceId, parsedResponse.ContainerProperties.ResourceId)
+	if properties.ResourceID != parsedResponse.ContainerProperties.ResourceID {
+		t.Errorf("Expected ResourceId to be %s, but got %s", properties.ResourceID, parsedResponse.ContainerProperties.ResourceID)
 	}
 
-	if properties.LastModified.Time != parsedResponse.ContainerProperties.LastModified.Time {
-		t.Errorf("Expected LastModified.Time to be %s, but got %s", properties.LastModified.Time.UTC(), parsedResponse.ContainerProperties.LastModified.Time.UTC())
+	if properties.LastModified != parsedResponse.ContainerProperties.LastModified {
+		t.Errorf("Expected LastModified.Time to be %v, but got %v", properties.LastModified, parsedResponse.ContainerProperties.LastModified)
 	}
 
 	if properties.PartitionKeyDefinition.Paths[0] != parsedResponse.ContainerProperties.PartitionKeyDefinition.Paths[0] {
@@ -98,8 +93,8 @@ func TestContainerResponseParsing(t *testing.T) {
 		t.Errorf("Expected PartitionKeyDefinition.Version to be %d, but got %d", properties.PartitionKeyDefinition.Version, parsedResponse.ContainerProperties.PartitionKeyDefinition.Version)
 	}
 
-	if parsedResponse.ActivityId != "someActivityId" {
-		t.Errorf("Expected ActivityId to be %s, but got %s", "someActivityId", parsedResponse.ActivityId)
+	if parsedResponse.ActivityID != "someActivityId" {
+		t.Errorf("Expected ActivityId to be %s, but got %s", "someActivityId", parsedResponse.ActivityID)
 	}
 
 	if parsedResponse.RequestCharge != 13.42 {
@@ -108,9 +103,5 @@ func TestContainerResponseParsing(t *testing.T) {
 
 	if parsedResponse.ETag != "someEtag" {
 		t.Errorf("Expected ETag to be %s, but got %s", "someEtag", parsedResponse.ETag)
-	}
-
-	if parsedResponse.ContainerProperties.Container != container {
-		t.Errorf("Expected Container to be %v, but got %v", container, parsedResponse.ContainerProperties.Container)
 	}
 }

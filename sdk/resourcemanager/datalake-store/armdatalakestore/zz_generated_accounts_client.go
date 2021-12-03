@@ -11,15 +11,15 @@ package armdatalakestore
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // AccountsClient contains the methods for the Accounts group.
@@ -31,8 +31,15 @@ type AccountsClient struct {
 }
 
 // NewAccountsClient creates a new instance of AccountsClient with the specified values.
-func NewAccountsClient(con *arm.Connection, subscriptionID string) *AccountsClient {
-	return &AccountsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AccountsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &AccountsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CheckNameAvailability - Checks whether the specified account name is available or taken.
@@ -78,7 +85,7 @@ func (client *AccountsClient) checkNameAvailabilityCreateRequest(ctx context.Con
 func (client *AccountsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (AccountsCheckNameAvailabilityResponse, error) {
 	result := AccountsCheckNameAvailabilityResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NameAvailabilityInformation); err != nil {
-		return AccountsCheckNameAvailabilityResponse{}, err
+		return AccountsCheckNameAvailabilityResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -345,7 +352,7 @@ func (client *AccountsClient) getCreateRequest(ctx context.Context, resourceGrou
 func (client *AccountsClient) getHandleResponse(resp *http.Response) (AccountsGetResponse, error) {
 	result := AccountsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataLakeStoreAccount); err != nil {
-		return AccountsGetResponse{}, err
+		return AccountsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -416,7 +423,7 @@ func (client *AccountsClient) listCreateRequest(ctx context.Context, options *Ac
 func (client *AccountsClient) listHandleResponse(resp *http.Response) (AccountsListResponse, error) {
 	result := AccountsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataLakeStoreAccountListResult); err != nil {
-		return AccountsListResponse{}, err
+		return AccountsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -492,7 +499,7 @@ func (client *AccountsClient) listByResourceGroupCreateRequest(ctx context.Conte
 func (client *AccountsClient) listByResourceGroupHandleResponse(resp *http.Response) (AccountsListByResourceGroupResponse, error) {
 	result := AccountsListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataLakeStoreAccountListResult); err != nil {
-		return AccountsListByResourceGroupResponse{}, err
+		return AccountsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

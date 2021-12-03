@@ -12,15 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // AppServicePlansClient contains the methods for the AppServicePlans group.
@@ -32,8 +32,15 @@ type AppServicePlansClient struct {
 }
 
 // NewAppServicePlansClient creates a new instance of AppServicePlansClient with the specified values.
-func NewAppServicePlansClient(con *arm.Connection, subscriptionID string) *AppServicePlansClient {
-	return &AppServicePlansClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewAppServicePlansClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AppServicePlansClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &AppServicePlansClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Description for Creates or updates an App Service Plan.
@@ -167,7 +174,7 @@ func (client *AppServicePlansClient) createOrUpdateVnetRouteCreateRequest(ctx co
 func (client *AppServicePlansClient) createOrUpdateVnetRouteHandleResponse(resp *http.Response) (AppServicePlansCreateOrUpdateVnetRouteResponse, error) {
 	result := AppServicePlansCreateOrUpdateVnetRouteResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetRoute); err != nil {
-		return AppServicePlansCreateOrUpdateVnetRouteResponse{}, err
+		return AppServicePlansCreateOrUpdateVnetRouteResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -432,7 +439,7 @@ func (client *AppServicePlansClient) getCreateRequest(ctx context.Context, resou
 func (client *AppServicePlansClient) getHandleResponse(resp *http.Response) (AppServicePlansGetResponse, error) {
 	result := AppServicePlansGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppServicePlan); err != nil {
-		return AppServicePlansGetResponse{}, err
+		return AppServicePlansGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -513,7 +520,7 @@ func (client *AppServicePlansClient) getHybridConnectionCreateRequest(ctx contex
 func (client *AppServicePlansClient) getHybridConnectionHandleResponse(resp *http.Response) (AppServicePlansGetHybridConnectionResponse, error) {
 	result := AppServicePlansGetHybridConnectionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridConnection); err != nil {
-		return AppServicePlansGetHybridConnectionResponse{}, err
+		return AppServicePlansGetHybridConnectionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -578,7 +585,7 @@ func (client *AppServicePlansClient) getHybridConnectionPlanLimitCreateRequest(c
 func (client *AppServicePlansClient) getHybridConnectionPlanLimitHandleResponse(resp *http.Response) (AppServicePlansGetHybridConnectionPlanLimitResponse, error) {
 	result := AppServicePlansGetHybridConnectionPlanLimitResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridConnectionLimits); err != nil {
-		return AppServicePlansGetHybridConnectionPlanLimitResponse{}, err
+		return AppServicePlansGetHybridConnectionPlanLimitResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -651,7 +658,7 @@ func (client *AppServicePlansClient) getRouteForVnetCreateRequest(ctx context.Co
 func (client *AppServicePlansClient) getRouteForVnetHandleResponse(resp *http.Response) (AppServicePlansGetRouteForVnetResponse, error) {
 	result := AppServicePlansGetRouteForVnetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetRouteArray); err != nil {
-		return AppServicePlansGetRouteForVnetResponse{}, err
+		return AppServicePlansGetRouteForVnetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -724,7 +731,7 @@ func (client *AppServicePlansClient) getServerFarmSKUsCreateRequest(ctx context.
 func (client *AppServicePlansClient) getServerFarmSKUsHandleResponse(resp *http.Response) (AppServicePlansGetServerFarmSKUsResponse, error) {
 	result := AppServicePlansGetServerFarmSKUsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Object); err != nil {
-		return AppServicePlansGetServerFarmSKUsResponse{}, err
+		return AppServicePlansGetServerFarmSKUsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -793,7 +800,7 @@ func (client *AppServicePlansClient) getVnetFromServerFarmCreateRequest(ctx cont
 func (client *AppServicePlansClient) getVnetFromServerFarmHandleResponse(resp *http.Response) (AppServicePlansGetVnetFromServerFarmResponse, error) {
 	result := AppServicePlansGetVnetFromServerFarmResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetInfoResource); err != nil {
-		return AppServicePlansGetVnetFromServerFarmResponse{}, err
+		return AppServicePlansGetVnetFromServerFarmResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -874,7 +881,7 @@ func (client *AppServicePlansClient) getVnetGatewayCreateRequest(ctx context.Con
 func (client *AppServicePlansClient) getVnetGatewayHandleResponse(resp *http.Response) (AppServicePlansGetVnetGatewayResponse, error) {
 	result := AppServicePlansGetVnetGatewayResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetGateway); err != nil {
-		return AppServicePlansGetVnetGatewayResponse{}, err
+		return AppServicePlansGetVnetGatewayResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -931,7 +938,7 @@ func (client *AppServicePlansClient) listCreateRequest(ctx context.Context, opti
 func (client *AppServicePlansClient) listHandleResponse(resp *http.Response) (AppServicePlansListResponse, error) {
 	result := AppServicePlansListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppServicePlanCollection); err != nil {
-		return AppServicePlansListResponse{}, err
+		return AppServicePlansListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -989,7 +996,7 @@ func (client *AppServicePlansClient) listByResourceGroupCreateRequest(ctx contex
 func (client *AppServicePlansClient) listByResourceGroupHandleResponse(resp *http.Response) (AppServicePlansListByResourceGroupResponse, error) {
 	result := AppServicePlansListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppServicePlanCollection); err != nil {
-		return AppServicePlansListByResourceGroupResponse{}, err
+		return AppServicePlansListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1054,7 +1061,7 @@ func (client *AppServicePlansClient) listCapabilitiesCreateRequest(ctx context.C
 func (client *AppServicePlansClient) listCapabilitiesHandleResponse(resp *http.Response) (AppServicePlansListCapabilitiesResponse, error) {
 	result := AppServicePlansListCapabilitiesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CapabilityArray); err != nil {
-		return AppServicePlansListCapabilitiesResponse{}, err
+		return AppServicePlansListCapabilitiesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1127,7 +1134,7 @@ func (client *AppServicePlansClient) listHybridConnectionKeysCreateRequest(ctx c
 func (client *AppServicePlansClient) listHybridConnectionKeysHandleResponse(resp *http.Response) (AppServicePlansListHybridConnectionKeysResponse, error) {
 	result := AppServicePlansListHybridConnectionKeysResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridConnectionKey); err != nil {
-		return AppServicePlansListHybridConnectionKeysResponse{}, err
+		return AppServicePlansListHybridConnectionKeysResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1189,7 +1196,7 @@ func (client *AppServicePlansClient) listHybridConnectionsCreateRequest(ctx cont
 func (client *AppServicePlansClient) listHybridConnectionsHandleResponse(resp *http.Response) (AppServicePlansListHybridConnectionsResponse, error) {
 	result := AppServicePlansListHybridConnectionsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridConnectionCollection); err != nil {
-		return AppServicePlansListHybridConnectionsResponse{}, err
+		return AppServicePlansListHybridConnectionsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1258,7 +1265,7 @@ func (client *AppServicePlansClient) listRoutesForVnetCreateRequest(ctx context.
 func (client *AppServicePlansClient) listRoutesForVnetHandleResponse(resp *http.Response) (AppServicePlansListRoutesForVnetResponse, error) {
 	result := AppServicePlansListRoutesForVnetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetRouteArray); err != nil {
-		return AppServicePlansListRoutesForVnetResponse{}, err
+		return AppServicePlansListRoutesForVnetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1325,7 +1332,7 @@ func (client *AppServicePlansClient) listUsagesCreateRequest(ctx context.Context
 func (client *AppServicePlansClient) listUsagesHandleResponse(resp *http.Response) (AppServicePlansListUsagesResponse, error) {
 	result := AppServicePlansListUsagesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CsmUsageQuotaCollection); err != nil {
-		return AppServicePlansListUsagesResponse{}, err
+		return AppServicePlansListUsagesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1390,7 +1397,7 @@ func (client *AppServicePlansClient) listVnetsCreateRequest(ctx context.Context,
 func (client *AppServicePlansClient) listVnetsHandleResponse(resp *http.Response) (AppServicePlansListVnetsResponse, error) {
 	result := AppServicePlansListVnetsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetInfoResourceArray); err != nil {
-		return AppServicePlansListVnetsResponse{}, err
+		return AppServicePlansListVnetsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1463,7 +1470,7 @@ func (client *AppServicePlansClient) listWebAppsCreateRequest(ctx context.Contex
 func (client *AppServicePlansClient) listWebAppsHandleResponse(resp *http.Response) (AppServicePlansListWebAppsResponse, error) {
 	result := AppServicePlansListWebAppsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WebAppCollection); err != nil {
-		return AppServicePlansListWebAppsResponse{}, err
+		return AppServicePlansListWebAppsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1533,7 +1540,7 @@ func (client *AppServicePlansClient) listWebAppsByHybridConnectionCreateRequest(
 func (client *AppServicePlansClient) listWebAppsByHybridConnectionHandleResponse(resp *http.Response) (AppServicePlansListWebAppsByHybridConnectionResponse, error) {
 	result := AppServicePlansListWebAppsByHybridConnectionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceCollection); err != nil {
-		return AppServicePlansListWebAppsByHybridConnectionResponse{}, err
+		return AppServicePlansListWebAppsByHybridConnectionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1717,7 +1724,7 @@ func (client *AppServicePlansClient) updateCreateRequest(ctx context.Context, re
 func (client *AppServicePlansClient) updateHandleResponse(resp *http.Response) (AppServicePlansUpdateResponse, error) {
 	result := AppServicePlansUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppServicePlan); err != nil {
-		return AppServicePlansUpdateResponse{}, err
+		return AppServicePlansUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1790,7 +1797,7 @@ func (client *AppServicePlansClient) updateVnetGatewayCreateRequest(ctx context.
 func (client *AppServicePlansClient) updateVnetGatewayHandleResponse(resp *http.Response) (AppServicePlansUpdateVnetGatewayResponse, error) {
 	result := AppServicePlansUpdateVnetGatewayResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetGateway); err != nil {
-		return AppServicePlansUpdateVnetGatewayResponse{}, err
+		return AppServicePlansUpdateVnetGatewayResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1863,7 +1870,7 @@ func (client *AppServicePlansClient) updateVnetRouteCreateRequest(ctx context.Co
 func (client *AppServicePlansClient) updateVnetRouteHandleResponse(resp *http.Response) (AppServicePlansUpdateVnetRouteResponse, error) {
 	result := AppServicePlansUpdateVnetRouteResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetRoute); err != nil {
-		return AppServicePlansUpdateVnetRouteResponse{}, err
+		return AppServicePlansUpdateVnetRouteResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

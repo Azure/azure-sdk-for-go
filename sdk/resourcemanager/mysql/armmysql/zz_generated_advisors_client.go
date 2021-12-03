@@ -11,13 +11,14 @@ package armmysql
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // AdvisorsClient contains the methods for the Advisors group.
@@ -29,8 +30,15 @@ type AdvisorsClient struct {
 }
 
 // NewAdvisorsClient creates a new instance of AdvisorsClient with the specified values.
-func NewAdvisorsClient(con *arm.Connection, subscriptionID string) *AdvisorsClient {
-	return &AdvisorsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewAdvisorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AdvisorsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &AdvisorsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Get a recommendation action advisor.
@@ -84,7 +92,7 @@ func (client *AdvisorsClient) getCreateRequest(ctx context.Context, resourceGrou
 func (client *AdvisorsClient) getHandleResponse(resp *http.Response) (AdvisorsGetResponse, error) {
 	result := AdvisorsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Advisor); err != nil {
-		return AdvisorsGetResponse{}, err
+		return AdvisorsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -145,7 +153,7 @@ func (client *AdvisorsClient) listByServerCreateRequest(ctx context.Context, res
 func (client *AdvisorsClient) listByServerHandleResponse(resp *http.Response) (AdvisorsListByServerResponse, error) {
 	result := AdvisorsListByServerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AdvisorsResultList); err != nil {
-		return AdvisorsListByServerResponse{}, err
+		return AdvisorsListByServerResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

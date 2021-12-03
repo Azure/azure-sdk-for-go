@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ActivityLogAlertsClient contains the methods for the ActivityLogAlerts group.
@@ -30,8 +31,15 @@ type ActivityLogAlertsClient struct {
 }
 
 // NewActivityLogAlertsClient creates a new instance of ActivityLogAlertsClient with the specified values.
-func NewActivityLogAlertsClient(con *arm.Connection, subscriptionID string) *ActivityLogAlertsClient {
-	return &ActivityLogAlertsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewActivityLogAlertsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ActivityLogAlertsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ActivityLogAlertsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Create a new activity log alert or update an existing one.
@@ -81,7 +89,7 @@ func (client *ActivityLogAlertsClient) createOrUpdateCreateRequest(ctx context.C
 func (client *ActivityLogAlertsClient) createOrUpdateHandleResponse(resp *http.Response) (ActivityLogAlertsCreateOrUpdateResponse, error) {
 	result := ActivityLogAlertsCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActivityLogAlertResource); err != nil {
-		return ActivityLogAlertsCreateOrUpdateResponse{}, err
+		return ActivityLogAlertsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -202,7 +210,7 @@ func (client *ActivityLogAlertsClient) getCreateRequest(ctx context.Context, res
 func (client *ActivityLogAlertsClient) getHandleResponse(resp *http.Response) (ActivityLogAlertsGetResponse, error) {
 	result := ActivityLogAlertsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActivityLogAlertResource); err != nil {
-		return ActivityLogAlertsGetResponse{}, err
+		return ActivityLogAlertsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -263,7 +271,7 @@ func (client *ActivityLogAlertsClient) listByResourceGroupCreateRequest(ctx cont
 func (client *ActivityLogAlertsClient) listByResourceGroupHandleResponse(resp *http.Response) (ActivityLogAlertsListByResourceGroupResponse, error) {
 	result := ActivityLogAlertsListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActivityLogAlertList); err != nil {
-		return ActivityLogAlertsListByResourceGroupResponse{}, err
+		return ActivityLogAlertsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -320,7 +328,7 @@ func (client *ActivityLogAlertsClient) listBySubscriptionIDCreateRequest(ctx con
 func (client *ActivityLogAlertsClient) listBySubscriptionIDHandleResponse(resp *http.Response) (ActivityLogAlertsListBySubscriptionIDResponse, error) {
 	result := ActivityLogAlertsListBySubscriptionIDResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActivityLogAlertList); err != nil {
-		return ActivityLogAlertsListBySubscriptionIDResponse{}, err
+		return ActivityLogAlertsListBySubscriptionIDResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -385,7 +393,7 @@ func (client *ActivityLogAlertsClient) updateCreateRequest(ctx context.Context, 
 func (client *ActivityLogAlertsClient) updateHandleResponse(resp *http.Response) (ActivityLogAlertsUpdateResponse, error) {
 	result := ActivityLogAlertsUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActivityLogAlertResource); err != nil {
-		return ActivityLogAlertsUpdateResponse{}, err
+		return ActivityLogAlertsUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

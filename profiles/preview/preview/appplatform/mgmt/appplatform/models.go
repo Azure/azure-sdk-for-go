@@ -12,7 +12,7 @@ package appplatform
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/appplatform/mgmt/2021-06-01-preview/appplatform"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/appplatform/mgmt/2021-09-01-preview/appplatform"
 )
 
 const (
@@ -36,6 +36,15 @@ const (
 	ConfigServerStateNotAvailable ConfigServerState = original.ConfigServerStateNotAvailable
 	ConfigServerStateSucceeded    ConfigServerState = original.ConfigServerStateSucceeded
 	ConfigServerStateUpdating     ConfigServerState = original.ConfigServerStateUpdating
+)
+
+type CreatedByType = original.CreatedByType
+
+const (
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
 )
 
 type DeploymentResourceProvisioningState = original.DeploymentResourceProvisioningState
@@ -75,6 +84,13 @@ const (
 	MonitoringSettingStateNotAvailable MonitoringSettingState = original.MonitoringSettingStateNotAvailable
 	MonitoringSettingStateSucceeded    MonitoringSettingState = original.MonitoringSettingStateSucceeded
 	MonitoringSettingStateUpdating     MonitoringSettingState = original.MonitoringSettingStateUpdating
+)
+
+type PowerState = original.PowerState
+
+const (
+	PowerStateRunning PowerState = original.PowerStateRunning
+	PowerStateStopped PowerState = original.PowerStateStopped
 )
 
 type ProvisioningState = original.ProvisioningState
@@ -121,6 +137,13 @@ const (
 	SkuScaleTypeNone      SkuScaleType = original.SkuScaleTypeNone
 )
 
+type StorageType = original.StorageType
+
+const (
+	StorageTypeStorageAccount    StorageType = original.StorageTypeStorageAccount
+	StorageTypeStorageProperties StorageType = original.StorageTypeStorageProperties
+)
+
 type SupportedRuntimePlatform = original.SupportedRuntimePlatform
 
 const (
@@ -150,6 +173,21 @@ const (
 	TrafficDirectionOutbound TrafficDirection = original.TrafficDirectionOutbound
 )
 
+type Type = original.Type
+
+const (
+	TypeAzureFileVolume                Type = original.TypeAzureFileVolume
+	TypeCustomPersistentDiskProperties Type = original.TypeCustomPersistentDiskProperties
+)
+
+type TypeBasicCertificateProperties = original.TypeBasicCertificateProperties
+
+const (
+	TypeBasicCertificatePropertiesTypeCertificateProperties TypeBasicCertificateProperties = original.TypeBasicCertificatePropertiesTypeCertificateProperties
+	TypeBasicCertificatePropertiesTypeContentCertificate    TypeBasicCertificateProperties = original.TypeBasicCertificatePropertiesTypeContentCertificate
+	TypeBasicCertificatePropertiesTypeKeyVaultCertificate   TypeBasicCertificateProperties = original.TypeBasicCertificatePropertiesTypeKeyVaultCertificate
+)
+
 type UserSourceType = original.UserSourceType
 
 const (
@@ -173,7 +211,11 @@ type AvailableOperations = original.AvailableOperations
 type AvailableOperationsIterator = original.AvailableOperationsIterator
 type AvailableOperationsPage = original.AvailableOperationsPage
 type AvailableRuntimeVersions = original.AvailableRuntimeVersions
+type AzureFileVolume = original.AzureFileVolume
 type BaseClient = original.BaseClient
+type BasicCertificateProperties = original.BasicCertificateProperties
+type BasicCustomPersistentDiskProperties = original.BasicCustomPersistentDiskProperties
+type BasicStorageProperties = original.BasicStorageProperties
 type BindingResource = original.BindingResource
 type BindingResourceCollection = original.BindingResourceCollection
 type BindingResourceCollectionIterator = original.BindingResourceCollectionIterator
@@ -204,6 +246,7 @@ type ConfigServersClient = original.ConfigServersClient
 type ConfigServersUpdatePatchFuture = original.ConfigServersUpdatePatchFuture
 type ConfigServersUpdatePutFuture = original.ConfigServersUpdatePutFuture
 type ConfigServersValidateFuture = original.ConfigServersValidateFuture
+type ContentCertificateProperties = original.ContentCertificateProperties
 type CustomContainer = original.CustomContainer
 type CustomDomainProperties = original.CustomDomainProperties
 type CustomDomainResource = original.CustomDomainResource
@@ -216,6 +259,8 @@ type CustomDomainsClient = original.CustomDomainsClient
 type CustomDomainsCreateOrUpdateFuture = original.CustomDomainsCreateOrUpdateFuture
 type CustomDomainsDeleteFuture = original.CustomDomainsDeleteFuture
 type CustomDomainsUpdateFuture = original.CustomDomainsUpdateFuture
+type CustomPersistentDiskProperties = original.CustomPersistentDiskProperties
+type CustomPersistentDiskResource = original.CustomPersistentDiskResource
 type DeploymentInstance = original.DeploymentInstance
 type DeploymentResource = original.DeploymentResource
 type DeploymentResourceCollection = original.DeploymentResourceCollection
@@ -223,16 +268,23 @@ type DeploymentResourceCollectionIterator = original.DeploymentResourceCollectio
 type DeploymentResourceCollectionPage = original.DeploymentResourceCollectionPage
 type DeploymentResourceProperties = original.DeploymentResourceProperties
 type DeploymentSettings = original.DeploymentSettings
+type DeploymentSettingsContainerProbeSettings = original.DeploymentSettingsContainerProbeSettings
 type DeploymentsClient = original.DeploymentsClient
 type DeploymentsCreateOrUpdateFuture = original.DeploymentsCreateOrUpdateFuture
 type DeploymentsDeleteFuture = original.DeploymentsDeleteFuture
+type DeploymentsGenerateHeapDumpFuture = original.DeploymentsGenerateHeapDumpFuture
+type DeploymentsGenerateThreadDumpFuture = original.DeploymentsGenerateThreadDumpFuture
 type DeploymentsRestartFuture = original.DeploymentsRestartFuture
 type DeploymentsStartFuture = original.DeploymentsStartFuture
+type DeploymentsStartJFRFuture = original.DeploymentsStartJFRFuture
 type DeploymentsStopFuture = original.DeploymentsStopFuture
 type DeploymentsUpdateFuture = original.DeploymentsUpdateFuture
+type DiagnosticParameters = original.DiagnosticParameters
 type Error = original.Error
 type GitPatternRepository = original.GitPatternRepository
 type ImageRegistryCredential = original.ImageRegistryCredential
+type KeyVaultCertificateProperties = original.KeyVaultCertificateProperties
+type LoadedCertificate = original.LoadedCertificate
 type LogFileURLResponse = original.LogFileURLResponse
 type LogSpecification = original.LogSpecification
 type ManagedIdentityProperties = original.ManagedIdentityProperties
@@ -276,11 +328,23 @@ type ServiceSpecification = original.ServiceSpecification
 type ServicesClient = original.ServicesClient
 type ServicesCreateOrUpdateFuture = original.ServicesCreateOrUpdateFuture
 type ServicesDeleteFuture = original.ServicesDeleteFuture
+type ServicesStartFuture = original.ServicesStartFuture
+type ServicesStopFuture = original.ServicesStopFuture
 type ServicesUpdateFuture = original.ServicesUpdateFuture
 type Sku = original.Sku
 type SkuCapacity = original.SkuCapacity
 type SkusClient = original.SkusClient
+type StorageAccount = original.StorageAccount
+type StorageProperties = original.StorageProperties
+type StorageResource = original.StorageResource
+type StorageResourceCollection = original.StorageResourceCollection
+type StorageResourceCollectionIterator = original.StorageResourceCollectionIterator
+type StorageResourceCollectionPage = original.StorageResourceCollectionPage
+type StoragesClient = original.StoragesClient
+type StoragesCreateOrUpdateFuture = original.StoragesCreateOrUpdateFuture
+type StoragesDeleteFuture = original.StoragesDeleteFuture
 type SupportedRuntimeVersion = original.SupportedRuntimeVersion
+type SystemData = original.SystemData
 type TemporaryDisk = original.TemporaryDisk
 type TestKeys = original.TestKeys
 type TrackedResource = original.TrackedResource
@@ -403,6 +467,18 @@ func NewSkusClient(subscriptionID string) SkusClient {
 func NewSkusClientWithBaseURI(baseURI string, subscriptionID string) SkusClient {
 	return original.NewSkusClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewStorageResourceCollectionIterator(page StorageResourceCollectionPage) StorageResourceCollectionIterator {
+	return original.NewStorageResourceCollectionIterator(page)
+}
+func NewStorageResourceCollectionPage(cur StorageResourceCollection, getNextPage func(context.Context, StorageResourceCollection) (StorageResourceCollection, error)) StorageResourceCollectionPage {
+	return original.NewStorageResourceCollectionPage(cur, getNextPage)
+}
+func NewStoragesClient(subscriptionID string) StoragesClient {
+	return original.NewStoragesClient(subscriptionID)
+}
+func NewStoragesClientWithBaseURI(baseURI string, subscriptionID string) StoragesClient {
+	return original.NewStoragesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
@@ -411,6 +487,9 @@ func PossibleAppResourceProvisioningStateValues() []AppResourceProvisioningState
 }
 func PossibleConfigServerStateValues() []ConfigServerState {
 	return original.PossibleConfigServerStateValues()
+}
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
 }
 func PossibleDeploymentResourceProvisioningStateValues() []DeploymentResourceProvisioningState {
 	return original.PossibleDeploymentResourceProvisioningStateValues()
@@ -423,6 +502,9 @@ func PossibleManagedIdentityTypeValues() []ManagedIdentityType {
 }
 func PossibleMonitoringSettingStateValues() []MonitoringSettingState {
 	return original.PossibleMonitoringSettingStateValues()
+}
+func PossiblePowerStateValues() []PowerState {
+	return original.PossiblePowerStateValues()
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
@@ -439,6 +521,9 @@ func PossibleRuntimeVersionValues() []RuntimeVersion {
 func PossibleSkuScaleTypeValues() []SkuScaleType {
 	return original.PossibleSkuScaleTypeValues()
 }
+func PossibleStorageTypeValues() []StorageType {
+	return original.PossibleStorageTypeValues()
+}
 func PossibleSupportedRuntimePlatformValues() []SupportedRuntimePlatform {
 	return original.PossibleSupportedRuntimePlatformValues()
 }
@@ -450,6 +535,12 @@ func PossibleTestKeyTypeValues() []TestKeyType {
 }
 func PossibleTrafficDirectionValues() []TrafficDirection {
 	return original.PossibleTrafficDirectionValues()
+}
+func PossibleTypeBasicCertificatePropertiesValues() []TypeBasicCertificateProperties {
+	return original.PossibleTypeBasicCertificatePropertiesValues()
+}
+func PossibleTypeValues() []Type {
+	return original.PossibleTypeValues()
 }
 func PossibleUserSourceTypeValues() []UserSourceType {
 	return original.PossibleUserSourceTypeValues()

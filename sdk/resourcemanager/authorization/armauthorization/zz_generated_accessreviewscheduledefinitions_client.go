@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // AccessReviewScheduleDefinitionsClient contains the methods for the AccessReviewScheduleDefinitions group.
@@ -30,8 +31,15 @@ type AccessReviewScheduleDefinitionsClient struct {
 }
 
 // NewAccessReviewScheduleDefinitionsClient creates a new instance of AccessReviewScheduleDefinitionsClient with the specified values.
-func NewAccessReviewScheduleDefinitionsClient(con *arm.Connection, subscriptionID string) *AccessReviewScheduleDefinitionsClient {
-	return &AccessReviewScheduleDefinitionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewAccessReviewScheduleDefinitionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AccessReviewScheduleDefinitionsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &AccessReviewScheduleDefinitionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdateByID - Create or Update access review schedule definition.
@@ -77,7 +85,7 @@ func (client *AccessReviewScheduleDefinitionsClient) createOrUpdateByIDCreateReq
 func (client *AccessReviewScheduleDefinitionsClient) createOrUpdateByIDHandleResponse(resp *http.Response) (AccessReviewScheduleDefinitionsCreateOrUpdateByIDResponse, error) {
 	result := AccessReviewScheduleDefinitionsCreateOrUpdateByIDResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessReviewScheduleDefinition); err != nil {
-		return AccessReviewScheduleDefinitionsCreateOrUpdateByIDResponse{}, err
+		return AccessReviewScheduleDefinitionsCreateOrUpdateByIDResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -190,7 +198,7 @@ func (client *AccessReviewScheduleDefinitionsClient) getByIDCreateRequest(ctx co
 func (client *AccessReviewScheduleDefinitionsClient) getByIDHandleResponse(resp *http.Response) (AccessReviewScheduleDefinitionsGetByIDResponse, error) {
 	result := AccessReviewScheduleDefinitionsGetByIDResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessReviewScheduleDefinition); err != nil {
-		return AccessReviewScheduleDefinitionsGetByIDResponse{}, err
+		return AccessReviewScheduleDefinitionsGetByIDResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -244,7 +252,7 @@ func (client *AccessReviewScheduleDefinitionsClient) listCreateRequest(ctx conte
 func (client *AccessReviewScheduleDefinitionsClient) listHandleResponse(resp *http.Response) (AccessReviewScheduleDefinitionsListResponse, error) {
 	result := AccessReviewScheduleDefinitionsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessReviewScheduleDefinitionListResult); err != nil {
-		return AccessReviewScheduleDefinitionsListResponse{}, err
+		return AccessReviewScheduleDefinitionsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

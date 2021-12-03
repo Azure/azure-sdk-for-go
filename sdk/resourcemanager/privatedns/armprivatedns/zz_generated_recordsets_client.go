@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // RecordSetsClient contains the methods for the RecordSets group.
@@ -31,8 +32,15 @@ type RecordSetsClient struct {
 }
 
 // NewRecordSetsClient creates a new instance of RecordSetsClient with the specified values.
-func NewRecordSetsClient(con *arm.Connection, subscriptionID string) *RecordSetsClient {
-	return &RecordSetsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewRecordSetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RecordSetsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &RecordSetsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or updates a record set within a Private DNS zone.
@@ -67,9 +75,6 @@ func (client *RecordSetsClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter recordType cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{recordType}", url.PathEscape(string(recordType)))
-	if relativeRecordSetName == "" {
-		return nil, errors.New("parameter relativeRecordSetName cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{relativeRecordSetName}", relativeRecordSetName)
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -96,7 +101,7 @@ func (client *RecordSetsClient) createOrUpdateCreateRequest(ctx context.Context,
 func (client *RecordSetsClient) createOrUpdateHandleResponse(resp *http.Response) (RecordSetsCreateOrUpdateResponse, error) {
 	result := RecordSetsCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecordSet); err != nil {
-		return RecordSetsCreateOrUpdateResponse{}, err
+		return RecordSetsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -146,9 +151,6 @@ func (client *RecordSetsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter recordType cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{recordType}", url.PathEscape(string(recordType)))
-	if relativeRecordSetName == "" {
-		return nil, errors.New("parameter relativeRecordSetName cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{relativeRecordSetName}", relativeRecordSetName)
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -213,9 +215,6 @@ func (client *RecordSetsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter recordType cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{recordType}", url.PathEscape(string(recordType)))
-	if relativeRecordSetName == "" {
-		return nil, errors.New("parameter relativeRecordSetName cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{relativeRecordSetName}", relativeRecordSetName)
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -236,7 +235,7 @@ func (client *RecordSetsClient) getCreateRequest(ctx context.Context, resourceGr
 func (client *RecordSetsClient) getHandleResponse(resp *http.Response) (RecordSetsGetResponse, error) {
 	result := RecordSetsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecordSet); err != nil {
-		return RecordSetsGetResponse{}, err
+		return RecordSetsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -304,7 +303,7 @@ func (client *RecordSetsClient) listCreateRequest(ctx context.Context, resourceG
 func (client *RecordSetsClient) listHandleResponse(resp *http.Response) (RecordSetsListResponse, error) {
 	result := RecordSetsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecordSetListResult); err != nil {
-		return RecordSetsListResponse{}, err
+		return RecordSetsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -376,7 +375,7 @@ func (client *RecordSetsClient) listByTypeCreateRequest(ctx context.Context, res
 func (client *RecordSetsClient) listByTypeHandleResponse(resp *http.Response) (RecordSetsListByTypeResponse, error) {
 	result := RecordSetsListByTypeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecordSetListResult); err != nil {
-		return RecordSetsListByTypeResponse{}, err
+		return RecordSetsListByTypeResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -426,9 +425,6 @@ func (client *RecordSetsClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter recordType cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{recordType}", url.PathEscape(string(recordType)))
-	if relativeRecordSetName == "" {
-		return nil, errors.New("parameter relativeRecordSetName cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{relativeRecordSetName}", relativeRecordSetName)
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -452,7 +448,7 @@ func (client *RecordSetsClient) updateCreateRequest(ctx context.Context, resourc
 func (client *RecordSetsClient) updateHandleResponse(resp *http.Response) (RecordSetsUpdateResponse, error) {
 	result := RecordSetsUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecordSet); err != nil {
-		return RecordSetsUpdateResponse{}, err
+		return RecordSetsUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

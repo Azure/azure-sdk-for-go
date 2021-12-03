@@ -1,6 +1,19 @@
 # Release History
 
-## 0.20.0 (Unreleased)
+## 0.21.0 (Unreleased)
+
+### Features Added
+* Added `AllowedHeaders` and `AllowedQueryParams` to `policy.LogOptions` to control which headers and query parameters are written to the logger.
+
+### Breaking Changes
+* Moved `[]policy.Policy` parameters of `arm/runtime.NewPipeline` and `runtime.NewPipeline` into a new struct, `runtime.PipelineOptions`
+* Renamed `arm/ClientOptions.Host` to `.Endpoint`
+
+### Bugs Fixed
+
+### Other Changes
+
+## 0.20.0 (2021-10-22)
 
 ### Breaking Changes
 * Removed `arm.Connection`
@@ -18,6 +31,7 @@
 * Added string typdef `arm.Endpoint` to provide a hint toward expected ARM client endpoints
 * `azcore.ClientOptions` contains common pipeline configuration settings
 * Added support for multi-tenant authorization in `arm/runtime`
+* Require one second minimum when calling `PollUntilDone()`
 
 ### Bug Fixes
 * Fixed a potential panic when creating the default Transporter.

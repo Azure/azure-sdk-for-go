@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // RoleEligibilitySchedulesClient contains the methods for the RoleEligibilitySchedules group.
@@ -29,8 +30,15 @@ type RoleEligibilitySchedulesClient struct {
 }
 
 // NewRoleEligibilitySchedulesClient creates a new instance of RoleEligibilitySchedulesClient with the specified values.
-func NewRoleEligibilitySchedulesClient(con *arm.Connection) *RoleEligibilitySchedulesClient {
-	return &RoleEligibilitySchedulesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewRoleEligibilitySchedulesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *RoleEligibilitySchedulesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &RoleEligibilitySchedulesClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Get the specified role eligibility schedule for a resource scope
@@ -53,9 +61,6 @@ func (client *RoleEligibilitySchedulesClient) Get(ctx context.Context, scope str
 // getCreateRequest creates the Get request.
 func (client *RoleEligibilitySchedulesClient) getCreateRequest(ctx context.Context, scope string, roleEligibilityScheduleName string, options *RoleEligibilitySchedulesGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleEligibilitySchedules/{roleEligibilityScheduleName}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if roleEligibilityScheduleName == "" {
 		return nil, errors.New("parameter roleEligibilityScheduleName cannot be empty")
@@ -76,7 +81,7 @@ func (client *RoleEligibilitySchedulesClient) getCreateRequest(ctx context.Conte
 func (client *RoleEligibilitySchedulesClient) getHandleResponse(resp *http.Response) (RoleEligibilitySchedulesGetResponse, error) {
 	result := RoleEligibilitySchedulesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleEligibilitySchedule); err != nil {
-		return RoleEligibilitySchedulesGetResponse{}, err
+		return RoleEligibilitySchedulesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -111,9 +116,6 @@ func (client *RoleEligibilitySchedulesClient) ListForScope(scope string, options
 // listForScopeCreateRequest creates the ListForScope request.
 func (client *RoleEligibilitySchedulesClient) listForScopeCreateRequest(ctx context.Context, scope string, options *RoleEligibilitySchedulesListForScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleEligibilitySchedules"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -133,7 +135,7 @@ func (client *RoleEligibilitySchedulesClient) listForScopeCreateRequest(ctx cont
 func (client *RoleEligibilitySchedulesClient) listForScopeHandleResponse(resp *http.Response) (RoleEligibilitySchedulesListForScopeResponse, error) {
 	result := RoleEligibilitySchedulesListForScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleEligibilityScheduleListResult); err != nil {
-		return RoleEligibilitySchedulesListForScopeResponse{}, err
+		return RoleEligibilitySchedulesListForScopeResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

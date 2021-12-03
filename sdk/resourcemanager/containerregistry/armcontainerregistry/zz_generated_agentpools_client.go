@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // AgentPoolsClient contains the methods for the AgentPools group.
@@ -31,8 +31,15 @@ type AgentPoolsClient struct {
 }
 
 // NewAgentPoolsClient creates a new instance of AgentPoolsClient with the specified values.
-func NewAgentPoolsClient(con *arm.Connection, subscriptionID string) *AgentPoolsClient {
-	return &AgentPoolsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewAgentPoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AgentPoolsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &AgentPoolsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreate - Creates an agent pool for a container registry with the specified parameters.
@@ -246,7 +253,7 @@ func (client *AgentPoolsClient) getCreateRequest(ctx context.Context, resourceGr
 func (client *AgentPoolsClient) getHandleResponse(resp *http.Response) (AgentPoolsGetResponse, error) {
 	result := AgentPoolsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AgentPool); err != nil {
-		return AgentPoolsGetResponse{}, err
+		return AgentPoolsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -315,7 +322,7 @@ func (client *AgentPoolsClient) getQueueStatusCreateRequest(ctx context.Context,
 func (client *AgentPoolsClient) getQueueStatusHandleResponse(resp *http.Response) (AgentPoolsGetQueueStatusResponse, error) {
 	result := AgentPoolsGetQueueStatusResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AgentPoolQueueStatus); err != nil {
-		return AgentPoolsGetQueueStatusResponse{}, err
+		return AgentPoolsGetQueueStatusResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -377,7 +384,7 @@ func (client *AgentPoolsClient) listCreateRequest(ctx context.Context, resourceG
 func (client *AgentPoolsClient) listHandleResponse(resp *http.Response) (AgentPoolsListResponse, error) {
 	result := AgentPoolsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AgentPoolListResult); err != nil {
-		return AgentPoolsListResponse{}, err
+		return AgentPoolsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

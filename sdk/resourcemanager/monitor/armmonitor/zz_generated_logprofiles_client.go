@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // LogProfilesClient contains the methods for the LogProfiles group.
@@ -30,8 +31,15 @@ type LogProfilesClient struct {
 }
 
 // NewLogProfilesClient creates a new instance of LogProfilesClient with the specified values.
-func NewLogProfilesClient(con *arm.Connection, subscriptionID string) *LogProfilesClient {
-	return &LogProfilesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewLogProfilesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LogProfilesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &LogProfilesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Create or update a log profile in Azure Monitoring REST API.
@@ -77,7 +85,7 @@ func (client *LogProfilesClient) createOrUpdateCreateRequest(ctx context.Context
 func (client *LogProfilesClient) createOrUpdateHandleResponse(resp *http.Response) (LogProfilesCreateOrUpdateResponse, error) {
 	result := LogProfilesCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LogProfileResource); err != nil {
-		return LogProfilesCreateOrUpdateResponse{}, err
+		return LogProfilesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -187,7 +195,7 @@ func (client *LogProfilesClient) getCreateRequest(ctx context.Context, logProfil
 func (client *LogProfilesClient) getHandleResponse(resp *http.Response) (LogProfilesGetResponse, error) {
 	result := LogProfilesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LogProfileResource); err != nil {
-		return LogProfilesGetResponse{}, err
+		return LogProfilesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -244,7 +252,7 @@ func (client *LogProfilesClient) listCreateRequest(ctx context.Context, options 
 func (client *LogProfilesClient) listHandleResponse(resp *http.Response) (LogProfilesListResponse, error) {
 	result := LogProfilesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LogProfileCollection); err != nil {
-		return LogProfilesListResponse{}, err
+		return LogProfilesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -304,7 +312,7 @@ func (client *LogProfilesClient) updateCreateRequest(ctx context.Context, logPro
 func (client *LogProfilesClient) updateHandleResponse(resp *http.Response) (LogProfilesUpdateResponse, error) {
 	result := LogProfilesUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LogProfileResource); err != nil {
-		return LogProfilesUpdateResponse{}, err
+		return LogProfilesUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

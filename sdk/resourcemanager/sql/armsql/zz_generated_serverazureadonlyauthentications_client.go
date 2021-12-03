@@ -11,14 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // ServerAzureADOnlyAuthenticationsClient contains the methods for the ServerAzureADOnlyAuthentications group.
@@ -30,8 +30,15 @@ type ServerAzureADOnlyAuthenticationsClient struct {
 }
 
 // NewServerAzureADOnlyAuthenticationsClient creates a new instance of ServerAzureADOnlyAuthenticationsClient with the specified values.
-func NewServerAzureADOnlyAuthenticationsClient(con *arm.Connection, subscriptionID string) *ServerAzureADOnlyAuthenticationsClient {
-	return &ServerAzureADOnlyAuthenticationsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewServerAzureADOnlyAuthenticationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServerAzureADOnlyAuthenticationsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ServerAzureADOnlyAuthenticationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Sets Server Active Directory only authentication property or updates an existing server Active Directory only authentication property.
@@ -242,7 +249,7 @@ func (client *ServerAzureADOnlyAuthenticationsClient) getCreateRequest(ctx conte
 func (client *ServerAzureADOnlyAuthenticationsClient) getHandleResponse(resp *http.Response) (ServerAzureADOnlyAuthenticationsGetResponse, error) {
 	result := ServerAzureADOnlyAuthenticationsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerAzureADOnlyAuthentication); err != nil {
-		return ServerAzureADOnlyAuthenticationsGetResponse{}, err
+		return ServerAzureADOnlyAuthenticationsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -303,7 +310,7 @@ func (client *ServerAzureADOnlyAuthenticationsClient) listByServerCreateRequest(
 func (client *ServerAzureADOnlyAuthenticationsClient) listByServerHandleResponse(resp *http.Response) (ServerAzureADOnlyAuthenticationsListByServerResponse, error) {
 	result := ServerAzureADOnlyAuthenticationsListByServerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AzureADOnlyAuthListResult); err != nil {
-		return ServerAzureADOnlyAuthenticationsListByServerResponse{}, err
+		return ServerAzureADOnlyAuthenticationsListByServerResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -12,6 +12,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -31,8 +32,15 @@ type DeploymentsClient struct {
 }
 
 // NewDeploymentsClient creates a new instance of DeploymentsClient with the specified values.
-func NewDeploymentsClient(con *arm.Connection, subscriptionID string) *DeploymentsClient {
-	return &DeploymentsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewDeploymentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DeploymentsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &DeploymentsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CalculateTemplateHash - Calculate the hash of the given template.
@@ -70,7 +78,7 @@ func (client *DeploymentsClient) calculateTemplateHashCreateRequest(ctx context.
 func (client *DeploymentsClient) calculateTemplateHashHandleResponse(resp *http.Response) (DeploymentsCalculateTemplateHashResponse, error) {
 	result := DeploymentsCalculateTemplateHashResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TemplateHashResult); err != nil {
-		return DeploymentsCalculateTemplateHashResponse{}, err
+		return DeploymentsCalculateTemplateHashResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -222,9 +230,6 @@ func (client *DeploymentsClient) CancelAtScope(ctx context.Context, scope string
 // cancelAtScopeCreateRequest creates the CancelAtScope request.
 func (client *DeploymentsClient) cancelAtScopeCreateRequest(ctx context.Context, scope string, deploymentName string, options *DeploymentsCancelAtScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}/cancel"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if deploymentName == "" {
 		return nil, errors.New("parameter deploymentName cannot be empty")
@@ -463,9 +468,6 @@ func (client *DeploymentsClient) CheckExistenceAtScope(ctx context.Context, scop
 // checkExistenceAtScopeCreateRequest creates the CheckExistenceAtScope request.
 func (client *DeploymentsClient) checkExistenceAtScopeCreateRequest(ctx context.Context, scope string, deploymentName string, options *DeploymentsCheckExistenceAtScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if deploymentName == "" {
 		return nil, errors.New("parameter deploymentName cannot be empty")
@@ -746,9 +748,6 @@ func (client *DeploymentsClient) createOrUpdateAtScope(ctx context.Context, scop
 // createOrUpdateAtScopeCreateRequest creates the CreateOrUpdateAtScope request.
 func (client *DeploymentsClient) createOrUpdateAtScopeCreateRequest(ctx context.Context, scope string, deploymentName string, parameters Deployment, options *DeploymentsBeginCreateOrUpdateAtScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if deploymentName == "" {
 		return nil, errors.New("parameter deploymentName cannot be empty")
@@ -1142,9 +1141,6 @@ func (client *DeploymentsClient) deleteAtScope(ctx context.Context, scope string
 // deleteAtScopeCreateRequest creates the DeleteAtScope request.
 func (client *DeploymentsClient) deleteAtScopeCreateRequest(ctx context.Context, scope string, deploymentName string, options *DeploymentsBeginDeleteAtScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if deploymentName == "" {
 		return nil, errors.New("parameter deploymentName cannot be empty")
@@ -1385,7 +1381,7 @@ func (client *DeploymentsClient) exportTemplateCreateRequest(ctx context.Context
 func (client *DeploymentsClient) exportTemplateHandleResponse(resp *http.Response) (DeploymentsExportTemplateResponse, error) {
 	result := DeploymentsExportTemplateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentExportResult); err != nil {
-		return DeploymentsExportTemplateResponse{}, err
+		return DeploymentsExportTemplateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1446,7 +1442,7 @@ func (client *DeploymentsClient) exportTemplateAtManagementGroupScopeCreateReque
 func (client *DeploymentsClient) exportTemplateAtManagementGroupScopeHandleResponse(resp *http.Response) (DeploymentsExportTemplateAtManagementGroupScopeResponse, error) {
 	result := DeploymentsExportTemplateAtManagementGroupScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentExportResult); err != nil {
-		return DeploymentsExportTemplateAtManagementGroupScopeResponse{}, err
+		return DeploymentsExportTemplateAtManagementGroupScopeResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1484,9 +1480,6 @@ func (client *DeploymentsClient) ExportTemplateAtScope(ctx context.Context, scop
 // exportTemplateAtScopeCreateRequest creates the ExportTemplateAtScope request.
 func (client *DeploymentsClient) exportTemplateAtScopeCreateRequest(ctx context.Context, scope string, deploymentName string, options *DeploymentsExportTemplateAtScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}/exportTemplate"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if deploymentName == "" {
 		return nil, errors.New("parameter deploymentName cannot be empty")
@@ -1507,7 +1500,7 @@ func (client *DeploymentsClient) exportTemplateAtScopeCreateRequest(ctx context.
 func (client *DeploymentsClient) exportTemplateAtScopeHandleResponse(resp *http.Response) (DeploymentsExportTemplateAtScopeResponse, error) {
 	result := DeploymentsExportTemplateAtScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentExportResult); err != nil {
-		return DeploymentsExportTemplateAtScopeResponse{}, err
+		return DeploymentsExportTemplateAtScopeResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1568,7 +1561,7 @@ func (client *DeploymentsClient) exportTemplateAtSubscriptionScopeCreateRequest(
 func (client *DeploymentsClient) exportTemplateAtSubscriptionScopeHandleResponse(resp *http.Response) (DeploymentsExportTemplateAtSubscriptionScopeResponse, error) {
 	result := DeploymentsExportTemplateAtSubscriptionScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentExportResult); err != nil {
-		return DeploymentsExportTemplateAtSubscriptionScopeResponse{}, err
+		return DeploymentsExportTemplateAtSubscriptionScopeResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1625,7 +1618,7 @@ func (client *DeploymentsClient) exportTemplateAtTenantScopeCreateRequest(ctx co
 func (client *DeploymentsClient) exportTemplateAtTenantScopeHandleResponse(resp *http.Response) (DeploymentsExportTemplateAtTenantScopeResponse, error) {
 	result := DeploymentsExportTemplateAtTenantScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentExportResult); err != nil {
-		return DeploymentsExportTemplateAtTenantScopeResponse{}, err
+		return DeploymentsExportTemplateAtTenantScopeResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1690,7 +1683,7 @@ func (client *DeploymentsClient) getCreateRequest(ctx context.Context, resourceG
 func (client *DeploymentsClient) getHandleResponse(resp *http.Response) (DeploymentsGetResponse, error) {
 	result := DeploymentsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentExtended); err != nil {
-		return DeploymentsGetResponse{}, err
+		return DeploymentsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1751,7 +1744,7 @@ func (client *DeploymentsClient) getAtManagementGroupScopeCreateRequest(ctx cont
 func (client *DeploymentsClient) getAtManagementGroupScopeHandleResponse(resp *http.Response) (DeploymentsGetAtManagementGroupScopeResponse, error) {
 	result := DeploymentsGetAtManagementGroupScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentExtended); err != nil {
-		return DeploymentsGetAtManagementGroupScopeResponse{}, err
+		return DeploymentsGetAtManagementGroupScopeResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1789,9 +1782,6 @@ func (client *DeploymentsClient) GetAtScope(ctx context.Context, scope string, d
 // getAtScopeCreateRequest creates the GetAtScope request.
 func (client *DeploymentsClient) getAtScopeCreateRequest(ctx context.Context, scope string, deploymentName string, options *DeploymentsGetAtScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if deploymentName == "" {
 		return nil, errors.New("parameter deploymentName cannot be empty")
@@ -1812,7 +1802,7 @@ func (client *DeploymentsClient) getAtScopeCreateRequest(ctx context.Context, sc
 func (client *DeploymentsClient) getAtScopeHandleResponse(resp *http.Response) (DeploymentsGetAtScopeResponse, error) {
 	result := DeploymentsGetAtScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentExtended); err != nil {
-		return DeploymentsGetAtScopeResponse{}, err
+		return DeploymentsGetAtScopeResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1873,7 +1863,7 @@ func (client *DeploymentsClient) getAtSubscriptionScopeCreateRequest(ctx context
 func (client *DeploymentsClient) getAtSubscriptionScopeHandleResponse(resp *http.Response) (DeploymentsGetAtSubscriptionScopeResponse, error) {
 	result := DeploymentsGetAtSubscriptionScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentExtended); err != nil {
-		return DeploymentsGetAtSubscriptionScopeResponse{}, err
+		return DeploymentsGetAtSubscriptionScopeResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1930,7 +1920,7 @@ func (client *DeploymentsClient) getAtTenantScopeCreateRequest(ctx context.Conte
 func (client *DeploymentsClient) getAtTenantScopeHandleResponse(resp *http.Response) (DeploymentsGetAtTenantScopeResponse, error) {
 	result := DeploymentsGetAtTenantScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentExtended); err != nil {
-		return DeploymentsGetAtTenantScopeResponse{}, err
+		return DeploymentsGetAtTenantScopeResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1990,7 +1980,7 @@ func (client *DeploymentsClient) listAtManagementGroupScopeCreateRequest(ctx con
 func (client *DeploymentsClient) listAtManagementGroupScopeHandleResponse(resp *http.Response) (DeploymentsListAtManagementGroupScopeResponse, error) {
 	result := DeploymentsListAtManagementGroupScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentListResult); err != nil {
-		return DeploymentsListAtManagementGroupScopeResponse{}, err
+		return DeploymentsListAtManagementGroupScopeResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -2025,9 +2015,6 @@ func (client *DeploymentsClient) ListAtScope(scope string, options *DeploymentsL
 // listAtScopeCreateRequest creates the ListAtScope request.
 func (client *DeploymentsClient) listAtScopeCreateRequest(ctx context.Context, scope string, options *DeploymentsListAtScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Resources/deployments/"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -2050,7 +2037,7 @@ func (client *DeploymentsClient) listAtScopeCreateRequest(ctx context.Context, s
 func (client *DeploymentsClient) listAtScopeHandleResponse(resp *http.Response) (DeploymentsListAtScopeResponse, error) {
 	result := DeploymentsListAtScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentListResult); err != nil {
-		return DeploymentsListAtScopeResponse{}, err
+		return DeploymentsListAtScopeResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -2110,7 +2097,7 @@ func (client *DeploymentsClient) listAtSubscriptionScopeCreateRequest(ctx contex
 func (client *DeploymentsClient) listAtSubscriptionScopeHandleResponse(resp *http.Response) (DeploymentsListAtSubscriptionScopeResponse, error) {
 	result := DeploymentsListAtSubscriptionScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentListResult); err != nil {
-		return DeploymentsListAtSubscriptionScopeResponse{}, err
+		return DeploymentsListAtSubscriptionScopeResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -2166,7 +2153,7 @@ func (client *DeploymentsClient) listAtTenantScopeCreateRequest(ctx context.Cont
 func (client *DeploymentsClient) listAtTenantScopeHandleResponse(resp *http.Response) (DeploymentsListAtTenantScopeResponse, error) {
 	result := DeploymentsListAtTenantScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentListResult); err != nil {
-		return DeploymentsListAtTenantScopeResponse{}, err
+		return DeploymentsListAtTenantScopeResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -2230,7 +2217,7 @@ func (client *DeploymentsClient) listByResourceGroupCreateRequest(ctx context.Co
 func (client *DeploymentsClient) listByResourceGroupHandleResponse(resp *http.Response) (DeploymentsListByResourceGroupResponse, error) {
 	result := DeploymentsListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentListResult); err != nil {
-		return DeploymentsListByResourceGroupResponse{}, err
+		return DeploymentsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -2436,9 +2423,6 @@ func (client *DeploymentsClient) validateAtScope(ctx context.Context, scope stri
 // validateAtScopeCreateRequest creates the ValidateAtScope request.
 func (client *DeploymentsClient) validateAtScopeCreateRequest(ctx context.Context, scope string, deploymentName string, parameters Deployment, options *DeploymentsBeginValidateAtScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}/validate"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if deploymentName == "" {
 		return nil, errors.New("parameter deploymentName cannot be empty")

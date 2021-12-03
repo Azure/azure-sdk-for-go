@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ConnectionTypeClient contains the methods for the ConnectionType group.
@@ -30,8 +31,15 @@ type ConnectionTypeClient struct {
 }
 
 // NewConnectionTypeClient creates a new instance of ConnectionTypeClient with the specified values.
-func NewConnectionTypeClient(con *arm.Connection, subscriptionID string) *ConnectionTypeClient {
-	return &ConnectionTypeClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewConnectionTypeClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ConnectionTypeClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ConnectionTypeClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Create a connection type.
@@ -85,7 +93,7 @@ func (client *ConnectionTypeClient) createOrUpdateCreateRequest(ctx context.Cont
 func (client *ConnectionTypeClient) createOrUpdateHandleResponse(resp *http.Response) (ConnectionTypeCreateOrUpdateResponse, error) {
 	result := ConnectionTypeCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionType); err != nil {
-		return ConnectionTypeCreateOrUpdateResponse{}, err
+		return ConnectionTypeCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -214,7 +222,7 @@ func (client *ConnectionTypeClient) getCreateRequest(ctx context.Context, resour
 func (client *ConnectionTypeClient) getHandleResponse(resp *http.Response) (ConnectionTypeGetResponse, error) {
 	result := ConnectionTypeGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionType); err != nil {
-		return ConnectionTypeGetResponse{}, err
+		return ConnectionTypeGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -276,7 +284,7 @@ func (client *ConnectionTypeClient) listByAutomationAccountCreateRequest(ctx con
 func (client *ConnectionTypeClient) listByAutomationAccountHandleResponse(resp *http.Response) (ConnectionTypeListByAutomationAccountResponse, error) {
 	result := ConnectionTypeListByAutomationAccountResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionTypeListResult); err != nil {
-		return ConnectionTypeListByAutomationAccountResponse{}, err
+		return ConnectionTypeListByAutomationAccountResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

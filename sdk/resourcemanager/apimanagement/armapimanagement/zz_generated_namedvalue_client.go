@@ -12,15 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // NamedValueClient contains the methods for the NamedValue group.
@@ -32,8 +32,15 @@ type NamedValueClient struct {
 }
 
 // NewNamedValueClient creates a new instance of NamedValueClient with the specified values.
-func NewNamedValueClient(con *arm.Connection, subscriptionID string) *NamedValueClient {
-	return &NamedValueClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewNamedValueClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *NamedValueClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &NamedValueClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Creates or updates named value.
@@ -97,7 +104,7 @@ func (client *NamedValueClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header.Set("If-Match", *options.IfMatch)
@@ -160,7 +167,7 @@ func (client *NamedValueClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("If-Match", ifMatch)
 	req.Raw().Header.Set("Accept", "application/json")
@@ -221,7 +228,7 @@ func (client *NamedValueClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -234,7 +241,7 @@ func (client *NamedValueClient) getHandleResponse(resp *http.Response) (NamedVal
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NamedValueContract); err != nil {
-		return NamedValueGetResponse{}, err
+		return NamedValueGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -290,7 +297,7 @@ func (client *NamedValueClient) getEntityTagCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -354,7 +361,7 @@ func (client *NamedValueClient) listByServiceCreateRequest(ctx context.Context, 
 	if options != nil && options.IsKeyVaultRefreshFailed != nil {
 		reqQP.Set("isKeyVaultRefreshFailed", strconv.FormatBool(*options.IsKeyVaultRefreshFailed))
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -364,7 +371,7 @@ func (client *NamedValueClient) listByServiceCreateRequest(ctx context.Context, 
 func (client *NamedValueClient) listByServiceHandleResponse(resp *http.Response) (NamedValueListByServiceResponse, error) {
 	result := NamedValueListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NamedValueCollection); err != nil {
-		return NamedValueListByServiceResponse{}, err
+		return NamedValueListByServiceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -423,7 +430,7 @@ func (client *NamedValueClient) listValueCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -436,7 +443,7 @@ func (client *NamedValueClient) listValueHandleResponse(resp *http.Response) (Na
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NamedValueSecretContract); err != nil {
-		return NamedValueListValueResponse{}, err
+		return NamedValueListValueResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -515,7 +522,7 @@ func (client *NamedValueClient) refreshSecretCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -595,7 +602,7 @@ func (client *NamedValueClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("If-Match", ifMatch)
 	req.Raw().Header.Set("Accept", "application/json")

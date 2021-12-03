@@ -1,0 +1,42 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://fakeaccount.table.core.windows.net/?comp=properties\u0026restype=service",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "PUT",
+        ":path": "/?comp=properties\u0026restype=service",
+        ":scheme": "https",
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "1488",
+        "Content-Type": "application/xml",
+        "User-Agent": "azsdk-go-aztables/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Tue, 26 Oct 2021 20:16:12 GMT",
+        "x-ms-version": "2019-02-02"
+      },
+      "RequestBody": "\u003CStorageServiceProperties\u003E\u003CCors\u003E\u003CCorsRule\u003E\u003CAllowedHeaders\u003Ex-ms-meta-data*\u003C/AllowedHeaders\u003E\u003CAllowedMethods\u003EPUT\u003C/AllowedMethods\u003E\u003CAllowedOrigins\u003Ewww.xyz.com\u003C/AllowedOrigins\u003E\u003CExposedHeaders\u003Ex-ms-meta-source*\u003C/ExposedHeaders\u003E\u003CMaxAgeInSeconds\u003E500\u003C/MaxAgeInSeconds\u003E\u003C/CorsRule\u003E\u003CCorsRule\u003E\u003CAllowedHeaders\u003Ex-ms-meta-data*\u003C/AllowedHeaders\u003E\u003CAllowedMethods\u003EPUT\u003C/AllowedMethods\u003E\u003CAllowedOrigins\u003Ewww.xyz.com\u003C/AllowedOrigins\u003E\u003CExposedHeaders\u003Ex-ms-meta-source*\u003C/ExposedHeaders\u003E\u003CMaxAgeInSeconds\u003E500\u003C/MaxAgeInSeconds\u003E\u003C/CorsRule\u003E\u003CCorsRule\u003E\u003CAllowedHeaders\u003Ex-ms-meta-data*\u003C/AllowedHeaders\u003E\u003CAllowedMethods\u003EPUT\u003C/AllowedMethods\u003E\u003CAllowedOrigins\u003Ewww.xyz.com\u003C/AllowedOrigins\u003E\u003CExposedHeaders\u003Ex-ms-meta-source*\u003C/ExposedHeaders\u003E\u003CMaxAgeInSeconds\u003E500\u003C/MaxAgeInSeconds\u003E\u003C/CorsRule\u003E\u003CCorsRule\u003E\u003CAllowedHeaders\u003Ex-ms-meta-data*\u003C/AllowedHeaders\u003E\u003CAllowedMethods\u003EPUT\u003C/AllowedMethods\u003E\u003CAllowedOrigins\u003Ewww.xyz.com\u003C/AllowedOrigins\u003E\u003CExposedHeaders\u003Ex-ms-meta-source*\u003C/ExposedHeaders\u003E\u003CMaxAgeInSeconds\u003E500\u003C/MaxAgeInSeconds\u003E\u003C/CorsRule\u003E\u003CCorsRule\u003E\u003CAllowedHeaders\u003Ex-ms-meta-data*\u003C/AllowedHeaders\u003E\u003CAllowedMethods\u003EPUT\u003C/AllowedMethods\u003E\u003CAllowedOrigins\u003Ewww.xyz.com\u003C/AllowedOrigins\u003E\u003CExposedHeaders\u003Ex-ms-meta-source*\u003C/ExposedHeaders\u003E\u003CMaxAgeInSeconds\u003E500\u003C/MaxAgeInSeconds\u003E\u003C/CorsRule\u003E\u003CCorsRule\u003E\u003CAllowedHeaders\u003Ex-ms-meta-data*\u003C/AllowedHeaders\u003E\u003CAllowedMethods\u003EPUT\u003C/AllowedMethods\u003E\u003CAllowedOrigins\u003Ewww.xyz.com\u003C/AllowedOrigins\u003E\u003CExposedHeaders\u003Ex-ms-meta-source*\u003C/ExposedHeaders\u003E\u003CMaxAgeInSeconds\u003E500\u003C/MaxAgeInSeconds\u003E\u003C/CorsRule\u003E\u003C/Cors\u003E\u003C/StorageServiceProperties\u003E",
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Content-Length": "327",
+        "Content-Type": "application/xml",
+        "Date": "Tue, 26 Oct 2021 20:16:11 GMT",
+        "Server": [
+          "Windows-Azure-Table/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-error-code": "InvalidXmlDocument",
+        "x-ms-request-id": "f245c18e-b002-005a-6ea6-ca173a000000",
+        "x-ms-version": "2019-02-02"
+      },
+      "ResponseBody": [
+        "\u003C?xml version=\u00221.0\u0022 encoding=\u0022utf-8\u0022?\u003E\u003Cm:error xmlns:m=\u0022http://schemas.microsoft.com/ado/2007/08/dataservices/metadata\u0022\u003E\u003Cm:code\u003EInvalidXmlDocument\u003C/m:code\u003E\u003Cm:message xml:lang=\u0022en-US\u0022\u003EXML specified is not syntactically valid.\n",
+        "RequestId:f245c18e-b002-005a-6ea6-ca173a000000\n",
+        "Time:2021-10-26T20:16:12.1927600Z\u003C/m:message\u003E\u003C/m:error\u003E"
+      ]
+    }
+  ],
+  "Variables": {}
+}

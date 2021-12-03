@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // AutomationsClient contains the methods for the Automations group.
@@ -30,8 +31,15 @@ type AutomationsClient struct {
 }
 
 // NewAutomationsClient creates a new instance of AutomationsClient with the specified values.
-func NewAutomationsClient(con *arm.Connection, subscriptionID string) *AutomationsClient {
-	return &AutomationsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewAutomationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AutomationsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &AutomationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or updates a security automation. If a security automation is already created and a subsequent request is issued for the same
@@ -82,7 +90,7 @@ func (client *AutomationsClient) createOrUpdateCreateRequest(ctx context.Context
 func (client *AutomationsClient) createOrUpdateHandleResponse(resp *http.Response) (AutomationsCreateOrUpdateResponse, error) {
 	result := AutomationsCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Automation); err != nil {
-		return AutomationsCreateOrUpdateResponse{}, err
+		return AutomationsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -203,7 +211,7 @@ func (client *AutomationsClient) getCreateRequest(ctx context.Context, resourceG
 func (client *AutomationsClient) getHandleResponse(resp *http.Response) (AutomationsGetResponse, error) {
 	result := AutomationsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Automation); err != nil {
-		return AutomationsGetResponse{}, err
+		return AutomationsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -258,7 +266,7 @@ func (client *AutomationsClient) listCreateRequest(ctx context.Context, options 
 func (client *AutomationsClient) listHandleResponse(resp *http.Response) (AutomationsListResponse, error) {
 	result := AutomationsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutomationList); err != nil {
-		return AutomationsListResponse{}, err
+		return AutomationsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -317,7 +325,7 @@ func (client *AutomationsClient) listByResourceGroupCreateRequest(ctx context.Co
 func (client *AutomationsClient) listByResourceGroupHandleResponse(resp *http.Response) (AutomationsListByResourceGroupResponse, error) {
 	result := AutomationsListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutomationList); err != nil {
-		return AutomationsListByResourceGroupResponse{}, err
+		return AutomationsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -382,7 +390,7 @@ func (client *AutomationsClient) validateCreateRequest(ctx context.Context, reso
 func (client *AutomationsClient) validateHandleResponse(resp *http.Response) (AutomationsValidateResponse, error) {
 	result := AutomationsValidateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutomationValidationStatus); err != nil {
-		return AutomationsValidateResponse{}, err
+		return AutomationsValidateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

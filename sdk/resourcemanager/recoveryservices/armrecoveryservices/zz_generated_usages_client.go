@@ -11,13 +11,14 @@ package armrecoveryservices
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // UsagesClient contains the methods for the Usages group.
@@ -29,8 +30,15 @@ type UsagesClient struct {
 }
 
 // NewUsagesClient creates a new instance of UsagesClient with the specified values.
-func NewUsagesClient(con *arm.Connection, subscriptionID string) *UsagesClient {
-	return &UsagesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *UsagesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &UsagesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // ListByVaults - Fetches the usages of the vault.
@@ -80,7 +88,7 @@ func (client *UsagesClient) listByVaultsCreateRequest(ctx context.Context, resou
 func (client *UsagesClient) listByVaultsHandleResponse(resp *http.Response) (UsagesListByVaultsResponse, error) {
 	result := UsagesListByVaultsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VaultUsageList); err != nil {
-		return UsagesListByVaultsResponse{}, err
+		return UsagesListByVaultsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

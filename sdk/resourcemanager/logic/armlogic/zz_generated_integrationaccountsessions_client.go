@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // IntegrationAccountSessionsClient contains the methods for the IntegrationAccountSessions group.
@@ -31,8 +32,15 @@ type IntegrationAccountSessionsClient struct {
 }
 
 // NewIntegrationAccountSessionsClient creates a new instance of IntegrationAccountSessionsClient with the specified values.
-func NewIntegrationAccountSessionsClient(con *arm.Connection, subscriptionID string) *IntegrationAccountSessionsClient {
-	return &IntegrationAccountSessionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewIntegrationAccountSessionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IntegrationAccountSessionsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &IntegrationAccountSessionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or updates an integration account session.
@@ -86,7 +94,7 @@ func (client *IntegrationAccountSessionsClient) createOrUpdateCreateRequest(ctx 
 func (client *IntegrationAccountSessionsClient) createOrUpdateHandleResponse(resp *http.Response) (IntegrationAccountSessionsCreateOrUpdateResponse, error) {
 	result := IntegrationAccountSessionsCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationAccountSession); err != nil {
-		return IntegrationAccountSessionsCreateOrUpdateResponse{}, err
+		return IntegrationAccountSessionsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -215,7 +223,7 @@ func (client *IntegrationAccountSessionsClient) getCreateRequest(ctx context.Con
 func (client *IntegrationAccountSessionsClient) getHandleResponse(resp *http.Response) (IntegrationAccountSessionsGetResponse, error) {
 	result := IntegrationAccountSessionsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationAccountSession); err != nil {
-		return IntegrationAccountSessionsGetResponse{}, err
+		return IntegrationAccountSessionsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -283,7 +291,7 @@ func (client *IntegrationAccountSessionsClient) listCreateRequest(ctx context.Co
 func (client *IntegrationAccountSessionsClient) listHandleResponse(resp *http.Response) (IntegrationAccountSessionsListResponse, error) {
 	result := IntegrationAccountSessionsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationAccountSessionListResult); err != nil {
-		return IntegrationAccountSessionsListResponse{}, err
+		return IntegrationAccountSessionsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

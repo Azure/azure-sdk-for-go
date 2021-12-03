@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ResourceProviderCommonClient contains the methods for the ResourceProviderCommon group.
@@ -30,8 +31,15 @@ type ResourceProviderCommonClient struct {
 }
 
 // NewResourceProviderCommonClient creates a new instance of ResourceProviderCommonClient with the specified values.
-func NewResourceProviderCommonClient(con *arm.Connection, subscriptionID string) *ResourceProviderCommonClient {
-	return &ResourceProviderCommonClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewResourceProviderCommonClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ResourceProviderCommonClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ResourceProviderCommonClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // GetSubscriptionQuota - Get the number of free and paid iot hubs in the subscription
@@ -73,7 +81,7 @@ func (client *ResourceProviderCommonClient) getSubscriptionQuotaCreateRequest(ct
 func (client *ResourceProviderCommonClient) getSubscriptionQuotaHandleResponse(resp *http.Response) (ResourceProviderCommonGetSubscriptionQuotaResponse, error) {
 	result := ResourceProviderCommonGetSubscriptionQuotaResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UserSubscriptionQuotaListResult); err != nil {
-		return ResourceProviderCommonGetSubscriptionQuotaResponse{}, err
+		return ResourceProviderCommonGetSubscriptionQuotaResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

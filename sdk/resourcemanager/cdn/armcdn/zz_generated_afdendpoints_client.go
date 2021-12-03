@@ -12,6 +12,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -30,8 +31,15 @@ type AFDEndpointsClient struct {
 }
 
 // NewAFDEndpointsClient creates a new instance of AFDEndpointsClient with the specified values.
-func NewAFDEndpointsClient(con *arm.Connection, subscriptionID string) *AFDEndpointsClient {
-	return &AFDEndpointsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewAFDEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AFDEndpointsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &AFDEndpointsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreate - Creates a new AzureFrontDoor endpoint with the specified endpoint name under the specified subscription, resource group and profile.
@@ -245,7 +253,7 @@ func (client *AFDEndpointsClient) getCreateRequest(ctx context.Context, resource
 func (client *AFDEndpointsClient) getHandleResponse(resp *http.Response) (AFDEndpointsGetResponse, error) {
 	result := AFDEndpointsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AFDEndpoint); err != nil {
-		return AFDEndpointsGetResponse{}, err
+		return AFDEndpointsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -307,7 +315,7 @@ func (client *AFDEndpointsClient) listByProfileCreateRequest(ctx context.Context
 func (client *AFDEndpointsClient) listByProfileHandleResponse(resp *http.Response) (AFDEndpointsListByProfileResponse, error) {
 	result := AFDEndpointsListByProfileResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AFDEndpointListResult); err != nil {
-		return AFDEndpointsListByProfileResponse{}, err
+		return AFDEndpointsListByProfileResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -373,7 +381,7 @@ func (client *AFDEndpointsClient) listResourceUsageCreateRequest(ctx context.Con
 func (client *AFDEndpointsClient) listResourceUsageHandleResponse(resp *http.Response) (AFDEndpointsListResourceUsageResponse, error) {
 	result := AFDEndpointsListResourceUsageResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UsagesListResult); err != nil {
-		return AFDEndpointsListResourceUsageResponse{}, err
+		return AFDEndpointsListResourceUsageResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -608,7 +616,7 @@ func (client *AFDEndpointsClient) validateCustomDomainCreateRequest(ctx context.
 func (client *AFDEndpointsClient) validateCustomDomainHandleResponse(resp *http.Response) (AFDEndpointsValidateCustomDomainResponse, error) {
 	result := AFDEndpointsValidateCustomDomainResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ValidateCustomDomainOutput); err != nil {
-		return AFDEndpointsValidateCustomDomainResponse{}, err
+		return AFDEndpointsValidateCustomDomainResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // APIExportClient contains the methods for the APIExport group.
@@ -30,8 +31,15 @@ type APIExportClient struct {
 }
 
 // NewAPIExportClient creates a new instance of APIExportClient with the specified values.
-func NewAPIExportClient(con *arm.Connection, subscriptionID string) *APIExportClient {
-	return &APIExportClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewAPIExportClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *APIExportClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &APIExportClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Gets the details of the API specified by its identifier in the format specified to the Storage Blob with SAS Key valid for 5 minutes.
@@ -77,7 +85,7 @@ func (client *APIExportClient) getCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("format", string(formatParam))
 	reqQP.Set("export", string(export))
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -87,7 +95,7 @@ func (client *APIExportClient) getCreateRequest(ctx context.Context, resourceGro
 func (client *APIExportClient) getHandleResponse(resp *http.Response) (APIExportGetResponse, error) {
 	result := APIExportGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIExportResult); err != nil {
-		return APIExportGetResponse{}, err
+		return APIExportGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

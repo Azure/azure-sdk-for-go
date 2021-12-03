@@ -10,9 +10,8 @@ package armdatalakestore
 
 import (
 	"context"
-	"net/http"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"net/http"
 )
 
 // AccountsCreatePoller provides polling facilities until the operation reaches a terminal state.

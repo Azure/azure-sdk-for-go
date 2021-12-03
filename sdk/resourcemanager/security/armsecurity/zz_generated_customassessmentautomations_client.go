@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // CustomAssessmentAutomationsClient contains the methods for the CustomAssessmentAutomations group.
@@ -30,14 +31,21 @@ type CustomAssessmentAutomationsClient struct {
 }
 
 // NewCustomAssessmentAutomationsClient creates a new instance of CustomAssessmentAutomationsClient with the specified values.
-func NewCustomAssessmentAutomationsClient(con *arm.Connection, subscriptionID string) *CustomAssessmentAutomationsClient {
-	return &CustomAssessmentAutomationsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewCustomAssessmentAutomationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CustomAssessmentAutomationsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &CustomAssessmentAutomationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Create - Creates or updates a custom assessment automation for the provided subscription. Please note that providing an existing custom assessment automation
 // will replace the existing record.
 // If the operation fails it returns the *CloudError error type.
-func (client *CustomAssessmentAutomationsClient) Create(ctx context.Context, resourceGroupName string, customAssessmentAutomationName string, customAssessmentAutomationBody CustomAssessmentAutomation, options *CustomAssessmentAutomationsCreateOptions) (CustomAssessmentAutomationsCreateResponse, error) {
+func (client *CustomAssessmentAutomationsClient) Create(ctx context.Context, resourceGroupName string, customAssessmentAutomationName string, customAssessmentAutomationBody CustomAssessmentAutomationRequest, options *CustomAssessmentAutomationsCreateOptions) (CustomAssessmentAutomationsCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, customAssessmentAutomationName, customAssessmentAutomationBody, options)
 	if err != nil {
 		return CustomAssessmentAutomationsCreateResponse{}, err
@@ -53,7 +61,7 @@ func (client *CustomAssessmentAutomationsClient) Create(ctx context.Context, res
 }
 
 // createCreateRequest creates the Create request.
-func (client *CustomAssessmentAutomationsClient) createCreateRequest(ctx context.Context, resourceGroupName string, customAssessmentAutomationName string, customAssessmentAutomationBody CustomAssessmentAutomation, options *CustomAssessmentAutomationsCreateOptions) (*policy.Request, error) {
+func (client *CustomAssessmentAutomationsClient) createCreateRequest(ctx context.Context, resourceGroupName string, customAssessmentAutomationName string, customAssessmentAutomationBody CustomAssessmentAutomationRequest, options *CustomAssessmentAutomationsCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Security/customAssessmentAutomations/{customAssessmentAutomationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -82,7 +90,7 @@ func (client *CustomAssessmentAutomationsClient) createCreateRequest(ctx context
 func (client *CustomAssessmentAutomationsClient) createHandleResponse(resp *http.Response) (CustomAssessmentAutomationsCreateResponse, error) {
 	result := CustomAssessmentAutomationsCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomAssessmentAutomation); err != nil {
-		return CustomAssessmentAutomationsCreateResponse{}, err
+		return CustomAssessmentAutomationsCreateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -203,7 +211,7 @@ func (client *CustomAssessmentAutomationsClient) getCreateRequest(ctx context.Co
 func (client *CustomAssessmentAutomationsClient) getHandleResponse(resp *http.Response) (CustomAssessmentAutomationsGetResponse, error) {
 	result := CustomAssessmentAutomationsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomAssessmentAutomation); err != nil {
-		return CustomAssessmentAutomationsGetResponse{}, err
+		return CustomAssessmentAutomationsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -261,7 +269,7 @@ func (client *CustomAssessmentAutomationsClient) listByResourceGroupCreateReques
 func (client *CustomAssessmentAutomationsClient) listByResourceGroupHandleResponse(resp *http.Response) (CustomAssessmentAutomationsListByResourceGroupResponse, error) {
 	result := CustomAssessmentAutomationsListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomAssessmentAutomationsListResult); err != nil {
-		return CustomAssessmentAutomationsListByResourceGroupResponse{}, err
+		return CustomAssessmentAutomationsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -315,7 +323,7 @@ func (client *CustomAssessmentAutomationsClient) listBySubscriptionCreateRequest
 func (client *CustomAssessmentAutomationsClient) listBySubscriptionHandleResponse(resp *http.Response) (CustomAssessmentAutomationsListBySubscriptionResponse, error) {
 	result := CustomAssessmentAutomationsListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomAssessmentAutomationsListResult); err != nil {
-		return CustomAssessmentAutomationsListBySubscriptionResponse{}, err
+		return CustomAssessmentAutomationsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

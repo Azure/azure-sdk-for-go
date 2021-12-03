@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // NetworkManagementClient contains the methods for the NetworkManagementClient group.
@@ -31,8 +31,15 @@ type NetworkManagementClient struct {
 }
 
 // NewNetworkManagementClient creates a new instance of NetworkManagementClient with the specified values.
-func NewNetworkManagementClient(con *arm.Connection, subscriptionID string) *NetworkManagementClient {
-	return &NetworkManagementClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewNetworkManagementClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *NetworkManagementClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &NetworkManagementClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CheckDNSNameAvailability - Checks whether a domain name in the cloudapp.azure.com zone is available for use.
@@ -69,7 +76,7 @@ func (client *NetworkManagementClient) checkDNSNameAvailabilityCreateRequest(ctx
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("domainNameLabel", domainNameLabel)
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -79,7 +86,7 @@ func (client *NetworkManagementClient) checkDNSNameAvailabilityCreateRequest(ctx
 func (client *NetworkManagementClient) checkDNSNameAvailabilityHandleResponse(resp *http.Response) (NetworkManagementClientCheckDNSNameAvailabilityResponse, error) {
 	result := NetworkManagementClientCheckDNSNameAvailabilityResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DNSNameAvailabilityResult); err != nil {
-		return NetworkManagementClientCheckDNSNameAvailabilityResponse{}, err
+		return NetworkManagementClientCheckDNSNameAvailabilityResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -154,7 +161,7 @@ func (client *NetworkManagementClient) deleteBastionShareableLinkCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, bslRequest)
@@ -207,7 +214,7 @@ func (client *NetworkManagementClient) disconnectActiveSessionsCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, sessionIDs)
@@ -217,7 +224,7 @@ func (client *NetworkManagementClient) disconnectActiveSessionsCreateRequest(ctx
 func (client *NetworkManagementClient) disconnectActiveSessionsHandleResponse(resp *http.Response) (NetworkManagementClientDisconnectActiveSessionsResponse, error) {
 	result := NetworkManagementClientDisconnectActiveSessionsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BastionSessionDeleteResult); err != nil {
-		return NetworkManagementClientDisconnectActiveSessionsResponse{}, err
+		return NetworkManagementClientDisconnectActiveSessionsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -294,7 +301,7 @@ func (client *NetworkManagementClient) generatevirtualwanvpnserverconfigurationv
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, vpnClientParams)
@@ -371,7 +378,7 @@ func (client *NetworkManagementClient) getActiveSessionsCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -381,7 +388,7 @@ func (client *NetworkManagementClient) getActiveSessionsCreateRequest(ctx contex
 func (client *NetworkManagementClient) getActiveSessionsHandleResponse(resp *http.Response) (NetworkManagementClientGetActiveSessionsResponse, error) {
 	result := NetworkManagementClientGetActiveSessionsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BastionActiveSessionListResult); err != nil {
-		return NetworkManagementClientGetActiveSessionsResponse{}, err
+		return NetworkManagementClientGetActiveSessionsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -433,7 +440,7 @@ func (client *NetworkManagementClient) getBastionShareableLinkCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, bslRequest)
@@ -443,7 +450,7 @@ func (client *NetworkManagementClient) getBastionShareableLinkCreateRequest(ctx 
 func (client *NetworkManagementClient) getBastionShareableLinkHandleResponse(resp *http.Response) (NetworkManagementClientGetBastionShareableLinkResponse, error) {
 	result := NetworkManagementClientGetBastionShareableLinkResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BastionShareableLinkListResult); err != nil {
-		return NetworkManagementClientGetBastionShareableLinkResponse{}, err
+		return NetworkManagementClientGetBastionShareableLinkResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -519,7 +526,7 @@ func (client *NetworkManagementClient) putBastionShareableLinkCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, bslRequest)
@@ -529,7 +536,7 @@ func (client *NetworkManagementClient) putBastionShareableLinkCreateRequest(ctx 
 func (client *NetworkManagementClient) putBastionShareableLinkHandleResponse(resp *http.Response) (NetworkManagementClientPutBastionShareableLinkResponse, error) {
 	result := NetworkManagementClientPutBastionShareableLinkResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BastionShareableLinkListResult); err != nil {
-		return NetworkManagementClientPutBastionShareableLinkResponse{}, err
+		return NetworkManagementClientPutBastionShareableLinkResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -584,7 +591,7 @@ func (client *NetworkManagementClient) supportedSecurityProvidersCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -594,7 +601,7 @@ func (client *NetworkManagementClient) supportedSecurityProvidersCreateRequest(c
 func (client *NetworkManagementClient) supportedSecurityProvidersHandleResponse(resp *http.Response) (NetworkManagementClientSupportedSecurityProvidersResponse, error) {
 	result := NetworkManagementClientSupportedSecurityProvidersResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualWanSecurityProviders); err != nil {
-		return NetworkManagementClientSupportedSecurityProvidersResponse{}, err
+		return NetworkManagementClientSupportedSecurityProvidersResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

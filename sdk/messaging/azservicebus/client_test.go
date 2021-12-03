@@ -11,11 +11,12 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
 	"github.com/stretchr/testify/require"
 )
 
 func TestNewClientWithAzureIdentity(t *testing.T) {
-	queue, cleanup := createQueue(t, getConnectionString(t), nil)
+	queue, cleanup := createQueue(t, test.GetConnectionString(t), nil)
 	defer cleanup()
 
 	// test with azure identity support
@@ -29,7 +30,7 @@ func TestNewClientWithAzureIdentity(t *testing.T) {
 	client, err := NewClient(ns, envCred, nil)
 	require.NoError(t, err)
 
-	sender, err := client.NewSender(queue)
+	sender, err := client.NewSender(queue, nil)
 	require.NoError(t, err)
 
 	err = sender.SendMessage(context.TODO(), &Message{Body: []byte("hello - authenticating with a TokenCredential")})
@@ -75,9 +76,6 @@ func TestNewClientUnitTests(t *testing.T) {
 		_, err = NewClient("", fakeTokenCredential, nil)
 		require.EqualError(t, err, "fullyQualifiedNamespace must not be empty")
 
-		_, err = NewClient("mysb", fakeTokenCredential, nil)
-		require.EqualError(t, err, "fullyQualifiedNamespace is not properly formed. Should be similar to 'myservicebus.servicebus.windows.net'")
-
 		_, err = NewClient("fake.something", nil, nil)
 		require.EqualError(t, err, "credential was nil")
 
@@ -86,11 +84,7 @@ func TestNewClientUnitTests(t *testing.T) {
 		require.NoError(t, internal.NamespacesWithTokenCredential("mysb.windows.servicebus.net",
 			fakeTokenCredential)(ns))
 
-		require.EqualValues(t, ns.Name, "mysb")
-		require.EqualValues(t, ns.Suffix, "windows.servicebus.net")
-
-		err = internal.NamespacesWithTokenCredential("mysb", fakeTokenCredential)(&internal.Namespace{})
-		require.EqualError(t, err, "fullyQualifiedNamespace is not properly formed. Should be similar to 'myservicebus.servicebus.windows.net'")
+		require.EqualValues(t, ns.FQDN, "mysb.windows.servicebus.net")
 	})
 
 	t.Run("CloseAndLinkTracking", func(t *testing.T) {
@@ -109,7 +103,7 @@ func TestNewClientUnitTests(t *testing.T) {
 		}
 
 		client, ns := setupClient()
-		_, err := client.NewSender("hello")
+		_, err := client.NewSender("hello", nil)
 
 		require.NoError(t, err)
 		require.EqualValues(t, 1, len(client.links))
@@ -139,7 +133,7 @@ func TestNewClientUnitTests(t *testing.T) {
 		require.EqualValues(t, 1, ns.AMQPLinks.Closed)
 
 		client, ns = setupClient()
-		_, err = client.NewProcessorForQueue("hello", nil)
+		_, err = newProcessorForQueue(client, "hello", nil)
 
 		require.NoError(t, err)
 		require.EqualValues(t, 1, len(client.links))
@@ -149,7 +143,7 @@ func TestNewClientUnitTests(t *testing.T) {
 		require.EqualValues(t, 1, ns.AMQPLinks.Closed)
 
 		client, ns = setupClient()
-		_, err = client.NewProcessorForSubscription("hello", "world", nil)
+		_, err = newProcessorForSubscription(client, "hello", "world", nil)
 
 		require.NoError(t, err)
 		require.EqualValues(t, 1, len(client.links))

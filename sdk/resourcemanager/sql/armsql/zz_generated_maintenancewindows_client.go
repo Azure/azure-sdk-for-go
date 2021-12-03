@@ -11,13 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // MaintenanceWindowsClient contains the methods for the MaintenanceWindows group.
@@ -29,8 +30,15 @@ type MaintenanceWindowsClient struct {
 }
 
 // NewMaintenanceWindowsClient creates a new instance of MaintenanceWindowsClient with the specified values.
-func NewMaintenanceWindowsClient(con *arm.Connection, subscriptionID string) *MaintenanceWindowsClient {
-	return &MaintenanceWindowsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewMaintenanceWindowsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *MaintenanceWindowsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &MaintenanceWindowsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Sets maintenance windows settings for a database.
@@ -144,7 +152,7 @@ func (client *MaintenanceWindowsClient) getCreateRequest(ctx context.Context, re
 func (client *MaintenanceWindowsClient) getHandleResponse(resp *http.Response) (MaintenanceWindowsGetResponse, error) {
 	result := MaintenanceWindowsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MaintenanceWindows); err != nil {
-		return MaintenanceWindowsGetResponse{}, err
+		return MaintenanceWindowsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // VirtualApplianceSKUsClient contains the methods for the VirtualApplianceSKUs group.
@@ -30,8 +31,15 @@ type VirtualApplianceSKUsClient struct {
 }
 
 // NewVirtualApplianceSKUsClient creates a new instance of VirtualApplianceSKUsClient with the specified values.
-func NewVirtualApplianceSKUsClient(con *arm.Connection, subscriptionID string) *VirtualApplianceSKUsClient {
-	return &VirtualApplianceSKUsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewVirtualApplianceSKUsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VirtualApplianceSKUsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &VirtualApplianceSKUsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Retrieves a single available sku for network virtual appliance.
@@ -67,7 +75,7 @@ func (client *VirtualApplianceSKUsClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -77,7 +85,7 @@ func (client *VirtualApplianceSKUsClient) getCreateRequest(ctx context.Context, 
 func (client *VirtualApplianceSKUsClient) getHandleResponse(resp *http.Response) (VirtualApplianceSKUsGetResponse, error) {
 	result := VirtualApplianceSKUsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkVirtualApplianceSKU); err != nil {
-		return VirtualApplianceSKUsGetResponse{}, err
+		return VirtualApplianceSKUsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -121,7 +129,7 @@ func (client *VirtualApplianceSKUsClient) listCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -131,7 +139,7 @@ func (client *VirtualApplianceSKUsClient) listCreateRequest(ctx context.Context,
 func (client *VirtualApplianceSKUsClient) listHandleResponse(resp *http.Response) (VirtualApplianceSKUsListResponse, error) {
 	result := VirtualApplianceSKUsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkVirtualApplianceSKUListResult); err != nil {
-		return VirtualApplianceSKUsListResponse{}, err
+		return VirtualApplianceSKUsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

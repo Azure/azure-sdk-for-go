@@ -17,8 +17,8 @@ type Response struct {
 	RawResponse *http.Response
 	// RequestCharge contains the value from the request charge header.
 	RequestCharge float32
-	// ActivityId contains the value from the activity header.
-	ActivityId string
+	// ActivityID contains the value from the activity header.
+	ActivityID string
 	// ETag contains the value from the ETag header.
 	ETag azcore.ETag
 }
@@ -27,7 +27,7 @@ func newResponse(resp *http.Response) Response {
 	response := Response{}
 	response.RawResponse = resp
 	response.RequestCharge = response.readRequestCharge()
-	response.ActivityId = resp.Header.Get(cosmosHeaderActivityId)
+	response.ActivityID = resp.Header.Get(cosmosHeaderActivityId)
 	response.ETag = azcore.ETag(resp.Header.Get(cosmosHeaderEtag))
 	return response
 }

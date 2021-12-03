@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // IntegrationServiceEnvironmentManagedAPIOperationsClient contains the methods for the IntegrationServiceEnvironmentManagedAPIOperations group.
@@ -30,8 +31,15 @@ type IntegrationServiceEnvironmentManagedAPIOperationsClient struct {
 }
 
 // NewIntegrationServiceEnvironmentManagedAPIOperationsClient creates a new instance of IntegrationServiceEnvironmentManagedAPIOperationsClient with the specified values.
-func NewIntegrationServiceEnvironmentManagedAPIOperationsClient(con *arm.Connection, subscriptionID string) *IntegrationServiceEnvironmentManagedAPIOperationsClient {
-	return &IntegrationServiceEnvironmentManagedAPIOperationsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewIntegrationServiceEnvironmentManagedAPIOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IntegrationServiceEnvironmentManagedAPIOperationsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &IntegrationServiceEnvironmentManagedAPIOperationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // List - Gets the managed Api operations.
@@ -82,7 +90,7 @@ func (client *IntegrationServiceEnvironmentManagedAPIOperationsClient) listCreat
 func (client *IntegrationServiceEnvironmentManagedAPIOperationsClient) listHandleResponse(resp *http.Response) (IntegrationServiceEnvironmentManagedAPIOperationsListResponse, error) {
 	result := IntegrationServiceEnvironmentManagedAPIOperationsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIOperationListResult); err != nil {
-		return IntegrationServiceEnvironmentManagedAPIOperationsListResponse{}, err
+		return IntegrationServiceEnvironmentManagedAPIOperationsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

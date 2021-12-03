@@ -34,7 +34,7 @@ func NewKustoPoolPrincipalAssignmentsClientWithBaseURI(baseURI string, subscript
 
 // CheckNameAvailability checks that the principal assignment name is valid and is not already in use.
 // Parameters:
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // kustoPoolName - the name of the Kusto pool.
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // principalAssignmentName - the name of the principal assignment.
@@ -127,7 +127,7 @@ func (client KustoPoolPrincipalAssignmentsClient) CheckNameAvailabilityResponder
 
 // CreateOrUpdate create a Kusto pool principalAssignment.
 // Parameters:
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // kustoPoolName - the name of the Kusto pool.
 // principalAssignmentName - the name of the Kusto principalAssignment.
 // resourceGroupName - the name of the resource group. The name is case insensitive.
@@ -226,7 +226,7 @@ func (client KustoPoolPrincipalAssignmentsClient) CreateOrUpdateResponder(resp *
 
 // Delete deletes a Kusto pool principalAssignment.
 // Parameters:
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // kustoPoolName - the name of the Kusto pool.
 // principalAssignmentName - the name of the Kusto principalAssignment.
 // resourceGroupName - the name of the resource group. The name is case insensitive.
@@ -317,7 +317,7 @@ func (client KustoPoolPrincipalAssignmentsClient) DeleteResponder(resp *http.Res
 
 // Get gets a Kusto pool principalAssignment.
 // Parameters:
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // kustoPoolName - the name of the Kusto pool.
 // principalAssignmentName - the name of the Kusto principalAssignment.
 // resourceGroupName - the name of the resource group. The name is case insensitive.
@@ -406,7 +406,7 @@ func (client KustoPoolPrincipalAssignmentsClient) GetResponder(resp *http.Respon
 
 // List lists all Kusto pool principalAssignments.
 // Parameters:
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // kustoPoolName - the name of the Kusto pool.
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 func (client KustoPoolPrincipalAssignmentsClient) List(ctx context.Context, workspaceName string, kustoPoolName string, resourceGroupName string) (result ClusterPrincipalAssignmentListResult, err error) {

@@ -10,15 +10,15 @@ package armmonitor
 
 import (
 	"context"
-	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // MetricsClient contains the methods for the Metrics group.
@@ -29,8 +29,15 @@ type MetricsClient struct {
 }
 
 // NewMetricsClient creates a new instance of MetricsClient with the specified values.
-func NewMetricsClient(con *arm.Connection) *MetricsClient {
-	return &MetricsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewMetricsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *MetricsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &MetricsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // List - Lists the metric values for a resource.
@@ -53,9 +60,6 @@ func (client *MetricsClient) List(ctx context.Context, resourceURI string, optio
 // listCreateRequest creates the List request.
 func (client *MetricsClient) listCreateRequest(ctx context.Context, resourceURI string, options *MetricsListOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Insights/metrics"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -99,7 +103,7 @@ func (client *MetricsClient) listCreateRequest(ctx context.Context, resourceURI 
 func (client *MetricsClient) listHandleResponse(resp *http.Response) (MetricsListResponse, error) {
 	result := MetricsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Response); err != nil {
-		return MetricsListResponse{}, err
+		return MetricsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

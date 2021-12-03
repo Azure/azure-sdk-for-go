@@ -11,14 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // ServerKeysClient contains the methods for the ServerKeys group.
@@ -30,8 +30,15 @@ type ServerKeysClient struct {
 }
 
 // NewServerKeysClient creates a new instance of ServerKeysClient with the specified values.
-func NewServerKeysClient(con *arm.Connection, subscriptionID string) *ServerKeysClient {
-	return &ServerKeysClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewServerKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServerKeysClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ServerKeysClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Creates or updates a server key.
@@ -242,7 +249,7 @@ func (client *ServerKeysClient) getCreateRequest(ctx context.Context, resourceGr
 func (client *ServerKeysClient) getHandleResponse(resp *http.Response) (ServerKeysGetResponse, error) {
 	result := ServerKeysGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerKey); err != nil {
-		return ServerKeysGetResponse{}, err
+		return ServerKeysGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -303,7 +310,7 @@ func (client *ServerKeysClient) listByServerCreateRequest(ctx context.Context, r
 func (client *ServerKeysClient) listByServerHandleResponse(resp *http.Response) (ServerKeysListByServerResponse, error) {
 	result := ServerKeysListByServerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerKeyListResult); err != nil {
-		return ServerKeysListByServerResponse{}, err
+		return ServerKeysListByServerResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ComplianceResultsClient contains the methods for the ComplianceResults group.
@@ -29,8 +30,15 @@ type ComplianceResultsClient struct {
 }
 
 // NewComplianceResultsClient creates a new instance of ComplianceResultsClient with the specified values.
-func NewComplianceResultsClient(con *arm.Connection) *ComplianceResultsClient {
-	return &ComplianceResultsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewComplianceResultsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *ComplianceResultsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ComplianceResultsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Security Compliance Result
@@ -53,9 +61,6 @@ func (client *ComplianceResultsClient) Get(ctx context.Context, resourceID strin
 // getCreateRequest creates the Get request.
 func (client *ComplianceResultsClient) getCreateRequest(ctx context.Context, resourceID string, complianceResultName string, options *ComplianceResultsGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/providers/Microsoft.Security/complianceResults/{complianceResultName}"
-	if resourceID == "" {
-		return nil, errors.New("parameter resourceID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	if complianceResultName == "" {
 		return nil, errors.New("parameter complianceResultName cannot be empty")
@@ -76,7 +81,7 @@ func (client *ComplianceResultsClient) getCreateRequest(ctx context.Context, res
 func (client *ComplianceResultsClient) getHandleResponse(resp *http.Response) (ComplianceResultsGetResponse, error) {
 	result := ComplianceResultsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComplianceResult); err != nil {
-		return ComplianceResultsGetResponse{}, err
+		return ComplianceResultsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -111,9 +116,6 @@ func (client *ComplianceResultsClient) List(scope string, options *ComplianceRes
 // listCreateRequest creates the List request.
 func (client *ComplianceResultsClient) listCreateRequest(ctx context.Context, scope string, options *ComplianceResultsListOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/complianceResults"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -130,7 +132,7 @@ func (client *ComplianceResultsClient) listCreateRequest(ctx context.Context, sc
 func (client *ComplianceResultsClient) listHandleResponse(resp *http.Response) (ComplianceResultsListResponse, error) {
 	result := ComplianceResultsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComplianceResultList); err != nil {
-		return ComplianceResultsListResponse{}, err
+		return ComplianceResultsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

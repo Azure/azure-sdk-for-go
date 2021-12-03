@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ReportsClient contains the methods for the Reports group.
@@ -31,8 +32,15 @@ type ReportsClient struct {
 }
 
 // NewReportsClient creates a new instance of ReportsClient with the specified values.
-func NewReportsClient(con *arm.Connection, subscriptionID string) *ReportsClient {
-	return &ReportsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewReportsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ReportsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ReportsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // ListByAPI - Lists report records by API.
@@ -79,7 +87,7 @@ func (client *ReportsClient) listByAPICreateRequest(ctx context.Context, resourc
 	if options != nil && options.Orderby != nil {
 		reqQP.Set("$orderby", *options.Orderby)
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -89,7 +97,7 @@ func (client *ReportsClient) listByAPICreateRequest(ctx context.Context, resourc
 func (client *ReportsClient) listByAPIHandleResponse(resp *http.Response) (ReportsListByAPIResponse, error) {
 	result := ReportsListByAPIResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReportCollection); err != nil {
-		return ReportsListByAPIResponse{}, err
+		return ReportsListByAPIResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -148,7 +156,7 @@ func (client *ReportsClient) listByGeoCreateRequest(ctx context.Context, resourc
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -158,7 +166,7 @@ func (client *ReportsClient) listByGeoCreateRequest(ctx context.Context, resourc
 func (client *ReportsClient) listByGeoHandleResponse(resp *http.Response) (ReportsListByGeoResponse, error) {
 	result := ReportsListByGeoResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReportCollection); err != nil {
-		return ReportsListByGeoResponse{}, err
+		return ReportsListByGeoResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -220,7 +228,7 @@ func (client *ReportsClient) listByOperationCreateRequest(ctx context.Context, r
 	if options != nil && options.Orderby != nil {
 		reqQP.Set("$orderby", *options.Orderby)
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -230,7 +238,7 @@ func (client *ReportsClient) listByOperationCreateRequest(ctx context.Context, r
 func (client *ReportsClient) listByOperationHandleResponse(resp *http.Response) (ReportsListByOperationResponse, error) {
 	result := ReportsListByOperationResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReportCollection); err != nil {
-		return ReportsListByOperationResponse{}, err
+		return ReportsListByOperationResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -292,7 +300,7 @@ func (client *ReportsClient) listByProductCreateRequest(ctx context.Context, res
 	if options != nil && options.Orderby != nil {
 		reqQP.Set("$orderby", *options.Orderby)
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -302,7 +310,7 @@ func (client *ReportsClient) listByProductCreateRequest(ctx context.Context, res
 func (client *ReportsClient) listByProductHandleResponse(resp *http.Response) (ReportsListByProductResponse, error) {
 	result := ReportsListByProductResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReportCollection); err != nil {
-		return ReportsListByProductResponse{}, err
+		return ReportsListByProductResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -364,7 +372,7 @@ func (client *ReportsClient) listByRequestCreateRequest(ctx context.Context, res
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -374,7 +382,7 @@ func (client *ReportsClient) listByRequestCreateRequest(ctx context.Context, res
 func (client *ReportsClient) listByRequestHandleResponse(resp *http.Response) (ReportsListByRequestResponse, error) {
 	result := ReportsListByRequestResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RequestReportCollection); err != nil {
-		return ReportsListByRequestResponse{}, err
+		return ReportsListByRequestResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -436,7 +444,7 @@ func (client *ReportsClient) listBySubscriptionCreateRequest(ctx context.Context
 	if options != nil && options.Orderby != nil {
 		reqQP.Set("$orderby", *options.Orderby)
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -446,7 +454,7 @@ func (client *ReportsClient) listBySubscriptionCreateRequest(ctx context.Context
 func (client *ReportsClient) listBySubscriptionHandleResponse(resp *http.Response) (ReportsListBySubscriptionResponse, error) {
 	result := ReportsListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReportCollection); err != nil {
-		return ReportsListBySubscriptionResponse{}, err
+		return ReportsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -509,7 +517,7 @@ func (client *ReportsClient) listByTimeCreateRequest(ctx context.Context, resour
 		reqQP.Set("$orderby", *options.Orderby)
 	}
 	reqQP.Set("interval", interval)
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -519,7 +527,7 @@ func (client *ReportsClient) listByTimeCreateRequest(ctx context.Context, resour
 func (client *ReportsClient) listByTimeHandleResponse(resp *http.Response) (ReportsListByTimeResponse, error) {
 	result := ReportsListByTimeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReportCollection); err != nil {
-		return ReportsListByTimeResponse{}, err
+		return ReportsListByTimeResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -581,7 +589,7 @@ func (client *ReportsClient) listByUserCreateRequest(ctx context.Context, resour
 	if options != nil && options.Orderby != nil {
 		reqQP.Set("$orderby", *options.Orderby)
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -591,7 +599,7 @@ func (client *ReportsClient) listByUserCreateRequest(ctx context.Context, resour
 func (client *ReportsClient) listByUserHandleResponse(resp *http.Response) (ReportsListByUserResponse, error) {
 	result := ReportsListByUserResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReportCollection); err != nil {
-		return ReportsListByUserResponse{}, err
+		return ReportsListByUserResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

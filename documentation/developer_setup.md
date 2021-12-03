@@ -49,36 +49,37 @@ Note that there are no exported fields on the `ServiceClient` struct, and as a r
 Constructors for clients are separate methods that are not associated with the struct. The constructor for the ServiceClient is as follow:
 ```golang
 // NewServiceClient creates a ServiceClient struct using the specified serviceURL, credential, and options.
-func NewServiceClient(serviceURL string, credential azcore.Credential, options *ClientOptions) (*ServiceClient, error) {
-	conOptions := options.getConnectionOptions()
-	if isCosmosEndpoint(serviceURL) {
-		conOptions.PerCallPolicies = []azcore.Policy{CosmosPatchTransformPolicy{}}
-	}
-	con := newConnection(serviceURL, cred, conOptions)
-	c, err := cred.(*SharedKeyCredential)
-	return &ServiceClient{client: &tableClient{con}, service: &serviceClient{con}, cred: *c}, err
+func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (ServiceClient, error) {
+	conOptions := getConnectionOptions(serviceURL, options)
+	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, runtime.NewBearerTokenPolicy(cred, []string{"https://storage.azure.com/.default"}, nil))
+	con := generated.NewConnection(serviceURL, conOptions)
+	return ServiceClient{
+		client:  generated.NewTableClient(con, generated.Enum0TwoThousandNineteen0202),
+		service: generated.NewServiceClient(con, generated.Enum0TwoThousandNineteen0202),
+		con:     con,
+	}, nil
 }
 ```
 In `Go`, the method parameters are enclosed with parenthesis immediately following the method name with the parameter name preceding the parameter type. The return arguments follow the parameters. If a method has more than one return parameter the types of the parameter must be enclosed in parenthesis. Note the `*` before a type indicates a pointer to that type. All methods that create a new client or interact with the service should return an `error` type as the last argument.
 
-This client takes three parameters, the first is the service URL for the specific account. The second is an [`interface`][go_interfaces] which is a specific struct that has definitions for a certain set of methods. In the case of `azcore.Credential` the `AuthenticationPolicy(options AuthenticationPolicyOptions) Policy` method must be defined to be a valid interface. The final argument to methods that create clients or interact with the service should be a pointer to an `Options` parameter. Making this final parameter a pointer allows the customer to pass in `nil` if there are no specific options they want to change. The `Options` type should have a name that is intuitive to what the customer is trying to do, in this case `ClientOptions`.
+This client takes three parameters, the first is the service URL for the specific account. The second is an [`interface`][go_interfaces] which is a specific struct that has definitions for a certain set of methods. In the case of `azcore.TokenCredential` the `GetToken(context.Context, options policy.TokenRequestOptions)` method must be defined to be a valid interface. The final argument to methods that create clients or interact with the service should be a pointer to an `Options` parameter. This options struct should have `azcore.ClientOptions` embedded and any service specific options. Making this final parameter a pointer allows the customer to pass in `nil` if there are no specific options they want to change.
 
 
 ### Defining Methods
 
 Defining a method follows the format:
 ```golang
-// Create creates a table with the specified name.
-func (s *ServiceClient) Create(ctx context.Context, name string) (TableResponseResponse, error) {
-	resp, err := t.client.Create(ctx, TableProperties{&name}, new(TableCreateOptions), new(QueryOptions))
-	if err == nil {
-		tableResp := resp.(TableResponseResponse)
-		return tableResp, nil
+// Create creates the table with the tableName specified when NewClient was called.
+func (t *Client) Create(ctx context.Context, options *CreateTableOptions) (CreateTableResponse, error) {
+	if options == nil {
+		options = &CreateTableOptions{}
 	}
-	return TableResponseResponse{}, err
+	resp, err := t.client.Create(ctx, generated.Enum1Three0, generated.TableProperties{TableName: &t.name}, options.toGenerated(), &generated.QueryOptions{})
+	return createTableResponseFromGen(&resp), err
 }
+
 ```
-The `(s *ServiceClient)` portion is the "receiver". Methods can be defined for either pointer (with a `*`) or receiver (without a `*`) types. Pointer receivers will not copy types on method calls and allows the method to mutate the receiving struct. Client methods should use a pointer receiver.
+The `(s *Client)` portion is the "receiver". Methods can be defined for either pointer (with a `*`) or receiver (without a `*`) types. Pointer receivers will not copy types on method calls and allows the method to mutate the receiving struct. Client methods should use a pointer receiver.
 
 All methods that perform I/O of any kind, sleep, or perform a significant amount of CPU-bound work must have the first parameter be of type [`context.Context`][golang_context] which allows the customer to carry a deadline, cancellation signal, and other values across API boundaries. The remaining parameters should be parameters specific to that method. The return types for methods should be first a "Response" object and second an `error` object.
 
@@ -87,10 +88,11 @@ All methods that perform I/O of any kind, sleep, or perform a significant amount
 
 Testing is built into the Go toolchain as well with the `testing` library. The testing infrastructure located in the `sdk/internal/recording` directory takes care of generating recordings, establishing the mode a test is being run in (options are "record" or "playback") and reading environment variables. The HTTP traffic is intercepted by a custom [test-proxy][test_proxy_docs] in both the "recording" and "playback" case to either persist or read HTTP interactions from a file. There is one small step that needs to be added to you client creation to route traffic to this test proxy. All three of these modes are specified in the `AZURE_RECORD_MODE` environment variable:
 
-| Mode | Powershell Command |
-| ---- | ------------------ |
-| record | `$ENV:AZURE_RECORD_MODE="record"` |
-| playback | `$ENV:AZURE_RECORD_MODE="playback"` |
+| Mode | Powershell Command | Usage |
+| ---- | ------------------ | ----- |
+| record | `$ENV:AZURE_RECORD_MODE="record"` | Running against a live service and recording HTTP interactions |
+| playback | `$ENV:AZURE_RECORD_MODE="playback"` | Running tests against recording HTTP interactiosn |
+| live | `$ENV:AZURE_RECORD_MODE="live"` | Bypassing test proxy, running against live service, and not recording HTTP interactions (used by live pipelines) |
 
 To get started first install [`docker`][get_docker]. Then to start the proxy, from the root of the repository, run the command `./eng/common/testproxy/docker-start-proxy.ps1 start`. This command will take care of pulling the pinned docker image and running it in the background.
 
@@ -99,19 +101,20 @@ It is not required to run the test-proxy from within the docker container, but t
 
 ### Test Mode Options
 
-There are two options for test modes: "recording" and "playback" each with their own purpose.
+There are three options for test modes: "recording", "playback", and "live, each with their own purpose.
 
 Recording mode is for testing against a live service and 'recording' the HTTP interactions in a JSON file for use later. This is helpful for developers because not every request will have to run through the service and makes your tests run much quicker. This also allows us to run our tests in public pipelines without fear of leaking secrets to our developer subscriptions.
 
 In playback mode the JSON file that the HTTP interactions are saved to is used in place of a real HTTP call. This is quicker and is used most often for quickly verifying you did not change the behavior of your library.
 
+Live mode is used by the internal pipelines to test directly against a service (similar to how a customer would do so). This mode bypasses any interactions with the test proxy.
 
 ### Routing Requests to the Proxy
 
-All clients should contain an options struct as the last parameter on the constructor. In this options struct you need to have a way to provide a custom HTTP transport object. In your tests, you will replace the default HTTP transport object with a custom one in the `internal/recording` library that takes care of all the routing for you. For example, here is that code snippet in the `aztable` package:
+All clients should contain an options struct as the last parameter on the constructor. In this options struct you need to have a way to provide a custom HTTP transport object. In your tests, you will replace the default HTTP transport object with a custom one in the `internal/recording` library that takes care of all the routing for you. For example, here is that code snippet in the `aztables` package:
 
 ```golang
-package aztable
+package aztables
 
 import (
 	...
@@ -119,64 +122,80 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
 
-var pathToPackage = "sdk/data/aztables"
+var pathToPackage = "sdk/data/aztables/testdata"
 
 type recordingPolicy struct {
 	options recording.RecordingOptions
+	t       *testing.T
 }
 
-func NewRecordingPolicy(o *recording.RecordingOptions) azcore.Policy {
-	if o == nil {
-		o = &recording.RecordingOptions{}
+func (r recordingPolicy) Host() string {
+	if r.options.UseHTTPS {
+		return "localhost:5001"
 	}
-	p := &recordingPolicy{options: *o}
-	p.options.Init()
+	return "localhost:5000"
+}
+
+func (r recordingPolicy) Scheme() string {
+	if r.options.UseHTTPS {
+		return "https"
+	}
+	return "http"
+}
+
+func NewRecordingPolicy(t *testing.T, o *recording.RecordingOptions) policy.Policy {
+	if o == nil {
+		o = &recording.RecordingOptions{UseHTTPS: true}
+	}
+	p := &recordingPolicy{options: *o, t: t}
 	return p
 }
 
-func (p *recordingPolicy) Do(req *azcore.Request) (resp *azcore.Response, err error) {
-	originalURLHost := req.URL.Host
-	req.URL.Scheme = "https"
-	req.URL.Host = p.options.Host
-	req.Host = p.options.Host
+func (p *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
+	if recording.GetRecordMode() != "live" && !recording.IsLiveOnly(p.t) {
+		originalURLHost := req.Raw().URL.Host
+		req.Raw().URL.Scheme = p.Scheme()
+		req.Raw().URL.Host = p.Host()
+		req.Raw().Host = p.Host()
 
-	req.Header.Set(recording.UpstreamUriHeader, fmt.Sprintf("%v://%v", p.options.Scheme, originalURLHost))
-	req.Header.Set(recording.ModeHeader, recording.GetRecordMode())
-	req.Header.Set(recording.IdHeader, recording.GetRecordingId())
-
+		req.Raw().Header.Set(recording.UpstreamURIHeader, fmt.Sprintf("%v://%v", p.Scheme(), originalURLHost))
+		req.Raw().Header.Set(recording.ModeHeader, recording.GetRecordMode())
+		req.Raw().Header.Set(recording.IDHeader, recording.GetRecordingId(p.t))
+	}
 	return req.Next()
 }
 
-func createClientForRecording(t *testing.T, tableName string, serviceURL string, cred azcore.Credential) (*Client, error) {
+func createClientForRecording(t *testing.T, tableName string, serviceURL string, cred SharedKeyCredential) (*Client, error) {
 	p := NewRecordingPolicy(t, &recording.RecordingOptions{UseHTTPS: true})
 	client, err := recording.GetHTTPClient(t)
 	require.NoError(t, err)
 
-	options := &ClientOptions{
-		PerCallOptions: []policy.Policy{p},
-		Transporter:    client,
-	}
+	options := &ClientOptions{ClientOptions: azcore.ClientOptions{
+		PerCallPolicies: []policy.Policy{p},
+		Transport:       client,
+	}}
 	if !strings.HasSuffix(serviceURL, "/") && tableName != "" {
 		serviceURL += "/"
 	}
 	serviceURL += tableName
 
-	return NewClient(serviceURL, cred, options)
+	return NewClientWithSharedKey(serviceURL, &cred, options)
 }
 ```
 
 Including this in a file for test helper methods will ensure that before each test the developer simply has to add
 ```golang
 func TestStartTests(t *testing.T) {
-	recording.StartRecording(t, "path/to/package", nil)
-	defer recording.StopRecording(t, nil)
+	err := recording.Start(t, "path/to/package", nil)
+	defer recording.Stop(t, nil)
+
 	client, err := createClientForRecording(t, "myTableName", "myServiceUrl", myCredential)
 	require.NoError(t, err)
 	...
 	<test code>
 }
 ```
-and nearly all of the test proxy interactions will be handled for them. In a later section ([scrubbing secrets](#scrubbing-secrets)) there is more information about purging secret keys and value from recording files. The first two methods (`StartRecording` and `StopRecording`) tell the proxy when an individual test is starting and stopping to communicate when to start recording HTTP interactions and when to persist it to disk. `StartRecording` takes three parameters, the `t *testing.T` parameter of the test, the path to where the recordings live for a package (this should be the path to the package), and an optional options struct.
+and nearly all of the test proxy interactions will be handled for them. In a later section ([scrubbing secrets](#scrubbing-secrets)) there is more information about purging secret keys and value from recording files. The first two methods (`Start` and `Stop`) tell the proxy when an individual test is starting and stopping to communicate when to start recording HTTP interactions and when to persist it to disk. `Start` takes three parameters, the `t *testing.T` parameter of the test, the path to where the recordings live for a package (this should be the path to the package), and an optional options struct.
 
 
 ### Writing Tests
@@ -200,8 +219,8 @@ const (
 
 // Test creating a single table
 func TestCreateTable(t *testing.T) {
-	recording.StartRecording(t, pathToPackage, nil)
-	defer recording.StopRecording(t, nil)
+	recording.Start(t, pathToPackage, nil)
+	defer recording.Stop(t, nil)
 
 	serviceUrl := fmt.Sprintf("https://%v.table.core.windows.net", accountName)
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -233,19 +252,19 @@ If you set the environment variable `AZURE_RECORD_MODE` to "record" and run `go 
 
 The recording files eventually live in the main repository (`github.com/Azure/azure-sdk-for-go`) and we need to make sure that all of these recordings are free from secrets. To do this we use Sanitizers with regular expressions for replacements. All of the available sanitizers are available as methods from the `recording` package. The recording methods generally take three parameters: the test instance (`t *testing.T`), the value to be removed (ie. an account name or key), and the value to use in replacement.
 
-| Sanitizer Type | Method | Parameters | Notes |
-| -------------- | ------ | ---------- | ----- |
-<!-- | BodyKeySanitizer | `recording.AddBodyKeySanitizer(t, ...)` | ... | ... |
-| BodyRegexSanitizer | `recording.BodyRegexSanitizer(t, ...)` | ... | ... |
-| ContinuationSanitizer | `recording.ContinuationSanitizer(t, ...)` | ... | ... |
-| GeneralRegexSanitizer | `recording.GeneralRegexSanitizer(t, ...)` | ... | ... |
-| HeaderRegexSanitizer | `recording.HeaderRegexSanitizer(t, ...)` | ... | ... |
-| OAuthResponseSanitizer | `recording.OAuthResponseSanitizer(t, ...)` | ... | ... |
-| RemoveHeaderSanitizer | `recording.RemoveHeaderSanitizer(t, ...)` | ... | ... |
-| ReplaceRequestSubscriptionId | `recording.ReplaceRequestSubscriptionId(t, ...)` | ... | ... | -->
-| UriRegexSanitizer | `recording.UriRegexSanitizer(t, ...)` | ... | ... |
+| Sanitizer Type | Method |
+| -------------- | ------ |
+| Body Key Sanitizer | `AddBodyKeySanitizer(jsonPath, value, regex string, options *RecordingOptions)` |
+| Body Regex Sanitizer | `AddBodyRegexSanitizer(value, regex string, options *RecordingOptions)` |
+| Continuation Sanitizer | `AddContinuationSanitizer(key, method string, resetAfterFirst bool, options *RecordingOptions)` |
+| General Regex Sanitizer | `AddGeneralRegexSanitizer(value, regex string, options *RecordingOptions)` |
+| Header Regex Sanitizer | `AddHeaderRegexSanitizer(key, value, regex string, options *RecordingOptions)` |
+| OAuth Response Sanitizer | `AddOAuthResponseSanitizer(options *RecordingOptions)` |
+| Remove Header Sanitizer | `AddRemoveHeaderSanitizer(headersForRemoval []string, options *RecordingOptions)` |
+| URI Sanitizer | `AddURISanitizer(value, regex string, options *RecordingOptions)` |
+| URI Subscription ID Sanitizer | `AddURISubscriptionIDSanitizer(value string, options *RecordingOptions)` |
 
-Note that removing the names of accounts and other values in your recording can have side effects when running your tests in playback. To take care of this, there are additional methods in the `internal/recording` module for reading environment variables and defaulting to the processed recording value. For example, if the `aztable` library had a test for creating a client and "requiring" the account name to be the same as provided it could potentially look similar to this:
+Note that removing the names of accounts and other values in your recording can have side effects when running your tests in playback. To take care of this, there are additional methods in the `internal/recording` module for reading environment variables and defaulting to the processed recording value. For example, if the `aztables` library had a test for creating a client and "requiring" the account name to be the same as provided it could potentially look similar to this:
 
 ```golang
 func TestClient(t *testing.T) {
@@ -263,42 +282,22 @@ func TestClient(t *testing.T) {
 
 ### Using `azidentity` Credentials In Tests
 
-The credentials in `azidentity` are not automatically configured to run in playback mode. To make sure your tests run in playback mode even with `azidentity` credentials the best practice is to use a simple `FakeCredential` type that inserts a fake Authorization header to mock a credential. An example for swapping the `DefaultAzureCredential` using a helper function is shown below in the context of `aztable`
+The credentials in `azidentity` are not automatically configured to run in playback mode. To make sure your tests run in playback mode even with `azidentity` credentials the best practice is to use a simple `FakeCredential` type that inserts a fake Authorization header to mock a credential. An example for swapping the `DefaultAzureCredential` using a helper function is shown below in the context of `aztables`
 
 ```golang
-type FakeCredential struct {
-	accountName string
-	accountKey  string
+type FakeCredential struct {}
+
+func NewFakeCredential() *FakeCredential {
+	return &FakeCredential{}
 }
 
-func NewFakeCredential(accountName, accountKey string) *FakeCredential {
-	return &FakeCredential{
-		accountName: accountName,
-		accountKey:  accountKey,
-	}
+func (f *FakeCredential) GetToken(ctx context.Context, options policy.TokenRequestOptions) (*azcore.AccessToken, error) {
+	return &azcore.AccessToken{Token: "***", ExpiresOn: time.Now().Add(time.Hour)}, nil
 }
 
-type fakeCredPolicy struct {
-	cred *FakeCredential
-}
-
-func newFakeCredPolicy(cred *FakeCredential, opts runtime.AuthenticationOptions) *fakeCredPolicy {
-	return &fakeCredPolicy{cred: cred}
-}
-
-func (f *fakeCredPolicy) Do(req *policy.Request) (*http.Response, error) {
-	authHeader := strings.Join([]string{"Authorization ", f.cred.accountName, ":", f.cred.accountKey}, "")
-	req.Raw().Header.Set(headerAuthorization, authHeader)
-	return req.Next()
-}
-
-func (f *FakeCredential) NewAuthenticationPolicy(options runtime.AuthenticationOptions) policy.Policy {
-	return newFakeCredPolicy(f, options)
-}
-
-func getAADCredential() (azcore.Credential, error) {
+func getAADCredential() (azcore.TokenCredential, error) {
 	if recording.InPlayback() {
-		return recording.NewFakeCredential("fakeAccountName", "fakeAccountKey"), nil
+		return NewFakeCredential(), nil
 	}
 	return azidentity.NewDefaultCredential(nil)
 }
@@ -312,7 +311,7 @@ func TestClientWithAAD(t *testing.T) {
 }
 ```
 
-The `FakeCredential` show here implements the `azcore.Credential` interface and can be used anywhere the `azcore.Credential` is used.
+The `FakeCredential` show here implements the `azcore.TokenCredential` interface and can be used anywhere the `azcore.TokenCredential` is used.
 
 
 ## Create Pipelines

@@ -10,18 +10,19 @@ import (
 	"net/http"
 	"net/url"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
 
 const (
 	tenantID                 = "expected-tenant"
 	badTenantID              = "bad_tenant"
-	clientID                 = "expected_client"
+	clientID                 = "expected-client-id"
 	secret                   = "secret"
 	wrongSecret              = "wrong_secret"
-	tokenValue               = "new_token"
 	scope                    = "https://storage.azure.com/.default"
 	defaultTestAuthorityHost = "login.microsoftonline.com"
 )
@@ -33,10 +34,6 @@ func TestClientSecretCredential_InvalidTenantID(t *testing.T) {
 	}
 	if cred != nil {
 		t.Fatalf("Expected a nil credential value. Received: %v", cred)
-	}
-	var errType *CredentialUnavailableError
-	if !errors.As(err, &errType) {
-		t.Fatalf("Did not receive a CredentialUnavailableError. Received: %t", err)
 	}
 }
 
@@ -84,7 +81,7 @@ func TestClientSecretCredential_GetTokenSuccess(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := ClientSecretCredentialOptions{}
 	options.AuthorityHost = AuthorityHost(srv.URL())
-	options.HTTPClient = srv
+	options.Transport = srv
 	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
@@ -101,7 +98,7 @@ func TestClientSecretCredential_GetTokenInvalidCredentials(t *testing.T) {
 	srv.SetResponse(mock.WithBody([]byte(accessTokenRespError)), mock.WithStatusCode(http.StatusUnauthorized))
 	options := ClientSecretCredentialOptions{}
 	options.AuthorityHost = AuthorityHost(srv.URL())
-	options.HTTPClient = srv
+	options.Transport = srv
 	cred, err := NewClientSecretCredential(tenantID, clientID, wrongSecret, &options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
@@ -110,7 +107,7 @@ func TestClientSecretCredential_GetTokenInvalidCredentials(t *testing.T) {
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one.")
 	}
-	var authFailed *AuthenticationFailedError
+	var authFailed AuthenticationFailedError
 	if !errors.As(err, &authFailed) {
 		t.Fatalf("Expected: AuthenticationFailedError, Received: %T", err)
 	}
@@ -125,7 +122,7 @@ func TestClientSecretCredential_GetTokenUnexpectedJSON(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespMalformed)))
 	options := ClientSecretCredentialOptions{}
 	options.AuthorityHost = AuthorityHost(srv.URL())
-	options.HTTPClient = srv
+	options.Transport = srv
 	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &options)
 	if err != nil {
 		t.Fatalf("Failed to create the credential")
@@ -133,5 +130,28 @@ func TestClientSecretCredential_GetTokenUnexpectedJSON(t *testing.T) {
 	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{scope}})
 	if err == nil {
 		t.Fatalf("Expected a JSON marshal error but received nil")
+	}
+}
+
+func TestClientSecretCredential_Live(t *testing.T) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		t.Skip("this test isn't recorded yet")
+	}
+	if liveSP.tenantID == "" || liveSP.clientID == "" || liveSP.secret == "" {
+		t.Skip("missing live service principal configuration")
+	}
+	cred, err := NewClientSecretCredential(liveSP.tenantID, liveSP.clientID, liveSP.secret, nil)
+	if err != nil {
+		t.Fatalf("failed to construct credential: %v", err)
+	}
+	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	if err != nil {
+		t.Fatalf("GetToken failed: %v", err)
+	}
+	if tk.Token == "" {
+		t.Fatalf("GetToken returned an invalid token")
+	}
+	if !tk.ExpiresOn.After(time.Now().UTC()) {
+		t.Fatalf("GetToken returned an invalid expiration time")
 	}
 }

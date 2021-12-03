@@ -10,14 +10,14 @@ package armconsumption
 
 import (
 	"context"
-	"errors"
 	"fmt"
-	"net/http"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"strings"
 )
 
 // TagsClient contains the methods for the Tags group.
@@ -28,8 +28,15 @@ type TagsClient struct {
 }
 
 // NewTagsClient creates a new instance of TagsClient with the specified values.
-func NewTagsClient(con *arm.Connection) *TagsClient {
-	return &TagsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewTagsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *TagsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &TagsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Get all available tag keys for the defined scope
@@ -52,9 +59,6 @@ func (client *TagsClient) Get(ctx context.Context, scope string, options *TagsGe
 // getCreateRequest creates the Get request.
 func (client *TagsClient) getCreateRequest(ctx context.Context, scope string, options *TagsGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Consumption/tags"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -71,7 +75,7 @@ func (client *TagsClient) getCreateRequest(ctx context.Context, scope string, op
 func (client *TagsClient) getHandleResponse(resp *http.Response) (TagsGetResponse, error) {
 	result := TagsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagsResult); err != nil {
-		return TagsGetResponse{}, err
+		return TagsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

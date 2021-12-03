@@ -11,13 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // RecoverableDatabasesClient contains the methods for the RecoverableDatabases group.
@@ -29,8 +30,15 @@ type RecoverableDatabasesClient struct {
 }
 
 // NewRecoverableDatabasesClient creates a new instance of RecoverableDatabasesClient with the specified values.
-func NewRecoverableDatabasesClient(con *arm.Connection, subscriptionID string) *RecoverableDatabasesClient {
-	return &RecoverableDatabasesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewRecoverableDatabasesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RecoverableDatabasesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &RecoverableDatabasesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Gets a recoverable database, which is a resource representing a database's geo backup
@@ -84,7 +92,7 @@ func (client *RecoverableDatabasesClient) getCreateRequest(ctx context.Context, 
 func (client *RecoverableDatabasesClient) getHandleResponse(resp *http.Response) (RecoverableDatabasesGetResponse, error) {
 	result := RecoverableDatabasesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecoverableDatabase); err != nil {
-		return RecoverableDatabasesGetResponse{}, err
+		return RecoverableDatabasesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -148,7 +156,7 @@ func (client *RecoverableDatabasesClient) listByServerCreateRequest(ctx context.
 func (client *RecoverableDatabasesClient) listByServerHandleResponse(resp *http.Response) (RecoverableDatabasesListByServerResponse, error) {
 	result := RecoverableDatabasesListByServerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecoverableDatabaseListResult); err != nil {
-		return RecoverableDatabasesListByServerResponse{}, err
+		return RecoverableDatabasesListByServerResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // VirtualMachineRunCommandsClient contains the methods for the VirtualMachineRunCommands group.
@@ -31,8 +31,15 @@ type VirtualMachineRunCommandsClient struct {
 }
 
 // NewVirtualMachineRunCommandsClient creates a new instance of VirtualMachineRunCommandsClient with the specified values.
-func NewVirtualMachineRunCommandsClient(con *arm.Connection, subscriptionID string) *VirtualMachineRunCommandsClient {
-	return &VirtualMachineRunCommandsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewVirtualMachineRunCommandsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VirtualMachineRunCommandsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &VirtualMachineRunCommandsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - The operation to create or update the run command.
@@ -242,7 +249,7 @@ func (client *VirtualMachineRunCommandsClient) getCreateRequest(ctx context.Cont
 func (client *VirtualMachineRunCommandsClient) getHandleResponse(resp *http.Response) (VirtualMachineRunCommandsGetResponse, error) {
 	result := VirtualMachineRunCommandsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RunCommandDocument); err != nil {
-		return VirtualMachineRunCommandsGetResponse{}, err
+		return VirtualMachineRunCommandsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -313,7 +320,7 @@ func (client *VirtualMachineRunCommandsClient) getByVirtualMachineCreateRequest(
 func (client *VirtualMachineRunCommandsClient) getByVirtualMachineHandleResponse(resp *http.Response) (VirtualMachineRunCommandsGetByVirtualMachineResponse, error) {
 	result := VirtualMachineRunCommandsGetByVirtualMachineResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineRunCommand); err != nil {
-		return VirtualMachineRunCommandsGetByVirtualMachineResponse{}, err
+		return VirtualMachineRunCommandsGetByVirtualMachineResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -371,7 +378,7 @@ func (client *VirtualMachineRunCommandsClient) listCreateRequest(ctx context.Con
 func (client *VirtualMachineRunCommandsClient) listHandleResponse(resp *http.Response) (VirtualMachineRunCommandsListResponse, error) {
 	result := VirtualMachineRunCommandsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RunCommandListResult); err != nil {
-		return VirtualMachineRunCommandsListResponse{}, err
+		return VirtualMachineRunCommandsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -435,7 +442,7 @@ func (client *VirtualMachineRunCommandsClient) listByVirtualMachineCreateRequest
 func (client *VirtualMachineRunCommandsClient) listByVirtualMachineHandleResponse(resp *http.Response) (VirtualMachineRunCommandsListByVirtualMachineResponse, error) {
 	result := VirtualMachineRunCommandsListByVirtualMachineResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineRunCommandsListResult); err != nil {
-		return VirtualMachineRunCommandsListByVirtualMachineResponse{}, err
+		return VirtualMachineRunCommandsListByVirtualMachineResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

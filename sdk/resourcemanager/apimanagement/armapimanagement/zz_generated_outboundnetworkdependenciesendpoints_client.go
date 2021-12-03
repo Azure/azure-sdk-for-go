@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // OutboundNetworkDependenciesEndpointsClient contains the methods for the OutboundNetworkDependenciesEndpoints group.
@@ -30,8 +31,15 @@ type OutboundNetworkDependenciesEndpointsClient struct {
 }
 
 // NewOutboundNetworkDependenciesEndpointsClient creates a new instance of OutboundNetworkDependenciesEndpointsClient with the specified values.
-func NewOutboundNetworkDependenciesEndpointsClient(con *arm.Connection, subscriptionID string) *OutboundNetworkDependenciesEndpointsClient {
-	return &OutboundNetworkDependenciesEndpointsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewOutboundNetworkDependenciesEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *OutboundNetworkDependenciesEndpointsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &OutboundNetworkDependenciesEndpointsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // ListByService - Gets the network endpoints of all outbound dependencies of a ApiManagement service.
@@ -71,7 +79,7 @@ func (client *OutboundNetworkDependenciesEndpointsClient) listByServiceCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -81,7 +89,7 @@ func (client *OutboundNetworkDependenciesEndpointsClient) listByServiceCreateReq
 func (client *OutboundNetworkDependenciesEndpointsClient) listByServiceHandleResponse(resp *http.Response) (OutboundNetworkDependenciesEndpointsListByServiceResponse, error) {
 	result := OutboundNetworkDependenciesEndpointsListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OutboundEnvironmentEndpointList); err != nil {
-		return OutboundNetworkDependenciesEndpointsListByServiceResponse{}, err
+		return OutboundNetworkDependenciesEndpointsListByServiceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

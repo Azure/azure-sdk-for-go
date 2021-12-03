@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // TagClient contains the methods for the Tag group.
@@ -31,8 +32,15 @@ type TagClient struct {
 }
 
 // NewTagClient creates a new instance of TagClient with the specified values.
-func NewTagClient(con *arm.Connection, subscriptionID string) *TagClient {
-	return &TagClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewTagClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TagClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &TagClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // AssignToAPI - Assign tag to the Api.
@@ -80,7 +88,7 @@ func (client *TagClient) assignToAPICreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -93,7 +101,7 @@ func (client *TagClient) assignToAPIHandleResponse(resp *http.Response) (TagAssi
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagContract); err != nil {
-		return TagAssignToAPIResponse{}, err
+		return TagAssignToAPIResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -160,7 +168,7 @@ func (client *TagClient) assignToOperationCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -170,7 +178,7 @@ func (client *TagClient) assignToOperationCreateRequest(ctx context.Context, res
 func (client *TagClient) assignToOperationHandleResponse(resp *http.Response) (TagAssignToOperationResponse, error) {
 	result := TagAssignToOperationResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagContract); err != nil {
-		return TagAssignToOperationResponse{}, err
+		return TagAssignToOperationResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -233,7 +241,7 @@ func (client *TagClient) assignToProductCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -243,7 +251,7 @@ func (client *TagClient) assignToProductCreateRequest(ctx context.Context, resou
 func (client *TagClient) assignToProductHandleResponse(resp *http.Response) (TagAssignToProductResponse, error) {
 	result := TagAssignToProductResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagContract); err != nil {
-		return TagAssignToProductResponse{}, err
+		return TagAssignToProductResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -302,7 +310,7 @@ func (client *TagClient) createOrUpdateCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header.Set("If-Match", *options.IfMatch)
@@ -318,7 +326,7 @@ func (client *TagClient) createOrUpdateHandleResponse(resp *http.Response) (TagC
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagContract); err != nil {
-		return TagCreateOrUpdateResponse{}, err
+		return TagCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -377,7 +385,7 @@ func (client *TagClient) deleteCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("If-Match", ifMatch)
 	req.Raw().Header.Set("Accept", "application/json")
@@ -442,7 +450,7 @@ func (client *TagClient) detachFromAPICreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -510,7 +518,7 @@ func (client *TagClient) detachFromOperationCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -574,7 +582,7 @@ func (client *TagClient) detachFromProductCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -634,7 +642,7 @@ func (client *TagClient) getCreateRequest(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -647,7 +655,7 @@ func (client *TagClient) getHandleResponse(resp *http.Response) (TagGetResponse,
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagContract); err != nil {
-		return TagGetResponse{}, err
+		return TagGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -710,7 +718,7 @@ func (client *TagClient) getByAPICreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -723,7 +731,7 @@ func (client *TagClient) getByAPIHandleResponse(resp *http.Response) (TagGetByAP
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagContract); err != nil {
-		return TagGetByAPIResponse{}, err
+		return TagGetByAPIResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -790,7 +798,7 @@ func (client *TagClient) getByOperationCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -803,7 +811,7 @@ func (client *TagClient) getByOperationHandleResponse(resp *http.Response) (TagG
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagContract); err != nil {
-		return TagGetByOperationResponse{}, err
+		return TagGetByOperationResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -866,7 +874,7 @@ func (client *TagClient) getByProductCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -879,7 +887,7 @@ func (client *TagClient) getByProductHandleResponse(resp *http.Response) (TagGet
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagContract); err != nil {
-		return TagGetByProductResponse{}, err
+		return TagGetByProductResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -935,7 +943,7 @@ func (client *TagClient) getEntityStateCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -995,7 +1003,7 @@ func (client *TagClient) getEntityStateByAPICreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -1059,7 +1067,7 @@ func (client *TagClient) getEntityStateByOperationCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -1119,7 +1127,7 @@ func (client *TagClient) getEntityStateByProductCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -1184,7 +1192,7 @@ func (client *TagClient) listByAPICreateRequest(ctx context.Context, resourceGro
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -1194,7 +1202,7 @@ func (client *TagClient) listByAPICreateRequest(ctx context.Context, resourceGro
 func (client *TagClient) listByAPIHandleResponse(resp *http.Response) (TagListByAPIResponse, error) {
 	result := TagListByAPIResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagCollection); err != nil {
-		return TagListByAPIResponse{}, err
+		return TagListByAPIResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1263,7 +1271,7 @@ func (client *TagClient) listByOperationCreateRequest(ctx context.Context, resou
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -1273,7 +1281,7 @@ func (client *TagClient) listByOperationCreateRequest(ctx context.Context, resou
 func (client *TagClient) listByOperationHandleResponse(resp *http.Response) (TagListByOperationResponse, error) {
 	result := TagListByOperationResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagCollection); err != nil {
-		return TagListByOperationResponse{}, err
+		return TagListByOperationResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1338,7 +1346,7 @@ func (client *TagClient) listByProductCreateRequest(ctx context.Context, resourc
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -1348,7 +1356,7 @@ func (client *TagClient) listByProductCreateRequest(ctx context.Context, resourc
 func (client *TagClient) listByProductHandleResponse(resp *http.Response) (TagListByProductResponse, error) {
 	result := TagListByProductResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagCollection); err != nil {
-		return TagListByProductResponse{}, err
+		return TagListByProductResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1412,7 +1420,7 @@ func (client *TagClient) listByServiceCreateRequest(ctx context.Context, resourc
 	if options != nil && options.Scope != nil {
 		reqQP.Set("scope", *options.Scope)
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -1422,7 +1430,7 @@ func (client *TagClient) listByServiceCreateRequest(ctx context.Context, resourc
 func (client *TagClient) listByServiceHandleResponse(resp *http.Response) (TagListByServiceResponse, error) {
 	result := TagListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagCollection); err != nil {
-		return TagListByServiceResponse{}, err
+		return TagListByServiceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1481,7 +1489,7 @@ func (client *TagClient) updateCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("If-Match", ifMatch)
 	req.Raw().Header.Set("Accept", "application/json")
@@ -1495,7 +1503,7 @@ func (client *TagClient) updateHandleResponse(resp *http.Response) (TagUpdateRes
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagContract); err != nil {
-		return TagUpdateResponse{}, err
+		return TagUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // DeploymentsClient contains the methods for the Deployments group.
@@ -31,8 +31,15 @@ type DeploymentsClient struct {
 }
 
 // NewDeploymentsClient creates a new instance of DeploymentsClient with the specified values.
-func NewDeploymentsClient(con *arm.Connection, subscriptionID string) *DeploymentsClient {
-	return &DeploymentsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewDeploymentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DeploymentsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &DeploymentsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Create a new Deployment or update an exiting Deployment.
@@ -100,7 +107,7 @@ func (client *DeploymentsClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, deploymentResource)
@@ -184,7 +191,7 @@ func (client *DeploymentsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -192,6 +199,174 @@ func (client *DeploymentsClient) deleteCreateRequest(ctx context.Context, resour
 
 // deleteHandleError handles the Delete error response.
 func (client *DeploymentsClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
+	if err != nil {
+		return runtime.NewResponseError(err, resp)
+	}
+	errType := CloudError{raw: string(body)}
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
+	}
+	return runtime.NewResponseError(&errType, resp)
+}
+
+// BeginGenerateHeapDump - Generate Heap Dump
+// If the operation fails it returns the *CloudError error type.
+func (client *DeploymentsClient) BeginGenerateHeapDump(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, diagnosticParameters DiagnosticParameters, options *DeploymentsBeginGenerateHeapDumpOptions) (DeploymentsGenerateHeapDumpPollerResponse, error) {
+	resp, err := client.generateHeapDump(ctx, resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters, options)
+	if err != nil {
+		return DeploymentsGenerateHeapDumpPollerResponse{}, err
+	}
+	result := DeploymentsGenerateHeapDumpPollerResponse{
+		RawResponse: resp,
+	}
+	pt, err := armruntime.NewPoller("DeploymentsClient.GenerateHeapDump", "azure-async-operation", resp, client.pl, client.generateHeapDumpHandleError)
+	if err != nil {
+		return DeploymentsGenerateHeapDumpPollerResponse{}, err
+	}
+	result.Poller = &DeploymentsGenerateHeapDumpPoller{
+		pt: pt,
+	}
+	return result, nil
+}
+
+// GenerateHeapDump - Generate Heap Dump
+// If the operation fails it returns the *CloudError error type.
+func (client *DeploymentsClient) generateHeapDump(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, diagnosticParameters DiagnosticParameters, options *DeploymentsBeginGenerateHeapDumpOptions) (*http.Response, error) {
+	req, err := client.generateHeapDumpCreateRequest(ctx, resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return nil, client.generateHeapDumpHandleError(resp)
+	}
+	return resp, nil
+}
+
+// generateHeapDumpCreateRequest creates the GenerateHeapDump request.
+func (client *DeploymentsClient) generateHeapDumpCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, diagnosticParameters DiagnosticParameters, options *DeploymentsBeginGenerateHeapDumpOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}/deployments/{deploymentName}/generateHeapDump"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if serviceName == "" {
+		return nil, errors.New("parameter serviceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
+	if appName == "" {
+		return nil, errors.New("parameter appName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{appName}", url.PathEscape(appName))
+	if deploymentName == "" {
+		return nil, errors.New("parameter deploymentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-09-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, diagnosticParameters)
+}
+
+// generateHeapDumpHandleError handles the GenerateHeapDump error response.
+func (client *DeploymentsClient) generateHeapDumpHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
+	if err != nil {
+		return runtime.NewResponseError(err, resp)
+	}
+	errType := CloudError{raw: string(body)}
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
+	}
+	return runtime.NewResponseError(&errType, resp)
+}
+
+// BeginGenerateThreadDump - Generate Thread Dump
+// If the operation fails it returns the *CloudError error type.
+func (client *DeploymentsClient) BeginGenerateThreadDump(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, diagnosticParameters DiagnosticParameters, options *DeploymentsBeginGenerateThreadDumpOptions) (DeploymentsGenerateThreadDumpPollerResponse, error) {
+	resp, err := client.generateThreadDump(ctx, resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters, options)
+	if err != nil {
+		return DeploymentsGenerateThreadDumpPollerResponse{}, err
+	}
+	result := DeploymentsGenerateThreadDumpPollerResponse{
+		RawResponse: resp,
+	}
+	pt, err := armruntime.NewPoller("DeploymentsClient.GenerateThreadDump", "azure-async-operation", resp, client.pl, client.generateThreadDumpHandleError)
+	if err != nil {
+		return DeploymentsGenerateThreadDumpPollerResponse{}, err
+	}
+	result.Poller = &DeploymentsGenerateThreadDumpPoller{
+		pt: pt,
+	}
+	return result, nil
+}
+
+// GenerateThreadDump - Generate Thread Dump
+// If the operation fails it returns the *CloudError error type.
+func (client *DeploymentsClient) generateThreadDump(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, diagnosticParameters DiagnosticParameters, options *DeploymentsBeginGenerateThreadDumpOptions) (*http.Response, error) {
+	req, err := client.generateThreadDumpCreateRequest(ctx, resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return nil, client.generateThreadDumpHandleError(resp)
+	}
+	return resp, nil
+}
+
+// generateThreadDumpCreateRequest creates the GenerateThreadDump request.
+func (client *DeploymentsClient) generateThreadDumpCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, diagnosticParameters DiagnosticParameters, options *DeploymentsBeginGenerateThreadDumpOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}/deployments/{deploymentName}/generateThreadDump"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if serviceName == "" {
+		return nil, errors.New("parameter serviceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
+	if appName == "" {
+		return nil, errors.New("parameter appName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{appName}", url.PathEscape(appName))
+	if deploymentName == "" {
+		return nil, errors.New("parameter deploymentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-09-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, diagnosticParameters)
+}
+
+// generateThreadDumpHandleError handles the GenerateThreadDump error response.
+func (client *DeploymentsClient) generateThreadDumpHandleError(resp *http.Response) error {
 	body, err := runtime.Payload(resp)
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
@@ -248,7 +423,7 @@ func (client *DeploymentsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -258,7 +433,7 @@ func (client *DeploymentsClient) getCreateRequest(ctx context.Context, resourceG
 func (client *DeploymentsClient) getHandleResponse(resp *http.Response) (DeploymentsGetResponse, error) {
 	result := DeploymentsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentResource); err != nil {
-		return DeploymentsGetResponse{}, err
+		return DeploymentsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -321,7 +496,7 @@ func (client *DeploymentsClient) getLogFileURLCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -331,7 +506,7 @@ func (client *DeploymentsClient) getLogFileURLCreateRequest(ctx context.Context,
 func (client *DeploymentsClient) getLogFileURLHandleResponse(resp *http.Response) (DeploymentsGetLogFileURLResponse, error) {
 	result := DeploymentsGetLogFileURLResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LogFileURLResponse); err != nil {
-		return DeploymentsGetLogFileURLResponse{}, err
+		return DeploymentsGetLogFileURLResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -387,7 +562,7 @@ func (client *DeploymentsClient) listCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	if options != nil && options.Version != nil {
 		for _, qv := range options.Version {
 			reqQP.Add("version", qv)
@@ -402,7 +577,7 @@ func (client *DeploymentsClient) listCreateRequest(ctx context.Context, resource
 func (client *DeploymentsClient) listHandleResponse(resp *http.Response) (DeploymentsListResponse, error) {
 	result := DeploymentsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentResourceCollection); err != nil {
-		return DeploymentsListResponse{}, err
+		return DeploymentsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -454,7 +629,7 @@ func (client *DeploymentsClient) listForClusterCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	if options != nil && options.Version != nil {
 		for _, qv := range options.Version {
 			reqQP.Add("version", qv)
@@ -469,7 +644,7 @@ func (client *DeploymentsClient) listForClusterCreateRequest(ctx context.Context
 func (client *DeploymentsClient) listForClusterHandleResponse(resp *http.Response) (DeploymentsListForClusterResponse, error) {
 	result := DeploymentsListForClusterResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentResourceCollection); err != nil {
-		return DeploymentsListForClusterResponse{}, err
+		return DeploymentsListForClusterResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -552,7 +727,7 @@ func (client *DeploymentsClient) restartCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -636,7 +811,7 @@ func (client *DeploymentsClient) startCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -644,6 +819,90 @@ func (client *DeploymentsClient) startCreateRequest(ctx context.Context, resourc
 
 // startHandleError handles the Start error response.
 func (client *DeploymentsClient) startHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
+	if err != nil {
+		return runtime.NewResponseError(err, resp)
+	}
+	errType := CloudError{raw: string(body)}
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
+	}
+	return runtime.NewResponseError(&errType, resp)
+}
+
+// BeginStartJFR - Start JFR
+// If the operation fails it returns the *CloudError error type.
+func (client *DeploymentsClient) BeginStartJFR(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, diagnosticParameters DiagnosticParameters, options *DeploymentsBeginStartJFROptions) (DeploymentsStartJFRPollerResponse, error) {
+	resp, err := client.startJFR(ctx, resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters, options)
+	if err != nil {
+		return DeploymentsStartJFRPollerResponse{}, err
+	}
+	result := DeploymentsStartJFRPollerResponse{
+		RawResponse: resp,
+	}
+	pt, err := armruntime.NewPoller("DeploymentsClient.StartJFR", "azure-async-operation", resp, client.pl, client.startJFRHandleError)
+	if err != nil {
+		return DeploymentsStartJFRPollerResponse{}, err
+	}
+	result.Poller = &DeploymentsStartJFRPoller{
+		pt: pt,
+	}
+	return result, nil
+}
+
+// StartJFR - Start JFR
+// If the operation fails it returns the *CloudError error type.
+func (client *DeploymentsClient) startJFR(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, diagnosticParameters DiagnosticParameters, options *DeploymentsBeginStartJFROptions) (*http.Response, error) {
+	req, err := client.startJFRCreateRequest(ctx, resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return nil, client.startJFRHandleError(resp)
+	}
+	return resp, nil
+}
+
+// startJFRCreateRequest creates the StartJFR request.
+func (client *DeploymentsClient) startJFRCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, diagnosticParameters DiagnosticParameters, options *DeploymentsBeginStartJFROptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}/deployments/{deploymentName}/StartJFR"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if serviceName == "" {
+		return nil, errors.New("parameter serviceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
+	if appName == "" {
+		return nil, errors.New("parameter appName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{appName}", url.PathEscape(appName))
+	if deploymentName == "" {
+		return nil, errors.New("parameter deploymentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-09-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, diagnosticParameters)
+}
+
+// startJFRHandleError handles the StartJFR error response.
+func (client *DeploymentsClient) startJFRHandleError(resp *http.Response) error {
 	body, err := runtime.Payload(resp)
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
@@ -720,7 +979,7 @@ func (client *DeploymentsClient) stopCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -804,7 +1063,7 @@ func (client *DeploymentsClient) updateCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, deploymentResource)

@@ -11,13 +11,14 @@ package armcosmos
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // CollectionPartitionClient contains the methods for the CollectionPartition group.
@@ -29,8 +30,15 @@ type CollectionPartitionClient struct {
 }
 
 // NewCollectionPartitionClient creates a new instance of CollectionPartitionClient with the specified values.
-func NewCollectionPartitionClient(con *arm.Connection, subscriptionID string) *CollectionPartitionClient {
-	return &CollectionPartitionClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewCollectionPartitionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CollectionPartitionClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &CollectionPartitionClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // ListMetrics - Retrieves the metrics determined by the given filter for the given collection, split by partition.
@@ -78,7 +86,7 @@ func (client *CollectionPartitionClient) listMetricsCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	reqQP.Set("$filter", filter)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
@@ -89,7 +97,7 @@ func (client *CollectionPartitionClient) listMetricsCreateRequest(ctx context.Co
 func (client *CollectionPartitionClient) listMetricsHandleResponse(resp *http.Response) (CollectionPartitionListMetricsResponse, error) {
 	result := CollectionPartitionListMetricsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PartitionMetricListResult); err != nil {
-		return CollectionPartitionListMetricsResponse{}, err
+		return CollectionPartitionListMetricsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -151,7 +159,7 @@ func (client *CollectionPartitionClient) listUsagesCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -164,7 +172,7 @@ func (client *CollectionPartitionClient) listUsagesCreateRequest(ctx context.Con
 func (client *CollectionPartitionClient) listUsagesHandleResponse(resp *http.Response) (CollectionPartitionListUsagesResponse, error) {
 	result := CollectionPartitionListUsagesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PartitionUsagesResult); err != nil {
-		return CollectionPartitionListUsagesResponse{}, err
+		return CollectionPartitionListUsagesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

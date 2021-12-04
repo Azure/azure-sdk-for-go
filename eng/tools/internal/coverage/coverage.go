@@ -70,6 +70,14 @@ func readConfigData(coverageConfig string) *codeCoverage {
 // this method will have to return a []*float64 for each packages goal
 func findCoverageGoal(covFiles []string, configData *codeCoverage) float64 {
 	for _, covFile := range covFiles {
+
+		// check for an exact match _first_, then go to fuzzy matching
+		for _, p := range configData.Packages {
+			if covFile == p.Name {
+				return p.CoverageGoal
+			}
+		}
+
 		for _, p := range configData.Packages {
 			if strings.Contains(covFile, p.Name) {
 				return p.CoverageGoal

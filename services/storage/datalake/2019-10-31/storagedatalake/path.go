@@ -1289,7 +1289,7 @@ func (client PathClient) UpdatePreparer(ctx context.Context, action PathUpdateAc
 		queryParameters["position"] = autorest.Encode("query", *position)
 	}
 	if retainUncommittedData != nil {
-		queryParameters["retainUncommittedData"] = autorest.Encode("query", *retainUncommittedData)
+		queryParameters["retainuncommitteddata"] = autorest.Encode("query", *retainUncommittedData)
 	}
 	if closeParameter != nil {
 		queryParameters["close"] = autorest.Encode("query", *closeParameter)

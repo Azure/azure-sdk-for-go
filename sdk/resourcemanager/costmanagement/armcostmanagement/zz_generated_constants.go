@@ -10,7 +10,7 @@ package armcostmanagement
 
 const (
 	module  = "armcostmanagement"
-	version = "v0.1.0"
+	version = "v0.1.1"
 )
 
 // AccumulatedType - Show costs accumulated over time.

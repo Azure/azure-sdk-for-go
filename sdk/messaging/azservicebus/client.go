@@ -20,7 +20,7 @@ import (
 // Client provides methods to create Sender and Receiver
 // instances to send and receive messages from Service Bus.
 type Client struct {
-	config    clientCreds
+	creds     clientCreds
 	namespace interface {
 		// used internally by `Client`
 		internal.NamespaceWithNewAMQPLinks
@@ -91,22 +91,22 @@ type clientCreds struct {
 	credential              azcore.TokenCredential
 }
 
-func newClientImpl(config clientCreds, options *ClientOptions) (*Client, error) {
+func newClientImpl(creds clientCreds, options *ClientOptions) (*Client, error) {
 	client := &Client{
 		linksMu: &sync.Mutex{},
-		config:  config,
+		creds:   creds,
 		links:   map[uint64]internal.Closeable{},
 	}
 
 	var err error
 	var nsOptions []internal.NamespaceOption
 
-	if client.config.connectionString != "" {
-		nsOptions = append(nsOptions, internal.NamespaceWithConnectionString(client.config.connectionString))
-	} else if client.config.credential != nil {
+	if client.creds.connectionString != "" {
+		nsOptions = append(nsOptions, internal.NamespaceWithConnectionString(client.creds.connectionString))
+	} else if client.creds.credential != nil {
 		option := internal.NamespacesWithTokenCredential(
-			client.config.fullyQualifiedNamespace,
-			client.config.credential)
+			client.creds.fullyQualifiedNamespace,
+			client.creds.credential)
 
 		nsOptions = append(nsOptions, option)
 	}

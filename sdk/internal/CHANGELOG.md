@@ -1,12 +1,13 @@
 # Release History
 
-## 0.8.3 (2021-11-30)
+## 0.8.3 (2021-12-07)
 
 ### Features Added
 * If `AZURE_RECORD_MODE` is not set, default to `playback`
 * If `PROXY_CERT` is not set, try to find it based on the `GOPATH` environment variable and the path to `eng/common/testproxy/dotnet-devcert.crt`
 * Adds `NewRecordingHTTPClient()` method which returns an `azcore.Transporter` interface that routes requests to the test proxy [#16221](https://github.com/Azure/azure-sdk-for-go/pull/16221).
 * Adds the `SetBodilessMatcher` method [#16256](https://github.com/Azure/azure-sdk-for-go/pull/16256)
+* Added variables storage to the `Stop` function. Pass in a `map[string]interface{}` to the `Stop` method options and the values can be retrieved with the `GetVariables(t *testing.T)` function [#16375](https://github.com/Azure/azure-sdk-for-go/pull/16375).
 
 ### Breaking Changes
 * Renames `ResetSanitizers` to `ResetProxy` [#16256](https://github.com/Azure/azure-sdk-for-go/pull/16256)

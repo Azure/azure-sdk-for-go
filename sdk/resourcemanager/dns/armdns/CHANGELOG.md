@@ -1,5 +1,5 @@
 # Release History
 
-## 0.1.0 (2021-11-30)
+## 0.1.0 (2021-12-07)
 
 - Initial preview release.

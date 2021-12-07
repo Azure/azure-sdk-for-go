@@ -10,7 +10,7 @@ package armmanagementpartner
 
 const (
 	module  = "armmanagementpartner"
-	version = "v0.1.0"
+	version = "v0.1.1"
 )
 
 // ErrorResponseCode - this is the error response code that management partner operations may return

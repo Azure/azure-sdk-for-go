@@ -10,7 +10,7 @@ package armdigitaltwins
 
 const (
 	module  = "armdigitaltwins"
-	version = "v0.1.0"
+	version = "v0.1.1"
 )
 
 // AuthenticationType - Specifies the authentication type being used for connecting to the endpoint.

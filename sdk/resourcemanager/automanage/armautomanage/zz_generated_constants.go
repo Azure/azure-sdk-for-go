@@ -10,7 +10,7 @@ package armautomanage
 
 const (
 	module  = "armautomanage"
-	version = "v0.1.0"
+	version = "v0.1.1"
 )
 
 // ConfigurationProfile - A value indicating configuration profile.

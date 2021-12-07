@@ -10,7 +10,7 @@ package armiotsecurity
 
 const (
 	module  = "armiotsecurity"
-	version = "v0.1.0"
+	version = "v0.1.1"
 )
 
 // AlertIntent - Kill chain related intent behind the alert. Could contain multiple enum values (separated by commas)

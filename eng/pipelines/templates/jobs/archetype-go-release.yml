@@ -11,6 +11,8 @@ stages:
     jobs:
       - job: CheckReleaseJob
         displayName: "Check whether need to release"
+        pool:
+          name: azsdk-pool-mms-ubuntu-2004-general
         steps:
           - task: PowerShell@2
             name: Verify
@@ -31,7 +33,7 @@ stages:
     jobs: 
       - deployment: TagRepository
         displayName: "Create release tag"
-        condition: and(succeeded(), eq(variables['NeedToRelease'], 'true'), ne(variables['Skip.TagRepository'], 'true'))
+        condition: and(succeeded(), ne(variables['Skip.TagRepository'], 'true'))
         environment: github
 
         pool:

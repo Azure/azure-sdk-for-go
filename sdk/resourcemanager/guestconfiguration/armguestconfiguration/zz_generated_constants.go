@@ -10,7 +10,7 @@ package armguestconfiguration
 
 const (
 	module  = "armguestconfiguration"
-	version = "v0.1.0"
+	version = "v0.1.1"
 )
 
 // ActionAfterReboot - Specifies what happens after a reboot during the application of a configuration. The possible values are ContinueConfiguration and

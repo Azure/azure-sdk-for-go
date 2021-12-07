@@ -10,7 +10,7 @@ package armdesktopvirtualization
 
 const (
 	module  = "armdesktopvirtualization"
-	version = "v0.1.0"
+	version = "v0.1.1"
 )
 
 // ApplicationGroupType - Resource Type of ApplicationGroup.

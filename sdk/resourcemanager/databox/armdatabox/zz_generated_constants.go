@@ -10,7 +10,7 @@ package armdatabox
 
 const (
 	module  = "armdatabox"
-	version = "v0.1.0"
+	version = "v0.1.1"
 )
 
 type AccessProtocol string

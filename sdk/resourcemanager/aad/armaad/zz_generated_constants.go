@@ -10,7 +10,7 @@ package armaad
 
 const (
 	module  = "armaad"
-	version = "v0.1.0"
+	version = "v0.1.1"
 )
 
 // Category - Name of a Diagnostic Log category for a resource type this setting is applied to. To obtain the list of Diagnostic Log categories for a resource,

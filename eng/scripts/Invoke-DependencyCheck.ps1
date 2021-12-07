@@ -8,24 +8,6 @@ $ignoreCheck = "sdk/synapse/azartifacts", "sdk/template/aztemplate", "sdk/azcore
 
 $sdks = Get-AllPackageInfoFromRepo
 
-$sdkRoot = Join-Path $RepoRoot "sdk"
-
-# Get all existed packages
-$packagesImport = ""
-$newPackage = ""
-foreach ($sdk in $sdks)
-{
-    if ($sdk.Name -like "*internal*" -or $sdk.Name -in $ignoreCheck)
-    {
-        continue
-    }
-    if ((Resolve-Path $sdk.DirectoryPath).Path -eq (Resolve-Path (Join-Path $sdkRoot $newPackageDirectory)).Path)
-    {
-        $newPackage = $sdk.Name
-    }
-    $packagesImport = $packagesImport + "`t_ `"github.com/Azure/azure-sdk-for-go/$($sdk.Name)`"`n"
-}
-
 ## Create depcheck module
 $workingPath = Join-Path $RepoRoot "sdk" "depcheck"
 if (Test-Path -Path $workingPath)
@@ -40,6 +22,23 @@ Write-Host "##[command]Executing go mod init in " $workingPath
 go mod init github.com/Azure/azure-sdk-for-go/sdk/depcheck
 if ($LASTEXITCODE) { exit $LASTEXITCODE }
 
+# Get all existed packages
+$packagesImport = ""
+foreach ($sdk in $sdks)
+{
+    if ($sdk.Name -like "*internal*" -or $sdk.Name -in $ignoreCheck)
+    {
+        continue
+    }
+    if ((Resolve-Path $sdk.DirectoryPath).Path -eq (Resolve-Path (Join-Path $RepoRoot $newPackageDirectory)).Path)
+    {
+        ## Add replace for new package
+        $modPath = Join-Path $RepoRoot "sdk" "depcheck" "go.mod"
+        Add-Content $modPath "`nreplace github.com/Azure/azure-sdk-for-go/$($sdk.Name) => ../../$($sdk.Name)`n"
+    }
+    $packagesImport = $packagesImport + "`t_ `"github.com/Azure/azure-sdk-for-go/$($sdk.Name)`"`n"
+}
+
 ## Add main.go
 $mainPath = Join-Path $RepoRoot "sdk" "depcheck" "main.go"
 New-Item -Path $mainPath -ItemType File -Value '' -Force
@@ -52,13 +51,6 @@ $packagesImport
 func main() {
 }
 "
-
-## Add replace for new package
-if ($newPackage -ne "")
-{
-    $modPath = Join-Path $RepoRoot "sdk" "depcheck" "go.mod"
-    Add-Content $modPath "`nreplace github.com/Azure/azure-sdk-for-go/$newPackage => ../../$newPackage`n"
-}
 
 ## Run go mod tidy
 Write-Host "##[command]Executing go mod tidy in " $workingPath

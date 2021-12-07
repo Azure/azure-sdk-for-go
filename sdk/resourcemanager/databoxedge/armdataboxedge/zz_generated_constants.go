@@ -10,7 +10,7 @@ package armdataboxedge
 
 const (
 	module  = "armdataboxedge"
-	version = "v0.1.0"
+	version = "v0.1.1"
 )
 
 // AccessLevel - Access level allowed for this remote application type

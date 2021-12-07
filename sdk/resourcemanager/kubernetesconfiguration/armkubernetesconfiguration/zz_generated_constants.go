@@ -10,7 +10,7 @@ package armkubernetesconfiguration
 
 const (
 	module  = "armkubernetesconfiguration"
-	version = "v0.1.0"
+	version = "v0.1.1"
 )
 
 // ClusterTypes - Cluster types

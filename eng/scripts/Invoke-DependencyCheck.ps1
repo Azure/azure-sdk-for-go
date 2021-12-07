@@ -4,7 +4,7 @@ Param(
 
 . (Join-Path $PSScriptRoot .. common scripts common.ps1)
 
-$ignoreCheck = "sdk/synapse/azartifacts", "sdk/template/aztemplate", "sdk/azcore", "sdk/azidentity"
+$ignoreCheck = ,"sdk/synapse/azartifacts"
 
 $sdks = Get-AllPackageInfoFromRepo
 

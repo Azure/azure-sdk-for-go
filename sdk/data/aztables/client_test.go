@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/stretchr/testify/require"
 )
 
@@ -466,6 +467,20 @@ func TestContinuationTokensFilters(t *testing.T) {
 			require.Equal(t, 4, count)
 		})
 	}
+}
+
+func TestClientConstructor(t *testing.T) {
+	// Test NewClient, which is not used by recording infra
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	require.NoError(t, err)
+	client, err := NewClient("https://fakeaccount.table.core.windows.net/", cred, nil)
+	require.NoError(t, err)
+	require.NotNil(t, client.client)
+
+	// Test NewClientWithNoCredential, which is also not used
+	client2, err := NewClientWithNoCredential("https://fakeaccount.table.core.windows.net/", nil)
+	require.NoError(t, err)
+	require.NotNil(t, client2.client)
 }
 
 func TestAzurite(t *testing.T) {

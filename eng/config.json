@@ -25,7 +25,7 @@
             "CoverageGoal": 0.76
         },
         {
-            "Name": "data",
+            "Name": "aztables",
             "CoverageGoal": 0.62
         },
         {

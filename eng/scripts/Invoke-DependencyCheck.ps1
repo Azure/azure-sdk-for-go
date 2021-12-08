@@ -1,10 +1,8 @@
 Param(
-    [string] $newPackageDirectory
+    [string] $PackageDirectory
 )
 
 . (Join-Path $PSScriptRoot .. common scripts common.ps1)
-
-$ignoreCheck = ,"sdk/synapse/azartifacts"
 
 $sdks = Get-AllPackageInfoFromRepo
 
@@ -22,11 +20,21 @@ Write-Host "##[command]Executing go mod init in " $workingPath
 go mod init github.com/Azure/azure-sdk-for-go/sdk/depcheck
 if ($LASTEXITCODE) { exit $LASTEXITCODE }
 
+# Find whether latest version is in the `retract` section in `go.mod` to judge whether the package is temporarily deprecated. 
+function IsPackageDeprecated($sdk)
+{
+    $RETRACT_SECTION_REGEX = "retract\s*((?<retract>(.|\s)*))"
+    $modContent = Get-Content (Join-Path $sdk.DirectoryPath 'go.mod') -Raw
+    if ($modContent -match $RETRACT_SECTION_REGEX) {
+        return $($matches["retract"]).Indexof($sdk.Version) -ne -1
+    }
+}
+
 # Get all existed packages
 $packagesImport = ""
 foreach ($sdk in $sdks)
 {
-    if ($sdk.Name -like "*internal*" -or $sdk.Name -in $ignoreCheck)
+    if ($sdk.Name -like "*internal*" -or (IsPackageDeprecated $sdk))
     {
         continue
     }

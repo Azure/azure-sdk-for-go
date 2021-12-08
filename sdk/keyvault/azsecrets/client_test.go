@@ -289,6 +289,9 @@ func TestUpdateSecretProperties(t *testing.T) {
 		Tags: map[string]string{
 			"Tag1": "TagVal1",
 		},
+		SecretAttributes: &Attributes{
+			Enabled: to.BoolPtr(false),
+		},
 	}
 
 	_, err = client.UpdateSecretProperties(context.Background(), secret, params, nil)

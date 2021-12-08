@@ -1,10 +1,13 @@
 # Release History
 
-## 0.3.2 (Unreleased)
+## 0.3.2 (2021-12-08)
 
 ### Features Added
 
 ### Breaking Changes
+
+- Message properties that come from the standard AMQP message have been made into pointers, to allow them to be 
+  properly omitted (or indicate that they've been omitted) when sending and receiving.  
 
 ### Bugs Fixed
 

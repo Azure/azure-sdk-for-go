@@ -6,11 +6,11 @@ Azure Key Vault helps securely store and control access to tokens, passwords, ce
 ## Getting started
 
 ### Install packages
-Install `azsecrets` and [azure-identity][azidentity_goget]:
+Install `azsecrets` and [azidentity][azidentity_goget]:
 ```
 go get -u github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets
 ```
-[azure-identity][azure_identity] is used for Azure Active Directory authentication as demonstrated below.
+[azidentity][azure_identity] is used for Azure Active Directory authentication as demonstrated below.
 ```
 go get -u github.com/Azure/azure-sdk-for-go/sdk/azidentity
 ```
@@ -59,7 +59,7 @@ go get -u github.com/Azure/azure-sdk-for-go/sdk/azidentity
   > The `"vaultUri"` property is the `vaultUrl` used by [azsecrets.NewClient][secret_client_docs]
 
 ### Authenticate the client
-This document demonstrates using [DefaultAzureCredential][default_cred_ref] to authenticate as a service principal. However, [Client][secret_client_docs] accepts any [azure-identity][azure_identity] credential. See the [azure-identity][azure_identity] documentation for more information about other credentials.
+This document demonstrates using [DefaultAzureCredential][default_cred_ref] to authenticate as a service principal. However, [Client][secret_client_docs] accepts any [azidentity][azure_identity] credential. See the [azidentity][azure_identity] documentation for more information about other credentials.
 
 
 #### Create a service principal (optional)

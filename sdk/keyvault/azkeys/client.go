@@ -55,7 +55,7 @@ func NewClient(vaultUrl string, credential azcore.TokenCredential, options *Clie
 
 	genOptions.PerRetryPolicies = append(
 		genOptions.PerRetryPolicies,
-		shared.NewKeyVaultChallengePolicy(credential), //, runtime.NewPipeline("azkeys", "0.1.0", nil, nil, genOptions)),
+		shared.NewKeyVaultChallengePolicy(credential),
 	)
 
 	conn := generated.NewConnection(genOptions)

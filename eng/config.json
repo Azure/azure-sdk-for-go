@@ -26,7 +26,8 @@
         },
         {
             "Name": "aztables",
-            "CoverageGoal": 0.62
+            "CoverageGoal": 0.62,
+            "LiveCoverageGoal": 0.80
         },
         {
             "Name": "eng/tools",

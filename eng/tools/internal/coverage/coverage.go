@@ -19,8 +19,9 @@ type codeCoverage struct {
 }
 
 type coveragePackage struct {
-	Name         string  `json:"name"`
-	CoverageGoal float64 `json:"CoverageGoal"`
+	Name             string  `json:"name"`
+	CoverageGoal     float64 `json:"CoverageGoal"`
+	LiveCoverageGoal float64 `json:"LiveCoverageGoal,omitempty"`
 }
 
 const (
@@ -67,13 +68,17 @@ func readConfigData(coverageConfig string) *codeCoverage {
 }
 
 // This supports doing a single package at a time. If this needs to be expanded in the future
-// this method will have to return a []*float64 for each packages goal
+// this method will have to return a []*float64 for each packages goal. Checks for a LiveCoverageGoal when in live mode
 func findCoverageGoal(covFiles []string, configData *codeCoverage) float64 {
+	recordMode := os.Getenv("AZURE_RECORD_MODE")
 	for _, covFile := range covFiles {
 
 		// check for an exact match _first_, then go to fuzzy matching
 		for _, p := range configData.Packages {
 			if covFile == p.Name {
+				if recordMode == "live" && p.LiveCoverageGoal != 0.0 {
+					return p.LiveCoverageGoal
+				}
 				return p.CoverageGoal
 			}
 		}

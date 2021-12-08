@@ -41,7 +41,6 @@ func createRandomName(t *testing.T, prefix string) (string, error) {
 	return prefix + fmt.Sprint(h.Sum32()), err
 }
 
-
 func lookupEnvVar(s string) string {
 	ret, ok := os.LookupEnv(s)
 	if !ok {
@@ -69,7 +68,7 @@ func createClient(t *testing.T, key string) (*Client, error) {
 
 	options := &ClientOptions{
 		azcore.ClientOptions{
-			Transport:       client,
+			Transport: client,
 		},
 	}
 
@@ -89,7 +88,7 @@ func createKeyClient(t *testing.T) (*azkeys.Client, error) {
 
 	options := &azkeys.ClientOptions{
 		ClientOptions: azcore.ClientOptions{
-			Transport:       client,
+			Transport: client,
 		},
 	}
 

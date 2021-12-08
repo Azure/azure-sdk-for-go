@@ -19,6 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	azcrypto "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/crypto"
 	"github.com/stretchr/testify/require"
 )
 
@@ -212,4 +213,32 @@ func toBytes(s string, t *testing.T) []byte {
 	ret, err := hex.DecodeString(s)
 	require.NoError(t, err)
 	return ret
+}
+
+func getCredential(t *testing.T) azcore.TokenCredential {
+	if recording.GetRecordMode() != "playback" {
+		tenantId := lookupEnvVar("AZKEYS_TENANT_ID")
+		clientId := lookupEnvVar("AZKEYS_CLIENT_ID")
+		clientSecret := lookupEnvVar("AZKEYS_CLIENT_SECRET")
+		cred, err := azidentity.NewClientSecretCredential(tenantId, clientId, clientSecret, nil)
+		require.NoError(t, err)
+		return cred
+	} else {
+		return NewFakeCredential("fake", "fake")
+	}
+}
+
+func createCryptoClient(t *testing.T, key string) (*azcrypto.Client, error) {
+	client, err := recording.NewRecordingHTTPClient(t, nil)
+	require.NoError(t, err)
+
+	options := &azcrypto.ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			Transport: client,
+		},
+	}
+
+	cred := getCredential(t)
+
+	return azcrypto.NewClient(key, cred, options)
 }

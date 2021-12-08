@@ -19,7 +19,7 @@ func TestMessageBatchUnitTests(t *testing.T) {
 
 		require.NoError(t, err)
 		require.EqualValues(t, 1, mb.NumMessages())
-		require.EqualValues(t, 195, mb.NumBytes())
+		require.EqualValues(t, 183, mb.NumBytes())
 	})
 
 	t.Run("addTooManyMessages", func(t *testing.T) {

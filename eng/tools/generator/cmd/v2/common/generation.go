@@ -50,7 +50,7 @@ type GenerateParam struct {
 func (ctx GenerateContext) GenerateForAutomation(readme, repo string) ([]GenerateResult, []error) {
 	absReadme := filepath.Join(ctx.SpecPath, readme)
 	absReadmeGo := filepath.Join(filepath.Dir(absReadme), "readme.go.md")
-	specRPName := strings.Split(readme, "/")[1]
+	specRPName := strings.Split(readme, "/")[0]
 
 	var result []GenerateResult
 	var errors []error

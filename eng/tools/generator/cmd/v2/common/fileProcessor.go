@@ -136,8 +136,8 @@ func ChangeConfigWithLocalPath(path, specPath, specRPName string) error {
 	lines := strings.Split(string(b), "\n")
 	for i, line := range lines {
 		if strings.Contains(line, autorest_md_file_suffix) {
-			lines[i] = fmt.Sprintf("- %s", filepath.Join(specPath, "specification", specRPName, "resource-manager", "readme.md"))
-			lines[i+1] = fmt.Sprintf("- %s", filepath.Join(specPath, "specification", specRPName, "resource-manager", "readme.go.md"))
+			lines[i] = fmt.Sprintf("- %s", filepath.Join(specPath, specRPName, "resource-manager", "readme.md"))
+			lines[i+1] = fmt.Sprintf("- %s", filepath.Join(specPath, specRPName, "resource-manager", "readme.go.md"))
 			break
 		}
 	}

@@ -97,6 +97,18 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 
 	for _, readme := range input.RelatedReadmeMdFiles {
 		log.Printf("Start to process readme file: %s", readme)
+
+		sepStrs := strings.Split(readme, "/")
+		for i, sepStr := range sepStrs {
+			if sepStr == "resource-manager" {
+				readme = strings.Join(sepStrs[i-1:], "/")
+				if i > 1 {
+					ctx.specRoot = ctx.specRoot + "/" + strings.Join(sepStrs[:i-1], "/")
+				}
+				break
+			}
+		}
+
 		generateCtx := common.GenerateContext{
 			SDKPath:  sdkRepo.Root(),
 			SDKRepo:  &sdkRepo,

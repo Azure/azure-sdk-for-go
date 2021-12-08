@@ -237,12 +237,12 @@ To obtain more detailed logging, including request/response bodies and header va
 ```go
 import azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 // Set log to output to the console
-log.SetListener(func(cls log.Event, msg string) {
+azlog.SetListener(func(cls azlog.Event, msg string) {
     fmt.Println(msg)
 })
 
 // Includes only requests and responses in credential logs
-log.SetEvents(log.EventRequest, log.EventResponse)
+azlog.SetEvents(azlog.EventRequest, azlog.EventResponse)
 ```
 
 > CAUTION: logs from credentials contain sensitive information.

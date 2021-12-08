@@ -4,7 +4,8 @@
 
 ### Features Added
 
-- Enabling websocket support via `ClientOptions.NewWebSocketConn`. For an example, see the `ExampleNewClient_usingWebsockets` function in `example_client_test.go`.
+- Enabling websocket support via `ClientOptions.NewWebSocketConn`. For an example, see the `ExampleNewClient_usingWebsockets` 
+  function in `example_client_test.go`.
 
 ### Breaking Changes
 
@@ -12,6 +13,10 @@
   properly omitted (or indicate that they've been omitted) when sending and receiving.  
 
 ### Bugs Fixed
+
+- Session IDs can now be blank - prior to this release it would cause an error. PR#16530
+- Drain will no longer hang if there is a link failure. Thanks to @flexarts for reporting this issue: PR#16530
+- Attempting to settle messages received in ReceiveAndDelete mode would cause a panic. PR#16255
 
 ### Other Changes
 - Removed legacy dependencies, resulting in a much smaller package.

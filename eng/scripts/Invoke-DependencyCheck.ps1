@@ -38,7 +38,7 @@ foreach ($sdk in $sdks)
     {
         continue
     }
-    if ((Resolve-Path $sdk.DirectoryPath).Path -eq (Resolve-Path (Join-Path $RepoRoot $newPackageDirectory)).Path)
+    if ($sdk.DirectoryPath.EndsWith($PackageDirectory))
     {
         ## Add replace for new package
         $modPath = Join-Path $RepoRoot "sdk" "depcheck" "go.mod"

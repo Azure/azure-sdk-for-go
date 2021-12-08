@@ -9,6 +9,7 @@ package azsecrets
 import (
 	"context"
 	"errors"
+	"fmt"
 	"net/http"
 	"os"
 	"strings"
@@ -16,6 +17,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -270,7 +272,7 @@ func TestUpdateSecretProperties(t *testing.T) {
 	client, err := createClient(t)
 	require.NoError(t, err)
 
-	secret, err := createRandomName(t, "secret")
+	secret, err := createRandomName(t, "secret2")
 	require.NoError(t, err)
 	value, err := createRandomName(t, "value")
 	require.NoError(t, err)
@@ -288,6 +290,9 @@ func TestUpdateSecretProperties(t *testing.T) {
 		ContentType: to.StringPtr("password"),
 		Tags: map[string]string{
 			"Tag1": "TagVal1",
+		},
+		SecretAttributes: &Attributes{
+			Enabled: to.BoolPtr(true),
 		},
 	}
 
@@ -407,6 +412,31 @@ func TestTimeout(t *testing.T) {
 	c := context.Background()
 	c, cancelFunc := context.WithTimeout(c, 10*time.Second)
 	defer cancelFunc()
+
+	start := time.Now()
+	_, err = client.GetSecret(c, "nonexistentsecret", nil)
+	require.Error(t, err)
+	require.ErrorIs(t, err, context.DeadlineExceeded)
+	require.Less(t, time.Since(start).Seconds(), 11.0)
+	require.Greater(t, time.Since(start).Seconds(), 9.0)
+}
+
+func TestLogging(t *testing.T) {
+	fakeKVUrl := "https://test-sync-time-dummy.vault.azure.net/"
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	require.NoError(t, err)
+
+	client, err := NewClient(fakeKVUrl, cred, nil)
+	require.NoError(t, err)
+
+	c := context.Background()
+	c, cancelFunc := context.WithTimeout(c, 10*time.Second)
+	defer cancelFunc()
+
+	log.SetListener(func(cls log.Event, msg string) {
+		fmt.Println(msg)
+	})
+	log.SetEvents(log.EventRequest, log.EventResponse)
 
 	start := time.Now()
 	_, err = client.GetSecret(c, "nonexistentsecret", nil)

@@ -164,16 +164,17 @@ contentType := "text/plain"
 
 // We will also disable the secret for further use
 
-properties := azsecrets.SecretProperties{
-    ContentType: &contentType,
-    SecretAttributes: &azsecrets.SecretAttributes{
-        Attributes: &azsecrets.Attributes{
-            Enabled: to.BoolPtr(false),
-        },
+properties := Properties{
+    ContentType: to.StringPtr("password"),
+    Tags: map[string]string{
+        "Tag1": "TagVal1",
+    },
+    SecretAttributes: &Attributes{
+        Enabled: to.BoolPtr(true),
     },
 }
 
-resp, err := client.UpdateSecretProperties(context.Background(), "mySecretName", &properties, nil)
+resp, err := client.UpdateSecretProperties(context.Background(), "mySecretName", properties, nil)
 if err != nil {
     // handle error...
 }
@@ -236,12 +237,12 @@ To obtain more detailed logging, including request/response bodies and header va
 ```go
 import azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 // Set log to output to the console
-log.SetListener(func(cls log.Classification, msg string) {
-		fmt.Println(msg) // printing log out to the console
+log.SetListener(func(cls log.Event, msg string) {
+    fmt.Println(msg)
 })
 
 // Includes only requests and responses in credential logs
-log.SetClassifications(log.Request, log.Response)
+log.SetEvents(log.EventRequest, log.EventResponse)
 ```
 
 > CAUTION: logs from credentials contain sensitive information.

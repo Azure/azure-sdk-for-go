@@ -88,9 +88,13 @@ type Attributes struct {
 }
 
 func (s Attributes) toGenerated() *internal.SecretAttributes {
+	var recLevel *internal.DeletionRecoveryLevel
+	if s.RecoveryLevel != nil {
+		recLevel = s.RecoveryLevel.toGenerated().ToPtr()
+	}
 	return &internal.SecretAttributes{
 		RecoverableDays: s.RecoverableDays,
-		RecoveryLevel:   s.RecoveryLevel.toGenerated().ToPtr(),
+		RecoveryLevel:   recLevel,
 		Attributes: internal.Attributes{
 			Enabled:   s.Enabled,
 			Expires:   s.Expires,

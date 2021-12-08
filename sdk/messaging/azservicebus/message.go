@@ -10,7 +10,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/Azure/go-amqp"
 	"github.com/devigned/tab"
 )
@@ -117,17 +116,9 @@ func (m *Message) toAMQPMessage() *amqp.Message {
 		amqpMsg.Header.TTL = *m.TimeToLive
 	}
 
-	// TODO: I don't think this should be strictly required. Need to
-	// look into why it won't send properly without one.
-	var messageID string
+	var messageID interface{}
 
-	if m.MessageID == nil || *m.MessageID == "" {
-		uuid, err := uuid.New()
-
-		if err == nil {
-			messageID = uuid.String()
-		}
-	} else {
+	if m.MessageID != nil {
 		messageID = *m.MessageID
 	}
 

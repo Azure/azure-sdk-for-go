@@ -19,13 +19,13 @@ import (
 type ReceivedMessage struct {
 	MessageID string
 
-	ContentType      string
-	CorrelationID    string
+	ContentType      *string
+	CorrelationID    *string
 	SessionID        *string
-	Subject          string
-	ReplyTo          string
-	ReplyToSessionID string
-	To               string
+	Subject          *string
+	ReplyTo          *string
+	ReplyToSessionID *string
+	To               *string
 
 	TimeToLive *time.Duration
 
@@ -69,19 +69,19 @@ func (rm *ReceivedMessage) Body() ([]byte, error) {
 	return rm.rawAMQPMessage.Data[0], nil
 }
 
-// Message is a SendableMessage which can be sent using a Client.NewSender().
+// Message is a message with a body and commonly used properties.
 type Message struct {
-	MessageID string
+	MessageID *string
 
-	ContentType   string
-	CorrelationID string
+	ContentType   *string
+	CorrelationID *string
 	// Body corresponds to the first []byte array in the Data section of an AMQP message.
 	Body             []byte
 	SessionID        *string
-	Subject          string
-	ReplyTo          string
-	ReplyToSessionID string
-	To               string
+	Subject          *string
+	ReplyTo          *string
+	ReplyToSessionID *string
+	To               *string
 	TimeToLive       *time.Duration
 
 	PartitionKey            *string
@@ -119,14 +119,16 @@ func (m *Message) toAMQPMessage() *amqp.Message {
 
 	// TODO: I don't think this should be strictly required. Need to
 	// look into why it won't send properly without one.
-	var messageID = m.MessageID
+	var messageID string
 
-	if messageID == "" {
+	if m.MessageID == nil || *m.MessageID == "" {
 		uuid, err := uuid.New()
 
 		if err == nil {
 			messageID = uuid.String()
 		}
+	} else {
+		messageID = *m.MessageID
 	}
 
 	amqpMsg.Properties = &amqp.MessageProperties{
@@ -134,14 +136,17 @@ func (m *Message) toAMQPMessage() *amqp.Message {
 	}
 
 	if m.SessionID != nil {
-		amqpMsg.Properties.GroupID = *m.SessionID
+		amqpMsg.Properties.GroupID = m.SessionID
 	}
 
 	// if m.GroupSequence != nil {
 	// 	amqpMsg.Properties.GroupSequence = *m.GroupSequence
 	// }
 
-	amqpMsg.Properties.CorrelationID = m.CorrelationID
+	if m.CorrelationID != nil {
+		amqpMsg.Properties.CorrelationID = *m.CorrelationID
+	}
+
 	amqpMsg.Properties.ContentType = m.ContentType
 	amqpMsg.Properties.Subject = m.Subject
 	amqpMsg.Properties.To = m.To
@@ -206,11 +211,11 @@ func newReceivedMessage(ctxForLogging context.Context, amqpMsg *amqp.Message) *R
 		if id, ok := amqpMsg.Properties.MessageID.(string); ok {
 			msg.MessageID = id
 		}
-		msg.SessionID = &amqpMsg.Properties.GroupID
+		msg.SessionID = amqpMsg.Properties.GroupID
 		//msg.GroupSequence = &amqpMsg.Properties.GroupSequence
 
 		if id, ok := amqpMsg.Properties.CorrelationID.(string); ok {
-			msg.CorrelationID = id
+			msg.CorrelationID = &id
 		}
 		msg.ContentType = amqpMsg.Properties.ContentType
 		msg.Subject = amqpMsg.Properties.Subject

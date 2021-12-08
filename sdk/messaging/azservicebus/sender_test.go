@@ -110,7 +110,7 @@ func Test_Sender_UsingPartitionedQueue(t *testing.T) {
 	require.NoError(t, err)
 
 	err = sender.SendMessage(context.Background(), &Message{
-		MessageID:    "message ID",
+		MessageID:    to.StringPtr("message ID"),
 		Body:         []byte("1. single partitioned message"),
 		PartitionKey: to.StringPtr("partitionKey1"),
 	})

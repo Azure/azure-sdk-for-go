@@ -53,6 +53,15 @@ The clients support different forms of authentication. Cosmos accounts can use a
 
 The aztables package supports any of the types that implement the `azcore.TokenCredential` interface, authorization via a Connection String, or authorization with a Shared Access Signature Token.
 
+##### Creating the client with an AAD credential
+Use AAD authentication as the credential parameter to authenticate the client:
+```golang
+cred, err := azidentity.NewDefaultAzureCredential(nil)
+handle(err)
+serviceClient, err := aztables.NewServiceClient("https://<myAccountName>.table.core.windows.net/", cred, nil)
+handle(err)
+```
+
 ##### Creating the client from a shared key
 To use an account [shared key][azure_shared_key] (aka account key or access key), provide the key as a string. This can be found in your storage account in the [Azure Portal][azure_portal_account_url] under the "Access Keys" section or by running the following Azure CLI command:
 
@@ -64,15 +73,6 @@ az storage account keys list -g MyResourceGroup -n MyStorageAccount
 cred, err := aztables.NewSharedKeyCredential("<accountName>", "<accountKey>")
 handle(err)
 client, err := aztables.NewServiceClientWithSharedKey(serviceURL, cred, nil)
-handle(err)
-```
-
-##### Creating the client with an AAD credential
-Use AAD authentication as the credential parameter to authenticate the client:
-```golang
-cred, err := azidentity.NewDefaultAzureCredential(nil)
-handle(err)
-serviceClient, err := aztables.NewServiceClient("https://<myAccountName>.table.core.windows.net/", cred, nil)
 handle(err)
 ```
 

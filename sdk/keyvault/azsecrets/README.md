@@ -173,12 +173,12 @@ properties := azsecrets.SecretProperties{
     },
 }
 
-resp, err := client.UpdateSecretProperties(context.Background(), "mySecretName", properties, nil)
+resp, err := client.UpdateSecretProperties(context.Background(), "mySecretName", &properties, nil)
 if err != nil {
     // handle error...
 }
 
-fmt.Printf("Updated on: %v, ContentType: %v, Enabled: %v", *resp.Attributes.Updated, *resp.ContentType, *resp.Attributes.Enabled)
+fmt.Printf("Updated on: %v, Content type: %v, Enabled: %v", *resp.Attributes.Updated, *resp.ContentType, *resp.Attributes.Enabled)
 ```
 
 ### Delete a Secret

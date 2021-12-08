@@ -16,7 +16,8 @@ import (
 )
 
 func TestBatchAdd(t *testing.T) {
-	recording.LiveOnly(t)
+	// recording.LiveOnly(t)
+	recording.SetBodilessMatcher(t, nil)
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
 			client, delete := initClientTest(t, service, true)
@@ -31,11 +32,12 @@ func TestBatchAdd(t *testing.T) {
 				batch = append(batch, TransactionAction{ActionType: Add, Entity: marshalled})
 			}
 
-			u1, err := uuid.New()
-			require.NoError(t, err)
-			u2, err := uuid.New()
-			require.NoError(t, err)
-			resp, err := client.submitTransactionInternal(ctx, &batch, u1, u2, nil)
+			// u1, err := uuid.New()
+			// require.NoError(t, err)
+			// u2, err := uuid.New()
+			// require.NoError(t, err)
+			// resp, err := client.submitTransactionInternal(ctx, &batch, u1, u2, nil)
+			resp, err := client.SubmitTransaction(ctx, batch, nil)
 			require.NoError(t, err)
 			for i := 0; i < len(*resp.TransactionResponses); i++ {
 				r := (*resp.TransactionResponses)[i]

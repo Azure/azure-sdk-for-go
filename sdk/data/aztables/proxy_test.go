@@ -28,7 +28,7 @@ func TestMain(m *testing.M) {
 				os.Exit(1)
 			}
 
-			err := recording.AddURISanitizer("fakeaccount", account, nil)
+			err := recording.AddGeneralRegexSanitizer("fakeaccount", account, nil)
 			if err != nil {
 				panic(err)
 			}

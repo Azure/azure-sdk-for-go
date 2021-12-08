@@ -270,7 +270,7 @@ func TestUpdateSecretProperties(t *testing.T) {
 	client, err := createClient(t)
 	require.NoError(t, err)
 
-	secret, err := createRandomName(t, "secret")
+	secret, err := createRandomName(t, "secret1" + t.Name())
 	require.NoError(t, err)
 	value, err := createRandomName(t, "value")
 	require.NoError(t, err)
@@ -284,10 +284,17 @@ func TestUpdateSecretProperties(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, *getResp.Value, value)
 
+	expires := time.Now().Add(48 * time.Hour)
+	nb := time.Now().Add(-24 * time.Hour)
 	params := Properties{
 		ContentType: to.StringPtr("password"),
 		Tags: map[string]string{
 			"Tag1": "TagVal1",
+		},
+		SecretAttributes: &Attributes{
+			Enabled: to.BoolPtr(true),
+			Expires: &expires,
+			NotBefore: &nb,
 		},
 	}
 

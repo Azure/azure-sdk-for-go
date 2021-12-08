@@ -55,9 +55,8 @@ func TestNewClient(t *testing.T) {
 }
 
 func TestClient_Decrypt(t *testing.T) {
-	recording.LiveOnly(t)
-	// stop := startTest(t)
-	// defer stop()
+	stop := startTest(t)
+	defer stop()
 
 	keyName, err := createRandomName(t, "key")
 	require.NoError(t, err)
@@ -81,9 +80,8 @@ func TestClient_Decrypt(t *testing.T) {
 }
 
 func TestClient_WrapUnwrap(t *testing.T) {
-	recording.LiveOnly(t)
-	// stop := startTest(t)
-	// defer stop()
+	stop := startTest(t)
+	defer stop()
 
 	keyName, err := createRandomName(t, "key")
 	require.NoError(t, err)
@@ -111,9 +109,8 @@ func TestClient_WrapUnwrap(t *testing.T) {
 }
 
 func TestClient_SignVerify(t *testing.T) {
-	recording.LiveOnly(t)
-	// stop := startTest(t)
-	// defer stop()
+	stop := startTest(t)
+	defer stop()
 
 	keyName, err := createRandomName(t, "key")
 	require.NoError(t, err)

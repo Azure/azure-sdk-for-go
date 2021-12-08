@@ -66,26 +66,6 @@ func NewClient(vaultUrl string, credential azcore.TokenCredential, options *Clie
 	}, nil
 }
 
-func createTestClient(vaultUrl string, credential azcore.TokenCredential, options *ClientOptions, recordingPolicy policy.Policy) (*Client, error) {
-	if options == nil {
-		options = &ClientOptions{}
-	}
-
-	genOptions := options.toConnectionOptions()
-
-	genOptions.PerRetryPolicies = append(
-		genOptions.PerRetryPolicies,
-		shared.NewKeyVaultChallengePolicy(credential, runtime.NewPipeline("azkeys", "0.1.0", nil, nil, genOptions)),
-	)
-	genOptions.PerCallPolicies = append(genOptions.PerCallPolicies, recordingPolicy)
-
-	conn := generated.NewConnection(genOptions)
-	return &Client{
-		kvClient: generated.NewKeyVaultClient(conn),
-		vaultUrl: vaultUrl,
-	}, nil
-}
-
 // CreateKeyOptions contains the optional parameters for the KeyVaultClient.CreateKey method.
 type CreateKeyOptions struct {
 	// Elliptic curve name. For valid values, see JsonWebKeyCurveName.

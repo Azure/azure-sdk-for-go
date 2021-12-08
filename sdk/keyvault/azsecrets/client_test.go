@@ -266,6 +266,8 @@ func TestPurgeDeletedSecret(t *testing.T) {
 func TestUpdateSecretProperties(t *testing.T) {
 	stop := startTest(t)
 	defer stop()
+	err := recording.SetBodilessMatcher(t, nil)
+	require.NoError(t, err)
 
 	client, err := createClient(t)
 	require.NoError(t, err)

@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Enabling websocket support via `ClientOptions.NewWebSocketConn`. For an example, see the `ExampleNewClient_usingWebsockets` function in `example_client_test.go`.
+
 ### Breaking Changes
 
 - Message properties that come from the standard AMQP message have been made into pointers, to allow them to be 

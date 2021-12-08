@@ -8,6 +8,7 @@ import (
 	"crypto/tls"
 	"errors"
 	"fmt"
+	"net"
 	"sync"
 	"sync/atomic"
 
@@ -19,7 +20,7 @@ import (
 // Client provides methods to create Sender and Receiver
 // instances to send and receive messages from Service Bus.
 type Client struct {
-	config    clientConfig
+	creds     clientCreds
 	namespace interface {
 		// used internally by `Client`
 		internal.NamespaceWithNewAMQPLinks
@@ -37,7 +38,14 @@ type Client struct {
 type ClientOptions struct {
 	// TLSConfig configures a client with a custom *tls.Config.
 	TLSConfig *tls.Config
+
+	// NewWebSocketConn is a function that can create a net.Conn for use with websockets.
+	// For an example, see ExampleNewClient_usingWebsockets() function in example_client_test.go.
+	NewWebSocketConn func(ctx context.Context, args NewWebSocketConnArgs) (net.Conn, error)
 }
+
+// NewWebSocketConnArgs are passed to your web socket creation function (ClientOptions.NewWebSocketConn)
+type NewWebSocketConnArgs = internal.NewWebSocketConnArgs
 
 // NewClient creates a new Client for a Service Bus namespace, using a TokenCredential.
 // A Client allows you create receivers (for queues or subscriptions) and senders (for queues and topics).
@@ -52,7 +60,7 @@ func NewClient(fullyQualifiedNamespace string, credential azcore.TokenCredential
 		return nil, errors.New("credential was nil")
 	}
 
-	return newClientImpl(clientConfig{
+	return newClientImpl(clientCreds{
 		credential:              credential,
 		fullyQualifiedNamespace: fullyQualifiedNamespace,
 	}, options)
@@ -66,7 +74,7 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 		return nil, errors.New("connectionString must not be empty")
 	}
 
-	return newClientImpl(clientConfig{
+	return newClientImpl(clientCreds{
 		connectionString: connectionString,
 	}, options)
 }
@@ -75,49 +83,42 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 // func NewClientWithNamedKeyCredential(fullyQualifiedNamespace string, credential azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 // }
 
-type clientConfig struct {
+type clientCreds struct {
 	connectionString string
-	credential       azcore.TokenCredential
+
 	// the Service Bus namespace name (ex: myservicebus.servicebus.windows.net)
 	fullyQualifiedNamespace string
-	tlsConfig               *tls.Config
+	credential              azcore.TokenCredential
 }
 
-func applyClientOptions(client *Client, options *ClientOptions) error {
-	if options == nil {
-		return nil
-	}
-
-	client.config.tlsConfig = options.TLSConfig
-	return nil
-}
-
-func newClientImpl(config clientConfig, options *ClientOptions) (*Client, error) {
+func newClientImpl(creds clientCreds, options *ClientOptions) (*Client, error) {
 	client := &Client{
 		linksMu: &sync.Mutex{},
-		config:  config,
+		creds:   creds,
 		links:   map[uint64]internal.Closeable{},
-	}
-
-	if err := applyClientOptions(client, options); err != nil {
-		return nil, err
 	}
 
 	var err error
 	var nsOptions []internal.NamespaceOption
 
-	if client.config.connectionString != "" {
-		nsOptions = append(nsOptions, internal.NamespaceWithConnectionString(client.config.connectionString))
-	} else if client.config.credential != nil {
+	if client.creds.connectionString != "" {
+		nsOptions = append(nsOptions, internal.NamespaceWithConnectionString(client.creds.connectionString))
+	} else if client.creds.credential != nil {
 		option := internal.NamespacesWithTokenCredential(
-			client.config.fullyQualifiedNamespace,
-			client.config.credential)
+			client.creds.fullyQualifiedNamespace,
+			client.creds.credential)
 
 		nsOptions = append(nsOptions, option)
 	}
 
-	if client.config.tlsConfig != nil {
-		nsOptions = append(nsOptions, internal.NamespaceWithTLSConfig(client.config.tlsConfig))
+	if options != nil {
+		if options.TLSConfig != nil {
+			nsOptions = append(nsOptions, internal.NamespaceWithTLSConfig(options.TLSConfig))
+		}
+
+		if options.NewWebSocketConn != nil {
+			nsOptions = append(nsOptions, internal.NamespaceWithWebSocket(options.NewWebSocketConn))
+		}
 	}
 
 	client.namespace, err = internal.NewNamespace(nsOptions...)

@@ -272,7 +272,7 @@ func TestUpdateSecretProperties(t *testing.T) {
 	client, err := createClient(t)
 	require.NoError(t, err)
 
-	secret, err := createRandomName(t, "secret1" + t.Name())
+	secret, err := createRandomName(t, "secret1"+t.Name())
 	require.NoError(t, err)
 	value, err := createRandomName(t, "value")
 	require.NoError(t, err)
@@ -294,8 +294,8 @@ func TestUpdateSecretProperties(t *testing.T) {
 			"Tag1": "TagVal1",
 		},
 		SecretAttributes: &Attributes{
-			Enabled: to.BoolPtr(true),
-			Expires: &expires,
+			Enabled:   to.BoolPtr(true),
+			Expires:   &expires,
 			NotBefore: &nb,
 		},
 	}

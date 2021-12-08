@@ -10,8 +10,8 @@ import (
 	"crypto/sha256"
 	"testing"
 
-	"github.com/stretchr/testify/require"
 	azcrypto "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/crypto"
+	"github.com/stretchr/testify/require"
 )
 
 func TestClient_Decrypt(t *testing.T) {

@@ -113,7 +113,8 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 		log.Printf("Get ori exports for changelog generation...")
 		oriExports, err = exports.Get(packagePath)
 		if err != nil {
-			return nil, err
+			log.Printf("Get ori exports error, set to empty: %+v", err)
+			oriExports = exports.Content{}
 		}
 
 		log.Printf("Remove all the files that start with `zz_generated_`...")

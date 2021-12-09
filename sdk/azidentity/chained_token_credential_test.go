@@ -298,7 +298,7 @@ func (c *UnavailableCredential) GetToken(ctx context.Context, opts policy.TokenR
 	return nil, newCredentialUnavailableError("UnavailableCredential", "Expected CredentialUnavailableError")
 }
 
-func TestChainedTokenCredential_RepeatedGetTokenWithSuccessfulCredentialWithRetryAllSources(t *testing.T) {
+func TestChainedTokenCredential_RepeatedGetTokenWithSuccessfulCredentialWithRetrySources(t *testing.T) {
 	err := initEnvironmentVarsForTest()
 	if err != nil {
 		t.Fatalf("Could not set environment variables for testing: %v", err)
@@ -322,8 +322,8 @@ func TestChainedTokenCredential_RepeatedGetTokenWithSuccessfulCredentialWithRetr
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
 
-	// Backwards order: envCred first, secCred later, to check that envCred is always called when RetryAllSources is set to true.
-	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{unavailableCred, secCred}, &ChainedTokenCredentialOptions{RetryAllSources: true})
+	// Backwards order: envCred first, secCred later, to check that envCred is always called when RetrySources is set to true.
+	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{unavailableCred, secCred}, &ChainedTokenCredentialOptions{RetrySources: true})
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}

@@ -15,19 +15,19 @@ import (
 // ChainedTokenCredentialOptions contains optional parameters for ChainedTokenCredential.
 type ChainedTokenCredentialOptions struct {
 	// If true, it will not assume the first successful credential should be always used.
-	RetryAllSources bool
+	RetrySources bool
 }
 
 // ChainedTokenCredential is a chain of credentials that enables fallback behavior when a credential can't authenticate.
 type ChainedTokenCredential struct {
 	sources              []azcore.TokenCredential
 	successfulCredential azcore.TokenCredential
-	retryAllSources      bool
+	retrySources         bool
 }
 
 // NewChainedTokenCredential creates a ChainedTokenCredential.
 // By default, this credential will assume that the first successful credential should be the only credential used on future requests.
-// If the `RetryAllSources` option is set to true, it will always try to get a token using all of the originally provided credentials.
+// If the `RetrySources` option is set to true, it will always try to get a token using all of the originally provided credentials.
 // sources: Credential instances to comprise the chain. GetToken() will invoke them in the given order.
 // options: Optional configuration.
 func NewChainedTokenCredential(sources []azcore.TokenCredential, options *ChainedTokenCredentialOptions) (*ChainedTokenCredential, error) {
@@ -45,7 +45,7 @@ func NewChainedTokenCredential(sources []azcore.TokenCredential, options *Chaine
 	if options != nil {
 		credentialOptions = *options
 	}
-	return &ChainedTokenCredential{sources: cp, retryAllSources: credentialOptions.RetryAllSources}, nil
+	return &ChainedTokenCredential{sources: cp, retrySources: credentialOptions.RetrySources}, nil
 }
 
 // GetToken calls GetToken on the chained credentials in turn, stopping when one returns a token. This method is called automatically by Azure SDK clients.
@@ -64,7 +64,7 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.Token
 		return err
 	}
 
-	if c.successfulCredential != nil && !c.retryAllSources {
+	if c.successfulCredential != nil && !c.retrySources {
 		token, err = c.successfulCredential.GetToken(ctx, opts)
 		if err != nil {
 			return nil, formatError(err)

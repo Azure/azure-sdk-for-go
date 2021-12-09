@@ -13,7 +13,7 @@ import (
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/public"
 )
 
-var runManualBrowserTests = os.Getenv("AZIDENTITY_RUN_MANUAL_BROWSER_TESTS") != ""
+var _, runManualBrowserTests = os.LookupEnv("AZIDENTITY_RUN_MANUAL_BROWSER_TESTS")
 
 func TestInteractiveBrowserCredential_InvalidTenantID(t *testing.T) {
 	options := InteractiveBrowserCredentialOptions{}

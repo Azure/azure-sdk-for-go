@@ -14,6 +14,39 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func Test_Sender_MessageID(t *testing.T) {
+	client, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
+		EnablePartitioning: to.BoolPtr(true),
+	})
+	defer cleanup()
+
+	sender, err := client.NewSender(queueName, nil)
+	require.NoError(t, err)
+
+	receiver, err := client.NewReceiverForQueue(queueName, &ReceiverOptions{
+		ReceiveMode: ReceiveModeReceiveAndDelete,
+	})
+	require.NoError(t, err)
+
+	err = sender.SendMessage(context.Background(), &Message{
+		MessageID: to.StringPtr("message with a message ID"),
+	})
+	require.NoError(t, err)
+
+	messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+	require.EqualValues(t, "message with a message ID", messages[0].MessageID)
+
+	err = sender.SendMessage(context.Background(), &Message{
+		// note if you don't explicitly send a message ID one will be auto-generated for you.
+	})
+	require.NoError(t, err)
+
+	messages, err = receiver.ReceiveMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+	require.NotEmpty(t, messages[0].MessageID) // this is filled in by automatically.
+}
+
 func Test_Sender_SendBatchOfTwo(t *testing.T) {
 	client, cleanup, queueName := setupLiveTest(t, nil)
 	defer cleanup()
@@ -110,7 +143,7 @@ func Test_Sender_UsingPartitionedQueue(t *testing.T) {
 	require.NoError(t, err)
 
 	err = sender.SendMessage(context.Background(), &Message{
-		MessageID:    "message ID",
+		MessageID:    to.StringPtr("message ID"),
 		Body:         []byte("1. single partitioned message"),
 		PartitionKey: to.StringPtr("partitionKey1"),
 	})

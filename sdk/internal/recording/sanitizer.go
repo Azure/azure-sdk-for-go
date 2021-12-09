@@ -102,6 +102,7 @@ func handleProxyResponse(resp *http.Response, err error) error {
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
+	defer resp.Body.Close()
 	if err != nil {
 		return err
 	}

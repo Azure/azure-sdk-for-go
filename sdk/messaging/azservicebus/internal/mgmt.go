@@ -649,9 +649,7 @@ func (mc *mgmtClient) ScheduleMessages(ctx context.Context, enqueueTime time.Tim
 			"message":    encoded,
 		}
 
-		// TODO: I believe empty string should be allowed here. There isn't a way for the
-		// user to opt out of session related information.
-		if messages[i].Properties.GroupID != "" {
+		if messages[i].Properties.GroupID != nil {
 			individualMessage["session-id"] = messages[i].Properties.GroupID
 		}
 

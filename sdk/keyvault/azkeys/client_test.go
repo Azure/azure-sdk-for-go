@@ -354,6 +354,7 @@ func TestUpdateKeyProperties(t *testing.T) {
 			skipHSM(t, testType)
 			stop := startTest(t)
 			defer stop()
+			recording.SetBodilessMatcher(t, nil)
 
 			client, err := createClient(t, testType)
 			require.NoError(t, err)
@@ -617,7 +618,7 @@ func TestGetKeyRotationPolicy(t *testing.T) {
 func TestReleaseKey(t *testing.T) {
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
-			skipHSM(t, testType)
+			alwaysSkipHSM(t, testType)
 			// t.Skip("Release is not currently not enabled in API Version 7.3-preview")
 			stop := startTest(t)
 			defer stop()

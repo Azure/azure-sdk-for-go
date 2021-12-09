@@ -64,28 +64,29 @@ stages:
                     RepoId: Azure/azure-sdk-for-go
                     WorkingDirectory: $(System.DefaultWorkingDirectory)
 
-      - deployment: UpdatePackageVersion
-        displayName: "Update Package Version"
-        condition: and(succeeded(), ne(variables['Skip.UpdatePackageVersion'], 'true'))
-        environment: github
-        dependsOn: TagRepository
+      - ${{ if not(startsWith(parameters.ServiceDirectory, 'resourcemanager')) }}:
+        - deployment: UpdatePackageVersion
+          displayName: "Update Package Version"
+          condition: and(succeeded(), ne(variables['Skip.UpdatePackageVersion'], 'true'))
+          environment: github
+          dependsOn: TagRepository
 
-        pool:
-          name: azsdk-pool-mms-ubuntu-2004-general
-          vmImage: MMSUbuntu20.04
+          pool:
+            name: azsdk-pool-mms-ubuntu-2004-general
+            vmImage: MMSUbuntu20.04
 
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                - checkout: self
-                - pwsh: |
-                    eng/scripts/Update-ModuleVersion.ps1 -ModulePath 'sdk/${{parameters.ServiceDirectory}}'
-                  displayName: Increment package version
-                - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
-                  parameters:
-                    PRBranchName: increment-package-version-${{ parameters.ServiceDirectory }}-$(Build.BuildId)
-                    CommitMsg: "Increment package version after release of ${{ parameters.ServiceDirectory }}"
-                    PRTitle: "Increment version for ${{ parameters.ServiceDirectory }} releases"
-                    PRLabels: "auto-merge"
-                    CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
+          strategy:
+            runOnce:
+              deploy:
+                steps:
+                  - checkout: self
+                  - pwsh: |
+                      eng/scripts/Update-ModuleVersion.ps1 -ModulePath 'sdk/${{parameters.ServiceDirectory}}'
+                    displayName: Increment package version
+                  - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
+                    parameters:
+                      PRBranchName: increment-package-version-${{ parameters.ServiceDirectory }}-$(Build.BuildId)
+                      CommitMsg: "Increment package version after release of ${{ parameters.ServiceDirectory }}"
+                      PRTitle: "Increment version for ${{ parameters.ServiceDirectory }} releases"
+                      PRLabels: "auto-merge"
+                      CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'

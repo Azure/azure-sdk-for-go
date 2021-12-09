@@ -10,7 +10,7 @@ package armsecurityinsight
 
 const (
 	module  = "armsecurityinsight"
-	version = "v0.1.0"
+	version = "v0.1.1"
 )
 
 // AlertRuleKind - The kind of the alert rule

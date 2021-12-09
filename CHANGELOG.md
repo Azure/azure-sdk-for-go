@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## `v60.1.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/elastic/mgmt/2020-07-01/elastic`
+- `github.com/Azure/azure-sdk-for-go/services/virtualmachineimagebuilder/mgmt/2021-10-01/virtualmachineimagebuilder`
+
 ## `v60.0.0`
 
 ### New Packages
@@ -12,7 +19,7 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v60.0.0/services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
 
 ## `v59.4.0`
 

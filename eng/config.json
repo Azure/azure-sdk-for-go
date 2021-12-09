@@ -22,7 +22,7 @@
         },
         {
             "Name": "azsecrets",
-            "CoverageGoal": 0.76
+            "CoverageGoal": 0.86
         },
         {
             "Name": "data",

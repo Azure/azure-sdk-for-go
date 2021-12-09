@@ -14,11 +14,16 @@ import (
 
 // ChainedTokenCredentialOptions contains optional parameters for ChainedTokenCredential.
 type ChainedTokenCredentialOptions struct {
-	// RetrySources configures how the credential uses its sources. When true, the credential will always request a token from each source in turn, stopping when one provides a token. When false, the credential requests a token from only that source--it never again tries the sources which failed.
+	// RetrySources configures how the credential uses its sources.
+	// When true, the credential will always request a token from each source in turn,
+	// stopping when one provides a token. When false, the credential requests a token
+	// only from the source that previously retrieved a token--it never again tries the sources which failed.
 	RetrySources bool
 }
 
 // ChainedTokenCredential is a chain of credentials that enables fallback behavior when a credential can't authenticate.
+// By default, this credential will assume that the first successful credential should be the only credential used on future requests.
+// If the `RetrySources` option is set to true, it will always try to get a token using all of the originally provided credentials.
 type ChainedTokenCredential struct {
 	sources              []azcore.TokenCredential
 	successfulCredential azcore.TokenCredential
@@ -26,8 +31,6 @@ type ChainedTokenCredential struct {
 }
 
 // NewChainedTokenCredential creates a ChainedTokenCredential.
-// By default, this credential will assume that the first successful credential should be the only credential used on future requests.
-// If the `RetrySources` option is set to true, it will always try to get a token using all of the originally provided credentials.
 // sources: Credential instances to comprise the chain. GetToken() will invoke them in the given order.
 // options: Optional configuration.
 func NewChainedTokenCredential(sources []azcore.TokenCredential, options *ChainedTokenCredentialOptions) (*ChainedTokenCredential, error) {
@@ -66,7 +69,7 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.Token
 	if c.successfulCredential != nil && !c.retrySources {
 		token, err = c.successfulCredential.GetToken(ctx, opts)
 		if err != nil {
-			return nil, formatError(err)
+			return nil, err
 		}
 		return token, nil
 	}

@@ -27,3 +27,32 @@ func TestDefaultAzureCredential_GetTokenSuccess(t *testing.T) {
 		t.Fatalf("GetToken error: %v", err)
 	}
 }
+
+func TestDefaultAzureCredential_WithRetrySources(t *testing.T) {
+	env := map[string]string{"AZURE_TENANT_ID": tenantID, "AZURE_CLIENT_ID": clientID, "AZURE_CLIENT_SECRET": secret}
+	setEnvironmentVariables(t, env)
+	srv, close := mock.NewTLSServer()
+	defer close()
+
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+
+	cred, err := NewDefaultAzureCredential(&DefaultAzureCredentialOptions{AuthorityHost: AuthorityHost(srv.URL()), ClientOptions: policy.ClientOptions{Transport: srv}, RetrySources: true})
+	if err != nil {
+		t.Fatalf("Unable to create credential. Received: %v", err)
+	}
+
+	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{scope}})
+	if err != nil {
+		t.Fatalf("Received an error when attempting to get a token but expected none. Error: %v", err)
+	}
+	if tk.Token != tokenValue {
+		t.Fatalf("Received an incorrect access token")
+	}
+	if tk.ExpiresOn.IsZero() {
+		t.Fatalf("Received an incorrect time in the response")
+	}
+	if cred.chain.successfulCredential == nil {
+		t.Fatalf("The successful credential was not assigned")
+	}
+}

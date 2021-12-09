@@ -6,8 +6,11 @@
 
 ### Breaking Changes
 
-* Instances of `ChainedTokenCredential` will now skip looping through the list of source credentials and re-use the first successful credential on subsequent calls to `GetToken`.
+* Instances of `ChainedTokenCredential` and `DefaultAzureCredential` will now skip looping through the list of source credentials and re-use the first successful credential on subsequent calls to `GetToken`.
   * If `ChainedTokenCredentialOptions.RetrySources` is true, `ChainedTokenCredential` will continue to try all of the originally provided credentials each time the `GetToken` method is called.
+  * `ChainedTokenCredential.successfulCredential` will contain a reference to the last successful credential.
+  * If `DefaultAzureCredential.RetrySources` is true, `DefaultAzureCredential` will continue to try all of the underlying credentials (`EnvironmentCredential`, `ManagedIdentityCredential`, `AzureCLICredential`) each time the `GetToken` method is called.
+  * `DefaultAzureCredential.chain.successfulCredential` will contain a reference to the last successful credential.
 
 ### Bugs Fixed
 

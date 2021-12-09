@@ -271,11 +271,8 @@ func (s *startDeleteSecretPoller) Poll(ctx context.Context) (*http.Response, err
 		// Service recognizes DeletedSecret, operation is done
 		s.lastResponse = resp
 		return resp.RawResponse, nil
-	} else if err != nil {
-		return s.deleteResponse.RawResponse, nil
 	}
-	s.lastResponse = resp
-	return resp.RawResponse, nil
+	return s.deleteResponse.RawResponse, nil
 }
 
 // FinalResponse returns the final response after the operations has finished

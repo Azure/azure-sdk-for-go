@@ -19,6 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets/internal"
 	"github.com/stretchr/testify/require"
 )
 
@@ -228,6 +229,9 @@ func TestDeleteSecret(t *testing.T) {
 
 	_, err = client.GetSecret(context.Background(), secret, nil)
 	require.Error(t, err)
+
+	_, err = resp.Poller.FinalResponse(context.TODO())
+	require.NoError(t, err)
 }
 
 func TestPurgeDeletedSecret(t *testing.T) {
@@ -423,4 +427,27 @@ func TestTimeout(t *testing.T) {
 	require.ErrorIs(t, err, context.DeadlineExceeded)
 	require.Less(t, time.Since(start).Seconds(), 11.0)
 	require.Greater(t, time.Since(start).Seconds(), 9.0)
+}
+
+func TestConstants(t *testing.T) {
+	d := CustomizedRecoverable.toGenerated()
+	require.Equal(t, d, internal.DeletionRecoveryLevelCustomizedRecoverable)
+
+	d1 := CustomizedRecoverableProtectedSubscription.toGenerated()
+	require.Equal(t, d1, internal.DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription)
+
+	d2 := CustomizedRecoverablePurgeable.toGenerated()
+	require.Equal(t, d2, internal.DeletionRecoveryLevelCustomizedRecoverablePurgeable)
+
+	d3 := Purgeable.toGenerated()
+	require.Equal(t, d3, internal.DeletionRecoveryLevelPurgeable)
+
+	d4 := Recoverable.toGenerated()
+	require.Equal(t, d4, internal.DeletionRecoveryLevelRecoverable)
+
+	d5 := RecoverableProtectedSubscription.toGenerated()
+	require.Equal(t, d5, internal.DeletionRecoveryLevelRecoverableProtectedSubscription)
+
+	d6 := RecoverablePurgeable.toGenerated()
+	require.Equal(t, d6, internal.DeletionRecoveryLevelRecoverablePurgeable)
 }

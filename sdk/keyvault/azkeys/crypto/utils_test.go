@@ -76,12 +76,12 @@ func (f *FakeCredential) GetToken(ctx context.Context, options policy.TokenReque
 }
 
 func createCryptoClient(t *testing.T, key string) (*Client, error) {
-	client, err := recording.NewRecordingHTTPClient(t, nil)
+	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 
 	options := &ClientOptions{
 		ClientOptions: azcore.ClientOptions{
-			Transport: client,
+			Transport: transport,
 		},
 	}
 
@@ -100,12 +100,12 @@ func createClient(t *testing.T) (*azkeys.Client, error) {
 	vaultUrl := recording.GetEnvVariable("AZURE_KEYVAULT_URL", fakeKvURL)
 	var credOptions *azidentity.ClientSecretCredentialOptions
 
-	client, err := recording.NewRecordingHTTPClient(t, nil)
+	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 
 	options := &azkeys.ClientOptions{
 		ClientOptions: azcore.ClientOptions{
-			Transport: client,
+			Transport: transport,
 		},
 	}
 

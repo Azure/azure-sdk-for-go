@@ -143,12 +143,12 @@ func createClient(t *testing.T, testType string) (*Client, error) {
 		vaultUrl = recording.GetEnvVariable("AZURE_MANAGEDHSM_URL", fakeKvMHSMURL)
 	}
 
-	client, err := recording.NewRecordingHTTPClient(t, nil)
+	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 
 	options := &ClientOptions{
 		ClientOptions: azcore.ClientOptions{
-			Transport: client,
+			Transport: transport,
 		},
 	}
 

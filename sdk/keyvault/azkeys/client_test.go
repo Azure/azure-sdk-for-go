@@ -111,12 +111,7 @@ func TestCreateOCTKey(t *testing.T) {
 			require.NoError(t, err)
 			require.NotNil(t, resp.Key)
 
-			// resp2, err := client.CreateOCTKey(ctx, "invalidKey()[]", nil)
-			// require.NoError(t, err)
-			// require.Nil(t, resp2.Key)
-
 			cleanUpKey(t, client, key)
-			// cleanUpKey(t, client, "invalidKey")
 		})
 	}
 }
@@ -621,6 +616,7 @@ func TestGetKeyRotationPolicy(t *testing.T) {
 	}
 }
 
+// This test is not ready, it will be ready in the 7.4 swagger, leaving this test for once that change is made.
 func TestReleaseKey(t *testing.T) {
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {

@@ -16,18 +16,19 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup"
 )
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/ListOperations.json
-func ExampleOperationsClient_List() {
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/Common/TriggerExportJobs.json
+func ExampleJobsClient_Export() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armrecoveryservicesbackup.NewOperationsClient(cred, nil)
-	pager := client.List(nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
+	client := armrecoveryservicesbackup.NewJobsClient("<subscription-id>", cred, nil)
+	_, err = client.Export(ctx,
+		"<vault-name>",
+		"<resource-group-name>",
+		&armrecoveryservicesbackup.JobsExportOptions{Filter: nil})
+	if err != nil {
+		log.Fatal(err)
 	}
 }

@@ -13,306 +13,1161 @@ const (
 	version = "v0.1.0"
 )
 
-// AuthType - Specifies the authentication type.
-type AuthType string
+// A2ARecoveryAvailabilityType - The recovery availability type of the virtual machine.
+type A2ARecoveryAvailabilityType string
 
 const (
-	AuthTypeAAD                  AuthType = "AAD"
-	AuthTypeACS                  AuthType = "ACS"
-	AuthTypeAccessControlService AuthType = "AccessControlService"
-	AuthTypeAzureActiveDirectory AuthType = "AzureActiveDirectory"
-	AuthTypeInvalid              AuthType = "Invalid"
+	A2ARecoveryAvailabilityTypeAvailabilitySet  A2ARecoveryAvailabilityType = "AvailabilitySet"
+	A2ARecoveryAvailabilityTypeAvailabilityZone A2ARecoveryAvailabilityType = "AvailabilityZone"
+	A2ARecoveryAvailabilityTypeSingle           A2ARecoveryAvailabilityType = "Single"
 )
 
-// PossibleAuthTypeValues returns the possible values for the AuthType const type.
-func PossibleAuthTypeValues() []AuthType {
-	return []AuthType{
-		AuthTypeAAD,
-		AuthTypeACS,
-		AuthTypeAccessControlService,
-		AuthTypeAzureActiveDirectory,
-		AuthTypeInvalid,
+// PossibleA2ARecoveryAvailabilityTypeValues returns the possible values for the A2ARecoveryAvailabilityType const type.
+func PossibleA2ARecoveryAvailabilityTypeValues() []A2ARecoveryAvailabilityType {
+	return []A2ARecoveryAvailabilityType{
+		A2ARecoveryAvailabilityTypeAvailabilitySet,
+		A2ARecoveryAvailabilityTypeAvailabilityZone,
+		A2ARecoveryAvailabilityTypeSingle,
 	}
 }
 
-// ToPtr returns a *AuthType pointing to the current value.
-func (c AuthType) ToPtr() *AuthType {
+// ToPtr returns a *A2ARecoveryAvailabilityType pointing to the current value.
+func (c A2ARecoveryAvailabilityType) ToPtr() *A2ARecoveryAvailabilityType {
 	return &c
 }
 
-// CreatedByType - The type of identity that created the resource.
-type CreatedByType string
+// A2ARpRecoveryPointType - The recovery point type.
+type A2ARpRecoveryPointType string
 
 const (
-	CreatedByTypeApplication     CreatedByType = "Application"
-	CreatedByTypeKey             CreatedByType = "Key"
-	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
-	CreatedByTypeUser            CreatedByType = "User"
+	A2ARpRecoveryPointTypeLatest                      A2ARpRecoveryPointType = "Latest"
+	A2ARpRecoveryPointTypeLatestApplicationConsistent A2ARpRecoveryPointType = "LatestApplicationConsistent"
+	A2ARpRecoveryPointTypeLatestCrashConsistent       A2ARpRecoveryPointType = "LatestCrashConsistent"
+	A2ARpRecoveryPointTypeLatestProcessed             A2ARpRecoveryPointType = "LatestProcessed"
 )
 
-// PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
-func PossibleCreatedByTypeValues() []CreatedByType {
-	return []CreatedByType{
-		CreatedByTypeApplication,
-		CreatedByTypeKey,
-		CreatedByTypeManagedIdentity,
-		CreatedByTypeUser,
+// PossibleA2ARpRecoveryPointTypeValues returns the possible values for the A2ARpRecoveryPointType const type.
+func PossibleA2ARpRecoveryPointTypeValues() []A2ARpRecoveryPointType {
+	return []A2ARpRecoveryPointType{
+		A2ARpRecoveryPointTypeLatest,
+		A2ARpRecoveryPointTypeLatestApplicationConsistent,
+		A2ARpRecoveryPointTypeLatestCrashConsistent,
+		A2ARpRecoveryPointTypeLatestProcessed,
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
+// ToPtr returns a *A2ARpRecoveryPointType pointing to the current value.
+func (c A2ARpRecoveryPointType) ToPtr() *A2ARpRecoveryPointType {
 	return &c
 }
 
-// InfrastructureEncryptionState - Enabling/Disabling the Double Encryption state
-type InfrastructureEncryptionState string
+// AgentAutoUpdateStatus - A value indicating whether the auto update is enabled.
+type AgentAutoUpdateStatus string
 
 const (
-	InfrastructureEncryptionStateDisabled InfrastructureEncryptionState = "Disabled"
-	InfrastructureEncryptionStateEnabled  InfrastructureEncryptionState = "Enabled"
+	AgentAutoUpdateStatusDisabled AgentAutoUpdateStatus = "Disabled"
+	AgentAutoUpdateStatusEnabled  AgentAutoUpdateStatus = "Enabled"
 )
 
-// PossibleInfrastructureEncryptionStateValues returns the possible values for the InfrastructureEncryptionState const type.
-func PossibleInfrastructureEncryptionStateValues() []InfrastructureEncryptionState {
-	return []InfrastructureEncryptionState{
-		InfrastructureEncryptionStateDisabled,
-		InfrastructureEncryptionStateEnabled,
+// PossibleAgentAutoUpdateStatusValues returns the possible values for the AgentAutoUpdateStatus const type.
+func PossibleAgentAutoUpdateStatusValues() []AgentAutoUpdateStatus {
+	return []AgentAutoUpdateStatus{
+		AgentAutoUpdateStatusDisabled,
+		AgentAutoUpdateStatusEnabled,
 	}
 }
 
-// ToPtr returns a *InfrastructureEncryptionState pointing to the current value.
-func (c InfrastructureEncryptionState) ToPtr() *InfrastructureEncryptionState {
+// ToPtr returns a *AgentAutoUpdateStatus pointing to the current value.
+func (c AgentAutoUpdateStatus) ToPtr() *AgentAutoUpdateStatus {
 	return &c
 }
 
-// PrivateEndpointConnectionStatus - Gets or sets the status.
-type PrivateEndpointConnectionStatus string
+type AgentUpgradeBlockedReason string
 
 const (
-	PrivateEndpointConnectionStatusApproved     PrivateEndpointConnectionStatus = "Approved"
-	PrivateEndpointConnectionStatusDisconnected PrivateEndpointConnectionStatus = "Disconnected"
-	PrivateEndpointConnectionStatusPending      PrivateEndpointConnectionStatus = "Pending"
-	PrivateEndpointConnectionStatusRejected     PrivateEndpointConnectionStatus = "Rejected"
+	AgentUpgradeBlockedReasonAgentNoHeartbeat              AgentUpgradeBlockedReason = "AgentNoHeartbeat"
+	AgentUpgradeBlockedReasonAlreadyOnLatestVersion        AgentUpgradeBlockedReason = "AlreadyOnLatestVersion"
+	AgentUpgradeBlockedReasonDistroIsNotReported           AgentUpgradeBlockedReason = "DistroIsNotReported"
+	AgentUpgradeBlockedReasonDistroNotSupportedForUpgrade  AgentUpgradeBlockedReason = "DistroNotSupportedForUpgrade"
+	AgentUpgradeBlockedReasonIncompatibleApplianceVersion  AgentUpgradeBlockedReason = "IncompatibleApplianceVersion"
+	AgentUpgradeBlockedReasonInvalidAgentVersion           AgentUpgradeBlockedReason = "InvalidAgentVersion"
+	AgentUpgradeBlockedReasonInvalidDriverVersion          AgentUpgradeBlockedReason = "InvalidDriverVersion"
+	AgentUpgradeBlockedReasonMissingUpgradePath            AgentUpgradeBlockedReason = "MissingUpgradePath"
+	AgentUpgradeBlockedReasonNotProtected                  AgentUpgradeBlockedReason = "NotProtected"
+	AgentUpgradeBlockedReasonProcessServerNoHeartbeat      AgentUpgradeBlockedReason = "ProcessServerNoHeartbeat"
+	AgentUpgradeBlockedReasonRcmProxyNoHeartbeat           AgentUpgradeBlockedReason = "RcmProxyNoHeartbeat"
+	AgentUpgradeBlockedReasonRebootRequired                AgentUpgradeBlockedReason = "RebootRequired"
+	AgentUpgradeBlockedReasonUnknown                       AgentUpgradeBlockedReason = "Unknown"
+	AgentUpgradeBlockedReasonUnsupportedProtectionScenario AgentUpgradeBlockedReason = "UnsupportedProtectionScenario"
 )
 
-// PossiblePrivateEndpointConnectionStatusValues returns the possible values for the PrivateEndpointConnectionStatus const type.
-func PossiblePrivateEndpointConnectionStatusValues() []PrivateEndpointConnectionStatus {
-	return []PrivateEndpointConnectionStatus{
-		PrivateEndpointConnectionStatusApproved,
-		PrivateEndpointConnectionStatusDisconnected,
-		PrivateEndpointConnectionStatusPending,
-		PrivateEndpointConnectionStatusRejected,
+// PossibleAgentUpgradeBlockedReasonValues returns the possible values for the AgentUpgradeBlockedReason const type.
+func PossibleAgentUpgradeBlockedReasonValues() []AgentUpgradeBlockedReason {
+	return []AgentUpgradeBlockedReason{
+		AgentUpgradeBlockedReasonAgentNoHeartbeat,
+		AgentUpgradeBlockedReasonAlreadyOnLatestVersion,
+		AgentUpgradeBlockedReasonDistroIsNotReported,
+		AgentUpgradeBlockedReasonDistroNotSupportedForUpgrade,
+		AgentUpgradeBlockedReasonIncompatibleApplianceVersion,
+		AgentUpgradeBlockedReasonInvalidAgentVersion,
+		AgentUpgradeBlockedReasonInvalidDriverVersion,
+		AgentUpgradeBlockedReasonMissingUpgradePath,
+		AgentUpgradeBlockedReasonNotProtected,
+		AgentUpgradeBlockedReasonProcessServerNoHeartbeat,
+		AgentUpgradeBlockedReasonRcmProxyNoHeartbeat,
+		AgentUpgradeBlockedReasonRebootRequired,
+		AgentUpgradeBlockedReasonUnknown,
+		AgentUpgradeBlockedReasonUnsupportedProtectionScenario,
 	}
 }
 
-// ToPtr returns a *PrivateEndpointConnectionStatus pointing to the current value.
-func (c PrivateEndpointConnectionStatus) ToPtr() *PrivateEndpointConnectionStatus {
+// ToPtr returns a *AgentUpgradeBlockedReason pointing to the current value.
+func (c AgentUpgradeBlockedReason) ToPtr() *AgentUpgradeBlockedReason {
 	return &c
 }
 
-// ProvisioningState - Gets or sets provisioning state of the private endpoint connection.
-type ProvisioningState string
+// AgentVersionStatus - A value indicating whether security update required.
+type AgentVersionStatus string
 
 const (
-	ProvisioningStateDeleting  ProvisioningState = "Deleting"
-	ProvisioningStateFailed    ProvisioningState = "Failed"
-	ProvisioningStatePending   ProvisioningState = "Pending"
-	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
+	AgentVersionStatusDeprecated             AgentVersionStatus = "Deprecated"
+	AgentVersionStatusNotSupported           AgentVersionStatus = "NotSupported"
+	AgentVersionStatusSecurityUpdateRequired AgentVersionStatus = "SecurityUpdateRequired"
+	AgentVersionStatusSupported              AgentVersionStatus = "Supported"
+	AgentVersionStatusUpdateRequired         AgentVersionStatus = "UpdateRequired"
 )
 
-// PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{
-		ProvisioningStateDeleting,
-		ProvisioningStateFailed,
-		ProvisioningStatePending,
-		ProvisioningStateSucceeded,
+// PossibleAgentVersionStatusValues returns the possible values for the AgentVersionStatus const type.
+func PossibleAgentVersionStatusValues() []AgentVersionStatus {
+	return []AgentVersionStatus{
+		AgentVersionStatusDeprecated,
+		AgentVersionStatusNotSupported,
+		AgentVersionStatusSecurityUpdateRequired,
+		AgentVersionStatusSupported,
+		AgentVersionStatusUpdateRequired,
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
+// ToPtr returns a *AgentVersionStatus pointing to the current value.
+func (c AgentVersionStatus) ToPtr() *AgentVersionStatus {
 	return &c
 }
 
-// ResourceIdentityType - The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a
-// set of user-assigned identities. The type 'None' will remove any
-// identities.
-type ResourceIdentityType string
+// AlternateLocationRecoveryOption - The ALR option.
+type AlternateLocationRecoveryOption string
 
 const (
-	ResourceIdentityTypeNone                       ResourceIdentityType = "None"
-	ResourceIdentityTypeSystemAssigned             ResourceIdentityType = "SystemAssigned"
-	ResourceIdentityTypeSystemAssignedUserAssigned ResourceIdentityType = "SystemAssigned, UserAssigned"
-	ResourceIdentityTypeUserAssigned               ResourceIdentityType = "UserAssigned"
+	AlternateLocationRecoveryOptionCreateVMIfNotFound AlternateLocationRecoveryOption = "CreateVmIfNotFound"
+	AlternateLocationRecoveryOptionNoAction           AlternateLocationRecoveryOption = "NoAction"
 )
 
-// PossibleResourceIdentityTypeValues returns the possible values for the ResourceIdentityType const type.
-func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
-	return []ResourceIdentityType{
-		ResourceIdentityTypeNone,
-		ResourceIdentityTypeSystemAssigned,
-		ResourceIdentityTypeSystemAssignedUserAssigned,
-		ResourceIdentityTypeUserAssigned,
+// PossibleAlternateLocationRecoveryOptionValues returns the possible values for the AlternateLocationRecoveryOption const type.
+func PossibleAlternateLocationRecoveryOptionValues() []AlternateLocationRecoveryOption {
+	return []AlternateLocationRecoveryOption{
+		AlternateLocationRecoveryOptionCreateVMIfNotFound,
+		AlternateLocationRecoveryOptionNoAction,
 	}
 }
 
-// ToPtr returns a *ResourceIdentityType pointing to the current value.
-func (c ResourceIdentityType) ToPtr() *ResourceIdentityType {
+// ToPtr returns a *AlternateLocationRecoveryOption pointing to the current value.
+func (c AlternateLocationRecoveryOption) ToPtr() *AlternateLocationRecoveryOption {
 	return &c
 }
 
-// ResourceMoveState - The State of the Resource after the move operation
-type ResourceMoveState string
+// AutoProtectionOfDataDisk - A value indicating whether the auto protection is enabled.
+type AutoProtectionOfDataDisk string
 
 const (
-	ResourceMoveStateCommitFailed    ResourceMoveState = "CommitFailed"
-	ResourceMoveStateCommitTimedout  ResourceMoveState = "CommitTimedout"
-	ResourceMoveStateCriticalFailure ResourceMoveState = "CriticalFailure"
-	ResourceMoveStateFailure         ResourceMoveState = "Failure"
-	ResourceMoveStateInProgress      ResourceMoveState = "InProgress"
-	ResourceMoveStateMoveSucceeded   ResourceMoveState = "MoveSucceeded"
-	ResourceMoveStatePartialSuccess  ResourceMoveState = "PartialSuccess"
-	ResourceMoveStatePrepareFailed   ResourceMoveState = "PrepareFailed"
-	ResourceMoveStatePrepareTimedout ResourceMoveState = "PrepareTimedout"
-	ResourceMoveStateUnknown         ResourceMoveState = "Unknown"
+	AutoProtectionOfDataDiskDisabled AutoProtectionOfDataDisk = "Disabled"
+	AutoProtectionOfDataDiskEnabled  AutoProtectionOfDataDisk = "Enabled"
 )
 
-// PossibleResourceMoveStateValues returns the possible values for the ResourceMoveState const type.
-func PossibleResourceMoveStateValues() []ResourceMoveState {
-	return []ResourceMoveState{
-		ResourceMoveStateCommitFailed,
-		ResourceMoveStateCommitTimedout,
-		ResourceMoveStateCriticalFailure,
-		ResourceMoveStateFailure,
-		ResourceMoveStateInProgress,
-		ResourceMoveStateMoveSucceeded,
-		ResourceMoveStatePartialSuccess,
-		ResourceMoveStatePrepareFailed,
-		ResourceMoveStatePrepareTimedout,
-		ResourceMoveStateUnknown,
+// PossibleAutoProtectionOfDataDiskValues returns the possible values for the AutoProtectionOfDataDisk const type.
+func PossibleAutoProtectionOfDataDiskValues() []AutoProtectionOfDataDisk {
+	return []AutoProtectionOfDataDisk{
+		AutoProtectionOfDataDiskDisabled,
+		AutoProtectionOfDataDiskEnabled,
 	}
 }
 
-// ToPtr returns a *ResourceMoveState pointing to the current value.
-func (c ResourceMoveState) ToPtr() *ResourceMoveState {
+// ToPtr returns a *AutoProtectionOfDataDisk pointing to the current value.
+func (c AutoProtectionOfDataDisk) ToPtr() *AutoProtectionOfDataDisk {
 	return &c
 }
 
-// SKUName - The Sku name.
-type SKUName string
+// AutomationAccountAuthenticationType - A value indicating the type authentication to use for automation Account.
+type AutomationAccountAuthenticationType string
 
 const (
-	SKUNameRS0      SKUName = "RS0"
-	SKUNameStandard SKUName = "Standard"
+	AutomationAccountAuthenticationTypeRunAsAccount           AutomationAccountAuthenticationType = "RunAsAccount"
+	AutomationAccountAuthenticationTypeSystemAssignedIdentity AutomationAccountAuthenticationType = "SystemAssignedIdentity"
 )
 
-// PossibleSKUNameValues returns the possible values for the SKUName const type.
-func PossibleSKUNameValues() []SKUName {
-	return []SKUName{
-		SKUNameRS0,
-		SKUNameStandard,
+// PossibleAutomationAccountAuthenticationTypeValues returns the possible values for the AutomationAccountAuthenticationType const type.
+func PossibleAutomationAccountAuthenticationTypeValues() []AutomationAccountAuthenticationType {
+	return []AutomationAccountAuthenticationType{
+		AutomationAccountAuthenticationTypeRunAsAccount,
+		AutomationAccountAuthenticationTypeSystemAssignedIdentity,
 	}
 }
 
-// ToPtr returns a *SKUName pointing to the current value.
-func (c SKUName) ToPtr() *SKUName {
+// ToPtr returns a *AutomationAccountAuthenticationType pointing to the current value.
+func (c AutomationAccountAuthenticationType) ToPtr() *AutomationAccountAuthenticationType {
 	return &c
 }
 
-// TriggerType - The way the vault upgrade was triggered.
-type TriggerType string
+// DataSyncStatus - The data sync option.
+type DataSyncStatus string
 
 const (
-	TriggerTypeForcedUpgrade TriggerType = "ForcedUpgrade"
-	TriggerTypeUserTriggered TriggerType = "UserTriggered"
+	DataSyncStatusForDownTime        DataSyncStatus = "ForDownTime"
+	DataSyncStatusForSynchronization DataSyncStatus = "ForSynchronization"
 )
 
-// PossibleTriggerTypeValues returns the possible values for the TriggerType const type.
-func PossibleTriggerTypeValues() []TriggerType {
-	return []TriggerType{
-		TriggerTypeForcedUpgrade,
-		TriggerTypeUserTriggered,
+// PossibleDataSyncStatusValues returns the possible values for the DataSyncStatus const type.
+func PossibleDataSyncStatusValues() []DataSyncStatus {
+	return []DataSyncStatus{
+		DataSyncStatusForDownTime,
+		DataSyncStatusForSynchronization,
 	}
 }
 
-// ToPtr returns a *TriggerType pointing to the current value.
-func (c TriggerType) ToPtr() *TriggerType {
+// ToPtr returns a *DataSyncStatus pointing to the current value.
+func (c DataSyncStatus) ToPtr() *DataSyncStatus {
 	return &c
 }
 
-// UsagesUnit - Unit of the usage.
-type UsagesUnit string
+// DisableProtectionReason - Disable protection reason. It can have values NotSpecified/MigrationComplete.
+type DisableProtectionReason string
 
 const (
-	UsagesUnitBytes          UsagesUnit = "Bytes"
-	UsagesUnitBytesPerSecond UsagesUnit = "BytesPerSecond"
-	UsagesUnitCount          UsagesUnit = "Count"
-	UsagesUnitCountPerSecond UsagesUnit = "CountPerSecond"
-	UsagesUnitPercent        UsagesUnit = "Percent"
-	UsagesUnitSeconds        UsagesUnit = "Seconds"
+	DisableProtectionReasonMigrationComplete DisableProtectionReason = "MigrationComplete"
+	DisableProtectionReasonNotSpecified      DisableProtectionReason = "NotSpecified"
 )
 
-// PossibleUsagesUnitValues returns the possible values for the UsagesUnit const type.
-func PossibleUsagesUnitValues() []UsagesUnit {
-	return []UsagesUnit{
-		UsagesUnitBytes,
-		UsagesUnitBytesPerSecond,
-		UsagesUnitCount,
-		UsagesUnitCountPerSecond,
-		UsagesUnitPercent,
-		UsagesUnitSeconds,
+// PossibleDisableProtectionReasonValues returns the possible values for the DisableProtectionReason const type.
+func PossibleDisableProtectionReasonValues() []DisableProtectionReason {
+	return []DisableProtectionReason{
+		DisableProtectionReasonMigrationComplete,
+		DisableProtectionReasonNotSpecified,
 	}
 }
 
-// ToPtr returns a *UsagesUnit pointing to the current value.
-func (c UsagesUnit) ToPtr() *UsagesUnit {
+// ToPtr returns a *DisableProtectionReason pointing to the current value.
+func (c DisableProtectionReason) ToPtr() *DisableProtectionReason {
 	return &c
 }
 
-// VaultPrivateEndpointState - Private endpoint state for backup.
-type VaultPrivateEndpointState string
+// DiskAccountType - The DiskType.
+type DiskAccountType string
 
 const (
-	VaultPrivateEndpointStateEnabled VaultPrivateEndpointState = "Enabled"
-	VaultPrivateEndpointStateNone    VaultPrivateEndpointState = "None"
+	DiskAccountTypePremiumLRS     DiskAccountType = "Premium_LRS"
+	DiskAccountTypeStandardLRS    DiskAccountType = "Standard_LRS"
+	DiskAccountTypeStandardSSDLRS DiskAccountType = "StandardSSD_LRS"
 )
 
-// PossibleVaultPrivateEndpointStateValues returns the possible values for the VaultPrivateEndpointState const type.
-func PossibleVaultPrivateEndpointStateValues() []VaultPrivateEndpointState {
-	return []VaultPrivateEndpointState{
-		VaultPrivateEndpointStateEnabled,
-		VaultPrivateEndpointStateNone,
+// PossibleDiskAccountTypeValues returns the possible values for the DiskAccountType const type.
+func PossibleDiskAccountTypeValues() []DiskAccountType {
+	return []DiskAccountType{
+		DiskAccountTypePremiumLRS,
+		DiskAccountTypeStandardLRS,
+		DiskAccountTypeStandardSSDLRS,
 	}
 }
 
-// ToPtr returns a *VaultPrivateEndpointState pointing to the current value.
-func (c VaultPrivateEndpointState) ToPtr() *VaultPrivateEndpointState {
+// ToPtr returns a *DiskAccountType pointing to the current value.
+func (c DiskAccountType) ToPtr() *DiskAccountType {
 	return &c
 }
 
-// VaultUpgradeState - Status of the vault upgrade operation.
-type VaultUpgradeState string
+// DiskReplicationProgressHealth - The progress health.
+type DiskReplicationProgressHealth string
 
 const (
-	VaultUpgradeStateFailed     VaultUpgradeState = "Failed"
-	VaultUpgradeStateInProgress VaultUpgradeState = "InProgress"
-	VaultUpgradeStateUnknown    VaultUpgradeState = "Unknown"
-	VaultUpgradeStateUpgraded   VaultUpgradeState = "Upgraded"
+	DiskReplicationProgressHealthInProgress   DiskReplicationProgressHealth = "InProgress"
+	DiskReplicationProgressHealthNoProgress   DiskReplicationProgressHealth = "NoProgress"
+	DiskReplicationProgressHealthNone         DiskReplicationProgressHealth = "None"
+	DiskReplicationProgressHealthQueued       DiskReplicationProgressHealth = "Queued"
+	DiskReplicationProgressHealthSlowProgress DiskReplicationProgressHealth = "SlowProgress"
 )
 
-// PossibleVaultUpgradeStateValues returns the possible values for the VaultUpgradeState const type.
-func PossibleVaultUpgradeStateValues() []VaultUpgradeState {
-	return []VaultUpgradeState{
-		VaultUpgradeStateFailed,
-		VaultUpgradeStateInProgress,
-		VaultUpgradeStateUnknown,
-		VaultUpgradeStateUpgraded,
+// PossibleDiskReplicationProgressHealthValues returns the possible values for the DiskReplicationProgressHealth const type.
+func PossibleDiskReplicationProgressHealthValues() []DiskReplicationProgressHealth {
+	return []DiskReplicationProgressHealth{
+		DiskReplicationProgressHealthInProgress,
+		DiskReplicationProgressHealthNoProgress,
+		DiskReplicationProgressHealthNone,
+		DiskReplicationProgressHealthQueued,
+		DiskReplicationProgressHealthSlowProgress,
 	}
 }
 
-// ToPtr returns a *VaultUpgradeState pointing to the current value.
-func (c VaultUpgradeState) ToPtr() *VaultUpgradeState {
+// ToPtr returns a *DiskReplicationProgressHealth pointing to the current value.
+func (c DiskReplicationProgressHealth) ToPtr() *DiskReplicationProgressHealth {
+	return &c
+}
+
+// EthernetAddressType - The source IP address type.
+type EthernetAddressType string
+
+const (
+	EthernetAddressTypeDynamic EthernetAddressType = "Dynamic"
+	EthernetAddressTypeStatic  EthernetAddressType = "Static"
+)
+
+// PossibleEthernetAddressTypeValues returns the possible values for the EthernetAddressType const type.
+func PossibleEthernetAddressTypeValues() []EthernetAddressType {
+	return []EthernetAddressType{
+		EthernetAddressTypeDynamic,
+		EthernetAddressTypeStatic,
+	}
+}
+
+// ToPtr returns a *EthernetAddressType pointing to the current value.
+func (c EthernetAddressType) ToPtr() *EthernetAddressType {
+	return &c
+}
+
+// ExportJobOutputSerializationType - The output type of the jobs.
+type ExportJobOutputSerializationType string
+
+const (
+	ExportJobOutputSerializationTypeExcel ExportJobOutputSerializationType = "Excel"
+	ExportJobOutputSerializationTypeJSON  ExportJobOutputSerializationType = "Json"
+	ExportJobOutputSerializationTypeXML   ExportJobOutputSerializationType = "Xml"
+)
+
+// PossibleExportJobOutputSerializationTypeValues returns the possible values for the ExportJobOutputSerializationType const type.
+func PossibleExportJobOutputSerializationTypeValues() []ExportJobOutputSerializationType {
+	return []ExportJobOutputSerializationType{
+		ExportJobOutputSerializationTypeExcel,
+		ExportJobOutputSerializationTypeJSON,
+		ExportJobOutputSerializationTypeXML,
+	}
+}
+
+// ToPtr returns a *ExportJobOutputSerializationType pointing to the current value.
+func (c ExportJobOutputSerializationType) ToPtr() *ExportJobOutputSerializationType {
+	return &c
+}
+
+// FailoverDeploymentModel - The failover deployment model.
+type FailoverDeploymentModel string
+
+const (
+	FailoverDeploymentModelClassic         FailoverDeploymentModel = "Classic"
+	FailoverDeploymentModelNotApplicable   FailoverDeploymentModel = "NotApplicable"
+	FailoverDeploymentModelResourceManager FailoverDeploymentModel = "ResourceManager"
+)
+
+// PossibleFailoverDeploymentModelValues returns the possible values for the FailoverDeploymentModel const type.
+func PossibleFailoverDeploymentModelValues() []FailoverDeploymentModel {
+	return []FailoverDeploymentModel{
+		FailoverDeploymentModelClassic,
+		FailoverDeploymentModelNotApplicable,
+		FailoverDeploymentModelResourceManager,
+	}
+}
+
+// ToPtr returns a *FailoverDeploymentModel pointing to the current value.
+func (c FailoverDeploymentModel) ToPtr() *FailoverDeploymentModel {
+	return &c
+}
+
+// HealthErrorCategory - The category of the health error.
+type HealthErrorCategory string
+
+const (
+	HealthErrorCategoryAgentAutoUpdateArtifactDeleted     HealthErrorCategory = "AgentAutoUpdateArtifactDeleted"
+	HealthErrorCategoryAgentAutoUpdateInfra               HealthErrorCategory = "AgentAutoUpdateInfra"
+	HealthErrorCategoryAgentAutoUpdateRunAsAccount        HealthErrorCategory = "AgentAutoUpdateRunAsAccount"
+	HealthErrorCategoryAgentAutoUpdateRunAsAccountExpired HealthErrorCategory = "AgentAutoUpdateRunAsAccountExpired"
+	HealthErrorCategoryAgentAutoUpdateRunAsAccountExpiry  HealthErrorCategory = "AgentAutoUpdateRunAsAccountExpiry"
+	HealthErrorCategoryConfiguration                      HealthErrorCategory = "Configuration"
+	HealthErrorCategoryFabricInfrastructure               HealthErrorCategory = "FabricInfrastructure"
+	HealthErrorCategoryNone                               HealthErrorCategory = "None"
+	HealthErrorCategoryReplication                        HealthErrorCategory = "Replication"
+	HealthErrorCategoryTestFailover                       HealthErrorCategory = "TestFailover"
+	HealthErrorCategoryVersionExpiry                      HealthErrorCategory = "VersionExpiry"
+)
+
+// PossibleHealthErrorCategoryValues returns the possible values for the HealthErrorCategory const type.
+func PossibleHealthErrorCategoryValues() []HealthErrorCategory {
+	return []HealthErrorCategory{
+		HealthErrorCategoryAgentAutoUpdateArtifactDeleted,
+		HealthErrorCategoryAgentAutoUpdateInfra,
+		HealthErrorCategoryAgentAutoUpdateRunAsAccount,
+		HealthErrorCategoryAgentAutoUpdateRunAsAccountExpired,
+		HealthErrorCategoryAgentAutoUpdateRunAsAccountExpiry,
+		HealthErrorCategoryConfiguration,
+		HealthErrorCategoryFabricInfrastructure,
+		HealthErrorCategoryNone,
+		HealthErrorCategoryReplication,
+		HealthErrorCategoryTestFailover,
+		HealthErrorCategoryVersionExpiry,
+	}
+}
+
+// ToPtr returns a *HealthErrorCategory pointing to the current value.
+func (c HealthErrorCategory) ToPtr() *HealthErrorCategory {
+	return &c
+}
+
+// HealthErrorCustomerResolvability - Value indicating whether the health error is customer resolvable.
+type HealthErrorCustomerResolvability string
+
+const (
+	HealthErrorCustomerResolvabilityAllowed    HealthErrorCustomerResolvability = "Allowed"
+	HealthErrorCustomerResolvabilityNotAllowed HealthErrorCustomerResolvability = "NotAllowed"
+)
+
+// PossibleHealthErrorCustomerResolvabilityValues returns the possible values for the HealthErrorCustomerResolvability const type.
+func PossibleHealthErrorCustomerResolvabilityValues() []HealthErrorCustomerResolvability {
+	return []HealthErrorCustomerResolvability{
+		HealthErrorCustomerResolvabilityAllowed,
+		HealthErrorCustomerResolvabilityNotAllowed,
+	}
+}
+
+// ToPtr returns a *HealthErrorCustomerResolvability pointing to the current value.
+func (c HealthErrorCustomerResolvability) ToPtr() *HealthErrorCustomerResolvability {
+	return &c
+}
+
+// HyperVReplicaAzureRpRecoveryPointType - The recovery point type.
+type HyperVReplicaAzureRpRecoveryPointType string
+
+const (
+	HyperVReplicaAzureRpRecoveryPointTypeLatest                      HyperVReplicaAzureRpRecoveryPointType = "Latest"
+	HyperVReplicaAzureRpRecoveryPointTypeLatestApplicationConsistent HyperVReplicaAzureRpRecoveryPointType = "LatestApplicationConsistent"
+	HyperVReplicaAzureRpRecoveryPointTypeLatestProcessed             HyperVReplicaAzureRpRecoveryPointType = "LatestProcessed"
+)
+
+// PossibleHyperVReplicaAzureRpRecoveryPointTypeValues returns the possible values for the HyperVReplicaAzureRpRecoveryPointType const type.
+func PossibleHyperVReplicaAzureRpRecoveryPointTypeValues() []HyperVReplicaAzureRpRecoveryPointType {
+	return []HyperVReplicaAzureRpRecoveryPointType{
+		HyperVReplicaAzureRpRecoveryPointTypeLatest,
+		HyperVReplicaAzureRpRecoveryPointTypeLatestApplicationConsistent,
+		HyperVReplicaAzureRpRecoveryPointTypeLatestProcessed,
+	}
+}
+
+// ToPtr returns a *HyperVReplicaAzureRpRecoveryPointType pointing to the current value.
+func (c HyperVReplicaAzureRpRecoveryPointType) ToPtr() *HyperVReplicaAzureRpRecoveryPointType {
+	return &c
+}
+
+// InMageRcmFailbackRecoveryPointType - The recovery point type.
+type InMageRcmFailbackRecoveryPointType string
+
+const (
+	InMageRcmFailbackRecoveryPointTypeApplicationConsistent InMageRcmFailbackRecoveryPointType = "ApplicationConsistent"
+	InMageRcmFailbackRecoveryPointTypeCrashConsistent       InMageRcmFailbackRecoveryPointType = "CrashConsistent"
+)
+
+// PossibleInMageRcmFailbackRecoveryPointTypeValues returns the possible values for the InMageRcmFailbackRecoveryPointType const type.
+func PossibleInMageRcmFailbackRecoveryPointTypeValues() []InMageRcmFailbackRecoveryPointType {
+	return []InMageRcmFailbackRecoveryPointType{
+		InMageRcmFailbackRecoveryPointTypeApplicationConsistent,
+		InMageRcmFailbackRecoveryPointTypeCrashConsistent,
+	}
+}
+
+// ToPtr returns a *InMageRcmFailbackRecoveryPointType pointing to the current value.
+func (c InMageRcmFailbackRecoveryPointType) ToPtr() *InMageRcmFailbackRecoveryPointType {
+	return &c
+}
+
+// InMageV2RpRecoveryPointType - The recovery point type.
+type InMageV2RpRecoveryPointType string
+
+const (
+	InMageV2RpRecoveryPointTypeLatest                      InMageV2RpRecoveryPointType = "Latest"
+	InMageV2RpRecoveryPointTypeLatestApplicationConsistent InMageV2RpRecoveryPointType = "LatestApplicationConsistent"
+	InMageV2RpRecoveryPointTypeLatestCrashConsistent       InMageV2RpRecoveryPointType = "LatestCrashConsistent"
+	InMageV2RpRecoveryPointTypeLatestProcessed             InMageV2RpRecoveryPointType = "LatestProcessed"
+)
+
+// PossibleInMageV2RpRecoveryPointTypeValues returns the possible values for the InMageV2RpRecoveryPointType const type.
+func PossibleInMageV2RpRecoveryPointTypeValues() []InMageV2RpRecoveryPointType {
+	return []InMageV2RpRecoveryPointType{
+		InMageV2RpRecoveryPointTypeLatest,
+		InMageV2RpRecoveryPointTypeLatestApplicationConsistent,
+		InMageV2RpRecoveryPointTypeLatestCrashConsistent,
+		InMageV2RpRecoveryPointTypeLatestProcessed,
+	}
+}
+
+// ToPtr returns a *InMageV2RpRecoveryPointType pointing to the current value.
+func (c InMageV2RpRecoveryPointType) ToPtr() *InMageV2RpRecoveryPointType {
+	return &c
+}
+
+// LicenseType - License type.
+type LicenseType string
+
+const (
+	LicenseTypeNoLicenseType LicenseType = "NoLicenseType"
+	LicenseTypeNotSpecified  LicenseType = "NotSpecified"
+	LicenseTypeWindowsServer LicenseType = "WindowsServer"
+)
+
+// PossibleLicenseTypeValues returns the possible values for the LicenseType const type.
+func PossibleLicenseTypeValues() []LicenseType {
+	return []LicenseType{
+		LicenseTypeNoLicenseType,
+		LicenseTypeNotSpecified,
+		LicenseTypeWindowsServer,
+	}
+}
+
+// ToPtr returns a *LicenseType pointing to the current value.
+func (c LicenseType) ToPtr() *LicenseType {
+	return &c
+}
+
+type MigrationItemOperation string
+
+const (
+	MigrationItemOperationDisableMigration   MigrationItemOperation = "DisableMigration"
+	MigrationItemOperationMigrate            MigrationItemOperation = "Migrate"
+	MigrationItemOperationStartResync        MigrationItemOperation = "StartResync"
+	MigrationItemOperationTestMigrate        MigrationItemOperation = "TestMigrate"
+	MigrationItemOperationTestMigrateCleanup MigrationItemOperation = "TestMigrateCleanup"
+)
+
+// PossibleMigrationItemOperationValues returns the possible values for the MigrationItemOperation const type.
+func PossibleMigrationItemOperationValues() []MigrationItemOperation {
+	return []MigrationItemOperation{
+		MigrationItemOperationDisableMigration,
+		MigrationItemOperationMigrate,
+		MigrationItemOperationStartResync,
+		MigrationItemOperationTestMigrate,
+		MigrationItemOperationTestMigrateCleanup,
+	}
+}
+
+// ToPtr returns a *MigrationItemOperation pointing to the current value.
+func (c MigrationItemOperation) ToPtr() *MigrationItemOperation {
+	return &c
+}
+
+// MigrationRecoveryPointType - The recovery point type.
+type MigrationRecoveryPointType string
+
+const (
+	MigrationRecoveryPointTypeApplicationConsistent MigrationRecoveryPointType = "ApplicationConsistent"
+	MigrationRecoveryPointTypeCrashConsistent       MigrationRecoveryPointType = "CrashConsistent"
+	MigrationRecoveryPointTypeNotSpecified          MigrationRecoveryPointType = "NotSpecified"
+)
+
+// PossibleMigrationRecoveryPointTypeValues returns the possible values for the MigrationRecoveryPointType const type.
+func PossibleMigrationRecoveryPointTypeValues() []MigrationRecoveryPointType {
+	return []MigrationRecoveryPointType{
+		MigrationRecoveryPointTypeApplicationConsistent,
+		MigrationRecoveryPointTypeCrashConsistent,
+		MigrationRecoveryPointTypeNotSpecified,
+	}
+}
+
+// ToPtr returns a *MigrationRecoveryPointType pointing to the current value.
+func (c MigrationRecoveryPointType) ToPtr() *MigrationRecoveryPointType {
+	return &c
+}
+
+// MigrationState - The migration status.
+type MigrationState string
+
+const (
+	MigrationStateDisableMigrationFailed     MigrationState = "DisableMigrationFailed"
+	MigrationStateDisableMigrationInProgress MigrationState = "DisableMigrationInProgress"
+	MigrationStateEnableMigrationFailed      MigrationState = "EnableMigrationFailed"
+	MigrationStateEnableMigrationInProgress  MigrationState = "EnableMigrationInProgress"
+	MigrationStateInitialSeedingFailed       MigrationState = "InitialSeedingFailed"
+	MigrationStateInitialSeedingInProgress   MigrationState = "InitialSeedingInProgress"
+	MigrationStateMigrationFailed            MigrationState = "MigrationFailed"
+	MigrationStateMigrationInProgress        MigrationState = "MigrationInProgress"
+	MigrationStateMigrationSucceeded         MigrationState = "MigrationSucceeded"
+	MigrationStateNone                       MigrationState = "None"
+	MigrationStateReplicating                MigrationState = "Replicating"
+)
+
+// PossibleMigrationStateValues returns the possible values for the MigrationState const type.
+func PossibleMigrationStateValues() []MigrationState {
+	return []MigrationState{
+		MigrationStateDisableMigrationFailed,
+		MigrationStateDisableMigrationInProgress,
+		MigrationStateEnableMigrationFailed,
+		MigrationStateEnableMigrationInProgress,
+		MigrationStateInitialSeedingFailed,
+		MigrationStateInitialSeedingInProgress,
+		MigrationStateMigrationFailed,
+		MigrationStateMigrationInProgress,
+		MigrationStateMigrationSucceeded,
+		MigrationStateNone,
+		MigrationStateReplicating,
+	}
+}
+
+// ToPtr returns a *MigrationState pointing to the current value.
+func (c MigrationState) ToPtr() *MigrationState {
+	return &c
+}
+
+// MobilityAgentUpgradeState - The agent auto upgrade state.
+type MobilityAgentUpgradeState string
+
+const (
+	MobilityAgentUpgradeStateCommit    MobilityAgentUpgradeState = "Commit"
+	MobilityAgentUpgradeStateCompleted MobilityAgentUpgradeState = "Completed"
+	MobilityAgentUpgradeStateNone      MobilityAgentUpgradeState = "None"
+	MobilityAgentUpgradeStateStarted   MobilityAgentUpgradeState = "Started"
+)
+
+// PossibleMobilityAgentUpgradeStateValues returns the possible values for the MobilityAgentUpgradeState const type.
+func PossibleMobilityAgentUpgradeStateValues() []MobilityAgentUpgradeState {
+	return []MobilityAgentUpgradeState{
+		MobilityAgentUpgradeStateCommit,
+		MobilityAgentUpgradeStateCompleted,
+		MobilityAgentUpgradeStateNone,
+		MobilityAgentUpgradeStateStarted,
+	}
+}
+
+// ToPtr returns a *MobilityAgentUpgradeState pointing to the current value.
+func (c MobilityAgentUpgradeState) ToPtr() *MobilityAgentUpgradeState {
+	return &c
+}
+
+// MultiVMGroupCreateOption - Whether Multi VM group is auto created or specified by user.
+type MultiVMGroupCreateOption string
+
+const (
+	MultiVMGroupCreateOptionAutoCreated   MultiVMGroupCreateOption = "AutoCreated"
+	MultiVMGroupCreateOptionUserSpecified MultiVMGroupCreateOption = "UserSpecified"
+)
+
+// PossibleMultiVMGroupCreateOptionValues returns the possible values for the MultiVMGroupCreateOption const type.
+func PossibleMultiVMGroupCreateOptionValues() []MultiVMGroupCreateOption {
+	return []MultiVMGroupCreateOption{
+		MultiVMGroupCreateOptionAutoCreated,
+		MultiVMGroupCreateOptionUserSpecified,
+	}
+}
+
+// ToPtr returns a *MultiVMGroupCreateOption pointing to the current value.
+func (c MultiVMGroupCreateOption) ToPtr() *MultiVMGroupCreateOption {
+	return &c
+}
+
+// MultiVMSyncPointOption - A value indicating whether multi VM sync enabled VMs should use multi VM sync points for failover.
+type MultiVMSyncPointOption string
+
+const (
+	MultiVMSyncPointOptionUseMultiVMSyncRecoveryPoint MultiVMSyncPointOption = "UseMultiVmSyncRecoveryPoint"
+	MultiVMSyncPointOptionUsePerVMRecoveryPoint       MultiVMSyncPointOption = "UsePerVmRecoveryPoint"
+)
+
+// PossibleMultiVMSyncPointOptionValues returns the possible values for the MultiVMSyncPointOption const type.
+func PossibleMultiVMSyncPointOptionValues() []MultiVMSyncPointOption {
+	return []MultiVMSyncPointOption{
+		MultiVMSyncPointOptionUseMultiVMSyncRecoveryPoint,
+		MultiVMSyncPointOptionUsePerVMRecoveryPoint,
+	}
+}
+
+// ToPtr returns a *MultiVMSyncPointOption pointing to the current value.
+func (c MultiVMSyncPointOption) ToPtr() *MultiVMSyncPointOption {
+	return &c
+}
+
+// PlannedFailoverStatus - The last planned failover status.
+type PlannedFailoverStatus string
+
+const (
+	PlannedFailoverStatusCancelled PlannedFailoverStatus = "Cancelled"
+	PlannedFailoverStatusFailed    PlannedFailoverStatus = "Failed"
+	PlannedFailoverStatusSucceeded PlannedFailoverStatus = "Succeeded"
+	PlannedFailoverStatusUnknown   PlannedFailoverStatus = "Unknown"
+)
+
+// PossiblePlannedFailoverStatusValues returns the possible values for the PlannedFailoverStatus const type.
+func PossiblePlannedFailoverStatusValues() []PlannedFailoverStatus {
+	return []PlannedFailoverStatus{
+		PlannedFailoverStatusCancelled,
+		PlannedFailoverStatusFailed,
+		PlannedFailoverStatusSucceeded,
+		PlannedFailoverStatusUnknown,
+	}
+}
+
+// ToPtr returns a *PlannedFailoverStatus pointing to the current value.
+func (c PlannedFailoverStatus) ToPtr() *PlannedFailoverStatus {
+	return &c
+}
+
+type PossibleOperationsDirections string
+
+const (
+	PossibleOperationsDirectionsPrimaryToRecovery PossibleOperationsDirections = "PrimaryToRecovery"
+	PossibleOperationsDirectionsRecoveryToPrimary PossibleOperationsDirections = "RecoveryToPrimary"
+)
+
+// PossiblePossibleOperationsDirectionsValues returns the possible values for the PossibleOperationsDirections const type.
+func PossiblePossibleOperationsDirectionsValues() []PossibleOperationsDirections {
+	return []PossibleOperationsDirections{
+		PossibleOperationsDirectionsPrimaryToRecovery,
+		PossibleOperationsDirectionsRecoveryToPrimary,
+	}
+}
+
+// ToPtr returns a *PossibleOperationsDirections pointing to the current value.
+func (c PossibleOperationsDirections) ToPtr() *PossibleOperationsDirections {
+	return &c
+}
+
+// PresenceStatus - A value indicating whether the VM has a physical disk attached. String value of SrsDataContract.PresenceStatus enum.
+type PresenceStatus string
+
+const (
+	PresenceStatusNotPresent PresenceStatus = "NotPresent"
+	PresenceStatusPresent    PresenceStatus = "Present"
+	PresenceStatusUnknown    PresenceStatus = "Unknown"
+)
+
+// PossiblePresenceStatusValues returns the possible values for the PresenceStatus const type.
+func PossiblePresenceStatusValues() []PresenceStatus {
+	return []PresenceStatus{
+		PresenceStatusNotPresent,
+		PresenceStatusPresent,
+		PresenceStatusUnknown,
+	}
+}
+
+// ToPtr returns a *PresenceStatus pointing to the current value.
+func (c PresenceStatus) ToPtr() *PresenceStatus {
+	return &c
+}
+
+// ProtectionHealth - The health.
+type ProtectionHealth string
+
+const (
+	ProtectionHealthCritical ProtectionHealth = "Critical"
+	ProtectionHealthNone     ProtectionHealth = "None"
+	ProtectionHealthNormal   ProtectionHealth = "Normal"
+	ProtectionHealthWarning  ProtectionHealth = "Warning"
+)
+
+// PossibleProtectionHealthValues returns the possible values for the ProtectionHealth const type.
+func PossibleProtectionHealthValues() []ProtectionHealth {
+	return []ProtectionHealth{
+		ProtectionHealthCritical,
+		ProtectionHealthNone,
+		ProtectionHealthNormal,
+		ProtectionHealthWarning,
+	}
+}
+
+// ToPtr returns a *ProtectionHealth pointing to the current value.
+func (c ProtectionHealth) ToPtr() *ProtectionHealth {
+	return &c
+}
+
+// RcmComponentStatus - The throughput status.
+type RcmComponentStatus string
+
+const (
+	RcmComponentStatusCritical RcmComponentStatus = "Critical"
+	RcmComponentStatusHealthy  RcmComponentStatus = "Healthy"
+	RcmComponentStatusUnknown  RcmComponentStatus = "Unknown"
+	RcmComponentStatusWarning  RcmComponentStatus = "Warning"
+)
+
+// PossibleRcmComponentStatusValues returns the possible values for the RcmComponentStatus const type.
+func PossibleRcmComponentStatusValues() []RcmComponentStatus {
+	return []RcmComponentStatus{
+		RcmComponentStatusCritical,
+		RcmComponentStatusHealthy,
+		RcmComponentStatusUnknown,
+		RcmComponentStatusWarning,
+	}
+}
+
+// ToPtr returns a *RcmComponentStatus pointing to the current value.
+func (c RcmComponentStatus) ToPtr() *RcmComponentStatus {
+	return &c
+}
+
+// RecoveryPlanActionLocation - The fabric location.
+type RecoveryPlanActionLocation string
+
+const (
+	RecoveryPlanActionLocationPrimary  RecoveryPlanActionLocation = "Primary"
+	RecoveryPlanActionLocationRecovery RecoveryPlanActionLocation = "Recovery"
+)
+
+// PossibleRecoveryPlanActionLocationValues returns the possible values for the RecoveryPlanActionLocation const type.
+func PossibleRecoveryPlanActionLocationValues() []RecoveryPlanActionLocation {
+	return []RecoveryPlanActionLocation{
+		RecoveryPlanActionLocationPrimary,
+		RecoveryPlanActionLocationRecovery,
+	}
+}
+
+// ToPtr returns a *RecoveryPlanActionLocation pointing to the current value.
+func (c RecoveryPlanActionLocation) ToPtr() *RecoveryPlanActionLocation {
+	return &c
+}
+
+// RecoveryPlanGroupType - The group type.
+type RecoveryPlanGroupType string
+
+const (
+	RecoveryPlanGroupTypeBoot     RecoveryPlanGroupType = "Boot"
+	RecoveryPlanGroupTypeFailover RecoveryPlanGroupType = "Failover"
+	RecoveryPlanGroupTypeShutdown RecoveryPlanGroupType = "Shutdown"
+)
+
+// PossibleRecoveryPlanGroupTypeValues returns the possible values for the RecoveryPlanGroupType const type.
+func PossibleRecoveryPlanGroupTypeValues() []RecoveryPlanGroupType {
+	return []RecoveryPlanGroupType{
+		RecoveryPlanGroupTypeBoot,
+		RecoveryPlanGroupTypeFailover,
+		RecoveryPlanGroupTypeShutdown,
+	}
+}
+
+// ToPtr returns a *RecoveryPlanGroupType pointing to the current value.
+func (c RecoveryPlanGroupType) ToPtr() *RecoveryPlanGroupType {
+	return &c
+}
+
+// RecoveryPlanPointType - The recovery point type.
+type RecoveryPlanPointType string
+
+const (
+	RecoveryPlanPointTypeLatest                      RecoveryPlanPointType = "Latest"
+	RecoveryPlanPointTypeLatestApplicationConsistent RecoveryPlanPointType = "LatestApplicationConsistent"
+	RecoveryPlanPointTypeLatestCrashConsistent       RecoveryPlanPointType = "LatestCrashConsistent"
+	RecoveryPlanPointTypeLatestProcessed             RecoveryPlanPointType = "LatestProcessed"
+)
+
+// PossibleRecoveryPlanPointTypeValues returns the possible values for the RecoveryPlanPointType const type.
+func PossibleRecoveryPlanPointTypeValues() []RecoveryPlanPointType {
+	return []RecoveryPlanPointType{
+		RecoveryPlanPointTypeLatest,
+		RecoveryPlanPointTypeLatestApplicationConsistent,
+		RecoveryPlanPointTypeLatestCrashConsistent,
+		RecoveryPlanPointTypeLatestProcessed,
+	}
+}
+
+// ToPtr returns a *RecoveryPlanPointType pointing to the current value.
+func (c RecoveryPlanPointType) ToPtr() *RecoveryPlanPointType {
+	return &c
+}
+
+// RecoveryPointSyncType - A value indicating whether the recovery point is multi VM consistent.
+type RecoveryPointSyncType string
+
+const (
+	RecoveryPointSyncTypeMultiVMSyncRecoveryPoint RecoveryPointSyncType = "MultiVmSyncRecoveryPoint"
+	RecoveryPointSyncTypePerVMRecoveryPoint       RecoveryPointSyncType = "PerVmRecoveryPoint"
+)
+
+// PossibleRecoveryPointSyncTypeValues returns the possible values for the RecoveryPointSyncType const type.
+func PossibleRecoveryPointSyncTypeValues() []RecoveryPointSyncType {
+	return []RecoveryPointSyncType{
+		RecoveryPointSyncTypeMultiVMSyncRecoveryPoint,
+		RecoveryPointSyncTypePerVMRecoveryPoint,
+	}
+}
+
+// ToPtr returns a *RecoveryPointSyncType pointing to the current value.
+func (c RecoveryPointSyncType) ToPtr() *RecoveryPointSyncType {
+	return &c
+}
+
+// RecoveryPointType - The recovery point type. Values from LatestTime, LatestTag or Custom. In the case of custom, the recovery point provided by RecoveryPointId
+// will be used. In the other two cases, recovery point id will
+// be ignored.
+type RecoveryPointType string
+
+const (
+	RecoveryPointTypeCustom     RecoveryPointType = "Custom"
+	RecoveryPointTypeLatestTag  RecoveryPointType = "LatestTag"
+	RecoveryPointTypeLatestTime RecoveryPointType = "LatestTime"
+)
+
+// PossibleRecoveryPointTypeValues returns the possible values for the RecoveryPointType const type.
+func PossibleRecoveryPointTypeValues() []RecoveryPointType {
+	return []RecoveryPointType{
+		RecoveryPointTypeCustom,
+		RecoveryPointTypeLatestTag,
+		RecoveryPointTypeLatestTime,
+	}
+}
+
+// ToPtr returns a *RecoveryPointType pointing to the current value.
+func (c RecoveryPointType) ToPtr() *RecoveryPointType {
+	return &c
+}
+
+type ReplicationProtectedItemOperation string
+
+const (
+	ReplicationProtectedItemOperationCancelFailover      ReplicationProtectedItemOperation = "CancelFailover"
+	ReplicationProtectedItemOperationChangePit           ReplicationProtectedItemOperation = "ChangePit"
+	ReplicationProtectedItemOperationCommit              ReplicationProtectedItemOperation = "Commit"
+	ReplicationProtectedItemOperationCompleteMigration   ReplicationProtectedItemOperation = "CompleteMigration"
+	ReplicationProtectedItemOperationDisableProtection   ReplicationProtectedItemOperation = "DisableProtection"
+	ReplicationProtectedItemOperationFailback            ReplicationProtectedItemOperation = "Failback"
+	ReplicationProtectedItemOperationFinalizeFailback    ReplicationProtectedItemOperation = "FinalizeFailback"
+	ReplicationProtectedItemOperationPlannedFailover     ReplicationProtectedItemOperation = "PlannedFailover"
+	ReplicationProtectedItemOperationRepairReplication   ReplicationProtectedItemOperation = "RepairReplication"
+	ReplicationProtectedItemOperationReverseReplicate    ReplicationProtectedItemOperation = "ReverseReplicate"
+	ReplicationProtectedItemOperationSwitchProtection    ReplicationProtectedItemOperation = "SwitchProtection"
+	ReplicationProtectedItemOperationTestFailover        ReplicationProtectedItemOperation = "TestFailover"
+	ReplicationProtectedItemOperationTestFailoverCleanup ReplicationProtectedItemOperation = "TestFailoverCleanup"
+	ReplicationProtectedItemOperationUnplannedFailover   ReplicationProtectedItemOperation = "UnplannedFailover"
+)
+
+// PossibleReplicationProtectedItemOperationValues returns the possible values for the ReplicationProtectedItemOperation const type.
+func PossibleReplicationProtectedItemOperationValues() []ReplicationProtectedItemOperation {
+	return []ReplicationProtectedItemOperation{
+		ReplicationProtectedItemOperationCancelFailover,
+		ReplicationProtectedItemOperationChangePit,
+		ReplicationProtectedItemOperationCommit,
+		ReplicationProtectedItemOperationCompleteMigration,
+		ReplicationProtectedItemOperationDisableProtection,
+		ReplicationProtectedItemOperationFailback,
+		ReplicationProtectedItemOperationFinalizeFailback,
+		ReplicationProtectedItemOperationPlannedFailover,
+		ReplicationProtectedItemOperationRepairReplication,
+		ReplicationProtectedItemOperationReverseReplicate,
+		ReplicationProtectedItemOperationSwitchProtection,
+		ReplicationProtectedItemOperationTestFailover,
+		ReplicationProtectedItemOperationTestFailoverCleanup,
+		ReplicationProtectedItemOperationUnplannedFailover,
+	}
+}
+
+// ToPtr returns a *ReplicationProtectedItemOperation pointing to the current value.
+func (c ReplicationProtectedItemOperation) ToPtr() *ReplicationProtectedItemOperation {
+	return &c
+}
+
+// ResyncState - The resync state.
+type ResyncState string
+
+const (
+	ResyncStateNone                         ResyncState = "None"
+	ResyncStatePreparedForResynchronization ResyncState = "PreparedForResynchronization"
+	ResyncStateStartedResynchronization     ResyncState = "StartedResynchronization"
+)
+
+// PossibleResyncStateValues returns the possible values for the ResyncState const type.
+func PossibleResyncStateValues() []ResyncState {
+	return []ResyncState{
+		ResyncStateNone,
+		ResyncStatePreparedForResynchronization,
+		ResyncStateStartedResynchronization,
+	}
+}
+
+// ToPtr returns a *ResyncState pointing to the current value.
+func (c ResyncState) ToPtr() *ResyncState {
+	return &c
+}
+
+// RpInMageRecoveryPointType - The recovery point type.
+type RpInMageRecoveryPointType string
+
+const (
+	RpInMageRecoveryPointTypeCustom     RpInMageRecoveryPointType = "Custom"
+	RpInMageRecoveryPointTypeLatestTag  RpInMageRecoveryPointType = "LatestTag"
+	RpInMageRecoveryPointTypeLatestTime RpInMageRecoveryPointType = "LatestTime"
+)
+
+// PossibleRpInMageRecoveryPointTypeValues returns the possible values for the RpInMageRecoveryPointType const type.
+func PossibleRpInMageRecoveryPointTypeValues() []RpInMageRecoveryPointType {
+	return []RpInMageRecoveryPointType{
+		RpInMageRecoveryPointTypeCustom,
+		RpInMageRecoveryPointTypeLatestTag,
+		RpInMageRecoveryPointTypeLatestTime,
+	}
+}
+
+// ToPtr returns a *RpInMageRecoveryPointType pointing to the current value.
+func (c RpInMageRecoveryPointType) ToPtr() *RpInMageRecoveryPointType {
+	return &c
+}
+
+// SQLServerLicenseType - The SQL Server license type.
+type SQLServerLicenseType string
+
+const (
+	SQLServerLicenseTypeAHUB          SQLServerLicenseType = "AHUB"
+	SQLServerLicenseTypeNoLicenseType SQLServerLicenseType = "NoLicenseType"
+	SQLServerLicenseTypeNotSpecified  SQLServerLicenseType = "NotSpecified"
+	SQLServerLicenseTypePAYG          SQLServerLicenseType = "PAYG"
+)
+
+// PossibleSQLServerLicenseTypeValues returns the possible values for the SQLServerLicenseType const type.
+func PossibleSQLServerLicenseTypeValues() []SQLServerLicenseType {
+	return []SQLServerLicenseType{
+		SQLServerLicenseTypeAHUB,
+		SQLServerLicenseTypeNoLicenseType,
+		SQLServerLicenseTypeNotSpecified,
+		SQLServerLicenseTypePAYG,
+	}
+}
+
+// ToPtr returns a *SQLServerLicenseType pointing to the current value.
+func (c SQLServerLicenseType) ToPtr() *SQLServerLicenseType {
+	return &c
+}
+
+// SetMultiVMSyncStatus - A value indicating whether multi-VM sync has to be enabled. Value should be 'Enabled' or 'Disabled'.
+type SetMultiVMSyncStatus string
+
+const (
+	SetMultiVMSyncStatusDisable SetMultiVMSyncStatus = "Disable"
+	SetMultiVMSyncStatusEnable  SetMultiVMSyncStatus = "Enable"
+)
+
+// PossibleSetMultiVMSyncStatusValues returns the possible values for the SetMultiVMSyncStatus const type.
+func PossibleSetMultiVMSyncStatusValues() []SetMultiVMSyncStatus {
+	return []SetMultiVMSyncStatus{
+		SetMultiVMSyncStatusDisable,
+		SetMultiVMSyncStatusEnable,
+	}
+}
+
+// ToPtr returns a *SetMultiVMSyncStatus pointing to the current value.
+func (c SetMultiVMSyncStatus) ToPtr() *SetMultiVMSyncStatus {
+	return &c
+}
+
+// Severity - Severity of error.
+type Severity string
+
+const (
+	SeverityError   Severity = "Error"
+	SeverityInfo    Severity = "Info"
+	SeverityNONE    Severity = "NONE"
+	SeverityWarning Severity = "Warning"
+)
+
+// PossibleSeverityValues returns the possible values for the Severity const type.
+func PossibleSeverityValues() []Severity {
+	return []Severity{
+		SeverityError,
+		SeverityInfo,
+		SeverityNONE,
+		SeverityWarning,
+	}
+}
+
+// ToPtr returns a *Severity pointing to the current value.
+func (c Severity) ToPtr() *Severity {
+	return &c
+}
+
+// SourceSiteOperations - A value indicating whether source site operations are required.
+type SourceSiteOperations string
+
+const (
+	SourceSiteOperationsNotRequired SourceSiteOperations = "NotRequired"
+	SourceSiteOperationsRequired    SourceSiteOperations = "Required"
+)
+
+// PossibleSourceSiteOperationsValues returns the possible values for the SourceSiteOperations const type.
+func PossibleSourceSiteOperationsValues() []SourceSiteOperations {
+	return []SourceSiteOperations{
+		SourceSiteOperationsNotRequired,
+		SourceSiteOperationsRequired,
+	}
+}
+
+// ToPtr returns a *SourceSiteOperations pointing to the current value.
+func (c SourceSiteOperations) ToPtr() *SourceSiteOperations {
+	return &c
+}
+
+// TestMigrationState - The test migrate state.
+type TestMigrationState string
+
+const (
+	TestMigrationStateNone                           TestMigrationState = "None"
+	TestMigrationStateTestMigrationCleanupInProgress TestMigrationState = "TestMigrationCleanupInProgress"
+	TestMigrationStateTestMigrationFailed            TestMigrationState = "TestMigrationFailed"
+	TestMigrationStateTestMigrationInProgress        TestMigrationState = "TestMigrationInProgress"
+	TestMigrationStateTestMigrationSucceeded         TestMigrationState = "TestMigrationSucceeded"
+)
+
+// PossibleTestMigrationStateValues returns the possible values for the TestMigrationState const type.
+func PossibleTestMigrationStateValues() []TestMigrationState {
+	return []TestMigrationState{
+		TestMigrationStateNone,
+		TestMigrationStateTestMigrationCleanupInProgress,
+		TestMigrationStateTestMigrationFailed,
+		TestMigrationStateTestMigrationInProgress,
+		TestMigrationStateTestMigrationSucceeded,
+	}
+}
+
+// ToPtr returns a *TestMigrationState pointing to the current value.
+func (c TestMigrationState) ToPtr() *TestMigrationState {
+	return &c
+}
+
+// VMEncryptionType - The encryption type of the VM.
+type VMEncryptionType string
+
+const (
+	VMEncryptionTypeNotEncrypted     VMEncryptionType = "NotEncrypted"
+	VMEncryptionTypeOnePassEncrypted VMEncryptionType = "OnePassEncrypted"
+	VMEncryptionTypeTwoPassEncrypted VMEncryptionType = "TwoPassEncrypted"
+)
+
+// PossibleVMEncryptionTypeValues returns the possible values for the VMEncryptionType const type.
+func PossibleVMEncryptionTypeValues() []VMEncryptionType {
+	return []VMEncryptionType{
+		VMEncryptionTypeNotEncrypted,
+		VMEncryptionTypeOnePassEncrypted,
+		VMEncryptionTypeTwoPassEncrypted,
+	}
+}
+
+// ToPtr returns a *VMEncryptionType pointing to the current value.
+func (c VMEncryptionType) ToPtr() *VMEncryptionType {
+	return &c
+}
+
+// VMReplicationProgressHealth - The initial replication progress health.
+type VMReplicationProgressHealth string
+
+const (
+	VMReplicationProgressHealthInProgress   VMReplicationProgressHealth = "InProgress"
+	VMReplicationProgressHealthNoProgress   VMReplicationProgressHealth = "NoProgress"
+	VMReplicationProgressHealthNone         VMReplicationProgressHealth = "None"
+	VMReplicationProgressHealthSlowProgress VMReplicationProgressHealth = "SlowProgress"
+)
+
+// PossibleVMReplicationProgressHealthValues returns the possible values for the VMReplicationProgressHealth const type.
+func PossibleVMReplicationProgressHealthValues() []VMReplicationProgressHealth {
+	return []VMReplicationProgressHealth{
+		VMReplicationProgressHealthInProgress,
+		VMReplicationProgressHealthNoProgress,
+		VMReplicationProgressHealthNone,
+		VMReplicationProgressHealthSlowProgress,
+	}
+}
+
+// ToPtr returns a *VMReplicationProgressHealth pointing to the current value.
+func (c VMReplicationProgressHealth) ToPtr() *VMReplicationProgressHealth {
 	return &c
 }

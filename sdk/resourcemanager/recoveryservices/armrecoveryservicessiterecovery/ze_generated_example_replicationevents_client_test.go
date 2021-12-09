@@ -13,44 +13,45 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
 )
 
-// x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/ListPrivateLinkResources.json
-func ExamplePrivateLinkResourcesClient_List() {
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationEvents_List.json
+func ExampleReplicationEventsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armrecoveryservicessiterecovery.NewPrivateLinkResourcesClient("<subscription-id>", cred, nil)
-	pager := client.List("<resource-group-name>",
-		"<vault-name>",
-		nil)
+	client := armrecoveryservicessiterecovery.NewReplicationEventsClient("<resource-name>",
+		"<resource-group-name>",
+		"<subscription-id>", cred, nil)
+	pager := client.List(&armrecoveryservicessiterecovery.ReplicationEventsListOptions{Filter: nil})
 	for pager.NextPage(ctx) {
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("PrivateLinkResource.ID: %s\n", *v.ID)
+			log.Printf("Event.ID: %s\n", *v.ID)
 		}
 	}
 }
 
-// x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/GetPrivateLinkResources.json
-func ExamplePrivateLinkResourcesClient_Get() {
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationEvents_Get.json
+func ExampleReplicationEventsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armrecoveryservicessiterecovery.NewPrivateLinkResourcesClient("<subscription-id>", cred, nil)
-	res, err := client.Get(ctx,
+	client := armrecoveryservicessiterecovery.NewReplicationEventsClient("<resource-name>",
 		"<resource-group-name>",
-		"<vault-name>",
-		"<private-link-resource-name>",
+		"<subscription-id>", cred, nil)
+	res, err := client.Get(ctx,
+		"<event-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateLinkResource.ID: %s\n", *res.ID)
+	log.Printf("Event.ID: %s\n", *res.ID)
 }

@@ -13,6 +13,7 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup"
 )
 
 // x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/ListOperations.json
@@ -22,11 +23,49 @@ func ExampleOperationsClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armrecoveryservicesbackup.NewOperationsClient(cred, nil)
+	client := armrecoveryservicesbackup.NewOperationsClient("<subscription-id>", cred, nil)
 	pager := client.List(nil)
 	for pager.NextPage(ctx) {
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
 	}
+}
+
+// x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/GetOperationStatus.json
+func ExampleOperationsClient_OperationStatusGet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armrecoveryservicesbackup.NewOperationsClient("<subscription-id>", cred, nil)
+	res, err := client.OperationStatusGet(ctx,
+		"<resource-group-name>",
+		"<vault-name>",
+		"<operation-id>",
+		nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("OperationResource.ID: %s\n", *res.ID)
+}
+
+// x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/GetOperationResult.json
+func ExampleOperationsClient_GetOperationResult() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armrecoveryservicesbackup.NewOperationsClient("<subscription-id>", cred, nil)
+	res, err := client.GetOperationResult(ctx,
+		"<resource-group-name>",
+		"<vault-name>",
+		"<operation-id>",
+		nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Vault.ID: %s\n", *res.ID)
 }

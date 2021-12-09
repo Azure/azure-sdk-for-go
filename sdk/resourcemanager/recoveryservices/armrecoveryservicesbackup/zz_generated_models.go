@@ -321,8 +321,18 @@ func (o *OperationResource) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// OperationsGetOperationResultOptions contains the optional parameters for the Operations.GetOperationResult method.
+type OperationsGetOperationResultOptions struct {
+	// placeholder for future optional parameters
+}
+
 // OperationsListOptions contains the optional parameters for the Operations.List method.
 type OperationsListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OperationsOperationStatusGetOptions contains the optional parameters for the Operations.OperationStatusGet method.
+type OperationsOperationStatusGetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -525,16 +535,6 @@ func (r *RawCertificateData) UnmarshalJSON(data []byte) error {
 
 // RecoveryServicesCheckNameAvailabilityOptions contains the optional parameters for the RecoveryServices.CheckNameAvailability method.
 type RecoveryServicesCheckNameAvailabilityOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RecoveryServicesClientGetOperationResultOptions contains the optional parameters for the RecoveryServicesClient.GetOperationResult method.
-type RecoveryServicesClientGetOperationResultOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RecoveryServicesClientGetOperationStatusOptions contains the optional parameters for the RecoveryServicesClient.GetOperationStatus method.
-type RecoveryServicesClientGetOperationStatusOptions struct {
 	// placeholder for future optional parameters
 }
 

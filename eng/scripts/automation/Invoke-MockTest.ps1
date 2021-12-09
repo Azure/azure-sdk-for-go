@@ -10,13 +10,25 @@ $inputJson = Get-Content $inputJsonFile | Out-String | ConvertFrom-Json
 $packageFolder = $inputJson.packageFolder
 $packageFolder = $packageFolder -replace "\\", "/"
 
+$runLocalMockServer = $false
+if ([string]::IsNullOrEmpty($inputJson.mockServerHost)) {
+    $runLocalMockServer = $true
+}
 Write-Host "##[command]Generate example and Mock Test " $packageFolder
 Set-Location $packageFolder
 Invoke-MgmtTestgen -sdkDirectory $packageFolder -autorestPath $packageFolder/autorest.md -generateExample -generateMockTest
 
+if ($runLocalMockServer -eq $true) {
+    Write-Host "Prepare Mock Server"
+    PrepareMockServer
+    Write-Host "Try Stop mock server"
+    StopMockServer
+}
+
+Set-Location $packageFolder
 Write-output "Run Mock Test"
 $sdk = Get-GoModuleProperties $packageFolder
-ExecuteSingleTest $sdk $false
+ExecuteSingleTest $sdk $runLocalMockServer
 
 TestAndGenerateReport $packageFolder
 $testoutputFile = Join-Path $packageFolder output.txt

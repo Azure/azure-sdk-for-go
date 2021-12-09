@@ -28,6 +28,7 @@ function IsPackageDeprecated($sdk)
     if ($modContent -match $RETRACT_SECTION_REGEX) {
         return $($matches["retract"]).Indexof($sdk.Version) -ne -1
     }
+    return $false
 }
 
 # Get all existed packages
@@ -38,7 +39,7 @@ foreach ($sdk in $sdks)
     {
         continue
     }
-    if ($sdk.DirectoryPath.EndsWith($PackageDirectory))
+    if ($sdk.Name -eq $PackageDirectory)
     {
         ## Add replace for new package
         $modPath = Join-Path $RepoRoot "sdk" "depcheck" "go.mod"

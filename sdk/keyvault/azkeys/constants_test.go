@@ -21,10 +21,15 @@ func TestToPtrMethods(t *testing.T) {
 
 	o := JSONWebKeyOperationDecrypt
 	require.Equal(t, o.ToPtr(), &o)
+
+	a := KeyEncryptionAlgorithmRSAAESKEYWRAP256
+	require.Equal(t, a.ToPtr(), &a)
 }
 
+//nolint
 func TestToGeneratedMethods(t *testing.T) {
-	var l *ListKeyVersionsOptions //nolint
+	// If done incorrectly, this will have a nil pointer reference
+	var l *ListKeyVersionsOptions
 	l = nil
 	_ = l.toGenerated()
 }

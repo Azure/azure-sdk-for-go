@@ -203,7 +203,7 @@ func (c *Client) CreateECKey(ctx context.Context, name string, options *CreateEC
 
 	resp, err := c.kvClient.CreateKey(ctx, c.vaultUrl, name, options.toKeyCreateParameters(keyType), &generated.KeyVaultClientCreateKeyOptions{})
 	if err != nil {
-		return CreateECKeyResponse{}, nil
+		return CreateECKeyResponse{}, err
 	}
 
 	return createECKeyResponseFromGenerated(resp), nil
@@ -252,7 +252,7 @@ func createOCTKeyResponseFromGenerated(i generated.KeyVaultClientCreateKeyRespon
 
 // CreateKey - The create key operation can be used to create a new octet sequence (symmetric) key in Azure Key Vault.
 // If the named key already exists, Azure Key Vault creates
-// a new version of the key. It requires the keys/create  permission.
+// a new version of the key. It requires the keys/create permission.
 func (c *Client) CreateOCTKey(ctx context.Context, name string, options *CreateOCTKeyOptions) (CreateOCTKeyResponse, error) {
 	keyType := Oct
 
@@ -263,8 +263,11 @@ func (c *Client) CreateOCTKey(ctx context.Context, name string, options *CreateO
 	}
 
 	resp, err := c.kvClient.CreateKey(ctx, c.vaultUrl, name, options.toKeyCreateParameters(keyType), &generated.KeyVaultClientCreateKeyOptions{})
+	if err != nil {
+		return CreateOCTKeyResponse{}, err
+	}
 
-	return createOCTKeyResponseFromGenerated(resp), err
+	return createOCTKeyResponseFromGenerated(resp), nil
 }
 
 // CreateRSAKeyOptions contains the optional parameters for the Client.CreateRSAKey method.
@@ -598,11 +601,9 @@ func (s *startDeleteKeyPoller) Poll(ctx context.Context) (*http.Response, error)
 		// Service recognizes DeletedKey, operation is done
 		s.lastResponse = resp
 		return resp.RawResponse, nil
-	} else if err != nil {
-		return s.deleteResponse.RawResponse, nil
 	}
-	s.lastResponse = resp
-	return resp.RawResponse, nil
+
+	return s.deleteResponse.RawResponse, nil
 }
 
 // FinalResponse returns the final response after the operations has finished

@@ -153,7 +153,7 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKi
 		return nil, err
 	}
 
-	if runtime.HasStatusCode(resp, successStatusCodes[:]...) {
+	if runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return c.createAccessToken(resp)
 	}
 

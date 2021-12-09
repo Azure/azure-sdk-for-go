@@ -42,13 +42,6 @@ const (
 	AzurePublicCloud AuthorityHost = "https://login.microsoftonline.com/"
 )
 
-var (
-	successStatusCodes = [2]int{
-		http.StatusOK,      // 200
-		http.StatusCreated, // 201
-	}
-)
-
 // setAuthorityHost initializes the authority host for credentials.
 func setAuthorityHost(authorityHost AuthorityHost) (string, error) {
 	host := string(authorityHost)

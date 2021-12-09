@@ -28,6 +28,12 @@ const REGULARTEST = "NON-HSM"
 
 var testTypes = []string{REGULARTEST, HSMTEST}
 
+func TestConstructor(t *testing.T) {
+	client, err := NewClient("https://fakekvurl.vault.azure.net/", &FakeCredential{}, nil)
+	require.NoError(t, err)
+	require.NotNil(t, client.kvClient)
+}
+
 func TestCreateKeyRSA(t *testing.T) {
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
@@ -51,6 +57,10 @@ func TestCreateKeyRSA(t *testing.T) {
 
 			cleanUpKey(t, client, key)
 			cleanUpKey(t, client, key+"hsm")
+
+			invalid, err := client.CreateRSAKey(ctx, "invalidName!@#$", nil)
+			require.Error(t, err)
+			require.Nil(t, invalid.Attributes)
 		})
 	}
 }
@@ -421,7 +431,7 @@ func TestListKeyVersions(t *testing.T) {
 			for pager.NextPage(ctx) {
 				count += len(pager.PageResponse().Keys)
 			}
-
+			require.NoError(t, pager.Err())
 			require.GreaterOrEqual(t, count, 6)
 		})
 	}
@@ -474,6 +484,41 @@ func TestGetRandomBytes(t *testing.T) {
 			resp, err := client.GetRandomBytes(ctx, to.Int32Ptr(100), nil)
 			require.NoError(t, err)
 			require.Equal(t, 100, len(resp.Value))
+		})
+	}
+}
+
+func TestGetDeletedKey(t *testing.T) {
+	for _, testType := range testTypes {
+		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
+			if testType == HSMTEST {
+				t.Skip()
+			}
+			stop := startTest(t)
+			defer stop()
+
+			client, err := createClient(t, testType)
+			require.NoError(t, err)
+
+			key, err := createRandomName(t, "keyName")
+			require.NoError(t, err)
+			_, err = client.CreateRSAKey(ctx, key, nil)
+			require.NoError(t, err)
+			defer cleanUpKey(t, client, key)
+
+			poller, err := client.BeginDeleteKey(ctx, key, nil)
+			require.NoError(t, err)
+			_, err = poller.PollUntilDone(ctx, delay())
+			require.NoError(t, err)
+
+			time.Sleep(10 * delay())
+
+			resp, err := client.GetDeletedKey(ctx, key, nil)
+			require.NoError(t, err)
+			require.Contains(t, *resp.Key.ID, key)
+
+			_, err = client.PurgeDeletedKey(ctx, key, nil)
+			require.NoError(t, err)
 		})
 	}
 }

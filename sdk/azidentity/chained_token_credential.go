@@ -14,7 +14,7 @@ import (
 
 // ChainedTokenCredentialOptions contains optional parameters for ChainedTokenCredential.
 type ChainedTokenCredentialOptions struct {
-	// If true, it will not assume the first successful credential should be always used.
+	// RetrySources configures how the credential uses its sources. When true, the credential will always request a token from each source in turn, stopping when one provides a token. When false, the credential requests a token from only that source--it never again tries the sources which failed.
 	RetrySources bool
 }
 
@@ -41,11 +41,10 @@ func NewChainedTokenCredential(sources []azcore.TokenCredential, options *Chaine
 	}
 	cp := make([]azcore.TokenCredential, len(sources))
 	copy(cp, sources)
-	credentialOptions := ChainedTokenCredentialOptions{}
-	if options != nil {
-		credentialOptions = *options
+	if options == nil {
+		options = &ChainedTokenCredentialOptions{}
 	}
-	return &ChainedTokenCredential{sources: cp, retrySources: credentialOptions.RetrySources}, nil
+	return &ChainedTokenCredential{sources: cp, retrySources: options.RetrySources}, nil
 }
 
 // GetToken calls GetToken on the chained credentials in turn, stopping when one returns a token. This method is called automatically by Azure SDK clients.

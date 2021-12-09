@@ -354,7 +354,8 @@ func TestUpdateKeyProperties(t *testing.T) {
 			skipHSM(t, testType)
 			stop := startTest(t)
 			defer stop()
-			recording.SetBodilessMatcher(t, nil)
+			err := recording.SetBodilessMatcher(t, nil)
+			require.NoError(t, err)
 
 			client, err := createClient(t, testType)
 			require.NoError(t, err)
@@ -589,6 +590,11 @@ func TestRotateKey(t *testing.T) {
 
 			require.NotEqual(t, *createResp.Key.ID, *resp.Key.ID)
 			require.NotEqual(t, createResp.Key.N, resp.Key.N)
+
+			invalid, err := client.RotateKey(ctx, "keynonexistent", nil)
+			require.Error(t, err)
+			require.Nil(t, invalid.Key)
+			require.Nil(t, invalid.Key)
 		})
 	}
 }

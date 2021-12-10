@@ -74,7 +74,6 @@ func TestRequestBody(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	req.SkipBodyDownload()
 	if err := req.RewindBody(); err != nil {
 		t.Fatal(err)
 	}
@@ -97,16 +96,20 @@ func TestRequestClone(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	req.SkipBodyDownload()
 	if err := req.SetBody(shared.NopCloser(strings.NewReader("test")), "application/text"); err != nil {
 		t.Fatal(err)
 	}
+	type ensureCloned struct {
+		Count int
+	}
+	source := ensureCloned{Count: 12345}
+	req.SetOperationValue(source)
 	clone := req.Clone(context.Background())
-	var skip shared.BodyDownloadPolicyOpValues
-	if !clone.OperationValue(&skip) {
+	var cloned ensureCloned
+	if !clone.OperationValue(&cloned) {
 		t.Fatal("missing operation value")
 	}
-	if !skip.Skip {
+	if cloned.Count != source.Count {
 		t.Fatal("wrong operation value")
 	}
 	if clone.body == nil {

@@ -56,16 +56,6 @@ func NewChainedTokenCredential(sources []azcore.TokenCredential, options *Chaine
 func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (token *azcore.AccessToken, err error) {
 	var errList []CredentialUnavailableError
 
-	formatError := func(err error) error {
-		var authFailed AuthenticationFailedError
-		if errors.As(err, &authFailed) {
-			err = fmt.Errorf("Authentication failed:\n%s\n%s"+createChainedErrorMessage(errList), err)
-			authErr := newAuthenticationFailedError(err, authFailed.RawResponse())
-			return authErr
-		}
-		return err
-	}
-
 	if c.successfulCredential != nil && !c.retrySources {
 		token, err = c.successfulCredential.GetToken(ctx, opts)
 		if err != nil {
@@ -79,7 +69,13 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.Token
 		if errors.As(err, &credErr) {
 			errList = append(errList, credErr)
 		} else if err != nil {
-			return nil, formatError(err)
+			var authFailed AuthenticationFailedError
+			if errors.As(err, &authFailed) {
+				err = fmt.Errorf("Authentication failed:\n%s\n%s"+createChainedErrorMessage(errList), err)
+				authErr := newAuthenticationFailedError(err, authFailed.RawResponse())
+				return nil, authErr
+			}
+			return nil, err
 		} else {
 			logGetTokenSuccess(c, opts)
 			c.successfulCredential = cred

@@ -70,8 +70,8 @@ func (n *wrappedNumber) UnmarshalJSON(b []byte) error {
 	return json.Unmarshal(b, (*json.Number)(n))
 }
 
-// setRetryOptionDefaults sets zero-valued fields to default values appropriate for IMDS
-func setRetryOptionDefaults(o *policy.RetryOptions) {
+// setIMDSRetryOptionDefaults sets zero-valued fields to default values appropriate for IMDS
+func setIMDSRetryOptionDefaults(o *policy.RetryOptions) {
 	if o.MaxRetries == 0 {
 		o.MaxRetries = 5
 	}
@@ -104,23 +104,16 @@ func setRetryOptionDefaults(o *policy.RetryOptions) {
 	}
 }
 
-// newDefaultMSIPipeline creates a pipeline using the specified pipeline options needed
-// for a Managed Identity, such as a MSI specific retry policy.
-func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) runtime.Pipeline {
-	cp := o.ClientOptions
-	setRetryOptionDefaults(&cp.Retry)
-	return runtime.NewPipeline(component, version, runtime.PipelineOptions{}, &cp)
-}
-
 // newManagedIdentityClient creates a new instance of the ManagedIdentityClient with the ManagedIdentityCredentialOptions
 // that are passed into it along with a default pipeline.
 // options: ManagedIdentityCredentialOptions configure policies for the pipeline and the authority host that
 // will be used to retrieve tokens and authenticate
 func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) (*managedIdentityClient, error) {
-	c := managedIdentityClient{
-		id:       options.ID,
-		pipeline: newDefaultMSIPipeline(*options), // a pipeline that includes the specific requirements for MSI authentication, such as custom retry policy options
+	if options == nil {
+		options = &ManagedIdentityCredentialOptions{}
 	}
+	cp := options.ClientOptions
+	c := managedIdentityClient{id: options.ID}
 
 	env := "IMDS"
 	if endpoint, ok := os.LookupEnv(msiEndpoint); ok {
@@ -149,7 +142,9 @@ func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) (*manag
 	} else {
 		c.msiType = msiTypeIMDS
 		c.endpoint = imdsEndpoint
+		setIMDSRetryOptionDefaults(&cp.Retry)
 	}
+	c.pipeline = runtime.NewPipeline(component, version, runtime.PipelineOptions{}, &cp)
 
 	if log.Should(EventAuthentication) {
 		log.Writef(EventAuthentication, "Azure Identity => Managed Identity Credential will use %s managed identity", env)

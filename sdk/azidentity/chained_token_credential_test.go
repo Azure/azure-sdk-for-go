@@ -184,12 +184,6 @@ func TestChainedTokenCredential_RepeatedGetTokenWithSuccessfulCredential(t *test
 	if tk.ExpiresOn.IsZero() {
 		t.Fatalf("Received an incorrect time in the response")
 	}
-	if cred.successfulCredential == nil {
-		t.Fatalf("The successful credential was not assigned")
-	}
-	if cred.successfulCredential != successfulCredential {
-		t.Fatalf("The successful credential should have been the successfulCredential")
-	}
 	if failedCredential.getTokenCalls != 1 {
 		t.Fatalf("The failed credential getToken should have been called once")
 	}
@@ -237,12 +231,6 @@ func TestChainedTokenCredential_RepeatedGetTokenWithSuccessfulCredentialWithRetr
 	}
 	if tk.ExpiresOn.IsZero() {
 		t.Fatalf("Received an incorrect time in the response")
-	}
-	if cred.successfulCredential == nil {
-		t.Fatalf("The successful credential was not assigned")
-	}
-	if cred.successfulCredential != successfulCredential {
-		t.Fatalf("The successful credential should have been the successfulCredential")
 	}
 	if failedCredential.getTokenCalls != 1 {
 		t.Fatalf("The failed credential getToken should have been called once")

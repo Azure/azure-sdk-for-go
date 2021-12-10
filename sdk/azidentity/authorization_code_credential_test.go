@@ -5,23 +5,14 @@ package azidentity
 
 import (
 	"context"
-	"errors"
-	"io/ioutil"
-	"net/http"
-	"net/url"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
-)
-
-const (
-	testAuthCode    = "12345"
-	testRedirectURI = "http://localhost"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
 
 func TestAuthorizationCodeCredential_InvalidTenantID(t *testing.T) {
-	cred, err := NewAuthorizationCodeCredential(badTenantID, clientID, testAuthCode, testRedirectURI, nil)
+	cred, err := NewAuthorizationCodeCredential(badTenantID, fakeClientID, "fake_auth_code", "http://localhost", nil)
 	if err == nil {
 		t.Fatal("Expected an error but received none")
 	}
@@ -30,104 +21,64 @@ func TestAuthorizationCodeCredential_InvalidTenantID(t *testing.T) {
 	}
 }
 
-func TestAuthorizationCodeCredential_CreateAuthRequestSuccess(t *testing.T) {
-	cred, err := NewAuthorizationCodeCredential(tenantID, clientID, testAuthCode, testRedirectURI, nil)
+func TestAuthorizationCodeCredential_ConfidentialLive(t *testing.T) {
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		t.Skip("this test requires manual recording and can't pass live in CI")
+	}
+	opts, stop := initRecording(t)
+	defer stop()
+	o := AuthorizationCodeCredentialOptions{ClientOptions: opts, ClientSecret: liveSP.secret}
+	cred, err := NewAuthorizationCodeCredential(liveSP.tenantID, liveSP.clientID, "fake_auth_code", "http://localhost", &o)
 	if err != nil {
-		t.Fatalf("Unable to create credential. Received: %v", err)
+		t.Fatal(err)
 	}
-	req, err := cred.client.createAuthorizationCodeAuthRequest(context.Background(), cred.tenantID, cred.clientID, cred.authCode, cred.clientSecret, "", cred.redirectURI, []string{scope})
-	if err != nil {
-		t.Fatalf("Unexpectedly received an error: %v", err)
-	}
-	if req.Raw().Header.Get(headerContentType) != headerURLEncoded {
-		t.Fatal("Unexpected value for Content-Type header")
-	}
-	body, err := ioutil.ReadAll(req.Raw().Body)
-	if err != nil {
-		t.Fatal("Unable to read request body")
-	}
-	bodyStr := string(body)
-	reqQueryParams, err := url.ParseQuery(bodyStr)
-	if err != nil {
-		t.Fatal("Unable to parse query params in request")
-	}
-	if reqQueryParams[qpClientID][0] != clientID {
-		t.Fatal("Unexpected client ID in the client_id header")
-	}
-	if reqQueryParams[qpScope][0] != scope {
-		t.Fatal("Unexpected scope in scope header")
-	}
-	if reqQueryParams[qpCode][0] != testAuthCode {
-		t.Fatal("Unexpected authorization code")
-	}
-	if reqQueryParams[qpRedirectURI][0] != testRedirectURI {
-		t.Fatal("Unexpected redirectURI")
-	}
-	if req.Raw().URL.Host != defaultTestAuthorityHost {
-		t.Fatal("Unexpected default authority host")
-	}
-	if req.Raw().URL.Scheme != "https" {
-		t.Fatal("Wrong request scheme")
-	}
+	testGetTokenSuccess(t, cred)
 }
 
-func TestAuthorizationCodeCredential_GetTokenSuccess(t *testing.T) {
-	srv, close := mock.NewTLSServer()
-	defer close()
-	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	options := AuthorizationCodeCredentialOptions{}
-	options.ClientSecret = secret
-	options.AuthorityHost = AuthorityHost(srv.URL())
-	options.Transport = srv
-	cred, err := NewAuthorizationCodeCredential(tenantID, clientID, testAuthCode, testRedirectURI, &options)
+func TestAuthorizationCodeCredential_ConfidentialInvalidCodeLive(t *testing.T) {
+	opts, stop := initRecording(t)
+	defer stop()
+	o := AuthorizationCodeCredentialOptions{ClientOptions: opts, ClientSecret: liveSP.secret}
+	cred, err := NewAuthorizationCodeCredential(liveSP.tenantID, liveSP.clientID, "fake_auth_code", "http://localhost", &o)
 	if err != nil {
-		t.Fatalf("Unable to create credential. Received: %v", err)
+		t.Fatal(err)
 	}
-	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{scope}})
-	if err != nil {
-		t.Fatalf("Expected an empty error but received: %v", err)
+	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	if tk != nil {
+		t.Fatal("GetToken returned a token")
 	}
-}
-
-func TestAuthorizationCodeCredential_GetTokenInvalidCredentials(t *testing.T) {
-	srv, close := mock.NewTLSServer()
-	defer close()
-	srv.SetResponse(mock.WithBody([]byte(accessTokenRespError)), mock.WithStatusCode(http.StatusUnauthorized))
-	options := AuthorizationCodeCredentialOptions{}
-	options.ClientSecret = secret
-	options.AuthorityHost = AuthorityHost(srv.URL())
-	options.Transport = srv
-	cred, err := NewAuthorizationCodeCredential(tenantID, clientID, testAuthCode, testRedirectURI, &options)
-	if err != nil {
-		t.Fatalf("Unable to create credential. Received: %v", err)
-	}
-	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{scope}})
 	if err == nil {
-		t.Fatalf("Expected an error but did not receive one.")
-	}
-	var authFailed AuthenticationFailedError
-	if !errors.As(err, &authFailed) {
-		t.Fatalf("Expected: AuthenticationFailedError, Received: %T", err)
-	}
-	if authFailed.RawResponse() == nil {
-		t.Fatalf("Expected error to include a response")
+		t.Fatal("expected an error")
 	}
 }
 
-func TestAuthorizationCodeCredential_GetTokenUnexpectedJSON(t *testing.T) {
-	srv, close := mock.NewTLSServer()
-	defer close()
-	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespMalformed)))
-	options := AuthorizationCodeCredentialOptions{}
-	options.ClientSecret = secret
-	options.AuthorityHost = AuthorityHost(srv.URL())
-	options.Transport = srv
-	cred, err := NewAuthorizationCodeCredential(tenantID, clientID, testAuthCode, testRedirectURI, &options)
-	if err != nil {
-		t.Fatalf("Failed to create the credential")
+func TestAuthorizationCodeCredential_PublicLive(t *testing.T) {
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		t.Skip("this test requires manual recording and can't pass live in CI")
 	}
-	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{scope}})
+	opts, stop := initRecording(t)
+	defer stop()
+	o := AuthorizationCodeCredentialOptions{ClientOptions: opts}
+	cred, err := NewAuthorizationCodeCredential(liveSP.tenantID, liveSP.clientID, "fake_auth_code", "http://localhost", &o)
+	if err != nil {
+		t.Fatal(err)
+	}
+	testGetTokenSuccess(t, cred)
+}
+
+func TestAuthorizationCodeCredential_PublicInvalidCodeLive(t *testing.T) {
+	opts, stop := initRecording(t)
+	defer stop()
+	o := AuthorizationCodeCredentialOptions{ClientOptions: opts}
+	cred, err := NewAuthorizationCodeCredential(liveSP.tenantID, liveSP.clientID, "fake_auth_code", "http://localhost", &o)
+	if err != nil {
+		t.Fatal(err)
+	}
+	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	if tk != nil {
+		t.Fatal("GetToken returned a token")
+	}
 	if err == nil {
-		t.Fatalf("Expected a JSON marshal error but received nil")
+		t.Fatal("expected an error")
 	}
 }

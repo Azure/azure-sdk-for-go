@@ -5,14 +5,15 @@ package azidentity
 
 import (
 	"context"
-	"errors"
-	"net/http"
+	"os"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
-	"golang.org/x/net/http2"
+	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/public"
 )
+
+var _, runManualBrowserTests = os.LookupEnv("AZIDENTITY_RUN_MANUAL_BROWSER_TESTS")
 
 func TestInteractiveBrowserCredential_InvalidTenantID(t *testing.T) {
 	options := InteractiveBrowserCredentialOptions{}
@@ -26,13 +27,30 @@ func TestInteractiveBrowserCredential_InvalidTenantID(t *testing.T) {
 	}
 }
 
+func TestInteractiveBrowserCredential_GetTokenSuccess(t *testing.T) {
+	cred, err := NewInteractiveBrowserCredential(nil)
+	if err != nil {
+		t.Fatalf("Unable to create credential. Received: %v", err)
+	}
+	cred.client = fakePublicClient{
+		ar: public.AuthResult{
+			AccessToken: tokenValue,
+			ExpiresOn:   time.Now().Add(1 * time.Hour),
+		},
+	}
+	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	if err != nil {
+		t.Fatalf("Expected an empty error but received: %v", err)
+	}
+	if tk.Token != tokenValue {
+		t.Fatal("Received unexpected token")
+	}
+}
+
 func TestInteractiveBrowserCredential_CreateWithNilOptions(t *testing.T) {
 	cred, err := NewInteractiveBrowserCredential(nil)
 	if err != nil {
 		t.Fatalf("Failed to create interactive browser credential: %v", err)
-	}
-	if cred.client.authorityHost != string(AzurePublicCloud) {
-		t.Fatalf("Wrong authority host set. Expected: %s, Received: %s", AzurePublicCloud, cred.client.authorityHost)
 	}
 	if cred.options.ClientID != developerSignOnClientID {
 		t.Fatalf("Wrong clientID set. Expected: %s, Received: %s", developerSignOnClientID, cred.options.ClientID)
@@ -42,70 +60,25 @@ func TestInteractiveBrowserCredential_CreateWithNilOptions(t *testing.T) {
 	}
 }
 
-func TestInteractiveBrowserCredential_GetTokenSuccess(t *testing.T) {
-	srv, close := mock.NewTLSServer(mock.WithHTTP2Enabled(true))
-	defer close()
-	tr := &http.Transport{}
-	if err := http2.ConfigureTransport(tr); err != nil {
-		t.Fatalf("Failed to configure http2 transport: %v", err)
+func TestInteractiveBrowserCredential_GetTokenLive(t *testing.T) {
+	if !runManualBrowserTests {
+		t.Skip("set AZIDENTITY_RUN_MANUAL_BROWSER_TESTS to run this test")
 	}
-	tr.TLSClientConfig.InsecureSkipVerify = true
-	client := &http.Client{Transport: tr}
-	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	options := InteractiveBrowserCredentialOptions{}
-	options.AuthorityHost = AuthorityHost(srv.URL())
-	options.Transport = client
-	cred, err := NewInteractiveBrowserCredential(&options)
+	cred, err := NewInteractiveBrowserCredential(nil)
 	if err != nil {
-		t.Fatalf("Unable to create credential. Received: %v", err)
+		t.Fatal(err)
 	}
-	authCodeReceiver = func(ctx context.Context, authorityHost string, opts *InteractiveBrowserCredentialOptions, scopes []string) (*interactiveConfig, error) {
-		return &interactiveConfig{
-			authCode:    "12345",
-			redirectURI: srv.URL(),
-		}, nil
-	}
-	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{"https://storage.azure.com/.default"}})
-	if err != nil {
-		t.Fatalf("Expected an empty error but received: %v", err)
-	}
-	if tk.Token != "new_token" {
-		t.Fatal("Received unexpected token")
-	}
+	testGetTokenSuccess(t, cred)
 }
 
-func TestInteractiveBrowserCredential_GetTokenInvalidCredentials(t *testing.T) {
-	srv, close := mock.NewTLSServer(mock.WithHTTP2Enabled(true))
-	defer close()
-	tr := &http.Transport{}
-	if err := http2.ConfigureTransport(tr); err != nil {
-		t.Fatalf("Failed to configure http2 transport: %v", err)
+func TestInteractiveBrowserCredential_RedirectURLLive(t *testing.T) {
+	if !runManualBrowserTests {
+		t.Skip("set AZIDENTITY_RUN_MANUAL_BROWSER_TESTS to run this test")
 	}
-	tr.TLSClientConfig.InsecureSkipVerify = true
-	client := &http.Client{Transport: tr}
-	srv.SetResponse(mock.WithBody([]byte(accessTokenRespError)), mock.WithStatusCode(http.StatusUnauthorized))
-	options := InteractiveBrowserCredentialOptions{}
-	options.AuthorityHost = AuthorityHost(srv.URL())
-	options.Transport = client
-	cred, err := NewInteractiveBrowserCredential(&options)
+	// the default application's registration allows redirecting to any localhost port
+	cred, err := NewInteractiveBrowserCredential(&InteractiveBrowserCredentialOptions{RedirectURL: "localhost:8180"})
 	if err != nil {
-		t.Fatalf("Unable to create credential. Received: %v", err)
+		t.Fatal(err)
 	}
-	authCodeReceiver = func(ctx context.Context, authorityHost string, opts *InteractiveBrowserCredentialOptions, scopes []string) (*interactiveConfig, error) {
-		return &interactiveConfig{
-			authCode:    "12345",
-			redirectURI: srv.URL(),
-		}, nil
-	}
-	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{scope}})
-	if err == nil {
-		t.Fatalf("Expected an error but did not receive one.")
-	}
-	var authFailed AuthenticationFailedError
-	if !errors.As(err, &authFailed) {
-		t.Fatalf("Expected: AuthenticationFailedError, Received: %T", err)
-	}
-	if authFailed.RawResponse() == nil {
-		t.Fatalf("Expected error to include a response")
-	}
+	testGetTokenSuccess(t, cred)
 }

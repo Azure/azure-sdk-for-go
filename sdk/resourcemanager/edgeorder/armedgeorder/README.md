@@ -11,7 +11,7 @@ The `armedgeorder` module provides operations for working with Azure Edge Order.
 ## Prerequisites
 
 - an [Azure subscription](https://azure.microsoft.com/free/)
-- Go 1.13 or above
+- Go 1.16 or above
 
 ## Install the package
 

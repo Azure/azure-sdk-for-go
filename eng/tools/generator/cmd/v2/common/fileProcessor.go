@@ -22,6 +22,8 @@ import (
 
 const (
 	sdk_generated_file_prefix         = "zz_generated_"
+	sdk_example_file_prefix           = "ze_generated_"
+	sdk_test_file_prefix              = "zt_generated_"
 	autorest_md_file_suffix           = "readme.md"
 	autorest_md_module_version_prefix = "module-version: "
 	swagger_md_module_name_prefix     = "module-name: "
@@ -110,7 +112,7 @@ func CleanSDKGeneratedFiles(path string) error {
 	}
 
 	for _, file := range files {
-		if strings.HasPrefix(file.Name(), sdk_generated_file_prefix) {
+		if strings.HasPrefix(file.Name(), sdk_generated_file_prefix) || strings.HasPrefix(file.Name(), sdk_example_file_prefix) || strings.HasPrefix(file.Name(), sdk_test_file_prefix) {
 			err = os.Remove(filepath.Join(path, file.Name()))
 			if err != nil {
 				return err
@@ -136,8 +138,8 @@ func ChangeConfigWithLocalPath(path, specPath, specRPName string) error {
 	lines := strings.Split(string(b), "\n")
 	for i, line := range lines {
 		if strings.Contains(line, autorest_md_file_suffix) {
-			lines[i] = fmt.Sprintf("- %s", filepath.Join(specPath, "specification", specRPName, "resource-manager", "readme.md"))
-			lines[i+1] = fmt.Sprintf("- %s", filepath.Join(specPath, "specification", specRPName, "resource-manager", "readme.go.md"))
+			lines[i] = fmt.Sprintf("- %s", filepath.Join(specPath, specRPName, "resource-manager", "readme.md"))
+			lines[i+1] = fmt.Sprintf("- %s", filepath.Join(specPath, specRPName, "resource-manager", "readme.go.md"))
 			break
 		}
 	}

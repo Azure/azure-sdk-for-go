@@ -50,7 +50,7 @@ type GenerateParam struct {
 func (ctx GenerateContext) GenerateForAutomation(readme, repo string) ([]GenerateResult, []error) {
 	absReadme := filepath.Join(ctx.SpecPath, readme)
 	absReadmeGo := filepath.Join(filepath.Dir(absReadme), "readme.go.md")
-	specRPName := strings.Split(readme, "/")[1]
+	specRPName := strings.Split(readme, "/")[0]
 
 	var result []GenerateResult
 	var errors []error
@@ -113,7 +113,8 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 		log.Printf("Get ori exports for changelog generation...")
 		oriExports, err = exports.Get(packagePath)
 		if err != nil {
-			return nil, err
+			log.Printf("Get ori exports error, set to empty: %+v", err)
+			oriExports = exports.Content{}
 		}
 
 		log.Printf("Remove all the files that start with `zz_generated_`...")

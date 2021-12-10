@@ -54,8 +54,7 @@ func (client WorkloadNetworksClient) CreateDhcp(ctx context.Context, resourceGro
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("avs.WorkloadNetworksClient", "CreateDhcp", err.Error())
 	}
 
@@ -126,6 +125,192 @@ func (client WorkloadNetworksClient) CreateDhcpResponder(resp *http.Response) (r
 	return
 }
 
+// CreateDNSService sends the create dns service request.
+// Parameters:
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// privateCloudName - name of the private cloud
+// DNSServiceID - NSX DNS Service identifier. Generally the same as the DNS Service's display name
+// workloadNetworkDNSService - NSX DNS Service
+func (client WorkloadNetworksClient) CreateDNSService(ctx context.Context, resourceGroupName string, privateCloudName string, DNSServiceID string, workloadNetworkDNSService WorkloadNetworkDNSService) (result WorkloadNetworksCreateDNSServiceFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkloadNetworksClient.CreateDNSService")
+		defer func() {
+			sc := -1
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("avs.WorkloadNetworksClient", "CreateDNSService", err.Error())
+	}
+
+	req, err := client.CreateDNSServicePreparer(ctx, resourceGroupName, privateCloudName, DNSServiceID, workloadNetworkDNSService)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "CreateDNSService", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.CreateDNSServiceSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "CreateDNSService", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// CreateDNSServicePreparer prepares the CreateDNSService request.
+func (client WorkloadNetworksClient) CreateDNSServicePreparer(ctx context.Context, resourceGroupName string, privateCloudName string, DNSServiceID string, workloadNetworkDNSService WorkloadNetworkDNSService) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"dnsServiceId":      autorest.Encode("path", DNSServiceID),
+		"privateCloudName":  autorest.Encode("path", privateCloudName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-07-17-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsServices/{dnsServiceId}", pathParameters),
+		autorest.WithJSON(workloadNetworkDNSService),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CreateDNSServiceSender sends the CreateDNSService request. The method will close the
+// http.Response Body if it receives an error.
+func (client WorkloadNetworksClient) CreateDNSServiceSender(req *http.Request) (future WorkloadNetworksCreateDNSServiceFuture, err error) {
+	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
+}
+
+// CreateDNSServiceResponder handles the response to the CreateDNSService request. The method always
+// closes the http.Response Body.
+func (client WorkloadNetworksClient) CreateDNSServiceResponder(resp *http.Response) (result WorkloadNetworkDNSService, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// CreateDNSZone sends the create dns zone request.
+// Parameters:
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// privateCloudName - name of the private cloud
+// DNSZoneID - NSX DNS Zone identifier. Generally the same as the DNS Zone's display name
+// workloadNetworkDNSZone - NSX DNS Zone
+func (client WorkloadNetworksClient) CreateDNSZone(ctx context.Context, resourceGroupName string, privateCloudName string, DNSZoneID string, workloadNetworkDNSZone WorkloadNetworkDNSZone) (result WorkloadNetworksCreateDNSZoneFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkloadNetworksClient.CreateDNSZone")
+		defer func() {
+			sc := -1
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("avs.WorkloadNetworksClient", "CreateDNSZone", err.Error())
+	}
+
+	req, err := client.CreateDNSZonePreparer(ctx, resourceGroupName, privateCloudName, DNSZoneID, workloadNetworkDNSZone)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "CreateDNSZone", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.CreateDNSZoneSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "CreateDNSZone", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// CreateDNSZonePreparer prepares the CreateDNSZone request.
+func (client WorkloadNetworksClient) CreateDNSZonePreparer(ctx context.Context, resourceGroupName string, privateCloudName string, DNSZoneID string, workloadNetworkDNSZone WorkloadNetworkDNSZone) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"dnsZoneId":         autorest.Encode("path", DNSZoneID),
+		"privateCloudName":  autorest.Encode("path", privateCloudName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-07-17-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsZones/{dnsZoneId}", pathParameters),
+		autorest.WithJSON(workloadNetworkDNSZone),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CreateDNSZoneSender sends the CreateDNSZone request. The method will close the
+// http.Response Body if it receives an error.
+func (client WorkloadNetworksClient) CreateDNSZoneSender(req *http.Request) (future WorkloadNetworksCreateDNSZoneFuture, err error) {
+	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
+}
+
+// CreateDNSZoneResponder handles the response to the CreateDNSZone request. The method always
+// closes the http.Response Body.
+func (client WorkloadNetworksClient) CreateDNSZoneResponder(resp *http.Response) (result WorkloadNetworkDNSZone, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // CreatePortMirroring sends the create port mirroring request.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
@@ -148,8 +333,7 @@ func (client WorkloadNetworksClient) CreatePortMirroring(ctx context.Context, re
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("avs.WorkloadNetworksClient", "CreatePortMirroring", err.Error())
 	}
 
@@ -242,8 +426,7 @@ func (client WorkloadNetworksClient) CreateSegments(ctx context.Context, resourc
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("avs.WorkloadNetworksClient", "CreateSegments", err.Error())
 	}
 
@@ -336,8 +519,7 @@ func (client WorkloadNetworksClient) CreateVMGroup(ctx context.Context, resource
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("avs.WorkloadNetworksClient", "CreateVMGroup", err.Error())
 	}
 
@@ -429,8 +611,7 @@ func (client WorkloadNetworksClient) DeleteDhcp(ctx context.Context, resourceGro
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("avs.WorkloadNetworksClient", "DeleteDhcp", err.Error())
 	}
 
@@ -498,6 +679,184 @@ func (client WorkloadNetworksClient) DeleteDhcpResponder(resp *http.Response) (r
 	return
 }
 
+// DeleteDNSService sends the delete dns service request.
+// Parameters:
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// DNSServiceID - NSX DNS Service identifier. Generally the same as the DNS Service's display name
+// privateCloudName - name of the private cloud
+func (client WorkloadNetworksClient) DeleteDNSService(ctx context.Context, resourceGroupName string, DNSServiceID string, privateCloudName string) (result WorkloadNetworksDeleteDNSServiceFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkloadNetworksClient.DeleteDNSService")
+		defer func() {
+			sc := -1
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("avs.WorkloadNetworksClient", "DeleteDNSService", err.Error())
+	}
+
+	req, err := client.DeleteDNSServicePreparer(ctx, resourceGroupName, DNSServiceID, privateCloudName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "DeleteDNSService", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.DeleteDNSServiceSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "DeleteDNSService", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// DeleteDNSServicePreparer prepares the DeleteDNSService request.
+func (client WorkloadNetworksClient) DeleteDNSServicePreparer(ctx context.Context, resourceGroupName string, DNSServiceID string, privateCloudName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"dnsServiceId":      autorest.Encode("path", DNSServiceID),
+		"privateCloudName":  autorest.Encode("path", privateCloudName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-07-17-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsServices/{dnsServiceId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DeleteDNSServiceSender sends the DeleteDNSService request. The method will close the
+// http.Response Body if it receives an error.
+func (client WorkloadNetworksClient) DeleteDNSServiceSender(req *http.Request) (future WorkloadNetworksDeleteDNSServiceFuture, err error) {
+	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
+}
+
+// DeleteDNSServiceResponder handles the response to the DeleteDNSService request. The method always
+// closes the http.Response Body.
+func (client WorkloadNetworksClient) DeleteDNSServiceResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// DeleteDNSZone sends the delete dns zone request.
+// Parameters:
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// DNSZoneID - NSX DNS Zone identifier. Generally the same as the DNS Zone's display name
+// privateCloudName - name of the private cloud
+func (client WorkloadNetworksClient) DeleteDNSZone(ctx context.Context, resourceGroupName string, DNSZoneID string, privateCloudName string) (result WorkloadNetworksDeleteDNSZoneFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkloadNetworksClient.DeleteDNSZone")
+		defer func() {
+			sc := -1
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("avs.WorkloadNetworksClient", "DeleteDNSZone", err.Error())
+	}
+
+	req, err := client.DeleteDNSZonePreparer(ctx, resourceGroupName, DNSZoneID, privateCloudName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "DeleteDNSZone", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.DeleteDNSZoneSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "DeleteDNSZone", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// DeleteDNSZonePreparer prepares the DeleteDNSZone request.
+func (client WorkloadNetworksClient) DeleteDNSZonePreparer(ctx context.Context, resourceGroupName string, DNSZoneID string, privateCloudName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"dnsZoneId":         autorest.Encode("path", DNSZoneID),
+		"privateCloudName":  autorest.Encode("path", privateCloudName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-07-17-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsZones/{dnsZoneId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DeleteDNSZoneSender sends the DeleteDNSZone request. The method will close the
+// http.Response Body if it receives an error.
+func (client WorkloadNetworksClient) DeleteDNSZoneSender(req *http.Request) (future WorkloadNetworksDeleteDNSZoneFuture, err error) {
+	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
+}
+
+// DeleteDNSZoneResponder handles the response to the DeleteDNSZone request. The method always
+// closes the http.Response Body.
+func (client WorkloadNetworksClient) DeleteDNSZoneResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // DeletePortMirroring sends the delete port mirroring request.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
@@ -519,8 +878,7 @@ func (client WorkloadNetworksClient) DeletePortMirroring(ctx context.Context, re
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("avs.WorkloadNetworksClient", "DeletePortMirroring", err.Error())
 	}
 
@@ -609,8 +967,7 @@ func (client WorkloadNetworksClient) DeleteSegment(ctx context.Context, resource
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("avs.WorkloadNetworksClient", "DeleteSegment", err.Error())
 	}
 
@@ -699,8 +1056,7 @@ func (client WorkloadNetworksClient) DeleteVMGroup(ctx context.Context, resource
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("avs.WorkloadNetworksClient", "DeleteVMGroup", err.Error())
 	}
 
@@ -789,8 +1145,7 @@ func (client WorkloadNetworksClient) GetDhcp(ctx context.Context, resourceGroupN
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("avs.WorkloadNetworksClient", "GetDhcp", err.Error())
 	}
 
@@ -856,6 +1211,180 @@ func (client WorkloadNetworksClient) GetDhcpResponder(resp *http.Response) (resu
 	return
 }
 
+// GetDNSService sends the get dns service request.
+// Parameters:
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// privateCloudName - name of the private cloud
+// DNSServiceID - NSX DNS Service identifier. Generally the same as the DNS Service's display name
+func (client WorkloadNetworksClient) GetDNSService(ctx context.Context, resourceGroupName string, privateCloudName string, DNSServiceID string) (result WorkloadNetworkDNSService, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkloadNetworksClient.GetDNSService")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("avs.WorkloadNetworksClient", "GetDNSService", err.Error())
+	}
+
+	req, err := client.GetDNSServicePreparer(ctx, resourceGroupName, privateCloudName, DNSServiceID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "GetDNSService", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetDNSServiceSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "GetDNSService", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetDNSServiceResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "GetDNSService", resp, "Failure responding to request")
+		return
+	}
+
+	return
+}
+
+// GetDNSServicePreparer prepares the GetDNSService request.
+func (client WorkloadNetworksClient) GetDNSServicePreparer(ctx context.Context, resourceGroupName string, privateCloudName string, DNSServiceID string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"dnsServiceId":      autorest.Encode("path", DNSServiceID),
+		"privateCloudName":  autorest.Encode("path", privateCloudName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-07-17-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsServices/{dnsServiceId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetDNSServiceSender sends the GetDNSService request. The method will close the
+// http.Response Body if it receives an error.
+func (client WorkloadNetworksClient) GetDNSServiceSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetDNSServiceResponder handles the response to the GetDNSService request. The method always
+// closes the http.Response Body.
+func (client WorkloadNetworksClient) GetDNSServiceResponder(resp *http.Response) (result WorkloadNetworkDNSService, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetDNSZone sends the get dns zone request.
+// Parameters:
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// privateCloudName - name of the private cloud
+// DNSZoneID - NSX DNS Zone identifier. Generally the same as the DNS Zone's display name
+func (client WorkloadNetworksClient) GetDNSZone(ctx context.Context, resourceGroupName string, privateCloudName string, DNSZoneID string) (result WorkloadNetworkDNSZone, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkloadNetworksClient.GetDNSZone")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("avs.WorkloadNetworksClient", "GetDNSZone", err.Error())
+	}
+
+	req, err := client.GetDNSZonePreparer(ctx, resourceGroupName, privateCloudName, DNSZoneID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "GetDNSZone", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetDNSZoneSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "GetDNSZone", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetDNSZoneResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "GetDNSZone", resp, "Failure responding to request")
+		return
+	}
+
+	return
+}
+
+// GetDNSZonePreparer prepares the GetDNSZone request.
+func (client WorkloadNetworksClient) GetDNSZonePreparer(ctx context.Context, resourceGroupName string, privateCloudName string, DNSZoneID string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"dnsZoneId":         autorest.Encode("path", DNSZoneID),
+		"privateCloudName":  autorest.Encode("path", privateCloudName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-07-17-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsZones/{dnsZoneId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetDNSZoneSender sends the GetDNSZone request. The method will close the
+// http.Response Body if it receives an error.
+func (client WorkloadNetworksClient) GetDNSZoneSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetDNSZoneResponder handles the response to the GetDNSZone request. The method always
+// closes the http.Response Body.
+func (client WorkloadNetworksClient) GetDNSZoneResponder(resp *http.Response) (result WorkloadNetworkDNSZone, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // GetGateway sends the get gateway request.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
@@ -877,8 +1406,7 @@ func (client WorkloadNetworksClient) GetGateway(ctx context.Context, resourceGro
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("avs.WorkloadNetworksClient", "GetGateway", err.Error())
 	}
 
@@ -965,8 +1493,7 @@ func (client WorkloadNetworksClient) GetPortMirroring(ctx context.Context, resou
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("avs.WorkloadNetworksClient", "GetPortMirroring", err.Error())
 	}
 
@@ -1053,8 +1580,7 @@ func (client WorkloadNetworksClient) GetSegment(ctx context.Context, resourceGro
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("avs.WorkloadNetworksClient", "GetSegment", err.Error())
 	}
 
@@ -1141,8 +1667,7 @@ func (client WorkloadNetworksClient) GetVirtualMachine(ctx context.Context, reso
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("avs.WorkloadNetworksClient", "GetVirtualMachine", err.Error())
 	}
 
@@ -1229,8 +1754,7 @@ func (client WorkloadNetworksClient) GetVMGroup(ctx context.Context, resourceGro
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("avs.WorkloadNetworksClient", "GetVMGroup", err.Error())
 	}
 
@@ -1316,8 +1840,7 @@ func (client WorkloadNetworksClient) ListDhcp(ctx context.Context, resourceGroup
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("avs.WorkloadNetworksClient", "ListDhcp", err.Error())
 	}
 
@@ -1424,6 +1947,260 @@ func (client WorkloadNetworksClient) ListDhcpComplete(ctx context.Context, resou
 	return
 }
 
+// ListDNSServices sends the list dns services request.
+// Parameters:
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// privateCloudName - name of the private cloud
+func (client WorkloadNetworksClient) ListDNSServices(ctx context.Context, resourceGroupName string, privateCloudName string) (result WorkloadNetworkDNSServicesListPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkloadNetworksClient.ListDNSServices")
+		defer func() {
+			sc := -1
+			if result.wndsl.Response.Response != nil {
+				sc = result.wndsl.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("avs.WorkloadNetworksClient", "ListDNSServices", err.Error())
+	}
+
+	result.fn = client.listDNSServicesNextResults
+	req, err := client.ListDNSServicesPreparer(ctx, resourceGroupName, privateCloudName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "ListDNSServices", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListDNSServicesSender(req)
+	if err != nil {
+		result.wndsl.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "ListDNSServices", resp, "Failure sending request")
+		return
+	}
+
+	result.wndsl, err = client.ListDNSServicesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "ListDNSServices", resp, "Failure responding to request")
+		return
+	}
+	if result.wndsl.hasNextLink() && result.wndsl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+		return
+	}
+
+	return
+}
+
+// ListDNSServicesPreparer prepares the ListDNSServices request.
+func (client WorkloadNetworksClient) ListDNSServicesPreparer(ctx context.Context, resourceGroupName string, privateCloudName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"privateCloudName":  autorest.Encode("path", privateCloudName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-07-17-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsServices", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListDNSServicesSender sends the ListDNSServices request. The method will close the
+// http.Response Body if it receives an error.
+func (client WorkloadNetworksClient) ListDNSServicesSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListDNSServicesResponder handles the response to the ListDNSServices request. The method always
+// closes the http.Response Body.
+func (client WorkloadNetworksClient) ListDNSServicesResponder(resp *http.Response) (result WorkloadNetworkDNSServicesList, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listDNSServicesNextResults retrieves the next set of results, if any.
+func (client WorkloadNetworksClient) listDNSServicesNextResults(ctx context.Context, lastResults WorkloadNetworkDNSServicesList) (result WorkloadNetworkDNSServicesList, err error) {
+	req, err := lastResults.workloadNetworkDNSServicesListPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "listDNSServicesNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListDNSServicesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "listDNSServicesNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListDNSServicesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "listDNSServicesNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListDNSServicesComplete enumerates all values, automatically crossing page boundaries as required.
+func (client WorkloadNetworksClient) ListDNSServicesComplete(ctx context.Context, resourceGroupName string, privateCloudName string) (result WorkloadNetworkDNSServicesListIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkloadNetworksClient.ListDNSServices")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListDNSServices(ctx, resourceGroupName, privateCloudName)
+	return
+}
+
+// ListDNSZones sends the list dns zones request.
+// Parameters:
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// privateCloudName - name of the private cloud
+func (client WorkloadNetworksClient) ListDNSZones(ctx context.Context, resourceGroupName string, privateCloudName string) (result WorkloadNetworkDNSZonesListPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkloadNetworksClient.ListDNSZones")
+		defer func() {
+			sc := -1
+			if result.wndzl.Response.Response != nil {
+				sc = result.wndzl.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("avs.WorkloadNetworksClient", "ListDNSZones", err.Error())
+	}
+
+	result.fn = client.listDNSZonesNextResults
+	req, err := client.ListDNSZonesPreparer(ctx, resourceGroupName, privateCloudName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "ListDNSZones", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListDNSZonesSender(req)
+	if err != nil {
+		result.wndzl.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "ListDNSZones", resp, "Failure sending request")
+		return
+	}
+
+	result.wndzl, err = client.ListDNSZonesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "ListDNSZones", resp, "Failure responding to request")
+		return
+	}
+	if result.wndzl.hasNextLink() && result.wndzl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+		return
+	}
+
+	return
+}
+
+// ListDNSZonesPreparer prepares the ListDNSZones request.
+func (client WorkloadNetworksClient) ListDNSZonesPreparer(ctx context.Context, resourceGroupName string, privateCloudName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"privateCloudName":  autorest.Encode("path", privateCloudName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-07-17-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsZones", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListDNSZonesSender sends the ListDNSZones request. The method will close the
+// http.Response Body if it receives an error.
+func (client WorkloadNetworksClient) ListDNSZonesSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListDNSZonesResponder handles the response to the ListDNSZones request. The method always
+// closes the http.Response Body.
+func (client WorkloadNetworksClient) ListDNSZonesResponder(resp *http.Response) (result WorkloadNetworkDNSZonesList, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listDNSZonesNextResults retrieves the next set of results, if any.
+func (client WorkloadNetworksClient) listDNSZonesNextResults(ctx context.Context, lastResults WorkloadNetworkDNSZonesList) (result WorkloadNetworkDNSZonesList, err error) {
+	req, err := lastResults.workloadNetworkDNSZonesListPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "listDNSZonesNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListDNSZonesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "listDNSZonesNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListDNSZonesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "listDNSZonesNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListDNSZonesComplete enumerates all values, automatically crossing page boundaries as required.
+func (client WorkloadNetworksClient) ListDNSZonesComplete(ctx context.Context, resourceGroupName string, privateCloudName string) (result WorkloadNetworkDNSZonesListIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkloadNetworksClient.ListDNSZones")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListDNSZones(ctx, resourceGroupName, privateCloudName)
+	return
+}
+
 // ListGateways sends the list gateways request.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
@@ -1444,8 +2221,7 @@ func (client WorkloadNetworksClient) ListGateways(ctx context.Context, resourceG
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("avs.WorkloadNetworksClient", "ListGateways", err.Error())
 	}
 
@@ -1572,8 +2348,7 @@ func (client WorkloadNetworksClient) ListPortMirroring(ctx context.Context, reso
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("avs.WorkloadNetworksClient", "ListPortMirroring", err.Error())
 	}
 
@@ -1700,8 +2475,7 @@ func (client WorkloadNetworksClient) ListSegments(ctx context.Context, resourceG
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("avs.WorkloadNetworksClient", "ListSegments", err.Error())
 	}
 
@@ -1828,8 +2602,7 @@ func (client WorkloadNetworksClient) ListVirtualMachines(ctx context.Context, re
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("avs.WorkloadNetworksClient", "ListVirtualMachines", err.Error())
 	}
 
@@ -1956,8 +2729,7 @@ func (client WorkloadNetworksClient) ListVMGroups(ctx context.Context, resourceG
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("avs.WorkloadNetworksClient", "ListVMGroups", err.Error())
 	}
 
@@ -2086,8 +2858,7 @@ func (client WorkloadNetworksClient) UpdateDhcp(ctx context.Context, resourceGro
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("avs.WorkloadNetworksClient", "UpdateDhcp", err.Error())
 	}
 
@@ -2158,6 +2929,192 @@ func (client WorkloadNetworksClient) UpdateDhcpResponder(resp *http.Response) (r
 	return
 }
 
+// UpdateDNSService sends the update dns service request.
+// Parameters:
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// privateCloudName - name of the private cloud
+// DNSServiceID - NSX DNS Service identifier. Generally the same as the DNS Service's display name
+// workloadNetworkDNSService - NSX DNS Service
+func (client WorkloadNetworksClient) UpdateDNSService(ctx context.Context, resourceGroupName string, privateCloudName string, DNSServiceID string, workloadNetworkDNSService WorkloadNetworkDNSService) (result WorkloadNetworksUpdateDNSServiceFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkloadNetworksClient.UpdateDNSService")
+		defer func() {
+			sc := -1
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("avs.WorkloadNetworksClient", "UpdateDNSService", err.Error())
+	}
+
+	req, err := client.UpdateDNSServicePreparer(ctx, resourceGroupName, privateCloudName, DNSServiceID, workloadNetworkDNSService)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "UpdateDNSService", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.UpdateDNSServiceSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "UpdateDNSService", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// UpdateDNSServicePreparer prepares the UpdateDNSService request.
+func (client WorkloadNetworksClient) UpdateDNSServicePreparer(ctx context.Context, resourceGroupName string, privateCloudName string, DNSServiceID string, workloadNetworkDNSService WorkloadNetworkDNSService) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"dnsServiceId":      autorest.Encode("path", DNSServiceID),
+		"privateCloudName":  autorest.Encode("path", privateCloudName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-07-17-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsServices/{dnsServiceId}", pathParameters),
+		autorest.WithJSON(workloadNetworkDNSService),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// UpdateDNSServiceSender sends the UpdateDNSService request. The method will close the
+// http.Response Body if it receives an error.
+func (client WorkloadNetworksClient) UpdateDNSServiceSender(req *http.Request) (future WorkloadNetworksUpdateDNSServiceFuture, err error) {
+	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
+}
+
+// UpdateDNSServiceResponder handles the response to the UpdateDNSService request. The method always
+// closes the http.Response Body.
+func (client WorkloadNetworksClient) UpdateDNSServiceResponder(resp *http.Response) (result WorkloadNetworkDNSService, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// UpdateDNSZone sends the update dns zone request.
+// Parameters:
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// privateCloudName - name of the private cloud
+// DNSZoneID - NSX DNS Zone identifier. Generally the same as the DNS Zone's display name
+// workloadNetworkDNSZone - NSX DNS Zone
+func (client WorkloadNetworksClient) UpdateDNSZone(ctx context.Context, resourceGroupName string, privateCloudName string, DNSZoneID string, workloadNetworkDNSZone WorkloadNetworkDNSZone) (result WorkloadNetworksUpdateDNSZoneFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkloadNetworksClient.UpdateDNSZone")
+		defer func() {
+			sc := -1
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("avs.WorkloadNetworksClient", "UpdateDNSZone", err.Error())
+	}
+
+	req, err := client.UpdateDNSZonePreparer(ctx, resourceGroupName, privateCloudName, DNSZoneID, workloadNetworkDNSZone)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "UpdateDNSZone", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.UpdateDNSZoneSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "UpdateDNSZone", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// UpdateDNSZonePreparer prepares the UpdateDNSZone request.
+func (client WorkloadNetworksClient) UpdateDNSZonePreparer(ctx context.Context, resourceGroupName string, privateCloudName string, DNSZoneID string, workloadNetworkDNSZone WorkloadNetworkDNSZone) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"dnsZoneId":         autorest.Encode("path", DNSZoneID),
+		"privateCloudName":  autorest.Encode("path", privateCloudName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-07-17-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsZones/{dnsZoneId}", pathParameters),
+		autorest.WithJSON(workloadNetworkDNSZone),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// UpdateDNSZoneSender sends the UpdateDNSZone request. The method will close the
+// http.Response Body if it receives an error.
+func (client WorkloadNetworksClient) UpdateDNSZoneSender(req *http.Request) (future WorkloadNetworksUpdateDNSZoneFuture, err error) {
+	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
+}
+
+// UpdateDNSZoneResponder handles the response to the UpdateDNSZone request. The method always
+// closes the http.Response Body.
+func (client WorkloadNetworksClient) UpdateDNSZoneResponder(resp *http.Response) (result WorkloadNetworkDNSZone, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // UpdatePortMirroring sends the update port mirroring request.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
@@ -2180,8 +3137,7 @@ func (client WorkloadNetworksClient) UpdatePortMirroring(ctx context.Context, re
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("avs.WorkloadNetworksClient", "UpdatePortMirroring", err.Error())
 	}
 
@@ -2274,8 +3230,7 @@ func (client WorkloadNetworksClient) UpdateSegments(ctx context.Context, resourc
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("avs.WorkloadNetworksClient", "UpdateSegments", err.Error())
 	}
 
@@ -2368,8 +3323,7 @@ func (client WorkloadNetworksClient) UpdateVMGroup(ctx context.Context, resource
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("avs.WorkloadNetworksClient", "UpdateVMGroup", err.Error())
 	}
 

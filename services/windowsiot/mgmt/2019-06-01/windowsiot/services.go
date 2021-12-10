@@ -123,7 +123,7 @@ func (client ServicesClient) CheckDeviceServiceNameAvailabilityResponder(resp *h
 // deviceService - the Windows IoT Device Service metadata and security metadata.
 // ifMatch - eTag of the Windows IoT Device Service. Do not specify for creating a new Windows IoT Device
 // Service. Required to update an existing Windows IoT Device Service.
-func (client ServicesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, deviceName string, deviceService DeviceServiceProperties, ifMatch string) (result DeviceService, err error) {
+func (client ServicesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, deviceName string, deviceService DeviceService, ifMatch string) (result DeviceService, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ServicesClient.CreateOrUpdate")
 		defer func() {
@@ -157,7 +157,7 @@ func (client ServicesClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client ServicesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, deviceName string, deviceService DeviceServiceProperties, ifMatch string) (*http.Request, error) {
+func (client ServicesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, deviceName string, deviceService DeviceService, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"deviceName":        autorest.Encode("path", deviceName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -169,7 +169,6 @@ func (client ServicesClient) CreateOrUpdatePreparer(ctx context.Context, resourc
 		"api-version": APIVersion,
 	}
 
-	deviceService.StartDate = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
@@ -195,7 +194,7 @@ func (client ServicesClient) CreateOrUpdateSender(req *http.Request) (*http.Resp
 func (client ServicesClient) CreateOrUpdateResponder(resp *http.Response) (result DeviceService, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -271,7 +270,7 @@ func (client ServicesClient) DeleteSender(req *http.Request) (*http.Response, er
 func (client ServicesClient) DeleteResponder(resp *http.Response) (result DeviceService, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -592,7 +591,7 @@ func (client ServicesClient) ListByResourceGroupComplete(ctx context.Context, re
 // deviceService - the Windows IoT Device Service metadata and security metadata.
 // ifMatch - eTag of the Windows IoT Device Service. Do not specify for creating a brand new Windows IoT Device
 // Service. Required to update an existing Windows IoT Device Service.
-func (client ServicesClient) Update(ctx context.Context, resourceGroupName string, deviceName string, deviceService DeviceServiceProperties, ifMatch string) (result DeviceService, err error) {
+func (client ServicesClient) Update(ctx context.Context, resourceGroupName string, deviceName string, deviceService DeviceService, ifMatch string) (result DeviceService, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ServicesClient.Update")
 		defer func() {
@@ -626,7 +625,7 @@ func (client ServicesClient) Update(ctx context.Context, resourceGroupName strin
 }
 
 // UpdatePreparer prepares the Update request.
-func (client ServicesClient) UpdatePreparer(ctx context.Context, resourceGroupName string, deviceName string, deviceService DeviceServiceProperties, ifMatch string) (*http.Request, error) {
+func (client ServicesClient) UpdatePreparer(ctx context.Context, resourceGroupName string, deviceName string, deviceService DeviceService, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"deviceName":        autorest.Encode("path", deviceName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -638,7 +637,6 @@ func (client ServicesClient) UpdatePreparer(ctx context.Context, resourceGroupNa
 		"api-version": APIVersion,
 	}
 
-	deviceService.StartDate = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),

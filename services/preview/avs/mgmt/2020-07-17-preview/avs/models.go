@@ -19,6 +19,429 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/avs/mgmt/2020-07-17-preview/avs"
 
+// Addon an addon resource
+type Addon struct {
+	autorest.Response `json:"-"`
+	// AddonProperties - The properties of an addon resource
+	*AddonProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Addon.
+func (a Addon) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if a.AddonProperties != nil {
+		objectMap["properties"] = a.AddonProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for Addon struct.
+func (a *Addon) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var addonProperties AddonProperties
+				err = json.Unmarshal(*v, &addonProperties)
+				if err != nil {
+					return err
+				}
+				a.AddonProperties = &addonProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				a.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				a.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				a.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// AddonList a paged list of addons
+type AddonList struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; The items on a page
+	Value *[]Addon `json:"value,omitempty"`
+	// NextLink - READ-ONLY; URL to get the next page if any
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AddonList.
+func (al AddonList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// AddonListIterator provides access to a complete listing of Addon values.
+type AddonListIterator struct {
+	i    int
+	page AddonListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *AddonListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AddonListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *AddonListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter AddonListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter AddonListIterator) Response() AddonList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter AddonListIterator) Value() Addon {
+	if !iter.page.NotDone() {
+		return Addon{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the AddonListIterator type.
+func NewAddonListIterator(page AddonListPage) AddonListIterator {
+	return AddonListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (al AddonList) IsEmpty() bool {
+	return al.Value == nil || len(*al.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (al AddonList) hasNextLink() bool {
+	return al.NextLink != nil && len(*al.NextLink) != 0
+}
+
+// addonListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (al AddonList) addonListPreparer(ctx context.Context) (*http.Request, error) {
+	if !al.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(al.NextLink)))
+}
+
+// AddonListPage contains a page of Addon values.
+type AddonListPage struct {
+	fn func(context.Context, AddonList) (AddonList, error)
+	al AddonList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *AddonListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AddonListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.al)
+		if err != nil {
+			return err
+		}
+		page.al = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *AddonListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page AddonListPage) NotDone() bool {
+	return !page.al.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page AddonListPage) Response() AddonList {
+	return page.al
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page AddonListPage) Values() []Addon {
+	if page.al.IsEmpty() {
+		return nil
+	}
+	return *page.al.Value
+}
+
+// Creates a new instance of the AddonListPage type.
+func NewAddonListPage(cur AddonList, getNextPage func(context.Context, AddonList) (AddonList, error)) AddonListPage {
+	return AddonListPage{
+		fn: getNextPage,
+		al: cur,
+	}
+}
+
+// AddonProperties the properties of an addon that may be updated
+type AddonProperties struct {
+	// AddonType - The type of private cloud addon. Possible values include: 'SRM', 'VR'
+	AddonType AddonType `json:"addonType,omitempty"`
+	// ProvisioningState - READ-ONLY; The state of the addon provisioning. Possible values include: 'Succeeded', 'Failed', 'Cancelled', 'Deleting', 'Updating'
+	ProvisioningState AddonProvisioningState `json:"provisioningState,omitempty"`
+	// LicenseKey - The SRM license
+	LicenseKey *string `json:"licenseKey,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AddonProperties.
+func (ap AddonProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ap.AddonType != "" {
+		objectMap["addonType"] = ap.AddonType
+	}
+	if ap.LicenseKey != nil {
+		objectMap["licenseKey"] = ap.LicenseKey
+	}
+	return json.Marshal(objectMap)
+}
+
+// AddonsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type AddonsCreateOrUpdateFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(AddonsClient) (Addon, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *AddonsCreateOrUpdateFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for AddonsCreateOrUpdateFuture.Result.
+func (future *AddonsCreateOrUpdateFuture) result(client AddonsClient) (a Addon, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.AddonsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		a.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("avs.AddonsCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if a.Response.Response, err = future.GetResult(sender); err == nil && a.Response.Response.StatusCode != http.StatusNoContent {
+		a, err = client.CreateOrUpdateResponder(a.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "avs.AddonsCreateOrUpdateFuture", "Result", a.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// AddonsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type AddonsDeleteFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(AddonsClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *AddonsDeleteFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for AddonsDeleteFuture.Result.
+func (future *AddonsDeleteFuture) result(client AddonsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.AddonsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("avs.AddonsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// AddonSrmProperties the properties of an SRM addon that may be updated
+type AddonSrmProperties struct {
+	// LicenseKey - The SRM license
+	LicenseKey *string `json:"licenseKey,omitempty"`
+}
+
+// AddonUpdate an update of an addon resource
+type AddonUpdate struct {
+	// AddonUpdateProperties - The properties of an addon resource that may be updated
+	*AddonUpdateProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AddonUpdate.
+func (au AddonUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if au.AddonUpdateProperties != nil {
+		objectMap["properties"] = au.AddonUpdateProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for AddonUpdate struct.
+func (au *AddonUpdate) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var addonUpdateProperties AddonUpdateProperties
+				err = json.Unmarshal(*v, &addonUpdateProperties)
+				if err != nil {
+					return err
+				}
+				au.AddonUpdateProperties = &addonUpdateProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// AddonUpdateProperties the properties of an addon that may be updated
+type AddonUpdateProperties struct {
+	// AddonProperties - reference specific properties definition for addon type being used
+	*AddonProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AddonUpdateProperties.
+func (aup AddonUpdateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if aup.AddonProperties != nil {
+		objectMap["properties"] = aup.AddonProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for AddonUpdateProperties struct.
+func (aup *AddonUpdateProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var addonProperties AddonProperties
+				err = json.Unmarshal(*v, &addonProperties)
+				if err != nil {
+					return err
+				}
+				aup.AddonProperties = &addonProperties
+			}
+		}
+	}
+
+	return nil
+}
+
 // AdminCredentials administrative credentials for accessing vCenter and NSX-T
 type AdminCredentials struct {
 	autorest.Response `json:"-"`
@@ -396,7 +819,7 @@ func NewClusterListPage(cur ClusterList, getNextPage func(context.Context, Clust
 
 // ClusterProperties the properties of a cluster
 type ClusterProperties struct {
-	// ProvisioningState - READ-ONLY; The state of the cluster provisioning. Possible values include: 'Succeeded', 'Failed', 'Cancelled', 'Deleting', 'Updating'
+	// ProvisioningState - READ-ONLY; The state of the cluster provisioning. Possible values include: 'ClusterProvisioningStateSucceeded', 'ClusterProvisioningStateFailed', 'ClusterProvisioningStateCancelled', 'ClusterProvisioningStateDeleting', 'ClusterProvisioningStateUpdating'
 	ProvisioningState ClusterProvisioningState `json:"provisioningState,omitempty"`
 	// ClusterSize - The cluster size
 	ClusterSize *int32 `json:"clusterSize,omitempty"`
@@ -585,7 +1008,7 @@ type ClusterUpdateProperties struct {
 
 // CommonClusterProperties the common properties of a cluster
 type CommonClusterProperties struct {
-	// ProvisioningState - READ-ONLY; The state of the cluster provisioning. Possible values include: 'Succeeded', 'Failed', 'Cancelled', 'Deleting', 'Updating'
+	// ProvisioningState - READ-ONLY; The state of the cluster provisioning. Possible values include: 'ClusterProvisioningStateSucceeded', 'ClusterProvisioningStateFailed', 'ClusterProvisioningStateCancelled', 'ClusterProvisioningStateDeleting', 'ClusterProvisioningStateUpdating'
 	ProvisioningState ClusterProvisioningState `json:"provisioningState,omitempty"`
 	// ClusterSize - The cluster size
 	ClusterSize *int32 `json:"clusterSize,omitempty"`
@@ -1536,7 +1959,7 @@ type LogSpecification struct {
 
 // ManagementCluster the properties of a management cluster
 type ManagementCluster struct {
-	// ProvisioningState - READ-ONLY; The state of the cluster provisioning. Possible values include: 'Succeeded', 'Failed', 'Cancelled', 'Deleting', 'Updating'
+	// ProvisioningState - READ-ONLY; The state of the cluster provisioning. Possible values include: 'ClusterProvisioningStateSucceeded', 'ClusterProvisioningStateFailed', 'ClusterProvisioningStateCancelled', 'ClusterProvisioningStateDeleting', 'ClusterProvisioningStateUpdating'
 	ProvisioningState ClusterProvisioningState `json:"provisioningState,omitempty"`
 	// ClusterSize - The cluster size
 	ClusterSize *int32 `json:"clusterSize,omitempty"`
@@ -1561,6 +1984,10 @@ type MetricDimension struct {
 	Name *string `json:"name,omitempty"`
 	// DisplayName - Localized friendly display name of the dimension
 	DisplayName *string `json:"displayName,omitempty"`
+	// InternalName - Name of the dimension as it appears in MDM
+	InternalName *string `json:"internalName,omitempty"`
+	// ToBeExportedForShoebox - A boolean flag indicating whether this dimension should be included for the shoebox export scenario
+	ToBeExportedForShoebox *bool `json:"toBeExportedForShoebox,omitempty"`
 }
 
 // MetricSpecification specifications of the Metrics for Azure Monitoring
@@ -2107,6 +2534,10 @@ type PrivateCloudProperties struct {
 	ProvisioningNetwork *string `json:"provisioningNetwork,omitempty"`
 	// VmotionNetwork - READ-ONLY; Used for live migration of virtual machines
 	VmotionNetwork *string `json:"vmotionNetwork,omitempty"`
+	// VcenterPassword - Optionally, set the vCenter admin password when the private cloud is created
+	VcenterPassword *string `json:"vcenterPassword,omitempty"`
+	// NsxtPassword - Optionally, set the NSX-T Manager password when the private cloud is created
+	NsxtPassword *string `json:"nsxtPassword,omitempty"`
 	// VcenterCertificateThumbprint - READ-ONLY; Thumbprint of the vCenter Server SSL certificate
 	VcenterCertificateThumbprint *string `json:"vcenterCertificateThumbprint,omitempty"`
 	// NsxtCertificateThumbprint - READ-ONLY; Thumbprint of the NSX-T Manager SSL certificate
@@ -2117,10 +2548,6 @@ type PrivateCloudProperties struct {
 	Internet InternetEnum `json:"internet,omitempty"`
 	// IdentitySources - vCenter Single Sign On Identity Sources
 	IdentitySources *[]IdentitySource `json:"identitySources,omitempty"`
-	// VcenterPassword - Indicate to rotate the vCenter admin password for the private cloud. Possible values include: 'VcsaAdminRotateEnumOnetimeRotate'
-	VcenterPassword VcsaAdminRotateEnum `json:"vcenterPassword,omitempty"`
-	// NsxtPassword - Indicate to rotate the NSX-T Manager password for the private cloud. Possible values include: 'OnetimeRotate'
-	NsxtPassword NsxtAdminRotateEnum `json:"nsxtPassword,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for PrivateCloudProperties.
@@ -2132,6 +2559,12 @@ func (pcp PrivateCloudProperties) MarshalJSON() ([]byte, error) {
 	if pcp.NetworkBlock != nil {
 		objectMap["networkBlock"] = pcp.NetworkBlock
 	}
+	if pcp.VcenterPassword != nil {
+		objectMap["vcenterPassword"] = pcp.VcenterPassword
+	}
+	if pcp.NsxtPassword != nil {
+		objectMap["nsxtPassword"] = pcp.NsxtPassword
+	}
 	if pcp.ManagementCluster != nil {
 		objectMap["managementCluster"] = pcp.ManagementCluster
 	}
@@ -2140,12 +2573,6 @@ func (pcp PrivateCloudProperties) MarshalJSON() ([]byte, error) {
 	}
 	if pcp.IdentitySources != nil {
 		objectMap["identitySources"] = pcp.IdentitySources
-	}
-	if pcp.VcenterPassword != "" {
-		objectMap["vcenterPassword"] = pcp.VcenterPassword
-	}
-	if pcp.NsxtPassword != "" {
-		objectMap["nsxtPassword"] = pcp.NsxtPassword
 	}
 	return json.Marshal(objectMap)
 }
@@ -2224,6 +2651,80 @@ func (future *PrivateCloudsDeleteFuture) result(client PrivateCloudsClient) (ar 
 	if !done {
 		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("avs.PrivateCloudsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// PrivateCloudsRotateNsxtPasswordFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type PrivateCloudsRotateNsxtPasswordFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(PrivateCloudsClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *PrivateCloudsRotateNsxtPasswordFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for PrivateCloudsRotateNsxtPasswordFuture.Result.
+func (future *PrivateCloudsRotateNsxtPasswordFuture) result(client PrivateCloudsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.PrivateCloudsRotateNsxtPasswordFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("avs.PrivateCloudsRotateNsxtPasswordFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// PrivateCloudsRotateVcenterPasswordFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type PrivateCloudsRotateVcenterPasswordFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(PrivateCloudsClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *PrivateCloudsRotateVcenterPasswordFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for PrivateCloudsRotateVcenterPasswordFuture.Result.
+func (future *PrivateCloudsRotateVcenterPasswordFuture) result(client PrivateCloudsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.PrivateCloudsRotateVcenterPasswordFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("avs.PrivateCloudsRotateVcenterPasswordFuture")
 		return
 	}
 	ar.Response = future.Response()
@@ -2334,10 +2835,6 @@ type PrivateCloudUpdateProperties struct {
 	Internet InternetEnum `json:"internet,omitempty"`
 	// IdentitySources - vCenter Single Sign On Identity Sources
 	IdentitySources *[]IdentitySource `json:"identitySources,omitempty"`
-	// VcenterPassword - Indicate to rotate the vCenter admin password for the private cloud. Possible values include: 'VcsaAdminRotateEnumOnetimeRotate'
-	VcenterPassword VcsaAdminRotateEnum `json:"vcenterPassword,omitempty"`
-	// NsxtPassword - Indicate to rotate the NSX-T Manager password for the private cloud. Possible values include: 'OnetimeRotate'
-	NsxtPassword NsxtAdminRotateEnum `json:"nsxtPassword,omitempty"`
 }
 
 // ProxyResource the resource model definition for a ARM proxy resource
@@ -2889,6 +3386,570 @@ func (wnds WorkloadNetworkDhcpServer) AsWorkloadNetworkDhcpEntity() (*WorkloadNe
 // AsBasicWorkloadNetworkDhcpEntity is the BasicWorkloadNetworkDhcpEntity implementation for WorkloadNetworkDhcpServer.
 func (wnds WorkloadNetworkDhcpServer) AsBasicWorkloadNetworkDhcpEntity() (BasicWorkloadNetworkDhcpEntity, bool) {
 	return &wnds, true
+}
+
+// WorkloadNetworkDNSService NSX DNS Service
+type WorkloadNetworkDNSService struct {
+	autorest.Response `json:"-"`
+	// WorkloadNetworkDNSServiceProperties - DNS Service properties
+	*WorkloadNetworkDNSServiceProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WorkloadNetworkDNSService.
+func (wnds WorkloadNetworkDNSService) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wnds.WorkloadNetworkDNSServiceProperties != nil {
+		objectMap["properties"] = wnds.WorkloadNetworkDNSServiceProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for WorkloadNetworkDNSService struct.
+func (wnds *WorkloadNetworkDNSService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var workloadNetworkDNSServiceProperties WorkloadNetworkDNSServiceProperties
+				err = json.Unmarshal(*v, &workloadNetworkDNSServiceProperties)
+				if err != nil {
+					return err
+				}
+				wnds.WorkloadNetworkDNSServiceProperties = &workloadNetworkDNSServiceProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				wnds.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				wnds.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				wnds.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// WorkloadNetworkDNSServiceProperties NSX DNS Service Properties
+type WorkloadNetworkDNSServiceProperties struct {
+	// DisplayName - Display name of the DNS Service.
+	DisplayName *string `json:"displayName,omitempty"`
+	// DNSServiceIP - DNS service IP of the DNS Service.
+	DNSServiceIP *string `json:"dnsServiceIp,omitempty"`
+	// DefaultDNSZone - Default DNS zone of the DNS Service.
+	DefaultDNSZone *string `json:"defaultDnsZone,omitempty"`
+	// FqdnZones - FQDN zones of the DNS Service.
+	FqdnZones *[]string `json:"fqdnZones,omitempty"`
+	// LogLevel - DNS Service log level. Possible values include: 'DEBUG', 'INFO', 'WARNING', 'ERROR', 'FATAL'
+	LogLevel DNSServiceLogLevelEnum `json:"logLevel,omitempty"`
+	// Status - READ-ONLY; DNS Service status. Possible values include: 'SUCCESS', 'FAILURE'
+	Status DNSServiceStatusEnum `json:"status,omitempty"`
+	// ProvisioningState - READ-ONLY; The provisioning state. Possible values include: 'WorkloadNetworkDNSServiceProvisioningStateSucceeded', 'WorkloadNetworkDNSServiceProvisioningStateFailed', 'WorkloadNetworkDNSServiceProvisioningStateBuilding', 'WorkloadNetworkDNSServiceProvisioningStateDeleting', 'WorkloadNetworkDNSServiceProvisioningStateUpdating'
+	ProvisioningState WorkloadNetworkDNSServiceProvisioningState `json:"provisioningState,omitempty"`
+	// Revision - NSX revision number.
+	Revision *int64 `json:"revision,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WorkloadNetworkDNSServiceProperties.
+func (wndsp WorkloadNetworkDNSServiceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wndsp.DisplayName != nil {
+		objectMap["displayName"] = wndsp.DisplayName
+	}
+	if wndsp.DNSServiceIP != nil {
+		objectMap["dnsServiceIp"] = wndsp.DNSServiceIP
+	}
+	if wndsp.DefaultDNSZone != nil {
+		objectMap["defaultDnsZone"] = wndsp.DefaultDNSZone
+	}
+	if wndsp.FqdnZones != nil {
+		objectMap["fqdnZones"] = wndsp.FqdnZones
+	}
+	if wndsp.LogLevel != "" {
+		objectMap["logLevel"] = wndsp.LogLevel
+	}
+	if wndsp.Revision != nil {
+		objectMap["revision"] = wndsp.Revision
+	}
+	return json.Marshal(objectMap)
+}
+
+// WorkloadNetworkDNSServicesList a list of NSX DNS Services
+type WorkloadNetworkDNSServicesList struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; The items on the page
+	Value *[]WorkloadNetworkDNSService `json:"value,omitempty"`
+	// NextLink - READ-ONLY; URL to get the next page if any
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WorkloadNetworkDNSServicesList.
+func (wndsl WorkloadNetworkDNSServicesList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// WorkloadNetworkDNSServicesListIterator provides access to a complete listing of
+// WorkloadNetworkDNSService values.
+type WorkloadNetworkDNSServicesListIterator struct {
+	i    int
+	page WorkloadNetworkDNSServicesListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *WorkloadNetworkDNSServicesListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkloadNetworkDNSServicesListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *WorkloadNetworkDNSServicesListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter WorkloadNetworkDNSServicesListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter WorkloadNetworkDNSServicesListIterator) Response() WorkloadNetworkDNSServicesList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter WorkloadNetworkDNSServicesListIterator) Value() WorkloadNetworkDNSService {
+	if !iter.page.NotDone() {
+		return WorkloadNetworkDNSService{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the WorkloadNetworkDNSServicesListIterator type.
+func NewWorkloadNetworkDNSServicesListIterator(page WorkloadNetworkDNSServicesListPage) WorkloadNetworkDNSServicesListIterator {
+	return WorkloadNetworkDNSServicesListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (wndsl WorkloadNetworkDNSServicesList) IsEmpty() bool {
+	return wndsl.Value == nil || len(*wndsl.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (wndsl WorkloadNetworkDNSServicesList) hasNextLink() bool {
+	return wndsl.NextLink != nil && len(*wndsl.NextLink) != 0
+}
+
+// workloadNetworkDNSServicesListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (wndsl WorkloadNetworkDNSServicesList) workloadNetworkDNSServicesListPreparer(ctx context.Context) (*http.Request, error) {
+	if !wndsl.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(wndsl.NextLink)))
+}
+
+// WorkloadNetworkDNSServicesListPage contains a page of WorkloadNetworkDNSService values.
+type WorkloadNetworkDNSServicesListPage struct {
+	fn    func(context.Context, WorkloadNetworkDNSServicesList) (WorkloadNetworkDNSServicesList, error)
+	wndsl WorkloadNetworkDNSServicesList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *WorkloadNetworkDNSServicesListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkloadNetworkDNSServicesListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.wndsl)
+		if err != nil {
+			return err
+		}
+		page.wndsl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *WorkloadNetworkDNSServicesListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page WorkloadNetworkDNSServicesListPage) NotDone() bool {
+	return !page.wndsl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page WorkloadNetworkDNSServicesListPage) Response() WorkloadNetworkDNSServicesList {
+	return page.wndsl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page WorkloadNetworkDNSServicesListPage) Values() []WorkloadNetworkDNSService {
+	if page.wndsl.IsEmpty() {
+		return nil
+	}
+	return *page.wndsl.Value
+}
+
+// Creates a new instance of the WorkloadNetworkDNSServicesListPage type.
+func NewWorkloadNetworkDNSServicesListPage(cur WorkloadNetworkDNSServicesList, getNextPage func(context.Context, WorkloadNetworkDNSServicesList) (WorkloadNetworkDNSServicesList, error)) WorkloadNetworkDNSServicesListPage {
+	return WorkloadNetworkDNSServicesListPage{
+		fn:    getNextPage,
+		wndsl: cur,
+	}
+}
+
+// WorkloadNetworkDNSZone NSX DNS Zone
+type WorkloadNetworkDNSZone struct {
+	autorest.Response `json:"-"`
+	// WorkloadNetworkDNSZoneProperties - DNS Zone properties
+	*WorkloadNetworkDNSZoneProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WorkloadNetworkDNSZone.
+func (wndz WorkloadNetworkDNSZone) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wndz.WorkloadNetworkDNSZoneProperties != nil {
+		objectMap["properties"] = wndz.WorkloadNetworkDNSZoneProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for WorkloadNetworkDNSZone struct.
+func (wndz *WorkloadNetworkDNSZone) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var workloadNetworkDNSZoneProperties WorkloadNetworkDNSZoneProperties
+				err = json.Unmarshal(*v, &workloadNetworkDNSZoneProperties)
+				if err != nil {
+					return err
+				}
+				wndz.WorkloadNetworkDNSZoneProperties = &workloadNetworkDNSZoneProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				wndz.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				wndz.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				wndz.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// WorkloadNetworkDNSZoneProperties NSX DNS Zone Properties
+type WorkloadNetworkDNSZoneProperties struct {
+	// DisplayName - Display name of the DNS Zone.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Domain - Domain names of the DNS Zone.
+	Domain *[]string `json:"domain,omitempty"`
+	// DNSServerIps - DNS Server IP array of the DNS Zone.
+	DNSServerIps *[]string `json:"dnsServerIps,omitempty"`
+	// SourceIP - Source IP of the DNS Zone.
+	SourceIP *string `json:"sourceIp,omitempty"`
+	// DNSServices - Number of DNS Services using the DNS zone.
+	DNSServices *int64 `json:"dnsServices,omitempty"`
+	// ProvisioningState - READ-ONLY; The provisioning state. Possible values include: 'WorkloadNetworkDNSZoneProvisioningStateSucceeded', 'WorkloadNetworkDNSZoneProvisioningStateFailed', 'WorkloadNetworkDNSZoneProvisioningStateBuilding', 'WorkloadNetworkDNSZoneProvisioningStateDeleting', 'WorkloadNetworkDNSZoneProvisioningStateUpdating'
+	ProvisioningState WorkloadNetworkDNSZoneProvisioningState `json:"provisioningState,omitempty"`
+	// Revision - NSX revision number.
+	Revision *int64 `json:"revision,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WorkloadNetworkDNSZoneProperties.
+func (wndzp WorkloadNetworkDNSZoneProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wndzp.DisplayName != nil {
+		objectMap["displayName"] = wndzp.DisplayName
+	}
+	if wndzp.Domain != nil {
+		objectMap["domain"] = wndzp.Domain
+	}
+	if wndzp.DNSServerIps != nil {
+		objectMap["dnsServerIps"] = wndzp.DNSServerIps
+	}
+	if wndzp.SourceIP != nil {
+		objectMap["sourceIp"] = wndzp.SourceIP
+	}
+	if wndzp.DNSServices != nil {
+		objectMap["dnsServices"] = wndzp.DNSServices
+	}
+	if wndzp.Revision != nil {
+		objectMap["revision"] = wndzp.Revision
+	}
+	return json.Marshal(objectMap)
+}
+
+// WorkloadNetworkDNSZonesList a list of NSX DNS Zones
+type WorkloadNetworkDNSZonesList struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; The items on the page
+	Value *[]WorkloadNetworkDNSZone `json:"value,omitempty"`
+	// NextLink - READ-ONLY; URL to get the next page if any
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WorkloadNetworkDNSZonesList.
+func (wndzl WorkloadNetworkDNSZonesList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// WorkloadNetworkDNSZonesListIterator provides access to a complete listing of WorkloadNetworkDNSZone
+// values.
+type WorkloadNetworkDNSZonesListIterator struct {
+	i    int
+	page WorkloadNetworkDNSZonesListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *WorkloadNetworkDNSZonesListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkloadNetworkDNSZonesListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *WorkloadNetworkDNSZonesListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter WorkloadNetworkDNSZonesListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter WorkloadNetworkDNSZonesListIterator) Response() WorkloadNetworkDNSZonesList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter WorkloadNetworkDNSZonesListIterator) Value() WorkloadNetworkDNSZone {
+	if !iter.page.NotDone() {
+		return WorkloadNetworkDNSZone{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the WorkloadNetworkDNSZonesListIterator type.
+func NewWorkloadNetworkDNSZonesListIterator(page WorkloadNetworkDNSZonesListPage) WorkloadNetworkDNSZonesListIterator {
+	return WorkloadNetworkDNSZonesListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (wndzl WorkloadNetworkDNSZonesList) IsEmpty() bool {
+	return wndzl.Value == nil || len(*wndzl.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (wndzl WorkloadNetworkDNSZonesList) hasNextLink() bool {
+	return wndzl.NextLink != nil && len(*wndzl.NextLink) != 0
+}
+
+// workloadNetworkDNSZonesListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (wndzl WorkloadNetworkDNSZonesList) workloadNetworkDNSZonesListPreparer(ctx context.Context) (*http.Request, error) {
+	if !wndzl.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(wndzl.NextLink)))
+}
+
+// WorkloadNetworkDNSZonesListPage contains a page of WorkloadNetworkDNSZone values.
+type WorkloadNetworkDNSZonesListPage struct {
+	fn    func(context.Context, WorkloadNetworkDNSZonesList) (WorkloadNetworkDNSZonesList, error)
+	wndzl WorkloadNetworkDNSZonesList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *WorkloadNetworkDNSZonesListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkloadNetworkDNSZonesListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.wndzl)
+		if err != nil {
+			return err
+		}
+		page.wndzl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *WorkloadNetworkDNSZonesListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page WorkloadNetworkDNSZonesListPage) NotDone() bool {
+	return !page.wndzl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page WorkloadNetworkDNSZonesListPage) Response() WorkloadNetworkDNSZonesList {
+	return page.wndzl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page WorkloadNetworkDNSZonesListPage) Values() []WorkloadNetworkDNSZone {
+	if page.wndzl.IsEmpty() {
+		return nil
+	}
+	return *page.wndzl.Value
+}
+
+// Creates a new instance of the WorkloadNetworkDNSZonesListPage type.
+func NewWorkloadNetworkDNSZonesListPage(cur WorkloadNetworkDNSZonesList, getNextPage func(context.Context, WorkloadNetworkDNSZonesList) (WorkloadNetworkDNSZonesList, error)) WorkloadNetworkDNSZonesListPage {
+	return WorkloadNetworkDNSZonesListPage{
+		fn:    getNextPage,
+		wndzl: cur,
+	}
 }
 
 // WorkloadNetworkGateway NSX Gateway.
@@ -3468,6 +4529,92 @@ func (future *WorkloadNetworksCreateDhcpFuture) result(client WorkloadNetworksCl
 	return
 }
 
+// WorkloadNetworksCreateDNSServiceFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type WorkloadNetworksCreateDNSServiceFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(WorkloadNetworksClient) (WorkloadNetworkDNSService, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *WorkloadNetworksCreateDNSServiceFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for WorkloadNetworksCreateDNSServiceFuture.Result.
+func (future *WorkloadNetworksCreateDNSServiceFuture) result(client WorkloadNetworksClient) (wnds WorkloadNetworkDNSService, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksCreateDNSServiceFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		wnds.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("avs.WorkloadNetworksCreateDNSServiceFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if wnds.Response.Response, err = future.GetResult(sender); err == nil && wnds.Response.Response.StatusCode != http.StatusNoContent {
+		wnds, err = client.CreateDNSServiceResponder(wnds.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksCreateDNSServiceFuture", "Result", wnds.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// WorkloadNetworksCreateDNSZoneFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type WorkloadNetworksCreateDNSZoneFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(WorkloadNetworksClient) (WorkloadNetworkDNSZone, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *WorkloadNetworksCreateDNSZoneFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for WorkloadNetworksCreateDNSZoneFuture.Result.
+func (future *WorkloadNetworksCreateDNSZoneFuture) result(client WorkloadNetworksClient) (wndz WorkloadNetworkDNSZone, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksCreateDNSZoneFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		wndz.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("avs.WorkloadNetworksCreateDNSZoneFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if wndz.Response.Response, err = future.GetResult(sender); err == nil && wndz.Response.Response.StatusCode != http.StatusNoContent {
+		wndz, err = client.CreateDNSZoneResponder(wndz.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksCreateDNSZoneFuture", "Result", wndz.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // WorkloadNetworksCreatePortMirroringFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type WorkloadNetworksCreatePortMirroringFuture struct {
@@ -3628,6 +4775,80 @@ func (future *WorkloadNetworksDeleteDhcpFuture) result(client WorkloadNetworksCl
 	if !done {
 		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("avs.WorkloadNetworksDeleteDhcpFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// WorkloadNetworksDeleteDNSServiceFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type WorkloadNetworksDeleteDNSServiceFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(WorkloadNetworksClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *WorkloadNetworksDeleteDNSServiceFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for WorkloadNetworksDeleteDNSServiceFuture.Result.
+func (future *WorkloadNetworksDeleteDNSServiceFuture) result(client WorkloadNetworksClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksDeleteDNSServiceFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("avs.WorkloadNetworksDeleteDNSServiceFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// WorkloadNetworksDeleteDNSZoneFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type WorkloadNetworksDeleteDNSZoneFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(WorkloadNetworksClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *WorkloadNetworksDeleteDNSZoneFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for WorkloadNetworksDeleteDNSZoneFuture.Result.
+func (future *WorkloadNetworksDeleteDNSZoneFuture) result(client WorkloadNetworksClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksDeleteDNSZoneFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("avs.WorkloadNetworksDeleteDNSZoneFuture")
 		return
 	}
 	ar.Response = future.Response()
@@ -4072,6 +5293,92 @@ func (future *WorkloadNetworksUpdateDhcpFuture) result(client WorkloadNetworksCl
 		wnd, err = client.UpdateDhcpResponder(wnd.Response.Response)
 		if err != nil {
 			err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksUpdateDhcpFuture", "Result", wnd.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// WorkloadNetworksUpdateDNSServiceFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type WorkloadNetworksUpdateDNSServiceFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(WorkloadNetworksClient) (WorkloadNetworkDNSService, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *WorkloadNetworksUpdateDNSServiceFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for WorkloadNetworksUpdateDNSServiceFuture.Result.
+func (future *WorkloadNetworksUpdateDNSServiceFuture) result(client WorkloadNetworksClient) (wnds WorkloadNetworkDNSService, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksUpdateDNSServiceFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		wnds.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("avs.WorkloadNetworksUpdateDNSServiceFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if wnds.Response.Response, err = future.GetResult(sender); err == nil && wnds.Response.Response.StatusCode != http.StatusNoContent {
+		wnds, err = client.UpdateDNSServiceResponder(wnds.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksUpdateDNSServiceFuture", "Result", wnds.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// WorkloadNetworksUpdateDNSZoneFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type WorkloadNetworksUpdateDNSZoneFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(WorkloadNetworksClient) (WorkloadNetworkDNSZone, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *WorkloadNetworksUpdateDNSZoneFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for WorkloadNetworksUpdateDNSZoneFuture.Result.
+func (future *WorkloadNetworksUpdateDNSZoneFuture) result(client WorkloadNetworksClient) (wndz WorkloadNetworkDNSZone, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksUpdateDNSZoneFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		wndz.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("avs.WorkloadNetworksUpdateDNSZoneFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if wndz.Response.Response, err = future.GetResult(sender); err == nil && wndz.Response.Response.StatusCode != http.StatusNoContent {
+		wndz, err = client.UpdateDNSZoneResponder(wndz.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksUpdateDNSZoneFuture", "Result", wndz.Response.Response, "Failure responding to request")
 		}
 	}
 	return

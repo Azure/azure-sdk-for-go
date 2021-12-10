@@ -1,6 +1,7 @@
 // Package videoanalyzer implements the Azure ARM Videoanalyzer service API version 2021-05-01-preview.
 //
-// Azure Video Analyzer ARM Client
+// Azure Video Analyzer provides a platform for you to build intelligent video applications that span the edge and the
+// cloud
 package videoanalyzer
 
 // Copyright (c) Microsoft Corporation. All rights reserved.

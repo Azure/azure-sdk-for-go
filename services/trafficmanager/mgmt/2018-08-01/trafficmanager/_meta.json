@@ -1,5 +1,5 @@
 {
-  "commit": "2b0b50e3e5bd467aa039a51cafa2a071593eca28",
+  "commit": "4cda81c5daed78441aa8043dd32ae00b02899c36",
   "readme": "/_/azure-rest-api-specs/specification/trafficmanager/resource-manager/readme.md",
   "tag": "package-2018-08",
   "use": "@microsoft.azure/autorest.go@2.1.187",

@@ -10,6 +10,7 @@ steps:
 
   - task: Powershell@2
     displayName: 'Dependency Check'
+    continueOnError: true
     env:
       GO111MODULE: 'on'
     inputs:

@@ -45,6 +45,7 @@ type GenerateParam struct {
 	SpecRPName          string
 	ReleaseDate         string
 	SkipGenerateExample bool
+	GoVersion           string
 }
 
 func (ctx GenerateContext) GenerateForAutomation(readme, repo string) ([]GenerateResult, []error) {
@@ -104,6 +105,7 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 			PackageTitle:  generateParam.SpecficPackageTitle,
 			Commit:        ctx.SpecCommitHash,
 			PackageConfig: generateParam.NamespaceConfig,
+			GoVersion:     generateParam.GoVersion,
 		}); err != nil {
 			return nil, err
 		}

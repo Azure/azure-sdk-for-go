@@ -8,6 +8,7 @@ import (
 	"errors"
 	"net/http"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -153,95 +154,36 @@ func TestChainedTokenCredential_GetTokenWithUnavailableCredentialInChain(t *test
 	}
 }
 
-func TestChainedTokenCredential_ChecksThatSuccessfulCredentialIsSet(t *testing.T) {
-	err := initEnvironmentVarsForTest()
-	if err != nil {
-		t.Fatalf("Could not set environment variables for testing: %v", err)
-	}
-	srv, close := mock.NewTLSServer()
-	defer close()
-	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	options := ClientSecretCredentialOptions{}
-	options.AuthorityHost = AuthorityHost(srv.URL())
-	options.Transport = srv
-	secCred, err := NewClientSecretCredential(tenantID, clientID, secret, &options)
-	if err != nil {
-		t.Fatalf("Unable to create credential. Received: %v", err)
-	}
-	envCred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{
-		ClientOptions: azcore.ClientOptions{Transport: srv},
-		AuthorityHost: AuthorityHost(srv.URL()),
-	})
-	if err != nil {
-		t.Fatalf("Failed to create environment credential: %v", err)
-	}
-	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{secCred, envCred}, nil)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{scope}})
-	if err != nil {
-		t.Fatalf("Received an error when attempting to get a token but expected none")
-	}
-	if tk.Token != tokenValue {
-		t.Fatalf("Received an incorrect access token")
-	}
-	if tk.ExpiresOn.IsZero() {
-		t.Fatalf("Received an incorrect time in the response")
-	}
-	if cred.successfulCredential == nil {
-		t.Fatalf("The successful credential was not assigned")
-	}
-	if cred.successfulCredential != secCred {
-		t.Fatalf("The successful credential should have been the secret credential")
-	}
+// TestCredential response
+type TestCredentialResponse struct {
+	token *azcore.AccessToken
+	err   error
 }
 
-/**
- * Helps count the number of times a credential is called.
- */
-type TestCountPolicy struct{ count int }
+// Credential used for testing
+type TestCredential struct {
+	getTokenCalls int
+	responses     []TestCredentialResponse
+}
 
-/**
- * Helps count the number of times a credential is called.
- */
-func (p *TestCountPolicy) Do(req *policy.Request) (*http.Response, error) {
-	p.count += 1
-	return req.Next()
+func (c *TestCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (token *azcore.AccessToken, err error) {
+	index := c.getTokenCalls
+	c.getTokenCalls += 1
+	response := c.responses[index]
+	return response.token, response.err
 }
 
 func TestChainedTokenCredential_RepeatedGetTokenWithSuccessfulCredential(t *testing.T) {
-	err := initEnvironmentVarsForTest()
-	if err != nil {
-		t.Fatalf("Could not set environment variables for testing: %v", err)
-	}
-	srv, close := mock.NewTLSServer()
-	defer close()
+	failedCredential := &TestCredential{responses: []TestCredentialResponse{
+		{err: newCredentialUnavailableError("MockCredential", "Mocking a credential unavailable error")},
+		{err: newCredentialUnavailableError("MockCredential", "Mocking a credential unavailable error")},
+	}}
+	successfulCredential := &TestCredential{responses: []TestCredentialResponse{
+		{token: &azcore.AccessToken{Token: tokenValue, ExpiresOn: time.Now()}},
+		{token: &azcore.AccessToken{Token: tokenValue, ExpiresOn: time.Now()}},
+	}}
 
-	secretCountPolicy := &TestCountPolicy{}
-	environmentCountPolicy := &TestCountPolicy{}
-
-	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	options := ClientSecretCredentialOptions{}
-	options.AuthorityHost = AuthorityHost(srv.URL())
-	options.PerCallPolicies = []policy.Policy{secretCountPolicy}
-	options.Transport = srv
-	secCred, err := NewClientSecretCredential(tenantID, clientID, secret, &options)
-	if err != nil {
-		t.Fatalf("Unable to create credential. Received: %v", err)
-	}
-	envCred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{
-		ClientOptions: azcore.ClientOptions{
-			Transport:       srv,
-			PerCallPolicies: []policy.Policy{environmentCountPolicy},
-		},
-		AuthorityHost: AuthorityHost(srv.URL()),
-	})
-	if err != nil {
-		t.Fatalf("Failed to create environment credential: %v", err)
-	}
-	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{secCred, envCred}, nil)
+	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{failedCredential, successfulCredential}, nil)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -258,14 +200,14 @@ func TestChainedTokenCredential_RepeatedGetTokenWithSuccessfulCredential(t *test
 	if cred.successfulCredential == nil {
 		t.Fatalf("The successful credential was not assigned")
 	}
-	if cred.successfulCredential != secCred {
-		t.Fatalf("The successful credential should have been the secret credential")
+	if cred.successfulCredential != successfulCredential {
+		t.Fatalf("The successful credential should have been the successfulCredential")
 	}
-	if secretCountPolicy.count != 1 {
-		t.Fatalf("The secret credential policies should have been triggered once")
+	if failedCredential.getTokenCalls != 1 {
+		t.Fatalf("The failed credential getToken should have been called once")
 	}
-	if environmentCountPolicy.count != 0 {
-		t.Fatalf("The environment credential policies should not have been triggered")
+	if successfulCredential.getTokenCalls != 1 {
+		t.Fatalf("The successful credential getToken should have been called once")
 	}
 	tk2, err2 := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{scope}})
 	if err2 != nil {
@@ -277,53 +219,25 @@ func TestChainedTokenCredential_RepeatedGetTokenWithSuccessfulCredential(t *test
 	if tk2.ExpiresOn.IsZero() {
 		t.Fatalf("Received an incorrect time in the response")
 	}
-	if secretCountPolicy.count != 2 {
-		t.Fatalf("The secret credential policies should have been triggered twice")
+	if failedCredential.getTokenCalls != 1 {
+		t.Fatalf("The failed credential getToken should not have been called again")
 	}
-	if environmentCountPolicy.count != 0 {
-		t.Fatalf("The environment credential policies should not have been triggered")
+	if successfulCredential.getTokenCalls != 2 {
+		t.Fatalf("The successful credential getToken should have been called twice")
 	}
-}
-
-// A credential that always throws a CredentialUnavailableError
-type UnavailableCredential struct {
-	callCount int
-}
-
-func NewUnavailableCredential() (*UnavailableCredential, error) {
-	return &UnavailableCredential{callCount: 0}, nil
-}
-func (c *UnavailableCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (token *azcore.AccessToken, err error) {
-	c.callCount += 1
-	return nil, newCredentialUnavailableError("UnavailableCredential", "Expected CredentialUnavailableError")
 }
 
 func TestChainedTokenCredential_RepeatedGetTokenWithSuccessfulCredentialWithRetrySources(t *testing.T) {
-	err := initEnvironmentVarsForTest()
-	if err != nil {
-		t.Fatalf("Could not set environment variables for testing: %v", err)
-	}
-	srv, close := mock.NewTLSServer()
-	defer close()
+	failedCredential := &TestCredential{responses: []TestCredentialResponse{
+		{err: newCredentialUnavailableError("MockCredential", "Mocking a credential unavailable error")},
+		{err: newCredentialUnavailableError("MockCredential", "Mocking a credential unavailable error")},
+	}}
+	successfulCredential := &TestCredential{responses: []TestCredentialResponse{
+		{token: &azcore.AccessToken{Token: tokenValue, ExpiresOn: time.Now()}},
+		{token: &azcore.AccessToken{Token: tokenValue, ExpiresOn: time.Now()}},
+	}}
 
-	secretCountPolicy := &TestCountPolicy{}
-
-	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-
-	options := ClientSecretCredentialOptions{}
-	options.AuthorityHost = AuthorityHost(srv.URL())
-	options.PerCallPolicies = []policy.Policy{secretCountPolicy}
-	options.Transport = srv
-
-	unavailableCred, _ := NewUnavailableCredential()
-	secCred, err := NewClientSecretCredential(tenantID, clientID, secret, &options)
-	if err != nil {
-		t.Fatalf("Unable to create credential. Received: %v", err)
-	}
-
-	// Backwards order: envCred first, secCred later, to check that envCred is always called when RetrySources is set to true.
-	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{unavailableCred, secCred}, &ChainedTokenCredentialOptions{RetrySources: true})
+	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{failedCredential, successfulCredential}, &ChainedTokenCredentialOptions{RetrySources: true})
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -340,14 +254,14 @@ func TestChainedTokenCredential_RepeatedGetTokenWithSuccessfulCredentialWithRetr
 	if cred.successfulCredential == nil {
 		t.Fatalf("The successful credential was not assigned")
 	}
-	if cred.successfulCredential != secCred {
-		t.Fatalf("The successful credential should have been the secret credential")
+	if cred.successfulCredential != successfulCredential {
+		t.Fatalf("The successful credential should have been the successfulCredential")
 	}
-	if secretCountPolicy.count != 1 {
-		t.Fatalf("The secret credential policies should have been triggered once")
+	if failedCredential.getTokenCalls != 1 {
+		t.Fatalf("The failed credential getToken should have been called once")
 	}
-	if unavailableCred.callCount != 1 {
-		t.Fatalf("The environment credential policies should have been triggered once")
+	if successfulCredential.getTokenCalls != 1 {
+		t.Fatalf("The successful credential getToken should have been called once")
 	}
 	tk2, err2 := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{scope}})
 	if err2 != nil {
@@ -359,11 +273,11 @@ func TestChainedTokenCredential_RepeatedGetTokenWithSuccessfulCredentialWithRetr
 	if tk2.ExpiresOn.IsZero() {
 		t.Fatalf("Received an incorrect time in the response")
 	}
-	if secretCountPolicy.count != 2 {
-		t.Fatalf("The secret credential policies should have been triggered twice")
+	if failedCredential.getTokenCalls != 2 {
+		t.Fatalf("The failed credential getToken should have been called twice")
 	}
-	if unavailableCred.callCount != 2 {
-		t.Fatalf("The environment credential policies should have been triggered twice")
+	if successfulCredential.getTokenCalls != 2 {
+		t.Fatalf("The successful credential getToken should have been called twice")
 	}
 }
 

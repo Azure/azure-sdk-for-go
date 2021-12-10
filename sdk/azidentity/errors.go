@@ -4,10 +4,12 @@
 package azidentity
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
+	msal "github.com/AzureAD/microsoft-authentication-library-for-go/apps/errors"
 )
 
 // AuthenticationFailedError indicates an authentication request has failed.
@@ -23,6 +25,12 @@ type authenticationFailedError struct {
 }
 
 func newAuthenticationFailedError(err error, resp *http.Response) AuthenticationFailedError {
+	if resp == nil {
+		var e msal.CallErr
+		if errors.As(err, &e) {
+			return authenticationFailedError{err, e.Resp}
+		}
+	}
 	return authenticationFailedError{err, resp}
 }
 

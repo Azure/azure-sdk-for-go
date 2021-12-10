@@ -91,8 +91,24 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 		return nil, fmt.Errorf("failed to get sdk repo: %+v", err)
 	}
 
+	if input.RelatedReadmeMdFile != "" {
+		input.RelatedReadmeMdFiles = append(input.RelatedReadmeMdFiles, input.RelatedReadmeMdFile)
+	}
+
 	for _, readme := range input.RelatedReadmeMdFiles {
 		log.Printf("Start to process readme file: %s", readme)
+
+		sepStrs := strings.Split(readme, "/")
+		for i, sepStr := range sepStrs {
+			if sepStr == "resource-manager" {
+				readme = strings.Join(sepStrs[i-1:], "/")
+				if i > 1 {
+					ctx.specRoot = ctx.specRoot + "/" + strings.Join(sepStrs[:i-1], "/")
+				}
+				break
+			}
+		}
+
 		generateCtx := common.GenerateContext{
 			SDKPath:  sdkRepo.Root(),
 			SDKRepo:  &sdkRepo,
@@ -111,10 +127,11 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 			breakingChangeItems := namespaceResult.Changelog.GetBreakingChangeItems()
 
 			results = append(results, pipeline.PackageResult{
-				Version:     namespaceResult.Version,
-				PackageName: namespaceResult.PackageName,
-				Path:        []string{fmt.Sprintf("sdk/resourcemanager/%s/%s", namespaceResult.RPName, namespaceResult.PackageName)},
-				ReadmeMd:    []string{readme},
+				Version:       namespaceResult.Version,
+				PackageName:   namespaceResult.PackageName,
+				Path:          []string{fmt.Sprintf("sdk/resourcemanager/%s/%s", namespaceResult.RPName, namespaceResult.PackageName)},
+				PackageFolder: fmt.Sprintf("sdk/resourcemanager/%s/%s", namespaceResult.RPName, namespaceResult.PackageName),
+				ReadmeMd:      []string{readme},
 				Changelog: &pipeline.Changelog{
 					Content:             &content,
 					HasBreakingChange:   &breaking,

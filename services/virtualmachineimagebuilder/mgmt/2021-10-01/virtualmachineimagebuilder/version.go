@@ -1,4 +1,4 @@
-package maintenance
+package virtualmachineimagebuilder
 
 import "github.com/Azure/azure-sdk-for-go/version"
 
@@ -10,7 +10,7 @@ import "github.com/Azure/azure-sdk-for-go/version"
 
 // UserAgent returns the UserAgent string to use when sending http.Requests.
 func UserAgent() string {
-	return "Azure-SDK-For-Go/" + Version() + " maintenance/2018-06-01-preview"
+	return "Azure-SDK-For-Go/" + Version() + " virtualmachineimagebuilder/2021-10-01"
 }
 
 // Version returns the semantic version (see http://semver.org) of the client.

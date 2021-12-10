@@ -1,7 +1,8 @@
-// Package maintenance implements the Azure ARM Maintenance service API version 2018-06-01-preview.
+// Package virtualmachineimagebuilder implements the Azure ARM Virtualmachineimagebuilder service API version
+// 2021-10-01.
 //
-// Maintenance Client
-package maintenance
+// Azure Virtual Machine Image Builder Client
+package virtualmachineimagebuilder
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,11 +15,11 @@ import (
 )
 
 const (
-	// DefaultBaseURI is the default URI used for the service Maintenance
+	// DefaultBaseURI is the default URI used for the service Virtualmachineimagebuilder
 	DefaultBaseURI = "https://management.azure.com"
 )
 
-// BaseClient is the base client for Maintenance.
+// BaseClient is the base client for Virtualmachineimagebuilder.
 type BaseClient struct {
 	autorest.Client
 	BaseURI        string

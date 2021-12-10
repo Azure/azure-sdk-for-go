@@ -8,6 +8,16 @@ parameters:
 
 steps:
 
+  - task: Powershell@2
+    displayName: 'Dependency Check'
+    env:
+      GO111MODULE: 'on'
+    inputs:
+      targetType: filePath
+      pwsh: true
+      filePath: eng/scripts/Invoke-DependencyCheck.ps1
+      arguments: 'sdk/${{ parameters.ServiceDirectory }}'
+      
   - script: |
       curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin ${{parameters.LintVersion}}
       golangci-lint --version

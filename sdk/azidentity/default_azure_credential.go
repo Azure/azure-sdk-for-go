@@ -27,12 +27,6 @@ type DefaultAzureCredentialOptions struct {
 	// TenantID identifies the tenant the Azure CLI should authenticate in.
 	// Defaults to the CLI's default tenant, which is typically the home tenant of the user logged in to the CLI.
 	TenantID string
-
-	// RetrySources configures how the credential uses its sources.
-	// When true, the credential will always request a token from each underling credential in turn,
-	// stopping when one provides a token. When false, the credential requests a token
-	// only from the credential that previously retrieved a token--it never again tries the sources which failed.
-	RetrySources bool
 }
 
 // DefaultAzureCredential is a default credential chain for applications that will deploy to Azure.
@@ -84,7 +78,7 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 		logCredentialError("Default Azure Credential", err)
 		return nil, err
 	}
-	chain, err := NewChainedTokenCredential(creds, &ChainedTokenCredentialOptions{RetrySources: options.RetrySources})
+	chain, err := NewChainedTokenCredential(creds, nil)
 	if err != nil {
 		return nil, err
 	}

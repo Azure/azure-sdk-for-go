@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Support the pass-through of an Application ID when constructing an Azure Service Bus Client.
+
 ### Breaking Changes
 
 ### Bugs Fixed

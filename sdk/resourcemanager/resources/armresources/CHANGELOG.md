@@ -1,5 +1,17 @@
 # Release History
 
+## 0.2.2 (2021-12-10)
+### Breaking Changes
+
+### Features Added
+
+- New function `ZoneMapping.MarshalJSON() ([]byte, error)`
+- New struct `ZoneMapping`
+- New field `ZoneMappings` in struct `ProviderResourceType`
+
+Total 0 breaking change(s), 4 additive change(s).
+
+
 ## 0.2.1 (2021-11-26)
 
 ### Other Changes

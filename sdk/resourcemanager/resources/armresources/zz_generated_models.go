@@ -1395,7 +1395,8 @@ type ProviderResourceType struct {
 	Properties map[string]*string `json:"properties,omitempty"`
 
 	// The resource type.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string        `json:"resourceType,omitempty"`
+	ZoneMappings []*ZoneMapping `json:"zoneMappings,omitempty"`
 
 	// READ-ONLY; The API profiles for the resource provider.
 	APIProfiles []*APIProfile `json:"apiProfiles,omitempty" azure:"ro"`
@@ -1416,6 +1417,7 @@ func (p ProviderResourceType) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "locations", p.Locations)
 	populate(objectMap, "properties", p.Properties)
 	populate(objectMap, "resourceType", p.ResourceType)
+	populate(objectMap, "zoneMappings", p.ZoneMappings)
 	return json.Marshal(objectMap)
 }
 
@@ -2239,6 +2241,20 @@ func (w WhatIfPropertyChange) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "children", w.Children)
 	populate(objectMap, "path", w.Path)
 	populate(objectMap, "propertyChangeType", w.PropertyChangeType)
+	return json.Marshal(objectMap)
+}
+
+type ZoneMapping struct {
+	// The location of the zone mapping.
+	Location *string   `json:"location,omitempty"`
+	Zones    []*string `json:"zones,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ZoneMapping.
+func (z ZoneMapping) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "location", z.Location)
+	populate(objectMap, "zones", z.Zones)
 	return json.Marshal(objectMap)
 }
 

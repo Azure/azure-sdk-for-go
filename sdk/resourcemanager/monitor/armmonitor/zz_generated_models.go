@@ -62,6 +62,27 @@ func (a *Action) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	return nil
 }
 
+// ActionDetail - The action detail
+type ActionDetail struct {
+	// The detail of the friendly error message
+	Detail *string `json:"Detail,omitempty"`
+
+	// The mechanism type
+	MechanismType *string `json:"MechanismType,omitempty"`
+
+	// The name of the action
+	Name *string `json:"Name,omitempty"`
+
+	// The send time
+	SendTime *string `json:"SendTime,omitempty"`
+
+	// The status of the action
+	Status *string `json:"Status,omitempty"`
+
+	// The substatus of the action
+	SubState *string `json:"SubState,omitempty"`
+}
+
 // ActionGroup - An Azure action group.
 type ActionGroup struct {
 	// REQUIRED; Indicates whether this action group is enabled. If an action group is not enabled, then none of its receivers will receive communications.
@@ -84,6 +105,9 @@ type ActionGroup struct {
 
 	// The list of email receivers that are part of this action group.
 	EmailReceivers []*EmailReceiver `json:"emailReceivers,omitempty"`
+
+	// The list of event hub receivers that are part of this action group.
+	EventHubReceivers []*EventHubReceiver `json:"eventHubReceivers,omitempty"`
 
 	// The list of ITSM receivers that are part of this action group.
 	ItsmReceivers []*ItsmReceiver `json:"itsmReceivers,omitempty"`
@@ -110,6 +134,7 @@ func (a ActionGroup) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "azureFunctionReceivers", a.AzureFunctionReceivers)
 	populate(objectMap, "emailReceivers", a.EmailReceivers)
 	populate(objectMap, "enabled", a.Enabled)
+	populate(objectMap, "eventHubReceivers", a.EventHubReceivers)
 	populate(objectMap, "groupShortName", a.GroupShortName)
 	populate(objectMap, "itsmReceivers", a.ItsmReceivers)
 	populate(objectMap, "logicAppReceivers", a.LogicAppReceivers)
@@ -174,6 +199,11 @@ func (a ActionGroupResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// ActionGroupsBeginPostTestNotificationsOptions contains the optional parameters for the ActionGroups.BeginPostTestNotifications method.
+type ActionGroupsBeginPostTestNotificationsOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ActionGroupsCreateOrUpdateOptions contains the optional parameters for the ActionGroups.CreateOrUpdate method.
 type ActionGroupsCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
@@ -191,6 +221,11 @@ type ActionGroupsEnableReceiverOptions struct {
 
 // ActionGroupsGetOptions contains the optional parameters for the ActionGroups.Get method.
 type ActionGroupsGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ActionGroupsGetTestNotificationsOptions contains the optional parameters for the ActionGroups.GetTestNotifications method.
+type ActionGroupsGetTestNotificationsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -997,6 +1032,15 @@ type BaselinesListOptions struct {
 type ConfigurationAccessEndpointSpec struct {
 	// READ-ONLY; The endpoint. This property is READ-ONLY.
 	Endpoint *string `json:"endpoint,omitempty" azure:"ro"`
+}
+
+// Context - The context info
+type Context struct {
+	// The context id type
+	ContextType *string `json:"ContextType,omitempty"`
+
+	// The source of the notification request
+	NotificationSource *string `json:"NotificationSource,omitempty"`
 }
 
 // Criteria - Specifies the criteria for converting log to metric.
@@ -2066,6 +2110,27 @@ func (e EventDataCollection) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "nextLink", e.NextLink)
 	populate(objectMap, "value", e.Value)
 	return json.Marshal(objectMap)
+}
+
+// EventHubReceiver - An Event hub receiver.
+type EventHubReceiver struct {
+	// REQUIRED; The name of the specific Event Hub queue
+	EventHubName *string `json:"eventHubName,omitempty"`
+
+	// REQUIRED; The Event Hub namespace
+	EventHubNameSpace *string `json:"eventHubNameSpace,omitempty"`
+
+	// REQUIRED; The name of the Event hub receiver. Names must be unique across all receivers within an action group.
+	Name *string `json:"name,omitempty"`
+
+	// REQUIRED; The Id for the subscription containing this event hub
+	SubscriptionID *string `json:"subscriptionId,omitempty"`
+
+	// The tenant Id for the subscription containing this event hub
+	TenantID *string `json:"tenantId,omitempty"`
+
+	// Indicates whether to use common alert schema.
+	UseCommonAlertSchema *bool `json:"useCommonAlertSchema,omitempty"`
 }
 
 // ExtensionDataSource - Definition of which data will be collected from a separate VM extension that integrates with the Azure Monitor Agent. Collected
@@ -3814,6 +3879,63 @@ type NetworkRuleSet struct {
 	PublicNetworkAccess *KnownPublicNetworkAccessOptions `json:"publicNetworkAccess,omitempty"`
 }
 
+// NotificationRequestBody - The request body which contain contact detail metadata
+type NotificationRequestBody struct {
+	// REQUIRED; The name of the supported alert type.
+	AlertType *string `json:"alertType,omitempty"`
+
+	// The list of ARM role receivers that are part of this action group. Roles are Azure RBAC roles and only built-in roles are supported.
+	ArmRoleReceivers []*ArmRoleReceiver `json:"armRoleReceivers,omitempty"`
+
+	// The list of AutomationRunbook receivers that are part of this action group.
+	AutomationRunbookReceivers []*AutomationRunbookReceiver `json:"automationRunbookReceivers,omitempty"`
+
+	// The list of AzureAppPush receivers that are part of this action group.
+	AzureAppPushReceivers []*AzureAppPushReceiver `json:"azureAppPushReceivers,omitempty"`
+
+	// The list of azure function receivers that are part of this action group.
+	AzureFunctionReceivers []*AzureFunctionReceiver `json:"azureFunctionReceivers,omitempty"`
+
+	// The list of email receivers that are part of this action group.
+	EmailReceivers []*EmailReceiver `json:"emailReceivers,omitempty"`
+
+	// The list of event hub receivers that are part of this action group.
+	EventHubReceivers []*EventHubReceiver `json:"eventHubReceivers,omitempty"`
+
+	// The list of ITSM receivers that are part of this action group.
+	ItsmReceivers []*ItsmReceiver `json:"itsmReceivers,omitempty"`
+
+	// The list of logic app receivers that are part of this action group.
+	LogicAppReceivers []*LogicAppReceiver `json:"logicAppReceivers,omitempty"`
+
+	// The list of SMS receivers that are part of this action group.
+	SmsReceivers []*SmsReceiver `json:"smsReceivers,omitempty"`
+
+	// The list of voice receivers that are part of this action group.
+	VoiceReceivers []*VoiceReceiver `json:"voiceReceivers,omitempty"`
+
+	// The list of webhook receivers that are part of this action group.
+	WebhookReceivers []*WebhookReceiver `json:"webhookReceivers,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type NotificationRequestBody.
+func (n NotificationRequestBody) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "alertType", n.AlertType)
+	populate(objectMap, "armRoleReceivers", n.ArmRoleReceivers)
+	populate(objectMap, "automationRunbookReceivers", n.AutomationRunbookReceivers)
+	populate(objectMap, "azureAppPushReceivers", n.AzureAppPushReceivers)
+	populate(objectMap, "azureFunctionReceivers", n.AzureFunctionReceivers)
+	populate(objectMap, "emailReceivers", n.EmailReceivers)
+	populate(objectMap, "eventHubReceivers", n.EventHubReceivers)
+	populate(objectMap, "itsmReceivers", n.ItsmReceivers)
+	populate(objectMap, "logicAppReceivers", n.LogicAppReceivers)
+	populate(objectMap, "smsReceivers", n.SmsReceivers)
+	populate(objectMap, "voiceReceivers", n.VoiceReceivers)
+	populate(objectMap, "webhookReceivers", n.WebhookReceivers)
+	return json.Marshal(objectMap)
+}
+
 // Operation - Microsoft Insights API operation definition.
 type Operation struct {
 	// Display metadata associated with the operation.
@@ -5120,6 +5242,47 @@ type TenantActivityLogsListOptions struct {
 	// values are: *authorization*, *claims*, *correlationId*, *description*, *eventDataId*, *eventName*, *eventTimestamp*, *httpRequest*, *level*, *operationId*,
 	// *operationName*, *properties*, *resourceGroupName*, *resourceProviderName*, *resourceId*, *status*, *submissionTimestamp*, *subStatus*, *subscriptionId*
 	Select *string
+}
+
+// TestNotificationDetailsResponse - The details of the test notification results.
+type TestNotificationDetailsResponse struct {
+	// REQUIRED; The overall state
+	State *string `json:"State,omitempty"`
+
+	// The list of action detail
+	ActionDetails []*ActionDetail `json:"ActionDetails,omitempty"`
+
+	// The completed time
+	CompletedTime *string `json:"CompletedTime,omitempty"`
+
+	// The context info
+	Context *Context `json:"Context,omitempty"`
+
+	// The created time
+	CreatedTime *string `json:"CreatedTime,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type TestNotificationDetailsResponse.
+func (t TestNotificationDetailsResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "ActionDetails", t.ActionDetails)
+	populate(objectMap, "CompletedTime", t.CompletedTime)
+	populate(objectMap, "Context", t.Context)
+	populate(objectMap, "CreatedTime", t.CreatedTime)
+	populate(objectMap, "State", t.State)
+	return json.Marshal(objectMap)
+}
+
+// TestNotificationResponse - The response when test notification succeeded
+type TestNotificationResponse struct {
+	// REQUIRED; The correlation id
+	CorrelationID *string `json:"correlationId,omitempty"`
+
+	// REQUIRED; The created time
+	CreatedTime *string `json:"createdTime,omitempty"`
+
+	// REQUIRED; The notification id
+	NotificationID *string `json:"notificationId,omitempty"`
 }
 
 // ThresholdRuleCondition - A rule condition based on a metric crossing a threshold.

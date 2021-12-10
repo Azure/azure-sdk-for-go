@@ -194,7 +194,7 @@ func (c ConditionOperator) ToPtr() *ConditionOperator {
 	return &c
 }
 
-// ConditionalOperator - Result Condition Evaluation criteria. Supported Values - 'GreaterThan' or 'LessThan' or 'Equal'.
+// ConditionalOperator - Result Condition Evaluation criteria.
 type ConditionalOperator string
 
 const (

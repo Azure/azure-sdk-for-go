@@ -764,3 +764,39 @@ func TestManagedIdentityCredential_IMDSTimeoutSuccess(t *testing.T) {
 		t.Fatal("credential didn't remove IMDS timeout after receiving a response")
 	}
 }
+
+func TestManagedIdentityCredential_ServiceFabric(t *testing.T) {
+	resetEnvironmentVarsForTest()
+	expectedSecret := "expected-secret"
+	pred := func(req *http.Request) bool {
+		if secret := req.Header.Get("Secret"); secret != expectedSecret {
+			t.Fatalf(`unexpected Secret header "%s"`, secret)
+		}
+		if p := req.URL.Query().Get("api-version"); p != serviceFabricAPIVersion {
+			t.Fatalf("unexpected api-version: %s", p)
+		}
+		if p := req.URL.Query().Get("resource"); p != strings.TrimSuffix(liveTestScope, defaultSuffix) {
+			t.Fatalf("unexpected resource: %s", p)
+		}
+		return true
+	}
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithPredicate(pred), mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse()
+	setEnvironmentVariables(t, map[string]string{identityEndpoint: srv.URL(), identityHeader: expectedSecret, identityServerThumbprint: "..."})
+	cred, err := NewManagedIdentityCredential(nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if tk.Token != tokenValue {
+		t.Fatalf(`got unexpected token "%s"`, tk.Token)
+	}
+	if !tk.ExpiresOn.After(time.Now().UTC()) {
+		t.Fatal("GetToken returned an invalid expiration time")
+	}
+}

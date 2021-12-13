@@ -10,11 +10,6 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/suite"
 	"io"
 	"io/ioutil"
 	"log"
@@ -25,6 +20,12 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/suite"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 )
@@ -130,8 +131,8 @@ func (s *azblobUnrecordedTestSuite) AfterTest(suite string, test string) {
 const DefaultEndpointSuffix = "core.windows.net/"
 
 //const DefaultBlobEndpointSuffix = "blob.core.windows.net/"
-const AccountNameEnvVar = "AZURE_STORAGE_ACCOUNT_NAME"
-const AccountKeyEnvVar = "AZURE_STORAGE_ACCOUNT_KEY"
+const AccountNameEnvVar = "STORAGE_ACCOUNT_NAME"
+const AccountKeyEnvVar = "STORAGE_ACCOUNT_KEY"
 const DefaultEndpointSuffixEnvVar = "AZURE_STORAGE_ENDPOINT_SUFFIX"
 
 const (

@@ -1,0 +1,100 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://fakeaccount.blob.core.windows.net/goccontainergetpermissionspublicaccessnotnone?restype=container",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "PUT",
+        ":path": "/goccontainergetpermissionspublicaccessnotnone?restype=container",
+        ":scheme": "https",
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-azblob/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-blob-public-access": "blob",
+        "x-ms-date": "Mon, 13 Dec 2021 17:17:37 GMT",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Mon, 13 Dec 2021 17:17:30 GMT",
+        "ETag": "\u00220x8D9BE5C7230A6F3\u0022",
+        "Last-Modified": "Mon, 13 Dec 2021 17:17:31 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-request-id": "38f93aba-001e-0052-4e45-f00e8e000000",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://fakeaccount.blob.core.windows.net/goccontainergetpermissionspublicaccessnotnone?comp=acl\u0026restype=container",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "GET",
+        ":path": "/goccontainergetpermissionspublicaccessnotnone?comp=acl\u0026restype=container",
+        ":scheme": "https",
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azblob/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Mon, 13 Dec 2021 17:17:38 GMT",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Type": "application/xml",
+        "Date": "Mon, 13 Dec 2021 17:17:30 GMT",
+        "ETag": "\u00220x8D9BE5C7230A6F3\u0022",
+        "Last-Modified": "Mon, 13 Dec 2021 17:17:31 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "Transfer-Encoding": "chunked",
+        "x-ms-blob-public-access": "blob",
+        "x-ms-request-id": "38f93ad8-001e-0052-6a45-f00e8e000000",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": "\uFEFF\u003C?xml version=\u00221.0\u0022 encoding=\u0022utf-8\u0022?\u003E\u003CSignedIdentifiers /\u003E"
+    },
+    {
+      "RequestUri": "https://fakeaccount.blob.core.windows.net/goccontainergetpermissionspublicaccessnotnone?restype=container",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "DELETE",
+        ":path": "/goccontainergetpermissionspublicaccessnotnone?restype=container",
+        ":scheme": "https",
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azblob/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Mon, 13 Dec 2021 17:17:38 GMT",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Mon, 13 Dec 2021 17:17:30 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-request-id": "38f93af0-001e-0052-8045-f00e8e000000",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {}
+}

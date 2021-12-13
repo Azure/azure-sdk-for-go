@@ -4,40 +4,40 @@
 package azblob
 
 import (
-	"github.com/stretchr/testify/assert"
 	"strconv"
+	"testing"
 	"time"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
-//nolint
-func (s *azblobUnrecordedTestSuite) TestSetEmptyAccessPolicy() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+func TestSetEmptyAccessPolicy(t *testing.T) {
+	stop := start(t)
+	defer stop()
 
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
+	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
+	defer deleteContainer(assert.New(t), containerClient)
 
 	_, err = containerClient.SetAccessPolicy(ctx, &SetAccessPolicyOptions{})
-	_assert.Nil(err)
+	require.NoError(t, err)
 }
 
-//nolint
-func (s *azblobUnrecordedTestSuite) TestSetAccessPolicy() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+func TestSetAccessPolicy(t *testing.T) {
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
+	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
+	defer deleteContainer(assert.New(t), containerClient)
 
 	start := time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC)
 	expiration := time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)
@@ -62,21 +62,20 @@ func (s *azblobUnrecordedTestSuite) TestSetAccessPolicy() {
 	}
 
 	_, err = containerClient.SetAccessPolicy(ctx, &param)
-	_assert.Nil(err)
+	require.NoError(t, err)
 }
 
-//nolint
-func (s *azblobUnrecordedTestSuite) TestSetMultipleAccessPolicies() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+func TestSetMultipleAccessPolicies(t *testing.T) {
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
+	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
+	defer deleteContainer(assert.New(t), containerClient)
 
 	id := "empty"
 
@@ -116,26 +115,25 @@ func (s *azblobUnrecordedTestSuite) TestSetMultipleAccessPolicies() {
 	}
 
 	_, err = containerClient.SetAccessPolicy(ctx, &param)
-	_assert.Nil(err)
+	require.NoError(t, err)
 
 	// Make a Get to assert two access policies
 	resp, err := containerClient.GetAccessPolicy(ctx, nil)
-	_assert.Nil(err)
-	_assert.Len(resp.SignedIdentifiers, 3)
+	require.NoError(t, err)
+	require.Len(t, resp.SignedIdentifiers, 3)
 }
 
-//nolint
-func (s *azblobUnrecordedTestSuite) TestSetNullAccessPolicy() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+func TestSetNullAccessPolicy(t *testing.T) {
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
+	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
+	defer deleteContainer(assert.New(t), containerClient)
 
 	id := "null"
 
@@ -151,29 +149,29 @@ func (s *azblobUnrecordedTestSuite) TestSetNullAccessPolicy() {
 	}
 
 	_, err = containerClient.SetAccessPolicy(ctx, &param)
-	_assert.Nil(err)
+	require.NoError(t, err)
 
 	resp, err := containerClient.GetAccessPolicy(ctx, nil)
-	_assert.Nil(err)
-	_assert.Equal(len(resp.SignedIdentifiers), 1)
+	require.NoError(t, err)
+	require.Equal(t, len(resp.SignedIdentifiers), 1)
 }
 
-func (s *azblobTestSuite) TestContainerGetSetPermissionsMultiplePolicies() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+func TestContainerGetSetPermissionsMultiplePolicies(t *testing.T) {
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	defer deleteContainer(_assert, containerClient)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
+	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
+
+	defer deleteContainer(assert.New(t), containerClient)
 
 	// Define the policies
 	start, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
-	_assert.Nil(err)
+	require.NoError(t, err)
 	expiry := start.Add(5 * time.Minute)
 	expiry2 := start.Add(time.Minute)
 	readWrite := AccessPolicyPermission{Read: true, Write: true}.String()
@@ -203,22 +201,22 @@ func (s *azblobTestSuite) TestContainerGetSetPermissionsMultiplePolicies() {
 	}
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
 
-	_assert.Nil(err)
+	require.NoError(t, err)
 
 	resp, err := containerClient.GetAccessPolicy(ctx, nil)
-	_assert.Nil(err)
-	_assert.EqualValues(resp.SignedIdentifiers, permissions)
+	require.NoError(t, err)
+	require.EqualValues(t, resp.SignedIdentifiers, permissions)
 }
 
-func (s *azblobTestSuite) TestContainerGetPermissionsPublicAccessNotNone() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerName := generateContainerName(testName)
+func TestContainerGetPermissionsPublicAccessNotNone(t *testing.T) {
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
+
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
 	containerClient := getContainerClient(containerName, svcClient)
 
 	access := PublicAccessTypeBlob
@@ -226,13 +224,13 @@ func (s *azblobTestSuite) TestContainerGetPermissionsPublicAccessNotNone() {
 		Access: &access,
 	}
 	_, err = containerClient.Create(ctx, &createContainerOptions) // We create the container explicitly so we can be sure the access policy is not empty
-	_assert.Nil(err)
-	defer deleteContainer(_assert, containerClient)
+	require.NoError(t, err)
+	defer deleteContainer(assert.New(t), containerClient)
 
 	resp, err := containerClient.GetAccessPolicy(ctx, nil)
 
-	_assert.Nil(err)
-	_assert.Equal(*resp.BlobPublicAccess, PublicAccessTypeBlob)
+	require.NoError(t, err)
+	require.Equal(t, *resp.BlobPublicAccess, PublicAccessTypeBlob)
 }
 
 //func (s *azblobTestSuite) TestContainerSetPermissionsPublicAccessNone() {
@@ -240,16 +238,16 @@ func (s *azblobTestSuite) TestContainerGetPermissionsPublicAccessNotNone() {
 //	// For all the others, can just use GetPermissions since we've validated that it at least registers on the server correctly
 //	svcClient := getServiceClient(nil)
 //	containerClient, containerName := createNewContainer(c, svcClient)
-//	defer deleteContainer(_assert, containerClient)
+//	defer deleteContainer(assert.New(s.T()), containerClient)
 //	_, blobName := createNewBlockBlob(c, containerClient)
 //
 //	// Container is created with PublicAccessTypeBlob, so setting it to None will actually test that it is changed through this method
 //	_, err := containerClient.SetAccessPolicy(ctx, nil)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //	bsu2, err := NewServiceClient(svcClient.URL(), azcore.AnonymousCredential(), nil)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //
 //	containerClient2 := bsu2.NewContainerClient(containerName)
 //	blobURL2 := containerClient2.NewBlockBlobClient(blobName)
@@ -257,7 +255,7 @@ func (s *azblobTestSuite) TestContainerGetPermissionsPublicAccessNotNone() {
 //	// Get permissions via the original container URL so the request succeeds
 //	resp, err := containerClient.GetAccessPolicy(ctx, nil)
 //	_assert(resp.BlobPublicAccess, chk.IsNil)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //
 //	// If we cannot access a blob's data, we will also not be able to enumerate blobs
 //	p := containerClient2.ListBlobsFlat(nil)
@@ -269,17 +267,17 @@ func (s *azblobTestSuite) TestContainerGetPermissionsPublicAccessNotNone() {
 //	validateStorageError(c, err, StorageErrorCodeNoAuthenticationInformation)
 //}
 
-func (s *azblobTestSuite) TestContainerSetPermissionsPublicAccessTypeBlob() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+func TestContainerSetPermissionsPublicAccessTypeBlob(t *testing.T) {
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
+
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
+	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
+	defer deleteContainer(assert.New(t), containerClient)
 
 	access := PublicAccessTypeBlob
 	setAccessPolicyOptions := SetAccessPolicyOptions{
@@ -288,25 +286,25 @@ func (s *azblobTestSuite) TestContainerSetPermissionsPublicAccessTypeBlob() {
 		},
 	}
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
-	_assert.Nil(err)
+	require.NoError(t, err)
 
 	resp, err := containerClient.GetAccessPolicy(ctx, nil)
-	_assert.Nil(err)
-	_assert.Equal(*resp.BlobPublicAccess, PublicAccessTypeBlob)
+	require.NoError(t, err)
+	require.Equal(t, *resp.BlobPublicAccess, PublicAccessTypeBlob)
 }
 
-func (s *azblobTestSuite) TestContainerSetPermissionsPublicAccessContainer() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+func TestContainerSetPermissionsPublicAccessContainer(t *testing.T) {
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	defer deleteContainer(_assert, containerClient)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
+	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
+
+	defer deleteContainer(assert.New(t), containerClient)
 
 	access := PublicAccessTypeContainer
 	setAccessPolicyOptions := SetAccessPolicyOptions{
@@ -315,11 +313,11 @@ func (s *azblobTestSuite) TestContainerSetPermissionsPublicAccessContainer() {
 		},
 	}
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
-	_assert.Nil(err)
+	require.NoError(t, err)
 
 	resp, err := containerClient.GetAccessPolicy(ctx, nil)
-	_assert.Nil(err)
-	_assert.Equal(*resp.BlobPublicAccess, PublicAccessTypeContainer)
+	require.NoError(t, err)
+	require.Equal(t, *resp.BlobPublicAccess, PublicAccessTypeContainer)
 }
 
 ////// TODO: After Pacer is ready
@@ -330,7 +328,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsPublicAccessContainer() {
 ////		c.Fatal("Invalid credential")
 ////	}
 ////	containerClient, containerName := createNewContainer(c, svcClient)
-////	defer deleteContainer(_assert, containerClient)
+////	defer deleteContainer(assert.New(s.T()), containerClient)
 ////	_, blobName := createNewBlockBlob(c, containerClient)
 ////
 ////	start := time.Now().UTC().Add(-15 * time.Second)
@@ -352,7 +350,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsPublicAccessContainer() {
 ////		},
 ////	}
 ////	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
-////	_assert.Nil(err)
+////	_assert.NoError(err)
 ////
 ////	serviceSASValues := BlobSASSignatureValues{Identifier: "0000", ContainerName: containerName}
 ////	queryParams, err := serviceSASValues.NewSASQueryParameters(credential)
@@ -368,7 +366,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsPublicAccessContainer() {
 ////	// Verifies that the SAS can access the resource
 ////	sasContainer := sasBlobServiceURL.NewContainerClient(containerName)
 ////	resp, err := sasContainer.ListBlobsFlat(ctx, Marker{}, ListBlobsSegmentOptions{})
-////	_assert.Nil(err)
+////	_assert.NoError(err)
 ////	_assert(resp.Segment.BlobItems[0].Name, chk.Equals, blobName)
 ////
 ////	// Verifies that successful sas access is not just because it's public
@@ -378,23 +376,24 @@ func (s *azblobTestSuite) TestContainerSetPermissionsPublicAccessContainer() {
 ////	validateStorageError(c, err, StorageErrorCodeNoAuthenticationInformation)
 ////}
 
-func (s *azblobTestSuite) TestContainerSetPermissionsACLMoreThanFive() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+func TestContainerSetPermissionsACLMoreThanFive(t *testing.T) {
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	defer deleteContainer(_assert, containerClient)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
+	// failing in playback
+	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
+
+	defer deleteContainer(assert.New(t), containerClient)
 
 	start, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
-	_assert.Nil(err)
+	require.NoError(t, err)
 	expiry, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
-	_assert.Nil(err)
+	require.NoError(t, err)
 	permissions := make([]*SignedIdentifier, 6)
 	listOnly := AccessPolicyPermission{Read: true}.String()
 	for i := 0; i < 6; i++ {
@@ -417,28 +416,28 @@ func (s *azblobTestSuite) TestContainerSetPermissionsACLMoreThanFive() {
 		},
 	}
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
-	_assert.NotNil(err)
+	require.Error(t, err)
 
-	validateStorageError(_assert, err, StorageErrorCodeInvalidXMLDocument)
+	validateStorageError(assert.New(t), err, StorageErrorCodeInvalidXMLDocument)
 }
 
-func (s *azblobTestSuite) TestContainerSetPermissionsDeleteAndModifyACL() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+func TestContainerSetPermissionsDeleteAndModifyACL(t *testing.T) {
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	defer deleteContainer(_assert, containerClient)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
+	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
+
+	defer deleteContainer(assert.New(t), containerClient)
 
 	start, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
-	_assert.Nil(err)
+	require.NoError(t, err)
 	expiry, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
-	_assert.Nil(err)
+	require.NoError(t, err)
 	listOnly := AccessPolicyPermission{Read: true}.String()
 	permissions := make([]*SignedIdentifier, 2)
 	for i := 0; i < 2; i++ {
@@ -461,11 +460,11 @@ func (s *azblobTestSuite) TestContainerSetPermissionsDeleteAndModifyACL() {
 		},
 	}
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
-	_assert.Nil(err)
+	require.NoError(t, err)
 
 	resp, err := containerClient.GetAccessPolicy(ctx, nil)
-	_assert.Nil(err)
-	_assert.EqualValues(resp.SignedIdentifiers, permissions)
+	require.NoError(t, err)
+	require.EqualValues(t, resp.SignedIdentifiers, permissions)
 
 	permissions = resp.SignedIdentifiers[:1] // Delete the first policy by removing it from the slice
 	newId := "0004"
@@ -477,31 +476,31 @@ func (s *azblobTestSuite) TestContainerSetPermissionsDeleteAndModifyACL() {
 		},
 	}
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions1)
-	_assert.Nil(err)
+	require.NoError(t, err)
 
 	resp, err = containerClient.GetAccessPolicy(ctx, nil)
-	_assert.Nil(err)
-	_assert.Len(resp.SignedIdentifiers, 1)
-	_assert.EqualValues(resp.SignedIdentifiers, permissions)
+	require.NoError(t, err)
+	require.Len(t, resp.SignedIdentifiers, 1)
+	require.EqualValues(t, resp.SignedIdentifiers, permissions)
 }
 
-func (s *azblobTestSuite) TestContainerSetPermissionsDeleteAllPolicies() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+func TestContainerSetPermissionsDeleteAllPolicies(t *testing.T) {
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	defer deleteContainer(_assert, containerClient)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
+	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
+
+	defer deleteContainer(assert.New(t), containerClient)
 
 	start, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
-	_assert.Nil(err)
+	require.NoError(t, err)
 	expiry, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
-	_assert.Nil(err)
+	require.NoError(t, err)
 	permissions := make([]*SignedIdentifier, 2)
 	listOnly := AccessPolicyPermission{Read: true}.String()
 	for i := 0; i < 2; i++ {
@@ -524,12 +523,12 @@ func (s *azblobTestSuite) TestContainerSetPermissionsDeleteAllPolicies() {
 		},
 	}
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
-	_assert.Nil(err)
+	require.NoError(t, err)
 
 	resp, err := containerClient.GetAccessPolicy(ctx, nil)
-	_assert.Nil(err)
-	_assert.Len(resp.SignedIdentifiers, len(permissions))
-	_assert.EqualValues(resp.SignedIdentifiers, permissions)
+	require.NoError(t, err)
+	require.Len(t, resp.SignedIdentifiers, len(permissions))
+	require.EqualValues(t, resp.SignedIdentifiers, permissions)
 
 	setAccessPolicyOptions = SetAccessPolicyOptions{
 		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{
@@ -538,31 +537,31 @@ func (s *azblobTestSuite) TestContainerSetPermissionsDeleteAllPolicies() {
 		},
 	}
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
-	_assert.Nil(err)
+	require.NoError(t, err)
 
 	resp, err = containerClient.GetAccessPolicy(ctx, nil)
-	_assert.Nil(err)
-	_assert.Nil(resp.SignedIdentifiers)
+	require.NoError(t, err)
+	require.Nil(t, resp.SignedIdentifiers)
 }
 
-func (s *azblobTestSuite) TestContainerSetPermissionsInvalidPolicyTimes() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+func TestContainerSetPermissionsInvalidPolicyTimes(t *testing.T) {
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	defer deleteContainer(_assert, containerClient)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
+	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
+
+	defer deleteContainer(assert.New(t), containerClient)
 
 	// Swap start and expiry
 	expiry, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
-	_assert.Nil(err)
+	require.NoError(t, err)
 	start, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
-	_assert.Nil(err)
+	require.NoError(t, err)
 	permissions := make([]*SignedIdentifier, 2)
 	listOnly := AccessPolicyPermission{Read: true}.String()
 	for i := 0; i < 2; i++ {
@@ -585,45 +584,45 @@ func (s *azblobTestSuite) TestContainerSetPermissionsInvalidPolicyTimes() {
 		},
 	}
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
-	_assert.Nil(err)
+	require.NoError(t, err)
 }
 
-func (s *azblobTestSuite) TestContainerSetPermissionsNilPolicySlice() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+func TestContainerSetPermissionsNilPolicySlice(t *testing.T) {
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	defer deleteContainer(_assert, containerClient)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
+	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
+
+	defer deleteContainer(assert.New(t), containerClient)
 
 	_, err = containerClient.SetAccessPolicy(ctx, nil)
-	_assert.Nil(err)
+	require.NoError(t, err)
 }
 
-func (s *azblobTestSuite) TestContainerSetPermissionsSignedIdentifierTooLong() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+func TestContainerSetPermissionsSignedIdentifierTooLong(t *testing.T) {
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	defer deleteContainer(_assert, containerClient)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
+	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
+
+	defer deleteContainer(assert.New(t), containerClient)
 
 	id := ""
 	for i := 0; i < 65; i++ {
 		id += "a"
 	}
 	expiry, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
-	_assert.Nil(err)
+	require.NoError(t, err)
 	start := expiry.Add(5 * time.Minute).UTC()
 	permissions := make([]*SignedIdentifier, 2)
 	listOnly := AccessPolicyPermission{Read: true}.String()
@@ -646,27 +645,26 @@ func (s *azblobTestSuite) TestContainerSetPermissionsSignedIdentifierTooLong() {
 		},
 	}
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
-	_assert.NotNil(err)
+	require.NotNil(t, err)
 
-	validateStorageError(_assert, err, StorageErrorCodeInvalidXMLDocument)
+	validateStorageError(assert.New(t), err, StorageErrorCodeInvalidXMLDocument)
 }
 
-func (s *azblobTestSuite) TestContainerSetPermissionsIfModifiedSinceTrue() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+func TestContainerSetPermissionsIfModifiedSinceTrue(t *testing.T) {
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	containerName := generateContainerName(testName)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
 	containerClient := getContainerClient(containerName, svcClient)
 
 	cResp, err := containerClient.Create(ctx, nil)
-	_assert.Nil(err)
-	_assert.Equal(cResp.RawResponse.StatusCode, 201)
-	defer deleteContainer(_assert, containerClient)
+	require.NoError(t, err)
+	require.Equal(t, cResp.RawResponse.StatusCode, 201)
+	defer deleteContainer(assert.New(t), containerClient)
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, -10)
 
@@ -676,29 +674,28 @@ func (s *azblobTestSuite) TestContainerSetPermissionsIfModifiedSinceTrue() {
 		},
 	}
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
-	_assert.Nil(err)
+	require.NoError(t, err)
 
 	resp, err := containerClient.GetAccessPolicy(ctx, nil)
-	_assert.Nil(err)
-	_assert.Nil(resp.BlobPublicAccess)
+	require.NoError(t, err)
+	require.Nil(t, resp.BlobPublicAccess)
 }
 
-func (s *azblobTestSuite) TestContainerSetPermissionsIfModifiedSinceFalse() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+func TestContainerSetPermissionsIfModifiedSinceFalse(t *testing.T) {
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	containerName := generateContainerName(testName)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
 	containerClient := getContainerClient(containerName, svcClient)
 
 	cResp, err := containerClient.Create(ctx, nil)
-	_assert.Nil(err)
-	_assert.Equal(cResp.RawResponse.StatusCode, 201)
-	defer deleteContainer(_assert, containerClient)
+	require.NoError(t, err)
+	require.Equal(t, cResp.RawResponse.StatusCode, 201)
+	defer deleteContainer(assert.New(t), containerClient)
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, 10)
 
@@ -708,27 +705,26 @@ func (s *azblobTestSuite) TestContainerSetPermissionsIfModifiedSinceFalse() {
 		},
 	}
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
-	_assert.NotNil(err)
+	require.NotNil(t, err)
 
-	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
+	validateStorageError(assert.New(t), err, StorageErrorCodeConditionNotMet)
 }
 
-func (s *azblobTestSuite) TestContainerSetPermissionsIfUnModifiedSinceTrue() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+func TestContainerSetPermissionsIfUnModifiedSinceTrue(t *testing.T) {
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	containerName := generateContainerName(testName)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
 	containerClient := getContainerClient(containerName, svcClient)
 
 	cResp, err := containerClient.Create(ctx, nil)
-	_assert.Nil(err)
-	_assert.Equal(cResp.RawResponse.StatusCode, 201)
-	defer deleteContainer(_assert, containerClient)
+	require.NoError(t, err)
+	require.Equal(t, cResp.RawResponse.StatusCode, 201)
+	defer deleteContainer(assert.New(t), containerClient)
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, 10)
 
@@ -738,29 +734,28 @@ func (s *azblobTestSuite) TestContainerSetPermissionsIfUnModifiedSinceTrue() {
 		},
 	}
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
-	_assert.Nil(err)
+	require.NoError(t, err)
 
 	resp, err := containerClient.GetAccessPolicy(ctx, nil)
-	_assert.Nil(err)
-	_assert.Nil(resp.BlobPublicAccess)
+	require.NoError(t, err)
+	require.Nil(t, resp.BlobPublicAccess)
 }
 
-func (s *azblobTestSuite) TestContainerSetPermissionsIfUnModifiedSinceFalse() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+func TestContainerSetPermissionsIfUnModifiedSinceFalse(t *testing.T) {
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	containerName := generateContainerName(testName)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
 	containerClient := getContainerClient(containerName, svcClient)
 
 	cResp, err := containerClient.Create(ctx, nil)
-	_assert.Nil(err)
-	_assert.Equal(cResp.RawResponse.StatusCode, 201)
-	defer deleteContainer(_assert, containerClient)
+	require.NoError(t, err)
+	require.Equal(t, cResp.RawResponse.StatusCode, 201)
+	defer deleteContainer(assert.New(t), containerClient)
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, -10)
 
@@ -770,7 +765,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsIfUnModifiedSinceFalse() {
 		},
 	}
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
-	_assert.NotNil(err)
+	require.NotNil(t, err)
 
-	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
+	validateStorageError(assert.New(t), err, StorageErrorCodeConditionNotMet)
 }

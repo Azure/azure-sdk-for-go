@@ -1,0 +1,131 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://fakeaccount.blob.core.windows.net/gocsetmultipleaccesspolicies?restype=container",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "PUT",
+        ":path": "/gocsetmultipleaccesspolicies?restype=container",
+        ":scheme": "https",
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-azblob/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Mon, 13 Dec 2021 17:09:02 GMT",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Mon, 13 Dec 2021 17:08:55 GMT",
+        "ETag": "\u00220x8D9BE5B3F1D6F00\u0022",
+        "Last-Modified": "Mon, 13 Dec 2021 17:08:55 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-request-id": "d4a56622-e01e-0007-4444-f01e05000000",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://fakeaccount.blob.core.windows.net/gocsetmultipleaccesspolicies?comp=acl\u0026restype=container",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "PUT",
+        ":path": "/gocsetmultipleaccesspolicies?comp=acl\u0026restype=container",
+        ":scheme": "https",
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "375",
+        "Content-Type": "application/xml",
+        "User-Agent": "azsdk-go-azblob/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Mon, 13 Dec 2021 17:09:02 GMT",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": "\u003CSignedIdentifiers\u003E\u003CSignedIdentifier\u003E\u003CId\u003Eempty\u003C/Id\u003E\u003C/SignedIdentifier\u003E\u003CSignedIdentifier\u003E\u003CAccessPolicy\u003E\u003CPermission\u003Er\u003C/Permission\u003E\u003C/AccessPolicy\u003E\u003CId\u003Epartial\u003C/Id\u003E\u003C/SignedIdentifier\u003E\u003CSignedIdentifier\u003E\u003CAccessPolicy\u003E\u003CPermission\u003Er\u003C/Permission\u003E\u003CExpiry\u003E2021-06-08T02:10:09Z\u003C/Expiry\u003E\u003CStart\u003E2021-06-08T02:10:09Z\u003C/Start\u003E\u003C/AccessPolicy\u003E\u003CId\u003Efull\u003C/Id\u003E\u003C/SignedIdentifier\u003E\u003C/SignedIdentifiers\u003E",
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Mon, 13 Dec 2021 17:08:55 GMT",
+        "ETag": "\u00220x8D9BE5B3F2E7271\u0022",
+        "Last-Modified": "Mon, 13 Dec 2021 17:08:56 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-request-id": "d4a56630-e01e-0007-5044-f01e05000000",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://fakeaccount.blob.core.windows.net/gocsetmultipleaccesspolicies?comp=acl\u0026restype=container",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "GET",
+        ":path": "/gocsetmultipleaccesspolicies?comp=acl\u0026restype=container",
+        ":scheme": "https",
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azblob/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Mon, 13 Dec 2021 17:09:02 GMT",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Type": "application/xml",
+        "Date": "Mon, 13 Dec 2021 17:08:55 GMT",
+        "ETag": "\u00220x8D9BE5B3F2E7271\u0022",
+        "Last-Modified": "Mon, 13 Dec 2021 17:08:56 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "Transfer-Encoding": "chunked",
+        "x-ms-request-id": "d4a56638-e01e-0007-5844-f01e05000000",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": "\uFEFF\u003C?xml version=\u00221.0\u0022 encoding=\u0022utf-8\u0022?\u003E\u003CSignedIdentifiers\u003E\u003CSignedIdentifier\u003E\u003CId\u003Eempty\u003C/Id\u003E\u003C/SignedIdentifier\u003E\u003CSignedIdentifier\u003E\u003CId\u003Epartial\u003C/Id\u003E\u003CAccessPolicy\u003E\u003CPermission\u003Er\u003C/Permission\u003E\u003C/AccessPolicy\u003E\u003C/SignedIdentifier\u003E\u003CSignedIdentifier\u003E\u003CId\u003Efull\u003C/Id\u003E\u003CAccessPolicy\u003E\u003CStart\u003E2021-06-08T02:10:09.0000000Z\u003C/Start\u003E\u003CExpiry\u003E2021-06-08T02:10:09.0000000Z\u003C/Expiry\u003E\u003CPermission\u003Er\u003C/Permission\u003E\u003C/AccessPolicy\u003E\u003C/SignedIdentifier\u003E\u003C/SignedIdentifiers\u003E"
+    },
+    {
+      "RequestUri": "https://fakeaccount.blob.core.windows.net/gocsetmultipleaccesspolicies?restype=container",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "DELETE",
+        ":path": "/gocsetmultipleaccesspolicies?restype=container",
+        ":scheme": "https",
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azblob/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Mon, 13 Dec 2021 17:09:03 GMT",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Mon, 13 Dec 2021 17:08:56 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-request-id": "d4a56642-e01e-0007-6244-f01e05000000",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {}
+}

@@ -273,6 +273,7 @@ func (client MoveCollectionsClient) CreatePreparer(ctx context.Context, resource
 	body.ID = nil
 	body.Name = nil
 	body.Type = nil
+	body.Etag = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
@@ -873,6 +874,84 @@ func (client MoveCollectionsClient) ListMoveCollectionsBySubscriptionComplete(ct
 		}()
 	}
 	result.page, err = client.ListMoveCollectionsBySubscription(ctx)
+	return
+}
+
+// ListRequiredFor list of the move resources for which an arm resource is required for.
+// Parameters:
+// resourceGroupName - the Resource Group Name.
+// moveCollectionName - the Move Collection Name.
+// sourceID - the sourceId for which the api is invoked.
+func (client MoveCollectionsClient) ListRequiredFor(ctx context.Context, resourceGroupName string, moveCollectionName string, sourceID string) (result RequiredForResourcesCollection, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/MoveCollectionsClient.ListRequiredFor")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.ListRequiredForPreparer(ctx, resourceGroupName, moveCollectionName, sourceID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "ListRequiredFor", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListRequiredForSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "ListRequiredFor", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListRequiredForResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "ListRequiredFor", resp, "Failure responding to request")
+		return
+	}
+
+	return
+}
+
+// ListRequiredForPreparer prepares the ListRequiredFor request.
+func (client MoveCollectionsClient) ListRequiredForPreparer(ctx context.Context, resourceGroupName string, moveCollectionName string, sourceID string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"moveCollectionName": autorest.Encode("path", moveCollectionName),
+		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
+		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-10-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+		"sourceId":    autorest.Encode("query", sourceID),
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/moveCollections/{moveCollectionName}/requiredFor", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListRequiredForSender sends the ListRequiredFor request. The method will close the
+// http.Response Body if it receives an error.
+func (client MoveCollectionsClient) ListRequiredForSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListRequiredForResponder handles the response to the ListRequiredFor request. The method always
+// closes the http.Response Body.
+func (client MoveCollectionsClient) ListRequiredForResponder(resp *http.Response) (result RequiredForResourcesCollection, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 

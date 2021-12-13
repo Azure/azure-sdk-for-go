@@ -24,6 +24,7 @@ type MoveCollectionsClientAPI interface {
 	ListMoveCollectionsByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result resourcemover.MoveCollectionResultListIterator, err error)
 	ListMoveCollectionsBySubscription(ctx context.Context) (result resourcemover.MoveCollectionResultListPage, err error)
 	ListMoveCollectionsBySubscriptionComplete(ctx context.Context) (result resourcemover.MoveCollectionResultListIterator, err error)
+	ListRequiredFor(ctx context.Context, resourceGroupName string, moveCollectionName string, sourceID string) (result resourcemover.RequiredForResourcesCollection, err error)
 	Prepare(ctx context.Context, resourceGroupName string, moveCollectionName string, body *resourcemover.PrepareRequest) (result resourcemover.MoveCollectionsPrepareFuture, err error)
 	ResolveDependencies(ctx context.Context, resourceGroupName string, moveCollectionName string) (result resourcemover.MoveCollectionsResolveDependenciesFuture, err error)
 	Update(ctx context.Context, resourceGroupName string, moveCollectionName string, body *resourcemover.UpdateMoveCollectionRequest) (result resourcemover.MoveCollection, err error)
@@ -44,7 +45,8 @@ var _ MoveResourcesClientAPI = (*resourcemover.MoveResourcesClient)(nil)
 
 // UnresolvedDependenciesClientAPI contains the set of methods on the UnresolvedDependenciesClient type.
 type UnresolvedDependenciesClientAPI interface {
-	Get(ctx context.Context, resourceGroupName string, moveCollectionName string) (result resourcemover.UnresolvedDependencyCollection, err error)
+	Get(ctx context.Context, resourceGroupName string, moveCollectionName string, dependencyLevel resourcemover.DependencyLevel, orderby string, filter string) (result resourcemover.UnresolvedDependencyCollectionPage, err error)
+	GetComplete(ctx context.Context, resourceGroupName string, moveCollectionName string, dependencyLevel resourcemover.DependencyLevel, orderby string, filter string) (result resourcemover.UnresolvedDependencyCollectionIterator, err error)
 }
 
 var _ UnresolvedDependenciesClientAPI = (*resourcemover.UnresolvedDependenciesClient)(nil)

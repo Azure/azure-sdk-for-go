@@ -50,7 +50,7 @@ type AvailabilitySetResourceSettings struct {
 	UpdateDomain *int32 `json:"updateDomain,omitempty"`
 	// TargetResourceName - Gets or sets the target Resource name.
 	TargetResourceName *string `json:"targetResourceName,omitempty"`
-	// ResourceType - Possible values include: 'ResourceTypeResourceSettings', 'ResourceTypeMicrosoftComputevirtualMachines', 'ResourceTypeMicrosoftComputeavailabilitySets', 'ResourceTypeMicrosoftNetworkvirtualNetworks', 'ResourceTypeMicrosoftNetworknetworkInterfaces', 'ResourceTypeMicrosoftNetworknetworkSecurityGroups', 'ResourceTypeMicrosoftNetworkloadBalancers', 'ResourceTypeMicrosoftSqlservers', 'ResourceTypeMicrosoftSqlserverselasticPools', 'ResourceTypeMicrosoftSqlserversdatabases', 'ResourceTypeResourceGroups', 'ResourceTypeMicrosoftNetworkpublicIPAddresses'
+	// ResourceType - Possible values include: 'ResourceTypeResourceSettings', 'ResourceTypeMicrosoftComputevirtualMachines', 'ResourceTypeMicrosoftComputeavailabilitySets', 'ResourceTypeMicrosoftNetworkvirtualNetworks', 'ResourceTypeMicrosoftNetworknetworkInterfaces', 'ResourceTypeMicrosoftNetworknetworkSecurityGroups', 'ResourceTypeMicrosoftNetworkloadBalancers', 'ResourceTypeMicrosoftSqlservers', 'ResourceTypeMicrosoftSqlserverselasticPools', 'ResourceTypeMicrosoftSqlserversdatabases', 'ResourceTypeResourceGroups', 'ResourceTypeMicrosoftNetworkpublicIPAddresses', 'ResourceTypeMicrosoftKeyVaultvaults', 'ResourceTypeMicrosoftComputediskEncryptionSets'
 	ResourceType ResourceType `json:"resourceType,omitempty"`
 }
 
@@ -128,6 +128,16 @@ func (asrs AvailabilitySetResourceSettings) AsPublicIPAddressResourceSettings() 
 	return nil, false
 }
 
+// AsKeyVaultResourceSettings is the BasicResourceSettings implementation for AvailabilitySetResourceSettings.
+func (asrs AvailabilitySetResourceSettings) AsKeyVaultResourceSettings() (*KeyVaultResourceSettings, bool) {
+	return nil, false
+}
+
+// AsDiskEncryptionSetResourceSettings is the BasicResourceSettings implementation for AvailabilitySetResourceSettings.
+func (asrs AvailabilitySetResourceSettings) AsDiskEncryptionSetResourceSettings() (*DiskEncryptionSetResourceSettings, bool) {
+	return nil, false
+}
+
 // AsResourceSettings is the BasicResourceSettings implementation for AvailabilitySetResourceSettings.
 func (asrs AvailabilitySetResourceSettings) AsResourceSettings() (*ResourceSettings, bool) {
 	return nil, false
@@ -190,6 +200,102 @@ type DiscardRequest struct {
 	MoveResources *[]string `json:"moveResources,omitempty"`
 	// MoveResourceInputType - Possible values include: 'MoveResourceID', 'MoveResourceSourceID'
 	MoveResourceInputType MoveResourceInputType `json:"moveResourceInputType,omitempty"`
+}
+
+// DiskEncryptionSetResourceSettings defines the disk encryption set resource settings.
+type DiskEncryptionSetResourceSettings struct {
+	// TargetResourceName - Gets or sets the target Resource name.
+	TargetResourceName *string `json:"targetResourceName,omitempty"`
+	// ResourceType - Possible values include: 'ResourceTypeResourceSettings', 'ResourceTypeMicrosoftComputevirtualMachines', 'ResourceTypeMicrosoftComputeavailabilitySets', 'ResourceTypeMicrosoftNetworkvirtualNetworks', 'ResourceTypeMicrosoftNetworknetworkInterfaces', 'ResourceTypeMicrosoftNetworknetworkSecurityGroups', 'ResourceTypeMicrosoftNetworkloadBalancers', 'ResourceTypeMicrosoftSqlservers', 'ResourceTypeMicrosoftSqlserverselasticPools', 'ResourceTypeMicrosoftSqlserversdatabases', 'ResourceTypeResourceGroups', 'ResourceTypeMicrosoftNetworkpublicIPAddresses', 'ResourceTypeMicrosoftKeyVaultvaults', 'ResourceTypeMicrosoftComputediskEncryptionSets'
+	ResourceType ResourceType `json:"resourceType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DiskEncryptionSetResourceSettings.
+func (desrs DiskEncryptionSetResourceSettings) MarshalJSON() ([]byte, error) {
+	desrs.ResourceType = ResourceTypeMicrosoftComputediskEncryptionSets
+	objectMap := make(map[string]interface{})
+	if desrs.TargetResourceName != nil {
+		objectMap["targetResourceName"] = desrs.TargetResourceName
+	}
+	if desrs.ResourceType != "" {
+		objectMap["resourceType"] = desrs.ResourceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsVirtualMachineResourceSettings is the BasicResourceSettings implementation for DiskEncryptionSetResourceSettings.
+func (desrs DiskEncryptionSetResourceSettings) AsVirtualMachineResourceSettings() (*VirtualMachineResourceSettings, bool) {
+	return nil, false
+}
+
+// AsAvailabilitySetResourceSettings is the BasicResourceSettings implementation for DiskEncryptionSetResourceSettings.
+func (desrs DiskEncryptionSetResourceSettings) AsAvailabilitySetResourceSettings() (*AvailabilitySetResourceSettings, bool) {
+	return nil, false
+}
+
+// AsVirtualNetworkResourceSettings is the BasicResourceSettings implementation for DiskEncryptionSetResourceSettings.
+func (desrs DiskEncryptionSetResourceSettings) AsVirtualNetworkResourceSettings() (*VirtualNetworkResourceSettings, bool) {
+	return nil, false
+}
+
+// AsNetworkInterfaceResourceSettings is the BasicResourceSettings implementation for DiskEncryptionSetResourceSettings.
+func (desrs DiskEncryptionSetResourceSettings) AsNetworkInterfaceResourceSettings() (*NetworkInterfaceResourceSettings, bool) {
+	return nil, false
+}
+
+// AsNetworkSecurityGroupResourceSettings is the BasicResourceSettings implementation for DiskEncryptionSetResourceSettings.
+func (desrs DiskEncryptionSetResourceSettings) AsNetworkSecurityGroupResourceSettings() (*NetworkSecurityGroupResourceSettings, bool) {
+	return nil, false
+}
+
+// AsLoadBalancerResourceSettings is the BasicResourceSettings implementation for DiskEncryptionSetResourceSettings.
+func (desrs DiskEncryptionSetResourceSettings) AsLoadBalancerResourceSettings() (*LoadBalancerResourceSettings, bool) {
+	return nil, false
+}
+
+// AsSQLServerResourceSettings is the BasicResourceSettings implementation for DiskEncryptionSetResourceSettings.
+func (desrs DiskEncryptionSetResourceSettings) AsSQLServerResourceSettings() (*SQLServerResourceSettings, bool) {
+	return nil, false
+}
+
+// AsSQLElasticPoolResourceSettings is the BasicResourceSettings implementation for DiskEncryptionSetResourceSettings.
+func (desrs DiskEncryptionSetResourceSettings) AsSQLElasticPoolResourceSettings() (*SQLElasticPoolResourceSettings, bool) {
+	return nil, false
+}
+
+// AsSQLDatabaseResourceSettings is the BasicResourceSettings implementation for DiskEncryptionSetResourceSettings.
+func (desrs DiskEncryptionSetResourceSettings) AsSQLDatabaseResourceSettings() (*SQLDatabaseResourceSettings, bool) {
+	return nil, false
+}
+
+// AsResourceGroupResourceSettings is the BasicResourceSettings implementation for DiskEncryptionSetResourceSettings.
+func (desrs DiskEncryptionSetResourceSettings) AsResourceGroupResourceSettings() (*ResourceGroupResourceSettings, bool) {
+	return nil, false
+}
+
+// AsPublicIPAddressResourceSettings is the BasicResourceSettings implementation for DiskEncryptionSetResourceSettings.
+func (desrs DiskEncryptionSetResourceSettings) AsPublicIPAddressResourceSettings() (*PublicIPAddressResourceSettings, bool) {
+	return nil, false
+}
+
+// AsKeyVaultResourceSettings is the BasicResourceSettings implementation for DiskEncryptionSetResourceSettings.
+func (desrs DiskEncryptionSetResourceSettings) AsKeyVaultResourceSettings() (*KeyVaultResourceSettings, bool) {
+	return nil, false
+}
+
+// AsDiskEncryptionSetResourceSettings is the BasicResourceSettings implementation for DiskEncryptionSetResourceSettings.
+func (desrs DiskEncryptionSetResourceSettings) AsDiskEncryptionSetResourceSettings() (*DiskEncryptionSetResourceSettings, bool) {
+	return &desrs, true
+}
+
+// AsResourceSettings is the BasicResourceSettings implementation for DiskEncryptionSetResourceSettings.
+func (desrs DiskEncryptionSetResourceSettings) AsResourceSettings() (*ResourceSettings, bool) {
+	return nil, false
+}
+
+// AsBasicResourceSettings is the BasicResourceSettings implementation for DiskEncryptionSetResourceSettings.
+func (desrs DiskEncryptionSetResourceSettings) AsBasicResourceSettings() (BasicResourceSettings, bool) {
+	return &desrs, true
 }
 
 // Display contains the localized display information for this particular operation / action. These
@@ -261,6 +367,102 @@ func (js JobStatus) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// KeyVaultResourceSettings defines the key vault resource settings.
+type KeyVaultResourceSettings struct {
+	// TargetResourceName - Gets or sets the target Resource name.
+	TargetResourceName *string `json:"targetResourceName,omitempty"`
+	// ResourceType - Possible values include: 'ResourceTypeResourceSettings', 'ResourceTypeMicrosoftComputevirtualMachines', 'ResourceTypeMicrosoftComputeavailabilitySets', 'ResourceTypeMicrosoftNetworkvirtualNetworks', 'ResourceTypeMicrosoftNetworknetworkInterfaces', 'ResourceTypeMicrosoftNetworknetworkSecurityGroups', 'ResourceTypeMicrosoftNetworkloadBalancers', 'ResourceTypeMicrosoftSqlservers', 'ResourceTypeMicrosoftSqlserverselasticPools', 'ResourceTypeMicrosoftSqlserversdatabases', 'ResourceTypeResourceGroups', 'ResourceTypeMicrosoftNetworkpublicIPAddresses', 'ResourceTypeMicrosoftKeyVaultvaults', 'ResourceTypeMicrosoftComputediskEncryptionSets'
+	ResourceType ResourceType `json:"resourceType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for KeyVaultResourceSettings.
+func (kvrs KeyVaultResourceSettings) MarshalJSON() ([]byte, error) {
+	kvrs.ResourceType = ResourceTypeMicrosoftKeyVaultvaults
+	objectMap := make(map[string]interface{})
+	if kvrs.TargetResourceName != nil {
+		objectMap["targetResourceName"] = kvrs.TargetResourceName
+	}
+	if kvrs.ResourceType != "" {
+		objectMap["resourceType"] = kvrs.ResourceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsVirtualMachineResourceSettings is the BasicResourceSettings implementation for KeyVaultResourceSettings.
+func (kvrs KeyVaultResourceSettings) AsVirtualMachineResourceSettings() (*VirtualMachineResourceSettings, bool) {
+	return nil, false
+}
+
+// AsAvailabilitySetResourceSettings is the BasicResourceSettings implementation for KeyVaultResourceSettings.
+func (kvrs KeyVaultResourceSettings) AsAvailabilitySetResourceSettings() (*AvailabilitySetResourceSettings, bool) {
+	return nil, false
+}
+
+// AsVirtualNetworkResourceSettings is the BasicResourceSettings implementation for KeyVaultResourceSettings.
+func (kvrs KeyVaultResourceSettings) AsVirtualNetworkResourceSettings() (*VirtualNetworkResourceSettings, bool) {
+	return nil, false
+}
+
+// AsNetworkInterfaceResourceSettings is the BasicResourceSettings implementation for KeyVaultResourceSettings.
+func (kvrs KeyVaultResourceSettings) AsNetworkInterfaceResourceSettings() (*NetworkInterfaceResourceSettings, bool) {
+	return nil, false
+}
+
+// AsNetworkSecurityGroupResourceSettings is the BasicResourceSettings implementation for KeyVaultResourceSettings.
+func (kvrs KeyVaultResourceSettings) AsNetworkSecurityGroupResourceSettings() (*NetworkSecurityGroupResourceSettings, bool) {
+	return nil, false
+}
+
+// AsLoadBalancerResourceSettings is the BasicResourceSettings implementation for KeyVaultResourceSettings.
+func (kvrs KeyVaultResourceSettings) AsLoadBalancerResourceSettings() (*LoadBalancerResourceSettings, bool) {
+	return nil, false
+}
+
+// AsSQLServerResourceSettings is the BasicResourceSettings implementation for KeyVaultResourceSettings.
+func (kvrs KeyVaultResourceSettings) AsSQLServerResourceSettings() (*SQLServerResourceSettings, bool) {
+	return nil, false
+}
+
+// AsSQLElasticPoolResourceSettings is the BasicResourceSettings implementation for KeyVaultResourceSettings.
+func (kvrs KeyVaultResourceSettings) AsSQLElasticPoolResourceSettings() (*SQLElasticPoolResourceSettings, bool) {
+	return nil, false
+}
+
+// AsSQLDatabaseResourceSettings is the BasicResourceSettings implementation for KeyVaultResourceSettings.
+func (kvrs KeyVaultResourceSettings) AsSQLDatabaseResourceSettings() (*SQLDatabaseResourceSettings, bool) {
+	return nil, false
+}
+
+// AsResourceGroupResourceSettings is the BasicResourceSettings implementation for KeyVaultResourceSettings.
+func (kvrs KeyVaultResourceSettings) AsResourceGroupResourceSettings() (*ResourceGroupResourceSettings, bool) {
+	return nil, false
+}
+
+// AsPublicIPAddressResourceSettings is the BasicResourceSettings implementation for KeyVaultResourceSettings.
+func (kvrs KeyVaultResourceSettings) AsPublicIPAddressResourceSettings() (*PublicIPAddressResourceSettings, bool) {
+	return nil, false
+}
+
+// AsKeyVaultResourceSettings is the BasicResourceSettings implementation for KeyVaultResourceSettings.
+func (kvrs KeyVaultResourceSettings) AsKeyVaultResourceSettings() (*KeyVaultResourceSettings, bool) {
+	return &kvrs, true
+}
+
+// AsDiskEncryptionSetResourceSettings is the BasicResourceSettings implementation for KeyVaultResourceSettings.
+func (kvrs KeyVaultResourceSettings) AsDiskEncryptionSetResourceSettings() (*DiskEncryptionSetResourceSettings, bool) {
+	return nil, false
+}
+
+// AsResourceSettings is the BasicResourceSettings implementation for KeyVaultResourceSettings.
+func (kvrs KeyVaultResourceSettings) AsResourceSettings() (*ResourceSettings, bool) {
+	return nil, false
+}
+
+// AsBasicResourceSettings is the BasicResourceSettings implementation for KeyVaultResourceSettings.
+func (kvrs KeyVaultResourceSettings) AsBasicResourceSettings() (BasicResourceSettings, bool) {
+	return &kvrs, true
+}
+
 // LBBackendAddressPoolResourceSettings defines load balancer backend address pool properties.
 type LBBackendAddressPoolResourceSettings struct {
 	// Name - Gets or sets the backend address pool name.
@@ -310,7 +512,7 @@ type LoadBalancerResourceSettings struct {
 	Zones *string `json:"zones,omitempty"`
 	// TargetResourceName - Gets or sets the target Resource name.
 	TargetResourceName *string `json:"targetResourceName,omitempty"`
-	// ResourceType - Possible values include: 'ResourceTypeResourceSettings', 'ResourceTypeMicrosoftComputevirtualMachines', 'ResourceTypeMicrosoftComputeavailabilitySets', 'ResourceTypeMicrosoftNetworkvirtualNetworks', 'ResourceTypeMicrosoftNetworknetworkInterfaces', 'ResourceTypeMicrosoftNetworknetworkSecurityGroups', 'ResourceTypeMicrosoftNetworkloadBalancers', 'ResourceTypeMicrosoftSqlservers', 'ResourceTypeMicrosoftSqlserverselasticPools', 'ResourceTypeMicrosoftSqlserversdatabases', 'ResourceTypeResourceGroups', 'ResourceTypeMicrosoftNetworkpublicIPAddresses'
+	// ResourceType - Possible values include: 'ResourceTypeResourceSettings', 'ResourceTypeMicrosoftComputevirtualMachines', 'ResourceTypeMicrosoftComputeavailabilitySets', 'ResourceTypeMicrosoftNetworkvirtualNetworks', 'ResourceTypeMicrosoftNetworknetworkInterfaces', 'ResourceTypeMicrosoftNetworknetworkSecurityGroups', 'ResourceTypeMicrosoftNetworkloadBalancers', 'ResourceTypeMicrosoftSqlservers', 'ResourceTypeMicrosoftSqlserverselasticPools', 'ResourceTypeMicrosoftSqlserversdatabases', 'ResourceTypeResourceGroups', 'ResourceTypeMicrosoftNetworkpublicIPAddresses', 'ResourceTypeMicrosoftKeyVaultvaults', 'ResourceTypeMicrosoftComputediskEncryptionSets'
 	ResourceType ResourceType `json:"resourceType,omitempty"`
 }
 
@@ -394,6 +596,16 @@ func (lbrs LoadBalancerResourceSettings) AsPublicIPAddressResourceSettings() (*P
 	return nil, false
 }
 
+// AsKeyVaultResourceSettings is the BasicResourceSettings implementation for LoadBalancerResourceSettings.
+func (lbrs LoadBalancerResourceSettings) AsKeyVaultResourceSettings() (*KeyVaultResourceSettings, bool) {
+	return nil, false
+}
+
+// AsDiskEncryptionSetResourceSettings is the BasicResourceSettings implementation for LoadBalancerResourceSettings.
+func (lbrs LoadBalancerResourceSettings) AsDiskEncryptionSetResourceSettings() (*DiskEncryptionSetResourceSettings, bool) {
+	return nil, false
+}
+
 // AsResourceSettings is the BasicResourceSettings implementation for LoadBalancerResourceSettings.
 func (lbrs LoadBalancerResourceSettings) AsResourceSettings() (*ResourceSettings, bool) {
 	return nil, false
@@ -419,6 +631,8 @@ type MoveCollection struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
+	// Etag - READ-ONLY; The etag of the resource.
+	Etag *string `json:"etag,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives.
@@ -453,6 +667,29 @@ type MoveCollectionProperties struct {
 	TargetRegion *string `json:"targetRegion,omitempty"`
 	// ProvisioningState - Possible values include: 'Succeeded', 'Updating', 'Creating', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// Errors - READ-ONLY; Defines the move collection errors.
+	Errors *MoveCollectionPropertiesErrors `json:"errors,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MoveCollectionProperties.
+func (mcp MoveCollectionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mcp.SourceRegion != nil {
+		objectMap["sourceRegion"] = mcp.SourceRegion
+	}
+	if mcp.TargetRegion != nil {
+		objectMap["targetRegion"] = mcp.TargetRegion
+	}
+	if mcp.ProvisioningState != "" {
+		objectMap["provisioningState"] = mcp.ProvisioningState
+	}
+	return json.Marshal(objectMap)
+}
+
+// MoveCollectionPropertiesErrors defines the move collection errors.
+type MoveCollectionPropertiesErrors struct {
+	// Properties - The move resource error body.
+	Properties *MoveResourceErrorBody `json:"properties,omitempty"`
 }
 
 // MoveCollectionResultList defines the collection of move collections.
@@ -955,8 +1192,25 @@ type MoveResourceCollection struct {
 	Value *[]MoveResource `json:"value,omitempty"`
 	// NextLink - Gets the value of  next link.
 	NextLink *string `json:"nextLink,omitempty"`
-	// Summary - Gets or the list of summary items.
-	Summary *[]SummaryItem `json:"summary,omitempty"`
+	// SummaryCollection - Gets or sets the list of summary items and the field on which summary is done.
+	SummaryCollection *SummaryCollection `json:"summaryCollection,omitempty"`
+	// TotalCount - READ-ONLY; Gets the total count.
+	TotalCount *int64 `json:"totalCount,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MoveResourceCollection.
+func (mrc MoveResourceCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mrc.Value != nil {
+		objectMap["value"] = mrc.Value
+	}
+	if mrc.NextLink != nil {
+		objectMap["nextLink"] = mrc.NextLink
+	}
+	if mrc.SummaryCollection != nil {
+		objectMap["summaryCollection"] = mrc.SummaryCollection
+	}
+	return json.Marshal(objectMap)
 }
 
 // MoveResourceCollectionIterator provides access to a complete listing of MoveResource values.
@@ -1189,6 +1443,8 @@ type MoveResourceProperties struct {
 	DependsOn *[]MoveResourceDependency `json:"dependsOn,omitempty"`
 	// DependsOnOverrides - Gets or sets the move resource dependencies overrides.
 	DependsOnOverrides *[]MoveResourceDependencyOverride `json:"dependsOnOverrides,omitempty"`
+	// IsResolveRequired - READ-ONLY; Gets a value indicating whether the resolve action is required over the move collection.
+	IsResolveRequired *bool `json:"isResolveRequired,omitempty"`
 	// Errors - READ-ONLY; Defines the move resource errors.
 	Errors *MoveResourcePropertiesErrors `json:"errors,omitempty"`
 }
@@ -1300,6 +1556,15 @@ func (mrp *MoveResourceProperties) UnmarshalJSON(body []byte) error {
 				}
 				mrp.DependsOnOverrides = &dependsOnOverrides
 			}
+		case "isResolveRequired":
+			if v != nil {
+				var isResolveRequired bool
+				err = json.Unmarshal(*v, &isResolveRequired)
+				if err != nil {
+					return err
+				}
+				mrp.IsResolveRequired = &isResolveRequired
+			}
 		case "errors":
 			if v != nil {
 				var errorsVar MoveResourcePropertiesErrors
@@ -1323,27 +1588,10 @@ type MoveResourcePropertiesErrors struct {
 
 // MoveResourcePropertiesMoveStatus defines the move resource status.
 type MoveResourcePropertiesMoveStatus struct {
-	// MoveState - Possible values include: 'AssignmentPending', 'PreparePending', 'PrepareInProgress', 'PrepareFailed', 'MovePending', 'MoveInProgress', 'MoveFailed', 'DiscardInProgress', 'DiscardFailed', 'CommitPending', 'CommitInProgress', 'CommitFailed', 'Committed'
+	// MoveState - Possible values include: 'AssignmentPending', 'PreparePending', 'PrepareInProgress', 'PrepareFailed', 'MovePending', 'MoveInProgress', 'MoveFailed', 'DiscardInProgress', 'DiscardFailed', 'CommitPending', 'CommitInProgress', 'CommitFailed', 'Committed', 'DeleteSourcePending', 'ResourceMoveCompleted'
 	MoveState MoveState          `json:"moveState,omitempty"`
 	JobStatus *JobStatus         `json:"jobStatus,omitempty"`
 	Errors    *MoveResourceError `json:"errors,omitempty"`
-	// TargetID - READ-ONLY; Gets the Target ARM Id of the resource.
-	TargetID *string `json:"targetId,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for MoveResourcePropertiesMoveStatus.
-func (mrpS MoveResourcePropertiesMoveStatus) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if mrpS.MoveState != "" {
-		objectMap["moveState"] = mrpS.MoveState
-	}
-	if mrpS.JobStatus != nil {
-		objectMap["jobStatus"] = mrpS.JobStatus
-	}
-	if mrpS.Errors != nil {
-		objectMap["errors"] = mrpS.Errors
-	}
-	return json.Marshal(objectMap)
 }
 
 // MoveResourcesCreateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -1434,27 +1682,10 @@ func (future *MoveResourcesDeleteFuture) result(client MoveResourcesClient) (osV
 
 // MoveResourceStatus defines the move resource status.
 type MoveResourceStatus struct {
-	// MoveState - Possible values include: 'AssignmentPending', 'PreparePending', 'PrepareInProgress', 'PrepareFailed', 'MovePending', 'MoveInProgress', 'MoveFailed', 'DiscardInProgress', 'DiscardFailed', 'CommitPending', 'CommitInProgress', 'CommitFailed', 'Committed'
+	// MoveState - Possible values include: 'AssignmentPending', 'PreparePending', 'PrepareInProgress', 'PrepareFailed', 'MovePending', 'MoveInProgress', 'MoveFailed', 'DiscardInProgress', 'DiscardFailed', 'CommitPending', 'CommitInProgress', 'CommitFailed', 'Committed', 'DeleteSourcePending', 'ResourceMoveCompleted'
 	MoveState MoveState          `json:"moveState,omitempty"`
 	JobStatus *JobStatus         `json:"jobStatus,omitempty"`
 	Errors    *MoveResourceError `json:"errors,omitempty"`
-	// TargetID - READ-ONLY; Gets the Target ARM Id of the resource.
-	TargetID *string `json:"targetId,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for MoveResourceStatus.
-func (mrs MoveResourceStatus) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if mrs.MoveState != "" {
-		objectMap["moveState"] = mrs.MoveState
-	}
-	if mrs.JobStatus != nil {
-		objectMap["jobStatus"] = mrs.JobStatus
-	}
-	if mrs.Errors != nil {
-		objectMap["errors"] = mrs.Errors
-	}
-	return json.Marshal(objectMap)
 }
 
 // NetworkInterfaceResourceSettings defines the network interface resource settings.
@@ -1465,7 +1696,7 @@ type NetworkInterfaceResourceSettings struct {
 	EnableAcceleratedNetworking *bool `json:"enableAcceleratedNetworking,omitempty"`
 	// TargetResourceName - Gets or sets the target Resource name.
 	TargetResourceName *string `json:"targetResourceName,omitempty"`
-	// ResourceType - Possible values include: 'ResourceTypeResourceSettings', 'ResourceTypeMicrosoftComputevirtualMachines', 'ResourceTypeMicrosoftComputeavailabilitySets', 'ResourceTypeMicrosoftNetworkvirtualNetworks', 'ResourceTypeMicrosoftNetworknetworkInterfaces', 'ResourceTypeMicrosoftNetworknetworkSecurityGroups', 'ResourceTypeMicrosoftNetworkloadBalancers', 'ResourceTypeMicrosoftSqlservers', 'ResourceTypeMicrosoftSqlserverselasticPools', 'ResourceTypeMicrosoftSqlserversdatabases', 'ResourceTypeResourceGroups', 'ResourceTypeMicrosoftNetworkpublicIPAddresses'
+	// ResourceType - Possible values include: 'ResourceTypeResourceSettings', 'ResourceTypeMicrosoftComputevirtualMachines', 'ResourceTypeMicrosoftComputeavailabilitySets', 'ResourceTypeMicrosoftNetworkvirtualNetworks', 'ResourceTypeMicrosoftNetworknetworkInterfaces', 'ResourceTypeMicrosoftNetworknetworkSecurityGroups', 'ResourceTypeMicrosoftNetworkloadBalancers', 'ResourceTypeMicrosoftSqlservers', 'ResourceTypeMicrosoftSqlserverselasticPools', 'ResourceTypeMicrosoftSqlserversdatabases', 'ResourceTypeResourceGroups', 'ResourceTypeMicrosoftNetworkpublicIPAddresses', 'ResourceTypeMicrosoftKeyVaultvaults', 'ResourceTypeMicrosoftComputediskEncryptionSets'
 	ResourceType ResourceType `json:"resourceType,omitempty"`
 }
 
@@ -1543,6 +1774,16 @@ func (nirs NetworkInterfaceResourceSettings) AsPublicIPAddressResourceSettings()
 	return nil, false
 }
 
+// AsKeyVaultResourceSettings is the BasicResourceSettings implementation for NetworkInterfaceResourceSettings.
+func (nirs NetworkInterfaceResourceSettings) AsKeyVaultResourceSettings() (*KeyVaultResourceSettings, bool) {
+	return nil, false
+}
+
+// AsDiskEncryptionSetResourceSettings is the BasicResourceSettings implementation for NetworkInterfaceResourceSettings.
+func (nirs NetworkInterfaceResourceSettings) AsDiskEncryptionSetResourceSettings() (*DiskEncryptionSetResourceSettings, bool) {
+	return nil, false
+}
+
 // AsResourceSettings is the BasicResourceSettings implementation for NetworkInterfaceResourceSettings.
 func (nirs NetworkInterfaceResourceSettings) AsResourceSettings() (*ResourceSettings, bool) {
 	return nil, false
@@ -1559,7 +1800,7 @@ type NetworkSecurityGroupResourceSettings struct {
 	SecurityRules *[]NsgSecurityRule `json:"securityRules,omitempty"`
 	// TargetResourceName - Gets or sets the target Resource name.
 	TargetResourceName *string `json:"targetResourceName,omitempty"`
-	// ResourceType - Possible values include: 'ResourceTypeResourceSettings', 'ResourceTypeMicrosoftComputevirtualMachines', 'ResourceTypeMicrosoftComputeavailabilitySets', 'ResourceTypeMicrosoftNetworkvirtualNetworks', 'ResourceTypeMicrosoftNetworknetworkInterfaces', 'ResourceTypeMicrosoftNetworknetworkSecurityGroups', 'ResourceTypeMicrosoftNetworkloadBalancers', 'ResourceTypeMicrosoftSqlservers', 'ResourceTypeMicrosoftSqlserverselasticPools', 'ResourceTypeMicrosoftSqlserversdatabases', 'ResourceTypeResourceGroups', 'ResourceTypeMicrosoftNetworkpublicIPAddresses'
+	// ResourceType - Possible values include: 'ResourceTypeResourceSettings', 'ResourceTypeMicrosoftComputevirtualMachines', 'ResourceTypeMicrosoftComputeavailabilitySets', 'ResourceTypeMicrosoftNetworkvirtualNetworks', 'ResourceTypeMicrosoftNetworknetworkInterfaces', 'ResourceTypeMicrosoftNetworknetworkSecurityGroups', 'ResourceTypeMicrosoftNetworkloadBalancers', 'ResourceTypeMicrosoftSqlservers', 'ResourceTypeMicrosoftSqlserverselasticPools', 'ResourceTypeMicrosoftSqlserversdatabases', 'ResourceTypeResourceGroups', 'ResourceTypeMicrosoftNetworkpublicIPAddresses', 'ResourceTypeMicrosoftKeyVaultvaults', 'ResourceTypeMicrosoftComputediskEncryptionSets'
 	ResourceType ResourceType `json:"resourceType,omitempty"`
 }
 
@@ -1634,6 +1875,16 @@ func (nsgrs NetworkSecurityGroupResourceSettings) AsPublicIPAddressResourceSetti
 	return nil, false
 }
 
+// AsKeyVaultResourceSettings is the BasicResourceSettings implementation for NetworkSecurityGroupResourceSettings.
+func (nsgrs NetworkSecurityGroupResourceSettings) AsKeyVaultResourceSettings() (*KeyVaultResourceSettings, bool) {
+	return nil, false
+}
+
+// AsDiskEncryptionSetResourceSettings is the BasicResourceSettings implementation for NetworkSecurityGroupResourceSettings.
+func (nsgrs NetworkSecurityGroupResourceSettings) AsDiskEncryptionSetResourceSettings() (*DiskEncryptionSetResourceSettings, bool) {
+	return nil, false
+}
+
 // AsResourceSettings is the BasicResourceSettings implementation for NetworkSecurityGroupResourceSettings.
 func (nsgrs NetworkSecurityGroupResourceSettings) AsResourceSettings() (*ResourceSettings, bool) {
 	return nil, false
@@ -1657,6 +1908,15 @@ type NicIPConfigurationResourceSettings struct {
 	Primary *bool `json:"primary,omitempty"`
 	// LoadBalancerBackendAddressPools - Gets or sets the references of the load balancer backend address pools.
 	LoadBalancerBackendAddressPools *[]LoadBalancerBackendAddressPoolReference `json:"loadBalancerBackendAddressPools,omitempty"`
+	// LoadBalancerNatRules - Gets or sets the references of the load balancer NAT rules.
+	LoadBalancerNatRules *[]LoadBalancerNatRuleReference `json:"loadBalancerNatRules,omitempty"`
+	PublicIP             *PublicIPReference              `json:"publicIp,omitempty"`
+}
+
+// NsgReference defines reference to NSG.
+type NsgReference struct {
+	// SourceArmResourceID - Gets the ARM resource ID of the tracked resource being referenced.
+	SourceArmResourceID *string `json:"sourceArmResourceId,omitempty"`
 }
 
 // NsgSecurityRule security Rule data model for Network Security Groups.
@@ -1818,8 +2078,8 @@ type ProxyResourceReference struct {
 type PublicIPAddressResourceSettings struct {
 	// DomainNameLabel - Gets or sets the domain name label.
 	DomainNameLabel *string `json:"domainNameLabel,omitempty"`
-	// FQDN - Gets or sets the fully qualified domain name.
-	FQDN *string `json:"fQDN,omitempty"`
+	// Fqdn - Gets or sets the fully qualified domain name.
+	Fqdn *string `json:"fqdn,omitempty"`
 	// PublicIPAllocationMethod - Gets or sets public IP allocation method.
 	PublicIPAllocationMethod *string `json:"publicIpAllocationMethod,omitempty"`
 	// Sku - Gets or sets public IP sku.
@@ -1828,7 +2088,7 @@ type PublicIPAddressResourceSettings struct {
 	Zones *string `json:"zones,omitempty"`
 	// TargetResourceName - Gets or sets the target Resource name.
 	TargetResourceName *string `json:"targetResourceName,omitempty"`
-	// ResourceType - Possible values include: 'ResourceTypeResourceSettings', 'ResourceTypeMicrosoftComputevirtualMachines', 'ResourceTypeMicrosoftComputeavailabilitySets', 'ResourceTypeMicrosoftNetworkvirtualNetworks', 'ResourceTypeMicrosoftNetworknetworkInterfaces', 'ResourceTypeMicrosoftNetworknetworkSecurityGroups', 'ResourceTypeMicrosoftNetworkloadBalancers', 'ResourceTypeMicrosoftSqlservers', 'ResourceTypeMicrosoftSqlserverselasticPools', 'ResourceTypeMicrosoftSqlserversdatabases', 'ResourceTypeResourceGroups', 'ResourceTypeMicrosoftNetworkpublicIPAddresses'
+	// ResourceType - Possible values include: 'ResourceTypeResourceSettings', 'ResourceTypeMicrosoftComputevirtualMachines', 'ResourceTypeMicrosoftComputeavailabilitySets', 'ResourceTypeMicrosoftNetworkvirtualNetworks', 'ResourceTypeMicrosoftNetworknetworkInterfaces', 'ResourceTypeMicrosoftNetworknetworkSecurityGroups', 'ResourceTypeMicrosoftNetworkloadBalancers', 'ResourceTypeMicrosoftSqlservers', 'ResourceTypeMicrosoftSqlserverselasticPools', 'ResourceTypeMicrosoftSqlserversdatabases', 'ResourceTypeResourceGroups', 'ResourceTypeMicrosoftNetworkpublicIPAddresses', 'ResourceTypeMicrosoftKeyVaultvaults', 'ResourceTypeMicrosoftComputediskEncryptionSets'
 	ResourceType ResourceType `json:"resourceType,omitempty"`
 }
 
@@ -1839,8 +2099,8 @@ func (piars PublicIPAddressResourceSettings) MarshalJSON() ([]byte, error) {
 	if piars.DomainNameLabel != nil {
 		objectMap["domainNameLabel"] = piars.DomainNameLabel
 	}
-	if piars.FQDN != nil {
-		objectMap["fQDN"] = piars.FQDN
+	if piars.Fqdn != nil {
+		objectMap["fqdn"] = piars.Fqdn
 	}
 	if piars.PublicIPAllocationMethod != nil {
 		objectMap["publicIpAllocationMethod"] = piars.PublicIPAllocationMethod
@@ -1915,6 +2175,16 @@ func (piars PublicIPAddressResourceSettings) AsPublicIPAddressResourceSettings()
 	return &piars, true
 }
 
+// AsKeyVaultResourceSettings is the BasicResourceSettings implementation for PublicIPAddressResourceSettings.
+func (piars PublicIPAddressResourceSettings) AsKeyVaultResourceSettings() (*KeyVaultResourceSettings, bool) {
+	return nil, false
+}
+
+// AsDiskEncryptionSetResourceSettings is the BasicResourceSettings implementation for PublicIPAddressResourceSettings.
+func (piars PublicIPAddressResourceSettings) AsDiskEncryptionSetResourceSettings() (*DiskEncryptionSetResourceSettings, bool) {
+	return nil, false
+}
+
 // AsResourceSettings is the BasicResourceSettings implementation for PublicIPAddressResourceSettings.
 func (piars PublicIPAddressResourceSettings) AsResourceSettings() (*ResourceSettings, bool) {
 	return nil, false
@@ -1925,11 +2195,24 @@ func (piars PublicIPAddressResourceSettings) AsBasicResourceSettings() (BasicRes
 	return &piars, true
 }
 
+// PublicIPReference defines reference to a public IP.
+type PublicIPReference struct {
+	// SourceArmResourceID - Gets the ARM resource ID of the tracked resource being referenced.
+	SourceArmResourceID *string `json:"sourceArmResourceId,omitempty"`
+}
+
+// RequiredForResourcesCollection required for resources collection.
+type RequiredForResourcesCollection struct {
+	autorest.Response `json:"-"`
+	// SourceIds - Gets or sets the list of source Ids for which the input resource is required.
+	SourceIds *[]string `json:"sourceIds,omitempty"`
+}
+
 // ResourceGroupResourceSettings defines the resource group resource settings.
 type ResourceGroupResourceSettings struct {
 	// TargetResourceName - Gets or sets the target Resource name.
 	TargetResourceName *string `json:"targetResourceName,omitempty"`
-	// ResourceType - Possible values include: 'ResourceTypeResourceSettings', 'ResourceTypeMicrosoftComputevirtualMachines', 'ResourceTypeMicrosoftComputeavailabilitySets', 'ResourceTypeMicrosoftNetworkvirtualNetworks', 'ResourceTypeMicrosoftNetworknetworkInterfaces', 'ResourceTypeMicrosoftNetworknetworkSecurityGroups', 'ResourceTypeMicrosoftNetworkloadBalancers', 'ResourceTypeMicrosoftSqlservers', 'ResourceTypeMicrosoftSqlserverselasticPools', 'ResourceTypeMicrosoftSqlserversdatabases', 'ResourceTypeResourceGroups', 'ResourceTypeMicrosoftNetworkpublicIPAddresses'
+	// ResourceType - Possible values include: 'ResourceTypeResourceSettings', 'ResourceTypeMicrosoftComputevirtualMachines', 'ResourceTypeMicrosoftComputeavailabilitySets', 'ResourceTypeMicrosoftNetworkvirtualNetworks', 'ResourceTypeMicrosoftNetworknetworkInterfaces', 'ResourceTypeMicrosoftNetworknetworkSecurityGroups', 'ResourceTypeMicrosoftNetworkloadBalancers', 'ResourceTypeMicrosoftSqlservers', 'ResourceTypeMicrosoftSqlserverselasticPools', 'ResourceTypeMicrosoftSqlserversdatabases', 'ResourceTypeResourceGroups', 'ResourceTypeMicrosoftNetworkpublicIPAddresses', 'ResourceTypeMicrosoftKeyVaultvaults', 'ResourceTypeMicrosoftComputediskEncryptionSets'
 	ResourceType ResourceType `json:"resourceType,omitempty"`
 }
 
@@ -2001,6 +2284,16 @@ func (rgrs ResourceGroupResourceSettings) AsPublicIPAddressResourceSettings() (*
 	return nil, false
 }
 
+// AsKeyVaultResourceSettings is the BasicResourceSettings implementation for ResourceGroupResourceSettings.
+func (rgrs ResourceGroupResourceSettings) AsKeyVaultResourceSettings() (*KeyVaultResourceSettings, bool) {
+	return nil, false
+}
+
+// AsDiskEncryptionSetResourceSettings is the BasicResourceSettings implementation for ResourceGroupResourceSettings.
+func (rgrs ResourceGroupResourceSettings) AsDiskEncryptionSetResourceSettings() (*DiskEncryptionSetResourceSettings, bool) {
+	return nil, false
+}
+
 // AsResourceSettings is the BasicResourceSettings implementation for ResourceGroupResourceSettings.
 func (rgrs ResourceGroupResourceSettings) AsResourceSettings() (*ResourceSettings, bool) {
 	return nil, false
@@ -2034,6 +2327,8 @@ type BasicResourceSettings interface {
 	AsSQLDatabaseResourceSettings() (*SQLDatabaseResourceSettings, bool)
 	AsResourceGroupResourceSettings() (*ResourceGroupResourceSettings, bool)
 	AsPublicIPAddressResourceSettings() (*PublicIPAddressResourceSettings, bool)
+	AsKeyVaultResourceSettings() (*KeyVaultResourceSettings, bool)
+	AsDiskEncryptionSetResourceSettings() (*DiskEncryptionSetResourceSettings, bool)
 	AsResourceSettings() (*ResourceSettings, bool)
 }
 
@@ -2041,7 +2336,7 @@ type BasicResourceSettings interface {
 type ResourceSettings struct {
 	// TargetResourceName - Gets or sets the target Resource name.
 	TargetResourceName *string `json:"targetResourceName,omitempty"`
-	// ResourceType - Possible values include: 'ResourceTypeResourceSettings', 'ResourceTypeMicrosoftComputevirtualMachines', 'ResourceTypeMicrosoftComputeavailabilitySets', 'ResourceTypeMicrosoftNetworkvirtualNetworks', 'ResourceTypeMicrosoftNetworknetworkInterfaces', 'ResourceTypeMicrosoftNetworknetworkSecurityGroups', 'ResourceTypeMicrosoftNetworkloadBalancers', 'ResourceTypeMicrosoftSqlservers', 'ResourceTypeMicrosoftSqlserverselasticPools', 'ResourceTypeMicrosoftSqlserversdatabases', 'ResourceTypeResourceGroups', 'ResourceTypeMicrosoftNetworkpublicIPAddresses'
+	// ResourceType - Possible values include: 'ResourceTypeResourceSettings', 'ResourceTypeMicrosoftComputevirtualMachines', 'ResourceTypeMicrosoftComputeavailabilitySets', 'ResourceTypeMicrosoftNetworkvirtualNetworks', 'ResourceTypeMicrosoftNetworknetworkInterfaces', 'ResourceTypeMicrosoftNetworknetworkSecurityGroups', 'ResourceTypeMicrosoftNetworkloadBalancers', 'ResourceTypeMicrosoftSqlservers', 'ResourceTypeMicrosoftSqlserverselasticPools', 'ResourceTypeMicrosoftSqlserversdatabases', 'ResourceTypeResourceGroups', 'ResourceTypeMicrosoftNetworkpublicIPAddresses', 'ResourceTypeMicrosoftKeyVaultvaults', 'ResourceTypeMicrosoftComputediskEncryptionSets'
 	ResourceType ResourceType `json:"resourceType,omitempty"`
 }
 
@@ -2097,6 +2392,14 @@ func unmarshalBasicResourceSettings(body []byte) (BasicResourceSettings, error) 
 		var piars PublicIPAddressResourceSettings
 		err := json.Unmarshal(body, &piars)
 		return piars, err
+	case string(ResourceTypeMicrosoftKeyVaultvaults):
+		var kvrs KeyVaultResourceSettings
+		err := json.Unmarshal(body, &kvrs)
+		return kvrs, err
+	case string(ResourceTypeMicrosoftComputediskEncryptionSets):
+		var desrs DiskEncryptionSetResourceSettings
+		err := json.Unmarshal(body, &desrs)
+		return desrs, err
 	default:
 		var rs ResourceSettings
 		err := json.Unmarshal(body, &rs)
@@ -2190,6 +2493,16 @@ func (rs ResourceSettings) AsPublicIPAddressResourceSettings() (*PublicIPAddress
 	return nil, false
 }
 
+// AsKeyVaultResourceSettings is the BasicResourceSettings implementation for ResourceSettings.
+func (rs ResourceSettings) AsKeyVaultResourceSettings() (*KeyVaultResourceSettings, bool) {
+	return nil, false
+}
+
+// AsDiskEncryptionSetResourceSettings is the BasicResourceSettings implementation for ResourceSettings.
+func (rs ResourceSettings) AsDiskEncryptionSetResourceSettings() (*DiskEncryptionSetResourceSettings, bool) {
+	return nil, false
+}
+
 // AsResourceSettings is the BasicResourceSettings implementation for ResourceSettings.
 func (rs ResourceSettings) AsResourceSettings() (*ResourceSettings, bool) {
 	return &rs, true
@@ -2206,7 +2519,7 @@ type SQLDatabaseResourceSettings struct {
 	ZoneRedundant ZoneRedundant `json:"zoneRedundant,omitempty"`
 	// TargetResourceName - Gets or sets the target Resource name.
 	TargetResourceName *string `json:"targetResourceName,omitempty"`
-	// ResourceType - Possible values include: 'ResourceTypeResourceSettings', 'ResourceTypeMicrosoftComputevirtualMachines', 'ResourceTypeMicrosoftComputeavailabilitySets', 'ResourceTypeMicrosoftNetworkvirtualNetworks', 'ResourceTypeMicrosoftNetworknetworkInterfaces', 'ResourceTypeMicrosoftNetworknetworkSecurityGroups', 'ResourceTypeMicrosoftNetworkloadBalancers', 'ResourceTypeMicrosoftSqlservers', 'ResourceTypeMicrosoftSqlserverselasticPools', 'ResourceTypeMicrosoftSqlserversdatabases', 'ResourceTypeResourceGroups', 'ResourceTypeMicrosoftNetworkpublicIPAddresses'
+	// ResourceType - Possible values include: 'ResourceTypeResourceSettings', 'ResourceTypeMicrosoftComputevirtualMachines', 'ResourceTypeMicrosoftComputeavailabilitySets', 'ResourceTypeMicrosoftNetworkvirtualNetworks', 'ResourceTypeMicrosoftNetworknetworkInterfaces', 'ResourceTypeMicrosoftNetworknetworkSecurityGroups', 'ResourceTypeMicrosoftNetworkloadBalancers', 'ResourceTypeMicrosoftSqlservers', 'ResourceTypeMicrosoftSqlserverselasticPools', 'ResourceTypeMicrosoftSqlserversdatabases', 'ResourceTypeResourceGroups', 'ResourceTypeMicrosoftNetworkpublicIPAddresses', 'ResourceTypeMicrosoftKeyVaultvaults', 'ResourceTypeMicrosoftComputediskEncryptionSets'
 	ResourceType ResourceType `json:"resourceType,omitempty"`
 }
 
@@ -2281,6 +2594,16 @@ func (sdrs SQLDatabaseResourceSettings) AsPublicIPAddressResourceSettings() (*Pu
 	return nil, false
 }
 
+// AsKeyVaultResourceSettings is the BasicResourceSettings implementation for SQLDatabaseResourceSettings.
+func (sdrs SQLDatabaseResourceSettings) AsKeyVaultResourceSettings() (*KeyVaultResourceSettings, bool) {
+	return nil, false
+}
+
+// AsDiskEncryptionSetResourceSettings is the BasicResourceSettings implementation for SQLDatabaseResourceSettings.
+func (sdrs SQLDatabaseResourceSettings) AsDiskEncryptionSetResourceSettings() (*DiskEncryptionSetResourceSettings, bool) {
+	return nil, false
+}
+
 // AsResourceSettings is the BasicResourceSettings implementation for SQLDatabaseResourceSettings.
 func (sdrs SQLDatabaseResourceSettings) AsResourceSettings() (*ResourceSettings, bool) {
 	return nil, false
@@ -2297,7 +2620,7 @@ type SQLElasticPoolResourceSettings struct {
 	ZoneRedundant ZoneRedundant `json:"zoneRedundant,omitempty"`
 	// TargetResourceName - Gets or sets the target Resource name.
 	TargetResourceName *string `json:"targetResourceName,omitempty"`
-	// ResourceType - Possible values include: 'ResourceTypeResourceSettings', 'ResourceTypeMicrosoftComputevirtualMachines', 'ResourceTypeMicrosoftComputeavailabilitySets', 'ResourceTypeMicrosoftNetworkvirtualNetworks', 'ResourceTypeMicrosoftNetworknetworkInterfaces', 'ResourceTypeMicrosoftNetworknetworkSecurityGroups', 'ResourceTypeMicrosoftNetworkloadBalancers', 'ResourceTypeMicrosoftSqlservers', 'ResourceTypeMicrosoftSqlserverselasticPools', 'ResourceTypeMicrosoftSqlserversdatabases', 'ResourceTypeResourceGroups', 'ResourceTypeMicrosoftNetworkpublicIPAddresses'
+	// ResourceType - Possible values include: 'ResourceTypeResourceSettings', 'ResourceTypeMicrosoftComputevirtualMachines', 'ResourceTypeMicrosoftComputeavailabilitySets', 'ResourceTypeMicrosoftNetworkvirtualNetworks', 'ResourceTypeMicrosoftNetworknetworkInterfaces', 'ResourceTypeMicrosoftNetworknetworkSecurityGroups', 'ResourceTypeMicrosoftNetworkloadBalancers', 'ResourceTypeMicrosoftSqlservers', 'ResourceTypeMicrosoftSqlserverselasticPools', 'ResourceTypeMicrosoftSqlserversdatabases', 'ResourceTypeResourceGroups', 'ResourceTypeMicrosoftNetworkpublicIPAddresses', 'ResourceTypeMicrosoftKeyVaultvaults', 'ResourceTypeMicrosoftComputediskEncryptionSets'
 	ResourceType ResourceType `json:"resourceType,omitempty"`
 }
 
@@ -2372,6 +2695,16 @@ func (seprs SQLElasticPoolResourceSettings) AsPublicIPAddressResourceSettings() 
 	return nil, false
 }
 
+// AsKeyVaultResourceSettings is the BasicResourceSettings implementation for SQLElasticPoolResourceSettings.
+func (seprs SQLElasticPoolResourceSettings) AsKeyVaultResourceSettings() (*KeyVaultResourceSettings, bool) {
+	return nil, false
+}
+
+// AsDiskEncryptionSetResourceSettings is the BasicResourceSettings implementation for SQLElasticPoolResourceSettings.
+func (seprs SQLElasticPoolResourceSettings) AsDiskEncryptionSetResourceSettings() (*DiskEncryptionSetResourceSettings, bool) {
+	return nil, false
+}
+
 // AsResourceSettings is the BasicResourceSettings implementation for SQLElasticPoolResourceSettings.
 func (seprs SQLElasticPoolResourceSettings) AsResourceSettings() (*ResourceSettings, bool) {
 	return nil, false
@@ -2386,7 +2719,7 @@ func (seprs SQLElasticPoolResourceSettings) AsBasicResourceSettings() (BasicReso
 type SQLServerResourceSettings struct {
 	// TargetResourceName - Gets or sets the target Resource name.
 	TargetResourceName *string `json:"targetResourceName,omitempty"`
-	// ResourceType - Possible values include: 'ResourceTypeResourceSettings', 'ResourceTypeMicrosoftComputevirtualMachines', 'ResourceTypeMicrosoftComputeavailabilitySets', 'ResourceTypeMicrosoftNetworkvirtualNetworks', 'ResourceTypeMicrosoftNetworknetworkInterfaces', 'ResourceTypeMicrosoftNetworknetworkSecurityGroups', 'ResourceTypeMicrosoftNetworkloadBalancers', 'ResourceTypeMicrosoftSqlservers', 'ResourceTypeMicrosoftSqlserverselasticPools', 'ResourceTypeMicrosoftSqlserversdatabases', 'ResourceTypeResourceGroups', 'ResourceTypeMicrosoftNetworkpublicIPAddresses'
+	// ResourceType - Possible values include: 'ResourceTypeResourceSettings', 'ResourceTypeMicrosoftComputevirtualMachines', 'ResourceTypeMicrosoftComputeavailabilitySets', 'ResourceTypeMicrosoftNetworkvirtualNetworks', 'ResourceTypeMicrosoftNetworknetworkInterfaces', 'ResourceTypeMicrosoftNetworknetworkSecurityGroups', 'ResourceTypeMicrosoftNetworkloadBalancers', 'ResourceTypeMicrosoftSqlservers', 'ResourceTypeMicrosoftSqlserverselasticPools', 'ResourceTypeMicrosoftSqlserversdatabases', 'ResourceTypeResourceGroups', 'ResourceTypeMicrosoftNetworkpublicIPAddresses', 'ResourceTypeMicrosoftKeyVaultvaults', 'ResourceTypeMicrosoftComputediskEncryptionSets'
 	ResourceType ResourceType `json:"resourceType,omitempty"`
 }
 
@@ -2458,6 +2791,16 @@ func (ssrs SQLServerResourceSettings) AsPublicIPAddressResourceSettings() (*Publ
 	return nil, false
 }
 
+// AsKeyVaultResourceSettings is the BasicResourceSettings implementation for SQLServerResourceSettings.
+func (ssrs SQLServerResourceSettings) AsKeyVaultResourceSettings() (*KeyVaultResourceSettings, bool) {
+	return nil, false
+}
+
+// AsDiskEncryptionSetResourceSettings is the BasicResourceSettings implementation for SQLServerResourceSettings.
+func (ssrs SQLServerResourceSettings) AsDiskEncryptionSetResourceSettings() (*DiskEncryptionSetResourceSettings, bool) {
+	return nil, false
+}
+
 // AsResourceSettings is the BasicResourceSettings implementation for SQLServerResourceSettings.
 func (ssrs SQLServerResourceSettings) AsResourceSettings() (*ResourceSettings, bool) {
 	return nil, false
@@ -2481,15 +2824,35 @@ type SubnetResourceSettings struct {
 	// Name - Gets or sets the Subnet name.
 	Name *string `json:"name,omitempty"`
 	// AddressPrefix - Gets or sets address prefix for the subnet.
-	AddressPrefix *string `json:"addressPrefix,omitempty"`
+	AddressPrefix        *string       `json:"addressPrefix,omitempty"`
+	NetworkSecurityGroup *NsgReference `json:"networkSecurityGroup,omitempty"`
 }
 
-// SummaryItem summary item.
-type SummaryItem struct {
+// Summary summary item.
+type Summary struct {
 	// Count - Gets the count.
 	Count *int32 `json:"count,omitempty"`
 	// Item - Gets the item.
 	Item *string `json:"item,omitempty"`
+}
+
+// SummaryCollection summary Collection.
+type SummaryCollection struct {
+	// FieldName - Gets or sets the field name on which summary is done.
+	FieldName *string `json:"fieldName,omitempty"`
+	// Summary - Gets or sets the list of summary items.
+	Summary *[]Summary `json:"summary,omitempty"`
+}
+
+// UnresolvedDependenciesFilter unresolved dependencies contract.
+type UnresolvedDependenciesFilter struct {
+	Properties *UnresolvedDependenciesFilterProperties `json:"properties,omitempty"`
+}
+
+// UnresolvedDependenciesFilterProperties ...
+type UnresolvedDependenciesFilterProperties struct {
+	// Count - The count of the resource.
+	Count *int32 `json:"count,omitempty"`
 }
 
 // UnresolvedDependency unresolved dependency.
@@ -2507,6 +2870,173 @@ type UnresolvedDependencyCollection struct {
 	Value *[]UnresolvedDependency `json:"value,omitempty"`
 	// NextLink - Gets or sets the value of  next link.
 	NextLink *string `json:"nextLink,omitempty"`
+	// SummaryCollection - READ-ONLY; Gets or sets the list of summary items and the field on which summary is done.
+	SummaryCollection *SummaryCollection `json:"summaryCollection,omitempty"`
+	// TotalCount - READ-ONLY; Gets the total count.
+	TotalCount *int64 `json:"totalCount,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UnresolvedDependencyCollection.
+func (udc UnresolvedDependencyCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if udc.Value != nil {
+		objectMap["value"] = udc.Value
+	}
+	if udc.NextLink != nil {
+		objectMap["nextLink"] = udc.NextLink
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnresolvedDependencyCollectionIterator provides access to a complete listing of UnresolvedDependency
+// values.
+type UnresolvedDependencyCollectionIterator struct {
+	i    int
+	page UnresolvedDependencyCollectionPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *UnresolvedDependencyCollectionIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/UnresolvedDependencyCollectionIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *UnresolvedDependencyCollectionIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter UnresolvedDependencyCollectionIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter UnresolvedDependencyCollectionIterator) Response() UnresolvedDependencyCollection {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter UnresolvedDependencyCollectionIterator) Value() UnresolvedDependency {
+	if !iter.page.NotDone() {
+		return UnresolvedDependency{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the UnresolvedDependencyCollectionIterator type.
+func NewUnresolvedDependencyCollectionIterator(page UnresolvedDependencyCollectionPage) UnresolvedDependencyCollectionIterator {
+	return UnresolvedDependencyCollectionIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (udc UnresolvedDependencyCollection) IsEmpty() bool {
+	return udc.Value == nil || len(*udc.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (udc UnresolvedDependencyCollection) hasNextLink() bool {
+	return udc.NextLink != nil && len(*udc.NextLink) != 0
+}
+
+// unresolvedDependencyCollectionPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (udc UnresolvedDependencyCollection) unresolvedDependencyCollectionPreparer(ctx context.Context) (*http.Request, error) {
+	if !udc.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(udc.NextLink)))
+}
+
+// UnresolvedDependencyCollectionPage contains a page of UnresolvedDependency values.
+type UnresolvedDependencyCollectionPage struct {
+	fn  func(context.Context, UnresolvedDependencyCollection) (UnresolvedDependencyCollection, error)
+	udc UnresolvedDependencyCollection
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *UnresolvedDependencyCollectionPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/UnresolvedDependencyCollectionPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.udc)
+		if err != nil {
+			return err
+		}
+		page.udc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *UnresolvedDependencyCollectionPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page UnresolvedDependencyCollectionPage) NotDone() bool {
+	return !page.udc.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page UnresolvedDependencyCollectionPage) Response() UnresolvedDependencyCollection {
+	return page.udc
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page UnresolvedDependencyCollectionPage) Values() []UnresolvedDependency {
+	if page.udc.IsEmpty() {
+		return nil
+	}
+	return *page.udc.Value
+}
+
+// Creates a new instance of the UnresolvedDependencyCollectionPage type.
+func NewUnresolvedDependencyCollectionPage(cur UnresolvedDependencyCollection, getNextPage func(context.Context, UnresolvedDependencyCollection) (UnresolvedDependencyCollection, error)) UnresolvedDependencyCollectionPage {
+	return UnresolvedDependencyCollectionPage{
+		fn:  getNextPage,
+		udc: cur,
+	}
 }
 
 // UpdateMoveCollectionRequest defines the request body for updating move collection.
@@ -2538,7 +3068,7 @@ type VirtualMachineResourceSettings struct {
 	TargetAvailabilitySetID *string `json:"targetAvailabilitySetId,omitempty"`
 	// TargetResourceName - Gets or sets the target Resource name.
 	TargetResourceName *string `json:"targetResourceName,omitempty"`
-	// ResourceType - Possible values include: 'ResourceTypeResourceSettings', 'ResourceTypeMicrosoftComputevirtualMachines', 'ResourceTypeMicrosoftComputeavailabilitySets', 'ResourceTypeMicrosoftNetworkvirtualNetworks', 'ResourceTypeMicrosoftNetworknetworkInterfaces', 'ResourceTypeMicrosoftNetworknetworkSecurityGroups', 'ResourceTypeMicrosoftNetworkloadBalancers', 'ResourceTypeMicrosoftSqlservers', 'ResourceTypeMicrosoftSqlserverselasticPools', 'ResourceTypeMicrosoftSqlserversdatabases', 'ResourceTypeResourceGroups', 'ResourceTypeMicrosoftNetworkpublicIPAddresses'
+	// ResourceType - Possible values include: 'ResourceTypeResourceSettings', 'ResourceTypeMicrosoftComputevirtualMachines', 'ResourceTypeMicrosoftComputeavailabilitySets', 'ResourceTypeMicrosoftNetworkvirtualNetworks', 'ResourceTypeMicrosoftNetworknetworkInterfaces', 'ResourceTypeMicrosoftNetworknetworkSecurityGroups', 'ResourceTypeMicrosoftNetworkloadBalancers', 'ResourceTypeMicrosoftSqlservers', 'ResourceTypeMicrosoftSqlserverselasticPools', 'ResourceTypeMicrosoftSqlserversdatabases', 'ResourceTypeResourceGroups', 'ResourceTypeMicrosoftNetworkpublicIPAddresses', 'ResourceTypeMicrosoftKeyVaultvaults', 'ResourceTypeMicrosoftComputediskEncryptionSets'
 	ResourceType ResourceType `json:"resourceType,omitempty"`
 }
 
@@ -2619,6 +3149,16 @@ func (vmrs VirtualMachineResourceSettings) AsPublicIPAddressResourceSettings() (
 	return nil, false
 }
 
+// AsKeyVaultResourceSettings is the BasicResourceSettings implementation for VirtualMachineResourceSettings.
+func (vmrs VirtualMachineResourceSettings) AsKeyVaultResourceSettings() (*KeyVaultResourceSettings, bool) {
+	return nil, false
+}
+
+// AsDiskEncryptionSetResourceSettings is the BasicResourceSettings implementation for VirtualMachineResourceSettings.
+func (vmrs VirtualMachineResourceSettings) AsDiskEncryptionSetResourceSettings() (*DiskEncryptionSetResourceSettings, bool) {
+	return nil, false
+}
+
 // AsResourceSettings is the BasicResourceSettings implementation for VirtualMachineResourceSettings.
 func (vmrs VirtualMachineResourceSettings) AsResourceSettings() (*ResourceSettings, bool) {
 	return nil, false
@@ -2643,7 +3183,7 @@ type VirtualNetworkResourceSettings struct {
 	Subnets *[]SubnetResourceSettings `json:"subnets,omitempty"`
 	// TargetResourceName - Gets or sets the target Resource name.
 	TargetResourceName *string `json:"targetResourceName,omitempty"`
-	// ResourceType - Possible values include: 'ResourceTypeResourceSettings', 'ResourceTypeMicrosoftComputevirtualMachines', 'ResourceTypeMicrosoftComputeavailabilitySets', 'ResourceTypeMicrosoftNetworkvirtualNetworks', 'ResourceTypeMicrosoftNetworknetworkInterfaces', 'ResourceTypeMicrosoftNetworknetworkSecurityGroups', 'ResourceTypeMicrosoftNetworkloadBalancers', 'ResourceTypeMicrosoftSqlservers', 'ResourceTypeMicrosoftSqlserverselasticPools', 'ResourceTypeMicrosoftSqlserversdatabases', 'ResourceTypeResourceGroups', 'ResourceTypeMicrosoftNetworkpublicIPAddresses'
+	// ResourceType - Possible values include: 'ResourceTypeResourceSettings', 'ResourceTypeMicrosoftComputevirtualMachines', 'ResourceTypeMicrosoftComputeavailabilitySets', 'ResourceTypeMicrosoftNetworkvirtualNetworks', 'ResourceTypeMicrosoftNetworknetworkInterfaces', 'ResourceTypeMicrosoftNetworknetworkSecurityGroups', 'ResourceTypeMicrosoftNetworkloadBalancers', 'ResourceTypeMicrosoftSqlservers', 'ResourceTypeMicrosoftSqlserverselasticPools', 'ResourceTypeMicrosoftSqlserversdatabases', 'ResourceTypeResourceGroups', 'ResourceTypeMicrosoftNetworkpublicIPAddresses', 'ResourceTypeMicrosoftKeyVaultvaults', 'ResourceTypeMicrosoftComputediskEncryptionSets'
 	ResourceType ResourceType `json:"resourceType,omitempty"`
 }
 
@@ -2724,6 +3264,16 @@ func (vnrs VirtualNetworkResourceSettings) AsResourceGroupResourceSettings() (*R
 
 // AsPublicIPAddressResourceSettings is the BasicResourceSettings implementation for VirtualNetworkResourceSettings.
 func (vnrs VirtualNetworkResourceSettings) AsPublicIPAddressResourceSettings() (*PublicIPAddressResourceSettings, bool) {
+	return nil, false
+}
+
+// AsKeyVaultResourceSettings is the BasicResourceSettings implementation for VirtualNetworkResourceSettings.
+func (vnrs VirtualNetworkResourceSettings) AsKeyVaultResourceSettings() (*KeyVaultResourceSettings, bool) {
+	return nil, false
+}
+
+// AsDiskEncryptionSetResourceSettings is the BasicResourceSettings implementation for VirtualNetworkResourceSettings.
+func (vnrs VirtualNetworkResourceSettings) AsDiskEncryptionSetResourceSettings() (*DiskEncryptionSetResourceSettings, bool) {
 	return nil, false
 }
 

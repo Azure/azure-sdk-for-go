@@ -8,6 +8,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -745,6 +746,8 @@ func TestContainerSetPermissionsIfUnModifiedSinceFalse(t *testing.T) {
 	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
+	err := recording.SetBodilessMatcher(t, nil)
+	require.NoError(t, err)
 
 	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
 	require.NoError(t, err)

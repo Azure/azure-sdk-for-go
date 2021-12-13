@@ -164,12 +164,12 @@ contentType := "text/plain"
 
 // We will also disable the secret for further use
 
-properties := Properties{
+properties := azsecrets.Properties{
     ContentType: to.StringPtr("password"),
     Tags: map[string]string{
         "Tag1": "TagVal1",
     },
-    SecretAttributes: &Attributes{
+    SecretAttributes: &azsecrets.Attributes{
         Enabled: to.BoolPtr(true),
     },
 }

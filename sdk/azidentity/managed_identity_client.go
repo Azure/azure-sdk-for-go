@@ -117,31 +117,28 @@ func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) (*manag
 	c := managedIdentityClient{id: options.ID, endpoint: imdsEndpoint, msiType: msiTypeIMDS, imdsTimeout: options.imdsTimeout}
 	env := "IMDS"
 	if endpoint, ok := os.LookupEnv(msiEndpoint); ok {
-		c.endpoint = endpoint
 		if _, ok := os.LookupEnv(msiSecret); ok {
-			c.msiType = msiTypeAppServiceV20170901
 			env = "App Service"
+			c.endpoint = endpoint
+			c.msiType = msiTypeAppServiceV20170901
 		} else {
-			c.msiType = msiTypeCloudShell
 			env = "Cloud Shell"
+			c.endpoint = endpoint
+			c.msiType = msiTypeCloudShell
 		}
 	} else if endpoint, ok := os.LookupEnv(identityEndpoint); ok {
-		c.endpoint = endpoint
 		if _, ok := os.LookupEnv(identityHeader); ok {
 			if _, ok := os.LookupEnv(identityServerThumbprint); ok {
-				c.msiType = msiTypeServiceFabric
 				env = "Service Fabric"
+				c.endpoint = endpoint
+				c.msiType = msiTypeServiceFabric
 			}
 		} else if _, ok := os.LookupEnv(arcIMDSEndpoint); ok {
-			c.msiType = msiTypeAzureArc
 			env = "Azure Arc"
-		} else {
-			// no known hosting environment sets only IDENTITY_ENDPOINT
-			return nil, newCredentialUnavailableError("Managed Identity Credential", "this environment is not supported")
+			c.endpoint = endpoint
+			c.msiType = msiTypeAzureArc
 		}
 	} else {
-		c.msiType = msiTypeIMDS
-		c.endpoint = imdsEndpoint
 		setIMDSRetryOptionDefaults(&cp.Retry)
 	}
 	c.pipeline = runtime.NewPipeline(component, version, runtime.PipelineOptions{}, &cp)

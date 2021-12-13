@@ -143,6 +143,11 @@ func SetMultipartFormData(req *policy.Request, formData map[string]interface{}) 
 	return req.SetBody(shared.NopCloser(bytes.NewReader(body.Bytes())), writer.FormDataContentType())
 }
 
+// SkipBodyDownload will disable automatic downloading of the response body.
+func SkipBodyDownload(req *policy.Request) {
+	req.SetOperationValue(bodyDownloadPolicyOpValues{Skip: true})
+}
+
 // returns a clone of the object graph pointed to by v, omitting values of all read-only
 // fields. if there are no read-only fields in the object graph, no clone is created.
 func cloneWithoutReadOnlyFields(v interface{}) interface{} {

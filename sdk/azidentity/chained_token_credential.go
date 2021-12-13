@@ -57,11 +57,7 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.Token
 	var errList []CredentialUnavailableError
 
 	if c.successfulCredential != nil && !c.retrySources {
-		token, err = c.successfulCredential.GetToken(ctx, opts)
-		if err != nil {
-			return nil, err
-		}
-		return token, nil
+		return  c.successfulCredential.GetToken(ctx, opts)
 	}
 	for _, cred := range c.sources {
 		token, err = cred.GetToken(ctx, opts)

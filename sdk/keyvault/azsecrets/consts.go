@@ -66,21 +66,31 @@ func deletionRecoveryLevelFromGenerated(i internal.DeletionRecoveryLevel) Deleti
 	}
 }
 
-func (d DeletionRecoveryLevel) toGenerated() internal.DeletionRecoveryLevel {
-	if d == CustomizedRecoverable {
-		return internal.DeletionRecoveryLevelCustomizedRecoverable
-	} else if d == CustomizedRecoverableProtectedSubscription {
-		return internal.DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription
-	} else if d == CustomizedRecoverablePurgeable {
-		return internal.DeletionRecoveryLevelCustomizedRecoverablePurgeable
-	} else if d == Purgeable {
-		return internal.DeletionRecoveryLevelPurgeable
-	} else if d == Recoverable {
-		return internal.DeletionRecoveryLevelRecoverable
-	} else if d == RecoverableProtectedSubscription {
-		return internal.DeletionRecoveryLevelRecoverableProtectedSubscription
+func (d *DeletionRecoveryLevel) toGenerated() *internal.DeletionRecoveryLevel {
+	if d == nil {
+		return nil
+	}
+	if *d == CustomizedRecoverable {
+		i := internal.DeletionRecoveryLevelCustomizedRecoverable
+		return i.ToPtr()
+	} else if *d == CustomizedRecoverableProtectedSubscription {
+		i := internal.DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription
+		return i.ToPtr()
+	} else if *d == CustomizedRecoverablePurgeable {
+		i := internal.DeletionRecoveryLevelCustomizedRecoverablePurgeable
+		return i.ToPtr()
+	} else if *d == Purgeable {
+		i := internal.DeletionRecoveryLevelPurgeable
+		return i.ToPtr()
+	} else if *d == Recoverable {
+		i := internal.DeletionRecoveryLevelRecoverable
+		return i.ToPtr()
+	} else if *d == RecoverableProtectedSubscription {
+		i := internal.DeletionRecoveryLevelRecoverableProtectedSubscription
+		return i.ToPtr()
 	} else {
-		return internal.DeletionRecoveryLevelRecoverablePurgeable
+		i := internal.DeletionRecoveryLevelRecoverablePurgeable
+		return i.ToPtr()
 	}
 }
 

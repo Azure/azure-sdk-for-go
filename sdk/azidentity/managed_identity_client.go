@@ -114,7 +114,7 @@ func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) (*manag
 		options = &ManagedIdentityCredentialOptions{}
 	}
 	cp := options.ClientOptions
-	c := managedIdentityClient{id: options.ID, endpoint: imdsEndpoint, msiType: msiTypeIMDS, imdsTimeout: options.imdsTimeout}
+	c := managedIdentityClient{id: options.ID, endpoint: imdsEndpoint, msiType: msiTypeIMDS}
 	env := "IMDS"
 	if endpoint, ok := os.LookupEnv(msiEndpoint); ok {
 		if _, ok := os.LookupEnv(msiSecret); ok {

@@ -54,11 +54,10 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 		errMsg += err.Error()
 	}
 
-	msiCred, err := NewManagedIdentityCredential(
-		&ManagedIdentityCredentialOptions{ClientOptions: options.ClientOptions, imdsTimeout: time.Second},
-	)
+	msiCred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ClientOptions: options.ClientOptions})
 	if err == nil {
 		creds = append(creds, msiCred)
+		msiCred.client.imdsTimeout = time.Second
 	} else {
 		errMsg += err.Error()
 	}

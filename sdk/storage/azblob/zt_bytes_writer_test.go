@@ -5,6 +5,7 @@ package azblob
 
 import (
 	"bytes"
+
 	"github.com/stretchr/testify/assert"
 )
 
@@ -28,7 +29,7 @@ func (s *azblobUnrecordedTestSuite) TestBytesWriterWriteAt() {
 	_assert.Equal(bytes.Compare(b, []byte{0, 0, 0, 0, 0, 0, 0, 0, 0, 1}), 0)
 
 	count, err = buffer.WriteAt([]byte{1, 2}, 8)
-	_assert.Nil(err)
+	_assert.NoError(err)
 	_assert.Equal(count, 2)
 	_assert.Equal(bytes.Compare(b, []byte{0, 0, 0, 0, 0, 0, 0, 0, 1, 2}), 0)
 }

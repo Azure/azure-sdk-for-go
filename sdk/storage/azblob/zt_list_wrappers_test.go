@@ -4,8 +4,9 @@
 package azblob
 
 import (
-	"github.com/stretchr/testify/assert"
 	"sort"
+
+	"github.com/stretchr/testify/assert"
 )
 
 // tests general functionality
@@ -22,7 +23,7 @@ func (s *azblobTestSuite) TestBlobListWrapper() {
 	containerClient := getContainerClient(containerName, svcClient)
 
 	_, err = containerClient.Create(ctx, nil)
-	_assert.Nil(err)
+	_assert.NoError(err)
 	defer deleteContainer(_assert, containerClient)
 
 	files := []string{"a123", "b234", "c345"}
@@ -61,7 +62,7 @@ func (s *azblobTestSuite) TestBlobListWrapperFullBuffer() {
 	containerClient := getContainerClient(generateContainerName(testName), svcClient)
 
 	_, err = containerClient.Create(ctx, nil)
-	_assert.Nil(err)
+	_assert.NoError(err)
 	defer deleteContainer(_assert, containerClient)
 
 	files := []string{"a123", "b234", "c345"}

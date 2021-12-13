@@ -5,9 +5,10 @@ package azblob
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/assert"
-	"strings"
 )
 
 //nolint
@@ -20,7 +21,7 @@ import (
 //	testURL := svcClient.NewContainerClient(containerPrefix)
 //
 //	accountName, err := getRequiredEnv(AccountNameEnvVar)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //	correctURL := "https://" + accountName + "." + DefaultBlobEndpointSuffix + containerPrefix
 //	_assert.Equal(testURL.URL(), correctURL)
 //}
@@ -35,7 +36,7 @@ import (
 //	testURL := svcClient.NewContainerClient(ContainerNameRoot)
 //
 //	accountName, err := getRequiredEnv(AccountNameEnvVar)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //	correctURL := "https://" + accountName + ".blob.core.windows.net/$root"
 //	_assert.Equal(testURL.URL(), correctURL)
 //}
@@ -56,7 +57,7 @@ func (s *azblobTestSuite) TestContainerCreateInvalidName() {
 		Metadata: map[string]string{},
 	}
 	_, err = containerClient.Create(ctx, &createContainerOptions)
-	_assert.NotNil(err)
+	_assert.Error(err)
 	validateStorageError(_assert, err, StorageErrorCodeInvalidResourceName)
 }
 
@@ -77,7 +78,7 @@ func (s *azblobTestSuite) TestContainerCreateEmptyName() {
 		Metadata: map[string]string{},
 	}
 	_, err = containerClient.Create(ctx, &createContainerOptions)
-	_assert.NotNil(err)
+	_assert.Error(err)
 
 	validateStorageError(_assert, err, StorageErrorCodeInvalidQueryParameterValue)
 }
@@ -104,7 +105,7 @@ func (s *azblobTestSuite) TestContainerCreateNameCollision() {
 
 	containerClient = svcClient.NewContainerClient(containerName)
 	_, err = containerClient.Create(ctx, &createContainerOptions)
-	_assert.NotNil(err)
+	_assert.Error(err)
 
 	validateStorageError(_assert, err, StorageErrorCodeContainerAlreadyExists)
 }
@@ -127,7 +128,7 @@ func (s *azblobTestSuite) TestContainerCreateInvalidMetadata() {
 	}
 	_, err = containerClient.Create(ctx, &createContainerOptions)
 
-	_assert.NotNil(err)
+	_assert.Error(err)
 	_assert.Equal(strings.Contains(err.Error(), invalidHeaderErrorSubstring), true)
 }
 
@@ -149,10 +150,10 @@ func (s *azblobTestSuite) TestContainerCreateNilMetadata() {
 	}
 	_, err = containerClient.Create(ctx, &createContainerOptions)
 	defer deleteContainer(_assert, containerClient)
-	_assert.Nil(err)
+	_assert.NoError(err)
 
 	response, err := containerClient.GetProperties(ctx, nil)
-	_assert.Nil(err)
+	_assert.NoError(err)
 	_assert.Nil(response.Metadata)
 }
 
@@ -175,10 +176,10 @@ func (s *azblobTestSuite) TestContainerCreateEmptyMetadata() {
 	}
 	_, err = containerClient.Create(ctx, &createContainerOptions)
 	defer deleteContainer(_assert, containerClient)
-	_assert.Nil(err)
+	_assert.NoError(err)
 
 	response, err := containerClient.GetProperties(ctx, nil)
-	_assert.Nil(err)
+	_assert.NoError(err)
 	_assert.Nil(response.Metadata)
 }
 
@@ -192,7 +193,7 @@ func (s *azblobTestSuite) TestContainerCreateEmptyMetadata() {
 //		HTTPClient: _context.recording,
 //		Retry: azcore.RetryOptions{MaxRetries: -1}})
 //	credential, err := getGenericCredential("")
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //
 //	containerName := generateContainerName(testName)
 //	containerClient := getContainerClient(containerName, svcClient)
@@ -203,14 +204,14 @@ func (s *azblobTestSuite) TestContainerCreateEmptyMetadata() {
 //	}
 //	_, err = containerClient.Create(ctx, &createContainerOptions)
 //	defer deleteContainer(_assert, containerClient)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //
 //	bbClient := containerClient.NewBlockBlobClient(blobPrefix)
 //	uploadBlockBlobOptions := UploadBlockBlobOptions{
 //		Metadata: basicMetadata,
 //	}
 //	_, err = bbClient.Upload(ctx, bytes.NewReader([]byte("Content")), &uploadBlockBlobOptions)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //
 //	// Anonymous enumeration should be valid with container access
 //	containerClient2, _ := NewContainerClient(containerClient.URL(), credential, nil)
@@ -229,7 +230,7 @@ func (s *azblobTestSuite) TestContainerCreateEmptyMetadata() {
 //	// Getting blob data anonymously should still be valid with container access
 //	blobURL2 := containerClient2.NewBlockBlobClient(blobPrefix)
 //	resp, err := blobURL2.GetProperties(ctx, nil)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //	_assert.EqualValues(resp.Metadata, basicMetadata)
 //}
 
@@ -251,18 +252,18 @@ func (s *azblobTestSuite) TestContainerCreateEmptyMetadata() {
 //	}
 //	_, err = containerClient.Create(ctx, &createContainerOptions)
 //	defer deleteContainer(_assert, containerClient)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //
 //	bbClient := containerClient.NewBlockBlobClient(blobPrefix)
 //	uploadBlockBlobOptions := UploadBlockBlobOptions{
 //		Metadata: basicMetadata,
 //	}
 //	_, err = bbClient.Upload(ctx, bytes.NewReader([]byte("Content")), &uploadBlockBlobOptions)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //
 //	// Reference the same container URL but with anonymous credentials
 //	containerClient2, err := NewContainerClient(containerClient.URL(), azcore.AnonymousCredential(), nil)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //
 //	pager := containerClient2.ListBlobsFlat(nil)
 //
@@ -272,7 +273,7 @@ func (s *azblobTestSuite) TestContainerCreateEmptyMetadata() {
 //	// Accessing blob specific data should be public
 //	blobURL2 := containerClient2.NewBlockBlobClient(blobPrefix)
 //	resp, err := blobURL2.GetProperties(ctx, nil)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //	_assert.EqualValues(resp.Metadata, basicMetadata)
 //}
 
@@ -291,18 +292,18 @@ func (s *azblobTestSuite) TestContainerCreateAccessNone() {
 	// Public Access Type None
 	_, err = containerClient.Create(ctx, nil)
 	defer deleteContainer(_assert, containerClient)
-	_assert.Nil(err)
+	_assert.NoError(err)
 
 	bbClient := containerClient.NewBlockBlobClient(blobPrefix)
 	uploadBlockBlobOptions := UploadBlockBlobOptions{
 		Metadata: basicMetadata,
 	}
 	_, err = bbClient.Upload(ctx, internal.NopCloser(strings.NewReader("Content")), &uploadBlockBlobOptions)
-	_assert.Nil(err)
+	_assert.NoError(err)
 
 	// Reference the same container URL but with anonymous credentials
 	containerClient2, err := NewContainerClientWithNoCredential(containerClient.URL(), nil)
-	_assert.Nil(err)
+	_assert.NoError(err)
 
 	pager := containerClient2.ListBlobsFlat(nil)
 
@@ -312,7 +313,7 @@ func (s *azblobTestSuite) TestContainerCreateAccessNone() {
 	// Blob data is not public
 	blobURL2 := containerClient2.NewBlockBlobClient(blobPrefix)
 	_, err = blobURL2.GetProperties(ctx, nil)
-	_assert.NotNil(err)
+	_assert.Error(err)
 
 	//serr := err.(StorageError)
 	//_assert(serr.Response().StatusCode, chk.Equals, 401) // HEAD request does not return a status code
@@ -333,7 +334,7 @@ func (s *azblobTestSuite) TestContainerCreateAccessNone() {
 //	// Public Access Type None
 //	_, err = containerClient.Create(ctx, nil)
 //	defer deleteContainer(_assert, containerClient)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //
 //	access := PublicAccessTypeBlob
 //	createContainerOptions := CreateContainerOptions{
@@ -341,11 +342,11 @@ func (s *azblobTestSuite) TestContainerCreateAccessNone() {
 //		Metadata: nil,
 //	}
 //	_, err = containerClient.CreateIfNotExists(ctx, &createContainerOptions)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //
 //	// Ensure that next create call doesn't update the properties of already created container
 //	getResp, err := containerClient.GetProperties(ctx, nil)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //	_assert.Nil(getResp.BlobPublicAccess)
 //	_assert.Nil(getResp.Metadata)
 //}
@@ -368,19 +369,19 @@ func (s *azblobTestSuite) TestContainerCreateAccessNone() {
 //		Metadata: basicMetadata,
 //	}
 //	_, err = containerClient.CreateIfNotExists(ctx, &createContainerOptions)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //	defer deleteContainer(_assert, containerClient)
 //
 //	// Ensure that next create call doesn't update the properties of already created container
 //	getResp, err := containerClient.GetProperties(ctx, nil)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //	_assert.EqualValues(*getResp.BlobPublicAccess, PublicAccessTypeBlob)
 //	_assert.EqualValues(getResp.Metadata, basicMetadata)
 //}
 
 func validateContainerDeleted(_assert *assert.Assertions, containerClient ContainerClient) {
 	_, err := containerClient.GetAccessPolicy(ctx, nil)
-	_assert.NotNil(err)
+	_assert.Error(err)
 
 	validateStorageError(_assert, err, StorageErrorCodeContainerNotFound)
 }
@@ -398,7 +399,7 @@ func (s *azblobTestSuite) TestContainerDelete() {
 	containerClient := createNewContainer(_assert, containerName, svcClient)
 
 	_, err = containerClient.Delete(ctx, nil)
-	_assert.Nil(err)
+	_assert.NoError(err)
 
 	validateContainerDeleted(_assert, containerClient)
 }
@@ -418,10 +419,10 @@ func (s *azblobTestSuite) TestContainerDelete() {
 //	// Public Access Type None
 //	_, err = containerClient.Create(ctx, nil)
 //	defer deleteContainer(_assert, containerClient)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //
 //	_, err = containerClient.DeleteIfExists(ctx, nil)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //
 //	validateContainerDeleted(_assert, containerClient)
 //}
@@ -439,7 +440,7 @@ func (s *azblobTestSuite) TestContainerDelete() {
 //	containerClient := getContainerClient(containerName, serviceClient)
 //
 //	_, err = containerClient.DeleteIfExists(ctx, nil)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //}
 
 func (s *azblobTestSuite) TestContainerDeleteNonExistent() {
@@ -454,7 +455,7 @@ func (s *azblobTestSuite) TestContainerDeleteNonExistent() {
 	containerClient := getContainerClient(containerName, svcClient)
 
 	_, err = containerClient.Delete(ctx, nil)
-	_assert.NotNil(err)
+	_assert.Error(err)
 
 	validateStorageError(_assert, err, StorageErrorCodeContainerNotFound)
 }
@@ -472,7 +473,7 @@ func (s *azblobTestSuite) TestContainerDeleteIfModifiedSinceTrue() {
 	containerClient := getContainerClient(containerName, svcClient)
 
 	cResp, err := containerClient.Create(ctx, nil)
-	_assert.Nil(err)
+	_assert.NoError(err)
 	_assert.Equal(cResp.RawResponse.StatusCode, 201)
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, -10)
@@ -483,7 +484,7 @@ func (s *azblobTestSuite) TestContainerDeleteIfModifiedSinceTrue() {
 		},
 	}
 	_, err = containerClient.Delete(ctx, &deleteContainerOptions)
-	_assert.Nil(err)
+	_assert.NoError(err)
 	validateContainerDeleted(_assert, containerClient)
 }
 
@@ -500,7 +501,7 @@ func (s *azblobTestSuite) TestContainerDeleteIfModifiedSinceFalse() {
 	containerClient := getContainerClient(containerName, svcClient)
 
 	cResp, err := containerClient.Create(ctx, nil)
-	_assert.Nil(err)
+	_assert.NoError(err)
 	_assert.Equal(cResp.RawResponse.StatusCode, 201)
 	defer deleteContainer(_assert, containerClient)
 
@@ -512,7 +513,7 @@ func (s *azblobTestSuite) TestContainerDeleteIfModifiedSinceFalse() {
 		},
 	}
 	_, err = containerClient.Delete(ctx, &deleteContainerOptions)
-	_assert.NotNil(err)
+	_assert.Error(err)
 
 	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
 }
@@ -530,7 +531,7 @@ func (s *azblobTestSuite) TestContainerDeleteIfUnModifiedSinceTrue() {
 	containerClient := getContainerClient(containerName, svcClient)
 
 	cResp, err := containerClient.Create(ctx, nil)
-	_assert.Nil(err)
+	_assert.NoError(err)
 	_assert.Equal(cResp.RawResponse.StatusCode, 201)
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, 10)
@@ -541,7 +542,7 @@ func (s *azblobTestSuite) TestContainerDeleteIfUnModifiedSinceTrue() {
 		},
 	}
 	_, err = containerClient.Delete(ctx, &deleteContainerOptions)
-	_assert.Nil(err)
+	_assert.NoError(err)
 
 	validateContainerDeleted(_assert, containerClient)
 }
@@ -559,7 +560,7 @@ func (s *azblobTestSuite) TestContainerDeleteIfUnModifiedSinceFalse() {
 	containerClient := getContainerClient(containerName, svcClient)
 
 	cResp, err := containerClient.Create(ctx, nil)
-	_assert.Nil(err)
+	_assert.NoError(err)
 	_assert.Equal(cResp.RawResponse.StatusCode, 201)
 	defer deleteContainer(_assert, containerClient)
 
@@ -571,7 +572,7 @@ func (s *azblobTestSuite) TestContainerDeleteIfUnModifiedSinceFalse() {
 		},
 	}
 	_, err = containerClient.Delete(ctx, &deleteContainerOptions)
-	_assert.NotNil(err)
+	_assert.Error(err)
 
 	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
 }
@@ -591,7 +592,7 @@ func (s *azblobTestSuite) TestContainerDeleteIfUnModifiedSinceFalse() {
 ////		},
 ////	}
 ////	_, err := containerClient.SetMetadata(ctx, &deleteContainerOptions)
-////	_assert.NotNil(err)
+////	_assert.Error(err)
 ////}
 //
 ////func (s *azblobTestSuite) TestContainerListBlobsNonexistentPrefix() {
@@ -664,7 +665,7 @@ func (s *azblobTestSuite) TestContainerDeleteIfUnModifiedSinceFalse() {
 //	_assert(count, chk.Equals, 1)
 //
 //	// TODO: Ask why the output is BlobItemInternal and why other fields are not there for ex: prefix array
-//	//_assert.Nil(err)
+//	//_assert.NoError(err)
 //	//_assert(len(resp.Segment.BlobItems), chk.Equals, 1)
 //	//_assert(len(resp.Segment.BlobPrefixes), chk.Equals, 2)
 //	//_assert(resp.Segment.BlobPrefixes[0].Name, chk.Equals, "a/")
@@ -690,7 +691,7 @@ func (s *azblobTestSuite) TestContainerListBlobsWithSnapshots() {
 	snapBlob := createNewBlockBlob(_assert, snapBlobName, containerClient)
 	snap, err := snapBlob.CreateSnapshot(ctx, nil)
 	// snap.
-	_assert.Nil(err)
+	_assert.NoError(err)
 
 	listBlobFlatSegmentOptions := ContainerListBlobFlatSegmentOptions{
 		Include: []ListBlobsIncludeItem{ListBlobsIncludeItemSnapshots},
@@ -745,11 +746,11 @@ func (s *azblobTestSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	_, blobNameNoMetadata := createNewBlockBlobWithPrefix(c, container, "a")
 ////	blobMetadata, blobNameMetadata := createNewBlockBlobWithPrefix(c, container, "b")
 ////	_, err := blobMetadata.SetMetadata(ctx, Metadata{"field": "value"}, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-////	_assert.Nil(err)
+////	_assert.NoError(err)
 ////
 ////	resp, err := container.ListBlobsFlat(ctx, Marker{}, ListBlobsSegmentOptions{Details: BlobListingDetails{Metadata: true}})
 ////
-////	_assert.Nil(err)
+////	_assert.NoError(err)
 ////	_assert(resp.Segment.BlobItems[0].Name, chk.Equals, blobNameNoMetadata)
 ////	_assert(resp.Segment.BlobItems[0].Metadata, chk.HasLen, 0)
 ////	_assert(resp.Segment.BlobItems[1].Name, chk.Equals, blobNameMetadata)
@@ -762,12 +763,12 @@ func (s *azblobTestSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	defer deleteContainer(_assert, containerClient)
 ////	blob, blobName := createNewBlockBlob(c, containerClient)
 ////	_, err := blob.CreateSnapshot(ctx, Metadata{}, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-////	_assert.Nil(err)
+////	_assert.NoError(err)
 ////
 ////	resp, err := containerClient.ListBlobsFlat(ctx, Marker{},
 ////		ListBlobsSegmentOptions{Details: BlobListingDetails{Snapshots: true}})
 ////
-////	_assert.Nil(err)
+////	_assert.NoError(err)
 ////	_assert(resp.Segment.BlobItems, chk.HasLen, 2)
 ////	_assert(resp.Segment.BlobItems[0].Name, chk.Equals, blobName)
 ////	_assert(resp.Segment.BlobItems[0].Snapshot, chk.NotNil)
@@ -782,13 +783,13 @@ func (s *azblobTestSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	bbClient, blobName := createNewBlockBlob(c, containerClient)
 ////	blobCopyURL, blobCopyName := createNewBlockBlobWithPrefix(c, containerClient, "copy")
 ////	_, err := blobCopyURL.StartCopyFromURL(ctx, bbClient.URL(), Metadata{}, ModifiedAccessConditions{}, BlobAccessConditions{}, DefaultAccessTier, nil)
-////	_assert.Nil(err)
+////	_assert.NoError(err)
 ////
 ////	resp, err := containerClient.ListBlobsFlat(ctx, Marker{},
 ////		ListBlobsSegmentOptions{Details: BlobListingDetails{Copy: true}})
 ////
 ////	// These are sufficient to show that the blob copy was in fact included
-////	_assert.Nil(err)
+////	_assert.NoError(err)
 ////	_assert(resp.Segment.BlobItems, chk.HasLen, 2)
 ////	_assert(resp.Segment.BlobItems[1].Name, chk.Equals, blobName)
 ////	_assert(resp.Segment.BlobItems[0].Name, chk.Equals, blobCopyName)
@@ -804,12 +805,12 @@ func (s *azblobTestSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	defer deleteContainer(_assert, containerClient)
 ////	bbClient, blobName := getBlockBlobURL(c, containerClient)
 ////	_, err := bbClient.StageBlock(ctx, blockID, strings.NewReader(blockBlobDefaultData), LeaseAccessConditions{}, nil, ClientProvidedKeyOptions{})
-////	_assert.Nil(err)
+////	_assert.NoError(err)
 ////
 ////	resp, err := containerClient.ListBlobsFlat(ctx, Marker{},
 ////		ListBlobsSegmentOptions{Details: BlobListingDetails{UncommittedBlobs: true}})
 ////
-////	_assert.Nil(err)
+////	_assert.NoError(err)
 ////	_assert(resp.Segment.BlobItems, chk.HasLen, 1)
 ////	_assert(resp.Segment.BlobItems[0].Name, chk.Equals, blobName)
 ////}
@@ -821,15 +822,15 @@ func (s *azblobTestSuite) TestContainerListBlobsInvalidDelimiter() {
 ////
 ////	resp, err := containerClient.ListBlobsFlat(ctx, Marker{},
 ////		ListBlobsSegmentOptions{Details: BlobListingDetails{Versions: true, Deleted: true}})
-////	_assert.Nil(err)
+////	_assert.NoError(err)
 ////	_assert(resp.Segment.BlobItems, chk.HasLen, 1)
 ////
 ////	_, err = bbClient.Delete(ctx, DeleteSnapshotsOptionInclude, BlobAccessConditions{})
-////	_assert.Nil(err)
+////	_assert.NoError(err)
 ////
 ////	resp, err = containerClient.ListBlobsFlat(ctx, Marker{},
 ////		ListBlobsSegmentOptions{Details: BlobListingDetails{Versions: true, Deleted: true}})
-////	_assert.Nil(err)
+////	_assert.NoError(err)
 ////	if len(resp.Segment.BlobItems) != 1 {
 ////		return errors.New("DeletedBlobNotFound")
 ////	}
@@ -852,10 +853,10 @@ func (s *azblobTestSuite) TestContainerListBlobsInvalidDelimiter() {
 ////
 ////	bbClient, _ := createNewBlockBlobWithPrefix(c, containerClient, "z")
 ////	_, err := bbClient.CreateSnapshot(ctx, Metadata{}, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-////	_assert.Nil(err)
+////	_assert.NoError(err)
 ////	blobURL2, _ := createNewBlockBlobWithPrefix(c, containerClient, "copy")
 ////	resp2, err := blobURL2.StartCopyFromURL(ctx, bbClient.URL(), Metadata{}, ModifiedAccessConditions{}, BlobAccessConditions{}, DefaultAccessTier, nil)
-////	_assert.Nil(err)
+////	_assert.NoError(err)
 ////	waitForCopy(c, blobURL2, resp2)
 ////	blobURL3, _ := createNewBlockBlobWithPrefix(c, containerClient, "deleted")
 ////
@@ -864,7 +865,7 @@ func (s *azblobTestSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	resp, err := containerClient.ListBlobsFlat(ctx, Marker{},
 ////		ListBlobsSegmentOptions{Details: BlobListingDetails{Snapshots: true, Copy: true, Deleted: true, Versions: true}})
 ////
-////	_assert.Nil(err)
+////	_assert.NoError(err)
 ////	if len(resp.Segment.BlobItems) != 6 {
 ////		// If there are fewer blobs in the container than there should be, it will be because one was permanently deleted.
 ////		return errors.New("DeletedBlobNotFound")
@@ -1026,7 +1027,7 @@ func (s *azblobTestSuite) TestContainerGetPropertiesAndMetadataNoMetadata() {
 	defer deleteContainer(_assert, containerClient)
 
 	resp, err := containerClient.GetProperties(ctx, nil)
-	_assert.Nil(err)
+	_assert.NoError(err)
 	_assert.Nil(resp.Metadata)
 }
 
@@ -1042,7 +1043,7 @@ func (s *azblobTestSuite) TestContainerGetPropsAndMetaNonExistentContainer() {
 	containerClient := getContainerClient(containerName, svcClient)
 
 	_, err = containerClient.GetProperties(ctx, nil)
-	_assert.NotNil(err)
+	_assert.Error(err)
 
 	validateStorageError(_assert, err, StorageErrorCodeContainerNotFound)
 }
@@ -1065,16 +1066,16 @@ func (s *azblobTestSuite) TestContainerSetMetadataEmpty() {
 	}
 	_, err = containerClient.Create(ctx, &createContainerOptions)
 	defer deleteContainer(_assert, containerClient)
-	_assert.Nil(err)
+	_assert.NoError(err)
 
 	setMetadataContainerOptions := SetMetadataContainerOptions{
 		Metadata: map[string]string{},
 	}
 	_, err = containerClient.SetMetadata(ctx, &setMetadataContainerOptions)
-	_assert.Nil(err)
+	_assert.NoError(err)
 
 	resp, err := containerClient.GetProperties(ctx, nil)
-	_assert.Nil(err)
+	_assert.NoError(err)
 	_assert.Nil(resp.Metadata)
 }
 
@@ -1094,14 +1095,14 @@ func (s *azblobTestSuite) TestContainerSetMetadataNil() {
 		Metadata: basicMetadata,
 	}
 	_, err = containerClient.Create(ctx, &createContainerOptions)
-	_assert.Nil(err)
+	_assert.NoError(err)
 	defer deleteContainer(_assert, containerClient)
 
 	_, err = containerClient.SetMetadata(ctx, nil)
-	_assert.Nil(err)
+	_assert.NoError(err)
 
 	resp, err := containerClient.GetProperties(ctx, nil)
-	_assert.Nil(err)
+	_assert.NoError(err)
 	_assert.Nil(resp.Metadata)
 }
 
@@ -1122,7 +1123,7 @@ func (s *azblobTestSuite) TestContainerSetMetadataInvalidField() {
 		Metadata: map[string]string{"!nval!d Field!@#%": "value"},
 	}
 	_, err = containerClient.SetMetadata(ctx, &setMetadataContainerOptions)
-	_assert.NotNil(err)
+	_assert.Error(err)
 	_assert.Equal(strings.Contains(err.Error(), invalidHeaderErrorSubstring), true)
 }
 
@@ -1138,7 +1139,7 @@ func (s *azblobTestSuite) TestContainerSetMetadataNonExistent() {
 	containerClient := getContainerClient(containerName, svcClient)
 
 	_, err = containerClient.SetMetadata(ctx, nil)
-	_assert.NotNil(err)
+	_assert.Error(err)
 
 	validateStorageError(_assert, err, StorageErrorCodeContainerNotFound)
 }
@@ -1159,10 +1160,10 @@ func (s *azblobTestSuite) TestContainerSetMetadataNonExistent() {
 //		},
 //	}
 //	_, err := containerClient.SetMetadata(ctx, &setMetadataContainerOptions)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //
 //	resp, err := containerClient.GetProperties(ctx, nil)
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //	_assert(resp.Metadata, chk.NotNil)
 //	_assert(resp.Metadata, chk.DeepEquals, basicMetadata)
 //
@@ -1183,7 +1184,7 @@ func (s *azblobTestSuite) TestContainerSetMetadataNonExistent() {
 //	//currentTime := getRelativeTimeGMT(10)
 //	//currentTime, err := time.Parse(time.UnixDate, "Wed Jan 07 11:11:11 PST 2099")
 //	currentTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
-//	_assert.Nil(err)
+//	_assert.NoError(err)
 //	setMetadataContainerOptions := SetMetadataContainerOptions{
 //		Metadata: basicMetadata,
 //		ModifiedAccessConditions: &ModifiedAccessConditions{
@@ -1191,7 +1192,7 @@ func (s *azblobTestSuite) TestContainerSetMetadataNonExistent() {
 //		},
 //	}
 //	_, err = containerClient.SetMetadata(ctx, &setMetadataContainerOptions)
-//	_assert.NotNil(err)
+//	_assert.Error(err)
 //
 //	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
 //}

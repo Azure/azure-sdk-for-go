@@ -7,12 +7,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/stretchr/testify/assert"
 	"io"
 	"math/rand"
 	"net"
 	"net/http"
 	"time"
+
+	"github.com/stretchr/testify/assert"
 )
 
 // Testings for RetryReader
@@ -132,7 +133,7 @@ func (s *azblobUnrecordedTestSuite) TestRetryReaderReadWithRetry() {
 
 		httpGetterInfo := HTTPGetterInfo{Offset: 0, Count: int64(byteCount)}
 		initResponse, err := getter(context.Background(), httpGetterInfo)
-		_assert.Nil(err)
+		_assert.NoError(err)
 
 		rrOptions := RetryReaderOptions{MaxRetryRequests: 1}
 		if logThisRun {
@@ -144,7 +145,7 @@ func (s *azblobUnrecordedTestSuite) TestRetryReaderReadWithRetry() {
 		can := make([]byte, 1)
 		n, err := retryReader.Read(can)
 		_assert.Equal(n, 1)
-		_assert.Nil(err)
+		_assert.NoError(err)
 
 		// check "logging", if it was enabled
 		if logThisRun {
@@ -204,7 +205,7 @@ func (s *azblobUnrecordedTestSuite) TestRetryReaderWithRetryIoUnexpectedEOF() {
 
 		httpGetterInfo := HTTPGetterInfo{Offset: 0, Count: int64(byteCount)}
 		initResponse, err := getter(context.Background(), httpGetterInfo)
-		_assert.Nil(err)
+		_assert.NoError(err)
 
 		rrOptions := RetryReaderOptions{MaxRetryRequests: 1}
 		if logThisRun {
@@ -216,7 +217,7 @@ func (s *azblobUnrecordedTestSuite) TestRetryReaderWithRetryIoUnexpectedEOF() {
 		can := make([]byte, 1)
 		n, err := retryReader.Read(can)
 		_assert.Equal(n, 1)
-		_assert.Nil(err)
+		_assert.NoError(err)
 
 		// check "logging", if it was enabled
 		if logThisRun {
@@ -319,7 +320,7 @@ func (s *azblobUnrecordedTestSuite) TestRetryReaderReadCount0() {
 	can := make([]byte, 1)
 	n, err := retryReader.Read(can)
 	_assert.Equal(n, 1)
-	_assert.Nil(err)
+	_assert.NoError(err)
 
 	// should not read when Count=0, and should return EOF
 	n, err = retryReader.Read(can)
@@ -388,7 +389,7 @@ func (s *azblobUnrecordedTestSuite) TestRetryReaderReadWithForcedRetry() {
 
 		httpGetterInfo := HTTPGetterInfo{Offset: 0, Count: int64(byteCount)}
 		initResponse, err := getter(context.Background(), httpGetterInfo)
-		_assert.Nil(err)
+		_assert.NoError(err)
 
 		rrOptions := RetryReaderOptions{MaxRetryRequests: 2, TreatEarlyCloseAsError: !enableRetryOnEarlyClose}
 		rrOptions.NotifyFailedRead = failureMethod
@@ -408,11 +409,11 @@ func (s *azblobUnrecordedTestSuite) TestRetryReaderReadWithForcedRetry() {
 		n, err := io.ReadFull(retryReader, output)
 		if enableRetryOnEarlyClose {
 			_assert.Equal(n, byteCount)
-			_assert.Nil(err)
+			_assert.NoError(err)
 			_assert.EqualValues(output, randBytes)
 			_assert.Equal(failureMethodNumCalls, 1) // assert that the cancellation did indeed happen
 		} else {
-			_assert.NotNil(err)
+			_assert.Error(err)
 		}
 	}
 }

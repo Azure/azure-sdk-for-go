@@ -73,7 +73,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockWithMD5() {
 	// set up abClient to test
 	abClient := containerClient.NewAppendBlobClient(generateBlobName(s.T().Name()))
 	resp, err := abClient.Create(context.Background(), nil)
-	_assert.Nil(err)
+	_assert.NoError(err)
 	_assert.Equal(resp.RawResponse.StatusCode, 201)
 
 	// test append block with valid MD5 value
@@ -85,7 +85,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockWithMD5() {
 		TransactionalContentMD5: contentMD5,
 	}
 	appendResp, err := abClient.AppendBlock(context.Background(), internal.NopCloser(readerToBody), &appendBlockOptions)
-	_assert.Nil(err)
+	_assert.NoError(err)
 	_assert.Equal(appendResp.RawResponse.StatusCode, 201)
 	_assert.Equal(*appendResp.BlobAppendOffset, "0")
 	_assert.Equal(*appendResp.BlobCommittedBlockCount, int32(1))
@@ -106,7 +106,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockWithMD5() {
 		TransactionalContentMD5: badMD5,
 	}
 	appendResp, err = abClient.AppendBlock(context.Background(), internal.NopCloser(readerToBody), &appendBlockOptions)
-	_assert.NotNil(err)
+	_assert.Error(err)
 
 	validateStorageError(assert.New(s.T()), err, StorageErrorCodeMD5Mismatch)
 }
@@ -416,27 +416,26 @@ func validateAppendBlobPut(_assert *assert.Assertions, abClient AppendBlobClient
 	_assert.EqualValues(resp.GetHTTPHeaders(), basicHeaders)
 }
 
-func (s *azblobTestSuite) TestBlobCreateAppendIfModifiedSinceTrue() {
-	_assert := assert.New(s.T())
-	// testName := s.T().Name()
-	_context := getTestContext(s.T().Name())
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+func TestBlobCreateAppendIfModifiedSinceTrue(t *testing.T) {
+	t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	containerName := generateContainerName(s.T().Name())
-	containerClient := createNewContainer(assert.New(s.T()), containerName, svcClient)
-	defer deleteContainer(assert.New(s.T()), containerClient)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
 
-	abName := generateBlobName(s.T().Name())
+	containerName := generateContainerName(t.Name())
+	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
+	defer deleteContainer(assert.New(t), containerClient)
+
+	abName := generateBlobName(t.Name())
 	abClient := getAppendBlobClient(abName, containerClient)
 
 	appendBlobCreateResp, err := abClient.Create(ctx, nil)
 
-	_assert.NoError(err)
-	_assert.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
-	_assert.NotNil(appendBlobCreateResp.Date)
+	require.NoError(t, err)
+	require.Equal(t, appendBlobCreateResp.RawResponse.StatusCode, 201)
+	require.NotNil(t, appendBlobCreateResp.Date)
 
 	currentTime := getRelativeTimeFromAnchor(appendBlobCreateResp.Date, -10)
 
@@ -450,32 +449,31 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfModifiedSinceTrue() {
 		},
 	}
 	_, err = abClient.Create(ctx, &createAppendBlobOptions)
-	_assert.NoError(err)
+	require.NoError(t, err)
 
-	validateAppendBlobPut(assert.New(s.T()), abClient)
+	validateAppendBlobPut(assert.New(t), abClient)
 }
 
-func (s *azblobTestSuite) TestBlobCreateAppendIfModifiedSinceFalse() {
-	_assert := assert.New(s.T())
-	// testName := s.T().Name()
-	_context := getTestContext(s.T().Name())
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+func TestBlobCreateAppendIfModifiedSinceFalse(t *testing.T) {
+	t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	containerName := generateContainerName(s.T().Name())
-	containerClient := createNewContainer(assert.New(s.T()), containerName, svcClient)
-	defer deleteContainer(assert.New(s.T()), containerClient)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
 
-	abName := generateBlobName(s.T().Name())
+	containerName := generateContainerName(t.Name())
+	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
+	defer deleteContainer(assert.New(t), containerClient)
+
+	abName := generateBlobName(t.Name())
 	abClient := getAppendBlobClient(abName, containerClient)
 
 	appendBlobCreateResp, err := abClient.Create(ctx, nil)
 
-	_assert.NoError(err)
-	_assert.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
-	_assert.NotNil(appendBlobCreateResp.Date)
+	require.NoError(t, err)
+	require.Equal(t, appendBlobCreateResp.RawResponse.StatusCode, 201)
+	require.NotNil(t, appendBlobCreateResp.Date)
 
 	currentTime := getRelativeTimeFromAnchor(appendBlobCreateResp.Date, 10)
 
@@ -489,32 +487,31 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfModifiedSinceFalse() {
 		},
 	}
 	_, err = abClient.Create(ctx, &createAppendBlobOptions)
-	_assert.NotNil(err)
+	require.NotNil(t, err)
 
-	validateStorageError(assert.New(s.T()), err, StorageErrorCodeConditionNotMet)
+	validateStorageError(assert.New(t), err, StorageErrorCodeConditionNotMet)
 }
 
-func (s *azblobTestSuite) TestBlobCreateAppendIfUnmodifiedSinceTrue() {
-	_assert := assert.New(s.T())
-	// testName := s.T().Name()
-	_context := getTestContext(s.T().Name())
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+func TestBlobCreateAppendIfUnmodifiedSinceTrue(t *testing.T) {
+	t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	containerName := generateContainerName(s.T().Name())
-	containerClient := createNewContainer(assert.New(s.T()), containerName, svcClient)
-	defer deleteContainer(assert.New(s.T()), containerClient)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
 
-	abName := generateBlobName(s.T().Name())
+	containerName := generateContainerName(t.Name())
+	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
+	defer deleteContainer(assert.New(t), containerClient)
+
+	abName := generateBlobName(t.Name())
 	abClient := getAppendBlobClient(abName, containerClient)
 
 	appendBlobCreateResp, err := abClient.Create(ctx, nil)
 
-	_assert.NoError(err)
-	_assert.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
-	_assert.NotNil(appendBlobCreateResp.Date)
+	require.NoError(t, err)
+	require.Equal(t, appendBlobCreateResp.RawResponse.StatusCode, 201)
+	require.NotNil(t, appendBlobCreateResp.Date)
 
 	currentTime := getRelativeTimeFromAnchor(appendBlobCreateResp.Date, 10)
 
@@ -528,32 +525,31 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfUnmodifiedSinceTrue() {
 		},
 	}
 	_, err = abClient.Create(ctx, &createAppendBlobOptions)
-	_assert.NoError(err)
+	require.NoError(t, err)
 
-	validateAppendBlobPut(assert.New(s.T()), abClient)
+	validateAppendBlobPut(assert.New(t), abClient)
 }
 
-func (s *azblobTestSuite) TestBlobCreateAppendIfUnmodifiedSinceFalse() {
-	_assert := assert.New(s.T())
-	// testName := s.T().Name()
-	_context := getTestContext(s.T().Name())
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+func TestBlobCreateAppendIfUnmodifiedSinceFalse(t *testing.T) {
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	containerName := generateContainerName(s.T().Name())
-	containerClient := createNewContainer(assert.New(s.T()), containerName, svcClient)
-	defer deleteContainer(assert.New(s.T()), containerClient)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
 
-	abName := generateBlobName(s.T().Name())
+	containerName := generateContainerName(t.Name())
+	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
+	defer deleteContainer(assert.New(t), containerClient)
+
+	abName := generateBlobName(t.Name())
 	abClient := getAppendBlobClient(abName, containerClient)
 
 	appendBlobCreateResp, err := abClient.Create(ctx, nil)
 
-	_assert.NoError(err)
-	_assert.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
-	_assert.NotNil(appendBlobCreateResp.Date)
+	require.NoError(t, err)
+	require.Equal(t, appendBlobCreateResp.RawResponse.StatusCode, 201)
+	require.NotNil(t, appendBlobCreateResp.Date)
 
 	currentTime := getRelativeTimeFromAnchor(appendBlobCreateResp.Date, -10)
 
@@ -567,26 +563,25 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfUnmodifiedSinceFalse() {
 		},
 	}
 	_, err = abClient.Create(ctx, &createAppendBlobOptions)
-	_assert.NotNil(err)
+	require.NotNil(t, err)
 
-	validateStorageError(assert.New(s.T()), err, StorageErrorCodeConditionNotMet)
+	validateStorageError(assert.New(t), err, StorageErrorCodeConditionNotMet)
 }
 
-func (s *azblobTestSuite) TestBlobCreateAppendIfMatchTrue() {
-	_assert := assert.New(s.T())
-	// testName := s.T().Name()
-	_context := getTestContext(s.T().Name())
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+func TestBlobCreateAppendIfMatchTrue(t *testing.T) {
+	t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	containerName := generateContainerName(s.T().Name())
-	containerClient := createNewContainer(assert.New(s.T()), containerName, svcClient)
-	defer deleteContainer(assert.New(s.T()), containerClient)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
 
-	abName := generateBlobName(s.T().Name())
-	abClient := createNewAppendBlob(assert.New(s.T()), abName, containerClient)
+	containerName := generateContainerName(t.Name())
+	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
+	defer deleteContainer(assert.New(t), containerClient)
+
+	abName := generateBlobName(t.Name())
+	abClient := createNewAppendBlob(assert.New(t), abName, containerClient)
 
 	resp, _ := abClient.GetProperties(ctx, nil)
 
@@ -600,9 +595,9 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfMatchTrue() {
 		},
 	}
 	_, err = abClient.Create(ctx, &createAppendBlobOptions)
-	_assert.NoError(err)
+	require.NoError(t, err)
 
-	validateAppendBlobPut(assert.New(s.T()), abClient)
+	validateAppendBlobPut(assert.New(t), abClient)
 }
 
 func (s *azblobTestSuite) TestBlobCreateAppendIfMatchFalse() {
@@ -631,7 +626,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfMatchFalse() {
 		},
 	}
 	_, err = abClient.Create(ctx, &createAppendBlobOptions)
-	_assert.NotNil(err)
+	_assert.Error(err)
 
 	validateStorageError(assert.New(s.T()), err, StorageErrorCodeConditionNotMet)
 }
@@ -696,7 +691,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfNoneMatchFalse() {
 		},
 	}
 	_, err = abClient.Create(ctx, &createAppendBlobOptions)
-	_assert.NotNil(err)
+	_assert.Error(err)
 
 	validateStorageError(assert.New(s.T()), err, StorageErrorCodeConditionNotMet)
 }
@@ -718,7 +713,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockNilBody() {
 	abClient := createNewAppendBlob(assert.New(s.T()), abName, containerClient)
 
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(bytes.NewReader(nil)), nil)
-	_assert.NotNil(err)
+	_assert.Error(err)
 
 	validateStorageError(assert.New(s.T()), err, StorageErrorCodeInvalidHeaderValue)
 }
@@ -740,7 +735,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockEmptyBody() {
 	abClient := createNewAppendBlob(assert.New(s.T()), abName, containerClient)
 
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader("")), nil)
-	_assert.NotNil(err)
+	_assert.Error(err)
 
 	validateStorageError(assert.New(s.T()), err, StorageErrorCodeInvalidHeaderValue)
 }
@@ -762,7 +757,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockNonExistentBlob() {
 	abClient := getAppendBlobClient(abName, containerClient)
 
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
-	_assert.NotNil(err)
+	_assert.Error(err)
 
 	validateStorageError(assert.New(s.T()), err, StorageErrorCodeBlobNotFound)
 }
@@ -842,7 +837,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfModifiedSinceFalse() {
 		},
 	}
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions)
-	_assert.NotNil(err)
+	_assert.Error(err)
 
 	validateStorageError(assert.New(s.T()), err, StorageErrorCodeConditionNotMet)
 }
@@ -916,7 +911,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfUnmodifiedSinceFalse() {
 		},
 	}
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions)
-	_assert.NotNil(err)
+	_assert.Error(err)
 
 	validateStorageError(assert.New(s.T()), err, StorageErrorCodeConditionNotMet)
 }
@@ -974,7 +969,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfMatchFalse() {
 			},
 		},
 	})
-	_assert.NotNil(err)
+	_assert.Error(err)
 	validateStorageError(assert.New(s.T()), err, StorageErrorCodeConditionNotMet)
 }
 
@@ -1030,7 +1025,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfNoneMatchFalse() {
 			},
 		},
 	})
-	_assert.NotNil(err)
+	_assert.Error(err)
 	validateStorageError(assert.New(s.T()), err, StorageErrorCodeConditionNotMet)
 }
 
@@ -1048,7 +1043,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfNoneMatchFalse() {
 ////		},
 ////	}
 ////	_, err := abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions) // This will cause the library to set the value of the header to 0
-////	_assert.NotNil(err)
+////	_assert.Error(err)
 ////
 ////	validateBlockAppended(c, abClient, len(blockBlobDefaultData))
 ////}
@@ -1127,7 +1122,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfAppendPositionMatchFalseNegOne() 
 			AppendPosition: to.Int64Ptr(-1),
 		},
 	})
-	_assert.NotNil(err)
+	_assert.Error(err)
 	validateStorageError(assert.New(s.T()), err, StorageErrorCodeInvalidHeaderValue)
 }
 
@@ -1152,7 +1147,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfAppendPositionMatchFalseNonZero()
 			AppendPosition: to.Int64Ptr(12),
 		},
 	})
-	_assert.NotNil(err)
+	_assert.Error(err)
 	validateStorageError(assert.New(s.T()), err, StorageErrorCodeAppendPositionConditionNotMet)
 }
 
@@ -1202,7 +1197,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfMaxSizeFalse() {
 			MaxSize: to.Int64Ptr(int64(len(blockBlobDefaultData) - 1)),
 		},
 	})
-	_assert.NotNil(err)
+	_assert.Error(err)
 	validateStorageError(assert.New(s.T()), err, StorageErrorCodeMaxBlobSizeConditionNotMet)
 }
 
@@ -1233,7 +1228,7 @@ func (s *azblobTestSuite) TestSealAppendBlob() {
 	_assert.Equal(*sealResp.IsSealed, true)
 
 	appendResp, err = abClient.AppendBlock(context.Background(), getReaderToGeneratedBytes(1024), nil)
-	_assert.NotNil(err)
+	_assert.Error(err)
 	validateStorageError(assert.New(s.T()), err, "BlobIsSealed")
 
 	getPropResp, err := abClient.GetProperties(ctx, nil)
@@ -1263,7 +1258,7 @@ func (s *azblobTestSuite) TestSealAppendBlob() {
 //			AppendPosition: to.Int64Ptr(1),
 //		},
 //	})
-//	_assert.NotNil(err)
+//	_assert.Error(err)
 //	_ = sealResp
 //
 //	sealResp, err = abClient.SealAppendBlob(ctx, &SealAppendBlobOptions{
@@ -1302,7 +1297,7 @@ func (s *azblobTestSuite) TestCopySealedBlob() {
 	_assert.Equal(*getResp1.IsSealed, true)
 
 	_, err = copiedBlob1.AppendBlock(context.Background(), getReaderToGeneratedBytes(1024), nil)
-	_assert.NotNil(err)
+	_assert.Error(err)
 	validateStorageError(assert.New(s.T()), err, "BlobIsSealed")
 
 	copiedBlob2 := getAppendBlobClient("copy2"+abName, containerClient)
@@ -1316,7 +1311,7 @@ func (s *azblobTestSuite) TestCopySealedBlob() {
 	_assert.Equal(*getResp2.IsSealed, true)
 
 	_, err = copiedBlob2.AppendBlock(context.Background(), getReaderToGeneratedBytes(1024), nil)
-	_assert.NotNil(err)
+	_assert.Error(err)
 	validateStorageError(assert.New(s.T()), err, "BlobIsSealed")
 
 	copiedBlob3 := getAppendBlobClient("copy3"+abName, containerClient)

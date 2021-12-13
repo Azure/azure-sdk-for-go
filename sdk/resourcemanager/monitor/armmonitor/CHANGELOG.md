@@ -1,7 +1,6 @@
 # Release History
 
-## 0.2.1 (2021-12-10)
-### Breaking Changes
+## 0.2.1 (2021-12-13)
 
 ### Features Added
 
@@ -30,9 +29,6 @@
 - New struct `TestNotificationDetailsResponse`
 - New struct `TestNotificationResponse`
 - New field `EventHubReceivers` in struct `ActionGroup`
-
-Total 0 breaking change(s), 39 additive change(s).
-
 
 ## 0.2.0 (2021-10-29)
 

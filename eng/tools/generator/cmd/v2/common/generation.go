@@ -48,7 +48,7 @@ type GenerateParam struct {
 	GoVersion           string
 }
 
-func (ctx GenerateContext) GenerateForAutomation(readme, repo string) ([]GenerateResult, []error) {
+func (ctx GenerateContext) GenerateForAutomation(readme, repo, goVersion string) ([]GenerateResult, []error) {
 	absReadme := filepath.Join(ctx.SpecPath, readme)
 	absReadmeGo := filepath.Join(filepath.Dir(absReadme), "readme.go.md")
 	specRPName := strings.Split(readme, "/")[0]
@@ -73,6 +73,7 @@ func (ctx GenerateContext) GenerateForAutomation(readme, repo string) ([]Generat
 				SpecRPName:          specRPName,
 				SkipGenerateExample: true,
 				NamespaceConfig:     packageInfo.Config,
+				GoVersion:           goVersion,
 			})
 			if err != nil {
 				errors = append(errors, err)
@@ -174,7 +175,7 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 			PackageName:    generateParam.NamespaceName,
 			PackageAbsPath: packagePath,
 			Changelog:      *changelog,
-			ChangelogMD:    changelog.ToCompactMarkdown(),
+			ChangelogMD:    changelog.ToCompactMarkdown() + "\n" + changelog.GetChangeSummary(),
 		}, nil
 	} else {
 		log.Printf("Calculate new version...")
@@ -209,7 +210,7 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 			PackageName:    generateParam.NamespaceName,
 			PackageAbsPath: packagePath,
 			Changelog:      *changelog,
-			ChangelogMD:    changelogMd,
+			ChangelogMD:    changelogMd + "\n" + changelog.GetChangeSummary(),
 		}, nil
 	}
 }

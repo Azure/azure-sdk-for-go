@@ -249,7 +249,7 @@ func CalculateNewVersion(changelog *model.Changelog, packageRootPath string) (*s
 	var newVersion semver.Version
 	if version.Major() == 0 {
 		// preview version calculation
-		if changelog.HasBreakingChanges() {
+		if changelog.HasBreakingChanges() || changelog.Modified.HasAdditiveChanges() {
 			newVersion = version.IncMinor()
 		} else {
 			newVersion = version.IncPatch()

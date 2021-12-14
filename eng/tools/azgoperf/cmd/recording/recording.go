@@ -1,13 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package cmd
+package recording
 
 import (
 	"bytes"
 	"crypto/tls"
 	"crypto/x509"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"io/ioutil"
@@ -15,10 +14,13 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"path"
 	"path/filepath"
 	"runtime"
 	"testing"
 )
+
+var pathToRecordings = ""
 
 func init() {
 
@@ -162,88 +164,61 @@ func GetRecordingId(s string) string {
 	return ""
 }
 
-// // Start tells the test proxy to begin accepting requests for a given test
-// func Start(t *testing.T, pathToRecordings string, options *RecordingOptions) error {
-// 	if options == nil {
-// 		options = defaultOptions()
-// 	}
-// 	if recordMode == LiveMode {
-// 		return nil
-// 	}
+type RecordingOptions struct{}
 
-// 	if testStruct, ok := testSuite[t.Name()]; ok {
-// 		if testStruct.liveOnly {
-// 			// test should only be run live, don't want to generate recording
-// 			return nil
-// 		}
-// 	}
+func (r RecordingOptions) baseURL() string {
+	return "https://localhost:5001"
+}
 
-// 	testId := getTestId(pathToRecordings, t)
+func getTestId(pathToRecordings string, t string) string {
+	return path.Join(pathToRecordings, "recordings", t+".json")
+}
 
-// 	url := fmt.Sprintf("%s/%s/start", options.baseURL(), recordMode)
+var client = http.Client{
+	Transport: &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	},
+}
 
-// 	req, err := http.NewRequest("POST", url, nil)
-// 	if err != nil {
-// 		return err
-// 	}
-// 	req.Header.Set("x-recording-file", testId)
-
-// 	resp, err := client.Do(req)
-// 	if err != nil {
-// 		return err
-// 	}
-// 	recId := resp.Header.Get(IDHeader)
-// 	if recId == "" {
-// 		b, err := ioutil.ReadAll(resp.Body)
-// 		defer resp.Body.Close()
-// 		if err != nil {
-// 			return err
-// 		}
-// 		return fmt.Errorf("Recording ID was not returned by the response. Response body: %s", b)
-// 	}
-
-// 	// Unmarshal any variables returned by the proxy
-// 	var m map[string]interface{}
-// 	body, err := ioutil.ReadAll(resp.Body)
-// 	defer resp.Body.Close()
-// 	if err != nil {
-// 		return err
-// 	}
-// 	if len(body) > 0 {
-// 		err = json.Unmarshal(body, &m)
-// 		if err != nil {
-// 			return err
-// 		}
-// 	}
-
-// 	if val, ok := testSuite[t.Name()]; ok {
-// 		val.recordingId = recId
-// 		val.variables = m
-// 		testSuite[t.Name()] = val
-// 	} else {
-// 		testSuite[t.Name()] = recordedTest{
-// 			recordingId: recId,
-// 			liveOnly:    false,
-// 			variables:   m,
-// 		}
-// 	}
-// 	return nil
-// }
-
-// // Stop tells the test proxy to stop accepting requests for a given test
-// func Stop(t *testing.T, options *RecordingOptions) error {
-// 	if options == nil {
-// 		options = defaultOptions()
-// 	}
-	if recordMode == LiveMode {
-		return nil
+// Start tells the test proxy to begin accepting requests for a given test
+func Start(t string, pathToRecordings string, options *RecordingOptions) error {
+	if options == nil {
+		options = &RecordingOptions{}
 	}
 
-	if testStruct, ok := testSuite[t.Name()]; ok {
-		if testStruct.liveOnly {
-			// test should only be run live, don't want to generate recording
-			return nil
+	testId := getTestId(pathToRecordings, t)
+
+	url := fmt.Sprintf("%s/%s/start", options.baseURL(), recordMode)
+
+	req, err := http.NewRequest("POST", url, nil)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("x-recording-file", testId)
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+	recId := resp.Header.Get(IDHeader)
+	if recId == "" {
+		b, err := ioutil.ReadAll(resp.Body)
+		defer resp.Body.Close()
+		if err != nil {
+			return err
 		}
+		return fmt.Errorf("Recording ID was not returned by the response. Response body: %s", b)
+	}
+
+	perfTestSuite[t] = recId
+
+	return nil
+}
+
+// Stop tells the test proxy to stop accepting requests for a given test
+func Stop(t *testing.T, options *RecordingOptions) error {
+	if options == nil {
+		options = &RecordingOptions{}
 	}
 
 	url := fmt.Sprintf("%v/%v/stop", options.baseURL(), recordMode)
@@ -251,22 +226,13 @@ func GetRecordingId(s string) string {
 	if err != nil {
 		return err
 	}
-	if len(options.Variables) > 0 {
-		req.Header.Set("Content-Type", "application/json")
-		marshalled, err := json.Marshal(options.Variables)
-		if err != nil {
-			return err
-		}
-		req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
-		req.ContentLength = int64(len(marshalled))
-	}
 
-	var recTest recordedTest
+	var recTest string
 	var ok bool
-	if recTest, ok = testSuite[t.Name()]; !ok {
+	if recTest, ok = perfTestSuite[t.Name()]; !ok {
 		return errors.New("Recording ID was never set. Did you call StartRecording?")
 	}
-	req.Header.Set("x-recording-id", recTest.recordingId)
+	req.Header.Set("x-recording-id", recTest)
 	resp, err := client.Do(req)
 	if resp.StatusCode != 200 {
 		b, err := ioutil.ReadAll(resp.Body)
@@ -276,6 +242,5 @@ func GetRecordingId(s string) string {
 		}
 		return fmt.Errorf("proxy did not stop the recording properly: %s", err.Error())
 	}
-	_ = resp.Body.Close()
 	return err
 }

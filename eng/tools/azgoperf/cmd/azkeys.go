@@ -11,6 +11,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/azgoperf/cmd/recording"
 	"github.com/spf13/cobra"
 )
 
@@ -53,7 +54,7 @@ func (a *azkeysPerf) GlobalSetup(ctx context.Context) error {
 
 	options := &azkeys.ClientOptions{}
 	if TestProxy == "http" {
-		t, err := NewProxyTransport(&TransportOptions{UseHTTPS: false, TestName: a.GetMetadata()})
+		t, err := recording.NewProxyTransport(&recording.TransportOptions{UseHTTPS: false, TestName: a.GetMetadata()})
 		if err != nil {
 			return err
 		}
@@ -63,7 +64,7 @@ func (a *azkeysPerf) GlobalSetup(ctx context.Context) error {
 			},
 		}
 	} else if TestProxy == "https" {
-		t, err := NewProxyTransport(&TransportOptions{UseHTTPS: false, TestName: a.GetMetadata()})
+		t, err := recording.NewProxyTransport(&recording.TransportOptions{UseHTTPS: false, TestName: a.GetMetadata()})
 		if err != nil {
 			return err
 		}

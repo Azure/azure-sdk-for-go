@@ -6,12 +6,13 @@ package cmd
 import (
 	"context"
 	"errors"
+	"fmt"
 	"os"
 
+	"github.com/Azure/azure-sdk-for-go/eng/tools/azgoperf/cmd/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
-	"github.com/Azure/azure-sdk-for-go/eng/tools/azgoperf/cmd/recording"
 	"github.com/spf13/cobra"
 )
 
@@ -42,9 +43,13 @@ func (a *azkeysPerf) GetMetadata() string {
 }
 
 func (a *azkeysPerf) GlobalSetup(ctx context.Context) error {
-	vaultURL, ok := os.LookupEnv("AZKEYS_VAULT_URL")
+	err := recording.Start(a.GetMetadata(), nil)
+	if err != nil {
+		return err
+	}
+	vaultURL, ok := os.LookupEnv("AZURE_KEYVAULT_URL")
 	if !ok {
-		return errors.New("could not find 'AZKEYS_VAULT_URL' environment variable")
+		return errors.New("could not find 'AZURE_KEYVAULT_URL' environment variable")
 	}
 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -73,6 +78,7 @@ func (a *azkeysPerf) GlobalSetup(ctx context.Context) error {
 				Transport: t,
 			},
 		}
+		fmt.Println(options)
 	}
 
 	c, err := azkeys.NewClient(vaultURL, cred, options)
@@ -83,7 +89,9 @@ func (a *azkeysPerf) GlobalSetup(ctx context.Context) error {
 	a.client = c
 	a.keyName = "myKeyName"
 
-	_, err = a.client.CreateRSAKey(ctx, a.keyName, nil)
+	fmt.Println("Creating key")
+	_, err = a.client.CreateRSAKey(context.Background(), a.keyName, nil)
+	fmt.Println("Done creating key")
 	return err
 }
 

@@ -32,6 +32,7 @@ func getLimitedContext(t time.Duration) (context.Context, context.CancelFunc) {
 func runGlobalSetup(p PerfTest) error {
 	fmt.Println("Running Global Setup")
 
+	fmt.Println("Deadline of ", timeoutSeconds)
 	ctx, cancel := getLimitedContext(time.Duration(timeoutSeconds) * time.Second)
 	defer cancel()
 

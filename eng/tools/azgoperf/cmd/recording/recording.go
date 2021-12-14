@@ -181,14 +181,15 @@ var client = http.Client{
 }
 
 // Start tells the test proxy to begin accepting requests for a given test
-func Start(t string, pathToRecordings string, options *RecordingOptions) error {
+func Start(t string, options *RecordingOptions) error {
 	if options == nil {
 		options = &RecordingOptions{}
 	}
 
 	testId := getTestId(pathToRecordings, t)
 
-	url := fmt.Sprintf("%s/%s/start", options.baseURL(), recordMode)
+	url := fmt.Sprintf("https://localhost:5001/%s/start", recordMode)
+	fmt.Println(url)
 
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
@@ -207,10 +208,12 @@ func Start(t string, pathToRecordings string, options *RecordingOptions) error {
 		if err != nil {
 			return err
 		}
-		return fmt.Errorf("Recording ID was not returned by the response. Response body: %s", b)
+		return fmt.Errorf("recording ID was not returned by the response. Response body: %s", b)
 	}
 
 	perfTestSuite[t] = recId
+
+	fmt.Println(recId)
 
 	return nil
 }
@@ -230,7 +233,7 @@ func Stop(t *testing.T, options *RecordingOptions) error {
 	var recTest string
 	var ok bool
 	if recTest, ok = perfTestSuite[t.Name()]; !ok {
-		return errors.New("Recording ID was never set. Did you call StartRecording?")
+		return errors.New("recording ID was never set. Did you call StartRecording?")
 	}
 	req.Header.Set("x-recording-id", recTest)
 	resp, err := client.Do(req)

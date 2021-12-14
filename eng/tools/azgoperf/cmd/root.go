@@ -21,6 +21,7 @@ var (
 	iterations     int
 	TestProxy      string
 	timeoutSeconds int
+	warmUp         int
 )
 
 func init() {
@@ -28,6 +29,7 @@ func init() {
 	rootCmd.PersistentFlags().IntVarP(&iterations, "iterations", "i", 3, "The number of iterations to run a single performance test for")
 	rootCmd.PersistentFlags().StringVarP(&TestProxy, "testproxy", "x", "", "whether to target http or https proxy (default is neither)")
 	rootCmd.PersistentFlags().IntVarP(&timeoutSeconds, "timeout", "t", 10, "How long to allow an operation to block before cancelling.")
+	rootCmd.PersistentFlags().IntVarP(&warmUp, "warmup", "w", 3, "How long to allow a connection to warm up.")
 
 	if !(TestProxy == "" || TestProxy == "http" || TestProxy == "https") {
 		panic(fmt.Errorf("received invalid value for testproxy flag, received %s, expected 'http' or 'https'", TestProxy))

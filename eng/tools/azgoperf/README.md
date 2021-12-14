@@ -3,25 +3,48 @@ The `azgoperf` CLI tool provides a singular framework for writing and running pe
 
 ## Default Command Options
 
-| Flag | Short Flag | Default Value | Description |
-| -----| ---------- | ------------- | ----------- |
-| `--duration` | `-d` | 10 seconds| How long to run an individual performance test |
-| `--iterations` | `-i` | 3 | How many iterations of a performance test to run |
-| `--testproxy` | `-x` | N/A | Whether to run a test against a test proxy. If you want to run against `https` specify with `--testproxy https`, likewise for `http`. If you want to run normally omit this flag |
-| `--timeout` | `-t` | 10 seconds| How long to allow an operation to block. |
+| Flag | Short Flag | Default Value | Variable Name | Description |
+| -----| ---------- | ------------- | ------------- | ----------- |
+| `--duration` | `-d` | 10 seconds | duration (`int`) | How long to run an individual performance test |
+| `--iterations` | `-i` | 3 | iterations (`int`) | How many iterations of a performance test to run |
+| `--testproxy` | `-x` | N/A | testProxy (`string`) | Whether to run a test against a test proxy. If you want to run against `https` specify with `--testproxy https`, likewise for `http`. If you want to run normally omit this flag |
+| `--timeout` | `-t` | 10 seconds| timeoutSeconds (`int`) | How long to allow an operation to block. |
 
 ## Running with the test proxy
 
 To run with the test proxy, configure your client to route requests to the test proxy using the `NewProxyTransport()` method. For example in `azkeys`:
 
-```golang
+```go
 transport, err := recording.NewProxyTransport()
 handle(err)
 
-client, err := azkeys.NewClient("vault-url", cred, &azkeys.ClientOptions)
+t, err := recording.NewProxyTransport(&recording.TransportOptions{UseHTTPS: false, TestName: a.GetMetadata()})TestName: a.GetMetadata()})
+if err != nil {
+    return err
+}
+options := &azkeys.ClientOptions{
+    ClientOptions: azcore.ClientOptions{
+        Transport: t,
+    },
+}
+
+client, err := azkeys.NewClient("vault-url", cred, options)
 ```
 
+Before you can use the proxy in playback mode, you have to generate live recordings. To do this, call `recording.Start` before the test run and `recording.Stop` after the test run.
+
+<!-- TODO: Insert example here -->
+
 ## Adding Performance Tests to an SDK
+
+1. Copy the `template.go` file:
+```
+Copy-Item template.go aztables.go
+```
+
+2. Change the name of `templateCmd`. Best practices are to use a `<packageName>Cmd` as the name. Fill in `Use`, `Short`, `Long`, and `RunE` for your specific test.
+
+3. Implement the `GlobalSetup`, `Setup`, `Run`, `TearDown`, `GlobalTearDown`, and `GetMetadata` functions. All of these functions will take a `context.Context` type to prevent an erroneous test from blocking. GetMetadata should return a `string` with the name of the specific test. This is only used by the test proxy for generating and reading recordings.
 
 ### Writing a test
 
@@ -30,6 +53,21 @@ client, err := azkeys.NewClient("vault-url", cred, &azkeys.ClientOptions)
 ### Writing a Batch Test
 
 ## Running Performance Tests
+
+First, compile the cli into a single executable:
+```pwsh
+go build .
+```
+
+To run a single performance test specify the test as the second argument:
+```pwsh
+./azgoperf.exe azkeys
+```
+
+To specify flags for a performance test, add them after the second argument:
+```pwsh
+./azgoperf.exe azkeys --duration 7 --testproxy https
+```
 
 ### Test Commands
 

@@ -25,12 +25,16 @@ import (
 // SharedGalleryImageVersionsClient contains the methods for the SharedGalleryImageVersions group.
 // Don't use this type directly, use NewSharedGalleryImageVersionsClient() instead.
 type SharedGalleryImageVersionsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSharedGalleryImageVersionsClient creates a new instance of SharedGalleryImageVersionsClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSharedGalleryImageVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SharedGalleryImageVersionsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
@@ -39,11 +43,24 @@ func NewSharedGalleryImageVersionsClient(subscriptionID string, credential azcor
 	if len(cp.Host) == 0 {
 		cp.Host = arm.AzurePublicCloud
 	}
-	return &SharedGalleryImageVersionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SharedGalleryImageVersionsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Host),
+		pl:             armruntime.NewPipeline(module, version, credential, &cp),
+	}
+	return client
 }
 
 // Get - Get a shared gallery image version by subscription id or tenant id.
 // If the operation fails it returns the *CloudError error type.
+// location - Resource location.
+// galleryUniqueName - The unique name of the Shared Gallery.
+// galleryImageName - The name of the Shared Gallery Image Definition from which the Image Versions are to be listed.
+// galleryImageVersionName - The name of the gallery image version to be created. Needs to follow semantic version name pattern:
+// The allowed characters are digit and period. Digits must be within the range of a 32-bit integer.
+// Format: ..
+// options - SharedGalleryImageVersionsGetOptions contains the optional parameters for the SharedGalleryImageVersionsClient.Get
+// method.
 func (client *SharedGalleryImageVersionsClient) Get(ctx context.Context, location string, galleryUniqueName string, galleryImageName string, galleryImageVersionName string, options *SharedGalleryImageVersionsGetOptions) (SharedGalleryImageVersionsGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, location, galleryUniqueName, galleryImageName, galleryImageVersionName, options)
 	if err != nil {
@@ -82,7 +99,7 @@ func (client *SharedGalleryImageVersionsClient) getCreateRequest(ctx context.Con
 		return nil, errors.New("parameter galleryImageVersionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{galleryImageVersionName}", url.PathEscape(galleryImageVersionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -117,6 +134,11 @@ func (client *SharedGalleryImageVersionsClient) getHandleError(resp *http.Respon
 
 // List - List shared gallery image versions by subscription id or tenant id.
 // If the operation fails it returns the *CloudError error type.
+// location - Resource location.
+// galleryUniqueName - The unique name of the Shared Gallery.
+// galleryImageName - The name of the Shared Gallery Image Definition from which the Image Versions are to be listed.
+// options - SharedGalleryImageVersionsListOptions contains the optional parameters for the SharedGalleryImageVersionsClient.List
+// method.
 func (client *SharedGalleryImageVersionsClient) List(location string, galleryUniqueName string, galleryImageName string, options *SharedGalleryImageVersionsListOptions) *SharedGalleryImageVersionsListPager {
 	return &SharedGalleryImageVersionsListPager{
 		client: client,
@@ -148,7 +170,7 @@ func (client *SharedGalleryImageVersionsClient) listCreateRequest(ctx context.Co
 		return nil, errors.New("parameter galleryImageName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{galleryImageName}", url.PathEscape(galleryImageName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}

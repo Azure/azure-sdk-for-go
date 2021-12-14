@@ -24,12 +24,16 @@ import (
 // ResourceSKUsClient contains the methods for the ResourceSKUs group.
 // Don't use this type directly, use NewResourceSKUsClient() instead.
 type ResourceSKUsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewResourceSKUsClient creates a new instance of ResourceSKUsClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewResourceSKUsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ResourceSKUsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
@@ -38,11 +42,17 @@ func NewResourceSKUsClient(subscriptionID string, credential azcore.TokenCredent
 	if len(cp.Host) == 0 {
 		cp.Host = arm.AzurePublicCloud
 	}
-	return &ResourceSKUsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ResourceSKUsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Host),
+		pl:             armruntime.NewPipeline(module, version, credential, &cp),
+	}
+	return client
 }
 
 // List - Gets the list of Microsoft.Compute SKUs available for your Subscription.
 // If the operation fails it returns a generic error.
+// options - ResourceSKUsListOptions contains the optional parameters for the ResourceSKUsClient.List method.
 func (client *ResourceSKUsClient) List(options *ResourceSKUsListOptions) *ResourceSKUsListPager {
 	return &ResourceSKUsListPager{
 		client: client,
@@ -62,7 +72,7 @@ func (client *ResourceSKUsClient) listCreateRequest(ctx context.Context, options
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}

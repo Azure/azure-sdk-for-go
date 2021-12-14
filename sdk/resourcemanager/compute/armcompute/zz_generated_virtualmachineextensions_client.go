@@ -24,12 +24,16 @@ import (
 // VirtualMachineExtensionsClient contains the methods for the VirtualMachineExtensions group.
 // Don't use this type directly, use NewVirtualMachineExtensionsClient() instead.
 type VirtualMachineExtensionsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewVirtualMachineExtensionsClient creates a new instance of VirtualMachineExtensionsClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewVirtualMachineExtensionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VirtualMachineExtensionsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
@@ -38,11 +42,22 @@ func NewVirtualMachineExtensionsClient(subscriptionID string, credential azcore.
 	if len(cp.Host) == 0 {
 		cp.Host = arm.AzurePublicCloud
 	}
-	return &VirtualMachineExtensionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &VirtualMachineExtensionsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Host),
+		pl:             armruntime.NewPipeline(module, version, credential, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - The operation to create or update the extension.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// vmName - The name of the virtual machine where the extension should be created or updated.
+// vmExtensionName - The name of the virtual machine extension.
+// extensionParameters - Parameters supplied to the Create Virtual Machine Extension operation.
+// options - VirtualMachineExtensionsBeginCreateOrUpdateOptions contains the optional parameters for the VirtualMachineExtensionsClient.BeginCreateOrUpdate
+// method.
 func (client *VirtualMachineExtensionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtension, options *VirtualMachineExtensionsBeginCreateOrUpdateOptions) (VirtualMachineExtensionsCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, vmName, vmExtensionName, extensionParameters, options)
 	if err != nil {
@@ -97,7 +112,7 @@ func (client *VirtualMachineExtensionsClient) createOrUpdateCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -122,6 +137,11 @@ func (client *VirtualMachineExtensionsClient) createOrUpdateHandleError(resp *ht
 
 // BeginDelete - The operation to delete the extension.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// vmName - The name of the virtual machine where the extension should be deleted.
+// vmExtensionName - The name of the virtual machine extension.
+// options - VirtualMachineExtensionsBeginDeleteOptions contains the optional parameters for the VirtualMachineExtensionsClient.BeginDelete
+// method.
 func (client *VirtualMachineExtensionsClient) BeginDelete(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, options *VirtualMachineExtensionsBeginDeleteOptions) (VirtualMachineExtensionsDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, vmName, vmExtensionName, options)
 	if err != nil {
@@ -176,7 +196,7 @@ func (client *VirtualMachineExtensionsClient) deleteCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -200,6 +220,11 @@ func (client *VirtualMachineExtensionsClient) deleteHandleError(resp *http.Respo
 
 // Get - The operation to get the extension.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// vmName - The name of the virtual machine containing the extension.
+// vmExtensionName - The name of the virtual machine extension.
+// options - VirtualMachineExtensionsGetOptions contains the optional parameters for the VirtualMachineExtensionsClient.Get
+// method.
 func (client *VirtualMachineExtensionsClient) Get(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, options *VirtualMachineExtensionsGetOptions) (VirtualMachineExtensionsGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vmName, vmExtensionName, options)
 	if err != nil {
@@ -234,7 +259,7 @@ func (client *VirtualMachineExtensionsClient) getCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -271,6 +296,10 @@ func (client *VirtualMachineExtensionsClient) getHandleError(resp *http.Response
 
 // List - The operation to get all extensions of a Virtual Machine.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// vmName - The name of the virtual machine containing the extension.
+// options - VirtualMachineExtensionsListOptions contains the optional parameters for the VirtualMachineExtensionsClient.List
+// method.
 func (client *VirtualMachineExtensionsClient) List(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachineExtensionsListOptions) (VirtualMachineExtensionsListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, vmName, options)
 	if err != nil {
@@ -301,7 +330,7 @@ func (client *VirtualMachineExtensionsClient) listCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -338,6 +367,12 @@ func (client *VirtualMachineExtensionsClient) listHandleError(resp *http.Respons
 
 // BeginUpdate - The operation to update the extension.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// vmName - The name of the virtual machine where the extension should be updated.
+// vmExtensionName - The name of the virtual machine extension.
+// extensionParameters - Parameters supplied to the Update Virtual Machine Extension operation.
+// options - VirtualMachineExtensionsBeginUpdateOptions contains the optional parameters for the VirtualMachineExtensionsClient.BeginUpdate
+// method.
 func (client *VirtualMachineExtensionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtensionUpdate, options *VirtualMachineExtensionsBeginUpdateOptions) (VirtualMachineExtensionsUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, vmName, vmExtensionName, extensionParameters, options)
 	if err != nil {
@@ -392,7 +427,7 @@ func (client *VirtualMachineExtensionsClient) updateCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}

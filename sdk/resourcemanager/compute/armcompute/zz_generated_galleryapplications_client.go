@@ -25,12 +25,16 @@ import (
 // GalleryApplicationsClient contains the methods for the GalleryApplications group.
 // Don't use this type directly, use NewGalleryApplicationsClient() instead.
 type GalleryApplicationsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewGalleryApplicationsClient creates a new instance of GalleryApplicationsClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewGalleryApplicationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *GalleryApplicationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
@@ -39,11 +43,24 @@ func NewGalleryApplicationsClient(subscriptionID string, credential azcore.Token
 	if len(cp.Host) == 0 {
 		cp.Host = arm.AzurePublicCloud
 	}
-	return &GalleryApplicationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &GalleryApplicationsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Host),
+		pl:             armruntime.NewPipeline(module, version, credential, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Create or update a gallery Application Definition.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// galleryName - The name of the Shared Application Gallery in which the Application Definition is to be created.
+// galleryApplicationName - The name of the gallery Application Definition to be created or updated. The allowed characters
+// are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length is 80
+// characters.
+// galleryApplication - Parameters supplied to the create or update gallery Application operation.
+// options - GalleryApplicationsBeginCreateOrUpdateOptions contains the optional parameters for the GalleryApplicationsClient.BeginCreateOrUpdate
+// method.
 func (client *GalleryApplicationsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplication GalleryApplication, options *GalleryApplicationsBeginCreateOrUpdateOptions) (GalleryApplicationsCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, galleryName, galleryApplicationName, galleryApplication, options)
 	if err != nil {
@@ -98,7 +115,7 @@ func (client *GalleryApplicationsClient) createOrUpdateCreateRequest(ctx context
 		return nil, errors.New("parameter galleryApplicationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{galleryApplicationName}", url.PathEscape(galleryApplicationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -124,6 +141,11 @@ func (client *GalleryApplicationsClient) createOrUpdateHandleError(resp *http.Re
 
 // BeginDelete - Delete a gallery Application.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// galleryName - The name of the Shared Application Gallery in which the Application Definition is to be deleted.
+// galleryApplicationName - The name of the gallery Application Definition to be deleted.
+// options - GalleryApplicationsBeginDeleteOptions contains the optional parameters for the GalleryApplicationsClient.BeginDelete
+// method.
 func (client *GalleryApplicationsClient) BeginDelete(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, options *GalleryApplicationsBeginDeleteOptions) (GalleryApplicationsDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, galleryName, galleryApplicationName, options)
 	if err != nil {
@@ -178,7 +200,7 @@ func (client *GalleryApplicationsClient) deleteCreateRequest(ctx context.Context
 		return nil, errors.New("parameter galleryApplicationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{galleryApplicationName}", url.PathEscape(galleryApplicationName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -204,6 +226,10 @@ func (client *GalleryApplicationsClient) deleteHandleError(resp *http.Response) 
 
 // Get - Retrieves information about a gallery Application Definition.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// galleryName - The name of the Shared Application Gallery from which the Application Definitions are to be retrieved.
+// galleryApplicationName - The name of the gallery Application Definition to be retrieved.
+// options - GalleryApplicationsGetOptions contains the optional parameters for the GalleryApplicationsClient.Get method.
 func (client *GalleryApplicationsClient) Get(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, options *GalleryApplicationsGetOptions) (GalleryApplicationsGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, galleryName, galleryApplicationName, options)
 	if err != nil {
@@ -238,7 +264,7 @@ func (client *GalleryApplicationsClient) getCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter galleryApplicationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{galleryApplicationName}", url.PathEscape(galleryApplicationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -273,6 +299,10 @@ func (client *GalleryApplicationsClient) getHandleError(resp *http.Response) err
 
 // ListByGallery - List gallery Application Definitions in a gallery.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// galleryName - The name of the Shared Application Gallery from which Application Definitions are to be listed.
+// options - GalleryApplicationsListByGalleryOptions contains the optional parameters for the GalleryApplicationsClient.ListByGallery
+// method.
 func (client *GalleryApplicationsClient) ListByGallery(resourceGroupName string, galleryName string, options *GalleryApplicationsListByGalleryOptions) *GalleryApplicationsListByGalleryPager {
 	return &GalleryApplicationsListByGalleryPager{
 		client: client,
@@ -300,7 +330,7 @@ func (client *GalleryApplicationsClient) listByGalleryCreateRequest(ctx context.
 		return nil, errors.New("parameter galleryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{galleryName}", url.PathEscape(galleryName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -335,6 +365,14 @@ func (client *GalleryApplicationsClient) listByGalleryHandleError(resp *http.Res
 
 // BeginUpdate - Update a gallery Application Definition.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// galleryName - The name of the Shared Application Gallery in which the Application Definition is to be updated.
+// galleryApplicationName - The name of the gallery Application Definition to be updated. The allowed characters are alphabets
+// and numbers with dots, dashes, and periods allowed in the middle. The maximum length is 80
+// characters.
+// galleryApplication - Parameters supplied to the update gallery Application operation.
+// options - GalleryApplicationsBeginUpdateOptions contains the optional parameters for the GalleryApplicationsClient.BeginUpdate
+// method.
 func (client *GalleryApplicationsClient) BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplication GalleryApplicationUpdate, options *GalleryApplicationsBeginUpdateOptions) (GalleryApplicationsUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, galleryName, galleryApplicationName, galleryApplication, options)
 	if err != nil {
@@ -389,7 +427,7 @@ func (client *GalleryApplicationsClient) updateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter galleryApplicationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{galleryApplicationName}", url.PathEscape(galleryApplicationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}

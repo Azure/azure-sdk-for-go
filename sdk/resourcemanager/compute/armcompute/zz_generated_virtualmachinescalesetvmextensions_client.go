@@ -25,12 +25,16 @@ import (
 // VirtualMachineScaleSetVMExtensionsClient contains the methods for the VirtualMachineScaleSetVMExtensions group.
 // Don't use this type directly, use NewVirtualMachineScaleSetVMExtensionsClient() instead.
 type VirtualMachineScaleSetVMExtensionsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewVirtualMachineScaleSetVMExtensionsClient creates a new instance of VirtualMachineScaleSetVMExtensionsClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewVirtualMachineScaleSetVMExtensionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VirtualMachineScaleSetVMExtensionsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
@@ -39,11 +43,23 @@ func NewVirtualMachineScaleSetVMExtensionsClient(subscriptionID string, credenti
 	if len(cp.Host) == 0 {
 		cp.Host = arm.AzurePublicCloud
 	}
-	return &VirtualMachineScaleSetVMExtensionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &VirtualMachineScaleSetVMExtensionsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Host),
+		pl:             armruntime.NewPipeline(module, version, credential, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - The operation to create or update the VMSS VM extension.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// vmScaleSetName - The name of the VM scale set.
+// instanceID - The instance ID of the virtual machine.
+// vmExtensionName - The name of the virtual machine extension.
+// extensionParameters - Parameters supplied to the Create Virtual Machine Extension operation.
+// options - VirtualMachineScaleSetVMExtensionsBeginCreateOrUpdateOptions contains the optional parameters for the VirtualMachineScaleSetVMExtensionsClient.BeginCreateOrUpdate
+// method.
 func (client *VirtualMachineScaleSetVMExtensionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, vmExtensionName string, extensionParameters VirtualMachineScaleSetVMExtension, options *VirtualMachineScaleSetVMExtensionsBeginCreateOrUpdateOptions) (VirtualMachineScaleSetVMExtensionsCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, vmScaleSetName, instanceID, vmExtensionName, extensionParameters, options)
 	if err != nil {
@@ -102,7 +118,7 @@ func (client *VirtualMachineScaleSetVMExtensionsClient) createOrUpdateCreateRequ
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -128,6 +144,12 @@ func (client *VirtualMachineScaleSetVMExtensionsClient) createOrUpdateHandleErro
 
 // BeginDelete - The operation to delete the VMSS VM extension.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// vmScaleSetName - The name of the VM scale set.
+// instanceID - The instance ID of the virtual machine.
+// vmExtensionName - The name of the virtual machine extension.
+// options - VirtualMachineScaleSetVMExtensionsBeginDeleteOptions contains the optional parameters for the VirtualMachineScaleSetVMExtensionsClient.BeginDelete
+// method.
 func (client *VirtualMachineScaleSetVMExtensionsClient) BeginDelete(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, vmExtensionName string, options *VirtualMachineScaleSetVMExtensionsBeginDeleteOptions) (VirtualMachineScaleSetVMExtensionsDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, vmScaleSetName, instanceID, vmExtensionName, options)
 	if err != nil {
@@ -186,7 +208,7 @@ func (client *VirtualMachineScaleSetVMExtensionsClient) deleteCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -212,6 +234,12 @@ func (client *VirtualMachineScaleSetVMExtensionsClient) deleteHandleError(resp *
 
 // Get - The operation to get the VMSS VM extension.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// vmScaleSetName - The name of the VM scale set.
+// instanceID - The instance ID of the virtual machine.
+// vmExtensionName - The name of the virtual machine extension.
+// options - VirtualMachineScaleSetVMExtensionsGetOptions contains the optional parameters for the VirtualMachineScaleSetVMExtensionsClient.Get
+// method.
 func (client *VirtualMachineScaleSetVMExtensionsClient) Get(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, vmExtensionName string, options *VirtualMachineScaleSetVMExtensionsGetOptions) (VirtualMachineScaleSetVMExtensionsGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vmScaleSetName, instanceID, vmExtensionName, options)
 	if err != nil {
@@ -250,7 +278,7 @@ func (client *VirtualMachineScaleSetVMExtensionsClient) getCreateRequest(ctx con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -288,6 +316,11 @@ func (client *VirtualMachineScaleSetVMExtensionsClient) getHandleError(resp *htt
 
 // List - The operation to get all extensions of an instance in Virtual Machine Scaleset.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// vmScaleSetName - The name of the VM scale set.
+// instanceID - The instance ID of the virtual machine.
+// options - VirtualMachineScaleSetVMExtensionsListOptions contains the optional parameters for the VirtualMachineScaleSetVMExtensionsClient.List
+// method.
 func (client *VirtualMachineScaleSetVMExtensionsClient) List(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMExtensionsListOptions) (VirtualMachineScaleSetVMExtensionsListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, vmScaleSetName, instanceID, options)
 	if err != nil {
@@ -322,7 +355,7 @@ func (client *VirtualMachineScaleSetVMExtensionsClient) listCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -360,6 +393,13 @@ func (client *VirtualMachineScaleSetVMExtensionsClient) listHandleError(resp *ht
 
 // BeginUpdate - The operation to update the VMSS VM extension.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// vmScaleSetName - The name of the VM scale set.
+// instanceID - The instance ID of the virtual machine.
+// vmExtensionName - The name of the virtual machine extension.
+// extensionParameters - Parameters supplied to the Update Virtual Machine Extension operation.
+// options - VirtualMachineScaleSetVMExtensionsBeginUpdateOptions contains the optional parameters for the VirtualMachineScaleSetVMExtensionsClient.BeginUpdate
+// method.
 func (client *VirtualMachineScaleSetVMExtensionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, vmExtensionName string, extensionParameters VirtualMachineScaleSetVMExtensionUpdate, options *VirtualMachineScaleSetVMExtensionsBeginUpdateOptions) (VirtualMachineScaleSetVMExtensionsUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, vmScaleSetName, instanceID, vmExtensionName, extensionParameters, options)
 	if err != nil {
@@ -418,7 +458,7 @@ func (client *VirtualMachineScaleSetVMExtensionsClient) updateCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}

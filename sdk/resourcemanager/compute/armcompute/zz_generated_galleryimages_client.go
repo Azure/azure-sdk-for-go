@@ -25,12 +25,16 @@ import (
 // GalleryImagesClient contains the methods for the GalleryImages group.
 // Don't use this type directly, use NewGalleryImagesClient() instead.
 type GalleryImagesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewGalleryImagesClient creates a new instance of GalleryImagesClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewGalleryImagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *GalleryImagesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
@@ -39,11 +43,24 @@ func NewGalleryImagesClient(subscriptionID string, credential azcore.TokenCreden
 	if len(cp.Host) == 0 {
 		cp.Host = arm.AzurePublicCloud
 	}
-	return &GalleryImagesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &GalleryImagesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Host),
+		pl:             armruntime.NewPipeline(module, version, credential, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Create or update a gallery image definition.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// galleryName - The name of the Shared Image Gallery in which the Image Definition is to be created.
+// galleryImageName - The name of the gallery image definition to be created or updated. The allowed characters are alphabets
+// and numbers with dots, dashes, and periods allowed in the middle. The maximum length is 80
+// characters.
+// galleryImage - Parameters supplied to the create or update gallery image operation.
+// options - GalleryImagesBeginCreateOrUpdateOptions contains the optional parameters for the GalleryImagesClient.BeginCreateOrUpdate
+// method.
 func (client *GalleryImagesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImage GalleryImage, options *GalleryImagesBeginCreateOrUpdateOptions) (GalleryImagesCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, galleryName, galleryImageName, galleryImage, options)
 	if err != nil {
@@ -98,7 +115,7 @@ func (client *GalleryImagesClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter galleryImageName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{galleryImageName}", url.PathEscape(galleryImageName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -124,6 +141,10 @@ func (client *GalleryImagesClient) createOrUpdateHandleError(resp *http.Response
 
 // BeginDelete - Delete a gallery image.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// galleryName - The name of the Shared Image Gallery in which the Image Definition is to be deleted.
+// galleryImageName - The name of the gallery image definition to be deleted.
+// options - GalleryImagesBeginDeleteOptions contains the optional parameters for the GalleryImagesClient.BeginDelete method.
 func (client *GalleryImagesClient) BeginDelete(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, options *GalleryImagesBeginDeleteOptions) (GalleryImagesDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, galleryName, galleryImageName, options)
 	if err != nil {
@@ -178,7 +199,7 @@ func (client *GalleryImagesClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter galleryImageName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{galleryImageName}", url.PathEscape(galleryImageName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -204,6 +225,10 @@ func (client *GalleryImagesClient) deleteHandleError(resp *http.Response) error 
 
 // Get - Retrieves information about a gallery image definition.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// galleryName - The name of the Shared Image Gallery from which the Image Definitions are to be retrieved.
+// galleryImageName - The name of the gallery image definition to be retrieved.
+// options - GalleryImagesGetOptions contains the optional parameters for the GalleryImagesClient.Get method.
 func (client *GalleryImagesClient) Get(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, options *GalleryImagesGetOptions) (GalleryImagesGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, galleryName, galleryImageName, options)
 	if err != nil {
@@ -238,7 +263,7 @@ func (client *GalleryImagesClient) getCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter galleryImageName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{galleryImageName}", url.PathEscape(galleryImageName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -273,6 +298,10 @@ func (client *GalleryImagesClient) getHandleError(resp *http.Response) error {
 
 // ListByGallery - List gallery image definitions in a gallery.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// galleryName - The name of the Shared Image Gallery from which Image Definitions are to be listed.
+// options - GalleryImagesListByGalleryOptions contains the optional parameters for the GalleryImagesClient.ListByGallery
+// method.
 func (client *GalleryImagesClient) ListByGallery(resourceGroupName string, galleryName string, options *GalleryImagesListByGalleryOptions) *GalleryImagesListByGalleryPager {
 	return &GalleryImagesListByGalleryPager{
 		client: client,
@@ -300,7 +329,7 @@ func (client *GalleryImagesClient) listByGalleryCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter galleryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{galleryName}", url.PathEscape(galleryName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -335,6 +364,12 @@ func (client *GalleryImagesClient) listByGalleryHandleError(resp *http.Response)
 
 // BeginUpdate - Update a gallery image definition.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// galleryName - The name of the Shared Image Gallery in which the Image Definition is to be updated.
+// galleryImageName - The name of the gallery image definition to be updated. The allowed characters are alphabets and numbers
+// with dots, dashes, and periods allowed in the middle. The maximum length is 80 characters.
+// galleryImage - Parameters supplied to the update gallery image operation.
+// options - GalleryImagesBeginUpdateOptions contains the optional parameters for the GalleryImagesClient.BeginUpdate method.
 func (client *GalleryImagesClient) BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImage GalleryImageUpdate, options *GalleryImagesBeginUpdateOptions) (GalleryImagesUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, galleryName, galleryImageName, galleryImage, options)
 	if err != nil {
@@ -389,7 +424,7 @@ func (client *GalleryImagesClient) updateCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter galleryImageName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{galleryImageName}", url.PathEscape(galleryImageName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}

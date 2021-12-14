@@ -24,12 +24,16 @@ import (
 // UsageClient contains the methods for the Usage group.
 // Don't use this type directly, use NewUsageClient() instead.
 type UsageClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewUsageClient creates a new instance of UsageClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewUsageClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *UsageClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
@@ -38,11 +42,19 @@ func NewUsageClient(subscriptionID string, credential azcore.TokenCredential, op
 	if len(cp.Host) == 0 {
 		cp.Host = arm.AzurePublicCloud
 	}
-	return &UsageClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &UsageClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Host),
+		pl:             armruntime.NewPipeline(module, version, credential, &cp),
+	}
+	return client
 }
 
-// List - Gets, for the specified location, the current compute resource usage information as well as the limits for compute resources under the subscription.
+// List - Gets, for the specified location, the current compute resource usage information as well as the limits for compute
+// resources under the subscription.
 // If the operation fails it returns a generic error.
+// location - The location for which resource usage is queried.
+// options - UsageListOptions contains the optional parameters for the UsageClient.List method.
 func (client *UsageClient) List(location string, options *UsageListOptions) *UsageListPager {
 	return &UsageListPager{
 		client: client,
@@ -66,7 +78,7 @@ func (client *UsageClient) listCreateRequest(ctx context.Context, location strin
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}

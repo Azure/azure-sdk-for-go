@@ -25,12 +25,16 @@ import (
 // VirtualMachineExtensionImagesClient contains the methods for the VirtualMachineExtensionImages group.
 // Don't use this type directly, use NewVirtualMachineExtensionImagesClient() instead.
 type VirtualMachineExtensionImagesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewVirtualMachineExtensionImagesClient creates a new instance of VirtualMachineExtensionImagesClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewVirtualMachineExtensionImagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VirtualMachineExtensionImagesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
@@ -39,11 +43,19 @@ func NewVirtualMachineExtensionImagesClient(subscriptionID string, credential az
 	if len(cp.Host) == 0 {
 		cp.Host = arm.AzurePublicCloud
 	}
-	return &VirtualMachineExtensionImagesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &VirtualMachineExtensionImagesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Host),
+		pl:             armruntime.NewPipeline(module, version, credential, &cp),
+	}
+	return client
 }
 
 // Get - Gets a virtual machine extension image.
 // If the operation fails it returns a generic error.
+// location - The name of a supported Azure region.
+// options - VirtualMachineExtensionImagesGetOptions contains the optional parameters for the VirtualMachineExtensionImagesClient.Get
+// method.
 func (client *VirtualMachineExtensionImagesClient) Get(ctx context.Context, location string, publisherName string, typeParam string, version string, options *VirtualMachineExtensionImagesGetOptions) (VirtualMachineExtensionImagesGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, location, publisherName, typeParam, version, options)
 	if err != nil {
@@ -82,7 +94,7 @@ func (client *VirtualMachineExtensionImagesClient) getCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -116,6 +128,9 @@ func (client *VirtualMachineExtensionImagesClient) getHandleError(resp *http.Res
 
 // ListTypes - Gets a list of virtual machine extension image types.
 // If the operation fails it returns a generic error.
+// location - The name of a supported Azure region.
+// options - VirtualMachineExtensionImagesListTypesOptions contains the optional parameters for the VirtualMachineExtensionImagesClient.ListTypes
+// method.
 func (client *VirtualMachineExtensionImagesClient) ListTypes(ctx context.Context, location string, publisherName string, options *VirtualMachineExtensionImagesListTypesOptions) (VirtualMachineExtensionImagesListTypesResponse, error) {
 	req, err := client.listTypesCreateRequest(ctx, location, publisherName, options)
 	if err != nil {
@@ -146,7 +161,7 @@ func (client *VirtualMachineExtensionImagesClient) listTypesCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -180,6 +195,9 @@ func (client *VirtualMachineExtensionImagesClient) listTypesHandleError(resp *ht
 
 // ListVersions - Gets a list of virtual machine extension image versions.
 // If the operation fails it returns a generic error.
+// location - The name of a supported Azure region.
+// options - VirtualMachineExtensionImagesListVersionsOptions contains the optional parameters for the VirtualMachineExtensionImagesClient.ListVersions
+// method.
 func (client *VirtualMachineExtensionImagesClient) ListVersions(ctx context.Context, location string, publisherName string, typeParam string, options *VirtualMachineExtensionImagesListVersionsOptions) (VirtualMachineExtensionImagesListVersionsResponse, error) {
 	req, err := client.listVersionsCreateRequest(ctx, location, publisherName, typeParam, options)
 	if err != nil {
@@ -214,7 +232,7 @@ func (client *VirtualMachineExtensionImagesClient) listVersionsCreateRequest(ctx
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}

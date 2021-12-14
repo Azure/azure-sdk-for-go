@@ -24,12 +24,16 @@ import (
 // SnapshotsClient contains the methods for the Snapshots group.
 // Don't use this type directly, use NewSnapshotsClient() instead.
 type SnapshotsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSnapshotsClient creates a new instance of SnapshotsClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSnapshotsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SnapshotsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
@@ -38,11 +42,23 @@ func NewSnapshotsClient(subscriptionID string, credential azcore.TokenCredential
 	if len(cp.Host) == 0 {
 		cp.Host = arm.AzurePublicCloud
 	}
-	return &SnapshotsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SnapshotsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Host),
+		pl:             armruntime.NewPipeline(module, version, credential, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Creates or updates a snapshot.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// snapshotName - The name of the snapshot that is being created. The name can't be changed after the snapshot is created.
+// Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80
+// characters.
+// snapshot - Snapshot object supplied in the body of the Put disk operation.
+// options - SnapshotsBeginCreateOrUpdateOptions contains the optional parameters for the SnapshotsClient.BeginCreateOrUpdate
+// method.
 func (client *SnapshotsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, snapshotName string, snapshot Snapshot, options *SnapshotsBeginCreateOrUpdateOptions) (SnapshotsCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, snapshotName, snapshot, options)
 	if err != nil {
@@ -93,7 +109,7 @@ func (client *SnapshotsClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter snapshotName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{snapshotName}", url.PathEscape(snapshotName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -118,6 +134,11 @@ func (client *SnapshotsClient) createOrUpdateHandleError(resp *http.Response) er
 
 // BeginDelete - Deletes a snapshot.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// snapshotName - The name of the snapshot that is being created. The name can't be changed after the snapshot is created.
+// Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80
+// characters.
+// options - SnapshotsBeginDeleteOptions contains the optional parameters for the SnapshotsClient.BeginDelete method.
 func (client *SnapshotsClient) BeginDelete(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsBeginDeleteOptions) (SnapshotsDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, snapshotName, options)
 	if err != nil {
@@ -168,7 +189,7 @@ func (client *SnapshotsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter snapshotName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{snapshotName}", url.PathEscape(snapshotName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -192,6 +213,11 @@ func (client *SnapshotsClient) deleteHandleError(resp *http.Response) error {
 
 // Get - Gets information about a snapshot.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// snapshotName - The name of the snapshot that is being created. The name can't be changed after the snapshot is created.
+// Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80
+// characters.
+// options - SnapshotsGetOptions contains the optional parameters for the SnapshotsClient.Get method.
 func (client *SnapshotsClient) Get(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsGetOptions) (SnapshotsGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, snapshotName, options)
 	if err != nil {
@@ -222,7 +248,7 @@ func (client *SnapshotsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter snapshotName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{snapshotName}", url.PathEscape(snapshotName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -256,6 +282,12 @@ func (client *SnapshotsClient) getHandleError(resp *http.Response) error {
 
 // BeginGrantAccess - Grants access to a snapshot.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// snapshotName - The name of the snapshot that is being created. The name can't be changed after the snapshot is created.
+// Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80
+// characters.
+// grantAccessData - Access data object supplied in the body of the get snapshot access operation.
+// options - SnapshotsBeginGrantAccessOptions contains the optional parameters for the SnapshotsClient.BeginGrantAccess method.
 func (client *SnapshotsClient) BeginGrantAccess(ctx context.Context, resourceGroupName string, snapshotName string, grantAccessData GrantAccessData, options *SnapshotsBeginGrantAccessOptions) (SnapshotsGrantAccessPollerResponse, error) {
 	resp, err := client.grantAccess(ctx, resourceGroupName, snapshotName, grantAccessData, options)
 	if err != nil {
@@ -306,7 +338,7 @@ func (client *SnapshotsClient) grantAccessCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter snapshotName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{snapshotName}", url.PathEscape(snapshotName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -331,6 +363,7 @@ func (client *SnapshotsClient) grantAccessHandleError(resp *http.Response) error
 
 // List - Lists snapshots under a subscription.
 // If the operation fails it returns a generic error.
+// options - SnapshotsListOptions contains the optional parameters for the SnapshotsClient.List method.
 func (client *SnapshotsClient) List(options *SnapshotsListOptions) *SnapshotsListPager {
 	return &SnapshotsListPager{
 		client: client,
@@ -350,7 +383,7 @@ func (client *SnapshotsClient) listCreateRequest(ctx context.Context, options *S
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -384,6 +417,9 @@ func (client *SnapshotsClient) listHandleError(resp *http.Response) error {
 
 // ListByResourceGroup - Lists snapshots under a resource group.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// options - SnapshotsListByResourceGroupOptions contains the optional parameters for the SnapshotsClient.ListByResourceGroup
+// method.
 func (client *SnapshotsClient) ListByResourceGroup(resourceGroupName string, options *SnapshotsListByResourceGroupOptions) *SnapshotsListByResourceGroupPager {
 	return &SnapshotsListByResourceGroupPager{
 		client: client,
@@ -407,7 +443,7 @@ func (client *SnapshotsClient) listByResourceGroupCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -441,6 +477,12 @@ func (client *SnapshotsClient) listByResourceGroupHandleError(resp *http.Respons
 
 // BeginRevokeAccess - Revokes access to a snapshot.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// snapshotName - The name of the snapshot that is being created. The name can't be changed after the snapshot is created.
+// Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80
+// characters.
+// options - SnapshotsBeginRevokeAccessOptions contains the optional parameters for the SnapshotsClient.BeginRevokeAccess
+// method.
 func (client *SnapshotsClient) BeginRevokeAccess(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsBeginRevokeAccessOptions) (SnapshotsRevokeAccessPollerResponse, error) {
 	resp, err := client.revokeAccess(ctx, resourceGroupName, snapshotName, options)
 	if err != nil {
@@ -491,7 +533,7 @@ func (client *SnapshotsClient) revokeAccessCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter snapshotName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{snapshotName}", url.PathEscape(snapshotName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -515,6 +557,12 @@ func (client *SnapshotsClient) revokeAccessHandleError(resp *http.Response) erro
 
 // BeginUpdate - Updates (patches) a snapshot.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// snapshotName - The name of the snapshot that is being created. The name can't be changed after the snapshot is created.
+// Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80
+// characters.
+// snapshot - Snapshot object supplied in the body of the Patch snapshot operation.
+// options - SnapshotsBeginUpdateOptions contains the optional parameters for the SnapshotsClient.BeginUpdate method.
 func (client *SnapshotsClient) BeginUpdate(ctx context.Context, resourceGroupName string, snapshotName string, snapshot SnapshotUpdate, options *SnapshotsBeginUpdateOptions) (SnapshotsUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, snapshotName, snapshot, options)
 	if err != nil {
@@ -565,7 +613,7 @@ func (client *SnapshotsClient) updateCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter snapshotName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{snapshotName}", url.PathEscape(snapshotName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}

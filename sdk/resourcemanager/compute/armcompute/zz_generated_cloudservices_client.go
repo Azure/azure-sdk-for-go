@@ -25,12 +25,16 @@ import (
 // CloudServicesClient contains the methods for the CloudServices group.
 // Don't use this type directly, use NewCloudServicesClient() instead.
 type CloudServicesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewCloudServicesClient creates a new instance of CloudServicesClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewCloudServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CloudServicesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
@@ -39,11 +43,21 @@ func NewCloudServicesClient(subscriptionID string, credential azcore.TokenCreden
 	if len(cp.Host) == 0 {
 		cp.Host = arm.AzurePublicCloud
 	}
-	return &CloudServicesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &CloudServicesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Host),
+		pl:             armruntime.NewPipeline(module, version, credential, &cp),
+	}
+	return client
 }
 
-// BeginCreateOrUpdate - Create or update a cloud service. Please note some properties can be set only during cloud service creation.
+// BeginCreateOrUpdate - Create or update a cloud service. Please note some properties can be set only during cloud service
+// creation.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - Name of the resource group.
+// cloudServiceName - Name of the cloud service.
+// options - CloudServicesBeginCreateOrUpdateOptions contains the optional parameters for the CloudServicesClient.BeginCreateOrUpdate
+// method.
 func (client *CloudServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginCreateOrUpdateOptions) (CloudServicesCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
@@ -94,7 +108,7 @@ func (client *CloudServicesClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -123,6 +137,9 @@ func (client *CloudServicesClient) createOrUpdateHandleError(resp *http.Response
 
 // BeginDelete - Deletes a cloud service.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - Name of the resource group.
+// cloudServiceName - Name of the cloud service.
+// options - CloudServicesBeginDeleteOptions contains the optional parameters for the CloudServicesClient.BeginDelete method.
 func (client *CloudServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginDeleteOptions) (CloudServicesDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
@@ -173,7 +190,7 @@ func (client *CloudServicesClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -199,6 +216,10 @@ func (client *CloudServicesClient) deleteHandleError(resp *http.Response) error 
 
 // BeginDeleteInstances - Deletes role instances in a cloud service.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - Name of the resource group.
+// cloudServiceName - Name of the cloud service.
+// options - CloudServicesBeginDeleteInstancesOptions contains the optional parameters for the CloudServicesClient.BeginDeleteInstances
+// method.
 func (client *CloudServicesClient) BeginDeleteInstances(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginDeleteInstancesOptions) (CloudServicesDeleteInstancesPollerResponse, error) {
 	resp, err := client.deleteInstances(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
@@ -249,7 +270,7 @@ func (client *CloudServicesClient) deleteInstancesCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -278,6 +299,9 @@ func (client *CloudServicesClient) deleteInstancesHandleError(resp *http.Respons
 
 // Get - Display information about a cloud service.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - Name of the resource group.
+// cloudServiceName - Name of the cloud service.
+// options - CloudServicesGetOptions contains the optional parameters for the CloudServicesClient.Get method.
 func (client *CloudServicesClient) Get(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesGetOptions) (CloudServicesGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
@@ -308,7 +332,7 @@ func (client *CloudServicesClient) getCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -343,6 +367,10 @@ func (client *CloudServicesClient) getHandleError(resp *http.Response) error {
 
 // GetInstanceView - Gets the status of a cloud service.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - Name of the resource group.
+// cloudServiceName - Name of the cloud service.
+// options - CloudServicesGetInstanceViewOptions contains the optional parameters for the CloudServicesClient.GetInstanceView
+// method.
 func (client *CloudServicesClient) GetInstanceView(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesGetInstanceViewOptions) (CloudServicesGetInstanceViewResponse, error) {
 	req, err := client.getInstanceViewCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
@@ -373,7 +401,7 @@ func (client *CloudServicesClient) getInstanceViewCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -406,9 +434,11 @@ func (client *CloudServicesClient) getInstanceViewHandleError(resp *http.Respons
 	return runtime.NewResponseError(&errType, resp)
 }
 
-// List - Gets a list of all cloud services under a resource group. Use nextLink property in the response to get the next page of Cloud Services. Do this
-// till nextLink is null to fetch all the Cloud Services.
+// List - Gets a list of all cloud services under a resource group. Use nextLink property in the response to get the next
+// page of Cloud Services. Do this till nextLink is null to fetch all the Cloud Services.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - Name of the resource group.
+// options - CloudServicesListOptions contains the optional parameters for the CloudServicesClient.List method.
 func (client *CloudServicesClient) List(resourceGroupName string, options *CloudServicesListOptions) *CloudServicesListPager {
 	return &CloudServicesListPager{
 		client: client,
@@ -432,7 +462,7 @@ func (client *CloudServicesClient) listCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -465,10 +495,11 @@ func (client *CloudServicesClient) listHandleError(resp *http.Response) error {
 	return runtime.NewResponseError(&errType, resp)
 }
 
-// ListAll - Gets a list of all cloud services in the subscription, regardless of the associated resource group. Use nextLink property in the response to
-// get the next page of Cloud Services. Do this till nextLink
+// ListAll - Gets a list of all cloud services in the subscription, regardless of the associated resource group. Use nextLink
+// property in the response to get the next page of Cloud Services. Do this till nextLink
 // is null to fetch all the Cloud Services.
 // If the operation fails it returns the *CloudError error type.
+// options - CloudServicesListAllOptions contains the optional parameters for the CloudServicesClient.ListAll method.
 func (client *CloudServicesClient) ListAll(options *CloudServicesListAllOptions) *CloudServicesListAllPager {
 	return &CloudServicesListAllPager{
 		client: client,
@@ -488,7 +519,7 @@ func (client *CloudServicesClient) listAllCreateRequest(ctx context.Context, opt
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -521,8 +552,13 @@ func (client *CloudServicesClient) listAllHandleError(resp *http.Response) error
 	return runtime.NewResponseError(&errType, resp)
 }
 
-// BeginPowerOff - Power off the cloud service. Note that resources are still attached and you are getting charged for the resources.
+// BeginPowerOff - Power off the cloud service. Note that resources are still attached and you are getting charged for the
+// resources.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - Name of the resource group.
+// cloudServiceName - Name of the cloud service.
+// options - CloudServicesBeginPowerOffOptions contains the optional parameters for the CloudServicesClient.BeginPowerOff
+// method.
 func (client *CloudServicesClient) BeginPowerOff(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginPowerOffOptions) (CloudServicesPowerOffPollerResponse, error) {
 	resp, err := client.powerOff(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
@@ -573,7 +609,7 @@ func (client *CloudServicesClient) powerOffCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -597,10 +633,13 @@ func (client *CloudServicesClient) powerOffHandleError(resp *http.Response) erro
 	return runtime.NewResponseError(&errType, resp)
 }
 
-// BeginRebuild - Rebuild Role Instances reinstalls the operating system on instances of web roles or worker roles and initializes the storage resources
-// that are used by them. If you do not want to initialize storage
+// BeginRebuild - Rebuild Role Instances reinstalls the operating system on instances of web roles or worker roles and initializes
+// the storage resources that are used by them. If you do not want to initialize storage
 // resources, you can use Reimage Role Instances.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - Name of the resource group.
+// cloudServiceName - Name of the cloud service.
+// options - CloudServicesBeginRebuildOptions contains the optional parameters for the CloudServicesClient.BeginRebuild method.
 func (client *CloudServicesClient) BeginRebuild(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginRebuildOptions) (CloudServicesRebuildPollerResponse, error) {
 	resp, err := client.rebuild(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
@@ -619,8 +658,8 @@ func (client *CloudServicesClient) BeginRebuild(ctx context.Context, resourceGro
 	return result, nil
 }
 
-// Rebuild - Rebuild Role Instances reinstalls the operating system on instances of web roles or worker roles and initializes the storage resources that
-// are used by them. If you do not want to initialize storage
+// Rebuild - Rebuild Role Instances reinstalls the operating system on instances of web roles or worker roles and initializes
+// the storage resources that are used by them. If you do not want to initialize storage
 // resources, you can use Reimage Role Instances.
 // If the operation fails it returns the *CloudError error type.
 func (client *CloudServicesClient) rebuild(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginRebuildOptions) (*http.Response, error) {
@@ -653,7 +692,7 @@ func (client *CloudServicesClient) rebuildCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -682,6 +721,9 @@ func (client *CloudServicesClient) rebuildHandleError(resp *http.Response) error
 
 // BeginReimage - Reimage asynchronous operation reinstalls the operating system on instances of web roles or worker roles.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - Name of the resource group.
+// cloudServiceName - Name of the cloud service.
+// options - CloudServicesBeginReimageOptions contains the optional parameters for the CloudServicesClient.BeginReimage method.
 func (client *CloudServicesClient) BeginReimage(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginReimageOptions) (CloudServicesReimagePollerResponse, error) {
 	resp, err := client.reimage(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
@@ -732,7 +774,7 @@ func (client *CloudServicesClient) reimageCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -761,6 +803,9 @@ func (client *CloudServicesClient) reimageHandleError(resp *http.Response) error
 
 // BeginRestart - Restarts one or more role instances in a cloud service.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - Name of the resource group.
+// cloudServiceName - Name of the cloud service.
+// options - CloudServicesBeginRestartOptions contains the optional parameters for the CloudServicesClient.BeginRestart method.
 func (client *CloudServicesClient) BeginRestart(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginRestartOptions) (CloudServicesRestartPollerResponse, error) {
 	resp, err := client.restart(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
@@ -811,7 +856,7 @@ func (client *CloudServicesClient) restartCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -840,6 +885,9 @@ func (client *CloudServicesClient) restartHandleError(resp *http.Response) error
 
 // BeginStart - Starts the cloud service.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - Name of the resource group.
+// cloudServiceName - Name of the cloud service.
+// options - CloudServicesBeginStartOptions contains the optional parameters for the CloudServicesClient.BeginStart method.
 func (client *CloudServicesClient) BeginStart(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginStartOptions) (CloudServicesStartPollerResponse, error) {
 	resp, err := client.start(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
@@ -890,7 +938,7 @@ func (client *CloudServicesClient) startCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -916,6 +964,9 @@ func (client *CloudServicesClient) startHandleError(resp *http.Response) error {
 
 // BeginUpdate - Update a cloud service.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - Name of the resource group.
+// cloudServiceName - Name of the cloud service.
+// options - CloudServicesBeginUpdateOptions contains the optional parameters for the CloudServicesClient.BeginUpdate method.
 func (client *CloudServicesClient) BeginUpdate(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesBeginUpdateOptions) (CloudServicesUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
@@ -966,7 +1017,7 @@ func (client *CloudServicesClient) updateCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}

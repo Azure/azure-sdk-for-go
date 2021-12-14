@@ -25,12 +25,16 @@ import (
 // VirtualMachineRunCommandsClient contains the methods for the VirtualMachineRunCommands group.
 // Don't use this type directly, use NewVirtualMachineRunCommandsClient() instead.
 type VirtualMachineRunCommandsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewVirtualMachineRunCommandsClient creates a new instance of VirtualMachineRunCommandsClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewVirtualMachineRunCommandsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VirtualMachineRunCommandsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
@@ -39,11 +43,22 @@ func NewVirtualMachineRunCommandsClient(subscriptionID string, credential azcore
 	if len(cp.Host) == 0 {
 		cp.Host = arm.AzurePublicCloud
 	}
-	return &VirtualMachineRunCommandsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &VirtualMachineRunCommandsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Host),
+		pl:             armruntime.NewPipeline(module, version, credential, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - The operation to create or update the run command.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// vmName - The name of the virtual machine where the run command should be created or updated.
+// runCommandName - The name of the virtual machine run command.
+// runCommand - Parameters supplied to the Create Virtual Machine RunCommand operation.
+// options - VirtualMachineRunCommandsBeginCreateOrUpdateOptions contains the optional parameters for the VirtualMachineRunCommandsClient.BeginCreateOrUpdate
+// method.
 func (client *VirtualMachineRunCommandsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vmName string, runCommandName string, runCommand VirtualMachineRunCommand, options *VirtualMachineRunCommandsBeginCreateOrUpdateOptions) (VirtualMachineRunCommandsCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, vmName, runCommandName, runCommand, options)
 	if err != nil {
@@ -98,7 +113,7 @@ func (client *VirtualMachineRunCommandsClient) createOrUpdateCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -124,6 +139,11 @@ func (client *VirtualMachineRunCommandsClient) createOrUpdateHandleError(resp *h
 
 // BeginDelete - The operation to delete the run command.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// vmName - The name of the virtual machine where the run command should be deleted.
+// runCommandName - The name of the virtual machine run command.
+// options - VirtualMachineRunCommandsBeginDeleteOptions contains the optional parameters for the VirtualMachineRunCommandsClient.BeginDelete
+// method.
 func (client *VirtualMachineRunCommandsClient) BeginDelete(ctx context.Context, resourceGroupName string, vmName string, runCommandName string, options *VirtualMachineRunCommandsBeginDeleteOptions) (VirtualMachineRunCommandsDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, vmName, runCommandName, options)
 	if err != nil {
@@ -178,7 +198,7 @@ func (client *VirtualMachineRunCommandsClient) deleteCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -204,6 +224,10 @@ func (client *VirtualMachineRunCommandsClient) deleteHandleError(resp *http.Resp
 
 // Get - Gets specific run command for a subscription in a location.
 // If the operation fails it returns a generic error.
+// location - The location upon which run commands is queried.
+// commandID - The command id.
+// options - VirtualMachineRunCommandsGetOptions contains the optional parameters for the VirtualMachineRunCommandsClient.Get
+// method.
 func (client *VirtualMachineRunCommandsClient) Get(ctx context.Context, location string, commandID string, options *VirtualMachineRunCommandsGetOptions) (VirtualMachineRunCommandsGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, location, commandID, options)
 	if err != nil {
@@ -234,7 +258,7 @@ func (client *VirtualMachineRunCommandsClient) getCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -268,6 +292,11 @@ func (client *VirtualMachineRunCommandsClient) getHandleError(resp *http.Respons
 
 // GetByVirtualMachine - The operation to get the run command.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// vmName - The name of the virtual machine containing the run command.
+// runCommandName - The name of the virtual machine run command.
+// options - VirtualMachineRunCommandsGetByVirtualMachineOptions contains the optional parameters for the VirtualMachineRunCommandsClient.GetByVirtualMachine
+// method.
 func (client *VirtualMachineRunCommandsClient) GetByVirtualMachine(ctx context.Context, resourceGroupName string, vmName string, runCommandName string, options *VirtualMachineRunCommandsGetByVirtualMachineOptions) (VirtualMachineRunCommandsGetByVirtualMachineResponse, error) {
 	req, err := client.getByVirtualMachineCreateRequest(ctx, resourceGroupName, vmName, runCommandName, options)
 	if err != nil {
@@ -302,7 +331,7 @@ func (client *VirtualMachineRunCommandsClient) getByVirtualMachineCreateRequest(
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -340,6 +369,9 @@ func (client *VirtualMachineRunCommandsClient) getByVirtualMachineHandleError(re
 
 // List - Lists all available run commands for a subscription in a location.
 // If the operation fails it returns a generic error.
+// location - The location upon which run commands is queried.
+// options - VirtualMachineRunCommandsListOptions contains the optional parameters for the VirtualMachineRunCommandsClient.List
+// method.
 func (client *VirtualMachineRunCommandsClient) List(location string, options *VirtualMachineRunCommandsListOptions) *VirtualMachineRunCommandsListPager {
 	return &VirtualMachineRunCommandsListPager{
 		client: client,
@@ -363,7 +395,7 @@ func (client *VirtualMachineRunCommandsClient) listCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -397,6 +429,10 @@ func (client *VirtualMachineRunCommandsClient) listHandleError(resp *http.Respon
 
 // ListByVirtualMachine - The operation to get all run commands of a Virtual Machine.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// vmName - The name of the virtual machine containing the run command.
+// options - VirtualMachineRunCommandsListByVirtualMachineOptions contains the optional parameters for the VirtualMachineRunCommandsClient.ListByVirtualMachine
+// method.
 func (client *VirtualMachineRunCommandsClient) ListByVirtualMachine(resourceGroupName string, vmName string, options *VirtualMachineRunCommandsListByVirtualMachineOptions) *VirtualMachineRunCommandsListByVirtualMachinePager {
 	return &VirtualMachineRunCommandsListByVirtualMachinePager{
 		client: client,
@@ -424,7 +460,7 @@ func (client *VirtualMachineRunCommandsClient) listByVirtualMachineCreateRequest
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -462,6 +498,12 @@ func (client *VirtualMachineRunCommandsClient) listByVirtualMachineHandleError(r
 
 // BeginUpdate - The operation to update the run command.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// vmName - The name of the virtual machine where the run command should be updated.
+// runCommandName - The name of the virtual machine run command.
+// runCommand - Parameters supplied to the Update Virtual Machine RunCommand operation.
+// options - VirtualMachineRunCommandsBeginUpdateOptions contains the optional parameters for the VirtualMachineRunCommandsClient.BeginUpdate
+// method.
 func (client *VirtualMachineRunCommandsClient) BeginUpdate(ctx context.Context, resourceGroupName string, vmName string, runCommandName string, runCommand VirtualMachineRunCommandUpdate, options *VirtualMachineRunCommandsBeginUpdateOptions) (VirtualMachineRunCommandsUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, vmName, runCommandName, runCommand, options)
 	if err != nil {
@@ -516,7 +558,7 @@ func (client *VirtualMachineRunCommandsClient) updateCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}

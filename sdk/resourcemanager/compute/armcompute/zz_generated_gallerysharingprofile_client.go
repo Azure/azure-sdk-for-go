@@ -25,12 +25,16 @@ import (
 // GallerySharingProfileClient contains the methods for the GallerySharingProfile group.
 // Don't use this type directly, use NewGallerySharingProfileClient() instead.
 type GallerySharingProfileClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewGallerySharingProfileClient creates a new instance of GallerySharingProfileClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewGallerySharingProfileClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *GallerySharingProfileClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
@@ -39,11 +43,21 @@ func NewGallerySharingProfileClient(subscriptionID string, credential azcore.Tok
 	if len(cp.Host) == 0 {
 		cp.Host = arm.AzurePublicCloud
 	}
-	return &GallerySharingProfileClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &GallerySharingProfileClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Host),
+		pl:             armruntime.NewPipeline(module, version, credential, &cp),
+	}
+	return client
 }
 
 // BeginUpdate - Update sharing profile of a gallery.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// galleryName - The name of the Shared Image Gallery.
+// sharingUpdate - Parameters supplied to the update gallery sharing profile.
+// options - GallerySharingProfileBeginUpdateOptions contains the optional parameters for the GallerySharingProfileClient.BeginUpdate
+// method.
 func (client *GallerySharingProfileClient) BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, sharingUpdate SharingUpdate, options *GallerySharingProfileBeginUpdateOptions) (GallerySharingProfileUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, galleryName, sharingUpdate, options)
 	if err != nil {
@@ -94,7 +108,7 @@ func (client *GallerySharingProfileClient) updateCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter galleryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{galleryName}", url.PathEscape(galleryName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}

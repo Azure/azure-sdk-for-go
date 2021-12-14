@@ -25,12 +25,16 @@ import (
 // CommunityGalleriesClient contains the methods for the CommunityGalleries group.
 // Don't use this type directly, use NewCommunityGalleriesClient() instead.
 type CommunityGalleriesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewCommunityGalleriesClient creates a new instance of CommunityGalleriesClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewCommunityGalleriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CommunityGalleriesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
@@ -39,11 +43,19 @@ func NewCommunityGalleriesClient(subscriptionID string, credential azcore.TokenC
 	if len(cp.Host) == 0 {
 		cp.Host = arm.AzurePublicCloud
 	}
-	return &CommunityGalleriesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &CommunityGalleriesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Host),
+		pl:             armruntime.NewPipeline(module, version, credential, &cp),
+	}
+	return client
 }
 
 // Get - Get a community gallery by gallery public name.
 // If the operation fails it returns the *CloudError error type.
+// location - Resource location.
+// publicGalleryName - The public name of the community gallery.
+// options - CommunityGalleriesGetOptions contains the optional parameters for the CommunityGalleriesClient.Get method.
 func (client *CommunityGalleriesClient) Get(ctx context.Context, location string, publicGalleryName string, options *CommunityGalleriesGetOptions) (CommunityGalleriesGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, location, publicGalleryName, options)
 	if err != nil {
@@ -74,7 +86,7 @@ func (client *CommunityGalleriesClient) getCreateRequest(ctx context.Context, lo
 		return nil, errors.New("parameter publicGalleryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{publicGalleryName}", url.PathEscape(publicGalleryName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}

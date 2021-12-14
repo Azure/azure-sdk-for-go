@@ -25,12 +25,16 @@ import (
 // VirtualMachineScaleSetVMRunCommandsClient contains the methods for the VirtualMachineScaleSetVMRunCommands group.
 // Don't use this type directly, use NewVirtualMachineScaleSetVMRunCommandsClient() instead.
 type VirtualMachineScaleSetVMRunCommandsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewVirtualMachineScaleSetVMRunCommandsClient creates a new instance of VirtualMachineScaleSetVMRunCommandsClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewVirtualMachineScaleSetVMRunCommandsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VirtualMachineScaleSetVMRunCommandsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
@@ -39,11 +43,23 @@ func NewVirtualMachineScaleSetVMRunCommandsClient(subscriptionID string, credent
 	if len(cp.Host) == 0 {
 		cp.Host = arm.AzurePublicCloud
 	}
-	return &VirtualMachineScaleSetVMRunCommandsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &VirtualMachineScaleSetVMRunCommandsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Host),
+		pl:             armruntime.NewPipeline(module, version, credential, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - The operation to create or update the VMSS VM run command.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// vmScaleSetName - The name of the VM scale set.
+// instanceID - The instance ID of the virtual machine.
+// runCommandName - The name of the virtual machine run command.
+// runCommand - Parameters supplied to the Create Virtual Machine RunCommand operation.
+// options - VirtualMachineScaleSetVMRunCommandsBeginCreateOrUpdateOptions contains the optional parameters for the VirtualMachineScaleSetVMRunCommandsClient.BeginCreateOrUpdate
+// method.
 func (client *VirtualMachineScaleSetVMRunCommandsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, runCommandName string, runCommand VirtualMachineRunCommand, options *VirtualMachineScaleSetVMRunCommandsBeginCreateOrUpdateOptions) (VirtualMachineScaleSetVMRunCommandsCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, vmScaleSetName, instanceID, runCommandName, runCommand, options)
 	if err != nil {
@@ -102,7 +118,7 @@ func (client *VirtualMachineScaleSetVMRunCommandsClient) createOrUpdateCreateReq
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -128,6 +144,12 @@ func (client *VirtualMachineScaleSetVMRunCommandsClient) createOrUpdateHandleErr
 
 // BeginDelete - The operation to delete the VMSS VM run command.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// vmScaleSetName - The name of the VM scale set.
+// instanceID - The instance ID of the virtual machine.
+// runCommandName - The name of the virtual machine run command.
+// options - VirtualMachineScaleSetVMRunCommandsBeginDeleteOptions contains the optional parameters for the VirtualMachineScaleSetVMRunCommandsClient.BeginDelete
+// method.
 func (client *VirtualMachineScaleSetVMRunCommandsClient) BeginDelete(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, runCommandName string, options *VirtualMachineScaleSetVMRunCommandsBeginDeleteOptions) (VirtualMachineScaleSetVMRunCommandsDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, vmScaleSetName, instanceID, runCommandName, options)
 	if err != nil {
@@ -186,7 +208,7 @@ func (client *VirtualMachineScaleSetVMRunCommandsClient) deleteCreateRequest(ctx
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -212,6 +234,12 @@ func (client *VirtualMachineScaleSetVMRunCommandsClient) deleteHandleError(resp 
 
 // Get - The operation to get the VMSS VM run command.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// vmScaleSetName - The name of the VM scale set.
+// instanceID - The instance ID of the virtual machine.
+// runCommandName - The name of the virtual machine run command.
+// options - VirtualMachineScaleSetVMRunCommandsGetOptions contains the optional parameters for the VirtualMachineScaleSetVMRunCommandsClient.Get
+// method.
 func (client *VirtualMachineScaleSetVMRunCommandsClient) Get(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, runCommandName string, options *VirtualMachineScaleSetVMRunCommandsGetOptions) (VirtualMachineScaleSetVMRunCommandsGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vmScaleSetName, instanceID, runCommandName, options)
 	if err != nil {
@@ -250,7 +278,7 @@ func (client *VirtualMachineScaleSetVMRunCommandsClient) getCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -288,6 +316,11 @@ func (client *VirtualMachineScaleSetVMRunCommandsClient) getHandleError(resp *ht
 
 // List - The operation to get all run commands of an instance in Virtual Machine Scaleset.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// vmScaleSetName - The name of the VM scale set.
+// instanceID - The instance ID of the virtual machine.
+// options - VirtualMachineScaleSetVMRunCommandsListOptions contains the optional parameters for the VirtualMachineScaleSetVMRunCommandsClient.List
+// method.
 func (client *VirtualMachineScaleSetVMRunCommandsClient) List(resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMRunCommandsListOptions) *VirtualMachineScaleSetVMRunCommandsListPager {
 	return &VirtualMachineScaleSetVMRunCommandsListPager{
 		client: client,
@@ -319,7 +352,7 @@ func (client *VirtualMachineScaleSetVMRunCommandsClient) listCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -357,6 +390,13 @@ func (client *VirtualMachineScaleSetVMRunCommandsClient) listHandleError(resp *h
 
 // BeginUpdate - The operation to update the VMSS VM run command.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// vmScaleSetName - The name of the VM scale set.
+// instanceID - The instance ID of the virtual machine.
+// runCommandName - The name of the virtual machine run command.
+// runCommand - Parameters supplied to the Update Virtual Machine RunCommand operation.
+// options - VirtualMachineScaleSetVMRunCommandsBeginUpdateOptions contains the optional parameters for the VirtualMachineScaleSetVMRunCommandsClient.BeginUpdate
+// method.
 func (client *VirtualMachineScaleSetVMRunCommandsClient) BeginUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, runCommandName string, runCommand VirtualMachineRunCommandUpdate, options *VirtualMachineScaleSetVMRunCommandsBeginUpdateOptions) (VirtualMachineScaleSetVMRunCommandsUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, vmScaleSetName, instanceID, runCommandName, runCommand, options)
 	if err != nil {
@@ -415,7 +455,7 @@ func (client *VirtualMachineScaleSetVMRunCommandsClient) updateCreateRequest(ctx
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}

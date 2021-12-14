@@ -25,12 +25,16 @@ import (
 // CapacityReservationGroupsClient contains the methods for the CapacityReservationGroups group.
 // Don't use this type directly, use NewCapacityReservationGroupsClient() instead.
 type CapacityReservationGroupsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewCapacityReservationGroupsClient creates a new instance of CapacityReservationGroupsClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewCapacityReservationGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CapacityReservationGroupsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
@@ -39,13 +43,23 @@ func NewCapacityReservationGroupsClient(subscriptionID string, credential azcore
 	if len(cp.Host) == 0 {
 		cp.Host = arm.AzurePublicCloud
 	}
-	return &CapacityReservationGroupsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &CapacityReservationGroupsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Host),
+		pl:             armruntime.NewPipeline(module, version, credential, &cp),
+	}
+	return client
 }
 
-// CreateOrUpdate - The operation to create or update a capacity reservation group. When updating a capacity reservation group, only tags may be modified.
-// Please refer to https://aka.ms/CapacityReservation for more
+// CreateOrUpdate - The operation to create or update a capacity reservation group. When updating a capacity reservation group,
+// only tags may be modified. Please refer to https://aka.ms/CapacityReservation for more
 // details.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// capacityReservationGroupName - The name of the capacity reservation group.
+// parameters - Parameters supplied to the Create capacity reservation Group.
+// options - CapacityReservationGroupsCreateOrUpdateOptions contains the optional parameters for the CapacityReservationGroupsClient.CreateOrUpdate
+// method.
 func (client *CapacityReservationGroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, parameters CapacityReservationGroup, options *CapacityReservationGroupsCreateOrUpdateOptions) (CapacityReservationGroupsCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, capacityReservationGroupName, parameters, options)
 	if err != nil {
@@ -76,7 +90,7 @@ func (client *CapacityReservationGroupsClient) createOrUpdateCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -109,10 +123,14 @@ func (client *CapacityReservationGroupsClient) createOrUpdateHandleError(resp *h
 	return runtime.NewResponseError(&errType, resp)
 }
 
-// Delete - The operation to delete a capacity reservation group. This operation is allowed only if all the associated resources are disassociated from
-// the reservation group and all capacity reservations under
+// Delete - The operation to delete a capacity reservation group. This operation is allowed only if all the associated resources
+// are disassociated from the reservation group and all capacity reservations under
 // the reservation group have also been deleted. Please refer to https://aka.ms/CapacityReservation for more details.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// capacityReservationGroupName - The name of the capacity reservation group.
+// options - CapacityReservationGroupsDeleteOptions contains the optional parameters for the CapacityReservationGroupsClient.Delete
+// method.
 func (client *CapacityReservationGroupsClient) Delete(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, options *CapacityReservationGroupsDeleteOptions) (CapacityReservationGroupsDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, capacityReservationGroupName, options)
 	if err != nil {
@@ -143,7 +161,7 @@ func (client *CapacityReservationGroupsClient) deleteCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -169,6 +187,10 @@ func (client *CapacityReservationGroupsClient) deleteHandleError(resp *http.Resp
 
 // Get - The operation that retrieves information about a capacity reservation group.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// capacityReservationGroupName - The name of the capacity reservation group.
+// options - CapacityReservationGroupsGetOptions contains the optional parameters for the CapacityReservationGroupsClient.Get
+// method.
 func (client *CapacityReservationGroupsClient) Get(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, options *CapacityReservationGroupsGetOptions) (CapacityReservationGroupsGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, capacityReservationGroupName, options)
 	if err != nil {
@@ -199,7 +221,7 @@ func (client *CapacityReservationGroupsClient) getCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -235,9 +257,12 @@ func (client *CapacityReservationGroupsClient) getHandleError(resp *http.Respons
 	return runtime.NewResponseError(&errType, resp)
 }
 
-// ListByResourceGroup - Lists all of the capacity reservation groups in the specified resource group. Use the nextLink property in the response to get
-// the next page of capacity reservation groups.
+// ListByResourceGroup - Lists all of the capacity reservation groups in the specified resource group. Use the nextLink property
+// in the response to get the next page of capacity reservation groups.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// options - CapacityReservationGroupsListByResourceGroupOptions contains the optional parameters for the CapacityReservationGroupsClient.ListByResourceGroup
+// method.
 func (client *CapacityReservationGroupsClient) ListByResourceGroup(resourceGroupName string, options *CapacityReservationGroupsListByResourceGroupOptions) *CapacityReservationGroupsListByResourceGroupPager {
 	return &CapacityReservationGroupsListByResourceGroupPager{
 		client: client,
@@ -261,7 +286,7 @@ func (client *CapacityReservationGroupsClient) listByResourceGroupCreateRequest(
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -297,9 +322,11 @@ func (client *CapacityReservationGroupsClient) listByResourceGroupHandleError(re
 	return runtime.NewResponseError(&errType, resp)
 }
 
-// ListBySubscription - Lists all of the capacity reservation groups in the subscription. Use the nextLink property in the response to get the next page
-// of capacity reservation groups.
+// ListBySubscription - Lists all of the capacity reservation groups in the subscription. Use the nextLink property in the
+// response to get the next page of capacity reservation groups.
 // If the operation fails it returns the *CloudError error type.
+// options - CapacityReservationGroupsListBySubscriptionOptions contains the optional parameters for the CapacityReservationGroupsClient.ListBySubscription
+// method.
 func (client *CapacityReservationGroupsClient) ListBySubscription(options *CapacityReservationGroupsListBySubscriptionOptions) *CapacityReservationGroupsListBySubscriptionPager {
 	return &CapacityReservationGroupsListBySubscriptionPager{
 		client: client,
@@ -319,7 +346,7 @@ func (client *CapacityReservationGroupsClient) listBySubscriptionCreateRequest(c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -355,8 +382,14 @@ func (client *CapacityReservationGroupsClient) listBySubscriptionHandleError(res
 	return runtime.NewResponseError(&errType, resp)
 }
 
-// Update - The operation to update a capacity reservation group. When updating a capacity reservation group, only tags may be modified.
+// Update - The operation to update a capacity reservation group. When updating a capacity reservation group, only tags may
+// be modified.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// capacityReservationGroupName - The name of the capacity reservation group.
+// parameters - Parameters supplied to the Update capacity reservation Group operation.
+// options - CapacityReservationGroupsUpdateOptions contains the optional parameters for the CapacityReservationGroupsClient.Update
+// method.
 func (client *CapacityReservationGroupsClient) Update(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, parameters CapacityReservationGroupUpdate, options *CapacityReservationGroupsUpdateOptions) (CapacityReservationGroupsUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, capacityReservationGroupName, parameters, options)
 	if err != nil {
@@ -387,7 +420,7 @@ func (client *CapacityReservationGroupsClient) updateCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}

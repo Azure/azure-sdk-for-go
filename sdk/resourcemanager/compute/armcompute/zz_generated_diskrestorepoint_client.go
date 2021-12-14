@@ -25,12 +25,16 @@ import (
 // DiskRestorePointClient contains the methods for the DiskRestorePoint group.
 // Don't use this type directly, use NewDiskRestorePointClient() instead.
 type DiskRestorePointClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDiskRestorePointClient creates a new instance of DiskRestorePointClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDiskRestorePointClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DiskRestorePointClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
@@ -39,11 +43,21 @@ func NewDiskRestorePointClient(subscriptionID string, credential azcore.TokenCre
 	if len(cp.Host) == 0 {
 		cp.Host = arm.AzurePublicCloud
 	}
-	return &DiskRestorePointClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DiskRestorePointClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Host),
+		pl:             armruntime.NewPipeline(module, version, credential, &cp),
+	}
+	return client
 }
 
 // Get - Get disk restorePoint resource
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// restorePointCollectionName - The name of the restore point collection that the disk restore point belongs.
+// vmRestorePointName - The name of the vm restore point that the disk disk restore point belongs.
+// diskRestorePointName - The name of the disk restore point created.
+// options - DiskRestorePointGetOptions contains the optional parameters for the DiskRestorePointClient.Get method.
 func (client *DiskRestorePointClient) Get(ctx context.Context, resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, diskRestorePointName string, options *DiskRestorePointGetOptions) (DiskRestorePointGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName, options)
 	if err != nil {
@@ -82,7 +96,7 @@ func (client *DiskRestorePointClient) getCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter diskRestorePointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{diskRestorePointName}", url.PathEscape(diskRestorePointName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -117,6 +131,13 @@ func (client *DiskRestorePointClient) getHandleError(resp *http.Response) error 
 
 // BeginGrantAccess - Grants access to a diskRestorePoint.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// restorePointCollectionName - The name of the restore point collection that the disk restore point belongs.
+// vmRestorePointName - The name of the vm restore point that the disk disk restore point belongs.
+// diskRestorePointName - The name of the disk restore point created.
+// grantAccessData - Access data object supplied in the body of the get disk access operation.
+// options - DiskRestorePointBeginGrantAccessOptions contains the optional parameters for the DiskRestorePointClient.BeginGrantAccess
+// method.
 func (client *DiskRestorePointClient) BeginGrantAccess(ctx context.Context, resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, diskRestorePointName string, grantAccessData GrantAccessData, options *DiskRestorePointBeginGrantAccessOptions) (DiskRestorePointGrantAccessPollerResponse, error) {
 	resp, err := client.grantAccess(ctx, resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName, grantAccessData, options)
 	if err != nil {
@@ -175,7 +196,7 @@ func (client *DiskRestorePointClient) grantAccessCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter diskRestorePointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{diskRestorePointName}", url.PathEscape(diskRestorePointName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -201,6 +222,11 @@ func (client *DiskRestorePointClient) grantAccessHandleError(resp *http.Response
 
 // ListByRestorePoint - Lists diskRestorePoints under a vmRestorePoint.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// restorePointCollectionName - The name of the restore point collection that the disk restore point belongs.
+// vmRestorePointName - The name of the vm restore point that the disk disk restore point belongs.
+// options - DiskRestorePointListByRestorePointOptions contains the optional parameters for the DiskRestorePointClient.ListByRestorePoint
+// method.
 func (client *DiskRestorePointClient) ListByRestorePoint(resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, options *DiskRestorePointListByRestorePointOptions) *DiskRestorePointListByRestorePointPager {
 	return &DiskRestorePointListByRestorePointPager{
 		client: client,
@@ -232,7 +258,7 @@ func (client *DiskRestorePointClient) listByRestorePointCreateRequest(ctx contex
 		return nil, errors.New("parameter vmRestorePointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vmRestorePointName}", url.PathEscape(vmRestorePointName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -267,6 +293,12 @@ func (client *DiskRestorePointClient) listByRestorePointHandleError(resp *http.R
 
 // BeginRevokeAccess - Revokes access to a diskRestorePoint.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// restorePointCollectionName - The name of the restore point collection that the disk restore point belongs.
+// vmRestorePointName - The name of the vm restore point that the disk disk restore point belongs.
+// diskRestorePointName - The name of the disk restore point created.
+// options - DiskRestorePointBeginRevokeAccessOptions contains the optional parameters for the DiskRestorePointClient.BeginRevokeAccess
+// method.
 func (client *DiskRestorePointClient) BeginRevokeAccess(ctx context.Context, resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, diskRestorePointName string, options *DiskRestorePointBeginRevokeAccessOptions) (DiskRestorePointRevokeAccessPollerResponse, error) {
 	resp, err := client.revokeAccess(ctx, resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName, options)
 	if err != nil {
@@ -325,7 +357,7 @@ func (client *DiskRestorePointClient) revokeAccessCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter diskRestorePointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{diskRestorePointName}", url.PathEscape(diskRestorePointName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}

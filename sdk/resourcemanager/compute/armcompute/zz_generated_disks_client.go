@@ -24,12 +24,16 @@ import (
 // DisksClient contains the methods for the Disks group.
 // Don't use this type directly, use NewDisksClient() instead.
 type DisksClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDisksClient creates a new instance of DisksClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDisksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DisksClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
@@ -38,11 +42,22 @@ func NewDisksClient(subscriptionID string, credential azcore.TokenCredential, op
 	if len(cp.Host) == 0 {
 		cp.Host = arm.AzurePublicCloud
 	}
-	return &DisksClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DisksClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Host),
+		pl:             armruntime.NewPipeline(module, version, credential, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Creates or updates a disk.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// diskName - The name of the managed disk that is being created. The name can't be changed after the disk is created. Supported
+// characters for the name are a-z, A-Z, 0-9, _ and -. The maximum name length is 80
+// characters.
+// disk - Disk object supplied in the body of the Put disk operation.
+// options - DisksBeginCreateOrUpdateOptions contains the optional parameters for the DisksClient.BeginCreateOrUpdate method.
 func (client *DisksClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, diskName string, disk Disk, options *DisksBeginCreateOrUpdateOptions) (DisksCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, diskName, disk, options)
 	if err != nil {
@@ -93,7 +108,7 @@ func (client *DisksClient) createOrUpdateCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter diskName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{diskName}", url.PathEscape(diskName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -118,6 +133,11 @@ func (client *DisksClient) createOrUpdateHandleError(resp *http.Response) error 
 
 // BeginDelete - Deletes a disk.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// diskName - The name of the managed disk that is being created. The name can't be changed after the disk is created. Supported
+// characters for the name are a-z, A-Z, 0-9, _ and -. The maximum name length is 80
+// characters.
+// options - DisksBeginDeleteOptions contains the optional parameters for the DisksClient.BeginDelete method.
 func (client *DisksClient) BeginDelete(ctx context.Context, resourceGroupName string, diskName string, options *DisksBeginDeleteOptions) (DisksDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, diskName, options)
 	if err != nil {
@@ -168,7 +188,7 @@ func (client *DisksClient) deleteCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter diskName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{diskName}", url.PathEscape(diskName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -192,6 +212,11 @@ func (client *DisksClient) deleteHandleError(resp *http.Response) error {
 
 // Get - Gets information about a disk.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// diskName - The name of the managed disk that is being created. The name can't be changed after the disk is created. Supported
+// characters for the name are a-z, A-Z, 0-9, _ and -. The maximum name length is 80
+// characters.
+// options - DisksGetOptions contains the optional parameters for the DisksClient.Get method.
 func (client *DisksClient) Get(ctx context.Context, resourceGroupName string, diskName string, options *DisksGetOptions) (DisksGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, diskName, options)
 	if err != nil {
@@ -222,7 +247,7 @@ func (client *DisksClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, errors.New("parameter diskName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{diskName}", url.PathEscape(diskName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -256,6 +281,12 @@ func (client *DisksClient) getHandleError(resp *http.Response) error {
 
 // BeginGrantAccess - Grants access to a disk.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// diskName - The name of the managed disk that is being created. The name can't be changed after the disk is created. Supported
+// characters for the name are a-z, A-Z, 0-9, _ and -. The maximum name length is 80
+// characters.
+// grantAccessData - Access data object supplied in the body of the get disk access operation.
+// options - DisksBeginGrantAccessOptions contains the optional parameters for the DisksClient.BeginGrantAccess method.
 func (client *DisksClient) BeginGrantAccess(ctx context.Context, resourceGroupName string, diskName string, grantAccessData GrantAccessData, options *DisksBeginGrantAccessOptions) (DisksGrantAccessPollerResponse, error) {
 	resp, err := client.grantAccess(ctx, resourceGroupName, diskName, grantAccessData, options)
 	if err != nil {
@@ -306,7 +337,7 @@ func (client *DisksClient) grantAccessCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter diskName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{diskName}", url.PathEscape(diskName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -331,6 +362,7 @@ func (client *DisksClient) grantAccessHandleError(resp *http.Response) error {
 
 // List - Lists all the disks under a subscription.
 // If the operation fails it returns a generic error.
+// options - DisksListOptions contains the optional parameters for the DisksClient.List method.
 func (client *DisksClient) List(options *DisksListOptions) *DisksListPager {
 	return &DisksListPager{
 		client: client,
@@ -350,7 +382,7 @@ func (client *DisksClient) listCreateRequest(ctx context.Context, options *Disks
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -384,6 +416,8 @@ func (client *DisksClient) listHandleError(resp *http.Response) error {
 
 // ListByResourceGroup - Lists all the disks under a resource group.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// options - DisksListByResourceGroupOptions contains the optional parameters for the DisksClient.ListByResourceGroup method.
 func (client *DisksClient) ListByResourceGroup(resourceGroupName string, options *DisksListByResourceGroupOptions) *DisksListByResourceGroupPager {
 	return &DisksListByResourceGroupPager{
 		client: client,
@@ -407,7 +441,7 @@ func (client *DisksClient) listByResourceGroupCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -441,6 +475,11 @@ func (client *DisksClient) listByResourceGroupHandleError(resp *http.Response) e
 
 // BeginRevokeAccess - Revokes access to a disk.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// diskName - The name of the managed disk that is being created. The name can't be changed after the disk is created. Supported
+// characters for the name are a-z, A-Z, 0-9, _ and -. The maximum name length is 80
+// characters.
+// options - DisksBeginRevokeAccessOptions contains the optional parameters for the DisksClient.BeginRevokeAccess method.
 func (client *DisksClient) BeginRevokeAccess(ctx context.Context, resourceGroupName string, diskName string, options *DisksBeginRevokeAccessOptions) (DisksRevokeAccessPollerResponse, error) {
 	resp, err := client.revokeAccess(ctx, resourceGroupName, diskName, options)
 	if err != nil {
@@ -491,7 +530,7 @@ func (client *DisksClient) revokeAccessCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter diskName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{diskName}", url.PathEscape(diskName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -515,6 +554,12 @@ func (client *DisksClient) revokeAccessHandleError(resp *http.Response) error {
 
 // BeginUpdate - Updates (patches) a disk.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// diskName - The name of the managed disk that is being created. The name can't be changed after the disk is created. Supported
+// characters for the name are a-z, A-Z, 0-9, _ and -. The maximum name length is 80
+// characters.
+// disk - Disk object supplied in the body of the Patch disk operation.
+// options - DisksBeginUpdateOptions contains the optional parameters for the DisksClient.BeginUpdate method.
 func (client *DisksClient) BeginUpdate(ctx context.Context, resourceGroupName string, diskName string, disk DiskUpdate, options *DisksBeginUpdateOptions) (DisksUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, diskName, disk, options)
 	if err != nil {
@@ -565,7 +610,7 @@ func (client *DisksClient) updateCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter diskName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{diskName}", url.PathEscape(diskName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}

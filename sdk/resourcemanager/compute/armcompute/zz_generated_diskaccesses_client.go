@@ -25,12 +25,16 @@ import (
 // DiskAccessesClient contains the methods for the DiskAccesses group.
 // Don't use this type directly, use NewDiskAccessesClient() instead.
 type DiskAccessesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDiskAccessesClient creates a new instance of DiskAccessesClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDiskAccessesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DiskAccessesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
@@ -39,11 +43,23 @@ func NewDiskAccessesClient(subscriptionID string, credential azcore.TokenCredent
 	if len(cp.Host) == 0 {
 		cp.Host = arm.AzurePublicCloud
 	}
-	return &DiskAccessesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DiskAccessesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Host),
+		pl:             armruntime.NewPipeline(module, version, credential, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Creates or updates a disk access resource
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// diskAccessName - The name of the disk access resource that is being created. The name can't be changed after the disk encryption
+// set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
+// maximum name length is 80 characters.
+// diskAccess - disk access object supplied in the body of the Put disk access operation.
+// options - DiskAccessesBeginCreateOrUpdateOptions contains the optional parameters for the DiskAccessesClient.BeginCreateOrUpdate
+// method.
 func (client *DiskAccessesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess DiskAccess, options *DiskAccessesBeginCreateOrUpdateOptions) (DiskAccessesCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, diskAccessName, diskAccess, options)
 	if err != nil {
@@ -94,7 +110,7 @@ func (client *DiskAccessesClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter diskAccessName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{diskAccessName}", url.PathEscape(diskAccessName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -120,6 +136,11 @@ func (client *DiskAccessesClient) createOrUpdateHandleError(resp *http.Response)
 
 // BeginDelete - Deletes a disk access resource.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// diskAccessName - The name of the disk access resource that is being created. The name can't be changed after the disk encryption
+// set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
+// maximum name length is 80 characters.
+// options - DiskAccessesBeginDeleteOptions contains the optional parameters for the DiskAccessesClient.BeginDelete method.
 func (client *DiskAccessesClient) BeginDelete(ctx context.Context, resourceGroupName string, diskAccessName string, options *DiskAccessesBeginDeleteOptions) (DiskAccessesDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, diskAccessName, options)
 	if err != nil {
@@ -170,7 +191,7 @@ func (client *DiskAccessesClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter diskAccessName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{diskAccessName}", url.PathEscape(diskAccessName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -196,6 +217,13 @@ func (client *DiskAccessesClient) deleteHandleError(resp *http.Response) error {
 
 // BeginDeleteAPrivateEndpointConnection - Deletes a private endpoint connection under a disk access resource.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// diskAccessName - The name of the disk access resource that is being created. The name can't be changed after the disk encryption
+// set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
+// maximum name length is 80 characters.
+// privateEndpointConnectionName - The name of the private endpoint connection.
+// options - DiskAccessesBeginDeleteAPrivateEndpointConnectionOptions contains the optional parameters for the DiskAccessesClient.BeginDeleteAPrivateEndpointConnection
+// method.
 func (client *DiskAccessesClient) BeginDeleteAPrivateEndpointConnection(ctx context.Context, resourceGroupName string, diskAccessName string, privateEndpointConnectionName string, options *DiskAccessesBeginDeleteAPrivateEndpointConnectionOptions) (DiskAccessesDeleteAPrivateEndpointConnectionPollerResponse, error) {
 	resp, err := client.deleteAPrivateEndpointConnection(ctx, resourceGroupName, diskAccessName, privateEndpointConnectionName, options)
 	if err != nil {
@@ -250,7 +278,7 @@ func (client *DiskAccessesClient) deleteAPrivateEndpointConnectionCreateRequest(
 		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -276,6 +304,11 @@ func (client *DiskAccessesClient) deleteAPrivateEndpointConnectionHandleError(re
 
 // Get - Gets information about a disk access resource.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// diskAccessName - The name of the disk access resource that is being created. The name can't be changed after the disk encryption
+// set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
+// maximum name length is 80 characters.
+// options - DiskAccessesGetOptions contains the optional parameters for the DiskAccessesClient.Get method.
 func (client *DiskAccessesClient) Get(ctx context.Context, resourceGroupName string, diskAccessName string, options *DiskAccessesGetOptions) (DiskAccessesGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, diskAccessName, options)
 	if err != nil {
@@ -306,7 +339,7 @@ func (client *DiskAccessesClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter diskAccessName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{diskAccessName}", url.PathEscape(diskAccessName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -341,6 +374,13 @@ func (client *DiskAccessesClient) getHandleError(resp *http.Response) error {
 
 // GetAPrivateEndpointConnection - Gets information about a private endpoint connection under a disk access resource.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// diskAccessName - The name of the disk access resource that is being created. The name can't be changed after the disk encryption
+// set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
+// maximum name length is 80 characters.
+// privateEndpointConnectionName - The name of the private endpoint connection.
+// options - DiskAccessesGetAPrivateEndpointConnectionOptions contains the optional parameters for the DiskAccessesClient.GetAPrivateEndpointConnection
+// method.
 func (client *DiskAccessesClient) GetAPrivateEndpointConnection(ctx context.Context, resourceGroupName string, diskAccessName string, privateEndpointConnectionName string, options *DiskAccessesGetAPrivateEndpointConnectionOptions) (DiskAccessesGetAPrivateEndpointConnectionResponse, error) {
 	req, err := client.getAPrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, diskAccessName, privateEndpointConnectionName, options)
 	if err != nil {
@@ -375,7 +415,7 @@ func (client *DiskAccessesClient) getAPrivateEndpointConnectionCreateRequest(ctx
 		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -410,6 +450,12 @@ func (client *DiskAccessesClient) getAPrivateEndpointConnectionHandleError(resp 
 
 // GetPrivateLinkResources - Gets the private link resources possible under disk access resource
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// diskAccessName - The name of the disk access resource that is being created. The name can't be changed after the disk encryption
+// set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
+// maximum name length is 80 characters.
+// options - DiskAccessesGetPrivateLinkResourcesOptions contains the optional parameters for the DiskAccessesClient.GetPrivateLinkResources
+// method.
 func (client *DiskAccessesClient) GetPrivateLinkResources(ctx context.Context, resourceGroupName string, diskAccessName string, options *DiskAccessesGetPrivateLinkResourcesOptions) (DiskAccessesGetPrivateLinkResourcesResponse, error) {
 	req, err := client.getPrivateLinkResourcesCreateRequest(ctx, resourceGroupName, diskAccessName, options)
 	if err != nil {
@@ -440,7 +486,7 @@ func (client *DiskAccessesClient) getPrivateLinkResourcesCreateRequest(ctx conte
 		return nil, errors.New("parameter diskAccessName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{diskAccessName}", url.PathEscape(diskAccessName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -474,6 +520,7 @@ func (client *DiskAccessesClient) getPrivateLinkResourcesHandleError(resp *http.
 
 // List - Lists all the disk access resources under a subscription.
 // If the operation fails it returns the *CloudError error type.
+// options - DiskAccessesListOptions contains the optional parameters for the DiskAccessesClient.List method.
 func (client *DiskAccessesClient) List(options *DiskAccessesListOptions) *DiskAccessesListPager {
 	return &DiskAccessesListPager{
 		client: client,
@@ -493,7 +540,7 @@ func (client *DiskAccessesClient) listCreateRequest(ctx context.Context, options
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -528,6 +575,9 @@ func (client *DiskAccessesClient) listHandleError(resp *http.Response) error {
 
 // ListByResourceGroup - Lists all the disk access resources under a resource group.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// options - DiskAccessesListByResourceGroupOptions contains the optional parameters for the DiskAccessesClient.ListByResourceGroup
+// method.
 func (client *DiskAccessesClient) ListByResourceGroup(resourceGroupName string, options *DiskAccessesListByResourceGroupOptions) *DiskAccessesListByResourceGroupPager {
 	return &DiskAccessesListByResourceGroupPager{
 		client: client,
@@ -551,7 +601,7 @@ func (client *DiskAccessesClient) listByResourceGroupCreateRequest(ctx context.C
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -586,6 +636,12 @@ func (client *DiskAccessesClient) listByResourceGroupHandleError(resp *http.Resp
 
 // ListPrivateEndpointConnections - List information about private endpoint connections under a disk access resource
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// diskAccessName - The name of the disk access resource that is being created. The name can't be changed after the disk encryption
+// set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
+// maximum name length is 80 characters.
+// options - DiskAccessesListPrivateEndpointConnectionsOptions contains the optional parameters for the DiskAccessesClient.ListPrivateEndpointConnections
+// method.
 func (client *DiskAccessesClient) ListPrivateEndpointConnections(resourceGroupName string, diskAccessName string, options *DiskAccessesListPrivateEndpointConnectionsOptions) *DiskAccessesListPrivateEndpointConnectionsPager {
 	return &DiskAccessesListPrivateEndpointConnectionsPager{
 		client: client,
@@ -613,7 +669,7 @@ func (client *DiskAccessesClient) listPrivateEndpointConnectionsCreateRequest(ct
 		return nil, errors.New("parameter diskAccessName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{diskAccessName}", url.PathEscape(diskAccessName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -648,6 +704,12 @@ func (client *DiskAccessesClient) listPrivateEndpointConnectionsHandleError(resp
 
 // BeginUpdate - Updates (patches) a disk access resource.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// diskAccessName - The name of the disk access resource that is being created. The name can't be changed after the disk encryption
+// set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
+// maximum name length is 80 characters.
+// diskAccess - disk access object supplied in the body of the Patch disk access operation.
+// options - DiskAccessesBeginUpdateOptions contains the optional parameters for the DiskAccessesClient.BeginUpdate method.
 func (client *DiskAccessesClient) BeginUpdate(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess DiskAccessUpdate, options *DiskAccessesBeginUpdateOptions) (DiskAccessesUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, diskAccessName, diskAccess, options)
 	if err != nil {
@@ -698,7 +760,7 @@ func (client *DiskAccessesClient) updateCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter diskAccessName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{diskAccessName}", url.PathEscape(diskAccessName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -722,9 +784,18 @@ func (client *DiskAccessesClient) updateHandleError(resp *http.Response) error {
 	return runtime.NewResponseError(&errType, resp)
 }
 
-// BeginUpdateAPrivateEndpointConnection - Approve or reject a private endpoint connection under disk access resource, this can't be used to create a new
-// private endpoint connection.
+// BeginUpdateAPrivateEndpointConnection - Approve or reject a private endpoint connection under disk access resource, this
+// can't be used to create a new private endpoint connection.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// diskAccessName - The name of the disk access resource that is being created. The name can't be changed after the disk encryption
+// set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
+// maximum name length is 80 characters.
+// privateEndpointConnectionName - The name of the private endpoint connection.
+// privateEndpointConnection - private endpoint connection object supplied in the body of the Put private endpoint connection
+// operation.
+// options - DiskAccessesBeginUpdateAPrivateEndpointConnectionOptions contains the optional parameters for the DiskAccessesClient.BeginUpdateAPrivateEndpointConnection
+// method.
 func (client *DiskAccessesClient) BeginUpdateAPrivateEndpointConnection(ctx context.Context, resourceGroupName string, diskAccessName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, options *DiskAccessesBeginUpdateAPrivateEndpointConnectionOptions) (DiskAccessesUpdateAPrivateEndpointConnectionPollerResponse, error) {
 	resp, err := client.updateAPrivateEndpointConnection(ctx, resourceGroupName, diskAccessName, privateEndpointConnectionName, privateEndpointConnection, options)
 	if err != nil {
@@ -743,8 +814,8 @@ func (client *DiskAccessesClient) BeginUpdateAPrivateEndpointConnection(ctx cont
 	return result, nil
 }
 
-// UpdateAPrivateEndpointConnection - Approve or reject a private endpoint connection under disk access resource, this can't be used to create a new private
-// endpoint connection.
+// UpdateAPrivateEndpointConnection - Approve or reject a private endpoint connection under disk access resource, this can't
+// be used to create a new private endpoint connection.
 // If the operation fails it returns the *CloudError error type.
 func (client *DiskAccessesClient) updateAPrivateEndpointConnection(ctx context.Context, resourceGroupName string, diskAccessName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, options *DiskAccessesBeginUpdateAPrivateEndpointConnectionOptions) (*http.Response, error) {
 	req, err := client.updateAPrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, diskAccessName, privateEndpointConnectionName, privateEndpointConnection, options)
@@ -780,7 +851,7 @@ func (client *DiskAccessesClient) updateAPrivateEndpointConnectionCreateRequest(
 		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}

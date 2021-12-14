@@ -25,12 +25,16 @@ import (
 // SharedGalleriesClient contains the methods for the SharedGalleries group.
 // Don't use this type directly, use NewSharedGalleriesClient() instead.
 type SharedGalleriesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSharedGalleriesClient creates a new instance of SharedGalleriesClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSharedGalleriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SharedGalleriesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
@@ -39,11 +43,19 @@ func NewSharedGalleriesClient(subscriptionID string, credential azcore.TokenCred
 	if len(cp.Host) == 0 {
 		cp.Host = arm.AzurePublicCloud
 	}
-	return &SharedGalleriesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SharedGalleriesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Host),
+		pl:             armruntime.NewPipeline(module, version, credential, &cp),
+	}
+	return client
 }
 
 // Get - Get a shared gallery by subscription id or tenant id.
 // If the operation fails it returns the *CloudError error type.
+// location - Resource location.
+// galleryUniqueName - The unique name of the Shared Gallery.
+// options - SharedGalleriesGetOptions contains the optional parameters for the SharedGalleriesClient.Get method.
 func (client *SharedGalleriesClient) Get(ctx context.Context, location string, galleryUniqueName string, options *SharedGalleriesGetOptions) (SharedGalleriesGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, location, galleryUniqueName, options)
 	if err != nil {
@@ -74,7 +86,7 @@ func (client *SharedGalleriesClient) getCreateRequest(ctx context.Context, locat
 		return nil, errors.New("parameter galleryUniqueName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{galleryUniqueName}", url.PathEscape(galleryUniqueName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -109,6 +121,8 @@ func (client *SharedGalleriesClient) getHandleError(resp *http.Response) error {
 
 // List - List shared galleries by subscription id or tenant id.
 // If the operation fails it returns the *CloudError error type.
+// location - Resource location.
+// options - SharedGalleriesListOptions contains the optional parameters for the SharedGalleriesClient.List method.
 func (client *SharedGalleriesClient) List(location string, options *SharedGalleriesListOptions) *SharedGalleriesListPager {
 	return &SharedGalleriesListPager{
 		client: client,
@@ -132,7 +146,7 @@ func (client *SharedGalleriesClient) listCreateRequest(ctx context.Context, loca
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}

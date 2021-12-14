@@ -25,12 +25,16 @@ import (
 // RestorePointsClient contains the methods for the RestorePoints group.
 // Don't use this type directly, use NewRestorePointsClient() instead.
 type RestorePointsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewRestorePointsClient creates a new instance of RestorePointsClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewRestorePointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RestorePointsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
@@ -39,11 +43,21 @@ func NewRestorePointsClient(subscriptionID string, credential azcore.TokenCreden
 	if len(cp.Host) == 0 {
 		cp.Host = arm.AzurePublicCloud
 	}
-	return &RestorePointsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &RestorePointsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Host),
+		pl:             armruntime.NewPipeline(module, version, credential, &cp),
+	}
+	return client
 }
 
 // BeginCreate - The operation to create the restore point. Updating properties of an existing restore point is not allowed
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// restorePointCollectionName - The name of the restore point collection.
+// restorePointName - The name of the restore point.
+// parameters - Parameters supplied to the Create restore point operation.
+// options - RestorePointsBeginCreateOptions contains the optional parameters for the RestorePointsClient.BeginCreate method.
 func (client *RestorePointsClient) BeginCreate(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, parameters RestorePoint, options *RestorePointsBeginCreateOptions) (RestorePointsCreatePollerResponse, error) {
 	resp, err := client.create(ctx, resourceGroupName, restorePointCollectionName, restorePointName, parameters, options)
 	if err != nil {
@@ -98,7 +112,7 @@ func (client *RestorePointsClient) createCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter restorePointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{restorePointName}", url.PathEscape(restorePointName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -124,6 +138,10 @@ func (client *RestorePointsClient) createHandleError(resp *http.Response) error 
 
 // BeginDelete - The operation to delete the restore point.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// restorePointCollectionName - The name of the Restore Point Collection.
+// restorePointName - The name of the restore point.
+// options - RestorePointsBeginDeleteOptions contains the optional parameters for the RestorePointsClient.BeginDelete method.
 func (client *RestorePointsClient) BeginDelete(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, options *RestorePointsBeginDeleteOptions) (RestorePointsDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, restorePointCollectionName, restorePointName, options)
 	if err != nil {
@@ -178,7 +196,7 @@ func (client *RestorePointsClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter restorePointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{restorePointName}", url.PathEscape(restorePointName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -204,6 +222,10 @@ func (client *RestorePointsClient) deleteHandleError(resp *http.Response) error 
 
 // Get - The operation to get the restore point.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// restorePointCollectionName - The name of the restore point collection.
+// restorePointName - The name of the restore point.
+// options - RestorePointsGetOptions contains the optional parameters for the RestorePointsClient.Get method.
 func (client *RestorePointsClient) Get(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, options *RestorePointsGetOptions) (RestorePointsGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, restorePointCollectionName, restorePointName, options)
 	if err != nil {
@@ -238,7 +260,7 @@ func (client *RestorePointsClient) getCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter restorePointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{restorePointName}", url.PathEscape(restorePointName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}

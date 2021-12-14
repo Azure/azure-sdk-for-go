@@ -22,11 +22,13 @@ import (
 // OperationsClient contains the methods for the Operations group.
 // Don't use this type directly, use NewOperationsClient() instead.
 type OperationsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewOperationsClient creates a new instance of OperationsClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewOperationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *OperationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
@@ -35,11 +37,16 @@ func NewOperationsClient(credential azcore.TokenCredential, options *arm.ClientO
 	if len(cp.Host) == 0 {
 		cp.Host = arm.AzurePublicCloud
 	}
-	return &OperationsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &OperationsClient{
+		host: string(cp.Host),
+		pl:   armruntime.NewPipeline(module, version, credential, &cp),
+	}
+	return client
 }
 
 // List - Gets a list of compute operations.
 // If the operation fails it returns a generic error.
+// options - OperationsListOptions contains the optional parameters for the OperationsClient.List method.
 func (client *OperationsClient) List(ctx context.Context, options *OperationsListOptions) (OperationsListResponse, error) {
 	req, err := client.listCreateRequest(ctx, options)
 	if err != nil {
@@ -58,7 +65,7 @@ func (client *OperationsClient) List(ctx context.Context, options *OperationsLis
 // listCreateRequest creates the List request.
 func (client *OperationsClient) listCreateRequest(ctx context.Context, options *OperationsListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Compute/operations"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -72,7 +79,7 @@ func (client *OperationsClient) listCreateRequest(ctx context.Context, options *
 // listHandleResponse handles the List response.
 func (client *OperationsClient) listHandleResponse(resp *http.Response) (OperationsListResponse, error) {
 	result := OperationsListResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ComputeOperationListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.OperationListResult); err != nil {
 		return OperationsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil

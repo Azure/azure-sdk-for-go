@@ -25,12 +25,16 @@ import (
 // CommunityGalleryImageVersionsClient contains the methods for the CommunityGalleryImageVersions group.
 // Don't use this type directly, use NewCommunityGalleryImageVersionsClient() instead.
 type CommunityGalleryImageVersionsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewCommunityGalleryImageVersionsClient creates a new instance of CommunityGalleryImageVersionsClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewCommunityGalleryImageVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CommunityGalleryImageVersionsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
@@ -39,11 +43,24 @@ func NewCommunityGalleryImageVersionsClient(subscriptionID string, credential az
 	if len(cp.Host) == 0 {
 		cp.Host = arm.AzurePublicCloud
 	}
-	return &CommunityGalleryImageVersionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &CommunityGalleryImageVersionsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Host),
+		pl:             armruntime.NewPipeline(module, version, credential, &cp),
+	}
+	return client
 }
 
 // Get - Get a community gallery image version.
 // If the operation fails it returns the *CloudError error type.
+// location - Resource location.
+// publicGalleryName - The public name of the community gallery.
+// galleryImageName - The name of the community gallery image definition.
+// galleryImageVersionName - The name of the community gallery image version. Needs to follow semantic version name pattern:
+// The allowed characters are digit and period. Digits must be within the range of a 32-bit integer.
+// Format: ..
+// options - CommunityGalleryImageVersionsGetOptions contains the optional parameters for the CommunityGalleryImageVersionsClient.Get
+// method.
 func (client *CommunityGalleryImageVersionsClient) Get(ctx context.Context, location string, publicGalleryName string, galleryImageName string, galleryImageVersionName string, options *CommunityGalleryImageVersionsGetOptions) (CommunityGalleryImageVersionsGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, location, publicGalleryName, galleryImageName, galleryImageVersionName, options)
 	if err != nil {
@@ -82,7 +99,7 @@ func (client *CommunityGalleryImageVersionsClient) getCreateRequest(ctx context.
 		return nil, errors.New("parameter galleryImageVersionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{galleryImageVersionName}", url.PathEscape(galleryImageVersionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}

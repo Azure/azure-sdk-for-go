@@ -9,7 +9,7 @@ param(
     [switch]$format,
     [switch]$tidy,
     [string]$config = "autorest.md",
-    [string]$goExtension = "@autorest/go@4.0.0-preview.31",
+    [string]$goExtension = "@autorest/go@4.0.0-preview.33",
     [string]$outputFolder
 )
 
@@ -40,7 +40,7 @@ function Process-Sdk ()
         {
             $outputFolder = $currentDirectory
         }
-        autorest --use=$goExtension --go --track2 --output-folder=$outputFolder --file-prefix="zz_generated_" --clear-output-folder=false $autorestPath
+        autorest --use=$goExtension --go --track2 --output-folder=$outputFolder --file-prefix="zz_generated_" --clear-output-folder=false --go.clear-output-folder=false $autorestPath
         if ($LASTEXITCODE)
         {
             Write-Host "##[error]Error running autorest.go"

@@ -26,12 +26,16 @@ import (
 // VirtualMachineImagesEdgeZoneClient contains the methods for the VirtualMachineImagesEdgeZone group.
 // Don't use this type directly, use NewVirtualMachineImagesEdgeZoneClient() instead.
 type VirtualMachineImagesEdgeZoneClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewVirtualMachineImagesEdgeZoneClient creates a new instance of VirtualMachineImagesEdgeZoneClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewVirtualMachineImagesEdgeZoneClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VirtualMachineImagesEdgeZoneClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
@@ -40,11 +44,24 @@ func NewVirtualMachineImagesEdgeZoneClient(subscriptionID string, credential azc
 	if len(cp.Host) == 0 {
 		cp.Host = arm.AzurePublicCloud
 	}
-	return &VirtualMachineImagesEdgeZoneClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &VirtualMachineImagesEdgeZoneClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Host),
+		pl:             armruntime.NewPipeline(module, version, credential, &cp),
+	}
+	return client
 }
 
 // Get - Gets a virtual machine image in an edge zone.
 // If the operation fails it returns the *CloudError error type.
+// location - The name of a supported Azure region.
+// edgeZone - The name of the edge zone.
+// publisherName - A valid image publisher.
+// offer - A valid image publisher offer.
+// skus - A valid image SKU.
+// version - A valid image SKU version.
+// options - VirtualMachineImagesEdgeZoneGetOptions contains the optional parameters for the VirtualMachineImagesEdgeZoneClient.Get
+// method.
 func (client *VirtualMachineImagesEdgeZoneClient) Get(ctx context.Context, location string, edgeZone string, publisherName string, offer string, skus string, version string, options *VirtualMachineImagesEdgeZoneGetOptions) (VirtualMachineImagesEdgeZoneGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, location, edgeZone, publisherName, offer, skus, version, options)
 	if err != nil {
@@ -91,7 +108,7 @@ func (client *VirtualMachineImagesEdgeZoneClient) getCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -126,6 +143,13 @@ func (client *VirtualMachineImagesEdgeZoneClient) getHandleError(resp *http.Resp
 
 // List - Gets a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and SKU.
 // If the operation fails it returns the *CloudError error type.
+// location - The name of a supported Azure region.
+// edgeZone - The name of the edge zone.
+// publisherName - A valid image publisher.
+// offer - A valid image publisher offer.
+// skus - A valid image SKU.
+// options - VirtualMachineImagesEdgeZoneListOptions contains the optional parameters for the VirtualMachineImagesEdgeZoneClient.List
+// method.
 func (client *VirtualMachineImagesEdgeZoneClient) List(ctx context.Context, location string, edgeZone string, publisherName string, offer string, skus string, options *VirtualMachineImagesEdgeZoneListOptions) (VirtualMachineImagesEdgeZoneListResponse, error) {
 	req, err := client.listCreateRequest(ctx, location, edgeZone, publisherName, offer, skus, options)
 	if err != nil {
@@ -168,7 +192,7 @@ func (client *VirtualMachineImagesEdgeZoneClient) listCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -212,6 +236,11 @@ func (client *VirtualMachineImagesEdgeZoneClient) listHandleError(resp *http.Res
 
 // ListOffers - Gets a list of virtual machine image offers for the specified location, edge zone and publisher.
 // If the operation fails it returns the *CloudError error type.
+// location - The name of a supported Azure region.
+// edgeZone - The name of the edge zone.
+// publisherName - A valid image publisher.
+// options - VirtualMachineImagesEdgeZoneListOffersOptions contains the optional parameters for the VirtualMachineImagesEdgeZoneClient.ListOffers
+// method.
 func (client *VirtualMachineImagesEdgeZoneClient) ListOffers(ctx context.Context, location string, edgeZone string, publisherName string, options *VirtualMachineImagesEdgeZoneListOffersOptions) (VirtualMachineImagesEdgeZoneListOffersResponse, error) {
 	req, err := client.listOffersCreateRequest(ctx, location, edgeZone, publisherName, options)
 	if err != nil {
@@ -246,7 +275,7 @@ func (client *VirtualMachineImagesEdgeZoneClient) listOffersCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -281,6 +310,10 @@ func (client *VirtualMachineImagesEdgeZoneClient) listOffersHandleError(resp *ht
 
 // ListPublishers - Gets a list of virtual machine image publishers for the specified Azure location and edge zone.
 // If the operation fails it returns the *CloudError error type.
+// location - The name of a supported Azure region.
+// edgeZone - The name of the edge zone.
+// options - VirtualMachineImagesEdgeZoneListPublishersOptions contains the optional parameters for the VirtualMachineImagesEdgeZoneClient.ListPublishers
+// method.
 func (client *VirtualMachineImagesEdgeZoneClient) ListPublishers(ctx context.Context, location string, edgeZone string, options *VirtualMachineImagesEdgeZoneListPublishersOptions) (VirtualMachineImagesEdgeZoneListPublishersResponse, error) {
 	req, err := client.listPublishersCreateRequest(ctx, location, edgeZone, options)
 	if err != nil {
@@ -311,7 +344,7 @@ func (client *VirtualMachineImagesEdgeZoneClient) listPublishersCreateRequest(ct
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -346,6 +379,12 @@ func (client *VirtualMachineImagesEdgeZoneClient) listPublishersHandleError(resp
 
 // ListSKUs - Gets a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer.
 // If the operation fails it returns the *CloudError error type.
+// location - The name of a supported Azure region.
+// edgeZone - The name of the edge zone.
+// publisherName - A valid image publisher.
+// offer - A valid image publisher offer.
+// options - VirtualMachineImagesEdgeZoneListSKUsOptions contains the optional parameters for the VirtualMachineImagesEdgeZoneClient.ListSKUs
+// method.
 func (client *VirtualMachineImagesEdgeZoneClient) ListSKUs(ctx context.Context, location string, edgeZone string, publisherName string, offer string, options *VirtualMachineImagesEdgeZoneListSKUsOptions) (VirtualMachineImagesEdgeZoneListSKUsResponse, error) {
 	req, err := client.listSKUsCreateRequest(ctx, location, edgeZone, publisherName, offer, options)
 	if err != nil {
@@ -384,7 +423,7 @@ func (client *VirtualMachineImagesEdgeZoneClient) listSKUsCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -3608,7 +3608,7 @@ type OperationsListResponse struct {
 
 // OperationsListResult contains the result from method Operations.List.
 type OperationsListResult struct {
-	ComputeOperationListResult
+	OperationListResult
 }
 
 // ProximityPlacementGroupsCreateOrUpdateResponse contains the response from method ProximityPlacementGroups.CreateOrUpdate.
@@ -5143,7 +5143,8 @@ func (l VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradePollerResponse
 	return respType, nil
 }
 
-// Resume rehydrates a VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradePollerResponse from the provided client and resume token.
+// Resume rehydrates a VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradePollerResponse from the provided client and
+// resume token.
 func (l *VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradePollerResponse) Resume(ctx context.Context, client *VirtualMachineScaleSetRollingUpgradesClient, token string) error {
 	pt, err := armruntime.NewPollerFromResumeToken("VirtualMachineScaleSetRollingUpgradesClient.StartExtensionUpgrade", token, client.pl, client.startExtensionUpgradeHandleError)
 	if err != nil {
@@ -5189,7 +5190,8 @@ func (l VirtualMachineScaleSetRollingUpgradesStartOSUpgradePollerResponse) PollU
 	return respType, nil
 }
 
-// Resume rehydrates a VirtualMachineScaleSetRollingUpgradesStartOSUpgradePollerResponse from the provided client and resume token.
+// Resume rehydrates a VirtualMachineScaleSetRollingUpgradesStartOSUpgradePollerResponse from the provided client and resume
+// token.
 func (l *VirtualMachineScaleSetRollingUpgradesStartOSUpgradePollerResponse) Resume(ctx context.Context, client *VirtualMachineScaleSetRollingUpgradesClient, token string) error {
 	pt, err := armruntime.NewPollerFromResumeToken("VirtualMachineScaleSetRollingUpgradesClient.StartOSUpgrade", token, client.pl, client.startOSUpgradeHandleError)
 	if err != nil {
@@ -5235,7 +5237,8 @@ func (l VirtualMachineScaleSetVMExtensionsCreateOrUpdatePollerResponse) PollUnti
 	return respType, nil
 }
 
-// Resume rehydrates a VirtualMachineScaleSetVMExtensionsCreateOrUpdatePollerResponse from the provided client and resume token.
+// Resume rehydrates a VirtualMachineScaleSetVMExtensionsCreateOrUpdatePollerResponse from the provided client and resume
+// token.
 func (l *VirtualMachineScaleSetVMExtensionsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *VirtualMachineScaleSetVMExtensionsClient, token string) error {
 	pt, err := armruntime.NewPollerFromResumeToken("VirtualMachineScaleSetVMExtensionsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
 	if err != nil {
@@ -5409,7 +5412,8 @@ func (l VirtualMachineScaleSetVMRunCommandsCreateOrUpdatePollerResponse) PollUnt
 	return respType, nil
 }
 
-// Resume rehydrates a VirtualMachineScaleSetVMRunCommandsCreateOrUpdatePollerResponse from the provided client and resume token.
+// Resume rehydrates a VirtualMachineScaleSetVMRunCommandsCreateOrUpdatePollerResponse from the provided client and resume
+// token.
 func (l *VirtualMachineScaleSetVMRunCommandsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *VirtualMachineScaleSetVMRunCommandsClient, token string) error {
 	pt, err := armruntime.NewPollerFromResumeToken("VirtualMachineScaleSetVMRunCommandsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
 	if err != nil {
@@ -6723,7 +6727,8 @@ func (l VirtualMachineScaleSetsSetOrchestrationServiceStatePollerResponse) PollU
 	return respType, nil
 }
 
-// Resume rehydrates a VirtualMachineScaleSetsSetOrchestrationServiceStatePollerResponse from the provided client and resume token.
+// Resume rehydrates a VirtualMachineScaleSetsSetOrchestrationServiceStatePollerResponse from the provided client and resume
+// token.
 func (l *VirtualMachineScaleSetsSetOrchestrationServiceStatePollerResponse) Resume(ctx context.Context, client *VirtualMachineScaleSetsClient, token string) error {
 	pt, err := armruntime.NewPollerFromResumeToken("VirtualMachineScaleSetsClient.SetOrchestrationServiceState", token, client.pl, client.setOrchestrationServiceStateHandleError)
 	if err != nil {

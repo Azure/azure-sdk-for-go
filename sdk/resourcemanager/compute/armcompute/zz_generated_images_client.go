@@ -24,12 +24,16 @@ import (
 // ImagesClient contains the methods for the Images group.
 // Don't use this type directly, use NewImagesClient() instead.
 type ImagesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewImagesClient creates a new instance of ImagesClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewImagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ImagesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
@@ -38,11 +42,20 @@ func NewImagesClient(subscriptionID string, credential azcore.TokenCredential, o
 	if len(cp.Host) == 0 {
 		cp.Host = arm.AzurePublicCloud
 	}
-	return &ImagesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ImagesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Host),
+		pl:             armruntime.NewPipeline(module, version, credential, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Create or update an image.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// imageName - The name of the image.
+// parameters - Parameters supplied to the Create Image operation.
+// options - ImagesBeginCreateOrUpdateOptions contains the optional parameters for the ImagesClient.BeginCreateOrUpdate method.
 func (client *ImagesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, imageName string, parameters Image, options *ImagesBeginCreateOrUpdateOptions) (ImagesCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, imageName, parameters, options)
 	if err != nil {
@@ -93,7 +106,7 @@ func (client *ImagesClient) createOrUpdateCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -118,6 +131,9 @@ func (client *ImagesClient) createOrUpdateHandleError(resp *http.Response) error
 
 // BeginDelete - Deletes an Image.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// imageName - The name of the image.
+// options - ImagesBeginDeleteOptions contains the optional parameters for the ImagesClient.BeginDelete method.
 func (client *ImagesClient) BeginDelete(ctx context.Context, resourceGroupName string, imageName string, options *ImagesBeginDeleteOptions) (ImagesDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, imageName, options)
 	if err != nil {
@@ -168,7 +184,7 @@ func (client *ImagesClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -192,6 +208,9 @@ func (client *ImagesClient) deleteHandleError(resp *http.Response) error {
 
 // Get - Gets an image.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// imageName - The name of the image.
+// options - ImagesGetOptions contains the optional parameters for the ImagesClient.Get method.
 func (client *ImagesClient) Get(ctx context.Context, resourceGroupName string, imageName string, options *ImagesGetOptions) (ImagesGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, imageName, options)
 	if err != nil {
@@ -222,7 +241,7 @@ func (client *ImagesClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -257,9 +276,10 @@ func (client *ImagesClient) getHandleError(resp *http.Response) error {
 	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
-// List - Gets the list of Images in the subscription. Use nextLink property in the response to get the next page of Images. Do this till nextLink is null
-// to fetch all the Images.
+// List - Gets the list of Images in the subscription. Use nextLink property in the response to get the next page of Images.
+// Do this till nextLink is null to fetch all the Images.
 // If the operation fails it returns a generic error.
+// options - ImagesListOptions contains the optional parameters for the ImagesClient.List method.
 func (client *ImagesClient) List(options *ImagesListOptions) *ImagesListPager {
 	return &ImagesListPager{
 		client: client,
@@ -279,7 +299,7 @@ func (client *ImagesClient) listCreateRequest(ctx context.Context, options *Imag
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -313,6 +333,8 @@ func (client *ImagesClient) listHandleError(resp *http.Response) error {
 
 // ListByResourceGroup - Gets the list of images under a resource group.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// options - ImagesListByResourceGroupOptions contains the optional parameters for the ImagesClient.ListByResourceGroup method.
 func (client *ImagesClient) ListByResourceGroup(resourceGroupName string, options *ImagesListByResourceGroupOptions) *ImagesListByResourceGroupPager {
 	return &ImagesListByResourceGroupPager{
 		client: client,
@@ -336,7 +358,7 @@ func (client *ImagesClient) listByResourceGroupCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -370,6 +392,10 @@ func (client *ImagesClient) listByResourceGroupHandleError(resp *http.Response) 
 
 // BeginUpdate - Update an image.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// imageName - The name of the image.
+// parameters - Parameters supplied to the Update Image operation.
+// options - ImagesBeginUpdateOptions contains the optional parameters for the ImagesClient.BeginUpdate method.
 func (client *ImagesClient) BeginUpdate(ctx context.Context, resourceGroupName string, imageName string, parameters ImageUpdate, options *ImagesBeginUpdateOptions) (ImagesUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, imageName, parameters, options)
 	if err != nil {
@@ -420,7 +446,7 @@ func (client *ImagesClient) updateCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -25,12 +25,16 @@ import (
 // CloudServiceRolesClient contains the methods for the CloudServiceRoles group.
 // Don't use this type directly, use NewCloudServiceRolesClient() instead.
 type CloudServiceRolesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewCloudServiceRolesClient creates a new instance of CloudServiceRolesClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewCloudServiceRolesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CloudServiceRolesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
@@ -39,11 +43,18 @@ func NewCloudServiceRolesClient(subscriptionID string, credential azcore.TokenCr
 	if len(cp.Host) == 0 {
 		cp.Host = arm.AzurePublicCloud
 	}
-	return &CloudServiceRolesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &CloudServiceRolesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Host),
+		pl:             armruntime.NewPipeline(module, version, credential, &cp),
+	}
+	return client
 }
 
 // Get - Gets a role from a cloud service.
 // If the operation fails it returns the *CloudError error type.
+// roleName - Name of the role.
+// options - CloudServiceRolesGetOptions contains the optional parameters for the CloudServiceRolesClient.Get method.
 func (client *CloudServiceRolesClient) Get(ctx context.Context, roleName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRolesGetOptions) (CloudServiceRolesGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, roleName, resourceGroupName, cloudServiceName, options)
 	if err != nil {
@@ -78,7 +89,7 @@ func (client *CloudServiceRolesClient) getCreateRequest(ctx context.Context, rol
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -111,9 +122,10 @@ func (client *CloudServiceRolesClient) getHandleError(resp *http.Response) error
 	return runtime.NewResponseError(&errType, resp)
 }
 
-// List - Gets a list of all roles in a cloud service. Use nextLink property in the response to get the next page of roles. Do this till nextLink is null
-// to fetch all the roles.
+// List - Gets a list of all roles in a cloud service. Use nextLink property in the response to get the next page of roles.
+// Do this till nextLink is null to fetch all the roles.
 // If the operation fails it returns the *CloudError error type.
+// options - CloudServiceRolesListOptions contains the optional parameters for the CloudServiceRolesClient.List method.
 func (client *CloudServiceRolesClient) List(resourceGroupName string, cloudServiceName string, options *CloudServiceRolesListOptions) *CloudServiceRolesListPager {
 	return &CloudServiceRolesListPager{
 		client: client,
@@ -141,7 +153,7 @@ func (client *CloudServiceRolesClient) listCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}

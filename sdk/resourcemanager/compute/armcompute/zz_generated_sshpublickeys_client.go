@@ -24,12 +24,16 @@ import (
 // SSHPublicKeysClient contains the methods for the SSHPublicKeys group.
 // Don't use this type directly, use NewSSHPublicKeysClient() instead.
 type SSHPublicKeysClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSSHPublicKeysClient creates a new instance of SSHPublicKeysClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSSHPublicKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SSHPublicKeysClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
@@ -38,11 +42,20 @@ func NewSSHPublicKeysClient(subscriptionID string, credential azcore.TokenCreden
 	if len(cp.Host) == 0 {
 		cp.Host = arm.AzurePublicCloud
 	}
-	return &SSHPublicKeysClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SSHPublicKeysClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Host),
+		pl:             armruntime.NewPipeline(module, version, credential, &cp),
+	}
+	return client
 }
 
 // Create - Creates a new SSH public key resource.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// sshPublicKeyName - The name of the SSH public key.
+// parameters - Parameters supplied to create the SSH public key.
+// options - SSHPublicKeysCreateOptions contains the optional parameters for the SSHPublicKeysClient.Create method.
 func (client *SSHPublicKeysClient) Create(ctx context.Context, resourceGroupName string, sshPublicKeyName string, parameters SSHPublicKeyResource, options *SSHPublicKeysCreateOptions) (SSHPublicKeysCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, sshPublicKeyName, parameters, options)
 	if err != nil {
@@ -73,7 +86,7 @@ func (client *SSHPublicKeysClient) createCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -107,6 +120,9 @@ func (client *SSHPublicKeysClient) createHandleError(resp *http.Response) error 
 
 // Delete - Delete an SSH public key.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// sshPublicKeyName - The name of the SSH public key.
+// options - SSHPublicKeysDeleteOptions contains the optional parameters for the SSHPublicKeysClient.Delete method.
 func (client *SSHPublicKeysClient) Delete(ctx context.Context, resourceGroupName string, sshPublicKeyName string, options *SSHPublicKeysDeleteOptions) (SSHPublicKeysDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, sshPublicKeyName, options)
 	if err != nil {
@@ -137,7 +153,7 @@ func (client *SSHPublicKeysClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -159,10 +175,14 @@ func (client *SSHPublicKeysClient) deleteHandleError(resp *http.Response) error 
 	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
-// GenerateKeyPair - Generates and returns a public/private key pair and populates the SSH public key resource with the public key. The length of the key
-// will be 3072 bits. This operation can only be performed once per
+// GenerateKeyPair - Generates and returns a public/private key pair and populates the SSH public key resource with the public
+// key. The length of the key will be 3072 bits. This operation can only be performed once per
 // SSH public key resource.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// sshPublicKeyName - The name of the SSH public key.
+// options - SSHPublicKeysGenerateKeyPairOptions contains the optional parameters for the SSHPublicKeysClient.GenerateKeyPair
+// method.
 func (client *SSHPublicKeysClient) GenerateKeyPair(ctx context.Context, resourceGroupName string, sshPublicKeyName string, options *SSHPublicKeysGenerateKeyPairOptions) (SSHPublicKeysGenerateKeyPairResponse, error) {
 	req, err := client.generateKeyPairCreateRequest(ctx, resourceGroupName, sshPublicKeyName, options)
 	if err != nil {
@@ -193,7 +213,7 @@ func (client *SSHPublicKeysClient) generateKeyPairCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -227,6 +247,9 @@ func (client *SSHPublicKeysClient) generateKeyPairHandleError(resp *http.Respons
 
 // Get - Retrieves information about an SSH public key.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// sshPublicKeyName - The name of the SSH public key.
+// options - SSHPublicKeysGetOptions contains the optional parameters for the SSHPublicKeysClient.Get method.
 func (client *SSHPublicKeysClient) Get(ctx context.Context, resourceGroupName string, sshPublicKeyName string, options *SSHPublicKeysGetOptions) (SSHPublicKeysGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, sshPublicKeyName, options)
 	if err != nil {
@@ -257,7 +280,7 @@ func (client *SSHPublicKeysClient) getCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -289,9 +312,12 @@ func (client *SSHPublicKeysClient) getHandleError(resp *http.Response) error {
 	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
-// ListByResourceGroup - Lists all of the SSH public keys in the specified resource group. Use the nextLink property in the response to get the next page
-// of SSH public keys.
+// ListByResourceGroup - Lists all of the SSH public keys in the specified resource group. Use the nextLink property in the
+// response to get the next page of SSH public keys.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// options - SSHPublicKeysListByResourceGroupOptions contains the optional parameters for the SSHPublicKeysClient.ListByResourceGroup
+// method.
 func (client *SSHPublicKeysClient) ListByResourceGroup(resourceGroupName string, options *SSHPublicKeysListByResourceGroupOptions) *SSHPublicKeysListByResourceGroupPager {
 	return &SSHPublicKeysListByResourceGroupPager{
 		client: client,
@@ -315,7 +341,7 @@ func (client *SSHPublicKeysClient) listByResourceGroupCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -347,9 +373,11 @@ func (client *SSHPublicKeysClient) listByResourceGroupHandleError(resp *http.Res
 	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
-// ListBySubscription - Lists all of the SSH public keys in the subscription. Use the nextLink property in the response to get the next page of SSH public
-// keys.
+// ListBySubscription - Lists all of the SSH public keys in the subscription. Use the nextLink property in the response to
+// get the next page of SSH public keys.
 // If the operation fails it returns a generic error.
+// options - SSHPublicKeysListBySubscriptionOptions contains the optional parameters for the SSHPublicKeysClient.ListBySubscription
+// method.
 func (client *SSHPublicKeysClient) ListBySubscription(options *SSHPublicKeysListBySubscriptionOptions) *SSHPublicKeysListBySubscriptionPager {
 	return &SSHPublicKeysListBySubscriptionPager{
 		client: client,
@@ -369,7 +397,7 @@ func (client *SSHPublicKeysClient) listBySubscriptionCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -403,6 +431,10 @@ func (client *SSHPublicKeysClient) listBySubscriptionHandleError(resp *http.Resp
 
 // Update - Updates a new SSH public key resource.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// sshPublicKeyName - The name of the SSH public key.
+// parameters - Parameters supplied to update the SSH public key.
+// options - SSHPublicKeysUpdateOptions contains the optional parameters for the SSHPublicKeysClient.Update method.
 func (client *SSHPublicKeysClient) Update(ctx context.Context, resourceGroupName string, sshPublicKeyName string, parameters SSHPublicKeyUpdateResource, options *SSHPublicKeysUpdateOptions) (SSHPublicKeysUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, sshPublicKeyName, parameters, options)
 	if err != nil {
@@ -433,7 +465,7 @@ func (client *SSHPublicKeysClient) updateCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -24,12 +24,16 @@ import (
 // VirtualMachineSizesClient contains the methods for the VirtualMachineSizes group.
 // Don't use this type directly, use NewVirtualMachineSizesClient() instead.
 type VirtualMachineSizesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewVirtualMachineSizesClient creates a new instance of VirtualMachineSizesClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewVirtualMachineSizesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VirtualMachineSizesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
@@ -38,11 +42,18 @@ func NewVirtualMachineSizesClient(subscriptionID string, credential azcore.Token
 	if len(cp.Host) == 0 {
 		cp.Host = arm.AzurePublicCloud
 	}
-	return &VirtualMachineSizesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &VirtualMachineSizesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Host),
+		pl:             armruntime.NewPipeline(module, version, credential, &cp),
+	}
+	return client
 }
 
 // List - This API is deprecated. Use Resources Skus [https://docs.microsoft.com/rest/api/compute/resourceskus/list]
 // If the operation fails it returns a generic error.
+// location - The location upon which virtual-machine-sizes is queried.
+// options - VirtualMachineSizesListOptions contains the optional parameters for the VirtualMachineSizesClient.List method.
 func (client *VirtualMachineSizesClient) List(ctx context.Context, location string, options *VirtualMachineSizesListOptions) (VirtualMachineSizesListResponse, error) {
 	req, err := client.listCreateRequest(ctx, location, options)
 	if err != nil {
@@ -69,7 +80,7 @@ func (client *VirtualMachineSizesClient) listCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}

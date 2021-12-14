@@ -26,12 +26,16 @@ import (
 // VirtualMachineScaleSetVMsClient contains the methods for the VirtualMachineScaleSetVMs group.
 // Don't use this type directly, use NewVirtualMachineScaleSetVMsClient() instead.
 type VirtualMachineScaleSetVMsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewVirtualMachineScaleSetVMsClient creates a new instance of VirtualMachineScaleSetVMsClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewVirtualMachineScaleSetVMsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VirtualMachineScaleSetVMsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
@@ -40,13 +44,23 @@ func NewVirtualMachineScaleSetVMsClient(subscriptionID string, credential azcore
 	if len(cp.Host) == 0 {
 		cp.Host = arm.AzurePublicCloud
 	}
-	return &VirtualMachineScaleSetVMsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &VirtualMachineScaleSetVMsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Host),
+		pl:             armruntime.NewPipeline(module, version, credential, &cp),
+	}
+	return client
 }
 
-// BeginDeallocate - Deallocates a specific virtual machine in a VM scale set. Shuts down the virtual machine and releases the compute resources it uses.
-// You are not billed for the compute resources of this virtual
+// BeginDeallocate - Deallocates a specific virtual machine in a VM scale set. Shuts down the virtual machine and releases
+// the compute resources it uses. You are not billed for the compute resources of this virtual
 // machine once it is deallocated.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// vmScaleSetName - The name of the VM scale set.
+// instanceID - The instance ID of the virtual machine.
+// options - VirtualMachineScaleSetVMsBeginDeallocateOptions contains the optional parameters for the VirtualMachineScaleSetVMsClient.BeginDeallocate
+// method.
 func (client *VirtualMachineScaleSetVMsClient) BeginDeallocate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMsBeginDeallocateOptions) (VirtualMachineScaleSetVMsDeallocatePollerResponse, error) {
 	resp, err := client.deallocate(ctx, resourceGroupName, vmScaleSetName, instanceID, options)
 	if err != nil {
@@ -65,8 +79,8 @@ func (client *VirtualMachineScaleSetVMsClient) BeginDeallocate(ctx context.Conte
 	return result, nil
 }
 
-// Deallocate - Deallocates a specific virtual machine in a VM scale set. Shuts down the virtual machine and releases the compute resources it uses. You
-// are not billed for the compute resources of this virtual
+// Deallocate - Deallocates a specific virtual machine in a VM scale set. Shuts down the virtual machine and releases the
+// compute resources it uses. You are not billed for the compute resources of this virtual
 // machine once it is deallocated.
 // If the operation fails it returns a generic error.
 func (client *VirtualMachineScaleSetVMsClient) deallocate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMsBeginDeallocateOptions) (*http.Response, error) {
@@ -103,7 +117,7 @@ func (client *VirtualMachineScaleSetVMsClient) deallocateCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -127,6 +141,11 @@ func (client *VirtualMachineScaleSetVMsClient) deallocateHandleError(resp *http.
 
 // BeginDelete - Deletes a virtual machine from a VM scale set.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// vmScaleSetName - The name of the VM scale set.
+// instanceID - The instance ID of the virtual machine.
+// options - VirtualMachineScaleSetVMsBeginDeleteOptions contains the optional parameters for the VirtualMachineScaleSetVMsClient.BeginDelete
+// method.
 func (client *VirtualMachineScaleSetVMsClient) BeginDelete(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMsBeginDeleteOptions) (VirtualMachineScaleSetVMsDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, vmScaleSetName, instanceID, options)
 	if err != nil {
@@ -181,7 +200,7 @@ func (client *VirtualMachineScaleSetVMsClient) deleteCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -208,6 +227,11 @@ func (client *VirtualMachineScaleSetVMsClient) deleteHandleError(resp *http.Resp
 
 // Get - Gets a virtual machine from a VM scale set.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// vmScaleSetName - The name of the VM scale set.
+// instanceID - The instance ID of the virtual machine.
+// options - VirtualMachineScaleSetVMsGetOptions contains the optional parameters for the VirtualMachineScaleSetVMsClient.Get
+// method.
 func (client *VirtualMachineScaleSetVMsClient) Get(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMsGetOptions) (VirtualMachineScaleSetVMsGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vmScaleSetName, instanceID, options)
 	if err != nil {
@@ -242,7 +266,7 @@ func (client *VirtualMachineScaleSetVMsClient) getCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -279,6 +303,11 @@ func (client *VirtualMachineScaleSetVMsClient) getHandleError(resp *http.Respons
 
 // GetInstanceView - Gets the status of a virtual machine from a VM scale set.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// vmScaleSetName - The name of the VM scale set.
+// instanceID - The instance ID of the virtual machine.
+// options - VirtualMachineScaleSetVMsGetInstanceViewOptions contains the optional parameters for the VirtualMachineScaleSetVMsClient.GetInstanceView
+// method.
 func (client *VirtualMachineScaleSetVMsClient) GetInstanceView(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMsGetInstanceViewOptions) (VirtualMachineScaleSetVMsGetInstanceViewResponse, error) {
 	req, err := client.getInstanceViewCreateRequest(ctx, resourceGroupName, vmScaleSetName, instanceID, options)
 	if err != nil {
@@ -313,7 +342,7 @@ func (client *VirtualMachineScaleSetVMsClient) getInstanceViewCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -347,6 +376,10 @@ func (client *VirtualMachineScaleSetVMsClient) getInstanceViewHandleError(resp *
 
 // List - Gets a list of all virtual machines in a VM scale sets.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// virtualMachineScaleSetName - The name of the VM scale set.
+// options - VirtualMachineScaleSetVMsListOptions contains the optional parameters for the VirtualMachineScaleSetVMsClient.List
+// method.
 func (client *VirtualMachineScaleSetVMsClient) List(resourceGroupName string, virtualMachineScaleSetName string, options *VirtualMachineScaleSetVMsListOptions) *VirtualMachineScaleSetVMsListPager {
 	return &VirtualMachineScaleSetVMsListPager{
 		client: client,
@@ -374,7 +407,7 @@ func (client *VirtualMachineScaleSetVMsClient) listCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -417,6 +450,11 @@ func (client *VirtualMachineScaleSetVMsClient) listHandleError(resp *http.Respon
 
 // BeginPerformMaintenance - Performs maintenance on a virtual machine in a VM scale set.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// vmScaleSetName - The name of the VM scale set.
+// instanceID - The instance ID of the virtual machine.
+// options - VirtualMachineScaleSetVMsBeginPerformMaintenanceOptions contains the optional parameters for the VirtualMachineScaleSetVMsClient.BeginPerformMaintenance
+// method.
 func (client *VirtualMachineScaleSetVMsClient) BeginPerformMaintenance(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMsBeginPerformMaintenanceOptions) (VirtualMachineScaleSetVMsPerformMaintenancePollerResponse, error) {
 	resp, err := client.performMaintenance(ctx, resourceGroupName, vmScaleSetName, instanceID, options)
 	if err != nil {
@@ -471,7 +509,7 @@ func (client *VirtualMachineScaleSetVMsClient) performMaintenanceCreateRequest(c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -493,10 +531,15 @@ func (client *VirtualMachineScaleSetVMsClient) performMaintenanceHandleError(res
 	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
-// BeginPowerOff - Power off (stop) a virtual machine in a VM scale set. Note that resources are still attached and you are getting charged for the resources.
-// Instead, use deallocate to release resources and avoid
+// BeginPowerOff - Power off (stop) a virtual machine in a VM scale set. Note that resources are still attached and you are
+// getting charged for the resources. Instead, use deallocate to release resources and avoid
 // charges.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// vmScaleSetName - The name of the VM scale set.
+// instanceID - The instance ID of the virtual machine.
+// options - VirtualMachineScaleSetVMsBeginPowerOffOptions contains the optional parameters for the VirtualMachineScaleSetVMsClient.BeginPowerOff
+// method.
 func (client *VirtualMachineScaleSetVMsClient) BeginPowerOff(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMsBeginPowerOffOptions) (VirtualMachineScaleSetVMsPowerOffPollerResponse, error) {
 	resp, err := client.powerOff(ctx, resourceGroupName, vmScaleSetName, instanceID, options)
 	if err != nil {
@@ -515,8 +558,8 @@ func (client *VirtualMachineScaleSetVMsClient) BeginPowerOff(ctx context.Context
 	return result, nil
 }
 
-// PowerOff - Power off (stop) a virtual machine in a VM scale set. Note that resources are still attached and you are getting charged for the resources.
-// Instead, use deallocate to release resources and avoid
+// PowerOff - Power off (stop) a virtual machine in a VM scale set. Note that resources are still attached and you are getting
+// charged for the resources. Instead, use deallocate to release resources and avoid
 // charges.
 // If the operation fails it returns a generic error.
 func (client *VirtualMachineScaleSetVMsClient) powerOff(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMsBeginPowerOffOptions) (*http.Response, error) {
@@ -553,7 +596,7 @@ func (client *VirtualMachineScaleSetVMsClient) powerOffCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -578,8 +621,14 @@ func (client *VirtualMachineScaleSetVMsClient) powerOffHandleError(resp *http.Re
 	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
-// BeginRedeploy - Shuts down the virtual machine in the virtual machine scale set, moves it to a new node, and powers it back on.
+// BeginRedeploy - Shuts down the virtual machine in the virtual machine scale set, moves it to a new node, and powers it
+// back on.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// vmScaleSetName - The name of the VM scale set.
+// instanceID - The instance ID of the virtual machine.
+// options - VirtualMachineScaleSetVMsBeginRedeployOptions contains the optional parameters for the VirtualMachineScaleSetVMsClient.BeginRedeploy
+// method.
 func (client *VirtualMachineScaleSetVMsClient) BeginRedeploy(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMsBeginRedeployOptions) (VirtualMachineScaleSetVMsRedeployPollerResponse, error) {
 	resp, err := client.redeploy(ctx, resourceGroupName, vmScaleSetName, instanceID, options)
 	if err != nil {
@@ -598,7 +647,8 @@ func (client *VirtualMachineScaleSetVMsClient) BeginRedeploy(ctx context.Context
 	return result, nil
 }
 
-// Redeploy - Shuts down the virtual machine in the virtual machine scale set, moves it to a new node, and powers it back on.
+// Redeploy - Shuts down the virtual machine in the virtual machine scale set, moves it to a new node, and powers it back
+// on.
 // If the operation fails it returns a generic error.
 func (client *VirtualMachineScaleSetVMsClient) redeploy(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMsBeginRedeployOptions) (*http.Response, error) {
 	req, err := client.redeployCreateRequest(ctx, resourceGroupName, vmScaleSetName, instanceID, options)
@@ -634,7 +684,7 @@ func (client *VirtualMachineScaleSetVMsClient) redeployCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -658,6 +708,11 @@ func (client *VirtualMachineScaleSetVMsClient) redeployHandleError(resp *http.Re
 
 // BeginReimage - Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// vmScaleSetName - The name of the VM scale set.
+// instanceID - The instance ID of the virtual machine.
+// options - VirtualMachineScaleSetVMsBeginReimageOptions contains the optional parameters for the VirtualMachineScaleSetVMsClient.BeginReimage
+// method.
 func (client *VirtualMachineScaleSetVMsClient) BeginReimage(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMsBeginReimageOptions) (VirtualMachineScaleSetVMsReimagePollerResponse, error) {
 	resp, err := client.reimage(ctx, resourceGroupName, vmScaleSetName, instanceID, options)
 	if err != nil {
@@ -712,7 +767,7 @@ func (client *VirtualMachineScaleSetVMsClient) reimageCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -737,9 +792,14 @@ func (client *VirtualMachineScaleSetVMsClient) reimageHandleError(resp *http.Res
 	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
-// BeginReimageAll - Allows you to re-image all the disks ( including data disks ) in the a VM scale set instance. This operation is only supported for
-// managed disks.
+// BeginReimageAll - Allows you to re-image all the disks ( including data disks ) in the a VM scale set instance. This operation
+// is only supported for managed disks.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// vmScaleSetName - The name of the VM scale set.
+// instanceID - The instance ID of the virtual machine.
+// options - VirtualMachineScaleSetVMsBeginReimageAllOptions contains the optional parameters for the VirtualMachineScaleSetVMsClient.BeginReimageAll
+// method.
 func (client *VirtualMachineScaleSetVMsClient) BeginReimageAll(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMsBeginReimageAllOptions) (VirtualMachineScaleSetVMsReimageAllPollerResponse, error) {
 	resp, err := client.reimageAll(ctx, resourceGroupName, vmScaleSetName, instanceID, options)
 	if err != nil {
@@ -758,8 +818,8 @@ func (client *VirtualMachineScaleSetVMsClient) BeginReimageAll(ctx context.Conte
 	return result, nil
 }
 
-// ReimageAll - Allows you to re-image all the disks ( including data disks ) in the a VM scale set instance. This operation is only supported for managed
-// disks.
+// ReimageAll - Allows you to re-image all the disks ( including data disks ) in the a VM scale set instance. This operation
+// is only supported for managed disks.
 // If the operation fails it returns a generic error.
 func (client *VirtualMachineScaleSetVMsClient) reimageAll(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMsBeginReimageAllOptions) (*http.Response, error) {
 	req, err := client.reimageAllCreateRequest(ctx, resourceGroupName, vmScaleSetName, instanceID, options)
@@ -795,7 +855,7 @@ func (client *VirtualMachineScaleSetVMsClient) reimageAllCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -819,6 +879,11 @@ func (client *VirtualMachineScaleSetVMsClient) reimageAllHandleError(resp *http.
 
 // BeginRestart - Restarts a virtual machine in a VM scale set.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// vmScaleSetName - The name of the VM scale set.
+// instanceID - The instance ID of the virtual machine.
+// options - VirtualMachineScaleSetVMsBeginRestartOptions contains the optional parameters for the VirtualMachineScaleSetVMsClient.BeginRestart
+// method.
 func (client *VirtualMachineScaleSetVMsClient) BeginRestart(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMsBeginRestartOptions) (VirtualMachineScaleSetVMsRestartPollerResponse, error) {
 	resp, err := client.restart(ctx, resourceGroupName, vmScaleSetName, instanceID, options)
 	if err != nil {
@@ -873,7 +938,7 @@ func (client *VirtualMachineScaleSetVMsClient) restartCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -895,8 +960,14 @@ func (client *VirtualMachineScaleSetVMsClient) restartHandleError(resp *http.Res
 	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
-// RetrieveBootDiagnosticsData - The operation to retrieve SAS URIs of boot diagnostic logs for a virtual machine in a VM scale set.
+// RetrieveBootDiagnosticsData - The operation to retrieve SAS URIs of boot diagnostic logs for a virtual machine in a VM
+// scale set.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// vmScaleSetName - The name of the VM scale set.
+// instanceID - The instance ID of the virtual machine.
+// options - VirtualMachineScaleSetVMsRetrieveBootDiagnosticsDataOptions contains the optional parameters for the VirtualMachineScaleSetVMsClient.RetrieveBootDiagnosticsData
+// method.
 func (client *VirtualMachineScaleSetVMsClient) RetrieveBootDiagnosticsData(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMsRetrieveBootDiagnosticsDataOptions) (VirtualMachineScaleSetVMsRetrieveBootDiagnosticsDataResponse, error) {
 	req, err := client.retrieveBootDiagnosticsDataCreateRequest(ctx, resourceGroupName, vmScaleSetName, instanceID, options)
 	if err != nil {
@@ -931,7 +1002,7 @@ func (client *VirtualMachineScaleSetVMsClient) retrieveBootDiagnosticsDataCreate
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -969,6 +1040,12 @@ func (client *VirtualMachineScaleSetVMsClient) retrieveBootDiagnosticsDataHandle
 
 // BeginRunCommand - Run command on a virtual machine in a VM scale set.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// vmScaleSetName - The name of the VM scale set.
+// instanceID - The instance ID of the virtual machine.
+// parameters - Parameters supplied to the Run command operation.
+// options - VirtualMachineScaleSetVMsBeginRunCommandOptions contains the optional parameters for the VirtualMachineScaleSetVMsClient.BeginRunCommand
+// method.
 func (client *VirtualMachineScaleSetVMsClient) BeginRunCommand(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, parameters RunCommandInput, options *VirtualMachineScaleSetVMsBeginRunCommandOptions) (VirtualMachineScaleSetVMsRunCommandPollerResponse, error) {
 	resp, err := client.runCommand(ctx, resourceGroupName, vmScaleSetName, instanceID, parameters, options)
 	if err != nil {
@@ -1023,7 +1100,7 @@ func (client *VirtualMachineScaleSetVMsClient) runCommandCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1048,6 +1125,11 @@ func (client *VirtualMachineScaleSetVMsClient) runCommandHandleError(resp *http.
 
 // SimulateEviction - The operation to simulate the eviction of spot virtual machine in a VM scale set.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// vmScaleSetName - The name of the VM scale set.
+// instanceID - The instance ID of the virtual machine.
+// options - VirtualMachineScaleSetVMsSimulateEvictionOptions contains the optional parameters for the VirtualMachineScaleSetVMsClient.SimulateEviction
+// method.
 func (client *VirtualMachineScaleSetVMsClient) SimulateEviction(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMsSimulateEvictionOptions) (VirtualMachineScaleSetVMsSimulateEvictionResponse, error) {
 	req, err := client.simulateEvictionCreateRequest(ctx, resourceGroupName, vmScaleSetName, instanceID, options)
 	if err != nil {
@@ -1082,7 +1164,7 @@ func (client *VirtualMachineScaleSetVMsClient) simulateEvictionCreateRequest(ctx
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1106,6 +1188,11 @@ func (client *VirtualMachineScaleSetVMsClient) simulateEvictionHandleError(resp 
 
 // BeginStart - Starts a virtual machine in a VM scale set.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// vmScaleSetName - The name of the VM scale set.
+// instanceID - The instance ID of the virtual machine.
+// options - VirtualMachineScaleSetVMsBeginStartOptions contains the optional parameters for the VirtualMachineScaleSetVMsClient.BeginStart
+// method.
 func (client *VirtualMachineScaleSetVMsClient) BeginStart(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMsBeginStartOptions) (VirtualMachineScaleSetVMsStartPollerResponse, error) {
 	resp, err := client.start(ctx, resourceGroupName, vmScaleSetName, instanceID, options)
 	if err != nil {
@@ -1160,7 +1247,7 @@ func (client *VirtualMachineScaleSetVMsClient) startCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1184,6 +1271,12 @@ func (client *VirtualMachineScaleSetVMsClient) startHandleError(resp *http.Respo
 
 // BeginUpdate - Updates a virtual machine of a VM scale set.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// vmScaleSetName - The name of the VM scale set where the extension should be create or updated.
+// instanceID - The instance ID of the virtual machine.
+// parameters - Parameters supplied to the Update Virtual Machine Scale Sets VM operation.
+// options - VirtualMachineScaleSetVMsBeginUpdateOptions contains the optional parameters for the VirtualMachineScaleSetVMsClient.BeginUpdate
+// method.
 func (client *VirtualMachineScaleSetVMsClient) BeginUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, parameters VirtualMachineScaleSetVM, options *VirtualMachineScaleSetVMsBeginUpdateOptions) (VirtualMachineScaleSetVMsUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, vmScaleSetName, instanceID, parameters, options)
 	if err != nil {
@@ -1238,7 +1331,7 @@ func (client *VirtualMachineScaleSetVMsClient) updateCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}

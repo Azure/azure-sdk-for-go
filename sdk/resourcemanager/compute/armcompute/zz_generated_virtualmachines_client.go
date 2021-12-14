@@ -26,12 +26,16 @@ import (
 // VirtualMachinesClient contains the methods for the VirtualMachines group.
 // Don't use this type directly, use NewVirtualMachinesClient() instead.
 type VirtualMachinesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewVirtualMachinesClient creates a new instance of VirtualMachinesClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewVirtualMachinesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VirtualMachinesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
@@ -40,11 +44,20 @@ func NewVirtualMachinesClient(subscriptionID string, credential azcore.TokenCred
 	if len(cp.Host) == 0 {
 		cp.Host = arm.AzurePublicCloud
 	}
-	return &VirtualMachinesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &VirtualMachinesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Host),
+		pl:             armruntime.NewPipeline(module, version, credential, &cp),
+	}
+	return client
 }
 
 // BeginAssessPatches - Assess patches on the VM.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// vmName - The name of the virtual machine.
+// options - VirtualMachinesBeginAssessPatchesOptions contains the optional parameters for the VirtualMachinesClient.BeginAssessPatches
+// method.
 func (client *VirtualMachinesClient) BeginAssessPatches(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginAssessPatchesOptions) (VirtualMachinesAssessPatchesPollerResponse, error) {
 	resp, err := client.assessPatches(ctx, resourceGroupName, vmName, options)
 	if err != nil {
@@ -95,7 +108,7 @@ func (client *VirtualMachinesClient) assessPatchesCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -119,8 +132,14 @@ func (client *VirtualMachinesClient) assessPatchesHandleError(resp *http.Respons
 	return runtime.NewResponseError(&errType, resp)
 }
 
-// BeginCapture - Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar VMs.
+// BeginCapture - Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create
+// similar VMs.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// vmName - The name of the virtual machine.
+// parameters - Parameters supplied to the Capture Virtual Machine operation.
+// options - VirtualMachinesBeginCaptureOptions contains the optional parameters for the VirtualMachinesClient.BeginCapture
+// method.
 func (client *VirtualMachinesClient) BeginCapture(ctx context.Context, resourceGroupName string, vmName string, parameters VirtualMachineCaptureParameters, options *VirtualMachinesBeginCaptureOptions) (VirtualMachinesCapturePollerResponse, error) {
 	resp, err := client.capture(ctx, resourceGroupName, vmName, parameters, options)
 	if err != nil {
@@ -139,7 +158,8 @@ func (client *VirtualMachinesClient) BeginCapture(ctx context.Context, resourceG
 	return result, nil
 }
 
-// Capture - Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar VMs.
+// Capture - Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar
+// VMs.
 // If the operation fails it returns a generic error.
 func (client *VirtualMachinesClient) capture(ctx context.Context, resourceGroupName string, vmName string, parameters VirtualMachineCaptureParameters, options *VirtualMachinesBeginCaptureOptions) (*http.Response, error) {
 	req, err := client.captureCreateRequest(ctx, resourceGroupName, vmName, parameters, options)
@@ -171,7 +191,7 @@ func (client *VirtualMachinesClient) captureCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -194,9 +214,13 @@ func (client *VirtualMachinesClient) captureHandleError(resp *http.Response) err
 	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
-// BeginConvertToManagedDisks - Converts virtual machine disks from blob-based to managed disks. Virtual machine must be stop-deallocated before invoking
-// this operation.
+// BeginConvertToManagedDisks - Converts virtual machine disks from blob-based to managed disks. Virtual machine must be stop-deallocated
+// before invoking this operation.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// vmName - The name of the virtual machine.
+// options - VirtualMachinesBeginConvertToManagedDisksOptions contains the optional parameters for the VirtualMachinesClient.BeginConvertToManagedDisks
+// method.
 func (client *VirtualMachinesClient) BeginConvertToManagedDisks(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginConvertToManagedDisksOptions) (VirtualMachinesConvertToManagedDisksPollerResponse, error) {
 	resp, err := client.convertToManagedDisks(ctx, resourceGroupName, vmName, options)
 	if err != nil {
@@ -215,8 +239,8 @@ func (client *VirtualMachinesClient) BeginConvertToManagedDisks(ctx context.Cont
 	return result, nil
 }
 
-// ConvertToManagedDisks - Converts virtual machine disks from blob-based to managed disks. Virtual machine must be stop-deallocated before invoking this
-// operation.
+// ConvertToManagedDisks - Converts virtual machine disks from blob-based to managed disks. Virtual machine must be stop-deallocated
+// before invoking this operation.
 // If the operation fails it returns a generic error.
 func (client *VirtualMachinesClient) convertToManagedDisks(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginConvertToManagedDisksOptions) (*http.Response, error) {
 	req, err := client.convertToManagedDisksCreateRequest(ctx, resourceGroupName, vmName, options)
@@ -248,7 +272,7 @@ func (client *VirtualMachinesClient) convertToManagedDisksCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -270,8 +294,14 @@ func (client *VirtualMachinesClient) convertToManagedDisksHandleError(resp *http
 	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
-// BeginCreateOrUpdate - The operation to create or update a virtual machine. Please note some properties can be set only during virtual machine creation.
+// BeginCreateOrUpdate - The operation to create or update a virtual machine. Please note some properties can be set only
+// during virtual machine creation.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// vmName - The name of the virtual machine.
+// parameters - Parameters supplied to the Create Virtual Machine operation.
+// options - VirtualMachinesBeginCreateOrUpdateOptions contains the optional parameters for the VirtualMachinesClient.BeginCreateOrUpdate
+// method.
 func (client *VirtualMachinesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vmName string, parameters VirtualMachine, options *VirtualMachinesBeginCreateOrUpdateOptions) (VirtualMachinesCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, vmName, parameters, options)
 	if err != nil {
@@ -290,7 +320,8 @@ func (client *VirtualMachinesClient) BeginCreateOrUpdate(ctx context.Context, re
 	return result, nil
 }
 
-// CreateOrUpdate - The operation to create or update a virtual machine. Please note some properties can be set only during virtual machine creation.
+// CreateOrUpdate - The operation to create or update a virtual machine. Please note some properties can be set only during
+// virtual machine creation.
 // If the operation fails it returns a generic error.
 func (client *VirtualMachinesClient) createOrUpdate(ctx context.Context, resourceGroupName string, vmName string, parameters VirtualMachine, options *VirtualMachinesBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, vmName, parameters, options)
@@ -322,7 +353,7 @@ func (client *VirtualMachinesClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -345,9 +376,13 @@ func (client *VirtualMachinesClient) createOrUpdateHandleError(resp *http.Respon
 	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
-// BeginDeallocate - Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources that this virtual machine
-// uses.
+// BeginDeallocate - Shuts down the virtual machine and releases the compute resources. You are not billed for the compute
+// resources that this virtual machine uses.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// vmName - The name of the virtual machine.
+// options - VirtualMachinesBeginDeallocateOptions contains the optional parameters for the VirtualMachinesClient.BeginDeallocate
+// method.
 func (client *VirtualMachinesClient) BeginDeallocate(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginDeallocateOptions) (VirtualMachinesDeallocatePollerResponse, error) {
 	resp, err := client.deallocate(ctx, resourceGroupName, vmName, options)
 	if err != nil {
@@ -366,8 +401,8 @@ func (client *VirtualMachinesClient) BeginDeallocate(ctx context.Context, resour
 	return result, nil
 }
 
-// Deallocate - Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources that this virtual machine
-// uses.
+// Deallocate - Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
+// that this virtual machine uses.
 // If the operation fails it returns a generic error.
 func (client *VirtualMachinesClient) deallocate(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginDeallocateOptions) (*http.Response, error) {
 	req, err := client.deallocateCreateRequest(ctx, resourceGroupName, vmName, options)
@@ -399,7 +434,7 @@ func (client *VirtualMachinesClient) deallocateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -426,6 +461,10 @@ func (client *VirtualMachinesClient) deallocateHandleError(resp *http.Response) 
 
 // BeginDelete - The operation to delete a virtual machine.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// vmName - The name of the virtual machine.
+// options - VirtualMachinesBeginDeleteOptions contains the optional parameters for the VirtualMachinesClient.BeginDelete
+// method.
 func (client *VirtualMachinesClient) BeginDelete(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginDeleteOptions) (VirtualMachinesDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, vmName, options)
 	if err != nil {
@@ -476,7 +515,7 @@ func (client *VirtualMachinesClient) deleteCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -501,12 +540,15 @@ func (client *VirtualMachinesClient) deleteHandleError(resp *http.Response) erro
 	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
-// Generalize - Sets the OS state of the virtual machine to generalized. It is recommended to sysprep the virtual machine before performing this operation.
-// For Windows, please refer to Create a managed image of a
-// generalized VM in Azure [https://docs.microsoft.com/azure/virtual-machines/windows/capture-image-resource]. For Linux, please refer to How to create
-// an image of a virtual machine or VHD
+// Generalize - Sets the OS state of the virtual machine to generalized. It is recommended to sysprep the virtual machine
+// before performing this operation. For Windows, please refer to Create a managed image of a
+// generalized VM in Azure [https://docs.microsoft.com/azure/virtual-machines/windows/capture-image-resource]. For Linux,
+// please refer to How to create an image of a virtual machine or VHD
 // [https://docs.microsoft.com/azure/virtual-machines/linux/capture-image].
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// vmName - The name of the virtual machine.
+// options - VirtualMachinesGeneralizeOptions contains the optional parameters for the VirtualMachinesClient.Generalize method.
 func (client *VirtualMachinesClient) Generalize(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesGeneralizeOptions) (VirtualMachinesGeneralizeResponse, error) {
 	req, err := client.generalizeCreateRequest(ctx, resourceGroupName, vmName, options)
 	if err != nil {
@@ -537,7 +579,7 @@ func (client *VirtualMachinesClient) generalizeCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -561,6 +603,9 @@ func (client *VirtualMachinesClient) generalizeHandleError(resp *http.Response) 
 
 // Get - Retrieves information about the model view or the instance view of a virtual machine.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// vmName - The name of the virtual machine.
+// options - VirtualMachinesGetOptions contains the optional parameters for the VirtualMachinesClient.Get method.
 func (client *VirtualMachinesClient) Get(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesGetOptions) (VirtualMachinesGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vmName, options)
 	if err != nil {
@@ -591,7 +636,7 @@ func (client *VirtualMachinesClient) getCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -628,6 +673,11 @@ func (client *VirtualMachinesClient) getHandleError(resp *http.Response) error {
 
 // BeginInstallPatches - Installs patches on the VM.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// vmName - The name of the virtual machine.
+// installPatchesInput - Input for InstallPatches as directly received by the API
+// options - VirtualMachinesBeginInstallPatchesOptions contains the optional parameters for the VirtualMachinesClient.BeginInstallPatches
+// method.
 func (client *VirtualMachinesClient) BeginInstallPatches(ctx context.Context, resourceGroupName string, vmName string, installPatchesInput VirtualMachineInstallPatchesParameters, options *VirtualMachinesBeginInstallPatchesOptions) (VirtualMachinesInstallPatchesPollerResponse, error) {
 	resp, err := client.installPatches(ctx, resourceGroupName, vmName, installPatchesInput, options)
 	if err != nil {
@@ -678,7 +728,7 @@ func (client *VirtualMachinesClient) installPatchesCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -704,6 +754,10 @@ func (client *VirtualMachinesClient) installPatchesHandleError(resp *http.Respon
 
 // InstanceView - Retrieves information about the run-time state of a virtual machine.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// vmName - The name of the virtual machine.
+// options - VirtualMachinesInstanceViewOptions contains the optional parameters for the VirtualMachinesClient.InstanceView
+// method.
 func (client *VirtualMachinesClient) InstanceView(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesInstanceViewOptions) (VirtualMachinesInstanceViewResponse, error) {
 	req, err := client.instanceViewCreateRequest(ctx, resourceGroupName, vmName, options)
 	if err != nil {
@@ -734,7 +788,7 @@ func (client *VirtualMachinesClient) instanceViewCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -766,8 +820,11 @@ func (client *VirtualMachinesClient) instanceViewHandleError(resp *http.Response
 	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
-// List - Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to get the next page of virtual machines.
+// List - Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to
+// get the next page of virtual machines.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// options - VirtualMachinesListOptions contains the optional parameters for the VirtualMachinesClient.List method.
 func (client *VirtualMachinesClient) List(resourceGroupName string, options *VirtualMachinesListOptions) *VirtualMachinesListPager {
 	return &VirtualMachinesListPager{
 		client: client,
@@ -791,7 +848,7 @@ func (client *VirtualMachinesClient) listCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -823,9 +880,10 @@ func (client *VirtualMachinesClient) listHandleError(resp *http.Response) error 
 	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
-// ListAll - Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get the next page of virtual
-// machines.
+// ListAll - Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to
+// get the next page of virtual machines.
 // If the operation fails it returns a generic error.
+// options - VirtualMachinesListAllOptions contains the optional parameters for the VirtualMachinesClient.ListAll method.
 func (client *VirtualMachinesClient) ListAll(options *VirtualMachinesListAllOptions) *VirtualMachinesListAllPager {
 	return &VirtualMachinesListAllPager{
 		client: client,
@@ -845,7 +903,7 @@ func (client *VirtualMachinesClient) listAllCreateRequest(ctx context.Context, o
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -882,6 +940,10 @@ func (client *VirtualMachinesClient) listAllHandleError(resp *http.Response) err
 
 // ListAvailableSizes - Lists all available virtual machine sizes to which the specified virtual machine can be resized.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// vmName - The name of the virtual machine.
+// options - VirtualMachinesListAvailableSizesOptions contains the optional parameters for the VirtualMachinesClient.ListAvailableSizes
+// method.
 func (client *VirtualMachinesClient) ListAvailableSizes(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesListAvailableSizesOptions) (VirtualMachinesListAvailableSizesResponse, error) {
 	req, err := client.listAvailableSizesCreateRequest(ctx, resourceGroupName, vmName, options)
 	if err != nil {
@@ -912,7 +974,7 @@ func (client *VirtualMachinesClient) listAvailableSizesCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -946,6 +1008,9 @@ func (client *VirtualMachinesClient) listAvailableSizesHandleError(resp *http.Re
 
 // ListByLocation - Gets all the virtual machines under the specified subscription for the specified location.
 // If the operation fails it returns a generic error.
+// location - The location for which virtual machines under the subscription are queried.
+// options - VirtualMachinesListByLocationOptions contains the optional parameters for the VirtualMachinesClient.ListByLocation
+// method.
 func (client *VirtualMachinesClient) ListByLocation(location string, options *VirtualMachinesListByLocationOptions) *VirtualMachinesListByLocationPager {
 	return &VirtualMachinesListByLocationPager{
 		client: client,
@@ -969,7 +1034,7 @@ func (client *VirtualMachinesClient) listByLocationCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1003,6 +1068,10 @@ func (client *VirtualMachinesClient) listByLocationHandleError(resp *http.Respon
 
 // BeginPerformMaintenance - The operation to perform maintenance on a virtual machine.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// vmName - The name of the virtual machine.
+// options - VirtualMachinesBeginPerformMaintenanceOptions contains the optional parameters for the VirtualMachinesClient.BeginPerformMaintenance
+// method.
 func (client *VirtualMachinesClient) BeginPerformMaintenance(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginPerformMaintenanceOptions) (VirtualMachinesPerformMaintenancePollerResponse, error) {
 	resp, err := client.performMaintenance(ctx, resourceGroupName, vmName, options)
 	if err != nil {
@@ -1053,7 +1122,7 @@ func (client *VirtualMachinesClient) performMaintenanceCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1075,9 +1144,13 @@ func (client *VirtualMachinesClient) performMaintenanceHandleError(resp *http.Re
 	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
-// BeginPowerOff - The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same provisioned resources. You are
-// still charged for this virtual machine.
+// BeginPowerOff - The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
+// provisioned resources. You are still charged for this virtual machine.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// vmName - The name of the virtual machine.
+// options - VirtualMachinesBeginPowerOffOptions contains the optional parameters for the VirtualMachinesClient.BeginPowerOff
+// method.
 func (client *VirtualMachinesClient) BeginPowerOff(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginPowerOffOptions) (VirtualMachinesPowerOffPollerResponse, error) {
 	resp, err := client.powerOff(ctx, resourceGroupName, vmName, options)
 	if err != nil {
@@ -1096,8 +1169,8 @@ func (client *VirtualMachinesClient) BeginPowerOff(ctx context.Context, resource
 	return result, nil
 }
 
-// PowerOff - The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same provisioned resources. You are still
-// charged for this virtual machine.
+// PowerOff - The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same provisioned
+// resources. You are still charged for this virtual machine.
 // If the operation fails it returns a generic error.
 func (client *VirtualMachinesClient) powerOff(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginPowerOffOptions) (*http.Response, error) {
 	req, err := client.powerOffCreateRequest(ctx, resourceGroupName, vmName, options)
@@ -1129,7 +1202,7 @@ func (client *VirtualMachinesClient) powerOffCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1156,6 +1229,10 @@ func (client *VirtualMachinesClient) powerOffHandleError(resp *http.Response) er
 
 // BeginReapply - The operation to reapply a virtual machine's state.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// vmName - The name of the virtual machine.
+// options - VirtualMachinesBeginReapplyOptions contains the optional parameters for the VirtualMachinesClient.BeginReapply
+// method.
 func (client *VirtualMachinesClient) BeginReapply(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginReapplyOptions) (VirtualMachinesReapplyPollerResponse, error) {
 	resp, err := client.reapply(ctx, resourceGroupName, vmName, options)
 	if err != nil {
@@ -1206,7 +1283,7 @@ func (client *VirtualMachinesClient) reapplyCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1232,6 +1309,10 @@ func (client *VirtualMachinesClient) reapplyHandleError(resp *http.Response) err
 
 // BeginRedeploy - Shuts down the virtual machine, moves it to a new node, and powers it back on.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// vmName - The name of the virtual machine.
+// options - VirtualMachinesBeginRedeployOptions contains the optional parameters for the VirtualMachinesClient.BeginRedeploy
+// method.
 func (client *VirtualMachinesClient) BeginRedeploy(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginRedeployOptions) (VirtualMachinesRedeployPollerResponse, error) {
 	resp, err := client.redeploy(ctx, resourceGroupName, vmName, options)
 	if err != nil {
@@ -1282,7 +1363,7 @@ func (client *VirtualMachinesClient) redeployCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1306,6 +1387,10 @@ func (client *VirtualMachinesClient) redeployHandleError(resp *http.Response) er
 
 // BeginReimage - Reimages the virtual machine which has an ephemeral OS disk back to its initial state.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// vmName - The name of the virtual machine.
+// options - VirtualMachinesBeginReimageOptions contains the optional parameters for the VirtualMachinesClient.BeginReimage
+// method.
 func (client *VirtualMachinesClient) BeginReimage(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginReimageOptions) (VirtualMachinesReimagePollerResponse, error) {
 	resp, err := client.reimage(ctx, resourceGroupName, vmName, options)
 	if err != nil {
@@ -1356,7 +1441,7 @@ func (client *VirtualMachinesClient) reimageCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1383,6 +1468,10 @@ func (client *VirtualMachinesClient) reimageHandleError(resp *http.Response) err
 
 // BeginRestart - The operation to restart a virtual machine.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// vmName - The name of the virtual machine.
+// options - VirtualMachinesBeginRestartOptions contains the optional parameters for the VirtualMachinesClient.BeginRestart
+// method.
 func (client *VirtualMachinesClient) BeginRestart(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginRestartOptions) (VirtualMachinesRestartPollerResponse, error) {
 	resp, err := client.restart(ctx, resourceGroupName, vmName, options)
 	if err != nil {
@@ -1433,7 +1522,7 @@ func (client *VirtualMachinesClient) restartCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1457,6 +1546,10 @@ func (client *VirtualMachinesClient) restartHandleError(resp *http.Response) err
 
 // RetrieveBootDiagnosticsData - The operation to retrieve SAS URIs for a virtual machine's boot diagnostic logs.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - The name of the resource group.
+// vmName - The name of the virtual machine.
+// options - VirtualMachinesRetrieveBootDiagnosticsDataOptions contains the optional parameters for the VirtualMachinesClient.RetrieveBootDiagnosticsData
+// method.
 func (client *VirtualMachinesClient) RetrieveBootDiagnosticsData(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesRetrieveBootDiagnosticsDataOptions) (VirtualMachinesRetrieveBootDiagnosticsDataResponse, error) {
 	req, err := client.retrieveBootDiagnosticsDataCreateRequest(ctx, resourceGroupName, vmName, options)
 	if err != nil {
@@ -1487,7 +1580,7 @@ func (client *VirtualMachinesClient) retrieveBootDiagnosticsDataCreateRequest(ct
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1525,6 +1618,11 @@ func (client *VirtualMachinesClient) retrieveBootDiagnosticsDataHandleError(resp
 
 // BeginRunCommand - Run command on the VM.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// vmName - The name of the virtual machine.
+// parameters - Parameters supplied to the Run command operation.
+// options - VirtualMachinesBeginRunCommandOptions contains the optional parameters for the VirtualMachinesClient.BeginRunCommand
+// method.
 func (client *VirtualMachinesClient) BeginRunCommand(ctx context.Context, resourceGroupName string, vmName string, parameters RunCommandInput, options *VirtualMachinesBeginRunCommandOptions) (VirtualMachinesRunCommandPollerResponse, error) {
 	resp, err := client.runCommand(ctx, resourceGroupName, vmName, parameters, options)
 	if err != nil {
@@ -1575,7 +1673,7 @@ func (client *VirtualMachinesClient) runCommandCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1600,6 +1698,10 @@ func (client *VirtualMachinesClient) runCommandHandleError(resp *http.Response) 
 
 // SimulateEviction - The operation to simulate the eviction of spot virtual machine.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// vmName - The name of the virtual machine.
+// options - VirtualMachinesSimulateEvictionOptions contains the optional parameters for the VirtualMachinesClient.SimulateEviction
+// method.
 func (client *VirtualMachinesClient) SimulateEviction(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesSimulateEvictionOptions) (VirtualMachinesSimulateEvictionResponse, error) {
 	req, err := client.simulateEvictionCreateRequest(ctx, resourceGroupName, vmName, options)
 	if err != nil {
@@ -1630,7 +1732,7 @@ func (client *VirtualMachinesClient) simulateEvictionCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1654,6 +1756,9 @@ func (client *VirtualMachinesClient) simulateEvictionHandleError(resp *http.Resp
 
 // BeginStart - The operation to start a virtual machine.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// vmName - The name of the virtual machine.
+// options - VirtualMachinesBeginStartOptions contains the optional parameters for the VirtualMachinesClient.BeginStart method.
 func (client *VirtualMachinesClient) BeginStart(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesBeginStartOptions) (VirtualMachinesStartPollerResponse, error) {
 	resp, err := client.start(ctx, resourceGroupName, vmName, options)
 	if err != nil {
@@ -1704,7 +1809,7 @@ func (client *VirtualMachinesClient) startCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1728,6 +1833,11 @@ func (client *VirtualMachinesClient) startHandleError(resp *http.Response) error
 
 // BeginUpdate - The operation to update a virtual machine.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// vmName - The name of the virtual machine.
+// parameters - Parameters supplied to the Update Virtual Machine operation.
+// options - VirtualMachinesBeginUpdateOptions contains the optional parameters for the VirtualMachinesClient.BeginUpdate
+// method.
 func (client *VirtualMachinesClient) BeginUpdate(ctx context.Context, resourceGroupName string, vmName string, parameters VirtualMachineUpdate, options *VirtualMachinesBeginUpdateOptions) (VirtualMachinesUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, vmName, parameters, options)
 	if err != nil {
@@ -1778,7 +1888,7 @@ func (client *VirtualMachinesClient) updateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}

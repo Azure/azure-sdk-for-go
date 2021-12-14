@@ -26,12 +26,16 @@ import (
 // CloudServicesUpdateDomainClient contains the methods for the CloudServicesUpdateDomain group.
 // Don't use this type directly, use NewCloudServicesUpdateDomainClient() instead.
 type CloudServicesUpdateDomainClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewCloudServicesUpdateDomainClient creates a new instance of CloudServicesUpdateDomainClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewCloudServicesUpdateDomainClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CloudServicesUpdateDomainClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
@@ -40,12 +44,23 @@ func NewCloudServicesUpdateDomainClient(subscriptionID string, credential azcore
 	if len(cp.Host) == 0 {
 		cp.Host = arm.AzurePublicCloud
 	}
-	return &CloudServicesUpdateDomainClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &CloudServicesUpdateDomainClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Host),
+		pl:             armruntime.NewPipeline(module, version, credential, &cp),
+	}
+	return client
 }
 
-// GetUpdateDomain - Gets the specified update domain of a cloud service. Use nextLink property in the response to get the next page of update domains.
-// Do this till nextLink is null to fetch all the update domains.
+// GetUpdateDomain - Gets the specified update domain of a cloud service. Use nextLink property in the response to get the
+// next page of update domains. Do this till nextLink is null to fetch all the update domains.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - Name of the resource group.
+// cloudServiceName - Name of the cloud service.
+// updateDomain - Specifies an integer value that identifies the update domain. Update domains are identified with a zero-based
+// index: the first update domain has an ID of 0, the second has an ID of 1, and so on.
+// options - CloudServicesUpdateDomainGetUpdateDomainOptions contains the optional parameters for the CloudServicesUpdateDomainClient.GetUpdateDomain
+// method.
 func (client *CloudServicesUpdateDomainClient) GetUpdateDomain(ctx context.Context, resourceGroupName string, cloudServiceName string, updateDomain int32, options *CloudServicesUpdateDomainGetUpdateDomainOptions) (CloudServicesUpdateDomainGetUpdateDomainResponse, error) {
 	req, err := client.getUpdateDomainCreateRequest(ctx, resourceGroupName, cloudServiceName, updateDomain, options)
 	if err != nil {
@@ -77,7 +92,7 @@ func (client *CloudServicesUpdateDomainClient) getUpdateDomainCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -112,6 +127,10 @@ func (client *CloudServicesUpdateDomainClient) getUpdateDomainHandleError(resp *
 
 // ListUpdateDomains - Gets a list of all update domains in a cloud service.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - Name of the resource group.
+// cloudServiceName - Name of the cloud service.
+// options - CloudServicesUpdateDomainListUpdateDomainsOptions contains the optional parameters for the CloudServicesUpdateDomainClient.ListUpdateDomains
+// method.
 func (client *CloudServicesUpdateDomainClient) ListUpdateDomains(resourceGroupName string, cloudServiceName string, options *CloudServicesUpdateDomainListUpdateDomainsOptions) *CloudServicesUpdateDomainListUpdateDomainsPager {
 	return &CloudServicesUpdateDomainListUpdateDomainsPager{
 		client: client,
@@ -139,7 +158,7 @@ func (client *CloudServicesUpdateDomainClient) listUpdateDomainsCreateRequest(ct
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -174,6 +193,12 @@ func (client *CloudServicesUpdateDomainClient) listUpdateDomainsHandleError(resp
 
 // BeginWalkUpdateDomain - Updates the role instances in the specified update domain.
 // If the operation fails it returns the *CloudError error type.
+// resourceGroupName - Name of the resource group.
+// cloudServiceName - Name of the cloud service.
+// updateDomain - Specifies an integer value that identifies the update domain. Update domains are identified with a zero-based
+// index: the first update domain has an ID of 0, the second has an ID of 1, and so on.
+// options - CloudServicesUpdateDomainBeginWalkUpdateDomainOptions contains the optional parameters for the CloudServicesUpdateDomainClient.BeginWalkUpdateDomain
+// method.
 func (client *CloudServicesUpdateDomainClient) BeginWalkUpdateDomain(ctx context.Context, resourceGroupName string, cloudServiceName string, updateDomain int32, options *CloudServicesUpdateDomainBeginWalkUpdateDomainOptions) (CloudServicesUpdateDomainWalkUpdateDomainPollerResponse, error) {
 	resp, err := client.walkUpdateDomain(ctx, resourceGroupName, cloudServiceName, updateDomain, options)
 	if err != nil {
@@ -225,7 +250,7 @@ func (client *CloudServicesUpdateDomainClient) walkUpdateDomainCreateRequest(ctx
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -24,12 +24,16 @@ import (
 // DedicatedHostsClient contains the methods for the DedicatedHosts group.
 // Don't use this type directly, use NewDedicatedHostsClient() instead.
 type DedicatedHostsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDedicatedHostsClient creates a new instance of DedicatedHostsClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDedicatedHostsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DedicatedHostsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
@@ -38,11 +42,22 @@ func NewDedicatedHostsClient(subscriptionID string, credential azcore.TokenCrede
 	if len(cp.Host) == 0 {
 		cp.Host = arm.AzurePublicCloud
 	}
-	return &DedicatedHostsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DedicatedHostsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Host),
+		pl:             armruntime.NewPipeline(module, version, credential, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Create or update a dedicated host .
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// hostGroupName - The name of the dedicated host group.
+// hostName - The name of the dedicated host .
+// parameters - Parameters supplied to the Create Dedicated Host.
+// options - DedicatedHostsBeginCreateOrUpdateOptions contains the optional parameters for the DedicatedHostsClient.BeginCreateOrUpdate
+// method.
 func (client *DedicatedHostsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters DedicatedHost, options *DedicatedHostsBeginCreateOrUpdateOptions) (DedicatedHostsCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, hostGroupName, hostName, parameters, options)
 	if err != nil {
@@ -97,7 +112,7 @@ func (client *DedicatedHostsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -122,6 +137,10 @@ func (client *DedicatedHostsClient) createOrUpdateHandleError(resp *http.Respons
 
 // BeginDelete - Delete a dedicated host.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// hostGroupName - The name of the dedicated host group.
+// hostName - The name of the dedicated host.
+// options - DedicatedHostsBeginDeleteOptions contains the optional parameters for the DedicatedHostsClient.BeginDelete method.
 func (client *DedicatedHostsClient) BeginDelete(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, options *DedicatedHostsBeginDeleteOptions) (DedicatedHostsDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, hostGroupName, hostName, options)
 	if err != nil {
@@ -176,7 +195,7 @@ func (client *DedicatedHostsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -200,6 +219,10 @@ func (client *DedicatedHostsClient) deleteHandleError(resp *http.Response) error
 
 // Get - Retrieves information about a dedicated host.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// hostGroupName - The name of the dedicated host group.
+// hostName - The name of the dedicated host.
+// options - DedicatedHostsGetOptions contains the optional parameters for the DedicatedHostsClient.Get method.
 func (client *DedicatedHostsClient) Get(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, options *DedicatedHostsGetOptions) (DedicatedHostsGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, hostGroupName, hostName, options)
 	if err != nil {
@@ -234,7 +257,7 @@ func (client *DedicatedHostsClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -269,9 +292,13 @@ func (client *DedicatedHostsClient) getHandleError(resp *http.Response) error {
 	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
-// ListByHostGroup - Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property in the response to get the next page
-// of dedicated hosts.
+// ListByHostGroup - Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property in
+// the response to get the next page of dedicated hosts.
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// hostGroupName - The name of the dedicated host group.
+// options - DedicatedHostsListByHostGroupOptions contains the optional parameters for the DedicatedHostsClient.ListByHostGroup
+// method.
 func (client *DedicatedHostsClient) ListByHostGroup(resourceGroupName string, hostGroupName string, options *DedicatedHostsListByHostGroupOptions) *DedicatedHostsListByHostGroupPager {
 	return &DedicatedHostsListByHostGroupPager{
 		client: client,
@@ -299,7 +326,7 @@ func (client *DedicatedHostsClient) listByHostGroupCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -333,6 +360,11 @@ func (client *DedicatedHostsClient) listByHostGroupHandleError(resp *http.Respon
 
 // BeginUpdate - Update an dedicated host .
 // If the operation fails it returns a generic error.
+// resourceGroupName - The name of the resource group.
+// hostGroupName - The name of the dedicated host group.
+// hostName - The name of the dedicated host .
+// parameters - Parameters supplied to the Update Dedicated Host operation.
+// options - DedicatedHostsBeginUpdateOptions contains the optional parameters for the DedicatedHostsClient.BeginUpdate method.
 func (client *DedicatedHostsClient) BeginUpdate(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters DedicatedHostUpdate, options *DedicatedHostsBeginUpdateOptions) (DedicatedHostsUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, hostGroupName, hostName, parameters, options)
 	if err != nil {
@@ -387,7 +419,7 @@ func (client *DedicatedHostsClient) updateCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}

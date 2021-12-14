@@ -82,7 +82,7 @@ func createServiceClientWithConnStrForRecording(t *testing.T, accountType testAc
 
 func getRecordingCredential(t *testing.T, accountType testAccountType) (*SharedKeyCredential, error) {
 	if recording.GetRecordMode() == recording.PlaybackMode {
-		return NewSharedKeyCredential("fakeAccountName", "daaaaaaaaaabbbbbbbbbbcccccccccccccccccccdddddddddddddddddddeeeeeeeeeeefffffffffffggggg==")
+		return NewSharedKeyCredential("fakeAccount", "daaaaaaaaaabbbbbbbbbbcccccccccccccccccccdddddddddddddddddddeeeeeeeeeeefffffffffffggggg==")
 	}
 	accountName, accountKey := getAccountNameKey(t, accountType)
 	return NewSharedKeyCredential(accountName, accountKey)

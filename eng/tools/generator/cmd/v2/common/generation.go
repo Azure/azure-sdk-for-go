@@ -45,12 +45,13 @@ type GenerateParam struct {
 	SpecRPName          string
 	ReleaseDate         string
 	SkipGenerateExample bool
+	GoVersion           string
 }
 
-func (ctx GenerateContext) GenerateForAutomation(readme, repo string) ([]GenerateResult, []error) {
+func (ctx GenerateContext) GenerateForAutomation(readme, repo, goVersion string) ([]GenerateResult, []error) {
 	absReadme := filepath.Join(ctx.SpecPath, readme)
 	absReadmeGo := filepath.Join(filepath.Dir(absReadme), "readme.go.md")
-	specRPName := strings.Split(readme, "/")[1]
+	specRPName := strings.Split(readme, "/")[0]
 
 	var result []GenerateResult
 	var errors []error
@@ -72,6 +73,7 @@ func (ctx GenerateContext) GenerateForAutomation(readme, repo string) ([]Generat
 				SpecRPName:          specRPName,
 				SkipGenerateExample: true,
 				NamespaceConfig:     packageInfo.Config,
+				GoVersion:           goVersion,
 			})
 			if err != nil {
 				errors = append(errors, err)
@@ -104,6 +106,7 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 			PackageTitle:  generateParam.SpecficPackageTitle,
 			Commit:        ctx.SpecCommitHash,
 			PackageConfig: generateParam.NamespaceConfig,
+			GoVersion:     generateParam.GoVersion,
 		}); err != nil {
 			return nil, err
 		}
@@ -113,7 +116,8 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 		log.Printf("Get ori exports for changelog generation...")
 		oriExports, err = exports.Get(packagePath)
 		if err != nil {
-			return nil, err
+			log.Printf("Get ori exports error, set to empty: %+v", err)
+			oriExports = exports.Content{}
 		}
 
 		log.Printf("Remove all the files that start with `zz_generated_`...")
@@ -171,7 +175,7 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 			PackageName:    generateParam.NamespaceName,
 			PackageAbsPath: packagePath,
 			Changelog:      *changelog,
-			ChangelogMD:    changelog.ToCompactMarkdown(),
+			ChangelogMD:    changelog.ToCompactMarkdown() + "\n" + changelog.GetChangeSummary(),
 		}, nil
 	} else {
 		log.Printf("Calculate new version...")
@@ -206,7 +210,7 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 			PackageName:    generateParam.NamespaceName,
 			PackageAbsPath: packagePath,
 			Changelog:      *changelog,
-			ChangelogMD:    changelogMd,
+			ChangelogMD:    changelogMd + "\n" + changelog.GetChangeSummary(),
 		}, nil
 	}
 }

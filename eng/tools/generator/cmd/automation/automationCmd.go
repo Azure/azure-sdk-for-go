@@ -217,7 +217,7 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 		set := packageResultSet{}
 		for _, p := range packageResults {
 			log.Printf("Getting package result for package '%s'", p.Package.PackageName)
-			content := p.Package.Changelog.ToCompactMarkdown()
+			content := p.Package.Changelog.ToCompactMarkdown() + "\n" + p.Package.Changelog.GetChangeSummary()
 			breaking := p.Package.Changelog.HasBreakingChanges()
 			breakingChangeItems := p.Package.Changelog.GetBreakingChangeItems()
 			set.add(pipeline.PackageResult{

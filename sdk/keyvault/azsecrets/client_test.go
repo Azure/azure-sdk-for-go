@@ -9,6 +9,7 @@ package azsecrets
 import (
 	"context"
 	"errors"
+	"fmt"
 	"net/http"
 	"os"
 	"strings"
@@ -16,6 +17,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -276,7 +278,7 @@ func TestUpdateSecretProperties(t *testing.T) {
 	client, err := createClient(t)
 	require.NoError(t, err)
 
-	secret, err := createRandomName(t, "secret1"+t.Name())
+	secret, err := createRandomName(t, "secret2")
 	require.NoError(t, err)
 	value, err := createRandomName(t, "value")
 	require.NoError(t, err)
@@ -430,24 +432,49 @@ func TestTimeout(t *testing.T) {
 }
 
 func TestConstants(t *testing.T) {
-	d := CustomizedRecoverable.toGenerated()
-	require.Equal(t, d, internal.DeletionRecoveryLevelCustomizedRecoverable)
+	d := CustomizedRecoverable
+	require.Equal(t, *d.toGenerated(), internal.DeletionRecoveryLevelCustomizedRecoverable)
 
-	d1 := CustomizedRecoverableProtectedSubscription.toGenerated()
-	require.Equal(t, d1, internal.DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription)
+	d1 := CustomizedRecoverableProtectedSubscription
+	require.Equal(t, *d1.toGenerated(), internal.DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription)
 
-	d2 := CustomizedRecoverablePurgeable.toGenerated()
-	require.Equal(t, d2, internal.DeletionRecoveryLevelCustomizedRecoverablePurgeable)
+	d2 := CustomizedRecoverablePurgeable
+	require.Equal(t, *d2.toGenerated(), internal.DeletionRecoveryLevelCustomizedRecoverablePurgeable)
 
-	d3 := Purgeable.toGenerated()
-	require.Equal(t, d3, internal.DeletionRecoveryLevelPurgeable)
+	d3 := Purgeable
+	require.Equal(t, *d3.toGenerated(), internal.DeletionRecoveryLevelPurgeable)
 
-	d4 := Recoverable.toGenerated()
-	require.Equal(t, d4, internal.DeletionRecoveryLevelRecoverable)
+	d4 := Recoverable
+	require.Equal(t, *d4.toGenerated(), internal.DeletionRecoveryLevelRecoverable)
 
-	d5 := RecoverableProtectedSubscription.toGenerated()
-	require.Equal(t, d5, internal.DeletionRecoveryLevelRecoverableProtectedSubscription)
+	d5 := RecoverableProtectedSubscription
+	require.Equal(t, *d5.toGenerated(), internal.DeletionRecoveryLevelRecoverableProtectedSubscription)
 
-	d6 := RecoverablePurgeable.toGenerated()
-	require.Equal(t, d6, internal.DeletionRecoveryLevelRecoverablePurgeable)
+	d6 := RecoverablePurgeable
+	require.Equal(t, *d6.toGenerated(), internal.DeletionRecoveryLevelRecoverablePurgeable)
+}
+
+func TestLogging(t *testing.T) {
+	fakeKVUrl := "https://test-sync-time-dummy.vault.azure.net/"
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	require.NoError(t, err)
+
+	client, err := NewClient(fakeKVUrl, cred, nil)
+	require.NoError(t, err)
+
+	c := context.Background()
+	c, cancelFunc := context.WithTimeout(c, 10*time.Second)
+	defer cancelFunc()
+
+	log.SetListener(func(cls log.Event, msg string) {
+		fmt.Println(msg)
+	})
+	log.SetEvents(log.EventRequest, log.EventResponse)
+
+	start := time.Now()
+	_, err = client.GetSecret(c, "nonexistentsecret", nil)
+	require.Error(t, err)
+	require.ErrorIs(t, err, context.DeadlineExceeded)
+	require.Less(t, time.Since(start).Seconds(), 11.0)
+	require.Greater(t, time.Since(start).Seconds(), 9.0)
 }

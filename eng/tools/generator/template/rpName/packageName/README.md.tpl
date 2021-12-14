@@ -11,7 +11,7 @@ The `{{packageName}}` module provides operations for working with Azure {{Packag
 ## Prerequisites
 
 - an [Azure subscription](https://azure.microsoft.com/free/)
-- Go 1.13 or above
+- Go {{goVersion}} or above
 
 ## Install the package
 

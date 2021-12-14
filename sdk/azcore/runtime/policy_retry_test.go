@@ -433,7 +433,7 @@ func TestRetryPolicyFailOnErrorNoDownload(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	req.SkipBodyDownload()
+	SkipBodyDownload(req)
 	resp, err := pl.Do(req)
 	if !errors.Is(err, fakeErr) {
 		t.Fatalf("unexpected error: %v", err)
@@ -455,7 +455,7 @@ func TestRetryPolicySuccessNoDownload(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	req.SkipBodyDownload()
+	SkipBodyDownload(req)
 	resp, err := pl.Do(req)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -475,7 +475,7 @@ func TestRetryPolicySuccessNoDownloadNoBody(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	req.SkipBodyDownload()
+	SkipBodyDownload(req)
 	resp, err := pl.Do(req)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)

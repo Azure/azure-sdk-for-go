@@ -39,6 +39,9 @@ type ClientOptions struct {
 	// TLSConfig configures a client with a custom *tls.Config.
 	TLSConfig *tls.Config
 
+	// Application ID that will be passed to the namespace.
+	ApplicationID string
+
 	// NewWebSocketConn is a function that can create a net.Conn for use with websockets.
 	// For an example, see ExampleNewClient_usingWebsockets() function in example_client_test.go.
 	NewWebSocketConn func(ctx context.Context, args NewWebSocketConnArgs) (net.Conn, error)
@@ -118,6 +121,10 @@ func newClientImpl(creds clientCreds, options *ClientOptions) (*Client, error) {
 
 		if options.NewWebSocketConn != nil {
 			nsOptions = append(nsOptions, internal.NamespaceWithWebSocket(options.NewWebSocketConn))
+		}
+
+		if options.ApplicationID != "" {
+			nsOptions = append(nsOptions, internal.NamespaceWithUserAgent(options.ApplicationID))
 		}
 	}
 

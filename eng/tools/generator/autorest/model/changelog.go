@@ -54,6 +54,14 @@ func (c Changelog) ToCompactMarkdown() string {
 	return writeChangelogForPackage(c.Modified)
 }
 
+// Seperate change summary text get
+func (c Changelog) GetChangeSummary() string {
+	if c.NewPackage || c.RemovedPackage {
+		return ""
+	}
+	return getSummaries(c.Modified.BreakingChanges, c.Modified.AdditiveChanges)
+}
+
 // GetBreakingChangeItems returns an array of the breaking change items
 func (c Changelog) GetBreakingChangeItems() []string {
 	if c.RemovedPackage {
@@ -69,7 +77,7 @@ func (c Changelog) GetBreakingChangeItems() []string {
 
 func writeChangelogForPackage(r *report.Package) string {
 	if r == nil || r.IsEmpty() {
-		return "No exported changes"
+		return "### Other Changes\n"
 	}
 
 	md := &markdown.Writer{}
@@ -85,10 +93,6 @@ func writeChangelogForPackage(r *report.Package) string {
 	for _, item := range getNewContents(r.AdditiveChanges) {
 		md.WriteListItem(item)
 	}
-
-	md.EmptyLine()
-	summaries := getSummaries(r.BreakingChanges, r.AdditiveChanges)
-	md.WriteLine(summaries)
 
 	return md.String()
 }

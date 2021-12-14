@@ -14,7 +14,6 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 )
@@ -25,7 +24,7 @@ func bodyDownloadPolicy(req *policy.Request) (*http.Response, error) {
 	if err != nil {
 		return resp, err
 	}
-	var opValues shared.BodyDownloadPolicyOpValues
+	var opValues bodyDownloadPolicyOpValues
 	// don't skip downloading error response bodies
 	if req.OperationValue(&opValues); opValues.Skip && resp.StatusCode < 400 {
 		return resp, err
@@ -39,6 +38,11 @@ func bodyDownloadPolicy(req *policy.Request) (*http.Response, error) {
 	}
 	resp.Body = &nopClosingBytesReader{s: b}
 	return resp, err
+}
+
+// bodyDownloadPolicyOpValues is the struct containing the per-operation values
+type bodyDownloadPolicyOpValues struct {
+	Skip bool
 }
 
 type bodyDownloadError struct {

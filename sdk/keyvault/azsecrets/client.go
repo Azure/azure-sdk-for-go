@@ -274,7 +274,7 @@ func (s *startDeleteSecretPoller) Poll(ctx context.Context) (*http.Response, err
 	}
 	var httpResponseErr azcore.HTTPResponse
 	if errors.As(err, &httpResponseErr) {
-		if httpResponseErr.RawResponse().StatusCode == 404 {
+		if httpResponseErr.RawResponse().StatusCode == http.StatusNotFound {
 			// This is the expected result
 			return s.deleteResponse.RawResponse, nil
 		}

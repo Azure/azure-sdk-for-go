@@ -272,7 +272,14 @@ func (s *startDeleteSecretPoller) Poll(ctx context.Context) (*http.Response, err
 		s.lastResponse = resp
 		return resp.RawResponse, nil
 	}
-	return s.deleteResponse.RawResponse, nil
+	var httpResponseErr azcore.HTTPResponse
+	if errors.As(err, &httpResponseErr) {
+		if httpResponseErr.RawResponse().StatusCode == 404 {
+			// This is the expected result
+			return s.deleteResponse.RawResponse, nil
+		}
+	}
+	return s.deleteResponse.RawResponse, err
 }
 
 // FinalResponse returns the final response after the operations has finished

@@ -30,7 +30,6 @@ var azkeysCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(azkeysCmd)
-	azkeysCmd.Flags().StringVarP(&TestProxy, "testproxy", "x", "", "whether to target http or https proxy (default is neither)")
 }
 
 type azkeysPerf struct {

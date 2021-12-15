@@ -56,8 +56,8 @@ func runSetup(p PerfTest, i int) error {
 	return nil
 }
 
-// runTest takes care of the semantics of running a single iteration. It returns the exact number
-// of seconds the test ran for as a float64.
+// runTest takes care of the semantics of running a single iteration. It returns the number of times the test ran as an int, the exact number
+// of seconds the test ran as a float64, and any errors.
 func runTest(p PerfTest, iter int) (int, float64, error) {
 	fmt.Printf("\nBeginning iteration #%d\n", iter)
 	ctx, cancel := getLimitedContext(time.Duration(timeoutSeconds) * time.Second)
@@ -66,7 +66,10 @@ func runTest(p PerfTest, iter int) (int, float64, error) {
 	start := time.Now()
 	count := 0
 	for time.Since(start).Seconds() < float64(duration) {
-		p.Run(ctx)
+		err := p.Run(ctx)
+		if err != nil {
+			return 0, 0.0, err
+		}
 		count += 1
 	}
 

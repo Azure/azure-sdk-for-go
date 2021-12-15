@@ -45,7 +45,6 @@ type aztablesPerfTest struct {
 }
 
 func (a *aztablesPerfTest) createClient() error {
-
 	options := &aztables.ClientOptions{}
 	if TestProxy == "http" {
 		t, err := recording.NewProxyTransport(&recording.TransportOptions{UseHTTPS: true, TestName: a.GetMetadata()})

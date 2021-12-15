@@ -1,0 +1,11 @@
+{
+  "commit": "725b20c866d7f4a6512adff8d0647f0fe3baa069",
+  "readme": "/_/azure-rest-api-specs/specification/cognitiveservices/data-plane/AnomalyDetector/readme.md",
+  "tag": "release_1_0",
+  "use": "@microsoft.azure/autorest.go@2.1.187",
+  "repository_url": "https://github.com/Azure/azure-rest-api-specs.git",
+  "autorest_command": "autorest --use=@microsoft.azure/autorest.go@2.1.187 --tag=release_1_0 --go-sdk-folder=/_/azure-sdk-for-go --go --verbose --use-onever --version=V2 --go.license-header=MICROSOFT_MIT_NO_VERSION /_/azure-rest-api-specs/specification/cognitiveservices/data-plane/AnomalyDetector/readme.md",
+  "additional_properties": {
+    "additional_options": "--go --verbose --use-onever --version=V2 --go.license-header=MICROSOFT_MIT_NO_VERSION"
+  }
+}

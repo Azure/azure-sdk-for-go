@@ -52,14 +52,19 @@ func (a *azkeysPerf) GlobalSetup(ctx context.Context) error {
 		return errors.New("could not find 'AZURE_KEYVAULT_URL' environment variable")
 	}
 
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	cred, err := azidentity.NewClientSecretCredential(
+		os.Getenv("AZKEYS_TENANT_ID"),
+		os.Getenv("AZKEYS_CLIENT_ID"),
+		os.Getenv("AZKEYS_CLIENT_SECRET"),
+		nil,
+	)
 	if err != nil {
 		return err
 	}
 
 	options := &azkeys.ClientOptions{}
 	if TestProxy == "http" {
-		t, err := recording.NewProxyTransport(&recording.TransportOptions{UseHTTPS: false, TestName: a.GetMetadata()})
+		t, err := recording.NewProxyTransport(&recording.TransportOptions{UseHTTPS: true, TestName: a.GetMetadata()})
 		if err != nil {
 			return err
 		}
@@ -69,7 +74,7 @@ func (a *azkeysPerf) GlobalSetup(ctx context.Context) error {
 			},
 		}
 	} else if TestProxy == "https" {
-		t, err := recording.NewProxyTransport(&recording.TransportOptions{UseHTTPS: false, TestName: a.GetMetadata()})
+		t, err := recording.NewProxyTransport(&recording.TransportOptions{UseHTTPS: true, TestName: a.GetMetadata()})
 		if err != nil {
 			return err
 		}
@@ -78,7 +83,6 @@ func (a *azkeysPerf) GlobalSetup(ctx context.Context) error {
 				Transport: t,
 			},
 		}
-		fmt.Println(options)
 	}
 
 	c, err := azkeys.NewClient(vaultURL, cred, options)
@@ -87,7 +91,7 @@ func (a *azkeysPerf) GlobalSetup(ctx context.Context) error {
 	}
 
 	a.client = c
-	a.keyName = "myKeyName"
+	a.keyName = "myKeyName0"
 
 	fmt.Println("Creating key")
 	_, err = a.client.CreateRSAKey(context.Background(), a.keyName, nil)
@@ -110,5 +114,6 @@ func (a *azkeysPerf) TearDown(ctx context.Context) error {
 
 func (a *azkeysPerf) GlobalTearDown(ctx context.Context) error {
 	_, err := a.client.BeginDeleteKey(ctx, a.keyName, nil)
+	_ = recording.Stop(a.GetMetadata(), nil)
 	return err
 }

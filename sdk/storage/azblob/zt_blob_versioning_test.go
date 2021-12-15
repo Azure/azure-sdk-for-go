@@ -7,27 +7,28 @@ import (
 	"context"
 	"io/ioutil"
 	"strings"
+	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
-func (s *azblobTestSuite) TestBlockBlobGetPropertiesUsingVID() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
+func TestBlockBlobGetPropertiesUsingVID(t *testing.T) {
+	t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
 
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
-	bbClient := createNewBlockBlob(_assert, generateBlobName(testName), containerClient)
+	containerName := generateContainerName(t.Name())
+	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
+	defer deleteContainer(assert.New(t), containerClient)
+	bbClient := createNewBlockBlob(assert.New(t), generateBlobName(t.Name()), containerClient)
 
-	blobProp, _ := bbClient.GetProperties(ctx, nil)
+	blobProp, err := bbClient.GetProperties(ctx, nil)
+	require.NoError(t, err)
 
 	uploadBlockBlobOptions := UploadBlockBlobOptions{
 		Metadata: basicMetadata,
@@ -36,31 +37,31 @@ func (s *azblobTestSuite) TestBlockBlobGetPropertiesUsingVID() {
 		},
 	}
 	uploadResp, err := bbClient.Upload(ctx, getReaderToGeneratedBytes(1024), &uploadBlockBlobOptions)
-	_assert.NoError(err)
-	_assert.NotNil(uploadResp.VersionID)
-	blobProp, _ = bbClient.GetProperties(ctx, nil)
-	_assert.EqualValues(uploadResp.VersionID, blobProp.VersionID)
-	_assert.EqualValues(uploadResp.LastModified, blobProp.LastModified)
-	_assert.Equal(*uploadResp.ETag, *blobProp.ETag)
-	_assert.Equal(*blobProp.IsCurrentVersion, true)
+	require.NoError(t, err)
+	require.NotNil(t, uploadResp.VersionID)
+	blobProp, err = bbClient.GetProperties(ctx, nil)
+	require.NoError(t, err)
+	require.EqualValues(t, uploadResp.VersionID, blobProp.VersionID)
+	require.EqualValues(t, uploadResp.LastModified, blobProp.LastModified)
+	require.Equal(t, *uploadResp.ETag, *blobProp.ETag)
+	require.Equal(t, *blobProp.IsCurrentVersion, true)
 }
 
-func (s *azblobTestSuite) TestAppendBlobGetPropertiesUsingVID() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
+func TestAppendBlobGetPropertiesUsingVID(t *testing.T) {
+	t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
 
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
-	abClient := createNewAppendBlob(_assert, generateBlobName(testName), containerClient)
+	containerName := generateContainerName(t.Name())
+	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
+	defer deleteContainer(assert.New(t), containerClient)
+	abClient := createNewAppendBlob(assert.New(t), generateBlobName(t.Name()), containerClient)
 
-	blobProp, _ := abClient.GetProperties(ctx, nil)
+	blobProp, err := abClient.GetProperties(ctx, nil)
+	require.NoError(t, err)
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		Metadata: basicMetadata,
@@ -69,13 +70,14 @@ func (s *azblobTestSuite) TestAppendBlobGetPropertiesUsingVID() {
 		},
 	}
 	createResp, err := abClient.Create(ctx, &createAppendBlobOptions)
-	_assert.NoError(err)
-	_assert.NotNil(createResp.VersionID)
-	blobProp, _ = abClient.GetProperties(ctx, nil)
-	_assert.EqualValues(createResp.VersionID, blobProp.VersionID)
-	_assert.EqualValues(createResp.LastModified, blobProp.LastModified)
-	_assert.Equal(*createResp.ETag, *blobProp.ETag)
-	_assert.Equal(*blobProp.IsCurrentVersion, true)
+	require.NoError(t, err)
+	require.NotNil(t, createResp.VersionID)
+	blobProp, err = abClient.GetProperties(ctx, nil)
+	require.NoError(t, err)
+	require.EqualValues(t, createResp.VersionID, blobProp.VersionID)
+	require.EqualValues(t, createResp.LastModified, blobProp.LastModified)
+	require.Equal(t, *createResp.ETag, *blobProp.ETag)
+	require.Equal(t, *blobProp.IsCurrentVersion, true)
 }
 
 //nolint
@@ -122,36 +124,34 @@ func (s *azblobTestSuite) TestAppendBlobGetPropertiesUsingVID() {
 //
 //}
 
-func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
+func TestCreateAndDownloadBlobSpecialCharactersWithVID(t *testing.T) {
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
 
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerName := generateContainerName(t.Name())
+	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
+	defer deleteContainer(assert.New(t), containerClient)
 	data := []rune("-._/()$=',~0123456789")
 	for i := 0; i < len(data); i++ {
 		blobName := "abc" + string(data[i])
 		blobURL := containerClient.NewBlockBlobClient(blobName)
 		resp, err := blobURL.Upload(ctx, internal.NopCloser(strings.NewReader(string(data[i]))), nil)
-		_assert.NoError(err)
-		_assert.NotNil(resp.VersionID)
+		require.NoError(t, err)
+		require.NotNil(t, resp.VersionID) // Error here
 
 		dResp, err := blobURL.WithVersionID(*resp.VersionID).Download(ctx, nil)
-		_assert.NoError(err)
+		require.NoError(t, err)
 		d1, err := ioutil.ReadAll(dResp.Body(RetryReaderOptions{}))
-		_assert.NoError(err)
-		_assert.NotEqual(*dResp.Version, "")
-		_assert.EqualValues(string(d1), string(data[i]))
+		require.NoError(t, err)
+		require.NotEqual(t, *dResp.Version, "")
+		require.EqualValues(t, string(d1), string(data[i]))
 		versionId := dResp.RawResponse.Header.Get("x-ms-version-id")
-		_assert.NotNil(versionId)
-		_assert.Equal(versionId, *resp.VersionID)
+		require.NotNil(t, versionId)
+		require.Equal(t, versionId, *resp.VersionID)
 	}
 }
 
@@ -469,21 +469,19 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 //	_assert(blobs[0].Snapshot, chk.Equals, "")
 //}
 
-func (s *azblobTestSuite) TestPutBlockListReturnsVID() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
+func TestPutBlockListReturnsVID(t *testing.T) {
+	t.Skip("Error in test")
+	stop := start(t)
+	defer stop()
 
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
 
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerName := generateContainerName(t.Name())
+	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
+	defer deleteContainer(assert.New(t), containerClient)
 
-	bbClient := containerClient.NewBlockBlobClient(generateBlobName(testName))
+	bbClient := containerClient.NewBlockBlobClient(generateBlobName(t.Name()))
 
 	data := []string{"Azure ", "Storage ", "Block ", "Blob."}
 	base64BlockIDs := make([]string, len(data))
@@ -491,37 +489,36 @@ func (s *azblobTestSuite) TestPutBlockListReturnsVID() {
 	for index, d := range data {
 		base64BlockIDs[index] = blockIDIntToBase64(index)
 		resp, err := bbClient.StageBlock(ctx, base64BlockIDs[index], internal.NopCloser(strings.NewReader(d)), nil)
-		_assert.NoError(err)
-		_assert.Equal(resp.RawResponse.StatusCode, 201)
-		_assert.NotNil(resp.Version)
-		_assert.NotEqual(*resp.Version, "")
+		require.NoError(t, err)
+		require.Equal(t, resp.RawResponse.StatusCode, 201)
+		require.NotNil(t, resp.Version)
+		require.NotEqual(t, *resp.Version, "")
 	}
 
 	commitResp, err := bbClient.CommitBlockList(ctx, base64BlockIDs, nil)
-	_assert.NoError(err)
-	_assert.NotNil(commitResp.VersionID)
+	require.NoError(t, err)
+	require.NotNil(t, commitResp.VersionID)
 
 	contentResp, err := bbClient.Download(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(t, err)
 	contentData, err := ioutil.ReadAll(contentResp.Body(RetryReaderOptions{}))
-	_assert.NoError(err)
-	_assert.EqualValues(contentData, []uint8(strings.Join(data, "")))
+	require.NoError(t, err)
+	require.EqualValues(t, contentData, []uint8(strings.Join(data, "")))
 }
 
-func (s *azblobTestSuite) TestCreatePageBlobReturnsVID() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+func TestCreatePageBlobReturnsVID(t *testing.T) {
+	t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
 
-	pbClob := createNewPageBlob(_assert, generateBlobName(testName), containerClient)
+	containerName := generateContainerName(t.Name())
+	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
+	defer deleteContainer(assert.New(t), containerClient)
+
+	pbClob := createNewPageBlob(assert.New(t), generateBlobName(t.Name()), containerClient)
 
 	contentSize := 1 * 1024
 	r, _ := generateData(contentSize)
@@ -530,14 +527,14 @@ func (s *azblobTestSuite) TestCreatePageBlobReturnsVID() {
 		PageRange: &HttpRange{offset, count},
 	}
 	putResp, err := pbClob.UploadPages(context.Background(), r, &uploadPagesOptions)
-	_assert.NoError(err)
-	_assert.Equal(putResp.RawResponse.StatusCode, 201)
-	_assert.Equal(putResp.LastModified.IsZero(), false)
-	_assert.NotNil(putResp.ETag)
-	_assert.NotEqual(putResp.Version, "")
-	_assert.NotNil(putResp.RawResponse.Header.Get("x-ms-version-id"))
+	require.NoError(t, err)
+	require.Equal(t, putResp.RawResponse.StatusCode, 201)
+	require.Equal(t, putResp.LastModified.IsZero(), false)
+	require.NotNil(t, putResp.ETag)
+	require.NotEqual(t, putResp.Version, "")
+	require.NotNil(t, putResp.RawResponse.Header.Get("x-ms-version-id"))
 
 	gpResp, err := pbClob.GetProperties(ctx, nil)
-	_assert.NoError(err)
-	_assert.NotNil(gpResp)
+	require.NoError(t, err)
+	require.NotNil(t, gpResp)
 }

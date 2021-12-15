@@ -26,6 +26,11 @@ stages:
               pwsh: true
             env:
               GH_TOKEN: $(azuresdk-github-pat)
+      - template: /eng/pipelines/templates/jobs/new.smoke.tests.yml
+        parameters:
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+          Daily: false
+
   - stage: Release
     displayName: 'Release: ${{ parameters.ServiceDirectory }}'
     dependsOn: CheckRelease

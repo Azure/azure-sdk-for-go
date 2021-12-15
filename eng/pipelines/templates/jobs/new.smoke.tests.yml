@@ -1,0 +1,32 @@
+parameters:
+  - name: ServiceDirectory
+    type: string
+    default: ''
+  - name: Daily
+    type: boolean
+    default: true
+  - name: TimeoutInMinutes
+    type: number
+    default: 60
+
+jobs:
+  - job: SmokeTest
+    steps:
+      - ${{ if eq(parameters.Daily, true) }}:
+        - task: PowerShell@2
+          displayName: 'Run Nightly SmokeTests'
+          inputs:
+            targetType: 'filePath'
+            filePath: eng/scripts/Smoke_Tests_Nightly.ps1
+            pwsh: true
+
+      - ${{ if eq(parameters.Daily, false) }}:
+        - task: PowerShell@2
+          displayName: 'Run Pre-Release SmokeTests'
+          inputs:
+            targetType: 'filePath'
+            filePath: $(Build.SourcesDirectory)/eng/scripts/Smoke_Tests_Release.ps1
+            arguments: ${{ parameters.serviceDirectory }}
+            pwsh: true
+
+    timeoutInMinutes: ${{ parameters.TimeoutInMinutes }}

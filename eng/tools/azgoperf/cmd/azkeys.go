@@ -17,9 +17,9 @@ import (
 )
 
 var azkeysCmd = &cobra.Command{
-	Use:   "azkeys",
-	Short: "azkeys perf test",
-	Long:  "azkeys perf test longer description",
+	Use:   "CreateKeyTest",
+	Short: "Create a single RSA key",
+	Long:  "Create a RSA key using default options.",
 	Args: func(cmd *cobra.Command, args []string) error {
 		return nil
 	},
@@ -39,7 +39,7 @@ type azkeysPerf struct {
 }
 
 func (a *azkeysPerf) GetMetadata() string {
-	return "azkeysget"
+	return "azkeyscreate"
 }
 
 func (a *azkeysPerf) GlobalSetup(ctx context.Context) error {

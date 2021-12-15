@@ -1,14 +1,14 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 0.3.0 (2021-12-15)
+### Breaking Changes
+
+- Field `SharedAccessAuthorizationRuleListResult` of struct `NamespacesListKeysResult` has been removed
 
 ### Features Added
 
-### Breaking Changes
+- New anonymous field `ResourceListKeys` in struct `NamespacesListKeysResult`
 
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.2.0 (2021-10-29)
 

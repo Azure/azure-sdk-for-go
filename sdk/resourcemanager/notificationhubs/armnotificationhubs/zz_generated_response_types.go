@@ -160,7 +160,7 @@ type NamespacesListKeysResponse struct {
 
 // NamespacesListKeysResult contains the result from method Namespaces.ListKeys.
 type NamespacesListKeysResult struct {
-	SharedAccessAuthorizationRuleListResult
+	ResourceListKeys
 }
 
 // NamespacesListResponse contains the response from method Namespaces.List.

@@ -715,7 +715,7 @@ func (client *NamespacesClient) listKeysCreateRequest(ctx context.Context, resou
 // listKeysHandleResponse handles the ListKeys response.
 func (client *NamespacesClient) listKeysHandleResponse(resp *http.Response) (NamespacesListKeysResponse, error) {
 	result := NamespacesListKeysResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SharedAccessAuthorizationRuleListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceListKeys); err != nil {
 		return NamespacesListKeysResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil

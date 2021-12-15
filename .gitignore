@@ -42,3 +42,7 @@ vendor/
 
 # environment variables
 .env
+
+# vscode
+**/.vscode/*
+!.vscode/cspell.json

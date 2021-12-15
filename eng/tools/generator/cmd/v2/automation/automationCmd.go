@@ -20,14 +20,18 @@ import (
 // azure-sdk-for-go. It does not work if you are running this tool in somewhere else
 func Command() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:  "automation-v2 <generate input filepath> <generate output filepath>",
-		Args: cobra.ExactArgs(2),
+		Use:  "automation-v2 <generate input filepath> <generate output filepath> [goVersion]",
+		Args: cobra.RangeArgs(2, 3),
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			log.SetFlags(0) // remove the time stamp prefix
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			if err := execute(args[0], args[1]); err != nil {
+			goVersion := "1.16"
+			if len(args) == 3 {
+				goVersion = args[2]
+			}
+			if err := execute(args[0], args[1], goVersion); err != nil {
 				logError(err)
 				return err
 			}
@@ -39,7 +43,7 @@ func Command() *cobra.Command {
 	return cmd
 }
 
-func execute(inputPath, outputPath string) error {
+func execute(inputPath, outputPath, goVersion string) error {
 	log.Printf("Reading generate input file from '%s'...", inputPath)
 	input, err := pipeline.ReadInput(inputPath)
 	if err != nil {
@@ -56,6 +60,7 @@ func execute(inputPath, outputPath string) error {
 		sdkRoot:    utils.NormalizePath(cwd),
 		specRoot:   input.SpecFolder,
 		commitHash: input.HeadSha,
+		goVersion:  goVersion,
 	}
 	output, err := ctx.generate(input)
 	if err != nil {
@@ -73,6 +78,7 @@ type automationContext struct {
 	sdkRoot    string
 	specRoot   string
 	commitHash string
+	goVersion  string
 }
 
 // TODO -- support dry run
@@ -115,7 +121,7 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 			SpecPath: ctx.specRoot,
 		}
 
-		namespaceResults, errors := generateCtx.GenerateForAutomation(readme, input.RepoHTTPSURL)
+		namespaceResults, errors := generateCtx.GenerateForAutomation(readme, input.RepoHTTPSURL, ctx.goVersion)
 		if len(errors) != 0 {
 			errorBuilder.add(errors...)
 			continue

@@ -18,11 +18,11 @@
         },
         {
             "Name": "azkeys",
-            "CoverageGoal": 0.64
+            "CoverageGoal": 0.84
         },
         {
             "Name": "azsecrets",
-            "CoverageGoal": 0.76
+            "CoverageGoal": 0.86
         },
         {
             "Name": "data",

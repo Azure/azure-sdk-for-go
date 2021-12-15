@@ -8,14 +8,16 @@ import (
 	"crypto/md5"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"io"
 	"math/rand"
 	"os"
 	"path/filepath"
 	"strings"
 	"sync/atomic"
+	"testing"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 )
 
 const finalFileName = "final"
@@ -153,9 +155,8 @@ func fileMD5(p string) string {
 	return fmt.Sprintf("%x", h.Sum(nil))
 }
 
-//nolint
-func (s *azblobUnrecordedTestSuite) TestGetErr() {
-	s.T().Parallel()
+func TestGetErr(t *testing.T) {
+	t.Parallel()
 
 	canceled, cancel := context.WithCancel(context.Background())
 	cancel()
@@ -190,14 +191,14 @@ func (s *azblobUnrecordedTestSuite) TestGetErr() {
 
 		got := c.getErr()
 		if test.want != got {
-			s.T().Errorf("TestGetErr(%s): got %v, want %v", test.desc, got, test.want)
+			t.Errorf("TestGetErr(%s): got %v, want %v", test.desc, got, test.want)
 		}
 	}
 }
 
 //nolint
-func (s *azblobUnrecordedTestSuite) TestCopyFromReader() {
-	s.T().Parallel()
+func TestCopyFromReader(t *testing.T) {
+	t.Parallel()
 
 	canceled, cancel := context.WithCancel(context.Background())
 	cancel()
@@ -312,10 +313,10 @@ func (s *azblobUnrecordedTestSuite) TestCopyFromReader() {
 		_, err = copyFromReader(test.ctx, from, br, test.o)
 		switch {
 		case err == nil && test.err:
-			s.T().Errorf("TestCopyFromReader(%s): got err == nil, want err != nil", test.desc)
+			t.Errorf("TestCopyFromReader(%s): got err == nil, want err != nil", test.desc)
 			continue
 		case err != nil && !test.err:
-			s.T().Errorf("TestCopyFromReader(%s): got err == %s, want err == nil", test.desc, err)
+			t.Errorf("TestCopyFromReader(%s): got err == %s, want err == nil", test.desc, err)
 			continue
 		case err != nil:
 			continue
@@ -325,7 +326,7 @@ func (s *azblobUnrecordedTestSuite) TestCopyFromReader() {
 		got := fileMD5(br.final())
 
 		if got != want {
-			s.T().Errorf("TestCopyFromReader(%s): MD5 not the same: got %s, want %s", test.desc, got, want)
+			t.Errorf("TestCopyFromReader(%s): MD5 not the same: got %s, want %s", test.desc, got, want)
 		}
 	}
 }

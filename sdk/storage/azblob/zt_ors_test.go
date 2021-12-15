@@ -3,11 +3,14 @@
 
 package azblob
 
-import "github.com/stretchr/testify/assert"
+import (
+	"testing"
 
-//nolint
-func (s *azblobUnrecordedTestSuite) TestDeserializeORSPolicies() {
-	_assert := assert.New(s.T())
+	"github.com/stretchr/testify/assert"
+)
+
+func TestDeserializeORSPolicies(t *testing.T) {
+	_assert := assert.New(t)
 
 	headers := map[string]string{
 		"x-ms-or-111_111":   "Completed",

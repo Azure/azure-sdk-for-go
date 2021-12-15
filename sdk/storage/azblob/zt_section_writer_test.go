@@ -6,13 +6,14 @@ package azblob
 import (
 	"bytes"
 	"io"
+	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
 //nolint
-func (s *azblobUnrecordedTestSuite) TestSectionWriter() {
-	_assert := assert.New(s.T())
+func TestSectionWriter(t *testing.T) {
+	_assert := assert.New(t)
 	b := [10]byte{}
 	buffer := newBytesWriter(b[:])
 
@@ -70,8 +71,8 @@ func (s *azblobUnrecordedTestSuite) TestSectionWriter() {
 }
 
 //nolint
-func (s *azblobUnrecordedTestSuite) TestSectionWriterCopySrcDestEmpty() {
-	_assert := assert.New(s.T())
+func TestSectionWriterCopySrcDestEmpty(t *testing.T) {
+	_assert := assert.New(t)
 	input := make([]byte, 0)
 	reader := bytes.NewReader(input)
 
@@ -85,8 +86,8 @@ func (s *azblobUnrecordedTestSuite) TestSectionWriterCopySrcDestEmpty() {
 }
 
 //nolint
-func (s *azblobUnrecordedTestSuite) TestSectionWriterCopyDestEmpty() {
-	_assert := assert.New(s.T())
+func TestSectionWriterCopyDestEmpty(t *testing.T) {
+	_assert := assert.New(t)
 	input := make([]byte, 10)
 	reader := bytes.NewReader(input)
 

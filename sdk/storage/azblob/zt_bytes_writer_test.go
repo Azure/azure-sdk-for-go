@@ -5,13 +5,13 @@ package azblob
 
 import (
 	"bytes"
+	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
-//nolint
-func (s *azblobUnrecordedTestSuite) TestBytesWriterWriteAt() {
-	_assert := assert.New(s.T())
+func TestBytesWriterWriteAt(t *testing.T) {
+	_assert := assert.New(t)
 	b := make([]byte, 10)
 	buffer := newBytesWriter(b)
 

@@ -38,7 +38,7 @@ func runGlobalSetup(p PerfTest) error {
 
 	err := p.GlobalSetup(ctx)
 	if err != nil {
-		return fmt.Errorf("received an error while running global setup: %s", err.Error())
+		return err
 	}
 	return nil
 }
@@ -51,14 +51,15 @@ func runSetup(p PerfTest, i int) error {
 
 	err := p.Setup(ctx)
 	if err != nil {
-		return fmt.Errorf("received an error while running setup: %s", err.Error())
+		return err
 	}
 	return nil
 }
 
 // runTest takes care of the semantics of running a single iteration. It returns the exact number
 // of seconds the test ran for as a float64.
-func runTest(p PerfTest) (int, float64, error) {
+func runTest(p PerfTest, iter int) (int, float64, error) {
+	fmt.Printf("\nBeginning iteration #%d\n", iter)
 	ctx, cancel := getLimitedContext(time.Duration(timeoutSeconds) * time.Second)
 	defer cancel()
 
@@ -81,7 +82,7 @@ func runTearDown(p PerfTest) error {
 
 	err := p.TearDown(ctx)
 	if err != nil {
-		return fmt.Errorf("received an error while running teardown: %s", err.Error())
+		return err
 	}
 	return nil
 }
@@ -93,7 +94,7 @@ func runGlobalTearDown(p PerfTest) error {
 
 	err := p.GlobalTearDown(ctx)
 	if err != nil {
-		return fmt.Errorf("received an error while running global teardown: %s", err.Error())
+		return err
 	}
 	return nil
 }
@@ -109,12 +110,12 @@ func RunPerfTest(p PerfTest) error {
 	for i := 0; i < iterations; i++ {
 		runSetup(p, i)
 
-		count, end, err := runTest(p)
+		count, end, err := runTest(p, i+1)
 		if err != nil {
 			return err
 		}
 
-		printIteration(end, count, i)
+		printIteration(end, count, i+1)
 
 		totalCount += count
 		totalTime += end
@@ -125,10 +126,10 @@ func RunPerfTest(p PerfTest) error {
 		}
 	}
 
-	runGlobalTearDown(p)
+	err = runGlobalTearDown(p)
 	printFinal(totalCount, totalTime, iterations)
 
-	return runGlobalSetup(p)
+	return err
 }
 
 func printIteration(t float64, count int, itNum int) {

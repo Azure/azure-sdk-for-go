@@ -17,10 +17,9 @@ import (
 	"path"
 	"path/filepath"
 	"runtime"
-	"testing"
 )
 
-var pathToRecordings = ""
+var pathToRecordings = "eng/tools/azgoperf"
 
 func init() {
 
@@ -189,7 +188,6 @@ func Start(t string, options *RecordingOptions) error {
 	testId := getTestId(pathToRecordings, t)
 
 	url := fmt.Sprintf("https://localhost:5001/%s/start", recordMode)
-	fmt.Println(url)
 
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
@@ -213,13 +211,11 @@ func Start(t string, options *RecordingOptions) error {
 
 	perfTestSuite[t] = recId
 
-	fmt.Println(recId)
-
 	return nil
 }
 
 // Stop tells the test proxy to stop accepting requests for a given test
-func Stop(t *testing.T, options *RecordingOptions) error {
+func Stop(t string, options *RecordingOptions) error {
 	if options == nil {
 		options = &RecordingOptions{}
 	}
@@ -232,7 +228,7 @@ func Stop(t *testing.T, options *RecordingOptions) error {
 
 	var recTest string
 	var ok bool
-	if recTest, ok = perfTestSuite[t.Name()]; !ok {
+	if recTest, ok = perfTestSuite[t]; !ok {
 		return errors.New("recording ID was never set. Did you call StartRecording?")
 	}
 	req.Header.Set("x-recording-id", recTest)

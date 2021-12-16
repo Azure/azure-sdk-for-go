@@ -12,7 +12,7 @@ package windowsesu
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/windowsesu/2019-09-16-preview/windowsesu"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/windowsesu/mgmt/2019-09-16-preview/windowsesu"
 )
 
 const (

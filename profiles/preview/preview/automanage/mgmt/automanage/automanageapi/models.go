@@ -9,9 +9,12 @@
 
 package automanageapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/automanage/mgmt/2020-06-30-preview/automanage/automanageapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/automanage/mgmt/2021-04-30-preview/automanage/automanageapi"
 
-type AccountsClientAPI = original.AccountsClientAPI
+type BestPracticesClientAPI = original.BestPracticesClientAPI
+type BestPracticesVersionsClientAPI = original.BestPracticesVersionsClientAPI
 type ConfigurationProfileAssignmentsClientAPI = original.ConfigurationProfileAssignmentsClientAPI
-type ConfigurationProfilePreferencesClientAPI = original.ConfigurationProfilePreferencesClientAPI
+type ConfigurationProfilesClientAPI = original.ConfigurationProfilesClientAPI
+type ConfigurationProfilesVersionsClientAPI = original.ConfigurationProfilesVersionsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type ReportsClientAPI = original.ReportsClientAPI

@@ -1,0 +1,52 @@
+{
+    "Packages": [
+        {
+            "Name": "azblob",
+            "CoverageGoal": 0.45
+        },
+        {
+            "Name": "azcore",
+            "CoverageGoal": 0.85
+        },
+        {
+            "Name": "azcosmos",
+            "CoverageGoal": 0.40
+        },
+        {
+            "Name": "azidentity",
+            "CoverageGoal": 0.68
+        },
+        {
+            "Name": "azkeys",
+            "CoverageGoal": 0.84
+        },
+        {
+            "Name": "azsecrets",
+            "CoverageGoal": 0.86
+        },
+        {
+            "Name": "data",
+            "CoverageGoal": 0.62
+        },
+        {
+            "Name": "eng/tools",
+            "CoverageGoal": 0.0
+        },
+        {
+            "Name": "keyvault/internal",
+            "CoverageGoal": 0.40
+        },
+        {
+            "Name": "internal",
+            "CoverageGoal": 0.70
+        },
+        {
+            "Name": "messaging",
+            "CoverageGoal": 0.10
+        },
+        {
+            "Name": "messaging/internal",
+            "CoverageGoal": 0.40
+        }
+    ]
+}

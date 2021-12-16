@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -6,101 +7,62 @@
 package azcore
 
 import (
-	"io"
-	"net/http"
+	"reflect"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
-// Policy represents an extensibility point for the Pipeline that can mutate the specified
-// Request and react to the received Response.
-type Policy interface {
-	// Do applies the policy to the specified Request.  When implementing a Policy, mutate the
-	// request before calling req.Do() to move on to the next policy, and respond to the result
-	// before returning to the caller.
-	Do(req *Request) (*Response, error)
-}
+// holds sentinel values used to send nulls
+var nullables map[reflect.Type]interface{} = map[reflect.Type]interface{}{}
 
-// PolicyFunc is a type that implements the Policy interface.
-// Use this type when implementing a stateless policy as a first-class function.
-type PolicyFunc func(*Request) (*Response, error)
-
-// Do implements the Policy interface on PolicyFunc.
-func (pf PolicyFunc) Do(req *Request) (*Response, error) {
-	return pf(req)
-}
-
-// Transport represents an HTTP pipeline transport used to send HTTP requests and receive responses.
-type Transport interface {
-	// Do sends the HTTP request and returns the HTTP response or error.
-	Do(req *http.Request) (*http.Response, error)
-}
-
-// TransportFunc is a type that implements the Transport interface.
-// Use this type when implementing a stateless transport as a first-class function.
-type TransportFunc func(*http.Request) (*http.Response, error)
-
-// Do implements the Transport interface on TransportFunc.
-func (tf TransportFunc) Do(req *http.Request) (*http.Response, error) {
-	return tf(req)
-}
-
-// used to adapt a TransportPolicy to a Policy
-type transportPolicy struct {
-	trans Transport
-}
-
-func (tp transportPolicy) Do(req *Request) (*Response, error) {
-	resp, err := tp.trans.Do(req.Request)
-	if err != nil {
-		return nil, err
+// NullValue is used to send an explicit 'null' within a request.
+// This is typically used in JSON-MERGE-PATCH operations to delete a value.
+func NullValue(v interface{}) interface{} {
+	t := reflect.TypeOf(v)
+	if k := t.Kind(); k != reflect.Ptr && k != reflect.Slice && k != reflect.Map {
+		// t is not of pointer type, make it be of pointer type
+		t = reflect.PtrTo(t)
 	}
-	return &Response{Response: resp}, nil
-}
-
-// Pipeline represents a primitive for sending HTTP requests and receiving responses.
-// Its behavior can be extended by specifying policies during construction.
-type Pipeline struct {
-	policies []Policy
-}
-
-// NewPipeline creates a new goroutine-safe Pipeline object from the specified Policies.
-// If no transport is provided then the default HTTP transport will be used.
-func NewPipeline(transport Transport, policies ...Policy) Pipeline {
-	if transport == nil {
-		transport = DefaultHTTPClientTransport()
+	v, found := nullables[t]
+	if !found {
+		var o reflect.Value
+		if k := t.Kind(); k == reflect.Slice || k == reflect.Map {
+			o = reflect.New(t) // *[]type / *map[]
+			o = o.Elem()       // []type / map[]
+		} else {
+			o = reflect.New(t.Elem())
+		}
+		v = o.Interface()
+		nullables[t] = v
 	}
-	// transport policy must always be the last in the slice
-	policies = append(policies, newHTTPHeaderPolicy(), newBodyDownloadPolicy(), transportPolicy{trans: transport})
-	return Pipeline{
-		policies: policies,
+	// return the sentinel object
+	return v
+}
+
+// IsNullValue returns true if the field contains a null sentinel value.
+// This is used by custom marshallers to properly encode a null value.
+func IsNullValue(v interface{}) bool {
+	// see if our map has a sentinel object for this *T
+	t := reflect.TypeOf(v)
+	if k := t.Kind(); k != reflect.Ptr && k != reflect.Slice && k != reflect.Map {
+		// v isn't a pointer type so it can never be a null
+		return false
 	}
-}
-
-// Do is called for each and every HTTP request. It passes the request through all
-// the Policy objects (which can transform the Request's URL/query parameters/headers)
-// and ultimately sends the transformed HTTP request over the network.
-func (p Pipeline) Do(req *Request) (*Response, error) {
-	if err := req.valid(); err != nil {
-		return nil, err
+	if o, found := nullables[t]; found {
+		o1 := reflect.ValueOf(o)
+		v1 := reflect.ValueOf(v)
+		// we found it; return true if v points to the sentinel object.
+		// NOTE: maps and slices can only be compared to nil, else you get
+		// a runtime panic.  so we compare addresses instead.
+		return o1.Pointer() == v1.Pointer()
 	}
-	req.policies = p.policies
-	return req.Next()
+	// no sentinel object for this *t
+	return false
 }
 
-// ReadSeekCloser is the interface that groups the io.ReadCloser and io.Seeker interfaces.
-type ReadSeekCloser interface {
-	io.ReadCloser
-	io.Seeker
-}
+// ClientOptions contains configuration settings for a client's pipeline.
+type ClientOptions = policy.ClientOptions
 
-type nopCloser struct {
-	io.ReadSeeker
-}
-
-func (n nopCloser) Close() error {
-	return nil
-}
-
-// NopCloser returns a ReadSeekCloser with a no-op close method wrapping the provided io.ReadSeeker.
-func NopCloser(rs io.ReadSeeker) ReadSeekCloser {
-	return nopCloser{rs}
-}
+// Poller encapsulates state and logic for polling on long-running operations.
+type Poller = pollers.Poller

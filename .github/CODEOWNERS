@@ -1,0 +1,70 @@
+# Instructions for CODEOWNERS file format and automatic build failure notifications:
+# https://github.com/Azure/azure-sdk/blob/master/docs/policies/opensource.md#codeowners
+
+#############
+# SDK (track2)
+############# 
+
+# Catch all for non-code project files and unowned files | folders
+*                        @rickwinter @jhendrixMSFT
+/sdk/                    @rickwinter @chlowell @richardpark-msft @seankane-msft
+
+# Samples
+/samples/                @rickwinter @chlowell @jhendrixMSFT @richardpark-msft @seankane-msft
+
+# PRLabel: %Azure.Core
+/sdk/azcore/             @rickwinter @chlowell @jhendrixMSFT @richardpark-msft @seankane-msft
+
+# PRLabel: %Azure.Identity
+/sdk/azidentity/         @chlowell @jhendrixMSFT @rickwinter
+
+# PRLabel: %Internal
+/sdk/internal/           @rickwinter @chlowell @jhendrixMSFT @richardpark-msft @seankane-msft
+
+# PRLabel: %KeyVault
+/sdk/keyvault/           @seankane-msft @jhendrixMSFT
+
+# PRLabel: %Storage
+/sdk/storage/            @jhendrixMSFT @seankane-msft
+
+# PRLabel: %Cosmos
+/sdk/data/azcosmos/      @ealsur @ausfeldt 
+
+# PRLabel: %Tables
+/sdk/data/aztables/      @seankane-msft @jhendrixMSFT 
+
+# PRLabel: %Service Bus
+/sdk/messaging/azservicebus   @richardpark-msft @jhendrixMSFT 
+
+# PRLabel: %Service Bus
+/sdk/messaging/internal   @richardpark-msft @jhendrixMSFT 
+
+# PRLabel: %Mgmt
+/sdk/resourcemanager/    @ArcturusZhang @lirenhe
+
+
+###########
+# Eng Sys
+###########
+/eng/                    @benbp @weshaggard
+/**/ci.yml               @benbp
+/**/tests.yml            @benbp
+
+# PRLabel: %EngSys
+/sdk/template/           @benbp @weshaggard
+
+#############
+# SDK (track1 and track1.5)
+#############
+
+# PRLabel: %Track1
+/profiles/               @ArcturusZhang @lirenhe
+
+# PRLabel: %Track1
+/services/               @ArcturusZhang @lirenhe
+
+# PRLabel: %Track1
+/storage/                @jhendrixMSFT
+
+# PRLabel: %Track1
+/version/                @ArcturusZhang @lirenhe

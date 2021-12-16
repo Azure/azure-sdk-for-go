@@ -4,8 +4,15 @@
 package azidentity
 
 import (
+	"context"
+	"net/http"
 	"net/url"
+	"strings"
 	"testing"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
 func TestIMDSEndpointParse(t *testing.T) {
@@ -15,6 +22,48 @@ func TestIMDSEndpointParse(t *testing.T) {
 	}
 }
 
-// func TestNewDefaultMSIPipeline(t *testing.T) {
-// 	p := newDefaultMSIPipeline(ManagedIdentityCredentialOptions{})
-// }
+func TestMSITelemetryDefaultUserAgent(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+	options := ManagedIdentityCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: srv}}
+	pipeline := newDefaultMSIPipeline(options)
+	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	resp, err := pipeline.Do(req)
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("unexpected status code: %d", resp.StatusCode)
+	}
+	if ua := resp.Request.Header.Get("User-Agent"); !strings.HasPrefix(ua, "azsdk-go-"+component+"/"+version) {
+		t.Fatalf("unexpected User-Agent %s", ua)
+	}
+}
+
+func TestMSITelemetryCustom(t *testing.T) {
+	customTelemetry := "customvalue"
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+	options := ManagedIdentityCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: srv}}
+	options.Telemetry.ApplicationID = customTelemetry
+	pipeline := newDefaultMSIPipeline(options)
+	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	resp, err := pipeline.Do(req)
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("unexpected status code: %d", resp.StatusCode)
+	}
+	if ua := resp.Request.Header.Get("User-Agent"); !strings.HasPrefix(ua, customTelemetry+" "+"azsdk-go-"+component+"/"+version) {
+		t.Fatalf("unexpected User-Agent %s", ua)
+	}
+}

@@ -1,82 +1,76 @@
 parameters:
-  ServiceDirectory: ''
-  GoWorkspace: ''
-  Scope: 'sdk/...'
-  Image: ''
-  GoVersion: ''
+  - name:  ServiceDirectory
+    type: string
+    default: ''
+  - name:  Image
+    type: string
+    default: ''
+  - name:  GoVersion
+    type: string
+    default: ''
+  - name:  TestProxy
+    type: boolean
+    default: false
+  - name: EnvVars
+    type: object
+    default: {}
 
 steps:
+  - task: Powershell@2
+    displayName: Build
+    env:
+      GO111MODULE: 'on'
+    inputs:
+      targetType: filePath
+      pwsh: true
+      filePath: eng/scripts/build.ps1
+      arguments: -filter '${{ parameters.ServiceDirectory }}'
+
+  - task: Powershell@2
+    displayName: Vet
+    env:
+      GO111MODULE: 'on'
+    inputs:
+      targetType: filePath
+      pwsh: true
+      filePath: eng/scripts/build.ps1
+      arguments: -vet -skipBuild -filter '${{ parameters.ServiceDirectory }}'
 
   - pwsh: |
-      go get github.com/jstemmer/go-junit-report
-      go get github.com/axw/gocov/gocov
-      go get github.com/AlekSi/gocov-xml
-      go get github.com/matm/gocov-html
-      go get -u github.com/wadey/gocovmerge
+      go install github.com/jstemmer/go-junit-report@v0.9.1
+      go install github.com/axw/gocov/gocov@v1.0.0
+      go install github.com/AlekSi/gocov-xml@v1.0.0
+      go install github.com/matm/gocov-html@v0.0.0-20200509184451-71874e2e203b
     displayName: "Install Coverage and Junit Dependencies"
-    workingDirectory: '${{parameters.GoWorkspace}}'
 
-  - pwsh: |
-      $modDirs = (./eng/scripts/get_module_dirs.ps1 -serviceDir $(SCOPE))
-      foreach ($md in $modDirs) {
-        pushd $md
-        Write-Host "##[command]Executing go build -v ./... in $md"
-        go build -v ./...
-      }
-    displayName: 'Build'
-    workingDirectory: '${{parameters.GoWorkspace}}'
-    env:
-      GO111MODULE: 'on'
+  - ${{ if eq(parameters.TestProxy, true) }}:
+    - template: /eng/common/testproxy/test-proxy-docker.yml
 
-  - pwsh: |
-      $modDirs = (./eng/scripts/get_module_dirs.ps1 -serviceDir $(SCOPE))
-      foreach ($md in $modDirs) {
-        pushd $md
-        Write-Host "##[command]Executing go vet ./... in $md"
-        go vet ./...
-      }
-    displayName: 'Vet'
-    workingDirectory: '${{parameters.GoWorkspace}}'
-    env:
-      GO111MODULE: 'on'
-
-  - pwsh: |
-      $testDirs = (./eng/scripts/get_test_dirs.ps1 -serviceDir $(SCOPE))
-      foreach ($td in $testDirs) {
-        pushd $td
-        Write-Host "##[command]Executing go test -run "^Test" -race -v -coverprofile coverage.txt -covermode atomic $td | go-junit-report -set-exit-code > report.xml"
-        go test -run "^Test" -race -v -coverprofile coverage.txt -covermode atomic . | go-junit-report -set-exit-code > report.xml
-        # if no tests were actually run (e.g. examples) delete the coverage file so it's omitted from the coverage report
-        if (Select-String -path ./report.xml -pattern '<testsuites></testsuites>' -simplematch -quiet) {
-          Write-Host "##[command]Deleting empty coverage file"
-          rm coverage.txt
-        }
-      }
+  - task: PowerShell@2
     displayName: 'Run Tests'
-    workingDirectory: '${{parameters.GoWorkspace}}'
+    inputs:
+      targetType: 'filePath'
+      filePath: ./eng/scripts/run_tests.ps1
+      arguments: '${{ parameters.ServiceDirectory }}'
+      pwsh: true
     env:
       GO111MODULE: 'on'
+      PROXY_CERT: $(Build.SourcesDirectory)/eng/common/testproxy/dotnet-devcert.crt
+      ${{ insert }}: ${{ parameters.EnvVars }}
 
-  - pwsh: |
-      $coverageFiles = [Collections.Generic.List[String]]@()
-      Get-Childitem -recurse -path $(SCOPE) -filter coverage.txt | foreach-object {
-        $covFile = $_.FullName
-        Write-Host "Adding $covFile to the list of code coverage files"
-        $coverageFiles.Add($covFile)
-      }
-      gocovmerge $coverageFiles > mergedCoverage.txt
-      gocov convert ./mergedCoverage.txt > ./coverage.json
-      # gocov converts rely on standard input
-      Get-Content ./coverage.json | gocov-xml > ./coverage.xml
-      Get-Content ./coverage.json | gocov-html > ./coverage.html
-    displayName: 'Generate Coverage XML'
-    workingDirectory: '${{parameters.GoWorkspace}}sdk'
+  - ${{ if eq(parameters.TestProxy, true) }}:
+    - pwsh: |
+        # ambitious_azsdk_test_proxy is the hardcoded container name used
+        # by the test proxy startup script
+        docker logs ambitious_azsdk_test_proxy
+      displayName: 'Dump Test Proxy logs'
+      condition: succeededOrFailed()
 
   - task: PublishTestResults@2
     condition: succeededOrFailed()
     inputs:
       testRunner: JUnit
-      testResultsFiles: '${{parameters.GoWorkspace}}sdk/**/report.xml'
+      testResultsFiles: '$(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}/report.xml'
       testRunTitle: 'Go ${{ parameters.GoVersion }} on ${{ parameters.Image }}'
       failTaskOnFailedTests: true
 
@@ -84,6 +78,5 @@ steps:
     condition: succeededOrFailed()
     inputs:
       codeCoverageTool: Cobertura
-      summaryFileLocation: '${{parameters.GoWorkspace}}sdk/coverage.xml'
-      additionalCodeCoverageFiles: '${{parameters.GoWorkspace}}sdk/coverage.html'
-      failIfCoverageEmpty: true
+      summaryFileLocation: './coverage.xml'
+      additionalCodeCoverageFiles: './coverage.html'

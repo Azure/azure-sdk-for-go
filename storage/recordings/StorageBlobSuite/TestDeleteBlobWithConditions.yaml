@@ -6,15 +6,15 @@ interactions:
     form: {}
     headers:
       Authorization:
-      - SharedKey golangrocksonazure:8qvMbQ6lhiqmcPg3wkCxsdiTDv7BoYzZmU5UULuOMcE=
+      - SharedKey golangrocksonazure:81m+3NQzERy5/oY2uxvVtx5GVU1ECHaPrNWmQ5ji1ww=
       User-Agent:
-      - Go/go1.12.4 (amd64-windows) azure-storage-go/latest api-version/2018-03-28
+      - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         blob
       x-ms-date:
-      - Tue, 28 May 2019 22:35:37 GMT
+      - Tue, 13 Apr 2021 15:57:09 GMT
       x-ms-version:
       - "2018-03-28"
-    url: https://golangrocksonazure.blob.core.windows.net/cnt-45storageblobsuitetestdelete?restype=container
+    url: https://golangrocksonazure.blob.core.windows.net/45storageblobsuitetestdeleteblob?restype=container
     method: PUT
   response:
     body: ""
@@ -22,15 +22,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 28 May 2019 22:35:37 GMT
+      - Tue, 13 Apr 2021 15:57:08 GMT
       Etag:
-      - '"0x8D6E3BCCE689E96"'
+      - '"0x8D8FE94CB678BA5"'
       Last-Modified:
-      - Tue, 28 May 2019 22:35:37 GMT
+      - Tue, 13 Apr 2021 15:57:09 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 37813d5f-e01e-00b7-23a5-15d5a7000000
+      - 2c9d76fc-801e-004c-797d-300fdd000000
       X-Ms-Version:
       - "2018-03-28"
     status: 201 Created
@@ -41,19 +41,19 @@ interactions:
     form: {}
     headers:
       Authorization:
-      - SharedKey golangrocksonazure:tqvuZVArfQlkzwU01n/L3v9fPshv8+MHIfVstkgJ2Jg=
+      - SharedKey golangrocksonazure:/rxVz1t3WR/mKWaWPbwSs8gtYdbO0TCmZsN4LDwQkag=
       Content-Length:
       - "0"
       User-Agent:
-      - Go/go1.12.4 (amd64-windows) azure-storage-go/latest api-version/2018-03-28
+      - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         blob
       x-ms-blob-type:
       - BlockBlob
       x-ms-date:
-      - Tue, 28 May 2019 22:35:37 GMT
+      - Tue, 13 Apr 2021 15:57:09 GMT
       x-ms-version:
       - "2018-03-28"
-    url: https://golangrocksonazure.blob.core.windows.net/cnt-45storageblobsuitetestdelete/blob/45storageblobsuitetestdeleteblobwithconditions
+    url: https://golangrocksonazure.blob.core.windows.net/45storageblobsuitetestdeleteblob/blob/45storageblobsuitetestdeleteblobwithconditions
     method: PUT
   response:
     body: ""
@@ -63,15 +63,15 @@ interactions:
       Content-Md5:
       - 1B2M2Y8AsgTpgAmY7PhCfg==
       Date:
-      - Tue, 28 May 2019 22:35:37 GMT
+      - Tue, 13 Apr 2021 15:57:08 GMT
       Etag:
-      - '"0x8D6E3BCCE6ACFB7"'
+      - '"0x8D8FE94CB6AC87F"'
       Last-Modified:
-      - Tue, 28 May 2019 22:35:37 GMT
+      - Tue, 13 Apr 2021 15:57:09 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 37813d78-e01e-00b7-36a5-15d5a7000000
+      - 2c9d7701-801e-004c-7d7d-300fdd000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
@@ -84,15 +84,15 @@ interactions:
     form: {}
     headers:
       Authorization:
-      - SharedKey golangrocksonazure:+IrkkKIOpkaJzTkUjXUQxVJc/xpfNkgK0qkoVFQDub0=
+      - SharedKey golangrocksonazure:TClLbX/4zc0nz4AJRcqY42mUciGP5yPkrIeYNSs3oH4=
       User-Agent:
-      - Go/go1.12.4 (amd64-windows) azure-storage-go/latest api-version/2018-03-28
+      - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         blob
       x-ms-date:
-      - Tue, 28 May 2019 22:35:37 GMT
+      - Tue, 13 Apr 2021 15:57:09 GMT
       x-ms-version:
       - "2018-03-28"
-    url: https://golangrocksonazure.blob.core.windows.net/cnt-45storageblobsuitetestdelete/blob/45storageblobsuitetestdeleteblobwithconditions
+    url: https://golangrocksonazure.blob.core.windows.net/45storageblobsuitetestdeleteblob/blob/45storageblobsuitetestdeleteblobwithconditions
     method: HEAD
   response:
     body: ""
@@ -106,11 +106,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Tue, 28 May 2019 22:35:37 GMT
+      - Tue, 13 Apr 2021 15:57:08 GMT
       Etag:
-      - '"0x8D6E3BCCE6ACFB7"'
+      - '"0x8D8FE94CB6AC87F"'
       Last-Modified:
-      - Tue, 28 May 2019 22:35:37 GMT
+      - Tue, 13 Apr 2021 15:57:09 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Access-Tier:
@@ -120,13 +120,13 @@ interactions:
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Tue, 28 May 2019 22:35:37 GMT
+      - Tue, 13 Apr 2021 15:57:09 GMT
       X-Ms-Lease-State:
       - available
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - 37813d8c-e01e-00b7-48a5-15d5a7000000
+      - 2c9d7703-801e-004c-7f7d-300fdd000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
@@ -139,33 +139,33 @@ interactions:
     form: {}
     headers:
       Authorization:
-      - SharedKey golangrocksonazure:X/1yIsDB9RdPvvqvxxcPXBiLPFEy0/CgRdL+066MI5s=
+      - SharedKey golangrocksonazure:SCmbxOcpQZoPJNpfsB1ndsTovFSNKj5Jbw1D/W1GARc=
       If-Match:
       - GolangRocksOnAzure
       User-Agent:
-      - Go/go1.12.4 (amd64-windows) azure-storage-go/latest api-version/2018-03-28
+      - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         blob
       x-ms-date:
-      - Tue, 28 May 2019 22:35:37 GMT
+      - Tue, 13 Apr 2021 15:57:09 GMT
       x-ms-version:
       - "2018-03-28"
-    url: https://golangrocksonazure.blob.core.windows.net/cnt-45storageblobsuitetestdelete/blob/45storageblobsuitetestdeleteblobwithconditions
+    url: https://golangrocksonazure.blob.core.windows.net/45storageblobsuitetestdeleteblob/blob/45storageblobsuitetestdeleteblobwithconditions
     method: DELETE
   response:
-    body: "\uFEFF\x3C\x3F\x78\x6D\x6C\x20\x76\x65\x72\x73\x69\x6F\x6E\x3D\"\x31\x2E\x30\"\x20\x65\x6E\x63\x6F\x64\x69\x6E\x67\x3D\"\x75\x74\x66\x2D\x38\"\x3F\x3E\x3C\x45\x72\x72\x6F\x72\x3E\x3C\x43\x6F\x64\x65\x3E\x43\x6F\x6E\x64\x69\x74\x69\x6F\x6E\x4E\x6F\x74\x4D\x65\x74\x3C\x2F\x43\x6F\x64\x65\x3E\x3C\x4D\x65\x73\x73\x61\x67\x65\x3E\x54\x68\x65\x20\x63\x6F\x6E\x64\x69\x74\x69\x6F\x6E\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x20\x75\x73\x69\x6E\x67\x20\x48\x54\x54\x50\x20\x63\x6F\x6E\x64\x69\x74\x69\x6F\x6E\x61\x6C\x20\x68\x65\x61\x64\x65\x72\x28\x73\x29\x20\x69\x73\x20\x6E\x6F\x74\x20\x6D\x65\x74\x2E\n\x52\x65\x71\x75\x65\x73\x74\x49\x64\x3A\x33\x37\x38\x31\x33\x64\x39\x37\x2D\x65\x30\x31\x65\x2D\x30\x30\x62\x37\x2D\x35\x32\x61\x35\x2D\x31\x35\x64\x35\x61\x37\x30\x30\x30\x30\x30\x30\n\x54\x69\x6D\x65\x3A\x32\x30\x31\x39\x2D\x30\x35\x2D\x32\x38\x54\x32\x32\x3A\x33\x35\x3A\x33\x37\x2E\x36\x31\x38\x33\x37\x36\x36\x5A\x3C\x2F\x4D\x65\x73\x73\x61\x67\x65\x3E\x3C\x2F\x45\x72\x72\x6F\x72\x3E"
+    body: "\uFEFF\x3C\x3F\x78\x6D\x6C\x20\x76\x65\x72\x73\x69\x6F\x6E\x3D\"\x31\x2E\x30\"\x20\x65\x6E\x63\x6F\x64\x69\x6E\x67\x3D\"\x75\x74\x66\x2D\x38\"\x3F\x3E\x3C\x45\x72\x72\x6F\x72\x3E\x3C\x43\x6F\x64\x65\x3E\x43\x6F\x6E\x64\x69\x74\x69\x6F\x6E\x4E\x6F\x74\x4D\x65\x74\x3C\x2F\x43\x6F\x64\x65\x3E\x3C\x4D\x65\x73\x73\x61\x67\x65\x3E\x54\x68\x65\x20\x63\x6F\x6E\x64\x69\x74\x69\x6F\x6E\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x20\x75\x73\x69\x6E\x67\x20\x48\x54\x54\x50\x20\x63\x6F\x6E\x64\x69\x74\x69\x6F\x6E\x61\x6C\x20\x68\x65\x61\x64\x65\x72\x28\x73\x29\x20\x69\x73\x20\x6E\x6F\x74\x20\x6D\x65\x74\x2E\n\x52\x65\x71\x75\x65\x73\x74\x49\x64\x3A\x32\x63\x39\x64\x37\x37\x30\x39\x2D\x38\x30\x31\x65\x2D\x30\x30\x34\x63\x2D\x30\x35\x37\x64\x2D\x33\x30\x30\x66\x64\x64\x30\x30\x30\x30\x30\x30\n\x54\x69\x6D\x65\x3A\x32\x30\x32\x31\x2D\x30\x34\x2D\x31\x33\x54\x31\x35\x3A\x35\x37\x3A\x30\x39\x2E\x34\x37\x35\x31\x33\x35\x33\x5A\x3C\x2F\x4D\x65\x73\x73\x61\x67\x65\x3E\x3C\x2F\x45\x72\x72\x6F\x72\x3E"
     headers:
       Content-Length:
       - "252"
       Content-Type:
       - application/xml
       Date:
-      - Tue, 28 May 2019 22:35:37 GMT
+      - Tue, 13 Apr 2021 15:57:08 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Error-Code:
       - ConditionNotMet
       X-Ms-Request-Id:
-      - 37813d97-e01e-00b7-52a5-15d5a7000000
+      - 2c9d7709-801e-004c-057d-300fdd000000
       X-Ms-Version:
       - "2018-03-28"
     status: 412 The condition specified using HTTP conditional header(s) is not met.
@@ -176,15 +176,15 @@ interactions:
     form: {}
     headers:
       Authorization:
-      - SharedKey golangrocksonazure:+IrkkKIOpkaJzTkUjXUQxVJc/xpfNkgK0qkoVFQDub0=
+      - SharedKey golangrocksonazure:TClLbX/4zc0nz4AJRcqY42mUciGP5yPkrIeYNSs3oH4=
       User-Agent:
-      - Go/go1.12.4 (amd64-windows) azure-storage-go/latest api-version/2018-03-28
+      - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         blob
       x-ms-date:
-      - Tue, 28 May 2019 22:35:37 GMT
+      - Tue, 13 Apr 2021 15:57:09 GMT
       x-ms-version:
       - "2018-03-28"
-    url: https://golangrocksonazure.blob.core.windows.net/cnt-45storageblobsuitetestdelete/blob/45storageblobsuitetestdeleteblobwithconditions
+    url: https://golangrocksonazure.blob.core.windows.net/45storageblobsuitetestdeleteblob/blob/45storageblobsuitetestdeleteblobwithconditions
     method: HEAD
   response:
     body: ""
@@ -198,11 +198,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Tue, 28 May 2019 22:35:37 GMT
+      - Tue, 13 Apr 2021 15:57:08 GMT
       Etag:
-      - '"0x8D6E3BCCE6ACFB7"'
+      - '"0x8D8FE94CB6AC87F"'
       Last-Modified:
-      - Tue, 28 May 2019 22:35:37 GMT
+      - Tue, 13 Apr 2021 15:57:09 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Access-Tier:
@@ -212,13 +212,13 @@ interactions:
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Tue, 28 May 2019 22:35:37 GMT
+      - Tue, 13 Apr 2021 15:57:09 GMT
       X-Ms-Lease-State:
       - available
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - 37813da9-e01e-00b7-61a5-15d5a7000000
+      - 2c9d770e-801e-004c-0a7d-300fdd000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
@@ -231,17 +231,17 @@ interactions:
     form: {}
     headers:
       Authorization:
-      - SharedKey golangrocksonazure:cM+Ms0pm5dQa//9A1UOlxKj820ZdlONRON/YGG4kA1Q=
+      - SharedKey golangrocksonazure:VVcWu3IPkuIUcmxc7Wb4w9YDzrZtoq0qVm+p5hLcBig=
       If-Match:
-      - '"0x8D6E3BCCE6ACFB7"'
+      - '"0x8D8FE94CB6AC87F"'
       User-Agent:
-      - Go/go1.12.4 (amd64-windows) azure-storage-go/latest api-version/2018-03-28
+      - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         blob
       x-ms-date:
-      - Tue, 28 May 2019 22:35:37 GMT
+      - Tue, 13 Apr 2021 15:57:09 GMT
       x-ms-version:
       - "2018-03-28"
-    url: https://golangrocksonazure.blob.core.windows.net/cnt-45storageblobsuitetestdelete/blob/45storageblobsuitetestdeleteblobwithconditions
+    url: https://golangrocksonazure.blob.core.windows.net/45storageblobsuitetestdeleteblob/blob/45storageblobsuitetestdeleteblobwithconditions
     method: DELETE
   response:
     body: ""
@@ -249,13 +249,13 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 28 May 2019 22:35:37 GMT
+      - Tue, 13 Apr 2021 15:57:08 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Delete-Type-Permanent:
-      - "true"
+      - "false"
       X-Ms-Request-Id:
-      - 37813db5-e01e-00b7-6ba5-15d5a7000000
+      - 2c9d7715-801e-004c-117d-300fdd000000
       X-Ms-Version:
       - "2018-03-28"
     status: 202 Accepted
@@ -266,15 +266,15 @@ interactions:
     form: {}
     headers:
       Authorization:
-      - SharedKey golangrocksonazure:8MWpyZLz3ysAgFR7D5AdY/AHo1mrj751dR2LATFQJRA=
+      - SharedKey golangrocksonazure:PMLxNLrndm8tU9pVKUwFM8UYi8h71R53TBgFW6VqnFo=
       User-Agent:
-      - Go/go1.12.4 (amd64-windows) azure-storage-go/latest api-version/2018-03-28
+      - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         blob
       x-ms-date:
-      - Tue, 28 May 2019 22:35:37 GMT
+      - Tue, 13 Apr 2021 15:57:09 GMT
       x-ms-version:
       - "2018-03-28"
-    url: https://golangrocksonazure.blob.core.windows.net/cnt-45storageblobsuitetestdelete?restype=container
+    url: https://golangrocksonazure.blob.core.windows.net/45storageblobsuitetestdeleteblob?restype=container
     method: DELETE
   response:
     body: ""
@@ -282,11 +282,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 28 May 2019 22:35:37 GMT
+      - Tue, 13 Apr 2021 15:57:08 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 37813dc7-e01e-00b7-79a5-15d5a7000000
+      - 2c9d771e-801e-004c-1a7d-300fdd000000
       X-Ms-Version:
       - "2018-03-28"
     status: 202 Accepted

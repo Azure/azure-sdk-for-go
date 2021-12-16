@@ -1,0 +1,77 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+    - sdk/data/azcosmos/
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+    - sdk/data/azcosmos/
+
+stages:
+- template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: 'data/azcosmos'
+- stage: Emulator
+  displayName: 'Cosmos Emulator'
+  jobs:
+  - job: DownloadAndRunCosmosEmulator
+    displayName: Download and run Cosmos Emulator
+
+    strategy:
+      matrix:
+        Windows_Go116:
+          pool.name: azsdk-pool-mms-win-2019-general
+          image.name: MMS2019
+          go.version: '1.16.7'
+        Windows_Go117:
+          pool.name: azsdk-pool-mms-win-2019-general
+          image.name: MMS2019
+          go.version: '1.17'
+    pool:
+      name: $(pool.name)
+      vmImage: $(image.name)
+
+    steps:
+    - template: /eng/common/pipelines/templates/steps/cosmos-emulator.yml
+      parameters:
+        StartParameters: '/noexplorer /noui /enablepreview /disableratelimiting /enableaadauthentication /partitioncount=50 /consistency=Strong'
+    - powershell: |
+        $Key = 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
+        $password = ConvertTo-SecureString -String $Key -Force -AsPlainText
+        $cert = Get-ChildItem cert:\LocalMachine\My | Where-Object { $_.FriendlyName -eq "DocumentDbEmulatorCertificate" }
+        Export-PfxCertificate -Cert $cert -FilePath ".\CosmosDbEmulatorCert.pfx" -Password $password | Out-Null
+        $cert = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2
+        $cert.Import(".\CosmosDbEmulatorCert.pfx", $Key, "DefaultKeySet")
+        $cert | Export-Certificate -FilePath "$env:temp\CosmosDbEmulatorCert.cer" -Type CERT
+      displayName: 'Export Cosmos DB Emulator Certificate'
+    - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
+      parameters:
+        AgentImage: $(image.name)
+
+    - task: GoTool@0
+      inputs:
+        version: '$(go.version)'
+      displayName: "Select Go Version"
+
+    - template: /eng/pipelines/templates/steps/create-go-workspace.yml
+
+    - template:  /eng/pipelines/templates/steps/build-test.yml
+      parameters:
+        ServiceDirectory: 'data/azcosmos'
+        Image: $(vm.image)
+        GoVersion: $(go.version)
+        EnvVars:
+          EMULATOR: 'true'

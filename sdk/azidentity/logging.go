@@ -9,17 +9,19 @@ import (
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/diag"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
-// LogCredential entries contain information about authentication.
+// EventAuthentication entries contain information about authentication.
 // This includes information like the names of environment variables
 // used when obtaining credentials and the type of credential used.
-const LogCredential azcore.LogClassification = "Credential"
+const EventAuthentication log.Event = "Authentication"
 
 // log environment variables that can be used for credential types
 func logEnvVars() {
-	if !azcore.Log().Should(LogCredential) {
+	if !log.Should(EventAuthentication) {
 		return
 	}
 	// Log available environment variables
@@ -33,32 +35,29 @@ func logEnvVars() {
 	if envCheck := os.Getenv("AZURE_CLIENT_SECRET"); len(envCheck) > 0 {
 		envVars = append(envVars, "AZURE_CLIENT_SECRET")
 	}
-	if envCheck := os.Getenv("AZURE_AUTHORITY_HOST"); len(envCheck) > 0 {
-		envVars = append(envVars, "AZURE_AUTHORITY_HOST")
-	}
-	if envCheck := os.Getenv("AZURE_CLI_PATH"); len(envCheck) > 0 {
-		envVars = append(envVars, "AZURE_CLI_PATH")
+	if envCheck := os.Getenv(azureAuthorityHost); len(envCheck) > 0 {
+		envVars = append(envVars, azureAuthorityHost)
 	}
 	if len(envVars) > 0 {
-		azcore.Log().Writef(LogCredential, "Azure Identity => Found the following environment variables:\n\t%s", strings.Join(envVars, ", "))
+		log.Writef(EventAuthentication, "Azure Identity => Found the following environment variables:\n\t%s", strings.Join(envVars, ", "))
 	}
 }
 
-func logGetTokenSuccess(cred azcore.TokenCredential, opts azcore.TokenRequestOptions) {
-	if !azcore.Log().Should(LogCredential) {
+func logGetTokenSuccess(cred azcore.TokenCredential, opts policy.TokenRequestOptions) {
+	if !log.Should(EventAuthentication) {
 		return
 	}
 	msg := fmt.Sprintf("Azure Identity => GetToken() result for %T: SUCCESS\n", cred)
 	msg += fmt.Sprintf("\tCredential Scopes: [%s]", strings.Join(opts.Scopes, ", "))
-	azcore.Log().Write(LogCredential, msg)
+	log.Write(EventAuthentication, msg)
 }
 
 func logCredentialError(credName string, err error) {
-	azcore.Log().Writef(LogCredential, "Azure Identity => ERROR in %s: %s", credName, err.Error())
+	log.Writef(EventAuthentication, "Azure Identity => ERROR in %s: %s", credName, err.Error())
 }
 
 func logMSIEnv(msi msiType) {
-	if !azcore.Log().Should(LogCredential) {
+	if !log.Should(EventAuthentication) {
 		return
 	}
 	var msg string
@@ -72,17 +71,17 @@ func logMSIEnv(msi msiType) {
 	default:
 		msg = "Azure Identity => Managed Identity environment: Unknown"
 	}
-	azcore.Log().Write(LogCredential, msg)
+	log.Write(EventAuthentication, msg)
 }
 
 func addGetTokenFailureLogs(credName string, err error, includeStack bool) {
-	if !azcore.Log().Should(LogCredential) {
+	if !log.Should(EventAuthentication) {
 		return
 	}
 	stack := ""
 	if includeStack {
 		// skip the stack trace frames and ourself
-		stack = "\n" + runtime.StackTrace(3, azcore.StackFrameCount)
+		stack = "\n" + diag.StackTrace(3, 32)
 	}
-	azcore.Log().Writef(LogCredential, "Azure Identity => ERROR in GetToken() call for %s: %s%s", credName, err.Error(), stack)
+	log.Writef(EventAuthentication, "Azure Identity => ERROR in GetToken() call for %s: %s%s", credName, err.Error(), stack)
 }

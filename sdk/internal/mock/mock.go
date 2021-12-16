@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -6,6 +7,7 @@
 package mock
 
 import (
+	"crypto/tls"
 	"errors"
 	"io"
 	"net/http"
@@ -44,18 +46,35 @@ func newServer() *Server {
 
 // NewServer creates a new Server object.
 // The returned close func must be called when the server is no longer needed.
-func NewServer() (*Server, func()) {
+func NewServer(cfg ...ServerOption) (*Server, func()) {
 	s := newServer()
-	s.srv = httptest.NewServer(http.HandlerFunc(s.serveHTTP))
+	s.srv = httptest.NewUnstartedServer(http.HandlerFunc(s.serveHTTP))
+	for _, c := range cfg {
+		c.apply(s)
+	}
+	s.srv.Start()
 	return s, func() { s.srv.Close() }
 }
 
-// NewTLSServer creates a new Server object.
+// NewTLSServer creates a new Server object and applies any additional ServerOption
+// configurations provided on the Server.
 // The returned close func must be called when the server is no longer needed.
-func NewTLSServer() (*Server, func()) {
+// It will return nil for both the server and close func if it encountered an error
+// when configuring HTTP2 for the new TLS server.
+func NewTLSServer(cfg ...ServerOption) (*Server, func()) {
 	s := newServer()
-	s.srv = httptest.NewTLSServer(http.HandlerFunc(s.serveHTTP))
+	s.srv = httptest.NewUnstartedServer(http.HandlerFunc(s.serveHTTP))
+	for _, c := range cfg {
+		c.apply(s)
+	}
+	s.srv.StartTLS()
 	return s, func() { s.srv.Close() }
+}
+
+// ServerConfig returns the server config. Please note this should not be
+// modified since Start or StartTLS has already been called on the server.
+func (s *Server) ServerConfig() *http.Server {
+	return s.srv.Config
 }
 
 // returns true if the next response is an error response
@@ -133,7 +152,10 @@ func (s *Server) serveHTTP(w http.ResponseWriter, req *http.Request) {
 	if resp.delay > 0 {
 		time.Sleep(resp.delay)
 	}
-	resp.write(w)
+	err := resp.write(w)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // Requests returns the number of times an HTTP request was made.
@@ -192,6 +214,31 @@ func (s *Server) SetResponse(opts ...ResponseOption) {
 	s.static = &mr
 }
 
+// ServerOption is an abstraction for configuring a mock Server.
+type ServerOption interface {
+	apply(s *Server)
+}
+
+type fnSrvOpt func(*Server)
+
+func (fn fnSrvOpt) apply(s *Server) {
+	fn(s)
+}
+
+// WithTLSConfig sets the given TLS config on server.
+func WithTLSConfig(cfg *tls.Config) ServerOption {
+	return fnSrvOpt(func(s *Server) {
+		s.srv.TLS = cfg
+	})
+}
+
+// WithHTTP2Enabled sets the HTTP2Enabled field on the testserver to the boolean value provided.
+func WithHTTP2Enabled(enabled bool) ServerOption {
+	return fnSrvOpt(func(s *Server) {
+		s.srv.EnableHTTP2 = enabled
+	})
+}
+
 // ResponseOption is an abstraction for configuring a mock HTTP response.
 type ResponseOption interface {
 	apply(mr *mockResponse)
@@ -216,7 +263,7 @@ type mockResponse struct {
 	pred    ResponsePredicate
 }
 
-func (mr mockResponse) write(w http.ResponseWriter) {
+func (mr mockResponse) write(w http.ResponseWriter) error {
 	if len(mr.headers) > 0 {
 		for k, v := range mr.headers {
 			for _, vv := range v {
@@ -229,8 +276,12 @@ func (mr mockResponse) write(w http.ResponseWriter) {
 	}
 	w.WriteHeader(mr.code)
 	if mr.body != nil {
-		w.Write(mr.body)
+		_, err := w.Write(mr.body)
+		if err != nil {
+			return err
+		}
 	}
+	return nil
 }
 
 // WithStatusCode sets the HTTP response's status code to the specified value.

@@ -4,114 +4,210 @@
 package azidentity
 
 import (
-	"net/url"
+	"context"
+	"errors"
 	"os"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/confidential"
+	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/public"
 )
 
+// constants used throughout this package
+const (
+	accessTokenRespSuccess   = `{"access_token": "` + tokenValue + `", "expires_in": 3600}`
+	accessTokenRespMalformed = `{"access_token": 0, "expires_in": 3600}`
+	badTenantID              = "bad_tenant"
+	tokenValue               = "new_token"
+)
+
+// constants for this file
 const (
 	envHostString    = "https://mock.com/"
 	customHostString = "https://custommock.com/"
 )
 
-func Test_AuthorityHost_Parse(t *testing.T) {
-	_, err := url.Parse(AzurePublicCloud)
-	if err != nil {
-		t.Fatalf("Failed to parse default authority host: %v", err)
+// Set environment variables for the duration of a test. Restore their prior values
+// after the test completes. Obviated by 1.17's T.Setenv
+func setEnvironmentVariables(t *testing.T, vars map[string]string) {
+	priorValues := make(map[string]string, len(vars))
+	for k, v := range vars {
+		priorValues[k] = os.Getenv(k)
+		err := os.Setenv(k, v)
+		if err != nil {
+			t.Fatalf("Unexpected error setting %s: %v", k, err)
+		}
 	}
-}
 
-func Test_NonNilTokenCredentialOptsNilAuthorityHost(t *testing.T) {
-	opts := &TokenCredentialOptions{Retry: &azcore.RetryOptions{MaxRetries: 6}}
-	opts, err := opts.setDefaultValues()
-	if err != nil {
-		t.Fatalf("Received an error: %v", err)
-	}
-	if opts.AuthorityHost == "" {
-		t.Fatalf("Did not set default authority host")
-	}
+	t.Cleanup(func() {
+		for k, v := range priorValues {
+			err := os.Setenv(k, v)
+			if err != nil {
+				t.Fatalf("Unexpected error resetting %s: %v", k, err)
+			}
+		}
+	})
 }
 
 func Test_SetEnvAuthorityHost(t *testing.T) {
-	err := os.Setenv("AZURE_AUTHORITY_HOST", envHostString)
+	setEnvironmentVariables(t, map[string]string{azureAuthorityHost: envHostString})
+	authorityHost, err := setAuthorityHost("")
 	if err != nil {
-		t.Fatalf("Unexpected error when initializing environment variables: %v", err)
+		t.Fatal(err)
 	}
-
-	opts := &TokenCredentialOptions{}
-	opts, err = opts.setDefaultValues()
-	if opts.AuthorityHost != envHostString {
-		t.Fatalf("Unexpected error when get host from environment vairable: %v", err)
-	}
-
-	// Unset that host environment vairable to avoid other tests failed.
-	err = os.Unsetenv("AZURE_AUTHORITY_HOST")
-	if err != nil {
-		t.Fatalf("Unexpected error when unset environment vairable: %v", err)
+	if authorityHost != envHostString {
+		t.Fatalf("Unexpected error when get host from environment variable: %v", err)
 	}
 }
 
 func Test_CustomAuthorityHost(t *testing.T) {
-	err := os.Setenv("AZURE_AUTHORITY_HOST", envHostString)
+	setEnvironmentVariables(t, map[string]string{azureAuthorityHost: envHostString})
+	authorityHost, err := setAuthorityHost(customHostString)
 	if err != nil {
-		t.Fatalf("Unexpected error when initializing environment variables: %v", err)
+		t.Fatal(err)
 	}
-
-	opts := &TokenCredentialOptions{AuthorityHost: customHostString}
-	opts, err = opts.setDefaultValues()
-	if opts.AuthorityHost != customHostString {
-		t.Fatalf("Unexpected error when get host from environment vairable: %v", err)
-	}
-
-	// Unset that host environment vairable to avoid other tests failed.
-	err = os.Unsetenv("AZURE_AUTHORITY_HOST")
-	if err != nil {
-		t.Fatalf("Unexpected error when unset environment vairable: %v", err)
+	// ensure env var doesn't override explicit value
+	if authorityHost != customHostString {
+		t.Fatalf("Unexpected host when get host from environment variable: %v", authorityHost)
 	}
 }
 
 func Test_DefaultAuthorityHost(t *testing.T) {
-	opts := &TokenCredentialOptions{}
-	opts, err := opts.setDefaultValues()
-	if opts.AuthorityHost != AzurePublicCloud {
-		t.Fatalf("Unexpected error when set default AuthorityHost: %v", err)
-	}
-}
-
-func Test_AzureGermanyAuthorityHost(t *testing.T) {
-	opts := &TokenCredentialOptions{}
-	opts, err := opts.setDefaultValues()
+	setEnvironmentVariables(t, map[string]string{azureAuthorityHost: ""})
+	authorityHost, err := setAuthorityHost("")
 	if err != nil {
 		t.Fatal(err)
 	}
-	opts.AuthorityHost = AzureGermany
-	if opts.AuthorityHost != AzureGermany {
-		t.Fatalf("Did not retrieve expected authority host string")
+	if authorityHost != string(AzurePublicCloud) {
+		t.Fatalf("Unexpected host when set default AuthorityHost: %v", authorityHost)
 	}
 }
 
-func Test_AzureChinaAuthorityHost(t *testing.T) {
-	opts := &TokenCredentialOptions{}
-	opts, err := opts.setDefaultValues()
-	if err != nil {
-		t.Fatal(err)
+func Test_NonHTTPSAuthorityHost(t *testing.T) {
+	setEnvironmentVariables(t, map[string]string{azureAuthorityHost: ""})
+	authorityHost, err := setAuthorityHost("http://foo.com")
+	if err == nil {
+		t.Fatal("Expected an error but did not receive one.")
 	}
-	opts.AuthorityHost = AzureChina
-	if opts.AuthorityHost != AzureChina {
-		t.Fatalf("Did not retrieve expected authority host string")
+	if authorityHost != "" {
+		t.Fatalf("Unexpected value in authority host string: %s", authorityHost)
 	}
 }
 
-func Test_AzureGovernmentAuthorityHost(t *testing.T) {
-	opts := &TokenCredentialOptions{}
-	opts, err := opts.setDefaultValues()
-	if err != nil {
-		t.Fatal(err)
+func Test_ValidTenantIDFalse(t *testing.T) {
+	if validTenantID("bad@tenant") {
+		t.Fatal("Expected to receive false, but received true")
 	}
-	opts.AuthorityHost = AzureGovernment
-	if opts.AuthorityHost != AzureGovernment {
-		t.Fatalf("Did not retrieve expected authority host string")
+	if validTenantID("bad/tenant") {
+		t.Fatal("Expected to receive false, but received true")
+	}
+	if validTenantID("bad(tenant") {
+		t.Fatal("Expected to receive false, but received true")
+	}
+	if validTenantID("bad)tenant") {
+		t.Fatal("Expected to receive false, but received true")
+	}
+	if validTenantID("bad:tenant") {
+		t.Fatal("Expected to receive false, but received true")
 	}
 }
+
+func Test_ValidTenantIDTrue(t *testing.T) {
+	if !validTenantID("goodtenant") {
+		t.Fatal("Expected to receive true, but received false")
+	}
+	if !validTenantID("good-tenant") {
+		t.Fatal("Expected to receive true, but received false")
+	}
+	if !validTenantID("good.tenant") {
+		t.Fatal("Expected to receive true, but received false")
+	}
+}
+
+// ==================================================================================================================================
+
+type fakeConfidentialClient struct {
+	// set ar to have all API calls return the provided AuthResult
+	ar confidential.AuthResult
+
+	// set err to have all API calls return the provided error
+	err error
+
+	// set true to have silent auth succeed
+	silentAuth bool
+}
+
+func (f fakeConfidentialClient) returnResult() (confidential.AuthResult, error) {
+	if f.err != nil {
+		return confidential.AuthResult{}, f.err
+	}
+	return f.ar, nil
+}
+
+func (f fakeConfidentialClient) AcquireTokenSilent(ctx context.Context, scopes []string, options ...confidential.AcquireTokenSilentOption) (confidential.AuthResult, error) {
+	if f.silentAuth {
+		return f.ar, nil
+	}
+	return confidential.AuthResult{}, errors.New("silent authentication failed")
+}
+
+func (f fakeConfidentialClient) AcquireTokenByAuthCode(ctx context.Context, code string, redirectURI string, scopes []string, options ...confidential.AcquireTokenByAuthCodeOption) (confidential.AuthResult, error) {
+	return f.returnResult()
+}
+
+func (f fakeConfidentialClient) AcquireTokenByCredential(ctx context.Context, scopes []string) (confidential.AuthResult, error) {
+	return f.returnResult()
+}
+
+var _ confidentialClient = (*fakeConfidentialClient)(nil)
+
+// ==================================================================================================================================
+
+type fakePublicClient struct {
+	// set ar to have all API calls return the provided AuthResult
+	ar public.AuthResult
+
+	// similar to ar but for device code APIs
+	dc public.DeviceCode
+
+	// set err to have all API calls return the provided error
+	err error
+
+	// set true to have silent auth succeed
+	silentAuth bool
+}
+
+func (f fakePublicClient) returnResult() (public.AuthResult, error) {
+	if f.err != nil {
+		return public.AuthResult{}, f.err
+	}
+	return f.ar, nil
+}
+
+func (f fakePublicClient) AcquireTokenSilent(ctx context.Context, scopes []string, options ...public.AcquireTokenSilentOption) (public.AuthResult, error) {
+	if f.silentAuth {
+		return f.ar, nil
+	}
+	return public.AuthResult{}, errors.New("silent authentication failed")
+}
+
+func (f fakePublicClient) AcquireTokenByUsernamePassword(ctx context.Context, scopes []string, username string, password string) (public.AuthResult, error) {
+	return f.returnResult()
+}
+
+func (f fakePublicClient) AcquireTokenByDeviceCode(ctx context.Context, scopes []string) (public.DeviceCode, error) {
+	if f.err != nil {
+		return public.DeviceCode{}, f.err
+	}
+	return f.dc, nil
+}
+
+func (f fakePublicClient) AcquireTokenByAuthCode(ctx context.Context, code string, redirectURI string, scopes []string, options ...public.AcquireTokenByAuthCodeOption) (public.AuthResult, error) {
+	return f.returnResult()
+}
+
+func (f fakePublicClient) AcquireTokenInteractive(ctx context.Context, scopes []string, options ...public.InteractiveAuthOption) (public.AuthResult, error) {
+	return f.returnResult()
+}
+
+var _ publicClient = (*fakePublicClient)(nil)

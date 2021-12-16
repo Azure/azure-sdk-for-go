@@ -6,132 +6,63 @@ package azidentity
 import (
 	"context"
 	"errors"
-	"io/ioutil"
-	"net/http"
-	"net/url"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
-const (
-	tenantID                 = "expected_tenant"
-	clientID                 = "expected_client"
-	secret                   = "secret"
-	wrongSecret              = "wrong_secret"
-	tokenValue               = "new_token"
-	scope                    = "http://storage.azure.com/.default"
-	defaultTestAuthorityHost = "login.microsoftonline.com"
-)
+const secret = "secret"
 
-func TestClientSecretCredential_CreateAuthRequestSuccess(t *testing.T) {
-	cred, err := NewClientSecretCredential(tenantID, clientID, secret, nil)
-	if err != nil {
-		t.Fatalf("Unable to create credential. Received: %v", err)
+func TestClientSecretCredential_InvalidTenantID(t *testing.T) {
+	cred, err := NewClientSecretCredential(badTenantID, fakeClientID, secret, nil)
+	if err == nil {
+		t.Fatal("Expected an error but received none")
 	}
-	req, err := cred.client.createClientSecretAuthRequest(context.Background(), cred.tenantID, cred.clientID, cred.clientSecret, []string{scope})
-	if err != nil {
-		t.Fatalf("Unexpectedly received an error: %v", err)
-	}
-	if req.Request.Header.Get(azcore.HeaderContentType) != azcore.HeaderURLEncoded {
-		t.Fatalf("Unexpected value for Content-Type header")
-	}
-	body, err := ioutil.ReadAll(req.Request.Body)
-	if err != nil {
-		t.Fatalf("Unable to read request body")
-	}
-	bodyStr := string(body)
-	reqQueryParams, err := url.ParseQuery(bodyStr)
-	if err != nil {
-		t.Fatalf("Unable to parse query params in request")
-	}
-	if reqQueryParams[qpClientID][0] != clientID {
-		t.Fatalf("Unexpected client ID in the client_id header")
-	}
-	if reqQueryParams[qpClientSecret][0] != secret {
-		t.Fatalf("Unexpected secret in the client_secret header")
-	}
-	if reqQueryParams[qpScope][0] != scope {
-		t.Fatalf("Unexpected scope in scope header")
-	}
-	if req.Request.URL.Host != defaultTestAuthorityHost {
-		t.Fatalf("Unexpected default authority host")
-	}
-	if req.Request.URL.Scheme != "https" {
-		t.Fatalf("Wrong request scheme")
+	if cred != nil {
+		t.Fatalf("Expected a nil credential value. Received: %v", cred)
 	}
 }
 
 func TestClientSecretCredential_GetTokenSuccess(t *testing.T) {
-	srv, close := mock.NewServer()
-	defer close()
-	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()})
+	cred, err := NewClientSecretCredential(fakeTenantID, fakeClientID, secret, nil)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
+	cred.client = fakeConfidentialClient{}
+	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
 	if err != nil {
 		t.Fatalf("Expected an empty error but received: %v", err)
 	}
 }
 
-func TestClientSecretCredential_GetTokenInvalidCredentials(t *testing.T) {
-	srv, close := mock.NewServer()
-	defer close()
-	srv.SetResponse(mock.WithBody([]byte(accessTokenRespError)), mock.WithStatusCode(http.StatusUnauthorized))
-	cred, err := NewClientSecretCredential(tenantID, clientID, wrongSecret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()})
+func TestClientSecretCredential_Live(t *testing.T) {
+	opts, stop := initRecording(t)
+	defer stop()
+	o := ClientSecretCredentialOptions{ClientOptions: opts}
+	cred, err := NewClientSecretCredential(liveSP.tenantID, liveSP.clientID, liveSP.secret, &o)
 	if err != nil {
-		t.Fatalf("Unable to create credential. Received: %v", err)
+		t.Fatalf("failed to construct credential: %v", err)
 	}
-	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
-	if err == nil {
-		t.Fatalf("Expected an error but did not receive one.")
-	}
-	var authFailed *AuthenticationFailedError
-	if !errors.As(err, &authFailed) {
-		t.Fatalf("Expected: AuthenticationFailedError, Received: %T", err)
-	} else {
-		var respError *AADAuthenticationFailedError
-		if !errors.As(authFailed.Unwrap(), &respError) {
-			t.Fatalf("Expected: AADAuthenticationFailedError, Received: %T", err)
-		} else {
-			if len(respError.Message) == 0 {
-				t.Fatalf("Did not receive an error message")
-			}
-			if len(respError.Description) == 0 {
-				t.Fatalf("Did not receive an error description")
-			}
-			if len(respError.Timestamp) == 0 {
-				t.Fatalf("Did not receive a timestamp")
-			}
-			if len(respError.TraceID) == 0 {
-				t.Fatalf("Did not receive a TraceID")
-			}
-			if len(respError.CorrelationID) == 0 {
-				t.Fatalf("Did not receive a CorrelationID")
-			}
-			if len(respError.URI) == 0 {
-				t.Fatalf("Did not receive an error URI")
-			}
-			if respError.Response == nil {
-				t.Fatalf("Did not receive an error response")
-			}
-		}
-	}
+	testGetTokenSuccess(t, cred)
 }
 
-func TestClientSecretCredential_GetTokenUnexpectedJSON(t *testing.T) {
-	srv, close := mock.NewServer()
-	defer close()
-	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespMalformed)))
-	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()})
+func TestClientSecretCredential_InvalidSecretLive(t *testing.T) {
+	opts, stop := initRecording(t)
+	defer stop()
+	o := ClientSecretCredentialOptions{ClientOptions: opts}
+	cred, err := NewClientSecretCredential(liveSP.tenantID, liveSP.clientID, "invalid secret", &o)
 	if err != nil {
-		t.Fatalf("Failed to create the credential")
+		t.Fatalf("failed to construct credential: %v", err)
 	}
-	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
-	if err == nil {
-		t.Fatalf("Expected a JSON marshal error but received nil")
+	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	if tk != nil {
+		t.Fatal("GetToken returned a token")
+	}
+	var e AuthenticationFailedError
+	if !errors.As(err, &e) {
+		t.Fatal("expected AuthenticationFailedError")
+	}
+	if e.RawResponse() == nil {
+		t.Fatal("expected RawResponse() to return a non-nil *http.Response")
 	}
 }

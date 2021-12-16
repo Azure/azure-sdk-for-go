@@ -19,13 +19,15 @@
 #  name = "github.com/x/y"
 #  version = "2.4.0"
 
+ignored = ["github.com/ahmetb/go-linq/*", "github.com/google/go-github/*", "github.com/go-git/go-git/*", "github.com/Azure/azure-sdk-for-go/sdk/*", "github.com/Azure/azure-amqp-common-go/*"]
+
 [prune]
   unused-packages = true
   go-tests = true
 
 [[constraint]]
+  branch = "master"
   name = "github.com/Azure/go-autorest"
-  version = "14.0.0"
 
 [[constraint]]
   branch = "master"
@@ -36,8 +38,8 @@
   name = "github.com/globalsign/mgo"
 
 [[constraint]]
-  name = "github.com/satori/go.uuid"
-  version = "1.2.0"
+  name = "github.com/gofrs/uuid"
+  version = "4.0.0"
 
 [[constraint]]
   name = "github.com/shopspring/decimal"

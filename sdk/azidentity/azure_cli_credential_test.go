@@ -6,32 +6,32 @@ package azidentity
 import (
 	"context"
 	"errors"
-	"net/http"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
 var (
-	mockCLITokenProviderSuccess = func(ctx context.Context, resource string) ([]byte, error) {
+	mockCLITokenProviderSuccess = func(ctx context.Context, resource string, tenantID string) ([]byte, error) {
 		return []byte(" {\"accessToken\":\"mocktoken\" , " +
 			"\"expiresOn\": \"2007-01-01 01:01:01.079627\"," +
 			"\"subscription\": \"mocksub\"," +
 			"\"tenant\": \"mocktenant\"," +
 			"\"tokenType\": \"mocktype\"}"), nil
 	}
-	mockCLITokenProviderFailure = func(ctx context.Context, resource string) ([]byte, error) {
+	mockCLITokenProviderFailure = func(ctx context.Context, resource string, tenantID string) ([]byte, error) {
 		return nil, errors.New("provider failure message")
 	}
 )
 
 func TestAzureCLICredential_GetTokenSuccess(t *testing.T) {
-	cred, err := NewAzureCLICredential(&AzureCLICredentialOptions{TokenProvider: mockCLITokenProviderSuccess})
+	options := AzureCLICredentialOptions{}
+	options.tokenProvider = mockCLITokenProviderSuccess
+	cred, err := NewAzureCLICredential(&options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	at, err := cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
+	at, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
 	if err != nil {
 		t.Fatalf("Expected an empty error but received: %v", err)
 	}
@@ -44,37 +44,40 @@ func TestAzureCLICredential_GetTokenSuccess(t *testing.T) {
 }
 
 func TestAzureCLICredential_GetTokenInvalidToken(t *testing.T) {
-	cred, err := NewAzureCLICredential(&AzureCLICredentialOptions{TokenProvider: mockCLITokenProviderFailure})
+	options := AzureCLICredentialOptions{}
+	options.tokenProvider = mockCLITokenProviderFailure
+	cred, err := NewAzureCLICredential(&options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
+	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one.")
 	}
 }
 
-func TestBearerPolicy_AzureCLICredential(t *testing.T) {
-	srv, close := mock.NewTLSServer()
-	defer close()
-	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-	cred, err := NewAzureCLICredential(&AzureCLICredentialOptions{TokenProvider: mockCLITokenProviderSuccess})
-	if err != nil {
-		t.Fatalf("Did not expect an error but received: %v", err)
+func TestAzureCLICredential_TenantID(t *testing.T) {
+	expected := "expected-tenant-id"
+	called := false
+	options := AzureCLICredentialOptions{
+		TenantID: expected,
+		tokenProvider: func(ctx context.Context, resource, tenantID string) ([]byte, error) {
+			called = true
+			if tenantID != expected {
+				t.Fatal("Unexpected tenant ID: " + tenantID)
+			}
+			return mockCLITokenProviderSuccess(ctx, resource, tenantID)
+		},
 	}
-	pipeline := azcore.NewPipeline(
-		srv,
-		azcore.NewTelemetryPolicy(azcore.TelemetryOptions{}),
-		azcore.NewUniqueRequestIDPolicy(),
-		azcore.NewRetryPolicy(nil),
-		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
-		azcore.NewRequestLogPolicy(nil))
-	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	cred, err := NewAzureCLICredential(&options)
 	if err != nil {
-		t.Fatal(err)
+		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	_, err = pipeline.Do(req)
+	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
 	if err != nil {
-		t.Fatal("Expected nil error but received one")
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	if !called {
+		t.Fatal("token provider wasn't called")
 	}
 }

@@ -33,7 +33,6 @@ func TestNewResponseErrorNoBodyNoErrorCode(t *testing.T) {
 	if !ok {
 		t.Fatalf("unexpected error type %T", err)
 	}
-	re.NonRetriable() // nop
 	if re.ErrorCode != "" {
 		t.Fatal("expected empty error code")
 	}
@@ -75,7 +74,6 @@ func TestNewResponseErrorNoBody(t *testing.T) {
 	if !ok {
 		t.Fatalf("unexpected error type %T", err)
 	}
-	re.NonRetriable() // nop
 	if ec := re.ErrorCode; ec != errorCode {
 		t.Fatalf("unexpected error code %s", ec)
 	}
@@ -113,7 +111,6 @@ func TestNewResponseErrorNoErrorCode(t *testing.T) {
 	if !ok {
 		t.Fatalf("unexpected error type %T", err)
 	}
-	re.NonRetriable() // nop
 	if c := re.StatusCode; c != http.StatusInternalServerError {
 		t.Fatalf("unexpected status code %d", c)
 	}
@@ -154,7 +151,6 @@ func TestNewResponseErrorPreferErrorCodeHeader(t *testing.T) {
 	if !ok {
 		t.Fatalf("unexpected error type %T", err)
 	}
-	re.NonRetriable() // nop
 	if c := re.StatusCode; c != http.StatusInternalServerError {
 		t.Fatalf("unexpected status code %d", c)
 	}
@@ -192,7 +188,6 @@ func TestNewResponseErrorNoErrorCodeWrappedError(t *testing.T) {
 	if !ok {
 		t.Fatalf("unexpected error type %T", err)
 	}
-	re.NonRetriable() // nop
 	if c := re.StatusCode; c != http.StatusInternalServerError {
 		t.Fatalf("unexpected status code %d", c)
 	}
@@ -232,7 +227,6 @@ func TestNewResponseErrorNoErrorCodeInvalidBody(t *testing.T) {
 	if !ok {
 		t.Fatalf("unexpected error type %T", err)
 	}
-	re.NonRetriable() // nop
 	if c := re.StatusCode; c != http.StatusInternalServerError {
 		t.Fatalf("unexpected status code %d", c)
 	}
@@ -277,7 +271,6 @@ func TestNewResponseErrorNoErrorCodeCantReadBody(t *testing.T) {
 	if !ok {
 		t.Fatalf("unexpected error type %T", err)
 	}
-	re.NonRetriable() // nop
 	if c := re.StatusCode; c != http.StatusInternalServerError {
 		t.Fatalf("unexpected status code %d", c)
 	}
@@ -312,7 +305,6 @@ func TestNewResponseErrorNoErrorCodeXML(t *testing.T) {
 	if !ok {
 		t.Fatalf("unexpected error type %T", err)
 	}
-	re.NonRetriable() // nop
 	if c := re.StatusCode; c != http.StatusInternalServerError {
 		t.Fatalf("unexpected status code %d", c)
 	}
@@ -350,7 +342,6 @@ func TestNewResponseErrorErrorCodeHeaderXML(t *testing.T) {
 	if !ok {
 		t.Fatalf("unexpected error type %T", err)
 	}
-	re.NonRetriable() // nop
 	if c := re.StatusCode; c != http.StatusInternalServerError {
 		t.Fatalf("unexpected status code %d", c)
 	}
@@ -387,7 +378,6 @@ func TestNewResponseErrorAllMissingXML(t *testing.T) {
 	if !ok {
 		t.Fatalf("unexpected error type %T", err)
 	}
-	re.NonRetriable() // nop
 	if c := re.StatusCode; c != http.StatusInternalServerError {
 		t.Fatalf("unexpected status code %d", c)
 	}

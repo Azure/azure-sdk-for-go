@@ -128,11 +128,7 @@ type ResponseError struct {
 }
 
 // Error implements the error interface for type ResponseError.
+// Note that the message contents are not contractual and can change over time.
 func (e *ResponseError) Error() string {
 	return e.msg
-}
-
-// NonRetriable indicates this error is non-transient.
-func (e *ResponseError) NonRetriable() {
-	// marker method
 }

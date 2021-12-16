@@ -9,7 +9,7 @@
 
 package windowsesuapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/windowsesu/2019-09-16-preview/windowsesu/windowsesuapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/windowsesu/mgmt/2019-09-16-preview/windowsesu/windowsesuapi"
 
 type MultipleActivationKeysClientAPI = original.MultipleActivationKeysClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

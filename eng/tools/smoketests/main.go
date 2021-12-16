@@ -270,6 +270,7 @@ func CopyExampleFiles(exFiles []string, dest string) {
 	for _, exFile := range exFiles {
 		newFileName := strings.ReplaceAll(exFile[10:], "/", "_")
 		newFileName = strings.ReplaceAll(newFileName, " ", "")
+		newFileName = strings.ReplaceAll(newFileName, "_test", "")
 		destinationPath := filepath.Join(dest, newFileName)
 
 		err := copyFile(exFile, destinationPath)

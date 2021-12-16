@@ -6,9 +6,11 @@ package azblob
 import (
 	"fmt"
 	"strings"
+	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 //nolint
@@ -41,14 +43,15 @@ import (
 //	_assert.Equal(testURL.URL(), correctURL)
 //}
 
-func (s *azblobTestSuite) TestContainerCreateInvalidName() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+func TestContainerCreateInvalidName(t *testing.T) {
+	_assert := assert.New(t)
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
+
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
 	containerClient := svcClient.NewContainerClient("foo bar")
 
 	access := PublicAccessTypeBlob
@@ -61,14 +64,14 @@ func (s *azblobTestSuite) TestContainerCreateInvalidName() {
 	validateStorageError(_assert, err, StorageErrorCodeInvalidResourceName)
 }
 
-func (s *azblobTestSuite) TestContainerCreateEmptyName() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+func TestContainerCreateEmptyName(t *testing.T) {
+	_assert := assert.New(t)
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
+
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
 
 	containerClient := svcClient.NewContainerClient("")
 
@@ -83,16 +86,16 @@ func (s *azblobTestSuite) TestContainerCreateEmptyName() {
 	validateStorageError(_assert, err, StorageErrorCodeInvalidQueryParameterValue)
 }
 
-func (s *azblobTestSuite) TestContainerCreateNameCollision() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+func TestContainerCreateNameCollision(t *testing.T) {
+	_assert := assert.New(t)
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	containerName := generateContainerName(testName)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
 	containerClient := createNewContainer(_assert, containerName, svcClient)
 
 	defer deleteContainer(_assert, containerClient)
@@ -110,15 +113,16 @@ func (s *azblobTestSuite) TestContainerCreateNameCollision() {
 	validateStorageError(_assert, err, StorageErrorCodeContainerAlreadyExists)
 }
 
-func (s *azblobTestSuite) TestContainerCreateInvalidMetadata() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerName := generateContainerName(testName)
+func TestContainerCreateInvalidMetadata(t *testing.T) {
+	_assert := assert.New(t)
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
+
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
 	containerClient := getContainerClient(containerName, svcClient)
 
 	access := PublicAccessTypeBlob
@@ -132,15 +136,16 @@ func (s *azblobTestSuite) TestContainerCreateInvalidMetadata() {
 	_assert.Equal(strings.Contains(err.Error(), invalidHeaderErrorSubstring), true)
 }
 
-func (s *azblobTestSuite) TestContainerCreateNilMetadata() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerName := generateContainerName(testName)
+func TestContainerCreateNilMetadata(t *testing.T) {
+	_assert := assert.New(t)
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
+
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
 	containerClient := getContainerClient(containerName, svcClient)
 
 	access := PublicAccessTypeBlob
@@ -157,16 +162,16 @@ func (s *azblobTestSuite) TestContainerCreateNilMetadata() {
 	_assert.Nil(response.Metadata)
 }
 
-func (s *azblobTestSuite) TestContainerCreateEmptyMetadata() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
+func TestContainerCreateEmptyMetadata(t *testing.T) {
+	_assert := assert.New(t)
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerName := generateContainerName(testName)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
 	containerClient := getContainerClient(containerName, svcClient)
 
 	access := PublicAccessTypeBlob
@@ -186,8 +191,8 @@ func (s *azblobTestSuite) TestContainerCreateEmptyMetadata() {
 //func (s *azblobTestSuite) TestContainerCreateAccessContainer() {
 //	// TOD0: NotWorking
 //	_assert := assert.New(s.T())
-//testName := s.T().Name()
-//	_context := getTestContext(testName)
+//// testName := s.T().Name()
+//	_context := getTestContext(s.T().Name())
 //
 //	svcClient := getServiceClient(&ClientOptions{
 //		HTTPClient: _context.recording,
@@ -195,7 +200,7 @@ func (s *azblobTestSuite) TestContainerCreateEmptyMetadata() {
 //	credential, err := getGenericCredential("")
 //	_assert.NoError(err)
 //
-//	containerName := generateContainerName(testName)
+//	containerName := generateContainerName(s.T().Name())
 //	containerClient := getContainerClient(containerName, svcClient)
 //
 //	access := PublicAccessTypeBlob
@@ -237,13 +242,13 @@ func (s *azblobTestSuite) TestContainerCreateEmptyMetadata() {
 //func (s *azblobTestSuite) TestContainerCreateAccessBlob() {
 //	// TODO: Not Working
 //	_assert := assert.New(s.T())
-// testName := s.T().Name()
-//	_context := getTestContext(testName)
+// // testName := s.T().Name()
+//	_context := getTestContext(s.T().Name())
 //	svcClient := getServiceClient(&ClientOptions{
 //		HTTPClient: _context.recording,
 //		Retry: azcore.RetryOptions{MaxRetries: -1}})
 //
-//	containerName := generateContainerName(testName)
+//	containerName := generateContainerName(s.T().Name())
 //	containerClient := getContainerClient(containerName, svcClient)
 //
 //	access := PublicAccessTypeBlob
@@ -277,16 +282,16 @@ func (s *azblobTestSuite) TestContainerCreateEmptyMetadata() {
 //	_assert.EqualValues(resp.Metadata, basicMetadata)
 //}
 
-func (s *azblobTestSuite) TestContainerCreateAccessNone() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+func TestContainerCreateAccessNone(t *testing.T) {
+	_assert := assert.New(t)
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	containerName := generateContainerName(testName)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
 	containerClient := getContainerClient(containerName, svcClient)
 
 	// Public Access Type None
@@ -321,14 +326,14 @@ func (s *azblobTestSuite) TestContainerCreateAccessNone() {
 
 //func (s *azblobTestSuite) TestContainerCreateIfExists() {
 //	_assert := assert.New(s.T())
-//	testName := s.T().Name()
-//	_context := getTestContext(testName)
+//	// testName := s.T().Name()
+//	_context := getTestContext(s.T().Name())
 //	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
 //
-//	containerName := generateContainerName(testName)
+//	containerName := generateContainerName(s.T().Name())
 //	containerClient := getContainerClient(containerName, serviceClient)
 //
 //	// Public Access Type None
@@ -353,14 +358,14 @@ func (s *azblobTestSuite) TestContainerCreateAccessNone() {
 //
 //func (s *azblobTestSuite) TestContainerCreateIfNotExists() {
 //	_assert := assert.New(s.T())
-//	testName := s.T().Name()
-//	_context := getTestContext(testName)
+//	// testName := s.T().Name()
+//	_context := getTestContext(s.T().Name())
 //	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
 //
-//	containerName := generateContainerName(testName)
+//	containerName := generateContainerName(s.T().Name())
 //	containerClient := getContainerClient(containerName, serviceClient)
 //
 //	access := PublicAccessTypeBlob
@@ -386,16 +391,16 @@ func validateContainerDeleted(_assert *assert.Assertions, containerClient Contai
 	validateStorageError(_assert, err, StorageErrorCodeContainerNotFound)
 }
 
-func (s *azblobTestSuite) TestContainerDelete() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+func TestContainerDelete(t *testing.T) {
+	_assert := assert.New(t)
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	containerName := generateContainerName(testName)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
 	containerClient := createNewContainer(_assert, containerName, svcClient)
 
 	_, err = containerClient.Delete(ctx, nil)
@@ -406,14 +411,14 @@ func (s *azblobTestSuite) TestContainerDelete() {
 
 //func (s *azblobTestSuite) TestContainerDeleteIfExists() {
 //	_assert := assert.New(s.T())
-//	testName := s.T().Name()
-//	_context := getTestContext(testName)
+//	// testName := s.T().Name()
+//	_context := getTestContext(s.T().Name())
 //	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
 //
-//	containerName := generateContainerName(testName)
+//	containerName := generateContainerName(s.T().Name())
 //	containerClient := getContainerClient(containerName, serviceClient)
 //
 //	// Public Access Type None
@@ -429,29 +434,30 @@ func (s *azblobTestSuite) TestContainerDelete() {
 //
 //func (s *azblobTestSuite) TestContainerDeleteIfNotExists() {
 //	_assert := assert.New(s.T())
-//	testName := s.T().Name()
-//	_context := getTestContext(testName)
+//	// testName := s.T().Name()
+//	_context := getTestContext(s.T().Name())
 //	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
 //
-//	containerName := generateContainerName(testName)
+//	containerName := generateContainerName(s.T().Name())
 //	containerClient := getContainerClient(containerName, serviceClient)
 //
 //	_, err = containerClient.DeleteIfExists(ctx, nil)
 //	_assert.NoError(err)
 //}
 
-func (s *azblobTestSuite) TestContainerDeleteNonExistent() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerName := generateContainerName(testName)
+func TestContainerDeleteNonExistent(t *testing.T) {
+	_assert := assert.New(t)
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
+
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
 	containerClient := getContainerClient(containerName, svcClient)
 
 	_, err = containerClient.Delete(ctx, nil)
@@ -460,16 +466,16 @@ func (s *azblobTestSuite) TestContainerDeleteNonExistent() {
 	validateStorageError(_assert, err, StorageErrorCodeContainerNotFound)
 }
 
-func (s *azblobTestSuite) TestContainerDeleteIfModifiedSinceTrue() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+func TestContainerDeleteIfModifiedSinceTrue(t *testing.T) {
+	_assert := assert.New(t)
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	containerName := generateContainerName(testName)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
 	containerClient := getContainerClient(containerName, svcClient)
 
 	cResp, err := containerClient.Create(ctx, nil)
@@ -488,16 +494,16 @@ func (s *azblobTestSuite) TestContainerDeleteIfModifiedSinceTrue() {
 	validateContainerDeleted(_assert, containerClient)
 }
 
-func (s *azblobTestSuite) TestContainerDeleteIfModifiedSinceFalse() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+func TestContainerDeleteIfModifiedSinceFalse(t *testing.T) {
+	_assert := assert.New(t)
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	containerName := generateContainerName(testName)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
 	containerClient := getContainerClient(containerName, svcClient)
 
 	cResp, err := containerClient.Create(ctx, nil)
@@ -518,16 +524,16 @@ func (s *azblobTestSuite) TestContainerDeleteIfModifiedSinceFalse() {
 	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
 }
 
-func (s *azblobTestSuite) TestContainerDeleteIfUnModifiedSinceTrue() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+func TestContainerDeleteIfUnModifiedSinceTrue(t *testing.T) {
+	_assert := assert.New(t)
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	containerName := generateContainerName(testName)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
 	containerClient := getContainerClient(containerName, svcClient)
 
 	cResp, err := containerClient.Create(ctx, nil)
@@ -547,16 +553,16 @@ func (s *azblobTestSuite) TestContainerDeleteIfUnModifiedSinceTrue() {
 	validateContainerDeleted(_assert, containerClient)
 }
 
-func (s *azblobTestSuite) TestContainerDeleteIfUnModifiedSinceFalse() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+func TestContainerDeleteIfUnModifiedSinceFalse(t *testing.T) {
+	_assert := assert.New(t)
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	containerName := generateContainerName(testName)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
 	containerClient := getContainerClient(containerName, svcClient)
 
 	cResp, err := containerClient.Create(ctx, nil)
@@ -673,21 +679,21 @@ func (s *azblobTestSuite) TestContainerDeleteIfUnModifiedSinceFalse() {
 //	//_assert(resp.Segment.BlobItems[0].Name, chk.Equals, blobName)
 //}
 
-func (s *azblobTestSuite) TestContainerListBlobsWithSnapshots() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+func TestContainerListBlobsWithSnapshots(t *testing.T) {
+	_assert := assert.New(t)
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	containerName := generateContainerName(testName)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
 	containerClient := createNewContainer(_assert, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	// initialize a blob and create a snapshot of it
-	snapBlobName := generateBlobName(testName)
+	snapBlobName := generateBlobName(t.Name())
 	snapBlob := createNewBlockBlob(_assert, snapBlobName, containerClient)
 	snap, err := snapBlob.CreateSnapshot(ctx, nil)
 	// snap.
@@ -714,21 +720,21 @@ func (s *azblobTestSuite) TestContainerListBlobsWithSnapshots() {
 	_assert.Equal(wasFound, true)
 }
 
-func (s *azblobTestSuite) TestContainerListBlobsInvalidDelimiter() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+func TestContainerListBlobsInvalidDelimiter(t *testing.T) {
+	_assert := assert.New(t)
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	containerName := generateContainerName(testName)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
 	containerClient := createNewContainer(_assert, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 	prefixes := []string{"a/1", "a/2", "b/1", "blob"}
 	for _, prefix := range prefixes {
-		blobName := prefix + generateBlobName(testName)
+		blobName := prefix + generateBlobName(t.Name())
 		createNewBlockBlob(_assert, blobName, containerClient)
 	}
 
@@ -921,20 +927,20 @@ func (s *azblobTestSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	_assert((<- resp).Name, chk.Equals, blobName)
 ////}
 
-func (s *azblobTestSuite) TestContainerListBlobsMaxResultsExact() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+func TestContainerListBlobsMaxResultsExact(t *testing.T) {
+	_assert := assert.New(t)
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	containerName := generateContainerName(testName)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
 	containerClient := createNewContainer(_assert, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 	blobNames := make([]string, 2)
-	blobName := generateBlobName(testName)
+	blobName := generateBlobName(t.Name())
 	blobNames[0], blobNames[1] = "a"+blobName, "b"+blobName
 	createNewBlockBlob(_assert, blobNames[0], containerClient)
 	createNewBlockBlob(_assert, blobNames[1], containerClient)
@@ -957,21 +963,21 @@ func (s *azblobTestSuite) TestContainerListBlobsMaxResultsExact() {
 	_assert.Nil(pager.Err())
 }
 
-func (s *azblobTestSuite) TestContainerListBlobsMaxResultsSufficient() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+func TestContainerListBlobsMaxResultsSufficient(t *testing.T) {
+	_assert := assert.New(t)
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	containerName := generateContainerName(testName)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
 	containerClient := createNewContainer(_assert, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	blobNames := make([]string, 2)
-	blobName := generateBlobName(testName)
+	blobName := generateBlobName(t.Name())
 	blobNames[0], blobNames[1] = "a"+blobName, "b"+blobName
 	createNewBlockBlob(_assert, blobNames[0], containerClient)
 	createNewBlockBlob(_assert, blobNames[1], containerClient)
@@ -995,16 +1001,16 @@ func (s *azblobTestSuite) TestContainerListBlobsMaxResultsSufficient() {
 	_assert.Nil(pager.Err())
 }
 
-func (s *azblobTestSuite) TestContainerListBlobsNonExistentContainer() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+func TestContainerListBlobsNonExistentContainer(t *testing.T) {
+	_assert := assert.New(t)
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	containerName := generateContainerName(testName)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
 	containerClient := getContainerClient(containerName, svcClient)
 
 	pager := containerClient.ListBlobsFlat(nil)
@@ -1013,15 +1019,16 @@ func (s *azblobTestSuite) TestContainerListBlobsNonExistentContainer() {
 	_assert.NotNil(pager.Err())
 }
 
-func (s *azblobTestSuite) TestContainerGetPropertiesAndMetadataNoMetadata() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerName := generateContainerName(testName)
+func TestContainerGetPropertiesAndMetadataNoMetadata(t *testing.T) {
+	_assert := assert.New(t)
+	t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
+
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
 	containerClient := createNewContainer(_assert, containerName, svcClient)
 
 	defer deleteContainer(_assert, containerClient)
@@ -1031,15 +1038,16 @@ func (s *azblobTestSuite) TestContainerGetPropertiesAndMetadataNoMetadata() {
 	_assert.Nil(resp.Metadata)
 }
 
-func (s *azblobTestSuite) TestContainerGetPropsAndMetaNonExistentContainer() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerName := generateContainerName(testName)
+func TestContainerGetPropsAndMetaNonExistentContainer(t *testing.T) {
+	_assert := assert.New(t)
+	t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
+
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
 	containerClient := getContainerClient(containerName, svcClient)
 
 	_, err = containerClient.GetProperties(ctx, nil)
@@ -1048,15 +1056,16 @@ func (s *azblobTestSuite) TestContainerGetPropsAndMetaNonExistentContainer() {
 	validateStorageError(_assert, err, StorageErrorCodeContainerNotFound)
 }
 
-func (s *azblobTestSuite) TestContainerSetMetadataEmpty() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerName := generateContainerName(testName)
+func TestContainerSetMetadataEmpty(t *testing.T) {
+	_assert := assert.New(t)
+	t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
+
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
 	containerClient := getContainerClient(containerName, svcClient)
 
 	access := PublicAccessTypeBlob
@@ -1079,15 +1088,16 @@ func (s *azblobTestSuite) TestContainerSetMetadataEmpty() {
 	_assert.Nil(resp.Metadata)
 }
 
-func (s *azblobTestSuite) TestContainerSetMetadataNil() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerName := generateContainerName(testName)
+func TestContainerSetMetadataNil(t *testing.T) {
+	_assert := assert.New(t)
+	t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
+
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
 	containerClient := getContainerClient(containerName, svcClient)
 	access := PublicAccessTypeBlob
 	createContainerOptions := CreateContainerOptions{
@@ -1106,15 +1116,16 @@ func (s *azblobTestSuite) TestContainerSetMetadataNil() {
 	_assert.Nil(resp.Metadata)
 }
 
-func (s *azblobTestSuite) TestContainerSetMetadataInvalidField() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerName := generateContainerName(testName)
+func TestContainerSetMetadataInvalidField(t *testing.T) {
+	_assert := assert.New(t)
+	t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
+
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
 	containerClient := createNewContainer(_assert, containerName, svcClient)
 
 	defer deleteContainer(_assert, containerClient)
@@ -1127,15 +1138,16 @@ func (s *azblobTestSuite) TestContainerSetMetadataInvalidField() {
 	_assert.Equal(strings.Contains(err.Error(), invalidHeaderErrorSubstring), true)
 }
 
-func (s *azblobTestSuite) TestContainerSetMetadataNonExistent() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerName := generateContainerName(testName)
+func TestContainerSetMetadataNonExistent(t *testing.T) {
+	_assert := assert.New(t)
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
+
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
 	containerClient := getContainerClient(containerName, svcClient)
 
 	_, err = containerClient.SetMetadata(ctx, nil)
@@ -1172,8 +1184,8 @@ func (s *azblobTestSuite) TestContainerSetMetadataNonExistent() {
 //func (s *azblobTestSuite) TestContainerSetMetadataIfModifiedSinceFalse() {
 //	// TODO: NotWorking
 //	_assert := assert.New(s.T())
-// testName := s.T().Name()
-//	_context := getTestContext(testName)
+// // testName := s.T().Name()
+//	_context := getTestContext(s.T().Name())
 //	svcClient := getServiceClient(&ClientOptions{
 //		HTTPClient: _context.recording,
 //		Retry: azcore.RetryOptions{MaxRetries: -1}})
@@ -1197,15 +1209,16 @@ func (s *azblobTestSuite) TestContainerSetMetadataNonExistent() {
 //	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
 //}
 
-func (s *azblobTestSuite) TestContainerNewBlobURL() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerName := generateContainerName(testName)
+func TestContainerNewBlobURL(t *testing.T) {
+	_assert := assert.New(t)
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
+
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
 	containerClient := getContainerClient(containerName, svcClient)
 
 	bbClient := containerClient.NewBlobClient(blobPrefix)
@@ -1214,15 +1227,16 @@ func (s *azblobTestSuite) TestContainerNewBlobURL() {
 	_assert.IsTypef(bbClient, BlobClient{}, fmt.Sprintf("%T should be of type %T", bbClient, BlobClient{}))
 }
 
-func (s *azblobTestSuite) TestContainerNewBlockBlobClient() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerName := generateContainerName(testName)
+func TestContainerNewBlockBlobClient(t *testing.T) {
+	_assert := assert.New(t)
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
+
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
 	containerClient := getContainerClient(containerName, svcClient)
 
 	bbClient := containerClient.NewBlockBlobClient(blobPrefix)

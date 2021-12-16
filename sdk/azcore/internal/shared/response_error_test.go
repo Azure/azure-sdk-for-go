@@ -267,22 +267,12 @@ func TestNewResponseErrorNoErrorCodeCantReadBody(t *testing.T) {
 			URL:    fakeURL,
 		},
 	})
-	re, ok := err.(*ResponseError)
-	if !ok {
+	_, ok := err.(*ResponseError)
+	if ok {
 		t.Fatalf("unexpected error type %T", err)
 	}
-	if c := re.StatusCode; c != http.StatusInternalServerError {
-		t.Fatalf("unexpected status code %d", c)
-	}
-	const want = `GET https://fakeurl.com/the/path
---------------------------------------------------------------------------------
-RESPONSE 500: the system is down
-ERROR CODE UNAVAILABLE
---------------------------------------------------------------------------------
-Error reading response body: mock read failure
---------------------------------------------------------------------------------
-`
-	if got := re.Error(); got != want {
+	const want = `mock read failure`
+	if got := err.Error(); got != want {
 		t.Fatalf("\ngot:\n%s\nwant:\n%s\n", got, want)
 	}
 }

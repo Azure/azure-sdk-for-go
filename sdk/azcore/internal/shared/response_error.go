@@ -24,22 +24,16 @@ func NewResponseError(resp *http.Response) error {
 	// prefer the error code in the response header
 	if ec := resp.Header.Get("x-ms-error-code"); ec != "" {
 		respErr.ErrorCode = ec
-	}
-
-	// write the request method and URL with response status code
-	msg := &bytes.Buffer{}
-	fmt.Fprintf(msg, "%s %s://%s%s\n", resp.Request.Method, resp.Request.URL.Scheme, resp.Request.URL.Host, resp.Request.URL.Path)
-	fmt.Fprintln(msg, "--------------------------------------------------------------------------------")
-	fmt.Fprintf(msg, "RESPONSE %d: %s\n", resp.StatusCode, resp.Status)
-
-	body, err := Payload(resp)
-	if err != nil {
-		body = []byte(fmt.Sprintf("Error reading response body: %v", err))
-		goto Epilog
+		return respErr
 	}
 
 	// if we didn't get x-ms-error-code, check in the response body
-	if respErr.ErrorCode == "" && len(body) > 0 {
+	body, err := Payload(resp)
+	if err != nil {
+		return err
+	}
+
+	if len(body) > 0 {
 		if code := extractErrorCodeJSON(body); code != "" {
 			respErr.ErrorCode = code
 		} else if code := extractErrorCodeXML(body); code != "" {
@@ -47,27 +41,6 @@ func NewResponseError(resp *http.Response) error {
 		}
 	}
 
-Epilog:
-	if respErr.ErrorCode != "" {
-		fmt.Fprintf(msg, "ERROR CODE: %s\n", respErr.ErrorCode)
-	} else {
-		fmt.Fprintln(msg, "ERROR CODE UNAVAILABLE")
-	}
-
-	fmt.Fprintln(msg, "--------------------------------------------------------------------------------")
-	if len(body) > 0 {
-		if err := json.Indent(msg, body, "", "  "); err != nil {
-			// failed to pretty-print so just dump it verbatim
-			fmt.Fprint(msg, string(body))
-		}
-		// the standard library doesn't have a pretty-printer for XML
-		fmt.Fprintln(msg)
-	} else {
-		fmt.Fprintln(msg, "Response contained no body")
-	}
-	fmt.Fprintln(msg, "--------------------------------------------------------------------------------")
-
-	respErr.msg = msg.String()
 	return respErr
 }
 
@@ -115,8 +88,6 @@ func extractErrorCodeXML(body []byte) string {
 // the service returns a non-success HTTP status code.
 // Use errors.As() to access this type in the error chain.
 type ResponseError struct {
-	msg string
-
 	// ErrorCode is the error code returned by the resource provider if available.
 	ErrorCode string
 
@@ -130,5 +101,33 @@ type ResponseError struct {
 // Error implements the error interface for type ResponseError.
 // Note that the message contents are not contractual and can change over time.
 func (e *ResponseError) Error() string {
-	return e.msg
+	// write the request method and URL with response status code
+	msg := &bytes.Buffer{}
+	fmt.Fprintf(msg, "%s %s://%s%s\n", e.RawResponse.Request.Method, e.RawResponse.Request.URL.Scheme, e.RawResponse.Request.URL.Host, e.RawResponse.Request.URL.Path)
+	fmt.Fprintln(msg, "--------------------------------------------------------------------------------")
+	fmt.Fprintf(msg, "RESPONSE %d: %s\n", e.RawResponse.StatusCode, e.RawResponse.Status)
+	if e.ErrorCode != "" {
+		fmt.Fprintf(msg, "ERROR CODE: %s\n", e.ErrorCode)
+	} else {
+		fmt.Fprintln(msg, "ERROR CODE UNAVAILABLE")
+	}
+	fmt.Fprintln(msg, "--------------------------------------------------------------------------------")
+	body, err := Payload(e.RawResponse)
+	if err != nil {
+		// this really shouldn't fail at this point as the response
+		// body is already cached (it was read in NewResponseError)
+		fmt.Fprintf(msg, "Error reading response body: %v", err)
+	} else if len(body) > 0 {
+		if err := json.Indent(msg, body, "", "  "); err != nil {
+			// failed to pretty-print so just dump it verbatim
+			fmt.Fprint(msg, string(body))
+		}
+		// the standard library doesn't have a pretty-printer for XML
+		fmt.Fprintln(msg)
+	} else {
+		fmt.Fprintln(msg, "Response contained no body")
+	}
+	fmt.Fprintln(msg, "--------------------------------------------------------------------------------")
+
+	return msg.String()
 }

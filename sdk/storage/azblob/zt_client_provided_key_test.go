@@ -12,10 +12,12 @@ import (
 	"io/ioutil"
 	"strconv"
 	"strings"
+	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 /*
@@ -50,19 +52,19 @@ var testInvalidCPKByScope = CpkScopeInfo{
 	EncryptionScope: &testInvalidEncryptedScope,
 }
 
-func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPK() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+func TestPutBlockAndPutBlockListWithCPK(t *testing.T) {
+	_assert := assert.New(t)
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	containerClient := createNewContainer(_assert, generateContainerName(testName), svcClient)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(_assert, generateContainerName(t.Name()), svcClient)
 	defer deleteContainer(_assert, containerClient)
 
-	bbClient := containerClient.NewBlockBlobClient(generateBlobName(testName))
+	bbClient := containerClient.NewBlockBlobClient(generateBlobName(t.Name()))
 
 	words := []string{"AAA ", "BBB ", "CCC "}
 	base64BlockIDs := make([]string, len(words))

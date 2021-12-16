@@ -6,6 +6,7 @@ package azblob
 import (
 	"encoding/base64"
 	"strings"
+	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -14,8 +15,8 @@ func getAccountKey(cred *SharedKeyCredential) string {
 	return base64.StdEncoding.EncodeToString(cred.accountKey.Load().([]byte))
 }
 
-func (s *azblobTestSuite) TestConnectionStringParser() {
-	_assert := assert.New(s.T())
+func TestConnectionStringParser(t *testing.T) {
+	_assert := assert.New(t)
 
 	connStr := "DefaultEndpointsProtocol=https;AccountName=dummyaccount;AccountKey=secretkeykey;EndpointSuffix=core.windows.net"
 	serviceURL, sharedKeyCred, err := parseConnectionString(connStr)
@@ -35,8 +36,8 @@ func (s *azblobTestSuite) TestConnectionStringParser() {
 	_assert.True(strings.Contains(client.client.con.Endpoint(), "core.windows.net"))
 }
 
-func (s *azblobTestSuite) TestConnectionStringParserHTTP() {
-	_assert := assert.New(s.T())
+func TestConnectionStringParserHTTP(t *testing.T) {
+	_assert := assert.New(t)
 
 	connStr := "DefaultEndpointsProtocol=http;AccountName=dummyaccount;AccountKey=secretkeykey;EndpointSuffix=core.windows.net"
 	serviceURL, sharedKeyCred, err := parseConnectionString(connStr)
@@ -56,8 +57,8 @@ func (s *azblobTestSuite) TestConnectionStringParserHTTP() {
 	_assert.True(strings.Contains(client.client.con.Endpoint(), "core.windows.net"))
 }
 
-func (s *azblobTestSuite) TestConnectionStringParserBasic() {
-	_assert := assert.New(s.T())
+func TestConnectionStringParserBasic(t *testing.T) {
+	_assert := assert.New(t)
 	connStr := "AccountName=dummyaccount;AccountKey=secretkeykey"
 	serviceURL, sharedKeyCred, err := parseConnectionString(connStr)
 	_assert.NoError(err)
@@ -76,8 +77,8 @@ func (s *azblobTestSuite) TestConnectionStringParserBasic() {
 	_assert.True(strings.Contains(client.client.con.Endpoint(), "core.windows.net"))
 }
 
-func (s *azblobTestSuite) TestConnectionStringParserCustomDomain() {
-	_assert := assert.New(s.T())
+func TestConnectionStringParserCustomDomain(t *testing.T) {
+	_assert := assert.New(t)
 	connStr := "AccountName=dummyaccount;AccountKey=secretkeykey;BlobEndpoint=www.mydomain.com;"
 	serviceURL, sharedKeyCred, err := parseConnectionString(connStr)
 	_assert.NoError(err)
@@ -96,8 +97,8 @@ func (s *azblobTestSuite) TestConnectionStringParserCustomDomain() {
 	_assert.True(strings.Contains(client.client.con.Endpoint(), "mydomain.com"))
 }
 
-func (s *azblobTestSuite) TestConnectionStringParserInvalid() {
-	_assert := assert.New(s.T())
+func TestConnectionStringParserInvalid(t *testing.T) {
+	_assert := assert.New(t)
 	badConnectionStrings := []string{
 		"",
 		"foobar",
@@ -116,8 +117,8 @@ func (s *azblobTestSuite) TestConnectionStringParserInvalid() {
 	}
 }
 
-func (s *azblobTestSuite) TestConnectionStringSAS() {
-	_assert := assert.New(s.T())
+func TestConnectionStringSAS(t *testing.T) {
+	_assert := assert.New(t)
 	connStr := "AccountName=dummyaccount;SharedAccessSignature=fakesharedaccesssignature;"
 	serviceURL, cred, err := parseConnectionString(connStr)
 	_assert.NoError(err)
@@ -131,8 +132,8 @@ func (s *azblobTestSuite) TestConnectionStringSAS() {
 	_assert.True(strings.Contains(client.client.con.Endpoint(), "core.windows.net"))
 }
 
-func (s *azblobTestSuite) TestConnectionStringChinaCloud() {
-	_assert := assert.New(s.T())
+func TestConnectionStringChinaCloud(t *testing.T) {
+	_assert := assert.New(t)
 	connStr := "AccountName=dummyaccountname;AccountKey=secretkeykey;DefaultEndpointsProtocol=http;EndpointSuffix=core.chinacloudapi.cn;"
 	serviceURL, cred, err := parseConnectionString(connStr)
 	_assert.NoError(err)
@@ -150,8 +151,8 @@ func (s *azblobTestSuite) TestConnectionStringChinaCloud() {
 	_assert.Equal(getAccountKey(client.sharedKey), "secretkeykey")
 }
 
-func (s *azblobTestSuite) TestConnectionStringAzurite() {
-	_assert := assert.New(s.T())
+func TestConnectionStringAzurite(t *testing.T) {
+	_assert := assert.New(t)
 	connStr := "DefaultEndpointsProtocol=http;AccountName=dummyaccountname;AccountKey=secretkeykey;BlobEndpoint=http://local-machine:11002/custom/account/path/faketokensignature;"
 	serviceURL, cred, err := parseConnectionString(connStr)
 	_assert.NoError(err)

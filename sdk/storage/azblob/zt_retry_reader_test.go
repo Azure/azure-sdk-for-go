@@ -11,6 +11,7 @@ import (
 	"math/rand"
 	"net"
 	"net/http"
+	"testing"
 	"time"
 
 	"github.com/stretchr/testify/assert"
@@ -94,8 +95,8 @@ func (r *perByteReader) Close() error {
 // Test normal retry succeed, note initial response not provided.
 // Tests both with and without notification of failures
 //nolint
-func (s *azblobUnrecordedTestSuite) TestRetryReaderReadWithRetry() {
-	_assert := assert.New(s.T())
+func TestRetryReaderReadWithRetry(t *testing.T) {
+	_assert := assert.New(t)
 	// Test twice, the second time using the optional "logging"/notification callback for failed tries
 	// We must test both with and without the callback, since be testing without
 	// we are testing that it is, indeed, optional to provide the callback
@@ -166,8 +167,8 @@ func (s *azblobUnrecordedTestSuite) TestRetryReaderReadWithRetry() {
 // Test normal retry succeed, note initial response not provided.
 // Tests both with and without notification of failures
 //nolint
-func (s *azblobUnrecordedTestSuite) TestRetryReaderWithRetryIoUnexpectedEOF() {
-	_assert := assert.New(s.T())
+func TestRetryReaderWithRetryIoUnexpectedEOF(t *testing.T) {
+	_assert := assert.New(t)
 	// Test twice, the second time using the optional "logging"/notification callback for failed tries
 	// We must test both with and without the callback, since be testing without
 	// we are testing that it is, indeed, optional to provide the callback
@@ -237,8 +238,8 @@ func (s *azblobUnrecordedTestSuite) TestRetryReaderWithRetryIoUnexpectedEOF() {
 
 // Test normal retry fail as retry Count not enough.
 //nolint
-func (s *azblobUnrecordedTestSuite) TestRetryReaderReadNegativeNormalFail() {
-	_assert := assert.New(s.T())
+func TestRetryReaderReadNegativeNormalFail(t *testing.T) {
+	_assert := assert.New(t)
 	// Extra setup for testing notification of failures (i.e. of unsuccessful tries)
 	failureMethodNumCalls := 0
 	failureWillRetryCount := 0
@@ -294,8 +295,8 @@ func (s *azblobUnrecordedTestSuite) TestRetryReaderReadNegativeNormalFail() {
 
 // Test boundary case when Count equals to 0 and fail.
 //nolint
-func (s *azblobUnrecordedTestSuite) TestRetryReaderReadCount0() {
-	_assert := assert.New(s.T())
+func TestRetryReaderReadCount0(t *testing.T) {
+	_assert := assert.New(t)
 	byteCount := 1
 	body := newPerByteReader(byteCount)
 	body.doInjectError = true
@@ -329,8 +330,8 @@ func (s *azblobUnrecordedTestSuite) TestRetryReaderReadCount0() {
 }
 
 //nolint
-func (s *azblobUnrecordedTestSuite) TestRetryReaderReadNegativeNonRetriableError() {
-	_assert := assert.New(s.T())
+func TestRetryReaderReadNegativeNonRetriableError(t *testing.T) {
+	_assert := assert.New(t)
 	byteCount := 1
 	body := newPerByteReader(byteCount)
 	body.doInjectError = true
@@ -362,8 +363,8 @@ func (s *azblobUnrecordedTestSuite) TestRetryReaderReadNegativeNonRetriableError
 // consumers of the API, to allow programmatic forcing of retries (e.g. if the consumer deems
 // the read to be taking too long, they may force a retry in the hope of better performance next time).
 //nolint
-func (s *azblobUnrecordedTestSuite) TestRetryReaderReadWithForcedRetry() {
-	_assert := assert.New(s.T())
+func TestRetryReaderReadWithForcedRetry(t *testing.T) {
+	_assert := assert.New(t)
 	for _, enableRetryOnEarlyClose := range []bool{false, true} {
 
 		// use the notification callback, so we know that the retry really did happen

@@ -5,30 +5,31 @@ package azblob
 
 import (
 	"sort"
+	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 // tests general functionality
-func (s *azblobTestSuite) TestBlobListWrapper() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+func TestBlobListWrapper(t *testing.T) {
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	containerName := generateContainerName(testName)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerName := generateContainerName(t.Name())
 	containerClient := getContainerClient(containerName, svcClient)
 
 	_, err = containerClient.Create(ctx, nil)
-	_assert.NoError(err)
-	defer deleteContainer(_assert, containerClient)
+	require.NoError(t, err)
+	defer deleteContainer(assert.New(t), containerClient)
 
 	files := []string{"a123", "b234", "c345"}
 
-	createNewBlobs(_assert, files, containerClient)
+	createNewBlobs(assert.New(t), files, containerClient)
 
 	pager := containerClient.ListBlobsFlat(nil)
 
@@ -41,33 +42,32 @@ func (s *azblobTestSuite) TestBlobListWrapper() {
 			found = append(found, *blob.Name)
 		}
 	}
-	_assert.Nil(pager.Err())
+	require.Nil(t, pager.Err())
 
 	sort.Strings(files)
 	sort.Strings(found)
 
-	_assert.EqualValues(found, files)
+	require.EqualValues(t, found, files)
 }
 
 // tests that the buffer filling isn't a problem
-func (s *azblobTestSuite) TestBlobListWrapperFullBuffer() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+func TestBlobListWrapperFullBuffer(t *testing.T) {
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	containerClient := getContainerClient(generateContainerName(testName), svcClient)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := getContainerClient(generateContainerName(t.Name()), svcClient)
 
 	_, err = containerClient.Create(ctx, nil)
-	_assert.NoError(err)
-	defer deleteContainer(_assert, containerClient)
+	require.NoError(t, err)
+	defer deleteContainer(assert.New(t), containerClient)
 
 	files := []string{"a123", "b234", "c345"}
 
-	createNewBlobs(_assert, files, containerClient)
+	createNewBlobs(assert.New(t), files, containerClient)
 
 	pager := containerClient.ListBlobsFlat(nil)
 
@@ -80,27 +80,26 @@ func (s *azblobTestSuite) TestBlobListWrapperFullBuffer() {
 			found = append(found, *blob.Name)
 		}
 	}
-	_assert.Nil(pager.Err())
+	require.Nil(t, pager.Err())
 
 	sort.Strings(files)
 	sort.Strings(found)
 
-	_assert.EqualValues(files, found)
+	require.EqualValues(t, files, found)
 }
 
-func (s *azblobTestSuite) TestBlobListWrapperListingError() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+func TestBlobListWrapperListingError(t *testing.T) {
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	containerClient := getContainerClient(generateContainerName(testName), svcClient)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := getContainerClient(generateContainerName(t.Name()), svcClient)
 
 	pager := containerClient.ListBlobsFlat(nil)
 
-	_assert.Equal(pager.NextPage(ctx), false)
-	_assert.NotNil(pager.Err())
+	require.Equal(t, pager.NextPage(ctx), false)
+	require.NotNil(t, pager.Err())
 }

@@ -5,54 +5,52 @@ package azblob
 
 import (
 	"context"
+	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 //var headersToIgnoreForLease = []string {"X-Ms-Proposed-Lease-Id", "X-Ms-Lease-Id"}
 var proposedLeaseIDs = []*string{to.StringPtr("c820a799-76d7-4ee2-6e15-546f19325c2c"), to.StringPtr("326cc5e1-746e-4af8-4811-a50e6629a8ca")}
 
-func (s *azblobTestSuite) TestContainerAcquireLease() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
+func TestContainerAcquireLease(t *testing.T) {
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
 
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerName := generateContainerName(t.Name())
+	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
+	defer deleteContainer(assert.New(t), containerClient)
 
 	containerLeaseClient, _ := containerClient.NewContainerLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &AcquireLeaseContainerOptions{Duration: to.Int32Ptr(60)})
-	_assert.NoError(err)
-	_assert.NotNil(acquireLeaseResponse.LeaseID)
-	_assert.EqualValues(acquireLeaseResponse.LeaseID, containerLeaseClient.leaseID)
+	require.NoError(t, err)
+	require.NotNil(t, acquireLeaseResponse.LeaseID)
+	require.EqualValues(t, acquireLeaseResponse.LeaseID, containerLeaseClient.leaseID)
 
 	_, err = containerLeaseClient.ReleaseLease(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(t, err)
 }
 
-func (s *azblobTestSuite) TestContainerDeleteContainerWithoutLeaseId() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
+func TestContainerDeleteContainerWithoutLeaseId(t *testing.T) {
+	_assert := assert.New(t)
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
 
-	containerName := generateContainerName(testName)
+	containerName := generateContainerName(t.Name())
 	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(assert.New(t), containerClient)
 
 	containerLeaseClient, _ := containerClient.NewContainerLeaseClient(proposedLeaseIDs[0])
 
@@ -74,21 +72,18 @@ func (s *azblobTestSuite) TestContainerDeleteContainerWithoutLeaseId() {
 	_assert.NoError(err)
 }
 
-func (s *azblobTestSuite) TestContainerReleaseLease() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
+func TestContainerReleaseLease(t *testing.T) {
+	_assert := assert.New(t)
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	_context := getTestContext(testName)
-	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
 
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerName := generateContainerName(t.Name())
+	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
+	defer deleteContainer(assert.New(t), containerClient)
 
 	containerLeaseClient, _ := containerClient.NewContainerLeaseClient(proposedLeaseIDs[0])
 
@@ -108,21 +103,18 @@ func (s *azblobTestSuite) TestContainerReleaseLease() {
 	_assert.NoError(err)
 }
 
-func (s *azblobTestSuite) TestContainerRenewLease() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
+func TestContainerRenewLease(t *testing.T) {
+	_assert := assert.New(t)
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	_context := getTestContext(testName)
-	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
 
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerName := generateContainerName(t.Name())
+	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
+	defer deleteContainer(assert.New(t), containerClient)
 
 	containerLeaseClient, _ := containerClient.NewContainerLeaseClient(proposedLeaseIDs[0])
 
@@ -139,21 +131,18 @@ func (s *azblobTestSuite) TestContainerRenewLease() {
 	_assert.NoError(err)
 }
 
-func (s *azblobTestSuite) TestContainerChangeLease() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
+func TestContainerChangeLease(t *testing.T) {
+	_assert := assert.New(t)
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	_context := getTestContext(testName)
-	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
 
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerName := generateContainerName(t.Name())
+	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
+	defer deleteContainer(assert.New(t), containerClient)
 
 	containerLeaseClient, _ := containerClient.NewContainerLeaseClient(proposedLeaseIDs[0])
 
@@ -177,24 +166,21 @@ func (s *azblobTestSuite) TestContainerChangeLease() {
 	_assert.NoError(err)
 }
 
-func (s *azblobTestSuite) TestBlobAcquireLease() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
+func TestBlobAcquireLease(t *testing.T) {
+	_assert := assert.New(t)
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	_context := getTestContext(testName)
-	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
 
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	containerName := generateContainerName(t.Name())
+	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
+	defer deleteContainer(assert.New(t), containerClient)
 
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
-
-	blobName := generateBlobName(testName)
-	bbClient := createNewBlockBlob(_assert, blobName, containerClient)
+	blobName := generateBlobName(t.Name())
+	bbClient := createNewBlockBlob(assert.New(t), blobName, containerClient)
 	blobLeaseClient, _ := bbClient.NewBlobLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
@@ -207,24 +193,21 @@ func (s *azblobTestSuite) TestBlobAcquireLease() {
 	_assert.NoError(err)
 }
 
-func (s *azblobTestSuite) TestDeleteBlobWithoutLeaseId() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
+func TestDeleteBlobWithoutLeaseId(t *testing.T) {
+	_assert := assert.New(t)
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	_context := getTestContext(testName)
-	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
 
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	containerName := generateContainerName(t.Name())
+	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
+	defer deleteContainer(assert.New(t), containerClient)
 
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
-
-	blobName := generateBlobName(testName)
-	bbClient := createNewBlockBlob(_assert, blobName, containerClient)
+	blobName := generateBlobName(t.Name())
+	bbClient := createNewBlockBlob(assert.New(t), blobName, containerClient)
 	blobLeaseClient, _ := bbClient.NewBlobLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
@@ -247,24 +230,21 @@ func (s *azblobTestSuite) TestDeleteBlobWithoutLeaseId() {
 	_assert.NoError(err)
 }
 
-func (s *azblobTestSuite) TestBlobReleaseLease() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
+func TestBlobReleaseLease(t *testing.T) {
+	_assert := assert.New(t)
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	_context := getTestContext(testName)
-	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
 
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	containerName := generateContainerName(t.Name())
+	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
+	defer deleteContainer(assert.New(t), containerClient)
 
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
-
-	blobName := generateBlobName(testName)
-	bbClient := createNewBlockBlob(_assert, blobName, containerClient)
+	blobName := generateBlobName(t.Name())
+	bbClient := createNewBlockBlob(assert.New(t), blobName, containerClient)
 	blobLeaseClient, _ := bbClient.NewBlobLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
@@ -283,21 +263,21 @@ func (s *azblobTestSuite) TestBlobReleaseLease() {
 	_assert.NoError(err)
 }
 
-func (s *azblobTestSuite) TestBlobRenewLease() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+func TestBlobRenewLease(t *testing.T) {
+	_assert := assert.New(t)
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
 
-	blobName := generateBlobName(testName)
-	bbClient := createNewBlockBlob(_assert, blobName, containerClient)
+	containerName := generateContainerName(t.Name())
+	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
+	defer deleteContainer(assert.New(t), containerClient)
+
+	blobName := generateBlobName(t.Name())
+	bbClient := createNewBlockBlob(assert.New(t), blobName, containerClient)
 	blobLeaseClient, _ := bbClient.NewBlobLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
@@ -313,24 +293,21 @@ func (s *azblobTestSuite) TestBlobRenewLease() {
 	_assert.NoError(err)
 }
 
-func (s *azblobTestSuite) TestBlobChangeLease() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
+func TestBlobChangeLease(t *testing.T) {
+	_assert := assert.New(t)
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
 
-	_context := getTestContext(testName)
-	//ignoreHeaders(_context.recording, headersToIgnoreForLease)
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
 
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	containerName := generateContainerName(t.Name())
+	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
+	defer deleteContainer(assert.New(t), containerClient)
 
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
-
-	blobName := generateBlobName(testName)
-	bbClient := createNewBlockBlob(_assert, blobName, containerClient)
+	blobName := generateBlobName(t.Name())
+	bbClient := createNewBlockBlob(assert.New(t), blobName, containerClient)
 	blobLeaseClient, _ := bbClient.NewBlobLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()

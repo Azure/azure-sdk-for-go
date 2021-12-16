@@ -9,6 +9,7 @@ package azsecrets
 import (
 	"context"
 	"errors"
+	"fmt"
 	"net/http"
 	"os"
 	"strings"
@@ -16,9 +17,11 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets/internal"
 	"github.com/stretchr/testify/require"
 )
 
@@ -228,6 +231,9 @@ func TestDeleteSecret(t *testing.T) {
 
 	_, err = client.GetSecret(context.Background(), secret, nil)
 	require.Error(t, err)
+
+	_, err = resp.Poller.FinalResponse(context.TODO())
+	require.NoError(t, err)
 }
 
 func TestPurgeDeletedSecret(t *testing.T) {
@@ -266,11 +272,13 @@ func TestPurgeDeletedSecret(t *testing.T) {
 func TestUpdateSecretProperties(t *testing.T) {
 	stop := startTest(t)
 	defer stop()
+	err := recording.SetBodilessMatcher(t, nil)
+	require.NoError(t, err)
 
 	client, err := createClient(t)
 	require.NoError(t, err)
 
-	secret, err := createRandomName(t, "secret")
+	secret, err := createRandomName(t, "secret2")
 	require.NoError(t, err)
 	value, err := createRandomName(t, "value")
 	require.NoError(t, err)
@@ -284,10 +292,17 @@ func TestUpdateSecretProperties(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, *getResp.Value, value)
 
+	expires := time.Now().Add(48 * time.Hour)
+	nb := time.Now().Add(-24 * time.Hour)
 	params := Properties{
 		ContentType: to.StringPtr("password"),
 		Tags: map[string]string{
 			"Tag1": "TagVal1",
+		},
+		SecretAttributes: &Attributes{
+			Enabled:   to.BoolPtr(true),
+			Expires:   &expires,
+			NotBefore: &nb,
 		},
 	}
 
@@ -407,6 +422,54 @@ func TestTimeout(t *testing.T) {
 	c := context.Background()
 	c, cancelFunc := context.WithTimeout(c, 10*time.Second)
 	defer cancelFunc()
+
+	start := time.Now()
+	_, err = client.GetSecret(c, "nonexistentsecret", nil)
+	require.Error(t, err)
+	require.ErrorIs(t, err, context.DeadlineExceeded)
+	require.Less(t, time.Since(start).Seconds(), 11.0)
+	require.Greater(t, time.Since(start).Seconds(), 9.0)
+}
+
+func TestConstants(t *testing.T) {
+	d := CustomizedRecoverable
+	require.Equal(t, *d.toGenerated(), internal.DeletionRecoveryLevelCustomizedRecoverable)
+
+	d1 := CustomizedRecoverableProtectedSubscription
+	require.Equal(t, *d1.toGenerated(), internal.DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription)
+
+	d2 := CustomizedRecoverablePurgeable
+	require.Equal(t, *d2.toGenerated(), internal.DeletionRecoveryLevelCustomizedRecoverablePurgeable)
+
+	d3 := Purgeable
+	require.Equal(t, *d3.toGenerated(), internal.DeletionRecoveryLevelPurgeable)
+
+	d4 := Recoverable
+	require.Equal(t, *d4.toGenerated(), internal.DeletionRecoveryLevelRecoverable)
+
+	d5 := RecoverableProtectedSubscription
+	require.Equal(t, *d5.toGenerated(), internal.DeletionRecoveryLevelRecoverableProtectedSubscription)
+
+	d6 := RecoverablePurgeable
+	require.Equal(t, *d6.toGenerated(), internal.DeletionRecoveryLevelRecoverablePurgeable)
+}
+
+func TestLogging(t *testing.T) {
+	fakeKVUrl := "https://test-sync-time-dummy.vault.azure.net/"
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	require.NoError(t, err)
+
+	client, err := NewClient(fakeKVUrl, cred, nil)
+	require.NoError(t, err)
+
+	c := context.Background()
+	c, cancelFunc := context.WithTimeout(c, 10*time.Second)
+	defer cancelFunc()
+
+	log.SetListener(func(cls log.Event, msg string) {
+		fmt.Println(msg)
+	})
+	log.SetEvents(log.EventRequest, log.EventResponse)
 
 	start := time.Now()
 	_, err = client.GetSecret(c, "nonexistentsecret", nil)

@@ -125,7 +125,7 @@ func Test_isRetryableAMQPError(t *testing.T) {
 func Test_shouldRecreateLink(t *testing.T) {
 	require.False(t, shouldRecreateLink(nil))
 
-	require.True(t, shouldRecreateLink(amqp.ErrLinkDetached))
+	require.True(t, shouldRecreateLink(&amqp.DetachError{}))
 
 	// going to treat these as "connection troubles" and throw them into the
 	// connection recovery scenario instead.

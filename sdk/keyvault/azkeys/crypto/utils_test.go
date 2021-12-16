@@ -22,65 +22,18 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// var pathToPackage = "sdk/keyvault/azkeys/crypto/testdata"
-
 const fakeKvURL = "https://fakekvurl.vault.azure.net/"
 
-// func startTest(t *testing.T) func() {
-// 	err := recording.Start(t, pathToPackage, nil)
-// 	require.NoError(t, err)
-// 	return func() {
-// 		err := recording.Stop(t, nil)
-// 		require.NoError(t, err)
-// 	}
-// }
+var pathToPackage = "sdk/keyvault/azkeys/testdata"
 
-func createRandomName(t *testing.T, prefix string) (string, error) {
-	h := fnv.New32a()
-	_, err := h.Write([]byte(t.Name()))
-	return prefix + fmt.Sprint(h.Sum32()), err
+func startTest(t *testing.T) func() {
+	err := recording.Start(t, pathToPackage, nil)
+	require.NoError(t, err)
+	return func() {
+		err := recording.Stop(t, nil)
+		require.NoError(t, err)
+	}
 }
-
-// type recordingPolicy struct {
-// 	options recording.RecordingOptions
-// 	t       *testing.T
-// }
-
-// func (r recordingPolicy) Host() string {
-// 	if r.options.UseHTTPS {
-// 		return "localhost:5001"
-// 	}
-// 	return "localhost:5000"
-// }
-
-// func (r recordingPolicy) Scheme() string {
-// 	if r.options.UseHTTPS {
-// 		return "https"
-// 	}
-// 	return "http"
-// }
-
-// func NewRecordingPolicy(t *testing.T, o *recording.RecordingOptions) policy.Policy {
-// 	if o == nil {
-// 		o = &recording.RecordingOptions{UseHTTPS: true}
-// 	}
-// 	p := &recordingPolicy{options: *o, t: t}
-// 	return p
-// }
-
-// func (p *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
-// 	if recording.GetRecordMode() != "live" {
-// 		originalURLHost := req.Raw().URL.Host
-// 		req.Raw().URL.Scheme = p.Scheme()
-// 		req.Raw().URL.Host = p.Host()
-// 		req.Raw().Host = p.Host()
-
-// 		req.Raw().Header.Set(recording.UpstreamURIHeader, fmt.Sprintf("%v://%v", p.Scheme(), originalURLHost))
-// 		req.Raw().Header.Set(recording.ModeHeader, recording.GetRecordMode())
-// 		req.Raw().Header.Set(recording.IDHeader, recording.GetRecordingId(p.t))
-// 	}
-// 	return req.Next()
-// }
 
 func lookupEnvVar(s string) string {
 	ret, ok := os.LookupEnv(s)
@@ -103,45 +56,6 @@ func getCredential(t *testing.T) azcore.TokenCredential {
 	}
 }
 
-func createClient(t *testing.T, key string) (*Client, error) {
-	// p := NewRecordingPolicy(t, &recording.RecordingOptions{UseHTTPS: true})
-	// client, err := recording.GetHTTPClient(t)
-	// require.NoError(t, err)
-
-	// options := &ClientOptions{
-	// 	azcore.ClientOptions{
-	// 		PerCallPolicies: []policy.Policy{p},
-	// 		Transport:       client,
-	// 	},
-	// }
-
-	cred := getCredential(t)
-
-	return NewClient(key, cred, nil)
-}
-
-func createKeyClient(t *testing.T) (*azkeys.Client, error) {
-	vaultUrl := recording.GetEnvVariable("AZURE_KEYVAULT_URL", fakeKvURL)
-	if recording.GetRecordMode() == "playback" {
-		vaultUrl = fakeKvURL
-	}
-
-	// p := NewRecordingPolicy(t, &recording.RecordingOptions{UseHTTPS: true})
-	// client, err := recording.GetHTTPClient(t)
-	// require.NoError(t, err)
-
-	// options := &azkeys.ClientOptions{
-	// 	ClientOptions: azcore.ClientOptions{
-	// 		PerCallPolicies: []policy.Policy{p},
-	// 		Transport:       client,
-	// 	},
-	// }
-
-	cred := getCredential(t)
-
-	return azkeys.NewClient(vaultUrl, cred, nil)
-}
-
 type FakeCredential struct {
 	accountName string
 	accountKey  string
@@ -159,4 +73,52 @@ func (f *FakeCredential) GetToken(ctx context.Context, options policy.TokenReque
 		Token:     "faketoken",
 		ExpiresOn: time.Date(2040, time.January, 1, 1, 1, 1, 1, time.UTC),
 	}, nil
+}
+
+func createCryptoClient(t *testing.T, key string) (*Client, error) {
+	transport, err := recording.NewRecordingHTTPClient(t, nil)
+	require.NoError(t, err)
+
+	options := &ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			Transport: transport,
+		},
+	}
+
+	cred := getCredential(t)
+
+	return NewClient(key, cred, options)
+}
+
+func createRandomName(t *testing.T, prefix string) (string, error) {
+	h := fnv.New32a()
+	_, err := h.Write([]byte(t.Name()))
+	return prefix + fmt.Sprint(h.Sum32()), err
+}
+
+func createClient(t *testing.T) (*azkeys.Client, error) {
+	vaultUrl := recording.GetEnvVariable("AZURE_KEYVAULT_URL", fakeKvURL)
+	var credOptions *azidentity.ClientSecretCredentialOptions
+
+	transport, err := recording.NewRecordingHTTPClient(t, nil)
+	require.NoError(t, err)
+
+	options := &azkeys.ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			Transport: transport,
+		},
+	}
+
+	var cred azcore.TokenCredential
+	if recording.GetRecordMode() != "playback" {
+		tenantId := lookupEnvVar("AZKEYS_TENANT_ID")
+		clientId := lookupEnvVar("AZKEYS_CLIENT_ID")
+		clientSecret := lookupEnvVar("AZKEYS_CLIENT_SECRET")
+		cred, err = azidentity.NewClientSecretCredential(tenantId, clientId, clientSecret, credOptions)
+		require.NoError(t, err)
+	} else {
+		cred = NewFakeCredential("fake", "fake")
+	}
+
+	return azkeys.NewClient(vaultUrl, cred, options)
 }

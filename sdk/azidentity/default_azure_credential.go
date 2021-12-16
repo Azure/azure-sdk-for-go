@@ -11,11 +11,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
-const (
-	organizationsTenantID   = "organizations"
-	developerSignOnClientID = "04b07795-8ddb-461a-bbee-02f9e1bf7b46"
-)
-
 // DefaultAzureCredentialOptions contains optional parameters for DefaultAzureCredential.
 // These options may not apply to all credentials in the chain.
 type DefaultAzureCredentialOptions struct {
@@ -45,28 +40,27 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 	var creds []azcore.TokenCredential
 	errMsg := ""
 
-	cp := DefaultAzureCredentialOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &DefaultAzureCredentialOptions{}
 	}
 
-	envCred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{AuthorityHost: cp.AuthorityHost,
-		ClientOptions: cp.ClientOptions,
-	})
+	envCred, err := NewEnvironmentCredential(
+		&EnvironmentCredentialOptions{AuthorityHost: options.AuthorityHost, ClientOptions: options.ClientOptions},
+	)
 	if err == nil {
 		creds = append(creds, envCred)
 	} else {
 		errMsg += err.Error()
 	}
 
-	msiCred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ClientOptions: cp.ClientOptions})
+	msiCred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ClientOptions: options.ClientOptions})
 	if err == nil {
 		creds = append(creds, msiCred)
 	} else {
 		errMsg += err.Error()
 	}
 
-	cliCred, err := NewAzureCLICredential(&AzureCLICredentialOptions{TenantID: cp.TenantID})
+	cliCred, err := NewAzureCLICredential(&AzureCLICredentialOptions{TenantID: options.TenantID})
 	if err == nil {
 		creds = append(creds, cliCred)
 	} else {

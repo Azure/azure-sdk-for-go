@@ -32,6 +32,8 @@ The Azure Tables library allows you to interact with two types of resources:
 Interaction with these resources starts with an instance of a [client](#clients). To create a client object, you will need the account's table service endpoint URL and a credential that allows you to access the account. The `endpoint` can be found on the page for your storage account in the [Azure Portal][azure_portal_account_url] under the "Access Keys" section or by running the following Azure CLI command:
 
 ```bash
+# Log in to Azure CLI first, this opens a browser window
+az login
 # Get the table service URL for the account
 az storage account show -n mystorageaccount -g MyResourceGroup --query "primaryEndpoints.table"
 ```
@@ -51,6 +53,15 @@ The clients support different forms of authentication. Cosmos accounts can use a
 
 The aztables package supports any of the types that implement the `azcore.TokenCredential` interface, authorization via a Connection String, or authorization with a Shared Access Signature Token.
 
+##### Creating the client with an AAD credential
+Use AAD authentication as the credential parameter to authenticate the client:
+```golang
+cred, err := azidentity.NewDefaultAzureCredential(nil)
+handle(err)
+serviceClient, err := aztables.NewServiceClient("https://<myAccountName>.table.core.windows.net/", cred, nil)
+handle(err)
+```
+
 ##### Creating the client from a shared key
 To use an account [shared key][azure_shared_key] (aka account key or access key), provide the key as a string. This can be found in your storage account in the [Azure Portal][azure_portal_account_url] under the "Access Keys" section or by running the following Azure CLI command:
 
@@ -58,11 +69,10 @@ To use an account [shared key][azure_shared_key] (aka account key or access key)
 az storage account keys list -g MyResourceGroup -n MyStorageAccount
 ```
 
-Use AAD authentication as the credential parameter to authenticate the client:
 ```golang
-cred, err := azidentity.NewDefaultAzureCredential(nil)
+cred, err := aztables.NewSharedKeyCredential("<accountName>", "<accountKey>")
 handle(err)
-serviceClient, err := aztables.NewServiceClient("https://<myAccountName>.table.core.windows.net/", cred, nil)
+client, err := aztables.NewServiceClientWithSharedKey(serviceURL, cred, nil)
 handle(err)
 ```
 

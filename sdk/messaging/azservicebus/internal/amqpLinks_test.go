@@ -143,7 +143,7 @@ func TestAMQPLinksRecovery(t *testing.T) {
 	createLinkCalled = 0
 
 	// let's do just a link level one
-	require.NoError(t, links.RecoverIfNeeded(ctx, links.revision+1, amqp.ErrLinkDetached), amqp.ErrLinkDetached.Error())
+	require.NoError(t, links.RecoverIfNeeded(ctx, links.revision+1, &amqp.DetachError{}), &amqp.DetachError{})
 	require.EqualValues(t, 0, ns.recovered)
 	require.EqualValues(t, 1, sender.Closed)
 	require.EqualValues(t, 1, createLinkCalled)
@@ -161,7 +161,7 @@ func TestAMQPLinksRecovery(t *testing.T) {
 	createLinkCalled = 0
 
 	// cancellation overrides any other logic.
-	require.Error(t, links.RecoverIfNeeded(ctx, links.revision+1, amqp.ErrLinkDetached), amqp.ErrLinkDetached.Error())
+	require.Error(t, links.RecoverIfNeeded(ctx, links.revision+1, &amqp.DetachError{}), &amqp.DetachError{})
 	require.EqualValues(t, 0, ns.recovered)
 	require.EqualValues(t, 0, sender.Closed)
 	require.EqualValues(t, 0, createLinkCalled)

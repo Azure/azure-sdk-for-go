@@ -272,7 +272,7 @@ func (l *Link) RPC(ctx context.Context, msg *amqp.Message) (*Response, error) {
 	ctx, span := tracing.StartSpanFromContext(ctx, "az-amqp-common.rpc.RPC")
 	defer span.End()
 
-	msg.Properties.ReplyTo = l.clientAddress
+	msg.Properties.ReplyTo = &l.clientAddress
 
 	if msg.ApplicationProperties == nil {
 		msg.ApplicationProperties = make(map[string]interface{})
@@ -496,8 +496,10 @@ func addMessageID(message *amqp.Message, uuidNewV4 func() (uuid.UUID, error)) (*
 }
 
 func isClosedError(err error) bool {
+	var detachError *amqp.DetachError
+
 	return errors.Is(err, amqp.ErrLinkClosed) ||
-		errors.Is(err, amqp.ErrLinkDetached) ||
+		errors.As(err, &detachError) ||
 		errors.Is(err, amqp.ErrConnClosed) ||
 		errors.Is(err, amqp.ErrSessionClosed)
 }

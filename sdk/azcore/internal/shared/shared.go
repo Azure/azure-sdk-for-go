@@ -37,11 +37,6 @@ func NopCloser(rs io.ReadSeeker) io.ReadSeekCloser {
 	return nopCloser{rs}
 }
 
-// BodyDownloadPolicyOpValues is the struct containing the per-operation values
-type BodyDownloadPolicyOpValues struct {
-	Skip bool
-}
-
 func NewResponseError(inner error, resp *http.Response) error {
 	return &ResponseError{inner: inner, resp: resp}
 }

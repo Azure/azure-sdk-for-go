@@ -8,6 +8,7 @@
 ### Breaking Changes
 * Moved `[]policy.Policy` parameters of `arm/runtime.NewPipeline` and `runtime.NewPipeline` into a new struct, `runtime.PipelineOptions`
 * Renamed `arm/ClientOptions.Host` to `.Endpoint`
+* Moved `Request.SkipBodyDownload` method to function `runtime.SkipBodyDownload`
 
 ### Bugs Fixed
 

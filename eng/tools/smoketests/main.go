@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"io/fs"
@@ -174,8 +175,6 @@ func GetTopLevel() string {
 // BuildModFile creates a go.mod file and adds replace directives for the appropriate modules.
 // If serviceDirectory is a blank string it replaces all modules, otherwise it only replaces matching modules
 func BuildModFile(modules []Module, serviceDirectory string) error {
-	fmt.Println("Creating mod file manually at ", smoketestModFile)
-
 	f, err := os.OpenFile(smoketestModFile, os.O_RDWR, 0666)
 	handle(err)
 	defer f.Close()
@@ -325,7 +324,7 @@ func ReplacePackageStatement(root string) error {
 	})
 }
 
-func BuildMainFile(root string) error {
+func BuildMainFile(root string, c ConfigFile) error {
 	mainFile := filepath.Join(root, "main.go")
 	f, err := os.Create(mainFile)
 	if err != nil {
@@ -339,6 +338,12 @@ func BuildMainFile(root string) error {
 	// Write the main.go file
 
 	src := "package main\nfunc main() {"
+
+	fmt.Println(envVars)
+	for _, envVar := range envVars {
+		src += fmt.Sprintf(`os.Setenv("%s", "%s")`, envVar, FindEnvVarFromConfig(c, envVar))
+		src += "\n"
+	}
 
 	for _, exampleFunc := range exampleFuncs {
 		src += fmt.Sprintf("%s()\n", exampleFunc)
@@ -364,6 +369,7 @@ func FindEnvVars(root string) error {
 }
 
 func searchFile(path string) error {
+	fmt.Println("searching file")
 	var envVarRegex *regexp.Regexp
 	if runtime.GOOS == "windows" {
 		envVarRegex = regexp.MustCompile(`(?m)os.LookupEnv(.*)\r\n`)
@@ -388,6 +394,18 @@ func searchFile(path string) error {
 	Getenvs := envVarRegex.FindAllString(stringData, -1)
 	envVars = append(envVars, trimGetenvs(Getenvs)...)
 	return nil
+}
+
+func FindEnvVarFromConfig(c ConfigFile, envVar string) string {
+	for _, p := range c.Packages {
+		for key, value := range p.EnvironmentVariables {
+			if key == envVar {
+				return value
+			}
+		}
+	}
+
+	return ""
 }
 
 func trimLookupEnvs(values []string) []string {
@@ -420,6 +438,18 @@ func trimGetenvs(values []string) []string {
 	return ret
 }
 
+func LoadEngConfig(rootDirectory string) ConfigFile {
+	fileName := filepath.Join(rootDirectory, "eng", "config.json")
+	buffer, err := ioutil.ReadFile(fileName)
+	if err != nil {
+		panic(err)
+	}
+	var p ConfigFile
+	err = json.Unmarshal(buffer, &p)
+	handle(err)
+	return p
+}
+
 func main() {
 	serviceDirectory := flag.String("serviceDirectory", "", "pass in a single service directory for nightly run")
 	flag.Parse()
@@ -427,6 +457,9 @@ func main() {
 	fmt.Println("Running smoketest")
 
 	rootDirectory := GetTopLevel()
+
+	configFile := LoadEngConfig(rootDirectory)
+	fmt.Println(configFile)
 
 	absSDKPath, err := filepath.Abs(fmt.Sprintf("%s/sdk", rootDirectory))
 	handle(err)
@@ -462,9 +495,10 @@ func main() {
 	err = ReplacePackageStatement(smoketestDir)
 	handle(err)
 
-	err = BuildMainFile(smoketestDir)
+	err = FindEnvVars(smoketestDir)
 	handle(err)
 
-	// err = FindEnvVars(smoketestDir)
-	// handle(err)
+	err = BuildMainFile(smoketestDir, configFile)
+	handle(err)
+
 }

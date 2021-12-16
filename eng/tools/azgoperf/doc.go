@@ -3,6 +3,6 @@
 
 /*
 This command line tool is for running performance tests against the Azure SDK For Go
- */
+*/
 
 package main

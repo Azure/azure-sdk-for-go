@@ -49,12 +49,12 @@ func (k *keysPerfTest) GlobalTeardown() error {
 
 ## Adding Performance Tests to an SDK
 
-1. Copy the `template.go` file:
+1. Copy the `cmd/template` directory into a directory for your package:
 ```
 Copy-Item template.go aztables.go
 ```
 
-2. Change the name of `templateCmd`. Best practices are to use a `<packageName>Cmd` as the name. Fill in `Use`, `Short`, `Long`, and `RunE` for your specific test.
+2. Change the name of `TemplateCmd`. Best practices are to use a `<packageName>Cmd` as the name. Fill in `Use`, `Short`, `Long`, and `RunE` for your specific test.
 
 3. Implement the `GlobalSetup`, `Setup`, `Run`, `TearDown`, `GlobalTearDown`, and `GetMetadata` functions. All of these functions will take a `context.Context` type to prevent an erroneous test from blocking. `GetMetadata` should return a `string` with the name of the specific test. This is only used by the test proxy for generating and reading recordings. `GlobalSetup` and `GlobalTearDown` are called once each, at the beginning and end of the performance test respectively. These are good places to do client instantiation, create instances, etc. `Setup` and `TearDown` are called once before each test iteration. If there is nothing to do in any of these steps, you can use `return nil` for the implementation.
 
@@ -75,17 +75,17 @@ go build .
 
 To run a single performance test specify the test as the second argument:
 ```pwsh
-./azgoperf.exe azkeys
+./azgoperf.exe CreateEntityTest
 ```
 
 To specify flags for a performance test, add them after the second argument:
 ```pwsh
-./azgoperf.exe azkeys --duration 7 --testproxy https
+./azgoperf.exe CreateEntityTest --duration 7 --testproxy https
 ```
 
 ### Available Performance Tests
 
-| Name | Options | Package Testing | Description |
-| ---- | ------- | ----------- |
-| CreateEntityTest | None | `aztables` | Creates a single entity |
-| CreateKeyTest | None | `azkeys` | Creates a single RSA key |
+| Name | Options | Package Testing | Description | Additional Flags |
+| ---- | ------- | --------------- | ----------- | ---------------- |
+| CreateEntityTest | None | `aztables` | Creates a single entity | None |
+| CreateKeyTest | None | `azkeys` | Creates a single RSA key | None |

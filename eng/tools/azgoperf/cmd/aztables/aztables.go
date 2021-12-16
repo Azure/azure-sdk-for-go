@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package cmd
+package aztablesperf
 
 import (
 	"context"
@@ -13,14 +13,14 @@ import (
 	"os"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/eng/tools/azgoperf/cmd/recording"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/azgoperf/internal/perf"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/azgoperf/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
 	"github.com/spf13/cobra"
 )
 
-var aztablesCmd = &cobra.Command{
+var AztablesCmd = &cobra.Command{
 	Use:   "CreateEntityTest",
 	Short: "aztables perf test for creating an entity",
 	Long:  "aztables perf test for creating an entity. This test uses the `Client.InsertEntity` method to merge an entity on insertion.",
@@ -28,12 +28,8 @@ var aztablesCmd = &cobra.Command{
 		return nil
 	},
 	RunE: func(c *cobra.Command, args []string) error {
-		return RunPerfTest(&aztablesPerfTest{})
+		return perf.RunPerfTest(&aztablesPerfTest{})
 	},
-}
-
-func init() {
-	rootCmd.AddCommand(aztablesCmd)
 }
 
 type aztablesPerfTest struct {
@@ -45,8 +41,9 @@ type aztablesPerfTest struct {
 }
 
 func (a *aztablesPerfTest) createClient() error {
+	fmt.Println("PERF.TESTPROXY: ", perf.TestProxy)
 	options := &aztables.ClientOptions{}
-	if TestProxy == "http" {
+	if perf.TestProxy == "http" {
 		t, err := recording.NewProxyTransport(&recording.TransportOptions{UseHTTPS: true, TestName: a.GetMetadata()})
 		if err != nil {
 			return err
@@ -56,7 +53,7 @@ func (a *aztablesPerfTest) createClient() error {
 				Transport: t,
 			},
 		}
-	} else if TestProxy == "https" {
+	} else if perf.TestProxy == "https" {
 		t, err := recording.NewProxyTransport(&recording.TransportOptions{UseHTTPS: true, TestName: a.GetMetadata()})
 		if err != nil {
 			return err
@@ -72,11 +69,15 @@ func (a *aztablesPerfTest) createClient() error {
 	if !ok {
 		panic(errors.New("could not find an environment variable for 'TABLES_STORAGE_ACCOUNT_NAME'"))
 	}
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	accountKey, ok := os.LookupEnv("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY")
+	if !ok {
+		panic(errors.New("could not find an environment variable for 'TABLES_PRIMARY_STORAGE_ACCOUNT_KEY'"))
+	}
+	cred, err := aztables.NewSharedKeyCredential(accountName, accountKey)
 	if err != nil {
 		return err
 	}
-	client, err := aztables.NewClient(fmt.Sprintf("https://%s.table.core.windows.net/%s", accountName, a.tableName), cred, options)
+	client, err := aztables.NewClientWithSharedKey(fmt.Sprintf("https://%s.table.core.windows.net/%s", accountName, a.tableName), cred, options)
 	if err != nil {
 		return err
 	}
@@ -87,7 +88,7 @@ func (a *aztablesPerfTest) createClient() error {
 
 func (a *aztablesPerfTest) GlobalSetup(ctx context.Context) error {
 	a.tableName = "randomTableName"
-	if TestProxy != "" {
+	if perf.TestProxy != "" {
 		err := recording.Start(a.GetMetadata(), nil)
 		if err != nil {
 			return err
@@ -96,7 +97,7 @@ func (a *aztablesPerfTest) GlobalSetup(ctx context.Context) error {
 
 	err := a.createClient()
 	if err != nil {
-		if TestProxy != "" {
+		if perf.TestProxy != "" {
 			recording.Stop(a.GetMetadata(), nil)
 		}
 		return err
@@ -119,7 +120,7 @@ func (a *aztablesPerfTest) GlobalSetup(ctx context.Context) error {
 	}
 	marshalled, err := json.Marshal(e)
 	if err != nil {
-		if TestProxy != "" {
+		if perf.TestProxy != "" {
 			recording.Stop(a.GetMetadata(), nil)
 		}
 		return err
@@ -131,11 +132,9 @@ func (a *aztablesPerfTest) GlobalSetup(ctx context.Context) error {
 }
 
 func (a *aztablesPerfTest) GlobalTearDown(ctx context.Context) error {
+	defer recording.Stop(a.GetMetadata(), nil)
 	_, err := a.client.Delete(context.Background(), nil)
-	if err != nil {
-		return err
-	}
-	return recording.Stop(a.GetMetadata(), nil)
+	return err
 }
 
 func (a *aztablesPerfTest) Setup(ctx context.Context) error {

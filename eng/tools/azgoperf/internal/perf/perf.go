@@ -1,12 +1,20 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package cmd
+package perf
 
 import (
 	"context"
 	"fmt"
 	"time"
+)
+
+var (
+	Duration       int
+	TimeoutSeconds int
+	Iterations     int
+	TestProxy      string
+	WarmUp         int
 )
 
 type PerfTest interface {
@@ -32,11 +40,11 @@ func getLimitedContext(t time.Duration) (context.Context, context.CancelFunc) {
 func runGlobalSetup(p PerfTest) error {
 	fmt.Println("Running Global Setup")
 
-	fmt.Println("Deadline of ", timeoutSeconds)
-	ctx, cancel := getLimitedContext(time.Duration(timeoutSeconds) * time.Second)
+	fmt.Println("Deadline of ", TimeoutSeconds)
+	_, cancel := getLimitedContext(time.Duration(TimeoutSeconds) * time.Second)
 	defer cancel()
 
-	err := p.GlobalSetup(ctx)
+	err := p.GlobalSetup(context.Background())
 	if err != nil {
 		return err
 	}
@@ -46,10 +54,10 @@ func runGlobalSetup(p PerfTest) error {
 func runSetup(p PerfTest, i int) error {
 	fmt.Println("\nRunning setup for iteration #", i)
 
-	ctx, cancel := getLimitedContext(time.Duration(timeoutSeconds) * time.Second)
+	_, cancel := getLimitedContext(time.Duration(TimeoutSeconds) * time.Second)
 	defer cancel()
 
-	err := p.Setup(ctx)
+	err := p.Setup(context.Background())
 	if err != nil {
 		return err
 	}
@@ -60,13 +68,13 @@ func runSetup(p PerfTest, i int) error {
 // of seconds the test ran as a float64, and any errors.
 func runTest(p PerfTest, iter int) (int, float64, error) {
 	fmt.Printf("\nBeginning iteration #%d\n", iter)
-	ctx, cancel := getLimitedContext(time.Duration(timeoutSeconds) * time.Second)
+	_, cancel := getLimitedContext(time.Duration(TimeoutSeconds) * time.Second)
 	defer cancel()
 
 	start := time.Now()
 	count := 0
-	for time.Since(start).Seconds() < float64(duration) {
-		err := p.Run(ctx)
+	for time.Since(start).Seconds() < float64(Duration) {
+		err := p.Run(context.Background())
 		if err != nil {
 			return 0, 0.0, err
 		}
@@ -80,10 +88,10 @@ func runTest(p PerfTest, iter int) (int, float64, error) {
 func runTearDown(p PerfTest) error {
 	fmt.Println("\nRunning teardown")
 
-	ctx, cancel := getLimitedContext(time.Duration(timeoutSeconds) * time.Second)
+	_, cancel := getLimitedContext(time.Duration(TimeoutSeconds) * time.Second)
 	defer cancel()
 
-	err := p.TearDown(ctx)
+	err := p.TearDown(context.Background())
 	if err != nil {
 		return err
 	}
@@ -92,10 +100,10 @@ func runTearDown(p PerfTest) error {
 
 func runGlobalTearDown(p PerfTest) error {
 	fmt.Println("Running global teardown")
-	ctx, cancel := getLimitedContext(time.Duration(timeoutSeconds) * time.Second)
+	_, cancel := getLimitedContext(time.Duration(TimeoutSeconds) * time.Second)
 	defer cancel()
 
-	err := p.GlobalTearDown(ctx)
+	err := p.GlobalTearDown(context.Background())
 	if err != nil {
 		return err
 	}
@@ -110,7 +118,7 @@ func RunPerfTest(p PerfTest) error {
 
 	totalCount := 0
 	totalTime := 0.0
-	for i := 0; i < iterations; i++ {
+	for i := 0; i < Iterations; i++ {
 		runSetup(p, i)
 
 		count, end, err := runTest(p, i+1)
@@ -130,7 +138,7 @@ func RunPerfTest(p PerfTest) error {
 	}
 
 	err = runGlobalTearDown(p)
-	printFinal(totalCount, totalTime, iterations)
+	printFinal(totalCount, totalTime, Iterations)
 
 	return err
 }

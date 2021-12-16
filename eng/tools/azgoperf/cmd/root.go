@@ -7,6 +7,10 @@ import (
 	"fmt"
 	"os"
 
+	azkeys "github.com/Azure/azure-sdk-for-go/eng/tools/azgoperf/cmd/azkeys"
+	aztables "github.com/Azure/azure-sdk-for-go/eng/tools/azgoperf/cmd/aztables"
+	template "github.com/Azure/azure-sdk-for-go/eng/tools/azgoperf/cmd/template"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/azgoperf/internal/perf"
 	"github.com/spf13/cobra"
 )
 
@@ -16,24 +20,19 @@ var rootCmd = &cobra.Command{
 	Long:  `This tool creates a single executable for running performance tests for existing Track 2 Go SDKs`,
 }
 
-var (
-	duration       int
-	iterations     int
-	TestProxy      string
-	timeoutSeconds int
-	warmUp         int
-)
-
 func init() {
-	rootCmd.PersistentFlags().IntVarP(&duration, "duration", "d", 10, "The duration to run a single performance test for")
-	rootCmd.PersistentFlags().IntVarP(&iterations, "iterations", "i", 3, "The number of iterations to run a single performance test for")
-	rootCmd.PersistentFlags().StringVarP(&TestProxy, "testproxy", "x", "", "whether to target http or https proxy (default is neither)")
-	rootCmd.PersistentFlags().IntVarP(&timeoutSeconds, "timeout", "t", 10, "How long to allow an operation to block before cancelling.")
-	rootCmd.PersistentFlags().IntVarP(&warmUp, "warmup", "w", 3, "How long to allow a connection to warm up.")
+	rootCmd.PersistentFlags().IntVarP(&perf.Duration, "duration", "d", 10, "The duration to run a single performance test for")
+	rootCmd.PersistentFlags().IntVarP(&perf.Iterations, "iterations", "i", 3, "The number of iterations to run a single performance test for")
+	rootCmd.PersistentFlags().StringVarP(&perf.TestProxy, "testproxy", "x", "", "whether to target http or https proxy (default is neither)")
+	rootCmd.PersistentFlags().IntVarP(&perf.TimeoutSeconds, "timeout", "t", 10, "How long to allow an operation to block before cancelling.")
+	rootCmd.PersistentFlags().IntVarP(&perf.WarmUp, "warmup", "w", 3, "How long to allow a connection to warm up.")
 
-	if !(TestProxy == "" || TestProxy == "http" || TestProxy == "https") {
-		panic(fmt.Errorf("received invalid value for testproxy flag, received %s, expected 'http' or 'https'", TestProxy))
+	if !(perf.TestProxy == "" || perf.TestProxy == "http" || perf.TestProxy == "https") {
+		panic(fmt.Errorf("received invalid value for testproxy flag, received %s, expected 'http' or 'https'", perf.TestProxy))
 	}
+	rootCmd.AddCommand(template.TemplateCmd)
+	rootCmd.AddCommand(aztables.AztablesCmd)
+	rootCmd.AddCommand(azkeys.AzkeysCmd)
 }
 
 // Execute executes the specified command.

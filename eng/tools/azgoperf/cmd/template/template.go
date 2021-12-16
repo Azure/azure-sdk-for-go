@@ -6,10 +6,11 @@ package cmd
 import (
 	"context"
 
+	"github.com/Azure/azure-sdk-for-go/eng/tools/azgoperf/internal/perf"
 	"github.com/spf13/cobra"
 )
 
-var templateCmd = &cobra.Command{
+var TemplateCmd = &cobra.Command{
 	Use:   "template",
 	Short: "template perf test",
 	Long:  "template perf test longer description",
@@ -17,12 +18,8 @@ var templateCmd = &cobra.Command{
 		return nil
 	},
 	RunE: func(c *cobra.Command, args []string) error {
-		return RunPerfTest(&templatePerfTest{})
+		return perf.RunPerfTest(&templatePerfTest{})
 	},
-}
-
-func init() {
-	rootCmd.AddCommand(templateCmd)
 }
 
 type templatePerfTest struct {

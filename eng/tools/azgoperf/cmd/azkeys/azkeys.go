@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package cmd
+package azkeysperf
 
 import (
 	"context"
@@ -9,14 +9,15 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Azure/azure-sdk-for-go/eng/tools/azgoperf/cmd/recording"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/azgoperf/internal/perf"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/azgoperf/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
 	"github.com/spf13/cobra"
 )
 
-var azkeysCmd = &cobra.Command{
+var AzkeysCmd = &cobra.Command{
 	Use:   "CreateKeyTest",
 	Short: "Create a single RSA key",
 	Long:  "Create a RSA key using default options.",
@@ -24,12 +25,8 @@ var azkeysCmd = &cobra.Command{
 		return nil
 	},
 	RunE: func(c *cobra.Command, args []string) error {
-		return RunPerfTest(&azkeysPerf{})
+		return perf.RunPerfTest(&azkeysPerf{})
 	},
-}
-
-func init() {
-	rootCmd.AddCommand(azkeysCmd)
 }
 
 type azkeysPerf struct {
@@ -62,7 +59,7 @@ func (a *azkeysPerf) GlobalSetup(ctx context.Context) error {
 	}
 
 	options := &azkeys.ClientOptions{}
-	if TestProxy == "http" {
+	if perf.TestProxy == "http" {
 		t, err := recording.NewProxyTransport(&recording.TransportOptions{UseHTTPS: true, TestName: a.GetMetadata()})
 		if err != nil {
 			return err
@@ -72,7 +69,7 @@ func (a *azkeysPerf) GlobalSetup(ctx context.Context) error {
 				Transport: t,
 			},
 		}
-	} else if TestProxy == "https" {
+	} else if perf.TestProxy == "https" {
 		t, err := recording.NewProxyTransport(&recording.TransportOptions{UseHTTPS: true, TestName: a.GetMetadata()})
 		if err != nil {
 			return err
@@ -112,7 +109,7 @@ func (a *azkeysPerf) TearDown(ctx context.Context) error {
 }
 
 func (a *azkeysPerf) GlobalTearDown(ctx context.Context) error {
+	defer recording.Stop(a.GetMetadata(), nil)
 	_, err := a.client.BeginDeleteKey(ctx, a.keyName, nil)
-	_ = recording.Stop(a.GetMetadata(), nil)
 	return err
 }

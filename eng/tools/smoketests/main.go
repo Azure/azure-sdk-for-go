@@ -319,6 +319,9 @@ func BuildMainFile(root string, c ConfigFile) error {
 	// Write the main.go file
 
 	src := "package main\nimport \"os\"\nfunc main() {"
+	if len(envVars) == 0 {
+		src = "package main\nfunc main() {\n"
+	}
 
 	for _, envVar := range envVars {
 		src += fmt.Sprintf(`os.Setenv("%s", "%s")`, envVar, FindEnvVarFromConfig(c, envVar))

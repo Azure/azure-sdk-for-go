@@ -15,6 +15,10 @@
 | :--- | :---: |
 | `github.com/Azure/azure-sdk-for-go/services/eventgrid/mgmt/2021-12-01/eventgrid` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/eventgrid/mgmt/2021-12-01/eventgrid/CHANGELOG.md) |
 
+### Breaking Changes
+
+- Rename package `github.com/Azure/azure-sdk-for-go/services/preview/windowsesu/2019-09-16-preview/windowsesu/` to `github.com/Azure/azure-sdk-for-go/services/preview/windowsesu/mgmt/2019-09-16-preview/windowsesu/`
+
 ## `v60.1.0`
 
 ### New Packages

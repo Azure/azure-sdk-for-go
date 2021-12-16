@@ -6,9 +6,6 @@ Param(
 
 $repoRoot = Resolve-Path "$PSScriptRoot/../../"
 
-# Load the environment variables
-$configData = Get-Content
-
 Push-Location $repoRoot/eng/tools/smoketests
 
 # create a smoketests directory

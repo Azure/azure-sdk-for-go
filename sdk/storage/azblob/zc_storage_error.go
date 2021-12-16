@@ -8,10 +8,11 @@ import (
 	"encoding/xml"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"net/http"
 	"sort"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
 // InternalError is an internal error type that all errors get wrapped in.
@@ -193,8 +194,12 @@ func (e *StorageError) UnmarshalXML(d *xml.Decoder, start xml.StartElement) (err
 		switch tt := t.(type) {
 		case xml.StartElement:
 			tokName = tt.Name.Local
+		case xml.EndElement:
+			tokName = ""
 		case xml.CharData:
 			switch tokName {
+			case "":
+				continue
 			case "Message":
 				e.description = string(tt)
 			default:

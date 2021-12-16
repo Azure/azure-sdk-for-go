@@ -41,7 +41,7 @@ type MonitorsClientAPI interface {
 	ListMonitoredResourcesComplete(ctx context.Context, resourceGroupName string, monitorName string) (result datadog.MonitoredResourceListResponseIterator, err error)
 	RefreshSetPasswordLink(ctx context.Context, resourceGroupName string, monitorName string) (result datadog.SetPasswordLink, err error)
 	SetDefaultKey(ctx context.Context, resourceGroupName string, monitorName string, body *datadog.APIKey) (result autorest.Response, err error)
-	Update(ctx context.Context, resourceGroupName string, monitorName string, body *datadog.MonitorResourceUpdateParameters) (result datadog.MonitorResource, err error)
+	Update(ctx context.Context, resourceGroupName string, monitorName string, body *datadog.MonitorResourceUpdateParameters) (result datadog.MonitorsUpdateFuture, err error)
 }
 
 var _ MonitorsClientAPI = (*datadog.MonitorsClient)(nil)

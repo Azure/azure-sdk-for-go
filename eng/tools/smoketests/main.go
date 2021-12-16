@@ -337,7 +337,7 @@ func BuildMainFile(root string, c ConfigFile) error {
 
 	// Write the main.go file
 
-	src := "package main\nfunc main() {"
+	src := "package main\nimport \"os\"\nfunc main() {"
 
 	fmt.Println(envVars)
 	for _, envVar := range envVars {

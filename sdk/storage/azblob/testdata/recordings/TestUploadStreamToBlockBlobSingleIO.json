@@ -1,0 +1,172 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://fakeaccount.blob.core.windows.net/gocuploadstreamtoblockblobsingleio?restype=container",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "PUT",
+        ":path": "/gocuploadstreamtoblockblobsingleio?restype=container",
+        ":scheme": "https",
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-azblob/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Thu, 16 Dec 2021 23:11:15 GMT",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Thu, 16 Dec 2021 23:11:14 GMT",
+        "ETag": "\u00220x8D9C0E95BFC7E25\u0022",
+        "Last-Modified": "Thu, 16 Dec 2021 23:11:15 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-request-id": "01f9ca1b-501e-0038-32d2-f221d6000000",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://fakeaccount.blob.core.windows.net/gocuploadstreamtoblockblobsingleio/gotestblobuploadstreamtoblockblobsingleio?blockid=s7tBtP5ITIxxkTZ2q39kGQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%3D%3D\u0026comp=block",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "PUT",
+        ":path": "/gocuploadstreamtoblockblobsingleio/gotestblobuploadstreamtoblockblobsingleio?blockid=s7tBtP5ITIxxkTZ2q39kGQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%3D%3D\u0026comp=block",
+        ":scheme": "https",
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "1024",
+        "Content-Type": "application/octet-stream",
+        "User-Agent": "azsdk-go-azblob/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Thu, 16 Dec 2021 23:11:15 GMT",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": "MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdg==",
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Thu, 16 Dec 2021 23:11:14 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-content-crc64": "y9bUpbg4Hvo=",
+        "x-ms-request-id": "01f9ca30-501e-0038-45d2-f221d6000000",
+        "x-ms-request-server-encrypted": "true",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://fakeaccount.blob.core.windows.net/gocuploadstreamtoblockblobsingleio/gotestblobuploadstreamtoblockblobsingleio?comp=blocklist",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "PUT",
+        ":path": "/gocuploadstreamtoblockblobsingleio/gotestblobuploadstreamtoblockblobsingleio?comp=blocklist",
+        ":scheme": "https",
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "128",
+        "Content-Type": "application/xml",
+        "User-Agent": "azsdk-go-azblob/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Thu, 16 Dec 2021 23:11:15 GMT",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": "\u003CBlockList\u003E\u003CLatest\u003Es7tBtP5ITIxxkTZ2q39kGQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==\u003C/Latest\u003E\u003C/BlockList\u003E",
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Thu, 16 Dec 2021 23:11:14 GMT",
+        "ETag": "\u00220x8D9C0E95C1BF279\u0022",
+        "Last-Modified": "Thu, 16 Dec 2021 23:11:15 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-content-crc64": "xCACwJx\u002BswA=",
+        "x-ms-request-id": "01f9ca3f-501e-0038-53d2-f221d6000000",
+        "x-ms-request-server-encrypted": "true",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://fakeaccount.blob.core.windows.net/gocuploadstreamtoblockblobsingleio/gotestblobuploadstreamtoblockblobsingleio",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "GET",
+        ":path": "/gocuploadstreamtoblockblobsingleio/gotestblobuploadstreamtoblockblobsingleio",
+        ":scheme": "https",
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azblob/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Thu, 16 Dec 2021 23:11:15 GMT",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Accept-Ranges": "bytes",
+        "Content-Length": "1024",
+        "Content-Type": "application/octet-stream",
+        "Date": "Thu, 16 Dec 2021 23:11:14 GMT",
+        "ETag": "\u00220x8D9C0E95C1BF279\u0022",
+        "Last-Modified": "Thu, 16 Dec 2021 23:11:15 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-blob-type": "BlockBlob",
+        "x-ms-creation-time": "Thu, 16 Dec 2021 23:11:15 GMT",
+        "x-ms-lease-state": "available",
+        "x-ms-lease-status": "unlocked",
+        "x-ms-request-id": "01f9ca64-501e-0038-74d2-f221d6000000",
+        "x-ms-server-encrypted": "true",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": "MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdg=="
+    },
+    {
+      "RequestUri": "https://fakeaccount.blob.core.windows.net/gocuploadstreamtoblockblobsingleio?restype=container",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "DELETE",
+        ":path": "/gocuploadstreamtoblockblobsingleio?restype=container",
+        ":scheme": "https",
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azblob/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Thu, 16 Dec 2021 23:11:16 GMT",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Thu, 16 Dec 2021 23:11:14 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-request-id": "01f9ca77-501e-0038-07d2-f221d6000000",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {}
+}

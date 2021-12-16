@@ -19,7 +19,6 @@ import (
 )
 
 func TestAppendBlock(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
 

@@ -1,0 +1,349 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://fakeaccount.blob.core.windows.net/gocdownloadbufferwithnonzerocount?restype=container",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "PUT",
+        ":path": "/gocdownloadbufferwithnonzerocount?restype=container",
+        ":scheme": "https",
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-azblob/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Thu, 16 Dec 2021 23:18:41 GMT",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Thu, 16 Dec 2021 23:18:40 GMT",
+        "ETag": "\u00220x8D9C0EA658166AC\u0022",
+        "Last-Modified": "Thu, 16 Dec 2021 23:18:40 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-request-id": "ca1223c8-501e-0017-23d3-f22c1d000000",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://fakeaccount.blob.core.windows.net/gocdownloadbufferwithnonzerocount/gotestblobdownloadbufferwithnonzerocount",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "PUT",
+        ":path": "/gocdownloadbufferwithnonzerocount/gotestblobdownloadbufferwithnonzerocount",
+        ":scheme": "https",
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "8192",
+        "Content-Type": "application/octet-stream",
+        "User-Agent": "azsdk-go-azblob/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-blob-type": "BlockBlob",
+        "x-ms-date": "Thu, 16 Dec 2021 23:18:41 GMT",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": "MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3Y=",
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Content-MD5": "xk80mm7zFd4JWnRHbMEPtQ==",
+        "Date": "Thu, 16 Dec 2021 23:18:40 GMT",
+        "ETag": "\u00220x8D9C0EA658F8755\u0022",
+        "Last-Modified": "Thu, 16 Dec 2021 23:18:40 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-content-crc64": "AxMUZ85NtWE=",
+        "x-ms-request-id": "ca1223f2-501e-0017-4cd3-f22c1d000000",
+        "x-ms-request-server-encrypted": "true",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://fakeaccount.blob.core.windows.net/gocdownloadbufferwithnonzerocount/gotestblobdownloadbufferwithnonzerocount",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "GET",
+        ":path": "/gocdownloadbufferwithnonzerocount/gotestblobdownloadbufferwithnonzerocount",
+        ":scheme": "https",
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azblob/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Thu, 16 Dec 2021 23:18:41 GMT",
+        "x-ms-range": "bytes=2048-3071",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": null,
+      "StatusCode": 206,
+      "ResponseHeaders": {
+        "Accept-Ranges": "bytes",
+        "Content-Length": "1024",
+        "Content-Range": "bytes 2048-3071/8192",
+        "Content-Type": "application/octet-stream",
+        "Date": "Thu, 16 Dec 2021 23:18:40 GMT",
+        "ETag": "\u00220x8D9C0EA658F8755\u0022",
+        "Last-Modified": "Thu, 16 Dec 2021 23:18:40 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-blob-content-md5": "xk80mm7zFd4JWnRHbMEPtQ==",
+        "x-ms-blob-type": "BlockBlob",
+        "x-ms-creation-time": "Thu, 16 Dec 2021 23:18:40 GMT",
+        "x-ms-lease-state": "available",
+        "x-ms-lease-status": "unlocked",
+        "x-ms-request-id": "97078b64-b01e-000f-61d3-f2f37a000000",
+        "x-ms-server-encrypted": "true",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": "MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdg=="
+    },
+    {
+      "RequestUri": "https://fakeaccount.blob.core.windows.net/gocdownloadbufferwithnonzerocount/gotestblobdownloadbufferwithnonzerocount",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "GET",
+        ":path": "/gocdownloadbufferwithnonzerocount/gotestblobdownloadbufferwithnonzerocount",
+        ":scheme": "https",
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azblob/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Thu, 16 Dec 2021 23:18:41 GMT",
+        "x-ms-range": "bytes=1024-2047",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": null,
+      "StatusCode": 206,
+      "ResponseHeaders": {
+        "Accept-Ranges": "bytes",
+        "Content-Length": "1024",
+        "Content-Range": "bytes 1024-2047/8192",
+        "Content-Type": "application/octet-stream",
+        "Date": "Thu, 16 Dec 2021 23:18:40 GMT",
+        "ETag": "\u00220x8D9C0EA658F8755\u0022",
+        "Last-Modified": "Thu, 16 Dec 2021 23:18:40 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-blob-content-md5": "xk80mm7zFd4JWnRHbMEPtQ==",
+        "x-ms-blob-type": "BlockBlob",
+        "x-ms-creation-time": "Thu, 16 Dec 2021 23:18:40 GMT",
+        "x-ms-lease-state": "available",
+        "x-ms-lease-status": "unlocked",
+        "x-ms-request-id": "0d96f811-301e-0073-5fd3-f2dd85000000",
+        "x-ms-server-encrypted": "true",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": "MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdg=="
+    },
+    {
+      "RequestUri": "https://fakeaccount.blob.core.windows.net/gocdownloadbufferwithnonzerocount/gotestblobdownloadbufferwithnonzerocount",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "GET",
+        ":path": "/gocdownloadbufferwithnonzerocount/gotestblobdownloadbufferwithnonzerocount",
+        ":scheme": "https",
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azblob/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Thu, 16 Dec 2021 23:18:41 GMT",
+        "x-ms-range": "bytes=0-1023",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": null,
+      "StatusCode": 206,
+      "ResponseHeaders": {
+        "Accept-Ranges": "bytes",
+        "Content-Length": "1024",
+        "Content-Range": "bytes 0-1023/8192",
+        "Content-Type": "application/octet-stream",
+        "Date": "Thu, 16 Dec 2021 23:18:40 GMT",
+        "ETag": "\u00220x8D9C0EA658F8755\u0022",
+        "Last-Modified": "Thu, 16 Dec 2021 23:18:40 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-blob-content-md5": "xk80mm7zFd4JWnRHbMEPtQ==",
+        "x-ms-blob-type": "BlockBlob",
+        "x-ms-creation-time": "Thu, 16 Dec 2021 23:18:40 GMT",
+        "x-ms-lease-state": "available",
+        "x-ms-lease-status": "unlocked",
+        "x-ms-request-id": "ca122425-501e-0017-7fd3-f22c1d000000",
+        "x-ms-server-encrypted": "true",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": "MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdg=="
+    },
+    {
+      "RequestUri": "https://fakeaccount.blob.core.windows.net/gocdownloadbufferwithnonzerocount/gotestblobdownloadbufferwithnonzerocount",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "GET",
+        ":path": "/gocdownloadbufferwithnonzerocount/gotestblobdownloadbufferwithnonzerocount",
+        ":scheme": "https",
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azblob/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Thu, 16 Dec 2021 23:18:41 GMT",
+        "x-ms-range": "bytes=3072-4095",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": null,
+      "StatusCode": 206,
+      "ResponseHeaders": {
+        "Accept-Ranges": "bytes",
+        "Content-Length": "1024",
+        "Content-Range": "bytes 3072-4095/8192",
+        "Content-Type": "application/octet-stream",
+        "Date": "Thu, 16 Dec 2021 23:18:40 GMT",
+        "ETag": "\u00220x8D9C0EA658F8755\u0022",
+        "Last-Modified": "Thu, 16 Dec 2021 23:18:40 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-blob-content-md5": "xk80mm7zFd4JWnRHbMEPtQ==",
+        "x-ms-blob-type": "BlockBlob",
+        "x-ms-creation-time": "Thu, 16 Dec 2021 23:18:40 GMT",
+        "x-ms-lease-state": "available",
+        "x-ms-lease-status": "unlocked",
+        "x-ms-request-id": "ca122454-501e-0017-2dd3-f22c1d000000",
+        "x-ms-server-encrypted": "true",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": "MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdg=="
+    },
+    {
+      "RequestUri": "https://fakeaccount.blob.core.windows.net/gocdownloadbufferwithnonzerocount/gotestblobdownloadbufferwithnonzerocount",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "GET",
+        ":path": "/gocdownloadbufferwithnonzerocount/gotestblobdownloadbufferwithnonzerocount",
+        ":scheme": "https",
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azblob/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Thu, 16 Dec 2021 23:18:41 GMT",
+        "x-ms-range": "bytes=4096-5119",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": null,
+      "StatusCode": 206,
+      "ResponseHeaders": {
+        "Accept-Ranges": "bytes",
+        "Content-Length": "1024",
+        "Content-Range": "bytes 4096-5119/8192",
+        "Content-Type": "application/octet-stream",
+        "Date": "Thu, 16 Dec 2021 23:18:40 GMT",
+        "ETag": "\u00220x8D9C0EA658F8755\u0022",
+        "Last-Modified": "Thu, 16 Dec 2021 23:18:40 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-blob-content-md5": "xk80mm7zFd4JWnRHbMEPtQ==",
+        "x-ms-blob-type": "BlockBlob",
+        "x-ms-creation-time": "Thu, 16 Dec 2021 23:18:40 GMT",
+        "x-ms-lease-state": "available",
+        "x-ms-lease-status": "unlocked",
+        "x-ms-request-id": "97078b91-b01e-000f-0dd3-f2f37a000000",
+        "x-ms-server-encrypted": "true",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": "MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdg=="
+    },
+    {
+      "RequestUri": "https://fakeaccount.blob.core.windows.net/gocdownloadbufferwithnonzerocount/gotestblobdownloadbufferwithnonzerocount",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "GET",
+        ":path": "/gocdownloadbufferwithnonzerocount/gotestblobdownloadbufferwithnonzerocount",
+        ":scheme": "https",
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azblob/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Thu, 16 Dec 2021 23:18:41 GMT",
+        "x-ms-range": "bytes=5120-5999",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": null,
+      "StatusCode": 206,
+      "ResponseHeaders": {
+        "Accept-Ranges": "bytes",
+        "Content-Length": "880",
+        "Content-Range": "bytes 5120-5999/8192",
+        "Content-Type": "application/octet-stream",
+        "Date": "Thu, 16 Dec 2021 23:18:40 GMT",
+        "ETag": "\u00220x8D9C0EA658F8755\u0022",
+        "Last-Modified": "Thu, 16 Dec 2021 23:18:40 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-blob-content-md5": "xk80mm7zFd4JWnRHbMEPtQ==",
+        "x-ms-blob-type": "BlockBlob",
+        "x-ms-creation-time": "Thu, 16 Dec 2021 23:18:40 GMT",
+        "x-ms-lease-state": "available",
+        "x-ms-lease-status": "unlocked",
+        "x-ms-request-id": "0d96f82b-301e-0073-78d3-f2dd85000000",
+        "x-ms-server-encrypted": "true",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": "MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWg=="
+    },
+    {
+      "RequestUri": "https://fakeaccount.blob.core.windows.net/gocdownloadbufferwithnonzerocount?restype=container",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "DELETE",
+        ":path": "/gocdownloadbufferwithnonzerocount?restype=container",
+        ":scheme": "https",
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azblob/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Thu, 16 Dec 2021 23:18:41 GMT",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Thu, 16 Dec 2021 23:18:40 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-request-id": "0d96f844-301e-0073-0ed3-f2dd85000000",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {}
+}

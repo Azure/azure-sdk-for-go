@@ -1,5 +1,20 @@
 # CHANGELOG
 
+## `v60.2.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/edgeorder/mgmt/2021-12-01/edgeorder`
+- `github.com/Azure/azure-sdk-for-go/services/preview/automanage/mgmt/2021-04-30-preview/automanage`
+- `github.com/Azure/azure-sdk-for-go/services/preview/network/mgmt/2021-03-01-preview/network`
+- `github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2021-08-01/recoveryservices`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/eventgrid/mgmt/2021-12-01/eventgrid` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/eventgrid/mgmt/2021-12-01/eventgrid/CHANGELOG.md) |
+
 ## `v60.1.0`
 
 ### New Packages

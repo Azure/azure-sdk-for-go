@@ -8,7 +8,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"os"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -16,18 +15,24 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
 )
 
-func ExampleNewSharedKeyCredential() {
-	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
-	if !ok {
-		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
-	}
-	accountKey, ok := os.LookupEnv("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY")
-	if !ok {
-		panic("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY could not be found")
-	}
-	serviceURL := accountName + ".table.core.windows.net"
+var accountName = "myaccountname"
+var sharedAccessSignature = "?sig=somesignature"
+var accountKey = "mysecretaccountkey"
 
-	cred, err := aztables.NewSharedKeyCredential(accountName, accountKey)
+func ExampleNewSharedKeyCredential() {
+	// accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
+	// if !ok {
+	// 	panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
+	// }
+	// accountKey, ok := os.LookupEnv("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY")
+	// if !ok {
+	// 	panic("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY could not be found")
+	// }
+	// serviceURL := accountName + ".table.core.windows.net"
+	serviceURL := fmt.Sprintf("https://%s.table.core.windows.net/", "myaccountname")
+	accountKey := "mysecretaccountkey"
+
+	cred, err := aztables.NewSharedKeyCredential("myaccountname", accountKey)
 	if err != nil {
 		panic(err)
 	}
@@ -39,11 +44,12 @@ func ExampleNewSharedKeyCredential() {
 }
 
 func ExampleNewServiceClient() {
-	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
-	if !ok {
-		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
-	}
-	serviceURL := accountName + ".table.core.windows.net"
+	// accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
+	// if !ok {
+	// 	panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
+	// }
+	// serviceURL := accountName + ".table.core.windows.net"
+	serviceURL := fmt.Sprintf("https://%s.table.core.windows.net/", "myaccountname")
 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,17 +63,19 @@ func ExampleNewServiceClient() {
 }
 
 func ExampleNewServiceClientWithSharedKey() {
-	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
-	if !ok {
-		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
-	}
-	accountKey, ok := os.LookupEnv("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY")
-	if !ok {
-		panic("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY could not be found")
-	}
-	serviceURL := accountName + ".table.core.windows.net"
+	// accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
+	// if !ok {
+	// 	panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
+	// }
+	// accountKey, ok := os.LookupEnv("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY")
+	// if !ok {
+	// 	panic("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY could not be found")
+	// }
+	// serviceURL := accountName + ".table.core.windows.net"
+	serviceURL := fmt.Sprintf("https://%s.table.core.windows.net/", "myaccountname")
+	accountKey := "mysecretaccountkey"
 
-	cred, err := aztables.NewSharedKeyCredential(accountName, accountKey)
+	cred, err := aztables.NewSharedKeyCredential("myaccountname", accountKey)
 	if err != nil {
 		panic(err)
 	}
@@ -79,14 +87,14 @@ func ExampleNewServiceClientWithSharedKey() {
 }
 
 func ExampleNewServiceClientWithNoCredential() {
-	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
-	if !ok {
-		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
-	}
-	sharedAccessSignature, ok := os.LookupEnv("TABLES_SHARED_ACCESS_SIGNATURE")
-	if !ok {
-		panic("TABLES_SHARED_ACCESS_SIGNATURE could not be found")
-	}
+	// accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
+	// if !ok {
+	// 	panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
+	// }
+	// sharedAccessSignature, ok := os.LookupEnv("TABLES_SHARED_ACCESS_SIGNATURE")
+	// if !ok {
+	// 	panic("TABLES_SHARED_ACCESS_SIGNATURE could not be found")
+	// }
 	serviceURL := fmt.Sprintf("%s.table.core.windows.net/?%s", accountName, sharedAccessSignature)
 
 	client, err := aztables.NewServiceClientWithNoCredential(serviceURL, nil)
@@ -105,14 +113,14 @@ type MyEntity struct {
 }
 
 func ExampleClient_SubmitTransaction() {
-	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
-	if !ok {
-		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
-	}
-	accountKey, ok := os.LookupEnv("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY")
-	if !ok {
-		panic("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY could not be found")
-	}
+	// accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
+	// if !ok {
+	// 	panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
+	// }
+	// accountKey, ok := os.LookupEnv("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY")
+	// if !ok {
+	// 	panic("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY could not be found")
+	// }
 	serviceURL := fmt.Sprintf("https://%s.table.core.windows.net/%s", accountName, "tableName")
 
 	cred, err := aztables.NewSharedKeyCredential(accountName, accountKey)
@@ -219,10 +227,10 @@ func ExampleServiceClient_CreateTable() {
 	if err != nil {
 		panic(err)
 	}
-	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
-	if !ok {
-		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
-	}
+	// accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
+	// if !ok {
+	// 	panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
+	// }
 	serviceURL := fmt.Sprintf("https://%s.table.core.windows.net", accountName)
 
 	service, err := aztables.NewServiceClient(serviceURL, cred, nil)
@@ -242,10 +250,10 @@ func ExampleServiceClient_DeleteTable() {
 	if err != nil {
 		panic(err)
 	}
-	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
-	if !ok {
-		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
-	}
+	// accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
+	// if !ok {
+	// 	panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
+	// }
 	serviceURL := fmt.Sprintf("https://%s.table.core.windows.net", accountName)
 
 	service, err := aztables.NewServiceClient(serviceURL, cred, nil)
@@ -265,10 +273,10 @@ func ExampleClient_Create() {
 	if err != nil {
 		panic(err)
 	}
-	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
-	if !ok {
-		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
-	}
+	// accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
+	// if !ok {
+	// 	panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
+	// }
 	serviceURL := fmt.Sprintf("https://%s.table.core.windows.net/%s", accountName, "fromTableClient")
 	client, err := aztables.NewClient(serviceURL, cred, nil)
 	if err != nil {
@@ -287,10 +295,10 @@ func ExampleClient_Delete() {
 	if err != nil {
 		panic(err)
 	}
-	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
-	if !ok {
-		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
-	}
+	// accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
+	// if !ok {
+	// 	panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
+	// }
 	serviceURL := fmt.Sprintf("https://%s.table.core.windows.net/%s", accountName, "fromTableClient")
 	client, err := aztables.NewClient(serviceURL, cred, nil)
 	if err != nil {
@@ -305,10 +313,10 @@ func ExampleClient_Delete() {
 }
 
 func ExampleNewClient() {
-	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
-	if !ok {
-		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
-	}
+	// accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
+	// if !ok {
+	// 	panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
+	// }
 	serviceURL := fmt.Sprintf("https://%s.table.core.windows.net/%s", accountName, "myTableName")
 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -323,14 +331,14 @@ func ExampleNewClient() {
 }
 
 func ExampleNewClientWithSharedKey() {
-	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
-	if !ok {
-		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
-	}
-	accountKey, ok := os.LookupEnv("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY")
-	if !ok {
-		panic("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY could not be found")
-	}
+	// accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
+	// if !ok {
+	// 	panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
+	// }
+	// accountKey, ok := os.LookupEnv("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY")
+	// if !ok {
+	// 	panic("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY could not be found")
+	// }
 	serviceURL := fmt.Sprintf("https://%s.table.core.windows.net/%s", accountName, "myTableName")
 
 	cred, err := aztables.NewSharedKeyCredential(accountName, accountKey)
@@ -353,14 +361,14 @@ type InventoryEntity struct {
 }
 
 func ExampleClient_InsertEntity() {
-	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
-	if !ok {
-		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
-	}
-	accountKey, ok := os.LookupEnv("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY")
-	if !ok {
-		panic("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY could not be found")
-	}
+	// accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
+	// if !ok {
+	// 	panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
+	// }
+	// accountKey, ok := os.LookupEnv("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY")
+	// if !ok {
+	// 	panic("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY could not be found")
+	// }
 	serviceURL := fmt.Sprintf("https://%s.table.core.windows.net/%s", accountName, "myTable")
 
 	cred, err := aztables.NewSharedKeyCredential(accountName, accountKey)
@@ -421,14 +429,14 @@ func ExampleClient_InsertEntity() {
 }
 
 func ExampleClient_DeleteEntity() {
-	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
-	if !ok {
-		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
-	}
-	accountKey, ok := os.LookupEnv("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY")
-	if !ok {
-		panic("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY could not be found")
-	}
+	// accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
+	// if !ok {
+	// 	panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
+	// }
+	// accountKey, ok := os.LookupEnv("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY")
+	// if !ok {
+	// 	panic("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY could not be found")
+	// }
 	serviceURL := fmt.Sprintf("https://%s.table.core.windows.net/%s", accountName, "myTable")
 
 	cred, err := aztables.NewSharedKeyCredential(accountName, accountKey)
@@ -448,14 +456,14 @@ func ExampleClient_DeleteEntity() {
 }
 
 func ExampleClient_List() {
-	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
-	if !ok {
-		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
-	}
-	accountKey, ok := os.LookupEnv("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY")
-	if !ok {
-		panic("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY could not be found")
-	}
+	// accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
+	// if !ok {
+	// 	panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
+	// }
+	// accountKey, ok := os.LookupEnv("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY")
+	// if !ok {
+	// 	panic("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY could not be found")
+	// }
 	serviceURL := fmt.Sprintf("https://%s.table.core.windows.net/%s", accountName, "myTable")
 
 	cred, err := aztables.NewSharedKeyCredential(accountName, accountKey)
@@ -494,14 +502,14 @@ func ExampleClient_List() {
 }
 
 func ExampleServiceClient_ListTables() {
-	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
-	if !ok {
-		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
-	}
-	accountKey, ok := os.LookupEnv("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY")
-	if !ok {
-		panic("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY could not be found")
-	}
+	// accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
+	// if !ok {
+	// 	panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
+	// }
+	// accountKey, ok := os.LookupEnv("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY")
+	// if !ok {
+	// 	panic("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY could not be found")
+	// }
 	serviceURL := accountName + ".table.core.windows.net"
 
 	cred, err := aztables.NewSharedKeyCredential(accountName, accountKey)

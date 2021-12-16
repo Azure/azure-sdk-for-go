@@ -57,6 +57,7 @@ func inIgnoredDirectories(path string) bool {
 	return false
 }
 
+// Walks the sdk directory to find all modules based on a go.mod file
 func findModuleDirectories(root string) []string {
 	var ret []string
 
@@ -76,6 +77,7 @@ func findModuleDirectories(root string) []string {
 	return ret
 }
 
+// Reads all tags using the 'git tag -l' command and returns them as a string slice
 func getAllTags() []string {
 	result, err := exec.Command("git", "tag", "-l").Output()
 	handle(err)
@@ -83,37 +85,14 @@ func getAllTags() []string {
 	return strings.Split(res, "\n")
 }
 
-type Module struct {
-	Name    string
-	Version string
-	Replace string
-}
-
-type SemVer struct {
-	Major, Minor, Patch int
-}
-
-func (s SemVer) Newer(s2 SemVer) bool {
-	if s.Major > s2.Major {
-		return true
-	} else if s.Major == s2.Major && s.Minor > s2.Minor {
-		return true
-	} else if s.Major == s2.Major && s.Minor == s2.Minor && s.Patch > s2.Patch {
-		return true
-	}
-	return false
-}
-
-func (s SemVer) String() string {
-	return fmt.Sprintf("v%d.%d.%d", s.Major, s.Minor, s.Patch)
-}
-
+// Convert a string to an integer and handle errors
 func toInt(a string) int {
 	r, err := strconv.Atoi(a)
 	handle(err)
 	return r
 }
 
+// Create a new SemVer type
 func NewSemVerFromTag(s string) SemVer {
 	path := strings.Split(s, "/")
 	versionStr := path[len(path)-1]
@@ -126,6 +105,7 @@ func NewSemVerFromTag(s string) SemVer {
 	}
 }
 
+// Find the most recent SemVer tag for a given package.
 func findLatestTag(p string, tags []string) (string, error) {
 	var v SemVer
 	for i, tag := range tags {
@@ -144,6 +124,7 @@ func findLatestTag(p string, tags []string) (string, error) {
 	return "", fmt.Errorf("could not find a version for module %s", p)
 }
 
+// Creates a slice of modules matched with the most recent version
 func matchModulesAndTags(goModFiles []string, tags []string) []Module {
 	var m []Module
 
@@ -302,7 +283,6 @@ func CopyExampleFiles(exFiles []string, dest string) error {
 
 // ReplacePackageStatement replaces all "package ***" with a common "package main" statement
 func ReplacePackageStatement(root string) error {
-	fmt.Println("Fixing package names in", root)
 	packageName := "package main"
 	return filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
 		if strings.HasSuffix(info.Name(), ".go") {
@@ -324,6 +304,7 @@ func ReplacePackageStatement(root string) error {
 	})
 }
 
+// Create the main.go file with environment variables, example functions, and imports.
 func BuildMainFile(root string, c ConfigFile) error {
 	mainFile := filepath.Join(root, "main.go")
 	f, err := os.Create(mainFile)
@@ -339,11 +320,12 @@ func BuildMainFile(root string, c ConfigFile) error {
 
 	src := "package main\nimport \"os\"\nfunc main() {"
 
-	fmt.Println(envVars)
 	for _, envVar := range envVars {
 		src += fmt.Sprintf(`os.Setenv("%s", "%s")`, envVar, FindEnvVarFromConfig(c, envVar))
 		src += "\n"
 	}
+
+	src += "\n"
 
 	for _, exampleFunc := range exampleFuncs {
 		src += fmt.Sprintf("%s()\n", exampleFunc)
@@ -355,6 +337,7 @@ func BuildMainFile(root string, c ConfigFile) error {
 	return err
 }
 
+// Find all the environment variables looked up within a .go file
 func FindEnvVars(root string) error {
 	fmt.Println("Find all environment variables using `os.Getenv` or `os.LookupEnv`")
 
@@ -368,8 +351,8 @@ func FindEnvVars(root string) error {
 	return err
 }
 
+// Search for both os.Getenv and os.LookupEnv in go file
 func searchFile(path string) error {
-	fmt.Println("searching file")
 	var envVarRegex *regexp.Regexp
 	if runtime.GOOS == "windows" {
 		envVarRegex = regexp.MustCompile(`(?m)os.LookupEnv(.*)\r\n`)
@@ -396,6 +379,7 @@ func searchFile(path string) error {
 	return nil
 }
 
+// Search for a default value in the eng/config.json file
 func FindEnvVarFromConfig(c ConfigFile, envVar string) string {
 	for _, p := range c.Packages {
 		for key, value := range p.EnvironmentVariables {
@@ -438,6 +422,7 @@ func trimGetenvs(values []string) []string {
 	return ret
 }
 
+// Read the eng/config.json file to parse environment variables
 func LoadEngConfig(rootDirectory string) ConfigFile {
 	fileName := filepath.Join(rootDirectory, "eng", "config.json")
 	buffer, err := ioutil.ReadFile(fileName)
@@ -451,15 +436,13 @@ func LoadEngConfig(rootDirectory string) ConfigFile {
 }
 
 func main() {
-	serviceDirectory := flag.String("serviceDirectory", "", "pass in a single service directory for nightly run")
+	var serviceDirectory string
+	flag.StringVar(&serviceDirectory, "serviceDirectory", "", "pass in a single service directory for nightly run")
 	flag.Parse()
-
-	fmt.Println("Running smoketest")
 
 	rootDirectory := GetTopLevel()
 
 	configFile := LoadEngConfig(rootDirectory)
-	fmt.Println(configFile)
 
 	absSDKPath, err := filepath.Abs(fmt.Sprintf("%s/sdk", rootDirectory))
 	handle(err)
@@ -470,26 +453,21 @@ func main() {
 
 	smoketestModFile = filepath.Join(smoketestDir, "go.mod")
 
-	exampleFiles, err := FindExampleFiles(absSDKPath, *serviceDirectory)
+	exampleFiles, err := FindExampleFiles(absSDKPath, serviceDirectory)
 	handle(err)
 	fmt.Printf("Found %d example files for smoke tests\n", len(exampleFiles))
 	for _, e := range exampleFiles {
-		fmt.Println(e)
+		fmt.Printf("\t%s\n", e)
 	}
 
 	moduleDirectories := findModuleDirectories(absSDKPath)
-	fmt.Printf("Found %d modules\n", len(moduleDirectories))
-
 	allTags := getAllTags()
-	fmt.Printf("Found %d tags\n", len(allTags))
-
 	modules := matchModulesAndTags(moduleDirectories, allTags)
-	_ = modules
 
 	err = CopyExampleFiles(exampleFiles, smoketestDir)
 	handle(err)
 
-	err = BuildModFile(modules, *serviceDirectory)
+	err = BuildModFile(modules, serviceDirectory)
 	handle(err)
 
 	err = ReplacePackageStatement(smoketestDir)

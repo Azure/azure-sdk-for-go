@@ -107,18 +107,19 @@ func TestPutBlockAndPutBlockListWithCPK(t *testing.T) {
 	_assert.EqualValues(*getResp.LastModified, *resp.LastModified)
 }
 
-func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPKByScope() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerClient := createNewContainer(_assert, generateContainerName(testName), svcClient)
+func TestPutBlockAndPutBlockListWithCPKByScope(t *testing.T) {
+	_assert := assert.New(t)
+	t.Skip("Error: 'Given Encryption scope is not available'")
+	stop := start(t)
+	defer stop()
+
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(_assert, generateContainerName(t.Name()), svcClient)
 	defer deleteContainer(_assert, containerClient)
 
-	bbClient := containerClient.NewBlockBlobClient(generateBlobName(testName))
+	bbClient := containerClient.NewBlockBlobClient(generateBlobName(t.Name()))
 
 	words := []string{"AAA ", "BBB ", "CCC "}
 	base64BlockIDs := make([]string, len(words))
@@ -165,14 +166,16 @@ func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPKByScope() {
 }
 
 //nolint
-func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPK() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerClient := createNewContainer(_assert, generateContainerName(testName), svcClient)
+func TestPutBlockFromURLAndCommitWithCPK(t *testing.T) {
+	_assert := assert.New(t)
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
+
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(_assert, generateContainerName(t.Name()), svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	contentSize := 8 * 1024 // 8 KB
@@ -198,7 +201,7 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPK() {
 		Permissions:   BlobSASPermissions{Read: true}.String(),
 	}.NewSASQueryParameters(credential)
 	if err != nil {
-		s.T().Fatal(err)
+		t.Fatal(err)
 	}
 
 	srcBlobURLWithSAS := srcBlobParts.URL()
@@ -283,14 +286,16 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPK() {
 }
 
 //nolint
-func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPKWithScope() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerClient := createNewContainer(_assert, generateContainerName(testName), svcClient)
+func TestPutBlockFromURLAndCommitWithCPKWithScope(t *testing.T) {
+	_assert := assert.New(t)
+	t.Skip("The given encryption scope is not available")
+	stop := start(t)
+	defer stop()
+
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(_assert, generateContainerName(t.Name()), svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	contentSize := 8 * 1024 // 8 KB
@@ -316,7 +321,7 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPKWithScope
 		Permissions:   BlobSASPermissions{Read: true}.String(),
 	}.NewSASQueryParameters(credential)
 	if err != nil {
-		s.T().Fatal(err)
+		t.Fatal(err)
 	}
 
 	srcBlobURLWithSAS := srcBlobParts.URL()
@@ -397,20 +402,22 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPKWithScope
 }
 
 //nolint
-func (s *azblobUnrecordedTestSuite) TestUploadBlobWithMD5WithCPK() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerClient := createNewContainer(_assert, generateContainerName(testName), svcClient)
+func TestUploadBlobWithMD5WithCPK(t *testing.T) {
+	_assert := assert.New(t)
+	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
+
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(_assert, generateContainerName(t.Name()), svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	contentSize := 8 * 1024
 	r, srcData := generateData(contentSize)
 	md5Val := md5.Sum(srcData)
-	bbClient := containerClient.NewBlockBlobClient(generateBlobName(testName))
+	bbClient := containerClient.NewBlockBlobClient(generateBlobName(t.Name()))
 
 	uploadBlockBlobOptions := UploadBlockBlobOptions{
 		CpkInfo: &testCPKByValue,
@@ -442,21 +449,22 @@ func (s *azblobUnrecordedTestSuite) TestUploadBlobWithMD5WithCPK() {
 	_assert.EqualValues(downloadResp.EncryptionKeySHA256, testCPKByValue.EncryptionKeySHA256)
 }
 
-func (s *azblobTestSuite) TestUploadBlobWithMD5WithCPKScope() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerClient := createNewContainer(_assert, generateContainerName(testName), svcClient)
+func TestUploadBlobWithMD5WithCPKScope(t *testing.T) {
+	_assert := assert.New(t)
+	t.Skip("The encryption scope is not available")
+	stop := start(t)
+	defer stop()
+
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(_assert, generateContainerName(t.Name()), svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	contentSize := 8 * 1024
 	r, srcData := generateData(contentSize)
 	md5Val := md5.Sum(srcData)
-	bbClient := containerClient.NewBlockBlobClient(generateBlobName(testName))
+	bbClient := containerClient.NewBlockBlobClient(generateBlobName(t.Name()))
 
 	uploadBlockBlobOptions := UploadBlockBlobOptions{
 		CpkScopeInfo: &testCPKByScope,
@@ -480,18 +488,19 @@ func (s *azblobTestSuite) TestUploadBlobWithMD5WithCPKScope() {
 	_assert.EqualValues(*downloadResp.EncryptionScope, *testCPKByScope.EncryptionScope)
 }
 
-func (s *azblobTestSuite) TestAppendBlockWithCPK() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerClient := createNewContainer(_assert, generateContainerName(testName), svcClient)
+func TestAppendBlockWithCPK(t *testing.T) {
+	_assert := assert.New(t)
+	// t.Skip("The encryption scope is not available")
+	stop := start(t)
+	defer stop()
+
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(_assert, generateContainerName(t.Name()), svcClient)
 	defer deleteContainer(_assert, containerClient)
 
-	abClient := containerClient.NewAppendBlobClient(generateBlobName(testName))
+	abClient := containerClient.NewAppendBlobClient(generateBlobName(t.Name()))
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		CpkInfo: &testCPKByValue,
@@ -539,18 +548,19 @@ func (s *azblobTestSuite) TestAppendBlockWithCPK() {
 	_assert.EqualValues(*downloadResp.EncryptionKeySHA256, *testCPKByValue.EncryptionKeySHA256)
 }
 
-func (s *azblobTestSuite) TestAppendBlockWithCPKScope() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerClient := createNewContainer(_assert, generateContainerName(testName), svcClient)
+func TestAppendBlockWithCPKScope(t *testing.T) {
+	_assert := assert.New(t)
+	t.Skip("The encryption scope is not available")
+	stop := start(t)
+	defer stop()
+
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(_assert, generateContainerName(t.Name()), svcClient)
 	defer deleteContainer(_assert, containerClient)
 
-	abClient := containerClient.NewAppendBlobClient(generateBlobName(testName))
+	abClient := containerClient.NewAppendBlobClient(generateBlobName(t.Name()))
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		CpkScopeInfo: &testCPKByScope,
@@ -595,14 +605,16 @@ func (s *azblobTestSuite) TestAppendBlockWithCPKScope() {
 }
 
 //nolint
-func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPK() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerClient := createNewContainer(_assert, generateContainerName(testName)+"01", svcClient)
+func TestAppendBlockFromURLWithCPK(t *testing.T) {
+	_assert := assert.New(t)
+	// t.Skip("The encryption scope is not available")
+	stop := start(t)
+	defer stop()
+
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(_assert, generateContainerName(t.Name())+"01", svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	contentSize := 4 * 1024 * 1024 // 4MB
@@ -643,7 +655,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPK() {
 		Permissions:   BlobSASPermissions{Read: true}.String(),
 	}.NewSASQueryParameters(credential)
 	if err != nil {
-		s.T().Fatal(err)
+		t.Fatal(err)
 	}
 
 	srcBlobURLWithSAS := srcBlobParts.URL()
@@ -705,14 +717,16 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPK() {
 }
 
 //nolint
-func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPKScope() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerClient := createNewContainer(_assert, generateContainerName(testName)+"01", svcClient)
+func TestAppendBlockFromURLWithCPKScope(t *testing.T) {
+	_assert := assert.New(t)
+	t.Skip("The encryption scope is not available")
+	stop := start(t)
+	defer stop()
+
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(_assert, generateContainerName(t.Name())+"01", svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	contentSize := 4 * 1024 * 1024 // 4MB
@@ -753,7 +767,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPKScope() {
 		Permissions:   BlobSASPermissions{Read: true}.String(),
 	}.NewSASQueryParameters(credential)
 	if err != nil {
-		s.T().Fatal(err)
+		t.Fatal(err)
 	}
 
 	srcBlobURLWithSAS := srcBlobParts.URL()
@@ -802,19 +816,21 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPKScope() {
 }
 
 //nolint
-func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPK() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerClient := createNewContainer(_assert, generateContainerName(testName), svcClient)
+func TestPageBlockWithCPK(t *testing.T) {
+	_assert := assert.New(t)
+	// t.Skip("The encryption scope is not available")
+	stop := start(t)
+	defer stop()
+
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(_assert, generateContainerName(t.Name()), svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	contentSize := 4 * 1024 * 1024 // 4MB
 	r, srcData := generateData(contentSize)
-	pbName := generateBlobName(testName)
+	pbName := generateBlobName(t.Name())
 	pbClient := createNewPageBlobWithCPK(_assert, pbName, containerClient, int64(contentSize), &testCPKByValue, nil)
 
 	offset, count := int64(0), int64(contentSize)
@@ -859,19 +875,21 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPK() {
 }
 
 //nolint
-func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPKScope() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerClient := createNewContainer(_assert, generateContainerName(testName)+"01", svcClient)
+func TestPageBlockWithCPKScope(t *testing.T) {
+	_assert := assert.New(t)
+	t.Skip("The encryption scope is not available")
+	stop := start(t)
+	defer stop()
+
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(_assert, generateContainerName(t.Name())+"01", svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	contentSize := 4 * 1024 * 1024 // 4MB
 	r, srcData := generateData(contentSize)
-	pbName := generateBlobName(testName)
+	pbName := generateBlobName(t.Name())
 	pbClient := createNewPageBlobWithCPK(_assert, pbName, containerClient, int64(contentSize), nil, &testCPKByScope)
 
 	offset, count := int64(0), int64(contentSize)
@@ -907,14 +925,16 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPKScope() {
 }
 
 //nolint
-func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPK() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerClient := createNewContainer(_assert, generateContainerName(testName)+"01", svcClient)
+func TestPageBlockFromURLWithCPK(t *testing.T) {
+	_assert := assert.New(t)
+	// t.Skip("The encryption scope is not available")
+	stop := start(t)
+	defer stop()
+
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(_assert, generateContainerName(t.Name())+"01", svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	contentSize := 8 * 1024 // 1MB
@@ -922,9 +942,9 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPK() {
 	md5Sum := md5.Sum(srcData)
 	contentMD5 := md5Sum[:]
 	ctx := context.Background() // Use default Background context
-	srcPBName := "src" + generateBlobName(testName)
+	srcPBName := "src" + generateBlobName(t.Name())
 	bbClient := createNewPageBlobWithSize(_assert, srcPBName, containerClient, int64(contentSize))
-	dstPBName := "dst" + generateBlobName(testName)
+	dstPBName := "dst" + generateBlobName(t.Name())
 	destBlob := createNewPageBlobWithCPK(_assert, dstPBName, containerClient, int64(contentSize), &testCPKByValue, nil)
 
 	offset, count := int64(0), int64(contentSize)
@@ -946,7 +966,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPK() {
 		Permissions:   BlobSASPermissions{Read: true}.String(),
 	}.NewSASQueryParameters(credential)
 	if err != nil {
-		s.T().Fatal(err)
+		t.Fatal(err)
 	}
 
 	srcBlobURLWithSAS := srcBlobParts.URL()
@@ -992,14 +1012,16 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPK() {
 }
 
 //nolint
-func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPKScope() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerClient := createNewContainer(_assert, generateContainerName(testName)+"01", svcClient)
+func TestPageBlockFromURLWithCPKScope(t *testing.T) {
+	_assert := assert.New(t)
+	t.Skip("The encryption scope is not available")
+	stop := start(t)
+	defer stop()
+
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(_assert, generateContainerName(t.Name())+"01", svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	contentSize := 8 * 1024 // 1MB
@@ -1007,9 +1029,9 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPKScope() {
 	md5Sum := md5.Sum(srcData)
 	contentMD5 := md5Sum[:]
 	ctx := context.Background() // Use default Background context
-	srcPBName := "src" + generateBlobName(testName)
+	srcPBName := "src" + generateBlobName(t.Name())
 	srcPBClient := createNewPageBlobWithSize(_assert, srcPBName, containerClient, int64(contentSize))
-	dstPBName := "dst" + generateBlobName(testName)
+	dstPBName := "dst" + generateBlobName(t.Name())
 	dstPBBlob := createNewPageBlobWithCPK(_assert, dstPBName, containerClient, int64(contentSize), nil, &testCPKByScope)
 
 	offset, count := int64(0), int64(contentSize)
@@ -1031,7 +1053,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPKScope() {
 		Permissions:   BlobSASPermissions{Read: true}.String(),
 	}.NewSASQueryParameters(credential)
 	if err != nil {
-		s.T().Fatal(err)
+		t.Fatal(err)
 	}
 
 	srcBlobURLWithSAS := srcBlobParts.URL()
@@ -1068,21 +1090,23 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPKScope() {
 }
 
 //nolint
-func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5WithCPK() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerClient := createNewContainer(_assert, generateContainerName(testName)+"01", svcClient)
+func TestUploadPagesFromURLWithMD5WithCPK(t *testing.T) {
+	_assert := assert.New(t)
+	// t.Skip("The encryption scope is not available")
+	stop := start(t)
+	defer stop()
+
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(_assert, generateContainerName(t.Name())+"01", svcClient)
 	defer deleteContainer(_assert, containerClient)
 
 	contentSize := 8 * 1024
 	r, srcData := getRandomDataAndReader(contentSize)
 	md5Sum := md5.Sum(srcData)
 	contentMD5 := md5Sum[:]
-	srcPBName := "src" + generateBlobName(testName)
+	srcPBName := "src" + generateBlobName(t.Name())
 	srcBlob := createNewPageBlobWithSize(_assert, srcPBName, containerClient, int64(contentSize))
 
 	offset, count := int64(0), int64(contentSize)
@@ -1105,11 +1129,11 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5WithCPK() {
 		Permissions:   BlobSASPermissions{Read: true}.String(),
 	}.NewSASQueryParameters(credential)
 	if err != nil {
-		s.T().Fatal(err)
+		t.Fatal(err)
 	}
 
 	srcBlobURLWithSAS := srcBlobParts.URL()
-	dstPBName := "dst" + generateBlobName(testName)
+	dstPBName := "dst" + generateBlobName(t.Name())
 	destPBClient := createNewPageBlobWithCPK(_assert, dstPBName, containerClient, int64(contentSize), &testCPKByValue, nil)
 	uploadPagesFromURLOptions := UploadPagesFromURLOptions{
 		SourceContentMD5: contentMD5,
@@ -1162,18 +1186,19 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5WithCPK() {
 	validateStorageError(_assert, err, StorageErrorCodeMD5Mismatch)
 }
 
-func (s *azblobTestSuite) TestClearDiffPagesWithCPK() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerClient := createNewContainer(_assert, generateContainerName(testName)+"01", svcClient)
+func TestClearDiffPagesWithCPK(t *testing.T) {
+	_assert := assert.New(t)
+	// t.Skip("The encryption scope is not available")
+	stop := start(t)
+	defer stop()
+
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(_assert, generateContainerName(t.Name())+"01", svcClient)
 	defer deleteContainer(_assert, containerClient)
 
-	pbName := generateBlobName(testName)
+	pbName := generateBlobName(t.Name())
 	pbClient := createNewPageBlobWithCPK(_assert, pbName, containerClient, PageBlobPageBytes*10, &testCPKByValue, nil)
 
 	contentSize := 2 * 1024
@@ -1215,18 +1240,19 @@ func (s *azblobTestSuite) TestClearDiffPagesWithCPK() {
 	_assert.Nil(pageListResp.PageList.PageRange)
 }
 
-func (s *azblobTestSuite) TestBlobResizeWithCPK() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerClient := createNewContainer(_assert, generateContainerName(testName)+"01", svcClient)
+func TestBlobResizeWithCPK(t *testing.T) {
+	_assert := assert.New(t)
+	t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
+
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(_assert, generateContainerName(t.Name())+"01", svcClient)
 	defer deleteContainer(_assert, containerClient)
 
-	pbName := generateBlobName(testName)
+	pbName := generateBlobName(t.Name())
 	pbClient := createNewPageBlobWithCPK(_assert, pbName, containerClient, PageBlobPageBytes*10, &testCPKByValue, nil)
 
 	resizePageBlobOptions := ResizePageBlobOptions{
@@ -1238,22 +1264,24 @@ func (s *azblobTestSuite) TestBlobResizeWithCPK() {
 	getBlobPropertiesOptions := GetBlobPropertiesOptions{
 		CpkInfo: &testCPKByValue,
 	}
-	resp, _ := pbClient.GetProperties(ctx, &getBlobPropertiesOptions)
+	resp, err := pbClient.GetProperties(ctx, &getBlobPropertiesOptions)
+	_assert.NoError(err)
 	_assert.Equal(*resp.ContentLength, int64(PageBlobPageBytes))
 }
 
-func (s *azblobTestSuite) TestGetSetBlobMetadataWithCPK() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerClient := createNewContainer(_assert, generateContainerName(testName)+"01", svcClient)
+func TestGetSetBlobMetadataWithCPK(t *testing.T) {
+	_assert := assert.New(t)
+	t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
+
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(_assert, generateContainerName(t.Name())+"01", svcClient)
 	defer deleteContainer(_assert, containerClient)
 
-	bbName := generateBlobName(testName)
+	bbName := generateBlobName(t.Name())
 	bbClient := createNewBlockBlobWithCPK(_assert, bbName, containerClient, &testCPKByValue, nil)
 
 	// Set blob metadata without encryption key should fail the request.
@@ -1288,18 +1316,19 @@ func (s *azblobTestSuite) TestGetSetBlobMetadataWithCPK() {
 	_assert.Nil(getResp.Metadata)
 }
 
-func (s *azblobTestSuite) TestGetSetBlobMetadataWithCPKScope() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerClient := createNewContainer(_assert, generateContainerName(testName)+"01", svcClient)
+func TestGetSetBlobMetadataWithCPKScope(t *testing.T) {
+	_assert := assert.New(t)
+	t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
+
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(_assert, generateContainerName(t.Name())+"01", svcClient)
 	defer deleteContainer(_assert, containerClient)
 
-	bbName := generateBlobName(testName)
+	bbName := generateBlobName(t.Name())
 	bbClient := createNewBlockBlobWithCPK(_assert, bbName, containerClient, nil, &testCPKByScope)
 
 	// Set blob metadata without encryption key should fail the request.
@@ -1327,18 +1356,19 @@ func (s *azblobTestSuite) TestGetSetBlobMetadataWithCPKScope() {
 	_assert.Nil(getResp.Metadata)
 }
 
-func (s *azblobTestSuite) TestBlobSnapshotWithCPK() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerClient := createNewContainer(_assert, generateContainerName(testName)+"01", svcClient)
+func TestBlobSnapshotWithCPK(t *testing.T) {
+	_assert := assert.New(t)
+	t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+	stop := start(t)
+	defer stop()
+
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(_assert, generateContainerName(t.Name())+"01", svcClient)
 	defer deleteContainer(_assert, containerClient)
 
-	bbName := generateBlobName(testName)
+	bbName := generateBlobName(t.Name())
 	bbClient := createNewBlockBlobWithCPK(_assert, bbName, containerClient, &testCPKByValue, nil)
 
 	// Create Snapshot of an encrypted blob without encryption key should fail the request.
@@ -1376,18 +1406,19 @@ func (s *azblobTestSuite) TestBlobSnapshotWithCPK() {
 	//_assert(err.(StorageError).Response().StatusCode, chk.Equals, 404)
 }
 
-func (s *azblobTestSuite) TestBlobSnapshotWithCPKScope() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	containerClient := createNewContainer(_assert, generateContainerName(testName)+"01", svcClient)
+func TestBlobSnapshotWithCPKScope(t *testing.T) {
+	_assert := assert.New(t)
+	t.Skip("The given encryption scope is not available")
+	stop := start(t)
+	defer stop()
+
+	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
+	require.NoError(t, err)
+
+	containerClient := createNewContainer(_assert, generateContainerName(t.Name())+"01", svcClient)
 	defer deleteContainer(_assert, containerClient)
 
-	bbName := generateBlobName(testName)
+	bbName := generateBlobName(t.Name())
 	bbClient := createNewBlockBlobWithCPK(_assert, bbName, containerClient, nil, &testCPKByScope)
 
 	// Create Snapshot of an encrypted blob without encryption key should fail the request.

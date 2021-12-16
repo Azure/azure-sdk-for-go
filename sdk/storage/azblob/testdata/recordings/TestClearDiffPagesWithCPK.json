@@ -1,0 +1,332 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://fakeaccount.blob.core.windows.net/goccleardiffpageswithcpk01?restype=container",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "PUT",
+        ":path": "/goccleardiffpageswithcpk01?restype=container",
+        ":scheme": "https",
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-azblob/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Thu, 16 Dec 2021 22:25:29 GMT",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Thu, 16 Dec 2021 22:25:27 GMT",
+        "ETag": "\u00220x8D9C0E2F7049745\u0022",
+        "Last-Modified": "Thu, 16 Dec 2021 22:25:28 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-request-id": "854d5fb6-f01e-001e-19cb-f269ce000000",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://fakeaccount.blob.core.windows.net/goccleardiffpageswithcpk01/gotestblobcleardiffpageswithcpk",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "PUT",
+        ":path": "/goccleardiffpageswithcpk01/gotestblobcleardiffpageswithcpk",
+        ":scheme": "https",
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-azblob/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-blob-content-length": "5120",
+        "x-ms-blob-type": "PageBlob",
+        "x-ms-date": "Thu, 16 Dec 2021 22:25:29 GMT",
+        "x-ms-encryption-algorithm": "AES256",
+        "x-ms-encryption-key": "MDEyMzQ1NjcwMTIzNDU2NzAxMjM0NTY3MDEyMzQ1Njc=",
+        "x-ms-encryption-key-sha256": "3QFFFpRA5\u002BXANHqwwbT4yXDmrT/2JaLt/FKHjzhOdoE=",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Thu, 16 Dec 2021 22:25:28 GMT",
+        "ETag": "\u00220x8D9C0E2F71525EB\u0022",
+        "Last-Modified": "Thu, 16 Dec 2021 22:25:29 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-encryption-key-sha256": "3QFFFpRA5\u002BXANHqwwbT4yXDmrT/2JaLt/FKHjzhOdoE=",
+        "x-ms-request-id": "854d5fd0-f01e-001e-2ecb-f269ce000000",
+        "x-ms-request-server-encrypted": "true",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://fakeaccount.blob.core.windows.net/goccleardiffpageswithcpk01/gotestblobcleardiffpageswithcpk?comp=page",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "PUT",
+        ":path": "/goccleardiffpageswithcpk01/gotestblobcleardiffpageswithcpk?comp=page",
+        ":scheme": "https",
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "2048",
+        "Content-Type": "application/octet-stream",
+        "User-Agent": "azsdk-go-azblob/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Thu, 16 Dec 2021 22:25:29 GMT",
+        "x-ms-encryption-algorithm": "AES256",
+        "x-ms-encryption-key": "MDEyMzQ1NjcwMTIzNDU2NzAxMjM0NTY3MDEyMzQ1Njc=",
+        "x-ms-encryption-key-sha256": "3QFFFpRA5\u002BXANHqwwbT4yXDmrT/2JaLt/FKHjzhOdoE=",
+        "x-ms-page-write": "update",
+        "x-ms-range": "bytes=0-2047",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": "MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3Y=",
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Thu, 16 Dec 2021 22:25:28 GMT",
+        "ETag": "\u00220x8D9C0E2F7237BB4\u0022",
+        "Last-Modified": "Thu, 16 Dec 2021 22:25:29 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-blob-sequence-number": "0",
+        "x-ms-content-crc64": "7n4hFkwWHEs=",
+        "x-ms-encryption-key-sha256": "3QFFFpRA5\u002BXANHqwwbT4yXDmrT/2JaLt/FKHjzhOdoE=",
+        "x-ms-request-id": "854d5fee-f01e-001e-4bcb-f269ce000000",
+        "x-ms-request-server-encrypted": "true",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://fakeaccount.blob.core.windows.net/goccleardiffpageswithcpk01/gotestblobcleardiffpageswithcpk?comp=snapshot",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "PUT",
+        ":path": "/goccleardiffpageswithcpk01/gotestblobcleardiffpageswithcpk?comp=snapshot",
+        ":scheme": "https",
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-azblob/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Thu, 16 Dec 2021 22:25:29 GMT",
+        "x-ms-encryption-algorithm": "AES256",
+        "x-ms-encryption-key": "MDEyMzQ1NjcwMTIzNDU2NzAxMjM0NTY3MDEyMzQ1Njc=",
+        "x-ms-encryption-key-sha256": "3QFFFpRA5\u002BXANHqwwbT4yXDmrT/2JaLt/FKHjzhOdoE=",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Thu, 16 Dec 2021 22:25:28 GMT",
+        "ETag": "\u00220x8D9C0E2F7237BB4\u0022",
+        "Last-Modified": "Thu, 16 Dec 2021 22:25:29 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-request-id": "854d600a-f01e-001e-65cb-f269ce000000",
+        "x-ms-request-server-encrypted": "false",
+        "x-ms-snapshot": "2021-12-16T22:25:29.2024968Z",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://fakeaccount.blob.core.windows.net/goccleardiffpageswithcpk01/gotestblobcleardiffpageswithcpk?comp=page",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "PUT",
+        ":path": "/goccleardiffpageswithcpk01/gotestblobcleardiffpageswithcpk?comp=page",
+        ":scheme": "https",
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "2048",
+        "Content-Type": "application/octet-stream",
+        "User-Agent": "azsdk-go-azblob/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Thu, 16 Dec 2021 22:25:29 GMT",
+        "x-ms-encryption-algorithm": "AES256",
+        "x-ms-encryption-key": "MDEyMzQ1NjcwMTIzNDU2NzAxMjM0NTY3MDEyMzQ1Njc=",
+        "x-ms-encryption-key-sha256": "3QFFFpRA5\u002BXANHqwwbT4yXDmrT/2JaLt/FKHjzhOdoE=",
+        "x-ms-page-write": "update",
+        "x-ms-range": "bytes=2048-4095",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": "MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3YyU0RnWmo2UmtLWXpKcHUwNHN3ZVFlazR1V0hPOG5kUG5ZbFowdG5GUzYxaGpuRlo1SWt2SUdHWTQ0ZUtBQm92MlNEZ1pqNlJrS1l6SnB1MDRzd2VRZWs0dVdITzhuZFBuWWxaMHRuRlM2MWhqbkZaNUlrdklHR1k0NGVLQUJvdjJTRGdaajZSa0tZekpwdTA0c3dlUWVrNHVXSE84bmRQbllsWjB0bkZTNjFoam5GWjVJa3ZJR0dZNDRlS0FCb3Y=",
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Thu, 16 Dec 2021 22:25:28 GMT",
+        "ETag": "\u00220x8D9C0E2F742E5FF\u0022",
+        "Last-Modified": "Thu, 16 Dec 2021 22:25:29 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-blob-sequence-number": "0",
+        "x-ms-content-crc64": "7n4hFkwWHEs=",
+        "x-ms-encryption-key-sha256": "3QFFFpRA5\u002BXANHqwwbT4yXDmrT/2JaLt/FKHjzhOdoE=",
+        "x-ms-request-id": "854d6021-f01e-001e-7ccb-f269ce000000",
+        "x-ms-request-server-encrypted": "true",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://fakeaccount.blob.core.windows.net/goccleardiffpageswithcpk01/gotestblobcleardiffpageswithcpk?comp=pagelist\u0026prevsnapshot=2021-12-16T22%3A25%3A29.2024968Z",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "GET",
+        ":path": "/goccleardiffpageswithcpk01/gotestblobcleardiffpageswithcpk?comp=pagelist\u0026prevsnapshot=2021-12-16T22%3A25%3A29.2024968Z",
+        ":scheme": "https",
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azblob/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Thu, 16 Dec 2021 22:25:29 GMT",
+        "x-ms-range": "bytes=0-4095",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Type": "application/xml",
+        "Date": "Thu, 16 Dec 2021 22:25:28 GMT",
+        "ETag": "\u00220x8D9C0E2F742E5FF\u0022",
+        "Last-Modified": "Thu, 16 Dec 2021 22:25:29 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "Transfer-Encoding": "chunked",
+        "x-ms-blob-content-length": "5120",
+        "x-ms-request-id": "854d605a-f01e-001e-31cb-f269ce000000",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": "\uFEFF\u003C?xml version=\u00221.0\u0022 encoding=\u0022utf-8\u0022?\u003E\u003CPageList\u003E\u003CPageRange\u003E\u003CStart\u003E2048\u003C/Start\u003E\u003CEnd\u003E4095\u003C/End\u003E\u003C/PageRange\u003E\u003C/PageList\u003E"
+    },
+    {
+      "RequestUri": "https://fakeaccount.blob.core.windows.net/goccleardiffpageswithcpk01/gotestblobcleardiffpageswithcpk?comp=page",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "PUT",
+        ":path": "/goccleardiffpageswithcpk01/gotestblobcleardiffpageswithcpk?comp=page",
+        ":scheme": "https",
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-azblob/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Thu, 16 Dec 2021 22:25:30 GMT",
+        "x-ms-encryption-algorithm": "AES256",
+        "x-ms-encryption-key": "MDEyMzQ1NjcwMTIzNDU2NzAxMjM0NTY3MDEyMzQ1Njc=",
+        "x-ms-encryption-key-sha256": "3QFFFpRA5\u002BXANHqwwbT4yXDmrT/2JaLt/FKHjzhOdoE=",
+        "x-ms-page-write": "clear",
+        "x-ms-range": "bytes=2048-4095",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Thu, 16 Dec 2021 22:25:28 GMT",
+        "ETag": "\u00220x8D9C0E2F76DE75F\u0022",
+        "Last-Modified": "Thu, 16 Dec 2021 22:25:29 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-blob-sequence-number": "0",
+        "x-ms-request-id": "854d607e-f01e-001e-52cb-f269ce000000",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://fakeaccount.blob.core.windows.net/goccleardiffpageswithcpk01/gotestblobcleardiffpageswithcpk?comp=pagelist\u0026prevsnapshot=2021-12-16T22%3A25%3A29.2024968Z",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "GET",
+        ":path": "/goccleardiffpageswithcpk01/gotestblobcleardiffpageswithcpk?comp=pagelist\u0026prevsnapshot=2021-12-16T22%3A25%3A29.2024968Z",
+        ":scheme": "https",
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azblob/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Thu, 16 Dec 2021 22:25:30 GMT",
+        "x-ms-range": "bytes=0-4094",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Type": "application/xml",
+        "Date": "Thu, 16 Dec 2021 22:25:28 GMT",
+        "ETag": "\u00220x8D9C0E2F76DE75F\u0022",
+        "Last-Modified": "Thu, 16 Dec 2021 22:25:29 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "Transfer-Encoding": "chunked",
+        "x-ms-blob-content-length": "5120",
+        "x-ms-request-id": "854d609b-f01e-001e-6ccb-f269ce000000",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": "\uFEFF\u003C?xml version=\u00221.0\u0022 encoding=\u0022utf-8\u0022?\u003E\u003CPageList\u003E\u003CClearRange\u003E\u003CStart\u003E2048\u003C/Start\u003E\u003CEnd\u003E4095\u003C/End\u003E\u003C/ClearRange\u003E\u003C/PageList\u003E"
+    },
+    {
+      "RequestUri": "https://fakeaccount.blob.core.windows.net/goccleardiffpageswithcpk01?restype=container",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "DELETE",
+        ":path": "/goccleardiffpageswithcpk01?restype=container",
+        ":scheme": "https",
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azblob/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Thu, 16 Dec 2021 22:25:30 GMT",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Thu, 16 Dec 2021 22:25:28 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-request-id": "854d60ac-f01e-001e-7ccb-f269ce000000",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {}
+}

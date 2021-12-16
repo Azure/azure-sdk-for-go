@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
@@ -51,18 +52,20 @@ func TestMain(m *testing.M) {
 
 var pathToPackage = "sdk/storage/azblob/testdata"
 
-func createServiceClientWithSharedKeyForRecording(t *testing.T, accountType testAccountType) (ServiceClient, error) {
-	cred, err := getRecordingCredential(t, accountType)
-	require.NoError(t, err)
-
+func getServiceClientOptions(t *testing.T) *ClientOptions {
 	transporter, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 
-	options := &ClientOptions{
+	return &ClientOptions{
 		Transporter: transporter,
 	}
+}
+
+func createServiceClientWithSharedKeyForRecording(t *testing.T, accountType testAccountType) (ServiceClient, error) {
+	cred, err := getRecordingCredential(t, accountType)
+	require.NoError(t, err)
 	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", cred.AccountName())
-	return NewServiceClientWithSharedKey(serviceURL, cred, options)
+	return NewServiceClientWithSharedKey(serviceURL, cred, getServiceClientOptions(t))
 }
 
 func createServiceClientWithConnStrForRecording(t *testing.T, accountType testAccountType) (ServiceClient, error) {
@@ -120,4 +123,11 @@ func start(t *testing.T) func() {
 		err = recording.Stop(t, nil)
 		require.NoError(t, err)
 	}
+}
+
+func getSleepTime(s int) time.Duration {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		return time.Millisecond
+	}
+	return time.Second * time.Duration(s)
 }

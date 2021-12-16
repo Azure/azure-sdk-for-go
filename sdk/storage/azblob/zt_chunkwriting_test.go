@@ -22,14 +22,12 @@ import (
 
 const finalFileName = "final"
 
-//nolint
 type fakeBlockWriter struct {
 	path       string
 	block      int32
 	errOnBlock int32
 }
 
-//nolint
 func newFakeBlockWriter() *fakeBlockWriter {
 	generatedUuid, _ := uuid.New()
 	f := &fakeBlockWriter{
@@ -45,7 +43,6 @@ func newFakeBlockWriter() *fakeBlockWriter {
 	return f
 }
 
-//nolint
 func (f *fakeBlockWriter) StageBlock(_ context.Context, blockID string, body io.ReadSeekCloser, _ *StageBlockOptions) (BlockBlobStageBlockResponse, error) {
 	n := atomic.AddInt32(&f.block, 1)
 	if n == f.errOnBlock {
@@ -69,7 +66,6 @@ func (f *fakeBlockWriter) StageBlock(_ context.Context, blockID string, body io.
 	return BlockBlobStageBlockResponse{}, nil
 }
 
-//nolint
 func (f *fakeBlockWriter) CommitBlockList(_ context.Context, base64BlockIDs []string, _ *CommitBlockListOptions) (BlockBlobCommitBlockListResponse, error) {
 	dst, err := os.OpenFile(filepath.Join(f.path, finalFileName), os.O_CREATE+os.O_WRONLY, 0600)
 	if err != nil {
@@ -97,7 +93,6 @@ func (f *fakeBlockWriter) CommitBlockList(_ context.Context, base64BlockIDs []st
 	return BlockBlobCommitBlockListResponse{}, nil
 }
 
-//nolint
 func (f *fakeBlockWriter) cleanup() {
 	err := os.RemoveAll(f.path)
 	if err != nil {
@@ -105,12 +100,10 @@ func (f *fakeBlockWriter) cleanup() {
 	}
 }
 
-//nolint
 func (f *fakeBlockWriter) final() string {
 	return filepath.Join(f.path, finalFileName)
 }
 
-//nolint
 func createSrcFile(size int) (string, error) {
 	generatedUuid, err := uuid.New()
 	if err != nil {
@@ -136,7 +129,6 @@ func createSrcFile(size int) (string, error) {
 	return p, nil
 }
 
-//nolint
 func fileMD5(p string) string {
 	f, err := os.Open(p)
 	if err != nil {
@@ -196,7 +188,6 @@ func TestGetErr(t *testing.T) {
 	}
 }
 
-//nolint
 func TestCopyFromReader(t *testing.T) {
 	t.Parallel()
 

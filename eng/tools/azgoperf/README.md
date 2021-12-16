@@ -5,10 +5,11 @@ The `azgoperf` CLI tool provides a singular framework for writing and running pe
 
 | Flag | Short Flag | Default Value | Variable Name | Description |
 | -----| ---------- | ------------- | ------------- | ----------- |
-| `--duration` | `-d` | 10 seconds | duration (`int`) | How long to run an individual performance test |
-| `--iterations` | `-i` | 3 | iterations (`int`) | How many iterations of a performance test to run |
-| `--testproxy` | `-x` | N/A | testProxy (`string`) | Whether to run a test against a test proxy. If you want to run against `https` specify with `--testproxy https`, likewise for `http`. If you want to run normally omit this flag |
-| `--timeout` | `-t` | 10 seconds| timeoutSeconds (`int`) | How long to allow an operation to block. |
+| `--duration` | `-d` | 10 seconds | internal.Duration (`int`) | How long to run an individual performance test |
+| `--iterations` | `-i` | 3 | internal.Iterations (`int`) | How many iterations of a performance test to run |
+| `--testproxy` | `-x` | N/A | internal.TestProxy (`string`) | Whether to run a test against a test proxy. If you want to run against `https` specify with `--testproxy https`, likewise for `http`. If you want to run normally omit this flag |
+| `--timeout` | `-t` | 10 seconds| internal.TimeoutSeconds (`int`) | How long to allow an operation to block. |
+| `--warmup` | `-w` | 3 seconds| internal.WarmUp (`int`) | How long to allow the connection to warm up. |
 
 ## Running with the test proxy
 
@@ -50,13 +51,30 @@ func (k *keysPerfTest) GlobalTeardown() error {
 ## Adding Performance Tests to an SDK
 
 1. Copy the `cmd/template` directory into a directory for your package:
-```
-Copy-Item template.go aztables.go
+```pwsh
+Copy-Item cmd/template cmd/<mypackage> -Recurse
 ```
 
 2. Change the name of `TemplateCmd`. Best practices are to use a `<packageName>Cmd` as the name. Fill in `Use`, `Short`, `Long`, and `RunE` for your specific test.
 
 3. Implement the `GlobalSetup`, `Setup`, `Run`, `TearDown`, `GlobalTearDown`, and `GetMetadata` functions. All of these functions will take a `context.Context` type to prevent an erroneous test from blocking. `GetMetadata` should return a `string` with the name of the specific test. This is only used by the test proxy for generating and reading recordings. `GlobalSetup` and `GlobalTearDown` are called once each, at the beginning and end of the performance test respectively. These are good places to do client instantiation, create instances, etc. `Setup` and `TearDown` are called once before each test iteration. If there is nothing to do in any of these steps, you can use `return nil` for the implementation.
+
+4. Register the test in `cmd/root.go` by adding the command to the `init` function and importing your package:
+
+```golang
+import (
+    ...
+    mypackage "github.com/Azure/azure-sdk-for-go/eng/tools/azgoperf/cmd/mypackage"
+)
+
+
+func init() {
+    ...
+    rootCmd.AddCommand(mypackage.MyPackageCmd)
+}
+```
+
+You can create multiple performance tests all in one directory. Each performance test should be it's own unique `*cobra.Command` type and each needs to be registered with the `rootCmd.AddCommand` function.
 
 ### Writing a test
 

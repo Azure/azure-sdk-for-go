@@ -120,7 +120,7 @@ type ResponseError struct {
 	// ErrorCode is the error code returned by the resource provider if available.
 	ErrorCode string
 
-	// StatusCode is the HTTP status code.
+	// StatusCode is the HTTP status code as defined in https://pkg.go.dev/net/http#pkg-constants.
 	StatusCode int
 
 	// RawResponse is the underlying HTTP response.

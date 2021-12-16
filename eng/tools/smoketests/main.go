@@ -264,21 +264,17 @@ func copyFile(src, dest string) error {
 
 // CopyExampleFiles copies all the example files to the destination directory.
 // This creates a hash of the fileName for the destination path
-func CopyExampleFiles(exFiles []string, dest string) error {
+func CopyExampleFiles(exFiles []string, dest string) {
 	fmt.Printf("Copying %d example files to %s\n", len(exFiles), dest)
 
 	for _, exFile := range exFiles {
 		newFileName := strings.ReplaceAll(exFile[10:], "/", "_")
 		newFileName = strings.ReplaceAll(newFileName, " ", "")
-		destinationPath := filepath.Join(dest, fmt.Sprintf("%s.go", newFileName))
+		destinationPath := filepath.Join(dest, newFileName)
 
 		err := copyFile(exFile, destinationPath)
-		if err != nil {
-			return err
-		}
+		handle(err)
 	}
-
-	return nil
 }
 
 // ReplacePackageStatement replaces all "package ***" with a common "package main" statement
@@ -443,6 +439,10 @@ func main() {
 	flag.StringVar(&serviceDirectory, "serviceDirectory", "", "pass in a single service directory for nightly run")
 	flag.Parse()
 
+	if serviceDirectory == "." {
+		serviceDirectory = ""
+	}
+
 	rootDirectory := GetTopLevel()
 
 	configFile := LoadEngConfig(rootDirectory)
@@ -467,8 +467,7 @@ func main() {
 	allTags := getAllTags()
 	modules := matchModulesAndTags(moduleDirectories, allTags)
 
-	err = CopyExampleFiles(exampleFiles, smoketestDir)
-	handle(err)
+	CopyExampleFiles(exampleFiles, smoketestDir)
 
 	err = BuildModFile(modules, serviceDirectory)
 	handle(err)

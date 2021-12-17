@@ -1,0 +1,149 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://fakeaccount.blob.core.windows.net/gocputpageswithmd5?restype=container",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "PUT",
+        ":path": "/gocputpageswithmd5?restype=container",
+        ":scheme": "https",
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-azblob/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Fri, 17 Dec 2021 15:19:48 GMT",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Fri, 17 Dec 2021 15:19:47 GMT",
+        "ETag": "\u00220x8D9C170A9E6E21F\u0022",
+        "Last-Modified": "Fri, 17 Dec 2021 15:19:48 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-request-id": "c458fe03-b01e-0042-2159-f33c96000000",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://fakeaccount.blob.core.windows.net/gocputpageswithmd5/gotestblobputpageswithmd5",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "PUT",
+        ":path": "/gocputpageswithmd5/gotestblobputpageswithmd5",
+        ":scheme": "https",
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-azblob/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-blob-content-length": "5120",
+        "x-ms-blob-type": "PageBlob",
+        "x-ms-date": "Fri, 17 Dec 2021 15:19:48 GMT",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Fri, 17 Dec 2021 15:19:48 GMT",
+        "ETag": "\u00220x8D9C170A9F5EB57\u0022",
+        "Last-Modified": "Fri, 17 Dec 2021 15:19:48 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-request-id": "c458fe25-b01e-0042-4159-f33c96000000",
+        "x-ms-request-server-encrypted": "true",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://fakeaccount.blob.core.windows.net/gocputpageswithmd5/gotestblobputpageswithmd5?comp=page",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "PUT",
+        ":path": "/gocputpageswithmd5/gotestblobputpageswithmd5?comp=page",
+        ":scheme": "https",
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "1024",
+        "Content-MD5": "Bw\u002BQPjtq1PNagvSCdYfHTw==",
+        "Content-Type": "application/octet-stream",
+        "User-Agent": "azsdk-go-azblob/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Fri, 17 Dec 2021 15:19:48 GMT",
+        "x-ms-page-write": "update",
+        "x-ms-range": "bytes=0-1023",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": "Uv38ByGCZU8WP18PmmIdcpVmx00QA3xNe7sEB9HixkmBhVrYaB0NhtHpHgAWeTnLZpTSxCKs0gigByk5SH9pmeudGKRHhARdh/PGfPInRumVr1olNnlRuqL/bNRxxIPxX7kLrbN8WCG22VUmpBqVBGgLTnyLdjobHUnUlVyEhiFjJSU/7HON16nii/khEZwWDwcCRIYVu9oIMT9qjrZo0gv1BZh1kh5milvfLH/EhEWS0lcrzQZo0tbFL1BU4tCDa/hMcXTLdHY2TMPb2Wiw9xcu2FeUuzWLDDtSXaF4b5//CUJ52xlE69ehnQ97usvgJVqlt9RL7ED4TIkrm//UNimwIjvupfT3Q5H0RdFa/UKUBAN09pJLmMv4cT\u002BNli18jQGRksJCJOLK/Mrjph\u002B1hrFDI6a8j5598dkpMz/5k5M76m9bOvbeA3Q2bEcZ5DobBn2JvH8B8fVzmBZZpE/xekxyFaO1OeseWEnGB327VyL1cXoomiZvl2R5gZmOvqicC0s3OXARXoLtb0ElyPpzEeTX3vqSLarneGZn9\u002Bk2zU8kq/ffhmuqVgODZ61hRd4e6PSosJk\u002BvfiIOgrYvpw5eLBIg\u002BVqFWqN5WOvpGfUnexqQOmh0AfwM8KCMGG90Oqln45NpkMBBSINCyloi3NLjqDzypk26EYfENd8luqAp6Zl9gb2pjt/Pf0lZ8GJeeTWDyZobZvy\u002BybJAf81TN4WB\u002B4pSznzK3x4Irpk\u002BEq0PKDG5rkcH9O\u002BiZBDQXnTr0SRo2kBLbktGE/DnRc0/1cWQolTu2hl/PkrDDoXyQKL6ZFOt2ScbJNHgAl50YMDVvKlTD3qsqS0R11jr76PtWmHx39YGFJvGBS\u002BgjNQ6rE5NfMdhEhFF\u002BkkrveK4VHAB1WSWDa3B1iFZQww7CmjcDk0v1CijaECl13tp351hXnqPf5BNqv3UrO4Jx0D6USzyds2a3UEX479adIq5UEZR8tVPXaUJnrvTrzqQGsy1hCL1oWE9X43yqxuM/6qMmOjmUNwJLqcmxRniidPAakQrilfbvv\u002BX1q/RMzeJjtWBmM\u002BK/AAbygpXX05Bp8BojnENlhUw69/a0HWMfkrmo0S9BJXMl//My91drBiBVYwSj4\u002BrhTCjQzqOdKQGlJyDahcoeSzjq8/RMbG74Ni8vVPwA4J1vwlZAhUwV38rKqKLOzOWjq6U6twWxjblLTTOKUUPmNAjYcksM8/rhej95vhBy\u002B2PDXWBCxBYPOO6eKp8/tP\u002BwAZtFTVIrX/oXYEGT\u002B4lmcQp5YHMspSz1PD9SDIibeb9QTPtXx2ASMtWJuszqnW4mPiXCd0HT9sYsu7FdmvvL9/faQasECOOWnC4s3PIzQ4vw==",
+      "StatusCode": 403,
+      "ResponseHeaders": {
+        "Content-Length": "771",
+        "Content-Type": "application/xml",
+        "Date": "Fri, 17 Dec 2021 15:19:48 GMT",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "x-ms-error-code": "AuthenticationFailed",
+        "x-ms-request-id": "c458fe3e-b01e-0042-5a59-f33c96000000"
+      },
+      "ResponseBody": [
+        "\uFEFF\u003C?xml version=\u00221.0\u0022 encoding=\u0022utf-8\u0022?\u003E\u003CError\u003E\u003CCode\u003EAuthenticationFailed\u003C/Code\u003E\u003CMessage\u003EServer failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.\n",
+        "RequestId:c458fe3e-b01e-0042-5a59-f33c96000000\n",
+        "Time:2021-12-17T15:19:48.2503375Z\u003C/Message\u003E\u003CAuthenticationErrorDetail\u003EThe MAC signature found in the HTTP request \u0027fl69hc/Xf/fgmSPwPadq1ewvKPoiIAAEYd\u002BgMsA6bGM=\u0027 is not the same as any computed signature. Server used following string to sign: \u0027PUT\n\n",
+        "\n",
+        "1024\n\n",
+        "application/octet-stream\n\n",
+        "\n\n",
+        "\n\n",
+        "\n",
+        "x-ms-date:Fri, 17 Dec 2021 15:19:48 GMT\n",
+        "x-ms-page-write:update\n",
+        "x-ms-range:bytes=0-1023\n",
+        "x-ms-version:2019-12-12\n",
+        "/primrosebud/gocputpageswithmd5/gotestblobputpageswithmd5\n",
+        "comp:page\u0027.\u003C/AuthenticationErrorDetail\u003E\u003C/Error\u003E"
+      ]
+    },
+    {
+      "RequestUri": "https://fakeaccount.blob.core.windows.net/gocputpageswithmd5?restype=container",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "DELETE",
+        ":path": "/gocputpageswithmd5?restype=container",
+        ":scheme": "https",
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azblob/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Fri, 17 Dec 2021 15:19:48 GMT",
+        "x-ms-version": "2019-12-12"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Fri, 17 Dec 2021 15:19:48 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-request-id": "c458fe50-b01e-0042-6c59-f33c96000000",
+        "x-ms-version": "2019-12-12"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {}
+}

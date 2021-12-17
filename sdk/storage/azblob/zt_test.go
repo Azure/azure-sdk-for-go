@@ -12,109 +12,106 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"log"
 	"math/rand"
 	"net/url"
 	"os"
 	"runtime"
 	"strings"
-	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/suite"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 )
 
-type azblobTestSuite struct {
-	suite.Suite
-	mode testframework.RecordMode
-}
+// type azblobTestSuite struct {
+// 	suite.Suite
+// 	mode testframework.RecordMode
+// }
 
-//nolint
-type azblobUnrecordedTestSuite struct {
-	suite.Suite
-}
+// //nolint
+// type azblobUnrecordedTestSuite struct {
+// 	suite.Suite
+// }
 
-// Hookup to the testing framework
-func Test(t *testing.T) {
-	suite.Run(t, &azblobTestSuite{mode: testframework.Playback})
-	//suite.Run(t, &azblobUnrecordedTestSuite{})
-}
+// // Hookup to the testing framework
+// func Test(t *testing.T) {
+// 	suite.Run(t, &azblobTestSuite{mode: testframework.Playback})
+// 	//suite.Run(t, &azblobUnrecordedTestSuite{})
+// }
 
-type testContext struct {
-	recording *testframework.Recording
-	context   *testframework.TestContext
-}
+// type testContext struct {
+// 	recording *testframework.Recording
+// 	context   *testframework.TestContext
+// }
 
-// a map to store our created test contexts
-var clientsMap = make(map[string]*testContext)
+// // a map to store our created test contexts
+// var clientsMap = make(map[string]*testContext)
 
-// recordedTestSetup is called before each test execution by the test suite's BeforeTest method
-func recordedTestSetup(t *testing.T, mode testframework.RecordMode) {
-	testName := t.Name()
-	_assert := assert.New(t)
+// // recordedTestSetup is called before each test execution by the test suite's BeforeTest method
+// func recordedTestSetup(t *testing.T, mode testframework.RecordMode) {
+// 	testName := t.Name()
+// 	_assert := assert.New(t)
 
-	// init the test framework
-	_testContext := testframework.NewTestContext(
-		func(msg string) { _assert.FailNow(msg) },
-		func(msg string) { t.Log(msg) },
-		func() string { return testName })
+// 	// init the test framework
+// 	_testContext := testframework.NewTestContext(
+// 		func(msg string) { _assert.FailNow(msg) },
+// 		func(msg string) { t.Log(msg) },
+// 		func() string { return testName })
 
-	// mode should be test_framework.Playback.
-	// This will automatically record if no test recording is available and playback if it is.
-	recording, err := testframework.NewRecording(_testContext, mode)
-	_assert.NoError(err)
+// 	// mode should be test_framework.Playback.
+// 	// This will automatically record if no test recording is available and playback if it is.
+// 	recording, err := testframework.NewRecording(_testContext, mode)
+// 	_assert.NoError(err)
 
-	_, err = recording.GetEnvVar(AccountNameEnvVar, testframework.NoSanitization)
-	if err != nil {
-		log.Fatal(err)
-	}
-	_, err = recording.GetEnvVar(AccountKeyEnvVar, testframework.Secret_Base64String)
-	if err != nil {
-		log.Fatal(err)
-	}
-	_ = recording.GetOptionalEnvVar(DefaultEndpointSuffixEnvVar, DefaultEndpointSuffix, testframework.NoSanitization)
+// 	_, err = recording.GetEnvVar(AccountNameEnvVar, testframework.NoSanitization)
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
+// 	_, err = recording.GetEnvVar(AccountKeyEnvVar, testframework.Secret_Base64String)
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
+// 	_ = recording.GetOptionalEnvVar(DefaultEndpointSuffixEnvVar, DefaultEndpointSuffix, testframework.NoSanitization)
 
-	clientsMap[testName] = &testContext{recording: recording, context: &_testContext}
-}
+// 	clientsMap[testName] = &testContext{recording: recording, context: &_testContext}
+// }
 
-func getTestContext(key string) *testContext {
-	return clientsMap[key]
-}
+// func getTestContext(key string) *testContext {
+// 	return clientsMap[key]
+// }
 
-func recordedTestTeardown(key string) {
-	_context, ok := clientsMap[key]
-	if ok && !(*_context.context).IsFailed() {
-		_ = _context.recording.Stop()
-	}
-}
+// func recordedTestTeardown(key string) {
+// 	_context, ok := clientsMap[key]
+// 	if ok && !(*_context.context).IsFailed() {
+// 		_ = _context.recording.Stop()
+// 	}
+// }
 
-//nolint
-func (s *azblobTestSuite) BeforeTest(suite string, test string) {
-	// set up the test environment
-	recordedTestSetup(s.T(), s.mode)
-}
+// //nolint
+// func (s *azblobTestSuite) BeforeTest(suite string, test string) {
+// 	// set up the test environment
+// 	recordedTestSetup(s.T(), s.mode)
+// }
 
-//nolint
-func (s *azblobTestSuite) AfterTest(suite string, test string) {
-	// teardown the test context
-	recordedTestTeardown(s.T().Name())
-}
+// //nolint
+// func (s *azblobTestSuite) AfterTest(suite string, test string) {
+// 	// teardown the test context
+// 	recordedTestTeardown(s.T().Name())
+// }
 
-//nolint
-func (s *azblobUnrecordedTestSuite) BeforeTest(suite string, test string) {
+// //nolint
+// func (s *azblobUnrecordedTestSuite) BeforeTest(suite string, test string) {
 
-}
+// }
 
-//nolint
-func (s *azblobUnrecordedTestSuite) AfterTest(suite string, test string) {
+// //nolint
+// func (s *azblobUnrecordedTestSuite) AfterTest(suite string, test string) {
 
-}
+// }
 
 //// Note that this function is adding to the list of ignored headers not creating from scratch
 //func ignoreHeaders(recording *testframework.Recording, headers []string) {
@@ -267,8 +264,9 @@ func createNewContainer(_assert *assert.Assertions, containerName string, servic
 	containerClient := getContainerClient(containerName, serviceClient)
 
 	cResp, err := containerClient.Create(ctx, nil)
-	_assert.NoError(err)
-	_assert.Equal(cResp.RawResponse.StatusCode, 201)
+	if _assert.NoError(err) {
+		_assert.Equal(cResp.RawResponse.StatusCode, 201)
+	}
 	return containerClient
 }
 

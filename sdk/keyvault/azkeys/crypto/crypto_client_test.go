@@ -28,6 +28,10 @@ func TestConstructor(t *testing.T) {
 	require.NotNil(t, client.kvClient)
 	require.Equal(t, client.keyID, "key89075156")
 	require.Equal(t, client.keyVersion, "")
+
+	_, err = NewClient("https://fakekvurl.vault.azure.net/", &FakeCredential{}, nil)
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "could not parse Key ID from")
 }
 
 func TestClient_Decrypt(t *testing.T) {

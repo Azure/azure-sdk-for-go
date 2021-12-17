@@ -57,6 +57,10 @@ func parseKeyIDAndVersion(id string) (string, string, error) {
 		return "", "", err
 	}
 
+	if !strings.HasPrefix(parsed.Path, "/keys/") {
+		return "", "", fmt.Errorf("could not parse Key ID from %s", id)
+	}
+
 	path := strings.Split(strings.TrimPrefix(parsed.Path, "/keys/"), "/")
 
 	if len(path) < 1 {

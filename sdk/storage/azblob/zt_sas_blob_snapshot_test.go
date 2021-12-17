@@ -55,7 +55,7 @@ package azblob
 //
 //	//Get credentials & current time
 //	currentTime := time.Now().UTC()
-//	credential, err := getGenericCredential("")
+//	credential, err := getGenericCredential(t)
 //	if err != nil {
 //		c.Fatal("Invalid credential")
 //	}

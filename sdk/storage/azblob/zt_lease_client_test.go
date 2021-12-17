@@ -24,8 +24,8 @@ func TestContainerAcquireLease(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
-	defer deleteContainer(assert.New(t), containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	containerLeaseClient, _ := containerClient.NewContainerLeaseClient(proposedLeaseIDs[0])
 
@@ -49,8 +49,8 @@ func TestContainerDeleteContainerWithoutLeaseId(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(assert.New(t), containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	containerLeaseClient, _ := containerClient.NewContainerLeaseClient(proposedLeaseIDs[0])
 
@@ -82,8 +82,8 @@ func TestContainerReleaseLease(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
-	defer deleteContainer(assert.New(t), containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	containerLeaseClient, _ := containerClient.NewContainerLeaseClient(proposedLeaseIDs[0])
 
@@ -113,8 +113,8 @@ func TestContainerRenewLease(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
-	defer deleteContainer(assert.New(t), containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	containerLeaseClient, _ := containerClient.NewContainerLeaseClient(proposedLeaseIDs[0])
 
@@ -141,8 +141,8 @@ func TestContainerChangeLease(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
-	defer deleteContainer(assert.New(t), containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	containerLeaseClient, _ := containerClient.NewContainerLeaseClient(proposedLeaseIDs[0])
 
@@ -176,8 +176,8 @@ func TestBlobAcquireLease(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
-	defer deleteContainer(assert.New(t), containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	bbClient := createNewBlockBlob(assert.New(t), blobName, containerClient)
@@ -203,8 +203,8 @@ func TestDeleteBlobWithoutLeaseId(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
-	defer deleteContainer(assert.New(t), containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	bbClient := createNewBlockBlob(assert.New(t), blobName, containerClient)
@@ -240,8 +240,8 @@ func TestBlobReleaseLease(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
-	defer deleteContainer(assert.New(t), containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	bbClient := createNewBlockBlob(assert.New(t), blobName, containerClient)
@@ -273,8 +273,8 @@ func TestBlobRenewLease(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
-	defer deleteContainer(assert.New(t), containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	bbClient := createNewBlockBlob(assert.New(t), blobName, containerClient)
@@ -303,8 +303,8 @@ func TestBlobChangeLease(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
-	defer deleteContainer(assert.New(t), containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	bbClient := createNewBlockBlob(assert.New(t), blobName, containerClient)

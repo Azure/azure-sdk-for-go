@@ -26,8 +26,8 @@ func TestPutGetPages(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := createNewPageBlob(_assert, blobName, containerClient)
@@ -78,8 +78,8 @@ func TestUploadPagesFromURL(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	contentSize := 4 * 1024 * 1024 // 4MB
 	r, sourceData := getRandomDataAndReader(contentSize)
@@ -103,7 +103,7 @@ func TestUploadPagesFromURL(t *testing.T) {
 	_assert.Equal((*uploadSrcResp1.Date).IsZero(), false)
 
 	// Get source pbClient URL with SAS for UploadPagesFromURL.
-	credential, err := getGenericCredential(nil, testAccountDefault)
+	credential, err := getGenericCredential(t, testAccountDefault)
 	_assert.NoError(err)
 	srcBlobParts := NewBlobURLParts(srcBlob.URL())
 
@@ -150,8 +150,8 @@ func TestUploadPagesFromURLWithMD5(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	contentSize := 4 * 1024 * 1024 // 4MB
 	r, sourceData := getRandomDataAndReader(contentSize)
@@ -169,7 +169,7 @@ func TestUploadPagesFromURLWithMD5(t *testing.T) {
 	_assert.Equal(uploadSrcResp1.RawResponse.StatusCode, 201)
 
 	// Get source pbClient URL with SAS for UploadPagesFromURL.
-	credential, err := getGenericCredential(nil, testAccountDefault)
+	credential, err := getGenericCredential(t, testAccountDefault)
 	_assert.NoError(err)
 	srcBlobParts := NewBlobURLParts(srcBlob.URL())
 
@@ -223,7 +223,7 @@ func TestUploadPagesFromURLWithMD5(t *testing.T) {
 }
 
 //nolint
-func  TestClearDiffPages(t *testing.T) {
+func TestClearDiffPages(t *testing.T) {
 	_assert := assert.New(t)
 	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
@@ -233,8 +233,8 @@ func  TestClearDiffPages(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := createNewPageBlob(_assert, blobName, containerClient)
@@ -301,8 +301,8 @@ func TestIncrementalCopy(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	accessType := PublicAccessTypeBlob
 	setAccessPolicyOptions := SetAccessPolicyOptions{
@@ -351,8 +351,8 @@ func TestResizePageBlob(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := createNewPageBlob(_assert, blobName, containerClient)
@@ -380,8 +380,8 @@ func TestPageSequenceNumbers(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := createNewPageBlob(_assert, blobName, containerClient)
@@ -428,8 +428,8 @@ func TestPutPagesWithMD5(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := createNewPageBlob(_assert, blobName, containerClient)
@@ -485,8 +485,8 @@ func TestBlobCreatePageSizeInvalid(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := getPageBlobClient(blobName, containerClient)
@@ -511,8 +511,8 @@ func TestBlobCreatePageSequenceInvalid(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := getPageBlobClient(blobName, containerClient)
@@ -535,8 +535,8 @@ func TestBlobCreatePageMetadataNonEmpty(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := getPageBlobClient(blobName, containerClient)
@@ -565,8 +565,8 @@ func TestBlobCreatePageMetadataEmpty(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := getPageBlobClient(blobName, containerClient)
@@ -594,8 +594,8 @@ func TestBlobCreatePageMetadataInvalid(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := getPageBlobClient(blobName, containerClient)
@@ -621,8 +621,8 @@ func TestBlobCreatePageHTTPHeaders(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := getPageBlobClient(blobName, containerClient)
@@ -659,8 +659,8 @@ func TestBlobCreatePageIfModifiedSinceTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := getPageBlobClient(blobName, containerClient)
@@ -697,8 +697,8 @@ func TestBlobCreatePageIfModifiedSinceFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := getPageBlobClient(blobName, containerClient)
@@ -735,8 +735,8 @@ func TestBlobCreatePageIfUnmodifiedSinceTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := getPageBlobClient(blobName, containerClient)
@@ -773,8 +773,8 @@ func TestBlobCreatePageIfUnmodifiedSinceFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := getPageBlobClient(blobName, containerClient)
@@ -810,8 +810,8 @@ func TestBlobCreatePageIfMatchTrue(t *testing.T) {
 	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
 	require.NoError(t, err)
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := createNewPageBlob(_assert, blobName, containerClient)
@@ -846,8 +846,8 @@ func TestBlobCreatePageIfMatchFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := createNewPageBlob(_assert, blobName, containerClient)
@@ -880,8 +880,8 @@ func TestBlobCreatePageIfNoneMatchTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := createNewPageBlob(_assert, blobName, containerClient)
@@ -914,8 +914,8 @@ func TestBlobCreatePageIfNoneMatchFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := createNewPageBlob(_assert, blobName, containerClient)
@@ -950,8 +950,8 @@ func TestBlobPutPagesInvalidRange(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := createNewPageBlob(_assert, blobName, containerClient)
@@ -968,7 +968,7 @@ func TestBlobPutPagesInvalidRange(t *testing.T) {
 ////func (s *azblobTestSuite) TestBlobPutPagesNilBody() {
 ////	svcClient := getServiceClient()
 ////	containerClient, _ := createNewContainer(c, svcClient)
-////	defer deleteContainer(_assert, containerClient)
+////	defer deleteContainer(t, containerClient)
 ////	pbClient, _ := createNewPageBlob(c, containerClient)
 ////
 ////	_, err := pbClient.UploadPages(ctx, nil, nil)
@@ -985,8 +985,8 @@ func TestBlobPutPagesEmptyBody(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := createNewPageBlob(_assert, blobName, containerClient)
@@ -1008,8 +1008,8 @@ func TestBlobPutPagesNonExistentBlob(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := getPageBlobClient(blobName, containerClient)
@@ -1044,8 +1044,8 @@ func TestBlobPutPagesIfModifiedSinceTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := getPageBlobClient(blobName, containerClient)
@@ -1082,8 +1082,8 @@ func TestBlobPutPagesIfModifiedSinceFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := getPageBlobClient(blobName, containerClient)
@@ -1120,8 +1120,8 @@ func TestBlobPutPagesIfUnmodifiedSinceTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := getPageBlobClient(blobName, containerClient)
@@ -1158,8 +1158,8 @@ func TestBlobPutPagesIfUnmodifiedSinceFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := getPageBlobClient(blobName, containerClient)
@@ -1196,8 +1196,8 @@ func TestBlobPutPagesIfMatchTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := getPageBlobClient(blobName, containerClient)
@@ -1234,8 +1234,8 @@ func TestBlobPutPagesIfMatchFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := getPageBlobClient(blobName, containerClient)
@@ -1271,8 +1271,8 @@ func TestBlobPutPagesIfNoneMatchTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := getPageBlobClient(blobName, containerClient)
@@ -1308,8 +1308,8 @@ func TestBlobPutPagesIfNoneMatchFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := getPageBlobClient(blobName, containerClient)
@@ -1346,8 +1346,8 @@ func TestBlobPutPagesIfSequenceNumberLessThanTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := createNewPageBlob(_assert, blobName, containerClient)
@@ -1377,8 +1377,8 @@ func TestBlobPutPagesIfSequenceNumberLessThanFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := createNewPageBlob(_assert, blobName, containerClient)
@@ -1417,8 +1417,8 @@ func TestBlobPutPagesIfSequenceNumberLessThanNegOne(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := createNewPageBlob(_assert, blobName, containerClient)
@@ -1449,8 +1449,8 @@ func TestBlobPutPagesIfSequenceNumberLTETrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := createNewPageBlob(_assert, blobName, containerClient)
@@ -1489,8 +1489,8 @@ func TestBlobPutPagesIfSequenceNumberLTEqualFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := createNewPageBlob(_assert, blobName, containerClient)
@@ -1529,8 +1529,8 @@ func TestBlobPutPagesIfSequenceNumberLTENegOne(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := createNewPageBlob(_assert, blobName, containerClient)
@@ -1558,8 +1558,8 @@ func TestBlobPutPagesIfSequenceNumberEqualTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := createNewPageBlob(_assert, blobName, containerClient)
@@ -1598,8 +1598,8 @@ func TestBlobPutPagesIfSequenceNumberEqualFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := createNewPageBlob(_assert, blobName, containerClient)
@@ -1629,8 +1629,8 @@ func TestBlobPutPagesIfSequenceNumberEqualFalse(t *testing.T) {
 //	}
 //
 //	containerName := generateContainerName(s.T().Name())
-//	containerClient := createNewContainer(_assert, containerName, svcClient)
-//	defer deleteContainer(_assert, containerClient)
+//	containerClient := createNewContainer(t, containerName, svcClient)
+//	defer deleteContainer(t, containerClient)
 //
 //	blobName := generateBlobName(s.T().Name())
 //	pbClient := createNewPageBlob(_assert, blobName, containerClient)
@@ -1656,7 +1656,7 @@ func setupClearPagesTest(t *testing.T, testName string) (ContainerClient, PageBl
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
 
 	blobName := generateBlobName(testName)
 	pbClient := createNewPageBlob(_assert, blobName, containerClient)
@@ -1685,7 +1685,7 @@ func TestBlobClearPagesInvalidRange(t *testing.T) {
 	_assert := assert.New(t)
 	// testName := s.T().Name()
 	containerClient, pbClient := setupClearPagesTest(t, t.Name())
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	_, err := pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes + 1}, nil)
 	_assert.Error(err)
@@ -1697,7 +1697,7 @@ func TestBlobClearPagesIfModifiedSinceTrue(t *testing.T) {
 	_assert := assert.New(t)
 	// testName := s.T().Name()
 	containerClient, pbClient := setupClearPagesTest(t, t.Name())
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	getPropertiesResp, err := pbClient.GetProperties(ctx, nil)
 	_assert.NoError(err)
@@ -1722,7 +1722,7 @@ func TestBlobClearPagesIfModifiedSinceFalse(t *testing.T) {
 	defer stop()
 	_assert := assert.New(t)
 	containerClient, pbClient := setupClearPagesTest(t, t.Name())
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	getPropertiesResp, err := pbClient.GetProperties(ctx, nil)
 	_assert.NoError(err)
@@ -1747,7 +1747,7 @@ func TestBlobClearPagesIfUnmodifiedSinceTrue(t *testing.T) {
 	defer stop()
 	_assert := assert.New(t)
 	containerClient, pbClient := setupClearPagesTest(t, t.Name())
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	getPropertiesResp, err := pbClient.GetProperties(ctx, nil)
 	_assert.NoError(err)
@@ -1773,7 +1773,7 @@ func TestBlobClearPagesIfUnmodifiedSinceFalse(t *testing.T) {
 	_assert := assert.New(t)
 	// testName := s.T().Name()
 	containerClient, pbClient := setupClearPagesTest(t, t.Name())
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	getPropertiesResp, err := pbClient.GetProperties(ctx, nil)
 	_assert.NoError(err)
@@ -1799,7 +1799,7 @@ func TestBlobClearPagesIfMatchTrue(t *testing.T) {
 	_assert := assert.New(t)
 	// testName := s.T().Name()
 	containerClient, pbClient := setupClearPagesTest(t, t.Name())
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	getPropertiesResp, err := pbClient.GetProperties(ctx, nil)
 	_assert.NoError(err)
@@ -1822,7 +1822,7 @@ func TestBlobClearPagesIfMatchFalse(t *testing.T) {
 	defer stop()
 	_assert := assert.New(t)
 	containerClient, pbClient := setupClearPagesTest(t, t.Name())
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	eTag := "garbage"
 	clearPageOptions := ClearPagesOptions{
@@ -1843,7 +1843,7 @@ func TestBlobClearPagesIfNoneMatchTrue(t *testing.T) {
 	defer stop()
 	_assert := assert.New(t)
 	containerClient, pbClient := setupClearPagesTest(t, t.Name())
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	eTag := "garbage"
 	clearPageOptions := ClearPagesOptions{
@@ -1864,7 +1864,7 @@ func TestBlobClearPagesIfNoneMatchFalse(t *testing.T) {
 	defer stop()
 	_assert := assert.New(t)
 	containerClient, pbClient := setupClearPagesTest(t, t.Name())
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	resp, _ := pbClient.GetProperties(ctx, nil)
 
@@ -1886,7 +1886,7 @@ func TestBlobClearPagesIfSequenceNumberLessThanTrue(t *testing.T) {
 	defer stop()
 	_assert := assert.New(t)
 	containerClient, pbClient := setupClearPagesTest(t, t.Name())
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	ifSequenceNumberLessThan := int64(10)
 	clearPageOptions := ClearPagesOptions{
@@ -1905,7 +1905,7 @@ func TestBlobClearPagesIfSequenceNumberLessThanFalse(t *testing.T) {
 	defer stop()
 	_assert := assert.New(t)
 	containerClient, pbClient := setupClearPagesTest(t, t.Name())
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	sequenceNumber := int64(10)
 	actionType := SequenceNumberActionTypeUpdate
@@ -1933,7 +1933,7 @@ func TestBlobClearPagesIfSequenceNumberLessThanNegOne(t *testing.T) {
 	defer stop()
 	_assert := assert.New(t)
 	containerClient, pbClient := setupClearPagesTest(t, t.Name())
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	ifSequenceNumberLessThan := int64(-1)
 	clearPageOptions := ClearPagesOptions{
@@ -1952,7 +1952,7 @@ func TestBlobClearPagesIfSequenceNumberLTETrue(t *testing.T) {
 	defer stop()
 	_assert := assert.New(t)
 	containerClient, pbClient := setupClearPagesTest(t, t.Name())
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	ifSequenceNumberLessThanOrEqualTo := int64(10)
 	clearPageOptions := ClearPagesOptions{
@@ -1971,7 +1971,7 @@ func TestBlobClearPagesIfSequenceNumberLTEFalse(t *testing.T) {
 	defer stop()
 	_assert := assert.New(t)
 	containerClient, pbClient := setupClearPagesTest(t, t.Name())
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	sequenceNumber := int64(10)
 	actionType := SequenceNumberActionTypeUpdate
@@ -1999,7 +1999,7 @@ func TestBlobClearPagesIfSequenceNumberLTENegOne(t *testing.T) {
 	defer stop()
 	_assert := assert.New(t)
 	containerClient, pbClient := setupClearPagesTest(t, t.Name())
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	ifSequenceNumberLessThanOrEqualTo := int64(-1)
 	clearPageOptions := ClearPagesOptions{
@@ -2018,7 +2018,7 @@ func TestBlobClearPagesIfSequenceNumberEqualTrue(t *testing.T) {
 	defer stop()
 	_assert := assert.New(t)
 	containerClient, pbClient := setupClearPagesTest(t, t.Name())
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	sequenceNumber := int64(10)
 	actionType := SequenceNumberActionTypeUpdate
@@ -2046,7 +2046,7 @@ func TestBlobClearPagesIfSequenceNumberEqualFalse(t *testing.T) {
 	defer stop()
 	_assert := assert.New(t)
 	containerClient, pbClient := setupClearPagesTest(t, t.Name())
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	sequenceNumber := int64(10)
 	actionType := SequenceNumberActionTypeUpdate
@@ -2074,7 +2074,7 @@ func TestBlobClearPagesIfSequenceNumberEqualNegOne(t *testing.T) {
 	defer stop()
 	_assert := assert.New(t)
 	containerClient, pbClient := setupClearPagesTest(t, t.Name())
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	ifSequenceNumberEqualTo := int64(-1)
 	clearPageOptions := ClearPagesOptions{
@@ -2096,7 +2096,7 @@ func setupGetPageRangesTest(t *testing.T, testName string) (containerClient Cont
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient = createNewContainer(_assert, containerName, svcClient)
+	containerClient = createNewContainer(t, containerName, svcClient)
 
 	blobName := generateBlobName(testName)
 	pbClient = createNewPageBlob(_assert, blobName, containerClient)
@@ -2131,8 +2131,8 @@ func TestBlobGetPageRangesEmptyBlob(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := createNewPageBlob(_assert, blobName, containerClient)
@@ -2152,7 +2152,7 @@ func TestBlobGetPageRangesEmptyRange(t *testing.T) {
 	// require.NoError(t, err)
 
 	containerClient, pbClient := setupGetPageRangesTest(t, t.Name())
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	resp, err := pbClient.GetPageRanges(ctx, HttpRange{0, 0}, nil)
 	_assert.NoError(err)
@@ -2169,7 +2169,7 @@ func TestBlobGetPageRangesInvalidRange(t *testing.T) {
 	// require.NoError(t, err)
 
 	containerClient, pbClient := setupGetPageRangesTest(t, t.Name())
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	_, err := pbClient.GetPageRanges(ctx, HttpRange{-2, 500}, nil)
 	_assert.NoError(err)
@@ -2185,7 +2185,7 @@ func TestBlobGetPageRangesNonContiguousRanges(t *testing.T) {
 	// require.NoError(t, err)
 
 	containerClient, pbClient := setupGetPageRangesTest(t, t.Name())
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(2*PageBlobPageBytes), int64(PageBlobPageBytes)
@@ -2222,7 +2222,7 @@ func TestBlobGetPageRangesNotPageAligned(t *testing.T) {
 	// require.NoError(t, err)
 
 	containerClient, pbClient := setupGetPageRangesTest(t, t.Name())
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	resp, err := pbClient.GetPageRanges(ctx, HttpRange{0, 2000}, nil)
 	_assert.NoError(err)
@@ -2239,7 +2239,7 @@ func TestBlobGetPageRangesSnapshot(t *testing.T) {
 	// require.NoError(t, err)
 
 	containerClient, pbClient := setupGetPageRangesTest(t, t.Name())
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	resp, err := pbClient.CreateSnapshot(ctx, nil)
 	_assert.NoError(err)
@@ -2261,7 +2261,7 @@ func TestBlobGetPageRangesIfModifiedSinceTrue(t *testing.T) {
 	// require.NoError(t, err)
 
 	containerClient, pbClient := setupGetPageRangesTest(t, t.Name())
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	getPropertiesResp, err := pbClient.GetProperties(ctx, nil)
 	_assert.NoError(err)
@@ -2290,7 +2290,7 @@ func TestBlobGetPageRangesIfModifiedSinceFalse(t *testing.T) {
 	// require.NoError(t, err)
 
 	containerClient, pbClient := setupGetPageRangesTest(t, t.Name())
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	getPropertiesResp, err := pbClient.GetProperties(ctx, nil)
 	_assert.NoError(err)
@@ -2321,7 +2321,7 @@ func TestBlobGetPageRangesIfUnmodifiedSinceTrue(t *testing.T) {
 	// require.NoError(t, err)
 
 	containerClient, pbClient := setupGetPageRangesTest(t, t.Name())
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	getPropertiesResp, err := pbClient.GetProperties(ctx, nil)
 	_assert.NoError(err)
@@ -2347,7 +2347,7 @@ func TestBlobGetPageRangesIfUnmodifiedSinceFalse(t *testing.T) {
 	t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 
 	containerClient, pbClient := setupGetPageRangesTest(t, t.Name())
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	getPropertiesResp, err := pbClient.GetProperties(ctx, nil)
 	_assert.NoError(err)
@@ -2374,7 +2374,7 @@ func TestBlobGetPageRangesIfMatchTrue(t *testing.T) {
 	t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 
 	containerClient, pbClient := setupGetPageRangesTest(t, t.Name())
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	resp, err := pbClient.GetProperties(ctx, nil)
 	_assert.NoError(err)
@@ -2398,7 +2398,7 @@ func TestBlobGetPageRangesIfMatchFalse(t *testing.T) {
 	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 
 	containerClient, pbClient := setupGetPageRangesTest(t, t.Name())
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	eTag := "garbage"
 	getPageRangesOptions := GetPageRangesOptions{
@@ -2421,7 +2421,7 @@ func TestBlobGetPageRangesIfNoneMatchTrue(t *testing.T) {
 	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 
 	containerClient, pbClient := setupGetPageRangesTest(t, t.Name())
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	eTag := "garbage"
 	getPageRangesOptions := GetPageRangesOptions{
@@ -2439,11 +2439,11 @@ func TestBlobGetPageRangesIfNoneMatchTrue(t *testing.T) {
 func TestBlobGetPageRangesIfNoneMatchFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
-	_assert := assert.New(t)
+	// _assert := assert.New(t)
 	t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 
 	containerClient, pbClient := setupGetPageRangesTest(t, t.Name())
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	resp, _ := pbClient.GetProperties(ctx, nil)
 
@@ -2466,7 +2466,7 @@ func setupDiffPageRangesTest(t *testing.T, testName string) (containerClient Con
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient = createNewContainer(_assert, containerName, svcClient)
+	containerClient = createNewContainer(t, containerName, svcClient)
 
 	blobName := generateName(testName)
 	pbClient = createNewPageBlob(_assert, blobName, containerClient)
@@ -2510,7 +2510,7 @@ func TestBlobDiffPageRangesNonExistentSnapshot(t *testing.T) {
 	defer stop()
 	_assert := assert.New(t)
 	containerClient, pbClient, snapshot := setupDiffPageRangesTest(t, t.Name())
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	snapshotTime, _ := time.Parse(SnapshotTimeFormat, snapshot)
 	snapshotTime = snapshotTime.Add(time.Minute)
@@ -2523,9 +2523,9 @@ func TestBlobDiffPageRangesNonExistentSnapshot(t *testing.T) {
 func TestBlobDiffPageRangeInvalidRange(t *testing.T) {
 	stop := start(t)
 	defer stop()
-	_assert := assert.New(t)
+	// _assert := assert.New(t)
 	containerClient, pbClient, snapshot := setupDiffPageRangesTest(t, t.Name())
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 	_, err := pbClient.GetPageRangesDiff(ctx, HttpRange{-22, 14}, snapshot, nil)
 	require.NoError(t, err)
 }
@@ -2535,7 +2535,7 @@ func TestBlobDiffPageRangeIfModifiedSinceTrue(t *testing.T) {
 	defer stop()
 	_assert := assert.New(t)
 	containerClient, pbClient, snapshot := setupDiffPageRangesTest(t, t.Name())
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	currentTime := getRelativeTimeGMT(-10)
 
@@ -2555,9 +2555,9 @@ func TestBlobDiffPageRangeIfModifiedSinceTrue(t *testing.T) {
 func TestBlobDiffPageRangeIfModifiedSinceFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
-	_assert := assert.New(t)
+	// _assert := assert.New(t)
 	containerClient, pbClient, snapshot := setupDiffPageRangesTest(t, t.Name())
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	currentTime := getRelativeTimeGMT(10)
 
@@ -2578,7 +2578,7 @@ func TestBlobDiffPageRangeIfUnmodifiedSinceTrue(t *testing.T) {
 	defer stop()
 	_assert := assert.New(t)
 	containerClient, pbClient, snapshot := setupDiffPageRangesTest(t, t.Name())
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	currentTime := getRelativeTimeGMT(10)
 
@@ -2601,7 +2601,7 @@ func TestBlobDiffPageRangeIfUnmodifiedSinceFalse(t *testing.T) {
 	_assert := assert.New(t)
 	// testName := s.T().Name()
 	containerClient, pbClient, snapshot := setupDiffPageRangesTest(t, t.Name())
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	currentTime := getRelativeTimeGMT(-10)
 
@@ -2625,7 +2625,7 @@ func TestBlobDiffPageRangeIfMatchTrue(t *testing.T) {
 	_assert := assert.New(t)
 	// testName := s.T().Name()
 	containerClient, pbClient, snapshot := setupDiffPageRangesTest(t, t.Name())
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	resp, _ := pbClient.GetProperties(ctx, nil)
 
@@ -2648,7 +2648,7 @@ func TestBlobDiffPageRangeIfMatchFalse(t *testing.T) {
 	_assert := assert.New(t)
 	// testName := s.T().Name()
 	containerClient, pbClient, snapshot := setupDiffPageRangesTest(t, t.Name())
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	eTag := "garbage"
 	getPageRangesOptions := GetPageRangesOptions{
@@ -2670,7 +2670,7 @@ func TestBlobDiffPageRangeIfNoneMatchTrue(t *testing.T) {
 	defer stop()
 	_assert := assert.New(t)
 	containerClient, pbClient, snapshot := setupDiffPageRangesTest(t, t.Name())
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	eTag := "garbage"
 	getPageRangesOptions := GetPageRangesOptions{
@@ -2689,10 +2689,10 @@ func TestBlobDiffPageRangeIfNoneMatchTrue(t *testing.T) {
 func TestBlobDiffPageRangeIfNoneMatchFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
-	_assert := assert.New(t)
+	// _assert := assert.New(t)
 	// testName := s.T().Name()
 	containerClient, pbClient, snapshot := setupDiffPageRangesTest(t, t.Name())
-	defer deleteContainer(_assert, containerClient)
+	defer deleteContainer(t, containerClient)
 
 	resp, _ := pbClient.GetProperties(ctx, nil)
 
@@ -2717,8 +2717,8 @@ func TestBlobResizeZero(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := createNewPageBlob(_assert, blobName, containerClient)
@@ -2742,8 +2742,8 @@ func TestBlobResizeInvalidSizeNegative(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := createNewPageBlob(_assert, blobName, containerClient)
@@ -2762,8 +2762,8 @@ func TestBlobResizeInvalidSizeMisaligned(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := createNewPageBlob(_assert, blobName, containerClient)
@@ -2788,8 +2788,8 @@ func TestBlobResizeIfModifiedSinceTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := getPageBlobClient(blobName, containerClient)
@@ -2824,8 +2824,8 @@ func TestBlobResizeIfModifiedSinceFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := getPageBlobClient(blobName, containerClient)
@@ -2860,8 +2860,8 @@ func TestBlobResizeIfUnmodifiedSinceTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := getPageBlobClient(blobName, containerClient)
@@ -2896,8 +2896,8 @@ func TestBlobResizeIfUnmodifiedSinceFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := getPageBlobClient(blobName, containerClient)
@@ -2932,8 +2932,8 @@ func TestBlobResizeIfMatchTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := createNewPageBlob(_assert, blobName, containerClient)
@@ -2963,8 +2963,8 @@ func TestBlobResizeIfMatchFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := createNewPageBlob(_assert, blobName, containerClient)
@@ -2993,8 +2993,8 @@ func TestBlobResizeIfNoneMatchTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := createNewPageBlob(_assert, blobName, containerClient)
@@ -3023,8 +3023,8 @@ func TestBlobResizeIfNoneMatchFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := createNewPageBlob(_assert, blobName, containerClient)
@@ -3055,8 +3055,8 @@ func TestBlobSetSequenceNumberActionTypeInvalid(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := createNewPageBlob(_assert, blobName, containerClient)
@@ -3083,8 +3083,8 @@ func TestBlobSetSequenceNumberSequenceNumberInvalid(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := createNewPageBlob(_assert, blobName, containerClient)
@@ -3122,8 +3122,8 @@ func TestBlobSetSequenceNumberIfModifiedSinceTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := getPageBlobClient(blobName, containerClient)
@@ -3160,8 +3160,8 @@ func TestBlobSetSequenceNumberIfModifiedSinceFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := getPageBlobClient(blobName, containerClient)
@@ -3198,8 +3198,8 @@ func TestBlobSetSequenceNumberIfUnmodifiedSinceTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := getPageBlobClient(blobName, containerClient)
@@ -3236,8 +3236,8 @@ func TestBlobSetSequenceNumberIfUnmodifiedSinceFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := getPageBlobClient(blobName, containerClient)
@@ -3274,8 +3274,8 @@ func TestBlobSetSequenceNumberIfMatchTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := createNewPageBlob(_assert, blobName, containerClient)
@@ -3308,8 +3308,8 @@ func TestBlobSetSequenceNumberIfMatchFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := createNewPageBlob(_assert, blobName, containerClient)
@@ -3340,8 +3340,8 @@ func TestBlobSetSequenceNumberIfNoneMatchTrue(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := createNewPageBlob(_assert, "src"+blobName, containerClient)
@@ -3372,8 +3372,8 @@ func TestBlobSetSequenceNumberIfNoneMatchFalse(t *testing.T) {
 	require.NoError(t, err)
 
 	containerName := generateContainerName(t.Name())
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
 	pbClient := createNewPageBlob(_assert, "src"+blobName, containerClient)
@@ -3408,8 +3408,8 @@ func TestBlobSetSequenceNumberIfNoneMatchFalse(t *testing.T) {
 //	}
 //
 //	containerName := generateContainerName(s.T().Name())
-//	containerClient = createNewContainer(_assert, containerName, svcClient)
-//	defer deleteContainer(_assert, containerClient)
+//	containerClient = createNewContainer(t, containerName, svcClient)
+//	defer deleteContainer(t, containerClient)
 //
 //	accessType := PublicAccessTypeBlob
 //	setAccessPolicyOptions := SetAccessPolicyOptions{
@@ -3452,8 +3452,8 @@ func TestBlobSetSequenceNumberIfNoneMatchFalse(t *testing.T) {
 //	}
 //
 //	containerName := generateContainerName(s.T().Name())
-//	containerClient := createNewContainer(_assert, containerName, svcClient)
-//	defer deleteContainer(_assert, containerClient)
+//	containerClient := createNewContainer(t, containerName, svcClient)
+//	defer deleteContainer(t, containerClient)
 //
 //	blobName := generateBlobName(s.T().Name())
 //	pbClient := createNewPageBlob(_assert, "src" + blobName, containerClient)
@@ -3471,7 +3471,7 @@ func TestBlobSetSequenceNumberIfNoneMatchFalse(t *testing.T) {
 //	// testName := s.T().Name()
 //	containerClient, pbClient, copyPBClient, snapshot := setupStartIncrementalCopyTest(_assert, s.T().Name())
 //
-//	defer deleteContainer(_assert, containerClient)
+//	defer deleteContainer(t, containerClient)
 //
 //	currentTime := getRelativeTimeGMT(-20)
 //
@@ -3491,7 +3491,7 @@ func TestBlobSetSequenceNumberIfNoneMatchFalse(t *testing.T) {
 //	// testName := s.T().Name()
 //	containerClient, pbClient, copyPBClient, snapshot := setupStartIncrementalCopyTest(_assert, s.T().Name())
 //
-//	defer deleteContainer(_assert, containerClient)
+//	defer deleteContainer(t, containerClient)
 //
 //	currentTime := getRelativeTimeGMT(20)
 //
@@ -3511,7 +3511,7 @@ func TestBlobSetSequenceNumberIfNoneMatchFalse(t *testing.T) {
 //	// testName := s.T().Name()
 //	containerClient, pbClient, copyPBClient, snapshot := setupStartIncrementalCopyTest(_assert, s.T().Name())
 //
-//	defer deleteContainer(_assert, containerClient)
+//	defer deleteContainer(t, containerClient)
 //
 //	currentTime := getRelativeTimeGMT(20)
 //
@@ -3531,7 +3531,7 @@ func TestBlobSetSequenceNumberIfNoneMatchFalse(t *testing.T) {
 //	// testName := s.T().Name()
 //	containerClient, pbClient, copyPBClient, snapshot := setupStartIncrementalCopyTest(_assert, s.T().Name())
 //
-//	defer deleteContainer(_assert, containerClient)
+//	defer deleteContainer(t, containerClient)
 //
 //	currentTime := getRelativeTimeGMT(-20)
 //
@@ -3562,7 +3562,7 @@ func TestBlobSetSequenceNumberIfNoneMatchFalse(t *testing.T) {
 //	_assert.NoError(err)
 //
 //	validateIncrementalCopy(_assert, copyPBClient, &resp2)
-//	defer deleteContainer(_assert, containerClient)
+//	defer deleteContainer(t, containerClient)
 //}
 //
 
@@ -3572,7 +3572,7 @@ func TestBlobSetSequenceNumberIfNoneMatchFalse(t *testing.T) {
 //	// testName := s.T().Name()
 //	containerClient, pbClient, copyPBClient, snapshot := setupStartIncrementalCopyTest(_assert, s.T().Name())
 //
-//	defer deleteContainer(_assert, containerClient)
+//	defer deleteContainer(t, containerClient)
 //
 //	eTag := "garbage"
 //	copyIncrementalPageBlobOptions := CopyIncrementalPageBlobOptions{
@@ -3592,7 +3592,7 @@ func TestBlobSetSequenceNumberIfNoneMatchFalse(t *testing.T) {
 //	_assert := assert.New(s.T())
 //	// testName := s.T().Name()
 //	containerClient, pbClient, copyPBClient, snapshot := setupStartIncrementalCopyTest(_assert, s.T().Name())
-//	defer deleteContainer(_assert, containerClient)
+//	defer deleteContainer(t, containerClient)
 //
 //	eTag := "garbage"
 //	copyIncrementalPageBlobOptions := CopyIncrementalPageBlobOptions{
@@ -3612,7 +3612,7 @@ func TestBlobSetSequenceNumberIfNoneMatchFalse(t *testing.T) {
 //	_assert := assert.New(s.T())
 //	// testName := s.T().Name()
 //	containerClient, pbClient, copyPBClient, snapshot := setupStartIncrementalCopyTest(_assert, s.T().Name())
-//	defer deleteContainer(_assert, containerClient)
+//	defer deleteContainer(t, containerClient)
 //
 //	resp, _ := copyPBClient.GetProperties(ctx, nil)
 //

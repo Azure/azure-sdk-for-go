@@ -36,8 +36,8 @@ func performUploadStreamToBlockBlobTest(t *testing.T, testName string, blobSize,
 	require.NoError(t, err)
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(assert.New(t), containerName, svcClient)
-	defer deleteContainer(assert.New(t), containerClient)
+	containerClient := createNewContainer(t, containerName, svcClient)
+	defer deleteContainer(t, containerClient)
 
 	// Set up test blob
 	blobName := generateBlobName(testName)
@@ -122,8 +122,8 @@ func performUploadAndDownloadFileTest(t *testing.T, testName string, fileSize, b
 
 	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
 	require.NoError(t, err)
-	containerClient := createNewContainer(_assert, generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
+	defer deleteContainer(t, containerClient)
 
 	// Set up test blob
 	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
@@ -261,8 +261,8 @@ func performUploadAndDownloadBufferTest(t *testing.T, testName string, blobSize,
 	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
 	require.NoError(t, err)
 
-	containerClient := createNewContainer(_assert, generateContainerName(testName), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, generateContainerName(testName), svcClient)
+	defer deleteContainer(t, containerClient)
 
 	// Set up test blob
 	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)

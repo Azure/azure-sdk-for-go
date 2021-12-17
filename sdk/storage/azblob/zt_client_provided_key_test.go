@@ -61,8 +61,8 @@ func TestPutBlockAndPutBlockListWithCPK(t *testing.T) {
 	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
 	require.NoError(t, err)
 
-	containerClient := createNewContainer(_assert, generateContainerName(t.Name()), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, generateContainerName(t.Name()), svcClient)
+	defer deleteContainer(t, containerClient)
 
 	bbClient := containerClient.NewBlockBlobClient(generateBlobName(t.Name()))
 
@@ -116,8 +116,8 @@ func TestPutBlockAndPutBlockListWithCPKByScope(t *testing.T) {
 	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
 	require.NoError(t, err)
 
-	containerClient := createNewContainer(_assert, generateContainerName(t.Name()), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, generateContainerName(t.Name()), svcClient)
+	defer deleteContainer(t, containerClient)
 
 	bbClient := containerClient.NewBlockBlobClient(generateBlobName(t.Name()))
 
@@ -175,8 +175,8 @@ func TestPutBlockFromURLAndCommitWithCPK(t *testing.T) {
 	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
 	require.NoError(t, err)
 
-	containerClient := createNewContainer(_assert, generateContainerName(t.Name()), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, generateContainerName(t.Name()), svcClient)
+	defer deleteContainer(t, containerClient)
 
 	contentSize := 8 * 1024 // 8 KB
 	content := make([]byte, contentSize)
@@ -191,7 +191,7 @@ func TestPutBlockFromURLAndCommitWithCPK(t *testing.T) {
 
 	// Get source blob url with SAS for StageFromURL.
 	srcBlobParts := NewBlobURLParts(srcBlob.URL())
-	credential, err := getGenericCredential(nil, testAccountDefault)
+	credential, err := getGenericCredential(t, testAccountDefault)
 	_assert.NoError(err)
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
 		Protocol:      SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
@@ -295,8 +295,8 @@ func TestPutBlockFromURLAndCommitWithCPKWithScope(t *testing.T) {
 	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
 	require.NoError(t, err)
 
-	containerClient := createNewContainer(_assert, generateContainerName(t.Name()), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, generateContainerName(t.Name()), svcClient)
+	defer deleteContainer(t, containerClient)
 
 	contentSize := 8 * 1024 // 8 KB
 	content := make([]byte, contentSize)
@@ -311,7 +311,7 @@ func TestPutBlockFromURLAndCommitWithCPKWithScope(t *testing.T) {
 
 	// Get source blob url with SAS for StageFromURL.
 	srcBlobParts := NewBlobURLParts(srcBlob.URL())
-	credential, err := getGenericCredential(nil, testAccountDefault)
+	credential, err := getGenericCredential(t, testAccountDefault)
 	_assert.NoError(err)
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
 		Protocol:      SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
@@ -411,8 +411,8 @@ func TestUploadBlobWithMD5WithCPK(t *testing.T) {
 	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
 	require.NoError(t, err)
 
-	containerClient := createNewContainer(_assert, generateContainerName(t.Name()), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, generateContainerName(t.Name()), svcClient)
+	defer deleteContainer(t, containerClient)
 
 	contentSize := 8 * 1024
 	r, srcData := generateData(contentSize)
@@ -458,8 +458,8 @@ func TestUploadBlobWithMD5WithCPKScope(t *testing.T) {
 	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
 	require.NoError(t, err)
 
-	containerClient := createNewContainer(_assert, generateContainerName(t.Name()), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, generateContainerName(t.Name()), svcClient)
+	defer deleteContainer(t, containerClient)
 
 	contentSize := 8 * 1024
 	r, srcData := generateData(contentSize)
@@ -497,8 +497,8 @@ func TestAppendBlockWithCPK(t *testing.T) {
 	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
 	require.NoError(t, err)
 
-	containerClient := createNewContainer(_assert, generateContainerName(t.Name()), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, generateContainerName(t.Name()), svcClient)
+	defer deleteContainer(t, containerClient)
 
 	abClient := containerClient.NewAppendBlobClient(generateBlobName(t.Name()))
 
@@ -557,8 +557,8 @@ func TestAppendBlockWithCPKScope(t *testing.T) {
 	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
 	require.NoError(t, err)
 
-	containerClient := createNewContainer(_assert, generateContainerName(t.Name()), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, generateContainerName(t.Name()), svcClient)
+	defer deleteContainer(t, containerClient)
 
 	abClient := containerClient.NewAppendBlobClient(generateBlobName(t.Name()))
 
@@ -614,8 +614,8 @@ func TestAppendBlockFromURLWithCPK(t *testing.T) {
 	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
 	require.NoError(t, err)
 
-	containerClient := createNewContainer(_assert, generateContainerName(t.Name())+"01", svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, generateContainerName(t.Name())+"01", svcClient)
+	defer deleteContainer(t, containerClient)
 
 	contentSize := 4 * 1024 * 1024 // 4MB
 	r, srcData := getRandomDataAndReader(contentSize)
@@ -645,7 +645,7 @@ func TestAppendBlockFromURLWithCPK(t *testing.T) {
 
 	srcBlobParts := NewBlobURLParts(srcABClient.URL())
 
-	credential, err := getGenericCredential(nil, testAccountDefault)
+	credential, err := getGenericCredential(t, testAccountDefault)
 	_assert.NoError(err)
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
 		Protocol:      SASProtocolHTTPS,
@@ -726,8 +726,8 @@ func TestAppendBlockFromURLWithCPKScope(t *testing.T) {
 	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
 	require.NoError(t, err)
 
-	containerClient := createNewContainer(_assert, generateContainerName(t.Name())+"01", svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, generateContainerName(t.Name())+"01", svcClient)
+	defer deleteContainer(t, containerClient)
 
 	contentSize := 4 * 1024 * 1024 // 4MB
 	r, srcData := getRandomDataAndReader(contentSize)
@@ -757,7 +757,7 @@ func TestAppendBlockFromURLWithCPKScope(t *testing.T) {
 
 	srcBlobParts := NewBlobURLParts(srcClient.URL())
 
-	credential, err := getGenericCredential(nil, testAccountDefault)
+	credential, err := getGenericCredential(t, testAccountDefault)
 	_assert.NoError(err)
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
 		Protocol:      SASProtocolHTTPS,
@@ -825,8 +825,8 @@ func TestPageBlockWithCPK(t *testing.T) {
 	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
 	require.NoError(t, err)
 
-	containerClient := createNewContainer(_assert, generateContainerName(t.Name()), svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, generateContainerName(t.Name()), svcClient)
+	defer deleteContainer(t, containerClient)
 
 	contentSize := 4 * 1024 * 1024 // 4MB
 	r, srcData := generateData(contentSize)
@@ -884,8 +884,8 @@ func TestPageBlockWithCPKScope(t *testing.T) {
 	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
 	require.NoError(t, err)
 
-	containerClient := createNewContainer(_assert, generateContainerName(t.Name())+"01", svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, generateContainerName(t.Name())+"01", svcClient)
+	defer deleteContainer(t, containerClient)
 
 	contentSize := 4 * 1024 * 1024 // 4MB
 	r, srcData := generateData(contentSize)
@@ -934,8 +934,8 @@ func TestPageBlockFromURLWithCPK(t *testing.T) {
 	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
 	require.NoError(t, err)
 
-	containerClient := createNewContainer(_assert, generateContainerName(t.Name())+"01", svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, generateContainerName(t.Name())+"01", svcClient)
+	defer deleteContainer(t, containerClient)
 
 	contentSize := 8 * 1024 // 1MB
 	r, srcData := getRandomDataAndReader(contentSize)
@@ -956,7 +956,7 @@ func TestPageBlockFromURLWithCPK(t *testing.T) {
 	_assert.Equal(uploadResp.RawResponse.StatusCode, 201)
 	srcBlobParts := NewBlobURLParts(bbClient.URL())
 
-	credential, err := getGenericCredential(nil, testAccountDefault)
+	credential, err := getGenericCredential(t, testAccountDefault)
 	_assert.NoError(err)
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
 		Protocol:      SASProtocolHTTPS,
@@ -1021,8 +1021,8 @@ func TestPageBlockFromURLWithCPKScope(t *testing.T) {
 	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
 	require.NoError(t, err)
 
-	containerClient := createNewContainer(_assert, generateContainerName(t.Name())+"01", svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, generateContainerName(t.Name())+"01", svcClient)
+	defer deleteContainer(t, containerClient)
 
 	contentSize := 8 * 1024 // 1MB
 	r, srcData := getRandomDataAndReader(contentSize)
@@ -1043,7 +1043,7 @@ func TestPageBlockFromURLWithCPKScope(t *testing.T) {
 	_assert.Equal(uploadResp.RawResponse.StatusCode, 201)
 	srcBlobParts := NewBlobURLParts(srcPBClient.URL())
 
-	credential, err := getGenericCredential(nil, testAccountDefault)
+	credential, err := getGenericCredential(t, testAccountDefault)
 	_assert.NoError(err)
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
 		Protocol:      SASProtocolHTTPS,
@@ -1099,8 +1099,8 @@ func TestUploadPagesFromURLWithMD5WithCPK(t *testing.T) {
 	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
 	require.NoError(t, err)
 
-	containerClient := createNewContainer(_assert, generateContainerName(t.Name())+"01", svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, generateContainerName(t.Name())+"01", svcClient)
+	defer deleteContainer(t, containerClient)
 
 	contentSize := 8 * 1024
 	r, srcData := getRandomDataAndReader(contentSize)
@@ -1119,7 +1119,7 @@ func TestUploadPagesFromURLWithMD5WithCPK(t *testing.T) {
 
 	srcBlobParts := NewBlobURLParts(srcBlob.URL())
 
-	credential, err := getGenericCredential(nil, testAccountDefault)
+	credential, err := getGenericCredential(t, testAccountDefault)
 	_assert.NoError(err)
 	srcBlobParts.SAS, err = BlobSASSignatureValues{
 		Protocol:      SASProtocolHTTPS,
@@ -1195,8 +1195,8 @@ func TestClearDiffPagesWithCPK(t *testing.T) {
 	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
 	require.NoError(t, err)
 
-	containerClient := createNewContainer(_assert, generateContainerName(t.Name())+"01", svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, generateContainerName(t.Name())+"01", svcClient)
+	defer deleteContainer(t, containerClient)
 
 	pbName := generateBlobName(t.Name())
 	pbClient := createNewPageBlobWithCPK(_assert, pbName, containerClient, PageBlobPageBytes*10, &testCPKByValue, nil)
@@ -1249,8 +1249,8 @@ func TestBlobResizeWithCPK(t *testing.T) {
 	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
 	require.NoError(t, err)
 
-	containerClient := createNewContainer(_assert, generateContainerName(t.Name())+"01", svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, generateContainerName(t.Name())+"01", svcClient)
+	defer deleteContainer(t, containerClient)
 
 	pbName := generateBlobName(t.Name())
 	pbClient := createNewPageBlobWithCPK(_assert, pbName, containerClient, PageBlobPageBytes*10, &testCPKByValue, nil)
@@ -1278,8 +1278,8 @@ func TestGetSetBlobMetadataWithCPK(t *testing.T) {
 	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
 	require.NoError(t, err)
 
-	containerClient := createNewContainer(_assert, generateContainerName(t.Name())+"01", svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, generateContainerName(t.Name())+"01", svcClient)
+	defer deleteContainer(t, containerClient)
 
 	bbName := generateBlobName(t.Name())
 	bbClient := createNewBlockBlobWithCPK(_assert, bbName, containerClient, &testCPKByValue, nil)
@@ -1325,8 +1325,8 @@ func TestGetSetBlobMetadataWithCPKScope(t *testing.T) {
 	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
 	require.NoError(t, err)
 
-	containerClient := createNewContainer(_assert, generateContainerName(t.Name())+"01", svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, generateContainerName(t.Name())+"01", svcClient)
+	defer deleteContainer(t, containerClient)
 
 	bbName := generateBlobName(t.Name())
 	bbClient := createNewBlockBlobWithCPK(_assert, bbName, containerClient, nil, &testCPKByScope)
@@ -1365,8 +1365,8 @@ func TestBlobSnapshotWithCPK(t *testing.T) {
 	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
 	require.NoError(t, err)
 
-	containerClient := createNewContainer(_assert, generateContainerName(t.Name())+"01", svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, generateContainerName(t.Name())+"01", svcClient)
+	defer deleteContainer(t, containerClient)
 
 	bbName := generateBlobName(t.Name())
 	bbClient := createNewBlockBlobWithCPK(_assert, bbName, containerClient, &testCPKByValue, nil)
@@ -1415,8 +1415,8 @@ func TestBlobSnapshotWithCPKScope(t *testing.T) {
 	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
 	require.NoError(t, err)
 
-	containerClient := createNewContainer(_assert, generateContainerName(t.Name())+"01", svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(t, generateContainerName(t.Name())+"01", svcClient)
+	defer deleteContainer(t, containerClient)
 
 	bbName := generateBlobName(t.Name())
 	bbClient := createNewBlockBlobWithCPK(_assert, bbName, containerClient, nil, &testCPKByScope)

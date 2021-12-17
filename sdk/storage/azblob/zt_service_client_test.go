@@ -41,8 +41,8 @@ func TestServiceClientFromConnectionString(t *testing.T) {
 
 	svcClient, err := NewServiceClientWithSharedKey(serviceURL, cred, getServiceClientOptions(t))
 	require.NoError(t, err)
-	containerClient := createNewContainer(assert.New(t), generateContainerName(t.Name()), svcClient)
-	defer deleteContainer(assert.New(t), containerClient)
+	containerClient := createNewContainer(t, generateContainerName(t.Name()), svcClient)
+	defer deleteContainer(t, containerClient)
 }
 
 //nolint
@@ -184,7 +184,7 @@ func TestListContainersBasicUsingConnectionString(t *testing.T) {
 //	expectedResults := make(map[string]bool)
 //	for i := 0; i < numContainers; i++ {
 //		containerName := pagedContainersPrefix + generateContainerName(s.T().Name()) + string(i)
-//		containerClient := createNewContainer(_assert, containerName, svcClient)
+//		containerClient := createNewContainer(t, containerName, svcClient)
 //		containers[i] = containerClient
 //		expectedResults[containerName] = false
 //	}
@@ -240,10 +240,10 @@ func TestAccountListContainersEmptyPrefix(t *testing.T) {
 	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
 	require.NoError(t, err)
 
-	containerClient1 := createNewContainer(assert.New(t), generateContainerName(t.Name())+"1", svcClient)
-	defer deleteContainer(assert.New(t), containerClient1)
-	containerClient2 := createNewContainer(assert.New(t), generateContainerName(t.Name())+"2", svcClient)
-	defer deleteContainer(assert.New(t), containerClient2)
+	containerClient1 := createNewContainer(t, generateContainerName(t.Name())+"1", svcClient)
+	defer deleteContainer(t, containerClient1)
+	containerClient2 := createNewContainer(t, generateContainerName(t.Name())+"2", svcClient)
+	defer deleteContainer(t, containerClient2)
 
 	count := 0
 	pager := svcClient.ListContainers(nil)
@@ -264,7 +264,7 @@ func TestAccountListContainersEmptyPrefix(t *testing.T) {
 ////func (s *azblobTestSuite) TestAccountListContainersMaxResultsNegative() {
 ////	svcClient := getServiceClient()
 ////	containerClient, _ := createNewContainer(c, svcClient)
-////	defer deleteContainer(_assert, containerClient)
+////	defer deleteContainer(t, containerClient)
 ////
 ////	illegalMaxResults := []int32{-2, 0}
 ////	for _, num := range illegalMaxResults {

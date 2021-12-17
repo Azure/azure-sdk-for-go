@@ -13,116 +13,19 @@ import (
 	"io"
 	"io/ioutil"
 	"math/rand"
-	"net/url"
 	"os"
 	"runtime"
 	"strings"
+	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 )
-
-// type azblobTestSuite struct {
-// 	suite.Suite
-// 	mode testframework.RecordMode
-// }
-
-// //nolint
-// type azblobUnrecordedTestSuite struct {
-// 	suite.Suite
-// }
-
-// // Hookup to the testing framework
-// func Test(t *testing.T) {
-// 	suite.Run(t, &azblobTestSuite{mode: testframework.Playback})
-// 	//suite.Run(t, &azblobUnrecordedTestSuite{})
-// }
-
-// type testContext struct {
-// 	recording *testframework.Recording
-// 	context   *testframework.TestContext
-// }
-
-// // a map to store our created test contexts
-// var clientsMap = make(map[string]*testContext)
-
-// // recordedTestSetup is called before each test execution by the test suite's BeforeTest method
-// func recordedTestSetup(t *testing.T, mode testframework.RecordMode) {
-// 	testName := t.Name()
-// 	_assert := assert.New(t)
-
-// 	// init the test framework
-// 	_testContext := testframework.NewTestContext(
-// 		func(msg string) { _assert.FailNow(msg) },
-// 		func(msg string) { t.Log(msg) },
-// 		func() string { return testName })
-
-// 	// mode should be test_framework.Playback.
-// 	// This will automatically record if no test recording is available and playback if it is.
-// 	recording, err := testframework.NewRecording(_testContext, mode)
-// 	_assert.NoError(err)
-
-// 	_, err = recording.GetEnvVar(AccountNameEnvVar, testframework.NoSanitization)
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-// 	_, err = recording.GetEnvVar(AccountKeyEnvVar, testframework.Secret_Base64String)
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-// 	_ = recording.GetOptionalEnvVar(DefaultEndpointSuffixEnvVar, DefaultEndpointSuffix, testframework.NoSanitization)
-
-// 	clientsMap[testName] = &testContext{recording: recording, context: &_testContext}
-// }
-
-// func getTestContext(key string) *testContext {
-// 	return clientsMap[key]
-// }
-
-// func recordedTestTeardown(key string) {
-// 	_context, ok := clientsMap[key]
-// 	if ok && !(*_context.context).IsFailed() {
-// 		_ = _context.recording.Stop()
-// 	}
-// }
-
-// //nolint
-// func (s *azblobTestSuite) BeforeTest(suite string, test string) {
-// 	// set up the test environment
-// 	recordedTestSetup(s.T(), s.mode)
-// }
-
-// //nolint
-// func (s *azblobTestSuite) AfterTest(suite string, test string) {
-// 	// teardown the test context
-// 	recordedTestTeardown(s.T().Name())
-// }
-
-// //nolint
-// func (s *azblobUnrecordedTestSuite) BeforeTest(suite string, test string) {
-
-// }
-
-// //nolint
-// func (s *azblobUnrecordedTestSuite) AfterTest(suite string, test string) {
-
-// }
-
-//// Note that this function is adding to the list of ignored headers not creating from scratch
-//func ignoreHeaders(recording *testframework.Recording, headers []string) {
-//	ignoredHeaders := recording.Matcher.IgnoredHeaders
-//	for _, header := range headers {
-//		// TODO: Mohit Come Here
-//		//ignoredHeaders[header] = nil
-//		_ = header
-//	}
-//	_ = ignoredHeaders
-//}
 
 // Vars for
 const DefaultEndpointSuffix = "core.windows.net/"
@@ -260,20 +163,20 @@ func generateData(sizeInBytes int) (io.ReadSeekCloser, []byte) {
 	return internal.NopCloser(bytes.NewReader(data)), data
 }
 
-func createNewContainer(_assert *assert.Assertions, containerName string, serviceClient ServiceClient) ContainerClient {
+func createNewContainer(t *testing.T, containerName string, serviceClient ServiceClient) ContainerClient {
 	containerClient := getContainerClient(containerName, serviceClient)
 
 	cResp, err := containerClient.Create(ctx, nil)
-	if _assert.NoError(err) {
-		_assert.Equal(cResp.RawResponse.StatusCode, 201)
-	}
+	require.NoError(t, err)
+	require.Equal(t, cResp.RawResponse.StatusCode, 201)
+
 	return containerClient
 }
 
-func deleteContainer(_assert *assert.Assertions, containerClient ContainerClient) {
+func deleteContainer(t *testing.T, containerClient ContainerClient) {
 	deleteContainerResp, err := containerClient.Delete(context.Background(), nil)
-	_assert.NoError(err)
-	_assert.Equal(deleteContainerResp.RawResponse.StatusCode, 202)
+	require.NoError(t, err)
+	require.Equal(t, deleteContainerResp.RawResponse.StatusCode, 202)
 }
 
 func createNewBlockBlob(_assert *assert.Assertions, blockBlobName string, containerClient ContainerClient) BlockBlobClient {
@@ -359,70 +262,39 @@ func getRequiredEnv(name string) (string, error) {
 		return "", errors.New("Required environment variable not set: " + name)
 	}
 }
-func getAccountInfo(recording *testframework.Recording, accountType testAccountType) (string, string) {
+
+func getAccountInfo(t *testing.T, accountType testAccountType) (string, string) {
 	accountNameEnvVar := string(accountType) + AccountNameEnvVar
 	accountKeyEnvVar := string(accountType) + AccountKeyEnvVar
-	var err error
-	accountName, accountKey := "", ""
-	if recording == nil {
-		accountName, err = getRequiredEnv(accountNameEnvVar)
-		//if err != nil {
-		//	log.Fatalln(err)
-		//}
-		_ = err
-		accountKey, err = getRequiredEnv(accountKeyEnvVar)
-		//if err != nil {
-		//	log.Fatalln(err)
-		//}
-		_ = err
+	accountName, err := getRequiredEnv(accountNameEnvVar)
+	if err != nil && recording.GetRecordMode() == recording.PlaybackMode {
+		accountName = "fakeaccountname"
 	} else {
-		accountName, err = recording.GetEnvVar(accountNameEnvVar, testframework.NoSanitization)
-		//if err != nil {
-		//	log.Fatalln(err)
-		//}
-		_ = err
-		accountKey, err = recording.GetEnvVar(accountKeyEnvVar, testframework.Secret_Base64String)
-		//if err != nil {
-		//	log.Fatalln(err)
-		//}
-		_ = err
+		require.NoError(t, err)
 	}
+	accountKey, err := getRequiredEnv(accountKeyEnvVar)
+	if err != nil && recording.GetRecordMode() == recording.PlaybackMode {
+		accountKey = "supersecretkey"
+	} else {
+		require.NoError(t, err)
+	}
+
 	return accountName, accountKey
 }
-func getGenericCredential(recording *testframework.Recording, accountType testAccountType) (*SharedKeyCredential, error) {
-	accountName, accountKey := getAccountInfo(recording, accountType)
+
+func getGenericCredential(t *testing.T, accountType testAccountType) (*SharedKeyCredential, error) {
+	accountName, accountKey := getAccountInfo(t, accountType)
 	if accountName == "" || accountKey == "" {
 		return nil, errors.New(string(accountType) + AccountNameEnvVar + " and/or " + string(accountType) + AccountKeyEnvVar + " environment variables not specified.")
 	}
 	return NewSharedKeyCredential(accountName, accountKey)
 }
 
-//nolint
-func getConnectionString(recording *testframework.Recording, accountType testAccountType) string {
-	accountName, accountKey := getAccountInfo(recording, accountType)
+func getConnectionString(t *testing.T, accountType testAccountType) string {
+	accountName, accountKey := getAccountInfo(t, accountType)
 	connectionString := fmt.Sprintf("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;EndpointSuffix=core.windows.net/",
 		accountName, accountKey)
 	return connectionString
-}
-
-//nolint
-func getServiceClientFromConnectionString(recording *testframework.Recording, accountType testAccountType, options *ClientOptions) (ServiceClient, error) {
-	if recording != nil {
-		if options == nil {
-			options = &ClientOptions{
-				Transporter: recording,
-				Retry:       policy.RetryOptions{MaxRetries: -1}}
-		}
-	}
-
-	connectionString := getConnectionString(recording, accountType)
-	primaryURL, cred, err := parseConnectionString(connectionString)
-	if err != nil {
-		return ServiceClient{}, nil
-	}
-
-	svcClient, err := NewServiceClientWithSharedKey(primaryURL, cred, options)
-	return svcClient, err
 }
 
 type testAccountType string
@@ -434,27 +306,6 @@ const (
 	//testAccountBlobStorage testAccountType = "BLOB_"
 )
 
-func getServiceClient(recording *testframework.Recording, accountType testAccountType, options *ClientOptions) (ServiceClient, error) {
-	if recording != nil {
-		if options == nil {
-			options = &ClientOptions{
-				Transporter: recording,
-				Retry:       policy.RetryOptions{MaxRetries: -1}}
-		}
-	}
-
-	cred, err := getGenericCredential(recording, accountType)
-	if err != nil {
-		return ServiceClient{}, err
-	}
-
-	serviceURL, _ := url.Parse("https://" + cred.AccountName() + ".blob.core.windows.net/")
-	serviceClient, err := NewServiceClientWithSharedKey(serviceURL.String(), cred, options)
-
-	return serviceClient, err
-}
-
-//nolint
 func getRelativeTimeGMT(amount time.Duration) time.Time {
 	currentTime := time.Now().In(time.FixedZone("GMT", 0))
 	currentTime = currentTime.Add(amount * time.Second)
@@ -464,12 +315,6 @@ func getRelativeTimeGMT(amount time.Duration) time.Time {
 func getRelativeTimeFromAnchor(anchorTime *time.Time, amount time.Duration) time.Time {
 	return anchorTime.Add(amount * time.Second)
 }
-
-//func generateCurrentTimeWithModerateResolution() time.Time {
-//	highResolutionTime := time.Now().UTC()
-//	return time.Date(highResolutionTime.Year(), highResolutionTime.Month(), highResolutionTime.Day(), highResolutionTime.Hour(), highResolutionTime.Minute(),
-//		highResolutionTime.Second(), 0, highResolutionTime.Location())
-//}
 
 // Some tests require setting service properties. It can take up to 30 seconds for the new properties to be reflected across all FEs.
 // We will enable the necessary property and try to run the test implementation. If it fails with an error that should be due to

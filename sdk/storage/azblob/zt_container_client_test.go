@@ -45,7 +45,6 @@ import (
 
 func TestContainerCreateInvalidName(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
 
@@ -66,7 +65,7 @@ func TestContainerCreateInvalidName(t *testing.T) {
 
 func TestContainerCreateEmptyName(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -88,7 +87,7 @@ func TestContainerCreateEmptyName(t *testing.T) {
 
 func TestContainerCreateNameCollision(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -115,7 +114,7 @@ func TestContainerCreateNameCollision(t *testing.T) {
 
 func TestContainerCreateInvalidMetadata(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -138,7 +137,7 @@ func TestContainerCreateInvalidMetadata(t *testing.T) {
 
 func TestContainerCreateNilMetadata(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -164,7 +163,7 @@ func TestContainerCreateNilMetadata(t *testing.T) {
 
 func TestContainerCreateEmptyMetadata(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -284,7 +283,7 @@ func TestContainerCreateEmptyMetadata(t *testing.T) {
 
 func TestContainerCreateAccessNone(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -393,7 +392,7 @@ func validateContainerDeleted(_assert *assert.Assertions, containerClient Contai
 
 func TestContainerDelete(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -450,7 +449,7 @@ func TestContainerDelete(t *testing.T) {
 
 func TestContainerDeleteNonExistent(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -468,7 +467,7 @@ func TestContainerDeleteNonExistent(t *testing.T) {
 
 func TestContainerDeleteIfModifiedSinceTrue(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -496,7 +495,7 @@ func TestContainerDeleteIfModifiedSinceTrue(t *testing.T) {
 
 func TestContainerDeleteIfModifiedSinceFalse(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -526,7 +525,7 @@ func TestContainerDeleteIfModifiedSinceFalse(t *testing.T) {
 
 func TestContainerDeleteIfUnModifiedSinceTrue(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -555,7 +554,7 @@ func TestContainerDeleteIfUnModifiedSinceTrue(t *testing.T) {
 
 func TestContainerDeleteIfUnModifiedSinceFalse(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -681,7 +680,7 @@ func TestContainerDeleteIfUnModifiedSinceFalse(t *testing.T) {
 
 func TestContainerListBlobsWithSnapshots(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -722,7 +721,7 @@ func TestContainerListBlobsWithSnapshots(t *testing.T) {
 
 func TestContainerListBlobsInvalidDelimiter(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -929,7 +928,7 @@ func TestContainerListBlobsInvalidDelimiter(t *testing.T) {
 
 func TestContainerListBlobsMaxResultsExact(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -965,7 +964,7 @@ func TestContainerListBlobsMaxResultsExact(t *testing.T) {
 
 func TestContainerListBlobsMaxResultsSufficient(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -1003,7 +1002,7 @@ func TestContainerListBlobsMaxResultsSufficient(t *testing.T) {
 
 func TestContainerListBlobsNonExistentContainer(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -1140,7 +1139,7 @@ func TestContainerSetMetadataInvalidField(t *testing.T) {
 
 func TestContainerSetMetadataNonExistent(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -1211,7 +1210,7 @@ func TestContainerSetMetadataNonExistent(t *testing.T) {
 
 func TestContainerNewBlobURL(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -1229,7 +1228,7 @@ func TestContainerNewBlobURL(t *testing.T) {
 
 func TestContainerNewBlockBlobClient(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 

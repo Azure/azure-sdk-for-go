@@ -29,7 +29,6 @@ func TestSetEmptyAccessPolicy(t *testing.T) {
 }
 
 func TestSetAccessPolicy(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
 
@@ -67,7 +66,6 @@ func TestSetAccessPolicy(t *testing.T) {
 }
 
 func TestSetMultipleAccessPolicies(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
 
@@ -125,7 +123,6 @@ func TestSetMultipleAccessPolicies(t *testing.T) {
 }
 
 func TestSetNullAccessPolicy(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
 
@@ -158,7 +155,6 @@ func TestSetNullAccessPolicy(t *testing.T) {
 }
 
 func TestContainerGetSetPermissionsMultiplePolicies(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
 
@@ -210,7 +206,6 @@ func TestContainerGetSetPermissionsMultiplePolicies(t *testing.T) {
 }
 
 func TestContainerGetPermissionsPublicAccessNotNone(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
 
@@ -269,7 +264,6 @@ func TestContainerGetPermissionsPublicAccessNotNone(t *testing.T) {
 //}
 
 func TestContainerSetPermissionsPublicAccessTypeBlob(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
 
@@ -295,7 +289,6 @@ func TestContainerSetPermissionsPublicAccessTypeBlob(t *testing.T) {
 }
 
 func TestContainerSetPermissionsPublicAccessContainer(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
 
@@ -378,7 +371,6 @@ func TestContainerSetPermissionsPublicAccessContainer(t *testing.T) {
 ////}
 
 func TestContainerSetPermissionsACLMoreThanFive(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
 
@@ -423,7 +415,6 @@ func TestContainerSetPermissionsACLMoreThanFive(t *testing.T) {
 }
 
 func TestContainerSetPermissionsDeleteAndModifyACL(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
 
@@ -486,7 +477,6 @@ func TestContainerSetPermissionsDeleteAndModifyACL(t *testing.T) {
 }
 
 func TestContainerSetPermissionsDeleteAllPolicies(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
 
@@ -546,7 +536,6 @@ func TestContainerSetPermissionsDeleteAllPolicies(t *testing.T) {
 }
 
 func TestContainerSetPermissionsInvalidPolicyTimes(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
 
@@ -589,7 +578,6 @@ func TestContainerSetPermissionsInvalidPolicyTimes(t *testing.T) {
 }
 
 func TestContainerSetPermissionsNilPolicySlice(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
 
@@ -606,7 +594,6 @@ func TestContainerSetPermissionsNilPolicySlice(t *testing.T) {
 }
 
 func TestContainerSetPermissionsSignedIdentifierTooLong(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
 
@@ -652,7 +639,6 @@ func TestContainerSetPermissionsSignedIdentifierTooLong(t *testing.T) {
 }
 
 func TestContainerSetPermissionsIfModifiedSinceTrue(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
 
@@ -683,7 +669,6 @@ func TestContainerSetPermissionsIfModifiedSinceTrue(t *testing.T) {
 }
 
 func TestContainerSetPermissionsIfModifiedSinceFalse(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
 
@@ -712,7 +697,6 @@ func TestContainerSetPermissionsIfModifiedSinceFalse(t *testing.T) {
 }
 
 func TestContainerSetPermissionsIfUnModifiedSinceTrue(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
 
@@ -743,7 +727,6 @@ func TestContainerSetPermissionsIfUnModifiedSinceTrue(t *testing.T) {
 }
 
 func TestContainerSetPermissionsIfUnModifiedSinceFalse(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
 	err := recording.SetBodilessMatcher(t, nil)

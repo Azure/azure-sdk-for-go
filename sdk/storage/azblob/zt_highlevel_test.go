@@ -28,7 +28,6 @@ func generateFile(fileName string, fileSize int) []byte {
 
 func performUploadStreamToBlockBlobTest(t *testing.T, testName string, blobSize, bufferSize, maxBuffers int) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
 
@@ -254,7 +253,6 @@ func performUploadAndDownloadBufferTest(t *testing.T, testName string, blobSize,
 
 	_assert := assert.New(t)
 	// Set up test container
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
 

@@ -22,7 +22,7 @@ import (
 )
 
 func TestStageGetBlocks(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -98,7 +98,7 @@ func TestStageGetBlocks(t *testing.T) {
 }
 
 func TestStageBlockFromURL(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -493,7 +493,7 @@ func TestBlobPutBlobMetadataEmpty(t *testing.T) {
 }
 
 func TestBlobPutBlobMetadataInvalid(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -519,7 +519,7 @@ func TestBlobPutBlobMetadataInvalid(t *testing.T) {
 }
 
 func TestBlobPutBlobIfModifiedSinceTrue(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -554,7 +554,7 @@ func TestBlobPutBlobIfModifiedSinceTrue(t *testing.T) {
 }
 
 func TestBlobPutBlobIfModifiedSinceFalse(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -594,7 +594,7 @@ func TestBlobPutBlobIfModifiedSinceFalse(t *testing.T) {
 }
 
 func TestBlobPutBlobIfUnmodifiedSinceTrue(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -633,7 +633,7 @@ func TestBlobPutBlobIfUnmodifiedSinceTrue(t *testing.T) {
 }
 
 func TestBlobPutBlobIfUnmodifiedSinceFalse(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -1040,7 +1040,7 @@ func TestBlobPutBlockListValidateData(t *testing.T) {
 }
 
 func TestBlobPutBlockListModifyBlob(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -1101,7 +1101,7 @@ func TestSetTierOnBlobUpload(t *testing.T) {
 }
 
 func TestBlobSetTierOnCommit(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 

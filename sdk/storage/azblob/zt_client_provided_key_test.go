@@ -54,7 +54,6 @@ var testInvalidCPKByScope = CpkScopeInfo{
 
 func TestPutBlockAndPutBlockListWithCPK(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
 
@@ -168,7 +167,6 @@ func TestPutBlockAndPutBlockListWithCPKByScope(t *testing.T) {
 //nolint
 func TestPutBlockFromURLAndCommitWithCPK(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
 
@@ -404,7 +402,6 @@ func TestPutBlockFromURLAndCommitWithCPKWithScope(t *testing.T) {
 //nolint
 func TestUploadBlobWithMD5WithCPK(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
 
@@ -490,7 +487,6 @@ func TestUploadBlobWithMD5WithCPKScope(t *testing.T) {
 
 func TestAppendBlockWithCPK(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("The encryption scope is not available")
 	stop := start(t)
 	defer stop()
 
@@ -607,7 +603,6 @@ func TestAppendBlockWithCPKScope(t *testing.T) {
 //nolint
 func TestAppendBlockFromURLWithCPK(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("The encryption scope is not available")
 	stop := start(t)
 	defer stop()
 
@@ -818,7 +813,6 @@ func TestAppendBlockFromURLWithCPKScope(t *testing.T) {
 //nolint
 func TestPageBlockWithCPK(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("The encryption scope is not available")
 	stop := start(t)
 	defer stop()
 
@@ -927,7 +921,6 @@ func TestPageBlockWithCPKScope(t *testing.T) {
 //nolint
 func TestPageBlockFromURLWithCPK(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("The encryption scope is not available")
 	stop := start(t)
 	defer stop()
 
@@ -1092,7 +1085,6 @@ func TestPageBlockFromURLWithCPKScope(t *testing.T) {
 //nolint
 func TestUploadPagesFromURLWithMD5WithCPK(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("The encryption scope is not available")
 	stop := start(t)
 	defer stop()
 
@@ -1188,7 +1180,6 @@ func TestUploadPagesFromURLWithMD5WithCPK(t *testing.T) {
 
 func TestClearDiffPagesWithCPK(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("The encryption scope is not available")
 	stop := start(t)
 	defer stop()
 

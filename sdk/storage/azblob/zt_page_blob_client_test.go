@@ -18,7 +18,7 @@ import (
 
 func TestPutGetPages(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -70,7 +70,7 @@ func TestPutGetPages(t *testing.T) {
 
 func TestUploadPagesFromURL(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -142,7 +142,7 @@ func TestUploadPagesFromURL(t *testing.T) {
 
 func TestUploadPagesFromURLWithMD5(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -225,7 +225,7 @@ func TestUploadPagesFromURLWithMD5(t *testing.T) {
 //nolint
 func TestClearDiffPages(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -372,7 +372,7 @@ func TestResizePageBlob(t *testing.T) {
 
 func TestPageSequenceNumbers(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -477,7 +477,7 @@ func TestPutPagesWithMD5(t *testing.T) {
 
 func TestBlobCreatePageSizeInvalid(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -503,7 +503,7 @@ func TestBlobCreatePageSizeInvalid(t *testing.T) {
 
 func TestBlobCreatePageSequenceInvalid(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -527,7 +527,7 @@ func TestBlobCreatePageSequenceInvalid(t *testing.T) {
 
 func TestBlobCreatePageMetadataNonEmpty(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -557,7 +557,7 @@ func TestBlobCreatePageMetadataNonEmpty(t *testing.T) {
 
 func TestBlobCreatePageMetadataEmpty(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -586,7 +586,7 @@ func TestBlobCreatePageMetadataEmpty(t *testing.T) {
 
 func TestBlobCreatePageMetadataInvalid(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -613,7 +613,7 @@ func TestBlobCreatePageMetadataInvalid(t *testing.T) {
 
 func TestBlobCreatePageHTTPHeaders(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -651,7 +651,7 @@ func validatePageBlobPut(_assert *assert.Assertions, pbClient PageBlobClient) {
 
 func TestBlobCreatePageIfModifiedSinceTrue(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -689,7 +689,7 @@ func TestBlobCreatePageIfModifiedSinceTrue(t *testing.T) {
 
 func TestBlobCreatePageIfModifiedSinceFalse(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -727,7 +727,7 @@ func TestBlobCreatePageIfModifiedSinceFalse(t *testing.T) {
 
 func TestBlobCreatePageIfUnmodifiedSinceTrue(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -765,7 +765,7 @@ func TestBlobCreatePageIfUnmodifiedSinceTrue(t *testing.T) {
 
 func TestBlobCreatePageIfUnmodifiedSinceFalse(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -803,7 +803,7 @@ func TestBlobCreatePageIfUnmodifiedSinceFalse(t *testing.T) {
 
 func TestBlobCreatePageIfMatchTrue(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -838,7 +838,7 @@ func TestBlobCreatePageIfMatchTrue(t *testing.T) {
 
 func TestBlobCreatePageIfMatchFalse(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -872,7 +872,7 @@ func TestBlobCreatePageIfMatchFalse(t *testing.T) {
 
 func TestBlobCreatePageIfNoneMatchTrue(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -906,7 +906,7 @@ func TestBlobCreatePageIfNoneMatchTrue(t *testing.T) {
 
 func TestBlobCreatePageIfNoneMatchFalse(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -942,7 +942,7 @@ func TestBlobCreatePageIfNoneMatchFalse(t *testing.T) {
 //nolint
 func TestBlobPutPagesInvalidRange(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -977,7 +977,7 @@ func TestBlobPutPagesInvalidRange(t *testing.T) {
 
 func TestBlobPutPagesEmptyBody(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -1000,7 +1000,7 @@ func TestBlobPutPagesEmptyBody(t *testing.T) {
 
 func TestBlobPutPagesNonExistentBlob(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -1036,7 +1036,7 @@ func validateUploadPages(_assert *assert.Assertions, pbClient PageBlobClient) {
 
 func TestBlobPutPagesIfModifiedSinceTrue(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -1074,7 +1074,7 @@ func TestBlobPutPagesIfModifiedSinceTrue(t *testing.T) {
 
 func TestBlobPutPagesIfModifiedSinceFalse(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -1112,7 +1112,7 @@ func TestBlobPutPagesIfModifiedSinceFalse(t *testing.T) {
 
 func TestBlobPutPagesIfUnmodifiedSinceTrue(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -1150,7 +1150,7 @@ func TestBlobPutPagesIfUnmodifiedSinceTrue(t *testing.T) {
 
 func TestBlobPutPagesIfUnmodifiedSinceFalse(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -1188,7 +1188,7 @@ func TestBlobPutPagesIfUnmodifiedSinceFalse(t *testing.T) {
 
 func TestBlobPutPagesIfMatchTrue(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -1226,7 +1226,7 @@ func TestBlobPutPagesIfMatchTrue(t *testing.T) {
 
 func TestBlobPutPagesIfMatchFalse(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -1263,7 +1263,7 @@ func TestBlobPutPagesIfMatchFalse(t *testing.T) {
 
 func TestBlobPutPagesIfNoneMatchTrue(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -1338,7 +1338,7 @@ func TestBlobPutPagesIfNoneMatchFalse(t *testing.T) {
 
 func TestBlobPutPagesIfSequenceNumberLessThanTrue(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -1369,7 +1369,7 @@ func TestBlobPutPagesIfSequenceNumberLessThanTrue(t *testing.T) {
 
 func TestBlobPutPagesIfSequenceNumberLessThanFalse(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -1409,7 +1409,7 @@ func TestBlobPutPagesIfSequenceNumberLessThanFalse(t *testing.T) {
 
 func TestBlobPutPagesIfSequenceNumberLessThanNegOne(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -1441,7 +1441,7 @@ func TestBlobPutPagesIfSequenceNumberLessThanNegOne(t *testing.T) {
 
 func TestBlobPutPagesIfSequenceNumberLTETrue(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -1481,7 +1481,7 @@ func TestBlobPutPagesIfSequenceNumberLTETrue(t *testing.T) {
 
 func TestBlobPutPagesIfSequenceNumberLTEqualFalse(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -1521,7 +1521,7 @@ func TestBlobPutPagesIfSequenceNumberLTEqualFalse(t *testing.T) {
 
 func TestBlobPutPagesIfSequenceNumberLTENegOne(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -1550,7 +1550,7 @@ func TestBlobPutPagesIfSequenceNumberLTENegOne(t *testing.T) {
 
 func TestBlobPutPagesIfSequenceNumberEqualTrue(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -1590,7 +1590,7 @@ func TestBlobPutPagesIfSequenceNumberEqualTrue(t *testing.T) {
 
 func TestBlobPutPagesIfSequenceNumberEqualFalse(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -1650,7 +1650,6 @@ func TestBlobPutPagesIfSequenceNumberEqualFalse(t *testing.T) {
 
 func setupClearPagesTest(t *testing.T, testName string) (ContainerClient, PageBlobClient) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 
 	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
 	require.NoError(t, err)
@@ -2090,7 +2089,6 @@ func TestBlobClearPagesIfSequenceNumberEqualNegOne(t *testing.T) {
 
 func setupGetPageRangesTest(t *testing.T, testName string) (containerClient ContainerClient, pbClient PageBlobClient) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 
 	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
 	require.NoError(t, err)
@@ -2125,7 +2123,6 @@ func TestBlobGetPageRangesEmptyBlob(t *testing.T) {
 	stop := start(t)
 	defer stop()
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 
 	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
 	require.NoError(t, err)
@@ -2146,7 +2143,6 @@ func TestBlobGetPageRangesEmptyRange(t *testing.T) {
 	stop := start(t)
 	defer stop()
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 
 	// svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
 	// require.NoError(t, err)
@@ -2163,7 +2159,6 @@ func TestBlobGetPageRangesInvalidRange(t *testing.T) {
 	stop := start(t)
 	defer stop()
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 
 	// svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
 	// require.NoError(t, err)
@@ -2179,7 +2174,6 @@ func TestBlobGetPageRangesNonContiguousRanges(t *testing.T) {
 	stop := start(t)
 	defer stop()
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 
 	// svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
 	// require.NoError(t, err)
@@ -2216,7 +2210,6 @@ func TestBlobGetPageRangesNotPageAligned(t *testing.T) {
 	stop := start(t)
 	defer stop()
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 
 	// svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
 	// require.NoError(t, err)
@@ -2233,7 +2226,6 @@ func TestBlobGetPageRangesSnapshot(t *testing.T) {
 	stop := start(t)
 	defer stop()
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 
 	// svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
 	// require.NoError(t, err)
@@ -2395,7 +2387,6 @@ func TestBlobGetPageRangesIfMatchFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 
 	containerClient, pbClient := setupGetPageRangesTest(t, t.Name())
 	defer deleteContainer(t, containerClient)
@@ -2418,7 +2409,6 @@ func TestBlobGetPageRangesIfNoneMatchTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 
 	containerClient, pbClient := setupGetPageRangesTest(t, t.Name())
 	defer deleteContainer(t, containerClient)
@@ -2734,7 +2724,7 @@ func TestBlobResizeZero(t *testing.T) {
 
 func TestBlobResizeInvalidSizeNegative(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -2754,7 +2744,7 @@ func TestBlobResizeInvalidSizeNegative(t *testing.T) {
 
 func TestBlobResizeInvalidSizeMisaligned(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -2816,7 +2806,7 @@ func TestBlobResizeIfModifiedSinceTrue(t *testing.T) {
 
 func TestBlobResizeIfModifiedSinceFalse(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -2888,7 +2878,7 @@ func TestBlobResizeIfUnmodifiedSinceTrue(t *testing.T) {
 
 func TestBlobResizeIfUnmodifiedSinceFalse(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -2955,7 +2945,7 @@ func TestBlobResizeIfMatchTrue(t *testing.T) {
 
 func TestBlobResizeIfMatchFalse(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -3047,7 +3037,7 @@ func TestBlobResizeIfNoneMatchFalse(t *testing.T) {
 
 func TestBlobSetSequenceNumberActionTypeInvalid(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -3075,7 +3065,7 @@ func TestBlobSetSequenceNumberActionTypeInvalid(t *testing.T) {
 
 func TestBlobSetSequenceNumberSequenceNumberInvalid(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -3114,7 +3104,7 @@ func validateSequenceNumberSet(t *testing.T, pbClient PageBlobClient) {
 
 func TestBlobSetSequenceNumberIfModifiedSinceTrue(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -3152,7 +3142,7 @@ func TestBlobSetSequenceNumberIfModifiedSinceTrue(t *testing.T) {
 
 func TestBlobSetSequenceNumberIfModifiedSinceFalse(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -3190,7 +3180,7 @@ func TestBlobSetSequenceNumberIfModifiedSinceFalse(t *testing.T) {
 
 func TestBlobSetSequenceNumberIfUnmodifiedSinceTrue(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -3228,7 +3218,7 @@ func TestBlobSetSequenceNumberIfUnmodifiedSinceTrue(t *testing.T) {
 
 func TestBlobSetSequenceNumberIfUnmodifiedSinceFalse(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -3300,7 +3290,7 @@ func TestBlobSetSequenceNumberIfMatchTrue(t *testing.T) {
 
 func TestBlobSetSequenceNumberIfMatchFalse(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -3332,7 +3322,7 @@ func TestBlobSetSequenceNumberIfMatchFalse(t *testing.T) {
 
 func TestBlobSetSequenceNumberIfNoneMatchTrue(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 

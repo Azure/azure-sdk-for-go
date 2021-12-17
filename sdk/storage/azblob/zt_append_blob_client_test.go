@@ -111,7 +111,7 @@ func TestAppendBlockWithMD5(t *testing.T) {
 }
 
 func TestAppendBlockFromURL(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -204,7 +204,7 @@ func TestAppendBlockFromURL(t *testing.T) {
 }
 
 func TestAppendBlockFromURLWithMD5(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -358,7 +358,7 @@ func TestBlobCreateAppendMetadataEmpty(t *testing.T) {
 }
 
 func TestBlobCreateAppendMetadataInvalid(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -530,7 +530,7 @@ func TestBlobCreateAppendIfUnmodifiedSinceTrue(t *testing.T) {
 }
 
 func TestBlobCreateAppendIfUnmodifiedSinceFalse(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -600,7 +600,7 @@ func TestBlobCreateAppendIfMatchTrue(t *testing.T) {
 }
 
 func TestBlobCreateAppendIfMatchFalse(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -693,7 +693,7 @@ func TestBlobCreateAppendIfNoneMatchFalse(t *testing.T) {
 }
 
 func TestBlobAppendBlockNilBody(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -734,7 +734,7 @@ func TestBlobAppendBlockEmptyBody(t *testing.T) {
 }
 
 func TestBlobAppendBlockNonExistentBlob(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -1054,7 +1054,7 @@ func TestBlobAppendBlockIfNoneMatchFalse(t *testing.T) {
 ////}
 
 func TestBlobAppendBlockIfAppendPositionMatchTrueNonZero(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -1082,7 +1082,7 @@ func TestBlobAppendBlockIfAppendPositionMatchTrueNonZero(t *testing.T) {
 }
 
 func TestBlobAppendBlockIfAppendPositionMatchFalseNegOne(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -1109,7 +1109,7 @@ func TestBlobAppendBlockIfAppendPositionMatchFalseNegOne(t *testing.T) {
 }
 
 func TestBlobAppendBlockIfAppendPositionMatchFalseNonZero(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 

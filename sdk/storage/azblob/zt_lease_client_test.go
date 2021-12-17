@@ -16,7 +16,6 @@ import (
 var proposedLeaseIDs = []*string{to.StringPtr("c820a799-76d7-4ee2-6e15-546f19325c2c"), to.StringPtr("326cc5e1-746e-4af8-4811-a50e6629a8ca")}
 
 func TestContainerAcquireLease(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
 
@@ -41,7 +40,6 @@ func TestContainerAcquireLease(t *testing.T) {
 
 func TestContainerDeleteContainerWithoutLeaseId(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
 
@@ -74,7 +72,6 @@ func TestContainerDeleteContainerWithoutLeaseId(t *testing.T) {
 
 func TestContainerReleaseLease(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
 
@@ -105,7 +102,6 @@ func TestContainerReleaseLease(t *testing.T) {
 
 func TestContainerRenewLease(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
 
@@ -133,7 +129,6 @@ func TestContainerRenewLease(t *testing.T) {
 
 func TestContainerChangeLease(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
 
@@ -168,7 +163,7 @@ func TestContainerChangeLease(t *testing.T) {
 
 func TestBlobAcquireLease(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -195,7 +190,7 @@ func TestBlobAcquireLease(t *testing.T) {
 
 func TestDeleteBlobWithoutLeaseId(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -232,7 +227,7 @@ func TestDeleteBlobWithoutLeaseId(t *testing.T) {
 
 func TestBlobReleaseLease(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -265,7 +260,7 @@ func TestBlobReleaseLease(t *testing.T) {
 
 func TestBlobRenewLease(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -295,7 +290,7 @@ func TestBlobRenewLease(t *testing.T) {
 
 func TestBlobChangeLease(t *testing.T) {
 	_assert := assert.New(t)
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 

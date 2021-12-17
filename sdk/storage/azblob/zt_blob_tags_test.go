@@ -19,7 +19,7 @@ import (
 )
 
 func TestSetBlobTags(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -62,7 +62,7 @@ func TestSetBlobTags(t *testing.T) {
 }
 
 func TestSetBlobTagsWithVID(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -119,7 +119,7 @@ func TestSetBlobTagsWithVID(t *testing.T) {
 }
 
 func TestUploadBlockBlobWithSpecialCharactersInTags(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -220,7 +220,7 @@ func TestStageBlockWithTags(t *testing.T) {
 }
 
 func TestStageBlockFromURLWithTags(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 
@@ -328,7 +328,7 @@ func TestStageBlockFromURLWithTags(t *testing.T) {
 }
 
 func TestCopyBlockBlobFromURLWithTags(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
+
 	stop := start(t)
 	defer stop()
 

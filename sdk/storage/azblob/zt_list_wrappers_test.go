@@ -13,7 +13,6 @@ import (
 
 // tests general functionality
 func TestBlobListWrapper(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
 
@@ -52,7 +51,6 @@ func TestBlobListWrapper(t *testing.T) {
 
 // tests that the buffer filling isn't a problem
 func TestBlobListWrapperFullBuffer(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
 
@@ -89,7 +87,6 @@ func TestBlobListWrapperFullBuffer(t *testing.T) {
 }
 
 func TestBlobListWrapperListingError(t *testing.T) {
-	// t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
 

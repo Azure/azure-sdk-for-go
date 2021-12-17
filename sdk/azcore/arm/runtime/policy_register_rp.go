@@ -10,7 +10,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
@@ -246,7 +245,7 @@ func (client *providersOperations) getCreateRequest(ctx context.Context, resourc
 // getHandleResponse handles the Get response.
 func (client *providersOperations) getHandleResponse(resp *http.Response) (*ProviderResponse, error) {
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return nil, client.getHandleError(resp)
+		return nil, shared.NewResponseError(resp)
 	}
 	result := ProviderResponse{RawResponse: resp}
 	err := runtime.UnmarshalAsJSON(resp, &result.Provider)
@@ -254,18 +253,6 @@ func (client *providersOperations) getHandleResponse(resp *http.Response) (*Prov
 		return nil, err
 	}
 	return &result, err
-}
-
-// getHandleError handles the Get error response.
-func (client *providersOperations) getHandleError(resp *http.Response) error {
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return shared.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return shared.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return shared.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Register - Registers a subscription with a resource provider.
@@ -303,7 +290,7 @@ func (client *providersOperations) registerCreateRequest(ctx context.Context, re
 // registerHandleResponse handles the Register response.
 func (client *providersOperations) registerHandleResponse(resp *http.Response) (*ProviderResponse, error) {
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return nil, client.registerHandleError(resp)
+		return nil, shared.NewResponseError(resp)
 	}
 	result := ProviderResponse{RawResponse: resp}
 	err := runtime.UnmarshalAsJSON(resp, &result.Provider)
@@ -311,18 +298,6 @@ func (client *providersOperations) registerHandleResponse(resp *http.Response) (
 		return nil, err
 	}
 	return &result, err
-}
-
-// registerHandleError handles the Register error response.
-func (client *providersOperations) registerHandleError(resp *http.Response) error {
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return shared.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return shared.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return shared.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ProviderResponse is the response envelope for operations that return a Provider type.

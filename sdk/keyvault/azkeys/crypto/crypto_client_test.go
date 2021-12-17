@@ -16,6 +16,16 @@ import (
 
 var ctx = context.TODO()
 
+func TestConstructor(t *testing.T) {
+	client, err := NewClient("https://fakekvurl.vault.azure.net/myKeyName/myKeyID0123", &FakeCredential{}, nil)
+	require.NoError(t, err)
+	require.NotNil(t, client.kvClient)
+
+	client, err = NewClient("https://fakekvurl.vault.azure.net/myKeyName", &FakeCredential{}, nil)
+	require.NoError(t, err)
+	require.NotNil(t, client.kvClient)
+}
+
 func TestClient_Decrypt(t *testing.T) {
 	stop := startTest(t)
 	defer stop()

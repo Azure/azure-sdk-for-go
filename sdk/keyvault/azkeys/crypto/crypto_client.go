@@ -57,17 +57,17 @@ func parseKeyIDAndVersion(id string) (string, string, error) {
 		return "", "", err
 	}
 
-	path := strings.Split(parsed.Path, "/")
+	path := strings.Split(strings.TrimPrefix(parsed.Path, "/"), "/")
 
-	if len(path) < 3 {
+	if len(path) < 1 {
 		return "", "", fmt.Errorf("could not parse Key ID from %s", id)
 	}
 
-	if len(path) == 3 {
-		return path[2], "", nil
+	if len(path) == 1 {
+		return path[0], "", nil
 	}
 
-	return path[2], path[3], nil
+	return path[0], path[1], nil
 }
 
 // Parse vault URL from the key identifier

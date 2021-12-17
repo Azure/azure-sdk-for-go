@@ -21,7 +21,7 @@ var client *azkeys.Client
 
 func ExampleNewClient() {
 	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	cred, err := azidentity.NewClientSecretCredential("myTenantID", "myClientID", "myClientSecret", nil)
 	if err != nil {
 		panic(err)
 	}
@@ -34,7 +34,7 @@ func ExampleNewClient() {
 
 func ExampleClient_CreateRSAKey() {
 	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	cred, err := azidentity.NewClientSecretCredential("myTenantID", "myClientID", "myClientSecret", nil)
 	if err != nil {
 		panic(err)
 	}
@@ -54,7 +54,7 @@ func ExampleClient_CreateRSAKey() {
 
 func ExampleClient_CreateECKey() {
 	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	cred, err := azidentity.NewClientSecretCredential("myTenantID", "myClientID", "myClientSecret", nil)
 	if err != nil {
 		panic(err)
 	}
@@ -74,7 +74,7 @@ func ExampleClient_CreateECKey() {
 
 func ExampleClient_GetKey() {
 	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	cred, err := azidentity.NewClientSecretCredential("myTenantID", "myClientID", "myClientSecret", nil)
 	if err != nil {
 		panic(err)
 	}
@@ -93,7 +93,7 @@ func ExampleClient_GetKey() {
 
 func ExampleClient_UpdateKeyProperties() {
 	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	cred, err := azidentity.NewClientSecretCredential("myTenantID", "myClientID", "myClientSecret", nil)
 	if err != nil {
 		panic(err)
 	}
@@ -119,7 +119,7 @@ func ExampleClient_UpdateKeyProperties() {
 
 func ExampleClient_BeginDeleteKey() {
 	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	cred, err := azidentity.NewClientSecretCredential("myTenantID", "myClientID", "myClientSecret", nil)
 	if err != nil {
 		panic(err)
 	}
@@ -142,7 +142,7 @@ func ExampleClient_BeginDeleteKey() {
 
 func ExampleClient_ListKeys() {
 	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	cred, err := azidentity.NewClientSecretCredential("myTenantID", "myClientID", "myClientSecret", nil)
 	if err != nil {
 		panic(err)
 	}

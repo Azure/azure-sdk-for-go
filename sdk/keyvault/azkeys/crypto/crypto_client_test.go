@@ -31,7 +31,7 @@ func TestConstructor(t *testing.T) {
 
 	_, err = NewClient("https://fakekvurl.vault.azure.net/", &FakeCredential{}, nil)
 	require.Error(t, err)
-	require.Contains(t, err.Error(), "could not parse Key ID from")
+	require.Contains(t, err.Error(), "URL is not for a specific key, expect path to start with '/keys/', received")
 }
 
 func TestClient_Decrypt(t *testing.T) {

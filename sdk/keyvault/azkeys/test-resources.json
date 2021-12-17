@@ -137,6 +137,8 @@
                                 "release",
                                 "restore",
                                 "rotate",
+                                "setrotationpolicy",
+                                "getrotationpolicy",
                                 "sign",
                                 "unwrapKey",
                                 "update",

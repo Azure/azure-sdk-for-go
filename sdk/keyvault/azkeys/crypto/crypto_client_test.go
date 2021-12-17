@@ -17,13 +17,17 @@ import (
 var ctx = context.TODO()
 
 func TestConstructor(t *testing.T) {
-	client, err := NewClient("https://fakekvurl.vault.azure.net/myKeyName/myKeyID0123", &FakeCredential{}, nil)
+	client, err := NewClient("https://fakekvurl.vault.azure.net/keys/key89075156/0b29f1d3760f4407aeb996868c9a02a7", &FakeCredential{}, nil)
 	require.NoError(t, err)
 	require.NotNil(t, client.kvClient)
+	require.Equal(t, client.keyID, "key89075156")
+	require.Equal(t, client.keyVersion, "0b29f1d3760f4407aeb996868c9a02a7")
 
-	client, err = NewClient("https://fakekvurl.vault.azure.net/myKeyName", &FakeCredential{}, nil)
+	client, err = NewClient("https://fakekvurl.vault.azure.net/keys/key89075156", &FakeCredential{}, nil)
 	require.NoError(t, err)
 	require.NotNil(t, client.kvClient)
+	require.Equal(t, client.keyID, "key89075156")
+	require.Equal(t, client.keyVersion, "")
 }
 
 func TestClient_Decrypt(t *testing.T) {

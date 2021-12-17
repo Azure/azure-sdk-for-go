@@ -104,31 +104,20 @@ cred, err := azidentity.NewDefaultAzureCredential(nil)
 For more details on how authentication works in `azidentity`, please see the documentation for `azidentity` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity).
 
 
-Connecting to Azure 
--------------------
-
-Once you have a credential, create a connection to the desired ARM endpoint.  The `github.com/Azure/azure-sdk-for-go/sdk/azcore/arm` package provides facilities for connecting with ARM endpoints including public and sovereign clouds as well as Azure Stack.
-
-```go
-con := arm.NewDefaultConnection(cred, nil)
-```
-
-For more information on ARM connections, please see the documentation for `azcore` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore).
-
 Creating a Resource Management Client
 -------------------------------------
 
-Once you have a connection to ARM, you will need to decide what service to use and create a client to connect to that service. In this section, we will use `Compute` as our target service. The Compute modules consist of one or more clients. A client groups a set of related APIs, providing access to its functionality within the specified subscription. You will need to create one or more clients to access the APIs you require using your `arm.Connection`.
+Once you have a credential, you will need to decide what service to use and create a client to connect to that service. In this section, we will use `Compute` as our target service. The Compute modules consist of one or more clients. A client groups a set of related APIs, providing access to its functionality within the specified subscription. You will need to create one or more clients to access the APIs you require using your `azcore.TokenCredential`.
 
 To show an example, we will create a client to manage Virtual Machines. The code to achieve this task would be:
 
 ```go
-client := armcompute.NewVirtualMachinesClient(con, "<subscription ID>")
+client := armcompute.NewVirtualMachinesClient("<subscription ID>", credential, nil)
 ```
 You can use the same pattern to connect with other Azure services that you are using. For example, in order to manage Virtual Network resources, you would install the Network package and create a `VirtualNetwork` Client:
 
 ```go
-client := armnetwork.NewVirtualNetworksClient(acon, "<subscription ID>")
+client := armnetwork.NewVirtualNetworksClient("<subscription ID>", credential, nil)
 ```
 
 Interacting with Azure Resources
@@ -161,10 +150,12 @@ import (
     "os"
     "time"
 
+    "github.com/Azure/azure-sdk-for-go/sdk/azcore"
     "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+    "github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
     "github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-    "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
     "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+    "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 )
 ```
 
@@ -181,8 +172,8 @@ var (
 
 ***Write a function to create a resource group***
 ```go
-func createResourceGroup(ctx context.Context, connection *arm.Connection) (armresources.ResourceGroupResponse, error) {
-	rgClient := armresources.NewResourceGroupsClient(connection, subscriptionId)
+func createResourceGroup(ctx context.Context, credential azcore.TokenCredential) (armresources.ResourceGroupsCreateOrUpdateResponse, error) {
+	rgClient := armresources.NewResourceGroupsClient(subscriptionId, credential, nil)
 
     param := armresources.ResourceGroup{
         Location: to.StringPtr(location),
@@ -199,13 +190,8 @@ func main() {
     if err != nil {
         log.Fatalf("authentication failure: %+v", err)
     }
-    conn := arm.NewDefaultConnection(cred, &arm.ConnectionOptions{
-        Logging: azcore.LogOptions{
-            IncludeBody: true,
-        },
-    })
     
-    resourceGroup, err := createResourceGroup(ctx, conn)
+    resourceGroup, err := createResourceGroup(ctx, cred)
     if err != nil {
         log.Fatalf("cannot create resource group: %+v", err)
     }
@@ -221,9 +207,9 @@ Example: Managing Resource Groups
 ***Update a resource group***
 
 ```go
-func updateResourceGroup(ctx context.Context, connection *arm.Connection) (armresources.ResourceGroupResponse, error) {
-    rgClient := armresources.NewResourceGroupsClient(connection, subscriptionId)
-    
+func updateResourceGroup(ctx context.Context, credential azcore.TokenCredential) (armresources.ResourceGroupsUpdateResponse, error) {
+    rgClient := armresources.NewResourceGroupsClient(subscriptionId, credential, nil)
+
     update := armresources.ResourceGroupPatchable{
         Tags: map[string]*string{
             "new": to.StringPtr("tag"),
@@ -236,15 +222,15 @@ func updateResourceGroup(ctx context.Context, connection *arm.Connection) (armre
 ***List all resource groups***
 
 ```go
-func listResourceGroups(ctx context.Context, connection *arm.Connection) ([]*armresources.ResourceGroup, error) {
-    rgClient := armresources.NewResourceGroupsClient(connection, subscriptionId)
+func listResourceGroups(ctx context.Context, credential azcore.TokenCredential) ([]*armresources.ResourceGroup, error) {
+    rgClient := armresources.NewResourceGroupsClient(subscriptionId, credential, nil)
     
     pager := rgClient.List(nil)
     
     var resourceGroups []*armresources.ResourceGroup
     for pager.NextPage(ctx) {
         resp := pager.PageResponse()
-        if resp.ResourceGroupListResult != nil {
+        if resp.ResourceGroupListResult.Value != nil {
             resourceGroups = append(resourceGroups, resp.ResourceGroupListResult.Value...)
         }
     }
@@ -255,17 +241,15 @@ func listResourceGroups(ctx context.Context, connection *arm.Connection) ([]*arm
 ***Delete a resource group***
 
 ```go
-func deleteResourceGroup(ctx context.Context, connection *arm.Connection) error {
-    rgClient := armresources.NewResourceGroupsClient(connection, subscriptionId)
+func deleteResourceGroup(ctx context.Context, credential azcore.TokenCredential) error {
+    rgClient := armresources.NewResourceGroupsClient(subscriptionId, credential, nil)
     
     poller, err := rgClient.BeginDelete(ctx, resourceGroupName, nil)
     if err != nil {
         return err
     }
-    if _, err := poller.PollUntilDone(ctx, interval); err != nil {
-        return err
-    }
-    return nil
+    _, err = poller.PollUntilDone(ctx, interval)
+    return err
 }
 ```
 
@@ -276,32 +260,26 @@ func main() {
 	if err != nil {
 		log.Fatalf("authentication failure: %+v", err)
 	}
-	conn := arm.NewDefaultConnection(cred, &arm.ConnectionOptions{
-		Logging: azcore.LogOptions{
-			IncludeBody: true,
-		},
-	})
 
-
-    resourceGroup, err := createResourceGroup(ctx, conn)
+    resourceGroup, err := createResourceGroup(ctx, cred)
     if err != nil {
         log.Fatalf("cannot create resource group: %+v", err)
     }
     log.Printf("Resource Group %s created", *resourceGroup.ResourceGroup.ID)
 
-    updatedRG, err := updateResourceGroup(ctx, conn)
+    updatedRG, err := updateResourceGroup(ctx, cred)
     if err != nil {
         log.Fatalf("cannot update resource group: %+v", err)
     }
     log.Printf("Resource Group %s updated", *updatedRG.ResourceGroup.ID)
 
-    rgList, err := listResourceGroups(ctx, conn)
+    rgList, err := listResourceGroups(ctx, cred)
     if err != nil {
         log.Fatalf("cannot list resource group: %+v", err)
     }
     log.Printf("We totally have %d resource groups", len(rgList))
 
-    if err := deleteResourceGroup(ctx, conn); err != nil {
+    if err := deleteResourceGroup(ctx, cred); err != nil {
         log.Fatalf("cannot delete resource group: %+v", err)
     }
     log.Printf("Resource Group deleted")

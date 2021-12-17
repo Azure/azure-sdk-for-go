@@ -129,13 +129,13 @@ func TestListKeys(t *testing.T) {
 			client, err := createClient(t, testType)
 			require.NoError(t, err)
 
-			// for i := 0; i < 4; i++ {
-			// 	key, err := createRandomName(t, fmt.Sprintf("key-%d", i))
-			// 	require.NoError(t, err)
+			for i := 0; i < 4; i++ {
+				key, err := createRandomName(t, fmt.Sprintf("key-%d", i))
+				require.NoError(t, err)
 
-			// 	_, err = client.CreateKey(ctx, key, RSA, nil)
-			// 	require.NoError(t, err)
-			// }
+				_, err = client.CreateKey(ctx, key, RSA, nil)
+				require.NoError(t, err)
+			}
 
 			pager := client.ListKeys(nil)
 			count := 0

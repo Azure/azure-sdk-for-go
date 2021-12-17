@@ -154,11 +154,10 @@ func createClient(t *testing.T, testType string) (*Client, error) {
 
 	var cred azcore.TokenCredential
 	if recording.GetRecordMode() != "playback" {
-		cred, err = azidentity.NewDefaultAzureCredential(nil)
-		// tenantId := lookupEnvVar("AZKEYS_TENANT_ID")
-		// clientId := lookupEnvVar("AZKEYS_CLIENT_ID")
-		// clientSecret := lookupEnvVar("AZKEYS_CLIENT_SECRET")
-		// cred, err = azidentity.NewClientSecretCredential(tenantId, clientId, clientSecret, nil)
+		tenantId := lookupEnvVar("AZKEYS_TENANT_ID")
+		clientId := lookupEnvVar("AZKEYS_CLIENT_ID")
+		clientSecret := lookupEnvVar("AZKEYS_CLIENT_SECRET")
+		cred, err = azidentity.NewClientSecretCredential(tenantId, clientId, clientSecret, nil)
 		require.NoError(t, err)
 	} else {
 		cred = NewFakeCredential("fake", "fake")

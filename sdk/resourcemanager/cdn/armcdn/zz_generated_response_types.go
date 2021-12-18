@@ -151,7 +151,7 @@ type AFDCustomDomainsRefreshValidationTokenPollerResponse struct {
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l AFDCustomDomainsRefreshValidationTokenPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AFDCustomDomainsRefreshValidationTokenResponse, error) {
 	respType := AFDCustomDomainsRefreshValidationTokenResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ValidationToken)
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
 	}
@@ -179,14 +179,8 @@ func (l *AFDCustomDomainsRefreshValidationTokenPollerResponse) Resume(ctx contex
 
 // AFDCustomDomainsRefreshValidationTokenResponse contains the response from method AFDCustomDomains.RefreshValidationToken.
 type AFDCustomDomainsRefreshValidationTokenResponse struct {
-	AFDCustomDomainsRefreshValidationTokenResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
-}
-
-// AFDCustomDomainsRefreshValidationTokenResult contains the result from method AFDCustomDomains.RefreshValidationToken.
-type AFDCustomDomainsRefreshValidationTokenResult struct {
-	ValidationToken
 }
 
 // AFDCustomDomainsUpdatePollerResponse contains the response from method AFDCustomDomains.Update.
@@ -854,7 +848,7 @@ type AFDProfilesCheckHostNameAvailabilityResponse struct {
 
 // AFDProfilesCheckHostNameAvailabilityResult contains the result from method AFDProfiles.CheckHostNameAvailability.
 type AFDProfilesCheckHostNameAvailabilityResult struct {
-	ValidateCustomDomainOutput
+	CheckNameAvailabilityOutput
 }
 
 // AFDProfilesListResourceUsageResponse contains the response from method AFDProfiles.ListResourceUsage.
@@ -1009,46 +1003,6 @@ type CustomDomainsDeleteResult struct {
 	CustomDomain
 }
 
-// CustomDomainsDisableCustomHTTPSPollerResponse contains the response from method CustomDomains.DisableCustomHTTPS.
-type CustomDomainsDisableCustomHTTPSPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *CustomDomainsDisableCustomHTTPSPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l CustomDomainsDisableCustomHTTPSPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CustomDomainsDisableCustomHTTPSResponse, error) {
-	respType := CustomDomainsDisableCustomHTTPSResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.CustomDomain)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a CustomDomainsDisableCustomHTTPSPollerResponse from the provided client and resume token.
-func (l *CustomDomainsDisableCustomHTTPSPollerResponse) Resume(ctx context.Context, client *CustomDomainsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("CustomDomainsClient.DisableCustomHTTPS", token, client.pl, client.disableCustomHTTPSHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &CustomDomainsDisableCustomHTTPSPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
 // CustomDomainsDisableCustomHTTPSResponse contains the response from method CustomDomains.DisableCustomHTTPS.
 type CustomDomainsDisableCustomHTTPSResponse struct {
 	CustomDomainsDisableCustomHTTPSResult
@@ -1059,46 +1013,6 @@ type CustomDomainsDisableCustomHTTPSResponse struct {
 // CustomDomainsDisableCustomHTTPSResult contains the result from method CustomDomains.DisableCustomHTTPS.
 type CustomDomainsDisableCustomHTTPSResult struct {
 	CustomDomain
-}
-
-// CustomDomainsEnableCustomHTTPSPollerResponse contains the response from method CustomDomains.EnableCustomHTTPS.
-type CustomDomainsEnableCustomHTTPSPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *CustomDomainsEnableCustomHTTPSPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l CustomDomainsEnableCustomHTTPSPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CustomDomainsEnableCustomHTTPSResponse, error) {
-	respType := CustomDomainsEnableCustomHTTPSResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.CustomDomain)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a CustomDomainsEnableCustomHTTPSPollerResponse from the provided client and resume token.
-func (l *CustomDomainsEnableCustomHTTPSPollerResponse) Resume(ctx context.Context, client *CustomDomainsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("CustomDomainsClient.EnableCustomHTTPS", token, client.pl, client.enableCustomHTTPSHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &CustomDomainsEnableCustomHTTPSPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
 }
 
 // CustomDomainsEnableCustomHTTPSResponse contains the response from method CustomDomains.EnableCustomHTTPS.
@@ -2529,46 +2443,6 @@ type RoutesUpdateResult struct {
 	Route
 }
 
-// RuleSetsCreatePollerResponse contains the response from method RuleSets.Create.
-type RuleSetsCreatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *RuleSetsCreatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l RuleSetsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (RuleSetsCreateResponse, error) {
-	respType := RuleSetsCreateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.RuleSet)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a RuleSetsCreatePollerResponse from the provided client and resume token.
-func (l *RuleSetsCreatePollerResponse) Resume(ctx context.Context, client *RuleSetsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("RuleSetsClient.Create", token, client.pl, client.createHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &RuleSetsCreatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
 // RuleSetsCreateResponse contains the response from method RuleSets.Create.
 type RuleSetsCreateResponse struct {
 	RuleSetsCreateResult
@@ -2957,58 +2831,6 @@ type SecretsListByProfileResponse struct {
 // SecretsListByProfileResult contains the result from method Secrets.ListByProfile.
 type SecretsListByProfileResult struct {
 	SecretListResult
-}
-
-// SecretsUpdatePollerResponse contains the response from method Secrets.Update.
-type SecretsUpdatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *SecretsUpdatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l SecretsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SecretsUpdateResponse, error) {
-	respType := SecretsUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Secret)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a SecretsUpdatePollerResponse from the provided client and resume token.
-func (l *SecretsUpdatePollerResponse) Resume(ctx context.Context, client *SecretsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SecretsClient.Update", token, client.pl, client.updateHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &SecretsUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// SecretsUpdateResponse contains the response from method Secrets.Update.
-type SecretsUpdateResponse struct {
-	SecretsUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SecretsUpdateResult contains the result from method Secrets.Update.
-type SecretsUpdateResult struct {
-	Secret
 }
 
 // SecurityPoliciesCreatePollerResponse contains the response from method SecurityPolicies.Create.

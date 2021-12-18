@@ -44,7 +44,7 @@ func NewAFDProfilesClient(subscriptionID string, credential azcore.TokenCredenti
 
 // CheckHostNameAvailability - Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.
 // If the operation fails it returns the *AfdErrorResponse error type.
-func (client *AFDProfilesClient) CheckHostNameAvailability(ctx context.Context, resourceGroupName string, profileName string, checkHostNameAvailabilityInput ValidateCustomDomainInput, options *AFDProfilesCheckHostNameAvailabilityOptions) (AFDProfilesCheckHostNameAvailabilityResponse, error) {
+func (client *AFDProfilesClient) CheckHostNameAvailability(ctx context.Context, resourceGroupName string, profileName string, checkHostNameAvailabilityInput CheckHostNameAvailabilityInput, options *AFDProfilesCheckHostNameAvailabilityOptions) (AFDProfilesCheckHostNameAvailabilityResponse, error) {
 	req, err := client.checkHostNameAvailabilityCreateRequest(ctx, resourceGroupName, profileName, checkHostNameAvailabilityInput, options)
 	if err != nil {
 		return AFDProfilesCheckHostNameAvailabilityResponse{}, err
@@ -60,7 +60,7 @@ func (client *AFDProfilesClient) CheckHostNameAvailability(ctx context.Context, 
 }
 
 // checkHostNameAvailabilityCreateRequest creates the CheckHostNameAvailability request.
-func (client *AFDProfilesClient) checkHostNameAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, profileName string, checkHostNameAvailabilityInput ValidateCustomDomainInput, options *AFDProfilesCheckHostNameAvailabilityOptions) (*policy.Request, error) {
+func (client *AFDProfilesClient) checkHostNameAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, profileName string, checkHostNameAvailabilityInput CheckHostNameAvailabilityInput, options *AFDProfilesCheckHostNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/checkHostNameAvailability"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -79,7 +79,7 @@ func (client *AFDProfilesClient) checkHostNameAvailabilityCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, checkHostNameAvailabilityInput)
@@ -88,7 +88,7 @@ func (client *AFDProfilesClient) checkHostNameAvailabilityCreateRequest(ctx cont
 // checkHostNameAvailabilityHandleResponse handles the CheckHostNameAvailability response.
 func (client *AFDProfilesClient) checkHostNameAvailabilityHandleResponse(resp *http.Response) (AFDProfilesCheckHostNameAvailabilityResponse, error) {
 	result := AFDProfilesCheckHostNameAvailabilityResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ValidateCustomDomainOutput); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityOutput); err != nil {
 		return AFDProfilesCheckHostNameAvailabilityResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
@@ -141,7 +141,7 @@ func (client *AFDProfilesClient) listResourceUsageCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil

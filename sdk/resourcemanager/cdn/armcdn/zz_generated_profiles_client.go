@@ -42,7 +42,8 @@ func NewProfilesClient(subscriptionID string, credential azcore.TokenCredential,
 	return &ProfilesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
-// BeginCreate - Creates a new CDN profile with a profile name under the specified subscription and resource group.
+// BeginCreate - Creates a new Azure Front Door Standard or Azure Front Door Premium or CDN profile with a profile name under the specified subscription
+// and resource group.
 // If the operation fails it returns the *ErrorResponse error type.
 func (client *ProfilesClient) BeginCreate(ctx context.Context, resourceGroupName string, profileName string, profile Profile, options *ProfilesBeginCreateOptions) (ProfilesCreatePollerResponse, error) {
 	resp, err := client.create(ctx, resourceGroupName, profileName, profile, options)
@@ -62,7 +63,8 @@ func (client *ProfilesClient) BeginCreate(ctx context.Context, resourceGroupName
 	return result, nil
 }
 
-// Create - Creates a new CDN profile with a profile name under the specified subscription and resource group.
+// Create - Creates a new Azure Front Door Standard or Azure Front Door Premium or CDN profile with a profile name under the specified subscription and
+// resource group.
 // If the operation fails it returns the *ErrorResponse error type.
 func (client *ProfilesClient) create(ctx context.Context, resourceGroupName string, profileName string, profile Profile, options *ProfilesBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, profileName, profile, options)
@@ -99,7 +101,7 @@ func (client *ProfilesClient) createCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, profile)
@@ -118,7 +120,8 @@ func (client *ProfilesClient) createHandleError(resp *http.Response) error {
 	return runtime.NewResponseError(&errType, resp)
 }
 
-// BeginDelete - Deletes an existing CDN profile with the specified parameters. Deleting a profile will result in the deletion of all of the sub-resources
+// BeginDelete - Deletes an existing Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified parameters. Deleting a profile
+// will result in the deletion of all of the sub-resources
 // including endpoints, origins and custom domains.
 // If the operation fails it returns the *ErrorResponse error type.
 func (client *ProfilesClient) BeginDelete(ctx context.Context, resourceGroupName string, profileName string, options *ProfilesBeginDeleteOptions) (ProfilesDeletePollerResponse, error) {
@@ -139,8 +142,9 @@ func (client *ProfilesClient) BeginDelete(ctx context.Context, resourceGroupName
 	return result, nil
 }
 
-// Delete - Deletes an existing CDN profile with the specified parameters. Deleting a profile will result in the deletion of all of the sub-resources including
-// endpoints, origins and custom domains.
+// Delete - Deletes an existing Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified parameters. Deleting a profile will
+// result in the deletion of all of the sub-resources
+// including endpoints, origins and custom domains.
 // If the operation fails it returns the *ErrorResponse error type.
 func (client *ProfilesClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, options *ProfilesBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, profileName, options)
@@ -151,7 +155,7 @@ func (client *ProfilesClient) deleteOperation(ctx context.Context, resourceGroup
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
 	return resp, nil
@@ -177,7 +181,7 @@ func (client *ProfilesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -236,7 +240,7 @@ func (client *ProfilesClient) generateSsoURICreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -264,7 +268,8 @@ func (client *ProfilesClient) generateSsoURIHandleError(resp *http.Response) err
 	return runtime.NewResponseError(&errType, resp)
 }
 
-// Get - Gets a CDN profile with the specified profile name under the specified subscription and resource group.
+// Get - Gets an Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified profile name under the specified subscription and
+// resource group.
 // If the operation fails it returns the *ErrorResponse error type.
 func (client *ProfilesClient) Get(ctx context.Context, resourceGroupName string, profileName string, options *ProfilesGetOptions) (ProfilesGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, profileName, options)
@@ -301,7 +306,7 @@ func (client *ProfilesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -329,7 +334,7 @@ func (client *ProfilesClient) getHandleError(resp *http.Response) error {
 	return runtime.NewResponseError(&errType, resp)
 }
 
-// List - Lists all of the CDN profiles within an Azure subscription.
+// List - Lists all of the Azure Front Door Standard, Azure Front Door Premium, and CDN profiles within an Azure subscription.
 // If the operation fails it returns the *ErrorResponse error type.
 func (client *ProfilesClient) List(options *ProfilesListOptions) *ProfilesListPager {
 	return &ProfilesListPager{
@@ -355,7 +360,7 @@ func (client *ProfilesClient) listCreateRequest(ctx context.Context, options *Pr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -383,7 +388,7 @@ func (client *ProfilesClient) listHandleError(resp *http.Response) error {
 	return runtime.NewResponseError(&errType, resp)
 }
 
-// ListByResourceGroup - Lists all of the CDN profiles within a resource group.
+// ListByResourceGroup - Lists all of the Azure Front Door Standard, Azure Front Door Premium, and CDN profiles within a resource group.
 // If the operation fails it returns the *ErrorResponse error type.
 func (client *ProfilesClient) ListByResourceGroup(resourceGroupName string, options *ProfilesListByResourceGroupOptions) *ProfilesListByResourceGroupPager {
 	return &ProfilesListByResourceGroupPager{
@@ -413,7 +418,7 @@ func (client *ProfilesClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -441,7 +446,7 @@ func (client *ProfilesClient) listByResourceGroupHandleError(resp *http.Response
 	return runtime.NewResponseError(&errType, resp)
 }
 
-// ListResourceUsage - Checks the quota and actual usage of endpoints under the given CDN profile.
+// ListResourceUsage - Checks the quota and actual usage of endpoints under the given Azure Front Door Standard or Azure Front Door Premium or CDN profile.
 // If the operation fails it returns the *ErrorResponse error type.
 func (client *ProfilesClient) ListResourceUsage(resourceGroupName string, profileName string, options *ProfilesListResourceUsageOptions) *ProfilesListResourceUsagePager {
 	return &ProfilesListResourceUsagePager{
@@ -475,7 +480,7 @@ func (client *ProfilesClient) listResourceUsageCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -541,7 +546,7 @@ func (client *ProfilesClient) listSupportedOptimizationTypesCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -569,7 +574,8 @@ func (client *ProfilesClient) listSupportedOptimizationTypesHandleError(resp *ht
 	return runtime.NewResponseError(&errType, resp)
 }
 
-// BeginUpdate - Updates an existing CDN profile with the specified profile name under the specified subscription and resource group.
+// BeginUpdate - Updates an existing Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified profile name under the specified
+// subscription and resource group.
 // If the operation fails it returns the *ErrorResponse error type.
 func (client *ProfilesClient) BeginUpdate(ctx context.Context, resourceGroupName string, profileName string, profileUpdateParameters ProfileUpdateParameters, options *ProfilesBeginUpdateOptions) (ProfilesUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, profileName, profileUpdateParameters, options)
@@ -589,7 +595,8 @@ func (client *ProfilesClient) BeginUpdate(ctx context.Context, resourceGroupName
 	return result, nil
 }
 
-// Update - Updates an existing CDN profile with the specified profile name under the specified subscription and resource group.
+// Update - Updates an existing Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified profile name under the specified
+// subscription and resource group.
 // If the operation fails it returns the *ErrorResponse error type.
 func (client *ProfilesClient) update(ctx context.Context, resourceGroupName string, profileName string, profileUpdateParameters ProfileUpdateParameters, options *ProfilesBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, profileName, profileUpdateParameters, options)
@@ -626,7 +633,7 @@ func (client *ProfilesClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, profileUpdateParameters)

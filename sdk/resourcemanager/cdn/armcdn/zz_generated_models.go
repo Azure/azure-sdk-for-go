@@ -164,10 +164,16 @@ type AFDDomainUpdatePropertiesParameters struct {
 	// Resource reference to the Azure DNS zone
 	AzureDNSZone *ResourceReference `json:"azureDnsZone,omitempty"`
 
+	// Resource reference to the Azure resource where custom domain ownership was prevalidated
+	PreValidatedCustomDomainResourceID *ResourceReference `json:"preValidatedCustomDomainResourceId,omitempty"`
+
 	// The configuration specifying how to enable HTTPS for the domain - using AzureFrontDoor managed certificate or user's own certificate. If not specified,
 	// enabling ssl uses AzureFrontDoor managed
 	// certificate by default.
 	TLSSettings *AFDDomainHTTPSParameters `json:"tlsSettings,omitempty"`
+
+	// READ-ONLY; The name of the profile which holds the domain.
+	ProfileName *string `json:"profileName,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AFDDomainUpdatePropertiesParameters.
@@ -188,6 +194,8 @@ func (a *AFDDomainUpdatePropertiesParameters) UnmarshalJSON(data []byte) error {
 
 func (a AFDDomainUpdatePropertiesParameters) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "azureDnsZone", a.AzureDNSZone)
+	populate(objectMap, "preValidatedCustomDomainResourceId", a.PreValidatedCustomDomainResourceID)
+	populate(objectMap, "profileName", a.ProfileName)
 	populate(objectMap, "tlsSettings", a.TLSSettings)
 }
 
@@ -197,6 +205,12 @@ func (a *AFDDomainUpdatePropertiesParameters) unmarshalInternal(rawMsg map[strin
 		switch key {
 		case "azureDnsZone":
 			err = unpopulate(val, &a.AzureDNSZone)
+			delete(rawMsg, key)
+		case "preValidatedCustomDomainResourceId":
+			err = unpopulate(val, &a.PreValidatedCustomDomainResourceID)
+			delete(rawMsg, key)
+		case "profileName":
+			err = unpopulate(val, &a.ProfileName)
 			delete(rawMsg, key)
 		case "tlsSettings":
 			err = unpopulate(val, &a.TLSSettings)
@@ -293,6 +307,9 @@ type AFDEndpointPropertiesUpdateParameters struct {
 
 	// Send and receive timeout on forwarding request to the origin. When timeout is reached, the request fails and returns.
 	OriginResponseTimeoutSeconds *int32 `json:"originResponseTimeoutSeconds,omitempty"`
+
+	// READ-ONLY; The name of the profile which holds the endpoint.
+	ProfileName *string `json:"profileName,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AFDEndpointPropertiesUpdateParameters.
@@ -314,6 +331,7 @@ func (a *AFDEndpointPropertiesUpdateParameters) UnmarshalJSON(data []byte) error
 func (a AFDEndpointPropertiesUpdateParameters) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "enabledState", a.EnabledState)
 	populate(objectMap, "originResponseTimeoutSeconds", a.OriginResponseTimeoutSeconds)
+	populate(objectMap, "profileName", a.ProfileName)
 }
 
 func (a *AFDEndpointPropertiesUpdateParameters) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
@@ -325,6 +343,9 @@ func (a *AFDEndpointPropertiesUpdateParameters) unmarshalInternal(rawMsg map[str
 			delete(rawMsg, key)
 		case "originResponseTimeoutSeconds":
 			err = unpopulate(val, &a.OriginResponseTimeoutSeconds)
+			delete(rawMsg, key)
+		case "profileName":
+			err = unpopulate(val, &a.ProfileName)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -477,6 +498,9 @@ type AFDOriginGroupUpdatePropertiesParameters struct {
 	// Time in minutes to shift the traffic to the endpoint gradually when an unhealthy endpoint comes healthy or a new endpoint is added. Default is 10 mins.
 	// This property is currently not supported.
 	TrafficRestorationTimeToHealedOrNewEndpointsInMinutes *int32 `json:"trafficRestorationTimeToHealedOrNewEndpointsInMinutes,omitempty"`
+
+	// READ-ONLY; The name of the profile which holds the origin group.
+	ProfileName *string `json:"profileName,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AFDOriginGroupUpdatePropertiesParameters.
@@ -498,6 +522,7 @@ func (a *AFDOriginGroupUpdatePropertiesParameters) UnmarshalJSON(data []byte) er
 func (a AFDOriginGroupUpdatePropertiesParameters) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "healthProbeSettings", a.HealthProbeSettings)
 	populate(objectMap, "loadBalancingSettings", a.LoadBalancingSettings)
+	populate(objectMap, "profileName", a.ProfileName)
 	populate(objectMap, "responseBasedAfdOriginErrorDetectionSettings", a.ResponseBasedAfdOriginErrorDetectionSettings)
 	populate(objectMap, "sessionAffinityState", a.SessionAffinityState)
 	populate(objectMap, "trafficRestorationTimeToHealedOrNewEndpointsInMinutes", a.TrafficRestorationTimeToHealedOrNewEndpointsInMinutes)
@@ -512,6 +537,9 @@ func (a *AFDOriginGroupUpdatePropertiesParameters) unmarshalInternal(rawMsg map[
 			delete(rawMsg, key)
 		case "loadBalancingSettings":
 			err = unpopulate(val, &a.LoadBalancingSettings)
+			delete(rawMsg, key)
+		case "profileName":
+			err = unpopulate(val, &a.ProfileName)
 			delete(rawMsg, key)
 		case "responseBasedAfdOriginErrorDetectionSettings":
 			err = unpopulate(val, &a.ResponseBasedAfdOriginErrorDetectionSettings)
@@ -605,6 +633,9 @@ type AFDOriginUpdatePropertiesParameters struct {
 	// backend in single enabled backend pool.
 	EnabledState *EnabledState `json:"enabledState,omitempty"`
 
+	// Whether to enable certificate name check at origin level
+	EnforceCertificateNameCheck *bool `json:"enforceCertificateNameCheck,omitempty"`
+
 	// The value of the HTTP port. Must be between 1 and 65535.
 	HTTPPort *int32 `json:"httpPort,omitempty"`
 
@@ -628,6 +659,9 @@ type AFDOriginUpdatePropertiesParameters struct {
 
 	// Weight of the origin in given origin group for load balancing. Must be between 1 and 1000
 	Weight *int32 `json:"weight,omitempty"`
+
+	// READ-ONLY; The name of the origin group which contains this origin.
+	OriginGroupName *string `json:"originGroupName,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AFDOriginUpdatePropertiesParameters.
@@ -649,9 +683,11 @@ func (a *AFDOriginUpdatePropertiesParameters) UnmarshalJSON(data []byte) error {
 func (a AFDOriginUpdatePropertiesParameters) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "azureOrigin", a.AzureOrigin)
 	populate(objectMap, "enabledState", a.EnabledState)
+	populate(objectMap, "enforceCertificateNameCheck", a.EnforceCertificateNameCheck)
 	populate(objectMap, "httpPort", a.HTTPPort)
 	populate(objectMap, "httpsPort", a.HTTPSPort)
 	populate(objectMap, "hostName", a.HostName)
+	populate(objectMap, "originGroupName", a.OriginGroupName)
 	populate(objectMap, "originHostHeader", a.OriginHostHeader)
 	populate(objectMap, "priority", a.Priority)
 	populate(objectMap, "sharedPrivateLinkResource", a.SharedPrivateLinkResource)
@@ -668,6 +704,9 @@ func (a *AFDOriginUpdatePropertiesParameters) unmarshalInternal(rawMsg map[strin
 		case "enabledState":
 			err = unpopulate(val, &a.EnabledState)
 			delete(rawMsg, key)
+		case "enforceCertificateNameCheck":
+			err = unpopulate(val, &a.EnforceCertificateNameCheck)
+			delete(rawMsg, key)
 		case "httpPort":
 			err = unpopulate(val, &a.HTTPPort)
 			delete(rawMsg, key)
@@ -676,6 +715,9 @@ func (a *AFDOriginUpdatePropertiesParameters) unmarshalInternal(rawMsg map[strin
 			delete(rawMsg, key)
 		case "hostName":
 			err = unpopulate(val, &a.HostName)
+			delete(rawMsg, key)
+		case "originGroupName":
+			err = unpopulate(val, &a.OriginGroupName)
 			delete(rawMsg, key)
 		case "originHostHeader":
 			err = unpopulate(val, &a.OriginHostHeader)
@@ -780,13 +822,22 @@ func (a *AFDStateProperties) unmarshalInternal(rawMsg map[string]json.RawMessage
 	return nil
 }
 
+// ActivatedResourceReference - Reference to another resource along with its state.
+type ActivatedResourceReference struct {
+	// Resource ID.
+	ID *string `json:"id,omitempty"`
+
+	// READ-ONLY; Whether the resource is active or inactive
+	IsActive *bool `json:"isActive,omitempty" azure:"ro"`
+}
+
 // AfdErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData
 // error response format.).
 // Implements the error and azcore.HTTPResponse interfaces.
 type AfdErrorResponse struct {
 	raw string
 	// The error object.
-	InnerError *ErrorResponse `json:"error,omitempty"`
+	InnerError *ErrorDetail `json:"error,omitempty"`
 }
 
 // Error implements the error interface for type AfdErrorResponse.
@@ -812,6 +863,59 @@ func (a AfdPurgeParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// AfdRouteCacheConfiguration - Caching settings for a caching-type route. To disable caching, do not provide a cacheConfiguration object.
+type AfdRouteCacheConfiguration struct {
+	// compression settings.
+	CompressionSettings map[string]interface{} `json:"compressionSettings,omitempty"`
+
+	// query parameters to include or exclude (comma separated).
+	QueryParameters *string `json:"queryParameters,omitempty"`
+
+	// Defines how Frontdoor caches requests that include query strings. You can ignore any query strings when caching, ignore specific query strings, cache
+	// every request with a unique URL, or cache specific
+	// query strings.
+	QueryStringCachingBehavior *AfdQueryStringCachingBehavior `json:"queryStringCachingBehavior,omitempty"`
+}
+
+// AzureFirstPartyManagedCertificate - Azure FirstParty Managed Certificate provided by other first party resource providers to enable HTTPS.
+type AzureFirstPartyManagedCertificate struct {
+	Certificate
+}
+
+// AzureFirstPartyManagedCertificateParameters - Azure FirstParty Managed Certificate provided by other first party resource providers to enable HTTPS.
+type AzureFirstPartyManagedCertificateParameters struct {
+	SecretParameters
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AzureFirstPartyManagedCertificateParameters.
+func (a AzureFirstPartyManagedCertificateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	a.SecretParameters.marshalInternal(objectMap, SecretTypeAzureFirstPartyManagedCertificate)
+	return json.Marshal(objectMap)
+}
+
+// CacheConfiguration - Caching settings for a caching-type route. To disable caching, do not provide a cacheConfiguration object.
+type CacheConfiguration struct {
+	// Caching behavior for the requests
+	CacheBehavior *RuleCacheBehavior `json:"cacheBehavior,omitempty"`
+
+	// The duration for which the content needs to be cached. Allowed format is [d.]hh:mm:ss
+	CacheDuration *string `json:"cacheDuration,omitempty"`
+
+	// Indicates whether content compression is enabled. If compression is enabled, content will be served as compressed if user requests for a compressed version.
+	// Content won't be compressed on
+	// AzureFrontDoor when requested content is smaller than 1 byte or larger than 1 MB.
+	IsCompressionEnabled *RuleIsCompressionEnabled `json:"isCompressionEnabled,omitempty"`
+
+	// query parameters to include or exclude (comma separated).
+	QueryParameters *string `json:"queryParameters,omitempty"`
+
+	// Defines how Frontdoor caches requests that include query strings. You can ignore any query strings when caching, ignore specific query strings, cache
+	// every request with a unique URL, or cache specific
+	// query strings.
+	QueryStringCachingBehavior *RuleQueryStringCachingBehavior `json:"queryStringCachingBehavior,omitempty"`
+}
+
 // CacheExpirationActionParameters - Defines the parameters for the cache expiration action.
 type CacheExpirationActionParameters struct {
 	// REQUIRED; Caching behavior for the requests
@@ -821,7 +925,7 @@ type CacheExpirationActionParameters struct {
 	CacheType *CacheType `json:"cacheType,omitempty"`
 
 	// REQUIRED
-	ODataType *CacheExpirationActionParametersODataType `json:"@odata.type,omitempty"`
+	TypeName *CacheExpirationActionParametersTypeName `json:"typeName,omitempty"`
 
 	// The duration for which the content needs to be cached. Allowed format is [d.]hh:mm:ss
 	CacheDuration *string `json:"cacheDuration,omitempty"`
@@ -829,11 +933,11 @@ type CacheExpirationActionParameters struct {
 
 // CacheKeyQueryStringActionParameters - Defines the parameters for the cache-key query string action.
 type CacheKeyQueryStringActionParameters struct {
-	// REQUIRED
-	ODataType *CacheKeyQueryStringActionParametersODataType `json:"@odata.type,omitempty"`
-
 	// REQUIRED; Caching behavior for the requests
 	QueryStringBehavior *QueryStringBehavior `json:"queryStringBehavior,omitempty"`
+
+	// REQUIRED
+	TypeName *CacheKeyQueryStringActionParametersTypeName `json:"typeName,omitempty"`
 
 	// query parameters to include or exclude (comma separated).
 	QueryParameters *string `json:"queryParameters,omitempty"`
@@ -845,7 +949,7 @@ type CdnCertificateSourceParameters struct {
 	CertificateType *CertificateType `json:"certificateType,omitempty"`
 
 	// REQUIRED
-	ODataType *CdnCertificateSourceParametersODataType `json:"@odata.type,omitempty"`
+	TypeName *CdnCertificateSourceParametersTypeName `json:"typeName,omitempty"`
 }
 
 // CdnEndpoint - Defines the ARM Resource ID for the linked endpoints
@@ -1001,14 +1105,14 @@ func (c CdnWebApplicationFirewallPolicyProperties) MarshalJSON() ([]byte, error)
 
 // Certificate used for https
 type Certificate struct {
-	// Certificate expiration date.
-	ExpirationDate *string `json:"expirationDate,omitempty"`
+	// The type of the secret resource.
+	Type *SecretType `json:"type,omitempty"`
 
-	// Subject name in the certificate.
-	Subject *string `json:"subject,omitempty"`
+	// READ-ONLY; Certificate expiration date.
+	ExpirationDate *string `json:"expirationDate,omitempty" azure:"ro"`
 
-	// Certificate thumbprint.
-	Thumbprint *string `json:"thumbprint,omitempty"`
+	// READ-ONLY; Subject name in the certificate.
+	Subject *string `json:"subject,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Certificate.
@@ -1021,7 +1125,13 @@ func (c Certificate) MarshalJSON() ([]byte, error) {
 func (c Certificate) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "expirationDate", c.ExpirationDate)
 	populate(objectMap, "subject", c.Subject)
-	populate(objectMap, "thumbprint", c.Thumbprint)
+	populate(objectMap, "type", c.Type)
+}
+
+// CheckHostNameAvailabilityInput - Input of CheckHostNameAvailability API.
+type CheckHostNameAvailabilityInput struct {
+	// REQUIRED; The host name to validate.
+	HostName *string `json:"hostName,omitempty"`
 }
 
 // CheckNameAvailabilityInput - Input of CheckNameAvailability API.
@@ -1052,6 +1162,31 @@ type CidrIPAddress struct {
 
 	// The length of the prefix of the ip address.
 	PrefixLength *int32 `json:"prefixLength,omitempty"`
+}
+
+// ClientPortMatchConditionParameters - Defines the parameters for ClientPort match conditions
+type ClientPortMatchConditionParameters struct {
+	// REQUIRED; Describes operator to be matched
+	Operator *ClientPortOperator `json:"operator,omitempty"`
+
+	// REQUIRED
+	TypeName *ClientPortMatchConditionParametersTypeName `json:"typeName,omitempty"`
+
+	// The match value for the condition of the delivery rule
+	MatchValues []*string `json:"matchValues,omitempty"`
+
+	// Describes if this is negate condition or not
+	NegateCondition *bool `json:"negateCondition,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ClientPortMatchConditionParameters.
+func (c ClientPortMatchConditionParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "matchValues", c.MatchValues)
+	populate(objectMap, "negateCondition", c.NegateCondition)
+	populate(objectMap, "operator", c.Operator)
+	populate(objectMap, "typeName", c.TypeName)
+	return json.Marshal(objectMap)
 }
 
 type Components18OrqelSchemasWafmetricsresponsePropertiesSeriesItemsPropertiesDataItems struct {
@@ -1176,11 +1311,11 @@ type ContinentsResponseCountryOrRegionsItem struct {
 
 // CookiesMatchConditionParameters - Defines the parameters for Cookies match conditions
 type CookiesMatchConditionParameters struct {
-	// REQUIRED
-	ODataType *CookiesMatchConditionParametersODataType `json:"@odata.type,omitempty"`
-
 	// REQUIRED; Describes operator to be matched
 	Operator *CookiesOperator `json:"operator,omitempty"`
+
+	// REQUIRED
+	TypeName *CookiesMatchConditionParametersTypeName `json:"typeName,omitempty"`
 
 	// The match value for the condition of the delivery rule
 	MatchValues []*string `json:"matchValues,omitempty"`
@@ -1200,10 +1335,10 @@ func (c CookiesMatchConditionParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "matchValues", c.MatchValues)
 	populate(objectMap, "negateCondition", c.NegateCondition)
-	populate(objectMap, "@odata.type", c.ODataType)
 	populate(objectMap, "operator", c.Operator)
 	populate(objectMap, "selector", c.Selector)
 	populate(objectMap, "transforms", c.Transforms)
+	populate(objectMap, "typeName", c.TypeName)
 	return json.Marshal(objectMap)
 }
 
@@ -1401,13 +1536,13 @@ type CustomDomainsBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CustomDomainsBeginDisableCustomHTTPSOptions contains the optional parameters for the CustomDomains.BeginDisableCustomHTTPS method.
-type CustomDomainsBeginDisableCustomHTTPSOptions struct {
+// CustomDomainsDisableCustomHTTPSOptions contains the optional parameters for the CustomDomains.DisableCustomHTTPS method.
+type CustomDomainsDisableCustomHTTPSOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CustomDomainsBeginEnableCustomHTTPSOptions contains the optional parameters for the CustomDomains.BeginEnableCustomHTTPS method.
-type CustomDomainsBeginEnableCustomHTTPSOptions struct {
+// CustomDomainsEnableCustomHTTPSOptions contains the optional parameters for the CustomDomains.EnableCustomHTTPS method.
+type CustomDomainsEnableCustomHTTPSOptions struct {
 	// The configuration specifying how to enable HTTPS for the custom domain - using CDN managed certificate or user's own certificate. If not specified, enabling
 	// ssl uses CDN managed certificate by default.
 	CustomDomainHTTPSParameters CustomDomainHTTPSParametersClassification
@@ -1472,11 +1607,12 @@ func (c CustomRuleList) MarshalJSON() ([]byte, error) {
 // CustomerCertificate - Customer Certificate used for https
 type CustomerCertificate struct {
 	Certificate
-	// REQUIRED; Complete Url to the certificate
-	CertificateURL *string `json:"certificateUrl,omitempty"`
+	// Resource reference to the Azure Key Vault certificate. Expected to be in format of
+	// /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{certificateName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
+	SecretSource *ResourceReference `json:"secretSource,omitempty"`
 
-	// Certificate issuing authority.
-	CertificateAuthority *string `json:"certificateAuthority,omitempty"`
+	// Certificate version.
+	SecretVersion *string `json:"secretVersion,omitempty"`
 
 	// The list of SANs.
 	SubjectAlternativeNames []*string `json:"subjectAlternativeNames,omitempty"`
@@ -1484,8 +1620,11 @@ type CustomerCertificate struct {
 	// Whether to use the latest version for the certificate
 	UseLatestVersion *bool `json:"useLatestVersion,omitempty"`
 
-	// Certificate version.
-	Version *string `json:"version,omitempty"`
+	// READ-ONLY; Certificate issuing authority.
+	CertificateAuthority *string `json:"certificateAuthority,omitempty" azure:"ro"`
+
+	// READ-ONLY; Certificate thumbprint.
+	Thumbprint *string `json:"thumbprint,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type CustomerCertificate.
@@ -1493,21 +1632,20 @@ func (c CustomerCertificate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	c.Certificate.marshalInternal(objectMap)
 	populate(objectMap, "certificateAuthority", c.CertificateAuthority)
-	populate(objectMap, "certificateUrl", c.CertificateURL)
+	populate(objectMap, "secretSource", c.SecretSource)
+	populate(objectMap, "secretVersion", c.SecretVersion)
 	populate(objectMap, "subjectAlternativeNames", c.SubjectAlternativeNames)
+	populate(objectMap, "thumbprint", c.Thumbprint)
 	populate(objectMap, "useLatestVersion", c.UseLatestVersion)
-	populate(objectMap, "version", c.Version)
 	return json.Marshal(objectMap)
 }
 
 // CustomerCertificateParameters - Customer Certificate used for https
 type CustomerCertificateParameters struct {
 	SecretParameters
-	// REQUIRED; Resource reference to the KV secret
+	// REQUIRED; Resource reference to the Azure Key Vault certificate. Expected to be in format of
+	// /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{certificateName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
 	SecretSource *ResourceReference `json:"secretSource,omitempty"`
-
-	// Certificate issuing authority.
-	CertificateAuthority *string `json:"certificateAuthority,omitempty"`
 
 	// Version of the secret to be used
 	SecretVersion *string `json:"secretVersion,omitempty"`
@@ -1517,6 +1655,18 @@ type CustomerCertificateParameters struct {
 
 	// Whether to use the latest version for the certificate
 	UseLatestVersion *bool `json:"useLatestVersion,omitempty"`
+
+	// READ-ONLY; Certificate issuing authority.
+	CertificateAuthority *string `json:"certificateAuthority,omitempty" azure:"ro"`
+
+	// READ-ONLY; Certificate expiration date.
+	ExpirationDate *string `json:"expirationDate,omitempty" azure:"ro"`
+
+	// READ-ONLY; Subject name in the certificate.
+	Subject *string `json:"subject,omitempty" azure:"ro"`
+
+	// READ-ONLY; Certificate thumbprint.
+	Thumbprint *string `json:"thumbprint,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type CustomerCertificateParameters.
@@ -1524,9 +1674,12 @@ func (c CustomerCertificateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	c.SecretParameters.marshalInternal(objectMap, SecretTypeCustomerCertificate)
 	populate(objectMap, "certificateAuthority", c.CertificateAuthority)
+	populate(objectMap, "expirationDate", c.ExpirationDate)
 	populate(objectMap, "secretSource", c.SecretSource)
 	populate(objectMap, "secretVersion", c.SecretVersion)
+	populate(objectMap, "subject", c.Subject)
 	populate(objectMap, "subjectAlternativeNames", c.SubjectAlternativeNames)
+	populate(objectMap, "thumbprint", c.Thumbprint)
 	populate(objectMap, "useLatestVersion", c.UseLatestVersion)
 	return json.Marshal(objectMap)
 }
@@ -1543,14 +1696,23 @@ func (c *CustomerCertificateParameters) UnmarshalJSON(data []byte) error {
 		case "certificateAuthority":
 			err = unpopulate(val, &c.CertificateAuthority)
 			delete(rawMsg, key)
+		case "expirationDate":
+			err = unpopulate(val, &c.ExpirationDate)
+			delete(rawMsg, key)
 		case "secretSource":
 			err = unpopulate(val, &c.SecretSource)
 			delete(rawMsg, key)
 		case "secretVersion":
 			err = unpopulate(val, &c.SecretVersion)
 			delete(rawMsg, key)
+		case "subject":
+			err = unpopulate(val, &c.Subject)
+			delete(rawMsg, key)
 		case "subjectAlternativeNames":
 			err = unpopulate(val, &c.SubjectAlternativeNames)
+			delete(rawMsg, key)
+		case "thumbprint":
+			err = unpopulate(val, &c.Thumbprint)
 			delete(rawMsg, key)
 		case "useLatestVersion":
 			err = unpopulate(val, &c.UseLatestVersion)
@@ -1648,6 +1810,9 @@ type DeepCreatedOriginProperties struct {
 
 	// Weight of the origin in given origin group for load balancing. Must be between 1 and 1000
 	Weight *int32 `json:"weight,omitempty"`
+
+	// READ-ONLY; The approval status for the connection to the Private Link
+	PrivateEndpointStatus *PrivateEndpointStatus `json:"privateEndpointStatus,omitempty" azure:"ro"`
 }
 
 // DeliveryRule - A rule that specifies a set of actions and conditions
@@ -1710,7 +1875,8 @@ func (d *DeliveryRule) UnmarshalJSON(data []byte) error {
 // Call the interface's GetDeliveryRuleActionAutoGenerated() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
 // - *DeliveryRuleActionAutoGenerated, *DeliveryRuleCacheExpirationAction, *DeliveryRuleCacheKeyQueryStringAction, *DeliveryRuleRequestHeaderAction,
-// - *DeliveryRuleResponseHeaderAction, *OriginGroupOverrideAction, *UrlRedirectAction, *UrlRewriteAction, *UrlSigningAction
+// - *DeliveryRuleResponseHeaderAction, *DeliveryRuleRouteConfigurationOverrideAction, *OriginGroupOverrideAction, *UrlRedirectAction,
+// - *UrlRewriteAction, *UrlSigningAction
 type DeliveryRuleActionAutoGeneratedClassification interface {
 	// GetDeliveryRuleActionAutoGenerated returns the DeliveryRuleActionAutoGenerated content of the underlying type.
 	GetDeliveryRuleActionAutoGenerated() *DeliveryRuleActionAutoGenerated
@@ -1832,13 +1998,52 @@ func (d *DeliveryRuleCacheKeyQueryStringAction) UnmarshalJSON(data []byte) error
 	return nil
 }
 
+// DeliveryRuleClientPortCondition - Defines the ClientPort condition for the delivery rule.
+type DeliveryRuleClientPortCondition struct {
+	DeliveryRuleCondition
+	// REQUIRED; Defines the parameters for the condition.
+	Parameters *ClientPortMatchConditionParameters `json:"parameters,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type DeliveryRuleClientPortCondition.
+func (d DeliveryRuleClientPortCondition) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	d.DeliveryRuleCondition.marshalInternal(objectMap, MatchVariableClientPort)
+	populate(objectMap, "parameters", d.Parameters)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type DeliveryRuleClientPortCondition.
+func (d *DeliveryRuleClientPortCondition) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "parameters":
+			err = unpopulate(val, &d.Parameters)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	if err := d.DeliveryRuleCondition.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
+}
+
 // DeliveryRuleConditionClassification provides polymorphic access to related types.
 // Call the interface's GetDeliveryRuleCondition() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *DeliveryRuleCondition, *DeliveryRuleCookiesCondition, *DeliveryRuleHttpVersionCondition, *DeliveryRuleIsDeviceCondition,
-// - *DeliveryRulePostArgsCondition, *DeliveryRuleQueryStringCondition, *DeliveryRuleRemoteAddressCondition, *DeliveryRuleRequestBodyCondition,
-// - *DeliveryRuleRequestHeaderCondition, *DeliveryRuleRequestMethodCondition, *DeliveryRuleRequestSchemeCondition, *DeliveryRuleRequestUriCondition,
-// - *DeliveryRuleUrlFileExtensionCondition, *DeliveryRuleUrlFileNameCondition, *DeliveryRuleUrlPathCondition
+// - *DeliveryRuleClientPortCondition, *DeliveryRuleCondition, *DeliveryRuleCookiesCondition, *DeliveryRuleHostNameCondition,
+// - *DeliveryRuleHttpVersionCondition, *DeliveryRuleIsDeviceCondition, *DeliveryRulePostArgsCondition, *DeliveryRuleQueryStringCondition,
+// - *DeliveryRuleRemoteAddressCondition, *DeliveryRuleRequestBodyCondition, *DeliveryRuleRequestHeaderCondition, *DeliveryRuleRequestMethodCondition,
+// - *DeliveryRuleRequestSchemeCondition, *DeliveryRuleRequestUriCondition, *DeliveryRuleServerPortCondition, *DeliveryRuleSocketAddrCondition,
+// - *DeliveryRuleSslProtocolCondition, *DeliveryRuleUrlFileExtensionCondition, *DeliveryRuleUrlFileNameCondition, *DeliveryRuleUrlPathCondition
 type DeliveryRuleConditionClassification interface {
 	// GetDeliveryRuleCondition returns the DeliveryRuleCondition content of the underlying type.
 	GetDeliveryRuleCondition() *DeliveryRuleCondition
@@ -1937,6 +2142,44 @@ func (d DeliveryRuleHTTPVersionCondition) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type DeliveryRuleHTTPVersionCondition.
 func (d *DeliveryRuleHTTPVersionCondition) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "parameters":
+			err = unpopulate(val, &d.Parameters)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	if err := d.DeliveryRuleCondition.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeliveryRuleHostNameCondition - Defines the HostName condition for the delivery rule.
+type DeliveryRuleHostNameCondition struct {
+	DeliveryRuleCondition
+	// REQUIRED; Defines the parameters for the condition.
+	Parameters *HostNameMatchConditionParameters `json:"parameters,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type DeliveryRuleHostNameCondition.
+func (d DeliveryRuleHostNameCondition) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	d.DeliveryRuleCondition.marshalInternal(objectMap, MatchVariableHostName)
+	populate(objectMap, "parameters", d.Parameters)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type DeliveryRuleHostNameCondition.
+func (d *DeliveryRuleHostNameCondition) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
@@ -2376,6 +2619,159 @@ func (d *DeliveryRuleResponseHeaderAction) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// DeliveryRuleRouteConfigurationOverrideAction - Defines the route configuration override action for the delivery rule. Only applicable to Frontdoor Standard/Premium
+// Profiles.
+type DeliveryRuleRouteConfigurationOverrideAction struct {
+	DeliveryRuleActionAutoGenerated
+	// REQUIRED; Defines the parameters for the action.
+	Parameters *RouteConfigurationOverrideActionParameters `json:"parameters,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type DeliveryRuleRouteConfigurationOverrideAction.
+func (d DeliveryRuleRouteConfigurationOverrideAction) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	d.DeliveryRuleActionAutoGenerated.marshalInternal(objectMap, DeliveryRuleActionRouteConfigurationOverride)
+	populate(objectMap, "parameters", d.Parameters)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type DeliveryRuleRouteConfigurationOverrideAction.
+func (d *DeliveryRuleRouteConfigurationOverrideAction) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "parameters":
+			err = unpopulate(val, &d.Parameters)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	if err := d.DeliveryRuleActionAutoGenerated.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeliveryRuleSSLProtocolCondition - Defines the SslProtocol condition for the delivery rule.
+type DeliveryRuleSSLProtocolCondition struct {
+	DeliveryRuleCondition
+	// REQUIRED; Defines the parameters for the condition.
+	Parameters *SSLProtocolMatchConditionParameters `json:"parameters,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type DeliveryRuleSSLProtocolCondition.
+func (d DeliveryRuleSSLProtocolCondition) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	d.DeliveryRuleCondition.marshalInternal(objectMap, MatchVariableSSLProtocol)
+	populate(objectMap, "parameters", d.Parameters)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type DeliveryRuleSSLProtocolCondition.
+func (d *DeliveryRuleSSLProtocolCondition) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "parameters":
+			err = unpopulate(val, &d.Parameters)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	if err := d.DeliveryRuleCondition.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeliveryRuleServerPortCondition - Defines the ServerPort condition for the delivery rule.
+type DeliveryRuleServerPortCondition struct {
+	DeliveryRuleCondition
+	// REQUIRED; Defines the parameters for the condition.
+	Parameters *ServerPortMatchConditionParameters `json:"parameters,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type DeliveryRuleServerPortCondition.
+func (d DeliveryRuleServerPortCondition) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	d.DeliveryRuleCondition.marshalInternal(objectMap, MatchVariableServerPort)
+	populate(objectMap, "parameters", d.Parameters)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type DeliveryRuleServerPortCondition.
+func (d *DeliveryRuleServerPortCondition) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "parameters":
+			err = unpopulate(val, &d.Parameters)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	if err := d.DeliveryRuleCondition.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeliveryRuleSocketAddrCondition - Defines the SocketAddress condition for the delivery rule.
+type DeliveryRuleSocketAddrCondition struct {
+	DeliveryRuleCondition
+	// REQUIRED; Defines the parameters for the condition.
+	Parameters *SocketAddrMatchConditionParameters `json:"parameters,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type DeliveryRuleSocketAddrCondition.
+func (d DeliveryRuleSocketAddrCondition) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	d.DeliveryRuleCondition.marshalInternal(objectMap, MatchVariableSocketAddr)
+	populate(objectMap, "parameters", d.Parameters)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type DeliveryRuleSocketAddrCondition.
+func (d *DeliveryRuleSocketAddrCondition) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "parameters":
+			err = unpopulate(val, &d.Parameters)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	if err := d.DeliveryRuleCondition.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
+}
+
 // DeliveryRuleURLFileExtensionCondition - Defines the UrlFileExtension condition for the delivery rule.
 type DeliveryRuleURLFileExtensionCondition struct {
 	DeliveryRuleCondition
@@ -2490,6 +2886,18 @@ func (d *DeliveryRuleURLPathCondition) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// DimensionProperties - Type of operation: get, read, delete, etc.
+type DimensionProperties struct {
+	// Display name of dimension.
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Internal name of dimension.
+	InternalName *string `json:"internalName,omitempty"`
+
+	// Name of dimension.
+	Name *string `json:"name,omitempty"`
+}
+
 // DomainValidationProperties - The JSON object that contains the properties to validate a domain.
 type DomainValidationProperties struct {
 	// READ-ONLY; The date time that the token expires
@@ -2592,6 +3000,9 @@ type EndpointProperties struct {
 	// The origin groups comprising of origins that are used for load balancing the traffic based on availability.
 	OriginGroups []*DeepCreatedOriginGroup `json:"originGroups,omitempty"`
 
+	// READ-ONLY; The custom domains under the endpoint.
+	CustomDomains []*CustomDomain `json:"customDomains,omitempty" azure:"ro"`
+
 	// READ-ONLY; The host name of the endpoint structured as {endpointName}.{DNSZone}, e.g. contoso.azureedge.net
 	HostName *string `json:"hostName,omitempty" azure:"ro"`
 
@@ -2606,6 +3017,7 @@ type EndpointProperties struct {
 func (e EndpointProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	e.EndpointPropertiesUpdateParameters.marshalInternal(objectMap)
+	populate(objectMap, "customDomains", e.CustomDomains)
 	populate(objectMap, "hostName", e.HostName)
 	populate(objectMap, "originGroups", e.OriginGroups)
 	populate(objectMap, "origins", e.Origins)
@@ -2790,15 +3202,51 @@ type EndpointsValidateCustomDomainOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ErrorResponse - Error response indicates CDN service is not able to process the incoming request. The reason is provided in the error message.
+// ErrorAdditionalInfo - The resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// READ-ONLY; The additional info.
+	Info map[string]interface{} `json:"info,omitempty" azure:"ro"`
+
+	// READ-ONLY; The additional info type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error code.
+	Code *string `json:"code,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error message.
+	Message *string `json:"message,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error target.
+	Target *string `json:"target,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ErrorDetail.
+func (e ErrorDetail) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "additionalInfo", e.AdditionalInfo)
+	populate(objectMap, "code", e.Code)
+	populate(objectMap, "details", e.Details)
+	populate(objectMap, "message", e.Message)
+	populate(objectMap, "target", e.Target)
+	return json.Marshal(objectMap)
+}
+
+// ErrorResponse - Error response indicates Azure Front Door Standard or Azure Front Door Premium or CDN service is not able to process the incoming request.
+// The reason is provided in the error message.
 // Implements the error and azcore.HTTPResponse interfaces.
 type ErrorResponse struct {
 	raw string
-	// READ-ONLY; Error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
-
-	// READ-ONLY; Error message indicating why the operation failed.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	// The error object.
+	InnerError *ErrorDetail `json:"error,omitempty"`
 }
 
 // Error implements the error interface for type ErrorResponse.
@@ -2812,7 +3260,7 @@ type GeoFilter struct {
 	// REQUIRED; Action of the geo filter, i.e. allow or block access.
 	Action *GeoFilterActions `json:"action,omitempty"`
 
-	// REQUIRED; Two letter country codes defining user country access in a geo filter, e.g. AU, MX, US.
+	// REQUIRED; Two letter country or region codes defining user country or region access in a geo filter, e.g. AU, MX, US.
 	CountryCodes []*string `json:"countryCodes,omitempty"`
 
 	// REQUIRED; Relative path applicable to geo filter. (e.g. '/mypictures', '/mypicture/kitty.jpg', and etc.)
@@ -2839,17 +3287,20 @@ type HTTPErrorRangeParameters struct {
 
 // HTTPVersionMatchConditionParameters - Defines the parameters for HttpVersion match conditions
 type HTTPVersionMatchConditionParameters struct {
-	// REQUIRED
-	ODataType *HTTPVersionMatchConditionParametersODataType `json:"@odata.type,omitempty"`
-
 	// REQUIRED; Describes operator to be matched
 	Operator *HTTPVersionOperator `json:"operator,omitempty"`
+
+	// REQUIRED
+	TypeName *HTTPVersionMatchConditionParametersTypeName `json:"typeName,omitempty"`
 
 	// The match value for the condition of the delivery rule
 	MatchValues []*string `json:"matchValues,omitempty"`
 
 	// Describes if this is negate condition or not
 	NegateCondition *bool `json:"negateCondition,omitempty"`
+
+	// List of transforms
+	Transforms []*Transform `json:"transforms,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type HTTPVersionMatchConditionParameters.
@@ -2857,8 +3308,9 @@ func (h HTTPVersionMatchConditionParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "matchValues", h.MatchValues)
 	populate(objectMap, "negateCondition", h.NegateCondition)
-	populate(objectMap, "@odata.type", h.ODataType)
 	populate(objectMap, "operator", h.Operator)
+	populate(objectMap, "transforms", h.Transforms)
+	populate(objectMap, "typeName", h.TypeName)
 	return json.Marshal(objectMap)
 }
 
@@ -2871,7 +3323,7 @@ type HeaderActionParameters struct {
 	HeaderName *string `json:"headerName,omitempty"`
 
 	// REQUIRED
-	ODataType *HeaderActionParametersODataType `json:"@odata.type,omitempty"`
+	TypeName *HeaderActionParametersTypeName `json:"typeName,omitempty"`
 
 	// Value for the specified action
 	Value *string `json:"value,omitempty"`
@@ -2890,6 +3342,35 @@ type HealthProbeParameters struct {
 
 	// The type of health probe request that is made.
 	ProbeRequestType *HealthProbeRequestType `json:"probeRequestType,omitempty"`
+}
+
+// HostNameMatchConditionParameters - Defines the parameters for HostName match conditions
+type HostNameMatchConditionParameters struct {
+	// REQUIRED; Describes operator to be matched
+	Operator *HostNameOperator `json:"operator,omitempty"`
+
+	// REQUIRED
+	TypeName *HostNameMatchConditionParametersTypeName `json:"typeName,omitempty"`
+
+	// The match value for the condition of the delivery rule
+	MatchValues []*string `json:"matchValues,omitempty"`
+
+	// Describes if this is negate condition or not
+	NegateCondition *bool `json:"negateCondition,omitempty"`
+
+	// List of transforms
+	Transforms []*Transform `json:"transforms,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type HostNameMatchConditionParameters.
+func (h HostNameMatchConditionParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "matchValues", h.MatchValues)
+	populate(objectMap, "negateCondition", h.NegateCondition)
+	populate(objectMap, "operator", h.Operator)
+	populate(objectMap, "transforms", h.Transforms)
+	populate(objectMap, "typeName", h.TypeName)
+	return json.Marshal(objectMap)
 }
 
 // IPAddressGroup - CDN Ip address group
@@ -2915,20 +3396,17 @@ func (i IPAddressGroup) MarshalJSON() ([]byte, error) {
 
 // IsDeviceMatchConditionParameters - Defines the parameters for IsDevice match conditions
 type IsDeviceMatchConditionParameters struct {
-	// REQUIRED
-	ODataType *IsDeviceMatchConditionParametersODataType `json:"@odata.type,omitempty"`
-
 	// REQUIRED; Describes operator to be matched
 	Operator *IsDeviceOperator `json:"operator,omitempty"`
+
+	// REQUIRED
+	TypeName *IsDeviceMatchConditionParametersTypeName `json:"typeName,omitempty"`
 
 	// The match value for the condition of the delivery rule
 	MatchValues []*IsDeviceMatchConditionParametersMatchValuesItem `json:"matchValues,omitempty"`
 
 	// Describes if this is negate condition or not
 	NegateCondition *bool `json:"negateCondition,omitempty"`
-
-	// List of transforms
-	Transforms []*Transform `json:"transforms,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type IsDeviceMatchConditionParameters.
@@ -2936,9 +3414,8 @@ func (i IsDeviceMatchConditionParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "matchValues", i.MatchValues)
 	populate(objectMap, "negateCondition", i.NegateCondition)
-	populate(objectMap, "@odata.type", i.ODataType)
 	populate(objectMap, "operator", i.Operator)
-	populate(objectMap, "transforms", i.Transforms)
+	populate(objectMap, "typeName", i.TypeName)
 	return json.Marshal(objectMap)
 }
 
@@ -2946,9 +3423,6 @@ func (i IsDeviceMatchConditionParameters) MarshalJSON() ([]byte, error) {
 type KeyVaultCertificateSourceParameters struct {
 	// REQUIRED; Describes the action that shall be taken when the certificate is removed from Key Vault.
 	DeleteRule *DeleteRule `json:"deleteRule,omitempty"`
-
-	// REQUIRED
-	ODataType *KeyVaultCertificateSourceParametersODataType `json:"@odata.type,omitempty"`
 
 	// REQUIRED; Resource group of the user's Key Vault containing the SSL certificate
 	ResourceGroupName *string `json:"resourceGroupName,omitempty"`
@@ -2958,6 +3432,9 @@ type KeyVaultCertificateSourceParameters struct {
 
 	// REQUIRED; Subscription Id of the user's Key Vault containing the SSL certificate
 	SubscriptionID *string `json:"subscriptionId,omitempty"`
+
+	// REQUIRED
+	TypeName *KeyVaultCertificateSourceParametersTypeName `json:"typeName,omitempty"`
 
 	// REQUIRED; Describes the action that shall be taken when the certificate is updated in Key Vault.
 	UpdateRule *UpdateRule `json:"updateRule,omitempty"`
@@ -2971,9 +3448,6 @@ type KeyVaultCertificateSourceParameters struct {
 
 // KeyVaultSigningKeyParameters - Describes the parameters for using a user's KeyVault for URL Signing Key.
 type KeyVaultSigningKeyParameters struct {
-	// REQUIRED
-	ODataType *KeyVaultSigningKeyParametersODataType `json:"@odata.type,omitempty"`
-
 	// REQUIRED; Resource group of the user's Key Vault containing the secret
 	ResourceGroupName *string `json:"resourceGroupName,omitempty"`
 
@@ -2985,6 +3459,9 @@ type KeyVaultSigningKeyParameters struct {
 
 	// REQUIRED; Subscription Id of the user's Key Vault containing the secret
 	SubscriptionID *string `json:"subscriptionId,omitempty"`
+
+	// REQUIRED
+	TypeName *KeyVaultSigningKeyParametersTypeName `json:"typeName,omitempty"`
 
 	// REQUIRED; The name of the user's Key Vault containing the secret
 	VaultName *string `json:"vaultName,omitempty"`
@@ -3050,6 +3527,21 @@ type LogAnalyticsGetWafLogAnalyticsRankingsOptions struct {
 	RuleTypes []WafRuleType
 }
 
+// LogSpecification - Log specification of operation.
+type LogSpecification struct {
+	// Blob duration of specification.
+	BlobDuration *string `json:"blobDuration,omitempty"`
+
+	// Display name of log specification.
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Pattern to filter based on name
+	LogFilterPattern *string `json:"logFilterPattern,omitempty"`
+
+	// Name of log specification.
+	Name *string `json:"name,omitempty"`
+}
+
 // ManagedCertificate - Managed Certificate used for https
 type ManagedCertificate struct {
 	Certificate
@@ -3058,13 +3550,46 @@ type ManagedCertificate struct {
 // ManagedCertificateParameters - Managed Certificate used for https
 type ManagedCertificateParameters struct {
 	SecretParameters
+	// READ-ONLY; Certificate expiration date.
+	ExpirationDate *string `json:"expirationDate,omitempty" azure:"ro"`
+
+	// READ-ONLY; Subject name in the certificate.
+	Subject *string `json:"subject,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ManagedCertificateParameters.
 func (m ManagedCertificateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	m.SecretParameters.marshalInternal(objectMap, SecretTypeManagedCertificate)
+	populate(objectMap, "expirationDate", m.ExpirationDate)
+	populate(objectMap, "subject", m.Subject)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ManagedCertificateParameters.
+func (m *ManagedCertificateParameters) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "expirationDate":
+			err = unpopulate(val, &m.ExpirationDate)
+			delete(rawMsg, key)
+		case "subject":
+			err = unpopulate(val, &m.Subject)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	if err := m.SecretParameters.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // ManagedRuleDefinition - Describes a managed rule definition.
@@ -3230,13 +3755,25 @@ type ManagedRuleSetsListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ManagedServiceIdentity - Managed service identity.
+type ManagedServiceIdentity struct {
+	// Type of managed service identity.
+	Type *ManagedServiceIdentityType `json:"type,omitempty"`
+
+	// READ-ONLY; Principal Id of managed service identity.
+	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+
+	// READ-ONLY; Tenant of managed service identity.
+	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+}
+
 // MatchCondition - Define match conditions
 type MatchCondition struct {
 	// REQUIRED; List of possible match values.
 	MatchValue []*string `json:"matchValue,omitempty"`
 
 	// REQUIRED; Match variable to compare against.
-	MatchVariable *MatchVariable `json:"matchVariable,omitempty"`
+	MatchVariable *WafMatchVariable `json:"matchVariable,omitempty"`
 
 	// REQUIRED; Describes operator to be matched
 	Operator *Operator `json:"operator,omitempty"`
@@ -3260,6 +3797,65 @@ func (m MatchCondition) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "operator", m.Operator)
 	populate(objectMap, "selector", m.Selector)
 	populate(objectMap, "transforms", m.Transforms)
+	return json.Marshal(objectMap)
+}
+
+// MetricAvailability - Retention policy of a resource metric.
+type MetricAvailability struct {
+	BlobDuration *string `json:"blobDuration,omitempty"`
+	TimeGrain    *string `json:"timeGrain,omitempty"`
+}
+
+// MetricSpecification - Metric specification of operation.
+type MetricSpecification struct {
+	// The metric aggregation type. Possible values include: 'Average', 'Count', 'Total'.
+	AggregationType *string `json:"aggregationType,omitempty"`
+
+	// Retention policies of a resource metric.
+	Availabilities []*MetricAvailability `json:"availabilities,omitempty"`
+
+	// The dimensions of metric
+	Dimensions []*DimensionProperties `json:"dimensions,omitempty"`
+
+	// Display description of metric specification.
+	DisplayDescription *string `json:"displayDescription,omitempty"`
+
+	// Display name of metric specification.
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Property to specify whether to fill gap with zero.
+	FillGapWithZero *bool `json:"fillGapWithZero,omitempty"`
+
+	// Property to specify metric is internal or not.
+	IsInternal *bool `json:"isInternal,omitempty"`
+
+	// Pattern to filter based on name
+	MetricFilterPattern *string `json:"metricFilterPattern,omitempty"`
+
+	// Name of metric specification.
+	Name *string `json:"name,omitempty"`
+
+	// The supported time grain types for the metrics.
+	SupportedTimeGrainTypes []*string `json:"supportedTimeGrainTypes,omitempty"`
+
+	// The metric unit. Possible values include: 'Bytes', 'Count', 'Milliseconds'.
+	Unit *string `json:"unit,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type MetricSpecification.
+func (m MetricSpecification) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "aggregationType", m.AggregationType)
+	populate(objectMap, "availabilities", m.Availabilities)
+	populate(objectMap, "dimensions", m.Dimensions)
+	populate(objectMap, "displayDescription", m.DisplayDescription)
+	populate(objectMap, "displayName", m.DisplayName)
+	populate(objectMap, "fillGapWithZero", m.FillGapWithZero)
+	populate(objectMap, "isInternal", m.IsInternal)
+	populate(objectMap, "metricFilterPattern", m.MetricFilterPattern)
+	populate(objectMap, "name", m.Name)
+	populate(objectMap, "supportedTimeGrainTypes", m.SupportedTimeGrainTypes)
+	populate(objectMap, "unit", m.Unit)
 	return json.Marshal(objectMap)
 }
 
@@ -3337,12 +3933,24 @@ type Operation struct {
 	// The object that represents the operation.
 	Display *OperationDisplay `json:"display,omitempty"`
 
+	// Indicates whether the operation is a data action
+	IsDataAction *bool `json:"isDataAction,omitempty"`
+
+	// Properties of operation, include metric specifications.
+	OperationProperties *OperationProperties `json:"properties,omitempty"`
+
 	// READ-ONLY; Operation name: {provider}/{resource}/{operation}
 	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The origin of operations.
+	Origin *string `json:"origin,omitempty" azure:"ro"`
 }
 
 // OperationDisplay - The object that represents the operation.
 type OperationDisplay struct {
+	// READ-ONLY; Description of operation.
+	Description *string `json:"description,omitempty" azure:"ro"`
+
 	// READ-ONLY; Operation type: Read, write, delete, etc.
 	Operation *string `json:"operation,omitempty" azure:"ro"`
 
@@ -3351,6 +3959,12 @@ type OperationDisplay struct {
 
 	// READ-ONLY; Resource on which the operation is performed: Profile, endpoint, etc.
 	Resource *string `json:"resource,omitempty" azure:"ro"`
+}
+
+// OperationProperties - Properties of operation, include metric specifications.
+type OperationProperties struct {
+	// One property of operation, include metric specifications.
+	ServiceSpecification *ServiceSpecification `json:"serviceSpecification,omitempty"`
 }
 
 // OperationsListOptions contains the optional parameters for the Operations.List method.
@@ -3363,8 +3977,8 @@ type OperationsListResult struct {
 	// URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
 
-	// READ-ONLY; List of CDN operations supported by the CDN resource provider.
-	Value []*Operation `json:"value,omitempty" azure:"ro"`
+	// List of CDN operations supported by the CDN resource provider.
+	Value []*Operation `json:"value,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type OperationsListResult.
@@ -3425,6 +4039,15 @@ func (o OriginGroupListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// OriginGroupOverride - Defines the parameters for the origin group override configuration.
+type OriginGroupOverride struct {
+	// Protocol this rule will use when forwarding traffic to backends.
+	ForwardingProtocol *ForwardingProtocol `json:"forwardingProtocol,omitempty"`
+
+	// defines the OriginGroup that would override the DefaultOriginGroup on route.
+	OriginGroup *ResourceReference `json:"originGroup,omitempty"`
+}
+
 // OriginGroupOverrideAction - Defines the origin group override action for the delivery rule.
 type OriginGroupOverrideAction struct {
 	DeliveryRuleActionAutoGenerated
@@ -3465,11 +4088,11 @@ func (o *OriginGroupOverrideAction) UnmarshalJSON(data []byte) error {
 
 // OriginGroupOverrideActionParameters - Defines the parameters for the origin group override action.
 type OriginGroupOverrideActionParameters struct {
-	// REQUIRED
-	ODataType *OriginGroupOverrideActionParametersODataType `json:"@odata.type,omitempty"`
-
 	// REQUIRED; defines the OriginGroup that would override the DefaultOriginGroup.
 	OriginGroup *ResourceReference `json:"originGroup,omitempty"`
+
+	// REQUIRED
+	TypeName *OriginGroupOverrideActionParametersTypeName `json:"typeName,omitempty"`
 }
 
 // OriginGroupProperties - The JSON object that contains the properties of the origin group.
@@ -3711,11 +4334,11 @@ type PolicySettings struct {
 
 // PostArgsMatchConditionParameters - Defines the parameters for PostArgs match conditions
 type PostArgsMatchConditionParameters struct {
-	// REQUIRED
-	ODataType *PostArgsMatchConditionParametersODataType `json:"@odata.type,omitempty"`
-
 	// REQUIRED; Describes operator to be matched
 	Operator *PostArgsOperator `json:"operator,omitempty"`
+
+	// REQUIRED
+	TypeName *PostArgsMatchConditionParametersTypeName `json:"typeName,omitempty"`
 
 	// The match value for the condition of the delivery rule
 	MatchValues []*string `json:"matchValues,omitempty"`
@@ -3735,17 +4358,17 @@ func (p PostArgsMatchConditionParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "matchValues", p.MatchValues)
 	populate(objectMap, "negateCondition", p.NegateCondition)
-	populate(objectMap, "@odata.type", p.ODataType)
 	populate(objectMap, "operator", p.Operator)
 	populate(objectMap, "selector", p.Selector)
 	populate(objectMap, "transforms", p.Transforms)
+	populate(objectMap, "typeName", p.TypeName)
 	return json.Marshal(objectMap)
 }
 
-// Profile - CDN profile is a logical grouping of endpoints that share the same settings, such as CDN provider and pricing tier.
+// Profile - A profile is a logical grouping of endpoints that share the same settings.
 type Profile struct {
 	TrackedResource
-	// REQUIRED; The pricing tier (defines a CDN provider, feature list and rate) of the CDN profile.
+	// REQUIRED; The pricing tier (defines Azure Front Door Standard or Premium or a CDN provider, feature list and rate) of the profile.
 	SKU *SKU `json:"sku,omitempty"`
 
 	// The JSON object that contains the properties required to create a profile.
@@ -3780,8 +4403,17 @@ func (p ProfileListResult) MarshalJSON() ([]byte, error) {
 
 // ProfileProperties - The JSON object that contains the properties required to create a profile.
 type ProfileProperties struct {
+	// Managed service identity.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+
+	// Send and receive timeout on forwarding request to the origin. When timeout is reached, the request fails and returns.
+	OriginResponseTimeoutSeconds *int32 `json:"originResponseTimeoutSeconds,omitempty"`
+
 	// READ-ONLY; The Id of the frontdoor.
-	FrontdoorID *string `json:"frontdoorId,omitempty" azure:"ro"`
+	FrontDoorID *string `json:"frontDoorId,omitempty" azure:"ro"`
+
+	// READ-ONLY; Kind of the profile. Used by portal to differentiate traditional CDN profile and new AFD profile.
+	Kind *string `json:"kind,omitempty" azure:"ro"`
 
 	// READ-ONLY; Provisioning status of the profile.
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
@@ -3872,11 +4504,11 @@ func (p PurgeParameters) MarshalJSON() ([]byte, error) {
 
 // QueryStringMatchConditionParameters - Defines the parameters for QueryString match conditions
 type QueryStringMatchConditionParameters struct {
-	// REQUIRED
-	ODataType *QueryStringMatchConditionParametersODataType `json:"@odata.type,omitempty"`
-
 	// REQUIRED; Describes operator to be matched
 	Operator *QueryStringOperator `json:"operator,omitempty"`
+
+	// REQUIRED
+	TypeName *QueryStringMatchConditionParametersTypeName `json:"typeName,omitempty"`
 
 	// The match value for the condition of the delivery rule
 	MatchValues []*string `json:"matchValues,omitempty"`
@@ -3893,9 +4525,9 @@ func (q QueryStringMatchConditionParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "matchValues", q.MatchValues)
 	populate(objectMap, "negateCondition", q.NegateCondition)
-	populate(objectMap, "@odata.type", q.ODataType)
 	populate(objectMap, "operator", q.Operator)
 	populate(objectMap, "transforms", q.Transforms)
+	populate(objectMap, "typeName", q.TypeName)
 	return json.Marshal(objectMap)
 }
 
@@ -4007,11 +4639,11 @@ func (r RateLimitRuleList) MarshalJSON() ([]byte, error) {
 
 // RemoteAddressMatchConditionParameters - Defines the parameters for RemoteAddress match conditions
 type RemoteAddressMatchConditionParameters struct {
-	// REQUIRED
-	ODataType *RemoteAddressMatchConditionParametersODataType `json:"@odata.type,omitempty"`
-
 	// REQUIRED; Describes operator to be matched
 	Operator *RemoteAddressOperator `json:"operator,omitempty"`
+
+	// REQUIRED
+	TypeName *RemoteAddressMatchConditionParametersTypeName `json:"typeName,omitempty"`
 
 	// Match values to match against. The operator will apply to each value in here with OR semantics. If any of them match the variable with the given operator
 	// this match condition is considered a match.
@@ -4029,19 +4661,19 @@ func (r RemoteAddressMatchConditionParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "matchValues", r.MatchValues)
 	populate(objectMap, "negateCondition", r.NegateCondition)
-	populate(objectMap, "@odata.type", r.ODataType)
 	populate(objectMap, "operator", r.Operator)
 	populate(objectMap, "transforms", r.Transforms)
+	populate(objectMap, "typeName", r.TypeName)
 	return json.Marshal(objectMap)
 }
 
 // RequestBodyMatchConditionParameters - Defines the parameters for RequestBody match conditions
 type RequestBodyMatchConditionParameters struct {
-	// REQUIRED
-	ODataType *RequestBodyMatchConditionParametersODataType `json:"@odata.type,omitempty"`
-
 	// REQUIRED; Describes operator to be matched
 	Operator *RequestBodyOperator `json:"operator,omitempty"`
+
+	// REQUIRED
+	TypeName *RequestBodyMatchConditionParametersTypeName `json:"typeName,omitempty"`
 
 	// The match value for the condition of the delivery rule
 	MatchValues []*string `json:"matchValues,omitempty"`
@@ -4058,19 +4690,19 @@ func (r RequestBodyMatchConditionParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "matchValues", r.MatchValues)
 	populate(objectMap, "negateCondition", r.NegateCondition)
-	populate(objectMap, "@odata.type", r.ODataType)
 	populate(objectMap, "operator", r.Operator)
 	populate(objectMap, "transforms", r.Transforms)
+	populate(objectMap, "typeName", r.TypeName)
 	return json.Marshal(objectMap)
 }
 
 // RequestHeaderMatchConditionParameters - Defines the parameters for RequestHeader match conditions
 type RequestHeaderMatchConditionParameters struct {
-	// REQUIRED
-	ODataType *RequestHeaderMatchConditionParametersODataType `json:"@odata.type,omitempty"`
-
 	// REQUIRED; Describes operator to be matched
 	Operator *RequestHeaderOperator `json:"operator,omitempty"`
+
+	// REQUIRED
+	TypeName *RequestHeaderMatchConditionParametersTypeName `json:"typeName,omitempty"`
 
 	// The match value for the condition of the delivery rule
 	MatchValues []*string `json:"matchValues,omitempty"`
@@ -4090,26 +4722,29 @@ func (r RequestHeaderMatchConditionParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "matchValues", r.MatchValues)
 	populate(objectMap, "negateCondition", r.NegateCondition)
-	populate(objectMap, "@odata.type", r.ODataType)
 	populate(objectMap, "operator", r.Operator)
 	populate(objectMap, "selector", r.Selector)
 	populate(objectMap, "transforms", r.Transforms)
+	populate(objectMap, "typeName", r.TypeName)
 	return json.Marshal(objectMap)
 }
 
 // RequestMethodMatchConditionParameters - Defines the parameters for RequestMethod match conditions
 type RequestMethodMatchConditionParameters struct {
-	// REQUIRED
-	ODataType *RequestMethodMatchConditionParametersODataType `json:"@odata.type,omitempty"`
-
 	// REQUIRED; Describes operator to be matched
 	Operator *RequestMethodOperator `json:"operator,omitempty"`
+
+	// REQUIRED
+	TypeName *RequestMethodMatchConditionParametersTypeName `json:"typeName,omitempty"`
 
 	// The match value for the condition of the delivery rule
 	MatchValues []*RequestMethodMatchConditionParametersMatchValuesItem `json:"matchValues,omitempty"`
 
 	// Describes if this is negate condition or not
 	NegateCondition *bool `json:"negateCondition,omitempty"`
+
+	// List of transforms
+	Transforms []*Transform `json:"transforms,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type RequestMethodMatchConditionParameters.
@@ -4117,24 +4752,28 @@ func (r RequestMethodMatchConditionParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "matchValues", r.MatchValues)
 	populate(objectMap, "negateCondition", r.NegateCondition)
-	populate(objectMap, "@odata.type", r.ODataType)
 	populate(objectMap, "operator", r.Operator)
+	populate(objectMap, "transforms", r.Transforms)
+	populate(objectMap, "typeName", r.TypeName)
 	return json.Marshal(objectMap)
 }
 
 // RequestSchemeMatchConditionParameters - Defines the parameters for RequestScheme match conditions
 type RequestSchemeMatchConditionParameters struct {
-	// REQUIRED
-	ODataType *RequestSchemeMatchConditionParametersODataType `json:"@odata.type,omitempty"`
-
 	// REQUIRED; Describes operator to be matched
 	Operator *RequestSchemeMatchConditionParametersOperator `json:"operator,omitempty"`
+
+	// REQUIRED
+	TypeName *RequestSchemeMatchConditionParametersTypeName `json:"typeName,omitempty"`
 
 	// The match value for the condition of the delivery rule
 	MatchValues []*RequestSchemeMatchConditionParametersMatchValuesItem `json:"matchValues,omitempty"`
 
 	// Describes if this is negate condition or not
 	NegateCondition *bool `json:"negateCondition,omitempty"`
+
+	// List of transforms
+	Transforms []*Transform `json:"transforms,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type RequestSchemeMatchConditionParameters.
@@ -4142,18 +4781,19 @@ func (r RequestSchemeMatchConditionParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "matchValues", r.MatchValues)
 	populate(objectMap, "negateCondition", r.NegateCondition)
-	populate(objectMap, "@odata.type", r.ODataType)
 	populate(objectMap, "operator", r.Operator)
+	populate(objectMap, "transforms", r.Transforms)
+	populate(objectMap, "typeName", r.TypeName)
 	return json.Marshal(objectMap)
 }
 
 // RequestURIMatchConditionParameters - Defines the parameters for RequestUri match conditions
 type RequestURIMatchConditionParameters struct {
-	// REQUIRED
-	ODataType *RequestURIMatchConditionParametersODataType `json:"@odata.type,omitempty"`
-
 	// REQUIRED; Describes operator to be matched
 	Operator *RequestURIOperator `json:"operator,omitempty"`
+
+	// REQUIRED
+	TypeName *RequestURIMatchConditionParametersTypeName `json:"typeName,omitempty"`
 
 	// The match value for the condition of the delivery rule
 	MatchValues []*string `json:"matchValues,omitempty"`
@@ -4170,9 +4810,9 @@ func (r RequestURIMatchConditionParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "matchValues", r.MatchValues)
 	populate(objectMap, "negateCondition", r.NegateCondition)
-	populate(objectMap, "@odata.type", r.ODataType)
 	populate(objectMap, "operator", r.Operator)
 	populate(objectMap, "transforms", r.Transforms)
+	populate(objectMap, "typeName", r.TypeName)
 	return json.Marshal(objectMap)
 }
 
@@ -4329,6 +4969,18 @@ func (r Route) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// RouteConfigurationOverrideActionParameters - Defines the parameters for the route configuration override action.
+type RouteConfigurationOverrideActionParameters struct {
+	// REQUIRED
+	TypeName *RouteConfigurationOverrideActionParametersTypeName `json:"typeName,omitempty"`
+
+	// The caching configuration associated with this rule. To disable caching, do not provide a cacheConfiguration object.
+	CacheConfiguration *CacheConfiguration `json:"cacheConfiguration,omitempty"`
+
+	// A reference to the origin group override configuration. Leave empty to use the default origin group on route.
+	OriginGroupOverride *OriginGroupOverride `json:"originGroupOverride,omitempty"`
+}
+
 // RouteListResult - Result of the request to list routes. It contains a list of route objects and a URL link to get the next set of results.
 type RouteListResult struct {
 	// URL to get the next set of route objects if there are any.
@@ -4367,11 +5019,11 @@ func (r RouteUpdateParameters) MarshalJSON() ([]byte, error) {
 
 // RouteUpdatePropertiesParameters - The JSON object that contains the properties of the domain to create.
 type RouteUpdatePropertiesParameters struct {
-	// compression settings.
-	CompressionSettings map[string]interface{} `json:"compressionSettings,omitempty"`
+	// The caching configuration for this route. To disable caching, do not provide a cacheConfiguration object.
+	CacheConfiguration *AfdRouteCacheConfiguration `json:"cacheConfiguration,omitempty"`
 
 	// Domains referenced by this endpoint.
-	CustomDomains []*ResourceReference `json:"customDomains,omitempty"`
+	CustomDomains []*ActivatedResourceReference `json:"customDomains,omitempty"`
 
 	// Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'
 	EnabledState *EnabledState `json:"enabledState,omitempty"`
@@ -4395,16 +5047,14 @@ type RouteUpdatePropertiesParameters struct {
 	// The route patterns of the rule.
 	PatternsToMatch []*string `json:"patternsToMatch,omitempty"`
 
-	// Defines how CDN caches requests that include query strings. You can ignore any query strings when caching, bypass caching to prevent requests that contain
-	// query strings from being cached, or cache
-	// every request with a unique URL.
-	QueryStringCachingBehavior *AfdQueryStringCachingBehavior `json:"queryStringCachingBehavior,omitempty"`
-
 	// rule sets referenced by this endpoint.
 	RuleSets []*ResourceReference `json:"ruleSets,omitempty"`
 
 	// List of supported protocols for this route.
 	SupportedProtocols []*AFDEndpointProtocols `json:"supportedProtocols,omitempty"`
+
+	// READ-ONLY; The name of the endpoint which holds the route.
+	EndpointName *string `json:"endpointName,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type RouteUpdatePropertiesParameters.
@@ -4424,16 +5074,16 @@ func (r *RouteUpdatePropertiesParameters) UnmarshalJSON(data []byte) error {
 }
 
 func (r RouteUpdatePropertiesParameters) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "compressionSettings", r.CompressionSettings)
+	populate(objectMap, "cacheConfiguration", r.CacheConfiguration)
 	populate(objectMap, "customDomains", r.CustomDomains)
 	populate(objectMap, "enabledState", r.EnabledState)
+	populate(objectMap, "endpointName", r.EndpointName)
 	populate(objectMap, "forwardingProtocol", r.ForwardingProtocol)
 	populate(objectMap, "httpsRedirect", r.HTTPSRedirect)
 	populate(objectMap, "linkToDefaultDomain", r.LinkToDefaultDomain)
 	populate(objectMap, "originGroup", r.OriginGroup)
 	populate(objectMap, "originPath", r.OriginPath)
 	populate(objectMap, "patternsToMatch", r.PatternsToMatch)
-	populate(objectMap, "queryStringCachingBehavior", r.QueryStringCachingBehavior)
 	populate(objectMap, "ruleSets", r.RuleSets)
 	populate(objectMap, "supportedProtocols", r.SupportedProtocols)
 }
@@ -4442,14 +5092,17 @@ func (r *RouteUpdatePropertiesParameters) unmarshalInternal(rawMsg map[string]js
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "compressionSettings":
-			err = unpopulate(val, &r.CompressionSettings)
+		case "cacheConfiguration":
+			err = unpopulate(val, &r.CacheConfiguration)
 			delete(rawMsg, key)
 		case "customDomains":
 			err = unpopulate(val, &r.CustomDomains)
 			delete(rawMsg, key)
 		case "enabledState":
 			err = unpopulate(val, &r.EnabledState)
+			delete(rawMsg, key)
+		case "endpointName":
+			err = unpopulate(val, &r.EndpointName)
 			delete(rawMsg, key)
 		case "forwardingProtocol":
 			err = unpopulate(val, &r.ForwardingProtocol)
@@ -4468,9 +5121,6 @@ func (r *RouteUpdatePropertiesParameters) unmarshalInternal(rawMsg map[string]js
 			delete(rawMsg, key)
 		case "patternsToMatch":
 			err = unpopulate(val, &r.PatternsToMatch)
-			delete(rawMsg, key)
-		case "queryStringCachingBehavior":
-			err = unpopulate(val, &r.QueryStringCachingBehavior)
 			delete(rawMsg, key)
 		case "ruleSets":
 			err = unpopulate(val, &r.RuleSets)
@@ -4584,15 +5234,48 @@ func (r RuleSetListResult) MarshalJSON() ([]byte, error) {
 // RuleSetProperties - The JSON object that contains the properties of the Rule Set to create.
 type RuleSetProperties struct {
 	AFDStateProperties
+	// READ-ONLY; The name of the profile which holds the rule set.
+	ProfileName *string `json:"profileName,omitempty" azure:"ro"`
 }
 
-// RuleSetsBeginCreateOptions contains the optional parameters for the RuleSets.BeginCreate method.
-type RuleSetsBeginCreateOptions struct {
-	// placeholder for future optional parameters
+// MarshalJSON implements the json.Marshaller interface for type RuleSetProperties.
+func (r RuleSetProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	r.AFDStateProperties.marshalInternal(objectMap)
+	populate(objectMap, "profileName", r.ProfileName)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type RuleSetProperties.
+func (r *RuleSetProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "profileName":
+			err = unpopulate(val, &r.ProfileName)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	if err := r.AFDStateProperties.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // RuleSetsBeginDeleteOptions contains the optional parameters for the RuleSets.BeginDelete method.
 type RuleSetsBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RuleSetsCreateOptions contains the optional parameters for the RuleSets.Create method.
+type RuleSetsCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -4613,7 +5296,7 @@ type RuleSetsListResourceUsageOptions struct {
 
 // RuleUpdateParameters - The domain JSON object required for domain creation or update.
 type RuleUpdateParameters struct {
-	// The JSON object that contains the properties of the domain to create.
+	// The JSON object that contains the properties of the rule to update.
 	Properties *RuleUpdatePropertiesParameters `json:"properties,omitempty"`
 }
 
@@ -4624,7 +5307,7 @@ func (r RuleUpdateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// RuleUpdatePropertiesParameters - The JSON object that contains the properties of the domain to create.
+// RuleUpdatePropertiesParameters - The JSON object that contains the properties of the rule to update.
 type RuleUpdatePropertiesParameters struct {
 	// A list of actions that are executed when all the conditions of a rule are satisfied.
 	Actions []DeliveryRuleActionAutoGeneratedClassification `json:"actions,omitempty"`
@@ -4639,6 +5322,9 @@ type RuleUpdatePropertiesParameters struct {
 	// a greater order. Rule with order 0 is a special
 	// rule. It does not require any condition and actions listed in it will always be applied.
 	Order *int32 `json:"order,omitempty"`
+
+	// READ-ONLY; The name of the rule set containing the rule.
+	RuleSetName *string `json:"ruleSetName,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type RuleUpdatePropertiesParameters.
@@ -4662,6 +5348,7 @@ func (r RuleUpdatePropertiesParameters) marshalInternal(objectMap map[string]int
 	populate(objectMap, "conditions", r.Conditions)
 	populate(objectMap, "matchProcessingBehavior", r.MatchProcessingBehavior)
 	populate(objectMap, "order", r.Order)
+	populate(objectMap, "ruleSetName", r.RuleSetName)
 }
 
 func (r *RuleUpdatePropertiesParameters) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
@@ -4679,6 +5366,9 @@ func (r *RuleUpdatePropertiesParameters) unmarshalInternal(rawMsg map[string]jso
 			delete(rawMsg, key)
 		case "order":
 			err = unpopulate(val, &r.Order)
+			delete(rawMsg, key)
+		case "ruleSetName":
+			err = unpopulate(val, &r.RuleSetName)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -4713,10 +5403,47 @@ type RulesListByRuleSetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SKU - The pricing tier (defines a CDN provider, feature list and rate) of the CDN profile.
+// SKU - StandardVerizon = The SKU name for a Standard Verizon CDN profile. PremiumVerizon = The SKU name for a Premium Verizon CDN profile. CustomVerizon
+// = The SKU name for a Custom Verizon CDN profile.
+// StandardAkamai = The SKU name for an Akamai CDN profile. StandardChinaCdn = The SKU name for a China CDN profile for VOD, Web and download scenarios
+// using GB based billing model. StandardMicrosoft =
+// The SKU name for a Standard Microsoft CDN profile. StandardAzureFrontDoor = The SKU name for an Azure Front Door Standard profile. PremiumAzureFrontDoor
+// = The SKU name for an Azure Front Door Premium
+// profile. Standard955BandWidthChinaCdn = The SKU name for a China CDN profile for VOD, Web and download scenarios using 95-5 peak bandwidth billing model.
+// StandardAvgBandWidthChinaCdn = The SKU name
+// for a China CDN profile for VOD, Web and download scenarios using monthly average peak bandwidth billing model. StandardPlusChinaCdn = The SKU name for
+// a China CDN profile for live-streaming using GB
+// based billing model. StandardPlus955BandWidthChinaCdn = The SKU name for a China CDN live-streaming profile using 95-5 peak bandwidth billing model.
+// StandardPlusAvgBandWidth_ChinaCdn = The SKU name
+// for a China CDN live-streaming profile using monthly average peak bandwidth billing model.
 type SKU struct {
 	// Name of the pricing tier.
 	Name *SKUName `json:"name,omitempty"`
+}
+
+// SSLProtocolMatchConditionParameters - Defines the parameters for SslProtocol match conditions
+type SSLProtocolMatchConditionParameters struct {
+	// REQUIRED; Describes operator to be matched
+	Operator *SSLProtocolOperator `json:"operator,omitempty"`
+
+	// REQUIRED
+	TypeName *SSLProtocolMatchConditionParametersTypeName `json:"typeName,omitempty"`
+
+	// The match value for the condition of the delivery rule
+	MatchValues []*SSLProtocol `json:"matchValues,omitempty"`
+
+	// Describes if this is negate condition or not
+	NegateCondition *bool `json:"negateCondition,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SSLProtocolMatchConditionParameters.
+func (s SSLProtocolMatchConditionParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "matchValues", s.MatchValues)
+	populate(objectMap, "negateCondition", s.NegateCondition)
+	populate(objectMap, "operator", s.Operator)
+	populate(objectMap, "typeName", s.TypeName)
+	return json.Marshal(objectMap)
 }
 
 // Secret - Friendly Secret name mapping to the any Secret or secret related information.
@@ -4754,7 +5481,8 @@ func (s SecretListResult) MarshalJSON() ([]byte, error) {
 // SecretParametersClassification provides polymorphic access to related types.
 // Call the interface's GetSecretParameters() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *CustomerCertificateParameters, *ManagedCertificateParameters, *SecretParameters, *UrlSigningKeyParameters
+// - *AzureFirstPartyManagedCertificateParameters, *CustomerCertificateParameters, *ManagedCertificateParameters, *SecretParameters,
+// - *UrlSigningKeyParameters
 type SecretParametersClassification interface {
 	// GetSecretParameters returns the SecretParameters content of the underlying type.
 	GetSecretParameters() *SecretParameters
@@ -4762,7 +5490,7 @@ type SecretParametersClassification interface {
 
 // SecretParameters - The json object containing secret parameters
 type SecretParameters struct {
-	// REQUIRED; The type of the Secret to create.
+	// REQUIRED; The type of the secret resource.
 	Type *SecretType `json:"type,omitempty"`
 }
 
@@ -4803,6 +5531,9 @@ type SecretProperties struct {
 	AFDStateProperties
 	// object which contains secret parameters
 	Parameters SecretParametersClassification `json:"parameters,omitempty"`
+
+	// READ-ONLY; The name of the profile which holds the secret.
+	ProfileName *string `json:"profileName,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type SecretProperties.
@@ -4810,6 +5541,7 @@ func (s SecretProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	s.AFDStateProperties.marshalInternal(objectMap)
 	populate(objectMap, "parameters", s.Parameters)
+	populate(objectMap, "profileName", s.ProfileName)
 	return json.Marshal(objectMap)
 }
 
@@ -4824,6 +5556,9 @@ func (s *SecretProperties) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "parameters":
 			s.Parameters, err = unmarshalSecretParametersClassification(val)
+			delete(rawMsg, key)
+		case "profileName":
+			err = unpopulate(val, &s.ProfileName)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -4843,11 +5578,6 @@ type SecretsBeginCreateOptions struct {
 
 // SecretsBeginDeleteOptions contains the optional parameters for the Secrets.BeginDelete method.
 type SecretsBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SecretsBeginUpdateOptions contains the optional parameters for the Secrets.BeginUpdate method.
-type SecretsBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -4971,6 +5701,9 @@ type SecurityPolicyProperties struct {
 	AFDStateProperties
 	// object which contains security policy parameters
 	Parameters SecurityPolicyParametersClassification `json:"parameters,omitempty"`
+
+	// READ-ONLY; The name of the profile which holds the security policy.
+	ProfileName *string `json:"profileName,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type SecurityPolicyProperties.
@@ -4978,6 +5711,7 @@ func (s SecurityPolicyProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	s.AFDStateProperties.marshalInternal(objectMap)
 	populate(objectMap, "parameters", s.Parameters)
+	populate(objectMap, "profileName", s.ProfileName)
 	return json.Marshal(objectMap)
 }
 
@@ -4993,6 +5727,9 @@ func (s *SecurityPolicyProperties) UnmarshalJSON(data []byte) error {
 		case "parameters":
 			s.Parameters, err = unmarshalSecurityPolicyParametersClassification(val)
 			delete(rawMsg, key)
+		case "profileName":
+			err = unpopulate(val, &s.ProfileName)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -5007,7 +5744,7 @@ func (s *SecurityPolicyProperties) UnmarshalJSON(data []byte) error {
 // SecurityPolicyWebApplicationFirewallAssociation - settings for security policy patterns to match
 type SecurityPolicyWebApplicationFirewallAssociation struct {
 	// List of domains.
-	Domains []*ResourceReference `json:"domains,omitempty"`
+	Domains []*ActivatedResourceReference `json:"domains,omitempty"`
 
 	// List of paths
 	PatternsToMatch []*string `json:"patternsToMatch,omitempty"`
@@ -5066,6 +5803,48 @@ func (s *SecurityPolicyWebApplicationFirewallParameters) UnmarshalJSON(data []by
 	return nil
 }
 
+// ServerPortMatchConditionParameters - Defines the parameters for ServerPort match conditions
+type ServerPortMatchConditionParameters struct {
+	// REQUIRED; Describes operator to be matched
+	Operator *ServerPortOperator `json:"operator,omitempty"`
+
+	// REQUIRED
+	TypeName *ServerPortMatchConditionParametersTypeName `json:"typeName,omitempty"`
+
+	// The match value for the condition of the delivery rule
+	MatchValues []*string `json:"matchValues,omitempty"`
+
+	// Describes if this is negate condition or not
+	NegateCondition *bool `json:"negateCondition,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ServerPortMatchConditionParameters.
+func (s ServerPortMatchConditionParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "matchValues", s.MatchValues)
+	populate(objectMap, "negateCondition", s.NegateCondition)
+	populate(objectMap, "operator", s.Operator)
+	populate(objectMap, "typeName", s.TypeName)
+	return json.Marshal(objectMap)
+}
+
+// ServiceSpecification - One property of operation, include log specifications.
+type ServiceSpecification struct {
+	// Log specifications of operation.
+	LogSpecifications []*LogSpecification `json:"logSpecifications,omitempty"`
+
+	// Metric specifications of operation.
+	MetricSpecifications []*MetricSpecification `json:"metricSpecifications,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ServiceSpecification.
+func (s ServiceSpecification) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "logSpecifications", s.LogSpecifications)
+	populate(objectMap, "metricSpecifications", s.MetricSpecifications)
+	return json.Marshal(objectMap)
+}
+
 // SharedPrivateLinkResourceProperties - Describes the properties of an existing Shared Private Link Resource to use when connecting to a private origin.
 type SharedPrivateLinkResourceProperties struct {
 	// The group id from the provider of resource the shared private link resource is for.
@@ -5082,6 +5861,31 @@ type SharedPrivateLinkResourceProperties struct {
 
 	// Status of the shared private link resource. Can be Pending, Approved, Rejected, Disconnected, or Timeout.
 	Status *SharedPrivateLinkResourceStatus `json:"status,omitempty"`
+}
+
+// SocketAddrMatchConditionParameters - Defines the parameters for SocketAddress match conditions
+type SocketAddrMatchConditionParameters struct {
+	// REQUIRED; Describes operator to be matched
+	Operator *SocketAddrOperator `json:"operator,omitempty"`
+
+	// REQUIRED
+	TypeName *SocketAddrMatchConditionParametersTypeName `json:"typeName,omitempty"`
+
+	// The match value for the condition of the delivery rule
+	MatchValues []*string `json:"matchValues,omitempty"`
+
+	// Describes if this is negate condition or not
+	NegateCondition *bool `json:"negateCondition,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SocketAddrMatchConditionParameters.
+func (s SocketAddrMatchConditionParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "matchValues", s.MatchValues)
+	populate(objectMap, "negateCondition", s.NegateCondition)
+	populate(objectMap, "operator", s.Operator)
+	populate(objectMap, "typeName", s.TypeName)
+	return json.Marshal(objectMap)
 }
 
 // SsoURI - The URI required to login to the supplemental portal from the Azure portal.
@@ -5196,11 +6000,11 @@ func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
 
 // URLFileExtensionMatchConditionParameters - Defines the parameters for UrlFileExtension match conditions
 type URLFileExtensionMatchConditionParameters struct {
-	// REQUIRED
-	ODataType *URLFileExtensionMatchConditionParametersODataType `json:"@odata.type,omitempty"`
-
 	// REQUIRED; Describes operator to be matched
 	Operator *URLFileExtensionOperator `json:"operator,omitempty"`
+
+	// REQUIRED
+	TypeName *URLFileExtensionMatchConditionParametersTypeName `json:"typeName,omitempty"`
 
 	// The match value for the condition of the delivery rule
 	MatchValues []*string `json:"matchValues,omitempty"`
@@ -5217,19 +6021,19 @@ func (u URLFileExtensionMatchConditionParameters) MarshalJSON() ([]byte, error) 
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "matchValues", u.MatchValues)
 	populate(objectMap, "negateCondition", u.NegateCondition)
-	populate(objectMap, "@odata.type", u.ODataType)
 	populate(objectMap, "operator", u.Operator)
 	populate(objectMap, "transforms", u.Transforms)
+	populate(objectMap, "typeName", u.TypeName)
 	return json.Marshal(objectMap)
 }
 
 // URLFileNameMatchConditionParameters - Defines the parameters for UrlFilename match conditions
 type URLFileNameMatchConditionParameters struct {
-	// REQUIRED
-	ODataType *URLFileNameMatchConditionParametersODataType `json:"@odata.type,omitempty"`
-
 	// REQUIRED; Describes operator to be matched
 	Operator *URLFileNameOperator `json:"operator,omitempty"`
+
+	// REQUIRED
+	TypeName *URLFileNameMatchConditionParametersTypeName `json:"typeName,omitempty"`
 
 	// The match value for the condition of the delivery rule
 	MatchValues []*string `json:"matchValues,omitempty"`
@@ -5246,19 +6050,19 @@ func (u URLFileNameMatchConditionParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "matchValues", u.MatchValues)
 	populate(objectMap, "negateCondition", u.NegateCondition)
-	populate(objectMap, "@odata.type", u.ODataType)
 	populate(objectMap, "operator", u.Operator)
 	populate(objectMap, "transforms", u.Transforms)
+	populate(objectMap, "typeName", u.TypeName)
 	return json.Marshal(objectMap)
 }
 
 // URLPathMatchConditionParameters - Defines the parameters for UrlPath match conditions
 type URLPathMatchConditionParameters struct {
-	// REQUIRED
-	ODataType *URLPathMatchConditionParametersODataType `json:"@odata.type,omitempty"`
-
 	// REQUIRED; Describes operator to be matched
 	Operator *URLPathOperator `json:"operator,omitempty"`
+
+	// REQUIRED
+	TypeName *URLPathMatchConditionParametersTypeName `json:"typeName,omitempty"`
 
 	// The match value for the condition of the delivery rule
 	MatchValues []*string `json:"matchValues,omitempty"`
@@ -5275,9 +6079,9 @@ func (u URLPathMatchConditionParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "matchValues", u.MatchValues)
 	populate(objectMap, "negateCondition", u.NegateCondition)
-	populate(objectMap, "@odata.type", u.ODataType)
 	populate(objectMap, "operator", u.Operator)
 	populate(objectMap, "transforms", u.Transforms)
+	populate(objectMap, "typeName", u.TypeName)
 	return json.Marshal(objectMap)
 }
 
@@ -5321,11 +6125,11 @@ func (u *URLRedirectAction) UnmarshalJSON(data []byte) error {
 
 // URLRedirectActionParameters - Defines the parameters for the url redirect action.
 type URLRedirectActionParameters struct {
-	// REQUIRED
-	ODataType *URLRedirectActionParametersODataType `json:"@odata.type,omitempty"`
-
 	// REQUIRED; The redirect type the rule will use when redirecting traffic.
 	RedirectType *RedirectType `json:"redirectType,omitempty"`
+
+	// REQUIRED
+	TypeName *URLRedirectActionParametersTypeName `json:"typeName,omitempty"`
 
 	// Fragment to add to the redirect URL. Fragment is the part of the URL that comes after #. Do not include the #.
 	CustomFragment *string `json:"customFragment,omitempty"`
@@ -5388,11 +6192,11 @@ type URLRewriteActionParameters struct {
 	// REQUIRED; Define the relative URL to which the above requests will be rewritten by.
 	Destination *string `json:"destination,omitempty"`
 
-	// REQUIRED
-	ODataType *URLRewriteActionParametersODataType `json:"@odata.type,omitempty"`
-
 	// REQUIRED; define a request URI pattern that identifies the type of requests that may be rewritten. If value is blank, all strings are matched.
 	SourcePattern *string `json:"sourcePattern,omitempty"`
+
+	// REQUIRED
+	TypeName *URLRewriteActionParametersTypeName `json:"typeName,omitempty"`
 
 	// Whether to preserve unmatched path. Default value is true.
 	PreserveUnmatchedPath *bool `json:"preserveUnmatchedPath,omitempty"`
@@ -5439,7 +6243,7 @@ func (u *URLSigningAction) UnmarshalJSON(data []byte) error {
 // URLSigningActionParameters - Defines the parameters for the Url Signing action.
 type URLSigningActionParameters struct {
 	// REQUIRED
-	ODataType *URLSigningActionParametersODataType `json:"@odata.type,omitempty"`
+	TypeName *URLSigningActionParametersTypeName `json:"typeName,omitempty"`
 
 	// Algorithm to use for URL signing
 	Algorithm *Algorithm `json:"algorithm,omitempty"`
@@ -5452,8 +6256,8 @@ type URLSigningActionParameters struct {
 func (u URLSigningActionParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "algorithm", u.Algorithm)
-	populate(objectMap, "@odata.type", u.ODataType)
 	populate(objectMap, "parameterNameOverride", u.ParameterNameOverride)
+	populate(objectMap, "typeName", u.TypeName)
 	return json.Marshal(objectMap)
 }
 
@@ -5472,7 +6276,8 @@ type URLSigningKeyParameters struct {
 	// REQUIRED; Defines the customer defined key Id. This id will exist in the incoming request to indicate the key used to form the hash.
 	KeyID *string `json:"keyId,omitempty"`
 
-	// REQUIRED; Resource reference to the KV secret
+	// REQUIRED; Resource reference to the Azure Key Vault secret. Expected to be in format of
+	// /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{secretName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
 	SecretSource *ResourceReference `json:"secretSource,omitempty"`
 
 	// Version of the secret to be used
@@ -5647,11 +6452,15 @@ type ValidateProbeOutput struct {
 
 // ValidateSecretInput - Input of the secret to be validated.
 type ValidateSecretInput struct {
-	// REQUIRED; The secret source.
+	// REQUIRED; Resource reference to the Azure Key Vault secret. Expected to be in format of
+	// /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{secretName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
 	SecretSource *ResourceReference `json:"secretSource,omitempty"`
 
 	// REQUIRED; The secret type.
-	SecretType *ValidateSecretType `json:"secretType,omitempty"`
+	SecretType *SecretType `json:"secretType,omitempty"`
+
+	// Secret version, if customer is using a specific version.
+	SecretVersion *string `json:"secretVersion,omitempty"`
 }
 
 // ValidateSecretOptions contains the optional parameters for the Validate.Secret method.

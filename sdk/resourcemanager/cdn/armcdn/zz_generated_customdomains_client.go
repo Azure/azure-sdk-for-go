@@ -107,7 +107,7 @@ func (client *CustomDomainsClient) createCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, customDomainProperties)
@@ -191,7 +191,7 @@ func (client *CustomDomainsClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -210,45 +210,25 @@ func (client *CustomDomainsClient) deleteHandleError(resp *http.Response) error 
 	return runtime.NewResponseError(&errType, resp)
 }
 
-// BeginDisableCustomHTTPS - Disable https delivery of the custom domain.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CustomDomainsClient) BeginDisableCustomHTTPS(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsBeginDisableCustomHTTPSOptions) (CustomDomainsDisableCustomHTTPSPollerResponse, error) {
-	resp, err := client.disableCustomHTTPS(ctx, resourceGroupName, profileName, endpointName, customDomainName, options)
-	if err != nil {
-		return CustomDomainsDisableCustomHTTPSPollerResponse{}, err
-	}
-	result := CustomDomainsDisableCustomHTTPSPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("CustomDomainsClient.DisableCustomHTTPS", "", resp, client.pl, client.disableCustomHTTPSHandleError)
-	if err != nil {
-		return CustomDomainsDisableCustomHTTPSPollerResponse{}, err
-	}
-	result.Poller = &CustomDomainsDisableCustomHTTPSPoller{
-		pt: pt,
-	}
-	return result, nil
-}
-
 // DisableCustomHTTPS - Disable https delivery of the custom domain.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *CustomDomainsClient) disableCustomHTTPS(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsBeginDisableCustomHTTPSOptions) (*http.Response, error) {
+func (client *CustomDomainsClient) DisableCustomHTTPS(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsDisableCustomHTTPSOptions) (CustomDomainsDisableCustomHTTPSResponse, error) {
 	req, err := client.disableCustomHTTPSCreateRequest(ctx, resourceGroupName, profileName, endpointName, customDomainName, options)
 	if err != nil {
-		return nil, err
+		return CustomDomainsDisableCustomHTTPSResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return nil, err
+		return CustomDomainsDisableCustomHTTPSResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.disableCustomHTTPSHandleError(resp)
+		return CustomDomainsDisableCustomHTTPSResponse{}, client.disableCustomHTTPSHandleError(resp)
 	}
-	return resp, nil
+	return client.disableCustomHTTPSHandleResponse(resp)
 }
 
 // disableCustomHTTPSCreateRequest creates the DisableCustomHTTPS request.
-func (client *CustomDomainsClient) disableCustomHTTPSCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsBeginDisableCustomHTTPSOptions) (*policy.Request, error) {
+func (client *CustomDomainsClient) disableCustomHTTPSCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsDisableCustomHTTPSOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}/disableCustomHttps"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -275,10 +255,19 @@ func (client *CustomDomainsClient) disableCustomHTTPSCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
+}
+
+// disableCustomHTTPSHandleResponse handles the DisableCustomHTTPS response.
+func (client *CustomDomainsClient) disableCustomHTTPSHandleResponse(resp *http.Response) (CustomDomainsDisableCustomHTTPSResponse, error) {
+	result := CustomDomainsDisableCustomHTTPSResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CustomDomain); err != nil {
+		return CustomDomainsDisableCustomHTTPSResponse{}, runtime.NewResponseError(err, resp)
+	}
+	return result, nil
 }
 
 // disableCustomHTTPSHandleError handles the DisableCustomHTTPS error response.
@@ -294,45 +283,25 @@ func (client *CustomDomainsClient) disableCustomHTTPSHandleError(resp *http.Resp
 	return runtime.NewResponseError(&errType, resp)
 }
 
-// BeginEnableCustomHTTPS - Enable https delivery of the custom domain.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CustomDomainsClient) BeginEnableCustomHTTPS(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsBeginEnableCustomHTTPSOptions) (CustomDomainsEnableCustomHTTPSPollerResponse, error) {
-	resp, err := client.enableCustomHTTPS(ctx, resourceGroupName, profileName, endpointName, customDomainName, options)
-	if err != nil {
-		return CustomDomainsEnableCustomHTTPSPollerResponse{}, err
-	}
-	result := CustomDomainsEnableCustomHTTPSPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("CustomDomainsClient.EnableCustomHTTPS", "", resp, client.pl, client.enableCustomHTTPSHandleError)
-	if err != nil {
-		return CustomDomainsEnableCustomHTTPSPollerResponse{}, err
-	}
-	result.Poller = &CustomDomainsEnableCustomHTTPSPoller{
-		pt: pt,
-	}
-	return result, nil
-}
-
 // EnableCustomHTTPS - Enable https delivery of the custom domain.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *CustomDomainsClient) enableCustomHTTPS(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsBeginEnableCustomHTTPSOptions) (*http.Response, error) {
+func (client *CustomDomainsClient) EnableCustomHTTPS(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsEnableCustomHTTPSOptions) (CustomDomainsEnableCustomHTTPSResponse, error) {
 	req, err := client.enableCustomHTTPSCreateRequest(ctx, resourceGroupName, profileName, endpointName, customDomainName, options)
 	if err != nil {
-		return nil, err
+		return CustomDomainsEnableCustomHTTPSResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return nil, err
+		return CustomDomainsEnableCustomHTTPSResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.enableCustomHTTPSHandleError(resp)
+		return CustomDomainsEnableCustomHTTPSResponse{}, client.enableCustomHTTPSHandleError(resp)
 	}
-	return resp, nil
+	return client.enableCustomHTTPSHandleResponse(resp)
 }
 
 // enableCustomHTTPSCreateRequest creates the EnableCustomHTTPS request.
-func (client *CustomDomainsClient) enableCustomHTTPSCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsBeginEnableCustomHTTPSOptions) (*policy.Request, error) {
+func (client *CustomDomainsClient) enableCustomHTTPSCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsEnableCustomHTTPSOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}/enableCustomHttps"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -359,13 +328,22 @@ func (client *CustomDomainsClient) enableCustomHTTPSCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	if options != nil && options.CustomDomainHTTPSParameters != nil {
 		return req, runtime.MarshalAsJSON(req, options.CustomDomainHTTPSParameters)
 	}
 	return req, nil
+}
+
+// enableCustomHTTPSHandleResponse handles the EnableCustomHTTPS response.
+func (client *CustomDomainsClient) enableCustomHTTPSHandleResponse(resp *http.Response) (CustomDomainsEnableCustomHTTPSResponse, error) {
+	result := CustomDomainsEnableCustomHTTPSResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CustomDomain); err != nil {
+		return CustomDomainsEnableCustomHTTPSResponse{}, runtime.NewResponseError(err, resp)
+	}
+	return result, nil
 }
 
 // enableCustomHTTPSHandleError handles the EnableCustomHTTPS error response.
@@ -426,7 +404,7 @@ func (client *CustomDomainsClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -492,7 +470,7 @@ func (client *CustomDomainsClient) listByEndpointCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil

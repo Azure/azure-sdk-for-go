@@ -1,14 +1,482 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 0.3.0 (2021-12-18)
+### Breaking Changes
+
+- Function `*AFDProfilesClient.CheckHostNameAvailability` parameter(s) have been changed from `(context.Context, string, string, ValidateCustomDomainInput, *AFDProfilesCheckHostNameAvailabilityOptions)` to `(context.Context, string, string, CheckHostNameAvailabilityInput, *AFDProfilesCheckHostNameAvailabilityOptions)`
+- Type of `SecurityPolicyWebApplicationFirewallAssociation.Domains` has been changed from `[]*ResourceReference` to `[]*ActivatedResourceReference`
+- Type of `ValidateSecretInput.SecretType` has been changed from `*ValidateSecretType` to `*SecretType`
+- Type of `AfdErrorResponse.InnerError` has been changed from `*ErrorResponse` to `*ErrorDetail`
+- Type of `MatchCondition.MatchVariable` has been changed from `*MatchVariable` to `*WafMatchVariable`
+- Type of `RouteUpdatePropertiesParameters.CustomDomains` has been changed from `[]*ResourceReference` to `[]*ActivatedResourceReference`
+- Const `CacheKeyQueryStringActionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleCacheKeyQueryStringBehaviorActionParameters` has been removed
+- Const `ValidateSecretTypeManagedCertificate` has been removed
+- Const `IsDeviceMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleIsDeviceConditionParameters` has been removed
+- Const `ValidateSecretTypeCustomerCertificate` has been removed
+- Const `RequestHeaderMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleRequestHeaderConditionParameters` has been removed
+- Const `OriginGroupOverrideActionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleOriginGroupOverrideActionParameters` has been removed
+- Const `RequestMethodMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleRequestMethodConditionParameters` has been removed
+- Const `PostArgsMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRulePostArgsConditionParameters` has been removed
+- Const `HeaderActionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleHeaderActionParameters` has been removed
+- Const `URLFileNameMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleURLFilenameConditionParameters` has been removed
+- Const `URLRewriteActionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleURLRewriteActionParameters` has been removed
+- Const `URLFileExtensionMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleURLFileExtensionMatchConditionParameters` has been removed
+- Const `CacheExpirationActionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleCacheExpirationActionParameters` has been removed
+- Const `SKUNamePremiumChinaCdn` has been removed
+- Const `AfdQueryStringCachingBehaviorNotSet` has been removed
+- Const `RequestBodyMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleRequestBodyConditionParameters` has been removed
+- Const `RequestURIMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleRequestURIConditionParameters` has been removed
+- Const `URLSigningActionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleURLSigningActionParameters` has been removed
+- Const `KeyVaultCertificateSourceParametersODataTypeMicrosoftAzureCdnModelsKeyVaultCertificateSourceParameters` has been removed
+- Const `KeyVaultSigningKeyParametersODataTypeMicrosoftAzureCdnModelsKeyVaultSigningKeyParameters` has been removed
+- Const `HTTPVersionMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleHTTPVersionConditionParameters` has been removed
+- Const `URLPathMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleURLPathMatchConditionParameters` has been removed
+- Const `QueryStringMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleQueryStringConditionParameters` has been removed
+- Const `ValidateSecretTypeURLSigningKey` has been removed
+- Const `WafRankingTypeCountry` has been removed
+- Const `RequestSchemeMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleRequestSchemeConditionParameters` has been removed
+- Const `URLRedirectActionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleURLRedirectActionParameters` has been removed
+- Const `MatchVariableRemoteAddr` has been removed
+- Const `CookiesMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleCookiesConditionParameters` has been removed
+- Const `RemoteAddressMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleRemoteAddressConditionParameters` has been removed
+- Const `CdnCertificateSourceParametersODataTypeMicrosoftAzureCdnModelsCdnCertificateSourceParameters` has been removed
+- Const `LogMetricsGroupByCountry` has been removed
+- Function `PossibleKeyVaultSigningKeyParametersODataTypeValues` has been removed
+- Function `*SecretsClient.BeginUpdate` has been removed
+- Function `PossibleURLFileExtensionMatchConditionParametersODataTypeValues` has been removed
+- Function `OriginGroupOverrideActionParametersODataType.ToPtr` has been removed
+- Function `*SecretsUpdatePoller.FinalResponse` has been removed
+- Function `RequestURIMatchConditionParametersODataType.ToPtr` has been removed
+- Function `URLSigningActionParametersODataType.ToPtr` has been removed
+- Function `*CustomDomainsDisableCustomHTTPSPoller.Done` has been removed
+- Function `CustomDomainsDisableCustomHTTPSPollerResponse.PollUntilDone` has been removed
+- Function `*CustomDomainsClient.BeginDisableCustomHTTPS` has been removed
+- Function `PossibleURLSigningActionParametersODataTypeValues` has been removed
+- Function `RequestMethodMatchConditionParametersODataType.ToPtr` has been removed
+- Function `PostArgsMatchConditionParametersODataType.ToPtr` has been removed
+- Function `*CustomDomainsDisableCustomHTTPSPollerResponse.Resume` has been removed
+- Function `PossibleCacheExpirationActionParametersODataTypeValues` has been removed
+- Function `CacheExpirationActionParametersODataType.ToPtr` has been removed
+- Function `*RuleSetsCreatePollerResponse.Resume` has been removed
+- Function `URLFileNameMatchConditionParametersODataType.ToPtr` has been removed
+- Function `PossibleURLRedirectActionParametersODataTypeValues` has been removed
+- Function `KeyVaultCertificateSourceParametersODataType.ToPtr` has been removed
+- Function `PossibleCacheKeyQueryStringActionParametersODataTypeValues` has been removed
+- Function `PossibleRequestHeaderMatchConditionParametersODataTypeValues` has been removed
+- Function `*CustomDomainsDisableCustomHTTPSPoller.ResumeToken` has been removed
+- Function `URLRedirectActionParametersODataType.ToPtr` has been removed
+- Function `PossibleHeaderActionParametersODataTypeValues` has been removed
+- Function `RequestHeaderMatchConditionParametersODataType.ToPtr` has been removed
+- Function `PossibleCdnCertificateSourceParametersODataTypeValues` has been removed
+- Function `PossibleQueryStringMatchConditionParametersODataTypeValues` has been removed
+- Function `QueryStringMatchConditionParametersODataType.ToPtr` has been removed
+- Function `PossibleKeyVaultCertificateSourceParametersODataTypeValues` has been removed
+- Function `PossibleIsDeviceMatchConditionParametersODataTypeValues` has been removed
+- Function `*RuleSetsCreatePoller.Done` has been removed
+- Function `URLFileExtensionMatchConditionParametersODataType.ToPtr` has been removed
+- Function `PossibleOriginGroupOverrideActionParametersODataTypeValues` has been removed
+- Function `RuleSetsCreatePollerResponse.PollUntilDone` has been removed
+- Function `CustomDomainsEnableCustomHTTPSPollerResponse.PollUntilDone` has been removed
+- Function `*RuleSetsClient.BeginCreate` has been removed
+- Function `*SecretsUpdatePoller.Done` has been removed
+- Function `URLRewriteActionParametersODataType.ToPtr` has been removed
+- Function `IsDeviceMatchConditionParametersODataType.ToPtr` has been removed
+- Function `RequestSchemeMatchConditionParametersODataType.ToPtr` has been removed
+- Function `*CustomDomainsEnableCustomHTTPSPoller.ResumeToken` has been removed
+- Function `RemoteAddressMatchConditionParametersODataType.ToPtr` has been removed
+- Function `PossibleRequestMethodMatchConditionParametersODataTypeValues` has been removed
+- Function `PossibleHTTPVersionMatchConditionParametersODataTypeValues` has been removed
+- Function `PossibleRemoteAddressMatchConditionParametersODataTypeValues` has been removed
+- Function `CdnCertificateSourceParametersODataType.ToPtr` has been removed
+- Function `PossibleRequestBodyMatchConditionParametersODataTypeValues` has been removed
+- Function `*CustomDomainsEnableCustomHTTPSPoller.FinalResponse` has been removed
+- Function `URLPathMatchConditionParametersODataType.ToPtr` has been removed
+- Function `*RuleSetsCreatePoller.Poll` has been removed
+- Function `HTTPVersionMatchConditionParametersODataType.ToPtr` has been removed
+- Function `*CustomDomainsEnableCustomHTTPSPoller.Poll` has been removed
+- Function `PossibleURLFileNameMatchConditionParametersODataTypeValues` has been removed
+- Function `*CustomDomainsClient.BeginEnableCustomHTTPS` has been removed
+- Function `CacheKeyQueryStringActionParametersODataType.ToPtr` has been removed
+- Function `PossibleRequestSchemeMatchConditionParametersODataTypeValues` has been removed
+- Function `CookiesMatchConditionParametersODataType.ToPtr` has been removed
+- Function `RequestBodyMatchConditionParametersODataType.ToPtr` has been removed
+- Function `PossibleValidateSecretTypeValues` has been removed
+- Function `KeyVaultSigningKeyParametersODataType.ToPtr` has been removed
+- Function `HeaderActionParametersODataType.ToPtr` has been removed
+- Function `SecretsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `PossiblePostArgsMatchConditionParametersODataTypeValues` has been removed
+- Function `*CustomDomainsDisableCustomHTTPSPoller.FinalResponse` has been removed
+- Function `*RuleSetsCreatePoller.ResumeToken` has been removed
+- Function `ValidateSecretType.ToPtr` has been removed
+- Function `*RuleSetsCreatePoller.FinalResponse` has been removed
+- Function `PossibleURLRewriteActionParametersODataTypeValues` has been removed
+- Function `*SecretsUpdatePollerResponse.Resume` has been removed
+- Function `PossibleCookiesMatchConditionParametersODataTypeValues` has been removed
+- Function `*CustomDomainsEnableCustomHTTPSPoller.Done` has been removed
+- Function `*SecretsUpdatePoller.ResumeToken` has been removed
+- Function `*CustomDomainsEnableCustomHTTPSPollerResponse.Resume` has been removed
+- Function `PossibleRequestURIMatchConditionParametersODataTypeValues` has been removed
+- Function `*SecretsUpdatePoller.Poll` has been removed
+- Function `*CustomDomainsDisableCustomHTTPSPoller.Poll` has been removed
+- Function `PossibleURLPathMatchConditionParametersODataTypeValues` has been removed
+- Struct `AFDCustomDomainsRefreshValidationTokenResult` has been removed
+- Struct `CustomDomainsBeginDisableCustomHTTPSOptions` has been removed
+- Struct `CustomDomainsBeginEnableCustomHTTPSOptions` has been removed
+- Struct `CustomDomainsDisableCustomHTTPSPoller` has been removed
+- Struct `CustomDomainsDisableCustomHTTPSPollerResponse` has been removed
+- Struct `CustomDomainsEnableCustomHTTPSPoller` has been removed
+- Struct `CustomDomainsEnableCustomHTTPSPollerResponse` has been removed
+- Struct `RuleSetsBeginCreateOptions` has been removed
+- Struct `RuleSetsCreatePoller` has been removed
+- Struct `RuleSetsCreatePollerResponse` has been removed
+- Struct `SecretsBeginUpdateOptions` has been removed
+- Struct `SecretsUpdatePoller` has been removed
+- Struct `SecretsUpdatePollerResponse` has been removed
+- Struct `SecretsUpdateResponse` has been removed
+- Struct `SecretsUpdateResult` has been removed
+- Field `ODataType` of struct `HeaderActionParameters` has been removed
+- Field `Version` of struct `CustomerCertificate` has been removed
+- Field `CertificateURL` of struct `CustomerCertificate` has been removed
+- Field `ODataType` of struct `CacheKeyQueryStringActionParameters` has been removed
+- Field `ODataType` of struct `HTTPVersionMatchConditionParameters` has been removed
+- Field `ODataType` of struct `URLRewriteActionParameters` has been removed
+- Field `ODataType` of struct `CdnCertificateSourceParameters` has been removed
+- Field `ODataType` of struct `RequestSchemeMatchConditionParameters` has been removed
+- Field `ODataType` of struct `OriginGroupOverrideActionParameters` has been removed
+- Field `QueryStringCachingBehavior` of struct `RouteUpdatePropertiesParameters` has been removed
+- Field `CompressionSettings` of struct `RouteUpdatePropertiesParameters` has been removed
+- Field `Transforms` of struct `IsDeviceMatchConditionParameters` has been removed
+- Field `ODataType` of struct `IsDeviceMatchConditionParameters` has been removed
+- Field `Thumbprint` of struct `Certificate` has been removed
+- Field `ODataType` of struct `CookiesMatchConditionParameters` has been removed
+- Field `ODataType` of struct `URLFileNameMatchConditionParameters` has been removed
+- Field `ODataType` of struct `KeyVaultCertificateSourceParameters` has been removed
+- Field `ODataType` of struct `URLFileExtensionMatchConditionParameters` has been removed
+- Field `ODataType` of struct `PostArgsMatchConditionParameters` has been removed
+- Field `ODataType` of struct `RequestBodyMatchConditionParameters` has been removed
+- Field `ODataType` of struct `RequestMethodMatchConditionParameters` has been removed
+- Field `ODataType` of struct `URLPathMatchConditionParameters` has been removed
+- Field `ODataType` of struct `RemoteAddressMatchConditionParameters` has been removed
+- Field `ODataType` of struct `RequestHeaderMatchConditionParameters` has been removed
+- Field `ODataType` of struct `CacheExpirationActionParameters` has been removed
+- Field `ODataType` of struct `URLRedirectActionParameters` has been removed
+- Field `FrontdoorID` of struct `ProfileProperties` has been removed
+- Field `Code` of struct `ErrorResponse` has been removed
+- Field `Message` of struct `ErrorResponse` has been removed
+- Field `ODataType` of struct `RequestURIMatchConditionParameters` has been removed
+- Field `ValidateCustomDomainOutput` of struct `AFDProfilesCheckHostNameAvailabilityResult` has been removed
+- Field `ODataType` of struct `QueryStringMatchConditionParameters` has been removed
+- Field `ODataType` of struct `URLSigningActionParameters` has been removed
+- Field `AFDCustomDomainsRefreshValidationTokenResult` of struct `AFDCustomDomainsRefreshValidationTokenResponse` has been removed
+- Field `ODataType` of struct `KeyVaultSigningKeyParameters` has been removed
 
 ### Features Added
 
-### Breaking Changes
+- New const `ManagedServiceIdentityTypeNone`
+- New const `AfdQueryStringCachingBehaviorIncludeSpecifiedQueryStrings`
+- New const `ServerPortOperatorBeginsWith`
+- New const `SSLProtocolTLSv1`
+- New const `RequestSchemeMatchConditionParametersTypeNameDeliveryRuleRequestSchemeConditionParameters`
+- New const `RuleCacheBehaviorHonorOrigin`
+- New const `HostNameOperatorContains`
+- New const `TransformURLDecode`
+- New const `RuleQueryStringCachingBehaviorIncludeSpecifiedQueryStrings`
+- New const `URLRewriteActionParametersTypeNameDeliveryRuleURLRewriteActionParameters`
+- New const `HostNameOperatorEndsWith`
+- New const `KeyVaultSigningKeyParametersTypeNameKeyVaultSigningKeyParameters`
+- New const `ServerPortOperatorLessThanOrEqual`
+- New const `DomainValidationStateRejected`
+- New const `URLRedirectActionParametersTypeNameDeliveryRuleURLRedirectActionParameters`
+- New const `ClientPortOperatorEndsWith`
+- New const `RuleCacheBehaviorOverrideIfOriginMissing`
+- New const `HostNameOperatorEqual`
+- New const `HTTPVersionMatchConditionParametersTypeNameDeliveryRuleHTTPVersionConditionParameters`
+- New const `RuleIsCompressionEnabledEnabled`
+- New const `MatchVariableServerPort`
+- New const `RuleQueryStringCachingBehaviorUseQueryString`
+- New const `ClientPortOperatorBeginsWith`
+- New const `DeliveryRuleActionRouteConfigurationOverride`
+- New const `TransformTrim`
+- New const `RemoteAddressMatchConditionParametersTypeNameDeliveryRuleRemoteAddressConditionParameters`
+- New const `ClientPortOperatorGreaterThan`
+- New const `ServerPortOperatorLessThan`
+- New const `RuleQueryStringCachingBehaviorIgnoreSpecifiedQueryStrings`
+- New const `ClientPortOperatorContains`
+- New const `RuleCacheBehaviorOverrideAlways`
+- New const `MatchVariableHostName`
+- New const `TransformURLEncode`
+- New const `SocketAddrOperatorIPMatch`
+- New const `HostNameOperatorGreaterThanOrEqual`
+- New const `ClientPortOperatorLessThanOrEqual`
+- New const `SSLProtocolTLSv11`
+- New const `MatchVariableClientPort`
+- New const `ServerPortOperatorRegEx`
+- New const `SSLProtocolOperatorEqual`
+- New const `SecretTypeAzureFirstPartyManagedCertificate`
+- New const `URLFileNameMatchConditionParametersTypeNameDeliveryRuleURLFilenameConditionParameters`
+- New const `WafRankingTypeCountryOrRegion`
+- New const `KeyVaultCertificateSourceParametersTypeNameKeyVaultCertificateSourceParameters`
+- New const `SSLProtocolTLSv12`
+- New const `RuleQueryStringCachingBehaviorIgnoreQueryString`
+- New const `ServerPortOperatorEqual`
+- New const `CacheExpirationActionParametersTypeNameDeliveryRuleCacheExpirationActionParameters`
+- New const `ClientPortOperatorRegEx`
+- New const `ServerPortOperatorContains`
+- New const `WafMatchVariableQueryString`
+- New const `MetricsResponseSeriesItemUnitMilliSeconds`
+- New const `WafMatchVariableSocketAddr`
+- New const `HostNameOperatorLessThan`
+- New const `ClientPortOperatorEqual`
+- New const `WafMatchVariableRequestBody`
+- New const `ClientPortOperatorLessThan`
+- New const `ClientPortMatchConditionParametersTypeNameDeliveryRuleClientPortConditionParameters`
+- New const `ClientPortOperatorGreaterThanOrEqual`
+- New const `WafMatchVariableRequestMethod`
+- New const `AfdQueryStringCachingBehaviorIgnoreSpecifiedQueryStrings`
+- New const `RequestMethodMatchConditionParametersTypeNameDeliveryRuleRequestMethodConditionParameters`
+- New const `URLSigningActionParametersTypeNameDeliveryRuleURLSigningActionParameters`
+- New const `HostNameOperatorGreaterThan`
+- New const `WafMatchVariableRequestHeader`
+- New const `WafMatchVariableRequestURI`
+- New const `URLFileExtensionMatchConditionParametersTypeNameDeliveryRuleURLFileExtensionMatchConditionParameters`
+- New const `HostNameOperatorLessThanOrEqual`
+- New const `WafMatchVariableCookies`
+- New const `HostNameOperatorAny`
+- New const `CdnCertificateSourceParametersTypeNameCdnCertificateSourceParameters`
+- New const `ServerPortOperatorAny`
+- New const `OriginGroupOverrideActionParametersTypeNameDeliveryRuleOriginGroupOverrideActionParameters`
+- New const `RouteConfigurationOverrideActionParametersTypeNameDeliveryRuleRouteConfigurationOverrideActionParameters`
+- New const `SocketAddrMatchConditionParametersTypeNameDeliveryRuleSocketAddrConditionParameters`
+- New const `PostArgsMatchConditionParametersTypeNameDeliveryRulePostArgsConditionParameters`
+- New const `CacheKeyQueryStringActionParametersTypeNameDeliveryRuleCacheKeyQueryStringBehaviorActionParameters`
+- New const `WafMatchVariablePostArgs`
+- New const `LogMetricsGroupByCountryOrRegion`
+- New const `ServerPortOperatorEndsWith`
+- New const `RequestBodyMatchConditionParametersTypeNameDeliveryRuleRequestBodyConditionParameters`
+- New const `CookiesMatchConditionParametersTypeNameDeliveryRuleCookiesConditionParameters`
+- New const `SSLProtocolMatchConditionParametersTypeNameDeliveryRuleSSLProtocolConditionParameters`
+- New const `HeaderActionParametersTypeNameDeliveryRuleHeaderActionParameters`
+- New const `ClientPortOperatorAny`
+- New const `TransformRemoveNulls`
+- New const `ServerPortMatchConditionParametersTypeNameDeliveryRuleServerPortConditionParameters`
+- New const `ManagedServiceIdentityTypeSystemAssigned`
+- New const `HostNameOperatorRegEx`
+- New const `SocketAddrOperatorAny`
+- New const `ServerPortOperatorGreaterThan`
+- New const `RequestHeaderMatchConditionParametersTypeNameDeliveryRuleRequestHeaderConditionParameters`
+- New const `QueryStringMatchConditionParametersTypeNameDeliveryRuleQueryStringConditionParameters`
+- New const `IsDeviceMatchConditionParametersTypeNameDeliveryRuleIsDeviceConditionParameters`
+- New const `AfdCertificateTypeAzureFirstPartyManagedCertificate`
+- New const `MatchVariableSSLProtocol`
+- New const `WafMatchVariableRemoteAddr`
+- New const `HostNameMatchConditionParametersTypeNameDeliveryRuleHostNameConditionParameters`
+- New const `RequestURIMatchConditionParametersTypeNameDeliveryRuleRequestURIConditionParameters`
+- New const `RuleIsCompressionEnabledDisabled`
+- New const `HostNameOperatorBeginsWith`
+- New const `URLPathMatchConditionParametersTypeNameDeliveryRuleURLPathMatchConditionParameters`
+- New const `ServerPortOperatorGreaterThanOrEqual`
+- New function `PossibleURLFileExtensionMatchConditionParametersTypeNameValues() []URLFileExtensionMatchConditionParametersTypeName`
+- New function `HostNameMatchConditionParameters.MarshalJSON() ([]byte, error)`
+- New function `DeliveryRuleRouteConfigurationOverrideAction.MarshalJSON() ([]byte, error)`
+- New function `DeliveryRuleSocketAddrCondition.MarshalJSON() ([]byte, error)`
+- New function `HostNameMatchConditionParametersTypeName.ToPtr() *HostNameMatchConditionParametersTypeName`
+- New function `SSLProtocol.ToPtr() *SSLProtocol`
+- New function `*DeliveryRuleClientPortCondition.UnmarshalJSON([]byte) error`
+- New function `PossibleKeyVaultCertificateSourceParametersTypeNameValues() []KeyVaultCertificateSourceParametersTypeName`
+- New function `ClientPortMatchConditionParametersTypeName.ToPtr() *ClientPortMatchConditionParametersTypeName`
+- New function `PossibleURLFileNameMatchConditionParametersTypeNameValues() []URLFileNameMatchConditionParametersTypeName`
+- New function `OriginGroupOverrideActionParametersTypeName.ToPtr() *OriginGroupOverrideActionParametersTypeName`
+- New function `ServiceSpecification.MarshalJSON() ([]byte, error)`
+- New function `PossibleCdnCertificateSourceParametersTypeNameValues() []CdnCertificateSourceParametersTypeName`
+- New function `PossiblePostArgsMatchConditionParametersTypeNameValues() []PostArgsMatchConditionParametersTypeName`
+- New function `WafMatchVariable.ToPtr() *WafMatchVariable`
+- New function `DeliveryRuleClientPortCondition.MarshalJSON() ([]byte, error)`
+- New function `DeliveryRuleServerPortCondition.MarshalJSON() ([]byte, error)`
+- New function `PossibleHTTPVersionMatchConditionParametersTypeNameValues() []HTTPVersionMatchConditionParametersTypeName`
+- New function `HTTPVersionMatchConditionParametersTypeName.ToPtr() *HTTPVersionMatchConditionParametersTypeName`
+- New function `PossibleSSLProtocolOperatorValues() []SSLProtocolOperator`
+- New function `URLSigningActionParametersTypeName.ToPtr() *URLSigningActionParametersTypeName`
+- New function `PossibleClientPortOperatorValues() []ClientPortOperator`
+- New function `SocketAddrMatchConditionParameters.MarshalJSON() ([]byte, error)`
+- New function `PossibleRequestURIMatchConditionParametersTypeNameValues() []RequestURIMatchConditionParametersTypeName`
+- New function `*ManagedCertificateParameters.UnmarshalJSON([]byte) error`
+- New function `*DeliveryRuleSSLProtocolCondition.UnmarshalJSON([]byte) error`
+- New function `URLFileNameMatchConditionParametersTypeName.ToPtr() *URLFileNameMatchConditionParametersTypeName`
+- New function `PossibleRequestBodyMatchConditionParametersTypeNameValues() []RequestBodyMatchConditionParametersTypeName`
+- New function `ClientPortOperator.ToPtr() *ClientPortOperator`
+- New function `PossibleSocketAddrOperatorValues() []SocketAddrOperator`
+- New function `PossibleOriginGroupOverrideActionParametersTypeNameValues() []OriginGroupOverrideActionParametersTypeName`
+- New function `PossibleURLRewriteActionParametersTypeNameValues() []URLRewriteActionParametersTypeName`
+- New function `PossibleURLSigningActionParametersTypeNameValues() []URLSigningActionParametersTypeName`
+- New function `*RuleSetProperties.UnmarshalJSON([]byte) error`
+- New function `PossibleHeaderActionParametersTypeNameValues() []HeaderActionParametersTypeName`
+- New function `DeliveryRuleSSLProtocolCondition.MarshalJSON() ([]byte, error)`
+- New function `PossibleKeyVaultSigningKeyParametersTypeNameValues() []KeyVaultSigningKeyParametersTypeName`
+- New function `*RuleSetsClient.Create(context.Context, string, string, string, *RuleSetsCreateOptions) (RuleSetsCreateResponse, error)`
+- New function `PossibleRemoteAddressMatchConditionParametersTypeNameValues() []RemoteAddressMatchConditionParametersTypeName`
+- New function `RequestURIMatchConditionParametersTypeName.ToPtr() *RequestURIMatchConditionParametersTypeName`
+- New function `*DeliveryRuleHostNameCondition.UnmarshalJSON([]byte) error`
+- New function `PossibleURLPathMatchConditionParametersTypeNameValues() []URLPathMatchConditionParametersTypeName`
+- New function `ServerPortMatchConditionParameters.MarshalJSON() ([]byte, error)`
+- New function `CdnCertificateSourceParametersTypeName.ToPtr() *CdnCertificateSourceParametersTypeName`
+- New function `IsDeviceMatchConditionParametersTypeName.ToPtr() *IsDeviceMatchConditionParametersTypeName`
+- New function `QueryStringMatchConditionParametersTypeName.ToPtr() *QueryStringMatchConditionParametersTypeName`
+- New function `PossibleCacheExpirationActionParametersTypeNameValues() []CacheExpirationActionParametersTypeName`
+- New function `AzureFirstPartyManagedCertificateParameters.MarshalJSON() ([]byte, error)`
+- New function `RuleIsCompressionEnabled.ToPtr() *RuleIsCompressionEnabled`
+- New function `RequestMethodMatchConditionParametersTypeName.ToPtr() *RequestMethodMatchConditionParametersTypeName`
+- New function `PossibleRequestSchemeMatchConditionParametersTypeNameValues() []RequestSchemeMatchConditionParametersTypeName`
+- New function `RouteConfigurationOverrideActionParametersTypeName.ToPtr() *RouteConfigurationOverrideActionParametersTypeName`
+- New function `PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType`
+- New function `PossibleRouteConfigurationOverrideActionParametersTypeNameValues() []RouteConfigurationOverrideActionParametersTypeName`
+- New function `SocketAddrOperator.ToPtr() *SocketAddrOperator`
+- New function `*DeliveryRuleSocketAddrCondition.UnmarshalJSON([]byte) error`
+- New function `RuleSetProperties.MarshalJSON() ([]byte, error)`
+- New function `PostArgsMatchConditionParametersTypeName.ToPtr() *PostArgsMatchConditionParametersTypeName`
+- New function `RuleCacheBehavior.ToPtr() *RuleCacheBehavior`
+- New function `PossibleSSLProtocolMatchConditionParametersTypeNameValues() []SSLProtocolMatchConditionParametersTypeName`
+- New function `ClientPortMatchConditionParameters.MarshalJSON() ([]byte, error)`
+- New function `SocketAddrMatchConditionParametersTypeName.ToPtr() *SocketAddrMatchConditionParametersTypeName`
+- New function `ErrorDetail.MarshalJSON() ([]byte, error)`
+- New function `RequestBodyMatchConditionParametersTypeName.ToPtr() *RequestBodyMatchConditionParametersTypeName`
+- New function `URLPathMatchConditionParametersTypeName.ToPtr() *URLPathMatchConditionParametersTypeName`
+- New function `PossibleServerPortMatchConditionParametersTypeNameValues() []ServerPortMatchConditionParametersTypeName`
+- New function `CookiesMatchConditionParametersTypeName.ToPtr() *CookiesMatchConditionParametersTypeName`
+- New function `PossibleClientPortMatchConditionParametersTypeNameValues() []ClientPortMatchConditionParametersTypeName`
+- New function `*CustomDomainsClient.EnableCustomHTTPS(context.Context, string, string, string, string, *CustomDomainsEnableCustomHTTPSOptions) (CustomDomainsEnableCustomHTTPSResponse, error)`
+- New function `PossibleRuleQueryStringCachingBehaviorValues() []RuleQueryStringCachingBehavior`
+- New function `CacheKeyQueryStringActionParametersTypeName.ToPtr() *CacheKeyQueryStringActionParametersTypeName`
+- New function `*DeliveryRuleServerPortCondition.UnmarshalJSON([]byte) error`
+- New function `ServerPortMatchConditionParametersTypeName.ToPtr() *ServerPortMatchConditionParametersTypeName`
+- New function `PossibleIsDeviceMatchConditionParametersTypeNameValues() []IsDeviceMatchConditionParametersTypeName`
+- New function `SSLProtocolMatchConditionParameters.MarshalJSON() ([]byte, error)`
+- New function `PossibleSSLProtocolValues() []SSLProtocol`
+- New function `KeyVaultCertificateSourceParametersTypeName.ToPtr() *KeyVaultCertificateSourceParametersTypeName`
+- New function `CacheExpirationActionParametersTypeName.ToPtr() *CacheExpirationActionParametersTypeName`
+- New function `SSLProtocolOperator.ToPtr() *SSLProtocolOperator`
+- New function `RuleQueryStringCachingBehavior.ToPtr() *RuleQueryStringCachingBehavior`
+- New function `URLFileExtensionMatchConditionParametersTypeName.ToPtr() *URLFileExtensionMatchConditionParametersTypeName`
+- New function `KeyVaultSigningKeyParametersTypeName.ToPtr() *KeyVaultSigningKeyParametersTypeName`
+- New function `RemoteAddressMatchConditionParametersTypeName.ToPtr() *RemoteAddressMatchConditionParametersTypeName`
+- New function `PossibleURLRedirectActionParametersTypeNameValues() []URLRedirectActionParametersTypeName`
+- New function `RequestHeaderMatchConditionParametersTypeName.ToPtr() *RequestHeaderMatchConditionParametersTypeName`
+- New function `PossibleRuleCacheBehaviorValues() []RuleCacheBehavior`
+- New function `PossibleRequestHeaderMatchConditionParametersTypeNameValues() []RequestHeaderMatchConditionParametersTypeName`
+- New function `PossibleServerPortOperatorValues() []ServerPortOperator`
+- New function `DeliveryRuleHostNameCondition.MarshalJSON() ([]byte, error)`
+- New function `URLRedirectActionParametersTypeName.ToPtr() *URLRedirectActionParametersTypeName`
+- New function `SSLProtocolMatchConditionParametersTypeName.ToPtr() *SSLProtocolMatchConditionParametersTypeName`
+- New function `PossibleRuleIsCompressionEnabledValues() []RuleIsCompressionEnabled`
+- New function `HostNameOperator.ToPtr() *HostNameOperator`
+- New function `*CustomDomainsClient.DisableCustomHTTPS(context.Context, string, string, string, string, *CustomDomainsDisableCustomHTTPSOptions) (CustomDomainsDisableCustomHTTPSResponse, error)`
+- New function `URLRewriteActionParametersTypeName.ToPtr() *URLRewriteActionParametersTypeName`
+- New function `PossibleQueryStringMatchConditionParametersTypeNameValues() []QueryStringMatchConditionParametersTypeName`
+- New function `PossibleWafMatchVariableValues() []WafMatchVariable`
+- New function `*DeliveryRuleRouteConfigurationOverrideAction.UnmarshalJSON([]byte) error`
+- New function `PossibleCookiesMatchConditionParametersTypeNameValues() []CookiesMatchConditionParametersTypeName`
+- New function `PossibleSocketAddrMatchConditionParametersTypeNameValues() []SocketAddrMatchConditionParametersTypeName`
+- New function `PossibleCacheKeyQueryStringActionParametersTypeNameValues() []CacheKeyQueryStringActionParametersTypeName`
+- New function `MetricSpecification.MarshalJSON() ([]byte, error)`
+- New function `ServerPortOperator.ToPtr() *ServerPortOperator`
+- New function `ManagedServiceIdentityType.ToPtr() *ManagedServiceIdentityType`
+- New function `PossibleHostNameMatchConditionParametersTypeNameValues() []HostNameMatchConditionParametersTypeName`
+- New function `PossibleRequestMethodMatchConditionParametersTypeNameValues() []RequestMethodMatchConditionParametersTypeName`
+- New function `PossibleHostNameOperatorValues() []HostNameOperator`
+- New function `RequestSchemeMatchConditionParametersTypeName.ToPtr() *RequestSchemeMatchConditionParametersTypeName`
+- New function `HeaderActionParametersTypeName.ToPtr() *HeaderActionParametersTypeName`
+- New struct `ActivatedResourceReference`
+- New struct `AfdRouteCacheConfiguration`
+- New struct `AzureFirstPartyManagedCertificate`
+- New struct `AzureFirstPartyManagedCertificateParameters`
+- New struct `CacheConfiguration`
+- New struct `CheckHostNameAvailabilityInput`
+- New struct `ClientPortMatchConditionParameters`
+- New struct `CustomDomainsDisableCustomHTTPSOptions`
+- New struct `CustomDomainsEnableCustomHTTPSOptions`
+- New struct `DeliveryRuleClientPortCondition`
+- New struct `DeliveryRuleHostNameCondition`
+- New struct `DeliveryRuleRouteConfigurationOverrideAction`
+- New struct `DeliveryRuleSSLProtocolCondition`
+- New struct `DeliveryRuleServerPortCondition`
+- New struct `DeliveryRuleSocketAddrCondition`
+- New struct `DimensionProperties`
+- New struct `ErrorAdditionalInfo`
+- New struct `ErrorDetail`
+- New struct `HostNameMatchConditionParameters`
+- New struct `LogSpecification`
+- New struct `ManagedServiceIdentity`
+- New struct `MetricAvailability`
+- New struct `MetricSpecification`
+- New struct `OperationProperties`
+- New struct `OriginGroupOverride`
+- New struct `RouteConfigurationOverrideActionParameters`
+- New struct `RuleSetsCreateOptions`
+- New struct `SSLProtocolMatchConditionParameters`
+- New struct `ServerPortMatchConditionParameters`
+- New struct `ServiceSpecification`
+- New struct `SocketAddrMatchConditionParameters`
+- New field `EnforceCertificateNameCheck` in struct `AFDOriginUpdatePropertiesParameters`
+- New field `OriginGroupName` in struct `AFDOriginUpdatePropertiesParameters`
+- New field `TypeName` in struct `HeaderActionParameters`
+- New field `TypeName` in struct `RequestBodyMatchConditionParameters`
+- New field `CacheConfiguration` in struct `RouteUpdatePropertiesParameters`
+- New field `EndpointName` in struct `RouteUpdatePropertiesParameters`
+- New anonymous field `CheckNameAvailabilityOutput` in struct `AFDProfilesCheckHostNameAvailabilityResult`
+- New field `TypeName` in struct `URLRewriteActionParameters`
+- New field `ProfileName` in struct `RuleSetProperties`
+- New field `SecretVersion` in struct `ValidateSecretInput`
+- New field `ProfileName` in struct `AFDOriginGroupUpdatePropertiesParameters`
+- New field `ProfileName` in struct `SecurityPolicyProperties`
+- New field `TypeName` in struct `PostArgsMatchConditionParameters`
+- New field `CustomDomains` in struct `EndpointProperties`
+- New field `InnerError` in struct `ErrorResponse`
+- New field `TypeName` in struct `URLSigningActionParameters`
+- New field `RuleSetName` in struct `RuleUpdatePropertiesParameters`
+- New field `TypeName` in struct `QueryStringMatchConditionParameters`
+- New field `TypeName` in struct `RequestSchemeMatchConditionParameters`
+- New field `Transforms` in struct `RequestSchemeMatchConditionParameters`
+- New field `ProfileName` in struct `AFDEndpointPropertiesUpdateParameters`
+- New field `ProfileName` in struct `SecretProperties`
+- New field `TypeName` in struct `CacheExpirationActionParameters`
+- New field `Description` in struct `OperationDisplay`
+- New field `TypeName` in struct `CdnCertificateSourceParameters`
+- New field `TypeName` in struct `URLRedirectActionParameters`
+- New field `PreValidatedCustomDomainResourceID` in struct `AFDDomainUpdatePropertiesParameters`
+- New field `ProfileName` in struct `AFDDomainUpdatePropertiesParameters`
+- New field `IsDataAction` in struct `Operation`
+- New field `OperationProperties` in struct `Operation`
+- New field `Origin` in struct `Operation`
+- New field `Transforms` in struct `RequestMethodMatchConditionParameters`
+- New field `TypeName` in struct `RequestMethodMatchConditionParameters`
+- New field `TypeName` in struct `RequestURIMatchConditionParameters`
+- New field `Identity` in struct `ProfileProperties`
+- New field `OriginResponseTimeoutSeconds` in struct `ProfileProperties`
+- New field `FrontDoorID` in struct `ProfileProperties`
+- New field `Kind` in struct `ProfileProperties`
+- New field `TypeName` in struct `CookiesMatchConditionParameters`
+- New field `SecretVersion` in struct `CustomerCertificate`
+- New field `Thumbprint` in struct `CustomerCertificate`
+- New field `SecretSource` in struct `CustomerCertificate`
+- New field `ExpirationDate` in struct `CustomerCertificateParameters`
+- New field `Subject` in struct `CustomerCertificateParameters`
+- New field `Thumbprint` in struct `CustomerCertificateParameters`
+- New field `TypeName` in struct `URLFileExtensionMatchConditionParameters`
+- New field `TypeName` in struct `URLFileNameMatchConditionParameters`
+- New field `Type` in struct `Certificate`
+- New field `TypeName` in struct `CacheKeyQueryStringActionParameters`
+- New field `PrivateEndpointStatus` in struct `DeepCreatedOriginProperties`
+- New field `TypeName` in struct `IsDeviceMatchConditionParameters`
+- New field `TypeName` in struct `RemoteAddressMatchConditionParameters`
+- New field `TypeName` in struct `URLPathMatchConditionParameters`
+- New field `TypeName` in struct `OriginGroupOverrideActionParameters`
+- New field `ExpirationDate` in struct `ManagedCertificateParameters`
+- New field `Subject` in struct `ManagedCertificateParameters`
+- New field `TypeName` in struct `HTTPVersionMatchConditionParameters`
+- New field `Transforms` in struct `HTTPVersionMatchConditionParameters`
+- New field `TypeName` in struct `RequestHeaderMatchConditionParameters`
+- New field `TypeName` in struct `KeyVaultSigningKeyParameters`
+- New field `TypeName` in struct `KeyVaultCertificateSourceParameters`
 
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.2.0 (2021-10-29)
 

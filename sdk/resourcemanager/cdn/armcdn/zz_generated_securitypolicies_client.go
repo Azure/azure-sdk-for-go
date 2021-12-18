@@ -103,7 +103,7 @@ func (client *SecurityPoliciesClient) createCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, securityPolicy)
@@ -183,7 +183,7 @@ func (client *SecurityPoliciesClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -243,7 +243,7 @@ func (client *SecurityPoliciesClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -305,7 +305,7 @@ func (client *SecurityPoliciesClient) listByProfileCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -333,7 +333,7 @@ func (client *SecurityPoliciesClient) listByProfileHandleError(resp *http.Respon
 	return runtime.NewResponseError(&errType, resp)
 }
 
-// BeginPatch - Updates an existing Secret within a profile.
+// BeginPatch - Updates an existing security policy within a profile.
 // If the operation fails it returns the *AfdErrorResponse error type.
 func (client *SecurityPoliciesClient) BeginPatch(ctx context.Context, resourceGroupName string, profileName string, securityPolicyName string, securityPolicyProperties SecurityPolicyProperties, options *SecurityPoliciesBeginPatchOptions) (SecurityPoliciesPatchPollerResponse, error) {
 	resp, err := client.patch(ctx, resourceGroupName, profileName, securityPolicyName, securityPolicyProperties, options)
@@ -353,7 +353,7 @@ func (client *SecurityPoliciesClient) BeginPatch(ctx context.Context, resourceGr
 	return result, nil
 }
 
-// Patch - Updates an existing Secret within a profile.
+// Patch - Updates an existing security policy within a profile.
 // If the operation fails it returns the *AfdErrorResponse error type.
 func (client *SecurityPoliciesClient) patch(ctx context.Context, resourceGroupName string, profileName string, securityPolicyName string, securityPolicyProperties SecurityPolicyProperties, options *SecurityPoliciesBeginPatchOptions) (*http.Response, error) {
 	req, err := client.patchCreateRequest(ctx, resourceGroupName, profileName, securityPolicyName, securityPolicyProperties, options)
@@ -394,7 +394,7 @@ func (client *SecurityPoliciesClient) patchCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, securityPolicyProperties)

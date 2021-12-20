@@ -34,7 +34,7 @@ func TestConstructor(t *testing.T) {
 	require.Contains(t, err.Error(), "URL is not for a specific key, expect path to start with '/keys/', received")
 }
 
-func TestClient_Decrypt(t *testing.T) {
+func TestClient_EncryptDecrypt(t *testing.T) {
 	stop := startTest(t)
 	defer stop()
 

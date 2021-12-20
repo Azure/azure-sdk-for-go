@@ -16,8 +16,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
@@ -94,7 +92,6 @@ func TestCreateECKey(t *testing.T) {
 }
 
 func TestCreateOCTKey(t *testing.T) {
-	log.SetEvents(azidentity.EventCredential)
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
 			if testType == REGULARTEST {
@@ -642,6 +639,9 @@ func TestReleaseKey(t *testing.T) {
 			req, err := http.NewRequest("GET", fmt.Sprintf("%s/generate-test-token", attestationURL), nil)
 			require.NoError(t, err)
 
+			if recording.GetRecordMode() == recording.PlaybackMode {
+				t.Skip("Skipping test in playback")
+			}
 			_, err = http.DefaultClient.Do(req)
 			require.NoError(t, err)
 			// require.Equal(t, resp.StatusCode, http.StatusOK)

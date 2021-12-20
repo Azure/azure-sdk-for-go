@@ -56,8 +56,6 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 			return nil, err
 		}
 
-		fmt.Println("First find scope and tenant")
-		fmt.Println(challengeReq.Raw())
 		err = k.findScopeAndTenant(resp)
 		if err != nil {
 			return nil, err
@@ -89,7 +87,6 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 		k.mainResource.Reset()
 
 		// Find the scope and tenant again in case they have changed
-		fmt.Println("First find scope and tenant")
 		err := k.findScopeAndTenant(resp)
 		if err != nil {
 			// Error parsing challenge, doomed to fail. Return

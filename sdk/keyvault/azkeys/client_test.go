@@ -643,7 +643,7 @@ func TestReleaseKey(t *testing.T) {
 			require.NoError(t, err)
 
 			_, err = http.DefaultClient.Do(req)
-			require.Error(t, err)
+			require.NoError(t, err)
 			// require.Equal(t, resp.StatusCode, http.StatusOK)
 			// defer resp.Body.Close()
 

@@ -182,6 +182,7 @@ func (k KeyVaultChallengePolicy) getChallengeRequest(orig policy.Request) (*poli
 	copied := orig.Clone(orig.Raw().Context())
 	copied.Raw().Body = req.Body()
 	copied.Raw().ContentLength = 0
+	copied.Raw().Header.Set("Content-Length", "0")
 	err = copied.SetBody(NopCloser(), "application/json")
 	if err != nil {
 		return nil, err

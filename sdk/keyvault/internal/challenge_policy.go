@@ -9,6 +9,7 @@ package internal
 import (
 	"errors"
 	"fmt"
+	"io"
 	"net/http"
 	"strings"
 	"time"
@@ -50,13 +51,14 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 			return nil, err
 		}
 
-		challengeResp, err := http.DefaultClient.Do(challengeReq.Raw())
-		// challengeResp, err := challengeReq.Next()
+		resp, err := challengeReq.Next()
 		if err != nil {
 			return nil, err
 		}
 
-		err = k.findScopeAndTenant(challengeResp)
+		fmt.Println("First find scope and tenant")
+		fmt.Println(challengeReq.Raw())
+		err = k.findScopeAndTenant(resp)
 		if err != nil {
 			return nil, err
 		}
@@ -87,10 +89,11 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 		k.mainResource.Reset()
 
 		// Find the scope and tenant again in case they have changed
+		fmt.Println("First find scope and tenant")
 		err := k.findScopeAndTenant(resp)
 		if err != nil {
 			// Error parsing challenge, doomed to fail. Return
-			return resp, err
+			return resp, cloneReqErr
 		}
 
 		tk, err := k.mainResource.GetResource(as)
@@ -176,10 +179,37 @@ func (k KeyVaultChallengePolicy) getChallengeRequest(orig policy.Request) (*poli
 	req.Raw().Header.Set("Content-Length", "0")
 	req.Raw().ContentLength = 0
 
-	// copied := orig.Clone(orig.Raw().Context())
-	// copied.Raw().Body = req.Body()
+	copied := orig.Clone(orig.Raw().Context())
+	copied.Raw().Body = req.Body()
+	copied.Raw().ContentLength = 0
+	err = copied.SetBody(NopCloser(), "application/json")
+	if err != nil {
+		return nil, err
+	}
+	copied.Raw().Header.Del("Content-Type")
 
-	return req, err
+	return copied, err
+}
+
+// The next three methods are copied from azcore/internal/shared.go
+type nopCloser struct {
+}
+
+func (n nopCloser) Close() error {
+	return nil
+}
+
+func (n nopCloser) Read(p []byte) (int, error) {
+	return 0, nil
+}
+
+func (n nopCloser) Seek(offset int64, whence int) (int64, error) {
+	return 0, nil
+}
+
+// NopCloser returns a ReadSeekCloser with a no-op close method wrapping the provided io.ReadSeeker.
+func NopCloser() io.ReadSeekCloser {
+	return nopCloser{}
 }
 
 type acquiringResourceState struct {

@@ -294,13 +294,13 @@ func TestBlobChangeLease(t *testing.T) {
 	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &AcquireLeaseBlobOptions{Duration: to.Int32Ptr(15)})
 	require.NoError(t, err)
 	require.NotNil(t, acquireLeaseResponse.LeaseID)
-	_assert.Equal(*acquireLeaseResponse.LeaseID, *proposedLeaseIDs[0])
+	require.Equal(t, *acquireLeaseResponse.LeaseID, *proposedLeaseIDs[0])
 
 	changeLeaseResp, err := blobLeaseClient.ChangeLease(ctx, &ChangeLeaseBlobOptions{
 		ProposedLeaseID: proposedLeaseIDs[1],
 	})
 	require.NoError(t, err)
-	_assert.Equal(*changeLeaseResp.LeaseID, *proposedLeaseIDs[1])
+	require.Equal(t, *changeLeaseResp.LeaseID, *proposedLeaseIDs[1])
 
 	_, err = blobLeaseClient.RenewLease(ctx, nil)
 	require.NoError(t, err)

@@ -290,10 +290,8 @@ func getGenericCredential(t *testing.T, accountType testAccountType) (*SharedKey
 }
 
 func getConnectionString(t *testing.T, accountType testAccountType) string {
-	accountName, accountKey := getAccountInfo(t, accountType)
-	connectionString := fmt.Sprintf("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;EndpointSuffix=core.windows.net/",
-		accountName, accountKey)
-	return connectionString
+	accountName, accountKey := getAccountNameKey(t, accountType)
+	return fmt.Sprintf("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;EndpointSuffix=core.windows.net/", accountName, accountKey)
 }
 
 type testAccountType string

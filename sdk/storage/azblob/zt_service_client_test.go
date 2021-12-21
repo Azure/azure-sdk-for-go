@@ -31,8 +31,8 @@ func TestServiceClientFromConnectionString(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	accountName, _ := getAccountInfo(nil, testAccountDefault)
-	connectionString := getConnectionString(nil, testAccountDefault)
+	accountName, _ := getAccountNameKey(t, testAccountDefault)
+	connectionString := getConnectionString(t, testAccountDefault)
 
 	serviceURL, cred, err := parseConnectionString(connectionString)
 	require.NoError(t, err)

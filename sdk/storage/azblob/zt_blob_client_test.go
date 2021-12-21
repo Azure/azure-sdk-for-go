@@ -18,7 +18,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -1954,7 +1953,7 @@ func TestBlobDeleteSnapshot(t *testing.T) {
 	_, err = snapshotURL.Delete(ctx, nil)
 	require.NoError(t, err)
 
-	validateBlobDeleted(assert.New(t), snapshotURL.BlobClient)
+	validateBlobDeleted(t, snapshotURL.BlobClient)
 }
 
 //
@@ -2028,13 +2027,13 @@ func TestBlobDeleteSnapshotsNoneWithSnapshots(t *testing.T) {
 	require.Error(t, err)
 }
 
-func validateBlobDeleted(_assert *assert.Assertions, bbClient BlobClient) {
+func validateBlobDeleted(t *testing.T, bbClient BlobClient) {
 	_, err := bbClient.GetProperties(ctx, nil)
-	_assert.Error(err)
+	require.Error(t, err)
 
 	var storageError *StorageError
-	_assert.Equal(errors.As(err, &storageError), true)
-	_assert.Equal(storageError.ErrorCode, StorageErrorCodeBlobNotFound)
+	require.Equal(t, errors.As(err, &storageError), true)
+	require.Equal(t, storageError.ErrorCode, StorageErrorCodeBlobNotFound)
 }
 
 func TestBlobDeleteIfModifiedSinceTrue(t *testing.T) {
@@ -2066,7 +2065,7 @@ func TestBlobDeleteIfModifiedSinceTrue(t *testing.T) {
 	_, err = bbClient.Delete(ctx, &deleteBlobOptions)
 	require.NoError(t, err)
 
-	validateBlobDeleted(assert.New(t), bbClient.BlobClient)
+	validateBlobDeleted(t, bbClient.BlobClient)
 }
 
 func TestBlobDeleteIfModifiedSinceFalse(t *testing.T) {
@@ -2128,7 +2127,7 @@ func TestBlobDeleteIfUnmodifiedSinceTrue(t *testing.T) {
 	_, err = bbClient.Delete(ctx, &deleteBlobOptions)
 	require.NoError(t, err)
 
-	validateBlobDeleted(assert.New(t), bbClient.BlobClient)
+	validateBlobDeleted(t, bbClient.BlobClient)
 }
 
 func TestBlobDeleteIfUnmodifiedSinceFalse(t *testing.T) {
@@ -2186,7 +2185,7 @@ func TestBlobDeleteIfMatchTrue(t *testing.T) {
 	_, err = bbClient.Delete(ctx, &deleteBlobOptions)
 	require.NoError(t, err)
 
-	validateBlobDeleted(assert.New(t), bbClient.BlobClient)
+	validateBlobDeleted(t, bbClient.BlobClient)
 }
 
 func TestBlobDeleteIfMatchFalse(t *testing.T) {
@@ -2248,7 +2247,7 @@ func TestBlobDeleteIfNoneMatchTrue(t *testing.T) {
 	_, err = bbClient.Delete(ctx, &deleteBlobOptions)
 	require.NoError(t, err)
 
-	validateBlobDeleted(assert.New(t), bbClient.BlobClient)
+	validateBlobDeleted(t, bbClient.BlobClient)
 }
 
 func TestBlobDeleteIfNoneMatchFalse(t *testing.T) {
@@ -2607,10 +2606,10 @@ func TestBlobSetPropertiesEmptyValue(t *testing.T) {
 	require.Nil(t, resp.ContentType)
 }
 
-func validatePropertiesSet(_assert *assert.Assertions, bbClient BlockBlobClient, disposition string) {
+func validatePropertiesSet(t *testing.T, bbClient BlockBlobClient, disposition string) {
 	resp, err := bbClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
-	_assert.Equal(*resp.ContentDisposition, disposition)
+	require.NoError(t, err)
+	require.Equal(t, *resp.ContentDisposition, disposition)
 }
 
 func TestBlobSetPropertiesIfModifiedSinceTrue(t *testing.T) {
@@ -2638,7 +2637,7 @@ func TestBlobSetPropertiesIfModifiedSinceTrue(t *testing.T) {
 		&SetBlobHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime}})
 	require.NoError(t, err)
 
-	validatePropertiesSet(assert.New(t), bbClient, "my_disposition")
+	validatePropertiesSet(t, bbClient, "my_disposition")
 }
 
 func TestBlobSetPropertiesIfModifiedSinceFalse(t *testing.T) {
@@ -2692,7 +2691,7 @@ func TestBlobSetPropertiesIfUnmodifiedSinceTrue(t *testing.T) {
 		&SetBlobHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime}})
 	require.NoError(t, err)
 
-	validatePropertiesSet(assert.New(t), bbClient, "my_disposition")
+	validatePropertiesSet(t, bbClient, "my_disposition")
 }
 
 func TestBlobSetPropertiesIfUnmodifiedSinceFalse(t *testing.T) {
@@ -2743,7 +2742,7 @@ func TestBlobSetPropertiesIfMatchTrue(t *testing.T) {
 		&SetBlobHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: resp.ETag}})
 	require.NoError(t, err)
 
-	validatePropertiesSet(assert.New(t), bbClient, "my_disposition")
+	validatePropertiesSet(t, bbClient, "my_disposition")
 }
 
 func TestBlobSetPropertiesIfMatchFalse(t *testing.T) {
@@ -2785,7 +2784,7 @@ func TestBlobSetPropertiesIfNoneMatchTrue(t *testing.T) {
 		&SetBlobHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: to.StringPtr("garbage")}})
 	require.NoError(t, err)
 
-	validatePropertiesSet(assert.New(t), bbClient, "my_disposition")
+	validatePropertiesSet(t, bbClient, "my_disposition")
 }
 
 func TestBlobSetPropertiesIfNoneMatchFalse(t *testing.T) {
@@ -2884,10 +2883,10 @@ func TestBlobSetMetadataInvalidField(t *testing.T) {
 	//_assert.Equal(strings.Contains(err.Error(), invalidHeaderErrorSubstring), true)
 }
 
-func validateMetadataSet(_assert *assert.Assertions, bbClient BlockBlobClient) {
+func validateMetadataSet(t *testing.T, bbClient BlockBlobClient) {
 	resp, err := bbClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
-	_assert.EqualValues(resp.Metadata, basicMetadata)
+	require.NoError(t, err)
+	require.EqualValues(t, resp.Metadata, basicMetadata)
 }
 
 func TestBlobSetMetadataIfModifiedSinceTrue(t *testing.T) {
@@ -2917,7 +2916,7 @@ func TestBlobSetMetadataIfModifiedSinceTrue(t *testing.T) {
 	_, err = bbClient.SetMetadata(ctx, basicMetadata, &setBlobMetadataOptions)
 	require.NoError(t, err)
 
-	validateMetadataSet(assert.New(t), bbClient)
+	validateMetadataSet(t, bbClient)
 }
 
 func TestBlobSetMetadataIfModifiedSinceFalse(t *testing.T) {
@@ -2975,7 +2974,7 @@ func TestBlobSetMetadataIfUnmodifiedSinceTrue(t *testing.T) {
 	_, err = bbClient.SetMetadata(ctx, basicMetadata, &setBlobMetadataOptions)
 	require.NoError(t, err)
 
-	validateMetadataSet(assert.New(t), bbClient)
+	validateMetadataSet(t, bbClient)
 }
 
 func TestBlobSetMetadataIfUnmodifiedSinceFalse(t *testing.T) {
@@ -3030,7 +3029,7 @@ func TestBlobSetMetadataIfMatchTrue(t *testing.T) {
 	_, err = bbClient.SetMetadata(ctx, basicMetadata, &setBlobMetadataOptions)
 	require.NoError(t, err)
 
-	validateMetadataSet(assert.New(t), bbClient)
+	validateMetadataSet(t, bbClient)
 }
 
 func TestBlobSetMetadataIfMatchFalse(t *testing.T) {
@@ -3078,7 +3077,7 @@ func TestBlobSetMetadataIfNoneMatchTrue(t *testing.T) {
 	_, err = bbClient.SetMetadata(ctx, basicMetadata, &setBlobMetadataOptions)
 	require.NoError(t, err)
 
-	validateMetadataSet(assert.New(t), bbClient)
+	validateMetadataSet(t, bbClient)
 }
 
 func TestBlobSetMetadataIfNoneMatchFalse(t *testing.T) {
@@ -3140,13 +3139,13 @@ func TestBlobServiceClientDelete(t *testing.T) {
 	runTestRequiringServiceProperties(t, svcClient, string(rune(code)), enableSoftDelete, testBlobServiceClientDeleteImpl, disableSoftDelete)
 }
 
-func setAndCheckBlobTier(_assert *assert.Assertions, bbClient BlobClient, tier AccessTier) {
+func setAndCheckBlobTier(t *testing.T, bbClient BlobClient, tier AccessTier) {
 	_, err := bbClient.SetTier(ctx, tier, nil)
-	_assert.NoError(err)
+	require.NoError(t, err)
 
 	resp, err := bbClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
-	_assert.Equal(*resp.AccessTier, string(tier))
+	require.NoError(t, err)
+	require.Equal(t, *resp.AccessTier, string(tier))
 }
 
 func TestBlobSetTierAllTiers(t *testing.T) {
@@ -3164,9 +3163,9 @@ func TestBlobSetTierAllTiers(t *testing.T) {
 	blockBlobName := generateBlobName(t.Name())
 	bbClient := createNewBlockBlob(t, blockBlobName, containerClient)
 
-	setAndCheckBlobTier(assert.New(t), bbClient.BlobClient, AccessTierHot)
-	setAndCheckBlobTier(assert.New(t), bbClient.BlobClient, AccessTierCool)
-	setAndCheckBlobTier(assert.New(t), bbClient.BlobClient, AccessTierArchive)
+	setAndCheckBlobTier(t, bbClient.BlobClient, AccessTierHot)
+	setAndCheckBlobTier(t, bbClient.BlobClient, AccessTierCool)
+	setAndCheckBlobTier(t, bbClient.BlobClient, AccessTierArchive)
 
 	premiumServiceClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountPremium)
 	require.NoError(t, err)
@@ -3177,13 +3176,13 @@ func TestBlobSetTierAllTiers(t *testing.T) {
 
 	pbClient := createNewPageBlob(t, blockBlobName, premContainerClient)
 
-	setAndCheckBlobTier(assert.New(t), pbClient.BlobClient, AccessTierP4)
-	setAndCheckBlobTier(assert.New(t), pbClient.BlobClient, AccessTierP6)
-	setAndCheckBlobTier(assert.New(t), pbClient.BlobClient, AccessTierP10)
-	setAndCheckBlobTier(assert.New(t), pbClient.BlobClient, AccessTierP20)
-	setAndCheckBlobTier(assert.New(t), pbClient.BlobClient, AccessTierP30)
-	setAndCheckBlobTier(assert.New(t), pbClient.BlobClient, AccessTierP40)
-	setAndCheckBlobTier(assert.New(t), pbClient.BlobClient, AccessTierP50)
+	setAndCheckBlobTier(t, pbClient.BlobClient, AccessTierP4)
+	setAndCheckBlobTier(t, pbClient.BlobClient, AccessTierP6)
+	setAndCheckBlobTier(t, pbClient.BlobClient, AccessTierP10)
+	setAndCheckBlobTier(t, pbClient.BlobClient, AccessTierP20)
+	setAndCheckBlobTier(t, pbClient.BlobClient, AccessTierP30)
+	setAndCheckBlobTier(t, pbClient.BlobClient, AccessTierP40)
+	setAndCheckBlobTier(t, pbClient.BlobClient, AccessTierP50)
 }
 
 //

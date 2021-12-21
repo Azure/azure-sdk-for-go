@@ -18,7 +18,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -808,10 +807,10 @@ func TestBlobPutBlobIfNoneMatchFalse(t *testing.T) {
 	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
-func validateBlobCommitted(_assert *assert.Assertions, bbClient BlockBlobClient) {
+func validateBlobCommitted(t *testing.T, bbClient BlockBlobClient) {
 	resp, err := bbClient.GetBlockList(ctx, BlockListTypeAll, nil)
-	_assert.NoError(err)
-	_assert.Len(resp.BlockList.CommittedBlocks, 1)
+	require.NoError(t, err)
+	require.Len(t, resp.BlockList.CommittedBlocks, 1)
 }
 
 func setupPutBlockListTest(t *testing.T) (ContainerClient, BlockBlobClient, []string) {
@@ -857,13 +856,12 @@ func TestBlobPutBlockListIfModifiedSinceTrue(t *testing.T) {
 	stop := start(t)
 	defer stop()
 
-	_assert := assert.New(t)
 	containerClient, bbClient, blockIDs := setupPutBlockListTest(t)
 	defer deleteContainer(t, containerClient)
 
 	commitBlockListResp, err := bbClient.CommitBlockList(ctx, blockIDs, nil) // The bbClient must actually exist to have a modifed time
 	require.NoError(t, err)
-	_assert.NotNil(commitBlockListResp.Date)
+	require.NotNil(t, commitBlockListResp.Date)
 
 	currentTime := getRelativeTimeFromAnchor(commitBlockListResp.Date, -10)
 
@@ -873,7 +871,7 @@ func TestBlobPutBlockListIfModifiedSinceTrue(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	validateBlobCommitted(_assert, bbClient)
+	validateBlobCommitted(t, bbClient)
 }
 
 func TestBlobPutBlockListIfModifiedSinceFalse(t *testing.T) {
@@ -918,7 +916,7 @@ func TestBlobPutBlockListIfUnmodifiedSinceTrue(t *testing.T) {
 	_, err = bbClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
 	require.NoError(t, err)
 
-	validateBlobCommitted(assert.New(t), bbClient)
+	validateBlobCommitted(t, bbClient)
 }
 
 func TestBlobPutBlockListIfUnmodifiedSinceFalse(t *testing.T) {
@@ -961,7 +959,7 @@ func TestBlobPutBlockListIfMatchTrue(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	validateBlobCommitted(assert.New(t), bbClient)
+	validateBlobCommitted(t, bbClient)
 }
 
 func TestBlobPutBlockListIfMatchFalse(t *testing.T) {
@@ -1002,7 +1000,7 @@ func TestBlobPutBlockListIfNoneMatchTrue(t *testing.T) {
 	_, err = bbClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
 	require.NoError(t, err)
 
-	validateBlobCommitted(assert.New(t), bbClient)
+	validateBlobCommitted(t, bbClient)
 }
 
 func TestBlobPutBlockListIfNoneMatchFalse(t *testing.T) {

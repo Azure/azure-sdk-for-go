@@ -15,7 +15,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -116,7 +115,7 @@ func TestSetBlobTagsWithVID(t *testing.T) {
 	blobGetTagsResponse, err = bbClient.GetTags(ctx, &getTagsBlobOptions2)
 	require.NoError(t, err)
 	require.Equal(t, blobGetTagsResponse.RawResponse.StatusCode, 200)
-	assert.Nil(t, blobGetTagsResponse.BlobTagSet) // this check fails
+	require.Nil(t, blobGetTagsResponse.BlobTagSet) // this check fails
 }
 
 func TestUploadBlockBlobWithSpecialCharactersInTags(t *testing.T) {

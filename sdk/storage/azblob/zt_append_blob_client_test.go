@@ -15,7 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -408,12 +407,12 @@ func TestBlobCreateAppendHTTPHeaders(t *testing.T) {
 	require.EqualValues(t, h, basicHeaders)
 }
 
-func validateAppendBlobPut(_assert *assert.Assertions, abClient AppendBlobClient) {
+func validateAppendBlobPut(t *testing.T, abClient AppendBlobClient) {
 	resp, err := abClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
-	_assert.NotNil(resp.Metadata)
-	_assert.EqualValues(resp.Metadata, basicMetadata)
-	_assert.EqualValues(resp.GetHTTPHeaders(), basicHeaders)
+	require.NoError(t, err)
+	require.NotNil(t, resp.Metadata)
+	require.EqualValues(t, resp.Metadata, basicMetadata)
+	require.EqualValues(t, resp.GetHTTPHeaders(), basicHeaders)
 }
 
 func TestBlobCreateAppendIfModifiedSinceTrue(t *testing.T) {
@@ -451,7 +450,7 @@ func TestBlobCreateAppendIfModifiedSinceTrue(t *testing.T) {
 	_, err = abClient.Create(ctx, &createAppendBlobOptions)
 	require.NoError(t, err)
 
-	validateAppendBlobPut(assert.New(t), abClient)
+	validateAppendBlobPut(t, abClient)
 }
 
 func TestBlobCreateAppendIfModifiedSinceFalse(t *testing.T) {
@@ -527,7 +526,7 @@ func TestBlobCreateAppendIfUnmodifiedSinceTrue(t *testing.T) {
 	_, err = abClient.Create(ctx, &createAppendBlobOptions)
 	require.NoError(t, err)
 
-	validateAppendBlobPut(assert.New(t), abClient)
+	validateAppendBlobPut(t, abClient)
 }
 
 func TestBlobCreateAppendIfUnmodifiedSinceFalse(t *testing.T) {
@@ -597,7 +596,7 @@ func TestBlobCreateAppendIfMatchTrue(t *testing.T) {
 	_, err = abClient.Create(ctx, &createAppendBlobOptions)
 	require.NoError(t, err)
 
-	validateAppendBlobPut(assert.New(t), abClient)
+	validateAppendBlobPut(t, abClient)
 }
 
 func TestBlobCreateAppendIfMatchFalse(t *testing.T) {
@@ -658,7 +657,7 @@ func TestBlobCreateAppendIfNoneMatchTrue(t *testing.T) {
 	_, err = abClient.Create(ctx, &createAppendBlobOptions)
 	require.NoError(t, err)
 
-	validateAppendBlobPut(assert.New(t), abClient)
+	validateAppendBlobPut(t, abClient)
 }
 
 func TestBlobCreateAppendIfNoneMatchFalse(t *testing.T) {

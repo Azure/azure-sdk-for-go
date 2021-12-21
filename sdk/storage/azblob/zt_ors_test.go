@@ -66,7 +66,7 @@ func TestDeserializeORSPolicies(t *testing.T) {
 //	defer deleteContainer(t, containerClient)
 //
 //	bbName := generateBlobName(testName)
-//	bbClient := createNewBlockBlob(_assert, bbName, containerClient)
+//	bbClient := createNewBlockBlob(t, bbName, containerClient)
 //
 //	getResp, err := bbClient.GetProperties(ctx, nil)
 //	_assert.NoError(err)

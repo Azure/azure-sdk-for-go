@@ -460,7 +460,7 @@ func TestSetBlobTagForSnapshot(t *testing.T) {
 	containerClient := createNewContainer(t, generateContainerName(t.Name()), svcClient)
 	defer deleteContainer(t, containerClient)
 
-	bbClient := createNewBlockBlob(assert.New(t), generateBlobName(t.Name()), containerClient)
+	bbClient := createNewBlockBlob(t, generateBlobName(t.Name()), containerClient)
 	blobTagsMap := map[string]string{
 		"Microsoft Azure": "Azure Storage",
 		"Storage+SDK":     "SDK/GO",
@@ -495,7 +495,7 @@ func TestListBlobReturnsTags(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
-	blobClient := createNewBlockBlob(assert.New(t), blobName, containerClient)
+	blobClient := createNewBlockBlob(t, blobName, containerClient)
 	blobTagsMap := map[string]string{
 		"+-./:=_ ": "firsttag",
 		"tag2":     "+-./:=_",
@@ -670,7 +670,7 @@ func TestCreatePageBlobWithTags(t *testing.T) {
 	containerClient := createNewContainer(t, generateContainerName(t.Name()), svcClient)
 	defer deleteContainer(t, containerClient)
 
-	pbClient := createNewPageBlob(assert.New(t), "src"+generateBlobName(t.Name()), containerClient)
+	pbClient := createNewPageBlob(t, "src"+generateBlobName(t.Name()), containerClient)
 
 	contentSize := 1 * 1024
 	offset, count := int64(0), int64(contentSize)
@@ -746,7 +746,7 @@ func TestPageBlobSetBlobTagForSnapshot(t *testing.T) {
 	containerClient := createNewContainer(t, generateContainerName(t.Name()), svcClient)
 	defer deleteContainer(t, containerClient)
 
-	pbClient := createNewPageBlob(assert.New(t), generateBlobName(t.Name()), containerClient)
+	pbClient := createNewPageBlob(t, generateBlobName(t.Name()), containerClient)
 
 	setTagsBlobOptions := SetTagsBlobOptions{
 		TagsMap: specialCharBlobTagsMap,

@@ -21,7 +21,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -179,48 +178,48 @@ func deleteContainer(t *testing.T, containerClient ContainerClient) {
 	require.Equal(t, deleteContainerResp.RawResponse.StatusCode, 202)
 }
 
-func createNewBlockBlob(_assert *assert.Assertions, blockBlobName string, containerClient ContainerClient) BlockBlobClient {
+func createNewBlockBlob(t *testing.T, blockBlobName string, containerClient ContainerClient) BlockBlobClient {
 	bbClient := getBlockBlobClient(blockBlobName, containerClient)
 
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 
-	_assert.NoError(err)
-	_assert.Equal(cResp.RawResponse.StatusCode, 201)
+	require.NoError(t, err)
+	require.Equal(t, cResp.RawResponse.StatusCode, 201)
 
 	return bbClient
 }
 
-func createNewBlobs(_assert *assert.Assertions, blobNames []string, containerClient ContainerClient) {
+func createNewBlobs(t *testing.T, blobNames []string, containerClient ContainerClient) {
 	for _, blobName := range blobNames {
-		createNewBlockBlob(_assert, blobName, containerClient)
+		createNewBlockBlob(t, blobName, containerClient)
 	}
 }
 
-func createNewAppendBlob(_assert *assert.Assertions, appendBlobName string, containerClient ContainerClient) AppendBlobClient {
+func createNewAppendBlob(t *testing.T, appendBlobName string, containerClient ContainerClient) AppendBlobClient {
 	abClient := getAppendBlobClient(appendBlobName, containerClient)
 
 	appendBlobCreateResp, err := abClient.Create(ctx, nil)
 
-	_assert.NoError(err)
-	_assert.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
+	require.NoError(t, err)
+	require.Equal(t, appendBlobCreateResp.RawResponse.StatusCode, 201)
 	return abClient
 }
 
-func createNewPageBlob(_assert *assert.Assertions, pageBlobName string, containerClient ContainerClient) PageBlobClient {
-	return createNewPageBlobWithSize(_assert, pageBlobName, containerClient, PageBlobPageBytes*10)
+func createNewPageBlob(t *testing.T, pageBlobName string, containerClient ContainerClient) PageBlobClient {
+	return createNewPageBlobWithSize(t, pageBlobName, containerClient, PageBlobPageBytes*10)
 }
 
-func createNewPageBlobWithSize(_assert *assert.Assertions, pageBlobName string,
+func createNewPageBlobWithSize(t *testing.T, pageBlobName string,
 	containerClient ContainerClient, sizeInBytes int64) PageBlobClient {
 	pbClient := getPageBlobClient(pageBlobName, containerClient)
 
 	pageBlobCreateResponse, err := pbClient.Create(ctx, sizeInBytes, nil)
-	_assert.NoError(err)
-	_assert.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
+	require.NoError(t, err)
+	require.Equal(t, pageBlobCreateResponse.RawResponse.StatusCode, 201)
 	return pbClient
 }
 
-func createNewBlockBlobWithCPK(_assert *assert.Assertions, blockBlobName string, containerClient ContainerClient, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo) (bbClient BlockBlobClient) {
+func createNewBlockBlobWithCPK(t *testing.T, blockBlobName string, containerClient ContainerClient, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo) (bbClient BlockBlobClient) {
 	bbClient = getBlockBlobClient(blockBlobName, containerClient)
 
 	uploadBlockBlobOptions := UploadBlockBlobOptions{
@@ -228,19 +227,19 @@ func createNewBlockBlobWithCPK(_assert *assert.Assertions, blockBlobName string,
 		CpkScopeInfo: cpkScopeInfo,
 	}
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &uploadBlockBlobOptions)
-	_assert.NoError(err)
-	_assert.Equal(cResp.RawResponse.StatusCode, 201)
-	_assert.Equal(*cResp.IsServerEncrypted, true)
+	require.NoError(t, err)
+	require.Equal(t, cResp.RawResponse.StatusCode, 201)
+	require.Equal(t, *cResp.IsServerEncrypted, true)
 	if cpkInfo != nil {
-		_assert.EqualValues(cResp.EncryptionKeySHA256, cpkInfo.EncryptionKeySHA256)
+		require.EqualValues(t, cResp.EncryptionKeySHA256, cpkInfo.EncryptionKeySHA256)
 	}
 	if cpkScopeInfo != nil {
-		_assert.EqualValues(cResp.EncryptionScope, cpkScopeInfo.EncryptionScope)
+		require.EqualValues(t, cResp.EncryptionScope, cpkScopeInfo.EncryptionScope)
 	}
 	return
 }
 
-func createNewPageBlobWithCPK(_assert *assert.Assertions, pageBlobName string, container ContainerClient,
+func createNewPageBlobWithCPK(t *testing.T, pageBlobName string, container ContainerClient,
 	sizeInBytes int64, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo) (pbClient PageBlobClient) {
 	pbClient = getPageBlobClient(pageBlobName, container)
 
@@ -248,8 +247,8 @@ func createNewPageBlobWithCPK(_assert *assert.Assertions, pageBlobName string, c
 		CpkInfo:      cpkInfo,
 		CpkScopeInfo: cpkScopeInfo,
 	})
-	_assert.NoError(err)
-	_assert.Equal(resp.RawResponse.StatusCode, 201)
+	require.NoError(t, err)
+	require.Equal(t, resp.RawResponse.StatusCode, 201)
 	return
 }
 
@@ -321,41 +320,41 @@ func getRelativeTimeFromAnchor(anchorTime *time.Time, amount time.Duration) time
 // those changes not being reflected yet, we will wait 30 seconds and try the test again. If it fails this time for any reason,
 // we fail the test. It is the responsibility of the the testImplFunc to determine which error string indicates the test should be retried.
 // There can only be one such string. All errors that cannot be due to this detail should be asserted and not returned as an error string.
-func runTestRequiringServiceProperties(_assert *assert.Assertions, bsu ServiceClient, code string,
-	enableServicePropertyFunc func(*assert.Assertions, ServiceClient),
-	testImplFunc func(*assert.Assertions, ServiceClient) error,
-	disableServicePropertyFunc func(*assert.Assertions, ServiceClient)) {
+func runTestRequiringServiceProperties(t *testing.T, bsu ServiceClient, code string,
+	enableServicePropertyFunc func(*testing.T, ServiceClient),
+	testImplFunc func(*testing.T, ServiceClient) error,
+	disableServicePropertyFunc func(*testing.T, ServiceClient)) {
 
-	enableServicePropertyFunc(_assert, bsu)
-	defer disableServicePropertyFunc(_assert, bsu)
+	enableServicePropertyFunc(t, bsu)
+	defer disableServicePropertyFunc(t, bsu)
 
-	err := testImplFunc(_assert, bsu)
+	err := testImplFunc(t, bsu)
 	// We cannot assume that the error indicative of slow update will necessarily be a StorageError. As in ListBlobs.
 	if err != nil && err.Error() == code {
 		time.Sleep(time.Second * 30)
-		err = testImplFunc(_assert, bsu)
-		_assert.NoError(err)
+		err = testImplFunc(t, bsu)
+		require.NoError(t, err)
 	}
 }
 
-func enableSoftDelete(_assert *assert.Assertions, serviceClient ServiceClient) {
+func enableSoftDelete(t *testing.T, serviceClient ServiceClient) {
 	days := int32(1)
 	_, err := serviceClient.SetProperties(ctx, StorageServiceProperties{
 		DeleteRetentionPolicy: &RetentionPolicy{Enabled: to.BoolPtr(true), Days: &days}})
-	_assert.NoError(err)
+	require.NoError(t, err)
 }
 
-func disableSoftDelete(_assert *assert.Assertions, bsu ServiceClient) {
+func disableSoftDelete(t *testing.T, bsu ServiceClient) {
 	_, err := bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: to.BoolPtr(false)}})
-	_assert.NoError(err)
+	require.NoError(t, err)
 }
 
-func validateUpload(_assert *assert.Assertions, blobClient BlobClient) {
+func validateUpload(t *testing.T, blobClient BlobClient) {
 	resp, err := blobClient.Download(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(t, err)
 	data, err := ioutil.ReadAll(resp.RawResponse.Body)
-	_assert.NoError(err)
-	_assert.Len(data, 0)
+	require.NoError(t, err)
+	require.Len(t, data, 0)
 }
 
 func generateBlockIDsList(count int) []string {

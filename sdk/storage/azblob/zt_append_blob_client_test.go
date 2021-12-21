@@ -581,7 +581,7 @@ func TestBlobCreateAppendIfMatchTrue(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(t.Name())
-	abClient := createNewAppendBlob(assert.New(t), abName, containerClient)
+	abClient := createNewAppendBlob(t, abName, containerClient)
 
 	resp, _ := abClient.GetProperties(ctx, nil)
 
@@ -613,7 +613,7 @@ func TestBlobCreateAppendIfMatchFalse(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(t.Name())
-	abClient := createNewAppendBlob(assert.New(t), abName, containerClient)
+	abClient := createNewAppendBlob(t, abName, containerClient)
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
 		HTTPHeaders: &basicHeaders,
@@ -643,7 +643,7 @@ func TestBlobCreateAppendIfNoneMatchTrue(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(t.Name())
-	abClient := createNewAppendBlob(assert.New(t), abName, containerClient)
+	abClient := createNewAppendBlob(t, abName, containerClient)
 
 	eTag := "garbage"
 	createAppendBlobOptions := CreateAppendBlobOptions{
@@ -674,7 +674,7 @@ func TestBlobCreateAppendIfNoneMatchFalse(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(t.Name())
-	abClient := createNewAppendBlob(assert.New(t), abName, containerClient)
+	abClient := createNewAppendBlob(t, abName, containerClient)
 
 	resp, _ := abClient.GetProperties(ctx, nil)
 
@@ -706,7 +706,7 @@ func TestBlobAppendBlockNilBody(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(t.Name())
-	abClient := createNewAppendBlob(assert.New(t), abName, containerClient)
+	abClient := createNewAppendBlob(t, abName, containerClient)
 
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(bytes.NewReader(nil)), nil)
 	require.Error(t, err)
@@ -726,7 +726,7 @@ func TestBlobAppendBlockEmptyBody(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(t.Name())
-	abClient := createNewAppendBlob(assert.New(t), abName, containerClient)
+	abClient := createNewAppendBlob(t, abName, containerClient)
 
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader("")), nil)
 	require.Error(t, err)
@@ -918,7 +918,7 @@ func TestBlobAppendBlockIfMatchTrue(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(t.Name())
-	abClient := createNewAppendBlob(assert.New(t), abName, containerClient)
+	abClient := createNewAppendBlob(t, abName, containerClient)
 
 	resp, _ := abClient.GetProperties(ctx, nil)
 
@@ -947,7 +947,7 @@ func TestBlobAppendBlockIfMatchFalse(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(t.Name())
-	abClient := createNewAppendBlob(assert.New(t), abName, containerClient)
+	abClient := createNewAppendBlob(t, abName, containerClient)
 
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlockOptions{
 		BlobAccessConditions: &BlobAccessConditions{
@@ -973,7 +973,7 @@ func TestBlobAppendBlockIfNoneMatchTrue(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(t.Name())
-	abClient := createNewAppendBlob(assert.New(t), abName, containerClient)
+	abClient := createNewAppendBlob(t, abName, containerClient)
 
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlockOptions{
 		BlobAccessConditions: &BlobAccessConditions{
@@ -999,7 +999,7 @@ func TestBlobAppendBlockIfNoneMatchFalse(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(t.Name())
-	abClient := createNewAppendBlob(assert.New(t), abName, containerClient)
+	abClient := createNewAppendBlob(t, abName, containerClient)
 
 	resp, _ := abClient.GetProperties(ctx, nil)
 
@@ -1067,7 +1067,7 @@ func TestBlobAppendBlockIfAppendPositionMatchTrueNonZero(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(t.Name())
-	abClient := createNewAppendBlob(assert.New(t), abName, containerClient)
+	abClient := createNewAppendBlob(t, abName, containerClient)
 
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	require.NoError(t, err)
@@ -1095,7 +1095,7 @@ func TestBlobAppendBlockIfAppendPositionMatchFalseNegOne(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(t.Name())
-	abClient := createNewAppendBlob(assert.New(t), abName, containerClient)
+	abClient := createNewAppendBlob(t, abName, containerClient)
 
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	require.NoError(t, err)
@@ -1122,7 +1122,7 @@ func TestBlobAppendBlockIfAppendPositionMatchFalseNonZero(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(t.Name())
-	abClient := createNewAppendBlob(assert.New(t), abName, containerClient)
+	abClient := createNewAppendBlob(t, abName, containerClient)
 
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlockOptions{
 		AppendPositionAccessConditions: &AppendPositionAccessConditions{
@@ -1146,7 +1146,7 @@ func TestBlobAppendBlockIfMaxSizeTrue(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(t.Name())
-	abClient := createNewAppendBlob(assert.New(t), abName, containerClient)
+	abClient := createNewAppendBlob(t, abName, containerClient)
 
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlockOptions{
 		AppendPositionAccessConditions: &AppendPositionAccessConditions{
@@ -1170,7 +1170,7 @@ func TestBlobAppendBlockIfMaxSizeFalse(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(t.Name())
-	abClient := createNewAppendBlob(assert.New(t), abName, containerClient)
+	abClient := createNewAppendBlob(t, abName, containerClient)
 
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlockOptions{
 		AppendPositionAccessConditions: &AppendPositionAccessConditions{
@@ -1194,7 +1194,7 @@ func TestSealAppendBlob(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(t.Name())
-	abClient := createNewAppendBlob(assert.New(t), abName, containerClient)
+	abClient := createNewAppendBlob(t, abName, containerClient)
 
 	appendResp, err := abClient.AppendBlock(context.Background(), getReaderToGeneratedBytes(1024), nil)
 	require.NoError(t, err)
@@ -1260,7 +1260,7 @@ func TestCopySealedBlob(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(t.Name())
-	abClient := createNewAppendBlob(assert.New(t), abName, containerClient)
+	abClient := createNewAppendBlob(t, abName, containerClient)
 
 	_, err = abClient.SealAppendBlob(ctx, nil)
 	require.NoError(t, err)
@@ -1322,7 +1322,7 @@ func TestCopyUnsealedBlob(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	abName := generateBlobName(t.Name())
-	abClient := createNewAppendBlob(assert.New(t), abName, containerClient)
+	abClient := createNewAppendBlob(t, abName, containerClient)
 
 	copiedBlob := getAppendBlobClient("copy"+abName, containerClient)
 	_, err = copiedBlob.StartCopyFromURL(ctx, abClient.URL(), &StartCopyBlobOptions{

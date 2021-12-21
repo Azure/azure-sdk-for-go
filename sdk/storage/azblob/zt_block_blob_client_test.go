@@ -423,7 +423,7 @@ func TestBlobPutBlobHTTPHeaders(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blockBlobName := generateBlobName(t.Name())
-	bbClient := createNewBlockBlob(assert.New(t), blockBlobName, containerClient)
+	bbClient := createNewBlockBlob(t, blockBlobName, containerClient)
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
@@ -452,7 +452,7 @@ func TestBlobPutBlobMetadataNotEmpty(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blockBlobName := generateBlobName(t.Name())
-	bbClient := createNewBlockBlob(assert.New(t), blockBlobName, containerClient)
+	bbClient := createNewBlockBlob(t, blockBlobName, containerClient)
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
@@ -481,7 +481,7 @@ func TestBlobPutBlobMetadataEmpty(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blockBlobName := generateBlobName(t.Name())
-	bbClient := createNewBlockBlob(assert.New(t), blockBlobName, containerClient)
+	bbClient := createNewBlockBlob(t, blockBlobName, containerClient)
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
@@ -508,7 +508,7 @@ func TestBlobPutBlobMetadataInvalid(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blockBlobName := generateBlobName(t.Name())
-	bbClient := createNewBlockBlob(assert.New(t), blockBlobName, containerClient)
+	bbClient := createNewBlockBlob(t, blockBlobName, containerClient)
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
@@ -553,7 +553,7 @@ func TestBlobPutBlobIfModifiedSinceTrue(t *testing.T) {
 		},
 	})
 	require.NoError(t, err)
-	validateUpload(assert.New(t), bbClient.BlobClient)
+	validateUpload(t, bbClient.BlobClient)
 }
 
 func TestBlobPutBlobIfModifiedSinceFalse(t *testing.T) {
@@ -632,7 +632,7 @@ func TestBlobPutBlobIfUnmodifiedSinceTrue(t *testing.T) {
 	_, err = bbClient.Upload(ctx, rsc, &uploadBlockBlobOptions)
 	require.NoError(t, err)
 
-	validateUpload(assert.New(t), bbClient.BlobClient)
+	validateUpload(t, bbClient.BlobClient)
 }
 
 func TestBlobPutBlobIfUnmodifiedSinceFalse(t *testing.T) {
@@ -683,7 +683,7 @@ func TestBlobPutBlobIfMatchTrue(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blockBlobName := generateBlobName(t.Name())
-	bbClient := createNewBlockBlob(assert.New(t), blockBlobName, containerClient)
+	bbClient := createNewBlockBlob(t, blockBlobName, containerClient)
 
 	resp, err := bbClient.GetProperties(ctx, nil)
 	require.NoError(t, err)
@@ -701,7 +701,7 @@ func TestBlobPutBlobIfMatchTrue(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	validateUpload(assert.New(t), bbClient.BlobClient)
+	validateUpload(t, bbClient.BlobClient)
 }
 
 func TestBlobPutBlobIfMatchFalse(t *testing.T) {
@@ -717,7 +717,7 @@ func TestBlobPutBlobIfMatchFalse(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blockBlobName := generateBlobName(t.Name())
-	bbClient := createNewBlockBlob(assert.New(t), blockBlobName, containerClient)
+	bbClient := createNewBlockBlob(t, blockBlobName, containerClient)
 
 	_, err = bbClient.GetProperties(ctx, nil)
 	require.NoError(t, err)
@@ -751,7 +751,7 @@ func TestBlobPutBlobIfNoneMatchTrue(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blockBlobName := generateBlobName(t.Name())
-	bbClient := createNewBlockBlob(assert.New(t), blockBlobName, containerClient)
+	bbClient := createNewBlockBlob(t, blockBlobName, containerClient)
 
 	_, err = bbClient.GetProperties(ctx, nil)
 	require.NoError(t, err)
@@ -772,7 +772,7 @@ func TestBlobPutBlobIfNoneMatchTrue(t *testing.T) {
 	_, err = bbClient.Upload(ctx, rsc, &uploadBlockBlobOptions)
 	require.NoError(t, err)
 
-	validateUpload(assert.New(t), bbClient.BlobClient)
+	validateUpload(t, bbClient.BlobClient)
 }
 
 func TestBlobPutBlobIfNoneMatchFalse(t *testing.T) {
@@ -788,7 +788,7 @@ func TestBlobPutBlobIfNoneMatchFalse(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blockBlobName := generateBlobName(t.Name())
-	bbClient := createNewBlockBlob(assert.New(t), blockBlobName, containerClient)
+	bbClient := createNewBlockBlob(t, blockBlobName, containerClient)
 
 	resp, err := bbClient.GetProperties(ctx, nil)
 	require.NoError(t, err)
@@ -1320,7 +1320,7 @@ func TestSetStandardBlobTierWithRehydratePriority(t *testing.T) {
 
 	standardTier, rehydrateTier, rehydratePriority := AccessTierArchive, AccessTierCool, RehydratePriorityStandard
 	bbName := generateBlobName(t.Name())
-	bbClient := createNewBlockBlob(assert.New(t), bbName, containerClient)
+	bbClient := createNewBlockBlob(t, bbName, containerClient)
 
 	_, err = bbClient.SetTier(ctx, standardTier, &SetTierOptions{
 		RehydratePriority: &rehydratePriority,
@@ -1409,7 +1409,7 @@ func TestCopyBlobWithRehydratePriority(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	sourceBlobName := generateBlobName(t.Name())
-	sourceBBClient := createNewBlockBlob(assert.New(t), sourceBlobName, containerClient)
+	sourceBBClient := createNewBlockBlob(t, sourceBlobName, containerClient)
 
 	blobTier, rehydratePriority := AccessTierArchive, RehydratePriorityHigh
 

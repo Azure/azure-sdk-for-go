@@ -175,7 +175,7 @@ func TestBlobAcquireLease(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
-	bbClient := createNewBlockBlob(assert.New(t), blobName, containerClient)
+	bbClient := createNewBlockBlob(t, blobName, containerClient)
 	blobLeaseClient, _ := bbClient.NewBlobLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
@@ -202,7 +202,7 @@ func TestDeleteBlobWithoutLeaseId(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
-	bbClient := createNewBlockBlob(assert.New(t), blobName, containerClient)
+	bbClient := createNewBlockBlob(t, blobName, containerClient)
 	blobLeaseClient, _ := bbClient.NewBlobLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
@@ -239,7 +239,7 @@ func TestBlobReleaseLease(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
-	bbClient := createNewBlockBlob(assert.New(t), blobName, containerClient)
+	bbClient := createNewBlockBlob(t, blobName, containerClient)
 	blobLeaseClient, _ := bbClient.NewBlobLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
@@ -272,7 +272,7 @@ func TestBlobRenewLease(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
-	bbClient := createNewBlockBlob(assert.New(t), blobName, containerClient)
+	bbClient := createNewBlockBlob(t, blobName, containerClient)
 	blobLeaseClient, _ := bbClient.NewBlobLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
@@ -302,7 +302,7 @@ func TestBlobChangeLease(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
-	bbClient := createNewBlockBlob(assert.New(t), blobName, containerClient)
+	bbClient := createNewBlockBlob(t, blobName, containerClient)
 	blobLeaseClient, _ := bbClient.NewBlobLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()

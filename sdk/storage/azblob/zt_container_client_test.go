@@ -9,7 +9,6 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -23,9 +22,9 @@ import (
 //	testURL := svcClient.NewContainerClient(containerPrefix)
 //
 //	accountName, err := getRequiredEnv(AccountNameEnvVar)
-//	_assert.NoError(err)
+//	require.NoError(t, err)
 //	correctURL := "https://" + accountName + "." + DefaultBlobEndpointSuffix + containerPrefix
-//	_assert.Equal(testURL.URL(), correctURL)
+//	require.Equal(t, testURL.URL(), correctURL)
 //}
 
 //nolint
@@ -38,13 +37,12 @@ import (
 //	testURL := svcClient.NewContainerClient(ContainerNameRoot)
 //
 //	accountName, err := getRequiredEnv(AccountNameEnvVar)
-//	_assert.NoError(err)
+//	require.NoError(t, err)
 //	correctURL := "https://" + accountName + ".blob.core.windows.net/$root"
-//	_assert.Equal(testURL.URL(), correctURL)
+//	require.Equal(t, testURL.URL(), correctURL)
 //}
 
 func TestContainerCreateInvalidName(t *testing.T) {
-	_assert := assert.New(t)
 	stop := start(t)
 	defer stop()
 
@@ -59,13 +57,11 @@ func TestContainerCreateInvalidName(t *testing.T) {
 		Metadata: map[string]string{},
 	}
 	_, err = containerClient.Create(ctx, &createContainerOptions)
-	_assert.Error(err)
+	require.Error(t, err)
 	validateStorageError(t, err, StorageErrorCodeInvalidResourceName)
 }
 
 func TestContainerCreateEmptyName(t *testing.T) {
-	_assert := assert.New(t)
-
 	stop := start(t)
 	defer stop()
 
@@ -80,14 +76,12 @@ func TestContainerCreateEmptyName(t *testing.T) {
 		Metadata: map[string]string{},
 	}
 	_, err = containerClient.Create(ctx, &createContainerOptions)
-	_assert.Error(err)
+	require.Error(t, err)
 
 	validateStorageError(t, err, StorageErrorCodeInvalidQueryParameterValue)
 }
 
 func TestContainerCreateNameCollision(t *testing.T) {
-	_assert := assert.New(t)
-
 	stop := start(t)
 	defer stop()
 
@@ -107,14 +101,12 @@ func TestContainerCreateNameCollision(t *testing.T) {
 
 	containerClient = svcClient.NewContainerClient(containerName)
 	_, err = containerClient.Create(ctx, &createContainerOptions)
-	_assert.Error(err)
+	require.Error(t, err)
 
 	validateStorageError(t, err, StorageErrorCodeContainerAlreadyExists)
 }
 
 func TestContainerCreateInvalidMetadata(t *testing.T) {
-	_assert := assert.New(t)
-
 	stop := start(t)
 	defer stop()
 
@@ -131,13 +123,11 @@ func TestContainerCreateInvalidMetadata(t *testing.T) {
 	}
 	_, err = containerClient.Create(ctx, &createContainerOptions)
 
-	_assert.Error(err)
-	_assert.Equal(strings.Contains(err.Error(), invalidHeaderErrorSubstring), true)
+	require.Error(t, err)
+	require.Equal(t, strings.Contains(err.Error(), invalidHeaderErrorSubstring), true)
 }
 
 func TestContainerCreateNilMetadata(t *testing.T) {
-	_assert := assert.New(t)
-
 	stop := start(t)
 	defer stop()
 
@@ -154,16 +144,14 @@ func TestContainerCreateNilMetadata(t *testing.T) {
 	}
 	_, err = containerClient.Create(ctx, &createContainerOptions)
 	defer deleteContainer(t, containerClient)
-	_assert.NoError(err)
+	require.NoError(t, err)
 
 	response, err := containerClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
-	_assert.Nil(response.Metadata)
+	require.NoError(t, err)
+	require.Nil(t, response.Metadata)
 }
 
 func TestContainerCreateEmptyMetadata(t *testing.T) {
-	_assert := assert.New(t)
-
 	stop := start(t)
 	defer stop()
 
@@ -180,11 +168,11 @@ func TestContainerCreateEmptyMetadata(t *testing.T) {
 	}
 	_, err = containerClient.Create(ctx, &createContainerOptions)
 	defer deleteContainer(t, containerClient)
-	_assert.NoError(err)
+	require.NoError(t, err)
 
 	response, err := containerClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
-	_assert.Nil(response.Metadata)
+	require.NoError(t, err)
+	require.Nil(t, response.Metadata)
 }
 
 //func (s *azblobTestSuite) TestContainerCreateAccessContainer() {
@@ -197,7 +185,7 @@ func TestContainerCreateEmptyMetadata(t *testing.T) {
 //		HTTPClient: _context.recording,
 //		Retry: azcore.RetryOptions{MaxRetries: -1}})
 //	credential, err := getGenericCredential(t)
-//	_assert.NoError(err)
+//	require.NoError(t, err)
 //
 //	containerName := generateContainerName(s.T().Name())
 //	containerClient := getContainerClient(containerName, svcClient)
@@ -208,14 +196,14 @@ func TestContainerCreateEmptyMetadata(t *testing.T) {
 //	}
 //	_, err = containerClient.Create(ctx, &createContainerOptions)
 //	defer deleteContainer(t, containerClient)
-//	_assert.NoError(err)
+//	require.NoError(t, err)
 //
 //	bbClient := containerClient.NewBlockBlobClient(blobPrefix)
 //	uploadBlockBlobOptions := UploadBlockBlobOptions{
 //		Metadata: basicMetadata,
 //	}
 //	_, err = bbClient.Upload(ctx, bytes.NewReader([]byte("Content")), &uploadBlockBlobOptions)
-//	_assert.NoError(err)
+//	require.NoError(t, err)
 //
 //	// Anonymous enumeration should be valid with container access
 //	containerClient2, _ := NewContainerClient(containerClient.URL(), credential, nil)
@@ -225,16 +213,16 @@ func TestContainerCreateEmptyMetadata(t *testing.T) {
 //		resp := pager.PageResponse()
 //
 //		for _, blob := range resp.EnumerationResults.Segment.BlobItems {
-//			_assert.Equal(*blob.Name, blobPrefix)
+//			require.Equal(t, *blob.Name, blobPrefix)
 //		}
 //	}
 //
-//	_assert.Nil(pager.Err())
+//	require.Nil(t, pager.Err())
 //
 //	// Getting blob data anonymously should still be valid with container access
 //	blobURL2 := containerClient2.NewBlockBlobClient(blobPrefix)
 //	resp, err := blobURL2.GetProperties(ctx, nil)
-//	_assert.NoError(err)
+//	require.NoError(t, err)
 //	_assert.EqualValues(resp.Metadata, basicMetadata)
 //}
 
@@ -256,34 +244,32 @@ func TestContainerCreateEmptyMetadata(t *testing.T) {
 //	}
 //	_, err = containerClient.Create(ctx, &createContainerOptions)
 //	defer deleteContainer(t, containerClient)
-//	_assert.NoError(err)
+//	require.NoError(t, err)
 //
 //	bbClient := containerClient.NewBlockBlobClient(blobPrefix)
 //	uploadBlockBlobOptions := UploadBlockBlobOptions{
 //		Metadata: basicMetadata,
 //	}
 //	_, err = bbClient.Upload(ctx, bytes.NewReader([]byte("Content")), &uploadBlockBlobOptions)
-//	_assert.NoError(err)
+//	require.NoError(t, err)
 //
 //	// Reference the same container URL but with anonymous credentials
 //	containerClient2, err := NewContainerClient(containerClient.URL(), azcore.AnonymousCredential(), nil)
-//	_assert.NoError(err)
+//	require.NoError(t, err)
 //
 //	pager := containerClient2.ListBlobsFlat(nil)
 //
-//	_assert.Equal(pager.NextPage(ctx), false)
-//	_assert.NotNil(pager.Err())
+//	require.Equal(t, pager.NextPage(ctx), false)
+//	require.NotNil(t, pager.Err())
 //
 //	// Accessing blob specific data should be public
 //	blobURL2 := containerClient2.NewBlockBlobClient(blobPrefix)
 //	resp, err := blobURL2.GetProperties(ctx, nil)
-//	_assert.NoError(err)
+//	require.NoError(t, err)
 //	_assert.EqualValues(resp.Metadata, basicMetadata)
 //}
 
 func TestContainerCreateAccessNone(t *testing.T) {
-	_assert := assert.New(t)
-
 	stop := start(t)
 	defer stop()
 
@@ -296,28 +282,28 @@ func TestContainerCreateAccessNone(t *testing.T) {
 	// Public Access Type None
 	_, err = containerClient.Create(ctx, nil)
 	defer deleteContainer(t, containerClient)
-	_assert.NoError(err)
+	require.NoError(t, err)
 
 	bbClient := containerClient.NewBlockBlobClient(blobPrefix)
 	uploadBlockBlobOptions := UploadBlockBlobOptions{
 		Metadata: basicMetadata,
 	}
 	_, err = bbClient.Upload(ctx, internal.NopCloser(strings.NewReader("Content")), &uploadBlockBlobOptions)
-	_assert.NoError(err)
+	require.NoError(t, err)
 
 	// Reference the same container URL but with anonymous credentials
 	containerClient2, err := NewContainerClientWithNoCredential(containerClient.URL(), nil)
-	_assert.NoError(err)
+	require.NoError(t, err)
 
 	pager := containerClient2.ListBlobsFlat(nil)
 
-	_assert.Equal(pager.NextPage(ctx), false)
-	_assert.NotNil(pager.Err())
+	require.Equal(t, pager.NextPage(ctx), false)
+	require.NotNil(t, pager.Err())
 
 	// Blob data is not public
 	blobURL2 := containerClient2.NewBlockBlobClient(blobPrefix)
 	_, err = blobURL2.GetProperties(ctx, nil)
-	_assert.Error(err)
+	require.Error(t, err)
 
 	//serr := err.(StorageError)
 	//_assert(serr.Response().StatusCode, chk.Equals, 401) // HEAD request does not return a status code
@@ -338,7 +324,7 @@ func TestContainerCreateAccessNone(t *testing.T) {
 //	// Public Access Type None
 //	_, err = containerClient.Create(ctx, nil)
 //	defer deleteContainer(t, containerClient)
-//	_assert.NoError(err)
+//	require.NoError(t, err)
 //
 //	access := PublicAccessTypeBlob
 //	createContainerOptions := CreateContainerOptions{
@@ -346,13 +332,13 @@ func TestContainerCreateAccessNone(t *testing.T) {
 //		Metadata: nil,
 //	}
 //	_, err = containerClient.CreateIfNotExists(ctx, &createContainerOptions)
-//	_assert.NoError(err)
+//	require.NoError(t, err)
 //
 //	// Ensure that next create call doesn't update the properties of already created container
 //	getResp, err := containerClient.GetProperties(ctx, nil)
-//	_assert.NoError(err)
-//	_assert.Nil(getResp.BlobPublicAccess)
-//	_assert.Nil(getResp.Metadata)
+//	require.NoError(t, err)
+//	require.Nil(t, getResp.BlobPublicAccess)
+//	require.Nil(t, getResp.Metadata)
 //}
 //
 //func (s *azblobTestSuite) TestContainerCreateIfNotExists() {
@@ -373,12 +359,12 @@ func TestContainerCreateAccessNone(t *testing.T) {
 //		Metadata: basicMetadata,
 //	}
 //	_, err = containerClient.CreateIfNotExists(ctx, &createContainerOptions)
-//	_assert.NoError(err)
+//	require.NoError(t, err)
 //	defer deleteContainer(t, containerClient)
 //
 //	// Ensure that next create call doesn't update the properties of already created container
 //	getResp, err := containerClient.GetProperties(ctx, nil)
-//	_assert.NoError(err)
+//	require.NoError(t, err)
 //	_assert.EqualValues(*getResp.BlobPublicAccess, PublicAccessTypeBlob)
 //	_assert.EqualValues(getResp.Metadata, basicMetadata)
 //}
@@ -391,8 +377,6 @@ func validateContainerDeleted(t *testing.T, containerClient ContainerClient) {
 }
 
 func TestContainerDelete(t *testing.T) {
-	_assert := assert.New(t)
-
 	stop := start(t)
 	defer stop()
 
@@ -403,7 +387,7 @@ func TestContainerDelete(t *testing.T) {
 	containerClient := createNewContainer(t, containerName, svcClient)
 
 	_, err = containerClient.Delete(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(t, err)
 
 	validateContainerDeleted(t, containerClient)
 }
@@ -423,10 +407,10 @@ func TestContainerDelete(t *testing.T) {
 //	// Public Access Type None
 //	_, err = containerClient.Create(ctx, nil)
 //	defer deleteContainer(t, containerClient)
-//	_assert.NoError(err)
+//	require.NoError(t, err)
 //
 //	_, err = containerClient.DeleteIfExists(ctx, nil)
-//	_assert.NoError(err)
+//	require.NoError(t, err)
 //
 //	validateContainerDeleted(_assert, containerClient)
 //}
@@ -444,12 +428,10 @@ func TestContainerDelete(t *testing.T) {
 //	containerClient := getContainerClient(containerName, serviceClient)
 //
 //	_, err = containerClient.DeleteIfExists(ctx, nil)
-//	_assert.NoError(err)
+//	require.NoError(t, err)
 //}
 
 func TestContainerDeleteNonExistent(t *testing.T) {
-	_assert := assert.New(t)
-
 	stop := start(t)
 	defer stop()
 
@@ -460,14 +442,12 @@ func TestContainerDeleteNonExistent(t *testing.T) {
 	containerClient := getContainerClient(containerName, svcClient)
 
 	_, err = containerClient.Delete(ctx, nil)
-	_assert.Error(err)
+	require.Error(t, err)
 
 	validateStorageError(t, err, StorageErrorCodeContainerNotFound)
 }
 
 func TestContainerDeleteIfModifiedSinceTrue(t *testing.T) {
-	_assert := assert.New(t)
-
 	stop := start(t)
 	defer stop()
 
@@ -478,8 +458,8 @@ func TestContainerDeleteIfModifiedSinceTrue(t *testing.T) {
 	containerClient := getContainerClient(containerName, svcClient)
 
 	cResp, err := containerClient.Create(ctx, nil)
-	_assert.NoError(err)
-	_assert.Equal(cResp.RawResponse.StatusCode, 201)
+	require.NoError(t, err)
+	require.Equal(t, cResp.RawResponse.StatusCode, 201)
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, -10)
 
@@ -489,13 +469,11 @@ func TestContainerDeleteIfModifiedSinceTrue(t *testing.T) {
 		},
 	}
 	_, err = containerClient.Delete(ctx, &deleteContainerOptions)
-	_assert.NoError(err)
+	require.NoError(t, err)
 	validateContainerDeleted(t, containerClient)
 }
 
 func TestContainerDeleteIfModifiedSinceFalse(t *testing.T) {
-	_assert := assert.New(t)
-
 	stop := start(t)
 	defer stop()
 
@@ -506,8 +484,8 @@ func TestContainerDeleteIfModifiedSinceFalse(t *testing.T) {
 	containerClient := getContainerClient(containerName, svcClient)
 
 	cResp, err := containerClient.Create(ctx, nil)
-	_assert.NoError(err)
-	_assert.Equal(cResp.RawResponse.StatusCode, 201)
+	require.NoError(t, err)
+	require.Equal(t, cResp.RawResponse.StatusCode, 201)
 	defer deleteContainer(t, containerClient)
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, 10)
@@ -518,14 +496,12 @@ func TestContainerDeleteIfModifiedSinceFalse(t *testing.T) {
 		},
 	}
 	_, err = containerClient.Delete(ctx, &deleteContainerOptions)
-	_assert.Error(err)
+	require.Error(t, err)
 
 	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
 func TestContainerDeleteIfUnModifiedSinceTrue(t *testing.T) {
-	_assert := assert.New(t)
-
 	stop := start(t)
 	defer stop()
 
@@ -536,8 +512,8 @@ func TestContainerDeleteIfUnModifiedSinceTrue(t *testing.T) {
 	containerClient := getContainerClient(containerName, svcClient)
 
 	cResp, err := containerClient.Create(ctx, nil)
-	_assert.NoError(err)
-	_assert.Equal(cResp.RawResponse.StatusCode, 201)
+	require.NoError(t, err)
+	require.Equal(t, cResp.RawResponse.StatusCode, 201)
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, 10)
 
@@ -547,14 +523,12 @@ func TestContainerDeleteIfUnModifiedSinceTrue(t *testing.T) {
 		},
 	}
 	_, err = containerClient.Delete(ctx, &deleteContainerOptions)
-	_assert.NoError(err)
+	require.NoError(t, err)
 
 	validateContainerDeleted(t, containerClient)
 }
 
 func TestContainerDeleteIfUnModifiedSinceFalse(t *testing.T) {
-	_assert := assert.New(t)
-
 	stop := start(t)
 	defer stop()
 
@@ -565,8 +539,8 @@ func TestContainerDeleteIfUnModifiedSinceFalse(t *testing.T) {
 	containerClient := getContainerClient(containerName, svcClient)
 
 	cResp, err := containerClient.Create(ctx, nil)
-	_assert.NoError(err)
-	_assert.Equal(cResp.RawResponse.StatusCode, 201)
+	require.NoError(t, err)
+	require.Equal(t, cResp.RawResponse.StatusCode, 201)
 	defer deleteContainer(t, containerClient)
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, -10)
@@ -577,7 +551,7 @@ func TestContainerDeleteIfUnModifiedSinceFalse(t *testing.T) {
 		},
 	}
 	_, err = containerClient.Delete(ctx, &deleteContainerOptions)
-	_assert.Error(err)
+	require.Error(t, err)
 
 	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
@@ -597,7 +571,7 @@ func TestContainerDeleteIfUnModifiedSinceFalse(t *testing.T) {
 ////		},
 ////	}
 ////	_, err := containerClient.SetMetadata(ctx, &deleteContainerOptions)
-////	_assert.Error(err)
+////	require.Error(t, err)
 ////}
 //
 ////func (s *azblobTestSuite) TestContainerListBlobsNonexistentPrefix() {
@@ -670,7 +644,7 @@ func TestContainerDeleteIfUnModifiedSinceFalse(t *testing.T) {
 //	_assert(count, chk.Equals, 1)
 //
 //	// TODO: Ask why the output is BlobItemInternal and why other fields are not there for ex: prefix array
-//	//_assert.NoError(err)
+//	//require.NoError(t, err)
 //	//_assert(len(resp.Segment.BlobItems), chk.Equals, 1)
 //	//_assert(len(resp.Segment.BlobPrefixes), chk.Equals, 2)
 //	//_assert(resp.Segment.BlobPrefixes[0].Name, chk.Equals, "a/")
@@ -679,8 +653,6 @@ func TestContainerDeleteIfUnModifiedSinceFalse(t *testing.T) {
 //}
 
 func TestContainerListBlobsWithSnapshots(t *testing.T) {
-	_assert := assert.New(t)
-
 	stop := start(t)
 	defer stop()
 
@@ -693,10 +665,10 @@ func TestContainerListBlobsWithSnapshots(t *testing.T) {
 
 	// initialize a blob and create a snapshot of it
 	snapBlobName := generateBlobName(t.Name())
-	snapBlob := createNewBlockBlob(_assert, snapBlobName, containerClient)
+	snapBlob := createNewBlockBlob(t, snapBlobName, containerClient)
 	snap, err := snapBlob.CreateSnapshot(ctx, nil)
 	// snap.
-	_assert.NoError(err)
+	require.NoError(t, err)
 
 	listBlobFlatSegmentOptions := ContainerListBlobFlatSegmentOptions{
 		Include: []ListBlobsIncludeItem{ListBlobsIncludeItemSnapshots},
@@ -705,23 +677,21 @@ func TestContainerListBlobsWithSnapshots(t *testing.T) {
 
 	wasFound := false // hold the for loop accountable for finding the blob and it's snapshot
 	for pager.NextPage(ctx) {
-		_assert.Nil(pager.Err())
+		require.Nil(t, pager.Err())
 
 		resp := pager.PageResponse()
 
 		for _, blob := range resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems {
 			if *blob.Name == snapBlobName && blob.Snapshot != nil {
 				wasFound = true
-				_assert.Equal(*blob.Snapshot, *snap.Snapshot)
+				require.Equal(t, *blob.Snapshot, *snap.Snapshot)
 			}
 		}
 	}
-	_assert.Equal(wasFound, true)
+	require.Equal(t, wasFound, true)
 }
 
 func TestContainerListBlobsInvalidDelimiter(t *testing.T) {
-	_assert := assert.New(t)
-
 	stop := start(t)
 	defer stop()
 
@@ -734,14 +704,14 @@ func TestContainerListBlobsInvalidDelimiter(t *testing.T) {
 	prefixes := []string{"a/1", "a/2", "b/1", "blob"}
 	for _, prefix := range prefixes {
 		blobName := prefix + generateBlobName(t.Name())
-		createNewBlockBlob(_assert, blobName, containerClient)
+		createNewBlockBlob(t, blobName, containerClient)
 	}
 
 	pager := containerClient.ListBlobsHierarchy("^", nil)
 
 	pager.NextPage(ctx)
-	_assert.Nil(pager.Err())
-	_assert.Nil(pager.PageResponse().ContainerListBlobHierarchySegmentResult.Segment.BlobPrefixes)
+	require.Nil(t, pager.Err())
+	require.Nil(t, pager.PageResponse().ContainerListBlobHierarchySegmentResult.Segment.BlobPrefixes)
 }
 
 ////func (s *azblobTestSuite) TestContainerListBlobsIncludeTypeMetadata() {
@@ -751,11 +721,11 @@ func TestContainerListBlobsInvalidDelimiter(t *testing.T) {
 ////	_, blobNameNoMetadata := createNewBlockBlobWithPrefix(c, container, "a")
 ////	blobMetadata, blobNameMetadata := createNewBlockBlobWithPrefix(c, container, "b")
 ////	_, err := blobMetadata.SetMetadata(ctx, Metadata{"field": "value"}, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-////	_assert.NoError(err)
+////	require.NoError(t, err)
 ////
 ////	resp, err := container.ListBlobsFlat(ctx, Marker{}, ListBlobsSegmentOptions{Details: BlobListingDetails{Metadata: true}})
 ////
-////	_assert.NoError(err)
+////	require.NoError(t, err)
 ////	_assert(resp.Segment.BlobItems[0].Name, chk.Equals, blobNameNoMetadata)
 ////	_assert(resp.Segment.BlobItems[0].Metadata, chk.HasLen, 0)
 ////	_assert(resp.Segment.BlobItems[1].Name, chk.Equals, blobNameMetadata)
@@ -768,12 +738,12 @@ func TestContainerListBlobsInvalidDelimiter(t *testing.T) {
 ////	defer deleteContainer(t, containerClient)
 ////	blob, blobName := createNewBlockBlob(c, containerClient)
 ////	_, err := blob.CreateSnapshot(ctx, Metadata{}, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-////	_assert.NoError(err)
+////	require.NoError(t, err)
 ////
 ////	resp, err := containerClient.ListBlobsFlat(ctx, Marker{},
 ////		ListBlobsSegmentOptions{Details: BlobListingDetails{Snapshots: true}})
 ////
-////	_assert.NoError(err)
+////	require.NoError(t, err)
 ////	_assert(resp.Segment.BlobItems, chk.HasLen, 2)
 ////	_assert(resp.Segment.BlobItems[0].Name, chk.Equals, blobName)
 ////	_assert(resp.Segment.BlobItems[0].Snapshot, chk.NotNil)
@@ -788,13 +758,13 @@ func TestContainerListBlobsInvalidDelimiter(t *testing.T) {
 ////	bbClient, blobName := createNewBlockBlob(c, containerClient)
 ////	blobCopyURL, blobCopyName := createNewBlockBlobWithPrefix(c, containerClient, "copy")
 ////	_, err := blobCopyURL.StartCopyFromURL(ctx, bbClient.URL(), Metadata{}, ModifiedAccessConditions{}, BlobAccessConditions{}, DefaultAccessTier, nil)
-////	_assert.NoError(err)
+////	require.NoError(t, err)
 ////
 ////	resp, err := containerClient.ListBlobsFlat(ctx, Marker{},
 ////		ListBlobsSegmentOptions{Details: BlobListingDetails{Copy: true}})
 ////
 ////	// These are sufficient to show that the blob copy was in fact included
-////	_assert.NoError(err)
+////	require.NoError(t, err)
 ////	_assert(resp.Segment.BlobItems, chk.HasLen, 2)
 ////	_assert(resp.Segment.BlobItems[1].Name, chk.Equals, blobName)
 ////	_assert(resp.Segment.BlobItems[0].Name, chk.Equals, blobCopyName)
@@ -810,12 +780,12 @@ func TestContainerListBlobsInvalidDelimiter(t *testing.T) {
 ////	defer deleteContainer(t, containerClient)
 ////	bbClient, blobName := getBlockBlobURL(c, containerClient)
 ////	_, err := bbClient.StageBlock(ctx, blockID, strings.NewReader(blockBlobDefaultData), LeaseAccessConditions{}, nil, ClientProvidedKeyOptions{})
-////	_assert.NoError(err)
+////	require.NoError(t, err)
 ////
 ////	resp, err := containerClient.ListBlobsFlat(ctx, Marker{},
 ////		ListBlobsSegmentOptions{Details: BlobListingDetails{UncommittedBlobs: true}})
 ////
-////	_assert.NoError(err)
+////	require.NoError(t, err)
 ////	_assert(resp.Segment.BlobItems, chk.HasLen, 1)
 ////	_assert(resp.Segment.BlobItems[0].Name, chk.Equals, blobName)
 ////}
@@ -827,15 +797,15 @@ func TestContainerListBlobsInvalidDelimiter(t *testing.T) {
 ////
 ////	resp, err := containerClient.ListBlobsFlat(ctx, Marker{},
 ////		ListBlobsSegmentOptions{Details: BlobListingDetails{Versions: true, Deleted: true}})
-////	_assert.NoError(err)
+////	require.NoError(t, err)
 ////	_assert(resp.Segment.BlobItems, chk.HasLen, 1)
 ////
 ////	_, err = bbClient.Delete(ctx, DeleteSnapshotsOptionInclude, BlobAccessConditions{})
-////	_assert.NoError(err)
+////	require.NoError(t, err)
 ////
 ////	resp, err = containerClient.ListBlobsFlat(ctx, Marker{},
 ////		ListBlobsSegmentOptions{Details: BlobListingDetails{Versions: true, Deleted: true}})
-////	_assert.NoError(err)
+////	require.NoError(t, err)
 ////	if len(resp.Segment.BlobItems) != 1 {
 ////		return errors.New("DeletedBlobNotFound")
 ////	}
@@ -858,10 +828,10 @@ func TestContainerListBlobsInvalidDelimiter(t *testing.T) {
 ////
 ////	bbClient, _ := createNewBlockBlobWithPrefix(c, containerClient, "z")
 ////	_, err := bbClient.CreateSnapshot(ctx, Metadata{}, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-////	_assert.NoError(err)
+////	require.NoError(t, err)
 ////	blobURL2, _ := createNewBlockBlobWithPrefix(c, containerClient, "copy")
 ////	resp2, err := blobURL2.StartCopyFromURL(ctx, bbClient.URL(), Metadata{}, ModifiedAccessConditions{}, BlobAccessConditions{}, DefaultAccessTier, nil)
-////	_assert.NoError(err)
+////	require.NoError(t, err)
 ////	waitForCopy(c, blobURL2, resp2)
 ////	blobURL3, _ := createNewBlockBlobWithPrefix(c, containerClient, "deleted")
 ////
@@ -870,7 +840,7 @@ func TestContainerListBlobsInvalidDelimiter(t *testing.T) {
 ////	resp, err := containerClient.ListBlobsFlat(ctx, Marker{},
 ////		ListBlobsSegmentOptions{Details: BlobListingDetails{Snapshots: true, Copy: true, Deleted: true, Versions: true}})
 ////
-////	_assert.NoError(err)
+////	require.NoError(t, err)
 ////	if len(resp.Segment.BlobItems) != 6 {
 ////		// If there are fewer blobs in the container than there should be, it will be because one was permanently deleted.
 ////		return errors.New("DeletedBlobNotFound")
@@ -927,8 +897,6 @@ func TestContainerListBlobsInvalidDelimiter(t *testing.T) {
 ////}
 
 func TestContainerListBlobsMaxResultsExact(t *testing.T) {
-	_assert := assert.New(t)
-
 	stop := start(t)
 	defer stop()
 
@@ -941,8 +909,8 @@ func TestContainerListBlobsMaxResultsExact(t *testing.T) {
 	blobNames := make([]string, 2)
 	blobName := generateBlobName(t.Name())
 	blobNames[0], blobNames[1] = "a"+blobName, "b"+blobName
-	createNewBlockBlob(_assert, blobNames[0], containerClient)
-	createNewBlockBlob(_assert, blobNames[1], containerClient)
+	createNewBlockBlob(t, blobNames[0], containerClient)
+	createNewBlockBlob(t, blobNames[1], containerClient)
 
 	maxResult := int32(2)
 	pager := containerClient.ListBlobsFlat(&ContainerListBlobFlatSegmentOptions{
@@ -955,16 +923,14 @@ func TestContainerListBlobsMaxResultsExact(t *testing.T) {
 		resp := pager.PageResponse()
 
 		for _, blob := range resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems {
-			_assert.Equal(nameMap[*blob.Name], true)
+			require.Equal(t, nameMap[*blob.Name], true)
 		}
 	}
 
-	_assert.Nil(pager.Err())
+	require.Nil(t, pager.Err())
 }
 
 func TestContainerListBlobsMaxResultsSufficient(t *testing.T) {
-	_assert := assert.New(t)
-
 	stop := start(t)
 	defer stop()
 
@@ -978,8 +944,8 @@ func TestContainerListBlobsMaxResultsSufficient(t *testing.T) {
 	blobNames := make([]string, 2)
 	blobName := generateBlobName(t.Name())
 	blobNames[0], blobNames[1] = "a"+blobName, "b"+blobName
-	createNewBlockBlob(_assert, blobNames[0], containerClient)
-	createNewBlockBlob(_assert, blobNames[1], containerClient)
+	createNewBlockBlob(t, blobNames[0], containerClient)
+	createNewBlockBlob(t, blobNames[1], containerClient)
 
 	maxResult := int32(3)
 	containerListBlobFlatSegmentOptions := ContainerListBlobFlatSegmentOptions{
@@ -993,16 +959,14 @@ func TestContainerListBlobsMaxResultsSufficient(t *testing.T) {
 		resp := pager.PageResponse()
 
 		for _, blob := range resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems {
-			_assert.Equal(nameMap[*blob.Name], true)
+			require.Equal(t, nameMap[*blob.Name], true)
 		}
 	}
 
-	_assert.Nil(pager.Err())
+	require.Nil(t, pager.Err())
 }
 
 func TestContainerListBlobsNonExistentContainer(t *testing.T) {
-	_assert := assert.New(t)
-
 	stop := start(t)
 	defer stop()
 
@@ -1015,11 +979,10 @@ func TestContainerListBlobsNonExistentContainer(t *testing.T) {
 	pager := containerClient.ListBlobsFlat(nil)
 
 	pager.NextPage(ctx)
-	_assert.NotNil(pager.Err())
+	require.NotNil(t, pager.Err())
 }
 
 func TestContainerGetPropertiesAndMetadataNoMetadata(t *testing.T) {
-	_assert := assert.New(t)
 	t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
@@ -1033,12 +996,11 @@ func TestContainerGetPropertiesAndMetadataNoMetadata(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	resp, err := containerClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
-	_assert.Nil(resp.Metadata)
+	require.NoError(t, err)
+	require.Nil(t, resp.Metadata)
 }
 
 func TestContainerGetPropsAndMetaNonExistentContainer(t *testing.T) {
-	_assert := assert.New(t)
 	t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
@@ -1050,13 +1012,12 @@ func TestContainerGetPropsAndMetaNonExistentContainer(t *testing.T) {
 	containerClient := getContainerClient(containerName, svcClient)
 
 	_, err = containerClient.GetProperties(ctx, nil)
-	_assert.Error(err)
+	require.Error(t, err)
 
 	validateStorageError(t, err, StorageErrorCodeContainerNotFound)
 }
 
 func TestContainerSetMetadataEmpty(t *testing.T) {
-	_assert := assert.New(t)
 	t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
@@ -1074,21 +1035,20 @@ func TestContainerSetMetadataEmpty(t *testing.T) {
 	}
 	_, err = containerClient.Create(ctx, &createContainerOptions)
 	defer deleteContainer(t, containerClient)
-	_assert.NoError(err)
+	require.NoError(t, err)
 
 	setMetadataContainerOptions := SetMetadataContainerOptions{
 		Metadata: map[string]string{},
 	}
 	_, err = containerClient.SetMetadata(ctx, &setMetadataContainerOptions)
-	_assert.NoError(err)
+	require.NoError(t, err)
 
 	resp, err := containerClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
-	_assert.Nil(resp.Metadata)
+	require.NoError(t, err)
+	require.Nil(t, resp.Metadata)
 }
 
 func TestContainerSetMetadataNil(t *testing.T) {
-	_assert := assert.New(t)
 	t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
@@ -1104,19 +1064,18 @@ func TestContainerSetMetadataNil(t *testing.T) {
 		Metadata: basicMetadata,
 	}
 	_, err = containerClient.Create(ctx, &createContainerOptions)
-	_assert.NoError(err)
+	require.NoError(t, err)
 	defer deleteContainer(t, containerClient)
 
 	_, err = containerClient.SetMetadata(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(t, err)
 
 	resp, err := containerClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
-	_assert.Nil(resp.Metadata)
+	require.NoError(t, err)
+	require.Nil(t, resp.Metadata)
 }
 
 func TestContainerSetMetadataInvalidField(t *testing.T) {
-	_assert := assert.New(t)
 	t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
@@ -1133,13 +1092,11 @@ func TestContainerSetMetadataInvalidField(t *testing.T) {
 		Metadata: map[string]string{"!nval!d Field!@#%": "value"},
 	}
 	_, err = containerClient.SetMetadata(ctx, &setMetadataContainerOptions)
-	_assert.Error(err)
-	_assert.Equal(strings.Contains(err.Error(), invalidHeaderErrorSubstring), true)
+	require.Error(t, err)
+	require.Equal(t, strings.Contains(err.Error(), invalidHeaderErrorSubstring), true)
 }
 
 func TestContainerSetMetadataNonExistent(t *testing.T) {
-	_assert := assert.New(t)
-
 	stop := start(t)
 	defer stop()
 
@@ -1150,7 +1107,7 @@ func TestContainerSetMetadataNonExistent(t *testing.T) {
 	containerClient := getContainerClient(containerName, svcClient)
 
 	_, err = containerClient.SetMetadata(ctx, nil)
-	_assert.Error(err)
+	require.Error(t, err)
 
 	validateStorageError(t, err, StorageErrorCodeContainerNotFound)
 }
@@ -1171,10 +1128,10 @@ func TestContainerSetMetadataNonExistent(t *testing.T) {
 //		},
 //	}
 //	_, err := containerClient.SetMetadata(ctx, &setMetadataContainerOptions)
-//	_assert.NoError(err)
+//	require.NoError(t, err)
 //
 //	resp, err := containerClient.GetProperties(ctx, nil)
-//	_assert.NoError(err)
+//	require.NoError(t, err)
 //	_assert(resp.Metadata, chk.NotNil)
 //	_assert(resp.Metadata, chk.DeepEquals, basicMetadata)
 //
@@ -1195,7 +1152,7 @@ func TestContainerSetMetadataNonExistent(t *testing.T) {
 //	//currentTime := getRelativeTimeGMT(10)
 //	//currentTime, err := time.Parse(time.UnixDate, "Wed Jan 07 11:11:11 PST 2099")
 //	currentTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
-//	_assert.NoError(err)
+//	require.NoError(t, err)
 //	setMetadataContainerOptions := SetMetadataContainerOptions{
 //		Metadata: basicMetadata,
 //		ModifiedAccessConditions: &ModifiedAccessConditions{
@@ -1203,14 +1160,12 @@ func TestContainerSetMetadataNonExistent(t *testing.T) {
 //		},
 //	}
 //	_, err = containerClient.SetMetadata(ctx, &setMetadataContainerOptions)
-//	_assert.Error(err)
+//	require.Error(t, err)
 //
 //	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 //}
 
 func TestContainerNewBlobURL(t *testing.T) {
-	_assert := assert.New(t)
-
 	stop := start(t)
 	defer stop()
 
@@ -1222,13 +1177,11 @@ func TestContainerNewBlobURL(t *testing.T) {
 
 	bbClient := containerClient.NewBlobClient(blobPrefix)
 
-	_assert.Equal(bbClient.URL(), containerClient.URL()+"/"+blobPrefix)
-	_assert.IsTypef(bbClient, BlobClient{}, fmt.Sprintf("%T should be of type %T", bbClient, BlobClient{}))
+	require.Equal(t, bbClient.URL(), containerClient.URL()+"/"+blobPrefix)
+	require.IsTypef(t, bbClient, BlobClient{}, fmt.Sprintf("%T should be of type %T", bbClient, BlobClient{}))
 }
 
 func TestContainerNewBlockBlobClient(t *testing.T) {
-	_assert := assert.New(t)
-
 	stop := start(t)
 	defer stop()
 
@@ -1240,6 +1193,6 @@ func TestContainerNewBlockBlobClient(t *testing.T) {
 
 	bbClient := containerClient.NewBlockBlobClient(blobPrefix)
 
-	_assert.Equal(bbClient.URL(), containerClient.URL()+"/"+blobPrefix)
-	_assert.IsTypef(bbClient, BlockBlobClient{}, fmt.Sprintf("%T should be of type %T", bbClient, BlockBlobClient{}))
+	require.Equal(t, bbClient.URL(), containerClient.URL()+"/"+blobPrefix)
+	require.IsTypef(t, bbClient, BlockBlobClient{}, fmt.Sprintf("%T should be of type %T", bbClient, BlockBlobClient{}))
 }

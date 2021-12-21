@@ -30,7 +30,7 @@ func TestPutGetPages(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
-	pbClient := createNewPageBlob(_assert, blobName, containerClient)
+	pbClient := createNewPageBlob(t, blobName, containerClient)
 
 	contentSize := 1024
 	offset, count := int64(0), int64(contentSize)
@@ -84,8 +84,8 @@ func TestUploadPagesFromURL(t *testing.T) {
 	contentSize := 4 * 1024 * 1024 // 4MB
 	r, sourceData := getRandomDataAndReader(contentSize)
 	ctx := context.Background() // Use default Background context
-	srcBlob := createNewPageBlobWithSize(_assert, "srcblob", containerClient, int64(contentSize))
-	destBlob := createNewPageBlobWithSize(_assert, "dstblob", containerClient, int64(contentSize))
+	srcBlob := createNewPageBlobWithSize(t, "srcblob", containerClient, int64(contentSize))
+	destBlob := createNewPageBlobWithSize(t, "dstblob", containerClient, int64(contentSize))
 
 	offset, _, count := int64(0), int64(contentSize-1), int64(contentSize)
 	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
@@ -158,8 +158,8 @@ func TestUploadPagesFromURLWithMD5(t *testing.T) {
 	md5Value := md5.Sum(sourceData)
 	contentMD5 := md5Value[:]
 	ctx := context.Background() // Use default Background context
-	srcBlob := createNewPageBlobWithSize(_assert, "srcblob", containerClient, int64(contentSize))
-	destBlob := createNewPageBlobWithSize(_assert, "dstblob", containerClient, int64(contentSize))
+	srcBlob := createNewPageBlobWithSize(t, "srcblob", containerClient, int64(contentSize))
+	destBlob := createNewPageBlobWithSize(t, "dstblob", containerClient, int64(contentSize))
 
 	// Prepare source pbClient for copy.
 	offset, _, count := int64(0), int64(contentSize-1), int64(contentSize)
@@ -237,7 +237,7 @@ func TestClearDiffPages(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
-	pbClient := createNewPageBlob(_assert, blobName, containerClient)
+	pbClient := createNewPageBlob(t, blobName, containerClient)
 
 	contentSize := 2 * 1024
 	r := getReaderToGeneratedBytes(contentSize)
@@ -311,7 +311,7 @@ func TestIncrementalCopy(t *testing.T) {
 	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_assert.NoError(err)
 
-	srcBlob := createNewPageBlob(_assert, "src"+generateBlobName(t.Name()), containerClient)
+	srcBlob := createNewPageBlob(t, "src"+generateBlobName(t.Name()), containerClient)
 
 	contentSize := 1024
 	r := getReaderToGeneratedBytes(contentSize)
@@ -355,7 +355,7 @@ func TestResizePageBlob(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
-	pbClient := createNewPageBlob(_assert, blobName, containerClient)
+	pbClient := createNewPageBlob(t, blobName, containerClient)
 
 	resp, err := pbClient.Resize(context.Background(), 2048, nil)
 	_assert.NoError(err)
@@ -384,7 +384,7 @@ func TestPageSequenceNumbers(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
-	pbClient := createNewPageBlob(_assert, blobName, containerClient)
+	pbClient := createNewPageBlob(t, blobName, containerClient)
 
 	sequenceNumber := int64(0)
 	actionType := SequenceNumberActionTypeIncrement
@@ -432,7 +432,7 @@ func TestPutPagesWithMD5(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
-	pbClient := createNewPageBlob(_assert, blobName, containerClient)
+	pbClient := createNewPageBlob(t, blobName, containerClient)
 
 	// put page with valid MD5
 	contentSize := 1024
@@ -814,7 +814,7 @@ func TestBlobCreatePageIfMatchTrue(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
-	pbClient := createNewPageBlob(_assert, blobName, containerClient)
+	pbClient := createNewPageBlob(t, blobName, containerClient)
 
 	resp, err := pbClient.GetProperties(ctx, nil)
 	_assert.NoError(err)
@@ -850,7 +850,7 @@ func TestBlobCreatePageIfMatchFalse(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
-	pbClient := createNewPageBlob(_assert, blobName, containerClient)
+	pbClient := createNewPageBlob(t, blobName, containerClient)
 
 	sequenceNumber := int64(0)
 	eTag := "garbage"
@@ -884,7 +884,7 @@ func TestBlobCreatePageIfNoneMatchTrue(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
-	pbClient := createNewPageBlob(_assert, blobName, containerClient)
+	pbClient := createNewPageBlob(t, blobName, containerClient)
 
 	sequenceNumber := int64(0)
 	eTag := "garbage"
@@ -918,7 +918,7 @@ func TestBlobCreatePageIfNoneMatchFalse(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
-	pbClient := createNewPageBlob(_assert, blobName, containerClient)
+	pbClient := createNewPageBlob(t, blobName, containerClient)
 
 	resp, _ := pbClient.GetProperties(ctx, nil)
 
@@ -954,7 +954,7 @@ func TestBlobPutPagesInvalidRange(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
-	pbClient := createNewPageBlob(_assert, blobName, containerClient)
+	pbClient := createNewPageBlob(t, blobName, containerClient)
 
 	contentSize := 1024
 	r := getReaderToGeneratedBytes(contentSize)
@@ -989,7 +989,7 @@ func TestBlobPutPagesEmptyBody(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
-	pbClient := createNewPageBlob(_assert, blobName, containerClient)
+	pbClient := createNewPageBlob(t, blobName, containerClient)
 
 	r := bytes.NewReader([]byte{})
 	offset, count := int64(0), int64(0)
@@ -1350,7 +1350,7 @@ func TestBlobPutPagesIfSequenceNumberLessThanTrue(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
-	pbClient := createNewPageBlob(_assert, blobName, containerClient)
+	pbClient := createNewPageBlob(t, blobName, containerClient)
 
 	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
@@ -1381,7 +1381,7 @@ func TestBlobPutPagesIfSequenceNumberLessThanFalse(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
-	pbClient := createNewPageBlob(_assert, blobName, containerClient)
+	pbClient := createNewPageBlob(t, blobName, containerClient)
 
 	sequenceNumber := int64(10)
 	actionType := SequenceNumberActionTypeUpdate
@@ -1421,7 +1421,7 @@ func TestBlobPutPagesIfSequenceNumberLessThanNegOne(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
-	pbClient := createNewPageBlob(_assert, blobName, containerClient)
+	pbClient := createNewPageBlob(t, blobName, containerClient)
 
 	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
@@ -1453,7 +1453,7 @@ func TestBlobPutPagesIfSequenceNumberLTETrue(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
-	pbClient := createNewPageBlob(_assert, blobName, containerClient)
+	pbClient := createNewPageBlob(t, blobName, containerClient)
 
 	sequenceNumber := int64(1)
 	actionType := SequenceNumberActionTypeUpdate
@@ -1493,7 +1493,7 @@ func TestBlobPutPagesIfSequenceNumberLTEqualFalse(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
-	pbClient := createNewPageBlob(_assert, blobName, containerClient)
+	pbClient := createNewPageBlob(t, blobName, containerClient)
 
 	sequenceNumber := int64(10)
 	actionType := SequenceNumberActionTypeUpdate
@@ -1533,7 +1533,7 @@ func TestBlobPutPagesIfSequenceNumberLTENegOne(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
-	pbClient := createNewPageBlob(_assert, blobName, containerClient)
+	pbClient := createNewPageBlob(t, blobName, containerClient)
 
 	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
@@ -1562,7 +1562,7 @@ func TestBlobPutPagesIfSequenceNumberEqualTrue(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
-	pbClient := createNewPageBlob(_assert, blobName, containerClient)
+	pbClient := createNewPageBlob(t, blobName, containerClient)
 
 	sequenceNumber := int64(1)
 	actionType := SequenceNumberActionTypeUpdate
@@ -1602,7 +1602,7 @@ func TestBlobPutPagesIfSequenceNumberEqualFalse(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
-	pbClient := createNewPageBlob(_assert, blobName, containerClient)
+	pbClient := createNewPageBlob(t, blobName, containerClient)
 
 	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
@@ -1633,7 +1633,7 @@ func TestBlobPutPagesIfSequenceNumberEqualFalse(t *testing.T) {
 //	defer deleteContainer(t, containerClient)
 //
 //	blobName := generateBlobName(s.T().Name())
-//	pbClient := createNewPageBlob(_assert, blobName, containerClient)
+//	pbClient := createNewPageBlob(t, blobName, containerClient)
 //
 //	r, _ := generateData(PageBlobPageBytes)
 //	offset, count := int64(0), int64(PageBlobPageBytes)
@@ -1658,7 +1658,7 @@ func setupClearPagesTest(t *testing.T, testName string) (ContainerClient, PageBl
 	containerClient := createNewContainer(t, containerName, svcClient)
 
 	blobName := generateBlobName(testName)
-	pbClient := createNewPageBlob(_assert, blobName, containerClient)
+	pbClient := createNewPageBlob(t, blobName, containerClient)
 
 	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
@@ -2097,7 +2097,7 @@ func setupGetPageRangesTest(t *testing.T, testName string) (containerClient Cont
 	containerClient = createNewContainer(t, containerName, svcClient)
 
 	blobName := generateBlobName(testName)
-	pbClient = createNewPageBlob(_assert, blobName, containerClient)
+	pbClient = createNewPageBlob(t, blobName, containerClient)
 
 	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
@@ -2132,7 +2132,7 @@ func TestBlobGetPageRangesEmptyBlob(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
-	pbClient := createNewPageBlob(_assert, blobName, containerClient)
+	pbClient := createNewPageBlob(t, blobName, containerClient)
 
 	resp, err := pbClient.GetPageRanges(ctx, HttpRange{0, 0}, nil)
 	_assert.NoError(err)
@@ -2450,8 +2450,6 @@ func TestBlobGetPageRangesIfNoneMatchFalse(t *testing.T) {
 
 //nolint
 func setupDiffPageRangesTest(t *testing.T, testName string) (containerClient ContainerClient, pbClient PageBlobClient, snapshot string) {
-	_assert := assert.New(t)
-
 	svcClient, err := createServiceClientWithSharedKeyForRecording(t, testAccountDefault)
 	require.NoError(t, err)
 
@@ -2459,7 +2457,7 @@ func setupDiffPageRangesTest(t *testing.T, testName string) (containerClient Con
 	containerClient = createNewContainer(t, containerName, svcClient)
 
 	blobName := generateName(testName)
-	pbClient = createNewPageBlob(_assert, blobName, containerClient)
+	pbClient = createNewPageBlob(t, blobName, containerClient)
 
 	r := getReaderToGeneratedBytes(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
@@ -2512,7 +2510,7 @@ func TestBlobDiffPageRangesNonExistentSnapshot(t *testing.T) {
 func TestBlobDiffPageRangeInvalidRange(t *testing.T) {
 	stop := start(t)
 	defer stop()
-	// _assert := assert.New(t)
+
 	containerClient, pbClient, snapshot := setupDiffPageRangesTest(t, t.Name())
 	defer deleteContainer(t, containerClient)
 	_, err := pbClient.GetPageRangesDiff(ctx, HttpRange{-22, 14}, snapshot, nil)
@@ -2544,7 +2542,7 @@ func TestBlobDiffPageRangeIfModifiedSinceTrue(t *testing.T) {
 func TestBlobDiffPageRangeIfModifiedSinceFalse(t *testing.T) {
 	stop := start(t)
 	defer stop()
-	// _assert := assert.New(t)
+
 	containerClient, pbClient, snapshot := setupDiffPageRangesTest(t, t.Name())
 	defer deleteContainer(t, containerClient)
 
@@ -2706,7 +2704,7 @@ func TestBlobResizeZero(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
-	pbClient := createNewPageBlob(_assert, blobName, containerClient)
+	pbClient := createNewPageBlob(t, blobName, containerClient)
 
 	// The default pbClient is created with size > 0, so this should actually update
 	_, err = pbClient.Resize(ctx, 0, nil)
@@ -2718,8 +2716,6 @@ func TestBlobResizeZero(t *testing.T) {
 }
 
 func TestBlobResizeInvalidSizeNegative(t *testing.T) {
-	_assert := assert.New(t)
-
 	stop := start(t)
 	defer stop()
 
@@ -2731,15 +2727,13 @@ func TestBlobResizeInvalidSizeNegative(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
-	pbClient := createNewPageBlob(_assert, blobName, containerClient)
+	pbClient := createNewPageBlob(t, blobName, containerClient)
 
 	_, err = pbClient.Resize(ctx, -4, nil)
 	require.Error(t, err)
 }
 
 func TestBlobResizeInvalidSizeMisaligned(t *testing.T) {
-	_assert := assert.New(t)
-
 	stop := start(t)
 	defer stop()
 
@@ -2751,7 +2745,7 @@ func TestBlobResizeInvalidSizeMisaligned(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
-	pbClient := createNewPageBlob(_assert, blobName, containerClient)
+	pbClient := createNewPageBlob(t, blobName, containerClient)
 
 	_, err = pbClient.Resize(ctx, 12, nil)
 	require.Error(t, err)
@@ -2908,7 +2902,6 @@ func TestBlobResizeIfUnmodifiedSinceFalse(t *testing.T) {
 }
 
 func TestBlobResizeIfMatchTrue(t *testing.T) {
-	_assert := assert.New(t)
 	t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
@@ -2921,7 +2914,7 @@ func TestBlobResizeIfMatchTrue(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
-	pbClient := createNewPageBlob(_assert, blobName, containerClient)
+	pbClient := createNewPageBlob(t, blobName, containerClient)
 
 	resp, _ := pbClient.GetProperties(ctx, nil)
 
@@ -2939,8 +2932,6 @@ func TestBlobResizeIfMatchTrue(t *testing.T) {
 }
 
 func TestBlobResizeIfMatchFalse(t *testing.T) {
-	_assert := assert.New(t)
-
 	stop := start(t)
 	defer stop()
 
@@ -2952,7 +2943,7 @@ func TestBlobResizeIfMatchFalse(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
-	pbClient := createNewPageBlob(_assert, blobName, containerClient)
+	pbClient := createNewPageBlob(t, blobName, containerClient)
 
 	eTag := "garbage"
 	resizePageBlobOptions := ResizePageBlobOptions{
@@ -2969,7 +2960,6 @@ func TestBlobResizeIfMatchFalse(t *testing.T) {
 }
 
 func TestBlobResizeIfNoneMatchTrue(t *testing.T) {
-	_assert := assert.New(t)
 	t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
@@ -2982,7 +2972,7 @@ func TestBlobResizeIfNoneMatchTrue(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
-	pbClient := createNewPageBlob(_assert, blobName, containerClient)
+	pbClient := createNewPageBlob(t, blobName, containerClient)
 
 	eTag := "garbage"
 	resizePageBlobOptions := ResizePageBlobOptions{
@@ -2999,7 +2989,6 @@ func TestBlobResizeIfNoneMatchTrue(t *testing.T) {
 }
 
 func TestBlobResizeIfNoneMatchFalse(t *testing.T) {
-	_assert := assert.New(t)
 	t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
@@ -3012,7 +3001,7 @@ func TestBlobResizeIfNoneMatchFalse(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
-	pbClient := createNewPageBlob(_assert, blobName, containerClient)
+	pbClient := createNewPageBlob(t, blobName, containerClient)
 
 	resp, err := pbClient.GetProperties(ctx, nil)
 	require.NoError(t, err)
@@ -3044,7 +3033,7 @@ func TestBlobSetSequenceNumberActionTypeInvalid(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
-	pbClient := createNewPageBlob(_assert, blobName, containerClient)
+	pbClient := createNewPageBlob(t, blobName, containerClient)
 
 	sequenceNumber := int64(1)
 	actionType := SequenceNumberActionType("garbage")
@@ -3072,7 +3061,7 @@ func TestBlobSetSequenceNumberSequenceNumberInvalid(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
-	pbClient := createNewPageBlob(_assert, blobName, containerClient)
+	pbClient := createNewPageBlob(t, blobName, containerClient)
 
 	defer func() { // Invalid sequence number should panic
 		_ = recover()
@@ -3263,7 +3252,7 @@ func TestBlobSetSequenceNumberIfMatchTrue(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
-	pbClient := createNewPageBlob(_assert, blobName, containerClient)
+	pbClient := createNewPageBlob(t, blobName, containerClient)
 
 	resp, err := pbClient.GetProperties(ctx, nil)
 	require.NoError(t, err)
@@ -3297,7 +3286,7 @@ func TestBlobSetSequenceNumberIfMatchFalse(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
-	pbClient := createNewPageBlob(_assert, blobName, containerClient)
+	pbClient := createNewPageBlob(t, blobName, containerClient)
 
 	eTag := "garbage"
 	actionType := SequenceNumberActionTypeIncrement
@@ -3329,7 +3318,7 @@ func TestBlobSetSequenceNumberIfNoneMatchTrue(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
-	pbClient := createNewPageBlob(_assert, "src"+blobName, containerClient)
+	pbClient := createNewPageBlob(t, "src"+blobName, containerClient)
 
 	eTag := "garbage"
 	actionType := SequenceNumberActionTypeIncrement
@@ -3361,7 +3350,7 @@ func TestBlobSetSequenceNumberIfNoneMatchFalse(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	blobName := generateBlobName(t.Name())
-	pbClient := createNewPageBlob(_assert, "src"+blobName, containerClient)
+	pbClient := createNewPageBlob(t, "src"+blobName, containerClient)
 
 	resp, _ := pbClient.GetProperties(ctx, nil)
 
@@ -3403,7 +3392,7 @@ func TestBlobSetSequenceNumberIfNoneMatchFalse(t *testing.T) {
 //	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 //	_assert.NoError(err)
 //
-//	pbClient = createNewPageBlob(_assert, generateBlobName(s.T().Name()), containerClient)
+//	pbClient = createNewPageBlob(t, generateBlobName(s.T().Name()), containerClient)
 //	resp, _ := pbClient.CreateSnapshot(ctx, nil)
 //
 //	copyPBClient = getPageBlobClient("copy"+generateBlobName(s.T().Name()), containerClient)
@@ -3441,7 +3430,7 @@ func TestBlobSetSequenceNumberIfNoneMatchFalse(t *testing.T) {
 //	defer deleteContainer(t, containerClient)
 //
 //	blobName := generateBlobName(s.T().Name())
-//	pbClient := createNewPageBlob(_assert, "src" + blobName, containerClient)
+//	pbClient := createNewPageBlob(t, "src" + blobName, containerClient)
 //	copyPBClient := getPageBlobClient("dst" + blobName, containerClient)
 //
 //	snapshot := time.Now().UTC().Format(SnapshotTimeFormat)

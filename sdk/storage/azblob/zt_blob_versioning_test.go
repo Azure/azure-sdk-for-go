@@ -10,7 +10,6 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -25,7 +24,7 @@ func TestBlockBlobGetPropertiesUsingVID(t *testing.T) {
 	containerName := generateContainerName(t.Name())
 	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(t, containerClient)
-	bbClient := createNewBlockBlob(assert.New(t), generateBlobName(t.Name()), containerClient)
+	bbClient := createNewBlockBlob(t, generateBlobName(t.Name()), containerClient)
 
 	blobProp, err := bbClient.GetProperties(ctx, nil)
 	require.NoError(t, err)
@@ -58,7 +57,7 @@ func TestAppendBlobGetPropertiesUsingVID(t *testing.T) {
 	containerName := generateContainerName(t.Name())
 	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(t, containerClient)
-	abClient := createNewAppendBlob(assert.New(t), generateBlobName(t.Name()), containerClient)
+	abClient := createNewAppendBlob(t, generateBlobName(t.Name()), containerClient)
 
 	blobProp, err := abClient.GetProperties(ctx, nil)
 	require.NoError(t, err)
@@ -95,7 +94,7 @@ func TestAppendBlobGetPropertiesUsingVID(t *testing.T) {
 //	defer deleteContainer(t, containerClient)
 //
 //	bbName := generateName(testName)
-//	bbClient := createNewBlockBlob(_assert, bbName, containerClient)
+//	bbClient := createNewBlockBlob(t, bbName, containerClient)
 //
 //	metadata := map[string]string{"test_key_1": "test_value_1", "test_key_2": "2019"}
 //	resp, err := bbClient.SetMetadata(ctx, metadata, nil)
@@ -518,7 +517,7 @@ func TestCreatePageBlobReturnsVID(t *testing.T) {
 	containerClient := createNewContainer(t, containerName, svcClient)
 	defer deleteContainer(t, containerClient)
 
-	pbClob := createNewPageBlob(assert.New(t), generateBlobName(t.Name()), containerClient)
+	pbClob := createNewPageBlob(t, generateBlobName(t.Name()), containerClient)
 
 	contentSize := 1 * 1024
 	r, _ := generateData(contentSize)

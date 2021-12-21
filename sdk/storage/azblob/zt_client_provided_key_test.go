@@ -828,7 +828,7 @@ func TestPageBlockWithCPK(t *testing.T) {
 	contentSize := 4 * 1024 * 1024 // 4MB
 	r, srcData := generateData(contentSize)
 	pbName := generateBlobName(t.Name())
-	pbClient := createNewPageBlobWithCPK(_assert, pbName, containerClient, int64(contentSize), &testCPKByValue, nil)
+	pbClient := createNewPageBlobWithCPK(t, pbName, containerClient, int64(contentSize), &testCPKByValue, nil)
 
 	offset, count := int64(0), int64(contentSize)
 	uploadPagesOptions := UploadPagesOptions{
@@ -887,7 +887,7 @@ func TestPageBlockWithCPKScope(t *testing.T) {
 	contentSize := 4 * 1024 * 1024 // 4MB
 	r, srcData := generateData(contentSize)
 	pbName := generateBlobName(t.Name())
-	pbClient := createNewPageBlobWithCPK(_assert, pbName, containerClient, int64(contentSize), nil, &testCPKByScope)
+	pbClient := createNewPageBlobWithCPK(t, pbName, containerClient, int64(contentSize), nil, &testCPKByScope)
 
 	offset, count := int64(0), int64(contentSize)
 	uploadPagesOptions := UploadPagesOptions{
@@ -940,9 +940,9 @@ func TestPageBlockFromURLWithCPK(t *testing.T) {
 	contentMD5 := md5Sum[:]
 	ctx := context.Background() // Use default Background context
 	srcPBName := "src" + generateBlobName(t.Name())
-	bbClient := createNewPageBlobWithSize(_assert, srcPBName, containerClient, int64(contentSize))
+	bbClient := createNewPageBlobWithSize(t, srcPBName, containerClient, int64(contentSize))
 	dstPBName := "dst" + generateBlobName(t.Name())
-	destBlob := createNewPageBlobWithCPK(_assert, dstPBName, containerClient, int64(contentSize), &testCPKByValue, nil)
+	destBlob := createNewPageBlobWithCPK(t, dstPBName, containerClient, int64(contentSize), &testCPKByValue, nil)
 
 	offset, count := int64(0), int64(contentSize)
 	uploadPagesOptions := UploadPagesOptions{
@@ -1027,9 +1027,9 @@ func TestPageBlockFromURLWithCPKScope(t *testing.T) {
 	contentMD5 := md5Sum[:]
 	ctx := context.Background() // Use default Background context
 	srcPBName := "src" + generateBlobName(t.Name())
-	srcPBClient := createNewPageBlobWithSize(_assert, srcPBName, containerClient, int64(contentSize))
+	srcPBClient := createNewPageBlobWithSize(t, srcPBName, containerClient, int64(contentSize))
 	dstPBName := "dst" + generateBlobName(t.Name())
-	dstPBBlob := createNewPageBlobWithCPK(_assert, dstPBName, containerClient, int64(contentSize), nil, &testCPKByScope)
+	dstPBBlob := createNewPageBlobWithCPK(t, dstPBName, containerClient, int64(contentSize), nil, &testCPKByScope)
 
 	offset, count := int64(0), int64(contentSize)
 	uploadPagesOptions := UploadPagesOptions{
@@ -1104,7 +1104,7 @@ func TestUploadPagesFromURLWithMD5WithCPK(t *testing.T) {
 	md5Sum := md5.Sum(srcData)
 	contentMD5 := md5Sum[:]
 	srcPBName := "src" + generateBlobName(t.Name())
-	srcBlob := createNewPageBlobWithSize(_assert, srcPBName, containerClient, int64(contentSize))
+	srcBlob := createNewPageBlobWithSize(t, srcPBName, containerClient, int64(contentSize))
 
 	offset, count := int64(0), int64(contentSize)
 	uploadPagesOptions := UploadPagesOptions{
@@ -1131,7 +1131,7 @@ func TestUploadPagesFromURLWithMD5WithCPK(t *testing.T) {
 
 	srcBlobURLWithSAS := srcBlobParts.URL()
 	dstPBName := "dst" + generateBlobName(t.Name())
-	destPBClient := createNewPageBlobWithCPK(_assert, dstPBName, containerClient, int64(contentSize), &testCPKByValue, nil)
+	destPBClient := createNewPageBlobWithCPK(t, dstPBName, containerClient, int64(contentSize), &testCPKByValue, nil)
 	uploadPagesFromURLOptions := UploadPagesFromURLOptions{
 		SourceContentMD5: contentMD5,
 		CpkInfo:          &testCPKByValue,
@@ -1195,7 +1195,7 @@ func TestClearDiffPagesWithCPK(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	pbName := generateBlobName(t.Name())
-	pbClient := createNewPageBlobWithCPK(_assert, pbName, containerClient, PageBlobPageBytes*10, &testCPKByValue, nil)
+	pbClient := createNewPageBlobWithCPK(t, pbName, containerClient, PageBlobPageBytes*10, &testCPKByValue, nil)
 
 	contentSize := 2 * 1024
 	r := getReaderToGeneratedBytes(contentSize)
@@ -1249,7 +1249,7 @@ func TestBlobResizeWithCPK(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	pbName := generateBlobName(t.Name())
-	pbClient := createNewPageBlobWithCPK(_assert, pbName, containerClient, PageBlobPageBytes*10, &testCPKByValue, nil)
+	pbClient := createNewPageBlobWithCPK(t, pbName, containerClient, PageBlobPageBytes*10, &testCPKByValue, nil)
 
 	resizePageBlobOptions := ResizePageBlobOptions{
 		CpkInfo: &testCPKByValue,
@@ -1278,7 +1278,7 @@ func TestGetSetBlobMetadataWithCPK(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	bbName := generateBlobName(t.Name())
-	bbClient := createNewBlockBlobWithCPK(_assert, bbName, containerClient, &testCPKByValue, nil)
+	bbClient := createNewBlockBlobWithCPK(t, bbName, containerClient, &testCPKByValue, nil)
 
 	// Set blob metadata without encryption key should fail the request.
 	_, err = bbClient.SetMetadata(ctx, basicMetadata, nil)
@@ -1325,7 +1325,7 @@ func TestGetSetBlobMetadataWithCPKScope(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	bbName := generateBlobName(t.Name())
-	bbClient := createNewBlockBlobWithCPK(_assert, bbName, containerClient, nil, &testCPKByScope)
+	bbClient := createNewBlockBlobWithCPK(t, bbName, containerClient, nil, &testCPKByScope)
 
 	// Set blob metadata without encryption key should fail the request.
 	_, err = bbClient.SetMetadata(ctx, basicMetadata, nil)
@@ -1365,7 +1365,7 @@ func TestBlobSnapshotWithCPK(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	bbName := generateBlobName(t.Name())
-	bbClient := createNewBlockBlobWithCPK(_assert, bbName, containerClient, &testCPKByValue, nil)
+	bbClient := createNewBlockBlobWithCPK(t, bbName, containerClient, &testCPKByValue, nil)
 
 	// Create Snapshot of an encrypted blob without encryption key should fail the request.
 	_, err = bbClient.CreateSnapshot(ctx, nil)
@@ -1415,7 +1415,7 @@ func TestBlobSnapshotWithCPKScope(t *testing.T) {
 	defer deleteContainer(t, containerClient)
 
 	bbName := generateBlobName(t.Name())
-	bbClient := createNewBlockBlobWithCPK(_assert, bbName, containerClient, nil, &testCPKByScope)
+	bbClient := createNewBlockBlobWithCPK(t, bbName, containerClient, nil, &testCPKByScope)
 
 	// Create Snapshot of an encrypted blob without encryption key should fail the request.
 	_, err = bbClient.CreateSnapshot(ctx, nil)

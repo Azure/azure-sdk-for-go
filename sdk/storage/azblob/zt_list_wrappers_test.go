@@ -7,7 +7,6 @@ import (
 	"sort"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -28,7 +27,7 @@ func TestBlobListWrapper(t *testing.T) {
 
 	files := []string{"a123", "b234", "c345"}
 
-	createNewBlobs(assert.New(t), files, containerClient)
+	createNewBlobs(t, files, containerClient)
 
 	pager := containerClient.ListBlobsFlat(nil)
 
@@ -65,7 +64,7 @@ func TestBlobListWrapperFullBuffer(t *testing.T) {
 
 	files := []string{"a123", "b234", "c345"}
 
-	createNewBlobs(assert.New(t), files, containerClient)
+	createNewBlobs(t, files, containerClient)
 
 	pager := containerClient.ListBlobsFlat(nil)
 

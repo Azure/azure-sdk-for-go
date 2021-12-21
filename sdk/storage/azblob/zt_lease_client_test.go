@@ -8,7 +8,6 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -39,7 +38,6 @@ func TestContainerAcquireLease(t *testing.T) {
 }
 
 func TestContainerDeleteContainerWithoutLeaseId(t *testing.T) {
-	_assert := assert.New(t)
 	stop := start(t)
 	defer stop()
 
@@ -54,12 +52,12 @@ func TestContainerDeleteContainerWithoutLeaseId(t *testing.T) {
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &AcquireLeaseContainerOptions{Duration: to.Int32Ptr(60)})
-	_assert.NoError(err)
-	_assert.NotNil(acquireLeaseResponse.LeaseID)
-	_assert.EqualValues(acquireLeaseResponse.LeaseID, containerLeaseClient.leaseID)
+	require.NoError(t, err)
+	require.NotNil(t, acquireLeaseResponse.LeaseID)
+	require.EqualValues(t, acquireLeaseResponse.LeaseID, containerLeaseClient.leaseID)
 
 	_, err = containerClient.Delete(ctx, nil)
-	_assert.Error(err)
+	require.Error(t, err)
 
 	leaseID := containerLeaseClient.leaseID
 	_, err = containerClient.Delete(ctx, &DeleteContainerOptions{
@@ -67,11 +65,10 @@ func TestContainerDeleteContainerWithoutLeaseId(t *testing.T) {
 			LeaseID: leaseID,
 		},
 	})
-	_assert.NoError(err)
+	require.NoError(t, err)
 }
 
 func TestContainerReleaseLease(t *testing.T) {
-	_assert := assert.New(t)
 	stop := start(t)
 	defer stop()
 
@@ -86,22 +83,21 @@ func TestContainerReleaseLease(t *testing.T) {
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &AcquireLeaseContainerOptions{Duration: to.Int32Ptr(60)})
-	_assert.NoError(err)
-	_assert.NotNil(acquireLeaseResponse.LeaseID)
-	_assert.EqualValues(acquireLeaseResponse.LeaseID, containerLeaseClient.leaseID)
+	require.NoError(t, err)
+	require.NotNil(t, acquireLeaseResponse.LeaseID)
+	require.EqualValues(t, acquireLeaseResponse.LeaseID, containerLeaseClient.leaseID)
 
 	_, err = containerClient.Delete(ctx, nil)
-	_assert.Error(err)
+	require.Error(t, err)
 
 	_, err = containerLeaseClient.ReleaseLease(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(t, err)
 
 	_, err = containerClient.Delete(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(t, err)
 }
 
 func TestContainerRenewLease(t *testing.T) {
-	_assert := assert.New(t)
 	stop := start(t)
 	defer stop()
 
@@ -116,19 +112,18 @@ func TestContainerRenewLease(t *testing.T) {
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &AcquireLeaseContainerOptions{Duration: to.Int32Ptr(15)})
-	_assert.NoError(err)
-	_assert.NotNil(acquireLeaseResponse.LeaseID)
-	_assert.EqualValues(acquireLeaseResponse.LeaseID, containerLeaseClient.leaseID)
+	require.NoError(t, err)
+	require.NotNil(t, acquireLeaseResponse.LeaseID)
+	require.EqualValues(t, acquireLeaseResponse.LeaseID, containerLeaseClient.leaseID)
 
 	_, err = containerLeaseClient.RenewLease(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(t, err)
 
 	_, err = containerLeaseClient.ReleaseLease(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(t, err)
 }
 
 func TestContainerChangeLease(t *testing.T) {
-	_assert := assert.New(t)
 	stop := start(t)
 	defer stop()
 
@@ -143,27 +138,25 @@ func TestContainerChangeLease(t *testing.T) {
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &AcquireLeaseContainerOptions{Duration: to.Int32Ptr(15)})
-	_assert.NoError(err)
-	_assert.NotNil(acquireLeaseResponse.LeaseID)
-	_assert.EqualValues(acquireLeaseResponse.LeaseID, containerLeaseClient.leaseID)
+	require.NoError(t, err)
+	require.NotNil(t, acquireLeaseResponse.LeaseID)
+	require.EqualValues(t, acquireLeaseResponse.LeaseID, containerLeaseClient.leaseID)
 
 	changeLeaseResp, err := containerLeaseClient.ChangeLease(ctx, &ChangeLeaseContainerOptions{
 		ProposedLeaseID: proposedLeaseIDs[1],
 	})
-	_assert.NoError(err)
-	_assert.EqualValues(changeLeaseResp.LeaseID, proposedLeaseIDs[1])
-	_assert.EqualValues(containerLeaseClient.leaseID, proposedLeaseIDs[1])
+	require.NoError(t, err)
+	require.EqualValues(t, changeLeaseResp.LeaseID, proposedLeaseIDs[1])
+	require.EqualValues(t, containerLeaseClient.leaseID, proposedLeaseIDs[1])
 
 	_, err = containerLeaseClient.RenewLease(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(t, err)
 
 	_, err = containerLeaseClient.ReleaseLease(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(t, err)
 }
 
 func TestBlobAcquireLease(t *testing.T) {
-	_assert := assert.New(t)
-
 	stop := start(t)
 	defer stop()
 
@@ -180,17 +173,15 @@ func TestBlobAcquireLease(t *testing.T) {
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &AcquireLeaseBlobOptions{Duration: to.Int32Ptr(60)})
-	_assert.NoError(err)
-	_assert.NotNil(acquireLeaseResponse.LeaseID)
-	_assert.EqualValues(acquireLeaseResponse.LeaseID, blobLeaseClient.leaseID)
+	require.NoError(t, err)
+	require.NotNil(t, acquireLeaseResponse.LeaseID)
+	require.EqualValues(t, acquireLeaseResponse.LeaseID, blobLeaseClient.leaseID)
 
 	_, err = blobLeaseClient.ReleaseLease(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(t, err)
 }
 
 func TestDeleteBlobWithoutLeaseId(t *testing.T) {
-	_assert := assert.New(t)
-
 	stop := start(t)
 	defer stop()
 
@@ -207,12 +198,12 @@ func TestDeleteBlobWithoutLeaseId(t *testing.T) {
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &AcquireLeaseBlobOptions{Duration: to.Int32Ptr(60)})
-	_assert.NoError(err)
-	_assert.NotNil(acquireLeaseResponse.LeaseID)
-	_assert.EqualValues(acquireLeaseResponse.LeaseID, blobLeaseClient.leaseID)
+	require.NoError(t, err)
+	require.NotNil(t, acquireLeaseResponse.LeaseID)
+	require.EqualValues(t, acquireLeaseResponse.LeaseID, blobLeaseClient.leaseID)
 
 	_, err = blobLeaseClient.Delete(ctx, nil)
-	_assert.Error(err)
+	require.Error(t, err)
 
 	leaseID := blobLeaseClient.leaseID
 	_, err = blobLeaseClient.Delete(ctx, &DeleteBlobOptions{
@@ -222,12 +213,10 @@ func TestDeleteBlobWithoutLeaseId(t *testing.T) {
 			},
 		},
 	})
-	_assert.NoError(err)
+	require.NoError(t, err)
 }
 
 func TestBlobReleaseLease(t *testing.T) {
-	_assert := assert.New(t)
-
 	stop := start(t)
 	defer stop()
 
@@ -244,23 +233,21 @@ func TestBlobReleaseLease(t *testing.T) {
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &AcquireLeaseBlobOptions{Duration: to.Int32Ptr(60)})
-	_assert.NoError(err)
-	_assert.NotNil(acquireLeaseResponse.LeaseID)
-	_assert.EqualValues(acquireLeaseResponse.LeaseID, blobLeaseClient.leaseID)
+	require.NoError(t, err)
+	require.NotNil(t, acquireLeaseResponse.LeaseID)
+	require.EqualValues(t, acquireLeaseResponse.LeaseID, blobLeaseClient.leaseID)
 
 	_, err = blobLeaseClient.Delete(ctx, nil)
-	_assert.Error(err)
+	require.Error(t, err)
 
 	_, err = blobLeaseClient.ReleaseLease(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(t, err)
 
 	_, err = blobLeaseClient.Delete(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(t, err)
 }
 
 func TestBlobRenewLease(t *testing.T) {
-	_assert := assert.New(t)
-
 	stop := start(t)
 	defer stop()
 
@@ -277,20 +264,18 @@ func TestBlobRenewLease(t *testing.T) {
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &AcquireLeaseBlobOptions{Duration: to.Int32Ptr(15)})
-	_assert.NoError(err)
-	_assert.NotNil(acquireLeaseResponse.LeaseID)
-	_assert.EqualValues(acquireLeaseResponse.LeaseID, blobLeaseClient.leaseID)
+	require.NoError(t, err)
+	require.NotNil(t, acquireLeaseResponse.LeaseID)
+	require.EqualValues(t, acquireLeaseResponse.LeaseID, blobLeaseClient.leaseID)
 
 	_, err = blobLeaseClient.RenewLease(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(t, err)
 
 	_, err = blobLeaseClient.ReleaseLease(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(t, err)
 }
 
 func TestBlobChangeLease(t *testing.T) {
-	_assert := assert.New(t)
-
 	stop := start(t)
 	defer stop()
 
@@ -307,19 +292,19 @@ func TestBlobChangeLease(t *testing.T) {
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &AcquireLeaseBlobOptions{Duration: to.Int32Ptr(15)})
-	_assert.NoError(err)
-	_assert.NotNil(acquireLeaseResponse.LeaseID)
+	require.NoError(t, err)
+	require.NotNil(t, acquireLeaseResponse.LeaseID)
 	_assert.Equal(*acquireLeaseResponse.LeaseID, *proposedLeaseIDs[0])
 
 	changeLeaseResp, err := blobLeaseClient.ChangeLease(ctx, &ChangeLeaseBlobOptions{
 		ProposedLeaseID: proposedLeaseIDs[1],
 	})
-	_assert.NoError(err)
+	require.NoError(t, err)
 	_assert.Equal(*changeLeaseResp.LeaseID, *proposedLeaseIDs[1])
 
 	_, err = blobLeaseClient.RenewLease(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(t, err)
 
 	_, err = blobLeaseClient.ReleaseLease(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(t, err)
 }

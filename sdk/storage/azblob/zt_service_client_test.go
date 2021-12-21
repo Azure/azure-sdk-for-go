@@ -10,7 +10,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -77,17 +76,17 @@ func TestListContainersBasic(t *testing.T) {
 		resp := pager.PageResponse()
 
 		for _, container := range resp.ServiceListContainersSegmentResult.ContainerItems {
-			assert.NotNil(t, container.Name)
+			require.NotNil(t, container.Name)
 
 			if *container.Name == containerName {
-				assert.NotNil(t, container.Properties)
-				assert.NotNil(t, container.Properties.LastModified)
-				assert.NotNil(t, container.Properties.Etag)
-				assert.Equal(t, *container.Properties.LeaseStatus, LeaseStatusTypeUnlocked)
-				assert.Equal(t, *container.Properties.LeaseState, LeaseStateTypeAvailable)
-				assert.Nil(t, container.Properties.LeaseDuration)
-				assert.Nil(t, container.Properties.PublicAccess)
-				assert.NotNil(t, container.Metadata)
+				require.NotNil(t, container.Properties)
+				require.NotNil(t, container.Properties.LastModified)
+				require.NotNil(t, container.Properties.Etag)
+				require.Equal(t, *container.Properties.LeaseStatus, LeaseStatusTypeUnlocked)
+				require.Equal(t, *container.Properties.LeaseState, LeaseStateTypeAvailable)
+				require.Nil(t, container.Properties.LeaseDuration)
+				require.Nil(t, container.Properties.PublicAccess)
+				require.NotNil(t, container.Metadata)
 
 				unwrappedMeta := map[string]string{}
 				for k, v := range container.Metadata {
@@ -96,14 +95,14 @@ func TestListContainersBasic(t *testing.T) {
 					}
 				}
 
-				assert.EqualValues(t, unwrappedMeta, md)
+				require.EqualValues(t, unwrappedMeta, md)
 			}
 		}
 	}
 
-	assert.Nil(t, pager.Err())
+	require.Nil(t, pager.Err())
 	require.NoError(t, err)
-	assert.GreaterOrEqual(t, count, 0)
+	require.GreaterOrEqual(t, count, 0)
 }
 
 //nolint
@@ -138,17 +137,17 @@ func TestListContainersBasicUsingConnectionString(t *testing.T) {
 		resp := pager.PageResponse()
 
 		for _, container := range resp.ServiceListContainersSegmentResult.ContainerItems {
-			assert.NotNil(t, container.Name)
+			require.NotNil(t, container.Name)
 
 			if *container.Name == containerName {
-				assert.NotNil(t, container.Properties)
-				assert.NotNil(t, container.Properties.LastModified)
-				assert.NotNil(t, container.Properties.Etag)
-				assert.Equal(t, *container.Properties.LeaseStatus, LeaseStatusTypeUnlocked)
-				assert.Equal(t, *container.Properties.LeaseState, LeaseStateTypeAvailable)
-				assert.Nil(t, container.Properties.LeaseDuration)
-				assert.Nil(t, container.Properties.PublicAccess)
-				assert.NotNil(t, container.Metadata)
+				require.NotNil(t, container.Properties)
+				require.NotNil(t, container.Properties.LastModified)
+				require.NotNil(t, container.Properties.Etag)
+				require.Equal(t, *container.Properties.LeaseStatus, LeaseStatusTypeUnlocked)
+				require.Equal(t, *container.Properties.LeaseState, LeaseStateTypeAvailable)
+				require.Nil(t, container.Properties.LeaseDuration)
+				require.Nil(t, container.Properties.PublicAccess)
+				require.NotNil(t, container.Metadata)
 
 				unwrappedMeta := map[string]string{}
 				for k, v := range container.Metadata {
@@ -157,14 +156,14 @@ func TestListContainersBasicUsingConnectionString(t *testing.T) {
 					}
 				}
 
-				assert.EqualValues(t, unwrappedMeta, md)
+				require.EqualValues(t, unwrappedMeta, md)
 			}
 		}
 	}
 
-	assert.Nil(t, pager.Err())
+	require.Nil(t, pager.Err())
 	require.NoError(t, err)
-	assert.GreaterOrEqual(t, count, 0)
+	require.GreaterOrEqual(t, count, 0)
 }
 
 //func (s *azblobTestSuite) TestListContainersPaged() {
@@ -253,11 +252,11 @@ func TestAccountListContainersEmptyPrefix(t *testing.T) {
 
 		for _, container := range resp.ServiceListContainersSegmentResult.ContainerItems {
 			count++
-			assert.NotNil(t, container.Name)
+			require.NotNil(t, container.Name)
 		}
 	}
-	assert.Nil(t, pager.Err())
-	assert.GreaterOrEqual(t, count, 2)
+	require.Nil(t, pager.Err())
+	require.GreaterOrEqual(t, count, 2)
 }
 
 //// TODO re-enable after fixing error handling
@@ -321,8 +320,8 @@ func TestAccountDeleteRetentionPolicy(t *testing.T) {
 
 	resp, err := svcClient.GetProperties(ctx)
 	require.NoError(t, err)
-	assert.EqualValues(t, *resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, *enabled)
-	assert.EqualValues(t, *resp.StorageServiceProperties.DeleteRetentionPolicy.Days, *days)
+	require.EqualValues(t, *resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, *enabled)
+	require.EqualValues(t, *resp.StorageServiceProperties.DeleteRetentionPolicy.Days, *days)
 
 	disabled := false
 	_, err = svcClient.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &disabled}})
@@ -333,8 +332,8 @@ func TestAccountDeleteRetentionPolicy(t *testing.T) {
 
 	resp, err = svcClient.GetProperties(ctx)
 	require.NoError(t, err)
-	assert.EqualValues(t, *resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, false)
-	assert.Nil(t, resp.StorageServiceProperties.DeleteRetentionPolicy.Days)
+	require.EqualValues(t, *resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, false)
+	require.Nil(t, resp.StorageServiceProperties.DeleteRetentionPolicy.Days)
 }
 
 func TestAccountDeleteRetentionPolicyEmpty(t *testing.T) {
@@ -354,12 +353,12 @@ func TestAccountDeleteRetentionPolicyEmpty(t *testing.T) {
 
 	resp, err := svcClient.GetProperties(ctx)
 	require.NoError(t, err)
-	assert.EqualValues(t, *resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, *enabled)
-	assert.EqualValues(t, *resp.StorageServiceProperties.DeleteRetentionPolicy.Days, *days)
+	require.EqualValues(t, *resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, *enabled)
+	require.EqualValues(t, *resp.StorageServiceProperties.DeleteRetentionPolicy.Days, *days)
 
 	// Empty retention policy causes an error, this is different from track 1.5
 	_, err = svcClient.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{}})
-	assert.Error(t, err)
+	require.Error(t, err)
 }
 
 func TestAccountDeleteRetentionPolicyNil(t *testing.T) {
@@ -379,8 +378,8 @@ func TestAccountDeleteRetentionPolicyNil(t *testing.T) {
 
 	resp, err := svcClient.GetProperties(ctx)
 	require.NoError(t, err)
-	assert.EqualValues(t, *resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, *enabled)
-	assert.EqualValues(t, *resp.StorageServiceProperties.DeleteRetentionPolicy.Days, *days)
+	require.EqualValues(t, *resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, *enabled)
+	require.EqualValues(t, *resp.StorageServiceProperties.DeleteRetentionPolicy.Days, *days)
 
 	_, err = svcClient.SetProperties(ctx, StorageServiceProperties{})
 	require.NoError(t, err)
@@ -391,8 +390,8 @@ func TestAccountDeleteRetentionPolicyNil(t *testing.T) {
 	// If an element of service properties is not passed, the service keeps the current settings.
 	resp, err = svcClient.GetProperties(ctx)
 	require.NoError(t, err)
-	assert.EqualValues(t, *resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, *enabled)
-	assert.EqualValues(t, *resp.StorageServiceProperties.DeleteRetentionPolicy.Days, *days)
+	require.EqualValues(t, *resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, *enabled)
+	require.EqualValues(t, *resp.StorageServiceProperties.DeleteRetentionPolicy.Days, *days)
 
 	// Disable for other tests
 	enabled = to.BoolPtr(false)
@@ -410,7 +409,7 @@ func TestAccountDeleteRetentionPolicyDaysTooSmall(t *testing.T) {
 	days := int32(0) // Minimum days is 1. Validated on the client.
 	enabled := true
 	_, err = svcClient.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled, Days: &days}})
-	assert.Error(t, err)
+	require.Error(t, err)
 }
 
 //nolint
@@ -433,7 +432,7 @@ func TestAccountDeleteRetentionPolicyDaysTooLarge(t *testing.T) {
 		days := int32(366) // Max days is 365. Left to the service for validation.
 		enabled := true
 		_, err = svcClient.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled, Days: &days}})
-		assert.Error(t, err)
+		require.Error(t, err)
 
 		validateStorageError(t, err, StorageErrorCodeInvalidXMLDocument)
 	}
@@ -450,7 +449,7 @@ func TestAccountDeleteRetentionPolicyDaysOmitted(t *testing.T) {
 	// Days is required if enabled is true.
 	enabled := true
 	_, err = svcClient.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled}})
-	assert.Error(t, err)
+	require.Error(t, err)
 
 	validateStorageError(t, err, StorageErrorCodeInvalidXMLDocument)
 }

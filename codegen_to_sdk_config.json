@@ -1,13 +1,4 @@
 {
-    "init": {
-        "initScript": {
-            "path": "./eng/scripts/automation_init.sh",
-            "logPrefix": "[GO]",
-            "stderr":{
-                "storeAllLog": true
-            }
-        }
-    },
     "generateAndBuild": {
         "generateAndBuildScript": {
             "path": "generator automation-v2",

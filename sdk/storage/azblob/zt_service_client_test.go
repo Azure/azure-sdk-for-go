@@ -435,7 +435,7 @@ func TestAccountDeleteRetentionPolicyDaysTooLarge(t *testing.T) {
 		_, err = svcClient.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled, Days: &days}})
 		assert.Error(t, err)
 
-		validateStorageError(assert.New(t), err, StorageErrorCodeInvalidXMLDocument)
+		validateStorageError(t, err, StorageErrorCodeInvalidXMLDocument)
 	}
 }
 
@@ -452,5 +452,5 @@ func TestAccountDeleteRetentionPolicyDaysOmitted(t *testing.T) {
 	_, err = svcClient.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled}})
 	assert.Error(t, err)
 
-	validateStorageError(assert.New(t), err, StorageErrorCodeInvalidXMLDocument)
+	validateStorageError(t, err, StorageErrorCodeInvalidXMLDocument)
 }

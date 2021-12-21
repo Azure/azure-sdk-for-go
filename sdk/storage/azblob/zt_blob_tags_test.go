@@ -13,6 +13,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -220,6 +221,7 @@ func TestStageBlockWithTags(t *testing.T) {
 }
 
 func TestStageBlockFromURLWithTags(t *testing.T) {
+	recording.LiveOnly(t)
 
 	stop := start(t)
 	defer stop()
@@ -328,7 +330,7 @@ func TestStageBlockFromURLWithTags(t *testing.T) {
 }
 
 func TestCopyBlockBlobFromURLWithTags(t *testing.T) {
-
+	recording.LiveOnly(t) // Live only because of header differences
 	stop := start(t)
 	defer stop()
 

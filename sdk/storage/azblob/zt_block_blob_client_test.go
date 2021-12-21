@@ -16,6 +16,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -98,6 +99,7 @@ func TestStageGetBlocks(t *testing.T) {
 }
 
 func TestStageBlockFromURL(t *testing.T) {
+	recording.LiveOnly(t)
 
 	stop := start(t)
 	defer stop()
@@ -289,6 +291,7 @@ func TestCopyBlockBlobFromURL(t *testing.T) {
 }
 
 func TestBlobSASQueryParamOverrideResponseHeaders(t *testing.T) {
+	recording.LiveOnly(t)
 	stop := start(t)
 	defer stop()
 
@@ -590,7 +593,7 @@ func TestBlobPutBlobIfModifiedSinceFalse(t *testing.T) {
 	_, err = bbClient.Upload(ctx, rsc, &uploadBlockBlobOptions)
 	require.Error(t, err)
 
-	validateStorageError(assert.New(t), err, StorageErrorCodeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
 func TestBlobPutBlobIfUnmodifiedSinceTrue(t *testing.T) {
@@ -664,7 +667,7 @@ func TestBlobPutBlobIfUnmodifiedSinceFalse(t *testing.T) {
 	_, err = bbClient.Upload(ctx, internal.NopCloser(bytes.NewReader(nil)), &uploadBlockBlobOptions)
 	_ = err
 
-	validateStorageError(assert.New(t), err, StorageErrorCodeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
 func TestBlobPutBlobIfMatchTrue(t *testing.T) {
@@ -732,7 +735,7 @@ func TestBlobPutBlobIfMatchFalse(t *testing.T) {
 	}
 	_, err = bbClient.Upload(ctx, internal.NopCloser(body), &uploadBlockBlobOptions)
 	require.Error(t, err)
-	validateStorageError(assert.New(t), err, StorageErrorCodeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
 func TestBlobPutBlobIfNoneMatchTrue(t *testing.T) {
@@ -802,7 +805,7 @@ func TestBlobPutBlobIfNoneMatchFalse(t *testing.T) {
 		},
 	})
 
-	validateStorageError(assert.New(t), err, StorageErrorCodeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
 func validateBlobCommitted(_assert *assert.Assertions, bbClient BlockBlobClient) {
@@ -892,7 +895,7 @@ func TestBlobPutBlockListIfModifiedSinceFalse(t *testing.T) {
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime}},
 	})
 
-	validateStorageError(assert.New(t), err, StorageErrorCodeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
 func TestBlobPutBlockListIfUnmodifiedSinceTrue(t *testing.T) {
@@ -938,7 +941,7 @@ func TestBlobPutBlockListIfUnmodifiedSinceFalse(t *testing.T) {
 	}
 	_, err = bbClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
 
-	validateStorageError(assert.New(t), err, StorageErrorCodeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
 func TestBlobPutBlockListIfMatchTrue(t *testing.T) {
@@ -978,7 +981,7 @@ func TestBlobPutBlockListIfMatchFalse(t *testing.T) {
 	}
 	_, err = bbClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
 
-	validateStorageError(assert.New(t), err, StorageErrorCodeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
 func TestBlobPutBlockListIfNoneMatchTrue(t *testing.T) {
@@ -1018,7 +1021,7 @@ func TestBlobPutBlockListIfNoneMatchFalse(t *testing.T) {
 	}
 	_, err = bbClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
 
-	validateStorageError(assert.New(t), err, StorageErrorCodeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
 func TestBlobPutBlockListValidateData(t *testing.T) {

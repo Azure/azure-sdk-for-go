@@ -60,7 +60,7 @@ func TestContainerCreateInvalidName(t *testing.T) {
 	}
 	_, err = containerClient.Create(ctx, &createContainerOptions)
 	_assert.Error(err)
-	validateStorageError(_assert, err, StorageErrorCodeInvalidResourceName)
+	validateStorageError(t, err, StorageErrorCodeInvalidResourceName)
 }
 
 func TestContainerCreateEmptyName(t *testing.T) {
@@ -82,7 +82,7 @@ func TestContainerCreateEmptyName(t *testing.T) {
 	_, err = containerClient.Create(ctx, &createContainerOptions)
 	_assert.Error(err)
 
-	validateStorageError(_assert, err, StorageErrorCodeInvalidQueryParameterValue)
+	validateStorageError(t, err, StorageErrorCodeInvalidQueryParameterValue)
 }
 
 func TestContainerCreateNameCollision(t *testing.T) {
@@ -109,7 +109,7 @@ func TestContainerCreateNameCollision(t *testing.T) {
 	_, err = containerClient.Create(ctx, &createContainerOptions)
 	_assert.Error(err)
 
-	validateStorageError(_assert, err, StorageErrorCodeContainerAlreadyExists)
+	validateStorageError(t, err, StorageErrorCodeContainerAlreadyExists)
 }
 
 func TestContainerCreateInvalidMetadata(t *testing.T) {
@@ -383,11 +383,11 @@ func TestContainerCreateAccessNone(t *testing.T) {
 //	_assert.EqualValues(getResp.Metadata, basicMetadata)
 //}
 
-func validateContainerDeleted(_assert *assert.Assertions, containerClient ContainerClient) {
+func validateContainerDeleted(t *testing.T, containerClient ContainerClient) {
 	_, err := containerClient.GetAccessPolicy(ctx, nil)
-	_assert.Error(err)
+	require.Error(t, err)
 
-	validateStorageError(_assert, err, StorageErrorCodeContainerNotFound)
+	validateStorageError(t, err, StorageErrorCodeContainerNotFound)
 }
 
 func TestContainerDelete(t *testing.T) {
@@ -405,7 +405,7 @@ func TestContainerDelete(t *testing.T) {
 	_, err = containerClient.Delete(ctx, nil)
 	_assert.NoError(err)
 
-	validateContainerDeleted(_assert, containerClient)
+	validateContainerDeleted(t, containerClient)
 }
 
 //func (s *azblobTestSuite) TestContainerDeleteIfExists() {
@@ -462,7 +462,7 @@ func TestContainerDeleteNonExistent(t *testing.T) {
 	_, err = containerClient.Delete(ctx, nil)
 	_assert.Error(err)
 
-	validateStorageError(_assert, err, StorageErrorCodeContainerNotFound)
+	validateStorageError(t, err, StorageErrorCodeContainerNotFound)
 }
 
 func TestContainerDeleteIfModifiedSinceTrue(t *testing.T) {
@@ -490,7 +490,7 @@ func TestContainerDeleteIfModifiedSinceTrue(t *testing.T) {
 	}
 	_, err = containerClient.Delete(ctx, &deleteContainerOptions)
 	_assert.NoError(err)
-	validateContainerDeleted(_assert, containerClient)
+	validateContainerDeleted(t, containerClient)
 }
 
 func TestContainerDeleteIfModifiedSinceFalse(t *testing.T) {
@@ -520,7 +520,7 @@ func TestContainerDeleteIfModifiedSinceFalse(t *testing.T) {
 	_, err = containerClient.Delete(ctx, &deleteContainerOptions)
 	_assert.Error(err)
 
-	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
 func TestContainerDeleteIfUnModifiedSinceTrue(t *testing.T) {
@@ -549,7 +549,7 @@ func TestContainerDeleteIfUnModifiedSinceTrue(t *testing.T) {
 	_, err = containerClient.Delete(ctx, &deleteContainerOptions)
 	_assert.NoError(err)
 
-	validateContainerDeleted(_assert, containerClient)
+	validateContainerDeleted(t, containerClient)
 }
 
 func TestContainerDeleteIfUnModifiedSinceFalse(t *testing.T) {
@@ -579,7 +579,7 @@ func TestContainerDeleteIfUnModifiedSinceFalse(t *testing.T) {
 	_, err = containerClient.Delete(ctx, &deleteContainerOptions)
 	_assert.Error(err)
 
-	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
 ////func (s *azblobTestSuite) TestContainerAccessConditionsUnsupportedConditions() {
@@ -1052,7 +1052,7 @@ func TestContainerGetPropsAndMetaNonExistentContainer(t *testing.T) {
 	_, err = containerClient.GetProperties(ctx, nil)
 	_assert.Error(err)
 
-	validateStorageError(_assert, err, StorageErrorCodeContainerNotFound)
+	validateStorageError(t, err, StorageErrorCodeContainerNotFound)
 }
 
 func TestContainerSetMetadataEmpty(t *testing.T) {
@@ -1152,7 +1152,7 @@ func TestContainerSetMetadataNonExistent(t *testing.T) {
 	_, err = containerClient.SetMetadata(ctx, nil)
 	_assert.Error(err)
 
-	validateStorageError(_assert, err, StorageErrorCodeContainerNotFound)
+	validateStorageError(t, err, StorageErrorCodeContainerNotFound)
 }
 
 //
@@ -1205,7 +1205,7 @@ func TestContainerSetMetadataNonExistent(t *testing.T) {
 //	_, err = containerClient.SetMetadata(ctx, &setMetadataContainerOptions)
 //	_assert.Error(err)
 //
-//	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
+//	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 //}
 
 func TestContainerNewBlobURL(t *testing.T) {

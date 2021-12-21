@@ -21,15 +21,17 @@ func TestMain(m *testing.M) {
 			panic(err)
 		}
 
-		account, ok := os.LookupEnv(AccountNameEnvVar)
-		if !ok {
-			fmt.Printf("Could not find environment variable: %s", AccountNameEnvVar)
-			os.Exit(1)
-		}
+		for _, envVar := range []string{AccountNameEnvVar, "SECONDARY_STORAGE_ACCOUNT_NAME", "PREMIUM_STORAGE_ACCOUNT_NAME"} {
+			account, ok := os.LookupEnv(envVar)
+			if !ok {
+				fmt.Printf("Could not find environment variable: %s", envVar)
+				os.Exit(1)
+			}
 
-		err = recording.AddURISanitizer("fakeaccount", account, nil)
-		if err != nil {
-			panic(err)
+			err = recording.AddGeneralRegexSanitizer("fakeaccount", account, nil)
+			if err != nil {
+				panic(err)
+			}
 		}
 
 	}
@@ -84,9 +86,9 @@ func createServiceClientWithConnStrForRecording(t *testing.T, accountType testAc
 }
 
 func getRecordingCredential(t *testing.T, accountType testAccountType) (*SharedKeyCredential, error) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		return NewSharedKeyCredential("fakeAccount", "daaaaaaaaaabbbbbbbbbbcccccccccccccccccccdddddddddddddddddddeeeeeeeeeeefffffffffffggggg==")
-	}
+	// if recording.GetRecordMode() == recording.PlaybackMode {
+	// 	return NewSharedKeyCredential("fakeaccount", "daaaaaaaaaabbbbbbbbbbcccccccccccccccccccdddddddddddddddddddeeeeeeeeeeefffffffffffggggg==")
+	// }
 	accountName, accountKey := getAccountNameKey(t, accountType)
 	return NewSharedKeyCredential(accountName, accountKey)
 }
@@ -111,6 +113,10 @@ func getAccountNameKey(t *testing.T, accountType testAccountType) (string, strin
 		require.True(t, ok)
 		accountKey, ok = os.LookupEnv("PREMIUM_STORAGE_ACCOUNT_KEY")
 		require.True(t, ok)
+	}
+
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		return "fakeaccount", "daaaaaaaaaabbbbbbbbbbcccccccccccccccccccdddddddddddddddddddeeeeeeeeeeefffffffffffggggg=="
 	}
 
 	return accountName, accountKey

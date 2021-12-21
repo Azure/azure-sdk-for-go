@@ -374,12 +374,12 @@ func blockIDIntToBase64(blockID int) string {
 }
 
 // TODO: Figure out in which scenario, the parsing will fail.
-func validateStorageError(_assert *assert.Assertions, err error, code StorageErrorCode) {
-	_assert.Error(err)
+func validateStorageError(t *testing.T, err error, code StorageErrorCode) {
+	require.Error(t, err)
 
 	var storageError *StorageError
-	_assert.Equal(errors.As(err, &storageError), true)
-	_assert.Equal(storageError.ErrorCode, code)
+	require.Equal(t, errors.As(err, &storageError), true)
+	require.Equal(t, storageError.ErrorCode, code)
 }
 
 func blobListToMap(list []string) map[string]bool {

@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -107,11 +108,11 @@ func TestAppendBlockWithMD5(t *testing.T) {
 	appendResp, err = abClient.AppendBlock(context.Background(), internal.NopCloser(readerToBody), &appendBlockOptions)
 	require.Error(t, err)
 
-	validateStorageError(assert.New(t), err, StorageErrorCodeMD5Mismatch)
+	validateStorageError(t, err, StorageErrorCodeMD5Mismatch)
 }
 
 func TestAppendBlockFromURL(t *testing.T) {
-
+	recording.LiveOnly(t) // header differences
 	stop := start(t)
 	defer stop()
 
@@ -204,7 +205,7 @@ func TestAppendBlockFromURL(t *testing.T) {
 }
 
 func TestAppendBlockFromURLWithMD5(t *testing.T) {
-
+	recording.LiveOnly(t) // header differences
 	stop := start(t)
 	defer stop()
 
@@ -302,7 +303,7 @@ func TestAppendBlockFromURLWithMD5(t *testing.T) {
 	}
 	_, err = destBlob.AppendBlockFromURL(ctx, srcBlobURLWithSAS, &appendBlockURLOptions)
 	require.NotNil(t, err)
-	validateStorageError(assert.New(t), err, StorageErrorCodeMD5Mismatch)
+	validateStorageError(t, err, StorageErrorCodeMD5Mismatch)
 }
 
 func TestBlobCreateAppendMetadataNonEmpty(t *testing.T) {
@@ -488,7 +489,7 @@ func TestBlobCreateAppendIfModifiedSinceFalse(t *testing.T) {
 	_, err = abClient.Create(ctx, &createAppendBlobOptions)
 	require.NotNil(t, err)
 
-	validateStorageError(assert.New(t), err, StorageErrorCodeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
 func TestBlobCreateAppendIfUnmodifiedSinceTrue(t *testing.T) {
@@ -564,7 +565,7 @@ func TestBlobCreateAppendIfUnmodifiedSinceFalse(t *testing.T) {
 	_, err = abClient.Create(ctx, &createAppendBlobOptions)
 	require.NotNil(t, err)
 
-	validateStorageError(assert.New(t), err, StorageErrorCodeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
 func TestBlobCreateAppendIfMatchTrue(t *testing.T) {
@@ -626,7 +627,7 @@ func TestBlobCreateAppendIfMatchFalse(t *testing.T) {
 	_, err = abClient.Create(ctx, &createAppendBlobOptions)
 	require.Error(t, err)
 
-	validateStorageError(assert.New(t), err, StorageErrorCodeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
 func TestBlobCreateAppendIfNoneMatchTrue(t *testing.T) {
@@ -689,7 +690,7 @@ func TestBlobCreateAppendIfNoneMatchFalse(t *testing.T) {
 	_, err = abClient.Create(ctx, &createAppendBlobOptions)
 	require.Error(t, err)
 
-	validateStorageError(assert.New(t), err, StorageErrorCodeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
 func TestBlobAppendBlockNilBody(t *testing.T) {
@@ -710,7 +711,7 @@ func TestBlobAppendBlockNilBody(t *testing.T) {
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(bytes.NewReader(nil)), nil)
 	require.Error(t, err)
 
-	validateStorageError(assert.New(t), err, StorageErrorCodeInvalidHeaderValue)
+	validateStorageError(t, err, StorageErrorCodeInvalidHeaderValue)
 }
 
 func TestBlobAppendBlockEmptyBody(t *testing.T) {
@@ -730,7 +731,7 @@ func TestBlobAppendBlockEmptyBody(t *testing.T) {
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader("")), nil)
 	require.Error(t, err)
 
-	validateStorageError(assert.New(t), err, StorageErrorCodeInvalidHeaderValue)
+	validateStorageError(t, err, StorageErrorCodeInvalidHeaderValue)
 }
 
 func TestBlobAppendBlockNonExistentBlob(t *testing.T) {
@@ -751,13 +752,13 @@ func TestBlobAppendBlockNonExistentBlob(t *testing.T) {
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	require.Error(t, err)
 
-	validateStorageError(assert.New(t), err, StorageErrorCodeBlobNotFound)
+	validateStorageError(t, err, StorageErrorCodeBlobNotFound)
 }
 
-func validateBlockAppended(_assert *assert.Assertions, abClient AppendBlobClient, expectedSize int) {
+func validateBlockAppended(t *testing.T, abClient AppendBlobClient, expectedSize int) {
 	resp, err := abClient.GetProperties(ctx, nil)
-	_assert.NoError(err)
-	_assert.Equal(*resp.ContentLength, int64(expectedSize))
+	require.NoError(t, err)
+	require.Equal(t, *resp.ContentLength, int64(expectedSize))
 }
 
 func TestBlobAppendBlockIfModifiedSinceTrue(t *testing.T) {
@@ -793,7 +794,7 @@ func TestBlobAppendBlockIfModifiedSinceTrue(t *testing.T) {
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions)
 	require.NoError(t, err)
 
-	validateBlockAppended(assert.New(t), abClient, len(blockBlobDefaultData))
+	validateBlockAppended(t, abClient, len(blockBlobDefaultData))
 }
 
 func TestBlobAppendBlockIfModifiedSinceFalse(t *testing.T) {
@@ -829,7 +830,7 @@ func TestBlobAppendBlockIfModifiedSinceFalse(t *testing.T) {
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions)
 	require.Error(t, err)
 
-	validateStorageError(assert.New(t), err, StorageErrorCodeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
 func TestBlobAppendBlockIfUnmodifiedSinceTrue(t *testing.T) {
@@ -865,7 +866,7 @@ func TestBlobAppendBlockIfUnmodifiedSinceTrue(t *testing.T) {
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions)
 	require.NoError(t, err)
 
-	validateBlockAppended(assert.New(t), abClient, len(blockBlobDefaultData))
+	validateBlockAppended(t, abClient, len(blockBlobDefaultData))
 }
 
 func TestBlobAppendBlockIfUnmodifiedSinceFalse(t *testing.T) {
@@ -901,7 +902,7 @@ func TestBlobAppendBlockIfUnmodifiedSinceFalse(t *testing.T) {
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions)
 	require.Error(t, err)
 
-	validateStorageError(assert.New(t), err, StorageErrorCodeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
 func TestBlobAppendBlockIfMatchTrue(t *testing.T) {
@@ -930,7 +931,7 @@ func TestBlobAppendBlockIfMatchTrue(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	validateBlockAppended(assert.New(t), abClient, len(blockBlobDefaultData))
+	validateBlockAppended(t, abClient, len(blockBlobDefaultData))
 }
 
 func TestBlobAppendBlockIfMatchFalse(t *testing.T) {
@@ -956,7 +957,7 @@ func TestBlobAppendBlockIfMatchFalse(t *testing.T) {
 		},
 	})
 	require.Error(t, err)
-	validateStorageError(assert.New(t), err, StorageErrorCodeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
 func TestBlobAppendBlockIfNoneMatchTrue(t *testing.T) {
@@ -982,7 +983,7 @@ func TestBlobAppendBlockIfNoneMatchTrue(t *testing.T) {
 		},
 	})
 	require.NoError(t, err)
-	validateBlockAppended(assert.New(t), abClient, len(blockBlobDefaultData))
+	validateBlockAppended(t, abClient, len(blockBlobDefaultData))
 }
 
 func TestBlobAppendBlockIfNoneMatchFalse(t *testing.T) {
@@ -1010,7 +1011,7 @@ func TestBlobAppendBlockIfNoneMatchFalse(t *testing.T) {
 		},
 	})
 	require.Error(t, err)
-	validateStorageError(assert.New(t), err, StorageErrorCodeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
 //// TODO: Fix this
@@ -1054,7 +1055,7 @@ func TestBlobAppendBlockIfNoneMatchFalse(t *testing.T) {
 ////}
 
 func TestBlobAppendBlockIfAppendPositionMatchTrueNonZero(t *testing.T) {
-
+	t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
 
@@ -1078,7 +1079,7 @@ func TestBlobAppendBlockIfAppendPositionMatchTrueNonZero(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	validateBlockAppended(assert.New(t), abClient, len(blockBlobDefaultData)*2)
+	validateBlockAppended(t, abClient, len(blockBlobDefaultData)*2)
 }
 
 func TestBlobAppendBlockIfAppendPositionMatchFalseNegOne(t *testing.T) {
@@ -1105,7 +1106,7 @@ func TestBlobAppendBlockIfAppendPositionMatchFalseNegOne(t *testing.T) {
 		},
 	})
 	require.Error(t, err)
-	validateStorageError(assert.New(t), err, StorageErrorCodeInvalidHeaderValue)
+	validateStorageError(t, err, StorageErrorCodeInvalidHeaderValue)
 }
 
 func TestBlobAppendBlockIfAppendPositionMatchFalseNonZero(t *testing.T) {
@@ -1129,7 +1130,7 @@ func TestBlobAppendBlockIfAppendPositionMatchFalseNonZero(t *testing.T) {
 		},
 	})
 	require.Error(t, err)
-	validateStorageError(assert.New(t), err, StorageErrorCodeAppendPositionConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeAppendPositionConditionNotMet)
 }
 
 func TestBlobAppendBlockIfMaxSizeTrue(t *testing.T) {
@@ -1153,7 +1154,7 @@ func TestBlobAppendBlockIfMaxSizeTrue(t *testing.T) {
 		},
 	})
 	require.NoError(t, err)
-	validateBlockAppended(assert.New(t), abClient, len(blockBlobDefaultData))
+	validateBlockAppended(t, abClient, len(blockBlobDefaultData))
 }
 
 func TestBlobAppendBlockIfMaxSizeFalse(t *testing.T) {
@@ -1177,7 +1178,7 @@ func TestBlobAppendBlockIfMaxSizeFalse(t *testing.T) {
 		},
 	})
 	require.Error(t, err)
-	validateStorageError(assert.New(t), err, StorageErrorCodeMaxBlobSizeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeMaxBlobSizeConditionNotMet)
 }
 
 func TestSealAppendBlob(t *testing.T) {
@@ -1207,7 +1208,7 @@ func TestSealAppendBlob(t *testing.T) {
 
 	appendResp, err = abClient.AppendBlock(context.Background(), getReaderToGeneratedBytes(1024), nil)
 	require.Error(t, err)
-	validateStorageError(assert.New(t), err, "BlobIsSealed")
+	validateStorageError(t, err, "BlobIsSealed")
 
 	getPropResp, err := abClient.GetProperties(ctx, nil)
 	require.NoError(t, err)
@@ -1275,7 +1276,7 @@ func TestCopySealedBlob(t *testing.T) {
 
 	_, err = copiedBlob1.AppendBlock(context.Background(), getReaderToGeneratedBytes(1024), nil)
 	require.Error(t, err)
-	validateStorageError(assert.New(t), err, "BlobIsSealed")
+	validateStorageError(t, err, "BlobIsSealed")
 
 	copiedBlob2 := getAppendBlobClient("copy2"+abName, containerClient)
 	_, err = copiedBlob2.StartCopyFromURL(ctx, abClient.URL(), &StartCopyBlobOptions{
@@ -1289,7 +1290,7 @@ func TestCopySealedBlob(t *testing.T) {
 
 	_, err = copiedBlob2.AppendBlock(context.Background(), getReaderToGeneratedBytes(1024), nil)
 	require.Error(t, err)
-	validateStorageError(assert.New(t), err, "BlobIsSealed")
+	validateStorageError(t, err, "BlobIsSealed")
 
 	copiedBlob3 := getAppendBlobClient("copy3"+abName, containerClient)
 	_, err = copiedBlob3.StartCopyFromURL(ctx, abClient.URL(), &StartCopyBlobOptions{

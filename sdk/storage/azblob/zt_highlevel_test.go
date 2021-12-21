@@ -12,7 +12,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/stretchr/testify/assert"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
 
@@ -27,7 +27,7 @@ func generateFile(fileName string, fileSize int) []byte {
 }
 
 func performUploadStreamToBlockBlobTest(t *testing.T, testName string, blobSize, bufferSize, maxBuffers int) {
-	_assert := assert.New(t)
+	recording.LiveOnly(t) // path is formed during the past
 	stop := start(t)
 	defer stop()
 
@@ -50,18 +50,18 @@ func performUploadStreamToBlockBlobTest(t *testing.T, testName string, blobSize,
 		UploadStreamToBlockBlobOptions{BufferSize: bufferSize, MaxBuffers: maxBuffers})
 
 	// Assert that upload was successful
-	_assert.Equal(err, nil)
-	_assert.Equal(uploadResp.RawResponse.StatusCode, 201)
+	require.Equal(t, err, nil)
+	require.Equal(t, uploadResp.RawResponse.StatusCode, 201)
 
 	// Download the blob to verify
 	downloadResponse, err := blobClient.Download(ctx, nil)
-	_assert.NoError(err)
+	require.NoError(t, err)
 
 	// Assert that the content is correct
 	actualBlobData, err := ioutil.ReadAll(downloadResponse.RawResponse.Body)
-	_assert.NoError(err)
-	_assert.Equal(len(actualBlobData), blobSize)
-	_assert.EqualValues(actualBlobData, blobData)
+	require.NoError(t, err)
+	require.Equal(t, len(actualBlobData), blobSize)
+	require.EqualValues(t, actualBlobData, blobData)
 }
 
 func TestUploadStreamToBlockBlobInChunks(t *testing.T) {
@@ -100,14 +100,13 @@ func TestUploadStreamToBlockBlobEmpty(t *testing.T) {
 }
 
 func performUploadAndDownloadFileTest(t *testing.T, testName string, fileSize, blockSize, parallelism, downloadOffset, downloadCount int) {
-	_assert := assert.New(t)
 	// Set up file to upload
 	fileName := "BigFile.bin"
 	fileData := generateFile(fileName, fileSize)
 
 	// Open the file to upload
 	file, err := os.Open(fileName)
-	_assert.Equal(err, nil)
+	require.Equal(t, err, nil)
 	defer func(file *os.File) {
 		_ = file.Close()
 	}(file)
@@ -134,16 +133,16 @@ func performUploadAndDownloadFileTest(t *testing.T, testName string, fileSize, b
 			Parallelism: uint16(parallelism),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
 			Progress: func(bytesTransferred int64) {
-				_assert.Equal(bytesTransferred > 0 && bytesTransferred <= int64(fileSize), true)
+				require.Equal(t, bytesTransferred > 0 && bytesTransferred <= int64(fileSize), true)
 			},
 		})
-	_assert.Equal(err, nil)
-	_assert.Equal(response.StatusCode, 201)
+	require.Equal(t, err, nil)
+	require.Equal(t, response.StatusCode, 201)
 
 	// Set up file to download the blob to
 	destFileName := "BigFile-downloaded.bin"
 	destFile, err := os.Create(destFileName)
-	_assert.Equal(err, nil)
+	require.Equal(t, err, nil)
 	defer func(destFile *os.File) {
 		_ = destFile.Close()
 
@@ -161,12 +160,12 @@ func performUploadAndDownloadFileTest(t *testing.T, testName string, fileSize, b
 			Parallelism: uint16(parallelism),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
 			Progress: func(bytesTransferred int64) {
-				_assert.Equal(bytesTransferred > 0 && bytesTransferred <= int64(fileSize), true)
+				require.Equal(t, bytesTransferred > 0 && bytesTransferred <= int64(fileSize), true)
 			},
 		})
 
 	// Assert download was successful
-	_assert.Equal(err, nil)
+	require.Equal(t, err, nil)
 
 	// Assert downloaded data is consistent
 	var destBuffer []byte
@@ -177,17 +176,17 @@ func performUploadAndDownloadFileTest(t *testing.T, testName string, fileSize, b
 	}
 
 	n, err := destFile.Read(destBuffer)
-	_assert.Equal(err, nil)
+	require.Equal(t, err, nil)
 
 	if downloadOffset == 0 && downloadCount == 0 {
-		_assert.EqualValues(destBuffer, fileData)
+		require.EqualValues(t, destBuffer, fileData)
 	} else {
 		if downloadCount == 0 {
-			_assert.Equal(n, fileSize-downloadOffset)
-			_assert.EqualValues(destBuffer, fileData[downloadOffset:])
+			require.Equal(t, n, fileSize-downloadOffset)
+			require.EqualValues(t, destBuffer, fileData[downloadOffset:])
 		} else {
-			_assert.Equal(n, downloadCount)
-			_assert.EqualValues(destBuffer, fileData[downloadOffset:downloadOffset+downloadCount])
+			require.Equal(t, n, downloadCount)
+			require.EqualValues(t, destBuffer, fileData[downloadOffset:downloadOffset+downloadCount])
 		}
 	}
 }
@@ -251,7 +250,6 @@ func performUploadAndDownloadBufferTest(t *testing.T, testName string, blobSize,
 	// Set up buffer to upload
 	_, bytesToUpload := generateData(blobSize)
 
-	_assert := assert.New(t)
 	// Set up test container
 	stop := start(t)
 	defer stop()
@@ -272,11 +270,11 @@ func performUploadAndDownloadBufferTest(t *testing.T, testName string, blobSize,
 			Parallelism: uint16(parallelism),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
 			Progress: func(bytesTransferred int64) {
-				_assert.Equal(bytesTransferred > 0 && bytesTransferred <= int64(blobSize), true)
+				require.Equal(t, bytesTransferred > 0 && bytesTransferred <= int64(blobSize), true)
 			},
 		})
-	_assert.Equal(err, nil)
-	_assert.Equal(response.StatusCode, 201)
+	require.Equal(t, err, nil)
+	require.Equal(t, response.StatusCode, 201)
 
 	// Set up buffer to download the blob to
 	var destBuffer []byte
@@ -293,19 +291,19 @@ func performUploadAndDownloadBufferTest(t *testing.T, testName string, blobSize,
 			Parallelism: uint16(parallelism),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
 			Progress: func(bytesTransferred int64) {
-				_assert.Equal(bytesTransferred > 0 && bytesTransferred <= int64(blobSize), true)
+				require.Equal(t, bytesTransferred > 0 && bytesTransferred <= int64(blobSize), true)
 			},
 		})
 
-	_assert.Equal(err, nil)
+	require.Equal(t, err, nil)
 
 	if downloadOffset == 0 && downloadCount == 0 {
-		_assert.EqualValues(destBuffer, bytesToUpload)
+		require.EqualValues(t, destBuffer, bytesToUpload)
 	} else {
 		if downloadCount == 0 {
-			_assert.EqualValues(destBuffer, bytesToUpload[downloadOffset:])
+			require.EqualValues(t, destBuffer, bytesToUpload[downloadOffset:])
 		} else {
-			_assert.EqualValues(destBuffer, bytesToUpload[downloadOffset:downloadOffset+downloadCount])
+			require.EqualValues(t, destBuffer, bytesToUpload[downloadOffset:downloadOffset+downloadCount])
 		}
 	}
 }
@@ -366,7 +364,6 @@ func TestDownloadBufferWithNonZeroOffsetAndCount(t *testing.T) {
 }
 
 func TestBasicDoBatchTransfer(t *testing.T) {
-	_assert := assert.New(t)
 	// test the basic multi-routine processing
 	type testInstance struct {
 		transferSize int64
@@ -404,11 +401,11 @@ func TestBasicDoBatchTransfer(t *testing.T) {
 		})
 
 		if test.expectError {
-			_assert.Error(err)
+			require.Error(t, err)
 		} else {
-			_assert.NoError(err)
-			_assert.Equal(totalSizeCount, test.transferSize)
-			_assert.Equal(runCount, ((test.transferSize-1)/test.chunkSize)+1)
+			require.NoError(t, err)
+			require.Equal(t, totalSizeCount, test.transferSize)
+			require.Equal(t, runCount, ((test.transferSize-1)/test.chunkSize)+1)
 		}
 	}
 }
@@ -417,7 +414,7 @@ func TestBasicDoBatchTransfer(t *testing.T) {
 
 type mockMMF struct {
 	isClosed   bool
-	failHandle *assert.Assertions
+	failHandle *require.Assertions
 }
 
 // accept input
@@ -430,9 +427,8 @@ func (m *mockMMF) write(_ string) {
 }
 
 func TestDoBatchTransferWithError(t *testing.T) {
-	_assert := assert.New(t)
 	ctx := context.Background()
-	mmf := mockMMF{failHandle: _assert}
+	mmf := mockMMF{failHandle: require.New(t)}
 	expectedFirstError := errors.New("#3 means trouble")
 
 	err := DoBatchTransfer(ctx, BatchTransferOptions{
@@ -453,7 +449,7 @@ func TestDoBatchTransferWithError(t *testing.T) {
 				// anything after offset=3 are canceled
 				// so verify that the context indeed got canceled
 				ctxErr := ctx.Err()
-				_assert.Equal(ctxErr, context.Canceled)
+				require.Equal(t, ctxErr, context.Canceled)
 				return ctxErr
 			}
 
@@ -463,7 +459,7 @@ func TestDoBatchTransferWithError(t *testing.T) {
 		OperationName: "TestErrorPath",
 	})
 
-	_assert.Equal(err, expectedFirstError)
+	require.Equal(t, err, expectedFirstError)
 
 	// simulate closing the mmf and make sure no panic occurs (as reported in #139)
 	mmf.isClosed = true

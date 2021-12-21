@@ -15,6 +15,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -166,6 +167,7 @@ func TestPutBlockAndPutBlockListWithCPKByScope(t *testing.T) {
 
 //nolint
 func TestPutBlockFromURLAndCommitWithCPK(t *testing.T) {
+	recording.LiveOnly(t)
 	_assert := assert.New(t)
 	stop := start(t)
 	defer stop()
@@ -602,6 +604,7 @@ func TestAppendBlockWithCPKScope(t *testing.T) {
 
 //nolint
 func TestAppendBlockFromURLWithCPK(t *testing.T) {
+	recording.LiveOnly(t)
 	_assert := assert.New(t)
 	stop := start(t)
 	defer stop()
@@ -920,6 +923,7 @@ func TestPageBlockWithCPKScope(t *testing.T) {
 
 //nolint
 func TestPageBlockFromURLWithCPK(t *testing.T) {
+	recording.LiveOnly(t) // live only because of header differences
 	_assert := assert.New(t)
 	stop := start(t)
 	defer stop()
@@ -1084,6 +1088,7 @@ func TestPageBlockFromURLWithCPKScope(t *testing.T) {
 
 //nolint
 func TestUploadPagesFromURLWithMD5WithCPK(t *testing.T) {
+	recording.LiveOnly(t) // header differences
 	_assert := assert.New(t)
 	stop := start(t)
 	defer stop()
@@ -1175,7 +1180,7 @@ func TestUploadPagesFromURLWithMD5WithCPK(t *testing.T) {
 	_, err = destPBClient.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions1)
 	_assert.Error(err)
 
-	validateStorageError(_assert, err, StorageErrorCodeMD5Mismatch)
+	validateStorageError(t, err, StorageErrorCodeMD5Mismatch)
 }
 
 func TestClearDiffPagesWithCPK(t *testing.T) {

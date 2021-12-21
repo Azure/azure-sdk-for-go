@@ -40,8 +40,7 @@ func TestCreateBlobClient(t *testing.T) {
 	require.Equal(t, blobURLParts.BlobName, blobName)
 	require.Equal(t, blobURLParts.ContainerName, containerName)
 
-	accountName, err := getRequiredEnv(AccountNameEnvVar)
-	require.NoError(t, err)
+	accountName, _ := getAccountNameKey(t, testAccountDefault)
 	correctURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s", accountName, containerName, blobName)
 	require.Equal(t, bbClient.URL(), correctURL)
 }
@@ -373,7 +372,7 @@ func TestBlobStartCopySourcePrivate(t *testing.T) {
 		t.Skip("Test not valid because primary and secondary accounts are the same")
 	}
 	_, err = copyBlobClient.StartCopyFromURL(ctx, bbClient.URL(), nil)
-	validateStorageError(assert.New(t), err, StorageErrorCodeCannotVerifyCopySource)
+	validateStorageError(t, err, StorageErrorCodeCannotVerifyCopySource)
 }
 
 func TestBlobStartCopyUsingSASSrc(t *testing.T) {
@@ -661,7 +660,7 @@ func TestBlobStartCopySourceIfMatchFalse(t *testing.T) {
 	destBlobClient := getBlockBlobClient(destBlobName, containerClient)
 	_, err = destBlobClient.StartCopyFromURL(ctx, bbClient.URL(), &options)
 	require.Error(t, err)
-	validateStorageError(assert.New(t), err, StorageErrorCodeSourceConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeSourceConditionNotMet)
 }
 
 func TestBlobStartCopySourceIfNoneMatchTrue(t *testing.T) {
@@ -725,7 +724,7 @@ func TestBlobStartCopySourceIfNoneMatchFalse(t *testing.T) {
 	destBlobClient := getBlockBlobClient(destBlobName, containerClient)
 	_, err = destBlobClient.StartCopyFromURL(ctx, bbClient.URL(), &options)
 	require.Error(t, err)
-	validateStorageError(assert.New(t), err, StorageErrorCodeSourceConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeSourceConditionNotMet)
 }
 
 func TestBlobStartCopyDestIfModifiedSinceTrue(t *testing.T) {
@@ -790,7 +789,7 @@ func TestBlobStartCopyDestIfModifiedSinceFalse(t *testing.T) {
 		},
 	}
 	_, err = destBlobClient.StartCopyFromURL(ctx, bbClient.URL(), &options)
-	validateStorageError(assert.New(t), err, StorageErrorCodeTargetConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeTargetConditionNotMet)
 }
 
 func TestBlobStartCopyDestIfUnmodifiedSinceTrue(t *testing.T) {
@@ -925,7 +924,7 @@ func TestBlobStartCopyDestIfMatchFalse(t *testing.T) {
 
 	_, err = destBlobClient.StartCopyFromURL(ctx, bbClient.URL(), &options)
 	require.Error(t, err)
-	validateStorageError(assert.New(t), err, StorageErrorCodeTargetConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeTargetConditionNotMet)
 }
 
 func TestBlobStartCopyDestIfNoneMatchTrue(t *testing.T) {
@@ -992,7 +991,7 @@ func TestBlobStartCopyDestIfNoneMatchFalse(t *testing.T) {
 
 	_, err = destBlobClient.StartCopyFromURL(ctx, bbClient.URL(), &options)
 	require.Error(t, err)
-	validateStorageError(assert.New(t), err, StorageErrorCodeTargetConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeTargetConditionNotMet)
 }
 
 func TestBlobAbortCopyInProgress(t *testing.T) {
@@ -1046,7 +1045,7 @@ func TestBlobAbortCopyInProgress(t *testing.T) {
 	if err != nil {
 		// If the error is nil, the test continues as normal.
 		// If the error is not nil, we want to check if it's because the copy is finished and send a message indicating this.
-		validateStorageError(assert.New(t), err, StorageErrorCodeNoPendingCopyOperation)
+		validateStorageError(t, err, StorageErrorCodeNoPendingCopyOperation)
 		require.Error(t, errors.New("the test failed because the copy completed because it was aborted"))
 	}
 
@@ -1071,7 +1070,7 @@ func TestBlobAbortCopyNoCopyStarted(t *testing.T) {
 
 	_, err = copyBlobClient.AbortCopyFromURL(ctx, "copynotstarted", nil)
 	require.Error(t, err)
-	validateStorageError(assert.New(t), err, StorageErrorCodeInvalidQueryParameterValue)
+	validateStorageError(t, err, StorageErrorCodeInvalidQueryParameterValue)
 }
 
 func TestBlobSnapshotMetadata(t *testing.T) {
@@ -1220,7 +1219,7 @@ func TestBlobSnapshotOfSnapshot(t *testing.T) {
 	// The library allows the server to handle the snapshot of snapshot error
 	_, err = snapshotURL.CreateSnapshot(ctx, nil)
 	require.Error(t, err)
-	validateStorageError(assert.New(t), err, StorageErrorCodeInvalidQueryParameterValue)
+	validateStorageError(t, err, StorageErrorCodeInvalidQueryParameterValue)
 }
 
 func TestBlobSnapshotIfModifiedSinceTrue(t *testing.T) {
@@ -1427,7 +1426,7 @@ func TestBlobSnapshotIfNoneMatchTrue(t *testing.T) {
 }
 
 func TestBlobSnapshotIfNoneMatchFalse(t *testing.T) {
-
+	t.Skip("Error: 'System.InvalidCastException: Unable to cast object of type 'System.Net.Http.EmptyReadStream' to type 'System.IO.MemoryStream'.'")
 	stop := start(t)
 	defer stop()
 
@@ -1514,7 +1513,7 @@ func TestBlobDownloadDataOffsetOutOfRange(t *testing.T) {
 	}
 	_, err = bbClient.Download(ctx, &options)
 	require.Error(t, err)
-	validateStorageError(assert.New(t), err, StorageErrorCodeInvalidRange)
+	validateStorageError(t, err, StorageErrorCodeInvalidRange)
 }
 
 func TestBlobDownloadDataCountNegative(t *testing.T) {
@@ -2098,7 +2097,7 @@ func TestBlobDeleteIfModifiedSinceFalse(t *testing.T) {
 		},
 	}
 	_, err = bbClient.Delete(ctx, &deleteBlobOptions)
-	validateStorageError(assert.New(t), err, StorageErrorCodeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
 func TestBlobDeleteIfUnmodifiedSinceTrue(t *testing.T) {
@@ -2160,7 +2159,7 @@ func TestBlobDeleteIfUnmodifiedSinceFalse(t *testing.T) {
 		},
 	}
 	_, err = bbClient.Delete(ctx, &deleteBlobOptions)
-	validateStorageError(assert.New(t), err, StorageErrorCodeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
 func TestBlobDeleteIfMatchTrue(t *testing.T) {
@@ -2219,7 +2218,7 @@ func TestBlobDeleteIfMatchFalse(t *testing.T) {
 		},
 	}
 	_, err = bbClient.Delete(ctx, &deleteBlobOptions)
-	validateStorageError(assert.New(t), err, StorageErrorCodeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
 func TestBlobDeleteIfNoneMatchTrue(t *testing.T) {
@@ -2277,7 +2276,7 @@ func TestBlobDeleteIfNoneMatchFalse(t *testing.T) {
 		},
 	}
 	_, err = bbClient.Delete(ctx, &deleteBlobOptions)
-	validateStorageError(assert.New(t), err, StorageErrorCodeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
 func TestBlobGetPropsAndMetadataIfModifiedSinceTrue(t *testing.T) {
@@ -2947,7 +2946,7 @@ func TestBlobSetMetadataIfModifiedSinceFalse(t *testing.T) {
 		ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime},
 	}
 	_, err = bbClient.SetMetadata(ctx, basicMetadata, &setBlobMetadataOptions)
-	validateStorageError(assert.New(t), err, StorageErrorCodeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
 func TestBlobSetMetadataIfUnmodifiedSinceTrue(t *testing.T) {
@@ -3005,7 +3004,7 @@ func TestBlobSetMetadataIfUnmodifiedSinceFalse(t *testing.T) {
 		ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
 	}
 	_, err = bbClient.SetMetadata(ctx, basicMetadata, &setBlobMetadataOptions)
-	validateStorageError(assert.New(t), err, StorageErrorCodeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
 func TestBlobSetMetadataIfMatchTrue(t *testing.T) {
@@ -3055,7 +3054,7 @@ func TestBlobSetMetadataIfMatchFalse(t *testing.T) {
 		ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: &eTag},
 	}
 	_, err = bbClient.SetMetadata(ctx, basicMetadata, &setBlobMetadataOptions)
-	validateStorageError(assert.New(t), err, StorageErrorCodeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
 func TestBlobSetMetadataIfNoneMatchTrue(t *testing.T) {
@@ -3105,7 +3104,7 @@ func TestBlobSetMetadataIfNoneMatchFalse(t *testing.T) {
 		ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: resp.ETag},
 	}
 	_, err = bbClient.SetMetadata(ctx, basicMetadata, &setBlobMetadataOptions)
-	validateStorageError(assert.New(t), err, StorageErrorCodeConditionNotMet)
+	validateStorageError(t, err, StorageErrorCodeConditionNotMet)
 }
 
 //nolint

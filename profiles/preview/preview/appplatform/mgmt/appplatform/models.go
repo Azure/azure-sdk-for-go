@@ -12,20 +12,92 @@ package appplatform
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/appplatform/mgmt/2021-09-01-preview/appplatform"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/appplatform/mgmt/2022-01-01-preview/appplatform"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type APIPortalProvisioningState = original.APIPortalProvisioningState
+
+const (
+	APIPortalProvisioningStateCreating  APIPortalProvisioningState = original.APIPortalProvisioningStateCreating
+	APIPortalProvisioningStateDeleting  APIPortalProvisioningState = original.APIPortalProvisioningStateDeleting
+	APIPortalProvisioningStateFailed    APIPortalProvisioningState = original.APIPortalProvisioningStateFailed
+	APIPortalProvisioningStateSucceeded APIPortalProvisioningState = original.APIPortalProvisioningStateSucceeded
+	APIPortalProvisioningStateUpdating  APIPortalProvisioningState = original.APIPortalProvisioningStateUpdating
+)
+
 type AppResourceProvisioningState = original.AppResourceProvisioningState
 
 const (
 	AppResourceProvisioningStateCreating  AppResourceProvisioningState = original.AppResourceProvisioningStateCreating
+	AppResourceProvisioningStateDeleting  AppResourceProvisioningState = original.AppResourceProvisioningStateDeleting
 	AppResourceProvisioningStateFailed    AppResourceProvisioningState = original.AppResourceProvisioningStateFailed
 	AppResourceProvisioningStateSucceeded AppResourceProvisioningState = original.AppResourceProvisioningStateSucceeded
 	AppResourceProvisioningStateUpdating  AppResourceProvisioningState = original.AppResourceProvisioningStateUpdating
+)
+
+type BindingType = original.BindingType
+
+const (
+	BindingTypeApacheSkyWalking    BindingType = original.BindingTypeApacheSkyWalking
+	BindingTypeAppDynamics         BindingType = original.BindingTypeAppDynamics
+	BindingTypeApplicationInsights BindingType = original.BindingTypeApplicationInsights
+	BindingTypeDynatrace           BindingType = original.BindingTypeDynatrace
+	BindingTypeElasticAPM          BindingType = original.BindingTypeElasticAPM
+	BindingTypeNewRelic            BindingType = original.BindingTypeNewRelic
+)
+
+type BuildProvisioningState = original.BuildProvisioningState
+
+const (
+	BuildProvisioningStateCreating  BuildProvisioningState = original.BuildProvisioningStateCreating
+	BuildProvisioningStateDeleting  BuildProvisioningState = original.BuildProvisioningStateDeleting
+	BuildProvisioningStateFailed    BuildProvisioningState = original.BuildProvisioningStateFailed
+	BuildProvisioningStateSucceeded BuildProvisioningState = original.BuildProvisioningStateSucceeded
+	BuildProvisioningStateUpdating  BuildProvisioningState = original.BuildProvisioningStateUpdating
+)
+
+type BuildResultProvisioningState = original.BuildResultProvisioningState
+
+const (
+	BuildResultProvisioningStateBuilding  BuildResultProvisioningState = original.BuildResultProvisioningStateBuilding
+	BuildResultProvisioningStateDeleting  BuildResultProvisioningState = original.BuildResultProvisioningStateDeleting
+	BuildResultProvisioningStateFailed    BuildResultProvisioningState = original.BuildResultProvisioningStateFailed
+	BuildResultProvisioningStateQueuing   BuildResultProvisioningState = original.BuildResultProvisioningStateQueuing
+	BuildResultProvisioningStateSucceeded BuildResultProvisioningState = original.BuildResultProvisioningStateSucceeded
+)
+
+type BuildServiceProvisioningState = original.BuildServiceProvisioningState
+
+const (
+	BuildServiceProvisioningStateCreating  BuildServiceProvisioningState = original.BuildServiceProvisioningStateCreating
+	BuildServiceProvisioningStateDeleting  BuildServiceProvisioningState = original.BuildServiceProvisioningStateDeleting
+	BuildServiceProvisioningStateFailed    BuildServiceProvisioningState = original.BuildServiceProvisioningStateFailed
+	BuildServiceProvisioningStateSucceeded BuildServiceProvisioningState = original.BuildServiceProvisioningStateSucceeded
+	BuildServiceProvisioningStateUpdating  BuildServiceProvisioningState = original.BuildServiceProvisioningStateUpdating
+)
+
+type BuilderProvisioningState = original.BuilderProvisioningState
+
+const (
+	BuilderProvisioningStateCreating  BuilderProvisioningState = original.BuilderProvisioningStateCreating
+	BuilderProvisioningStateDeleting  BuilderProvisioningState = original.BuilderProvisioningStateDeleting
+	BuilderProvisioningStateFailed    BuilderProvisioningState = original.BuilderProvisioningStateFailed
+	BuilderProvisioningStateSucceeded BuilderProvisioningState = original.BuilderProvisioningStateSucceeded
+	BuilderProvisioningStateUpdating  BuilderProvisioningState = original.BuilderProvisioningStateUpdating
+)
+
+type BuildpackBindingProvisioningState = original.BuildpackBindingProvisioningState
+
+const (
+	BuildpackBindingProvisioningStateCreating  BuildpackBindingProvisioningState = original.BuildpackBindingProvisioningStateCreating
+	BuildpackBindingProvisioningStateDeleting  BuildpackBindingProvisioningState = original.BuildpackBindingProvisioningStateDeleting
+	BuildpackBindingProvisioningStateFailed    BuildpackBindingProvisioningState = original.BuildpackBindingProvisioningStateFailed
+	BuildpackBindingProvisioningStateSucceeded BuildpackBindingProvisioningState = original.BuildpackBindingProvisioningStateSucceeded
+	BuildpackBindingProvisioningStateUpdating  BuildpackBindingProvisioningState = original.BuildpackBindingProvisioningStateUpdating
 )
 
 type ConfigServerState = original.ConfigServerState
@@ -36,6 +108,16 @@ const (
 	ConfigServerStateNotAvailable ConfigServerState = original.ConfigServerStateNotAvailable
 	ConfigServerStateSucceeded    ConfigServerState = original.ConfigServerStateSucceeded
 	ConfigServerStateUpdating     ConfigServerState = original.ConfigServerStateUpdating
+)
+
+type ConfigurationServiceProvisioningState = original.ConfigurationServiceProvisioningState
+
+const (
+	ConfigurationServiceProvisioningStateCreating  ConfigurationServiceProvisioningState = original.ConfigurationServiceProvisioningStateCreating
+	ConfigurationServiceProvisioningStateDeleting  ConfigurationServiceProvisioningState = original.ConfigurationServiceProvisioningStateDeleting
+	ConfigurationServiceProvisioningStateFailed    ConfigurationServiceProvisioningState = original.ConfigurationServiceProvisioningStateFailed
+	ConfigurationServiceProvisioningStateSucceeded ConfigurationServiceProvisioningState = original.ConfigurationServiceProvisioningStateSucceeded
+	ConfigurationServiceProvisioningStateUpdating  ConfigurationServiceProvisioningState = original.ConfigurationServiceProvisioningStateUpdating
 )
 
 type CreatedByType = original.CreatedByType
@@ -59,13 +141,36 @@ const (
 type DeploymentResourceStatus = original.DeploymentResourceStatus
 
 const (
-	DeploymentResourceStatusAllocating DeploymentResourceStatus = original.DeploymentResourceStatusAllocating
-	DeploymentResourceStatusCompiling  DeploymentResourceStatus = original.DeploymentResourceStatusCompiling
-	DeploymentResourceStatusFailed     DeploymentResourceStatus = original.DeploymentResourceStatusFailed
-	DeploymentResourceStatusRunning    DeploymentResourceStatus = original.DeploymentResourceStatusRunning
-	DeploymentResourceStatusStopped    DeploymentResourceStatus = original.DeploymentResourceStatusStopped
-	DeploymentResourceStatusUnknown    DeploymentResourceStatus = original.DeploymentResourceStatusUnknown
-	DeploymentResourceStatusUpgrading  DeploymentResourceStatus = original.DeploymentResourceStatusUpgrading
+	DeploymentResourceStatusRunning DeploymentResourceStatus = original.DeploymentResourceStatusRunning
+	DeploymentResourceStatusStopped DeploymentResourceStatus = original.DeploymentResourceStatusStopped
+)
+
+type GatewayProvisioningState = original.GatewayProvisioningState
+
+const (
+	GatewayProvisioningStateCreating  GatewayProvisioningState = original.GatewayProvisioningStateCreating
+	GatewayProvisioningStateDeleting  GatewayProvisioningState = original.GatewayProvisioningStateDeleting
+	GatewayProvisioningStateFailed    GatewayProvisioningState = original.GatewayProvisioningStateFailed
+	GatewayProvisioningStateSucceeded GatewayProvisioningState = original.GatewayProvisioningStateSucceeded
+	GatewayProvisioningStateUpdating  GatewayProvisioningState = original.GatewayProvisioningStateUpdating
+)
+
+type KPackBuildStageProvisioningState = original.KPackBuildStageProvisioningState
+
+const (
+	KPackBuildStageProvisioningStateFailed     KPackBuildStageProvisioningState = original.KPackBuildStageProvisioningStateFailed
+	KPackBuildStageProvisioningStateNotStarted KPackBuildStageProvisioningState = original.KPackBuildStageProvisioningStateNotStarted
+	KPackBuildStageProvisioningStateRunning    KPackBuildStageProvisioningState = original.KPackBuildStageProvisioningStateRunning
+	KPackBuildStageProvisioningStateSucceeded  KPackBuildStageProvisioningState = original.KPackBuildStageProvisioningStateSucceeded
+)
+
+type LastModifiedByType = original.LastModifiedByType
+
+const (
+	LastModifiedByTypeApplication     LastModifiedByType = original.LastModifiedByTypeApplication
+	LastModifiedByTypeKey             LastModifiedByType = original.LastModifiedByTypeKey
+	LastModifiedByTypeManagedIdentity LastModifiedByType = original.LastModifiedByTypeManagedIdentity
+	LastModifiedByTypeUser            LastModifiedByType = original.LastModifiedByTypeUser
 )
 
 type ManagedIdentityType = original.ManagedIdentityType
@@ -121,12 +226,14 @@ const (
 	ResourceSkuRestrictionsTypeZone     ResourceSkuRestrictionsType = original.ResourceSkuRestrictionsTypeZone
 )
 
-type RuntimeVersion = original.RuntimeVersion
+type ServiceRegistryProvisioningState = original.ServiceRegistryProvisioningState
 
 const (
-	RuntimeVersionJava11    RuntimeVersion = original.RuntimeVersionJava11
-	RuntimeVersionJava8     RuntimeVersion = original.RuntimeVersionJava8
-	RuntimeVersionNetCore31 RuntimeVersion = original.RuntimeVersionNetCore31
+	ServiceRegistryProvisioningStateCreating  ServiceRegistryProvisioningState = original.ServiceRegistryProvisioningStateCreating
+	ServiceRegistryProvisioningStateDeleting  ServiceRegistryProvisioningState = original.ServiceRegistryProvisioningStateDeleting
+	ServiceRegistryProvisioningStateFailed    ServiceRegistryProvisioningState = original.ServiceRegistryProvisioningStateFailed
+	ServiceRegistryProvisioningStateSucceeded ServiceRegistryProvisioningState = original.ServiceRegistryProvisioningStateSucceeded
+	ServiceRegistryProvisioningStateUpdating  ServiceRegistryProvisioningState = original.ServiceRegistryProvisioningStateUpdating
 )
 
 type SkuScaleType = original.SkuScaleType
@@ -155,6 +262,7 @@ type SupportedRuntimeValue = original.SupportedRuntimeValue
 
 const (
 	SupportedRuntimeValueJava11    SupportedRuntimeValue = original.SupportedRuntimeValueJava11
+	SupportedRuntimeValueJava17    SupportedRuntimeValue = original.SupportedRuntimeValueJava17
 	SupportedRuntimeValueJava8     SupportedRuntimeValue = original.SupportedRuntimeValueJava8
 	SupportedRuntimeValueNetCore31 SupportedRuntimeValue = original.SupportedRuntimeValueNetCore31
 )
@@ -188,15 +296,37 @@ const (
 	TypeBasicCertificatePropertiesTypeKeyVaultCertificate   TypeBasicCertificateProperties = original.TypeBasicCertificatePropertiesTypeKeyVaultCertificate
 )
 
-type UserSourceType = original.UserSourceType
+type TypeBasicUserSourceInfo = original.TypeBasicUserSourceInfo
 
 const (
-	UserSourceTypeContainer  UserSourceType = original.UserSourceTypeContainer
-	UserSourceTypeJar        UserSourceType = original.UserSourceTypeJar
-	UserSourceTypeNetCoreZip UserSourceType = original.UserSourceTypeNetCoreZip
-	UserSourceTypeSource     UserSourceType = original.UserSourceTypeSource
+	TypeBasicUserSourceInfoTypeBuildResult            TypeBasicUserSourceInfo = original.TypeBasicUserSourceInfoTypeBuildResult
+	TypeBasicUserSourceInfoTypeContainer              TypeBasicUserSourceInfo = original.TypeBasicUserSourceInfoTypeContainer
+	TypeBasicUserSourceInfoTypeJar                    TypeBasicUserSourceInfo = original.TypeBasicUserSourceInfoTypeJar
+	TypeBasicUserSourceInfoTypeNetCoreZip             TypeBasicUserSourceInfo = original.TypeBasicUserSourceInfoTypeNetCoreZip
+	TypeBasicUserSourceInfoTypeSource                 TypeBasicUserSourceInfo = original.TypeBasicUserSourceInfoTypeSource
+	TypeBasicUserSourceInfoTypeUploadedUserSourceInfo TypeBasicUserSourceInfo = original.TypeBasicUserSourceInfoTypeUploadedUserSourceInfo
+	TypeBasicUserSourceInfoTypeUserSourceInfo         TypeBasicUserSourceInfo = original.TypeBasicUserSourceInfoTypeUserSourceInfo
 )
 
+type APIPortalCustomDomainProperties = original.APIPortalCustomDomainProperties
+type APIPortalCustomDomainResource = original.APIPortalCustomDomainResource
+type APIPortalCustomDomainResourceCollection = original.APIPortalCustomDomainResourceCollection
+type APIPortalCustomDomainResourceCollectionIterator = original.APIPortalCustomDomainResourceCollectionIterator
+type APIPortalCustomDomainResourceCollectionPage = original.APIPortalCustomDomainResourceCollectionPage
+type APIPortalCustomDomainsClient = original.APIPortalCustomDomainsClient
+type APIPortalCustomDomainsCreateOrUpdateFuture = original.APIPortalCustomDomainsCreateOrUpdateFuture
+type APIPortalCustomDomainsDeleteFuture = original.APIPortalCustomDomainsDeleteFuture
+type APIPortalInstance = original.APIPortalInstance
+type APIPortalProperties = original.APIPortalProperties
+type APIPortalResource = original.APIPortalResource
+type APIPortalResourceCollection = original.APIPortalResourceCollection
+type APIPortalResourceCollectionIterator = original.APIPortalResourceCollectionIterator
+type APIPortalResourceCollectionPage = original.APIPortalResourceCollectionPage
+type APIPortalResourceRequests = original.APIPortalResourceRequests
+type APIPortalsClient = original.APIPortalsClient
+type APIPortalsCreateOrUpdateFuture = original.APIPortalsCreateOrUpdateFuture
+type APIPortalsDeleteFuture = original.APIPortalsDeleteFuture
+type ActiveDeploymentCollection = original.ActiveDeploymentCollection
 type AppResource = original.AppResource
 type AppResourceCollection = original.AppResourceCollection
 type AppResourceCollectionIterator = original.AppResourceCollectionIterator
@@ -206,6 +336,7 @@ type ApplicationInsightsAgentVersions = original.ApplicationInsightsAgentVersion
 type AppsClient = original.AppsClient
 type AppsCreateOrUpdateFuture = original.AppsCreateOrUpdateFuture
 type AppsDeleteFuture = original.AppsDeleteFuture
+type AppsSetActiveDeploymentsFuture = original.AppsSetActiveDeploymentsFuture
 type AppsUpdateFuture = original.AppsUpdateFuture
 type AvailableOperations = original.AvailableOperations
 type AvailableOperationsIterator = original.AvailableOperationsIterator
@@ -216,6 +347,8 @@ type BaseClient = original.BaseClient
 type BasicCertificateProperties = original.BasicCertificateProperties
 type BasicCustomPersistentDiskProperties = original.BasicCustomPersistentDiskProperties
 type BasicStorageProperties = original.BasicStorageProperties
+type BasicUploadedUserSourceInfo = original.BasicUploadedUserSourceInfo
+type BasicUserSourceInfo = original.BasicUserSourceInfo
 type BindingResource = original.BindingResource
 type BindingResourceCollection = original.BindingResourceCollection
 type BindingResourceCollectionIterator = original.BindingResourceCollectionIterator
@@ -225,6 +358,53 @@ type BindingsClient = original.BindingsClient
 type BindingsCreateOrUpdateFuture = original.BindingsCreateOrUpdateFuture
 type BindingsDeleteFuture = original.BindingsDeleteFuture
 type BindingsUpdateFuture = original.BindingsUpdateFuture
+type Build = original.Build
+type BuildCollection = original.BuildCollection
+type BuildCollectionIterator = original.BuildCollectionIterator
+type BuildCollectionPage = original.BuildCollectionPage
+type BuildProperties = original.BuildProperties
+type BuildResult = original.BuildResult
+type BuildResultCollection = original.BuildResultCollection
+type BuildResultCollectionIterator = original.BuildResultCollectionIterator
+type BuildResultCollectionPage = original.BuildResultCollectionPage
+type BuildResultLog = original.BuildResultLog
+type BuildResultProperties = original.BuildResultProperties
+type BuildResultUserSourceInfo = original.BuildResultUserSourceInfo
+type BuildService = original.BuildService
+type BuildServiceAgentPoolClient = original.BuildServiceAgentPoolClient
+type BuildServiceAgentPoolProperties = original.BuildServiceAgentPoolProperties
+type BuildServiceAgentPoolResource = original.BuildServiceAgentPoolResource
+type BuildServiceAgentPoolResourceCollection = original.BuildServiceAgentPoolResourceCollection
+type BuildServiceAgentPoolResourceCollectionIterator = original.BuildServiceAgentPoolResourceCollectionIterator
+type BuildServiceAgentPoolResourceCollectionPage = original.BuildServiceAgentPoolResourceCollectionPage
+type BuildServiceAgentPoolSizeProperties = original.BuildServiceAgentPoolSizeProperties
+type BuildServiceAgentPoolUpdatePutFuture = original.BuildServiceAgentPoolUpdatePutFuture
+type BuildServiceBuilderClient = original.BuildServiceBuilderClient
+type BuildServiceBuilderCreateOrUpdateFuture = original.BuildServiceBuilderCreateOrUpdateFuture
+type BuildServiceBuilderDeleteFuture = original.BuildServiceBuilderDeleteFuture
+type BuildServiceClient = original.BuildServiceClient
+type BuildServiceCollection = original.BuildServiceCollection
+type BuildServiceCollectionIterator = original.BuildServiceCollectionIterator
+type BuildServiceCollectionPage = original.BuildServiceCollectionPage
+type BuildServiceProperties = original.BuildServiceProperties
+type BuildServicePropertiesResourceRequests = original.BuildServicePropertiesResourceRequests
+type BuildStageProperties = original.BuildStageProperties
+type BuilderProperties = original.BuilderProperties
+type BuilderResource = original.BuilderResource
+type BuilderResourceCollection = original.BuilderResourceCollection
+type BuilderResourceCollectionIterator = original.BuilderResourceCollectionIterator
+type BuilderResourceCollectionPage = original.BuilderResourceCollectionPage
+type BuildpackBindingClient = original.BuildpackBindingClient
+type BuildpackBindingCreateOrUpdateFuture = original.BuildpackBindingCreateOrUpdateFuture
+type BuildpackBindingDeleteFuture = original.BuildpackBindingDeleteFuture
+type BuildpackBindingLaunchProperties = original.BuildpackBindingLaunchProperties
+type BuildpackBindingProperties = original.BuildpackBindingProperties
+type BuildpackBindingResource = original.BuildpackBindingResource
+type BuildpackBindingResourceCollection = original.BuildpackBindingResourceCollection
+type BuildpackBindingResourceCollectionIterator = original.BuildpackBindingResourceCollectionIterator
+type BuildpackBindingResourceCollectionPage = original.BuildpackBindingResourceCollectionPage
+type BuildpackProperties = original.BuildpackProperties
+type BuildpacksGroupProperties = original.BuildpacksGroupProperties
 type CertificateProperties = original.CertificateProperties
 type CertificateResource = original.CertificateResource
 type CertificateResourceCollection = original.CertificateResourceCollection
@@ -246,8 +426,26 @@ type ConfigServersClient = original.ConfigServersClient
 type ConfigServersUpdatePatchFuture = original.ConfigServersUpdatePatchFuture
 type ConfigServersUpdatePutFuture = original.ConfigServersUpdatePutFuture
 type ConfigServersValidateFuture = original.ConfigServersValidateFuture
+type ConfigurationServiceGitProperty = original.ConfigurationServiceGitProperty
+type ConfigurationServiceGitPropertyValidateResult = original.ConfigurationServiceGitPropertyValidateResult
+type ConfigurationServiceGitRepository = original.ConfigurationServiceGitRepository
+type ConfigurationServiceInstance = original.ConfigurationServiceInstance
+type ConfigurationServiceProperties = original.ConfigurationServiceProperties
+type ConfigurationServiceResource = original.ConfigurationServiceResource
+type ConfigurationServiceResourceCollection = original.ConfigurationServiceResourceCollection
+type ConfigurationServiceResourceCollectionIterator = original.ConfigurationServiceResourceCollectionIterator
+type ConfigurationServiceResourceCollectionPage = original.ConfigurationServiceResourceCollectionPage
+type ConfigurationServiceResourceRequests = original.ConfigurationServiceResourceRequests
+type ConfigurationServiceSettings = original.ConfigurationServiceSettings
+type ConfigurationServiceSettingsValidateResult = original.ConfigurationServiceSettingsValidateResult
+type ConfigurationServicesClient = original.ConfigurationServicesClient
+type ConfigurationServicesCreateOrUpdateFuture = original.ConfigurationServicesCreateOrUpdateFuture
+type ConfigurationServicesDeleteFuture = original.ConfigurationServicesDeleteFuture
+type ConfigurationServicesValidateFuture = original.ConfigurationServicesValidateFuture
+type ContainerProbeSettings = original.ContainerProbeSettings
 type ContentCertificateProperties = original.ContentCertificateProperties
 type CustomContainer = original.CustomContainer
+type CustomContainerUserSourceInfo = original.CustomContainerUserSourceInfo
 type CustomDomainProperties = original.CustomDomainProperties
 type CustomDomainResource = original.CustomDomainResource
 type CustomDomainResourceCollection = original.CustomDomainResourceCollection
@@ -268,7 +466,6 @@ type DeploymentResourceCollectionIterator = original.DeploymentResourceCollectio
 type DeploymentResourceCollectionPage = original.DeploymentResourceCollectionPage
 type DeploymentResourceProperties = original.DeploymentResourceProperties
 type DeploymentSettings = original.DeploymentSettings
-type DeploymentSettingsContainerProbeSettings = original.DeploymentSettingsContainerProbeSettings
 type DeploymentsClient = original.DeploymentsClient
 type DeploymentsCreateOrUpdateFuture = original.DeploymentsCreateOrUpdateFuture
 type DeploymentsDeleteFuture = original.DeploymentsDeleteFuture
@@ -281,8 +478,40 @@ type DeploymentsStopFuture = original.DeploymentsStopFuture
 type DeploymentsUpdateFuture = original.DeploymentsUpdateFuture
 type DiagnosticParameters = original.DiagnosticParameters
 type Error = original.Error
+type GatewayAPIMetadataProperties = original.GatewayAPIMetadataProperties
+type GatewayAPIRoute = original.GatewayAPIRoute
+type GatewayCorsProperties = original.GatewayCorsProperties
+type GatewayCustomDomainProperties = original.GatewayCustomDomainProperties
+type GatewayCustomDomainResource = original.GatewayCustomDomainResource
+type GatewayCustomDomainResourceCollection = original.GatewayCustomDomainResourceCollection
+type GatewayCustomDomainResourceCollectionIterator = original.GatewayCustomDomainResourceCollectionIterator
+type GatewayCustomDomainResourceCollectionPage = original.GatewayCustomDomainResourceCollectionPage
+type GatewayCustomDomainsClient = original.GatewayCustomDomainsClient
+type GatewayCustomDomainsCreateOrUpdateFuture = original.GatewayCustomDomainsCreateOrUpdateFuture
+type GatewayCustomDomainsDeleteFuture = original.GatewayCustomDomainsDeleteFuture
+type GatewayInstance = original.GatewayInstance
+type GatewayOperatorProperties = original.GatewayOperatorProperties
+type GatewayOperatorResourceRequests = original.GatewayOperatorResourceRequests
+type GatewayProperties = original.GatewayProperties
+type GatewayResource = original.GatewayResource
+type GatewayResourceCollection = original.GatewayResourceCollection
+type GatewayResourceCollectionIterator = original.GatewayResourceCollectionIterator
+type GatewayResourceCollectionPage = original.GatewayResourceCollectionPage
+type GatewayResourceRequests = original.GatewayResourceRequests
+type GatewayRouteConfigProperties = original.GatewayRouteConfigProperties
+type GatewayRouteConfigResource = original.GatewayRouteConfigResource
+type GatewayRouteConfigResourceCollection = original.GatewayRouteConfigResourceCollection
+type GatewayRouteConfigResourceCollectionIterator = original.GatewayRouteConfigResourceCollectionIterator
+type GatewayRouteConfigResourceCollectionPage = original.GatewayRouteConfigResourceCollectionPage
+type GatewayRouteConfigsClient = original.GatewayRouteConfigsClient
+type GatewayRouteConfigsCreateOrUpdateFuture = original.GatewayRouteConfigsCreateOrUpdateFuture
+type GatewayRouteConfigsDeleteFuture = original.GatewayRouteConfigsDeleteFuture
+type GatewaysClient = original.GatewaysClient
+type GatewaysCreateOrUpdateFuture = original.GatewaysCreateOrUpdateFuture
+type GatewaysDeleteFuture = original.GatewaysDeleteFuture
 type GitPatternRepository = original.GitPatternRepository
 type ImageRegistryCredential = original.ImageRegistryCredential
+type JarUploadedUserSourceInfo = original.JarUploadedUserSourceInfo
 type KeyVaultCertificateProperties = original.KeyVaultCertificateProperties
 type LoadedCertificate = original.LoadedCertificate
 type LogFileURLResponse = original.LogFileURLResponse
@@ -297,6 +526,7 @@ type MonitoringSettingsUpdatePatchFuture = original.MonitoringSettingsUpdatePatc
 type MonitoringSettingsUpdatePutFuture = original.MonitoringSettingsUpdatePutFuture
 type NameAvailability = original.NameAvailability
 type NameAvailabilityParameters = original.NameAvailabilityParameters
+type NetCoreZipUploadedUserSourceInfo = original.NetCoreZipUploadedUserSourceInfo
 type NetworkProfile = original.NetworkProfile
 type NetworkProfileOutboundIPs = original.NetworkProfileOutboundIPs
 type OperationDetail = original.OperationDetail
@@ -320,6 +550,16 @@ type ResourceSkuRestrictions = original.ResourceSkuRestrictions
 type ResourceSkuZoneDetails = original.ResourceSkuZoneDetails
 type ResourceUploadDefinition = original.ResourceUploadDefinition
 type RuntimeVersionsClient = original.RuntimeVersionsClient
+type ServiceRegistriesClient = original.ServiceRegistriesClient
+type ServiceRegistriesCreateOrUpdateFuture = original.ServiceRegistriesCreateOrUpdateFuture
+type ServiceRegistriesDeleteFuture = original.ServiceRegistriesDeleteFuture
+type ServiceRegistryInstance = original.ServiceRegistryInstance
+type ServiceRegistryProperties = original.ServiceRegistryProperties
+type ServiceRegistryResource = original.ServiceRegistryResource
+type ServiceRegistryResourceCollection = original.ServiceRegistryResourceCollection
+type ServiceRegistryResourceCollectionIterator = original.ServiceRegistryResourceCollectionIterator
+type ServiceRegistryResourceCollectionPage = original.ServiceRegistryResourceCollectionPage
+type ServiceRegistryResourceRequests = original.ServiceRegistryResourceRequests
 type ServiceResource = original.ServiceResource
 type ServiceResourceList = original.ServiceResourceList
 type ServiceResourceListIterator = original.ServiceResourceListIterator
@@ -334,6 +574,9 @@ type ServicesUpdateFuture = original.ServicesUpdateFuture
 type Sku = original.Sku
 type SkuCapacity = original.SkuCapacity
 type SkusClient = original.SkusClient
+type SourceUploadedUserSourceInfo = original.SourceUploadedUserSourceInfo
+type SsoProperties = original.SsoProperties
+type StackProperties = original.StackProperties
 type StorageAccount = original.StorageAccount
 type StorageProperties = original.StorageProperties
 type StorageResource = original.StorageResource
@@ -343,15 +586,48 @@ type StorageResourceCollectionPage = original.StorageResourceCollectionPage
 type StoragesClient = original.StoragesClient
 type StoragesCreateOrUpdateFuture = original.StoragesCreateOrUpdateFuture
 type StoragesDeleteFuture = original.StoragesDeleteFuture
+type SupportedBuildpackResource = original.SupportedBuildpackResource
+type SupportedBuildpackResourceProperties = original.SupportedBuildpackResourceProperties
+type SupportedBuildpacksCollection = original.SupportedBuildpacksCollection
 type SupportedRuntimeVersion = original.SupportedRuntimeVersion
+type SupportedStackResource = original.SupportedStackResource
+type SupportedStackResourceProperties = original.SupportedStackResourceProperties
+type SupportedStacksCollection = original.SupportedStacksCollection
 type SystemData = original.SystemData
 type TemporaryDisk = original.TemporaryDisk
 type TestKeys = original.TestKeys
 type TrackedResource = original.TrackedResource
+type TriggeredBuildResult = original.TriggeredBuildResult
+type UploadedUserSourceInfo = original.UploadedUserSourceInfo
 type UserSourceInfo = original.UserSourceInfo
+type ValidationMessages = original.ValidationMessages
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
+}
+func NewAPIPortalCustomDomainResourceCollectionIterator(page APIPortalCustomDomainResourceCollectionPage) APIPortalCustomDomainResourceCollectionIterator {
+	return original.NewAPIPortalCustomDomainResourceCollectionIterator(page)
+}
+func NewAPIPortalCustomDomainResourceCollectionPage(cur APIPortalCustomDomainResourceCollection, getNextPage func(context.Context, APIPortalCustomDomainResourceCollection) (APIPortalCustomDomainResourceCollection, error)) APIPortalCustomDomainResourceCollectionPage {
+	return original.NewAPIPortalCustomDomainResourceCollectionPage(cur, getNextPage)
+}
+func NewAPIPortalCustomDomainsClient(subscriptionID string) APIPortalCustomDomainsClient {
+	return original.NewAPIPortalCustomDomainsClient(subscriptionID)
+}
+func NewAPIPortalCustomDomainsClientWithBaseURI(baseURI string, subscriptionID string) APIPortalCustomDomainsClient {
+	return original.NewAPIPortalCustomDomainsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAPIPortalResourceCollectionIterator(page APIPortalResourceCollectionPage) APIPortalResourceCollectionIterator {
+	return original.NewAPIPortalResourceCollectionIterator(page)
+}
+func NewAPIPortalResourceCollectionPage(cur APIPortalResourceCollection, getNextPage func(context.Context, APIPortalResourceCollection) (APIPortalResourceCollection, error)) APIPortalResourceCollectionPage {
+	return original.NewAPIPortalResourceCollectionPage(cur, getNextPage)
+}
+func NewAPIPortalsClient(subscriptionID string) APIPortalsClient {
+	return original.NewAPIPortalsClient(subscriptionID)
+}
+func NewAPIPortalsClientWithBaseURI(baseURI string, subscriptionID string) APIPortalsClient {
+	return original.NewAPIPortalsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewAppResourceCollectionIterator(page AppResourceCollectionPage) AppResourceCollectionIterator {
 	return original.NewAppResourceCollectionIterator(page)
@@ -383,6 +659,66 @@ func NewBindingsClient(subscriptionID string) BindingsClient {
 func NewBindingsClientWithBaseURI(baseURI string, subscriptionID string) BindingsClient {
 	return original.NewBindingsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewBuildCollectionIterator(page BuildCollectionPage) BuildCollectionIterator {
+	return original.NewBuildCollectionIterator(page)
+}
+func NewBuildCollectionPage(cur BuildCollection, getNextPage func(context.Context, BuildCollection) (BuildCollection, error)) BuildCollectionPage {
+	return original.NewBuildCollectionPage(cur, getNextPage)
+}
+func NewBuildResultCollectionIterator(page BuildResultCollectionPage) BuildResultCollectionIterator {
+	return original.NewBuildResultCollectionIterator(page)
+}
+func NewBuildResultCollectionPage(cur BuildResultCollection, getNextPage func(context.Context, BuildResultCollection) (BuildResultCollection, error)) BuildResultCollectionPage {
+	return original.NewBuildResultCollectionPage(cur, getNextPage)
+}
+func NewBuildServiceAgentPoolClient(subscriptionID string) BuildServiceAgentPoolClient {
+	return original.NewBuildServiceAgentPoolClient(subscriptionID)
+}
+func NewBuildServiceAgentPoolClientWithBaseURI(baseURI string, subscriptionID string) BuildServiceAgentPoolClient {
+	return original.NewBuildServiceAgentPoolClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewBuildServiceAgentPoolResourceCollectionIterator(page BuildServiceAgentPoolResourceCollectionPage) BuildServiceAgentPoolResourceCollectionIterator {
+	return original.NewBuildServiceAgentPoolResourceCollectionIterator(page)
+}
+func NewBuildServiceAgentPoolResourceCollectionPage(cur BuildServiceAgentPoolResourceCollection, getNextPage func(context.Context, BuildServiceAgentPoolResourceCollection) (BuildServiceAgentPoolResourceCollection, error)) BuildServiceAgentPoolResourceCollectionPage {
+	return original.NewBuildServiceAgentPoolResourceCollectionPage(cur, getNextPage)
+}
+func NewBuildServiceBuilderClient(subscriptionID string) BuildServiceBuilderClient {
+	return original.NewBuildServiceBuilderClient(subscriptionID)
+}
+func NewBuildServiceBuilderClientWithBaseURI(baseURI string, subscriptionID string) BuildServiceBuilderClient {
+	return original.NewBuildServiceBuilderClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewBuildServiceClient(subscriptionID string) BuildServiceClient {
+	return original.NewBuildServiceClient(subscriptionID)
+}
+func NewBuildServiceClientWithBaseURI(baseURI string, subscriptionID string) BuildServiceClient {
+	return original.NewBuildServiceClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewBuildServiceCollectionIterator(page BuildServiceCollectionPage) BuildServiceCollectionIterator {
+	return original.NewBuildServiceCollectionIterator(page)
+}
+func NewBuildServiceCollectionPage(cur BuildServiceCollection, getNextPage func(context.Context, BuildServiceCollection) (BuildServiceCollection, error)) BuildServiceCollectionPage {
+	return original.NewBuildServiceCollectionPage(cur, getNextPage)
+}
+func NewBuilderResourceCollectionIterator(page BuilderResourceCollectionPage) BuilderResourceCollectionIterator {
+	return original.NewBuilderResourceCollectionIterator(page)
+}
+func NewBuilderResourceCollectionPage(cur BuilderResourceCollection, getNextPage func(context.Context, BuilderResourceCollection) (BuilderResourceCollection, error)) BuilderResourceCollectionPage {
+	return original.NewBuilderResourceCollectionPage(cur, getNextPage)
+}
+func NewBuildpackBindingClient(subscriptionID string) BuildpackBindingClient {
+	return original.NewBuildpackBindingClient(subscriptionID)
+}
+func NewBuildpackBindingClientWithBaseURI(baseURI string, subscriptionID string) BuildpackBindingClient {
+	return original.NewBuildpackBindingClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewBuildpackBindingResourceCollectionIterator(page BuildpackBindingResourceCollectionPage) BuildpackBindingResourceCollectionIterator {
+	return original.NewBuildpackBindingResourceCollectionIterator(page)
+}
+func NewBuildpackBindingResourceCollectionPage(cur BuildpackBindingResourceCollection, getNextPage func(context.Context, BuildpackBindingResourceCollection) (BuildpackBindingResourceCollection, error)) BuildpackBindingResourceCollectionPage {
+	return original.NewBuildpackBindingResourceCollectionPage(cur, getNextPage)
+}
 func NewCertificateResourceCollectionIterator(page CertificateResourceCollectionPage) CertificateResourceCollectionIterator {
 	return original.NewCertificateResourceCollectionIterator(page)
 }
@@ -400,6 +736,18 @@ func NewConfigServersClient(subscriptionID string) ConfigServersClient {
 }
 func NewConfigServersClientWithBaseURI(baseURI string, subscriptionID string) ConfigServersClient {
 	return original.NewConfigServersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewConfigurationServiceResourceCollectionIterator(page ConfigurationServiceResourceCollectionPage) ConfigurationServiceResourceCollectionIterator {
+	return original.NewConfigurationServiceResourceCollectionIterator(page)
+}
+func NewConfigurationServiceResourceCollectionPage(cur ConfigurationServiceResourceCollection, getNextPage func(context.Context, ConfigurationServiceResourceCollection) (ConfigurationServiceResourceCollection, error)) ConfigurationServiceResourceCollectionPage {
+	return original.NewConfigurationServiceResourceCollectionPage(cur, getNextPage)
+}
+func NewConfigurationServicesClient(subscriptionID string) ConfigurationServicesClient {
+	return original.NewConfigurationServicesClient(subscriptionID)
+}
+func NewConfigurationServicesClientWithBaseURI(baseURI string, subscriptionID string) ConfigurationServicesClient {
+	return original.NewConfigurationServicesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewCustomDomainResourceCollectionIterator(page CustomDomainResourceCollectionPage) CustomDomainResourceCollectionIterator {
 	return original.NewCustomDomainResourceCollectionIterator(page)
@@ -425,6 +773,42 @@ func NewDeploymentsClient(subscriptionID string) DeploymentsClient {
 func NewDeploymentsClientWithBaseURI(baseURI string, subscriptionID string) DeploymentsClient {
 	return original.NewDeploymentsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewGatewayCustomDomainResourceCollectionIterator(page GatewayCustomDomainResourceCollectionPage) GatewayCustomDomainResourceCollectionIterator {
+	return original.NewGatewayCustomDomainResourceCollectionIterator(page)
+}
+func NewGatewayCustomDomainResourceCollectionPage(cur GatewayCustomDomainResourceCollection, getNextPage func(context.Context, GatewayCustomDomainResourceCollection) (GatewayCustomDomainResourceCollection, error)) GatewayCustomDomainResourceCollectionPage {
+	return original.NewGatewayCustomDomainResourceCollectionPage(cur, getNextPage)
+}
+func NewGatewayCustomDomainsClient(subscriptionID string) GatewayCustomDomainsClient {
+	return original.NewGatewayCustomDomainsClient(subscriptionID)
+}
+func NewGatewayCustomDomainsClientWithBaseURI(baseURI string, subscriptionID string) GatewayCustomDomainsClient {
+	return original.NewGatewayCustomDomainsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewGatewayResourceCollectionIterator(page GatewayResourceCollectionPage) GatewayResourceCollectionIterator {
+	return original.NewGatewayResourceCollectionIterator(page)
+}
+func NewGatewayResourceCollectionPage(cur GatewayResourceCollection, getNextPage func(context.Context, GatewayResourceCollection) (GatewayResourceCollection, error)) GatewayResourceCollectionPage {
+	return original.NewGatewayResourceCollectionPage(cur, getNextPage)
+}
+func NewGatewayRouteConfigResourceCollectionIterator(page GatewayRouteConfigResourceCollectionPage) GatewayRouteConfigResourceCollectionIterator {
+	return original.NewGatewayRouteConfigResourceCollectionIterator(page)
+}
+func NewGatewayRouteConfigResourceCollectionPage(cur GatewayRouteConfigResourceCollection, getNextPage func(context.Context, GatewayRouteConfigResourceCollection) (GatewayRouteConfigResourceCollection, error)) GatewayRouteConfigResourceCollectionPage {
+	return original.NewGatewayRouteConfigResourceCollectionPage(cur, getNextPage)
+}
+func NewGatewayRouteConfigsClient(subscriptionID string) GatewayRouteConfigsClient {
+	return original.NewGatewayRouteConfigsClient(subscriptionID)
+}
+func NewGatewayRouteConfigsClientWithBaseURI(baseURI string, subscriptionID string) GatewayRouteConfigsClient {
+	return original.NewGatewayRouteConfigsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewGatewaysClient(subscriptionID string) GatewaysClient {
+	return original.NewGatewaysClient(subscriptionID)
+}
+func NewGatewaysClientWithBaseURI(baseURI string, subscriptionID string) GatewaysClient {
+	return original.NewGatewaysClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewMonitoringSettingsClient(subscriptionID string) MonitoringSettingsClient {
 	return original.NewMonitoringSettingsClient(subscriptionID)
 }
@@ -448,6 +832,18 @@ func NewRuntimeVersionsClient(subscriptionID string) RuntimeVersionsClient {
 }
 func NewRuntimeVersionsClientWithBaseURI(baseURI string, subscriptionID string) RuntimeVersionsClient {
 	return original.NewRuntimeVersionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewServiceRegistriesClient(subscriptionID string) ServiceRegistriesClient {
+	return original.NewServiceRegistriesClient(subscriptionID)
+}
+func NewServiceRegistriesClientWithBaseURI(baseURI string, subscriptionID string) ServiceRegistriesClient {
+	return original.NewServiceRegistriesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewServiceRegistryResourceCollectionIterator(page ServiceRegistryResourceCollectionPage) ServiceRegistryResourceCollectionIterator {
+	return original.NewServiceRegistryResourceCollectionIterator(page)
+}
+func NewServiceRegistryResourceCollectionPage(cur ServiceRegistryResourceCollection, getNextPage func(context.Context, ServiceRegistryResourceCollection) (ServiceRegistryResourceCollection, error)) ServiceRegistryResourceCollectionPage {
+	return original.NewServiceRegistryResourceCollectionPage(cur, getNextPage)
 }
 func NewServiceResourceListIterator(page ServiceResourceListPage) ServiceResourceListIterator {
 	return original.NewServiceResourceListIterator(page)
@@ -482,11 +878,35 @@ func NewStoragesClientWithBaseURI(baseURI string, subscriptionID string) Storage
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
+func PossibleAPIPortalProvisioningStateValues() []APIPortalProvisioningState {
+	return original.PossibleAPIPortalProvisioningStateValues()
+}
 func PossibleAppResourceProvisioningStateValues() []AppResourceProvisioningState {
 	return original.PossibleAppResourceProvisioningStateValues()
 }
+func PossibleBindingTypeValues() []BindingType {
+	return original.PossibleBindingTypeValues()
+}
+func PossibleBuildProvisioningStateValues() []BuildProvisioningState {
+	return original.PossibleBuildProvisioningStateValues()
+}
+func PossibleBuildResultProvisioningStateValues() []BuildResultProvisioningState {
+	return original.PossibleBuildResultProvisioningStateValues()
+}
+func PossibleBuildServiceProvisioningStateValues() []BuildServiceProvisioningState {
+	return original.PossibleBuildServiceProvisioningStateValues()
+}
+func PossibleBuilderProvisioningStateValues() []BuilderProvisioningState {
+	return original.PossibleBuilderProvisioningStateValues()
+}
+func PossibleBuildpackBindingProvisioningStateValues() []BuildpackBindingProvisioningState {
+	return original.PossibleBuildpackBindingProvisioningStateValues()
+}
 func PossibleConfigServerStateValues() []ConfigServerState {
 	return original.PossibleConfigServerStateValues()
+}
+func PossibleConfigurationServiceProvisioningStateValues() []ConfigurationServiceProvisioningState {
+	return original.PossibleConfigurationServiceProvisioningStateValues()
 }
 func PossibleCreatedByTypeValues() []CreatedByType {
 	return original.PossibleCreatedByTypeValues()
@@ -496,6 +916,15 @@ func PossibleDeploymentResourceProvisioningStateValues() []DeploymentResourcePro
 }
 func PossibleDeploymentResourceStatusValues() []DeploymentResourceStatus {
 	return original.PossibleDeploymentResourceStatusValues()
+}
+func PossibleGatewayProvisioningStateValues() []GatewayProvisioningState {
+	return original.PossibleGatewayProvisioningStateValues()
+}
+func PossibleKPackBuildStageProvisioningStateValues() []KPackBuildStageProvisioningState {
+	return original.PossibleKPackBuildStageProvisioningStateValues()
+}
+func PossibleLastModifiedByTypeValues() []LastModifiedByType {
+	return original.PossibleLastModifiedByTypeValues()
 }
 func PossibleManagedIdentityTypeValues() []ManagedIdentityType {
 	return original.PossibleManagedIdentityTypeValues()
@@ -515,8 +944,8 @@ func PossibleResourceSkuRestrictionsReasonCodeValues() []ResourceSkuRestrictions
 func PossibleResourceSkuRestrictionsTypeValues() []ResourceSkuRestrictionsType {
 	return original.PossibleResourceSkuRestrictionsTypeValues()
 }
-func PossibleRuntimeVersionValues() []RuntimeVersion {
-	return original.PossibleRuntimeVersionValues()
+func PossibleServiceRegistryProvisioningStateValues() []ServiceRegistryProvisioningState {
+	return original.PossibleServiceRegistryProvisioningStateValues()
 }
 func PossibleSkuScaleTypeValues() []SkuScaleType {
 	return original.PossibleSkuScaleTypeValues()
@@ -539,11 +968,11 @@ func PossibleTrafficDirectionValues() []TrafficDirection {
 func PossibleTypeBasicCertificatePropertiesValues() []TypeBasicCertificateProperties {
 	return original.PossibleTypeBasicCertificatePropertiesValues()
 }
+func PossibleTypeBasicUserSourceInfoValues() []TypeBasicUserSourceInfo {
+	return original.PossibleTypeBasicUserSourceInfoValues()
+}
 func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()
-}
-func PossibleUserSourceTypeValues() []UserSourceType {
-	return original.PossibleUserSourceTypeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

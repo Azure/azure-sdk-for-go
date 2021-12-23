@@ -9,17 +9,28 @@
 
 package appplatformapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/appplatform/mgmt/2021-09-01-preview/appplatform/appplatformapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/appplatform/mgmt/2022-01-01-preview/appplatform/appplatformapi"
 
+type APIPortalCustomDomainsClientAPI = original.APIPortalCustomDomainsClientAPI
+type APIPortalsClientAPI = original.APIPortalsClientAPI
 type AppsClientAPI = original.AppsClientAPI
 type BindingsClientAPI = original.BindingsClientAPI
+type BuildServiceAgentPoolClientAPI = original.BuildServiceAgentPoolClientAPI
+type BuildServiceBuilderClientAPI = original.BuildServiceBuilderClientAPI
+type BuildServiceClientAPI = original.BuildServiceClientAPI
+type BuildpackBindingClientAPI = original.BuildpackBindingClientAPI
 type CertificatesClientAPI = original.CertificatesClientAPI
 type ConfigServersClientAPI = original.ConfigServersClientAPI
+type ConfigurationServicesClientAPI = original.ConfigurationServicesClientAPI
 type CustomDomainsClientAPI = original.CustomDomainsClientAPI
 type DeploymentsClientAPI = original.DeploymentsClientAPI
+type GatewayCustomDomainsClientAPI = original.GatewayCustomDomainsClientAPI
+type GatewayRouteConfigsClientAPI = original.GatewayRouteConfigsClientAPI
+type GatewaysClientAPI = original.GatewaysClientAPI
 type MonitoringSettingsClientAPI = original.MonitoringSettingsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type RuntimeVersionsClientAPI = original.RuntimeVersionsClientAPI
+type ServiceRegistriesClientAPI = original.ServiceRegistriesClientAPI
 type ServicesClientAPI = original.ServicesClientAPI
 type SkusClientAPI = original.SkusClientAPI
 type StoragesClientAPI = original.StoragesClientAPI

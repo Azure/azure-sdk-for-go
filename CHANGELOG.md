@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## `v60.3.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/frontdoor/mgmt/2020-11-01/frontdoor`
+- `github.com/Azure/azure-sdk-for-go/services/preview/appplatform/mgmt/2022-01-01-preview/appplatform`
+- `github.com/Azure/azure-sdk-for-go/services/preview/securityinsight/mgmt/2021-09-01-preview/securityinsight`
+
 ## `v60.2.0`
 
 ### New Packages
@@ -13,7 +21,7 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/eventgrid/mgmt/2021-12-01/eventgrid` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/eventgrid/mgmt/2021-12-01/eventgrid/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/eventgrid/mgmt/2021-12-01/eventgrid` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v60.2.0/services/eventgrid/mgmt/2021-12-01/eventgrid/CHANGELOG.md) |
 
 ### Breaking Changes
 

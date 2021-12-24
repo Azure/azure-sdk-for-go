@@ -1,14 +1,10 @@
 # Release History
 
-## 0.2.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 0.2.1 (2021-12-24)
 
 ### Other Changes
+
+- Rename github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/web/armweb to github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice
 
 ## 0.2.0 (2021-10-29)
 

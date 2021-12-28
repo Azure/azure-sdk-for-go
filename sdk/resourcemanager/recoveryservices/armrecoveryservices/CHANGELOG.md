@@ -1,14 +1,17 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 0.3.0 (2021-12-28)
+### Breaking Changes
 
 ### Features Added
 
-### Breaking Changes
+- New const `BackupStorageVersionUnassigned`
+- New const `BackupStorageVersionV2`
+- New const `BackupStorageVersionV1`
+- New function `PossibleBackupStorageVersionValues() []BackupStorageVersion`
+- New function `BackupStorageVersion.ToPtr() *BackupStorageVersion`
+- New field `BackupStorageVersion` in struct `VaultProperties`
 
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.2.0 (2021-10-29)
 

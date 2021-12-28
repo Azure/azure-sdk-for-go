@@ -1211,6 +1211,9 @@ type VaultProperties struct {
 	// Details for upgrading vault.
 	UpgradeDetails *UpgradeDetails `json:"upgradeDetails,omitempty"`
 
+	// READ-ONLY; Backup storage version
+	BackupStorageVersion *BackupStorageVersion `json:"backupStorageVersion,omitempty" azure:"ro"`
+
 	// READ-ONLY; The State of the Resource after the move operation
 	MoveState *ResourceMoveState `json:"moveState,omitempty" azure:"ro"`
 
@@ -1230,6 +1233,7 @@ type VaultProperties struct {
 // MarshalJSON implements the json.Marshaller interface for type VaultProperties.
 func (v VaultProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	populate(objectMap, "backupStorageVersion", v.BackupStorageVersion)
 	populate(objectMap, "encryption", v.Encryption)
 	populate(objectMap, "moveDetails", v.MoveDetails)
 	populate(objectMap, "moveState", v.MoveState)

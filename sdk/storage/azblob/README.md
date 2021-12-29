@@ -164,7 +164,7 @@ Three different clients are provided to interact with the various components of 
 	// ===== 1. Creating a container =====
 
 	// First, branch off of the service client and create a container client.
-	container := service.NewContainerClient("myContainer")
+	container := service.NewContainerClient("mycontainer")
 	// Then, fire off a create operation on the container client.
 	// Note that, all service-side requests have an options bag attached, allowing you to specify things like metadata, public access types, etc.
 	// Specifying nil omits all options.

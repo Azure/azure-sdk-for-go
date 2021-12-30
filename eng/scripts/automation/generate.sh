@@ -1,3 +1,5 @@
 #!/bin/bash
 set -x
-eng/tools/generator/generator automation-v2 /tmp/input.json
+env
+generator automation-v2 $1 $2
+eng/tools/generator/generator automation-v2 $1 $2

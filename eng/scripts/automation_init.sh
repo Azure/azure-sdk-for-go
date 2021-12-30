@@ -47,4 +47,15 @@ ls $GOPATH/bin/generator
 pwd
 generator
 sudo ln -s $GOPATH/bin/generator /usr/bin/generator
+ln -s /usr/bin/pwsh $GOPATH/bin/pwsh.exe
 ls -l /usr/bin/generator
+
+echo $2
+cat > $2 << EOF
+{
+  "envs": {
+    "PATH": "$PATH:$GOPATH",
+    "GOPATH": "$GOPATH"
+  }
+}
+EOF

@@ -103,7 +103,7 @@ serviceClient, err := azblob.NewServiceClientWithSharedKey(fmt.Sprintf("https://
 handle(err)
 // Provide the convenience function with relevant info (services, resource types, permissions, and duration)
 // The SAS token will be valid from this moment onwards.
-accountSAS, err := serviceClient.GetAccountSASToken(AccountSASResourceTypes{Object: true, Service: true, Container: true},
+accountSAS, err := serviceClient.GetSASToken(AccountSASResourceTypes{Object: true, Service: true, Container: true},
 AccountSASPermissions{Read: true, List: true}, AccountSASServices{Blob: true}, time.Now(), time.Now().Add(48*time.Hour))
 handle(err)
 urlToSend := fmt.Sprintf("https://%s.blob.core.windows.net/?%s", accountName, accountSAS)

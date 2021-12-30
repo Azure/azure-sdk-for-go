@@ -51,6 +51,18 @@ type ActionGroupsGetResult struct {
 	ActionGroupResource
 }
 
+// ActionGroupsGetTestNotificationsResponse contains the response from method ActionGroups.GetTestNotifications.
+type ActionGroupsGetTestNotificationsResponse struct {
+	ActionGroupsGetTestNotificationsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ActionGroupsGetTestNotificationsResult contains the result from method ActionGroups.GetTestNotifications.
+type ActionGroupsGetTestNotificationsResult struct {
+	TestNotificationDetailsResponse
+}
+
 // ActionGroupsListByResourceGroupResponse contains the response from method ActionGroups.ListByResourceGroup.
 type ActionGroupsListByResourceGroupResponse struct {
 	ActionGroupsListByResourceGroupResult
@@ -73,6 +85,58 @@ type ActionGroupsListBySubscriptionIDResponse struct {
 // ActionGroupsListBySubscriptionIDResult contains the result from method ActionGroups.ListBySubscriptionID.
 type ActionGroupsListBySubscriptionIDResult struct {
 	ActionGroupList
+}
+
+// ActionGroupsPostTestNotificationsPollerResponse contains the response from method ActionGroups.PostTestNotifications.
+type ActionGroupsPostTestNotificationsPollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *ActionGroupsPostTestNotificationsPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l ActionGroupsPostTestNotificationsPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ActionGroupsPostTestNotificationsResponse, error) {
+	respType := ActionGroupsPostTestNotificationsResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.TestNotificationResponse)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a ActionGroupsPostTestNotificationsPollerResponse from the provided client and resume token.
+func (l *ActionGroupsPostTestNotificationsPollerResponse) Resume(ctx context.Context, client *ActionGroupsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ActionGroupsClient.PostTestNotifications", token, client.pl, client.postTestNotificationsHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &ActionGroupsPostTestNotificationsPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// ActionGroupsPostTestNotificationsResponse contains the response from method ActionGroups.PostTestNotifications.
+type ActionGroupsPostTestNotificationsResponse struct {
+	ActionGroupsPostTestNotificationsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ActionGroupsPostTestNotificationsResult contains the result from method ActionGroups.PostTestNotifications.
+type ActionGroupsPostTestNotificationsResult struct {
+	TestNotificationResponse
 }
 
 // ActionGroupsUpdateResponse contains the response from method ActionGroups.Update.

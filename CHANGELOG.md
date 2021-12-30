@@ -1,5 +1,61 @@
 # CHANGELOG
 
+## `v60.3.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/frontdoor/mgmt/2020-11-01/frontdoor`
+- `github.com/Azure/azure-sdk-for-go/services/preview/appplatform/mgmt/2022-01-01-preview/appplatform`
+- `github.com/Azure/azure-sdk-for-go/services/preview/securityinsight/mgmt/2021-09-01-preview/securityinsight`
+
+## `v60.2.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/edgeorder/mgmt/2021-12-01/edgeorder`
+- `github.com/Azure/azure-sdk-for-go/services/preview/automanage/mgmt/2021-04-30-preview/automanage`
+- `github.com/Azure/azure-sdk-for-go/services/preview/network/mgmt/2021-03-01-preview/network`
+- `github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2021-08-01/recoveryservices`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/eventgrid/mgmt/2021-12-01/eventgrid` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v60.2.0/services/eventgrid/mgmt/2021-12-01/eventgrid/CHANGELOG.md) |
+
+### Breaking Changes
+
+- Rename package `github.com/Azure/azure-sdk-for-go/services/preview/windowsesu/2019-09-16-preview/windowsesu/` to `github.com/Azure/azure-sdk-for-go/services/preview/windowsesu/mgmt/2019-09-16-preview/windowsesu/`
+
+## `v60.1.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/elastic/mgmt/2020-07-01/elastic`
+- `github.com/Azure/azure-sdk-for-go/services/virtualmachineimagebuilder/mgmt/2021-10-01/virtualmachineimagebuilder`
+
+## `v60.0.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/kubernetesconfiguration/mgmt/2021-09-01/kubernetesconfiguration`
+- `github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2021-08-01/netapp`
+- `github.com/Azure/azure-sdk-for-go/services/webpubsub/mgmt/2021-10-01/webpubsub`
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v60.0.0/services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
+
+## `v59.4.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2021-10-01/containerservice`
+- `github.com/Azure/azure-sdk-for-go/services/preview/appplatform/mgmt/2021-09-01-preview/appplatform`
+- `github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2021-07-01/backup`
+
 ## `v59.3.0`
 
 ### New Packages

@@ -35,7 +35,7 @@ func TestProgressReporting(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	req.SkipBodyDownload()
+	runtime.SkipBodyDownload(req)
 	var bytesSent int64
 	reqRpt := NewRequestProgress(NopCloser(body), func(bytesTransferred int64) {
 		bytesSent = bytesTransferred
@@ -84,7 +84,7 @@ func TestProgressReportingSeek(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	req.SkipBodyDownload()
+	runtime.SkipBodyDownload(req)
 	var bytesSent int64
 	reqRpt := NewRequestProgress(NopCloser(body), func(bytesTransferred int64) {
 		bytesSent = bytesTransferred

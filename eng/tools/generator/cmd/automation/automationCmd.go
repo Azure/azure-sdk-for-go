@@ -217,8 +217,9 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 		set := packageResultSet{}
 		for _, p := range packageResults {
 			log.Printf("Getting package result for package '%s'", p.Package.PackageName)
-			content := p.Package.Changelog.ToCompactMarkdown()
-			breaking := p.Package.Changelog.HasBreakingChanges()
+			content := p.Package.Changelog.ToCompactMarkdown() + "\n" + p.Package.Changelog.GetChangeSummary()
+			// explicitly disable the breaking change detection in SDK automation track 1 since we already have quite a coverage of track 2 packages, we will leverage the breaking change detection on track 2 modules
+			breaking := false
 			breakingChangeItems := p.Package.Changelog.GetBreakingChangeItems()
 			set.add(pipeline.PackageResult{
 				Version:     ctx.sdkVersion,

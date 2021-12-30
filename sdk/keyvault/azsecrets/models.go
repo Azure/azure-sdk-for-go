@@ -90,7 +90,7 @@ type Attributes struct {
 func (s Attributes) toGenerated() *internal.SecretAttributes {
 	return &internal.SecretAttributes{
 		RecoverableDays: s.RecoverableDays,
-		RecoveryLevel:   s.RecoveryLevel.toGenerated().ToPtr(),
+		RecoveryLevel:   s.RecoveryLevel.toGenerated(),
 		Attributes: internal.Attributes{
 			Enabled:   s.Enabled,
 			Expires:   s.Expires,

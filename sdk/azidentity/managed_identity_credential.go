@@ -72,18 +72,17 @@ type ManagedIdentityCredential struct {
 // NewManagedIdentityCredential creates a ManagedIdentityCredential.
 // options: Optional configuration.
 func NewManagedIdentityCredential(options *ManagedIdentityCredentialOptions) (*ManagedIdentityCredential, error) {
-	cp := ManagedIdentityCredentialOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &ManagedIdentityCredentialOptions{}
 	}
-	client := newManagedIdentityClient(&cp)
+	client := newManagedIdentityClient(options)
 	msiType, err := client.getMSIType()
 	if err != nil {
 		logCredentialError("Managed Identity Credential", err)
 		return nil, err
 	}
 	client.msiType = msiType
-	return &ManagedIdentityCredential{id: cp.ID, client: client}, nil
+	return &ManagedIdentityCredential{id: options.ID, client: client}, nil
 }
 
 // GetToken obtains a token from Azure Active Directory. This method is called automatically by Azure SDK clients.

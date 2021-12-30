@@ -39,17 +39,19 @@ type GenerateResult struct {
 type GenerateParam struct {
 	RPName              string
 	NamespaceName       string
+	NamespaceConfig     string
 	SpecficVersion      string
 	SpecficPackageTitle string
 	SpecRPName          string
 	ReleaseDate         string
 	SkipGenerateExample bool
+	GoVersion           string
 }
 
-func (ctx GenerateContext) GenerateForAutomation(readme, repo string) ([]GenerateResult, []error) {
+func (ctx GenerateContext) GenerateForAutomation(readme, repo, goVersion string) ([]GenerateResult, []error) {
 	absReadme := filepath.Join(ctx.SpecPath, readme)
 	absReadmeGo := filepath.Join(filepath.Dir(absReadme), "readme.go.md")
-	specRPName := strings.Split(readme, "/")[1]
+	specRPName := strings.Split(readme, "/")[0]
 
 	var result []GenerateResult
 	var errors []error
@@ -62,14 +64,16 @@ func (ctx GenerateContext) GenerateForAutomation(readme, repo string) ([]Generat
 		}
 	}
 
-	for rpName, namespaceNames := range rpMap {
-		for _, namespaceName := range namespaceNames {
-			log.Printf("Process rp: %s, namespace: %s", rpName, namespaceName)
+	for rpName, packageInfos := range rpMap {
+		for _, packageInfo := range packageInfos {
+			log.Printf("Process rp: %s, namespace: %s", rpName, packageInfo.Name)
 			singleResult, err := ctx.GenerateForSingleRPNamespace(&GenerateParam{
 				RPName:              rpName,
-				NamespaceName:       namespaceName,
+				NamespaceName:       packageInfo.Name,
 				SpecRPName:          specRPName,
 				SkipGenerateExample: true,
+				NamespaceConfig:     packageInfo.Config,
+				GoVersion:           goVersion,
 			})
 			if err != nil {
 				errors = append(errors, err)
@@ -97,10 +101,12 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 
 		log.Printf("Use template to generate new rp folder and basic package files...")
 		if err = template.GeneratePackageByTemplate(generateParam.RPName, generateParam.NamespaceName, template.Flags{
-			SDKRoot:      ctx.SDKPath,
-			TemplatePath: "eng/tools/generator/template/rpName/packageName",
-			PackageTitle: generateParam.SpecficPackageTitle,
-			Commit:       ctx.SpecCommitHash,
+			SDKRoot:       ctx.SDKPath,
+			TemplatePath:  "eng/tools/generator/template/rpName/packageName",
+			PackageTitle:  generateParam.SpecficPackageTitle,
+			Commit:        ctx.SpecCommitHash,
+			PackageConfig: generateParam.NamespaceConfig,
+			GoVersion:     generateParam.GoVersion,
 		}); err != nil {
 			return nil, err
 		}
@@ -110,7 +116,8 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 		log.Printf("Get ori exports for changelog generation...")
 		oriExports, err = exports.Get(packagePath)
 		if err != nil {
-			return nil, err
+			log.Printf("Get ori exports error, set to empty: %+v", err)
+			oriExports = exports.Content{}
 		}
 
 		log.Printf("Remove all the files that start with `zz_generated_`...")
@@ -168,7 +175,7 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 			PackageName:    generateParam.NamespaceName,
 			PackageAbsPath: packagePath,
 			Changelog:      *changelog,
-			ChangelogMD:    changelog.ToCompactMarkdown(),
+			ChangelogMD:    changelog.ToCompactMarkdown() + "\n" + changelog.GetChangeSummary(),
 		}, nil
 	} else {
 		log.Printf("Calculate new version...")
@@ -192,18 +199,8 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 			return nil, err
 		}
 
-		log.Printf("Remove all the files that start with `zz_generated_`...")
-		if err = CleanSDKGeneratedFiles(packagePath); err != nil {
-			return nil, err
-		}
-
-		log.Printf("Replace version in autorest.md...")
+		log.Printf("Replace version in autorest.md and constants...")
 		if err = ReplaceVersion(packagePath, version.String()); err != nil {
-			return nil, err
-		}
-
-		log.Printf("Run `go generate` to regenerate the code for new version...")
-		if err = ExecuteGoGenerate(packagePath); err != nil {
 			return nil, err
 		}
 
@@ -213,7 +210,7 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 			PackageName:    generateParam.NamespaceName,
 			PackageAbsPath: packagePath,
 			Changelog:      *changelog,
-			ChangelogMD:    changelogMd,
+			ChangelogMD:    changelogMd + "\n" + changelog.GetChangeSummary(),
 		}, nil
 	}
 }

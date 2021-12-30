@@ -20,7 +20,7 @@ type SubscriptionProperties struct {
 	// Default is 1 minute.
 	LockDuration *time.Duration
 
-	// RequiresSession indicates whether the queue supports the concept of sessions.
+	// RequiresSession indicates whether the subscription supports the concept of sessions.
 	// Sessionful-messages follow FIFO ordering.
 	// Default is false.
 	RequiresSession *bool
@@ -30,7 +30,7 @@ type SubscriptionProperties struct {
 	// set on a message itself.
 	DefaultMessageTimeToLive *time.Duration
 
-	// DeadLetteringOnMessageExpiration indicates whether this queue has dead letter
+	// DeadLetteringOnMessageExpiration indicates whether this subscription has dead letter
 	// support when a message expires.
 	DeadLetteringOnMessageExpiration *bool
 
@@ -43,13 +43,13 @@ type SubscriptionProperties struct {
 	// Default value is 10.
 	MaxDeliveryCount *int32
 
-	// Status is the current status of the queue.
+	// Status is the current status of the subscription.
 	Status *EntityStatus
 
 	// AutoDeleteOnIdle is the idle interval after which the subscription is automatically deleted.
 	AutoDeleteOnIdle *time.Duration
 
-	// ForwardTo is the name of the recipient entity to which all the messages sent to the queue
+	// ForwardTo is the name of the recipient entity to which all the messages sent to the topic
 	// are forwarded to.
 	ForwardTo *string
 

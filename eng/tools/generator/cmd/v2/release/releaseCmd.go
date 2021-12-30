@@ -6,19 +6,15 @@ package release
 import (
 	"fmt"
 	"log"
-	"path/filepath"
-	"regexp"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/v2/common"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/flags"
-	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/repo"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 )
 
 var (
-	commitIDRegex            = regexp.MustCompile("^[0-9a-f]{40}$")
 	releaseBranchNamePattern = "release-%s-%s-%s-%v"
 )
 
@@ -66,6 +62,8 @@ type Flags struct {
 	ReleaseDate         string
 	SkipCreateBranch    bool
 	SkipGenerateExample bool
+	PackageConfig       string
+	GoVersion           string
 }
 
 func BindFlags(flagSet *pflag.FlagSet) {
@@ -77,6 +75,8 @@ func BindFlags(flagSet *pflag.FlagSet) {
 	flagSet.String("release-date", "", "Specifies the release date in changelog")
 	flagSet.Bool("skip-create-branch", false, "Skip create release branch after generation")
 	flagSet.Bool("skip-generate-example", false, "Skip generate example for SDK in the same time")
+	flagSet.String("package-config", "", "Additional config for package")
+	flagSet.String("go-version", "1.16", "Go version")
 }
 
 func ParseFlags(flagSet *pflag.FlagSet) Flags {
@@ -89,6 +89,8 @@ func ParseFlags(flagSet *pflag.FlagSet) Flags {
 		ReleaseDate:         flags.GetString(flagSet, "release-date"),
 		SkipCreateBranch:    flags.GetBool(flagSet, "skip-create-branch"),
 		SkipGenerateExample: flags.GetBool(flagSet, "skip-generate-example"),
+		PackageConfig:       flags.GetString(flagSet, "package-config"),
+		GoVersion:           flags.GetString(flagSet, "go-version"),
 	}
 }
 
@@ -99,43 +101,14 @@ type commandContext struct {
 }
 
 func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
-	var err error
-	var sdkRepo repo.SDKRepository
-	// create sdk and spec git repo ref
-	if commitIDRegex.Match([]byte(sdkRepoParam)) {
-		sdkRepo, err = repo.CloneSDKRepository(c.flags.SDKRepo, sdkRepoParam)
-		if err != nil {
-			return fmt.Errorf("failed to get sdk repo: %+v", err)
-		}
-	} else {
-		path, err := filepath.Abs(sdkRepoParam)
-		if err != nil {
-			return fmt.Errorf("failed to get the directory of azure-sdk-for-go: %v", err)
-		}
-
-		sdkRepo, err = repo.OpenSDKRepository(path)
-		if err != nil {
-			return fmt.Errorf("failed to get sdk repo: %+v", err)
-		}
+	sdkRepo, err := common.GetSDKRepo(sdkRepoParam, c.flags.SDKRepo)
+	if err != nil {
+		return err
 	}
 
-	specCommitHash := ""
-	if commitIDRegex.Match([]byte(specRepoParam)) {
-		specCommitHash = specRepoParam
-	} else {
-		path, err := filepath.Abs(specRepoParam)
-		if err != nil {
-			return fmt.Errorf("failed to get the directory of azure-rest-api-specs: %v", err)
-		}
-		specRepo, err := repo.OpenSpecRepository(path)
-		if err != nil {
-			return fmt.Errorf("failed to get spec repo: %+v", err)
-		}
-		specHeader, err := specRepo.Head()
-		if err != nil {
-			return fmt.Errorf("failed to get HEAD ref of azure-rest-api-specs: %+v", err)
-		}
-		specCommitHash = specHeader.Hash().String()
+	specCommitHash, err := common.GetSpecCommit(specRepoParam)
+	if err != nil {
+		return err
 	}
 
 	log.Printf("Release generation for rp: %s, namespace: %s", c.rpName, c.namespaceName)
@@ -152,11 +125,13 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 	result, err := generateCtx.GenerateForSingleRPNamespace(&common.GenerateParam{
 		RPName:              c.rpName,
 		NamespaceName:       c.namespaceName,
+		NamespaceConfig:     c.flags.PackageConfig,
 		SpecficPackageTitle: c.flags.PackageTitle,
 		SpecficVersion:      c.flags.VersionNumber,
 		SpecRPName:          c.flags.SpecRPName,
 		ReleaseDate:         c.flags.ReleaseDate,
 		SkipGenerateExample: c.flags.SkipGenerateExample,
+		GoVersion:           c.flags.GoVersion,
 	})
 	if err != nil {
 		return fmt.Errorf("failed to finish release generation process: %+v", err)

@@ -36,8 +36,8 @@ func ExampleClient_CreateQueue() {
 	exitOnError("Failed to add queue", err)
 
 	// some example properties
-	fmt.Printf("Max message delivery count = %d", resp.MaxDeliveryCount)
-	fmt.Printf("Lock duration: %s", resp.LockDuration)
+	fmt.Printf("Max message delivery count = %d\n", *resp.MaxDeliveryCount)
+	fmt.Printf("Lock duration: %s\n", resp.LockDuration)
 }
 
 func ExampleClient_CreateQueue_usingproperties() {
@@ -52,8 +52,8 @@ func ExampleClient_CreateQueue_usingproperties() {
 	exitOnError("Failed to create queue", err)
 
 	// some example properties
-	fmt.Printf("Max message delivery count = %d", resp.MaxDeliveryCount)
-	fmt.Printf("Lock duration: %s", resp.LockDuration)
+	fmt.Printf("Max message delivery count = %d\n", *resp.MaxDeliveryCount)
+	fmt.Printf("Lock duration: %s\n", resp.LockDuration)
 }
 
 func ExampleClient_ListQueues() {
@@ -61,7 +61,7 @@ func ExampleClient_ListQueues() {
 
 	for queuePager.NextPage(context.TODO()) {
 		for _, queue := range queuePager.PageResponse().Items {
-			fmt.Printf("Queue name: %s, max size in MB: %d", queue.QueueName, queue.MaxSizeInMegabytes)
+			fmt.Printf("Queue name: %s, max size in MB: %d\n", queue.QueueName, *queue.MaxSizeInMegabytes)
 		}
 	}
 
@@ -73,7 +73,7 @@ func ExampleClient_ListQueuesRuntimeProperties() {
 
 	for queuePager.NextPage(context.TODO()) {
 		for _, queue := range queuePager.PageResponse().Items {
-			fmt.Printf("Queue name: %s, active messages: %d", queue.QueueName, queue.ActiveMessageCount)
+			fmt.Printf("Queue name: %s, active messages: %d\n", queue.QueueName, queue.ActiveMessageCount)
 		}
 	}
 

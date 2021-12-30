@@ -8,7 +8,6 @@ package azkeys
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
@@ -25,8 +24,15 @@ var ctx = context.Background()
 
 const HSMTEST = "HSM"
 const REGULARTEST = "NON-HSM"
+const INVALIDKEYNAME = "key!@#$%"
 
 var testTypes = []string{REGULARTEST, HSMTEST}
+
+func TestConstructor(t *testing.T) {
+	client, err := NewClient("https://fakekvurl.vault.azure.net/", &FakeCredential{}, nil)
+	require.NoError(t, err)
+	require.NotNil(t, client.kvClient)
+}
 
 func TestCreateKeyRSA(t *testing.T) {
 	for _, testType := range testTypes {
@@ -51,6 +57,10 @@ func TestCreateKeyRSA(t *testing.T) {
 
 			cleanUpKey(t, client, key)
 			cleanUpKey(t, client, key+"hsm")
+
+			invalid, err := client.CreateRSAKey(ctx, "invalidName!@#$", nil)
+			require.Error(t, err)
+			require.Nil(t, invalid.Attributes)
 		})
 	}
 }
@@ -71,6 +81,10 @@ func TestCreateECKey(t *testing.T) {
 			resp, err := client.CreateECKey(ctx, key, nil)
 			require.NoError(t, err)
 			require.NotNil(t, resp.Key)
+
+			invalid, err := client.CreateECKey(ctx, "key!@#$", nil)
+			require.Error(t, err)
+			require.Nil(t, invalid.Key)
 
 			cleanUpKey(t, client, key)
 		})
@@ -160,6 +174,10 @@ func TestGetKey(t *testing.T) {
 			resp, err := client.GetKey(ctx, key, nil)
 			require.NoError(t, err)
 			require.NotNil(t, resp.Key)
+
+			invalid, err := client.CreateKey(ctx, "invalidkey[]()", RSA, nil)
+			require.Error(t, err)
+			require.Nil(t, invalid.Attributes)
 		})
 	}
 }
@@ -203,6 +221,13 @@ func TestDeleteKey(t *testing.T) {
 
 			_, err = client.GetDeletedKey(ctx, key, nil)
 			require.Error(t, err)
+
+			_, err = resp.Poller.FinalResponse(ctx)
+			require.NoError(t, err)
+
+			invalidResp, err := client.BeginDeleteKey(ctx, "nonexistent", nil)
+			require.Error(t, err)
+			require.Nil(t, invalidResp.Poller)
 		})
 	}
 }
@@ -263,6 +288,16 @@ func TestBackupKey(t *testing.T) {
 			// Now the Key should be Get-able
 			_, err = client.GetKey(ctx, key, nil)
 			require.NoError(t, err)
+
+			// confirm invalid response
+			invalidResp, err := client.BackupKey(ctx, INVALIDKEYNAME, nil)
+			require.Error(t, err)
+			require.Equal(t, 0, len(invalidResp.Value))
+
+			// confirm invalid restore key backup
+			invalidResp2, err := client.RestoreKeyBackup(ctx, []byte("doesnotexist"), nil)
+			require.Error(t, err)
+			require.Nil(t, invalidResp2.RawResponse)
 		})
 	}
 }
@@ -300,6 +335,10 @@ func TestRecoverDeletedKey(t *testing.T) {
 			getResp, err := client.GetKey(ctx, key, nil)
 			require.NoError(t, err)
 			require.NotNil(t, getResp.Key)
+
+			invalidResp, err := client.BeginRecoverDeletedKey(ctx, "INVALIDKEYNAME", nil)
+			require.Error(t, err)
+			require.Nil(t, invalidResp.Poller)
 		})
 	}
 }
@@ -310,6 +349,8 @@ func TestUpdateKeyProperties(t *testing.T) {
 			skipHSM(t, testType)
 			stop := startTest(t)
 			defer stop()
+			err := recording.SetBodilessMatcher(t, nil)
+			require.NoError(t, err)
 
 			client, err := createClient(t, testType)
 			require.NoError(t, err)
@@ -325,18 +366,20 @@ func TestUpdateKeyProperties(t *testing.T) {
 				Tags: map[string]*string{
 					"Tag1": to.StringPtr("Val1"),
 				},
-				// Uncomment when new azcore with fix with #15786 is released
-				// KeyAttributes: &KeyAttributes{
-				// 	Attributes: Attributes{
-				// 		Expires: to.TimePtr(time.Now().AddDate(1, 0, 0)),
-				// 	},
-				// },
+				KeyAttributes: &KeyAttributes{
+					Attributes: Attributes{
+						Expires: to.TimePtr(time.Now().AddDate(1, 0, 0)),
+					},
+				},
 			})
 			require.NoError(t, err)
 			require.NotNil(t, resp.Attributes)
 			require.Equal(t, *resp.Tags["Tag1"], "Val1")
 			require.NotNil(t, resp.Attributes.Updated)
 
+			invalid, err := client.UpdateKeyProperties(ctx, "doesnotexist", nil)
+			require.Error(t, err)
+			require.Nil(t, invalid.Attributes)
 		})
 	}
 }
@@ -421,7 +464,7 @@ func TestListKeyVersions(t *testing.T) {
 			for pager.NextPage(ctx) {
 				count += len(pager.PageResponse().Keys)
 			}
-
+			require.NoError(t, pager.Err())
 			require.GreaterOrEqual(t, count, 6)
 		})
 	}
@@ -454,6 +497,10 @@ func TestImportKey(t *testing.T) {
 			resp, err := client.ImportKey(ctx, "importedKey", jwk, nil)
 			require.NoError(t, err)
 			require.NotNil(t, resp.Key)
+
+			invalid, err := client.ImportKey(ctx, "invalid", JSONWebKey{}, nil)
+			require.Error(t, err)
+			require.Nil(t, invalid.Attributes)
 		})
 	}
 }
@@ -474,6 +521,45 @@ func TestGetRandomBytes(t *testing.T) {
 			resp, err := client.GetRandomBytes(ctx, to.Int32Ptr(100), nil)
 			require.NoError(t, err)
 			require.Equal(t, 100, len(resp.Value))
+
+			invalid, err := client.GetRandomBytes(ctx, to.Int32Ptr(-1), nil)
+			require.Error(t, err)
+			require.Nil(t, invalid.RawResponse)
+		})
+	}
+}
+
+func TestGetDeletedKey(t *testing.T) {
+	for _, testType := range testTypes {
+		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
+			if testType == HSMTEST {
+				t.Skip()
+			}
+			stop := startTest(t)
+			defer stop()
+
+			client, err := createClient(t, testType)
+			require.NoError(t, err)
+
+			key, err := createRandomName(t, "keyName")
+			require.NoError(t, err)
+			_, err = client.CreateRSAKey(ctx, key, nil)
+			require.NoError(t, err)
+			defer cleanUpKey(t, client, key)
+
+			poller, err := client.BeginDeleteKey(ctx, key, nil)
+			require.NoError(t, err)
+			_, err = poller.PollUntilDone(ctx, delay())
+			require.NoError(t, err)
+
+			time.Sleep(10 * delay())
+
+			resp, err := client.GetDeletedKey(ctx, key, nil)
+			require.NoError(t, err)
+			require.Contains(t, *resp.Key.ID, key)
+
+			_, err = client.PurgeDeletedKey(ctx, key, nil)
+			require.NoError(t, err)
 		})
 	}
 }
@@ -499,6 +585,11 @@ func TestRotateKey(t *testing.T) {
 
 			require.NotEqual(t, *createResp.Key.ID, *resp.Key.ID)
 			require.NotEqual(t, createResp.Key.N, resp.Key.N)
+
+			invalid, err := client.RotateKey(ctx, "keynonexistent", nil)
+			require.Error(t, err)
+			require.Nil(t, invalid.Key)
+			require.Nil(t, invalid.Key)
 		})
 	}
 }
@@ -525,11 +616,12 @@ func TestGetKeyRotationPolicy(t *testing.T) {
 	}
 }
 
+// This test is not ready, it will be ready in the 7.4 swagger, leaving this test for once that change is made.
 func TestReleaseKey(t *testing.T) {
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
-			skipHSM(t, testType)
-			t.Skip("Release is not currently not enabled in API Version 7.3-preview")
+			alwaysSkipHSM(t, testType)
+			// t.Skip("Release is not currently not enabled in API Version 7.3-preview")
 			stop := startTest(t)
 			defer stop()
 
@@ -547,21 +639,21 @@ func TestReleaseKey(t *testing.T) {
 			req, err := http.NewRequest("GET", fmt.Sprintf("%s/generate-test-token", attestationURL), nil)
 			require.NoError(t, err)
 
-			resp, err := http.DefaultClient.Do(req)
-			require.NoError(t, err)
-			require.Equal(t, resp.StatusCode, http.StatusOK)
-			defer resp.Body.Close()
+			_, err = http.DefaultClient.Do(req)
+			require.Error(t, err)
+			// require.Equal(t, resp.StatusCode, http.StatusOK)
+			// defer resp.Body.Close()
 
-			type targetResponse struct {
-				Token string `json:"token"`
-			}
+			// type targetResponse struct {
+			// 	Token string `json:"token"`
+			// }
 
-			var tR targetResponse
-			err = json.NewDecoder(resp.Body).Decode(&tR)
-			require.NoError(t, err)
+			// var tR targetResponse
+			// err = json.NewDecoder(resp.Body).Decode(&tR)
+			// require.NoError(t, err)
 
-			_, err = client.ReleaseKey(ctx, key, tR.Token, nil)
-			require.NoError(t, err)
+			_, err = client.ReleaseKey(ctx, key, "target", nil)
+			require.Error(t, err)
 		})
 	}
 }

@@ -5,6 +5,7 @@ if [ -z $1 ]; then
     exit 1
 fi
 echo $1
+cat $1
 
 if [ -z $2 ]; then
     echo "Please input outputfile"

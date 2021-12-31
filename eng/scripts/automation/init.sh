@@ -1,5 +1,6 @@
 #!/bin/bash
 set -x
+set -e
 echo "GOPATH:$GOPATH"
 echo "GOROOT:$GOROOT"
 TMPDIR="/tmp"
@@ -17,14 +18,14 @@ fi
 #   export GOPATH=$DIRECTORY/../../../gofolder
 # fi
 DIRECTORY=$(cd `dirname $0` && pwd)
-# WORKFOLDER="$(realpath $DIRECTORY/../../../../)"
-# echo $WORKFOLDER
-# export GOPATH=$WORKFOLDER/gofolder
-if [ "$GOPATH" == "" ]; then
-  WORKFOLDER="$(realpath $DIRECTORY/../../../../)"
-  echo $WORKFOLDER
-  export GOPATH=$WORKFOLDER/gofolder
-fi
+WORKFOLDER="$(realpath $DIRECTORY/../../../../)"
+echo $WORKFOLDER
+export GOPATH=$WORKFOLDER/gofolder
+# if [ "$GOPATH" == "" ]; then
+#   WORKFOLDER="$(realpath $DIRECTORY/../../../../)"
+#   echo $WORKFOLDER
+#   export GOPATH=$WORKFOLDER/gofolder
+# fi
 
 if [ ! -d "$GOPATH/bin" ]; then
   echo "create gopath folder"
@@ -34,20 +35,27 @@ echo $GOPATH
 
 export GO111MODULE=on
 # cd eng/tools/generator && go build && cp generator $GOPATH/bin && cd ../../..
-cd $DIRECTORY/../../tools/generator
+generatorDirectory="$(realpath $DIRECTORY/../../tools/generator)"
+cd $generatorDirectory
+# cd $DIRECTORY/../../tools/generator
+pwd
 go build
+ls -l
 # go install
 cp generator $GOPATH/bin/
+ls -l  $GOPATH/bin/
 export PATH=$PATH:$GOPATH/bin
 # ln -s /usr/bin/pwsh $GOPATH/bin/pwsh.exe
 ls $GOPATH/bin/
 cd $DIRECTORY
-generator
+# generator
 # sudo ln -s $GOPATH/bin/generator /usr/bin/generator
+ls -l $generatorDirectory/generator
+sudo ln -s $generatorDirectory/generator /usr/bin/generator
 if [ ! -f "$GOPATH/bin/pwsh.exe" ]; then
   ln -s /usr/bin/pwsh $GOPATH/bin/pwsh.exe
 fi
-# ls -l /usr/bin/generator
+ls -l /usr/bin/generator
 
 echo $1
 cat > $1 << EOF

@@ -8,23 +8,34 @@ package streamanalyticsapi
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/services/preview/streamanalytics/mgmt/2020-03-01-preview/streamanalytics"
+	"github.com/Azure/azure-sdk-for-go/services/streamanalytics/mgmt/2020-03-01/streamanalytics"
 	"github.com/Azure/go-autorest/autorest"
 )
 
-// FunctionsClientAPI contains the set of methods on the FunctionsClient type.
-type FunctionsClientAPI interface {
-	CreateOrReplace(ctx context.Context, function streamanalytics.Function, resourceGroupName string, jobName string, functionName string, ifMatch string, ifNoneMatch string) (result streamanalytics.Function, err error)
-	Delete(ctx context.Context, resourceGroupName string, jobName string, functionName string) (result autorest.Response, err error)
-	Get(ctx context.Context, resourceGroupName string, jobName string, functionName string) (result streamanalytics.Function, err error)
-	ListByStreamingJob(ctx context.Context, resourceGroupName string, jobName string, selectParameter string) (result streamanalytics.FunctionListResultPage, err error)
-	ListByStreamingJobComplete(ctx context.Context, resourceGroupName string, jobName string, selectParameter string) (result streamanalytics.FunctionListResultIterator, err error)
-	RetrieveDefaultDefinition(ctx context.Context, resourceGroupName string, jobName string, functionName string, functionRetrieveDefaultDefinitionParameters *streamanalytics.BasicFunctionRetrieveDefaultDefinitionParameters) (result streamanalytics.Function, err error)
-	Test(ctx context.Context, resourceGroupName string, jobName string, functionName string, function *streamanalytics.Function) (result streamanalytics.FunctionsTestFuture, err error)
-	Update(ctx context.Context, function streamanalytics.Function, resourceGroupName string, jobName string, functionName string, ifMatch string) (result streamanalytics.Function, err error)
+// OperationsClientAPI contains the set of methods on the OperationsClient type.
+type OperationsClientAPI interface {
+	List(ctx context.Context) (result streamanalytics.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result streamanalytics.OperationListResultIterator, err error)
 }
 
-var _ FunctionsClientAPI = (*streamanalytics.FunctionsClient)(nil)
+var _ OperationsClientAPI = (*streamanalytics.OperationsClient)(nil)
+
+// StreamingJobsClientAPI contains the set of methods on the StreamingJobsClient type.
+type StreamingJobsClientAPI interface {
+	CreateOrReplace(ctx context.Context, streamingJob streamanalytics.StreamingJob, resourceGroupName string, jobName string, ifMatch string, ifNoneMatch string) (result streamanalytics.StreamingJobsCreateOrReplaceFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, jobName string) (result streamanalytics.StreamingJobsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, jobName string, expand string) (result streamanalytics.StreamingJob, err error)
+	List(ctx context.Context, expand string) (result streamanalytics.StreamingJobListResultPage, err error)
+	ListComplete(ctx context.Context, expand string) (result streamanalytics.StreamingJobListResultIterator, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string, expand string) (result streamanalytics.StreamingJobListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, expand string) (result streamanalytics.StreamingJobListResultIterator, err error)
+	Scale(ctx context.Context, resourceGroupName string, jobName string, scaleJobParameters *streamanalytics.ScaleStreamingJobParameters) (result streamanalytics.StreamingJobsScaleFuture, err error)
+	Start(ctx context.Context, resourceGroupName string, jobName string, startJobParameters *streamanalytics.StartStreamingJobParameters) (result streamanalytics.StreamingJobsStartFuture, err error)
+	Stop(ctx context.Context, resourceGroupName string, jobName string) (result streamanalytics.StreamingJobsStopFuture, err error)
+	Update(ctx context.Context, streamingJob streamanalytics.StreamingJob, resourceGroupName string, jobName string, ifMatch string) (result streamanalytics.StreamingJob, err error)
+}
+
+var _ StreamingJobsClientAPI = (*streamanalytics.StreamingJobsClient)(nil)
 
 // InputsClientAPI contains the set of methods on the InputsClient type.
 type InputsClientAPI interface {
@@ -52,34 +63,6 @@ type OutputsClientAPI interface {
 
 var _ OutputsClientAPI = (*streamanalytics.OutputsClient)(nil)
 
-// StreamingJobsClientAPI contains the set of methods on the StreamingJobsClient type.
-type StreamingJobsClientAPI interface {
-	CreateOrReplace(ctx context.Context, streamingJob streamanalytics.StreamingJob, resourceGroupName string, jobName string, ifMatch string, ifNoneMatch string) (result streamanalytics.StreamingJobsCreateOrReplaceFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, jobName string) (result streamanalytics.StreamingJobsDeleteFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, jobName string, expand string) (result streamanalytics.StreamingJob, err error)
-	List(ctx context.Context, expand string) (result streamanalytics.StreamingJobListResultPage, err error)
-	ListComplete(ctx context.Context, expand string) (result streamanalytics.StreamingJobListResultIterator, err error)
-	ListByResourceGroup(ctx context.Context, resourceGroupName string, expand string) (result streamanalytics.StreamingJobListResultPage, err error)
-	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, expand string) (result streamanalytics.StreamingJobListResultIterator, err error)
-	Start(ctx context.Context, resourceGroupName string, jobName string, startJobParameters *streamanalytics.StartStreamingJobParameters) (result streamanalytics.StreamingJobsStartFuture, err error)
-	Stop(ctx context.Context, resourceGroupName string, jobName string) (result streamanalytics.StreamingJobsStopFuture, err error)
-	Update(ctx context.Context, streamingJob streamanalytics.StreamingJob, resourceGroupName string, jobName string, ifMatch string) (result streamanalytics.StreamingJob, err error)
-}
-
-var _ StreamingJobsClientAPI = (*streamanalytics.StreamingJobsClient)(nil)
-
-// SubscriptionsClientAPI contains the set of methods on the SubscriptionsClient type.
-type SubscriptionsClientAPI interface {
-	CompileQueryMethod(ctx context.Context, compileQuery streamanalytics.CompileQuery, location string) (result streamanalytics.QueryCompilationResult, err error)
-	ListQuotas(ctx context.Context, location string) (result streamanalytics.SubscriptionQuotasListResult, err error)
-	SampleInputMethod(ctx context.Context, sampleInput streamanalytics.SampleInput, location string) (result streamanalytics.SubscriptionsSampleInputMethodFuture, err error)
-	TestInputMethod(ctx context.Context, testInput streamanalytics.TestInput, location string) (result streamanalytics.SubscriptionsTestInputMethodFuture, err error)
-	TestOutputMethod(ctx context.Context, testOutput streamanalytics.TestOutput, location string) (result streamanalytics.SubscriptionsTestOutputMethodFuture, err error)
-	TestQueryMethod(ctx context.Context, testQuery streamanalytics.TestQuery, location string) (result streamanalytics.SubscriptionsTestQueryMethodFuture, err error)
-}
-
-var _ SubscriptionsClientAPI = (*streamanalytics.SubscriptionsClient)(nil)
-
 // TransformationsClientAPI contains the set of methods on the TransformationsClient type.
 type TransformationsClientAPI interface {
 	CreateOrReplace(ctx context.Context, transformation streamanalytics.Transformation, resourceGroupName string, jobName string, transformationName string, ifMatch string, ifNoneMatch string) (result streamanalytics.Transformation, err error)
@@ -89,13 +72,26 @@ type TransformationsClientAPI interface {
 
 var _ TransformationsClientAPI = (*streamanalytics.TransformationsClient)(nil)
 
-// OperationsClientAPI contains the set of methods on the OperationsClient type.
-type OperationsClientAPI interface {
-	List(ctx context.Context) (result streamanalytics.OperationListResultPage, err error)
-	ListComplete(ctx context.Context) (result streamanalytics.OperationListResultIterator, err error)
+// FunctionsClientAPI contains the set of methods on the FunctionsClient type.
+type FunctionsClientAPI interface {
+	CreateOrReplace(ctx context.Context, function streamanalytics.Function, resourceGroupName string, jobName string, functionName string, ifMatch string, ifNoneMatch string) (result streamanalytics.Function, err error)
+	Delete(ctx context.Context, resourceGroupName string, jobName string, functionName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, jobName string, functionName string) (result streamanalytics.Function, err error)
+	ListByStreamingJob(ctx context.Context, resourceGroupName string, jobName string, selectParameter string) (result streamanalytics.FunctionListResultPage, err error)
+	ListByStreamingJobComplete(ctx context.Context, resourceGroupName string, jobName string, selectParameter string) (result streamanalytics.FunctionListResultIterator, err error)
+	RetrieveDefaultDefinition(ctx context.Context, resourceGroupName string, jobName string, functionName string, functionRetrieveDefaultDefinitionParameters *streamanalytics.BasicFunctionRetrieveDefaultDefinitionParameters) (result streamanalytics.Function, err error)
+	Test(ctx context.Context, resourceGroupName string, jobName string, functionName string, function *streamanalytics.Function) (result streamanalytics.FunctionsTestFuture, err error)
+	Update(ctx context.Context, function streamanalytics.Function, resourceGroupName string, jobName string, functionName string, ifMatch string) (result streamanalytics.Function, err error)
 }
 
-var _ OperationsClientAPI = (*streamanalytics.OperationsClient)(nil)
+var _ FunctionsClientAPI = (*streamanalytics.FunctionsClient)(nil)
+
+// SubscriptionsClientAPI contains the set of methods on the SubscriptionsClient type.
+type SubscriptionsClientAPI interface {
+	ListQuotas(ctx context.Context, location string) (result streamanalytics.SubscriptionQuotasListResult, err error)
+}
+
+var _ SubscriptionsClientAPI = (*streamanalytics.SubscriptionsClient)(nil)
 
 // ClustersClientAPI contains the set of methods on the ClustersClient type.
 type ClustersClientAPI interface {

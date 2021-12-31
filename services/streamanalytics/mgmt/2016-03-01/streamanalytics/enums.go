@@ -49,6 +49,23 @@ func PossibleEncodingValues() []Encoding {
 	return []Encoding{UTF8}
 }
 
+// EventSerializationType enumerates the values for event serialization type.
+type EventSerializationType string
+
+const (
+	// Avro ...
+	Avro EventSerializationType = "Avro"
+	// Csv ...
+	Csv EventSerializationType = "Csv"
+	// JSON ...
+	JSON EventSerializationType = "Json"
+)
+
+// PossibleEventSerializationTypeValues returns an array of possible values for the EventSerializationType const type.
+func PossibleEventSerializationTypeValues() []EventSerializationType {
+	return []EventSerializationType{Avro, Csv, JSON}
+}
+
 // EventsOutOfOrderPolicy enumerates the values for events out of order policy.
 type EventsOutOfOrderPolicy string
 

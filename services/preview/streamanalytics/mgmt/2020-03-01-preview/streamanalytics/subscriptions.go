@@ -31,10 +31,97 @@ func NewSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) Su
 	return SubscriptionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// CompileQueryMethod compile the Stream Analytics query.
+// Parameters:
+// compileQuery - the query compilation object which defines the input, output, and transformation for the
+// query compilation.
+// location - the region to which the request is sent. You can find out which regions Azure Stream Analytics is
+// supported in here: https://azure.microsoft.com/en-us/regions/
+func (client SubscriptionsClient) CompileQueryMethod(ctx context.Context, compileQuery CompileQuery, location string) (result QueryCompilationResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SubscriptionsClient.CompileQueryMethod")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: compileQuery,
+			Constraints: []validation.Constraint{{Target: "compileQuery.Query", Name: validation.Null, Rule: true, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("streamanalytics.SubscriptionsClient", "CompileQueryMethod", err.Error())
+	}
+
+	req, err := client.CompileQueryMethodPreparer(ctx, compileQuery, location)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "streamanalytics.SubscriptionsClient", "CompileQueryMethod", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.CompileQueryMethodSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "streamanalytics.SubscriptionsClient", "CompileQueryMethod", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.CompileQueryMethodResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "streamanalytics.SubscriptionsClient", "CompileQueryMethod", resp, "Failure responding to request")
+		return
+	}
+
+	return
+}
+
+// CompileQueryMethodPreparer prepares the CompileQueryMethod request.
+func (client SubscriptionsClient) CompileQueryMethodPreparer(ctx context.Context, compileQuery CompileQuery, location string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"location":       autorest.Encode("path", location),
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2017-04-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.StreamAnalytics/locations/{location}/compileQuery", pathParameters),
+		autorest.WithJSON(compileQuery),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CompileQueryMethodSender sends the CompileQueryMethod request. The method will close the
+// http.Response Body if it receives an error.
+func (client SubscriptionsClient) CompileQueryMethodSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// CompileQueryMethodResponder handles the response to the CompileQueryMethod request. The method always
+// closes the http.Response Body.
+func (client SubscriptionsClient) CompileQueryMethodResponder(resp *http.Response) (result QueryCompilationResult, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // ListQuotas retrieves the subscription's current quota information in a particular region.
 // Parameters:
-// location - the region in which to retrieve the subscription's quota information. You can find out which
-// regions Azure Stream Analytics is supported in here: https://azure.microsoft.com/en-us/regions/
+// location - the region to which the request is sent. You can find out which regions Azure Stream Analytics is
+// supported in here: https://azure.microsoft.com/en-us/regions/
 func (client SubscriptionsClient) ListQuotas(ctx context.Context, location string) (result SubscriptionQuotasListResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SubscriptionsClient.ListQuotas")
@@ -106,6 +193,363 @@ func (client SubscriptionsClient) ListQuotasResponder(resp *http.Response) (resu
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// SampleInputMethod sample the Stream Analytics input data.
+// Parameters:
+// sampleInput - defines the necessary parameters for sampling the Stream Analytics input data.
+// location - the region to which the request is sent. You can find out which regions Azure Stream Analytics is
+// supported in here: https://azure.microsoft.com/en-us/regions/
+func (client SubscriptionsClient) SampleInputMethod(ctx context.Context, sampleInput SampleInput, location string) (result SubscriptionsSampleInputMethodFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SubscriptionsClient.SampleInputMethod")
+		defer func() {
+			sc := -1
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("streamanalytics.SubscriptionsClient", "SampleInputMethod", err.Error())
+	}
+
+	req, err := client.SampleInputMethodPreparer(ctx, sampleInput, location)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "streamanalytics.SubscriptionsClient", "SampleInputMethod", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.SampleInputMethodSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "streamanalytics.SubscriptionsClient", "SampleInputMethod", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// SampleInputMethodPreparer prepares the SampleInputMethod request.
+func (client SubscriptionsClient) SampleInputMethodPreparer(ctx context.Context, sampleInput SampleInput, location string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"location":       autorest.Encode("path", location),
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2017-04-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.StreamAnalytics/locations/{location}/sampleInput", pathParameters),
+		autorest.WithJSON(sampleInput),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// SampleInputMethodSender sends the SampleInputMethod request. The method will close the
+// http.Response Body if it receives an error.
+func (client SubscriptionsClient) SampleInputMethodSender(req *http.Request) (future SubscriptionsSampleInputMethodFuture, err error) {
+	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
+}
+
+// SampleInputMethodResponder handles the response to the SampleInputMethod request. The method always
+// closes the http.Response Body.
+func (client SubscriptionsClient) SampleInputMethodResponder(resp *http.Response) (result SampleInputResult, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// TestInputMethod test the Stream Analytics input.
+// Parameters:
+// testInput - defines the necessary parameters for testing the Stream Analytics input.
+// location - the region to which the request is sent. You can find out which regions Azure Stream Analytics is
+// supported in here: https://azure.microsoft.com/en-us/regions/
+func (client SubscriptionsClient) TestInputMethod(ctx context.Context, testInput TestInput, location string) (result SubscriptionsTestInputMethodFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SubscriptionsClient.TestInputMethod")
+		defer func() {
+			sc := -1
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: testInput,
+			Constraints: []validation.Constraint{{Target: "testInput.Input", Name: validation.Null, Rule: true, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("streamanalytics.SubscriptionsClient", "TestInputMethod", err.Error())
+	}
+
+	req, err := client.TestInputMethodPreparer(ctx, testInput, location)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "streamanalytics.SubscriptionsClient", "TestInputMethod", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.TestInputMethodSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "streamanalytics.SubscriptionsClient", "TestInputMethod", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// TestInputMethodPreparer prepares the TestInputMethod request.
+func (client SubscriptionsClient) TestInputMethodPreparer(ctx context.Context, testInput TestInput, location string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"location":       autorest.Encode("path", location),
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2017-04-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.StreamAnalytics/locations/{location}/testInput", pathParameters),
+		autorest.WithJSON(testInput),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// TestInputMethodSender sends the TestInputMethod request. The method will close the
+// http.Response Body if it receives an error.
+func (client SubscriptionsClient) TestInputMethodSender(req *http.Request) (future SubscriptionsTestInputMethodFuture, err error) {
+	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
+}
+
+// TestInputMethodResponder handles the response to the TestInputMethod request. The method always
+// closes the http.Response Body.
+func (client SubscriptionsClient) TestInputMethodResponder(resp *http.Response) (result TestDatasourceResult, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// TestOutputMethod test the Stream Analytics output.
+// Parameters:
+// testOutput - defines the necessary parameters for testing the Stream Analytics output.
+// location - the region to which the request is sent. You can find out which regions Azure Stream Analytics is
+// supported in here: https://azure.microsoft.com/en-us/regions/
+func (client SubscriptionsClient) TestOutputMethod(ctx context.Context, testOutput TestOutput, location string) (result SubscriptionsTestOutputMethodFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SubscriptionsClient.TestOutputMethod")
+		defer func() {
+			sc := -1
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: testOutput,
+			Constraints: []validation.Constraint{{Target: "testOutput.Output", Name: validation.Null, Rule: true, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("streamanalytics.SubscriptionsClient", "TestOutputMethod", err.Error())
+	}
+
+	req, err := client.TestOutputMethodPreparer(ctx, testOutput, location)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "streamanalytics.SubscriptionsClient", "TestOutputMethod", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.TestOutputMethodSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "streamanalytics.SubscriptionsClient", "TestOutputMethod", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// TestOutputMethodPreparer prepares the TestOutputMethod request.
+func (client SubscriptionsClient) TestOutputMethodPreparer(ctx context.Context, testOutput TestOutput, location string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"location":       autorest.Encode("path", location),
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2017-04-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.StreamAnalytics/locations/{location}/testOutput", pathParameters),
+		autorest.WithJSON(testOutput),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// TestOutputMethodSender sends the TestOutputMethod request. The method will close the
+// http.Response Body if it receives an error.
+func (client SubscriptionsClient) TestOutputMethodSender(req *http.Request) (future SubscriptionsTestOutputMethodFuture, err error) {
+	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
+}
+
+// TestOutputMethodResponder handles the response to the TestOutputMethod request. The method always
+// closes the http.Response Body.
+func (client SubscriptionsClient) TestOutputMethodResponder(resp *http.Response) (result TestDatasourceResult, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// TestQueryMethod test the Stream Analytics query on a sample input.
+// Parameters:
+// testQuery - the query testing object that defines the input, output, and transformation for the query
+// testing.
+// location - the region to which the request is sent. You can find out which regions Azure Stream Analytics is
+// supported in here: https://azure.microsoft.com/en-us/regions/
+func (client SubscriptionsClient) TestQueryMethod(ctx context.Context, testQuery TestQuery, location string) (result SubscriptionsTestQueryMethodFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SubscriptionsClient.TestQueryMethod")
+		defer func() {
+			sc := -1
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: testQuery,
+			Constraints: []validation.Constraint{{Target: "testQuery.Diagnostics", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "testQuery.Diagnostics.WriteURI", Name: validation.Null, Rule: true, Chain: nil}}},
+				{Target: "testQuery.StreamingJob", Name: validation.Null, Rule: true, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("streamanalytics.SubscriptionsClient", "TestQueryMethod", err.Error())
+	}
+
+	req, err := client.TestQueryMethodPreparer(ctx, testQuery, location)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "streamanalytics.SubscriptionsClient", "TestQueryMethod", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.TestQueryMethodSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "streamanalytics.SubscriptionsClient", "TestQueryMethod", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// TestQueryMethodPreparer prepares the TestQueryMethod request.
+func (client SubscriptionsClient) TestQueryMethodPreparer(ctx context.Context, testQuery TestQuery, location string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"location":       autorest.Encode("path", location),
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2017-04-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.StreamAnalytics/locations/{location}/testQuery", pathParameters),
+		autorest.WithJSON(testQuery),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// TestQueryMethodSender sends the TestQueryMethod request. The method will close the
+// http.Response Body if it receives an error.
+func (client SubscriptionsClient) TestQueryMethodSender(req *http.Request) (future SubscriptionsTestQueryMethodFuture, err error) {
+	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
+}
+
+// TestQueryMethodResponder handles the response to the TestQueryMethod request. The method always
+// closes the http.Response Body.
+func (client SubscriptionsClient) TestQueryMethodResponder(resp *http.Response) (result QueryTestingResult, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}

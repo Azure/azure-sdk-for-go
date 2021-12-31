@@ -29,19 +29,15 @@ type BindingType string
 const (
 	// BindingTypeFunctionRetrieveDefaultDefinitionParameters ...
 	BindingTypeFunctionRetrieveDefaultDefinitionParameters BindingType = "FunctionRetrieveDefaultDefinitionParameters"
-	// BindingTypeMicrosoftMachineLearningServices ...
-	BindingTypeMicrosoftMachineLearningServices BindingType = "Microsoft.MachineLearningServices"
 	// BindingTypeMicrosoftMachineLearningWebService ...
 	BindingTypeMicrosoftMachineLearningWebService BindingType = "Microsoft.MachineLearning/WebService"
-	// BindingTypeMicrosoftStreamAnalyticsCLRUdf ...
-	BindingTypeMicrosoftStreamAnalyticsCLRUdf BindingType = "Microsoft.StreamAnalytics/CLRUdf"
 	// BindingTypeMicrosoftStreamAnalyticsJavascriptUdf ...
 	BindingTypeMicrosoftStreamAnalyticsJavascriptUdf BindingType = "Microsoft.StreamAnalytics/JavascriptUdf"
 )
 
 // PossibleBindingTypeValues returns an array of possible values for the BindingType const type.
 func PossibleBindingTypeValues() []BindingType {
-	return []BindingType{BindingTypeFunctionRetrieveDefaultDefinitionParameters, BindingTypeMicrosoftMachineLearningServices, BindingTypeMicrosoftMachineLearningWebService, BindingTypeMicrosoftStreamAnalyticsCLRUdf, BindingTypeMicrosoftStreamAnalyticsJavascriptUdf}
+	return []BindingType{BindingTypeFunctionRetrieveDefaultDefinitionParameters, BindingTypeMicrosoftMachineLearningWebService, BindingTypeMicrosoftStreamAnalyticsJavascriptUdf}
 }
 
 // ClusterProvisioningState enumerates the values for cluster provisioning state.
@@ -80,13 +76,32 @@ func PossibleClusterSkuNameValues() []ClusterSkuName {
 type CompatibilityLevel string
 
 const (
+	// OneFullStopTwo ...
+	OneFullStopTwo CompatibilityLevel = "1.2"
 	// OneFullStopZero ...
 	OneFullStopZero CompatibilityLevel = "1.0"
 )
 
 // PossibleCompatibilityLevelValues returns an array of possible values for the CompatibilityLevel const type.
 func PossibleCompatibilityLevelValues() []CompatibilityLevel {
-	return []CompatibilityLevel{OneFullStopZero}
+	return []CompatibilityLevel{OneFullStopTwo, OneFullStopZero}
+}
+
+// CompressionType enumerates the values for compression type.
+type CompressionType string
+
+const (
+	// Deflate ...
+	Deflate CompressionType = "Deflate"
+	// GZip ...
+	GZip CompressionType = "GZip"
+	// None ...
+	None CompressionType = "None"
+)
+
+// PossibleCompressionTypeValues returns an array of possible values for the CompressionType const type.
+func PossibleCompressionTypeValues() []CompressionType {
+	return []CompressionType{Deflate, GZip, None}
 }
 
 // ContentStoragePolicy enumerates the values for content storage policy.
@@ -125,8 +140,6 @@ const (
 	Avro EventSerializationType = "Avro"
 	// Csv ...
 	Csv EventSerializationType = "Csv"
-	// CustomClr ...
-	CustomClr EventSerializationType = "CustomClr"
 	// JSON ...
 	JSON EventSerializationType = "Json"
 	// Parquet ...
@@ -135,7 +148,7 @@ const (
 
 // PossibleEventSerializationTypeValues returns an array of possible values for the EventSerializationType const type.
 func PossibleEventSerializationTypeValues() []EventSerializationType {
-	return []EventSerializationType{Avro, Csv, CustomClr, JSON, Parquet}
+	return []EventSerializationType{Avro, Csv, JSON, Parquet}
 }
 
 // EventsOutOfOrderPolicy enumerates the values for events out of order policy.
@@ -246,101 +259,78 @@ func PossibleOutputStartModeValues() []OutputStartMode {
 	return []OutputStartMode{CustomTime, JobStartTime, LastOutputEventTime}
 }
 
-// QueryTestingResultStatus enumerates the values for query testing result status.
-type QueryTestingResultStatus string
+// RefreshType enumerates the values for refresh type.
+type RefreshType string
 
 const (
-	// CompilerError The query testing operation failed due to a compiler error.
-	CompilerError QueryTestingResultStatus = "CompilerError"
-	// RuntimeError The query testing operation failed due to a runtime error.
-	RuntimeError QueryTestingResultStatus = "RuntimeError"
-	// Started The query testing operation was initiated.
-	Started QueryTestingResultStatus = "Started"
-	// Success The query testing operation succeeded.
-	Success QueryTestingResultStatus = "Success"
-	// Timeout The query testing operation failed due to a timeout.
-	Timeout QueryTestingResultStatus = "Timeout"
-	// UnknownError The query testing operation failed due to an unknown error .
-	UnknownError QueryTestingResultStatus = "UnknownError"
+	// RefreshPeriodicallyWithDelta ...
+	RefreshPeriodicallyWithDelta RefreshType = "RefreshPeriodicallyWithDelta"
+	// RefreshPeriodicallyWithFull ...
+	RefreshPeriodicallyWithFull RefreshType = "RefreshPeriodicallyWithFull"
+	// Static ...
+	Static RefreshType = "Static"
 )
 
-// PossibleQueryTestingResultStatusValues returns an array of possible values for the QueryTestingResultStatus const type.
-func PossibleQueryTestingResultStatusValues() []QueryTestingResultStatus {
-	return []QueryTestingResultStatus{CompilerError, RuntimeError, Started, Success, Timeout, UnknownError}
+// PossibleRefreshTypeValues returns an array of possible values for the RefreshType const type.
+func PossibleRefreshTypeValues() []RefreshType {
+	return []RefreshType{RefreshPeriodicallyWithDelta, RefreshPeriodicallyWithFull, Static}
 }
 
-// SampleInputResultStatus enumerates the values for sample input result status.
-type SampleInputResultStatus string
-
-const (
-	// ErrorConnectingToInput The sample input operation failed to connect to the input.
-	ErrorConnectingToInput SampleInputResultStatus = "ErrorConnectingToInput"
-	// NoEventsFoundInRange The sample input operation found no events in the range.
-	NoEventsFoundInRange SampleInputResultStatus = "NoEventsFoundInRange"
-	// ReadAllEventsInRange The sample input operation successfully read all the events in the range.
-	ReadAllEventsInRange SampleInputResultStatus = "ReadAllEventsInRange"
-)
-
-// PossibleSampleInputResultStatusValues returns an array of possible values for the SampleInputResultStatus const type.
-func PossibleSampleInputResultStatusValues() []SampleInputResultStatus {
-	return []SampleInputResultStatus{ErrorConnectingToInput, NoEventsFoundInRange, ReadAllEventsInRange}
-}
-
-// StreamingJobSkuName enumerates the values for streaming job sku name.
-type StreamingJobSkuName string
+// SkuName enumerates the values for sku name.
+type SkuName string
 
 const (
 	// Standard ...
-	Standard StreamingJobSkuName = "Standard"
+	Standard SkuName = "Standard"
 )
 
-// PossibleStreamingJobSkuNameValues returns an array of possible values for the StreamingJobSkuName const type.
-func PossibleStreamingJobSkuNameValues() []StreamingJobSkuName {
-	return []StreamingJobSkuName{Standard}
-}
-
-// TestDatasourceResultStatus enumerates the values for test datasource result status.
-type TestDatasourceResultStatus string
-
-const (
-	// TestFailed The test datasource operation failed.
-	TestFailed TestDatasourceResultStatus = "TestFailed"
-	// TestSucceeded The test datasource operation succeeded.
-	TestSucceeded TestDatasourceResultStatus = "TestSucceeded"
-)
-
-// PossibleTestDatasourceResultStatusValues returns an array of possible values for the TestDatasourceResultStatus const type.
-func PossibleTestDatasourceResultStatusValues() []TestDatasourceResultStatus {
-	return []TestDatasourceResultStatus{TestFailed, TestSucceeded}
+// PossibleSkuNameValues returns an array of possible values for the SkuName const type.
+func PossibleSkuNameValues() []SkuName {
+	return []SkuName{Standard}
 }
 
 // Type enumerates the values for type.
 type Type string
 
 const (
-	// TypeFunctionBinding ...
-	TypeFunctionBinding Type = "FunctionBinding"
-	// TypeMicrosoftMachineLearningServices ...
-	TypeMicrosoftMachineLearningServices Type = "Microsoft.MachineLearningServices"
-	// TypeMicrosoftMachineLearningWebService ...
-	TypeMicrosoftMachineLearningWebService Type = "Microsoft.MachineLearning/WebService"
-	// TypeMicrosoftStreamAnalyticsCLRUdf ...
-	TypeMicrosoftStreamAnalyticsCLRUdf Type = "Microsoft.StreamAnalytics/CLRUdf"
-	// TypeMicrosoftStreamAnalyticsJavascriptUdf ...
-	TypeMicrosoftStreamAnalyticsJavascriptUdf Type = "Microsoft.StreamAnalytics/JavascriptUdf"
+	// TypeAvro ...
+	TypeAvro Type = "Avro"
+	// TypeCsv ...
+	TypeCsv Type = "Csv"
+	// TypeJSON ...
+	TypeJSON Type = "Json"
+	// TypeParquet ...
+	TypeParquet Type = "Parquet"
+	// TypeSerialization ...
+	TypeSerialization Type = "Serialization"
 )
 
 // PossibleTypeValues returns an array of possible values for the Type const type.
 func PossibleTypeValues() []Type {
-	return []Type{TypeFunctionBinding, TypeMicrosoftMachineLearningServices, TypeMicrosoftMachineLearningWebService, TypeMicrosoftStreamAnalyticsCLRUdf, TypeMicrosoftStreamAnalyticsJavascriptUdf}
+	return []Type{TypeAvro, TypeCsv, TypeJSON, TypeParquet, TypeSerialization}
+}
+
+// TypeBasicFunctionBinding enumerates the values for type basic function binding.
+type TypeBasicFunctionBinding string
+
+const (
+	// TypeFunctionBinding ...
+	TypeFunctionBinding TypeBasicFunctionBinding = "FunctionBinding"
+	// TypeMicrosoftMachineLearningWebService ...
+	TypeMicrosoftMachineLearningWebService TypeBasicFunctionBinding = "Microsoft.MachineLearning/WebService"
+	// TypeMicrosoftStreamAnalyticsJavascriptUdf ...
+	TypeMicrosoftStreamAnalyticsJavascriptUdf TypeBasicFunctionBinding = "Microsoft.StreamAnalytics/JavascriptUdf"
+)
+
+// PossibleTypeBasicFunctionBindingValues returns an array of possible values for the TypeBasicFunctionBinding const type.
+func PossibleTypeBasicFunctionBindingValues() []TypeBasicFunctionBinding {
+	return []TypeBasicFunctionBinding{TypeFunctionBinding, TypeMicrosoftMachineLearningWebService, TypeMicrosoftStreamAnalyticsJavascriptUdf}
 }
 
 // TypeBasicFunctionProperties enumerates the values for type basic function properties.
 type TypeBasicFunctionProperties string
 
 const (
-	// TypeAggregate ...
-	TypeAggregate TypeBasicFunctionProperties = "Aggregate"
 	// TypeFunctionProperties ...
 	TypeFunctionProperties TypeBasicFunctionProperties = "FunctionProperties"
 	// TypeScalar ...
@@ -349,7 +339,7 @@ const (
 
 // PossibleTypeBasicFunctionPropertiesValues returns an array of possible values for the TypeBasicFunctionProperties const type.
 func PossibleTypeBasicFunctionPropertiesValues() []TypeBasicFunctionProperties {
-	return []TypeBasicFunctionProperties{TypeAggregate, TypeFunctionProperties, TypeScalar}
+	return []TypeBasicFunctionProperties{TypeFunctionProperties, TypeScalar}
 }
 
 // TypeBasicInputProperties enumerates the values for type basic input properties.
@@ -373,8 +363,6 @@ func PossibleTypeBasicInputPropertiesValues() []TypeBasicInputProperties {
 type TypeBasicOutputDataSource string
 
 const (
-	// TypeMicrosoftAzureFunction ...
-	TypeMicrosoftAzureFunction TypeBasicOutputDataSource = "Microsoft.AzureFunction"
 	// TypeMicrosoftDataLakeAccounts ...
 	TypeMicrosoftDataLakeAccounts TypeBasicOutputDataSource = "Microsoft.DataLake/Accounts"
 	// TypeMicrosoftEventHubEventHub ...
@@ -399,13 +387,11 @@ const (
 	TypeOutputDataSource TypeBasicOutputDataSource = "OutputDataSource"
 	// TypePowerBI ...
 	TypePowerBI TypeBasicOutputDataSource = "PowerBI"
-	// TypeRaw ...
-	TypeRaw TypeBasicOutputDataSource = "Raw"
 )
 
 // PossibleTypeBasicOutputDataSourceValues returns an array of possible values for the TypeBasicOutputDataSource const type.
 func PossibleTypeBasicOutputDataSourceValues() []TypeBasicOutputDataSource {
-	return []TypeBasicOutputDataSource{TypeMicrosoftAzureFunction, TypeMicrosoftDataLakeAccounts, TypeMicrosoftEventHubEventHub, TypeMicrosoftServiceBusEventHub, TypeMicrosoftServiceBusQueue, TypeMicrosoftServiceBusTopic, TypeMicrosoftSQLServerDatabase, TypeMicrosoftSQLServerDataWarehouse, TypeMicrosoftStorageBlob, TypeMicrosoftStorageDocumentDB, TypeMicrosoftStorageTable, TypeOutputDataSource, TypePowerBI, TypeRaw}
+	return []TypeBasicOutputDataSource{TypeMicrosoftDataLakeAccounts, TypeMicrosoftEventHubEventHub, TypeMicrosoftServiceBusEventHub, TypeMicrosoftServiceBusQueue, TypeMicrosoftServiceBusTopic, TypeMicrosoftSQLServerDatabase, TypeMicrosoftSQLServerDataWarehouse, TypeMicrosoftStorageBlob, TypeMicrosoftStorageDocumentDB, TypeMicrosoftStorageTable, TypeOutputDataSource, TypePowerBI}
 }
 
 // TypeBasicReferenceInputDataSource enumerates the values for type basic reference input data source.
@@ -416,38 +402,13 @@ const (
 	TypeBasicReferenceInputDataSourceTypeMicrosoftSQLServerDatabase TypeBasicReferenceInputDataSource = "Microsoft.Sql/Server/Database"
 	// TypeBasicReferenceInputDataSourceTypeMicrosoftStorageBlob ...
 	TypeBasicReferenceInputDataSourceTypeMicrosoftStorageBlob TypeBasicReferenceInputDataSource = "Microsoft.Storage/Blob"
-	// TypeBasicReferenceInputDataSourceTypeRaw ...
-	TypeBasicReferenceInputDataSourceTypeRaw TypeBasicReferenceInputDataSource = "Raw"
 	// TypeBasicReferenceInputDataSourceTypeReferenceInputDataSource ...
 	TypeBasicReferenceInputDataSourceTypeReferenceInputDataSource TypeBasicReferenceInputDataSource = "ReferenceInputDataSource"
 )
 
 // PossibleTypeBasicReferenceInputDataSourceValues returns an array of possible values for the TypeBasicReferenceInputDataSource const type.
 func PossibleTypeBasicReferenceInputDataSourceValues() []TypeBasicReferenceInputDataSource {
-	return []TypeBasicReferenceInputDataSource{TypeBasicReferenceInputDataSourceTypeMicrosoftSQLServerDatabase, TypeBasicReferenceInputDataSourceTypeMicrosoftStorageBlob, TypeBasicReferenceInputDataSourceTypeRaw, TypeBasicReferenceInputDataSourceTypeReferenceInputDataSource}
-}
-
-// TypeBasicSerialization enumerates the values for type basic serialization.
-type TypeBasicSerialization string
-
-const (
-	// TypeAvro ...
-	TypeAvro TypeBasicSerialization = "Avro"
-	// TypeCsv ...
-	TypeCsv TypeBasicSerialization = "Csv"
-	// TypeCustomClr ...
-	TypeCustomClr TypeBasicSerialization = "CustomClr"
-	// TypeJSON ...
-	TypeJSON TypeBasicSerialization = "Json"
-	// TypeParquet ...
-	TypeParquet TypeBasicSerialization = "Parquet"
-	// TypeSerialization ...
-	TypeSerialization TypeBasicSerialization = "Serialization"
-)
-
-// PossibleTypeBasicSerializationValues returns an array of possible values for the TypeBasicSerialization const type.
-func PossibleTypeBasicSerializationValues() []TypeBasicSerialization {
-	return []TypeBasicSerialization{TypeAvro, TypeCsv, TypeCustomClr, TypeJSON, TypeParquet, TypeSerialization}
+	return []TypeBasicReferenceInputDataSource{TypeBasicReferenceInputDataSourceTypeMicrosoftSQLServerDatabase, TypeBasicReferenceInputDataSourceTypeMicrosoftStorageBlob, TypeBasicReferenceInputDataSourceTypeReferenceInputDataSource}
 }
 
 // TypeBasicStreamInputDataSource enumerates the values for type basic stream input data source.
@@ -462,15 +423,13 @@ const (
 	TypeBasicStreamInputDataSourceTypeMicrosoftServiceBusEventHub TypeBasicStreamInputDataSource = "Microsoft.ServiceBus/EventHub"
 	// TypeBasicStreamInputDataSourceTypeMicrosoftStorageBlob ...
 	TypeBasicStreamInputDataSourceTypeMicrosoftStorageBlob TypeBasicStreamInputDataSource = "Microsoft.Storage/Blob"
-	// TypeBasicStreamInputDataSourceTypeRaw ...
-	TypeBasicStreamInputDataSourceTypeRaw TypeBasicStreamInputDataSource = "Raw"
 	// TypeBasicStreamInputDataSourceTypeStreamInputDataSource ...
 	TypeBasicStreamInputDataSourceTypeStreamInputDataSource TypeBasicStreamInputDataSource = "StreamInputDataSource"
 )
 
 // PossibleTypeBasicStreamInputDataSourceValues returns an array of possible values for the TypeBasicStreamInputDataSource const type.
 func PossibleTypeBasicStreamInputDataSourceValues() []TypeBasicStreamInputDataSource {
-	return []TypeBasicStreamInputDataSource{TypeBasicStreamInputDataSourceTypeMicrosoftDevicesIotHubs, TypeBasicStreamInputDataSourceTypeMicrosoftEventHubEventHub, TypeBasicStreamInputDataSourceTypeMicrosoftServiceBusEventHub, TypeBasicStreamInputDataSourceTypeMicrosoftStorageBlob, TypeBasicStreamInputDataSourceTypeRaw, TypeBasicStreamInputDataSourceTypeStreamInputDataSource}
+	return []TypeBasicStreamInputDataSource{TypeBasicStreamInputDataSourceTypeMicrosoftDevicesIotHubs, TypeBasicStreamInputDataSourceTypeMicrosoftEventHubEventHub, TypeBasicStreamInputDataSourceTypeMicrosoftServiceBusEventHub, TypeBasicStreamInputDataSourceTypeMicrosoftStorageBlob, TypeBasicStreamInputDataSourceTypeStreamInputDataSource}
 }
 
 // UdfType enumerates the values for udf type.

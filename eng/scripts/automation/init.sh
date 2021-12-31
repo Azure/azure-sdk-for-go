@@ -43,7 +43,7 @@ export PATH=$PATH:$GOPATH/bin
 ls $GOPATH/bin/
 cd $DIRECTORY
 generator
-sudo ln -s $GOPATH/bin/generator /usr/bin/generator
+# sudo ln -s $GOPATH/bin/generator /usr/bin/generator
 if [ ! -f "$GOPATH/bin/pwsh.exe" ]; then
   ln -s /usr/bin/pwsh $GOPATH/bin/pwsh.exe
 fi

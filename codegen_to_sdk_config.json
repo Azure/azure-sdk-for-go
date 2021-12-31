@@ -10,7 +10,7 @@
     },
     "generateAndBuild": {
         "generateAndBuildScript": {
-            "path": "generator automation-v2",
+            "path": "./eng/scripts/automation/generate.sh",
             "logPrefix": "[GO-Generate]",
             "stderr":{
                 "storeLogByFilter": "[error|Error|Exception]"

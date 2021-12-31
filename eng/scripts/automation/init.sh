@@ -21,8 +21,10 @@ fi
 #   export GOPATH=$DIRECTORY/../../../gofolder
 # fi
 DIRECTORY=$(cd `dirname $0` && pwd)
-echo $DIRECTORY
-export GOPATH=$DIRECTORY/../../../gofolder
+WORKFOLDER="$(realpath $DIRECTORY/../../../../)"
+echo $WORKFOLDER
+# export GOPATH=$DIRECTORY/../../../gofolder
+export GOPATH=$WORKFOLDER/gofolder
 # export GOPATH=$TMPDIR/gofolder
 if [ ! -d "$GOPATH/bin" ]; then
   echo "create gopath folder"
@@ -32,7 +34,7 @@ echo $GOPATH
 
 export GO111MODULE=on
 # cd eng/tools/generator && go build && cp generator $GOPATH/bin && cd ../../..
-cd $DIRECTORY/../tools/generator
+cd $DIRECTORY/../../tools/generator
 go build
 ls -l
 # go install
@@ -62,3 +64,5 @@ cat > $1 << EOF
   }
 }
 EOF
+
+cat $1

@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## `v61.0.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2021-09-01-preview/insights`
+- `github.com/Azure/azure-sdk-for-go/services/streamanalytics/mgmt/2020-03-01/streamanalytics`
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/notificationhubs/mgmt/2017-04-01/notificationhubs` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/notificationhubs/mgmt/2017-04-01/notificationhubs/CHANGELOG.md) |
+
 ## `v60.3.0`
 
 ### New Packages

@@ -10,7 +10,7 @@
     },
     "generateAndBuild": {
         "generateAndBuildScript": {
-            "path": "./eng/scripts/automation/generate.sh",
+            "path": "generator automation-v2",
             "logPrefix": "[GO-Generate]",
             "stderr":{
                 "storeLogByFilter": "[error|Error|Exception]"
@@ -19,7 +19,7 @@
     },
     "mockTest": {
         "mockTestScript": {
-            "path": "pwsh ./eng/scripts/automation/Invoke-MockTest.ps1",
+            "path": "./eng/scripts/automation/Invoke-MockTest.ps1",
             "logPrefix": "[GO-MockTest]",
             "stderr":{
                 "storeLogByFilter": "[error|Error|Exception]"

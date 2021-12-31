@@ -19,7 +19,7 @@
     },
     "mockTest": {
         "mockTestScript": {
-            "path": "./eng/scripts/automation/Invoke-MockTest.ps1",
+            "path": "./eng/scripts/automation/mock-test.sh",
             "logPrefix": "[GO-MockTest]",
             "stderr":{
                 "storeLogByFilter": "[error|Error|Exception]"

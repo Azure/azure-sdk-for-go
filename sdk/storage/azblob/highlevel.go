@@ -7,12 +7,13 @@ import (
 	"context"
 	"encoding/base64"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"io"
 	"net/http"
 	"sync"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 
 	"bytes"
 	"errors"
@@ -281,7 +282,7 @@ func (b BlobClient) downloadBlobToWriterAt(ctx context.Context, offset int64, co
 						rangeProgress = bytesTransferred
 						progressLock.Lock()
 						progress += diff
-						//o.Progress(progress)
+						o.Progress(progress)
 						progressLock.Unlock()
 					})
 			}

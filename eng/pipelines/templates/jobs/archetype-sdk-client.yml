@@ -134,6 +134,8 @@ stages:
         name: azsdk-pool-mms-ubuntu-2004-general
 
       steps:
+      - template: /eng/common/pipelines/templates/steps/check-spelling.yml
+
       - task: GoTool@0
         inputs:
           version: '1.17'

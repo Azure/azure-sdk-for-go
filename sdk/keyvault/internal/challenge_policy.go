@@ -7,9 +7,9 @@
 package internal
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
-	"io"
 	"net/http"
 	"strings"
 	"time"
@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 )
 
@@ -180,34 +181,13 @@ func (k KeyVaultChallengePolicy) getChallengeRequest(orig policy.Request) (*poli
 	copied.Raw().Body = req.Body()
 	copied.Raw().ContentLength = 0
 	copied.Raw().Header.Set("Content-Length", "0")
-	err = copied.SetBody(NopCloser(), "application/json")
+	err = copied.SetBody(streaming.NopCloser(bytes.NewReader([]byte{})), "application/json")
 	if err != nil {
 		return nil, err
 	}
 	copied.Raw().Header.Del("Content-Type")
 
 	return copied, err
-}
-
-// The next three methods are copied from azcore/internal/shared.go
-type nopCloser struct {
-}
-
-func (n nopCloser) Close() error {
-	return nil
-}
-
-func (n nopCloser) Read(p []byte) (int, error) {
-	return 0, nil
-}
-
-func (n nopCloser) Seek(offset int64, whence int) (int64, error) {
-	return 0, nil
-}
-
-// NopCloser returns a ReadSeekCloser with a no-op close method wrapping the provided io.ReadSeeker.
-func NopCloser() io.ReadSeekCloser {
-	return nopCloser{}
 }
 
 type acquiringResourceState struct {

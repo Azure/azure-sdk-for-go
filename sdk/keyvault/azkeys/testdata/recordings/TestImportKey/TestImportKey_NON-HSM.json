@@ -11,7 +11,6 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Content-Length": "0",
-        "Content-Type": "application/json",
         "User-Agent": "azsdk-go-internal/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
       },
       "RequestBody": null,
@@ -20,7 +19,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "97",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 09 Dec 2021 17:59:04 GMT",
+        "Date": "Mon, 20 Dec 2021 16:41:25 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -29,7 +28,7 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.195.1",
-        "x-ms-request-id": "d1fd125e-8da7-4998-95b3-b67fecad4d19",
+        "x-ms-request-id": "3fa251d8-3193-45ec-b82d-b28f46093533",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -78,9 +77,9 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "685",
+        "Content-Length": "686",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 09 Dec 2021 17:59:05 GMT",
+        "Date": "Mon, 20 Dec 2021 16:41:25 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -88,12 +87,12 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.195.1",
-        "x-ms-request-id": "eca487c2-4108-4ccc-99dc-2a06d04d90a3",
+        "x-ms-request-id": "fa184d1b-1a45-48a4-b6d6-3e659f63f88a",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
         "key": {
-          "kid": "https://fakekvurl.vault.azure.net/keys/importedKey/4623912e81b54f72935c3f492822bbf9",
+          "kid": "https://fakekvurl.vault.azure.net/keys/importedKey/7ff364788c7140b5af7542a7c801fd50",
           "kty": "RSA",
           "key_ops": [
             "encrypt",
@@ -103,13 +102,13 @@
             "wrapKey",
             "unwrapKey"
           ],
-          "n": "oJFNACNKxoOyG0wV1b7Yh73JWcLlevVK5zTo8Acg13XSdeRVIH43hM7rYKUKRlXdcqepTScejuj3lZpmnKbndb8OI7ra6ZG0Up2XhSi0vZBSHTLdJlZ5a6gra7_HZoyPXutQU3R_0ZkxnSmoRA0I9EEtUn_5MR7acYJZILR7HEaxGrPpHXMWQH6Jx_NA97haNAQs5RdDsn1HGEA9NMe0OK9hgb4F5NEeuYXTglPX_pv1P8LxsALSLS15P6eaUEtqtC0EkoBNcHHXJ6Bs86iJOqVCsVA_gyspY3G2cH1NxuNy-P5n2N7RyQj95FzgO8CGpxSH-nXkOqDgZ5qg0g7-NQ",
+          "n": "AKCRTQAjSsaDshtMFdW-2Ie9yVnC5Xr1Suc06PAHINd10nXkVSB-N4TO62ClCkZV3XKnqU0nHo7o95WaZpym53W_DiO62umRtFKdl4UotL2QUh0y3SZWeWuoK2u_x2aMj17rUFN0f9GZMZ0pqEQNCPRBLVJ_-TEe2nGCWSC0exxGsRqz6R1zFkB-icfzQPe4WjQELOUXQ7J9RxhAPTTHtDivYYG-BeTRHrmF04JT1_6b9T_C8bAC0i0teT-nmlBLarQtBJKATXBx1yegbPOoiTqlQrFQP4MrKWNxtnB9Tcbjcvj-Z9je0ckI_eRc4DvAhqcUh_p15Dqg4GeaoNIO_jU",
           "e": "AQAB"
         },
         "attributes": {
           "enabled": true,
-          "created": 1639072745,
-          "updated": 1639072745,
+          "created": 1640018486,
+          "updated": 1640018486,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
           "recoverableDays": 7
         }
@@ -138,7 +137,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "101",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 09 Dec 2021 17:59:05 GMT",
+        "Date": "Mon, 20 Dec 2021 16:41:25 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -146,7 +145,7 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.195.1",
-        "x-ms-request-id": "c8eb27c6-f4c8-4e00-a891-fad69733c88e",
+        "x-ms-request-id": "be07c85e-6ab2-4d42-8011-c86e9b5e1495",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {

@@ -10,7 +10,7 @@ package internal
 
 const (
 	module  = "internal"
-	version = "v0.3.1"
+	version = "v0.4.0"
 )
 
 // DataAction - Supported permissions for data actions.

@@ -18,6 +18,7 @@ type ClientOptions struct {
 	azcore.ClientOptions
 }
 
+// NewClient creates an instance of a Client for a Key Vault Certificate URL.
 func NewClient(vaultURL string, credential azcore.TokenCredential, options *ClientOptions) (Client, error) {
 	if options == nil {
 		options = &ClientOptions{}

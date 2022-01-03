@@ -11,7 +11,6 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Content-Length": "0",
-        "Content-Type": "application/json",
         "User-Agent": "azsdk-go-internal/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
       },
       "RequestBody": null,
@@ -25,8 +24,8 @@
         "WWW-Authenticate": "Bearer authorization=\u0022https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000\u0022, resource=\u0022https://managedhsm.azure.net\u0022",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
-        "x-ms-request-id": "4fd6a62c-47ef-11ec-bf7c-000d3a5f7959",
-        "x-ms-server-latency": "1"
+        "x-ms-request-id": "aa594e1e-61b3-11ec-985f-000d3aec06d7",
+        "x-ms-server-latency": "0"
       },
       "ResponseBody": null
     },
@@ -59,17 +58,17 @@
         "X-Frame-Options": "SAMEORIGIN",
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=Ipv4;",
         "x-ms-keyvault-region": "southcentralus",
-        "x-ms-request-id": "4ffe4380-47ef-11ec-bf7c-000d3a5f7959",
-        "x-ms-server-latency": "208"
+        "x-ms-request-id": "aa902704-61b3-11ec-985f-000d3aec06d7",
+        "x-ms-server-latency": "225"
       },
       "ResponseBody": {
         "attributes": {
-          "created": 1637185370,
+          "created": 1640018483,
           "enabled": true,
           "exportable": false,
           "recoverableDays": 7,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-          "updated": 1637185370
+          "updated": 1640018483
         },
         "key": {
           "e": "AQAB",
@@ -81,9 +80,9 @@
             "sign",
             "verify"
           ],
-          "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key2201827963/03eac1f02f100080954a3b9cc5e16289",
+          "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key2201827963/ddc161944abe0e1d898762c03e3dd087",
           "kty": "RSA-HSM",
-          "n": "kcks_smGS8g28DCD2pfe0k-5ujj-azByR0iZv_Djn3JG7b4b8HvaPxm85w-hYr8qsiRmWsmPmxS5dm5gjWVc8XaF_Xl7qXn5Mowh6UnyvYMkxCt68ubrjSXi22i79huwC9BJF7AaQur1Bln80smPvirBOF82FFEeMp-b-aNT-9WZ81Z9IhfOVonocbKVv0cckkKpH-j2z3Ie_SBF8IoNxBaSbtV1r096OGnpO9QyIPYPiTnYXmCKK9Fi2rWxfrbccQOSKGS7w_TCDBIKGiuBNNl-usYUo0t8sMTNpFvIxvwmzZsE3tB-NOIoYuXC2g_Um1HLGxPPlnYWWg0NPFyJvw"
+          "n": "rlLaB8Ndm8JCkRNDhbgQdHtSYl7UNe0YX5pMw4X_IQg_baOkhAq7JyyX8t3onGbFQsfQbla-JJNnikvTCLY2TGFIYbWAuwj4ONRTtEI3GDMVZcGUydw1-mV1X-Y6S0fyb8qJuif3IgcN-kB-r7bmbbcy-tvChfWHFCd1cdehiV2xWk22taPiYVGOIpkJ9diMmFMsDm16NkdP_mrx1ZeMA-Ha_aOOVaPB50Ul6rSgTslUKxZSwje0cIsvPuRujZIOBvoLAjkEPxWqmMEJOpPte2-bEz9vPYTEcgHOLhLYzrtRJvNH_HJcOwEQvI2NoY8CLGGQ5tIH8Si_5vsSjcL0TQ"
         }
       }
     },
@@ -116,17 +115,17 @@
         "X-Frame-Options": "SAMEORIGIN",
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=Ipv4;",
         "x-ms-keyvault-region": "southcentralus",
-        "x-ms-request-id": "50285a62-47ef-11ec-bf7c-000d3a5f7959",
-        "x-ms-server-latency": "284"
+        "x-ms-request-id": "aabcb684-61b3-11ec-985f-000d3aec06d7",
+        "x-ms-server-latency": "303"
       },
       "ResponseBody": {
         "attributes": {
-          "created": 1637185370,
+          "created": 1640018483,
           "enabled": true,
           "exportable": false,
           "recoverableDays": 7,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-          "updated": 1637185370
+          "updated": 1640018483
         },
         "key": {
           "e": "AQAB",
@@ -138,9 +137,9 @@
             "decrypt",
             "unwrapKey"
           ],
-          "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key2201827963/9a153530ac9b06e694629ddc81544aa6",
+          "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key2201827963/1d56e2806f310d95303fb1d8279cc76f",
           "kty": "RSA-HSM",
-          "n": "tUGTFl5KghyDZ8q4Ij_l4og9hdsX3-gSjilDPR5Ns0uXRytzhcVX1GZb-Nl1yhrGxvYYTfPIodzeVT0O6nMAsalrMsjLAfh8KBP0NFJTZNs_iTsYRhCCIX2P0O2XPVg_sxxoYpkltZ7s_XQkHb8SujHjgWRscofr5i4Cm76Y4HGYxeEvDYgx3UwTxjR_NgsLlxy7TQDIDLpmATEmB84vU2f06JsYgdb-Ipy3kyjsQMCgmKyGCo-mNloxTAc9S18cKTalLLzQ1tujfu6rnu-h-_Yq01e0C02HqTjjCCqaVlJXJQdiwsid1j4OWLGutltFdDKIDMKfNpvP7ClPJYi5nw"
+          "n": "pTHSxrE6cRlhIRxDwOzNsLzy-LxrFQimFORGklT4Ft9H_xhUCs3bH6m2aCFhcX6OS2KceZ6zy9-E0aJWui464ARLQT3lJDooGgnEceLu4tl0WVlb4qqIFBn6FPtFRgpT6td33NDZXfqLZ6fjLXfEkQ-14nLyjYAlJmNwjaoVADonXqe9xR_vnrrJalv4MHh9dBCQcc1isKBu0lRV1gwUTBLh6f4YSDFwEIyk-5mETMIRQlvu_s178Zd-8cQzZ2g0cMUGaJUPuPWnh9n6F6Sj3LN5inh9EDqwa0epYxZSYakanjsrO3cZmCNEdAabKBX0-a0KwQezqeAw1plrroFVjw"
         }
       }
     },
@@ -173,17 +172,17 @@
         "X-Frame-Options": "SAMEORIGIN",
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=Ipv4;",
         "x-ms-keyvault-region": "southcentralus",
-        "x-ms-request-id": "505f8528-47ef-11ec-bf7c-000d3a5f7959",
-        "x-ms-server-latency": "277"
+        "x-ms-request-id": "aaf51e0c-61b3-11ec-985f-000d3aec06d7",
+        "x-ms-server-latency": "290"
       },
       "ResponseBody": {
         "attributes": {
-          "created": 1637185371,
+          "created": 1640018483,
           "enabled": true,
           "exportable": false,
           "recoverableDays": 7,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-          "updated": 1637185371
+          "updated": 1640018483
         },
         "key": {
           "e": "AQAB",
@@ -195,9 +194,9 @@
             "decrypt",
             "unwrapKey"
           ],
-          "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key2201827963/66be89d568c80e0dbabf87ea1a9ce726",
+          "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key2201827963/d23d776cd0114e5d993c3bc3bb0ee0a7",
           "kty": "RSA-HSM",
-          "n": "idj2DD4tVQOX2ehpY2PR85PNwmX5dkhnWKT37ggSZLAJsibElsVWqWL3aoqAiGhAcYYRoWSNDLhQzt3bMgh9FcPzrlbDygrHtxOvs-9AZhohRuwl3Ao0cbHS9k_VkgDABQaPj4Um1Ib8c6Y_CqWuwJK3Q6SitHQxU6AWzGR0BVI3ZmUT5cZdIYkvj3x_OwfkGvpV-nCzLI1uF7ol1iJzn0wnz798xQIwygJJwCr5DFDWJ5bnIyMAXIt8_K01jIhLQYDGBIytvAsX0228k2IM5KXBEM4Gh1XCFJ7kKrJlC6ZVcP2O49nHT8Bteet1hxh_v1HSR0dcvPw4uBImoefn1w"
+          "n": "rQpmpU_VIkaG2ypcPVf2x8n46aLNjrvgLmaHXV-nv7qspG3Axg7wCKnqO46GWPsrQ4leIz3HjAQoTIA3koLbAwiFbfQm4ZQxBSP9Jr3cFW2zQqr_D0PLL92i1XbxINquOFf7wQVsJVOf46G5B_COk5I7LROimo4Zq93lqej7WdEAYQzLBhRD7SIqwMwKrVi0f6lTp_mhll9c98MIh6-7Re4AIIsXi4ubJLEI_VNSqM1pYRtvD9h2ddxfn9DTnrgdJ2sLF0F-3Lx-KRhC6si21AD_KlV_4FWDjBz7_nrYDN1c7igCdYEKStUuPpPRSgKqFsIx8wUNd67SzHDLp95fKQ"
         }
       }
     },
@@ -230,17 +229,17 @@
         "X-Frame-Options": "SAMEORIGIN",
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=Ipv4;",
         "x-ms-keyvault-region": "southcentralus",
-        "x-ms-request-id": "5093d9f4-47ef-11ec-bf7c-000d3a5f7959",
-        "x-ms-server-latency": "279"
+        "x-ms-request-id": "ab2b7d58-61b3-11ec-985f-000d3aec06d7",
+        "x-ms-server-latency": "311"
       },
       "ResponseBody": {
         "attributes": {
-          "created": 1637185371,
+          "created": 1640018484,
           "enabled": true,
           "exportable": false,
           "recoverableDays": 7,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-          "updated": 1637185371
+          "updated": 1640018484
         },
         "key": {
           "e": "AQAB",
@@ -252,9 +251,9 @@
             "decrypt",
             "unwrapKey"
           ],
-          "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key2201827963/90e333d0a6040ff19f9a7eb5b184b7ad",
+          "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key2201827963/ab89ce2c997f490d9eedcd578e95931e",
           "kty": "RSA-HSM",
-          "n": "qmiqMHnymodGLdgGuS8OUg3fiTKFJJydECcMVDZGpjAMk-DS_VUOh8F8feMC7PJ1DiAgXBUuLMkK_Koo81KlTOErGsQ8eXItlVoes-pZuY9EFm0v1nGRRM_1i7epS97UV0wAl4e6ervUtzq_P8_tfyCnesucZSPJ6JsqmUWYNHJ0XRXfHiWyBpuqa7m34JdRufagP0sBEG3WUqcPotTJFuTS0v0MpzkcO7YiUQpd6XGbDtnr4jzIv4yYlACwF1hxEhZn0rLSFiCI_ijhLX_NWGv9HmAdU9wMojLULMJtb6I5me8lPunxclQ9jNY0kMMM_TvusEFBqM7JWfY1W60chQ"
+          "n": "3AfiR1j4W5IYtvKoY1oQPYJE6zEqEzcNaObCjpsGGEKusIOGY9xscgRUz5cclZZfw59C4wPnCG8yq-hl37kOqbpwheLOnrvQOV54czL4x235bd61mMUTh7eFm6bvnqfuEajXxlOVmLyzo7hXEaLEKEeGH3YIkVI3wLUa5kfh_cPsbVnEWuziTk-llcIo9ft_MPjVnabUMCLz2dd_VoNlwFB2zXlcAmaM_D83DIJW1Ux7-X1FhXgmPjSIA3LINihe8wSzPUvip9yTpq18dqKXisOcGx_593abfHM_4hBrHMS7LOd4XqyhBAX2rV5N6zzkc8zLA6spclWpa5g9hF94UQ"
         }
       }
     },
@@ -287,17 +286,17 @@
         "X-Frame-Options": "SAMEORIGIN",
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=Ipv4;",
         "x-ms-keyvault-region": "southcentralus",
-        "x-ms-request-id": "50c8bc32-47ef-11ec-bf7c-000d3a5f7959",
-        "x-ms-server-latency": "275"
+        "x-ms-request-id": "ab6550b4-61b3-11ec-985f-000d3aec06d7",
+        "x-ms-server-latency": "312"
       },
       "ResponseBody": {
         "attributes": {
-          "created": 1637185372,
+          "created": 1640018484,
           "enabled": true,
           "exportable": false,
           "recoverableDays": 7,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-          "updated": 1637185372
+          "updated": 1640018484
         },
         "key": {
           "e": "AQAB",
@@ -309,9 +308,9 @@
             "decrypt",
             "unwrapKey"
           ],
-          "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key2201827963/6d3db12667ec42273373166e480a7350",
+          "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key2201827963/daf3fe4135b80b502dce1d7126f93fa1",
           "kty": "RSA-HSM",
-          "n": "29T9ob649ZfkHj6alWXI8rZGDpWt-4_dJtLO2hahW--dlWgiLJbliZI06Q9UfBAcj02QJc26zuZdwOY1hegA88ymvgXienNDFtKRqvFYohgVJPY2POkuujVGHspVN4lPs9sg2uNZrgeiL5WthOzoca6kJ13e1TTvfcidRjsy8Rw7sGsyipgyTJELcp58edXS4SDNelGk-6oA4F6WZAkGp2zguK_1GTbv8JdjldYgCRPwtdxw1MKUUem_kOMI1qHXMxr9GeQz3xtoa_PtAT7-Y0MFE6cVftrkmkBqGOZZ6q1sXV5K0grJnvQ73MzqczPvjpK0Tkf6vzoU1jFB2nXuEQ"
+          "n": "61uiXPvtVtKqOimhcg9b95aZOAs7JokoK82f7ZR4GAhw1gFxXZTwf3Hi_F79hvcyafEckgmcNQH9yUilAnjRIVipVrnGuV5NlDfoTOLN6F1vwNOq5bQSmhlzNXDhnBBlJYpsoKmvBr38Iug2UZhiCyZG2khbSyBGI_shPEws9G0pEAab5oy6qqdu4y7L7Ebsa2rvVyatr9_1hPYVtzD5J3ITR6eAbIF-lLMGtW1Y36FReyqR_KAMixIG0PNzLt5I3vhksIKLL8Fd4pGDdyZPC0RpryrCWda1wpYgcLrM2p1hVjj6cEFPBnsxoBm9qUpkKQK94vfml5Oon1CJT2Q75Q"
         }
       }
     },
@@ -344,17 +343,17 @@
         "X-Frame-Options": "SAMEORIGIN",
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=Ipv4;",
         "x-ms-keyvault-region": "southcentralus",
-        "x-ms-request-id": "50fcef34-47ef-11ec-bf7c-000d3a5f7959",
-        "x-ms-server-latency": "288"
+        "x-ms-request-id": "ab9f131c-61b3-11ec-985f-000d3aec06d7",
+        "x-ms-server-latency": "291"
       },
       "ResponseBody": {
         "attributes": {
-          "created": 1637185372,
+          "created": 1640018484,
           "enabled": true,
           "exportable": false,
           "recoverableDays": 7,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-          "updated": 1637185372
+          "updated": 1640018484
         },
         "key": {
           "e": "AQAB",
@@ -366,9 +365,9 @@
             "decrypt",
             "unwrapKey"
           ],
-          "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key2201827963/a22487f5de5904b7bb36cb0e8ec3f39a",
+          "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key2201827963/5cc3dcdd32fc4cd58e9caac53ce10425",
           "kty": "RSA-HSM",
-          "n": "s4MCogYnasU461iFBJKLaVAvk45eutmVUqHDia7mCMrNNeT3jlYrYcQagKQICEqRM-K05jsTOQhTi7vEyuFVWW1eBDCDhTbTpds5_uumor7jVeB_x3JRGiluPy6Xh897u46bawMeJ_Rq_e5ZDqxf5PXXJZzqB54zo-l4eqyjmUganf4LaFENW_72qMZrriZ_SbqcMxLBWRJWcmKIjuaLPXwpVn_ttoC0KxhJrrK83UYVdLMfdvOhyrSUQZ2kXPThxA_rr_5ufmHxQM5lTEj3tEp7FqeKl9NvC9P-qaIV22ZQTRWZ3tggdQvAfQ_rWRSc5jQdMLFGbShGw_mY5PZvjQ"
+          "n": "q8Ak62c4Nvtw0i8JS_aXFzEcntlM2Wb0_CjSHfrSHtCRyHg9DpNMml8GIRfavTYP48_lksYRNI3_8K-8-ucmEXM5XMqAEKyNNdo3MzKlHu-0e72zdAuqK2bdx3UsqDfpE81sPb-Iqb4kmWWjDrJypD22RhCiQYj548ncGCpqeSt-Ktm4ISHCB0zhiTMzfp4ElZVFrrnP4EGyvY7a3qUBhD0PbQY3sVCUJuYq3pbFrXkJuS0bO9rYNAowTN9E-KfZYxufEATkiHERnWU0tVT44Uj2b98nr3z1fltscdPH4K1nNyKzCDcQ1wjrjONoSDhpaXpa_YFcBoMVP0YHvgBSYw"
         }
       }
     },
@@ -395,79 +394,79 @@
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
-        "x-ms-build-version": "1.0.20211018-1-9c44708a-develop",
+        "x-ms-build-version": "1.0.20211206-1-be739728-develop",
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=Ipv4;",
         "x-ms-keyvault-region": "southcentralus",
-        "x-ms-request-id": "51337d24-47ef-11ec-bf7c-000d3a5f7959",
-        "x-ms-server-latency": "116"
+        "x-ms-request-id": "abd7b3ac-61b3-11ec-985f-000d3aec06d7",
+        "x-ms-server-latency": "100"
       },
       "ResponseBody": {
         "value": [
           {
             "attributes": {
-              "created": 1637185370,
+              "created": 1640018483,
               "enabled": true,
               "exportable": false,
               "recoverableDays": 7,
               "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-              "updated": 1637185370
+              "updated": 1640018483
             },
-            "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key2201827963/03eac1f02f100080954a3b9cc5e16289"
+            "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key2201827963/ddc161944abe0e1d898762c03e3dd087"
           },
           {
             "attributes": {
-              "created": 1637185370,
+              "created": 1640018483,
               "enabled": true,
               "exportable": false,
               "recoverableDays": 7,
               "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-              "updated": 1637185370
+              "updated": 1640018483
             },
-            "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key2201827963/9a153530ac9b06e694629ddc81544aa6"
+            "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key2201827963/1d56e2806f310d95303fb1d8279cc76f"
           },
           {
             "attributes": {
-              "created": 1637185371,
+              "created": 1640018483,
               "enabled": true,
               "exportable": false,
               "recoverableDays": 7,
               "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-              "updated": 1637185371
+              "updated": 1640018483
             },
-            "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key2201827963/66be89d568c80e0dbabf87ea1a9ce726"
+            "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key2201827963/d23d776cd0114e5d993c3bc3bb0ee0a7"
           },
           {
             "attributes": {
-              "created": 1637185371,
+              "created": 1640018484,
               "enabled": true,
               "exportable": false,
               "recoverableDays": 7,
               "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-              "updated": 1637185371
+              "updated": 1640018484
             },
-            "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key2201827963/90e333d0a6040ff19f9a7eb5b184b7ad"
+            "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key2201827963/ab89ce2c997f490d9eedcd578e95931e"
           },
           {
             "attributes": {
-              "created": 1637185372,
+              "created": 1640018484,
               "enabled": true,
               "exportable": false,
               "recoverableDays": 7,
               "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-              "updated": 1637185372
+              "updated": 1640018484
             },
-            "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key2201827963/6d3db12667ec42273373166e480a7350"
+            "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key2201827963/daf3fe4135b80b502dce1d7126f93fa1"
           },
           {
             "attributes": {
-              "created": 1637185372,
+              "created": 1640018484,
               "enabled": true,
               "exportable": false,
               "recoverableDays": 7,
               "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-              "updated": 1637185372
+              "updated": 1640018484
             },
-            "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key2201827963/a22487f5de5904b7bb36cb0e8ec3f39a"
+            "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key2201827963/5cc3dcdd32fc4cd58e9caac53ce10425"
           }
         ]
       }
@@ -497,19 +496,19 @@
         "X-Frame-Options": "SAMEORIGIN",
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=Ipv4;",
         "x-ms-keyvault-region": "southcentralus",
-        "x-ms-request-id": "514f7c36-47ef-11ec-bf7c-000d3a5f7959",
-        "x-ms-server-latency": "87"
+        "x-ms-request-id": "abf16720-61b3-11ec-985f-000d3aec06d7",
+        "x-ms-server-latency": "90"
       },
       "ResponseBody": {
         "attributes": {
-          "created": 1637185372,
+          "created": 1640018484,
           "enabled": true,
           "exportable": false,
           "recoverableDays": 7,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-          "updated": 1637185372
+          "updated": 1640018484
         },
-        "deletedDate": 1637185372,
+        "deletedDate": 1640018485,
         "key": {
           "e": "AQAB",
           "key_ops": [
@@ -520,12 +519,12 @@
             "decrypt",
             "unwrapKey"
           ],
-          "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key2201827963/a22487f5de5904b7bb36cb0e8ec3f39a",
+          "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key2201827963/5cc3dcdd32fc4cd58e9caac53ce10425",
           "kty": "RSA-HSM",
-          "n": "s4MCogYnasU461iFBJKLaVAvk45eutmVUqHDia7mCMrNNeT3jlYrYcQagKQICEqRM-K05jsTOQhTi7vEyuFVWW1eBDCDhTbTpds5_uumor7jVeB_x3JRGiluPy6Xh897u46bawMeJ_Rq_e5ZDqxf5PXXJZzqB54zo-l4eqyjmUganf4LaFENW_72qMZrriZ_SbqcMxLBWRJWcmKIjuaLPXwpVn_ttoC0KxhJrrK83UYVdLMfdvOhyrSUQZ2kXPThxA_rr_5ufmHxQM5lTEj3tEp7FqeKl9NvC9P-qaIV22ZQTRWZ3tggdQvAfQ_rWRSc5jQdMLFGbShGw_mY5PZvjQ"
+          "n": "q8Ak62c4Nvtw0i8JS_aXFzEcntlM2Wb0_CjSHfrSHtCRyHg9DpNMml8GIRfavTYP48_lksYRNI3_8K-8-ucmEXM5XMqAEKyNNdo3MzKlHu-0e72zdAuqK2bdx3UsqDfpE81sPb-Iqb4kmWWjDrJypD22RhCiQYj548ncGCpqeSt-Ktm4ISHCB0zhiTMzfp4ElZVFrrnP4EGyvY7a3qUBhD0PbQY3sVCUJuYq3pbFrXkJuS0bO9rYNAowTN9E-KfZYxufEATkiHERnWU0tVT44Uj2b98nr3z1fltscdPH4K1nNyKzCDcQ1wjrjONoSDhpaXpa_YFcBoMVP0YHvgBSYw"
         },
         "recoveryId": "https://rosebudhsm.managedhsm.azure.net/deletedkeys/key2201827963",
-        "scheduledPurgeDate": 1637790172
+        "scheduledPurgeDate": 1640623285
       }
     },
     {
@@ -551,22 +550,22 @@
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
-        "x-ms-build-version": "1.0.20211018-1-9c44708a-develop",
+        "x-ms-build-version": "1.0.20211206-1-be739728-develop",
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=Ipv4;",
         "x-ms-keyvault-region": "southcentralus",
-        "x-ms-request-id": "5166f622-47ef-11ec-bf7c-000d3a5f7959",
-        "x-ms-server-latency": "28"
+        "x-ms-request-id": "ac09ce96-61b3-11ec-985f-000d3aec06d7",
+        "x-ms-server-latency": "34"
       },
       "ResponseBody": {
         "attributes": {
-          "created": 1637185372,
+          "created": 1640018484,
           "enabled": true,
           "exportable": false,
           "recoverableDays": 7,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-          "updated": 1637185372
+          "updated": 1640018484
         },
-        "deletedDate": 1637185372,
+        "deletedDate": 1640018485,
         "key": {
           "e": "AQAB",
           "key_ops": [
@@ -577,12 +576,12 @@
             "sign",
             "wrapKey"
           ],
-          "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key2201827963/a22487f5de5904b7bb36cb0e8ec3f39a",
+          "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key2201827963/5cc3dcdd32fc4cd58e9caac53ce10425",
           "kty": "RSA-HSM",
-          "n": "s4MCogYnasU461iFBJKLaVAvk45eutmVUqHDia7mCMrNNeT3jlYrYcQagKQICEqRM-K05jsTOQhTi7vEyuFVWW1eBDCDhTbTpds5_uumor7jVeB_x3JRGiluPy6Xh897u46bawMeJ_Rq_e5ZDqxf5PXXJZzqB54zo-l4eqyjmUganf4LaFENW_72qMZrriZ_SbqcMxLBWRJWcmKIjuaLPXwpVn_ttoC0KxhJrrK83UYVdLMfdvOhyrSUQZ2kXPThxA_rr_5ufmHxQM5lTEj3tEp7FqeKl9NvC9P-qaIV22ZQTRWZ3tggdQvAfQ_rWRSc5jQdMLFGbShGw_mY5PZvjQ"
+          "n": "q8Ak62c4Nvtw0i8JS_aXFzEcntlM2Wb0_CjSHfrSHtCRyHg9DpNMml8GIRfavTYP48_lksYRNI3_8K-8-ucmEXM5XMqAEKyNNdo3MzKlHu-0e72zdAuqK2bdx3UsqDfpE81sPb-Iqb4kmWWjDrJypD22RhCiQYj548ncGCpqeSt-Ktm4ISHCB0zhiTMzfp4ElZVFrrnP4EGyvY7a3qUBhD0PbQY3sVCUJuYq3pbFrXkJuS0bO9rYNAowTN9E-KfZYxufEATkiHERnWU0tVT44Uj2b98nr3z1fltscdPH4K1nNyKzCDcQ1wjrjONoSDhpaXpa_YFcBoMVP0YHvgBSYw"
         },
         "recoveryId": "https://rosebudhsm.managedhsm.azure.net/deletedkeys/key2201827963",
-        "scheduledPurgeDate": 1637790172
+        "scheduledPurgeDate": 1640623285
       }
     },
     {
@@ -608,22 +607,22 @@
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
-        "x-ms-build-version": "1.0.20211018-1-9c44708a-develop",
+        "x-ms-build-version": "1.0.20211206-1-be739728-develop",
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=Ipv4;",
         "x-ms-keyvault-region": "southcentralus",
-        "x-ms-request-id": "51757328-47ef-11ec-bf7c-000d3a5f7959",
-        "x-ms-server-latency": "36"
+        "x-ms-request-id": "ac1960c2-61b3-11ec-985f-000d3aec06d7",
+        "x-ms-server-latency": "37"
       },
       "ResponseBody": {
         "attributes": {
-          "created": 1637185372,
+          "created": 1640018484,
           "enabled": true,
           "exportable": false,
           "recoverableDays": 7,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-          "updated": 1637185372
+          "updated": 1640018484
         },
-        "deletedDate": 1637185372,
+        "deletedDate": 1640018485,
         "key": {
           "e": "AQAB",
           "key_ops": [
@@ -634,12 +633,12 @@
             "sign",
             "wrapKey"
           ],
-          "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key2201827963/a22487f5de5904b7bb36cb0e8ec3f39a",
+          "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key2201827963/5cc3dcdd32fc4cd58e9caac53ce10425",
           "kty": "RSA-HSM",
-          "n": "s4MCogYnasU461iFBJKLaVAvk45eutmVUqHDia7mCMrNNeT3jlYrYcQagKQICEqRM-K05jsTOQhTi7vEyuFVWW1eBDCDhTbTpds5_uumor7jVeB_x3JRGiluPy6Xh897u46bawMeJ_Rq_e5ZDqxf5PXXJZzqB54zo-l4eqyjmUganf4LaFENW_72qMZrriZ_SbqcMxLBWRJWcmKIjuaLPXwpVn_ttoC0KxhJrrK83UYVdLMfdvOhyrSUQZ2kXPThxA_rr_5ufmHxQM5lTEj3tEp7FqeKl9NvC9P-qaIV22ZQTRWZ3tggdQvAfQ_rWRSc5jQdMLFGbShGw_mY5PZvjQ"
+          "n": "q8Ak62c4Nvtw0i8JS_aXFzEcntlM2Wb0_CjSHfrSHtCRyHg9DpNMml8GIRfavTYP48_lksYRNI3_8K-8-ucmEXM5XMqAEKyNNdo3MzKlHu-0e72zdAuqK2bdx3UsqDfpE81sPb-Iqb4kmWWjDrJypD22RhCiQYj548ncGCpqeSt-Ktm4ISHCB0zhiTMzfp4ElZVFrrnP4EGyvY7a3qUBhD0PbQY3sVCUJuYq3pbFrXkJuS0bO9rYNAowTN9E-KfZYxufEATkiHERnWU0tVT44Uj2b98nr3z1fltscdPH4K1nNyKzCDcQ1wjrjONoSDhpaXpa_YFcBoMVP0YHvgBSYw"
         },
         "recoveryId": "https://rosebudhsm.managedhsm.azure.net/deletedkeys/key2201827963",
-        "scheduledPurgeDate": 1637790172
+        "scheduledPurgeDate": 1640623285
       }
     },
     {
@@ -667,8 +666,8 @@
         "X-Frame-Options": "SAMEORIGIN",
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=Ipv4;",
         "x-ms-keyvault-region": "southcentralus",
-        "x-ms-request-id": "518518be-47ef-11ec-bf7c-000d3a5f7959",
-        "x-ms-server-latency": "105"
+        "x-ms-request-id": "ac295612-61b3-11ec-985f-000d3aec06d7",
+        "x-ms-server-latency": "129"
       },
       "ResponseBody": null
     }

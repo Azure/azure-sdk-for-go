@@ -26,6 +26,53 @@ const fakeKvURL = "https://fakekvurl.vault.azure.net/"
 
 var pathToPackage = "sdk/keyvault/azkeys/testdata"
 
+func TestMain(m *testing.M) {
+	// Initialize
+	if recording.GetRecordMode() == "record" {
+		err := recording.ResetProxy(nil)
+		if err != nil {
+			panic(err)
+		}
+
+		vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
+		err = recording.AddURISanitizer(fakeKvURL, vaultUrl, nil)
+		if err != nil {
+			panic(err)
+		}
+
+		err = recording.AddBodyKeySanitizer("$.key.kid", fakeKvURL, vaultUrl, nil)
+		if err != nil {
+			panic(err)
+		}
+
+		err = recording.AddBodyKeySanitizer("$.recoveryId", fakeKvURL, vaultUrl, nil)
+		if err != nil {
+			panic(err)
+		}
+
+		tenantID := os.Getenv("AZKEYS_TENANT_ID")
+		err = recording.AddHeaderRegexSanitizer("WWW-Authenticate", "00000000-0000-0000-0000-000000000000", tenantID, nil)
+		if err != nil {
+			panic(err)
+		}
+
+	}
+
+	// Run tests
+	exitVal := m.Run()
+
+	// 3. Reset
+	if recording.GetRecordMode() != "live" {
+		err := recording.ResetProxy(nil)
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	// 4. Error out if applicable
+	os.Exit(exitVal)
+}
+
 func startTest(t *testing.T) func() {
 	err := recording.Start(t, pathToPackage, nil)
 	require.NoError(t, err)
@@ -98,7 +145,6 @@ func createRandomName(t *testing.T, prefix string) (string, error) {
 
 func createClient(t *testing.T) (*azkeys.Client, error) {
 	vaultUrl := recording.GetEnvVariable("AZURE_KEYVAULT_URL", fakeKvURL)
-	var credOptions *azidentity.ClientSecretCredentialOptions
 
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
@@ -114,7 +160,7 @@ func createClient(t *testing.T) (*azkeys.Client, error) {
 		tenantId := lookupEnvVar("AZKEYS_TENANT_ID")
 		clientId := lookupEnvVar("AZKEYS_CLIENT_ID")
 		clientSecret := lookupEnvVar("AZKEYS_CLIENT_SECRET")
-		cred, err = azidentity.NewClientSecretCredential(tenantId, clientId, clientSecret, credOptions)
+		cred, err = azidentity.NewClientSecretCredential(tenantId, clientId, clientSecret, nil)
 		require.NoError(t, err)
 	} else {
 		cred = NewFakeCredential("fake", "fake")

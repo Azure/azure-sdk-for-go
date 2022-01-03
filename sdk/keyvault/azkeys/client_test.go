@@ -639,8 +639,11 @@ func TestReleaseKey(t *testing.T) {
 			req, err := http.NewRequest("GET", fmt.Sprintf("%s/generate-test-token", attestationURL), nil)
 			require.NoError(t, err)
 
+			if recording.GetRecordMode() == recording.PlaybackMode {
+				t.Skip("Skipping test in playback")
+			}
 			_, err = http.DefaultClient.Do(req)
-			require.Error(t, err)
+			require.NoError(t, err)
 			// require.Equal(t, resp.StatusCode, http.StatusOK)
 			// defer resp.Body.Close()
 

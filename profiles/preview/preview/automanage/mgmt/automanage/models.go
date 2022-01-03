@@ -9,104 +9,83 @@
 
 package automanage
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/automanage/mgmt/2020-06-30-preview/automanage"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/automanage/mgmt/2021-04-30-preview/automanage"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type ConfigurationProfile = original.ConfigurationProfile
+type ActionType = original.ActionType
 
 const (
-	AzurevirtualmachinebestpracticesDevTest    ConfigurationProfile = original.AzurevirtualmachinebestpracticesDevTest
-	AzurevirtualmachinebestpracticesProduction ConfigurationProfile = original.AzurevirtualmachinebestpracticesProduction
+	ActionTypeInternal ActionType = original.ActionTypeInternal
 )
 
-type EnableRealTimeProtection = original.EnableRealTimeProtection
+type CreatedByType = original.CreatedByType
 
 const (
-	False EnableRealTimeProtection = original.False
-	True  EnableRealTimeProtection = original.True
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
 )
 
-type ProvisioningState = original.ProvisioningState
+type Origin = original.Origin
 
 const (
-	Created   ProvisioningState = original.Created
-	Failed    ProvisioningState = original.Failed
-	Succeeded ProvisioningState = original.Succeeded
+	OriginSystem     Origin = original.OriginSystem
+	OriginUser       Origin = original.OriginUser
+	OriginUsersystem Origin = original.OriginUsersystem
 )
 
-type ResourceIdentityType = original.ResourceIdentityType
-
-const (
-	None           ResourceIdentityType = original.None
-	SystemAssigned ResourceIdentityType = original.SystemAssigned
-)
-
-type RunScheduledScan = original.RunScheduledScan
-
-const (
-	RunScheduledScanFalse RunScheduledScan = original.RunScheduledScanFalse
-	RunScheduledScanTrue  RunScheduledScan = original.RunScheduledScanTrue
-)
-
-type ScanType = original.ScanType
-
-const (
-	Full  ScanType = original.Full
-	Quick ScanType = original.Quick
-)
-
-type UpdateStatus = original.UpdateStatus
-
-const (
-	UpdateStatusCreated   UpdateStatus = original.UpdateStatusCreated
-	UpdateStatusFailed    UpdateStatus = original.UpdateStatusFailed
-	UpdateStatusSucceeded UpdateStatus = original.UpdateStatusSucceeded
-)
-
-type Account = original.Account
-type AccountIdentity = original.AccountIdentity
-type AccountList = original.AccountList
-type AccountUpdate = original.AccountUpdate
-type AccountsClient = original.AccountsClient
+type AssignmentReportProperties = original.AssignmentReportProperties
 type AzureEntityResource = original.AzureEntityResource
 type BaseClient = original.BaseClient
+type BestPractice = original.BestPractice
+type BestPracticeList = original.BestPracticeList
+type BestPracticesClient = original.BestPracticesClient
+type BestPracticesVersionsClient = original.BestPracticesVersionsClient
+type ConfigurationProfile = original.ConfigurationProfile
 type ConfigurationProfileAssignment = original.ConfigurationProfileAssignment
-type ConfigurationProfileAssignmentCompliance = original.ConfigurationProfileAssignmentCompliance
 type ConfigurationProfileAssignmentList = original.ConfigurationProfileAssignmentList
 type ConfigurationProfileAssignmentProperties = original.ConfigurationProfileAssignmentProperties
 type ConfigurationProfileAssignmentsClient = original.ConfigurationProfileAssignmentsClient
-type ConfigurationProfileAssignmentsCreateOrUpdateFuture = original.ConfigurationProfileAssignmentsCreateOrUpdateFuture
-type ConfigurationProfilePreference = original.ConfigurationProfilePreference
-type ConfigurationProfilePreferenceAntiMalware = original.ConfigurationProfilePreferenceAntiMalware
-type ConfigurationProfilePreferenceList = original.ConfigurationProfilePreferenceList
-type ConfigurationProfilePreferenceProperties = original.ConfigurationProfilePreferenceProperties
-type ConfigurationProfilePreferenceUpdate = original.ConfigurationProfilePreferenceUpdate
-type ConfigurationProfilePreferenceVMBackup = original.ConfigurationProfilePreferenceVMBackup
-type ConfigurationProfilePreferencesClient = original.ConfigurationProfilePreferencesClient
+type ConfigurationProfileList = original.ConfigurationProfileList
+type ConfigurationProfileProperties = original.ConfigurationProfileProperties
+type ConfigurationProfileUpdate = original.ConfigurationProfileUpdate
+type ConfigurationProfilesClient = original.ConfigurationProfilesClient
+type ConfigurationProfilesVersionsClient = original.ConfigurationProfilesVersionsClient
 type ErrorAdditionalInfo = original.ErrorAdditionalInfo
 type ErrorDetail = original.ErrorDetail
 type ErrorResponse = original.ErrorResponse
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
-type OperationList = original.OperationList
-type OperationProperties = original.OperationProperties
+type OperationListResult = original.OperationListResult
 type OperationsClient = original.OperationsClient
 type ProxyResource = original.ProxyResource
+type Report = original.Report
+type ReportList = original.ReportList
+type ReportResource = original.ReportResource
+type ReportsClient = original.ReportsClient
 type Resource = original.Resource
+type SystemData = original.SystemData
 type TrackedResource = original.TrackedResource
 type UpdateResource = original.UpdateResource
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
-func NewAccountsClient(subscriptionID string) AccountsClient {
-	return original.NewAccountsClient(subscriptionID)
+func NewBestPracticesClient(subscriptionID string) BestPracticesClient {
+	return original.NewBestPracticesClient(subscriptionID)
 }
-func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
-	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID)
+func NewBestPracticesClientWithBaseURI(baseURI string, subscriptionID string) BestPracticesClient {
+	return original.NewBestPracticesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewBestPracticesVersionsClient(subscriptionID string) BestPracticesVersionsClient {
+	return original.NewBestPracticesVersionsClient(subscriptionID)
+}
+func NewBestPracticesVersionsClientWithBaseURI(baseURI string, subscriptionID string) BestPracticesVersionsClient {
+	return original.NewBestPracticesVersionsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewConfigurationProfileAssignmentsClient(subscriptionID string) ConfigurationProfileAssignmentsClient {
 	return original.NewConfigurationProfileAssignmentsClient(subscriptionID)
@@ -114,11 +93,17 @@ func NewConfigurationProfileAssignmentsClient(subscriptionID string) Configurati
 func NewConfigurationProfileAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) ConfigurationProfileAssignmentsClient {
 	return original.NewConfigurationProfileAssignmentsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewConfigurationProfilePreferencesClient(subscriptionID string) ConfigurationProfilePreferencesClient {
-	return original.NewConfigurationProfilePreferencesClient(subscriptionID)
+func NewConfigurationProfilesClient(subscriptionID string) ConfigurationProfilesClient {
+	return original.NewConfigurationProfilesClient(subscriptionID)
 }
-func NewConfigurationProfilePreferencesClientWithBaseURI(baseURI string, subscriptionID string) ConfigurationProfilePreferencesClient {
-	return original.NewConfigurationProfilePreferencesClientWithBaseURI(baseURI, subscriptionID)
+func NewConfigurationProfilesClientWithBaseURI(baseURI string, subscriptionID string) ConfigurationProfilesClient {
+	return original.NewConfigurationProfilesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewConfigurationProfilesVersionsClient(subscriptionID string) ConfigurationProfilesVersionsClient {
+	return original.NewConfigurationProfilesVersionsClient(subscriptionID)
+}
+func NewConfigurationProfilesVersionsClientWithBaseURI(baseURI string, subscriptionID string) ConfigurationProfilesVersionsClient {
+	return original.NewConfigurationProfilesVersionsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -126,29 +111,23 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewReportsClient(subscriptionID string) ReportsClient {
+	return original.NewReportsClient(subscriptionID)
+}
+func NewReportsClientWithBaseURI(baseURI string, subscriptionID string) ReportsClient {
+	return original.NewReportsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
-func PossibleConfigurationProfileValues() []ConfigurationProfile {
-	return original.PossibleConfigurationProfileValues()
+func PossibleActionTypeValues() []ActionType {
+	return original.PossibleActionTypeValues()
 }
-func PossibleEnableRealTimeProtectionValues() []EnableRealTimeProtection {
-	return original.PossibleEnableRealTimeProtectionValues()
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
 }
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return original.PossibleProvisioningStateValues()
-}
-func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
-	return original.PossibleResourceIdentityTypeValues()
-}
-func PossibleRunScheduledScanValues() []RunScheduledScan {
-	return original.PossibleRunScheduledScanValues()
-}
-func PossibleScanTypeValues() []ScanType {
-	return original.PossibleScanTypeValues()
-}
-func PossibleUpdateStatusValues() []UpdateStatus {
-	return original.PossibleUpdateStatusValues()
+func PossibleOriginValues() []Origin {
+	return original.PossibleOriginValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

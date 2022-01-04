@@ -1,11 +1,13 @@
 #Requires -Version 7.0
 param(
-    [string]$inputJsonFile = "input.json",
-    [string]$outputJsonFile = "output.json"
+    [string]$inputJsonFile,
+    [string]$outputJsonFile
 )
 
 . (Join-Path $PSScriptRoot .. MgmtTestLib.ps1)
-
+Write-output "inputfile:$inputJsonFile, outfile:$outputJsonFile"
+$inputstring = Get-Content $inputJsonFile | Out-String
+Write-Output "input parameter: $inputstring"
 $inputJson = Get-Content $inputJsonFile | Out-String | ConvertFrom-Json
 $packageFolder = $inputJson.packageFolder
 $packageFolder = $packageFolder -replace "\\", "/"

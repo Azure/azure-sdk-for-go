@@ -1,7 +1,7 @@
 {
     "init": {
         "initScript": {
-            "path": "./eng/scripts/automation_init.sh",
+            "path": "./eng/scripts/automation/init.sh",
             "logPrefix": "[GO]",
             "stderr":{
                 "storeAllLog": true
@@ -10,7 +10,7 @@
     },
     "generateAndBuild": {
         "generateAndBuildScript": {
-            "path": "./eng/tools/generator/generator automation-v2",
+            "path": "./eng/scripts/automation/generate.sh",
             "logPrefix": "[GO-Generate]",
             "stderr":{
                 "storeLogByFilter": "[error|Error|Exception]"
@@ -19,7 +19,7 @@
     },
     "mockTest": {
         "mockTestScript": {
-            "path": "./eng/scripts/automation/Invoke-MockTest.ps1",
+            "path": "./eng/scripts/automation/mock-test.sh",
             "logPrefix": "[GO-MockTest]",
             "stderr":{
                 "storeLogByFilter": "[error|Error|Exception]"

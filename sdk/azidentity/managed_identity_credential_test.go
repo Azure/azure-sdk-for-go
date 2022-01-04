@@ -68,55 +68,28 @@ func TestManagedIdentityCredential_GetTokenInAzureArcLive(t *testing.T) {
 	}
 }
 
-func TestManagedIdentityCredential_GetTokenInCloudShellLive(t *testing.T) {
-	if len(os.Getenv("MSI_ENDPOINT")) == 0 {
-		t.Skip()
-	}
-	msiCred, err := NewManagedIdentityCredential(nil)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	_, err = msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{msiScope}})
-	if err != nil {
-		t.Fatalf("Received an error when attempting to retrieve a token")
-	}
-}
-
-func TestManagedIdentityCredential_GetTokenInCloudShellMock(t *testing.T) {
-	resetEnvironmentVarsForTest()
+func TestManagedIdentityCredential_CloudShell(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
-	defer clearEnvVars("MSI_ENDPOINT")
+	setEnvironmentVariables(t, map[string]string{msiEndpoint: srv.URL()})
 	options := ManagedIdentityCredentialOptions{}
 	options.Transport = srv
 	msiCred, err := NewManagedIdentityCredential(&options)
 	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
+		t.Fatal(err)
 	}
-	_, err = msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{msiScope}})
+	tk, err := msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{msiScope}})
 	if err != nil {
-		t.Fatalf("Received an error when attempting to retrieve a token")
+		t.Fatal(err)
 	}
-}
-
-func TestManagedIdentityCredential_GetTokenInCloudShellMockFail(t *testing.T) {
-	resetEnvironmentVarsForTest()
-	srv, close := mock.NewServer()
-	defer close()
+	if tk.Token != tokenValue {
+		t.Fatalf("unexpected token value: %s", tk.Token)
+	}
 	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
-	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
-	defer clearEnvVars("MSI_ENDPOINT")
-	options := ManagedIdentityCredentialOptions{}
-	options.Transport = srv
-	msiCred, err := NewManagedIdentityCredential(&options)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
 	_, err = msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{msiScope}})
 	if err == nil {
-		t.Fatalf("Expected an error but did not receive one")
+		t.Fatal("expected an error but didn't receive one")
 	}
 }
 

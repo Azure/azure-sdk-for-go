@@ -86,9 +86,6 @@ func createServiceClientWithConnStrForRecording(t *testing.T, accountType testAc
 }
 
 func getRecordingCredential(t *testing.T, accountType testAccountType) (*SharedKeyCredential, error) {
-	// if recording.GetRecordMode() == recording.PlaybackMode {
-	// 	return NewSharedKeyCredential("fakeaccount", "daaaaaaaaaabbbbbbbbbbcccccccccccccccccccdddddddddddddddddddeeeeeeeeeeefffffffffffggggg==")
-	// }
 	accountName, accountKey := getAccountNameKey(t, accountType)
 	return NewSharedKeyCredential(accountName, accountKey)
 }
@@ -97,6 +94,10 @@ func getAccountNameKey(t *testing.T, accountType testAccountType) (string, strin
 	var accountName string
 	var accountKey string
 	var ok bool
+
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		return "fakeaccount", "daaaaaaaaaabbbbbbbbbbcccccccccccccccccccdddddddddddddddddddeeeeeeeeeeefffffffffffggggg=="
+	}
 
 	if accountType == testAccountDefault {
 		accountName, ok = os.LookupEnv("STORAGE_ACCOUNT_NAME")
@@ -113,10 +114,6 @@ func getAccountNameKey(t *testing.T, accountType testAccountType) (string, strin
 		require.True(t, ok)
 		accountKey, ok = os.LookupEnv("PREMIUM_STORAGE_ACCOUNT_KEY")
 		require.True(t, ok)
-	}
-
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		return "fakeaccount", "daaaaaaaaaabbbbbbbbbbcccccccccccccccccccdddddddddddddddddddeeeeeeeeeeefffffffffffggggg=="
 	}
 
 	return accountName, accountKey

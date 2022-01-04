@@ -17,6 +17,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/require"
 )
@@ -335,7 +336,7 @@ func TestBlobStartCopySourceNonExistent(t *testing.T) {
 
 	_, err = copyBlobClient.StartCopyFromURL(ctx, bbClient.URL(), nil)
 	require.Error(t, err)
-	require.Equal(t, strings.Contains(err.Error(), "not exist"), true)
+	require.Contains(t, err.Error(), "not exist")
 }
 
 func TestBlobStartCopySourcePrivate(t *testing.T) {
@@ -366,7 +367,7 @@ func TestBlobStartCopySourcePrivate(t *testing.T) {
 	copyBlobName := "copyb" + generateBlobName(t.Name())
 	copyBlobClient := getBlockBlobClient(copyBlobName, copyContainerClient)
 
-	if svcClient.URL() == serviceClient2.URL() {
+	if svcClient.URL() == serviceClient2.URL() && recording.GetRecordMode() != recording.PlaybackMode {
 		t.Skip("Test not valid because primary and secondary accounts are the same")
 	}
 	_, err = copyBlobClient.StartCopyFromURL(ctx, bbClient.URL(), nil)
@@ -760,7 +761,6 @@ func TestBlobStartCopyDestIfModifiedSinceTrue(t *testing.T) {
 }
 
 func TestBlobStartCopyDestIfModifiedSinceFalse(t *testing.T) {
-
 	stop := start(t)
 	defer stop()
 

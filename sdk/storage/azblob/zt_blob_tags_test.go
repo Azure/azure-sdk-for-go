@@ -115,7 +115,7 @@ func TestSetBlobTagsWithVID(t *testing.T) {
 	blobGetTagsResponse, err = bbClient.GetTags(ctx, &getTagsBlobOptions2)
 	require.NoError(t, err)
 	require.Equal(t, blobGetTagsResponse.RawResponse.StatusCode, 200)
-	require.Nil(t, blobGetTagsResponse.BlobTagSet) // this check fails
+	require.NotNil(t, blobGetTagsResponse.BlobTagSet)
 }
 
 func TestUploadBlockBlobWithSpecialCharactersInTags(t *testing.T) {

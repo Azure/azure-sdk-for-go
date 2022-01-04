@@ -4,25 +4,10 @@
 package azidentity_test
 
 import (
-	"log"
 	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
-
-const (
-	certPath = "testdata/certificate.pem"
-	clientID = "fake-client-id"
-	tenantID = "fake-tenant"
-)
-
-var cred *azidentity.ClientCertificateCredential
-
-func handleError(err error) {
-	if err != nil {
-		log.Panicf("example failed: %v", err)
-	}
-}
 
 func ExampleNewClientCertificateCredential() {
 	data, err := os.ReadFile(certPath)

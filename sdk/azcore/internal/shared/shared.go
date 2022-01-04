@@ -14,7 +14,9 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -179,9 +181,25 @@ func (r *NopClosingBytesReader) Seek(offset int64, whence int) (int64, error) {
 }
 
 const defaultScope = "/.default"
+const chinaCloudARMScope = "https://management.core.chinacloudapi.cn/" + defaultScope
+const publicCloudARMScope = "https://management.core.windows.net/" + defaultScope
+const usGovCloudARMScope = "https://management.core.usgovcloudapi.net/" + defaultScope
 
 // EndpointToScope converts the provided URL endpoint to its default scope.
 func EndpointToScope(endpoint string) string {
+	parsed, err := url.Parse(endpoint)
+	if err == nil {
+		host := parsed.Hostname()
+		switch {
+		case strings.HasSuffix(host, "management.azure.com"):
+			return publicCloudARMScope
+		case strings.HasSuffix(host, "management.usgovcloudapi.net"):
+			return usGovCloudARMScope
+		case strings.HasSuffix(host, "management.chinacloudapi.cn"):
+			return chinaCloudARMScope
+		}
+	}
+	// fall back to legacy behavior when endpoint doesn't parse or match a known cloud's ARM endpoint
 	if endpoint[len(endpoint)-1] != '/' {
 		endpoint += "/"
 	}

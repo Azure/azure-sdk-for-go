@@ -8,6 +8,7 @@ echo $1
 
 set -x
 set -e
+sudo npm install -g autorest@latest && sudo npm install -g typescript
 echo "GOPATH:$GOPATH"
 echo "GOROOT:$GOROOT"
 TMPDIR="/tmp"
@@ -42,9 +43,6 @@ go build
 cp generator $GOPATH/bin/
 export PATH=$PATH:$GOPATH/bin
 cd $DIRECTORY
-
-# sudo ln -s $generatorDirectory/generator /usr/bin/generator
-# ls -l /usr/bin/generator
 
 if [ ! -f "$GOPATH/bin/pwsh.exe" ]; then
   ln -s /usr/bin/pwsh $GOPATH/bin/pwsh.exe

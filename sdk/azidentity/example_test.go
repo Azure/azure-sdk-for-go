@@ -4,25 +4,10 @@
 package azidentity_test
 
 import (
-	"log"
 	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
-
-const (
-	certPath = "testdata/certificate.pem"
-	clientID = "fake-client-id"
-	tenantID = "fake-tenant"
-)
-
-var cred *azidentity.ClientCertificateCredential
-
-func handleError(err error) {
-	if err != nil {
-		log.Panicf("example failed: %v", err)
-	}
-}
 
 func ExampleNewClientCertificateCredential() {
 	data, err := os.ReadFile(certPath)
@@ -38,4 +23,18 @@ func ExampleNewClientCertificateCredential() {
 	handleError(err)
 
 	// Output:
+}
+
+func ExampleNewManagedIdentityCredential_userAssigned() {
+	// select a user assigned identity with its client ID...
+	clientID := azidentity.ClientID("abcd1234-...")
+	opts := azidentity.ManagedIdentityCredentialOptions{ID: clientID}
+	cred, err = azidentity.NewManagedIdentityCredential(&opts)
+	handleError(err)
+
+	// ...or its resource ID
+	resourceID := azidentity.ResourceID("/subscriptions/...")
+	opts = azidentity.ManagedIdentityCredentialOptions{ID: resourceID}
+	cred, err = azidentity.NewManagedIdentityCredential(&opts)
+	handleError(err)
 }

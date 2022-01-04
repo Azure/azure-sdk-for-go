@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Fixes a bug in `crypto.NewClient` where the key version was required in the path, it is no longer required but is recommended.
 
 ### Other Changes
 

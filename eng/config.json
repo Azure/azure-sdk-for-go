@@ -26,7 +26,12 @@
         },
         {
             "Name": "data",
-            "CoverageGoal": 0.62
+            "CoverageGoal": 0.62,
+            "EnvironmentVariables": {
+                "TABLES_STORAGE_ACCOUNT_NAME": "fakeaccount",
+                "TABLES_PRIMARY_STORAGE_ACCOUNT_KEY": "Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==",
+                "TABLES_SHARED_ACCESS_SIGNATURE": "?sig=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw=="
+            }
         },
         {
             "Name": "eng/tools",

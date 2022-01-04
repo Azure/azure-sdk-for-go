@@ -10,7 +10,7 @@ package armmonitor
 
 const (
 	module  = "armmonitor"
-	version = "v0.2.1"
+	version = "v0.3.0"
 )
 
 // AggregationType - the aggregation type of the metric.
@@ -194,7 +194,7 @@ func (c ConditionOperator) ToPtr() *ConditionOperator {
 	return &c
 }
 
-// ConditionalOperator - Result Condition Evaluation criteria. Supported Values - 'GreaterThan' or 'LessThan' or 'Equal'.
+// ConditionalOperator - Result Condition Evaluation criteria.
 type ConditionalOperator string
 
 const (

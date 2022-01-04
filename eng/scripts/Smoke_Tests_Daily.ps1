@@ -19,8 +19,8 @@ go mod init github.com/Azure/azure-sdk-for-go/sdk/smoketests
 Pop-Location
 
 # Run smoketests script
-Write-Host "Running 'go run . -serviceDirectory $serviceDirectory'"
-go run . -daily
+Write-Host "Running 'go run . --daily'"
+go run . --daily
 if ($LASTEXITCODE) {
     exit $LASTEXITCODE
 }

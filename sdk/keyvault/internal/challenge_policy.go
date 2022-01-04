@@ -7,9 +7,9 @@
 package internal
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
-	"io"
 	"net/http"
 	"strings"
 	"time"
@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 )
 
@@ -29,14 +30,12 @@ type KeyVaultChallengePolicy struct {
 	cred         azcore.TokenCredential
 	scope        *string
 	tenantID     *string
-	pipeline     runtime.Pipeline
 }
 
-func NewKeyVaultChallengePolicy(cred azcore.TokenCredential, pipeline runtime.Pipeline) *KeyVaultChallengePolicy {
+func NewKeyVaultChallengePolicy(cred azcore.TokenCredential) *KeyVaultChallengePolicy {
 	return &KeyVaultChallengePolicy{
 		cred:         cred,
 		mainResource: NewExpiringResource(acquire),
-		pipeline:     pipeline,
 	}
 }
 
@@ -53,7 +52,7 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 			return nil, err
 		}
 
-		resp, err := k.pipeline.Do(challengeReq)
+		resp, err := challengeReq.Next()
 		if err != nil {
 			return nil, err
 		}
@@ -72,7 +71,7 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 	if token, ok := tk.(*azcore.AccessToken); ok {
 		req.Raw().Header.Set(
 			headerAuthorization,
-			fmt.Sprintf(bearerHeader+token.Token),
+			fmt.Sprintf("%s%s", bearerHeader, token.Token),
 		)
 	}
 
@@ -92,7 +91,7 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 		err := k.findScopeAndTenant(resp)
 		if err != nil {
 			// Error parsing challenge, doomed to fail. Return
-			return resp, err
+			return resp, cloneReqErr
 		}
 
 		tk, err := k.mainResource.GetResource(as)
@@ -139,7 +138,7 @@ func (k *KeyVaultChallengePolicy) findScopeAndTenant(resp *http.Response) error 
 	// Strip down to auth and resource
 	// Format is "Bearer authorization=\"<site>\" resource=\"<site>\"" OR
 	// "Bearer authorization=\"<site>\" scope=\"<site>\" resource=\"<resource>\""
-	authHeader = strings.ReplaceAll(authHeader, bearerHeader, "")
+	authHeader = strings.ReplaceAll(authHeader, "Bearer ", "")
 
 	parts := strings.Split(authHeader, " ")
 
@@ -168,21 +167,6 @@ func (k *KeyVaultChallengePolicy) findScopeAndTenant(resp *http.Response) error 
 	return nil
 }
 
-// The next three methods are copied from azcore/internal/shared.go
-type nopCloser struct {
-	io.ReadSeeker
-}
-
-func (n nopCloser) Close() error {
-	return nil
-}
-
-// NopCloser returns a ReadSeekCloser with a no-op close method wrapping the provided io.ReadSeeker.
-func NopCloser(rs io.ReadSeeker) io.ReadSeekCloser {
-	return nopCloser{rs}
-}
-
-// TODO: Why is this sending with a body? Proxy fails here
 func (k KeyVaultChallengePolicy) getChallengeRequest(orig policy.Request) (*policy.Request, error) {
 	req, err := runtime.NewRequest(orig.Raw().Context(), orig.Raw().Method, orig.Raw().URL.String())
 	if err != nil {
@@ -191,8 +175,19 @@ func (k KeyVaultChallengePolicy) getChallengeRequest(orig policy.Request) (*poli
 
 	req.Raw().Header = orig.Raw().Header
 	req.Raw().Header.Set("Content-Length", "0")
+	req.Raw().ContentLength = 0
 
-	return req, err
+	copied := orig.Clone(orig.Raw().Context())
+	copied.Raw().Body = req.Body()
+	copied.Raw().ContentLength = 0
+	copied.Raw().Header.Set("Content-Length", "0")
+	err = copied.SetBody(streaming.NopCloser(bytes.NewReader([]byte{})), "application/json")
+	if err != nil {
+		return nil, err
+	}
+	copied.Raw().Header.Del("Content-Type")
+
+	return copied, err
 }
 
 type acquiringResourceState struct {

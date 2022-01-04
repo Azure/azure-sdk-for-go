@@ -4,6 +4,11 @@ Param(
     [string] $serviceDirectory
 )
 
+# 1. Every module uses a replace directive to the local version
+# 2. Include every module (data & mgmt) in a go.mod file
+# 3. Run `go mod tidy` and ensure it succeeds
+
+
 $repoRoot = Resolve-Path "$PSScriptRoot/../../"
 
 Push-Location $repoRoot/eng/tools/smoketests
@@ -20,11 +25,10 @@ Pop-Location
 
 # Run smoketests script
 Write-Host "Running 'go run . -serviceDirectory $serviceDirectory'"
-go run . -serviceDirectory $serviceDirectory
+go run . -daily
 if ($LASTEXITCODE) {
     exit $LASTEXITCODE
 }
-
 Pop-Location
 
 # Run go mod tidy and go build. If these succeed the smoke tests pass
@@ -42,3 +46,4 @@ Pop-Location
 
 # Clean-up the directory created
 Remove-Item -Path $smoketestsDir -Recurse -Force
+Write-Host $PSScriptRoot

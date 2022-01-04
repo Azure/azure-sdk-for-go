@@ -12,7 +12,7 @@ package recoveryservices
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2016-06-01/recoveryservices"
+	original "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2021-08-01/recoveryservices"
 )
 
 const (
@@ -22,28 +22,44 @@ const (
 type AuthType = original.AuthType
 
 const (
-	AAD                  AuthType = original.AAD
-	AccessControlService AuthType = original.AccessControlService
-	ACS                  AuthType = original.ACS
-	AzureActiveDirectory AuthType = original.AzureActiveDirectory
-	Invalid              AuthType = original.Invalid
+	AuthTypeAAD                  AuthType = original.AuthTypeAAD
+	AuthTypeAccessControlService AuthType = original.AuthTypeAccessControlService
+	AuthTypeACS                  AuthType = original.AuthTypeACS
+	AuthTypeAzureActiveDirectory AuthType = original.AuthTypeAzureActiveDirectory
+	AuthTypeInvalid              AuthType = original.AuthTypeInvalid
 )
 
 type AuthTypeBasicResourceCertificateDetails = original.AuthTypeBasicResourceCertificateDetails
 
 const (
-	AuthTypeAccessControlService       AuthTypeBasicResourceCertificateDetails = original.AuthTypeAccessControlService
-	AuthTypeAzureActiveDirectory       AuthTypeBasicResourceCertificateDetails = original.AuthTypeAzureActiveDirectory
-	AuthTypeResourceCertificateDetails AuthTypeBasicResourceCertificateDetails = original.AuthTypeResourceCertificateDetails
+	AuthTypeBasicResourceCertificateDetailsAuthTypeAccessControlService       AuthTypeBasicResourceCertificateDetails = original.AuthTypeBasicResourceCertificateDetailsAuthTypeAccessControlService
+	AuthTypeBasicResourceCertificateDetailsAuthTypeAzureActiveDirectory       AuthTypeBasicResourceCertificateDetails = original.AuthTypeBasicResourceCertificateDetailsAuthTypeAzureActiveDirectory
+	AuthTypeBasicResourceCertificateDetailsAuthTypeResourceCertificateDetails AuthTypeBasicResourceCertificateDetails = original.AuthTypeBasicResourceCertificateDetailsAuthTypeResourceCertificateDetails
+)
+
+type CreatedByType = original.CreatedByType
+
+const (
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
+)
+
+type InfrastructureEncryptionState = original.InfrastructureEncryptionState
+
+const (
+	InfrastructureEncryptionStateDisabled InfrastructureEncryptionState = original.InfrastructureEncryptionStateDisabled
+	InfrastructureEncryptionStateEnabled  InfrastructureEncryptionState = original.InfrastructureEncryptionStateEnabled
 )
 
 type PrivateEndpointConnectionStatus = original.PrivateEndpointConnectionStatus
 
 const (
-	Approved     PrivateEndpointConnectionStatus = original.Approved
-	Disconnected PrivateEndpointConnectionStatus = original.Disconnected
-	Pending      PrivateEndpointConnectionStatus = original.Pending
-	Rejected     PrivateEndpointConnectionStatus = original.Rejected
+	PrivateEndpointConnectionStatusApproved     PrivateEndpointConnectionStatus = original.PrivateEndpointConnectionStatusApproved
+	PrivateEndpointConnectionStatusDisconnected PrivateEndpointConnectionStatus = original.PrivateEndpointConnectionStatusDisconnected
+	PrivateEndpointConnectionStatusPending      PrivateEndpointConnectionStatus = original.PrivateEndpointConnectionStatusPending
+	PrivateEndpointConnectionStatusRejected     PrivateEndpointConnectionStatus = original.PrivateEndpointConnectionStatusRejected
 )
 
 type ProvisioningState = original.ProvisioningState
@@ -58,33 +74,50 @@ const (
 type ResourceIdentityType = original.ResourceIdentityType
 
 const (
-	None           ResourceIdentityType = original.None
-	SystemAssigned ResourceIdentityType = original.SystemAssigned
+	ResourceIdentityTypeNone                       ResourceIdentityType = original.ResourceIdentityTypeNone
+	ResourceIdentityTypeSystemAssigned             ResourceIdentityType = original.ResourceIdentityTypeSystemAssigned
+	ResourceIdentityTypeSystemAssignedUserAssigned ResourceIdentityType = original.ResourceIdentityTypeSystemAssignedUserAssigned
+	ResourceIdentityTypeUserAssigned               ResourceIdentityType = original.ResourceIdentityTypeUserAssigned
+)
+
+type ResourceMoveState = original.ResourceMoveState
+
+const (
+	ResourceMoveStateCommitFailed    ResourceMoveState = original.ResourceMoveStateCommitFailed
+	ResourceMoveStateCommitTimedout  ResourceMoveState = original.ResourceMoveStateCommitTimedout
+	ResourceMoveStateCriticalFailure ResourceMoveState = original.ResourceMoveStateCriticalFailure
+	ResourceMoveStateFailure         ResourceMoveState = original.ResourceMoveStateFailure
+	ResourceMoveStateInProgress      ResourceMoveState = original.ResourceMoveStateInProgress
+	ResourceMoveStateMoveSucceeded   ResourceMoveState = original.ResourceMoveStateMoveSucceeded
+	ResourceMoveStatePartialSuccess  ResourceMoveState = original.ResourceMoveStatePartialSuccess
+	ResourceMoveStatePrepareFailed   ResourceMoveState = original.ResourceMoveStatePrepareFailed
+	ResourceMoveStatePrepareTimedout ResourceMoveState = original.ResourceMoveStatePrepareTimedout
+	ResourceMoveStateUnknown         ResourceMoveState = original.ResourceMoveStateUnknown
 )
 
 type SkuName = original.SkuName
 
 const (
-	RS0      SkuName = original.RS0
-	Standard SkuName = original.Standard
+	SkuNameRS0      SkuName = original.SkuNameRS0
+	SkuNameStandard SkuName = original.SkuNameStandard
 )
 
 type TriggerType = original.TriggerType
 
 const (
-	ForcedUpgrade TriggerType = original.ForcedUpgrade
-	UserTriggered TriggerType = original.UserTriggered
+	TriggerTypeForcedUpgrade TriggerType = original.TriggerTypeForcedUpgrade
+	TriggerTypeUserTriggered TriggerType = original.TriggerTypeUserTriggered
 )
 
 type UsagesUnit = original.UsagesUnit
 
 const (
-	Bytes          UsagesUnit = original.Bytes
-	BytesPerSecond UsagesUnit = original.BytesPerSecond
-	Count          UsagesUnit = original.Count
-	CountPerSecond UsagesUnit = original.CountPerSecond
-	Percent        UsagesUnit = original.Percent
-	Seconds        UsagesUnit = original.Seconds
+	UsagesUnitBytes          UsagesUnit = original.UsagesUnitBytes
+	UsagesUnitBytesPerSecond UsagesUnit = original.UsagesUnitBytesPerSecond
+	UsagesUnitCount          UsagesUnit = original.UsagesUnitCount
+	UsagesUnitCountPerSecond UsagesUnit = original.UsagesUnitCountPerSecond
+	UsagesUnitPercent        UsagesUnit = original.UsagesUnitPercent
+	UsagesUnitSeconds        UsagesUnit = original.UsagesUnitSeconds
 )
 
 type VaultPrivateEndpointState = original.VaultPrivateEndpointState
@@ -97,10 +130,10 @@ const (
 type VaultUpgradeState = original.VaultUpgradeState
 
 const (
-	Failed     VaultUpgradeState = original.Failed
-	InProgress VaultUpgradeState = original.InProgress
-	Unknown    VaultUpgradeState = original.Unknown
-	Upgraded   VaultUpgradeState = original.Upgraded
+	VaultUpgradeStateFailed     VaultUpgradeState = original.VaultUpgradeStateFailed
+	VaultUpgradeStateInProgress VaultUpgradeState = original.VaultUpgradeStateInProgress
+	VaultUpgradeStateUnknown    VaultUpgradeState = original.VaultUpgradeStateUnknown
+	VaultUpgradeStateUpgraded   VaultUpgradeState = original.VaultUpgradeStateUpgraded
 )
 
 type BaseClient = original.BaseClient
@@ -117,10 +150,16 @@ type ClientDiscoveryResponse = original.ClientDiscoveryResponse
 type ClientDiscoveryResponseIterator = original.ClientDiscoveryResponseIterator
 type ClientDiscoveryResponsePage = original.ClientDiscoveryResponsePage
 type ClientDiscoveryValueForSingleAPI = original.ClientDiscoveryValueForSingleAPI
+type CloudError = original.CloudError
+type CmkKekIdentity = original.CmkKekIdentity
+type CmkKeyVaultProperties = original.CmkKeyVaultProperties
+type Error = original.Error
+type ErrorAdditionalInfo = original.ErrorAdditionalInfo
 type IdentityData = original.IdentityData
 type JobsSummary = original.JobsSummary
 type MonitoringSummary = original.MonitoringSummary
 type NameInfo = original.NameInfo
+type OperationResource = original.OperationResource
 type OperationsClient = original.OperationsClient
 type PatchTrackedResource = original.PatchTrackedResource
 type PatchVault = original.PatchVault
@@ -144,9 +183,11 @@ type ResourceCertificateAndAadDetails = original.ResourceCertificateAndAadDetail
 type ResourceCertificateAndAcsDetails = original.ResourceCertificateAndAcsDetails
 type ResourceCertificateDetails = original.ResourceCertificateDetails
 type Sku = original.Sku
+type SystemData = original.SystemData
 type TrackedResource = original.TrackedResource
 type UpgradeDetails = original.UpgradeDetails
 type UsagesClient = original.UsagesClient
+type UserIdentity = original.UserIdentity
 type Vault = original.Vault
 type VaultCertificateResponse = original.VaultCertificateResponse
 type VaultCertificatesClient = original.VaultCertificatesClient
@@ -157,9 +198,13 @@ type VaultList = original.VaultList
 type VaultListIterator = original.VaultListIterator
 type VaultListPage = original.VaultListPage
 type VaultProperties = original.VaultProperties
+type VaultPropertiesEncryption = original.VaultPropertiesEncryption
+type VaultPropertiesMoveDetails = original.VaultPropertiesMoveDetails
 type VaultUsage = original.VaultUsage
 type VaultUsageList = original.VaultUsageList
 type VaultsClient = original.VaultsClient
+type VaultsCreateOrUpdateFuture = original.VaultsCreateOrUpdateFuture
+type VaultsUpdateFuture = original.VaultsUpdateFuture
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -245,6 +290,12 @@ func PossibleAuthTypeBasicResourceCertificateDetailsValues() []AuthTypeBasicReso
 func PossibleAuthTypeValues() []AuthType {
 	return original.PossibleAuthTypeValues()
 }
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
+}
+func PossibleInfrastructureEncryptionStateValues() []InfrastructureEncryptionState {
+	return original.PossibleInfrastructureEncryptionStateValues()
+}
 func PossiblePrivateEndpointConnectionStatusValues() []PrivateEndpointConnectionStatus {
 	return original.PossiblePrivateEndpointConnectionStatusValues()
 }
@@ -253,6 +304,9 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 }
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	return original.PossibleResourceIdentityTypeValues()
+}
+func PossibleResourceMoveStateValues() []ResourceMoveState {
+	return original.PossibleResourceMoveStateValues()
 }
 func PossibleSkuNameValues() []SkuName {
 	return original.PossibleSkuNameValues()

@@ -21,7 +21,7 @@ import (
 
 // NewPoller creates a Poller based on the provided initial response.
 // pollerID - a unique identifier for an LRO, it's usually the client.Method string.
-func NewPoller(pollerID string, resp *http.Response, pl pipeline.Pipeline, eu func(*http.Response) error) (*pollers.Poller, error) {
+func NewPoller(pollerID string, resp *http.Response, pl pipeline.Pipeline) (*pollers.Poller, error) {
 	defer resp.Body.Close()
 	// this is a back-stop in case the swagger is incorrect (i.e. missing one or more status codes for success).
 	// ideally the codegen should return an error if the initial response failed and not even create a poller.
@@ -42,12 +42,12 @@ func NewPoller(pollerID string, resp *http.Response, pl pipeline.Pipeline, eu fu
 	if err != nil {
 		return nil, err
 	}
-	return pollers.NewPoller(lro, resp, pl, eu), nil
+	return pollers.NewPoller(lro, resp, pl), nil
 }
 
 // NewPollerFromResumeToken creates a Poller from a resume token string.
 // pollerID - a unique identifier for an LRO, it's usually the client.Method string.
-func NewPollerFromResumeToken(pollerID string, token string, pl pipeline.Pipeline, eu func(*http.Response) error) (*pollers.Poller, error) {
+func NewPollerFromResumeToken(pollerID string, token string, pl pipeline.Pipeline) (*pollers.Poller, error) {
 	kind, err := pollers.KindFromToken(pollerID, token)
 	if err != nil {
 		return nil, err
@@ -67,5 +67,5 @@ func NewPollerFromResumeToken(pollerID string, token string, pl pipeline.Pipelin
 	if err = json.Unmarshal([]byte(token), lro); err != nil {
 		return nil, err
 	}
-	return pollers.NewPoller(lro, nil, pl, eu), nil
+	return pollers.NewPoller(lro, nil, pl), nil
 }

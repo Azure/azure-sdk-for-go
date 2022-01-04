@@ -24,3 +24,17 @@ func ExampleNewClientCertificateCredential() {
 
 	// Output:
 }
+
+func ExampleNewManagedIdentityCredential_userAssigned() {
+	// select a user assigned identity with its client ID...
+	clientID := azidentity.ClientID("abcd1234-...")
+	opts := azidentity.ManagedIdentityCredentialOptions{ID: clientID}
+	cred, err = azidentity.NewManagedIdentityCredential(&opts)
+	handleError(err)
+
+	// ...or its resource ID
+	resourceID := azidentity.ResourceID("/subscriptions/...")
+	opts = azidentity.ManagedIdentityCredentialOptions{ID: resourceID}
+	cred, err = azidentity.NewManagedIdentityCredential(&opts)
+	handleError(err)
+}

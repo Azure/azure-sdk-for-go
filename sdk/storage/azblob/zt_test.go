@@ -26,8 +26,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 )
 
-
-//const DefaultBlobEndpointSuffix = "blob.core.windows.net/"
 const AccountNameEnvVar = "STORAGE_ACCOUNT_NAME"
 const AccountKeyEnvVar = "STORAGE_ACCOUNT_KEY"
 

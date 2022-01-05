@@ -1604,13 +1604,6 @@ func setupClearPagesTest(t *testing.T, testName string) (ContainerClient, PageBl
 	return containerClient, pbClient
 }
 
-func validateClearPagesTest(t *testing.T, pbClient PageBlobClient) {
-	resp, err := pbClient.GetPageRanges(ctx, HttpRange{0, 0}, nil)
-	require.NoError(t, err)
-	pageListResp := resp.PageList.PageRange
-	require.Nil(t, pageListResp)
-}
-
 func TestBlobClearPagesInvalidRange(t *testing.T) {
 	stop := start(t)
 	defer stop()

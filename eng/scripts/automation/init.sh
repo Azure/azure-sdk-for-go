@@ -41,7 +41,7 @@ cd $generatorDirectory
 go build
 # go install
 cp generator $GOPATH/bin/
-export PATH=$PATH:$GOPATH/bin
+export PATH=$GOPATH/bin:$PATH
 cd $DIRECTORY
 
 if [ ! -f "$GOPATH/bin/pwsh.exe" ]; then
@@ -53,7 +53,7 @@ echo $1
 cat > $1 << EOF
 {
   "envs": {
-    "PATH": "$PATH:$GOPATH",
+    "PATH": "$GOPATH:$PATH",
     "GOPATH": "$GOPATH",
     "GOROOT": "$GOROOT"
   }

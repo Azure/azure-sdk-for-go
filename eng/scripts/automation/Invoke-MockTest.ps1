@@ -18,7 +18,7 @@ if ([string]::IsNullOrEmpty($inputJson.mockServerHost)) {
 }
 Write-Host "##[command]Generate example and Mock Test " $packageFolder
 Set-Location $packageFolder
-Invoke-MgmtTestgen -sdkDirectory $packageFolder -autorestPath $packageFolder/autorest.md -generateExample -generateMockTest
+Invoke-MgmtTestgen -sdkDirectory $packageFolder -autorestPath $packageFolder/autorest.md -generateExample -generateMockTest -tidy
 
 if ($runLocalMockServer -eq $true) {
     Write-Host "Prepare Mock Server"
@@ -28,6 +28,7 @@ if ($runLocalMockServer -eq $true) {
 }
 
 Set-Location $packageFolder
+
 Write-output "Run Mock Test"
 $sdk = Get-GoModuleProperties $packageFolder
 ExecuteSingleTest $sdk $runLocalMockServer

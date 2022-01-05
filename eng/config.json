@@ -2,7 +2,7 @@
     "Packages": [
         {
             "Name": "azblob",
-            "CoverageGoal": 0.45
+            "CoverageGoal": 0.43
         },
         {
             "Name": "azcore",

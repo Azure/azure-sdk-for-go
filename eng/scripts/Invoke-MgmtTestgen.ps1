@@ -79,8 +79,8 @@ function Invoke-MgmtTestgen ()
 
     if (!$skipBuild)
     {
-        Write-Host "##[command]Executing go build -x -v ./... in " $currentDirectory
-        go build -x -v ./...
+        Write-Host "##[command]Executing go build -v ./... in " $currentDirectory
+        go build -v ./...
         Write-Host "##[command]Build Complete!"
         if ($LASTEXITCODE) { exit $LASTEXITCODE }
     }

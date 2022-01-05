@@ -7,12 +7,13 @@ import (
 	"context"
 	"encoding/base64"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"io"
 	"net/http"
 	"sync"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 
 	"bytes"
 	"errors"
@@ -278,7 +279,7 @@ func (b BlobClient) DownloadBlobToWriterAt(ctx context.Context, offset int64, co
 						rangeProgress = bytesTransferred
 						progressLock.Lock()
 						progress += diff
-						//o.Progress(progress)
+						o.Progress(progress)
 						progressLock.Unlock()
 					})
 			}
@@ -595,7 +596,7 @@ func (u *UploadStreamToBlockBlobOptions) getCommitBlockListOptions() *CommitBloc
 
 // UploadStreamToBlockBlob copies the file held in io.Reader to the Blob at blockBlobClient.
 // A Context deadline or cancellation will cause this to error.
-func (bb BlockBlobClient) UploadStreamToBlockBlob(ctx context.Context, body io.ReadSeekCloser, o UploadStreamToBlockBlobOptions) (BlockBlobCommitBlockListResponse, error) {
+func (bb BlockBlobClient) UploadStreamToBlockBlob(ctx context.Context, body io.Reader, o UploadStreamToBlockBlobOptions) (BlockBlobCommitBlockListResponse, error) {
 	if err := o.defaults(); err != nil {
 		return BlockBlobCommitBlockListResponse{}, err
 	}

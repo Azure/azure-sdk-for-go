@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package rpc
 
 import (
@@ -80,7 +82,7 @@ func TestResponseRouterBadCorrelationID(t *testing.T) {
 func TestResponseRouterFatalErrors(t *testing.T) {
 	fatalErrors := []error{
 		amqp.ErrLinkClosed,
-		amqp.ErrLinkDetached,
+		&amqp.DetachError{},
 		amqp.ErrConnClosed,
 		amqp.ErrSessionClosed,
 	}

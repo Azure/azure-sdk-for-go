@@ -19,4 +19,4 @@ const (
 // TODO: this should move into a proper file. Need to resolve some interdependency
 // issues between the public and internal packages first.
 // Version is the semantic version number
-const Version = "v0.3.2"
+const Version = "v0.3.3"

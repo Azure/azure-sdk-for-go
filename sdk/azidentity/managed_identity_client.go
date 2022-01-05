@@ -23,7 +23,8 @@ import (
 )
 
 const (
-	imdsEndpoint = "http://169.254.169.254/metadata/identity/oauth2/token"
+	headerMetadata = "Metadata"
+	imdsEndpoint   = "http://169.254.169.254/metadata/identity/oauth2/token"
 )
 
 const (
@@ -36,6 +37,9 @@ const (
 	imdsAPIVersion           = "2018-02-01"
 	azureArcAPIVersion       = "2019-08-15"
 	serviceFabricAPIVersion  = "2019-07-01-preview"
+
+	qpClientID = "client_id"
+	qpResID    = "mi_res_id"
 )
 
 type msiType int
@@ -112,7 +116,7 @@ func setRetryOptionDefaults(o *policy.RetryOptions) {
 func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) runtime.Pipeline {
 	cp := o.ClientOptions
 	setRetryOptionDefaults(&cp.Retry)
-	return runtime.NewPipeline(component, version, nil, nil, &cp)
+	return runtime.NewPipeline(component, version, runtime.PipelineOptions{}, &cp)
 }
 
 // newManagedIdentityClient creates a new instance of the ManagedIdentityClient with the ManagedIdentityCredentialOptions
@@ -149,13 +153,13 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKi
 		return nil, err
 	}
 
-	if runtime.HasStatusCode(resp, successStatusCodes[:]...) {
+	if runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return c.createAccessToken(resp)
 	}
 
 	if c.msiType == msiTypeIMDS && resp.StatusCode == 400 {
 		if id != nil {
-			return nil, newAuthenticationFailedError(errors.New("The requested identity isn't assigned to this resource."), resp)
+			return nil, newAuthenticationFailedError(errors.New("the requested identity isn't assigned to this resource"), resp)
 		}
 		c.unavailableMessage = "No default identity is assigned to this resource."
 		return nil, newCredentialUnavailableError("Managed Identity Credential", c.unavailableMessage)
@@ -374,7 +378,7 @@ func (c *managedIdentityClient) createCloudShellAuthRequest(ctx context.Context,
 	}
 	dataEncoded := data.Encode()
 	body := streaming.NopCloser(strings.NewReader(dataEncoded))
-	if err := request.SetBody(body, headerURLEncoded); err != nil {
+	if err := request.SetBody(body, "application/x-www-form-urlencoded"); err != nil {
 		return nil, err
 	}
 	return request, nil

@@ -13,6 +13,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
@@ -55,7 +56,7 @@ func TestSkipBodyDownload(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	req.SkipBodyDownload()
+	SkipBodyDownload(req)
 	resp, err := pl.Do(req)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -267,7 +268,7 @@ func TestSkipBodyDownloadWith400(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	req.SkipBodyDownload()
+	SkipBodyDownload(req)
 	resp, err := pl.Do(req)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -307,7 +308,7 @@ func TestReadBodyAfterSeek(t *testing.T) {
 	if string(payload) != message {
 		t.Fatal("incorrect payload")
 	}
-	nb, ok := resp.Body.(*nopClosingBytesReader)
+	nb, ok := resp.Body.(*shared.NopClosingBytesReader)
 	if !ok {
 		t.Fatalf("unexpected body type: %t", resp.Body)
 	}

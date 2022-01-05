@@ -12,11 +12,20 @@ package virtualmachineimagebuilder
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/virtualmachineimagebuilder/mgmt/2020-02-14/virtualmachineimagebuilder"
+	original "github.com/Azure/azure-sdk-for-go/services/virtualmachineimagebuilder/mgmt/2021-10-01/virtualmachineimagebuilder"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type CreatedByType = original.CreatedByType
+
+const (
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
 )
 
 type ProvisioningErrorCode = original.ProvisioningErrorCode
@@ -108,12 +117,13 @@ const (
 	TypeBasicImageTemplateDistributorTypeVHD                      TypeBasicImageTemplateDistributor = original.TypeBasicImageTemplateDistributorTypeVHD
 )
 
-type APIError = original.APIError
-type APIErrorBase = original.APIErrorBase
+type AzureEntityResource = original.AzureEntityResource
 type BaseClient = original.BaseClient
 type BasicImageTemplateCustomizer = original.BasicImageTemplateCustomizer
 type BasicImageTemplateDistributor = original.BasicImageTemplateDistributor
 type BasicImageTemplateSource = original.BasicImageTemplateSource
+type CloudError = original.CloudError
+type CloudErrorBody = original.CloudErrorBody
 type ImageTemplate = original.ImageTemplate
 type ImageTemplateCustomizer = original.ImageTemplateCustomizer
 type ImageTemplateDistributor = original.ImageTemplateDistributor
@@ -138,7 +148,6 @@ type ImageTemplateUpdateParameters = original.ImageTemplateUpdateParameters
 type ImageTemplateVMProfile = original.ImageTemplateVMProfile
 type ImageTemplateVhdDistributor = original.ImageTemplateVhdDistributor
 type ImageTemplateWindowsUpdateCustomizer = original.ImageTemplateWindowsUpdateCustomizer
-type InnerError = original.InnerError
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -147,6 +156,7 @@ type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
 type PlatformImagePurchasePlan = original.PlatformImagePurchasePlan
 type ProvisioningError = original.ProvisioningError
+type ProxyResource = original.ProxyResource
 type Resource = original.Resource
 type RunOutput = original.RunOutput
 type RunOutputCollection = original.RunOutputCollection
@@ -154,6 +164,8 @@ type RunOutputCollectionIterator = original.RunOutputCollectionIterator
 type RunOutputCollectionPage = original.RunOutputCollectionPage
 type RunOutputProperties = original.RunOutputProperties
 type SubResource = original.SubResource
+type SystemData = original.SystemData
+type TrackedResource = original.TrackedResource
 type VirtualMachineImageTemplatesCancelFuture = original.VirtualMachineImageTemplatesCancelFuture
 type VirtualMachineImageTemplatesClient = original.VirtualMachineImageTemplatesClient
 type VirtualMachineImageTemplatesCreateOrUpdateFuture = original.VirtualMachineImageTemplatesCreateOrUpdateFuture
@@ -197,6 +209,9 @@ func NewVirtualMachineImageTemplatesClientWithBaseURI(baseURI string, subscripti
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
 }
 func PossibleProvisioningErrorCodeValues() []ProvisioningErrorCode {
 	return original.PossibleProvisioningErrorCodeValues()

@@ -70,6 +70,14 @@ func readConfigData(coverageConfig string) *codeCoverage {
 // this method will have to return a []*float64 for each packages goal
 func findCoverageGoal(covFiles []string, configData *codeCoverage) float64 {
 	for _, covFile := range covFiles {
+
+		// check for an exact match _first_, then go to fuzzy matching
+		for _, p := range configData.Packages {
+			if covFile == p.Name {
+				return p.CoverageGoal
+			}
+		}
+
 		for _, p := range configData.Packages {
 			if strings.Contains(covFile, p.Name) {
 				return p.CoverageGoal
@@ -121,16 +129,20 @@ func CheckCoverage(serviceDir string, coverageConfig string, searchDirectory str
 	rootPath, err := filepath.Abs(searchDirectory)
 	check(err)
 
+	fmt.Printf("Searching for coverage files in %s\n", rootPath)
+
 	coverageFiles := findCoverageFiles(rootPath)
 	if len(coverageFiles) == 0 {
 		fmt.Println("No coverage files found in " + rootPath)
 		return
 	}
 
+	fmt.Printf("Reading config data from %s\n", coverageConfig)
+
 	configData := readConfigData(coverageConfig)
 	coverageGoal := findCoverageGoal([]string{serviceDir}, configData)
 
-	fmt.Printf("Failing if the coverage is below %.2f\n", coverageGoal)
+	fmt.Printf("(%s) Failing if the coverage is below %.2f\n", serviceDir, coverageGoal)
 
 	coverageValues := parseCoverageFiles(coverageFiles)
 

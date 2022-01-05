@@ -185,7 +185,9 @@ func shouldRecreateLink(err error) bool {
 		return false
 	}
 
-	return errors.Is(err, amqp.ErrLinkDetached) ||
+	var detachError *amqp.DetachError
+
+	return errors.As(err, &detachError) ||
 		// TODO: proper error types needs to happen
 		strings.Contains(err.Error(), "detach frame link detached")
 }

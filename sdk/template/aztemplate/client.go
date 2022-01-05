@@ -17,7 +17,7 @@ type Client struct {
 	client *internal.TemplateClient
 }
 
-func NewClient(cred azcore.Credential, options *ClientOptions) (*Client, error) {
+func NewClient(cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 
 	//if options == nil {
 	//options = &ClientOptions{}

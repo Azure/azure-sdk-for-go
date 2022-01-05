@@ -271,11 +271,15 @@ func (s *startDeleteSecretPoller) Poll(ctx context.Context) (*http.Response, err
 		// Service recognizes DeletedSecret, operation is done
 		s.lastResponse = resp
 		return resp.RawResponse, nil
-	} else if err != nil {
-		return s.deleteResponse.RawResponse, nil
 	}
-	s.lastResponse = resp
-	return resp.RawResponse, nil
+	var httpResponseErr azcore.HTTPResponse
+	if errors.As(err, &httpResponseErr) {
+		if httpResponseErr.RawResponse().StatusCode == http.StatusNotFound {
+			// This is the expected result
+			return s.deleteResponse.RawResponse, nil
+		}
+	}
+	return s.deleteResponse.RawResponse, err
 }
 
 // FinalResponse returns the final response after the operations has finished

@@ -39,7 +39,7 @@ func TestMSITelemetryDefaultUserAgent(t *testing.T) {
 	if resp.StatusCode != http.StatusOK {
 		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
-	if ua := resp.Request.Header.Get(headerUserAgent); !strings.HasPrefix(ua, "azsdk-go-"+component+"/"+version) {
+	if ua := resp.Request.Header.Get("User-Agent"); !strings.HasPrefix(ua, "azsdk-go-"+component+"/"+version) {
 		t.Fatalf("unexpected User-Agent %s", ua)
 	}
 }
@@ -63,7 +63,7 @@ func TestMSITelemetryCustom(t *testing.T) {
 	if resp.StatusCode != http.StatusOK {
 		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
-	if ua := resp.Request.Header.Get(headerUserAgent); !strings.HasPrefix(ua, customTelemetry+" "+"azsdk-go-"+component+"/"+version) {
+	if ua := resp.Request.Header.Get("User-Agent"); !strings.HasPrefix(ua, customTelemetry+" "+"azsdk-go-"+component+"/"+version) {
 		t.Fatalf("unexpected User-Agent %s", ua)
 	}
 }

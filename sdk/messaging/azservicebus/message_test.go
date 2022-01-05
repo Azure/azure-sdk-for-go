@@ -20,12 +20,12 @@ func TestMessageUnitTest(t *testing.T) {
 		// basic thing - it's totally fine to send a message nothing in it.
 		amqpMessage := message.toAMQPMessage()
 		require.Empty(t, amqpMessage.Annotations)
-		require.NotEmpty(t, amqpMessage.Properties.MessageID, "MessageID is (currently) automatically filled out if you don't specify one")
+		require.Nil(t, amqpMessage.Properties.MessageID)
 
 		scheduledEnqueuedTime := time.Now()
 
 		message = &Message{
-			MessageID:               "message id",
+			MessageID:               to.StringPtr("message id"),
 			Body:                    []byte("the body"),
 			PartitionKey:            to.StringPtr("partition key"),
 			TransactionPartitionKey: to.StringPtr("via partition key"),
@@ -36,7 +36,7 @@ func TestMessageUnitTest(t *testing.T) {
 		amqpMessage = message.toAMQPMessage()
 
 		require.EqualValues(t, "message id", amqpMessage.Properties.MessageID)
-		require.EqualValues(t, "session id", amqpMessage.Properties.GroupID)
+		require.EqualValues(t, "session id", *amqpMessage.Properties.GroupID)
 
 		require.EqualValues(t, "the body", string(amqpMessage.Data[0]))
 		require.EqualValues(t, 1, len(amqpMessage.Data))
@@ -93,21 +93,23 @@ func TestAMQPMessageToMessage(t *testing.T) {
 	// test the conversion occurs correctly.
 	dotNetEncodedLockTokenGUID := []byte{205, 89, 49, 187, 254, 253, 77, 205, 162, 38, 172, 76, 45, 235, 91, 225}
 
+	groupSequence := uint32(1)
+
 	amqpMsg := &amqp.Message{
 		DeliveryTag: dotNetEncodedLockTokenGUID,
 		Properties: &amqp.MessageProperties{
 			MessageID:          "messageID",
-			To:                 "to",
-			Subject:            "subject",
-			ReplyTo:            "replyTo",
-			ReplyToGroupID:     "replyToGroupID",
+			To:                 to.StringPtr("to"),
+			Subject:            to.StringPtr("subject"),
+			ReplyTo:            to.StringPtr("replyTo"),
+			ReplyToGroupID:     to.StringPtr("replyToGroupID"),
 			CorrelationID:      "correlationID",
-			ContentType:        "contentType",
-			ContentEncoding:    "contentEncoding",
-			AbsoluteExpiryTime: until,
-			CreationTime:       until,
-			GroupID:            "groupID",
-			GroupSequence:      uint32(1),
+			ContentType:        to.StringPtr("contentType"),
+			ContentEncoding:    to.StringPtr("contentEncoding"),
+			AbsoluteExpiryTime: &until,
+			CreationTime:       &until,
+			GroupID:            to.StringPtr("groupID"),
+			GroupSequence:      &groupSequence,
 		},
 		Annotations: amqp.Annotations{
 			"x-opt-locked-until":            until,
@@ -133,9 +135,9 @@ func TestAMQPMessageToMessage(t *testing.T) {
 	msg := newReceivedMessage(context.Background(), amqpMsg)
 
 	require.EqualValues(t, msg.MessageID, amqpMsg.Properties.MessageID, "messageID")
-	require.EqualValues(t, *msg.SessionID, amqpMsg.Properties.GroupID, "groupID")
+	require.EqualValues(t, msg.SessionID, amqpMsg.Properties.GroupID, "groupID")
 	require.EqualValues(t, msg.ContentType, amqpMsg.Properties.ContentType, "contentType")
-	require.EqualValues(t, msg.CorrelationID, amqpMsg.Properties.CorrelationID, "correlation")
+	require.EqualValues(t, *msg.CorrelationID, amqpMsg.Properties.CorrelationID, "correlation")
 	require.EqualValues(t, msg.ReplyToSessionID, amqpMsg.Properties.ReplyToGroupID, "replyToGroupID")
 	require.EqualValues(t, msg.ReplyTo, amqpMsg.Properties.ReplyTo, "replyTo")
 	require.EqualValues(t, *msg.TimeToLive, amqpMsg.Header.TTL, "ttl")

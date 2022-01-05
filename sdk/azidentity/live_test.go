@@ -4,17 +4,29 @@
 package azidentity
 
 import (
+	"context"
 	"fmt"
+	"log"
 	"net/http"
 	"net/url"
 	"os"
 	"testing"
+	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
 
 // configuration for live tests
+var liveManagedIdentity = struct {
+	clientID   string
+	resourceID string
+}{
+	clientID:   os.Getenv("MANAGED_IDENTITY_CLIENT_ID"),
+	resourceID: os.Getenv("MANAGED_IDENTITY_RESOURCE_ID"),
+}
+
 var liveSP = struct {
 	tenantID string
 	clientID string
@@ -45,6 +57,7 @@ const (
 	fakeClientID   = "fake-client-id"
 	fakeResourceID = "/fake/resource/ID"
 	fakeTenantID   = "fake-tenant"
+	fakeUsername   = "fake@user"
 )
 
 var liveTestScope = "https://management.core.windows.net//.default"
@@ -59,6 +72,8 @@ func init() {
 	}
 
 	if recording.GetRecordMode() == recording.PlaybackMode {
+		liveManagedIdentity.clientID = fakeClientID
+		liveManagedIdentity.resourceID = fakeResourceID
 		liveSP.secret = "fake-secret"
 		liveSP.clientID = fakeClientID
 		liveSP.tenantID = fakeTenantID
@@ -66,48 +81,56 @@ func init() {
 		liveSP.pfxPath = "testdata/certificate.pfx"
 		liveSP.sniPath = "testdata/certificate-with-chain.pem"
 		liveUser.tenantID = fakeTenantID
-		liveUser.username = "fake-user"
+		liveUser.username = fakeUsername
 		liveUser.password = "fake-password"
 	}
 }
 
 func TestMain(m *testing.M) {
-	if recording.GetRecordMode() == recording.RecordingMode {
+	switch recording.GetRecordMode() {
+	case recording.PlaybackMode:
+		// enable BodilessMatcher because we don't record request bodies
+		// TODO: add an API for this to sdk/internal
+		req, err := http.NewRequest("POST", "http://localhost:5000/Admin/SetMatcher", http.NoBody)
+		if err != nil {
+			panic(err)
+		}
+		req.Header["x-abstraction-identifier"] = []string{"BodilessMatcher"}
+		res, err := http.DefaultClient.Do(req)
+		if err != nil {
+			panic(err)
+		}
+		if res.StatusCode != http.StatusOK {
+			log.Panicf("failed to enable BodilessMatcher: %v", res)
+		}
+		// TODO: reset matcher
+	case recording.RecordingMode:
 		// remove default sanitizers such as the OAuth response sanitizer
 		err := recording.ResetSanitizers(nil)
 		if err != nil {
 			panic(err)
 		}
-		// replace path variables with fake values to simplify matching (these IDs aren't secret)
-		if id, ok := os.LookupEnv("MANAGED_IDENTITY_CLIENT_ID"); ok {
-			err = recording.AddURISanitizer(fakeClientID, id, nil)
-			if err != nil {
-				panic(err)
-			}
-			err = recording.AddHeaderRegexSanitizer(":path", fakeClientID, id, nil)
-			if err != nil {
-				panic(err)
-			}
+		// replace path variables with fake values to simplify matching (the real values aren't secret)
+		pathVars := map[string]string{
+			liveManagedIdentity.clientID:                    fakeClientID,
+			url.QueryEscape(liveManagedIdentity.resourceID): url.QueryEscape(fakeResourceID),
+			liveSP.tenantID:                                 fakeTenantID,
+			liveUser.tenantID:                               fakeTenantID,
+			liveUser.username:                               fakeUsername,
 		}
-		if id, ok := os.LookupEnv("MANAGED_IDENTITY_RESOURCE_ID"); ok {
-			replacement := url.QueryEscape(fakeResourceID)
-			target := url.QueryEscape(id)
-			err = recording.AddURISanitizer(replacement, target, nil)
-			if err != nil {
-				panic(err)
-			}
-			err = recording.AddHeaderRegexSanitizer(":path", replacement, target, nil)
-			if err != nil {
-				panic(err)
-			}
-		}
-		for _, tenantID := range []string{liveSP.tenantID, liveUser.tenantID} {
-			if tenantID != "" {
-				err = recording.AddURISanitizer(fakeTenantID, tenantID, nil)
+		for target, replacement := range pathVars {
+			if target != "" {
+				err = recording.AddURISanitizer(replacement, target, nil)
 				if err != nil {
 					panic(err)
 				}
-				err = recording.AddHeaderRegexSanitizer(":path", fakeTenantID, tenantID, nil)
+				err = recording.AddHeaderRegexSanitizer(":path", replacement, target, nil)
+				if err != nil {
+					panic(err)
+				}
+				// replace e.g. the real tenant ID with the fake one in metadata discovery responses,
+				// to ensure MSAL sends requests to the expected URI in playback
+				err = recording.AddBodyRegexSanitizer(replacement, target, nil)
 				if err != nil {
 					panic(err)
 				}
@@ -116,11 +139,12 @@ func TestMain(m *testing.M) {
 		// remove token request bodies (which are form encoded) because they contain
 		// secrets, are irrelevant in matching, and are formed by MSAL anyway
 		// (note: Cloud Shell would need an exemption from this, and that would be okay--its requests contain no secrets)
-		err = recording.AddBodyRegexSanitizer("{}", `^\S+=\w+`, nil)
+		err = recording.AddBodyRegexSanitizer("{}", `^\S+=.*`, nil)
 		if err != nil {
 			panic(err)
 		}
-		for _, key := range []string{"access_token", "refresh_token"} {
+		// redact secrets returned by AAD
+		for _, key := range []string{"access_token", "device_code", "message", "refresh_token", "user_code"} {
 			err = recording.AddBodyKeySanitizer("$."+key, "redacted", "", nil)
 			if err != nil {
 				panic(err)
@@ -131,6 +155,7 @@ func TestMain(m *testing.M) {
 			if err != nil {
 				panic(err)
 			}
+			// TODO: reset matcher
 		}()
 	}
 	os.Exit(m.Run())
@@ -175,4 +200,30 @@ func (p *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err erro
 		r.URL.Scheme = "https"
 	}
 	return req.Next()
+}
+
+// testGetTokenSuccess is a helper for happy path tests that acquires, and validates, a token from a credential
+func testGetTokenSuccess(t *testing.T, cred azcore.TokenCredential) {
+	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if tk.Token == "" {
+		t.Fatal("GetToken returned an invalid token")
+	}
+	if tk.ExpiresOn.Before(time.Now().UTC()) {
+		t.Fatal("GetToken returned an invalid expiration time")
+	}
+	_, actual := tk.ExpiresOn.Zone()
+	_, expected := time.Now().UTC().Zone()
+	if actual != expected {
+		t.Fatal("ExpiresOn isn't UTC")
+	}
+	tk2, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if tk2.Token != tk.Token || tk2.ExpiresOn.After(tk.ExpiresOn) {
+		t.Fatal("expected a cached token")
+	}
 }

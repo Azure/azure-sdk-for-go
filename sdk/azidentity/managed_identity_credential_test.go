@@ -17,7 +17,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
@@ -265,7 +264,7 @@ func TestManagedIdentityCredential_CreateAppServiceAuthRequestV20190801(t *testi
 		t.Fatalf("unexpected error: %v", err)
 	}
 	cred.client.endpoint = imdsEndpoint
-	req, err := cred.client.createAuthRequest(context.Background(), ClientID(clientID), []string{msiScope})
+	req, err := cred.client.createAuthRequest(context.Background(), ClientID(fakeClientID), []string{msiScope})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -282,7 +281,7 @@ func TestManagedIdentityCredential_CreateAppServiceAuthRequestV20190801(t *testi
 	if reqQueryParams["resource"][0] != msiScope {
 		t.Fatalf("Unexpected resource in resource query param")
 	}
-	if reqQueryParams[qpClientID][0] != clientID {
+	if reqQueryParams[qpClientID][0] != fakeClientID {
 		t.Fatalf("Unexpected client ID in resource query param")
 	}
 }
@@ -298,7 +297,7 @@ func TestManagedIdentityCredential_CreateAppServiceAuthRequestV20170901(t *testi
 		t.Fatalf("unexpected error: %v", err)
 	}
 	cred.client.endpoint = imdsEndpoint
-	req, err := cred.client.createAuthRequest(context.Background(), ClientID(clientID), []string{msiScope})
+	req, err := cred.client.createAuthRequest(context.Background(), ClientID(fakeClientID), []string{msiScope})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -315,7 +314,7 @@ func TestManagedIdentityCredential_CreateAppServiceAuthRequestV20170901(t *testi
 	if reqQueryParams["resource"][0] != msiScope {
 		t.Fatalf("Unexpected resource in resource query param")
 	}
-	if reqQueryParams["clientid"][0] != clientID {
+	if reqQueryParams["clientid"][0] != fakeClientID {
 		t.Fatalf("Unexpected client ID in resource query param")
 	}
 }
@@ -404,30 +403,6 @@ func TestManagedIdentityCredential_NewManagedIdentityCredentialFail(t *testing.T
 	}
 }
 
-func TestBearerPolicy_ManagedIdentityCredential(t *testing.T) {
-	srv, close := mock.NewTLSServer()
-	defer close()
-	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
-	defer clearEnvVars("MSI_ENDPOINT")
-	options := ManagedIdentityCredentialOptions{}
-	options.Transport = srv
-	cred, err := NewManagedIdentityCredential(&options)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	pipeline := defaultTestPipeline(srv, cred, msiScope)
-	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
-	if err != nil {
-		t.Fatal(err)
-	}
-	_, err = pipeline.Do(req)
-	if err != nil {
-		t.Fatalf("Expected an empty error but receive: %v", err)
-	}
-}
-
 func TestManagedIdentityCredential_GetTokenUnexpectedJSON(t *testing.T) {
 	resetEnvironmentVarsForTest()
 	srv, close := mock.NewServer()
@@ -457,7 +432,7 @@ func TestManagedIdentityCredential_CreateIMDSAuthRequest(t *testing.T) {
 		t.Fatalf("unexpected error: %v", err)
 	}
 	cred.client.endpoint = imdsEndpoint
-	req, err := cred.client.createIMDSAuthRequest(context.Background(), ClientID(clientID), []string{msiScope})
+	req, err := cred.client.createIMDSAuthRequest(context.Background(), ClientID(fakeClientID), []string{msiScope})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -474,8 +449,8 @@ func TestManagedIdentityCredential_CreateIMDSAuthRequest(t *testing.T) {
 	if reqQueryParams["resource"][0] != msiScope {
 		t.Fatalf("Unexpected resource in resource query param")
 	}
-	if reqQueryParams["client_id"][0] != clientID {
-		t.Fatalf("Unexpected client ID. Expected: %s, Received: %s", clientID, reqQueryParams["client_id"][0])
+	if reqQueryParams["client_id"][0] != fakeClientID {
+		t.Fatalf("Unexpected client ID. Expected: %s, Received: %s", fakeClientID, reqQueryParams["client_id"][0])
 	}
 	if u := req.Raw().URL.String(); !strings.HasPrefix(u, imdsEndpoint) {
 		t.Fatalf("Unexpected default authority host %s", u)
@@ -708,8 +683,15 @@ func TestManagedIdentityCredential_CreateAccessTokenExpiresOnFail(t *testing.T) 
 }
 
 func TestManagedIdentityCredential_IMDSLive(t *testing.T) {
-	if recording.GetRecordMode() == recording.LiveMode {
+	switch recording.GetRecordMode() {
+	case recording.LiveMode:
 		t.Skip("this test doesn't run in live mode because it can't pass in CI")
+	case recording.RecordingMode:
+		// record iff either managed identity environment variable is set, because
+		// otherwise there's no reason to believe the test is running on a VM
+		if len(liveManagedIdentity.clientID)+len(liveManagedIdentity.resourceID) == 0 {
+			t.Skip("neither MANAGED_IDENTITY_CLIENT_ID nor MANAGED_IDENTITY_RESOURCE_ID is set")
+		}
 	}
 	opts, stop := initRecording(t)
 	defer stop()
@@ -724,26 +706,24 @@ func TestManagedIdentityCredential_IMDSLive(t *testing.T) {
 	if tk.Token == "" {
 		t.Fatal("GetToken returned an invalid token")
 	}
-	if !tk.ExpiresOn.After(time.Now().UTC()) {
+	if tk.ExpiresOn.Before(time.Now().UTC()) {
 		t.Fatal("GetToken returned an invalid expiration time")
 	}
 }
 
 func TestManagedIdentityCredential_IMDSClientIDLive(t *testing.T) {
-	id := os.Getenv("MANAGED_IDENTITY_CLIENT_ID")
 	switch recording.GetRecordMode() {
 	case recording.LiveMode:
 		t.Skip("this test doesn't run in live mode because it can't pass in CI")
-	case recording.PlaybackMode:
-		id = fakeClientID
 	case recording.RecordingMode:
-		if id == "" {
+		if liveManagedIdentity.clientID == "" {
 			t.Skip("MANAGED_IDENTITY_CLIENT_ID isn't set")
 		}
 	}
 	opts, stop := initRecording(t)
 	defer stop()
-	cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ClientOptions: opts, ID: ClientID(id)})
+	o := ManagedIdentityCredentialOptions{ClientOptions: opts, ID: ClientID(liveManagedIdentity.clientID)}
+	cred, err := NewManagedIdentityCredential(&o)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -754,26 +734,24 @@ func TestManagedIdentityCredential_IMDSClientIDLive(t *testing.T) {
 	if tk.Token == "" {
 		t.Fatal("GetToken returned an invalid token")
 	}
-	if !tk.ExpiresOn.After(time.Now().UTC()) {
+	if tk.ExpiresOn.Before(time.Now().UTC()) {
 		t.Fatal("GetToken returned an invalid expiration time")
 	}
 }
 
 func TestManagedIdentityCredential_IMDSResourceIDLive(t *testing.T) {
-	id := os.Getenv("MANAGED_IDENTITY_RESOURCE_ID")
 	switch recording.GetRecordMode() {
 	case recording.LiveMode:
 		t.Skip("this test doesn't run in live mode because it can't pass in CI")
-	case recording.PlaybackMode:
-		id = fakeResourceID
 	case recording.RecordingMode:
-		if id == "" {
+		if liveManagedIdentity.resourceID == "" {
 			t.Skip("MANAGED_IDENTITY_RESOURCE_ID isn't set")
 		}
 	}
 	opts, stop := initRecording(t)
 	defer stop()
-	cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ClientOptions: opts, ID: ResourceID(id)})
+	o := ManagedIdentityCredentialOptions{ClientOptions: opts, ID: ResourceID(liveManagedIdentity.resourceID)}
+	cred, err := NewManagedIdentityCredential(&o)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -784,7 +762,7 @@ func TestManagedIdentityCredential_IMDSResourceIDLive(t *testing.T) {
 	if tk.Token == "" {
 		t.Fatal("GetToken returned an invalid token")
 	}
-	if !tk.ExpiresOn.After(time.Now().UTC()) {
+	if tk.ExpiresOn.Before(time.Now().UTC()) {
 		t.Fatal("GetToken returned an invalid expiration time")
 	}
 }

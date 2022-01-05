@@ -50,21 +50,21 @@ type EnvironmentCredential struct {
 // NewEnvironmentCredential creates an EnvironmentCredential.
 // options: Optional configuration.
 func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*EnvironmentCredential, error) {
-	cp := EnvironmentCredentialOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &EnvironmentCredentialOptions{}
 	}
 	tenantID := os.Getenv("AZURE_TENANT_ID")
 	if tenantID == "" {
-		return nil, errors.New("Missing environment variable AZURE_TENANT_ID")
+		return nil, errors.New("missing environment variable AZURE_TENANT_ID")
 	}
 	clientID := os.Getenv("AZURE_CLIENT_ID")
 	if clientID == "" {
-		return nil, errors.New("Missing environment variable AZURE_CLIENT_ID")
+		return nil, errors.New("missing environment variable AZURE_CLIENT_ID")
 	}
 	if clientSecret := os.Getenv("AZURE_CLIENT_SECRET"); clientSecret != "" {
 		log.Write(EventAuthentication, "Azure Identity => NewEnvironmentCredential() invoking ClientSecretCredential")
-		cred, err := NewClientSecretCredential(tenantID, clientID, clientSecret, &ClientSecretCredentialOptions{AuthorityHost: cp.AuthorityHost, ClientOptions: cp.ClientOptions})
+		o := &ClientSecretCredentialOptions{AuthorityHost: options.AuthorityHost, ClientOptions: options.ClientOptions}
+		cred, err := NewClientSecretCredential(tenantID, clientID, clientSecret, o)
 		if err != nil {
 			return nil, err
 		}
@@ -74,13 +74,14 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 		log.Write(EventAuthentication, "Azure Identity => NewEnvironmentCredential() invoking ClientCertificateCredential")
 		certData, err := os.ReadFile(certPath)
 		if err != nil {
-			return nil, fmt.Errorf("Failed to read certificate file: %v", err)
+			return nil, fmt.Errorf(`failed to read certificate file "%s": %v`, certPath, err)
 		}
 		certs, key, err := ParseCertificates(certData, nil)
 		if err != nil {
 			return nil, fmt.Errorf(`failed to load certificate from "%s": %v`, certPath, err)
 		}
-		cred, err := NewClientCertificateCredential(tenantID, clientID, certs, key, &ClientCertificateCredentialOptions{AuthorityHost: cp.AuthorityHost, ClientOptions: cp.ClientOptions})
+		o := &ClientCertificateCredentialOptions{AuthorityHost: options.AuthorityHost, ClientOptions: options.ClientOptions}
+		cred, err := NewClientCertificateCredential(tenantID, clientID, certs, key, o)
 		if err != nil {
 			return nil, err
 		}
@@ -89,14 +90,15 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 	if username := os.Getenv("AZURE_USERNAME"); username != "" {
 		if password := os.Getenv("AZURE_PASSWORD"); password != "" {
 			log.Write(EventAuthentication, "Azure Identity => NewEnvironmentCredential() invoking UsernamePasswordCredential")
-			cred, err := NewUsernamePasswordCredential(tenantID, clientID, username, password, &UsernamePasswordCredentialOptions{AuthorityHost: cp.AuthorityHost, ClientOptions: cp.ClientOptions})
+			o := &UsernamePasswordCredentialOptions{AuthorityHost: options.AuthorityHost, ClientOptions: options.ClientOptions}
+			cred, err := NewUsernamePasswordCredential(tenantID, clientID, username, password, o)
 			if err != nil {
 				return nil, err
 			}
 			return &EnvironmentCredential{cred: cred}, nil
 		}
 	}
-	return nil, errors.New("Missing environment variable AZURE_CLIENT_SECRET or AZURE_CLIENT_CERTIFICATE_PATH or AZURE_USERNAME and AZURE_PASSWORD")
+	return nil, errors.New("missing environment variable AZURE_CLIENT_SECRET or AZURE_CLIENT_CERTIFICATE_PATH or AZURE_USERNAME and AZURE_PASSWORD")
 }
 
 // GetToken obtains a token from Azure Active Directory. This method is called automatically by Azure SDK clients.

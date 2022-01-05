@@ -63,6 +63,7 @@ type Flags struct {
 	SkipCreateBranch    bool
 	SkipGenerateExample bool
 	PackageConfig       string
+	GoVersion           string
 }
 
 func BindFlags(flagSet *pflag.FlagSet) {
@@ -75,6 +76,7 @@ func BindFlags(flagSet *pflag.FlagSet) {
 	flagSet.Bool("skip-create-branch", false, "Skip create release branch after generation")
 	flagSet.Bool("skip-generate-example", false, "Skip generate example for SDK in the same time")
 	flagSet.String("package-config", "", "Additional config for package")
+	flagSet.String("go-version", "1.16", "Go version")
 }
 
 func ParseFlags(flagSet *pflag.FlagSet) Flags {
@@ -88,6 +90,7 @@ func ParseFlags(flagSet *pflag.FlagSet) Flags {
 		SkipCreateBranch:    flags.GetBool(flagSet, "skip-create-branch"),
 		SkipGenerateExample: flags.GetBool(flagSet, "skip-generate-example"),
 		PackageConfig:       flags.GetString(flagSet, "package-config"),
+		GoVersion:           flags.GetString(flagSet, "go-version"),
 	}
 }
 
@@ -128,6 +131,7 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 		SpecRPName:          c.flags.SpecRPName,
 		ReleaseDate:         c.flags.ReleaseDate,
 		SkipGenerateExample: c.flags.SkipGenerateExample,
+		GoVersion:           c.flags.GoVersion,
 	})
 	if err != nil {
 		return fmt.Errorf("failed to finish release generation process: %+v", err)

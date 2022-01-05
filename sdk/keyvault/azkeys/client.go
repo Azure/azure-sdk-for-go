@@ -14,7 +14,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	generated "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
 	shared "github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 )
@@ -56,28 +55,8 @@ func NewClient(vaultUrl string, credential azcore.TokenCredential, options *Clie
 
 	genOptions.PerRetryPolicies = append(
 		genOptions.PerRetryPolicies,
-		shared.NewKeyVaultChallengePolicy(credential, runtime.NewPipeline("azkeys", "0.1.0", nil, nil, genOptions)),
+		shared.NewKeyVaultChallengePolicy(credential),
 	)
-
-	conn := generated.NewConnection(genOptions)
-	return &Client{
-		kvClient: generated.NewKeyVaultClient(conn),
-		vaultUrl: vaultUrl,
-	}, nil
-}
-
-func createTestClient(vaultUrl string, credential azcore.TokenCredential, options *ClientOptions, recordingPolicy policy.Policy) (*Client, error) {
-	if options == nil {
-		options = &ClientOptions{}
-	}
-
-	genOptions := options.toConnectionOptions()
-
-	genOptions.PerRetryPolicies = append(
-		genOptions.PerRetryPolicies,
-		shared.NewKeyVaultChallengePolicy(credential, runtime.NewPipeline("azkeys", "0.1.0", nil, nil, genOptions)),
-	)
-	genOptions.PerCallPolicies = append(genOptions.PerCallPolicies, recordingPolicy)
 
 	conn := generated.NewConnection(genOptions)
 	return &Client{
@@ -224,7 +203,7 @@ func (c *Client) CreateECKey(ctx context.Context, name string, options *CreateEC
 
 	resp, err := c.kvClient.CreateKey(ctx, c.vaultUrl, name, options.toKeyCreateParameters(keyType), &generated.KeyVaultClientCreateKeyOptions{})
 	if err != nil {
-		return CreateECKeyResponse{}, nil
+		return CreateECKeyResponse{}, err
 	}
 
 	return createECKeyResponseFromGenerated(resp), nil
@@ -273,7 +252,7 @@ func createOCTKeyResponseFromGenerated(i generated.KeyVaultClientCreateKeyRespon
 
 // CreateKey - The create key operation can be used to create a new octet sequence (symmetric) key in Azure Key Vault.
 // If the named key already exists, Azure Key Vault creates
-// a new version of the key. It requires the keys/create  permission.
+// a new version of the key. It requires the keys/create permission.
 func (c *Client) CreateOCTKey(ctx context.Context, name string, options *CreateOCTKeyOptions) (CreateOCTKeyResponse, error) {
 	keyType := Oct
 
@@ -284,8 +263,11 @@ func (c *Client) CreateOCTKey(ctx context.Context, name string, options *CreateO
 	}
 
 	resp, err := c.kvClient.CreateKey(ctx, c.vaultUrl, name, options.toKeyCreateParameters(keyType), &generated.KeyVaultClientCreateKeyOptions{})
+	if err != nil {
+		return CreateOCTKeyResponse{}, err
+	}
 
-	return createOCTKeyResponseFromGenerated(resp), err
+	return createOCTKeyResponseFromGenerated(resp), nil
 }
 
 // CreateRSAKeyOptions contains the optional parameters for the Client.CreateRSAKey method.
@@ -619,11 +601,16 @@ func (s *startDeleteKeyPoller) Poll(ctx context.Context) (*http.Response, error)
 		// Service recognizes DeletedKey, operation is done
 		s.lastResponse = resp
 		return resp.RawResponse, nil
-	} else if err != nil {
-		return s.deleteResponse.RawResponse, nil
 	}
-	s.lastResponse = resp
-	return resp.RawResponse, nil
+
+	var httpResponseErr azcore.HTTPResponse
+	if errors.As(err, &httpResponseErr) {
+		if httpResponseErr.RawResponse().StatusCode == http.StatusNotFound {
+			// This is the expected result
+			return s.deleteResponse.RawResponse, nil
+		}
+	}
+	return s.deleteResponse.RawResponse, err
 }
 
 // FinalResponse returns the final response after the operations has finished

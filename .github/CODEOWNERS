@@ -36,6 +36,9 @@
 # PRLabel: %Service Bus
 /sdk/messaging/azservicebus   @richardpark-msft @jhendrixMSFT 
 
+# PRLabel: %Service Bus
+/sdk/messaging/internal   @richardpark-msft @jhendrixMSFT 
+
 # PRLabel: %Mgmt
 /sdk/resourcemanager/    @ArcturusZhang @lirenhe
 

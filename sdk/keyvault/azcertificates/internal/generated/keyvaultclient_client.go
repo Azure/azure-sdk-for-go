@@ -39,7 +39,7 @@ func (client *KeyVaultClient) BackupCertificate(ctx context.Context, vaultBaseUR
 	if err != nil {
 		return KeyVaultClientBackupCertificateResponse{}, err
 	}
-	resp, err := 	client.con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientBackupCertificateResponse{}, err
 	}
@@ -84,7 +84,7 @@ func (client *KeyVaultClient) backupCertificateHandleError(resp *http.Response) 
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := KeyVaultError{raw: string(body)}
+	errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -98,7 +98,7 @@ func (client *KeyVaultClient) CreateCertificate(ctx context.Context, vaultBaseUR
 	if err != nil {
 		return KeyVaultClientCreateCertificateResponse{}, err
 	}
-	resp, err := 	client.con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientCreateCertificateResponse{}, err
 	}
@@ -143,7 +143,7 @@ func (client *KeyVaultClient) createCertificateHandleError(resp *http.Response) 
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := KeyVaultError{raw: string(body)}
+	errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -159,7 +159,7 @@ func (client *KeyVaultClient) DeleteCertificate(ctx context.Context, vaultBaseUR
 	if err != nil {
 		return KeyVaultClientDeleteCertificateResponse{}, err
 	}
-	resp, err := 	client.con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientDeleteCertificateResponse{}, err
 	}
@@ -204,7 +204,7 @@ func (client *KeyVaultClient) deleteCertificateHandleError(resp *http.Response) 
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := KeyVaultError{raw: string(body)}
+	errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -219,7 +219,7 @@ func (client *KeyVaultClient) DeleteCertificateContacts(ctx context.Context, vau
 	if err != nil {
 		return KeyVaultClientDeleteCertificateContactsResponse{}, err
 	}
-	resp, err := 	client.con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientDeleteCertificateContactsResponse{}, err
 	}
@@ -260,7 +260,7 @@ func (client *KeyVaultClient) deleteCertificateContactsHandleError(resp *http.Re
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := KeyVaultError{raw: string(body)}
+	errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -275,7 +275,7 @@ func (client *KeyVaultClient) DeleteCertificateIssuer(ctx context.Context, vault
 	if err != nil {
 		return KeyVaultClientDeleteCertificateIssuerResponse{}, err
 	}
-	resp, err := 	client.con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientDeleteCertificateIssuerResponse{}, err
 	}
@@ -320,7 +320,7 @@ func (client *KeyVaultClient) deleteCertificateIssuerHandleError(resp *http.Resp
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := KeyVaultError{raw: string(body)}
+	errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -335,7 +335,7 @@ func (client *KeyVaultClient) DeleteCertificateOperation(ctx context.Context, va
 	if err != nil {
 		return KeyVaultClientDeleteCertificateOperationResponse{}, err
 	}
-	resp, err := 	client.con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientDeleteCertificateOperationResponse{}, err
 	}
@@ -380,7 +380,7 @@ func (client *KeyVaultClient) deleteCertificateOperationHandleError(resp *http.R
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := KeyVaultError{raw: string(body)}
+	errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -394,7 +394,7 @@ func (client *KeyVaultClient) GetCertificate(ctx context.Context, vaultBaseURL s
 	if err != nil {
 		return KeyVaultClientGetCertificateResponse{}, err
 	}
-	resp, err := 	client.con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientGetCertificateResponse{}, err
 	}
@@ -443,7 +443,7 @@ func (client *KeyVaultClient) getCertificateHandleError(resp *http.Response) err
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := KeyVaultError{raw: string(body)}
+	errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -458,7 +458,7 @@ func (client *KeyVaultClient) GetCertificateContacts(ctx context.Context, vaultB
 	if err != nil {
 		return KeyVaultClientGetCertificateContactsResponse{}, err
 	}
-	resp, err := 	client.con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientGetCertificateContactsResponse{}, err
 	}
@@ -499,7 +499,7 @@ func (client *KeyVaultClient) getCertificateContactsHandleError(resp *http.Respo
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := KeyVaultError{raw: string(body)}
+	errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -514,7 +514,7 @@ func (client *KeyVaultClient) GetCertificateIssuer(ctx context.Context, vaultBas
 	if err != nil {
 		return KeyVaultClientGetCertificateIssuerResponse{}, err
 	}
-	resp, err := 	client.con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientGetCertificateIssuerResponse{}, err
 	}
@@ -559,7 +559,7 @@ func (client *KeyVaultClient) getCertificateIssuerHandleError(resp *http.Respons
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := KeyVaultError{raw: string(body)}
+	errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -569,7 +569,7 @@ func (client *KeyVaultClient) getCertificateIssuerHandleError(resp *http.Respons
 // GetCertificateIssuers - The GetCertificateIssuers operation returns the set of certificate issuer resources in the specified key vault. This operation
 // requires the certificates/manageissuers/getissuers permission.
 // If the operation fails it returns the *KeyVaultError error type.
-func (client *KeyVaultClient) GetCertificateIssuers(vaultBaseURL string, options *KeyVaultClientGetCertificateIssuersOptions) (*KeyVaultClientGetCertificateIssuersPager) {
+func (client *KeyVaultClient) GetCertificateIssuers(vaultBaseURL string, options *KeyVaultClientGetCertificateIssuersOptions) *KeyVaultClientGetCertificateIssuersPager {
 	return &KeyVaultClientGetCertificateIssuersPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
@@ -615,7 +615,7 @@ func (client *KeyVaultClient) getCertificateIssuersHandleError(resp *http.Respon
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := KeyVaultError{raw: string(body)}
+	errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -629,7 +629,7 @@ func (client *KeyVaultClient) GetCertificateOperation(ctx context.Context, vault
 	if err != nil {
 		return KeyVaultClientGetCertificateOperationResponse{}, err
 	}
-	resp, err := 	client.con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientGetCertificateOperationResponse{}, err
 	}
@@ -674,7 +674,7 @@ func (client *KeyVaultClient) getCertificateOperationHandleError(resp *http.Resp
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := KeyVaultError{raw: string(body)}
+	errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -689,7 +689,7 @@ func (client *KeyVaultClient) GetCertificatePolicy(ctx context.Context, vaultBas
 	if err != nil {
 		return KeyVaultClientGetCertificatePolicyResponse{}, err
 	}
-	resp, err := 	client.con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientGetCertificatePolicyResponse{}, err
 	}
@@ -734,7 +734,7 @@ func (client *KeyVaultClient) getCertificatePolicyHandleError(resp *http.Respons
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := KeyVaultError{raw: string(body)}
+	errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -744,7 +744,7 @@ func (client *KeyVaultClient) getCertificatePolicyHandleError(resp *http.Respons
 // GetCertificateVersions - The GetCertificateVersions operation returns the versions of a certificate in the specified key vault. This operation requires
 // the certificates/list permission.
 // If the operation fails it returns the *KeyVaultError error type.
-func (client *KeyVaultClient) GetCertificateVersions(vaultBaseURL string, certificateName string, options *KeyVaultClientGetCertificateVersionsOptions) (*KeyVaultClientGetCertificateVersionsPager) {
+func (client *KeyVaultClient) GetCertificateVersions(vaultBaseURL string, certificateName string, options *KeyVaultClientGetCertificateVersionsOptions) *KeyVaultClientGetCertificateVersionsPager {
 	return &KeyVaultClientGetCertificateVersionsPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
@@ -794,7 +794,7 @@ func (client *KeyVaultClient) getCertificateVersionsHandleError(resp *http.Respo
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := KeyVaultError{raw: string(body)}
+	errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -804,7 +804,7 @@ func (client *KeyVaultClient) getCertificateVersionsHandleError(resp *http.Respo
 // GetCertificates - The GetCertificates operation returns the set of certificates resources in the specified key vault. This operation requires the certificates/list
 // permission.
 // If the operation fails it returns the *KeyVaultError error type.
-func (client *KeyVaultClient) GetCertificates(vaultBaseURL string, options *KeyVaultClientGetCertificatesOptions) (*KeyVaultClientGetCertificatesPager) {
+func (client *KeyVaultClient) GetCertificates(vaultBaseURL string, options *KeyVaultClientGetCertificatesOptions) *KeyVaultClientGetCertificatesPager {
 	return &KeyVaultClientGetCertificatesPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
@@ -853,7 +853,7 @@ func (client *KeyVaultClient) getCertificatesHandleError(resp *http.Response) er
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := KeyVaultError{raw: string(body)}
+	errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -869,7 +869,7 @@ func (client *KeyVaultClient) GetDeletedCertificate(ctx context.Context, vaultBa
 	if err != nil {
 		return KeyVaultClientGetDeletedCertificateResponse{}, err
 	}
-	resp, err := 	client.con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientGetDeletedCertificateResponse{}, err
 	}
@@ -914,7 +914,7 @@ func (client *KeyVaultClient) getDeletedCertificateHandleError(resp *http.Respon
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := KeyVaultError{raw: string(body)}
+	errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -925,7 +925,7 @@ func (client *KeyVaultClient) getDeletedCertificateHandleError(resp *http.Respon
 // for recovery or purging. This operation includes deletion-specific
 // information. This operation requires the certificates/get/list permission. This operation can only be enabled on soft-delete enabled vaults.
 // If the operation fails it returns the *KeyVaultError error type.
-func (client *KeyVaultClient) GetDeletedCertificates(vaultBaseURL string, options *KeyVaultClientGetDeletedCertificatesOptions) (*KeyVaultClientGetDeletedCertificatesPager) {
+func (client *KeyVaultClient) GetDeletedCertificates(vaultBaseURL string, options *KeyVaultClientGetDeletedCertificatesOptions) *KeyVaultClientGetDeletedCertificatesPager {
 	return &KeyVaultClientGetDeletedCertificatesPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
@@ -974,7 +974,7 @@ func (client *KeyVaultClient) getDeletedCertificatesHandleError(resp *http.Respo
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := KeyVaultError{raw: string(body)}
+	errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -991,7 +991,7 @@ func (client *KeyVaultClient) ImportCertificate(ctx context.Context, vaultBaseUR
 	if err != nil {
 		return KeyVaultClientImportCertificateResponse{}, err
 	}
-	resp, err := 	client.con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientImportCertificateResponse{}, err
 	}
@@ -1036,7 +1036,7 @@ func (client *KeyVaultClient) importCertificateHandleError(resp *http.Response) 
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := KeyVaultError{raw: string(body)}
+	errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -1052,7 +1052,7 @@ func (client *KeyVaultClient) MergeCertificate(ctx context.Context, vaultBaseURL
 	if err != nil {
 		return KeyVaultClientMergeCertificateResponse{}, err
 	}
-	resp, err := 	client.con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientMergeCertificateResponse{}, err
 	}
@@ -1097,7 +1097,7 @@ func (client *KeyVaultClient) mergeCertificateHandleError(resp *http.Response) e
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := KeyVaultError{raw: string(body)}
+	errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -1113,7 +1113,7 @@ func (client *KeyVaultClient) PurgeDeletedCertificate(ctx context.Context, vault
 	if err != nil {
 		return KeyVaultClientPurgeDeletedCertificateResponse{}, err
 	}
-	resp, err := 	client.con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientPurgeDeletedCertificateResponse{}, err
 	}
@@ -1149,7 +1149,7 @@ func (client *KeyVaultClient) purgeDeletedCertificateHandleError(resp *http.Resp
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := KeyVaultError{raw: string(body)}
+	errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -1165,7 +1165,7 @@ func (client *KeyVaultClient) RecoverDeletedCertificate(ctx context.Context, vau
 	if err != nil {
 		return KeyVaultClientRecoverDeletedCertificateResponse{}, err
 	}
-	resp, err := 	client.con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientRecoverDeletedCertificateResponse{}, err
 	}
@@ -1210,7 +1210,7 @@ func (client *KeyVaultClient) recoverDeletedCertificateHandleError(resp *http.Re
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := KeyVaultError{raw: string(body)}
+	errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -1224,7 +1224,7 @@ func (client *KeyVaultClient) RestoreCertificate(ctx context.Context, vaultBaseU
 	if err != nil {
 		return KeyVaultClientRestoreCertificateResponse{}, err
 	}
-	resp, err := 	client.con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientRestoreCertificateResponse{}, err
 	}
@@ -1265,7 +1265,7 @@ func (client *KeyVaultClient) restoreCertificateHandleError(resp *http.Response)
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := KeyVaultError{raw: string(body)}
+	errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -1279,7 +1279,7 @@ func (client *KeyVaultClient) SetCertificateContacts(ctx context.Context, vaultB
 	if err != nil {
 		return KeyVaultClientSetCertificateContactsResponse{}, err
 	}
-	resp, err := 	client.con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientSetCertificateContactsResponse{}, err
 	}
@@ -1320,7 +1320,7 @@ func (client *KeyVaultClient) setCertificateContactsHandleError(resp *http.Respo
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := KeyVaultError{raw: string(body)}
+	errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -1335,7 +1335,7 @@ func (client *KeyVaultClient) SetCertificateIssuer(ctx context.Context, vaultBas
 	if err != nil {
 		return KeyVaultClientSetCertificateIssuerResponse{}, err
 	}
-	resp, err := 	client.con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientSetCertificateIssuerResponse{}, err
 	}
@@ -1380,7 +1380,7 @@ func (client *KeyVaultClient) setCertificateIssuerHandleError(resp *http.Respons
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := KeyVaultError{raw: string(body)}
+	errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -1396,7 +1396,7 @@ func (client *KeyVaultClient) UpdateCertificate(ctx context.Context, vaultBaseUR
 	if err != nil {
 		return KeyVaultClientUpdateCertificateResponse{}, err
 	}
-	resp, err := 	client.con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientUpdateCertificateResponse{}, err
 	}
@@ -1445,7 +1445,7 @@ func (client *KeyVaultClient) updateCertificateHandleError(resp *http.Response) 
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := KeyVaultError{raw: string(body)}
+	errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -1460,7 +1460,7 @@ func (client *KeyVaultClient) UpdateCertificateIssuer(ctx context.Context, vault
 	if err != nil {
 		return KeyVaultClientUpdateCertificateIssuerResponse{}, err
 	}
-	resp, err := 	client.con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientUpdateCertificateIssuerResponse{}, err
 	}
@@ -1505,7 +1505,7 @@ func (client *KeyVaultClient) updateCertificateIssuerHandleError(resp *http.Resp
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := KeyVaultError{raw: string(body)}
+	errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -1519,7 +1519,7 @@ func (client *KeyVaultClient) UpdateCertificateOperation(ctx context.Context, va
 	if err != nil {
 		return KeyVaultClientUpdateCertificateOperationResponse{}, err
 	}
-	resp, err := 	client.con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientUpdateCertificateOperationResponse{}, err
 	}
@@ -1564,7 +1564,7 @@ func (client *KeyVaultClient) updateCertificateOperationHandleError(resp *http.R
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := KeyVaultError{raw: string(body)}
+	errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -1578,7 +1578,7 @@ func (client *KeyVaultClient) UpdateCertificatePolicy(ctx context.Context, vault
 	if err != nil {
 		return KeyVaultClientUpdateCertificatePolicyResponse{}, err
 	}
-	resp, err := 	client.con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientUpdateCertificatePolicyResponse{}, err
 	}
@@ -1623,10 +1623,9 @@ func (client *KeyVaultClient) updateCertificatePolicyHandleError(resp *http.Resp
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := KeyVaultError{raw: string(body)}
+	errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
 	return runtime.NewResponseError(&errType, resp)
 }
-

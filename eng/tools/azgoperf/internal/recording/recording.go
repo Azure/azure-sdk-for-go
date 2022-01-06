@@ -154,6 +154,7 @@ func (r TransportOptions) ReplaceAuthority(rawReq *http.Request) {
 	rawReq.Header.Set(UpstreamURIHeader, fmt.Sprintf("%v://%v", r.scheme(), originalURLHost))
 	rawReq.Header.Set(ModeHeader, GetRecordMode())
 	rawReq.Header.Set(IDHeader, GetRecordingId(r.TestName))
+	rawReq.Header.Set("x-recording-remove", "false")
 }
 
 func GetRecordingId(s string) string {

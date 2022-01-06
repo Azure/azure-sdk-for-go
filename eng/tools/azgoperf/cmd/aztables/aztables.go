@@ -9,7 +9,6 @@ import (
 	"errors"
 	"fmt"
 	"math"
-	"net/http"
 	"os"
 	"time"
 
@@ -33,11 +32,9 @@ var AztablesCmd = &cobra.Command{
 }
 
 type aztablesPerfTest struct {
-	client       aztables.Client
-	entity       []byte
-	partitionKey string
-	rowKey       string
-	tableName    string
+	client    aztables.Client
+	entity    []byte
+	tableName string
 }
 
 func (a *aztablesPerfTest) createClient() error {
@@ -97,6 +94,7 @@ func (a *aztablesPerfTest) GlobalSetup(ctx context.Context) error {
 
 	err := a.createClient()
 	if err != nil {
+		fmt.Println("there was an error creating the client")
 		if perf.TestProxy != "" {
 			recording.Stop(a.GetMetadata(), nil)
 		}
@@ -132,7 +130,12 @@ func (a *aztablesPerfTest) GlobalSetup(ctx context.Context) error {
 }
 
 func (a *aztablesPerfTest) GlobalTearDown(ctx context.Context) error {
-	defer recording.Stop(a.GetMetadata(), nil)
+	defer func() {
+		err := recording.Stop(a.GetMetadata(), nil)
+		if err != nil {
+			fmt.Println("test proxy was not stopped successfully.")
+		}
+	}()
 	_, err := a.client.Delete(context.Background(), nil)
 	return err
 }
@@ -147,13 +150,6 @@ func (a *aztablesPerfTest) Run(ctx context.Context) error {
 }
 
 func (a *aztablesPerfTest) TearDown(ctx context.Context) error {
-	_, err := a.client.DeleteEntity(ctx, a.partitionKey, a.rowKey, nil)
-	var azErr azcore.HTTPResponse
-	if errors.As(err, &azErr) {
-		if azErr.RawResponse().StatusCode == http.StatusNotFound {
-			return nil
-		}
-	}
 	return nil
 }
 

@@ -5,9 +5,9 @@
 ``` yaml
 azure-arm: true
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/4cda81c5daed78441aa8043dd32ae00b02899c36/specification/powerbiprivatelinks/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/4cda81c5daed78441aa8043dd32ae00b02899c36/specification/powerbiprivatelinks/resource-manager/readme.go.md
+- /home/vsts/work/1/s/azure-rest-api-specs/specification/powerbiprivatelinks/resource-manager/readme.md
+- /home/vsts/work/1/s/azure-rest-api-specs/specification/powerbiprivatelinks/resource-manager/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 0.1.0
+module-version: 0.1.1
 
 ```

@@ -3,7 +3,7 @@
 
 package main
 
-import "github.com/Azure/azure-sdk-for-go/eng/tools/azgoperf/cmd"
+import "github.com/Azure/azure-sdk-for-go/eng/tools/azperf/cmd"
 
 func main() {
 	cmd.Execute()

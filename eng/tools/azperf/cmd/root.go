@@ -7,15 +7,15 @@ import (
 	"fmt"
 	"os"
 
-	azkeys "github.com/Azure/azure-sdk-for-go/eng/tools/azgoperf/cmd/azkeys"
-	aztables "github.com/Azure/azure-sdk-for-go/eng/tools/azgoperf/cmd/aztables"
-	template "github.com/Azure/azure-sdk-for-go/eng/tools/azgoperf/cmd/template"
-	"github.com/Azure/azure-sdk-for-go/eng/tools/azgoperf/internal/perf"
+	azkeys "github.com/Azure/azure-sdk-for-go/eng/tools/azperf/cmd/azkeys"
+	aztables "github.com/Azure/azure-sdk-for-go/eng/tools/azperf/cmd/aztables"
+	template "github.com/Azure/azure-sdk-for-go/eng/tools/azperf/cmd/template"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/azperf/internal/perf"
 	"github.com/spf13/cobra"
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "azgoperf [OPTIONS] [PERFTEST] [LOCAL OPTIONS]",
+	Use:   "azperf [OPTIONS] [PERFTEST] [LOCAL OPTIONS]",
 	Short: "Generates a series of performance tests for different SDKs",
 	Long:  `This tool creates a single executable for running performance tests for existing Track 2 Go SDKs`,
 }

@@ -19,7 +19,7 @@ import (
 	"runtime"
 )
 
-var pathToRecordings = "eng/tools/azgoperf"
+var pathToRecordings = "eng/tools/azperf"
 
 func init() {
 

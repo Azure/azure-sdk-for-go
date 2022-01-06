@@ -1,5 +1,5 @@
 # Performance Testing Framework
-The `azgoperf` CLI tool provides a singular framework for writing and running performance tests.
+The `azperf` CLI tool provides a singular framework for writing and running performance tests.
 
 ## Default Command Options
 
@@ -64,7 +64,7 @@ Copy-Item cmd/template cmd/<mypackage> -Recurse
 ```golang
 import (
     ...
-    mypackage "github.com/Azure/azure-sdk-for-go/eng/tools/azgoperf/cmd/mypackage"
+    mypackage "github.com/Azure/azure-sdk-for-go/eng/tools/azperf/cmd/mypackage"
 )
 
 
@@ -93,12 +93,12 @@ go build .
 
 To run a single performance test specify the test as the second argument:
 ```pwsh
-./azgoperf.exe CreateEntityTest
+./azperf.exe CreateEntityTest
 ```
 
 To specify flags for a performance test, add them after the second argument:
 ```pwsh
-./azgoperf.exe CreateEntityTest --duration 7 --testproxy https
+./azperf.exe CreateEntityTest --duration 7 --testproxy https
 ```
 
 ### Available Performance Tests

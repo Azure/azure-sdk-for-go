@@ -9,8 +9,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Azure/azure-sdk-for-go/eng/tools/azgoperf/internal/perf"
-	"github.com/Azure/azure-sdk-for-go/eng/tools/azgoperf/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/azperf/internal/perf"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/azperf/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"

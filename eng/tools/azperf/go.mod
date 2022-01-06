@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/eng/tools/azgoperf
+module github.com/Azure/azure-sdk-for-go/eng/tools/azperf
 
 go 1.17
 

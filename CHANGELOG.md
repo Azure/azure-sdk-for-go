@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## `v61.1.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-08-01/compute`
+- `github.com/Azure/azure-sdk-for-go/services/preview/automation/mgmt/2020-01-13-preview/automation`
+
 ## `v61.0.0`
 
 ### New Packages
@@ -11,7 +18,7 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/notificationhubs/mgmt/2017-04-01/notificationhubs` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/notificationhubs/mgmt/2017-04-01/notificationhubs/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/notificationhubs/mgmt/2017-04-01/notificationhubs` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v61.0.0/services/notificationhubs/mgmt/2017-04-01/notificationhubs/CHANGELOG.md) |
 
 ## `v60.3.0`
 

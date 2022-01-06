@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 	"time"
@@ -54,17 +55,61 @@ func (m *mockIMDS) Do(req *http.Request) (*http.Response, error) {
 	panic("no more responses")
 }
 
-func TestManagedIdentityCredential_GetTokenInAzureArcLive(t *testing.T) {
-	if len(os.Getenv(arcIMDSEndpoint)) == 0 {
-		t.Skip()
-	}
-	msiCred, err := NewManagedIdentityCredential(nil)
+func TestManagedIdentityCredential_AzureArc(t *testing.T) {
+	file, err := os.Create(filepath.Join(t.TempDir(), "arc.key"))
 	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
+		t.Fatal(err)
 	}
-	_, err = msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{msiScope}})
+	expectedKey := "expected-key"
+	n, err := file.WriteString(expectedKey)
+	if n != len(expectedKey) || err != nil {
+		t.Fatalf("failed to write key file: %v", err)
+	}
+
+	expectedPath := "/foo/token"
+	validateReq := func(req *http.Request) bool {
+		if req.URL.Path != expectedPath {
+			t.Fatalf("unexpected path: %s", req.URL.Path)
+		}
+		if p := req.URL.Query().Get("api-version"); p != azureArcAPIVersion {
+			t.Fatalf("unexpected api-version: %s", p)
+		}
+		if p := req.URL.Query().Get("resource"); p != strings.TrimSuffix(liveTestScope, defaultSuffix) {
+			t.Fatalf("unexpected resource: %s", p)
+		}
+		if h := req.Header.Get("metadata"); h != "true" {
+			t.Fatalf("unexpected metadata header: %s", h)
+		}
+		if h := req.Header.Get("Authorization"); h != "Basic "+expectedKey {
+			t.Fatalf("unexpected Authorization: %s", h)
+		}
+		return true
+	}
+
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithHeader("WWW-Authenticate", "Basic realm="+file.Name()), mock.WithStatusCode(401))
+	srv.AppendResponse(mock.WithPredicate(validateReq), mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse()
+
+	setEnvironmentVariables(t, map[string]string{
+		arcIMDSEndpoint:  srv.URL(),
+		identityEndpoint: srv.URL() + expectedPath,
+	})
+	opts := ManagedIdentityCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: srv}}
+	cred, err := NewManagedIdentityCredential(&opts)
 	if err != nil {
-		t.Fatalf("Received an error when attempting to retrieve a token")
+		t.Fatal(err)
+	}
+	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if tk.Token != tokenValue {
+		t.Fatalf("unexpected token: %s", tk.Token)
+	}
+	if tk.ExpiresOn.Before(time.Now().UTC()) {
+		t.Fatal("GetToken returned an invalid expiration time")
 	}
 }
 
@@ -97,10 +142,19 @@ func TestManagedIdentityCredential_GetTokenInAppServiceV20170901Mock_windows(t *
 	resetEnvironmentVarsForTest()
 	srv, close := mock.NewServer()
 	defer close()
-	srv.AppendResponse(mock.WithBody([]byte(appServiceWindowsSuccessResp)))
-	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
-	_ = os.Setenv("MSI_SECRET", "secret")
-	defer clearEnvVars("MSI_ENDPOINT", "MSI_SECRET")
+	expectedSecret := "expected-secret"
+	pred := func(req *http.Request) bool {
+		if secret := req.Header.Get("Secret"); secret != expectedSecret {
+			t.Fatalf(`unexpected Secret header "%s"`, secret)
+		}
+		return true
+	}
+	srv.AppendResponse(mock.WithPredicate(pred), mock.WithBody([]byte(appServiceWindowsSuccessResp)))
+	srv.AppendResponse()
+	setEnvironmentVariables(t, map[string]string{"MSI_ENDPOINT": srv.URL(), "MSI_SECRET": expectedSecret})
+	// _ = os.Setenv("MSI_ENDPOINT", srv.URL())
+	// _ = os.Setenv("MSI_SECRET", expectedSecret)
+	// defer clearEnvVars("MSI_ENDPOINT", "MSI_SECRET")
 	options := ManagedIdentityCredentialOptions{}
 	options.Transport = srv
 	msiCred, err := NewManagedIdentityCredential(&options)

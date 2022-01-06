@@ -70,6 +70,13 @@ type ErrorResponse struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// ErrorResponseBody error response indicates that the service is not able to process the incoming request.
+// The reason is provided in the error message.
+type ErrorResponseBody struct {
+	// Error - The details of the error.
+	Error *ErrorResponse `json:"error,omitempty"`
+}
+
 // FactoryCreateSubscriptionInEnrollmentAccountFuture an abstraction for monitoring and retrieving the
 // results of a long-running operation.
 type FactoryCreateSubscriptionInEnrollmentAccountFuture struct {

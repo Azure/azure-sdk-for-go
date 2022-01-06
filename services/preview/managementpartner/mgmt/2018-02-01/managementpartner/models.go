@@ -23,12 +23,16 @@ const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/managementpartn
 type Error struct {
 	// Error - this is the ExtendedErrorInfo property
 	Error *ExtendedErrorInfo `json:"error,omitempty"`
+	// Code - this is the error response code
+	Code *string `json:"code,omitempty"`
+	// Message - this is the extended error info message
+	Message *string `json:"message,omitempty"`
 }
 
 // ExtendedErrorInfo this is the extended error info
 type ExtendedErrorInfo struct {
-	// Code - this is the error response code. Possible values include: 'NotFound', 'Conflict', 'BadRequest'
-	Code Code `json:"code,omitempty"`
+	// Code - this is the error response code
+	Code *string `json:"code,omitempty"`
 	// Message - this is the extended error info message
 	Message *string `json:"message,omitempty"`
 }

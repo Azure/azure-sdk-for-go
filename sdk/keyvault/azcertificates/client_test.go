@@ -10,6 +10,7 @@ import (
 	"context"
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
@@ -177,6 +178,55 @@ func TestClient_ListCertificates(t *testing.T) {
 	}
 
 	require.Equal(t, 0, createdCount)
+	require.NoError(t, pager.Err())
+}
+
+func TestClient_ListCertificateVersions(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	name, err := createRandomName(t, "cert")
+	require.NoError(t, err)
+	createCert(t, client, name)
+	time.Sleep(5 * delay())
+	defer cleanUp(t, client, name)
+
+	pager := client.ListCertificateVersions(name, nil)
+	count := 0
+	for pager.NextPage(ctx) {
+		count += len(pager.PageResponse().Value)
+	}
+
+	require.Equal(t, 1, count)
+	require.NoError(t, pager.Err())
+
+	// Add a second version
+	createCert(t, client, name)
+	time.Sleep(5 * delay())
+
+	pager = client.ListCertificateVersions(name, nil)
+	count = 0
+	for pager.NextPage(ctx) {
+		count += len(pager.PageResponse().Value)
+	}
+
+	require.Equal(t, 2, count)
+	require.NoError(t, pager.Err())
+
+	// Add a third version
+	createCert(t, client, name)
+	time.Sleep(5 * delay())
+
+	pager = client.ListCertificateVersions(name, nil)
+	count = 0
+	for pager.NextPage(ctx) {
+		count += len(pager.PageResponse().Value)
+	}
+
+	require.Equal(t, 3, count)
 	require.NoError(t, pager.Err())
 }
 

@@ -129,7 +129,7 @@ func delay() time.Duration {
 	if recording.GetRecordMode() == "playback" {
 		return 1 * time.Microsecond
 	}
-	return 250 * time.Millisecond
+	return 500 * time.Millisecond
 }
 
 type FakeCredential struct {

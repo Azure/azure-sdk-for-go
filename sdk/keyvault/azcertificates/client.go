@@ -345,7 +345,7 @@ type DeleteCertificatePoller interface {
 
 // The poller returned by the Client.BeginDeleteCertificate operation
 type beginDeleteCertificatePoller struct {
-	keyName        string // This is the key to Poll for in GetDeletedKey
+	certificateName        string // This is the certificate to Poll for in GetDeletedKey
 	vaultURL       string
 	client         *generated.KeyVaultClient
 	deleteResponse generated.KeyVaultClientDeleteCertificateResponse
@@ -362,7 +362,7 @@ func (s *beginDeleteCertificatePoller) Done() bool {
 // If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
 // If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.)
 func (s *beginDeleteCertificatePoller) Poll(ctx context.Context) (*http.Response, error) {
-	resp, err := s.client.GetDeletedCertificate(ctx, s.vaultURL, s.keyName, nil)
+	resp, err := s.client.GetDeletedCertificate(ctx, s.vaultURL, s.certificateName, nil)
 	if err == nil {
 		// Service recognizes DeletedKey, operation is done
 		s.lastResponse = resp
@@ -413,19 +413,19 @@ type DeleteCertificatePollerResponse struct {
 	RawResponse *http.Response
 }
 
-// BeginDeleteCertificate deletes a key from the keyvault. Delete cannot be applied to an individual version of a key. This operation
-// requires the key/delete permission. This response contains a Poller struct that can be used to Poll for a response, or the
+// BeginDeleteCertificate deletes a certificate from the keyvault. Delete cannot be applied to an individual version of a certificate. This operation
+// requires the certificate/delete permission. This response contains a Poller struct that can be used to Poll for a response, or the
 // response PollUntilDone function can be used to poll until completion.
-func (c *Client) BeginDeleteCertificate(ctx context.Context, keyName string, options *BeginDeleteCertificateOptions) (DeleteCertificatePollerResponse, error) {
+func (c *Client) BeginDeleteCertificate(ctx context.Context, certificateName string, options *BeginDeleteCertificateOptions) (DeleteCertificatePollerResponse, error) {
 	if options == nil {
 		options = &BeginDeleteCertificateOptions{}
 	}
-	resp, err := c.genClient.DeleteCertificate(ctx, c.vaultURL, keyName, options.toGenerated())
+	resp, err := c.genClient.DeleteCertificate(ctx, c.vaultURL, certificateName, options.toGenerated())
 	if err != nil {
 		return DeleteCertificatePollerResponse{}, err
 	}
 
-	getResp, err := c.genClient.GetDeletedCertificate(ctx, c.vaultURL, keyName, nil)
+	getResp, err := c.genClient.GetDeletedCertificate(ctx, c.vaultURL, certificateName, nil)
 	var httpErr azcore.HTTPResponse
 	if errors.As(err, &httpErr) {
 		if httpErr.RawResponse().StatusCode != http.StatusNotFound {
@@ -435,7 +435,7 @@ func (c *Client) BeginDeleteCertificate(ctx context.Context, keyName string, opt
 
 	s := &beginDeleteCertificatePoller{
 		vaultURL:       c.vaultURL,
-		keyName:        keyName,
+		certificateName:        certificateName,
 		client:         c.genClient,
 		deleteResponse: resp,
 		lastResponse:   getResp,
@@ -618,7 +618,7 @@ type ListCertificatesPager interface {
 
 // listKeysPager implements the ListCertificatesPager interface
 type listKeysPager struct {
-	genPager generated.KeyVaultClientGetCertificatesPager
+	genPager *generated.KeyVaultClientGetCertificatesPager
 }
 
 // PageResponse returns the results from the page most recently fetched from the service
@@ -644,7 +644,11 @@ type ListCertificatesOptions struct {
 }
 
 // convert ListCertificatesOptions to generated options
-func (l ListCertificatesOptions) toGenerated() *generated.KeyVaultClientGetCertificatesOptions {
+func (l *ListCertificatesOptions) toGenerated() *generated.KeyVaultClientGetCertificatesOptions {
+	if l == nil {
+		return &generated.KeyVaultClientGetCertificatesOptions{}
+	}
+
 	return &generated.KeyVaultClientGetCertificatesOptions{Maxresults: l.MaxResults}
 }
 
@@ -678,17 +682,104 @@ func listKeysPageFromGenerated(i generated.KeyVaultClientGetCertificatesResponse
 	}
 }
 
-// ListCertificates retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the
-// public part of a stored key. The LIST operation is applicable to all key types, however only the
-// base key identifier, attributes, and tags are provided in the response. Individual versions of a
-// key are not listed in the response. This operation requires the keys/list permission.
+// ListCertificates retrieves a list of the certificates in the Key Vault as JSON Web Key structures that contain the
+// public part of a stored certificate. The LIST operation is applicable to all certificate types, however only the
+// base certificate identifier, attributes, and tags are provided in the response. Individual versions of a
+// certificate are not listed in the response. This operation requires the certificates/list permission.
 func (c *Client) ListCertificates(options *ListCertificatesOptions) ListCertificatesPager {
-	if options == nil {
-		options = &ListCertificatesOptions{}
-	}
-	p := c.genClient.GetCertificates(c.vaultURL, options.toGenerated())
-
 	return &listKeysPager{
-		genPager: *p,
+		genPager: c.genClient.GetCertificates(c.vaultURL, options.toGenerated()),
+	}
+}
+
+// ListCertificateVersionsPager is a Pager for Client.ListCertificateVersions results
+type ListCertificateVersionsPager interface {
+	// PageResponse returns the current ListCertificateVersionsPage
+	PageResponse() ListCertificateVersionsPage
+
+	// Err returns true if there is another page of data available, false if not
+	Err() error
+
+	// NextPage returns true if there is another page of data available, false if not
+	NextPage(context.Context) bool
+}
+
+// listKeyVersionsPager implements the ListCertificateVersionsPager interface
+type listKeyVersionsPager struct {
+	genPager *generated.KeyVaultClientGetCertificateVersionsPager
+}
+
+// PageResponse returns the results from the page most recently fetched from the service.
+func (l *listKeyVersionsPager) PageResponse() ListCertificateVersionsPage {
+	return listKeyVersionsPageFromGenerated(l.genPager.PageResponse())
+}
+
+// Err returns an error value if the most recent call to NextPage was not successful, else nil.
+func (l *listKeyVersionsPager) Err() error {
+	return l.genPager.Err()
+}
+
+// NextPage fetches the next available page of results from the service. If the fetched page
+// contains results, the return value is true, else false. Results fetched from the service
+// can be evaluated by calling PageResponse on this Pager.
+func (l *listKeyVersionsPager) NextPage(ctx context.Context) bool {
+	return l.genPager.NextPage(ctx)
+}
+
+// ListCertificateVersionsOptions contains the options for the ListCertificateVersions operations
+type ListCertificateVersionsOptions struct {
+	// Maximum number of results to return in a page. If not specified the service will return up to 25 results.
+	MaxResults *int32
+}
+
+// convert the public ListCertificateVersionsOptions to the generated version
+func (l *ListCertificateVersionsOptions) toGenerated() *generated.KeyVaultClientGetCertificateVersionsOptions {
+	if l == nil {
+		return &generated.KeyVaultClientGetCertificateVersionsOptions{}
+	}
+
+	return &generated.KeyVaultClientGetCertificateVersionsOptions{
+		Maxresults: l.MaxResults,
+	}
+}
+
+// ListCertificateVersionsPage contains the current page from a ListCertificateVersionsPager.PageResponse method
+type ListCertificateVersionsPage struct {
+	CertificateListResult
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// create ListKeysPage from generated pager
+func listKeyVersionsPageFromGenerated(i generated.KeyVaultClientGetCertificateVersionsResponse) ListCertificateVersionsPage {
+	var vals []*CertificateItem
+	for _, v := range i.Value {
+		vals = append(vals, &CertificateItem{
+			Attributes:     certificateAttributesFromGenerated(v.Attributes),
+			ID:             v.ID,
+			Tags:           v.Tags,
+			X509Thumbprint: v.X509Thumbprint,
+		})
+	}
+
+	return ListCertificateVersionsPage{
+		RawResponse: i.RawResponse,
+		CertificateListResult: CertificateListResult{
+			Value: vals,
+		},
+	}
+}
+
+// ListCertificateVersions lists all versions of the specified certificate. The full certificate identifer and
+// attributes are provided in the response. No values are returned for the certificates. This operation
+// requires the certificates/list permission.
+func (c *Client) ListCertificateVersions(certificateName string, options *ListCertificateVersionsOptions) ListCertificateVersionsPager {
+	return &listKeyVersionsPager{
+		genPager: c.genClient.GetCertificateVersions(
+			c.vaultURL,
+			certificateName,
+			options.toGenerated(),
+		),
 	}
 }

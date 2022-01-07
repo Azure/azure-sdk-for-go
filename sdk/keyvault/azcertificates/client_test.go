@@ -9,6 +9,7 @@ package azcertificates
 import (
 	"context"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
@@ -43,15 +44,35 @@ func TestBeginCreateNewCertificate(t *testing.T) {
 			Subject: to.StringPtr("CN=DefaultPolicy"),
 		},
 	}, nil)
+	require.NoError(t, err)
+
 	pollerResp, err := resp.PollUntilDone(ctx, delay())
 	require.NoError(t, err)
 	require.NotNil(t, pollerResp.ID)
-	// require.NoError(t, err)
-	// require.NotNil(t, resp.ID)
+}
 
-	// time.Sleep(time.Second * 30)
+func TestClient_GetCertificateOperation(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
 
-	// getResp, err := client.GetCertificate(ctx, certName, nil)
-	// require.NoError(t, err)
-	// require.NotNil(t, getResp.ID)
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	certName, err := createRandomName(t, "cert")
+	require.NoError(t, err)
+	_, err = client.BeginCreateCertificate(ctx, certName, CertificatePolicy{
+		IssuerParameters: &IssuerParameters{
+			Name: to.StringPtr("Self"),
+		},
+		X509CertificateProperties: &X509CertificateProperties{
+			Subject: to.StringPtr("CN=DefaultPolicy"),
+		},
+	}, nil)
+	require.NoError(t, err)
+
+	time.Sleep(30 * time.Second)
+
+	resp, err := client.GetCertificateOperation(ctx, certName, nil)
+	require.NoError(t, err)
+	require.NotNil(t, resp.ID)
 }

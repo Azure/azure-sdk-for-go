@@ -248,3 +248,36 @@ func (c *Client) GetCertificate(ctx context.Context, certName string, options *G
 	}, nil
 }
 
+type GetCertificateVersionOptions struct{}
+
+type GetCertificateOperationResponse struct {
+	CertificateOperation
+
+	RawResponse *http.Response
+}
+
+func (c *Client) GetCertificateOperation(ctx context.Context, certName string, options *GetCertificateVersionOptions) (GetCertificateOperationResponse, error) {
+	if options == nil {
+		options = &GetCertificateVersionOptions{}
+	}
+
+	resp, err := c.genClient.GetCertificateOperation(ctx, c.vaultURL, certName, &generated.KeyVaultClientGetCertificateOperationOptions{})
+	if err != nil {
+		return GetCertificateOperationResponse{}, err
+	}
+
+	return GetCertificateOperationResponse{
+		RawResponse: resp.RawResponse,
+		CertificateOperation: CertificateOperation{
+			CancellationRequested: resp.CancellationRequested,
+			Csr:                   resp.Csr,
+			Error:                 resp.Error,
+			IssuerParameters:      resp.IssuerParameters,
+			RequestID:             resp.RequestID,
+			Status:                resp.Status,
+			StatusDetails:         resp.StatusDetails,
+			Target:                resp.Target,
+			ID:                    resp.ID,
+		},
+	}, nil
+}

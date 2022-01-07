@@ -53,7 +53,7 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.Token
 			var authFailed AuthenticationFailedError
 			if errors.As(err, &authFailed) {
 				err = fmt.Errorf("Authentication failed:\n%s\n%s"+createChainedErrorMessage(errList), err)
-				authErr := newAuthenticationFailedError(err, authFailed.RawResponse())
+				authErr := newAuthenticationFailedError(err, authFailed.RawResponse)
 				return nil, authErr
 			}
 			return nil, err

@@ -1,10 +1,11 @@
 # Release History
 
-## 0.12.1 (Unreleased)
+## 0.13.0 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
+* Replaced `AuthenticationFailedError.RawResponse()` with a field having the same name
 
 ### Bugs Fixed
 

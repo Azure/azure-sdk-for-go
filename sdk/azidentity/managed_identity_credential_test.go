@@ -12,7 +12,6 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
-	"runtime"
 	"strings"
 	"testing"
 	"time"
@@ -57,10 +56,6 @@ func (m *mockIMDS) Do(req *http.Request) (*http.Response, error) {
 }
 
 func TestManagedIdentityCredential_AzureArc(t *testing.T) {
-	if runtime.GOOS == "windows" {
-		// https://go-review.googlesource.com/c/go/+/371296
-		t.Skip("working around T.Tempdir bug fixed in 1.18")
-	}
 	file, err := os.Create(filepath.Join(t.TempDir(), "arc.key"))
 	if err != nil {
 		t.Fatal(err)

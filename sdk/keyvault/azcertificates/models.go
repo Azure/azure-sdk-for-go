@@ -124,6 +124,30 @@ type CertificateBundle struct {
 	X509Thumbprint []byte `json:"x5t,omitempty" azure:"ro"`
 }
 
+// CertificateItem - The certificate item containing certificate metadata.
+type CertificateItem struct {
+	// The certificate management attributes.
+	Attributes *CertificateAttributes `json:"attributes,omitempty"`
+
+	// Certificate identifier.
+	ID *string `json:"id,omitempty"`
+
+	// Application specific metadata in the form of key-value pairs.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// Thumbprint of the certificate.
+	X509Thumbprint []byte `json:"x5t,omitempty"`
+}
+
+// CertificateListResult - The certificate list result.
+type CertificateListResult struct {
+	// READ-ONLY; The URL to get the next set of certificates.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; A response message containing a list of certificates in the key vault along with a link to the next page of certificates.
+	Value []*CertificateItem `json:"value,omitempty" azure:"ro"`
+}
+
 // CertificateOperation - A certificate operation is returned in case of asynchronous requests.
 type CertificateOperation struct {
 	// Indicates if cancellation was requested on the certificate operation.
@@ -462,10 +486,10 @@ func x509CertificatePropertiesFromGenerated(g *generated.X509CertificateProperti
 	}
 
 	return &X509CertificateProperties{
-		Ekus:     g.Ekus,
-		Subject:  g.Subject,
-		KeyUsage: ku,
+		Ekus:                    g.Ekus,
+		Subject:                 g.Subject,
+		KeyUsage:                ku,
 		SubjectAlternativeNames: subjectAlternativeNamesFromGenerated(g.SubjectAlternativeNames),
-		ValidityInMonths: g.ValidityInMonths,
+		ValidityInMonths:        g.ValidityInMonths,
 	}
 }

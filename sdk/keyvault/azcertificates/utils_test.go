@@ -17,6 +17,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
@@ -168,5 +169,19 @@ func cleanUp(t *testing.T, client Client, certName string) {
 	require.Contains(t, *delPollerResp.ID, certName)
 
 	_, err = client.PurgeDeletedCertificate(ctx, certName, nil)
+	require.NoError(t, err)
+}
+
+func createCert(t *testing.T, client Client, certName string) {
+	resp, err := client.BeginCreateCertificate(ctx, certName, CertificatePolicy{
+		IssuerParameters: &IssuerParameters{
+			Name: to.StringPtr("Self"),
+		},
+		X509CertificateProperties: &X509CertificateProperties{
+			Subject: to.StringPtr("CN=DefaultPolicy"),
+		},
+	}, nil)
+	require.NoError(t, err)
+	_, err = resp.PollUntilDone(ctx, delay())
 	require.NoError(t, err)
 }

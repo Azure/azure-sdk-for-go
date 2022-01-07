@@ -8,6 +8,7 @@ package azcertificates
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -152,6 +153,31 @@ func TestClient_BackupCertificate(t *testing.T) {
 	require.Greater(t, len(backup.Value), 0)
 
 	cleanUp(t, client, certName)
+}
+
+func TestClient_ListCertificates(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	createdCount := 0
+	for i := 0; i < 4; i++ {
+		name, err := createRandomName(t, fmt.Sprintf("cert%d", i))
+		require.NoError(t, err)
+		createCert(t, client, name)
+		defer cleanUp(t, client, name)
+		createdCount++
+	}
+
+	pager := client.ListCertificates(nil)
+	for pager.NextPage(ctx) {
+		createdCount -= len(pager.PageResponse().Value)
+	}
+
+	require.Equal(t, 0, createdCount)
+	require.NoError(t, pager.Err())
 }
 
 func TestClient_ImportCertificate(t *testing.T) {

@@ -603,3 +603,92 @@ func (c *Client) ImportCertificate(ctx context.Context, certName string, base64E
 		},
 	}, nil
 }
+
+// ListCertificatesPager is a Pager for the Client.ListCertificates operation
+type ListCertificatesPager interface {
+	// PageResponse returns the current ListCertificatesPage
+	PageResponse() ListCertificatesPage
+
+	// Err returns true if there is another page of data available, false if not
+	Err() error
+
+	// NextPage returns true if there is another page of data available, false if not
+	NextPage(context.Context) bool
+}
+
+// listKeysPager implements the ListCertificatesPager interface
+type listKeysPager struct {
+	genPager generated.KeyVaultClientGetCertificatesPager
+}
+
+// PageResponse returns the results from the page most recently fetched from the service
+func (l *listKeysPager) PageResponse() ListCertificatesPage {
+	return listKeysPageFromGenerated(l.genPager.PageResponse())
+}
+
+// Err returns an error value if the most recent call to NextPage was not successful, else nil
+func (l *listKeysPager) Err() error {
+	return l.genPager.Err()
+}
+
+// NextPage fetches the next available page of results from the service. If the fetched page
+// contains results, the return value is true, else false. Results fetched from the service
+// can be evaluated by calling PageResponse on this Pager.
+func (l *listKeysPager) NextPage(ctx context.Context) bool {
+	return l.genPager.NextPage(ctx)
+}
+
+// ListCertificatesOptions contains the optional parameters for the Client.ListCertificates method
+type ListCertificatesOptions struct {
+	MaxResults *int32
+}
+
+// convert ListCertificatesOptions to generated options
+func (l ListCertificatesOptions) toGenerated() *generated.KeyVaultClientGetCertificatesOptions {
+	return &generated.KeyVaultClientGetCertificatesOptions{Maxresults: l.MaxResults}
+}
+
+// ListCertificatesPage contains the current page of results for the Client.ListSecrets operation
+type ListCertificatesPage struct {
+	CertificateListResult
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// convert internal Response to ListCertificatesPage
+func listKeysPageFromGenerated(i generated.KeyVaultClientGetCertificatesResponse) ListCertificatesPage {
+	var vals []*CertificateItem
+
+	for _, v := range i.Value {
+		vals = append(vals, &CertificateItem{
+			Attributes:     certificateAttributesFromGenerated(v.Attributes),
+			ID:             v.ID,
+			Tags:           v.Tags,
+			X509Thumbprint: v.X509Thumbprint,
+		})
+	}
+
+	return ListCertificatesPage{
+		RawResponse: i.RawResponse,
+		CertificateListResult: CertificateListResult{
+			NextLink: i.NextLink,
+			Value:    vals,
+		},
+	}
+}
+
+// ListCertificates retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the
+// public part of a stored key. The LIST operation is applicable to all key types, however only the
+// base key identifier, attributes, and tags are provided in the response. Individual versions of a
+// key are not listed in the response. This operation requires the keys/list permission.
+func (c *Client) ListCertificates(options *ListCertificatesOptions) ListCertificatesPager {
+	if options == nil {
+		options = &ListCertificatesOptions{}
+	}
+	p := c.genClient.GetCertificates(c.vaultURL, options.toGenerated())
+
+	return &listKeysPager{
+		genPager: *p,
+	}
+}

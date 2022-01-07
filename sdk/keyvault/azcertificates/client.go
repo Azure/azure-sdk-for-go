@@ -117,3 +117,28 @@ func (c *Client) BeginCreateCertificate(ctx context.Context, certName string, po
 		},
 	}, nil
 }
+
+// KeyVaultClientGetCertificateOptions contains the optional parameters for the KeyVaultClient.GetCertificate method.
+type GetCertificateOptions struct {
+	Version string
+}
+
+// GetCertificateResponse contains the result from method Client.GetCertificate.
+type GetCertificateResponse struct {
+	CertificateBundle
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+func (c *Client) GetCertificate(ctx context.Context, certName string, options *GetCertificateOptions) (GetCertificateResponse, error) {
+	if options == nil {
+		options = &GetCertificateOptions{}
+	}
+
+	resp, err := c.genClient.GetCertificate(ctx, c.vaultURL, certName, options.Version, nil)
+	if err != nil {
+		return GetCertificateResponse{}, err
+	}
+
+	return GetCertificateResponse{}, nil
+}

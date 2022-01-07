@@ -120,9 +120,23 @@ func TestManagedIdentityCredential_AzureArc(t *testing.T) {
 }
 
 func TestManagedIdentityCredential_CloudShell(t *testing.T) {
+	validateReq := func(req *http.Request) bool {
+		err := req.ParseForm()
+		if err != nil {
+			t.Fatal(err)
+		}
+		if v := req.FormValue("resource"); v != strings.TrimSuffix(liveTestScope, defaultSuffix) {
+			t.Fatalf("unexpected resource: %s", v)
+		}
+		if h := req.Header.Get("metadata"); h != "true" {
+			t.Fatalf("unexpected metadata header: %s", h)
+		}
+		return true
+	}
 	srv, close := mock.NewServer()
 	defer close()
-	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse(mock.WithPredicate(validateReq), mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse()
 	setEnvironmentVariables(t, map[string]string{msiEndpoint: srv.URL()})
 	options := ManagedIdentityCredentialOptions{}
 	options.Transport = srv
@@ -130,15 +144,16 @@ func TestManagedIdentityCredential_CloudShell(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	tk, err := msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{msiScope}})
+	tk, err := msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
 	if err != nil {
 		t.Fatal(err)
 	}
 	if tk.Token != tokenValue {
 		t.Fatalf("unexpected token value: %s", tk.Token)
 	}
-	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
-	_, err = msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{msiScope}})
+	srv.AppendResponse(mock.WithPredicate(validateReq), mock.WithStatusCode(http.StatusUnauthorized))
+	srv.AppendResponse()
+	_, err = msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
 	if err == nil {
 		t.Fatal("expected an error but didn't receive one")
 	}

@@ -17,7 +17,7 @@ jobs:
           displayName: 'Run Daily SmokeTests'
           inputs:
             targetType: 'filePath'
-            filePath: eng/scripts/Smoke_Tests_Daily.ps1
+            filePath: eng/scripts/Smoke_Tests.ps1
             arguments: '.'
             pwsh: true
 
@@ -26,7 +26,7 @@ jobs:
           displayName: 'Run Pre-Release SmokeTests'
           inputs:
             targetType: 'filePath'
-            filePath: $(Build.SourcesDirectory)/eng/scripts/Smoke_Tests_Daily.ps1
+            filePath: $(Build.SourcesDirectory)/eng/scripts/Smoke_Tests.ps1
             arguments: ${{ parameters.ServiceDirectory }}
             pwsh: true
 

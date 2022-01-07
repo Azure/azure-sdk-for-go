@@ -454,6 +454,9 @@ func smokeTestCmd() error {
 		os.Exit(-1)
 	} else if serviceDirectory != "" && !daily {
 		fmt.Printf("Running smoke tests on the %s directory\n", serviceDirectory)
+	} else if serviceDirectory == "." {
+		fmt.Printf("Running smoke tests for the entire repository.")
+		daily = true
 	}
 
 	rootDirectory := GetTopLevel()

@@ -65,6 +65,7 @@ func TestManagedIdentityCredential_AzureArc(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	defer file.Close()
 	expectedKey := "expected-key"
 	n, err := file.WriteString(expectedKey)
 	if n != len(expectedKey) || err != nil {

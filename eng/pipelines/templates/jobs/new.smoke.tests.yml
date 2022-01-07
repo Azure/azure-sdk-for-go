@@ -14,7 +14,7 @@ jobs:
     steps:
       - ${{ if eq(parameters.Daily, true) }}:
         - task: PowerShell@2
-          displayName: 'Run Nightly SmokeTests'
+          displayName: 'Run Daily SmokeTests'
           inputs:
             targetType: 'filePath'
             filePath: eng/scripts/Smoke_Tests_Daily.ps1

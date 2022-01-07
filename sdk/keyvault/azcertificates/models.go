@@ -76,6 +76,54 @@ func (c *CertificateAttributes) toGenerated() *generated.CertificateAttributes {
 	}
 }
 
+func certificateAttributesFromGenerated(g *generated.CertificateAttributes) *CertificateAttributes {
+	if g == nil {
+		return nil
+	}
+
+	return &CertificateAttributes{
+		Attributes: Attributes{
+			Enabled:   g.Enabled,
+			Expires:   g.Expires,
+			NotBefore: g.NotBefore,
+			Created:   g.Created,
+			Updated:   g.Updated,
+		},
+		RecoverableDays: g.RecoverableDays,
+		RecoveryLevel:   (*DeletionRecoveryLevel)(g.RecoveryLevel),
+	}
+}
+
+// CertificateBundle - A certificate bundle consists of a certificate (X509) plus its attributes.
+type CertificateBundle struct {
+	// The certificate attributes.
+	Attributes *CertificateAttributes `json:"attributes,omitempty"`
+
+	// CER contents of x509 certificate.
+	Cer []byte `json:"cer,omitempty"`
+
+	// The content type of the secret. eg. 'application/x-pem-file' or 'application/x-pkcs12',
+	ContentType *string `json:"contentType,omitempty"`
+
+	// Application specific metadata in the form of key-value pairs
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The certificate id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The key id.
+	Kid *string `json:"kid,omitempty" azure:"ro"`
+
+	// READ-ONLY; The management policy.
+	Policy *CertificatePolicy `json:"policy,omitempty" azure:"ro"`
+
+	// READ-ONLY; The secret id.
+	Sid *string `json:"sid,omitempty" azure:"ro"`
+
+	// READ-ONLY; Thumbprint of the certificate.
+	X509Thumbprint []byte `json:"x5t,omitempty" azure:"ro"`
+}
+
 // CertificateOperation - A certificate operation is returned in case of asynchronous requests.
 type CertificateOperation struct {
 	// Indicates if cancellation was requested on the certificate operation.
@@ -128,11 +176,9 @@ type CertificatePolicy struct {
 }
 
 func (c CertificatePolicy) toGeneratedCertificateCreateParameters() *generated.CertificatePolicy {
-	var lifetimeActions []*generated.LifetimeAction
-	if len(c.LifetimeActions) > 0 {
-		for _, la := range c.LifetimeActions {
-			lifetimeActions = append(lifetimeActions, la.toGenerated())
-		}
+	var la []*generated.LifetimeAction
+	for _, l := range c.LifetimeActions {
+		la = append(la, l.toGenerated())
 	}
 
 	return &generated.CertificatePolicy{
@@ -140,8 +186,28 @@ func (c CertificatePolicy) toGeneratedCertificateCreateParameters() *generated.C
 		IssuerParameters:          c.IssuerParameters.toGenerated(),
 		KeyProperties:             c.KeyProperties.toGenerated(),
 		SecretProperties:          c.SecretProperties.toGenerated(),
-		LifetimeActions:           lifetimeActions,
+		LifetimeActions:           la,
 		X509CertificateProperties: c.X509CertificateProperties.toGenerated(),
+	}
+}
+
+func certificatePolicyFromGenerated(g *generated.CertificatePolicy) *CertificatePolicy {
+	if g == nil {
+		return nil
+	}
+
+	var la []*LifetimeAction
+	for _, l := range g.LifetimeActions {
+		la = append(la, lifetimeActionFromGenerated(l))
+	}
+
+	return &CertificatePolicy{
+		Attributes:                certificateAttributesFromGenerated(g.Attributes),
+		IssuerParameters:          issuerParametersFromGenerated(g.IssuerParameters),
+		KeyProperties:             keyPropertiesFromGenerated(g.KeyProperties),
+		LifetimeActions:           la,
+		SecretProperties:          &SecretProperties{ContentType: g.SecretProperties.ContentType},
+		X509CertificateProperties: x509CertificatePropertiesFromGenerated(g.X509CertificateProperties),
 	}
 }
 
@@ -166,6 +232,18 @@ func (i *IssuerParameters) toGenerated() *generated.IssuerParameters {
 		CertificateTransparency: i.CertificateTransparency,
 		CertificateType:         i.CertificateType,
 		Name:                    i.Name,
+	}
+}
+
+func issuerParametersFromGenerated(g *generated.IssuerParameters) *IssuerParameters {
+	if g == nil {
+		return nil
+	}
+
+	return &IssuerParameters{
+		CertificateTransparency: g.CertificateTransparency,
+		CertificateType:         g.CertificateType,
+		Name:                    g.Name,
 	}
 }
 
@@ -201,6 +279,20 @@ func (k *KeyProperties) toGenerated() *generated.KeyProperties {
 	}
 }
 
+func keyPropertiesFromGenerated(g *generated.KeyProperties) *KeyProperties {
+	if g == nil {
+		return nil
+	}
+
+	return &KeyProperties{
+		Curve:      (*JSONWebKeyCurveName)(g.Curve),
+		Exportable: g.Exportable,
+		KeySize:    g.KeySize,
+		KeyType:    (*JSONWebKeyType)(g.KeyType),
+		ReuseKey:   g.ReuseKey,
+	}
+}
+
 // LifetimeAction - Action and its trigger that will be performed by Key Vault over the lifetime of a certificate.
 type LifetimeAction struct {
 	// The action that will be executed.
@@ -214,6 +306,22 @@ func (l LifetimeAction) toGenerated() *generated.LifetimeAction {
 	return &generated.LifetimeAction{
 		Action:  l.Action.toGenerated(),
 		Trigger: l.Trigger.toGenerated(),
+	}
+}
+
+func lifetimeActionFromGenerated(g *generated.LifetimeAction) *LifetimeAction {
+	if g == nil {
+		return nil
+	}
+
+	return &LifetimeAction{
+		Action: &Action{
+			ActionType: (*ActionType)(g.Action.ActionType),
+		},
+		Trigger: &Trigger{
+			DaysBeforeExpiry:   g.Trigger.DaysBeforeExpiry,
+			LifetimePercentage: g.Trigger.LifetimePercentage,
+		},
 	}
 }
 
@@ -312,5 +420,28 @@ func (x *X509CertificateProperties) toGenerated() *generated.X509CertificateProp
 		Subject:                 x.Subject,
 		SubjectAlternativeNames: x.SubjectAlternativeNames.toGenerated(),
 		ValidityInMonths:        x.ValidityInMonths,
+	}
+}
+
+func x509CertificatePropertiesFromGenerated(g *generated.X509CertificateProperties) *X509CertificateProperties {
+	if g == nil {
+		return nil
+	}
+
+	var ku []*KeyUsageType
+	for _, k := range g.KeyUsage {
+		ku = append(ku, (*KeyUsageType)(k))
+	}
+
+	return &X509CertificateProperties{
+		Ekus:     g.Ekus,
+		Subject:  g.Subject,
+		KeyUsage: ku,
+		SubjectAlternativeNames: &SubjectAlternativeNames{
+			DNSNames: g.SubjectAlternativeNames.DNSNames,
+			Emails:   g.SubjectAlternativeNames.Emails,
+			Upns:     g.SubjectAlternativeNames.Upns,
+		},
+		ValidityInMonths: g.ValidityInMonths,
 	}
 }

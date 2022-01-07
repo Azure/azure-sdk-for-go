@@ -9,6 +9,7 @@ package azcertificates
 import (
 	"context"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
@@ -45,4 +46,10 @@ func TestBeginCreateNewCertificate(t *testing.T) {
 	}, nil)
 	require.NoError(t, err)
 	require.NotNil(t, resp.ID)
+
+	time.Sleep(time.Second * 30)
+
+	getResp, err := client.GetCertificate(ctx, certName, nil)
+	require.NoError(t, err)
+	require.NotNil(t, getResp.ID)
 }

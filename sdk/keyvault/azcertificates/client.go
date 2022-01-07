@@ -130,6 +130,8 @@ type GetCertificateResponse struct {
 	RawResponse *http.Response
 }
 
+// GetCertificate - Gets information about a specific certificate. This operation requires the certificates/get permission.
+// If the operation fails it returns the *KeyVaultError error type.
 func (c *Client) GetCertificate(ctx context.Context, certName string, options *GetCertificateOptions) (GetCertificateResponse, error) {
 	if options == nil {
 		options = &GetCertificateOptions{}
@@ -140,5 +142,18 @@ func (c *Client) GetCertificate(ctx context.Context, certName string, options *G
 		return GetCertificateResponse{}, err
 	}
 
-	return GetCertificateResponse{}, nil
+	return GetCertificateResponse{
+		RawResponse: resp.RawResponse,
+		CertificateBundle: CertificateBundle{
+			Attributes:     certificateAttributesFromGenerated(resp.Attributes),
+			Cer:            resp.Cer,
+			ContentType:    resp.ContentType,
+			Tags:           resp.Tags,
+			ID:             resp.ID,
+			Kid:            resp.Kid,
+			Policy:         certificatePolicyFromGenerated(resp.Policy),
+			Sid:            resp.Sid,
+			X509Thumbprint: resp.X509Thumbprint,
+		},
+	}, nil
 }

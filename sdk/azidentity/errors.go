@@ -7,15 +7,14 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 	msal "github.com/AzureAD/microsoft-authentication-library-for-go/apps/errors"
 )
 
 // AuthenticationFailedError indicates an authentication request has failed.
 type AuthenticationFailedError interface {
-	azcore.HTTPResponse
 	errorinfo.NonRetriable
+	RawResponse() *http.Response
 	authenticationFailed()
 }
 
@@ -50,7 +49,6 @@ func (e authenticationFailedError) RawResponse() *http.Response {
 }
 
 var _ AuthenticationFailedError = (*authenticationFailedError)(nil)
-var _ azcore.HTTPResponse = (*authenticationFailedError)(nil)
 var _ errorinfo.NonRetriable = (*authenticationFailedError)(nil)
 
 // CredentialUnavailableError indicates a credential can't attempt authenticate

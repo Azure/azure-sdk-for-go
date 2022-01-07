@@ -138,7 +138,7 @@ func lookupEnvVar(s string) string {
 
 func createClient(t *testing.T, testType string) (*Client, error) {
 	vaultUrl := recording.GetEnvVariable("AZURE_KEYVAULT_URL", fakeKvURL)
-	var credOptions *azidentity.ClientSecretCredentialOptions
+	// var credOptions *azidentity.ClientSecretCredentialOptions
 	if testType == HSMTEST {
 		vaultUrl = recording.GetEnvVariable("AZURE_MANAGEDHSM_URL", fakeKvMHSMURL)
 	}
@@ -157,7 +157,7 @@ func createClient(t *testing.T, testType string) (*Client, error) {
 		tenantId := lookupEnvVar("AZKEYS_TENANT_ID")
 		clientId := lookupEnvVar("AZKEYS_CLIENT_ID")
 		clientSecret := lookupEnvVar("AZKEYS_CLIENT_SECRET")
-		cred, err = azidentity.NewClientSecretCredential(tenantId, clientId, clientSecret, credOptions)
+		cred, err = azidentity.NewClientSecretCredential(tenantId, clientId, clientSecret, nil)
 		require.NoError(t, err)
 	} else {
 		cred = NewFakeCredential("fake", "fake")

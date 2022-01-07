@@ -55,15 +55,14 @@ func PollerType(p *Poller) reflect.Type {
 }
 
 // NewPoller creates a Poller from the specified input.
-func NewPoller(lro Operation, resp *http.Response, pl pipeline.Pipeline, eu func(*http.Response) error) *Poller {
-	return &Poller{lro: lro, pl: pl, eu: eu, resp: resp}
+func NewPoller(lro Operation, resp *http.Response, pl pipeline.Pipeline) *Poller {
+	return &Poller{lro: lro, pl: pl, resp: resp}
 }
 
 // Poller encapsulates state and logic for polling on long-running operations.
 type Poller struct {
 	lro  Operation
 	pl   pipeline.Pipeline
-	eu   func(*http.Response) error
 	resp *http.Response
 	err  error
 }
@@ -97,7 +96,7 @@ func (l *Poller) Poll(ctx context.Context) (*http.Response, error) {
 	defer resp.Body.Close()
 	if !StatusCodeValid(resp) {
 		// the LRO failed.  unmarshall the error and update state
-		l.err = l.eu(resp)
+		l.err = shared.NewResponseError(resp)
 		l.resp = nil
 		return nil, l.err
 	}
@@ -107,7 +106,7 @@ func (l *Poller) Poll(ctx context.Context) (*http.Response, error) {
 	l.resp = resp
 	log.Writef(log.EventLRO, "Status %s", l.lro.Status())
 	if Failed(l.lro.Status()) {
-		l.err = l.eu(resp)
+		l.err = shared.NewResponseError(resp)
 		l.resp = nil
 		return nil, l.err
 	}
@@ -144,7 +143,7 @@ func (l *Poller) FinalResponse(ctx context.Context, respType interface{}) (*http
 			return nil, err
 		}
 		if !StatusCodeValid(resp) {
-			return nil, l.eu(resp)
+			return nil, shared.NewResponseError(resp)
 		}
 		l.resp = resp
 	}

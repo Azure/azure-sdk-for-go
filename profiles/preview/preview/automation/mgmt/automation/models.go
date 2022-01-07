@@ -12,7 +12,7 @@ package automation
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/automation/mgmt/2018-06-30-preview/automation"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/automation/mgmt/2020-01-13-preview/automation"
 )
 
 const (
@@ -22,36 +22,36 @@ const (
 type AccountState = original.AccountState
 
 const (
-	Ok          AccountState = original.Ok
-	Suspended   AccountState = original.Suspended
-	Unavailable AccountState = original.Unavailable
+	AccountStateOk          AccountState = original.AccountStateOk
+	AccountStateSuspended   AccountState = original.AccountStateSuspended
+	AccountStateUnavailable AccountState = original.AccountStateUnavailable
 )
 
 type AgentRegistrationKeyName = original.AgentRegistrationKeyName
 
 const (
-	Primary   AgentRegistrationKeyName = original.Primary
-	Secondary AgentRegistrationKeyName = original.Secondary
+	AgentRegistrationKeyNamePrimary   AgentRegistrationKeyName = original.AgentRegistrationKeyNamePrimary
+	AgentRegistrationKeyNameSecondary AgentRegistrationKeyName = original.AgentRegistrationKeyNameSecondary
 )
 
 type ContentSourceType = original.ContentSourceType
 
 const (
-	EmbeddedContent ContentSourceType = original.EmbeddedContent
-	URI             ContentSourceType = original.URI
+	ContentSourceTypeEmbeddedContent ContentSourceType = original.ContentSourceTypeEmbeddedContent
+	ContentSourceTypeURI             ContentSourceType = original.ContentSourceTypeURI
 )
 
 type CountType = original.CountType
 
 const (
-	Nodeconfiguration CountType = original.Nodeconfiguration
-	Status            CountType = original.Status
+	CountTypeNodeconfiguration CountType = original.CountTypeNodeconfiguration
+	CountTypeStatus            CountType = original.CountTypeStatus
 )
 
 type DscConfigurationProvisioningState = original.DscConfigurationProvisioningState
 
 const (
-	Succeeded DscConfigurationProvisioningState = original.Succeeded
+	DscConfigurationProvisioningStateSucceeded DscConfigurationProvisioningState = original.DscConfigurationProvisioningStateSucceeded
 )
 
 type DscConfigurationState = original.DscConfigurationState
@@ -62,63 +62,70 @@ const (
 	DscConfigurationStatePublished DscConfigurationState = original.DscConfigurationStatePublished
 )
 
+type EncryptionKeySourceType = original.EncryptionKeySourceType
+
+const (
+	EncryptionKeySourceTypeMicrosoftAutomation EncryptionKeySourceType = original.EncryptionKeySourceTypeMicrosoftAutomation
+	EncryptionKeySourceTypeMicrosoftKeyvault   EncryptionKeySourceType = original.EncryptionKeySourceTypeMicrosoftKeyvault
+)
+
 type GroupTypeEnum = original.GroupTypeEnum
 
 const (
-	System GroupTypeEnum = original.System
-	User   GroupTypeEnum = original.User
+	GroupTypeEnumSystem GroupTypeEnum = original.GroupTypeEnumSystem
+	GroupTypeEnumUser   GroupTypeEnum = original.GroupTypeEnumUser
 )
 
 type HTTPStatusCode = original.HTTPStatusCode
 
 const (
-	Accepted                     HTTPStatusCode = original.Accepted
-	Ambiguous                    HTTPStatusCode = original.Ambiguous
-	BadGateway                   HTTPStatusCode = original.BadGateway
-	BadRequest                   HTTPStatusCode = original.BadRequest
-	Conflict                     HTTPStatusCode = original.Conflict
-	Continue                     HTTPStatusCode = original.Continue
-	Created                      HTTPStatusCode = original.Created
-	ExpectationFailed            HTTPStatusCode = original.ExpectationFailed
-	Forbidden                    HTTPStatusCode = original.Forbidden
-	Found                        HTTPStatusCode = original.Found
-	GatewayTimeout               HTTPStatusCode = original.GatewayTimeout
-	Gone                         HTTPStatusCode = original.Gone
-	HTTPVersionNotSupported      HTTPStatusCode = original.HTTPVersionNotSupported
-	InternalServerError          HTTPStatusCode = original.InternalServerError
-	LengthRequired               HTTPStatusCode = original.LengthRequired
-	MethodNotAllowed             HTTPStatusCode = original.MethodNotAllowed
-	Moved                        HTTPStatusCode = original.Moved
-	MovedPermanently             HTTPStatusCode = original.MovedPermanently
-	MultipleChoices              HTTPStatusCode = original.MultipleChoices
-	NoContent                    HTTPStatusCode = original.NoContent
-	NonAuthoritativeInformation  HTTPStatusCode = original.NonAuthoritativeInformation
-	NotAcceptable                HTTPStatusCode = original.NotAcceptable
-	NotFound                     HTTPStatusCode = original.NotFound
-	NotImplemented               HTTPStatusCode = original.NotImplemented
-	NotModified                  HTTPStatusCode = original.NotModified
-	OK                           HTTPStatusCode = original.OK
-	PartialContent               HTTPStatusCode = original.PartialContent
-	PaymentRequired              HTTPStatusCode = original.PaymentRequired
-	PreconditionFailed           HTTPStatusCode = original.PreconditionFailed
-	ProxyAuthenticationRequired  HTTPStatusCode = original.ProxyAuthenticationRequired
-	Redirect                     HTTPStatusCode = original.Redirect
-	RedirectKeepVerb             HTTPStatusCode = original.RedirectKeepVerb
-	RedirectMethod               HTTPStatusCode = original.RedirectMethod
-	RequestedRangeNotSatisfiable HTTPStatusCode = original.RequestedRangeNotSatisfiable
-	RequestEntityTooLarge        HTTPStatusCode = original.RequestEntityTooLarge
-	RequestTimeout               HTTPStatusCode = original.RequestTimeout
-	RequestURITooLong            HTTPStatusCode = original.RequestURITooLong
-	ResetContent                 HTTPStatusCode = original.ResetContent
-	SeeOther                     HTTPStatusCode = original.SeeOther
-	ServiceUnavailable           HTTPStatusCode = original.ServiceUnavailable
-	SwitchingProtocols           HTTPStatusCode = original.SwitchingProtocols
-	TemporaryRedirect            HTTPStatusCode = original.TemporaryRedirect
-	Unauthorized                 HTTPStatusCode = original.Unauthorized
-	UnsupportedMediaType         HTTPStatusCode = original.UnsupportedMediaType
-	Unused                       HTTPStatusCode = original.Unused
-	UpgradeRequired              HTTPStatusCode = original.UpgradeRequired
-	UseProxy                     HTTPStatusCode = original.UseProxy
+	HTTPStatusCodeAccepted                     HTTPStatusCode = original.HTTPStatusCodeAccepted
+	HTTPStatusCodeAmbiguous                    HTTPStatusCode = original.HTTPStatusCodeAmbiguous
+	HTTPStatusCodeBadGateway                   HTTPStatusCode = original.HTTPStatusCodeBadGateway
+	HTTPStatusCodeBadRequest                   HTTPStatusCode = original.HTTPStatusCodeBadRequest
+	HTTPStatusCodeConflict                     HTTPStatusCode = original.HTTPStatusCodeConflict
+	HTTPStatusCodeContinue                     HTTPStatusCode = original.HTTPStatusCodeContinue
+	HTTPStatusCodeCreated                      HTTPStatusCode = original.HTTPStatusCodeCreated
+	HTTPStatusCodeExpectationFailed            HTTPStatusCode = original.HTTPStatusCodeExpectationFailed
+	HTTPStatusCodeForbidden                    HTTPStatusCode = original.HTTPStatusCodeForbidden
+	HTTPStatusCodeFound                        HTTPStatusCode = original.HTTPStatusCodeFound
+	HTTPStatusCodeGatewayTimeout               HTTPStatusCode = original.HTTPStatusCodeGatewayTimeout
+	HTTPStatusCodeGone                         HTTPStatusCode = original.HTTPStatusCodeGone
+	HTTPStatusCodeHTTPVersionNotSupported      HTTPStatusCode = original.HTTPStatusCodeHTTPVersionNotSupported
+	HTTPStatusCodeInternalServerError          HTTPStatusCode = original.HTTPStatusCodeInternalServerError
+	HTTPStatusCodeLengthRequired               HTTPStatusCode = original.HTTPStatusCodeLengthRequired
+	HTTPStatusCodeMethodNotAllowed             HTTPStatusCode = original.HTTPStatusCodeMethodNotAllowed
+	HTTPStatusCodeMoved                        HTTPStatusCode = original.HTTPStatusCodeMoved
+	HTTPStatusCodeMovedPermanently             HTTPStatusCode = original.HTTPStatusCodeMovedPermanently
+	HTTPStatusCodeMultipleChoices              HTTPStatusCode = original.HTTPStatusCodeMultipleChoices
+	HTTPStatusCodeNoContent                    HTTPStatusCode = original.HTTPStatusCodeNoContent
+	HTTPStatusCodeNonAuthoritativeInformation  HTTPStatusCode = original.HTTPStatusCodeNonAuthoritativeInformation
+	HTTPStatusCodeNotAcceptable                HTTPStatusCode = original.HTTPStatusCodeNotAcceptable
+	HTTPStatusCodeNotFound                     HTTPStatusCode = original.HTTPStatusCodeNotFound
+	HTTPStatusCodeNotImplemented               HTTPStatusCode = original.HTTPStatusCodeNotImplemented
+	HTTPStatusCodeNotModified                  HTTPStatusCode = original.HTTPStatusCodeNotModified
+	HTTPStatusCodeOK                           HTTPStatusCode = original.HTTPStatusCodeOK
+	HTTPStatusCodePartialContent               HTTPStatusCode = original.HTTPStatusCodePartialContent
+	HTTPStatusCodePaymentRequired              HTTPStatusCode = original.HTTPStatusCodePaymentRequired
+	HTTPStatusCodePreconditionFailed           HTTPStatusCode = original.HTTPStatusCodePreconditionFailed
+	HTTPStatusCodeProxyAuthenticationRequired  HTTPStatusCode = original.HTTPStatusCodeProxyAuthenticationRequired
+	HTTPStatusCodeRedirect                     HTTPStatusCode = original.HTTPStatusCodeRedirect
+	HTTPStatusCodeRedirectKeepVerb             HTTPStatusCode = original.HTTPStatusCodeRedirectKeepVerb
+	HTTPStatusCodeRedirectMethod               HTTPStatusCode = original.HTTPStatusCodeRedirectMethod
+	HTTPStatusCodeRequestedRangeNotSatisfiable HTTPStatusCode = original.HTTPStatusCodeRequestedRangeNotSatisfiable
+	HTTPStatusCodeRequestEntityTooLarge        HTTPStatusCode = original.HTTPStatusCodeRequestEntityTooLarge
+	HTTPStatusCodeRequestTimeout               HTTPStatusCode = original.HTTPStatusCodeRequestTimeout
+	HTTPStatusCodeRequestURITooLong            HTTPStatusCode = original.HTTPStatusCodeRequestURITooLong
+	HTTPStatusCodeResetContent                 HTTPStatusCode = original.HTTPStatusCodeResetContent
+	HTTPStatusCodeSeeOther                     HTTPStatusCode = original.HTTPStatusCodeSeeOther
+	HTTPStatusCodeServiceUnavailable           HTTPStatusCode = original.HTTPStatusCodeServiceUnavailable
+	HTTPStatusCodeSwitchingProtocols           HTTPStatusCode = original.HTTPStatusCodeSwitchingProtocols
+	HTTPStatusCodeTemporaryRedirect            HTTPStatusCode = original.HTTPStatusCodeTemporaryRedirect
+	HTTPStatusCodeUnauthorized                 HTTPStatusCode = original.HTTPStatusCodeUnauthorized
+	HTTPStatusCodeUnsupportedMediaType         HTTPStatusCode = original.HTTPStatusCodeUnsupportedMediaType
+	HTTPStatusCodeUnused                       HTTPStatusCode = original.HTTPStatusCodeUnused
+	HTTPStatusCodeUpgradeRequired              HTTPStatusCode = original.HTTPStatusCodeUpgradeRequired
+	HTTPStatusCodeUseProxy                     HTTPStatusCode = original.HTTPStatusCodeUseProxy
 )
 
 type JobProvisioningState = original.JobProvisioningState
@@ -151,13 +158,13 @@ const (
 type JobStreamType = original.JobStreamType
 
 const (
-	Any      JobStreamType = original.Any
-	Debug    JobStreamType = original.Debug
-	Error    JobStreamType = original.Error
-	Output   JobStreamType = original.Output
-	Progress JobStreamType = original.Progress
-	Verbose  JobStreamType = original.Verbose
-	Warning  JobStreamType = original.Warning
+	JobStreamTypeAny      JobStreamType = original.JobStreamTypeAny
+	JobStreamTypeDebug    JobStreamType = original.JobStreamTypeDebug
+	JobStreamTypeError    JobStreamType = original.JobStreamTypeError
+	JobStreamTypeOutput   JobStreamType = original.JobStreamTypeOutput
+	JobStreamTypeProgress JobStreamType = original.JobStreamTypeProgress
+	JobStreamTypeVerbose  JobStreamType = original.JobStreamTypeVerbose
+	JobStreamTypeWarning  JobStreamType = original.JobStreamTypeWarning
 )
 
 type KeyName = original.KeyName
@@ -170,17 +177,17 @@ const (
 type KeyPermissions = original.KeyPermissions
 
 const (
-	Full KeyPermissions = original.Full
-	Read KeyPermissions = original.Read
+	KeyPermissionsFull KeyPermissions = original.KeyPermissionsFull
+	KeyPermissionsRead KeyPermissions = original.KeyPermissionsRead
 )
 
 type LinuxUpdateClasses = original.LinuxUpdateClasses
 
 const (
-	Critical     LinuxUpdateClasses = original.Critical
-	Other        LinuxUpdateClasses = original.Other
-	Security     LinuxUpdateClasses = original.Security
-	Unclassified LinuxUpdateClasses = original.Unclassified
+	LinuxUpdateClassesCritical     LinuxUpdateClasses = original.LinuxUpdateClassesCritical
+	LinuxUpdateClassesOther        LinuxUpdateClasses = original.LinuxUpdateClassesOther
+	LinuxUpdateClassesSecurity     LinuxUpdateClasses = original.LinuxUpdateClassesSecurity
+	LinuxUpdateClassesUnclassified LinuxUpdateClasses = original.LinuxUpdateClassesUnclassified
 )
 
 type ModuleProvisioningState = original.ModuleProvisioningState
@@ -207,16 +214,25 @@ const (
 type OperatingSystemType = original.OperatingSystemType
 
 const (
-	Linux   OperatingSystemType = original.Linux
-	Windows OperatingSystemType = original.Windows
+	OperatingSystemTypeLinux   OperatingSystemType = original.OperatingSystemTypeLinux
+	OperatingSystemTypeWindows OperatingSystemType = original.OperatingSystemTypeWindows
 )
 
 type ProvisioningState = original.ProvisioningState
 
 const (
-	Completed ProvisioningState = original.Completed
-	Failed    ProvisioningState = original.Failed
-	Running   ProvisioningState = original.Running
+	ProvisioningStateCompleted ProvisioningState = original.ProvisioningStateCompleted
+	ProvisioningStateFailed    ProvisioningState = original.ProvisioningStateFailed
+	ProvisioningStateRunning   ProvisioningState = original.ProvisioningStateRunning
+)
+
+type ResourceIdentityType = original.ResourceIdentityType
+
+const (
+	ResourceIdentityTypeNone                       ResourceIdentityType = original.ResourceIdentityTypeNone
+	ResourceIdentityTypeSystemAssigned             ResourceIdentityType = original.ResourceIdentityTypeSystemAssigned
+	ResourceIdentityTypeSystemAssignedUserAssigned ResourceIdentityType = original.ResourceIdentityTypeSystemAssignedUserAssigned
+	ResourceIdentityTypeUserAssigned               ResourceIdentityType = original.ResourceIdentityTypeUserAssigned
 )
 
 type RunbookProvisioningState = original.RunbookProvisioningState
@@ -236,50 +252,50 @@ const (
 type RunbookTypeEnum = original.RunbookTypeEnum
 
 const (
-	Graph                   RunbookTypeEnum = original.Graph
-	GraphPowerShell         RunbookTypeEnum = original.GraphPowerShell
-	GraphPowerShellWorkflow RunbookTypeEnum = original.GraphPowerShellWorkflow
-	PowerShell              RunbookTypeEnum = original.PowerShell
-	PowerShellWorkflow      RunbookTypeEnum = original.PowerShellWorkflow
-	Script                  RunbookTypeEnum = original.Script
+	RunbookTypeEnumGraph                   RunbookTypeEnum = original.RunbookTypeEnumGraph
+	RunbookTypeEnumGraphPowerShell         RunbookTypeEnum = original.RunbookTypeEnumGraphPowerShell
+	RunbookTypeEnumGraphPowerShellWorkflow RunbookTypeEnum = original.RunbookTypeEnumGraphPowerShellWorkflow
+	RunbookTypeEnumPowerShell              RunbookTypeEnum = original.RunbookTypeEnumPowerShell
+	RunbookTypeEnumPowerShellWorkflow      RunbookTypeEnum = original.RunbookTypeEnumPowerShellWorkflow
+	RunbookTypeEnumScript                  RunbookTypeEnum = original.RunbookTypeEnumScript
 )
 
 type ScheduleDay = original.ScheduleDay
 
 const (
-	Friday    ScheduleDay = original.Friday
-	Monday    ScheduleDay = original.Monday
-	Saturday  ScheduleDay = original.Saturday
-	Sunday    ScheduleDay = original.Sunday
-	Thursday  ScheduleDay = original.Thursday
-	Tuesday   ScheduleDay = original.Tuesday
-	Wednesday ScheduleDay = original.Wednesday
+	ScheduleDayFriday    ScheduleDay = original.ScheduleDayFriday
+	ScheduleDayMonday    ScheduleDay = original.ScheduleDayMonday
+	ScheduleDaySaturday  ScheduleDay = original.ScheduleDaySaturday
+	ScheduleDaySunday    ScheduleDay = original.ScheduleDaySunday
+	ScheduleDayThursday  ScheduleDay = original.ScheduleDayThursday
+	ScheduleDayTuesday   ScheduleDay = original.ScheduleDayTuesday
+	ScheduleDayWednesday ScheduleDay = original.ScheduleDayWednesday
 )
 
 type ScheduleFrequency = original.ScheduleFrequency
 
 const (
-	Day     ScheduleFrequency = original.Day
-	Hour    ScheduleFrequency = original.Hour
-	Minute  ScheduleFrequency = original.Minute
-	Month   ScheduleFrequency = original.Month
-	OneTime ScheduleFrequency = original.OneTime
-	Week    ScheduleFrequency = original.Week
+	ScheduleFrequencyDay     ScheduleFrequency = original.ScheduleFrequencyDay
+	ScheduleFrequencyHour    ScheduleFrequency = original.ScheduleFrequencyHour
+	ScheduleFrequencyMinute  ScheduleFrequency = original.ScheduleFrequencyMinute
+	ScheduleFrequencyMonth   ScheduleFrequency = original.ScheduleFrequencyMonth
+	ScheduleFrequencyOneTime ScheduleFrequency = original.ScheduleFrequencyOneTime
+	ScheduleFrequencyWeek    ScheduleFrequency = original.ScheduleFrequencyWeek
 )
 
 type SkuNameEnum = original.SkuNameEnum
 
 const (
-	Basic SkuNameEnum = original.Basic
-	Free  SkuNameEnum = original.Free
+	SkuNameEnumBasic SkuNameEnum = original.SkuNameEnumBasic
+	SkuNameEnumFree  SkuNameEnum = original.SkuNameEnumFree
 )
 
 type SourceType = original.SourceType
 
 const (
-	GitHub  SourceType = original.GitHub
-	VsoGit  SourceType = original.VsoGit
-	VsoTfvc SourceType = original.VsoTfvc
+	SourceTypeGitHub  SourceType = original.SourceTypeGitHub
+	SourceTypeVsoGit  SourceType = original.SourceTypeVsoGit
+	SourceTypeVsoTfvc SourceType = original.SourceTypeVsoTfvc
 )
 
 type StreamType = original.StreamType
@@ -292,8 +308,8 @@ const (
 type SyncType = original.SyncType
 
 const (
-	FullSync    SyncType = original.FullSync
-	PartialSync SyncType = original.PartialSync
+	SyncTypeFullSync    SyncType = original.SyncTypeFullSync
+	SyncTypePartialSync SyncType = original.SyncTypePartialSync
 )
 
 type TagOperators = original.TagOperators
@@ -306,8 +322,8 @@ const (
 type TokenType = original.TokenType
 
 const (
-	Oauth               TokenType = original.Oauth
-	PersonalAccessToken TokenType = original.PersonalAccessToken
+	TokenTypeOauth               TokenType = original.TokenTypeOauth
+	TokenTypePersonalAccessToken TokenType = original.TokenTypePersonalAccessToken
 )
 
 type WindowsUpdateClasses = original.WindowsUpdateClasses
@@ -362,7 +378,6 @@ type CertificateListResultPage = original.CertificateListResultPage
 type CertificateProperties = original.CertificateProperties
 type CertificateUpdateParameters = original.CertificateUpdateParameters
 type CertificateUpdateProperties = original.CertificateUpdateProperties
-type CollectionItemUpdateConfiguration = original.CollectionItemUpdateConfiguration
 type Connection = original.Connection
 type ConnectionClient = original.ConnectionClient
 type ConnectionCreateOrUpdateParameters = original.ConnectionCreateOrUpdateParameters
@@ -443,6 +458,8 @@ type DscNodeUpdateParametersProperties = original.DscNodeUpdateParametersPropert
 type DscReportError = original.DscReportError
 type DscReportResource = original.DscReportResource
 type DscReportResourceNavigation = original.DscReportResourceNavigation
+type EncryptionProperties = original.EncryptionProperties
+type EncryptionPropertiesIdentity = original.EncryptionPropertiesIdentity
 type ErrorResponse = original.ErrorResponse
 type FieldDefinition = original.FieldDefinition
 type FieldsClient = original.FieldsClient
@@ -453,6 +470,8 @@ type HybridRunbookWorkerGroupUpdateParameters = original.HybridRunbookWorkerGrou
 type HybridRunbookWorkerGroupsListResult = original.HybridRunbookWorkerGroupsListResult
 type HybridRunbookWorkerGroupsListResultIterator = original.HybridRunbookWorkerGroupsListResultIterator
 type HybridRunbookWorkerGroupsListResultPage = original.HybridRunbookWorkerGroupsListResultPage
+type Identity = original.Identity
+type IdentityUserAssignedIdentitiesValue = original.IdentityUserAssignedIdentitiesValue
 type Job = original.Job
 type JobClient = original.JobClient
 type JobCollectionItem = original.JobCollectionItem
@@ -480,6 +499,7 @@ type JobStreamListResultPage = original.JobStreamListResultPage
 type JobStreamProperties = original.JobStreamProperties
 type Key = original.Key
 type KeyListResult = original.KeyListResult
+type KeyVaultProperties = original.KeyVaultProperties
 type KeysClient = original.KeysClient
 type LinkedWorkspace = original.LinkedWorkspace
 type LinkedWorkspaceClient = original.LinkedWorkspaceClient
@@ -506,6 +526,18 @@ type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationsClient = original.OperationsClient
+type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionListResult = original.PrivateEndpointConnectionListResult
+type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
+type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
+type PrivateEndpointConnectionsCreateOrUpdateFuture = original.PrivateEndpointConnectionsCreateOrUpdateFuture
+type PrivateEndpointConnectionsDeleteFuture = original.PrivateEndpointConnectionsDeleteFuture
+type PrivateEndpointProperty = original.PrivateEndpointProperty
+type PrivateLinkResource = original.PrivateLinkResource
+type PrivateLinkResourceListResult = original.PrivateLinkResourceListResult
+type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
+type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
+type PrivateLinkServiceConnectionStateProperty = original.PrivateLinkServiceConnectionStateProperty
 type ProxyResource = original.ProxyResource
 type Python2PackageClient = original.Python2PackageClient
 type PythonPackageCreateParameters = original.PythonPackageCreateParameters
@@ -533,6 +565,7 @@ type RunbookProperties = original.RunbookProperties
 type RunbookPublishFuture = original.RunbookPublishFuture
 type RunbookUpdateParameters = original.RunbookUpdateParameters
 type RunbookUpdateProperties = original.RunbookUpdateProperties
+type SUCScheduleProperties = original.SUCScheduleProperties
 type Schedule = original.Schedule
 type ScheduleAssociationProperty = original.ScheduleAssociationProperty
 type ScheduleClient = original.ScheduleClient
@@ -546,8 +579,6 @@ type ScheduleUpdateParameters = original.ScheduleUpdateParameters
 type ScheduleUpdateProperties = original.ScheduleUpdateProperties
 type SetObject = original.SetObject
 type Sku = original.Sku
-type SoftareUpdateConfigurationRunTaskProperties = original.SoftareUpdateConfigurationRunTaskProperties
-type SoftareUpdateConfigurationRunTasks = original.SoftareUpdateConfigurationRunTasks
 type SoftwareUpdateConfiguration = original.SoftwareUpdateConfiguration
 type SoftwareUpdateConfigurationCollectionItem = original.SoftwareUpdateConfigurationCollectionItem
 type SoftwareUpdateConfigurationCollectionItemProperties = original.SoftwareUpdateConfigurationCollectionItemProperties
@@ -559,6 +590,8 @@ type SoftwareUpdateConfigurationProperties = original.SoftwareUpdateConfiguratio
 type SoftwareUpdateConfigurationRun = original.SoftwareUpdateConfigurationRun
 type SoftwareUpdateConfigurationRunListResult = original.SoftwareUpdateConfigurationRunListResult
 type SoftwareUpdateConfigurationRunProperties = original.SoftwareUpdateConfigurationRunProperties
+type SoftwareUpdateConfigurationRunTaskProperties = original.SoftwareUpdateConfigurationRunTaskProperties
+type SoftwareUpdateConfigurationRunTasks = original.SoftwareUpdateConfigurationRunTasks
 type SoftwareUpdateConfigurationRunsClient = original.SoftwareUpdateConfigurationRunsClient
 type SoftwareUpdateConfigurationTasks = original.SoftwareUpdateConfigurationTasks
 type SoftwareUpdateConfigurationsClient = original.SoftwareUpdateConfigurationsClient
@@ -885,6 +918,18 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
+}
+func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClient(subscriptionID)
+}
+func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewPython2PackageClient(subscriptionID string) Python2PackageClient {
 	return original.NewPython2PackageClient(subscriptionID)
 }
@@ -1056,6 +1101,9 @@ func PossibleDscConfigurationProvisioningStateValues() []DscConfigurationProvisi
 func PossibleDscConfigurationStateValues() []DscConfigurationState {
 	return original.PossibleDscConfigurationStateValues()
 }
+func PossibleEncryptionKeySourceTypeValues() []EncryptionKeySourceType {
+	return original.PossibleEncryptionKeySourceTypeValues()
+}
 func PossibleGroupTypeEnumValues() []GroupTypeEnum {
 	return original.PossibleGroupTypeEnumValues()
 }
@@ -1088,6 +1136,9 @@ func PossibleOperatingSystemTypeValues() []OperatingSystemType {
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
+}
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
+	return original.PossibleResourceIdentityTypeValues()
 }
 func PossibleRunbookProvisioningStateValues() []RunbookProvisioningState {
 	return original.PossibleRunbookProvisioningStateValues()

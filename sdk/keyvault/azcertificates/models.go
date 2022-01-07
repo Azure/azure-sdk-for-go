@@ -60,7 +60,7 @@ type CertificateAttributes struct {
 
 func (c *CertificateAttributes) toGenerated() *generated.CertificateAttributes {
 	if c == nil {
-		return &generated.CertificateAttributes{}
+		return nil
 	}
 
 	return &generated.CertificateAttributes{
@@ -175,7 +175,10 @@ type CertificatePolicy struct {
 	X509CertificateProperties *X509CertificateProperties `json:"x509_props,omitempty"`
 }
 
-func (c CertificatePolicy) toGeneratedCertificateCreateParameters() *generated.CertificatePolicy {
+func (c *CertificatePolicy) toGeneratedCertificateCreateParameters() *generated.CertificatePolicy {
+	if c == nil {
+		return nil
+	}
 	var la []*generated.LifetimeAction
 	for _, l := range c.LifetimeActions {
 		la = append(la, l.toGenerated())
@@ -209,6 +212,19 @@ func certificatePolicyFromGenerated(g *generated.CertificatePolicy) *Certificate
 		SecretProperties:          &SecretProperties{ContentType: g.SecretProperties.ContentType},
 		X509CertificateProperties: x509CertificatePropertiesFromGenerated(g.X509CertificateProperties),
 	}
+}
+
+// DeletedCertificateBundle - A Deleted Certificate consisting of its previous id, attributes and its tags, as well as information on when it will be purged.
+type DeletedCertificateBundle struct {
+	CertificateBundle
+	// The url of the recovery object, used to identify and recover the deleted certificate.
+	RecoveryID *string `json:"recoveryId,omitempty"`
+
+	// READ-ONLY; The time when the certificate was deleted, in UTC
+	DeletedDate *time.Time `json:"deletedDate,omitempty" azure:"ro"`
+
+	// READ-ONLY; The time when the certificate is scheduled to be purged, in UTC
+	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
 }
 
 // IssuerParameters - Parameters for the issuer of the X509 component of a certificate.
@@ -365,6 +381,18 @@ func (s *SubjectAlternativeNames) toGenerated() *generated.SubjectAlternativeNam
 	}
 }
 
+func subjectAlternativeNamesFromGenerated(g *generated.SubjectAlternativeNames) *SubjectAlternativeNames {
+	if g == nil {
+		return nil
+	}
+
+	return &SubjectAlternativeNames{
+		DNSNames: g.DNSNames,
+		Emails:   g.Emails,
+		Upns:     g.Upns,
+	}
+}
+
 // Trigger - A condition to be satisfied for an action to be executed.
 type Trigger struct {
 	// Days before expiry to attempt renewal. Value should be between 1 and validityinmonths multiplied by 27. If validityinmonths is 36, then value should
@@ -437,11 +465,7 @@ func x509CertificatePropertiesFromGenerated(g *generated.X509CertificateProperti
 		Ekus:     g.Ekus,
 		Subject:  g.Subject,
 		KeyUsage: ku,
-		SubjectAlternativeNames: &SubjectAlternativeNames{
-			DNSNames: g.SubjectAlternativeNames.DNSNames,
-			Emails:   g.SubjectAlternativeNames.Emails,
-			Upns:     g.SubjectAlternativeNames.Upns,
-		},
+		SubjectAlternativeNames: subjectAlternativeNamesFromGenerated(g.SubjectAlternativeNames),
 		ValidityInMonths: g.ValidityInMonths,
 	}
 }

@@ -9,7 +9,6 @@ package azcertificates
 import (
 	"context"
 	"testing"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
@@ -27,7 +26,7 @@ func TestNewClient(t *testing.T) {
 	require.Equal(t, "https://certvault.vault.azure.net", client.vaultURL)
 }
 
-func TestBeginCreateNewCertificate(t *testing.T) {
+func TestClient_BeginCreateCertificate(t *testing.T) {
 	stop := startTest(t)
 	defer stop()
 
@@ -36,6 +35,7 @@ func TestBeginCreateNewCertificate(t *testing.T) {
 
 	certName, err := createRandomName(t, "cert")
 	require.NoError(t, err)
+
 	resp, err := client.BeginCreateCertificate(ctx, certName, CertificatePolicy{
 		IssuerParameters: &IssuerParameters{
 			Name: to.StringPtr("Self"),
@@ -49,6 +49,50 @@ func TestBeginCreateNewCertificate(t *testing.T) {
 	pollerResp, err := resp.PollUntilDone(ctx, delay())
 	require.NoError(t, err)
 	require.NotNil(t, pollerResp.ID)
+
+	cleanUp(t, client, certName)
+}
+
+func TestClient_BeginDeleteCertificate(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	certName, err := createRandomName(t, "cert")
+	require.NoError(t, err)
+
+	resp, err := client.BeginCreateCertificate(ctx, certName, CertificatePolicy{
+		IssuerParameters: &IssuerParameters{
+			Name: to.StringPtr("Self"),
+		},
+		X509CertificateProperties: &X509CertificateProperties{
+			Subject: to.StringPtr("CN=DefaultPolicy"),
+		},
+	}, nil)
+	require.NoError(t, err)
+
+	pollerResp, err := resp.PollUntilDone(ctx, delay())
+	require.NoError(t, err)
+	require.NotNil(t, pollerResp.ID)
+
+	delResp, err := client.BeginDeleteCertificate(ctx, certName, nil)
+	require.NoError(t, err)
+
+	delPollerResp, err := delResp.PollUntilDone(ctx, delay())
+	require.NoError(t, err)
+	require.Contains(t, *delPollerResp.ID, certName)
+
+	_, err = client.GetCertificate(ctx, certName, nil)
+	require.Error(t, err)
+
+	deletedResp, err := client.GetDeletedCertificate(ctx, certName, nil)
+	require.NoError(t, err)
+	require.Contains(t, *deletedResp.ID, certName)
+
+	_, err = client.PurgeDeletedCertificate(ctx, certName, nil)
+	require.NoError(t, err)
 }
 
 func TestClient_GetCertificateOperation(t *testing.T) {
@@ -60,7 +104,8 @@ func TestClient_GetCertificateOperation(t *testing.T) {
 
 	certName, err := createRandomName(t, "cert")
 	require.NoError(t, err)
-	_, err = client.BeginCreateCertificate(ctx, certName, CertificatePolicy{
+
+	resp, err := client.BeginCreateCertificate(ctx, certName, CertificatePolicy{
 		IssuerParameters: &IssuerParameters{
 			Name: to.StringPtr("Self"),
 		},
@@ -70,9 +115,58 @@ func TestClient_GetCertificateOperation(t *testing.T) {
 	}, nil)
 	require.NoError(t, err)
 
-	time.Sleep(30 * time.Second)
-
-	resp, err := client.GetCertificateOperation(ctx, certName, nil)
+	_, err = resp.PollUntilDone(ctx, delay())
 	require.NoError(t, err)
-	require.NotNil(t, resp.ID)
+
+	resp2, err := client.GetCertificateOperation(ctx, certName, nil)
+	require.NoError(t, err)
+	require.NotNil(t, resp2.ID)
+
+	cleanUp(t, client, certName)
+}
+
+func TestClient_BackupCertificate(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	certName, err := createRandomName(t, "cert")
+	require.NoError(t, err)
+
+	resp, err := client.BeginCreateCertificate(ctx, certName, CertificatePolicy{
+		IssuerParameters: &IssuerParameters{
+			Name: to.StringPtr("Self"),
+		},
+		X509CertificateProperties: &X509CertificateProperties{
+			Subject: to.StringPtr("CN=DefaultPolicy"),
+		},
+	}, nil)
+	require.NoError(t, err)
+	_, err = resp.PollUntilDone(ctx, delay())
+	require.NoError(t, err)
+
+	backup, err := client.BackupCertificate(ctx, certName, nil)
+	require.NoError(t, err)
+	require.Greater(t, len(backup.Value), 0)
+
+	cleanUp(t, client, certName)
+}
+
+func TestClient_ImportCertificate(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	importedName, err := createRandomName(t, "imported")
+	require.NoError(t, err)
+
+	importResp, err := client.ImportCertificate(ctx, importedName, certContentNotPasswordEncoded, nil)
+	require.NoError(t, err)
+	require.Contains(t, *importResp.ID, importedName)
+
+	cleanUp(t, client, importedName)
 }

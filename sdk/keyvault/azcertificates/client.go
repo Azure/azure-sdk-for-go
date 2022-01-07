@@ -8,6 +8,7 @@ package azcertificates
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"time"
 
@@ -61,7 +62,7 @@ func NewClient(vaultURL string, credential azcore.TokenCredential, options *Clie
 	}, nil
 }
 
-// Optional parameters for the Client.BeginCreateCertificateOptions function
+// Optional parameters for the Client.BeginCreateCertificate function
 type BeginCreateCertificateOptions struct {
 	// The attributes of the certificate (optional).
 	CertificateAttributes *CertificateAttributes `json:"attributes,omitempty"`
@@ -208,7 +209,7 @@ func (c *Client) BeginCreateCertificate(ctx context.Context, certName string, po
 	}, nil
 }
 
-// KeyVaultClientGetCertificateOptions contains the optional parameters for the KeyVaultClient.GetCertificate method.
+// GetCertificateOptions contains the optional parameters for the Client.GetCertificate method.
 type GetCertificateOptions struct {
 	Version string
 }
@@ -216,6 +217,7 @@ type GetCertificateOptions struct {
 // GetCertificateResponse contains the result from method Client.GetCertificate.
 type GetCertificateResponse struct {
 	CertificateBundle
+
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
@@ -248,20 +250,25 @@ func (c *Client) GetCertificate(ctx context.Context, certName string, options *G
 	}, nil
 }
 
-type GetCertificateVersionOptions struct{}
+// GetCertificateOperationOptions contains the optional parameters for the Client.GetCertificateOperation method.
+type GetCertificateOperationOptions struct{}
 
+func (g *GetCertificateOperationOptions) toGenerated() *generated.KeyVaultClientGetCertificateOperationOptions {
+	return &generated.KeyVaultClientGetCertificateOperationOptions{}
+}
+
+// GetCertificateOperationResponse contains the result from method Client.GetCertificateOperation.
 type GetCertificateOperationResponse struct {
 	CertificateOperation
 
+	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-func (c *Client) GetCertificateOperation(ctx context.Context, certName string, options *GetCertificateVersionOptions) (GetCertificateOperationResponse, error) {
-	if options == nil {
-		options = &GetCertificateVersionOptions{}
-	}
-
-	resp, err := c.genClient.GetCertificateOperation(ctx, c.vaultURL, certName, &generated.KeyVaultClientGetCertificateOperationOptions{})
+// GetCertificateOperation - Gets the creation operation associated with a specified certificate. This operation requires the certificates/get permission.
+// If the operation fails it returns the *KeyVaultError error type.
+func (c *Client) GetCertificateOperation(ctx context.Context, certName string, options *GetCertificateOperationOptions) (GetCertificateOperationResponse, error) {
+	resp, err := c.genClient.GetCertificateOperation(ctx, c.vaultURL, certName, options.toGenerated())
 	if err != nil {
 		return GetCertificateOperationResponse{}, err
 	}
@@ -278,6 +285,321 @@ func (c *Client) GetCertificateOperation(ctx context.Context, certName string, o
 			StatusDetails:         resp.StatusDetails,
 			Target:                resp.Target,
 			ID:                    resp.ID,
+		},
+	}, nil
+}
+
+// BeginDeleteCertificateOptions contains the optional parameters for the Client.BeginDeleteCertificate method.
+type BeginDeleteCertificateOptions struct{}
+
+// convert public options to generated options struct
+func (b *BeginDeleteCertificateOptions) toGenerated() *generated.KeyVaultClientDeleteCertificateOptions {
+	return &generated.KeyVaultClientDeleteCertificateOptions{}
+}
+
+type DeleteCertificateResponse struct {
+	DeletedCertificateBundle
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+func deleteCertificateResponseFromGenerated(g *generated.KeyVaultClientDeleteCertificateResponse) DeleteCertificateResponse {
+	if g == nil {
+		return DeleteCertificateResponse{}
+	}
+	return DeleteCertificateResponse{
+		RawResponse: g.RawResponse,
+		DeletedCertificateBundle: DeletedCertificateBundle{
+			RecoveryID:         g.RecoveryID,
+			DeletedDate:        g.DeletedDate,
+			ScheduledPurgeDate: g.ScheduledPurgeDate,
+			CertificateBundle: CertificateBundle{
+				Attributes:     certificateAttributesFromGenerated(g.Attributes),
+				Cer:            g.Cer,
+				ContentType:    g.ContentType,
+				Tags:           g.Tags,
+				ID:             g.ID,
+				Kid:            g.Kid,
+				Policy:         certificatePolicyFromGenerated(g.Policy),
+				Sid:            g.Sid,
+				X509Thumbprint: g.X509Thumbprint,
+			},
+		},
+	}
+}
+
+// DeleteCertificatePoller is the interface for the Client.DeleteCertificate operation.
+type DeleteCertificatePoller interface {
+	// Done returns true if the LRO has reached a terminal state
+	Done() bool
+
+	// Poll fetches the latest state of the LRO. It returns an HTTP response or error.
+	// If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
+	// If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.
+	Poll(context.Context) (*http.Response, error)
+
+	// FinalResponse returns the final response after the operations has finished
+	FinalResponse(context.Context) (DeleteCertificateResponse, error)
+}
+
+// The poller returned by the Client.BeginDeleteCertificate operation
+type beginDeleteCertificatePoller struct {
+	keyName        string // This is the key to Poll for in GetDeletedKey
+	vaultURL       string
+	client         *generated.KeyVaultClient
+	deleteResponse generated.KeyVaultClientDeleteCertificateResponse
+	lastResponse   generated.KeyVaultClientGetDeletedCertificateResponse
+	RawResponse    *http.Response
+}
+
+// Done returns true if the LRO has reached a terminal state
+func (s *beginDeleteCertificatePoller) Done() bool {
+	return s.lastResponse.RawResponse != nil
+}
+
+// Poll fetches the latest state of the LRO. It returns an HTTP response or error.(
+// If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
+// If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.)
+func (s *beginDeleteCertificatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	resp, err := s.client.GetDeletedCertificate(ctx, s.vaultURL, s.keyName, nil)
+	if err == nil {
+		// Service recognizes DeletedKey, operation is done
+		s.lastResponse = resp
+		return resp.RawResponse, nil
+	}
+
+	var httpResponseErr azcore.HTTPResponse
+	if errors.As(err, &httpResponseErr) {
+		if httpResponseErr.RawResponse().StatusCode == http.StatusNotFound {
+			// This is the expected result
+			return s.deleteResponse.RawResponse, nil
+		}
+	}
+	return s.deleteResponse.RawResponse, err
+}
+
+// FinalResponse returns the final response after the operations has finished
+func (s *beginDeleteCertificatePoller) FinalResponse(ctx context.Context) (DeleteCertificateResponse, error) {
+	return deleteCertificateResponseFromGenerated(&s.deleteResponse), nil
+}
+
+// pollUntilDone continually calls the Poll operation until the operation is completed. In between each
+// Poll is a wait determined by the t parameter.
+func (s *beginDeleteCertificatePoller) pollUntilDone(ctx context.Context, t time.Duration) (DeleteCertificateResponse, error) {
+	for {
+		resp, err := s.Poll(ctx)
+		if err != nil {
+			return DeleteCertificateResponse{}, err
+		}
+		s.RawResponse = resp
+		if s.Done() {
+			break
+		}
+		time.Sleep(t)
+	}
+	return deleteCertificateResponseFromGenerated(&s.deleteResponse), nil
+}
+
+// DeleteCertificatePollerResponse contains the response from the Client.BeginDeleteCertificate method
+type DeleteCertificatePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error occurs
+	PollUntilDone func(context.Context, time.Duration) (DeleteCertificateResponse, error)
+
+	// Poller contains an initialized WidgetPoller
+	Poller DeleteCertificatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BeginDeleteCertificate deletes a key from the keyvault. Delete cannot be applied to an individual version of a key. This operation
+// requires the key/delete permission. This response contains a Poller struct that can be used to Poll for a response, or the
+// response PollUntilDone function can be used to poll until completion.
+func (c *Client) BeginDeleteCertificate(ctx context.Context, keyName string, options *BeginDeleteCertificateOptions) (DeleteCertificatePollerResponse, error) {
+	if options == nil {
+		options = &BeginDeleteCertificateOptions{}
+	}
+	resp, err := c.genClient.DeleteCertificate(ctx, c.vaultURL, keyName, options.toGenerated())
+	if err != nil {
+		return DeleteCertificatePollerResponse{}, err
+	}
+
+	getResp, err := c.genClient.GetDeletedCertificate(ctx, c.vaultURL, keyName, nil)
+	var httpErr azcore.HTTPResponse
+	if errors.As(err, &httpErr) {
+		if httpErr.RawResponse().StatusCode != http.StatusNotFound {
+			return DeleteCertificatePollerResponse{}, err
+		}
+	}
+
+	s := &beginDeleteCertificatePoller{
+		vaultURL:       c.vaultURL,
+		keyName:        keyName,
+		client:         c.genClient,
+		deleteResponse: resp,
+		lastResponse:   getResp,
+	}
+
+	return DeleteCertificatePollerResponse{
+		Poller:        s,
+		RawResponse:   resp.RawResponse,
+		PollUntilDone: s.pollUntilDone,
+	}, nil
+}
+
+// Optional parameters for the Client.PurgeDeletedCertificateOptions function
+type PurgeDeletedCertificateOptions struct{}
+
+func (p *PurgeDeletedCertificateOptions) toGenerated() *generated.KeyVaultClientPurgeDeletedCertificateOptions {
+	return &generated.KeyVaultClientPurgeDeletedCertificateOptions{}
+}
+
+// PurgeDeletedCertificateResponse contains the response from method Client.PurgeDeletedCertificate.
+type PurgeDeletedCertificateResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+func (c *Client) PurgeDeletedCertificate(ctx context.Context, certName string, options *PurgeDeletedCertificateOptions) (PurgeDeletedCertificateResponse, error) {
+	resp, err := c.genClient.PurgeDeletedCertificate(ctx, c.vaultURL, certName, options.toGenerated())
+	if err != nil {
+		return PurgeDeletedCertificateResponse{}, err
+	}
+
+	return PurgeDeletedCertificateResponse{
+		RawResponse: resp.RawResponse,
+	}, nil
+}
+
+// Optional parameters for the Client.GetDeletedCertificateOptions function
+type GetDeletedCertificateOptions struct{}
+
+func (g *GetDeletedCertificateOptions) toGenerated() *generated.KeyVaultClientGetDeletedCertificateOptions {
+	return &generated.KeyVaultClientGetDeletedCertificateOptions{}
+}
+
+type GetDeletedCertificateResponse struct {
+	DeletedCertificateBundle
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+func (c *Client) GetDeletedCertificate(ctx context.Context, certName string, options *GetDeletedCertificateOptions) (GetDeletedCertificateResponse, error) {
+	resp, err := c.genClient.GetDeletedCertificate(ctx, c.vaultURL, certName, options.toGenerated())
+	if err != nil {
+		return GetDeletedCertificateResponse{}, err
+	}
+
+	return GetDeletedCertificateResponse{
+		RawResponse: resp.RawResponse,
+		DeletedCertificateBundle: DeletedCertificateBundle{
+			RecoveryID:         resp.RecoveryID,
+			DeletedDate:        resp.DeletedDate,
+			ScheduledPurgeDate: resp.ScheduledPurgeDate,
+			CertificateBundle: CertificateBundle{
+				Attributes:     certificateAttributesFromGenerated(resp.Attributes),
+				Cer:            resp.Cer,
+				ContentType:    resp.ContentType,
+				Tags:           resp.Tags,
+				ID:             resp.ID,
+				Kid:            resp.Kid,
+				Policy:         certificatePolicyFromGenerated(resp.Policy),
+				Sid:            resp.Sid,
+				X509Thumbprint: resp.X509Thumbprint,
+			},
+		},
+	}, nil
+}
+
+// Optional parameters for the Client.BackupCertificateOptions function
+type BackupCertificateOptions struct{}
+
+func (b *BackupCertificateOptions) toGenerated() *generated.KeyVaultClientBackupCertificateOptions {
+	return &generated.KeyVaultClientBackupCertificateOptions{}
+}
+
+// BackupCertificateResponse contains the response from method Client.BackupCertificate.
+type BackupCertificateResponse struct {
+	// READ-ONLY; The backup blob containing the backed up certificate.
+	Value []byte `json:"value,omitempty" azure:"ro"`
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+func (c *Client) BackupCertificate(ctx context.Context, certName string, options *BackupCertificateOptions) (BackupCertificateResponse, error) {
+	resp, err := c.genClient.BackupCertificate(ctx, c.vaultURL, certName, options.toGenerated())
+	if err != nil {
+		return BackupCertificateResponse{}, err
+	}
+
+	return BackupCertificateResponse{
+		RawResponse: resp.RawResponse,
+		Value:       resp.Value,
+	}, nil
+}
+
+type ImportCertificateOptions struct {
+
+	// The attributes of the certificate (optional).
+	CertificateAttributes *CertificateAttributes `json:"attributes,omitempty"`
+
+	// The management policy for the certificate.
+	CertificatePolicy *CertificatePolicy `json:"policy,omitempty"`
+
+	// If the private key in base64EncodedCertificate is encrypted, the password used for encryption.
+	Password *string `json:"pwd,omitempty"`
+
+	// Application specific metadata in the form of key-value pairs.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+func (i *ImportCertificateOptions) toGenerated() *generated.KeyVaultClientImportCertificateOptions {
+	return &generated.KeyVaultClientImportCertificateOptions{}
+}
+
+type ImportCertificateResponse struct {
+	CertificateBundle
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+func (c *Client) ImportCertificate(ctx context.Context, certName string, base64EncodedCertificate string, options *ImportCertificateOptions) (ImportCertificateResponse, error) {
+	if options == nil {
+		options = &ImportCertificateOptions{}
+	}
+	resp, err := c.genClient.ImportCertificate(
+		ctx,
+		c.vaultURL,
+		certName,
+		generated.CertificateImportParameters{
+			Base64EncodedCertificate: &base64EncodedCertificate,
+			CertificateAttributes:    options.CertificateAttributes.toGenerated(),
+			CertificatePolicy:        options.CertificatePolicy.toGeneratedCertificateCreateParameters(),
+			Password:                 options.Password,
+			Tags:                     options.Tags,
+		},
+		options.toGenerated(),
+	)
+	if err != nil {
+		return ImportCertificateResponse{}, err
+	}
+
+	return ImportCertificateResponse{
+		RawResponse: resp.RawResponse,
+		CertificateBundle: CertificateBundle{
+			Attributes:     certificateAttributesFromGenerated(resp.Attributes),
+			Cer:            resp.Cer,
+			ContentType:    resp.ContentType,
+			Tags:           resp.Tags,
+			ID:             resp.ID,
+			Kid:            resp.Kid,
+			Policy:         certificatePolicyFromGenerated(resp.Policy),
+			Sid:            resp.Sid,
+			X509Thumbprint: resp.X509Thumbprint,
 		},
 	}, nil
 }

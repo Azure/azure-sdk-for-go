@@ -801,9 +801,9 @@ func TestAdminClient_LackPermissions_Topic(t *testing.T) {
 	require.Contains(t, err.Error(), "error code: 401, Details: Authorization failed for specified action: Manage,EntityDelete.")
 
 	// sanity check that the http response is getting bundled into these errors, should it be needed.
-	var httpResponse azcore.HTTPResponse
+	var httpResponse *azcore.ResponseError
 	require.True(t, errors.As(err, &httpResponse))
-	require.EqualValues(t, http.StatusUnauthorized, httpResponse.RawResponse().StatusCode)
+	require.EqualValues(t, http.StatusUnauthorized, httpResponse.RawResponse.StatusCode)
 }
 
 func TestAdminClient_LackPermissions_Subscription(t *testing.T) {

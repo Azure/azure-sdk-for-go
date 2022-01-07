@@ -17,7 +17,7 @@ import (
 
 func TestResponseError(t *testing.T) {
 	// sanity check to make sure my error conforms to azcore's interface
-	var err azcore.HTTPResponse = ResponseError{}
+	var err azcore.ResponseError = azcore.ResponseError{}
 	require.NotNil(t, err)
 
 	require.EqualValues(t, "this is now the error message: 409", NewResponseError(nil, &http.Response{

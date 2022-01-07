@@ -9,6 +9,7 @@ package azcertificates
 import (
 	"context"
 	"net/http"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -73,15 +74,91 @@ func (b BeginCreateCertificateOptions) toGenerated() *generated.KeyVaultClientCr
 	return &generated.KeyVaultClientCreateCertificateOptions{}
 }
 
-// BeginCreateCertificateResponse contains the response from method Client.BeginCreateCertificate.
-type BeginCreateCertificateResponse struct {
+// CreateCertificateResponse contains the response from method Client.BeginCreateCertificate.
+type CreateCertificateResponse struct {
 	CertificateOperation
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-func (c *Client) BeginCreateCertificate(ctx context.Context, certName string, policy CertificatePolicy, options *BeginCreateCertificateOptions) (BeginCreateCertificateResponse, error) {
+// CreateCertificatePoller is the interface for the Client.BeginCreateCertificate operation.
+type CreateCertificatePoller interface {
+	// Done returns true if the LRO has reached a terminal state
+	Done() bool
+
+	// Poll fetches the latest state of the LRO. It returns an HTTP response or error.
+	// If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
+	// If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.
+	Poll(context.Context) (*http.Response, error)
+
+	// FinalResponse returns the final response after the operations has finished
+	FinalResponse(context.Context) (CreateCertificateResponse, error)
+}
+
+// the poller returned by the Client.BeginCreateCertificate
+type beginCreateCertificatePoller struct {
+	certName       string
+	certVersion    string
+	vaultURL       string
+	client         *generated.KeyVaultClient
+	createResponse CreateCertificateResponse
+	lastResponse   generated.KeyVaultClientGetCertificateResponse
+	RawResponse    *http.Response
+}
+
+func (b *beginCreateCertificatePoller) Done() bool {
+	return b.lastResponse.RawResponse.StatusCode == http.StatusOK
+}
+
+func (b *beginCreateCertificatePoller) Poll(ctx context.Context) (*http.Response, error) {
+	resp, err := b.client.GetCertificate(ctx, b.vaultURL, b.certName, b.certVersion, nil)
+	if err == nil {
+		b.lastResponse = resp
+		return resp.RawResponse, nil
+	}
+
+	if resp.RawResponse.StatusCode == http.StatusNotFound {
+		// The certificate has not been fully created yet
+		return b.createResponse.RawResponse, nil
+	}
+
+	// There was an error in this operation, return the original raw response and the error
+	return b.createResponse.RawResponse, err
+}
+
+func (b *beginCreateCertificatePoller) FinalResponse(ctx context.Context) (CreateCertificateResponse, error) {
+	return b.createResponse, nil
+}
+
+func (b *beginCreateCertificatePoller) pollUntilDone(ctx context.Context, t time.Duration) (CreateCertificateResponse, error) {
+	for {
+		resp, err := b.Poll(ctx)
+		if err != nil {
+			return CreateCertificateResponse{}, err
+		}
+		b.RawResponse = resp
+		if b.Done() {
+			break
+		}
+		time.Sleep(t)
+	}
+	return b.createResponse, nil
+}
+
+// CreateCertificatePollerResponse contains the response from the Client.BeginCreateCertificate method
+type CreateCertificatePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error occurs
+	PollUntilDone func(context.Context, time.Duration) (CreateCertificateResponse, error)
+
+	// Poller contains an initialized WidgetPoller
+	Poller CreateCertificatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+func (c *Client) BeginCreateCertificate(ctx context.Context, certName string, policy CertificatePolicy, options *BeginCreateCertificateOptions) (CreateCertificatePollerResponse, error) {
 	if options == nil {
 		options = &BeginCreateCertificateOptions{}
 	}
@@ -99,22 +176,35 @@ func (c *Client) BeginCreateCertificate(ctx context.Context, certName string, po
 	)
 
 	if err != nil {
-		return BeginCreateCertificateResponse{}, err
+		return CreateCertificatePollerResponse{}, err
 	}
 
-	return BeginCreateCertificateResponse{
-		RawResponse: resp.RawResponse,
-		CertificateOperation: CertificateOperation{
-			CancellationRequested: resp.CancellationRequested,
-			Csr:                   resp.Csr,
-			Error:                 resp.Error,
-			IssuerParameters:      resp.IssuerParameters,
-			RequestID:             resp.RequestID,
-			Status:                resp.Status,
-			StatusDetails:         resp.StatusDetails,
-			Target:                resp.Target,
-			ID:                    resp.ID,
+	p := &beginCreateCertificatePoller{
+		certName:    certName,
+		certVersion: "",
+		vaultURL:    c.vaultURL,
+		client:      c.genClient,
+		createResponse: CreateCertificateResponse{
+			RawResponse: resp.RawResponse,
+			CertificateOperation: CertificateOperation{
+				CancellationRequested: resp.CancellationRequested,
+				Csr:                   resp.Csr,
+				Error:                 resp.Error,
+				IssuerParameters:      resp.IssuerParameters,
+				RequestID:             resp.RequestID,
+				Status:                resp.Status,
+				StatusDetails:         resp.StatusDetails,
+				Target:                resp.Target,
+				ID:                    resp.ID,
+			},
 		},
+		lastResponse: generated.KeyVaultClientGetCertificateResponse{},
+	}
+
+	return CreateCertificatePollerResponse{
+		Poller:        p,
+		RawResponse:   resp.RawResponse,
+		PollUntilDone: p.pollUntilDone,
 	}, nil
 }
 
@@ -157,3 +247,4 @@ func (c *Client) GetCertificate(ctx context.Context, certName string, options *G
 		},
 	}, nil
 }
+

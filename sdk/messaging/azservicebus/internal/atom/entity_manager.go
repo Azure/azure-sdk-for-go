@@ -386,7 +386,6 @@ func TraceReqAndResponseMiddleware() MiddlewareFunc {
 }
 
 type feedEmptyError struct {
-	azcore.ResponseError
 	response *http.Response
 }
 
@@ -404,23 +403,7 @@ func NotFound(err error) (bool, *http.Response) {
 		return true, feedEmptyError.RawResponse()
 	}
 
-	var httpResponse *azcore.ResponseError
-
-	if errors.As(err, &httpResponse) {
-		return httpResponse.RawResponse.StatusCode == 404, httpResponse.RawResponse
-	}
-
 	return false, nil
-}
-
-func AsHTTPResponse(err error) *http.Response {
-	var httpResponse *azcore.ResponseError
-
-	if errors.As(err, &httpResponse) {
-		return httpResponse.RawResponse
-	}
-
-	return nil
 }
 
 func isEmptyFeed(b []byte) bool {

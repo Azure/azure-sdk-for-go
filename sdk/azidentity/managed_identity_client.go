@@ -20,11 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
-)
-
-const (
-	headerMetadata = "Metadata"
-	imdsEndpoint   = "http://169.254.169.254/metadata/identity/oauth2/token"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
 const (
@@ -32,6 +28,8 @@ const (
 	identityEndpoint         = "IDENTITY_ENDPOINT"
 	identityHeader           = "IDENTITY_HEADER"
 	identityServerThumbprint = "IDENTITY_SERVER_THUMBPRINT"
+	headerMetadata           = "Metadata"
+	imdsEndpoint             = "http://169.254.169.254/metadata/identity/oauth2/token"
 	msiEndpoint              = "MSI_ENDPOINT"
 	msiSecret                = "MSI_SECRET"
 	imdsAPIVersion           = "2018-02-01"
@@ -45,26 +43,22 @@ const (
 type msiType int
 
 const (
-	msiTypeUnknown             msiType = 0
-	msiTypeIMDS                msiType = 1
-	msiTypeAppServiceV20170901 msiType = 2
-	msiTypeCloudShell          msiType = 3
-	msiTypeUnavailable         msiType = 4
-	msiTypeAppServiceV20190801 msiType = 5
-	msiTypeAzureArc            msiType = 6
-	msiTypeServiceFabric       msiType = 7
+	msiTypeAppServiceV20170901 msiType = iota
+	msiTypeAppServiceV20190801
+	msiTypeAzureArc
+	msiTypeCloudShell
+	msiTypeIMDS
+	msiTypeServiceFabric
 )
 
 // managedIdentityClient provides the base for authenticating in managed identity environments
 // This type includes an runtime.Pipeline and TokenCredentialOptions.
 type managedIdentityClient struct {
-	pipeline             runtime.Pipeline
-	imdsAPIVersion       string
-	imdsAvailableTimeout time.Duration
-	msiType              msiType
-	endpoint             string
-	id                   ManagedIDKind
-	unavailableMessage   string
+	pipeline    runtime.Pipeline
+	msiType     msiType
+	endpoint    string
+	id          ManagedIDKind
+	imdsTimeout time.Duration
 }
 
 type wrappedNumber json.Number
@@ -77,8 +71,8 @@ func (n *wrappedNumber) UnmarshalJSON(b []byte) error {
 	return json.Unmarshal(b, (*json.Number)(n))
 }
 
-// setRetryOptionDefaults sets zero-valued fields to default values appropriate for IMDS
-func setRetryOptionDefaults(o *policy.RetryOptions) {
+// setIMDSRetryOptionDefaults sets zero-valued fields to default values appropriate for IMDS
+func setIMDSRetryOptionDefaults(o *policy.RetryOptions) {
 	if o.MaxRetries == 0 {
 		o.MaxRetries = 5
 	}
@@ -111,27 +105,49 @@ func setRetryOptionDefaults(o *policy.RetryOptions) {
 	}
 }
 
-// newDefaultMSIPipeline creates a pipeline using the specified pipeline options needed
-// for a Managed Identity, such as a MSI specific retry policy.
-func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) runtime.Pipeline {
-	cp := o.ClientOptions
-	setRetryOptionDefaults(&cp.Retry)
-	return runtime.NewPipeline(component, version, runtime.PipelineOptions{}, &cp)
-}
-
 // newManagedIdentityClient creates a new instance of the ManagedIdentityClient with the ManagedIdentityCredentialOptions
 // that are passed into it along with a default pipeline.
 // options: ManagedIdentityCredentialOptions configure policies for the pipeline and the authority host that
 // will be used to retrieve tokens and authenticate
-func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) *managedIdentityClient {
-	logEnvVars()
-	return &managedIdentityClient{
-		id:                   options.ID,
-		pipeline:             newDefaultMSIPipeline(*options), // a pipeline that includes the specific requirements for MSI authentication, such as custom retry policy options
-		imdsAPIVersion:       imdsAPIVersion,                  // this field will be set to whatever value exists in the constant and is used when creating requests to IMDS
-		imdsAvailableTimeout: 500 * time.Millisecond,          // we allow a timeout of 500 ms since the endpoint might be slow to respond
-		msiType:              msiTypeUnknown,                  // when creating a new managedIdentityClient, the current MSI type is unknown and will be tested for and replaced once authenticate() is called from GetToken on the credential side
+func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) (*managedIdentityClient, error) {
+	if options == nil {
+		options = &ManagedIdentityCredentialOptions{}
 	}
+	cp := options.ClientOptions
+	c := managedIdentityClient{id: options.ID, endpoint: imdsEndpoint, msiType: msiTypeIMDS}
+	env := "IMDS"
+	if endpoint, ok := os.LookupEnv(msiEndpoint); ok {
+		if _, ok := os.LookupEnv(msiSecret); ok {
+			env = "App Service"
+			c.endpoint = endpoint
+			c.msiType = msiTypeAppServiceV20170901
+		} else {
+			env = "Cloud Shell"
+			c.endpoint = endpoint
+			c.msiType = msiTypeCloudShell
+		}
+	} else if endpoint, ok := os.LookupEnv(identityEndpoint); ok {
+		if _, ok := os.LookupEnv(identityHeader); ok {
+			if _, ok := os.LookupEnv(identityServerThumbprint); ok {
+				env = "Service Fabric"
+				c.endpoint = endpoint
+				c.msiType = msiTypeServiceFabric
+			}
+		} else if _, ok := os.LookupEnv(arcIMDSEndpoint); ok {
+			env = "Azure Arc"
+			c.endpoint = endpoint
+			c.msiType = msiTypeAzureArc
+		}
+	} else {
+		setIMDSRetryOptionDefaults(&cp.Retry)
+	}
+	c.pipeline = runtime.NewPipeline(component, version, runtime.PipelineOptions{}, &cp)
+
+	if log.Should(EventAuthentication) {
+		log.Writef(EventAuthentication, "Azure Identity => Managed Identity Credential will use %s managed identity", env)
+	}
+
+	return &c, nil
 }
 
 // authenticate creates an authentication request for a Managed Identity and returns the resulting Access Token if successful.
@@ -139,8 +155,10 @@ func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) *manage
 // clientID: The client (application) ID of the service principal.
 // scopes: The scopes required for the token.
 func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKind, scopes []string) (*azcore.AccessToken, error) {
-	if len(c.unavailableMessage) > 0 {
-		return nil, newCredentialUnavailableError("Managed Identity Credential", c.unavailableMessage)
+	var cancel context.CancelFunc
+	if c.imdsTimeout > 0 && c.msiType == msiTypeIMDS {
+		ctx, cancel = context.WithTimeout(ctx, c.imdsTimeout)
+		defer cancel()
 	}
 
 	msg, err := c.createAuthRequest(ctx, id, scopes)
@@ -150,8 +168,14 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKi
 
 	resp, err := c.pipeline.Do(msg)
 	if err != nil {
-		return nil, err
+		if cancel != nil && errors.Is(err, context.DeadlineExceeded) {
+			return nil, newCredentialUnavailableError("Managed Identity Credential", "IMDS token request timed out")
+		}
+		return nil, newAuthenticationFailedError(err, nil)
 	}
+
+	// got a response, remove the IMDS timeout so future requests use the transport's configuration
+	c.imdsTimeout = 0
 
 	if runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return c.createAccessToken(resp)
@@ -161,8 +185,7 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKi
 		if id != nil {
 			return nil, newAuthenticationFailedError(errors.New("the requested identity isn't assigned to this resource"), resp)
 		}
-		c.unavailableMessage = "No default identity is assigned to this resource."
-		return nil, newCredentialUnavailableError("Managed Identity Credential", c.unavailableMessage)
+		return nil, newCredentialUnavailableError("Managed Identity Credential", "no default identity is assigned to this resource")
 	}
 
 	return nil, newAuthenticationFailedError(errors.New("authentication failed"), resp)
@@ -229,15 +252,7 @@ func (c *managedIdentityClient) createAuthRequest(ctx context.Context, id Manage
 	case msiTypeCloudShell:
 		return c.createCloudShellAuthRequest(ctx, id, scopes)
 	default:
-		errorMsg := ""
-		switch c.msiType {
-		case msiTypeUnavailable:
-			errorMsg = "unavailable"
-		default:
-			errorMsg = "unknown"
-		}
-		c.unavailableMessage = "managed identity support is " + errorMsg
-		return nil, newCredentialUnavailableError("Managed Identity Credential", c.unavailableMessage)
+		return nil, newCredentialUnavailableError("Managed Identity Credential", "managed identity isn't supported in this environment")
 	}
 }
 
@@ -248,7 +263,7 @@ func (c *managedIdentityClient) createIMDSAuthRequest(ctx context.Context, id Ma
 	}
 	request.Raw().Header.Set(headerMetadata, "true")
 	q := request.Raw().URL.Query()
-	q.Add("api-version", c.imdsAPIVersion)
+	q.Add("api-version", imdsAPIVersion)
 	q.Add("resource", strings.Join(scopes, " "))
 	if id != nil {
 		if id.idKind() == miResourceID {
@@ -382,53 +397,4 @@ func (c *managedIdentityClient) createCloudShellAuthRequest(ctx context.Context,
 		return nil, err
 	}
 	return request, nil
-}
-
-func (c *managedIdentityClient) getMSIType() (msiType, error) {
-	if c.msiType == msiTypeUnknown { // if we haven't already determined the msiType
-		if endpointEnvVar := os.Getenv(msiEndpoint); endpointEnvVar != "" { // if the env var MSI_ENDPOINT is set
-			c.endpoint = endpointEnvVar
-			if secretEnvVar := os.Getenv(msiSecret); secretEnvVar != "" { // if BOTH the env vars MSI_ENDPOINT and MSI_SECRET are set the msiType is AppService
-				c.msiType = msiTypeAppServiceV20170901
-			} else { // if ONLY the env var MSI_ENDPOINT is set the msiType is CloudShell
-				c.msiType = msiTypeCloudShell
-			}
-		} else if endpointEnvVar := os.Getenv(identityEndpoint); endpointEnvVar != "" { // check for IDENTITY_ENDPOINT
-			c.endpoint = endpointEnvVar
-			if header := os.Getenv(identityHeader); header != "" { // if BOTH the env vars IDENTITY_ENDPOINT and IDENTITY_HEADER are set the msiType is AppService
-				c.msiType = msiTypeAppServiceV20190801
-				if thumbprint := os.Getenv(identityServerThumbprint); thumbprint != "" { // if IDENTITY_SERVER_THUMBPRINT is set the environment is Service Fabric
-					c.msiType = msiTypeServiceFabric
-				}
-			} else if arcIMDS := os.Getenv(arcIMDSEndpoint); arcIMDS != "" {
-				c.msiType = msiTypeAzureArc
-			} else {
-				c.msiType = msiTypeUnavailable
-				return c.msiType, newCredentialUnavailableError("Managed Identity Credential", "this environment is not supported")
-			}
-		} else if c.imdsAvailable() { // if MSI_ENDPOINT is NOT set AND the IMDS endpoint is available the msiType is IMDS. This will timeout after 500 milliseconds
-			c.endpoint = imdsEndpoint
-			c.msiType = msiTypeIMDS
-		} else { // if MSI_ENDPOINT is NOT set and IMDS endpoint is not available Managed Identity is not available
-			c.msiType = msiTypeUnavailable
-			return c.msiType, newCredentialUnavailableError("Managed Identity Credential", "no managed identity endpoint is available")
-		}
-	}
-	return c.msiType, nil
-}
-
-// performs an I/O request that has a timeout of 500 milliseconds
-func (c *managedIdentityClient) imdsAvailable() bool {
-	tempCtx, cancel := context.WithTimeout(context.Background(), c.imdsAvailableTimeout)
-	defer cancel()
-	// this should never fail
-	request, _ := runtime.NewRequest(tempCtx, http.MethodGet, imdsEndpoint)
-	q := request.Raw().URL.Query()
-	q.Add("api-version", c.imdsAPIVersion)
-	request.Raw().URL.RawQuery = q.Encode()
-	resp, err := c.pipeline.Do(request)
-	if err == nil {
-		runtime.Drain(resp)
-	}
-	return err == nil
 }

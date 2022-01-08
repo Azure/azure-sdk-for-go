@@ -9,6 +9,10 @@
 ### Bugs Fixed
 
 ### Other Changes
+* `ManagedIdentityCredential` no longer probes IMDS before requesting a token
+  from it. Also, an error response from IMDS no longer disables a credential
+  instance. Following an error, a credential instance will continue to send
+  requests to IMDS as necessary.
 
 ## 0.12.0 (2021-11-02)
 ### Breaking Changes

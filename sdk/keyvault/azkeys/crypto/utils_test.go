@@ -143,7 +143,7 @@ func createRandomName(t *testing.T, prefix string) (string, error) {
 	return prefix + fmt.Sprint(h.Sum32()), err
 }
 
-func createClient(t *testing.T) (*azkeys.Client, error) {
+func createClient(t *testing.T) (azkeys.Client, error) {
 	vaultUrl := recording.GetEnvVariable("AZURE_KEYVAULT_URL", fakeKvURL)
 
 	transport, err := recording.NewRecordingHTTPClient(t, nil)

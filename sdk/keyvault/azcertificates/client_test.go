@@ -248,7 +248,7 @@ func TestClient_ImportCertificate(t *testing.T) {
 	cleanUp(t, client, importedName)
 }
 
-func TestClient_CreateIssuer(t *testing.T) {
+func TestClient_IssuerCRUD(t *testing.T) {
 	stop := startTest(t)
 	defer stop()
 
@@ -280,4 +280,10 @@ func TestClient_CreateIssuer(t *testing.T) {
 	require.Equal(t, *resp.Provider, "Test")
 	require.Equal(t, *resp.Credentials.AccountID, "keyvaultuser")
 	require.Contains(t, *resp.ID, fmt.Sprintf("/certificates/issuers/%s", issuerName))
+
+	getResp, err := client.GetIssuer(ctx, issuerName, nil)
+	require.NoError(t, err)
+	require.Equal(t, *getResp.Provider, "Test")
+	require.Equal(t, *getResp.Credentials.AccountID, "keyvaultuser")
+	require.Contains(t, *getResp.ID, fmt.Sprintf("/certificates/issuers/%s", issuerName))
 }

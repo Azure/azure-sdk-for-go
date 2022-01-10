@@ -838,3 +838,34 @@ func (c *Client) CreateIssuer(ctx context.Context, issuerName string, provider s
 		},
 	}, nil
 }
+
+type GetIssuerOptions struct{}
+
+func (g *GetIssuerOptions) toGenerated() *generated.KeyVaultClientGetCertificateIssuerOptions {
+	return &generated.KeyVaultClientGetCertificateIssuerOptions{}
+}
+
+// GetIssuerResponse contains the response from method Client.GetIssuer.
+type GetIssuerResponse struct {
+	IssuerBundle
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+func (c *Client) GetIssuer(ctx context.Context, issuerName string, options *GetIssuerOptions) (GetIssuerResponse, error) {
+	resp, err := c.genClient.GetCertificateIssuer(ctx, c.vaultURL, issuerName, options.toGenerated())
+	if err != nil {
+		return GetIssuerResponse{}, err
+	}
+
+	return GetIssuerResponse{
+		RawResponse: resp.RawResponse,
+		IssuerBundle: IssuerBundle{
+			ID:                  resp.ID,
+			Provider:            resp.Provider,
+			Attributes:          issuerAttributesFromGenerated(resp.Attributes),
+			Credentials:         issuerCredentialsFromGenerated(resp.Credentials),
+			OrganizationDetails: organizationDetailsFromGenerated(resp.OrganizationDetails),
+		},
+	}, nil
+}

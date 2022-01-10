@@ -654,7 +654,8 @@ func (l *ListCertificatesOptions) toGenerated() *generated.KeyVaultClientGetCert
 
 // ListCertificatesPage contains the current page of results for the Client.ListSecrets operation
 type ListCertificatesPage struct {
-	CertificateListResult
+	// READ-ONLY; A response message containing a list of certificates in the key vault along with a link to the next page of certificates.
+	Certificates []*CertificateItem `json:"value,omitempty" azure:"ro"`
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -674,11 +675,8 @@ func listKeysPageFromGenerated(i generated.KeyVaultClientGetCertificatesResponse
 	}
 
 	return ListCertificatesPage{
-		RawResponse: i.RawResponse,
-		CertificateListResult: CertificateListResult{
-			NextLink: i.NextLink,
-			Value:    vals,
-		},
+		RawResponse:  i.RawResponse,
+		Certificates: vals,
 	}
 }
 
@@ -745,7 +743,8 @@ func (l *ListCertificateVersionsOptions) toGenerated() *generated.KeyVaultClient
 
 // ListCertificateVersionsPage contains the current page from a ListCertificateVersionsPager.PageResponse method
 type ListCertificateVersionsPage struct {
-	CertificateListResult
+	// READ-ONLY; A response message containing a list of certificates in the key vault along with a link to the next page of certificates.
+	Certificates []*CertificateItem `json:"value,omitempty" azure:"ro"`
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -764,10 +763,8 @@ func listKeyVersionsPageFromGenerated(i generated.KeyVaultClientGetCertificateVe
 	}
 
 	return ListCertificateVersionsPage{
-		RawResponse: i.RawResponse,
-		CertificateListResult: CertificateListResult{
-			Value: vals,
-		},
+		RawResponse:  i.RawResponse,
+		Certificates: vals,
 	}
 }
 
@@ -870,7 +867,6 @@ func (c *Client) GetIssuer(ctx context.Context, issuerName string, options *GetI
 	}, nil
 }
 
-
 // ListIssuersPager is a Pager for the Client.ListIssuers operation
 type ListIssuersPager interface {
 	// PageResponse returns the current ListIssuersPage
@@ -922,7 +918,7 @@ func (l *ListIssuersOptions) toGenerated() *generated.KeyVaultClientGetCertifica
 // ListIssuersPage contains the current page of results for the Client.ListSecrets operation
 type ListIssuersPage struct {
 	// READ-ONLY; A response message containing a list of certificates in the key vault along with a link to the next page of certificates.
-	Value []*CertificateIssuerItem `json:"value,omitempty" azure:"ro"`
+	Issuers []*CertificateIssuerItem `json:"value,omitempty" azure:"ro"`
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -938,7 +934,7 @@ func listIssuersPageFromGenerated(i generated.KeyVaultClientGetCertificateIssuer
 
 	return ListIssuersPage{
 		RawResponse: i.RawResponse,
-		Value: vals,
+		Issuers:     vals,
 	}
 }
 
@@ -950,4 +946,35 @@ func (c *Client) ListIssuers(options *ListIssuersOptions) ListIssuersPager {
 	return &listIssuersPager{
 		genPager: c.genClient.GetCertificateIssuers(c.vaultURL, options.toGenerated()),
 	}
+}
+
+type DeleteIssuerOptions struct{}
+
+func (d *DeleteIssuerOptions) toGenerated() *generated.KeyVaultClientDeleteCertificateIssuerOptions {
+	return &generated.KeyVaultClientDeleteCertificateIssuerOptions{}
+}
+
+// KeyVaultClientDeleteCertificateIssuerResponse contains the response from method KeyVaultClient.DeleteCertificateIssuer.
+type DeleteIssuerResponse struct {
+	IssuerBundle
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+func (c *Client) DeleteIssuer(ctx context.Context, issuerName string, options *DeleteIssuerOptions) (DeleteIssuerResponse, error) {
+	resp, err := c.genClient.DeleteCertificateIssuer(ctx, c.vaultURL, issuerName, options.toGenerated())
+	if err != nil {
+		return DeleteIssuerResponse{}, err
+	}
+
+	return DeleteIssuerResponse{
+		RawResponse: resp.RawResponse,
+		IssuerBundle: IssuerBundle{
+			Attributes:          issuerAttributesFromGenerated(resp.Attributes),
+			Credentials:         issuerCredentialsFromGenerated(resp.Credentials),
+			OrganizationDetails: organizationDetailsFromGenerated(resp.OrganizationDetails),
+			Provider:            resp.Provider,
+			ID:                  resp.ID,
+		},
+	}, nil
 }

@@ -174,7 +174,7 @@ func TestClient_ListCertificates(t *testing.T) {
 
 	pager := client.ListCertificates(nil)
 	for pager.NextPage(ctx) {
-		createdCount -= len(pager.PageResponse().Value)
+		createdCount -= len(pager.PageResponse().Certificates)
 	}
 
 	require.Equal(t, 0, createdCount)
@@ -198,7 +198,7 @@ func TestClient_ListCertificateVersions(t *testing.T) {
 	pager := client.ListCertificateVersions(name, nil)
 	count := 0
 	for pager.NextPage(ctx) {
-		count += len(pager.PageResponse().Value)
+		count += len(pager.PageResponse().Certificates)
 	}
 
 	require.Equal(t, 1, count)
@@ -211,7 +211,7 @@ func TestClient_ListCertificateVersions(t *testing.T) {
 	pager = client.ListCertificateVersions(name, nil)
 	count = 0
 	for pager.NextPage(ctx) {
-		count += len(pager.PageResponse().Value)
+		count += len(pager.PageResponse().Certificates)
 	}
 
 	require.Equal(t, 2, count)
@@ -224,7 +224,7 @@ func TestClient_ListCertificateVersions(t *testing.T) {
 	pager = client.ListCertificateVersions(name, nil)
 	count = 0
 	for pager.NextPage(ctx) {
-		count += len(pager.PageResponse().Value)
+		count += len(pager.PageResponse().Certificates)
 	}
 
 	require.Equal(t, 3, count)
@@ -314,7 +314,7 @@ func TestClient_IssuerCRUD(t *testing.T) {
 	pager := client.ListIssuers(nil)
 	count := 0
 	for pager.NextPage(ctx) {
-		for _, issuer := range pager.PageResponse().Value {
+		for _, issuer := range pager.PageResponse().Issuers {
 			require.Equal(t, "Test", *issuer.Provider)
 			count += 1
 		}
@@ -322,5 +322,12 @@ func TestClient_IssuerCRUD(t *testing.T) {
 	require.GreaterOrEqual(t, count, 2)
 	require.NoError(t, pager.Err())
 
+	// Delete the first issuer
+	_, err = client.DeleteIssuer(ctx, issuerName, nil)
+	require.NoError(t, err)
+
+	// Get on the first issuer fails
+	_, err = client.GetIssuer(ctx, issuerName, nil)
+	require.Error(t, err)
 
 }

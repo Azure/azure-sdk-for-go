@@ -335,6 +335,67 @@ func (c *Client) CreateRSAKey(ctx context.Context, name string, options *CreateR
 	return createRSAKeyResponseFromGenerated(resp), nil
 }
 
+type CreateOKPKeyOptions struct {
+	// Hardware Protected OCT Key
+	HardwareProtected bool
+
+	// The key size in bits. For example: 2048, 3072, or 4096 for RSA.
+	KeySize *int32 `json:"key_size,omitempty"`
+
+	// The public exponent for a RSA key.
+	PublicExponent *int32 `json:"public_exponent,omitempty"`
+
+	// Application specific metadata in the form of key-value pairs.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+func (c *CreateOKPKeyOptions) toKeyCreateParameters(keyType KeyType) generated.KeyCreateParameters {
+	if c == nil {
+		return generated.KeyCreateParameters{Kty: keyType.toGenerated()}
+	}
+	return generated.KeyCreateParameters{
+		Kty:            keyType.toGenerated(),
+		KeySize:        c.KeySize,
+		PublicExponent: c.PublicExponent,
+		Tags:           c.Tags,
+	}
+}
+
+type CreateOKPKeyResponse struct {
+	KeyBundle
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+func (c *Client) CreateOKPKey(ctx context.Context, name string, options *CreateOKPKeyOptions) (CreateOKPKeyResponse, error) {
+	keyType := OKPHSM
+	if options == nil {
+		options = &CreateOKPKeyOptions{}
+	}
+
+	resp, err := c.kvClient.CreateKey(
+		ctx,
+		c.vaultUrl,
+		name,
+		options.toKeyCreateParameters(keyType),
+		&generated.KeyVaultClientCreateKeyOptions{},
+	)
+
+	if err != nil {
+		return CreateOKPKeyResponse{}, err
+	}
+
+	return CreateOKPKeyResponse{
+		RawResponse: resp.RawResponse,
+		KeyBundle: KeyBundle{
+			Attributes: keyAttributesFromGenerated(resp.Attributes),
+			Key:        jsonWebKeyFromGenerated(resp.Key),
+			Tags:       resp.Tags,
+			Managed:    resp.Managed,
+		},
+	}, nil
+}
+
 // ListKeysPager is a Pager for the Client.ListSecrets operation
 type ListKeysPager interface {
 	// PageResponse returns the current ListKeysPage

@@ -65,6 +65,34 @@ func TestCreateKeyRSA(t *testing.T) {
 	}
 }
 
+func TestClient_CreateKeyOKP(t *testing.T) {
+	for _, testType := range testTypes {
+		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
+			if testType != HSMTEST {
+				t.Skip("Only works on HSM")
+			}
+			stop := startTest(t)
+			defer stop()
+
+			client, err := createClient(t, testType)
+			require.NoError(t, err)
+
+			key, err := createRandomName(t, "key")
+			require.NoError(t, err)
+
+			resp, err := client.CreateOKPKey(ctx, key, nil)
+			require.NoError(t, err)
+			require.NotNil(t, resp.Key)
+
+			cleanUpKey(t, client, key)
+
+			invalid, err := client.CreateOKPKey(ctx, "invalidName!@#$", nil)
+			require.Error(t, err)
+			require.Nil(t, invalid.Attributes)
+		})
+	}
+}
+
 func TestCreateECKey(t *testing.T) {
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {

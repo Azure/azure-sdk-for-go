@@ -1,7 +1,7 @@
 {
     "init": {
         "initScript": {
-            "path": "./eng/scripts/automation/init.sh",
+            "path": "./eng/scripts/automation_init.sh",
             "logPrefix": "[GO]",
             "stderr":{
                 "storeAllLog": true

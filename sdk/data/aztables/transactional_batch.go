@@ -165,7 +165,7 @@ func (t *Client) submitTransactionInternal(ctx context.Context, transactionActio
 	}
 
 	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
-		return TransactionResponse{}, runtime.NewResponseError(err, resp)
+		return TransactionResponse{}, runtime.NewResponseError(resp)
 	}
 	return *transactionResponse, nil
 }
@@ -223,7 +223,7 @@ func buildTransactionResponse(req *policy.Request, resp *http.Response, itemCoun
 				retError := newTableTransactionError(errorBody, resp)
 				ret := retError.(*transactionError)
 				ret.statusCode = r.StatusCode
-				return &result, runtime.NewResponseError(retError, resp)
+				return &result, runtime.NewResponseError(resp)
 			}
 		}
 		innerResponses[i] = *r

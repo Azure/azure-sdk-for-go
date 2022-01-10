@@ -314,7 +314,7 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 			entity[partitionKey].(string),
 			entity[rowKey].(string),
 			ifMatch,
-			&generated.TableDeleteEntityOptions{},
+			&generated.TableClientDeleteEntityOptions{},
 			qo,
 		)
 		if err != nil {
@@ -325,7 +325,7 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 			ctx,
 			generated.Enum1Three0,
 			t.name,
-			&generated.TableInsertEntityOptions{
+			&generated.TableClientInsertEntityOptions{
 				TableEntityProperties: entity,
 				ResponsePreference:    generated.ResponseFormatReturnNoContent.ToPtr(),
 			},
@@ -337,7 +337,7 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 	case UpdateMerge:
 		fallthrough
 	case InsertMerge:
-		opts := &generated.TableMergeEntityOptions{TableEntityProperties: entity}
+		opts := &generated.TableClientMergeEntityOptions{TableEntityProperties: entity}
 		if transactionAction.IfMatch != nil {
 			opts.IfMatch = to.StringPtr(string(*transactionAction.IfMatch))
 		}
@@ -359,7 +359,7 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 	case UpdateReplace:
 		fallthrough
 	case InsertReplace:
-		opts := &generated.TableUpdateEntityOptions{TableEntityProperties: entity}
+		opts := &generated.TableClientUpdateEntityOptions{TableEntityProperties: entity}
 		if transactionAction.IfMatch != nil {
 			opts.IfMatch = to.StringPtr(string(*transactionAction.IfMatch))
 		}

@@ -287,6 +287,59 @@ func certificatePolicyFromGenerated(g *generated.CertificatePolicy) *Certificate
 	}
 }
 
+// Contact - The contact information for the vault certificates.
+type Contact struct {
+	// Email address.
+	EmailAddress *string `json:"email,omitempty"`
+
+	// Name.
+	Name *string `json:"name,omitempty"`
+
+	// Phone number.
+	Phone *string `json:"phone,omitempty"`
+}
+
+func contactListFromGenerated(g []*generated.Contact) []*Contact {
+	var ret []*Contact
+	for _, c := range g {
+		ret = append(ret, &Contact{
+			EmailAddress: c.EmailAddress,
+			Name:         c.Name,
+			Phone:        c.Phone,
+		})
+	}
+	return ret
+}
+
+// Contacts - The contacts for the vault certificates.
+type Contacts struct {
+	// The contact list for the vault certificates.
+	ContactList []*Contact `json:"contacts,omitempty"`
+
+	// READ-ONLY; Identifier for the contacts collection.
+	ID *string `json:"id,omitempty" azure:"ro"`
+}
+
+func (c *Contacts) toGenerated() generated.Contacts {
+	if c == nil {
+		return generated.Contacts{}
+	}
+
+	var contacts []*generated.Contact
+	for _, contact := range c.ContactList {
+		contacts = append(contacts, &generated.Contact{
+			EmailAddress: contact.EmailAddress,
+			Name:         contact.Name,
+			Phone:        contact.Phone,
+		})
+	}
+
+	return generated.Contacts{
+		ID:          c.ID,
+		ContactList: contacts,
+	}
+}
+
 // DeletedCertificateBundle - A Deleted Certificate consisting of its previous id, attributes and its tags, as well as information on when it will be purged.
 type DeletedCertificateBundle struct {
 	CertificateBundle

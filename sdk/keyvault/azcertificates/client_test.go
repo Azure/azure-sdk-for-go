@@ -349,5 +349,39 @@ func TestClient_IssuerCRUD(t *testing.T) {
 	// Get on the first issuer fails
 	_, err = client.GetIssuer(ctx, issuerName, nil)
 	require.Error(t, err)
+}
 
+func TestClient_ContactsCRUD(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	contacts := Contacts{ContactList: []*Contact{
+		{EmailAddress: to.StringPtr("admin@microsoft.com"), Name: to.StringPtr("John Doe"), Phone: to.StringPtr("1111111111")},
+		{EmailAddress: to.StringPtr("admin@contoso.com"), Name: to.StringPtr("Jane Doey"), Phone: to.StringPtr("2222222222")},
+	}}
+
+	resp, err := client.SetContacts(ctx, contacts, nil)
+	require.NoError(t, err)
+	require.Equal(t, 2, len(resp.ContactList))
+
+	getResp, err := client.GetContacts(ctx, nil)
+	require.NoError(t, err)
+	require.Equal(t, 2, len(getResp.ContactList))
+	require.Equal(t, "admin@microsoft.com", *getResp.ContactList[0].EmailAddress)
+	require.Equal(t, "admin@contoso.com", *getResp.ContactList[1].EmailAddress)
+	require.Equal(t, "John Doe", *getResp.ContactList[0].Name)
+	require.Equal(t, "Jane Doey", *getResp.ContactList[1].Name)
+	require.Equal(t, "1111111111", *getResp.ContactList[0].Phone)
+	require.Equal(t, "2222222222", *getResp.ContactList[1].Phone)
+
+	deleteResp, err := client.DeleteContacts(ctx, nil)
+	require.NoError(t, err)
+	require.Equal(t, 2, len(deleteResp.ContactList))
+
+	// Get should fail
+	_, err = client.GetContacts(ctx, nil)
+	require.Error(t, err)
 }

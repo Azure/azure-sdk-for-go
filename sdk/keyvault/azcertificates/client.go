@@ -1046,3 +1046,98 @@ func (c *Client) UpdateIssuer(ctx context.Context, issuerName string, options *U
 		},
 	}, nil
 }
+
+// SetContactsOptions contains the optional parameters for the Client.CreateContacts function
+type SetContactsOptions struct{}
+
+// SetContactsResponse contains the response from method Client.CreateContacts.
+type SetContactsResponse struct {
+	Contacts
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SetCertificateContacts - Sets the certificate contacts for the specified key vault. This operation requires the certificates/managecontacts permission.
+func (c *Client) SetContacts(ctx context.Context, contacts Contacts, options *SetContactsOptions) (SetContactsResponse, error) {
+	resp, err := c.genClient.SetCertificateContacts(
+		ctx,
+		c.vaultURL,
+		contacts.toGenerated(),
+		&generated.KeyVaultClientSetCertificateContactsOptions{},
+	)
+
+	if err != nil {
+		return SetContactsResponse{}, err
+	}
+
+	return SetContactsResponse{
+		RawResponse: resp.RawResponse,
+		Contacts: Contacts{
+			ID:          resp.ID,
+			ContactList: contactListFromGenerated(resp.ContactList),
+		},
+	}, nil
+}
+
+// GetContactsOptions contains the optional parameters for the Client.GetContacts function
+type GetContactsOptions struct{}
+
+func (g *GetContactsOptions) toGenerated() *generated.KeyVaultClientGetCertificateContactsOptions {
+	return &generated.KeyVaultClientGetCertificateContactsOptions{}
+}
+
+// GetContactsResponse contains the response from method Client.GetContacts.
+type GetContactsResponse struct {
+	Contacts
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GetCertificateContacts - The GetCertificateContacts operation returns the set of certificate contact resources in the specified key vault. This operation
+// requires the certificates/managecontacts permission.
+func (c *Client) GetContacts(ctx context.Context, options *GetContactsOptions) (GetContactsResponse, error) {
+	resp, err := c.genClient.GetCertificateContacts(ctx, c.vaultURL, options.toGenerated())
+	if err != nil {
+		return GetContactsResponse{}, err
+	}
+
+	return GetContactsResponse{
+		RawResponse: resp.RawResponse,
+		Contacts: Contacts{
+			ID:          resp.ID,
+			ContactList: contactListFromGenerated(resp.ContactList),
+		},
+	}, nil
+}
+
+// DeleteContactsOptions contains the optional parameters for the Client.DeleteContacts function
+type DeleteContactsOptions struct{}
+
+func (d *DeleteContactsOptions) toGenerated() *generated.KeyVaultClientDeleteCertificateContactsOptions {
+	return &generated.KeyVaultClientDeleteCertificateContactsOptions{}
+}
+
+// DeleteContactsResponse contains the response from method Client.DeleteContacts.
+type DeleteContactsResponse struct {
+	Contacts
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DeleteContacts - Deletes the certificate contacts for a specified key vault certificate. This operation requires the certificates/managecontacts permission.
+func (c *Client) DeleteContacts(ctx context.Context, options *DeleteContactsOptions) (DeleteContactsResponse, error) {
+	resp, err := c.genClient.DeleteCertificateContacts(ctx, c.vaultURL, options.toGenerated())
+	if err != nil {
+		return DeleteContactsResponse{}, err
+	}
+
+	return DeleteContactsResponse{
+		RawResponse: resp.RawResponse,
+		Contacts: Contacts{
+			ContactList: contactListFromGenerated(resp.ContactList),
+			ID:          resp.ID,
+		},
+	}, nil
+}

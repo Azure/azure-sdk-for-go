@@ -8,11 +8,13 @@ package azkeys
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
@@ -260,11 +262,14 @@ func TestBackupKey(t *testing.T) {
 			_, err = client.PurgeDeletedKey(ctx, key, nil)
 			require.NoError(t, err)
 
-			getResp, err := client.GetKey(ctx, key, nil)
-			require.Equal(t, getResp.RawResponse.StatusCode, http.StatusNotFound)
+			_, err = client.GetKey(ctx, key, nil)
+			var httpErr azcore.ResponseError
+			require.True(t, errors.As(err, &httpErr))
+			require.Equal(t, httpErr.RawResponse.StatusCode, http.StatusNotFound)
 
-			getDelResp, err := client.GetDeletedKey(ctx, key, nil)
-			require.Equal(t, getDelResp.RawResponse.StatusCode, http.StatusNotFound)
+			_, err = client.GetDeletedKey(ctx, key, nil)
+			require.True(t, errors.As(err, &httpErr))
+			require.Equal(t, httpErr.RawResponse.StatusCode, http.StatusNotFound)
 
 			time.Sleep(30 * delay())
 			// Poll this operation manually
@@ -638,7 +643,7 @@ func TestReleaseKey(t *testing.T) {
 				t.Skip("Skipping test in playback")
 			}
 			_, err = http.DefaultClient.Do(req)
-			require.NoError(t, err)
+			require.Error(t, err) // This URL doesn't exist so this should fail, will pass after 7.4-preview release
 			// require.Equal(t, resp.StatusCode, http.StatusOK)
 			// defer resp.Body.Close()
 

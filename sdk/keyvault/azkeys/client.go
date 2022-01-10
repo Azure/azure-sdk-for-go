@@ -8,6 +8,7 @@ package azkeys
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"time"
 
@@ -602,11 +603,13 @@ func (s *startDeleteKeyPoller) Poll(ctx context.Context) (*http.Response, error)
 		return resp.RawResponse, nil
 	}
 
-	if resp.RawResponse.StatusCode == http.StatusNotFound {
-		// This is the expected result
-		return s.deleteResponse.RawResponse, nil
+	var httpResponseErr azcore.ResponseError
+	if errors.As(err, &httpResponseErr) {
+		if httpResponseErr.RawResponse.StatusCode == http.StatusNotFound {
+			// This is the expected result
+			return s.deleteResponse.RawResponse, nil
+		}
 	}
-
 	return s.deleteResponse.RawResponse, err
 }
 
@@ -657,9 +660,11 @@ func (c *Client) BeginDeleteKey(ctx context.Context, keyName string, options *Be
 	}
 
 	getResp, err := c.kvClient.GetDeletedKey(ctx, c.vaultUrl, keyName, nil)
-
-	if getResp.RawResponse.StatusCode != http.StatusNotFound {
-		return DeleteKeyPollerResponse{}, err
+	var httpErr azcore.ResponseError
+	if errors.As(err, &httpErr) {
+		if httpErr.RawResponse.StatusCode != http.StatusNotFound {
+			return DeleteKeyPollerResponse{}, err
+		}
 	}
 
 	s := &startDeleteKeyPoller{
@@ -760,7 +765,11 @@ func (b *beginRecoverPoller) Done() bool {
 func (b *beginRecoverPoller) Poll(ctx context.Context) (*http.Response, error) {
 	resp, err := b.client.GetKey(ctx, b.vaultUrl, b.keyName, "", nil)
 	b.lastResponse = resp
-	return resp.RawResponse, err
+	var httpErr azcore.ResponseError
+	if errors.As(err, &httpErr) {
+		return httpErr.RawResponse, err
+	}
+	return resp.RawResponse, nil
 }
 
 // FinalResponse returns the final response after the operations has finished
@@ -836,9 +845,11 @@ func (c *Client) BeginRecoverDeletedKey(ctx context.Context, keyName string, opt
 	}
 
 	getResp, err := c.kvClient.GetKey(ctx, c.vaultUrl, keyName, "", nil)
-
-	if getResp.RawResponse.StatusCode != http.StatusNotFound {
-		return RecoverDeletedKeyPollerResponse{}, err
+	var httpErr azcore.ResponseError
+	if errors.As(err, &httpErr) {
+		if httpErr.RawResponse.StatusCode != http.StatusNotFound {
+			return RecoverDeletedKeyPollerResponse{}, err
+		}
 	}
 
 	b := &beginRecoverPoller{

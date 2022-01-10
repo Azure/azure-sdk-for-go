@@ -8,13 +8,11 @@ package azkeys
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net/http"
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
@@ -262,14 +260,11 @@ func TestBackupKey(t *testing.T) {
 			_, err = client.PurgeDeletedKey(ctx, key, nil)
 			require.NoError(t, err)
 
-			_, err = client.GetKey(ctx, key, nil)
-			var httpErr azcore.HTTPResponse
-			require.True(t, errors.As(err, &httpErr))
-			require.Equal(t, httpErr.RawResponse().StatusCode, http.StatusNotFound)
+			getResp, err := client.GetKey(ctx, key, nil)
+			require.Equal(t, getResp.RawResponse.StatusCode, http.StatusNotFound)
 
-			_, err = client.GetDeletedKey(ctx, key, nil)
-			require.True(t, errors.As(err, &httpErr))
-			require.Equal(t, httpErr.RawResponse().StatusCode, http.StatusNotFound)
+			getDelResp, err := client.GetDeletedKey(ctx, key, nil)
+			require.Equal(t, getDelResp.RawResponse.StatusCode, http.StatusNotFound)
 
 			time.Sleep(30 * delay())
 			// Poll this operation manually

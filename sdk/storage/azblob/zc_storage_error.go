@@ -12,7 +12,9 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // InternalError is an internal error type that all errors get wrapped in.
@@ -50,7 +52,6 @@ func (e *InternalError) As(target interface{}) bool {
 // TL;DR: This implements xml.Unmarshaler, and when the original StorageError is substituted, this unmarshaler kicks in.
 // This handles the description and details. defunkifyStorageError handles the response, cause, and service code.
 type StorageError struct {
-	raw         string
 	response    *http.Response
 	description string
 
@@ -59,8 +60,9 @@ type StorageError struct {
 }
 
 func handleError(err error) error {
-	if err, ok := err.(ResponseError); ok {
-		return &InternalError{defunkifyStorageError(err)}
+	var respErr *azcore.ResponseError
+	if errors.As(err, &respErr) {
+		return &InternalError{defunkifyStorageError(respErr)}
 	}
 
 	if err != nil {
@@ -71,22 +73,32 @@ func handleError(err error) error {
 }
 
 // defunkifyStorageError is a function that takes the "funky" ResponseError and reduces it to a storageError.
-func defunkifyStorageError(responseError ResponseError) error {
-	if err, ok := responseError.Unwrap().(*StorageError); ok {
-		// errors.Unwrap(responseError.Unwrap())
-
-		err.response = responseError.RawResponse()
-
-		err.ErrorCode = StorageErrorCode(responseError.RawResponse().Header.Get("x-ms-error-code"))
-
-		if code, ok := err.details["Code"]; ok {
-			err.ErrorCode = StorageErrorCode(code)
-			delete(err.details, "Code")
+func defunkifyStorageError(responseError *azcore.ResponseError) error {
+	var storageError StorageError
+	body, err := runtime.Payload(responseError.RawResponse)
+	if err != nil {
+		goto Default
+	}
+	if len(body) > 0 {
+		if err := xml.Unmarshal(body, &storageError); err != nil {
+			goto Default
 		}
-
-		return err
 	}
 
+	// errors.Unwrap(responseError.Unwrap())
+
+	storageError.response = responseError.RawResponse
+
+	storageError.ErrorCode = StorageErrorCode(responseError.RawResponse.Header.Get("x-ms-error-code"))
+
+	if code, ok := storageError.details["Code"]; ok {
+		storageError.ErrorCode = StorageErrorCode(code)
+		delete(storageError.details, "Code")
+	}
+
+	return &storageError
+
+Default:
 	return &InternalError{
 		cause: responseError,
 	}

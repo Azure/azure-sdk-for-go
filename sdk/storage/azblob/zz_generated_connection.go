@@ -49,7 +49,9 @@ func newConnection(endpoint string, authPolicy policy.Policy, options *azcore.Cl
 	if authPolicy != nil {
 		perRetryPolicies = append(perRetryPolicies, authPolicy)
 	}
-	return &connection{u: endpoint, p: runtime.NewPipeline(module, version, nil, perRetryPolicies, &cp)}
+	return &connection{u: endpoint, p: runtime.NewPipeline(module, version, runtime.PipelineOptions{
+		PerRetry: perRetryPolicies,
+	}, &cp)}
 }
 
 // Endpoint returns the connection's endpoint.

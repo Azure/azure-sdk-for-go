@@ -9,7 +9,7 @@ package azkeys
 import (
 	"time"
 
-	generated "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
 )
 
 // Attributes - The object attributes managed by the KeyVault service.
@@ -293,7 +293,7 @@ type KeyReleasePolicy struct {
 	ContentType *string `json:"contentType,omitempty"`
 
 	// Blob encoding the policy rules under which the key can be released.
-	Data []byte `json:"data,omitempty"`
+	EncodedPolicy []byte `json:"data,omitempty"`
 }
 
 func keyReleasePolicyFromGenerated(i *generated.KeyReleasePolicy) *KeyReleasePolicy {
@@ -301,8 +301,8 @@ func keyReleasePolicyFromGenerated(i *generated.KeyReleasePolicy) *KeyReleasePol
 		return nil
 	}
 	return &KeyReleasePolicy{
-		ContentType: i.ContentType,
-		Data:        i.Data,
+		ContentType:   i.ContentType,
+		EncodedPolicy: i.EncodedPolicy,
 	}
 }
 

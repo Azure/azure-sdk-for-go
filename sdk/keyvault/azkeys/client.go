@@ -14,7 +14,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	generated "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
 	shared "github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 )
 
@@ -1392,9 +1392,9 @@ func (c *Client) ReleaseKey(ctx context.Context, name string, target string, opt
 		name,
 		options.Version,
 		generated.KeyReleaseParameters{
-			Target: &target,
-			Enc:    (*generated.KeyEncryptionAlgorithm)(options.Enc),
-			Nonce:  options.Nonce,
+			TargetAttestationToken: &target,
+			Enc:                    (*generated.KeyEncryptionAlgorithm)(options.Enc),
+			Nonce:                  options.Nonce,
 		},
 		&generated.KeyVaultClientReleaseOptions{},
 	)

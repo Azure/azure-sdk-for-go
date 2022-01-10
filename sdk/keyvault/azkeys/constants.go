@@ -82,6 +82,9 @@ func recoveryLevelToGenerated(d *DeletionRecoveryLevel) *generated.DeletionRecov
 type JSONWebKeyCurveName string
 
 const (
+	// JSONWebKeyCurveNameEd25519 - The Ed25519 Edwards curve.
+	JSONWebKeyCurveNameEd25519 JSONWebKeyCurveName = "Ed25519"
+
 	// JSONWebKeyCurveNameP256 - The NIST P-256 elliptic curve, AKA SECG curve SECP256R1.
 	JSONWebKeyCurveNameP256 JSONWebKeyCurveName = "P-256"
 

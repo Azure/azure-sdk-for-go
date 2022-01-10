@@ -99,7 +99,7 @@ type JSONWebKey struct {
 	// Elliptic curve name. For valid values, see JsonWebKeyCurveName.
 	Crv *JSONWebKeyCurveName `json:"crv,omitempty"`
 
-	// RSA private exponent, or the D component of an EC private key.
+	// RSA private exponent, or the D component of an EC or OKP private key.
 	D []byte `json:"d,omitempty"`
 
 	// RSA private key parameter.
@@ -136,7 +136,7 @@ type JSONWebKey struct {
 	// Protected Key, used with 'Bring Your Own Key'.
 	T []byte `json:"key_hsm,omitempty"`
 
-	// X component of an EC public key.
+	// X component of an EC or OKP public key.
 	X []byte `json:"x,omitempty"`
 
 	// Y component of an EC public key.
@@ -200,6 +200,12 @@ const (
 
 	// ECHSM - Elliptic Curve with a private key which is not exportable from the HSM.
 	ECHSM KeyType = "EC-HSM"
+
+	// OKP - Octet key pair (https://tools.ietf.org/html/rfc8037)
+	OKP KeyType = "OKP"
+
+	// OKPHSM - Octet key pair (https://tools.ietf.org/html/rfc8037) with a private key which is stored in the HSM.
+	OKPHSM KeyType = "OKP-HSM"
 
 	// Oct - Octet sequence (used to represent symmetric keys)
 	Oct KeyType = "oct"

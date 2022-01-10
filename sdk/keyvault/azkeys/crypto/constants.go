@@ -61,6 +61,8 @@ const (
 	ES384 SignatureAlgorithm = "ES384"
 	// ES512 - ECDSA using P-521 and SHA-512, as described in https://tools.ietf.org/html/rfc7518
 	ES512 SignatureAlgorithm = "ES512"
+	// JSONWebKeySignatureAlgorithmEdDSA - Edwards-curve Digital Signature Algorithm, as described in https://tools.ietf.org/html/rfc8032.
+	EdDSA SignatureAlgorithm = "EdDSA"
 	// PS256 - RSASSA-PSS using SHA-256 and MGF1 with SHA-256, as described in https://tools.ietf.org/html/rfc7518
 	PS256 SignatureAlgorithm = "PS256"
 	// PS384 - RSASSA-PSS using SHA-384 and MGF1 with SHA-384, as described in https://tools.ietf.org/html/rfc7518

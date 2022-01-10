@@ -869,3 +869,85 @@ func (c *Client) GetIssuer(ctx context.Context, issuerName string, options *GetI
 		},
 	}, nil
 }
+
+
+// ListIssuersPager is a Pager for the Client.ListIssuers operation
+type ListIssuersPager interface {
+	// PageResponse returns the current ListIssuersPage
+	PageResponse() ListIssuersPage
+
+	// Err returns true if there is another page of data available, false if not
+	Err() error
+
+	// NextPage returns true if there is another page of data available, false if not
+	NextPage(context.Context) bool
+}
+
+// listIssuersPager implements the ListIssuersPager interface
+type listIssuersPager struct {
+	genPager *generated.KeyVaultClientGetCertificateIssuersPager
+}
+
+// PageResponse returns the results from the page most recently fetched from the service
+func (l *listIssuersPager) PageResponse() ListIssuersPage {
+	return listIssuersPageFromGenerated(l.genPager.PageResponse())
+}
+
+// Err returns an error value if the most recent call to NextPage was not successful, else nil
+func (l *listIssuersPager) Err() error {
+	return l.genPager.Err()
+}
+
+// NextPage fetches the next available page of results from the service. If the fetched page
+// contains results, the return value is true, else false. Results fetched from the service
+// can be evaluated by calling PageResponse on this Pager.
+func (l *listIssuersPager) NextPage(ctx context.Context) bool {
+	return l.genPager.NextPage(ctx)
+}
+
+// ListIssuersOptions contains the optional parameters for the Client.ListIssuers method
+type ListIssuersOptions struct {
+	MaxResults *int32
+}
+
+// convert ListIssuersOptions to generated options
+func (l *ListIssuersOptions) toGenerated() *generated.KeyVaultClientGetCertificateIssuersOptions {
+	if l == nil {
+		return &generated.KeyVaultClientGetCertificateIssuersOptions{}
+	}
+
+	return &generated.KeyVaultClientGetCertificateIssuersOptions{Maxresults: l.MaxResults}
+}
+
+// ListIssuersPage contains the current page of results for the Client.ListSecrets operation
+type ListIssuersPage struct {
+	// READ-ONLY; A response message containing a list of certificates in the key vault along with a link to the next page of certificates.
+	Value []*CertificateIssuerItem `json:"value,omitempty" azure:"ro"`
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// convert internal Response to ListIssuersPage
+func listIssuersPageFromGenerated(i generated.KeyVaultClientGetCertificateIssuersResponse) ListIssuersPage {
+	var vals []*CertificateIssuerItem
+
+	for _, v := range i.Value {
+		vals = append(vals, certificateIssuerItemFromGenerated(v))
+	}
+
+	return ListIssuersPage{
+		RawResponse: i.RawResponse,
+		Value: vals,
+	}
+}
+
+// ListIssuers retrieves a list of the certificates in the Key Vault as JSON Web Key structures that contain the
+// public part of a stored certificate. The LIST operation is applicable to all certificate types, however only the
+// base certificate identifier, attributes, and tags are provided in the response. Individual versions of a
+// certificate are not listed in the response. This operation requires the certificates/list permission.
+func (c *Client) ListIssuers(options *ListIssuersOptions) ListIssuersPager {
+	return &listIssuersPager{
+		genPager: c.genClient.GetCertificateIssuers(c.vaultURL, options.toGenerated()),
+	}
+}

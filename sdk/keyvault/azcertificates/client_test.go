@@ -268,10 +268,10 @@ func TestClient_IssuerCRUD(t *testing.T) {
 		OrganizationDetails: &OrganizationDetails{
 			AdminDetails: []*AdministratorDetails{
 				{
-					FirstName: to.StringPtr("John"),
-					LastName: to.StringPtr("Doe"),
+					FirstName:    to.StringPtr("John"),
+					LastName:     to.StringPtr("Doe"),
 					EmailAddress: to.StringPtr("admin@microsoft.com"),
-					Phone: to.StringPtr("4255555555"),
+					Phone:        to.StringPtr("4255555555"),
 				},
 			},
 		},
@@ -286,4 +286,41 @@ func TestClient_IssuerCRUD(t *testing.T) {
 	require.Equal(t, *getResp.Provider, "Test")
 	require.Equal(t, *getResp.Credentials.AccountID, "keyvaultuser")
 	require.Contains(t, *getResp.ID, fmt.Sprintf("/certificates/issuers/%s", issuerName))
+
+	issuerName2, err := createRandomName(t, "issuer2")
+	require.NoError(t, err)
+
+	_, err = client.CreateIssuer(ctx, issuerName2, "Test", &CreateIssuerOptions{
+		Credentials: &IssuerCredentials{
+			AccountID: to.StringPtr("keyvaultuser2"),
+		},
+		Attributes: &IssuerAttributes{
+			Enabled: to.BoolPtr(true),
+		},
+		OrganizationDetails: &OrganizationDetails{
+			AdminDetails: []*AdministratorDetails{
+				{
+					FirstName:    to.StringPtr("John"),
+					LastName:     to.StringPtr("Doe"),
+					EmailAddress: to.StringPtr("admin@microsoft.com"),
+					Phone:        to.StringPtr("4255555555"),
+				},
+			},
+		},
+	})
+	require.NoError(t, err)
+
+	// List operation
+	pager := client.ListIssuers(nil)
+	count := 0
+	for pager.NextPage(ctx) {
+		for _, issuer := range pager.PageResponse().Value {
+			require.Equal(t, "Test", *issuer.Provider)
+			count += 1
+		}
+	}
+	require.GreaterOrEqual(t, count, 2)
+	require.NoError(t, pager.Err())
+
+
 }

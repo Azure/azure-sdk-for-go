@@ -34,11 +34,11 @@ func (a AccessPolicy) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	aux := &struct {
 		*alias
 		Expiry *timeRFC3339 `xml:"Expiry"`
-		Start *timeRFC3339 `xml:"Start"`
+		Start  *timeRFC3339 `xml:"Start"`
 	}{
-		alias: (*alias)(&a),
+		alias:  (*alias)(&a),
 		Expiry: (*timeRFC3339)(a.Expiry),
-		Start: (*timeRFC3339)(a.Start),
+		Start:  (*timeRFC3339)(a.Start),
 	}
 	return e.EncodeElement(aux, start)
 }
@@ -49,7 +49,7 @@ func (a *AccessPolicy) UnmarshalXML(d *xml.Decoder, start xml.StartElement) erro
 	aux := &struct {
 		*alias
 		Expiry *timeRFC3339 `xml:"Expiry"`
-		Start *timeRFC3339 `xml:"Start"`
+		Start  *timeRFC3339 `xml:"Start"`
 	}{
 		alias: (*alias)(a),
 	}
@@ -73,13 +73,13 @@ type CorsRule struct {
 	AllowedMethods *string `xml:"AllowedMethods"`
 
 	// REQUIRED; The origin domains that are permitted to make a request against the service via CORS. The origin domain is the
-// domain from which the request originates. Note that the origin must be an exact
-// case-sensitive match with the origin that the user age sends to the service. You can also use the wildcard character '*'
-// to allow all origin domains to make requests via CORS.
+	// domain from which the request originates. Note that the origin must be an exact
+	// case-sensitive match with the origin that the user age sends to the service. You can also use the wildcard character '*'
+	// to allow all origin domains to make requests via CORS.
 	AllowedOrigins *string `xml:"AllowedOrigins"`
 
 	// REQUIRED; The response headers that may be sent in the response to the CORS request and exposed by the browser to the request
-// issuer.
+	// issuer.
 	ExposedHeaders *string `xml:"ExposedHeaders"`
 
 	// REQUIRED; The maximum amount time that a browser should cache the preflight OPTIONS request.
@@ -88,8 +88,8 @@ type CorsRule struct {
 
 type GeoReplication struct {
 	// REQUIRED; A GMT date/time value, to the second. All primary writes preceding this value are guaranteed to be available
-// for read operations at the secondary. Primary writes after this point in time may or may
-// not be available for reads.
+	// for read operations at the secondary. Primary writes after this point in time may or may
+	// not be available for reads.
 	LastSyncTime *time.Time `xml:"LastSyncTime"`
 
 	// REQUIRED; The status of the secondary location.
@@ -103,7 +103,7 @@ func (g GeoReplication) MarshalXML(e *xml.Encoder, start xml.StartElement) error
 		*alias
 		LastSyncTime *timeRFC1123 `xml:"LastSyncTime"`
 	}{
-		alias: (*alias)(&g),
+		alias:        (*alias)(&g),
 		LastSyncTime: (*timeRFC1123)(g.LastSyncTime),
 	}
 	return e.EncodeElement(aux, start)
@@ -164,7 +164,7 @@ type QueryOptions struct {
 	// Specifies the media type for the response.
 	Format *ODataMetadataFormat
 	// Select expression using OData notation. Limits the columns on each record to just those requested, e.g. "$select=PolicyAssignmentId,
-// ResourceId".
+	// ResourceId".
 	Select *string
 	// Maximum number of records to return.
 	Top *int32
@@ -176,14 +176,14 @@ type RetentionPolicy struct {
 	Enabled *bool `xml:"Enabled"`
 
 	// Indicates the number of days that metrics or logging or soft-deleted data should be retained. All data older than this
-// value will be deleted.
+	// value will be deleted.
 	Days *int32 `xml:"Days"`
 }
 
 // ServiceClientGetPropertiesOptions contains the optional parameters for the ServiceClient.GetProperties method.
 type ServiceClientGetPropertiesOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when analytics
-// logging is enabled.
+	// logging is enabled.
 	RequestID *string
 	// The timeout parameter is expressed in seconds.
 	Timeout *int32
@@ -192,7 +192,7 @@ type ServiceClientGetPropertiesOptions struct {
 // ServiceClientGetStatisticsOptions contains the optional parameters for the ServiceClient.GetStatistics method.
 type ServiceClientGetStatisticsOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when analytics
-// logging is enabled.
+	// logging is enabled.
 	RequestID *string
 	// The timeout parameter is expressed in seconds.
 	Timeout *int32
@@ -201,7 +201,7 @@ type ServiceClientGetStatisticsOptions struct {
 // ServiceClientSetPropertiesOptions contains the optional parameters for the ServiceClient.SetProperties method.
 type ServiceClientSetPropertiesOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when analytics
-// logging is enabled.
+	// logging is enabled.
 	RequestID *string
 	// The timeout parameter is expressed in seconds.
 	Timeout *int32
@@ -219,17 +219,17 @@ type SignedIdentifier struct {
 // TableClientCreateOptions contains the optional parameters for the TableClient.Create method.
 type TableClientCreateOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when analytics
-// logging is enabled.
+	// logging is enabled.
 	RequestID *string
 	// Specifies whether the response should include the inserted entity in the payload. Possible values are return-no-content
-// and return-content.
+	// and return-content.
 	ResponsePreference *ResponseFormat
 }
 
 // TableClientDeleteEntityOptions contains the optional parameters for the TableClient.DeleteEntity method.
 type TableClientDeleteEntityOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when analytics
-// logging is enabled.
+	// logging is enabled.
 	RequestID *string
 	// The timeout parameter is expressed in seconds.
 	Timeout *int32
@@ -238,14 +238,14 @@ type TableClientDeleteEntityOptions struct {
 // TableClientDeleteOptions contains the optional parameters for the TableClient.Delete method.
 type TableClientDeleteOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when analytics
-// logging is enabled.
+	// logging is enabled.
 	RequestID *string
 }
 
 // TableClientGetAccessPolicyOptions contains the optional parameters for the TableClient.GetAccessPolicy method.
 type TableClientGetAccessPolicyOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when analytics
-// logging is enabled.
+	// logging is enabled.
 	RequestID *string
 	// The timeout parameter is expressed in seconds.
 	Timeout *int32
@@ -254,10 +254,10 @@ type TableClientGetAccessPolicyOptions struct {
 // TableClientInsertEntityOptions contains the optional parameters for the TableClient.InsertEntity method.
 type TableClientInsertEntityOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when analytics
-// logging is enabled.
+	// logging is enabled.
 	RequestID *string
 	// Specifies whether the response should include the inserted entity in the payload. Possible values are return-no-content
-// and return-content.
+	// and return-content.
 	ResponsePreference *ResponseFormat
 	// The properties for the table entity.
 	TableEntityProperties map[string]interface{}
@@ -268,12 +268,12 @@ type TableClientInsertEntityOptions struct {
 // TableClientMergeEntityOptions contains the optional parameters for the TableClient.MergeEntity method.
 type TableClientMergeEntityOptions struct {
 	// Match condition for an entity to be updated. If specified and a matching entity is not found, an error will be raised.
-// To force an unconditional update, set to the wildcard character (*). If not
-// specified, an insert will be performed when no existing entity is found to update and a merge will be performed if an existing
-// entity is found.
+	// To force an unconditional update, set to the wildcard character (*). If not
+	// specified, an insert will be performed when no existing entity is found to update and a merge will be performed if an existing
+	// entity is found.
 	IfMatch *string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when analytics
-// logging is enabled.
+	// logging is enabled.
 	RequestID *string
 	// The properties for the table entity.
 	TableEntityProperties map[string]interface{}
@@ -288,7 +288,7 @@ type TableClientQueryEntitiesOptions struct {
 	// An entity query continuation token from a previous call.
 	NextRowKey *string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when analytics
-// logging is enabled.
+	// logging is enabled.
 	RequestID *string
 	// The timeout parameter is expressed in seconds.
 	Timeout *int32
@@ -298,7 +298,7 @@ type TableClientQueryEntitiesOptions struct {
 // method.
 type TableClientQueryEntityWithPartitionAndRowKeyOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when analytics
-// logging is enabled.
+	// logging is enabled.
 	RequestID *string
 	// The timeout parameter is expressed in seconds.
 	Timeout *int32
@@ -309,14 +309,14 @@ type TableClientQueryOptions struct {
 	// A table query continuation token from a previous call.
 	NextTableName *string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when analytics
-// logging is enabled.
+	// logging is enabled.
 	RequestID *string
 }
 
 // TableClientSetAccessPolicyOptions contains the optional parameters for the TableClient.SetAccessPolicy method.
 type TableClientSetAccessPolicyOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when analytics
-// logging is enabled.
+	// logging is enabled.
 	RequestID *string
 	// The acls for the table.
 	TableACL []*SignedIdentifier
@@ -327,12 +327,12 @@ type TableClientSetAccessPolicyOptions struct {
 // TableClientUpdateEntityOptions contains the optional parameters for the TableClient.UpdateEntity method.
 type TableClientUpdateEntityOptions struct {
 	// Match condition for an entity to be updated. If specified and a matching entity is not found, an error will be raised.
-// To force an unconditional update, set to the wildcard character (*). If not
-// specified, an insert will be performed when no existing entity is found to update and a replace will be performed if an
-// existing entity is found.
+	// To force an unconditional update, set to the wildcard character (*). If not
+	// specified, an insert will be performed when no existing entity is found to update and a replace will be performed if an
+	// existing entity is found.
 	IfMatch *string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when analytics
-// logging is enabled.
+	// logging is enabled.
 	RequestID *string
 	// The properties for the table entity.
 	TableEntityProperties map[string]interface{}
@@ -465,4 +465,3 @@ func populate(m map[string]interface{}, k string, v interface{}) {
 		m[k] = v
 	}
 }
-

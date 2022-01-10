@@ -9,7 +9,7 @@
 package internal
 
 const (
-	moduleName = "internal"
+	moduleName    = "internal"
 	moduleVersion = "v0.1.0"
 )
 
@@ -21,7 +21,7 @@ const (
 
 // PossibleEnum0Values returns the possible values for the Enum0 const type.
 func PossibleEnum0Values() []Enum0 {
-	return []Enum0{	
+	return []Enum0{
 		Enum0TwoThousandNineteen0202,
 	}
 }
@@ -39,7 +39,7 @@ const (
 
 // PossibleEnum1Values returns the possible values for the Enum1 const type.
 func PossibleEnum1Values() []Enum1 {
-	return []Enum1{	
+	return []Enum1{
 		Enum1Three0,
 	}
 }
@@ -57,7 +57,7 @@ const (
 
 // PossibleEnum4Values returns the possible values for the Enum4 const type.
 func PossibleEnum4Values() []Enum4 {
-	return []Enum4{	
+	return []Enum4{
 		Enum4ACL,
 	}
 }
@@ -75,7 +75,7 @@ const (
 
 // PossibleEnum5Values returns the possible values for the Enum5 const type.
 func PossibleEnum5Values() []Enum5 {
-	return []Enum5{	
+	return []Enum5{
 		Enum5Service,
 	}
 }
@@ -93,7 +93,7 @@ const (
 
 // PossibleEnum6Values returns the possible values for the Enum6 const type.
 func PossibleEnum6Values() []Enum6 {
-	return []Enum6{	
+	return []Enum6{
 		Enum6Properties,
 	}
 }
@@ -111,7 +111,7 @@ const (
 
 // PossibleEnum7Values returns the possible values for the Enum7 const type.
 func PossibleEnum7Values() []Enum7 {
-	return []Enum7{	
+	return []Enum7{
 		Enum7Stats,
 	}
 }
@@ -125,14 +125,14 @@ func (c Enum7) ToPtr() *Enum7 {
 type GeoReplicationStatusType string
 
 const (
-	GeoReplicationStatusTypeBootstrap GeoReplicationStatusType = "bootstrap"
-	GeoReplicationStatusTypeLive GeoReplicationStatusType = "live"
+	GeoReplicationStatusTypeBootstrap   GeoReplicationStatusType = "bootstrap"
+	GeoReplicationStatusTypeLive        GeoReplicationStatusType = "live"
 	GeoReplicationStatusTypeUnavailable GeoReplicationStatusType = "unavailable"
 )
 
 // PossibleGeoReplicationStatusTypeValues returns the possible values for the GeoReplicationStatusType const type.
 func PossibleGeoReplicationStatusTypeValues() []GeoReplicationStatusType {
-	return []GeoReplicationStatusType{	
+	return []GeoReplicationStatusType{
 		GeoReplicationStatusTypeBootstrap,
 		GeoReplicationStatusTypeLive,
 		GeoReplicationStatusTypeUnavailable,
@@ -147,14 +147,14 @@ func (c GeoReplicationStatusType) ToPtr() *GeoReplicationStatusType {
 type ODataMetadataFormat string
 
 const (
-	ODataMetadataFormatApplicationJSONODataFullmetadata ODataMetadataFormat = "application/json;odata=fullmetadata"
+	ODataMetadataFormatApplicationJSONODataFullmetadata    ODataMetadataFormat = "application/json;odata=fullmetadata"
 	ODataMetadataFormatApplicationJSONODataMinimalmetadata ODataMetadataFormat = "application/json;odata=minimalmetadata"
-	ODataMetadataFormatApplicationJSONODataNometadata ODataMetadataFormat = "application/json;odata=nometadata"
+	ODataMetadataFormatApplicationJSONODataNometadata      ODataMetadataFormat = "application/json;odata=nometadata"
 )
 
 // PossibleODataMetadataFormatValues returns the possible values for the ODataMetadataFormat const type.
 func PossibleODataMetadataFormatValues() []ODataMetadataFormat {
-	return []ODataMetadataFormat{	
+	return []ODataMetadataFormat{
 		ODataMetadataFormatApplicationJSONODataFullmetadata,
 		ODataMetadataFormatApplicationJSONODataMinimalmetadata,
 		ODataMetadataFormatApplicationJSONODataNometadata,
@@ -169,13 +169,13 @@ func (c ODataMetadataFormat) ToPtr() *ODataMetadataFormat {
 type ResponseFormat string
 
 const (
-	ResponseFormatReturnContent ResponseFormat = "return-content"
+	ResponseFormatReturnContent   ResponseFormat = "return-content"
 	ResponseFormatReturnNoContent ResponseFormat = "return-no-content"
 )
 
 // PossibleResponseFormatValues returns the possible values for the ResponseFormat const type.
 func PossibleResponseFormatValues() []ResponseFormat {
-	return []ResponseFormat{	
+	return []ResponseFormat{
 		ResponseFormatReturnContent,
 		ResponseFormatReturnNoContent,
 	}
@@ -185,4 +185,3 @@ func PossibleResponseFormatValues() []ResponseFormat {
 func (c ResponseFormat) ToPtr() *ResponseFormat {
 	return &c
 }
-

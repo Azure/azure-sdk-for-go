@@ -8,8 +8,6 @@
 
 package internal
 
-
-
 import (
 	"encoding/json"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"

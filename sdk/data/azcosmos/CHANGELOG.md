@@ -1,10 +1,11 @@
 # Release History
 
-## 0.1.1 (Unreleased)
+## 0.2.0 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
+* Updated to latest `azcore`. Public surface area is unchanged.  However, the `azcore.HTTPResponse` interface has been removed.
 
 ### Bugs Fixed
 

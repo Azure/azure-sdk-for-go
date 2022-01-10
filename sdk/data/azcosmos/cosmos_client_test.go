@@ -31,7 +31,7 @@ func TestEnsureErrorIsGeneratedOnResponse(t *testing.T) {
 		mock.WithBody(jsonString),
 		mock.WithStatusCode(404))
 
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", []policy.Policy{}, []policy.Policy{}, &policy.ClientOptions{Transport: srv})
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
 	client := &Client{endpoint: srv.URL(), pipeline: pl}
 	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeDatabase,
@@ -58,7 +58,7 @@ func TestEnsureErrorIsNotGeneratedOnResponse(t *testing.T) {
 	srv.SetResponse(
 		mock.WithStatusCode(200))
 
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", []policy.Policy{}, []policy.Policy{}, &policy.ClientOptions{Transport: srv})
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
 	client := &Client{endpoint: srv.URL(), pipeline: pl}
 	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeDatabase,
@@ -76,7 +76,7 @@ func TestRequestEnricherIsCalled(t *testing.T) {
 	srv.SetResponse(
 		mock.WithStatusCode(200))
 
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", []policy.Policy{}, []policy.Policy{}, &policy.ClientOptions{Transport: srv})
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
 	client := &Client{endpoint: srv.URL(), pipeline: pl}
 	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeDatabase,
@@ -103,7 +103,7 @@ func TestNoOptionsIsCalled(t *testing.T) {
 	srv.SetResponse(
 		mock.WithStatusCode(200))
 
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", []policy.Policy{}, []policy.Policy{}, &policy.ClientOptions{Transport: srv})
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
 	client := &Client{endpoint: srv.URL(), pipeline: pl}
 	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeDatabase,
@@ -120,7 +120,7 @@ func TestAttachContent(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", []policy.Policy{}, []policy.Policy{}, &policy.ClientOptions{Transport: srv})
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
 	client := &Client{endpoint: srv.URL(), pipeline: pl}
 	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeDatabase,
@@ -171,7 +171,7 @@ func TestAttachContent(t *testing.T) {
 func TestCreateRequest(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", []policy.Policy{}, []policy.Policy{}, &policy.ClientOptions{Transport: srv})
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
 	client := &Client{endpoint: srv.URL(), pipeline: pl}
 	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeDatabase,
@@ -211,7 +211,7 @@ func TestSendDelete(t *testing.T) {
 	srv.SetResponse(
 		mock.WithStatusCode(200))
 	verifier := pipelineVerifier{}
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", []policy.Policy{&verifier}, []policy.Policy{}, &policy.ClientOptions{Transport: srv})
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
 	client := &Client{endpoint: srv.URL(), pipeline: pl}
 	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeDatabase,
@@ -234,7 +234,7 @@ func TestSendGet(t *testing.T) {
 	srv.SetResponse(
 		mock.WithStatusCode(200))
 	verifier := pipelineVerifier{}
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", []policy.Policy{&verifier}, []policy.Policy{}, &policy.ClientOptions{Transport: srv})
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
 	client := &Client{endpoint: srv.URL(), pipeline: pl}
 	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeDatabase,
@@ -257,7 +257,7 @@ func TestSendPut(t *testing.T) {
 	srv.SetResponse(
 		mock.WithStatusCode(200))
 	verifier := pipelineVerifier{}
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", []policy.Policy{&verifier}, []policy.Policy{}, &policy.ClientOptions{Transport: srv})
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
 	client := &Client{endpoint: srv.URL(), pipeline: pl}
 	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeDatabase,
@@ -290,7 +290,7 @@ func TestSendPost(t *testing.T) {
 	srv.SetResponse(
 		mock.WithStatusCode(200))
 	verifier := pipelineVerifier{}
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", []policy.Policy{&verifier}, []policy.Policy{}, &policy.ClientOptions{Transport: srv})
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
 	client := &Client{endpoint: srv.URL(), pipeline: pl}
 	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeDatabase,
@@ -323,7 +323,7 @@ func TestSendQuery(t *testing.T) {
 	srv.SetResponse(
 		mock.WithStatusCode(200))
 	verifier := pipelineVerifier{}
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", []policy.Policy{&verifier}, []policy.Policy{}, &policy.ClientOptions{Transport: srv})
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
 	client := &Client{endpoint: srv.URL(), pipeline: pl}
 	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeDatabase,

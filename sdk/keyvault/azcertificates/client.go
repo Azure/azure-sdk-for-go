@@ -345,12 +345,12 @@ type DeleteCertificatePoller interface {
 
 // The poller returned by the Client.BeginDeleteCertificate operation
 type beginDeleteCertificatePoller struct {
-	certificateName        string // This is the certificate to Poll for in GetDeletedKey
-	vaultURL       string
-	client         *generated.KeyVaultClient
-	deleteResponse generated.KeyVaultClientDeleteCertificateResponse
-	lastResponse   generated.KeyVaultClientGetDeletedCertificateResponse
-	RawResponse    *http.Response
+	certificateName string // This is the certificate to Poll for in GetDeletedKey
+	vaultURL        string
+	client          *generated.KeyVaultClient
+	deleteResponse  generated.KeyVaultClientDeleteCertificateResponse
+	lastResponse    generated.KeyVaultClientGetDeletedCertificateResponse
+	RawResponse     *http.Response
 }
 
 // Done returns true if the LRO has reached a terminal state
@@ -434,11 +434,11 @@ func (c *Client) BeginDeleteCertificate(ctx context.Context, certificateName str
 	}
 
 	s := &beginDeleteCertificatePoller{
-		vaultURL:       c.vaultURL,
-		certificateName:        certificateName,
-		client:         c.genClient,
-		deleteResponse: resp,
-		lastResponse:   getResp,
+		vaultURL:        c.vaultURL,
+		certificateName: certificateName,
+		client:          c.genClient,
+		deleteResponse:  resp,
+		lastResponse:    getResp,
 	}
 
 	return DeleteCertificatePollerResponse{
@@ -782,4 +782,59 @@ func (c *Client) ListCertificateVersions(certificateName string, options *ListCe
 			options.toGenerated(),
 		),
 	}
+}
+
+type CreateIssuerOptions struct {
+	// Attributes of the issuer object.
+	Attributes *IssuerAttributes `json:"attributes,omitempty"`
+
+	// The credentials to be used for the issuer.
+	Credentials *IssuerCredentials `json:"credentials,omitempty"`
+
+	// Details of the organization as provided to the issuer.
+	OrganizationDetails *OrganizationDetails `json:"org_details,omitempty"`
+}
+
+func (c *CreateIssuerOptions) toGenerated() *generated.KeyVaultClientSetCertificateIssuerOptions {
+	return &generated.KeyVaultClientSetCertificateIssuerOptions{}
+}
+
+type CreateIssuerResponse struct {
+	IssuerBundle
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+func (c *Client) CreateIssuer(ctx context.Context, issuerName string, provider string, options *CreateIssuerOptions) (CreateIssuerResponse, error) {
+	if options == nil {
+		options = &CreateIssuerOptions{}
+	}
+
+	resp, err := c.genClient.SetCertificateIssuer(
+		ctx,
+		c.vaultURL,
+		issuerName,
+		generated.CertificateIssuerSetParameters{
+			Provider:            &provider,
+			Attributes:          options.Attributes.toGenerated(),
+			Credentials:         options.Credentials.toGenerated(),
+			OrganizationDetails: options.OrganizationDetails.toGenerated(),
+		},
+		options.toGenerated(),
+	)
+
+	if err != nil {
+		return CreateIssuerResponse{}, err
+	}
+
+	return CreateIssuerResponse{
+		RawResponse: resp.RawResponse,
+		IssuerBundle: IssuerBundle{
+			Attributes:          issuerAttributesFromGenerated(resp.Attributes),
+			Credentials:         issuerCredentialsFromGenerated(resp.Credentials),
+			OrganizationDetails: organizationDetailsFromGenerated(resp.OrganizationDetails),
+			Provider:            resp.Provider,
+			ID:                  resp.ID,
+		},
+	}, nil
 }

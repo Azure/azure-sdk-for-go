@@ -182,6 +182,7 @@ func TestClient_ListCertificates(t *testing.T) {
 }
 
 func TestClient_ListCertificateVersions(t *testing.T) {
+	t.Skip()
 	stop := startTest(t)
 	defer stop()
 
@@ -191,7 +192,7 @@ func TestClient_ListCertificateVersions(t *testing.T) {
 	name, err := createRandomName(t, "cert")
 	require.NoError(t, err)
 	createCert(t, client, name)
-	time.Sleep(5 * delay())
+	time.Sleep(10 * delay())
 	defer cleanUp(t, client, name)
 
 	pager := client.ListCertificateVersions(name, nil)
@@ -205,7 +206,7 @@ func TestClient_ListCertificateVersions(t *testing.T) {
 
 	// Add a second version
 	createCert(t, client, name)
-	time.Sleep(5 * delay())
+	time.Sleep(10 * delay())
 
 	pager = client.ListCertificateVersions(name, nil)
 	count = 0
@@ -218,7 +219,7 @@ func TestClient_ListCertificateVersions(t *testing.T) {
 
 	// Add a third version
 	createCert(t, client, name)
-	time.Sleep(5 * delay())
+	time.Sleep(10 * delay())
 
 	pager = client.ListCertificateVersions(name, nil)
 	count = 0
@@ -245,4 +246,38 @@ func TestClient_ImportCertificate(t *testing.T) {
 	require.Contains(t, *importResp.ID, importedName)
 
 	cleanUp(t, client, importedName)
+}
+
+func TestClient_CreateIssuer(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	issuerName, err := createRandomName(t, "issuer")
+	require.NoError(t, err)
+
+	resp, err := client.CreateIssuer(ctx, issuerName, "Test", &CreateIssuerOptions{
+		Credentials: &IssuerCredentials{
+			AccountID: to.StringPtr("keyvaultuser"),
+		},
+		Attributes: &IssuerAttributes{
+			Enabled: to.BoolPtr(true),
+		},
+		OrganizationDetails: &OrganizationDetails{
+			AdminDetails: []*AdministratorDetails{
+				{
+					FirstName: to.StringPtr("John"),
+					LastName: to.StringPtr("Doe"),
+					EmailAddress: to.StringPtr("admin@microsoft.com"),
+					Phone: to.StringPtr("4255555555"),
+				},
+			},
+		},
+	})
+	require.NoError(t, err)
+	require.Equal(t, *resp.Provider, "Test")
+	require.Equal(t, *resp.Credentials.AccountID, "keyvaultuser")
+	require.Contains(t, *resp.ID, fmt.Sprintf("/certificates/issuers/%s", issuerName))
 }

@@ -542,7 +542,6 @@ func (c *Client) BackupCertificate(ctx context.Context, certName string, options
 }
 
 type ImportCertificateOptions struct {
-
 	// The attributes of the certificate (optional).
 	CertificateAttributes *CertificateAttributes `json:"attributes,omitempty"`
 
@@ -781,6 +780,7 @@ func (c *Client) ListCertificateVersions(certificateName string, options *ListCe
 	}
 }
 
+// CreateIssuerOptions contains the optional parameters for the Client.CreateIssuer function
 type CreateIssuerOptions struct {
 	// Attributes of the issuer object.
 	Attributes *IssuerAttributes `json:"attributes,omitempty"`
@@ -796,12 +796,14 @@ func (c *CreateIssuerOptions) toGenerated() *generated.KeyVaultClientSetCertific
 	return &generated.KeyVaultClientSetCertificateIssuerOptions{}
 }
 
+// CreateIssuerResponse contains the response body for the Client.CreateIssuer function
 type CreateIssuerResponse struct {
 	IssuerBundle
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
+// SetCertificateContacts - Sets the certificate contacts for the specified key vault. This operation requires the certificates/managecontacts permission.
 func (c *Client) CreateIssuer(ctx context.Context, issuerName string, provider string, options *CreateIssuerOptions) (CreateIssuerResponse, error) {
 	if options == nil {
 		options = &CreateIssuerOptions{}
@@ -836,6 +838,7 @@ func (c *Client) CreateIssuer(ctx context.Context, issuerName string, provider s
 	}, nil
 }
 
+// GetIssuerOptions contains the optional parameters for the Client.GetIssuer function
 type GetIssuerOptions struct{}
 
 func (g *GetIssuerOptions) toGenerated() *generated.KeyVaultClientGetCertificateIssuerOptions {
@@ -849,6 +852,8 @@ type GetIssuerResponse struct {
 	RawResponse *http.Response
 }
 
+// GetIssuer - The GetIssuer operation returns the specified certificate issuer resources in the specified key vault. This operation
+// requires the certificates/manageissuers/getissuers permission.
 func (c *Client) GetIssuer(ctx context.Context, issuerName string, options *GetIssuerOptions) (GetIssuerResponse, error) {
 	resp, err := c.genClient.GetCertificateIssuer(ctx, c.vaultURL, issuerName, options.toGenerated())
 	if err != nil {
@@ -938,29 +943,30 @@ func listIssuersPageFromGenerated(i generated.KeyVaultClientGetCertificateIssuer
 	}
 }
 
-// ListIssuers retrieves a list of the certificates in the Key Vault as JSON Web Key structures that contain the
-// public part of a stored certificate. The LIST operation is applicable to all certificate types, however only the
-// base certificate identifier, attributes, and tags are provided in the response. Individual versions of a
-// certificate are not listed in the response. This operation requires the certificates/list permission.
+// ListIssuers - The ListIssuers operation returns the set of certificate issuer resources in the specified key vault. This operation
+// requires the certificates/manageissuers/getissuers permission.
 func (c *Client) ListIssuers(options *ListIssuersOptions) ListIssuersPager {
 	return &listIssuersPager{
 		genPager: c.genClient.GetCertificateIssuers(c.vaultURL, options.toGenerated()),
 	}
 }
 
+// DeleteIssuerOptions contains the optional parameters for the Client.DeleteIssuer function
 type DeleteIssuerOptions struct{}
 
 func (d *DeleteIssuerOptions) toGenerated() *generated.KeyVaultClientDeleteCertificateIssuerOptions {
 	return &generated.KeyVaultClientDeleteCertificateIssuerOptions{}
 }
 
-// KeyVaultClientDeleteCertificateIssuerResponse contains the response from method KeyVaultClient.DeleteCertificateIssuer.
+// DeleteIssuerResponse contains the response from method Client.DeleteIssuer.
 type DeleteIssuerResponse struct {
 	IssuerBundle
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
+// DeleteIssuer - The DeleteIssuer operation permanently removes the specified certificate issuer from the vault. This operation requires
+// the certificates/manageissuers/deleteissuers permission.
 func (c *Client) DeleteIssuer(ctx context.Context, issuerName string, options *DeleteIssuerOptions) (DeleteIssuerResponse, error) {
 	resp, err := c.genClient.DeleteCertificateIssuer(ctx, c.vaultURL, issuerName, options.toGenerated())
 	if err != nil {
@@ -968,6 +974,68 @@ func (c *Client) DeleteIssuer(ctx context.Context, issuerName string, options *D
 	}
 
 	return DeleteIssuerResponse{
+		RawResponse: resp.RawResponse,
+		IssuerBundle: IssuerBundle{
+			Attributes:          issuerAttributesFromGenerated(resp.Attributes),
+			Credentials:         issuerCredentialsFromGenerated(resp.Credentials),
+			OrganizationDetails: organizationDetailsFromGenerated(resp.OrganizationDetails),
+			Provider:            resp.Provider,
+			ID:                  resp.ID,
+		},
+	}, nil
+}
+
+// UpdateIssuerOptions contains the optional parameters for the Client.UpdateIssuer function
+type UpdateIssuerOptions struct {
+	// Attributes of the issuer object.
+	Attributes *IssuerAttributes `json:"attributes,omitempty"`
+
+	// The credentials to be used for the issuer.
+	Credentials *IssuerCredentials `json:"credentials,omitempty"`
+
+	// Details of the organization as provided to the issuer.
+	OrganizationDetails *OrganizationDetails `json:"org_details,omitempty"`
+
+	// The issuer provider.
+	Provider *string `json:"provider,omitempty"`
+}
+
+func (u *UpdateIssuerOptions) toUpdateParameters() generated.CertificateIssuerUpdateParameters {
+	if u == nil {
+		return generated.CertificateIssuerUpdateParameters{}
+	}
+
+	return generated.CertificateIssuerUpdateParameters{
+		Attributes:          u.Attributes.toGenerated(),
+		Credentials:         u.Credentials.toGenerated(),
+		OrganizationDetails: u.OrganizationDetails.toGenerated(),
+		Provider:            u.Provider,
+	}
+}
+
+// UpdateIssuerResponse contains the response from method Client.UpdateIssuer.
+type UpdateIssuerResponse struct {
+	IssuerBundle
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// UpdateIssuer - The UpdateIssuer operation performs an update on the specified certificate issuer entity. This operation requires
+// the certificates/setissuers permission.
+func (c *Client) UpdateIssuer(ctx context.Context, issuerName string, options *UpdateIssuerOptions) (UpdateIssuerResponse, error) {
+	resp, err := c.genClient.UpdateCertificateIssuer(
+		ctx,
+		c.vaultURL,
+		issuerName,
+		options.toUpdateParameters(),
+		&generated.KeyVaultClientUpdateCertificateIssuerOptions{},
+	)
+	if err != nil {
+		return UpdateIssuerResponse{}, err
+	}
+
+	return UpdateIssuerResponse{
 		RawResponse: resp.RawResponse,
 		IssuerBundle: IssuerBundle{
 			Attributes:          issuerAttributesFromGenerated(resp.Attributes),

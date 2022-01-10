@@ -322,6 +322,26 @@ func TestClient_IssuerCRUD(t *testing.T) {
 	require.GreaterOrEqual(t, count, 2)
 	require.NoError(t, pager.Err())
 
+	// Update the certificate issuer
+	updateResp, err := client.UpdateIssuer(ctx, issuerName2, &UpdateIssuerOptions{
+		OrganizationDetails: &OrganizationDetails{
+			AdminDetails: []*AdministratorDetails{
+				{
+					FirstName:    to.StringPtr("Jane"),
+					LastName:     to.StringPtr("Doey"),
+					EmailAddress: to.StringPtr("admin2@microsoft.com"),
+					Phone:        to.StringPtr("4266666666"),
+				},
+			},
+		},
+	})
+	require.NoError(t, err)
+	require.Equal(t, 1, len(updateResp.OrganizationDetails.AdminDetails))
+	require.Equal(t, "Jane", *updateResp.OrganizationDetails.AdminDetails[0].FirstName)
+	require.Equal(t, "Doey", *updateResp.OrganizationDetails.AdminDetails[0].LastName)
+	require.Equal(t, "admin2@microsoft.com", *updateResp.OrganizationDetails.AdminDetails[0].EmailAddress)
+	require.Equal(t, "4266666666", *updateResp.OrganizationDetails.AdminDetails[0].Phone)
+
 	// Delete the first issuer
 	_, err = client.DeleteIssuer(ctx, issuerName, nil)
 	require.NoError(t, err)

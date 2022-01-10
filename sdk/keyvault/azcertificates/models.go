@@ -532,7 +532,8 @@ func (o *OrganizationDetails) toGenerated() *generated.OrganizationDetails {
 	}
 
 	return &generated.OrganizationDetails{
-		ID: o.ID,
+		ID:           o.ID,
+		AdminDetails: adminDetails,
 	}
 }
 

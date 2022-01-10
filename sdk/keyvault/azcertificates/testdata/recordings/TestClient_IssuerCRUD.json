@@ -20,7 +20,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "97",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 10 Jan 2022 17:10:34 GMT",
+        "Date": "Mon, 10 Jan 2022 19:51:57 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -29,7 +29,7 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.226.1",
-        "x-ms-request-id": "9687f1ad-6b0e-4ef4-8972-bb895f75accf",
+        "x-ms-request-id": "8c05278c-8c71-4e8d-b290-7461282c766b",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -50,7 +50,7 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "Content-Length": "110",
+        "Content-Length": "218",
         "Content-Type": "application/json",
         "User-Agent": "azsdk-go-generated/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
       },
@@ -62,14 +62,23 @@
         "credentials": {
           "account_id": "keyvaultuser"
         },
-        "org_details": {}
+        "org_details": {
+          "admin_details": [
+            {
+              "email": "admin@microsoft.com",
+              "first_name": "John",
+              "last_name": "Doe",
+              "phone": "4255555555"
+            }
+          ]
+        }
       },
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "238",
+        "Content-Length": "347",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 10 Jan 2022 17:10:35 GMT",
+        "Date": "Mon, 10 Jan 2022 19:51:58 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -77,7 +86,7 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.226.1",
-        "x-ms-request-id": "ac2ddc4c-2ad6-4b38-8d9b-51f10b5e55a9",
+        "x-ms-request-id": "a7ea4fe4-5f9a-40c4-89a8-e1e7740db96c",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -87,12 +96,20 @@
           "account_id": "keyvaultuser"
         },
         "org_details": {
-          "zip": 0
+          "zip": 0,
+          "admin_details": [
+            {
+              "first_name": "John",
+              "last_name": "Doe",
+              "email": "admin@microsoft.com",
+              "phone": "4255555555"
+            }
+          ]
         },
         "attributes": {
           "enabled": true,
-          "created": 1641832151,
-          "updated": 1641834636
+          "created": 1641844192,
+          "updated": 1641844318
         }
       }
     },
@@ -113,9 +130,9 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "238",
+        "Content-Length": "347",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 10 Jan 2022 17:10:35 GMT",
+        "Date": "Mon, 10 Jan 2022 19:51:58 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -123,7 +140,7 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.226.1",
-        "x-ms-request-id": "22c9457a-5c03-4ef1-be39-caed441ea252",
+        "x-ms-request-id": "9686a4e6-e834-4b56-b3da-1d74627a8da9",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -133,12 +150,20 @@
           "account_id": "keyvaultuser"
         },
         "org_details": {
-          "zip": 0
+          "zip": 0,
+          "admin_details": [
+            {
+              "first_name": "John",
+              "last_name": "Doe",
+              "email": "admin@microsoft.com",
+              "phone": "4255555555"
+            }
+          ]
         },
         "attributes": {
           "enabled": true,
-          "created": 1641832151,
-          "updated": 1641834636
+          "created": 1641844192,
+          "updated": 1641844318
         }
       }
     },
@@ -153,7 +178,7 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "Content-Length": "111",
+        "Content-Length": "219",
         "Content-Type": "application/json",
         "User-Agent": "azsdk-go-generated/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
       },
@@ -165,14 +190,23 @@
         "credentials": {
           "account_id": "keyvaultuser2"
         },
-        "org_details": {}
+        "org_details": {
+          "admin_details": [
+            {
+              "email": "admin@microsoft.com",
+              "first_name": "John",
+              "last_name": "Doe",
+              "phone": "4255555555"
+            }
+          ]
+        }
       },
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "240",
+        "Content-Length": "349",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 10 Jan 2022 17:10:36 GMT",
+        "Date": "Mon, 10 Jan 2022 19:51:58 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -180,7 +214,7 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.226.1",
-        "x-ms-request-id": "468a98fc-6830-44b3-ab20-3e5a6680b0b6",
+        "x-ms-request-id": "798a803b-1619-45c5-8b10-9c96223daba8",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -190,12 +224,20 @@
           "account_id": "keyvaultuser2"
         },
         "org_details": {
-          "zip": 0
+          "zip": 0,
+          "admin_details": [
+            {
+              "first_name": "John",
+              "last_name": "Doe",
+              "email": "admin@microsoft.com",
+              "phone": "4255555555"
+            }
+          ]
         },
         "attributes": {
           "enabled": true,
-          "created": 1641834264,
-          "updated": 1641834636
+          "created": 1641844192,
+          "updated": 1641844319
         }
       }
     },
@@ -216,9 +258,9 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "325",
+        "Content-Length": "226",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 10 Jan 2022 17:10:36 GMT",
+        "Date": "Mon, 10 Jan 2022 19:51:58 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -226,15 +268,11 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.226.1",
-        "x-ms-request-id": "efb02b94-a31a-4e8d-990a-ad2f2cd61404",
+        "x-ms-request-id": "7974cf96-3798-4b9c-a9dc-73deb5ffd90b",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
         "value": [
-          {
-            "id": "https://fakekvurl.vault.azure.net/certificates/issuers/issuer1468158392",
-            "provider": "Test"
-          },
           {
             "id": "https://fakekvurl.vault.azure.net/certificates/issuers/issuer23351460800",
             "provider": "Test"
@@ -245,6 +283,73 @@
           }
         ],
         "nextLink": null
+      }
+    },
+    {
+      "RequestUri": "https://fakekvurl.vault.azure.net/certificates/issuers/issuer23351460800?api-version=7.3-preview",
+      "RequestMethod": "PATCH",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "PATCH",
+        ":path": "/certificates/issuers/issuer23351460800?api-version=7.3-preview",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "128",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-generated/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+      },
+      "RequestBody": {
+        "org_details": {
+          "admin_details": [
+            {
+              "email": "admin2@microsoft.com",
+              "first_name": "Jane",
+              "last_name": "Doey",
+              "phone": "4266666666"
+            }
+          ]
+        }
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "351",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 10 Jan 2022 19:51:58 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus2",
+        "x-ms-keyvault-service-version": "1.9.226.1",
+        "x-ms-request-id": "37c39e62-6575-4657-92a1-fc64b111e6d1",
+        "X-Powered-By": "ASP.NET"
+      },
+      "ResponseBody": {
+        "id": "https://fakekvurl.vault.azure.net/certificates/issuers/issuer23351460800",
+        "provider": "Test",
+        "credentials": {
+          "account_id": "keyvaultuser2"
+        },
+        "org_details": {
+          "zip": 0,
+          "admin_details": [
+            {
+              "first_name": "Jane",
+              "last_name": "Doey",
+              "email": "admin2@microsoft.com",
+              "phone": "4266666666"
+            }
+          ]
+        },
+        "attributes": {
+          "enabled": true,
+          "created": 1641844192,
+          "updated": 1641844319
+        }
       }
     },
     {
@@ -264,9 +369,9 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "238",
+        "Content-Length": "347",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 10 Jan 2022 17:10:36 GMT",
+        "Date": "Mon, 10 Jan 2022 19:51:58 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -274,7 +379,7 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.226.1",
-        "x-ms-request-id": "e350b17a-ce8c-4d86-aca8-c37f576915f2",
+        "x-ms-request-id": "ebb07a5a-b944-4e1b-88f6-2320ec5b0844",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -284,12 +389,20 @@
           "account_id": "keyvaultuser"
         },
         "org_details": {
-          "zip": 0
+          "zip": 0,
+          "admin_details": [
+            {
+              "first_name": "John",
+              "last_name": "Doe",
+              "email": "admin@microsoft.com",
+              "phone": "4255555555"
+            }
+          ]
         },
         "attributes": {
           "enabled": true,
-          "created": 1641832151,
-          "updated": 1641834636
+          "created": 1641844192,
+          "updated": 1641844318
         }
       }
     },
@@ -312,7 +425,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "75",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 10 Jan 2022 17:10:36 GMT",
+        "Date": "Mon, 10 Jan 2022 19:51:58 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -320,7 +433,7 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.226.1",
-        "x-ms-request-id": "fbd33427-730d-477b-bae3-289afc7d48c0",
+        "x-ms-request-id": "c5d130cf-bd88-42c3-b207-3fdaa8e39d94",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {

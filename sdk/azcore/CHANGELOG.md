@@ -14,10 +14,6 @@
 * `arm.NewPoller()` and `runtime.NewPoller()` no longer require an `eu` parameter
 * `runtime.NewResponseError()` no longer requires an `error` parameter
 
-### Bugs Fixed
-
-### Other Changes
-
 ## 0.20.0 (2021-10-22)
 
 ### Breaking Changes

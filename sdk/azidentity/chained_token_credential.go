@@ -43,10 +43,10 @@ func NewChainedTokenCredential(sources []azcore.TokenCredential, options *Chaine
 // ctx: Context controlling the request lifetime.
 // opts: Options for the token request, in particular the desired scope of the access token.
 func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (token *azcore.AccessToken, err error) {
-	var errList []CredentialUnavailableError
+	var errList []credentialUnavailableError
 	for _, cred := range c.sources {
 		token, err = cred.GetToken(ctx, opts)
-		var credErr CredentialUnavailableError
+		var credErr credentialUnavailableError
 		if errors.As(err, &credErr) {
 			errList = append(errList, credErr)
 		} else if err != nil {
@@ -69,7 +69,7 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.Token
 	return nil, credErr
 }
 
-func createChainedErrorMessage(errList []CredentialUnavailableError) string {
+func createChainedErrorMessage(errList []credentialUnavailableError) string {
 	msg := ""
 	for _, err := range errList {
 		msg += err.Error()

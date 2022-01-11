@@ -1,11 +1,12 @@
 # Release History
 
-## 0.13.0 (Unreleased)
+## 0.13.0 (2022-01-11)
 
 ### Features Added
 
 ### Breaking Changes
 * Replaced `AuthenticationFailedError.RawResponse()` with a field having the same name
+* Unexported `CredentialUnavailableError`
 
 ### Bugs Fixed
 

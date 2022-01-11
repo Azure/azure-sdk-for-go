@@ -131,7 +131,7 @@ func (ac *Client) GetTopic(ctx context.Context, topicName string, options *GetTo
 	props, err := newTopicProperties(&atomResp.Content.TopicDescription)
 
 	if err != nil {
-		return nil, atom.NewResponseError(err, resp)
+		return nil, err
 	}
 
 	return &GetTopicResponse{

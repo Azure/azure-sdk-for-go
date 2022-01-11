@@ -5,7 +5,6 @@ package admin
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net/http"
 	"os"
@@ -14,7 +13,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
@@ -799,11 +797,6 @@ func TestAdminClient_LackPermissions_Topic(t *testing.T) {
 
 	_, err = testData.Client.DeleteTopic(ctx, testData.TopicName, nil)
 	require.Contains(t, err.Error(), "error code: 401, Details: Authorization failed for specified action: Manage,EntityDelete.")
-
-	// sanity check that the http response is getting bundled into these errors, should it be needed.
-	var httpResponse azcore.HTTPResponse
-	require.True(t, errors.As(err, &httpResponse))
-	require.EqualValues(t, http.StatusUnauthorized, httpResponse.RawResponse().StatusCode)
 }
 
 func TestAdminClient_LackPermissions_Subscription(t *testing.T) {

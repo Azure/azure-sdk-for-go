@@ -11,9 +11,25 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
+
+type userAgentValidatingPolicy struct {
+	t     *testing.T
+	appID string
+}
+
+func (p userAgentValidatingPolicy) Do(req *policy.Request) (*http.Response, error) {
+	expected := "azsdk-go-" + component + "/" + version
+	if p.appID != "" {
+		expected = p.appID + " " + expected
+	}
+	if ua := req.Raw().Header.Get("User-Agent"); !strings.HasPrefix(ua, expected) {
+		p.t.Fatalf("unexpected User-Agent %s", ua)
+	}
+	return req.Next()
+}
 
 func TestIMDSEndpointParse(t *testing.T) {
 	_, err := url.Parse(imdsEndpoint)
@@ -22,48 +38,50 @@ func TestIMDSEndpointParse(t *testing.T) {
 	}
 }
 
-func TestMSITelemetryDefaultUserAgent(t *testing.T) {
+func TestManagedIdentityClient_UserAgent(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	options := ManagedIdentityCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: srv}}
-	pipeline := newDefaultMSIPipeline(options)
-	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	setEnvironmentVariables(t, map[string]string{msiEndpoint: srv.URL(), msiSecret: "..."})
+	options := ManagedIdentityCredentialOptions{
+		ClientOptions: azcore.ClientOptions{
+			Transport: srv, PerCallPolicies: []policy.Policy{userAgentValidatingPolicy{t: t}},
+		},
+	}
+	client, err := newManagedIdentityClient(&options)
 	if err != nil {
-		t.Fatalf("Unexpected error: %v", err)
+		t.Fatal(err)
 	}
-	resp, err := pipeline.Do(req)
+	_, err = client.authenticate(context.Background(), nil, []string{liveTestScope})
 	if err != nil {
-		t.Fatalf("Unexpected error: %v", err)
+		t.Fatal(err)
 	}
-	if resp.StatusCode != http.StatusOK {
-		t.Fatalf("unexpected status code: %d", resp.StatusCode)
-	}
-	if ua := resp.Request.Header.Get("User-Agent"); !strings.HasPrefix(ua, "azsdk-go-"+component+"/"+version) {
-		t.Fatalf("unexpected User-Agent %s", ua)
+	if count := srv.Requests(); count != 1 {
+		t.Fatalf("expected 1 token request, got %d", count)
 	}
 }
 
-func TestMSITelemetryCustom(t *testing.T) {
-	customTelemetry := "customvalue"
+func TestManagedIdentityClient_ApplicationID(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	options := ManagedIdentityCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: srv}}
-	options.Telemetry.ApplicationID = customTelemetry
-	pipeline := newDefaultMSIPipeline(options)
-	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	setEnvironmentVariables(t, map[string]string{msiEndpoint: srv.URL(), msiSecret: "..."})
+	appID := "customvalue"
+	options := ManagedIdentityCredentialOptions{
+		ClientOptions: azcore.ClientOptions{
+			Transport: srv, PerCallPolicies: []policy.Policy{userAgentValidatingPolicy{t: t, appID: appID}},
+		},
+	}
+	options.Telemetry.ApplicationID = appID
+	client, err := newManagedIdentityClient(&options)
 	if err != nil {
-		t.Fatalf("Unexpected error: %v", err)
+		t.Fatal(err)
 	}
-	resp, err := pipeline.Do(req)
+	_, err = client.authenticate(context.Background(), nil, []string{liveTestScope})
 	if err != nil {
-		t.Fatalf("Unexpected error: %v", err)
+		t.Fatal(err)
 	}
-	if resp.StatusCode != http.StatusOK {
-		t.Fatalf("unexpected status code: %d", resp.StatusCode)
-	}
-	if ua := resp.Request.Header.Get("User-Agent"); !strings.HasPrefix(ua, customTelemetry+" "+"azsdk-go-"+component+"/"+version) {
-		t.Fatalf("unexpected User-Agent %s", ua)
+	if count := srv.Requests(); count != 1 {
+		t.Fatalf("expected 1 token request, got %d", count)
 	}
 }

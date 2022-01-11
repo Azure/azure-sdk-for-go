@@ -106,7 +106,7 @@ func TestMain(m *testing.M) {
 		// TODO: reset matcher
 	case recording.RecordingMode:
 		// remove default sanitizers such as the OAuth response sanitizer
-		err := recording.ResetSanitizers(nil)
+		err := recording.ResetProxy(nil)
 		if err != nil {
 			panic(err)
 		}
@@ -151,7 +151,7 @@ func TestMain(m *testing.M) {
 			}
 		}
 		defer func() {
-			err := recording.ResetSanitizers(nil)
+			err := recording.ResetProxy(nil)
 			if err != nil {
 				panic(err)
 			}

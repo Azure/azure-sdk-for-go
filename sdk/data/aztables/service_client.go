@@ -30,8 +30,8 @@ func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *C
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, runtime.NewBearerTokenPolicy(cred, []string{"https://storage.azure.com/.default"}, nil))
 	con := generated.NewConnection(serviceURL, conOptions)
 	return &ServiceClient{
-		client:  generated.NewTableClient(con, generated.Enum0TwoThousandNineteen0202),
-		service: generated.NewServiceClient(con, generated.Enum0TwoThousandNineteen0202),
+		client:  generated.NewTableClient(serviceURL, generated.Enum0TwoThousandNineteen0202, conOptions),
+		service: generated.NewServiceClient(serviceURL, generated.Enum0TwoThousandNineteen0202, conOptions),
 		con:     con,
 	}, nil
 }
@@ -42,8 +42,8 @@ func NewServiceClientWithNoCredential(serviceURL string, options *ClientOptions)
 	conOptions := getConnectionOptions(serviceURL, options)
 	con := generated.NewConnection(serviceURL, conOptions)
 	return &ServiceClient{
-		client:  generated.NewTableClient(con, generated.Enum0TwoThousandNineteen0202),
-		service: generated.NewServiceClient(con, generated.Enum0TwoThousandNineteen0202),
+		client:  generated.NewTableClient(serviceURL, generated.Enum0TwoThousandNineteen0202, conOptions),
+		service: generated.NewServiceClient(serviceURL, generated.Enum0TwoThousandNineteen0202, conOptions),
 		con:     con,
 	}, nil
 }
@@ -55,8 +55,8 @@ func NewServiceClientWithSharedKey(serviceURL string, cred *SharedKeyCredential,
 
 	con := generated.NewConnection(serviceURL, conOptions)
 	return &ServiceClient{
-		client:  generated.NewTableClient(con, generated.Enum0TwoThousandNineteen0202),
-		service: generated.NewServiceClient(con, generated.Enum0TwoThousandNineteen0202),
+		client:  generated.NewTableClient(serviceURL, generated.Enum0TwoThousandNineteen0202, conOptions),
+		service: generated.NewServiceClient(serviceURL, generated.Enum0TwoThousandNineteen0202, conOptions),
 		cred:    cred,
 		con:     con,
 	}, nil
@@ -88,8 +88,8 @@ func (t *ServiceClient) NewClient(tableName string) *Client {
 type CreateTableOptions struct {
 }
 
-func (c *CreateTableOptions) toGenerated() *generated.TableCreateOptions {
-	return &generated.TableCreateOptions{}
+func (c *CreateTableOptions) toGenerated() *generated.TableClientCreateOptions {
+	return &generated.TableClientCreateOptions{}
 }
 
 // Create creates a table with the specified name.
@@ -105,8 +105,8 @@ func (t *ServiceClient) CreateTable(ctx context.Context, name string, options *C
 type DeleteTableOptions struct {
 }
 
-func (c *DeleteTableOptions) toGenerated() *generated.TableDeleteOptions {
-	return &generated.TableDeleteOptions{}
+func (c *DeleteTableOptions) toGenerated() *generated.TableClientDeleteOptions {
+	return &generated.TableClientDeleteOptions{}
 }
 
 // Response object from a ServiceClient.DeleteTable or Client.Delete operation
@@ -114,7 +114,7 @@ type DeleteTableResponse struct {
 	RawResponse *http.Response
 }
 
-func deleteTableResponseFromGen(g *generated.TableDeleteResponse) DeleteTableResponse {
+func deleteTableResponseFromGen(g *generated.TableClientDeleteResponse) DeleteTableResponse {
 	if g == nil {
 		return DeleteTableResponse{}
 	}
@@ -187,7 +187,7 @@ type ListTablesPage struct {
 	Tables []*ResponseProperties `json:"value,omitempty"`
 }
 
-func fromGeneratedTableQueryResponseEnvelope(g *generated.TableQueryResponseEnvelope) *ListTablesPage {
+func fromGeneratedTableQueryResponseEnvelope(g *generated.TableClientQueryResponse) *ListTablesPage {
 	if g == nil {
 		return nil
 	}
@@ -237,8 +237,8 @@ func fromGeneratedTableResponseProperties(g *generated.TableResponseProperties) 
 
 type tableQueryResponsePager struct {
 	client            *generated.TableClient
-	current           *generated.TableQueryResponseEnvelope
-	tableQueryOptions *generated.TableQueryOptions
+	current           *generated.TableClientQueryResponse
+	tableQueryOptions *generated.TableClientQueryOptions
 	listOptions       *ListTablesOptions
 	err               error
 }
@@ -250,7 +250,7 @@ func (p *tableQueryResponsePager) NextPage(ctx context.Context) bool {
 	if p.err != nil || (p.current != nil && p.current.XMSContinuationNextTableName == nil) {
 		return false
 	}
-	var resp generated.TableQueryResponseEnvelope
+	var resp generated.TableClientQueryResponse
 	resp, p.err = p.client.Query(ctx, generated.Enum1Three0, p.tableQueryOptions, p.listOptions.toQueryOptions())
 	p.current = &resp
 	p.tableQueryOptions.NextTableName = resp.XMSContinuationNextTableName
@@ -281,7 +281,7 @@ func (t *ServiceClient) ListTables(listOptions *ListTablesOptions) ListTablesPag
 	return &tableQueryResponsePager{
 		client:            t.client,
 		listOptions:       listOptions,
-		tableQueryOptions: new(generated.TableQueryOptions),
+		tableQueryOptions: new(generated.TableClientQueryOptions),
 	}
 }
 
@@ -294,15 +294,15 @@ type GetStatisticsResponse struct {
 	GeoReplication *GeoReplication `xml:"GeoReplication"`
 }
 
-func getStatisticsResponseFromGenerated(g *generated.ServiceGetStatisticsResponse) GetStatisticsResponse {
+func getStatisticsResponseFromGenerated(g *generated.ServiceClientGetStatisticsResponse) GetStatisticsResponse {
 	return GetStatisticsResponse{
 		RawResponse:    g.RawResponse,
 		GeoReplication: fromGeneratedGeoReplication(g.GeoReplication),
 	}
 }
 
-func (g *GetStatisticsOptions) toGenerated() *generated.ServiceGetStatisticsOptions {
-	return &generated.ServiceGetStatisticsOptions{}
+func (g *GetStatisticsOptions) toGenerated() *generated.ServiceClientGetStatisticsOptions {
+	return &generated.ServiceClientGetStatisticsOptions{}
 }
 
 // GetStatistics retrieves all the statistics for an account with Geo-redundancy established.
@@ -317,8 +317,8 @@ func (t *ServiceClient) GetStatistics(ctx context.Context, options *GetStatistic
 type GetPropertiesOptions struct {
 }
 
-func (g *GetPropertiesOptions) toGenerated() *generated.ServiceGetPropertiesOptions {
-	return &generated.ServiceGetPropertiesOptions{}
+func (g *GetPropertiesOptions) toGenerated() *generated.ServiceClientGetPropertiesOptions {
+	return &generated.ServiceClientGetPropertiesOptions{}
 }
 
 type GetPropertiesResponse struct {
@@ -336,7 +336,7 @@ type GetPropertiesResponse struct {
 	MinuteMetrics *Metrics `xml:"MinuteMetrics"`
 }
 
-func getPropertiesResponseFromGenerated(g *generated.ServiceGetPropertiesResponse) GetPropertiesResponse {
+func getPropertiesResponseFromGenerated(g *generated.ServiceClientGetPropertiesResponse) GetPropertiesResponse {
 	var cors []*CorsRule
 	for _, c := range g.Cors {
 		cors = append(cors, fromGeneratedCors(c))
@@ -361,15 +361,15 @@ func (t *ServiceClient) GetProperties(ctx context.Context, options *GetPropertie
 
 type SetPropertiesOptions struct{}
 
-func (s *SetPropertiesOptions) toGenerated() *generated.ServiceSetPropertiesOptions {
-	return &generated.ServiceSetPropertiesOptions{}
+func (s *SetPropertiesOptions) toGenerated() *generated.ServiceClientSetPropertiesOptions {
+	return &generated.ServiceClientSetPropertiesOptions{}
 }
 
 type SetPropertiesResponse struct {
 	RawResponse *http.Response
 }
 
-func setPropertiesResponseFromGenerated(g *generated.ServiceSetPropertiesResponse) SetPropertiesResponse {
+func setPropertiesResponseFromGenerated(g *generated.ServiceClientSetPropertiesResponse) SetPropertiesResponse {
 	return SetPropertiesResponse{
 		RawResponse: g.RawResponse,
 	}

@@ -1,9 +1,14 @@
 # Release History
 
-## 0.5.0 (Unreleased)
+## 0.4.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
 
 ### Other Changes
-* Bumps `azcore` dependency from `v0.20.0` to `v0.21.0`
 
 ## 0.4.0 (2021-11-09)
 

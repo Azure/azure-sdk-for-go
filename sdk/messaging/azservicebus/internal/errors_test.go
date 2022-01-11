@@ -177,6 +177,7 @@ func Test_ServiceBusError_NoRecoveryNeeded(t *testing.T) {
 		errors.New("link is currently draining"), // not yet exposed from go-amqp
 		fakeNetError{temp: true},
 		fakeNetError{timeout: true},
+		fakeNetError{temp: false, timeout: false},
 	}
 
 	for i, err := range tempErrors {
@@ -189,7 +190,6 @@ func Test_ServiceBusError_ConnectionRecoveryNeeded(t *testing.T) {
 	var connErrors = []error{
 		&amqp.Error{Condition: amqp.ErrorConnectionForced},
 		amqp.ErrConnClosed,
-		fakeNetError{temp: false, timeout: false},
 		io.EOF,
 	}
 

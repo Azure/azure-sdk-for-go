@@ -303,11 +303,6 @@ func GetRecoveryKind(ctxForLogging context.Context, err error) recoveryKind {
 	var netErr net.Error
 
 	if errors.As(err, &netErr) {
-		// TODO: need to look at this a bit more.
-		if !netErr.Temporary() && !netErr.Timeout() {
-			return RecoveryKindConn
-		}
-
 		// ie, just retry
 		return RecoveryKindNone
 	}

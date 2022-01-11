@@ -14,12 +14,20 @@ import (
 
 // ChainedTokenCredentialOptions contains optional parameters for ChainedTokenCredential.
 type ChainedTokenCredentialOptions struct {
-	// placeholder for future options
+	// RetrySources configures how the credential uses its sources.
+	// When true, the credential will always request a token from each source in turn,
+	// stopping when one provides a token. When false, the credential requests a token
+	// only from the source that previously retrieved a token--it never again tries the sources which failed.
+	RetrySources bool
 }
 
 // ChainedTokenCredential is a chain of credentials that enables fallback behavior when a credential can't authenticate.
+// By default, this credential will assume that the first successful credential should be the only credential used on future requests.
+// If the `RetrySources` option is set to true, it will always try to get a token using all of the originally provided credentials.
 type ChainedTokenCredential struct {
-	sources []azcore.TokenCredential
+	sources              []azcore.TokenCredential
+	successfulCredential azcore.TokenCredential
+	retrySources         bool
 }
 
 // NewChainedTokenCredential creates a ChainedTokenCredential.
@@ -36,7 +44,10 @@ func NewChainedTokenCredential(sources []azcore.TokenCredential, options *Chaine
 	}
 	cp := make([]azcore.TokenCredential, len(sources))
 	copy(cp, sources)
-	return &ChainedTokenCredential{sources: cp}, nil
+	if options == nil {
+		options = &ChainedTokenCredentialOptions{}
+	}
+	return &ChainedTokenCredential{sources: cp, retrySources: options.RetrySources}, nil
 }
 
 // GetToken calls GetToken on the chained credentials in turn, stopping when one returns a token. This method is called automatically by Azure SDK clients.
@@ -44,6 +55,10 @@ func NewChainedTokenCredential(sources []azcore.TokenCredential, options *Chaine
 // opts: Options for the token request, in particular the desired scope of the access token.
 func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (token *azcore.AccessToken, err error) {
 	var errList []CredentialUnavailableError
+
+	if c.successfulCredential != nil && !c.retrySources {
+		return c.successfulCredential.GetToken(ctx, opts)
+	}
 	for _, cred := range c.sources {
 		token, err = cred.GetToken(ctx, opts)
 		var credErr CredentialUnavailableError
@@ -59,9 +74,11 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.Token
 			return nil, err
 		} else {
 			logGetTokenSuccess(c, opts)
+			c.successfulCredential = cred
 			return token, nil
 		}
 	}
+
 	// if we reach this point it means that all of the credentials in the chain returned CredentialUnavailableError
 	credErr := newCredentialUnavailableError("Chained Token Credential", createChainedErrorMessage(errList))
 	// skip adding the stack trace here as it was already logged by other calls to GetToken()

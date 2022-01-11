@@ -383,7 +383,7 @@ func TestBackupSecret(t *testing.T) {
 	require.NoError(t, err)
 
 	_, err = client.GetSecret(context.Background(), secret, nil)
-	var httpErr azcore.ResponseError
+	var httpErr *azcore.ResponseError
 	require.True(t, errors.As(err, &httpErr))
 	require.Equal(t, httpErr.RawResponse.StatusCode, http.StatusNotFound)
 

@@ -643,7 +643,7 @@ func TestReleaseKey(t *testing.T) {
 				t.Skip("Skipping test in playback")
 			}
 			_, err = http.DefaultClient.Do(req)
-			require.NoError(t, err)
+			require.Error(t, err) // This URL doesn't exist so this should fail, will pass after 7.4-preview release
 			// require.Equal(t, resp.StatusCode, http.StatusOK)
 			// defer resp.Body.Close()
 

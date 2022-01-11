@@ -42,9 +42,9 @@ func TestEnsureErrorIsGeneratedOnResponse(t *testing.T) {
 		t.Fatal("Expected error")
 	}
 
-	asError := err.(*cosmosError)
-	if asError.ErrorCode() != someError.Code {
-		t.Errorf("Expected %v, but got %v", someError.Code, asError.ErrorCode())
+	asError := err.(*CosmosError)
+	if asError.ErrorCode != someError.Code {
+		t.Errorf("Expected %v, but got %v", someError.Code, asError.ErrorCode)
 	}
 
 	if err.Error() != asError.Error() {

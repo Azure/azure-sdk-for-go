@@ -80,13 +80,13 @@ func TestCosmosErrorOnJsonBody(t *testing.T) {
 	resp, _ := pl.Do(req)
 
 	cError := newCosmosError(resp)
-	asError := cError.(*cosmosError)
-	if asError.ErrorCode() != someError.Code {
-		t.Errorf("Expected %v, but got %v", someError.Code, asError.ErrorCode())
+	asError := cError.(*CosmosError)
+	if asError.ErrorCode != someError.Code {
+		t.Errorf("Expected %v, but got %v", someError.Code, asError.ErrorCode)
 	}
 
-	if asError.StatusCode() != 404 {
-		t.Errorf("Expected 404 Not Found, but got %v", asError.StatusCode())
+	if asError.StatusCode != 404 {
+		t.Errorf("Expected 404 Not Found, but got %v", asError.StatusCode)
 	}
 
 	if asError.Error() != string(jsonString) {

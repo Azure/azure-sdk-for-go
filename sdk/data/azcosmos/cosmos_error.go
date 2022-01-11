@@ -11,26 +11,18 @@ import (
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
-// cosmosError is used as base error for any error response from the Cosmos service.
-type cosmosError struct {
-	body        string
-	code        string
-	rawResponse *http.Response
-}
+// CosmosError is used as base error for any error response from the Cosmos service.
+type CosmosError struct {
+	body string
 
-func (e *cosmosError) StatusCode() int {
-	if e.rawResponse == nil {
-		return 0
-	}
-	return e.rawResponse.StatusCode
-}
+	// ErrorCode is the error code returned by the service if available.
+	ErrorCode string
 
-func (e *cosmosError) ErrorCode() string {
-	return e.code
-}
+	// StatusCode is the HTTP status code.
+	StatusCode int
 
-func (e *cosmosError) RawResponse() *http.Response {
-	return e.rawResponse
+	// RawResponse is the underlying HTTP response.
+	RawResponse *http.Response
 }
 
 func newCosmosError(response *http.Response) error {
@@ -39,8 +31,9 @@ func newCosmosError(response *http.Response) error {
 		return err
 	}
 
-	cError := cosmosError{
-		rawResponse: response,
+	cError := CosmosError{
+		StatusCode:  response.StatusCode,
+		RawResponse: response,
 		body:        string(bytesRead),
 	}
 
@@ -48,7 +41,7 @@ func newCosmosError(response *http.Response) error {
 	var cErrorResponse cosmosErrorResponse
 	err = json.Unmarshal(bytesRead, &cErrorResponse)
 	if err == nil {
-		cError.code = cErrorResponse.Code
+		cError.ErrorCode = cErrorResponse.Code
 	}
 
 	return &cError
@@ -64,12 +57,13 @@ func newCosmosErrorWithStatusCode(statusCode int, requestCharge *float32) error 
 		rawResponse.Header.Add(cosmosHeaderRequestCharge, fmt.Sprint(*requestCharge))
 	}
 
-	return &cosmosError{
-		rawResponse: rawResponse,
+	return &CosmosError{
+		StatusCode:  statusCode,
+		RawResponse: rawResponse,
 	}
 }
 
-func (e *cosmosError) Error() string {
+func (e *CosmosError) Error() string {
 	if e.body == "" {
 		return "response contained no body"
 	}

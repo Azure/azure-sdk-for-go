@@ -53,6 +53,7 @@ func (c cosmosOffers) ReadThroughputIfExists(
 
 	queryRequestCharge := newResponse(azResponse).RequestCharge
 	if len(theOffers.Offers) == 0 {
+		// TODO: this obscures the real raw response, is that ok?
 		return ThroughputResponse{}, newCosmosErrorWithStatusCode(http.StatusNotFound, &queryRequestCharge)
 	}
 

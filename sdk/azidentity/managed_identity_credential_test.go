@@ -400,7 +400,7 @@ func TestManagedIdentityCredential_GetTokenIMDS400(t *testing.T) {
 	for i := 0; i < 3; i++ {
 		_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
 		if !errors.As(err, &expected) {
-			t.Fatalf(`expected CredentialUnavailableError, got %T: "%s"`, err, err.Error())
+			t.Fatalf(`expected credentialUnavailableError, got %T: "%s"`, err, err.Error())
 		}
 	}
 }
@@ -731,9 +731,9 @@ func TestManagedIdentityCredential_IMDSTimeoutExceeded(t *testing.T) {
 	}
 	cred.client.imdsTimeout = time.Nanosecond
 	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
-	var expected CredentialUnavailableError
+	var expected credentialUnavailableError
 	if !errors.As(err, &expected) {
-		t.Fatalf(`expected CredentialUnavailableError, got %T: "%v"`, err, err)
+		t.Fatalf(`expected credentialUnavailableError, got %T: "%v"`, err, err)
 	}
 	if tk != nil {
 		t.Fatal("GetToken returned a token and an error")

@@ -8,8 +8,8 @@
 
 ### Bugs Fixed 
 
-- Fixing connection/link recovery in Sender.SendMessages() and Sender.SendMessageBatch(). PR#TBD
-- Fixing bug in the management link which could cause it to panic during recovery. PR#TBD
+- Fixing connection/link recovery in Sender.SendMessages() and Sender.SendMessageBatch(). PR#16790
+- Fixing bug in the management link which could cause it to panic during recovery. PR#16790
 
 ## 0.3.2 (2021-12-08)
 

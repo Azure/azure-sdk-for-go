@@ -5,6 +5,11 @@
 ### Breaking Changes
 * Replaced `AuthenticationFailedError.RawResponse()` with a field having the same name
 * Unexported `CredentialUnavailableError`
+* Instances of `ChainedTokenCredential` will now skip looping through the list of source credentials and re-use the first successful credential on subsequent calls to `GetToken`.
+  * If `ChainedTokenCredentialOptions.RetrySources` is true, `ChainedTokenCredential` will continue to try all of the originally provided credentials each time the `GetToken` method is called.
+  * `ChainedTokenCredential.successfulCredential` will contain a reference to the last successful credential.
+  * `DefaultAzureCredenial` will also re-use the first successful credential on subsequent calls to `GetToken`.
+  * `DefaultAzureCredential.chain.successfulCredential` will also contain a reference to the last successful credential.
 
 ### Other Changes
 * `ManagedIdentityCredential` no longer probes IMDS before requesting a token

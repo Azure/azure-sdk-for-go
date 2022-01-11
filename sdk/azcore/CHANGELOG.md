@@ -1,5 +1,15 @@
 # Release History
 
+## 0.21.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 0.21.0 (2022-01-11)
 
 ### Features Added
@@ -13,10 +23,6 @@
 * Removed `azcore.HTTPResponse` interface type
 * `arm.NewPoller()` and `runtime.NewPoller()` no longer require an `eu` parameter
 * `runtime.NewResponseError()` no longer requires an `error` parameter
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.20.0 (2021-10-22)
 

@@ -263,7 +263,7 @@ func TestBackupKey(t *testing.T) {
 			require.NoError(t, err)
 
 			_, err = client.GetKey(ctx, key, nil)
-			var httpErr azcore.ResponseError
+			var httpErr *azcore.ResponseError
 			require.True(t, errors.As(err, &httpErr))
 			require.Equal(t, httpErr.RawResponse.StatusCode, http.StatusNotFound)
 

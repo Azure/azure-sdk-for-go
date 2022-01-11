@@ -15,6 +15,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	generated "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
 	shared "github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 )
@@ -97,7 +98,7 @@ func NewClient(keyURL string, credential azcore.TokenCredential, options *Client
 		genOptions.PerRetryPolicies,
 		shared.NewKeyVaultChallengePolicy(credential),
 	)
-	conn := generated.NewConnection(genOptions)
+	pl := runtime.NewPipeline(generated.ModuleName, generated.ModuleVersion, runtime.PipelineOptions{}, genOptions)
 
 	vaultURL, err := parseVaultURL(keyURL)
 	if err != nil {
@@ -110,7 +111,7 @@ func NewClient(keyURL string, credential azcore.TokenCredential, options *Client
 	}
 
 	return &Client{
-		kvClient:   generated.NewKeyVaultClient(conn),
+		kvClient:   generated.NewKeyVaultClient(pl),
 		vaultURL:   vaultURL,
 		keyID:      keyID,
 		keyVersion: keyVersion,

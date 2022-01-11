@@ -16,6 +16,8 @@
   from it. Also, an error response from IMDS no longer disables a credential
   instance. Following an error, a credential instance will continue to send
   requests to IMDS as necessary.
+* Adopted MSAL for user and service principal authentication
+* Updated `azcore` requirement to 0.21.0
 
 ## 0.12.0 (2021-11-02)
 ### Breaking Changes

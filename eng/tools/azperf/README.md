@@ -8,8 +8,8 @@ The `azperf` CLI tool provides a singular framework for writing and running perf
 | `--duration` | `-d` | 10 seconds | internal.Duration (`int`) | How long to run an individual performance test |
 | `--iterations` | `-i` | 3 | internal.Iterations (`int`) | How many iterations of a performance test to run |
 | `--testproxy` | `-x` | N/A | internal.TestProxy (`string`) | Whether to run a test against a test proxy. If you want to run against `https` specify with `--testproxy https`, likewise for `http`. If you want to run normally omit this flag |
-| `--timeout` | `-t` | 10 seconds| internal.TimeoutSeconds (`int`) | How long to allow an operation to block. |
 | `--warmup` | `-w` | 3 seconds| internal.WarmUp (`int`) | How long to allow the connection to warm up. |
+| `--timeout` | `-t` | 10 seconds| internal.TimeoutSeconds (`int`) | How long to allow an operation to block. |
 
 ## Running with the test proxy
 
@@ -86,10 +86,18 @@ TODO
 
 ## Running Performance Tests
 
-First, compile the cli into a single executable:
+First, make sure you have go version 1.17 or later installed. You can install go from the [go.dev](https://go.dev/doc/install) site.
+
+Navigate to the `eng/tools/azperf` folder and run `go mod download` to download all the requirements for the performance framework.
+
+Build the CLI with the command:
 ```pwsh
 go build .
 ```
+
+Now you will have a single executable `azperf.exe` on Windows, or `azperf` on Mac/Linux, which can be used to run all performance tests.
+
+To list all the performance tests available run `./azperf.exe --help` and a list will show up along with optional parameters.
 
 To run a single performance test specify the test as the second argument:
 ```pwsh
@@ -101,9 +109,12 @@ To specify flags for a performance test, add them after the second argument:
 ./azperf.exe CreateEntityTest --duration 7 --testproxy https
 ```
 
+For more information about running individual tests, refer to the READMEs of each test linked below.
+
 ### Available Performance Tests
 
-| Name | Options | Package Testing | Description | Additional Flags |
-| ---- | ------- | --------------- | ----------- | ---------------- |
-| CreateEntityTest | None | `aztables` | Creates a single entity | None |
-| CreateKeyTest | None | `azkeys` | Creates a single RSA key | None |
+| Name | Options | Package Testing | Description | Additional Flags | More Information |
+| ---- | ------- | --------------- | ----------- | ---------------- | ---------------- |
+| CreateEntityTest | None | `aztables` | Creates a single entity | None | [README](https://github.com/Azure/azure-sdk-for-go) |
+| CreateKeyTest | None | `azkeys` | Creates a single RSA key | None | [README](https://github.com/Azure/azure-sdk-for-go) |
+| UploadBlobTest | None | `azblobs` | Uploads random data to a blob | None | [README](https://github.com/Azure/azure-sdk-for-go) |

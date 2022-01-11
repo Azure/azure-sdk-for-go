@@ -10,6 +10,7 @@ import (
 	azkeys "github.com/Azure/azure-sdk-for-go/eng/tools/azperf/cmd/azkeys"
 	aztables "github.com/Azure/azure-sdk-for-go/eng/tools/azperf/cmd/aztables"
 	template "github.com/Azure/azure-sdk-for-go/eng/tools/azperf/cmd/template"
+	azblob "github.com/Azure/azure-sdk-for-go/eng/tools/azperf/cmd/azblob"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/azperf/internal/perf"
 	"github.com/spf13/cobra"
 )
@@ -33,6 +34,10 @@ func init() {
 	rootCmd.AddCommand(template.TemplateCmd)
 	rootCmd.AddCommand(aztables.AztablesCmd)
 	rootCmd.AddCommand(azkeys.AzkeysCmd)
+
+	rootCmd.AddCommand(azblob.DownloadBlobCmd)
+	rootCmd.AddCommand(azblob.UploadBlobCmd)
+	rootCmd.AddCommand(azblob.ListBlobCmd)
 }
 
 // Execute executes the specified command.

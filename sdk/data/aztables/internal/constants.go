@@ -10,7 +10,7 @@ package internal
 
 const (
 	moduleName    = "internal"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v0.5.0"
 )
 
 type Enum0 string

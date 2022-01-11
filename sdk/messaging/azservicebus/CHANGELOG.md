@@ -1,16 +1,10 @@
 # Release History
 
-## 0.3.3 (Unreleased)
+## 0.3.3 (2022-01-12)
 
 ### Features Added
 
 - Support the pass-through of an Application ID when constructing an Azure Service Bus Client.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.3.2 (2021-12-08)
 

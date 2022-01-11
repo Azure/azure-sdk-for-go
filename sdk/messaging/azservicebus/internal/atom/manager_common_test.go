@@ -11,15 +11,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/stretchr/testify/require"
 )
 
 func TestResponseError(t *testing.T) {
-	// sanity check to make sure my error conforms to azcore's interface
-	var err azcore.HTTPResponse = ResponseError{}
-	require.NotNil(t, err)
-
 	require.EqualValues(t, "this is now the error message: 409", NewResponseError(nil, &http.Response{
 		StatusCode: http.StatusConflict,
 		Status:     "this is now the error message",

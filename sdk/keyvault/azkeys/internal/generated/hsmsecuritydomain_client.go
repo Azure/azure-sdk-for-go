@@ -47,11 +47,11 @@ func (client *HSMSecurityDomainClient) BeginDownload(ctx context.Context, vaultB
 	result := HSMSecurityDomainClientDownloadPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := runtime.NewPoller("HSMSecurityDomainClient.Download",resp, client.pl)
+	pt, err := runtime.NewPoller("HSMSecurityDomainClient.Download", resp, client.pl)
 	if err != nil {
 		return HSMSecurityDomainClientDownloadPollerResponse{}, err
 	}
-	result.Poller = &HSMSecurityDomainClientDownloadPoller {
+	result.Poller = &HSMSecurityDomainClientDownloadPoller{
 		pt: pt,
 	}
 	return result, nil
@@ -72,7 +72,7 @@ func (client *HSMSecurityDomainClient) download(ctx context.Context, vaultBaseUR
 	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
 		return nil, runtime.NewResponseError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // downloadCreateRequest creates the Download request.
@@ -192,11 +192,11 @@ func (client *HSMSecurityDomainClient) BeginUpload(ctx context.Context, vaultBas
 	result := HSMSecurityDomainClientUploadPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := runtime.NewPoller("HSMSecurityDomainClient.Upload",resp, client.pl)
+	pt, err := runtime.NewPoller("HSMSecurityDomainClient.Upload", resp, client.pl)
 	if err != nil {
 		return HSMSecurityDomainClientUploadPollerResponse{}, err
 	}
-	result.Poller = &HSMSecurityDomainClientUploadPoller {
+	result.Poller = &HSMSecurityDomainClientUploadPoller{
 		pt: pt,
 	}
 	return result, nil
@@ -216,7 +216,7 @@ func (client *HSMSecurityDomainClient) upload(ctx context.Context, vaultBaseURL 
 	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
 		return nil, runtime.NewResponseError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // uploadCreateRequest creates the Upload request.
@@ -273,4 +273,3 @@ func (client *HSMSecurityDomainClient) uploadPendingHandleResponse(resp *http.Re
 	}
 	return result, nil
 }
-

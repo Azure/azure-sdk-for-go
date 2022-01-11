@@ -8,8 +8,6 @@
 
 package generated
 
-
-
 import (
 	"encoding/json"
 	"fmt"

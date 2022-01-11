@@ -38,9 +38,9 @@ func (p *HSMSecurityDomainClientDownloadPoller) Poll(ctx context.Context) (*http
 	return p.pt.Poll(ctx)
 }
 
-	// FinalResponse performs a final GET to the service and returns the final response
-	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final HSMSecurityDomainClientDownloadResponse will be returned.
+// FinalResponse performs a final GET to the service and returns the final response
+// for the polling operation. If there is an error performing the final GET then an error is returned.
+// If the final GET succeeded then the final HSMSecurityDomainClientDownloadResponse will be returned.
 func (p *HSMSecurityDomainClientDownloadPoller) FinalResponse(ctx context.Context) (HSMSecurityDomainClientDownloadResponse, error) {
 	respType := HSMSecurityDomainClientDownloadResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.SecurityDomainObject)
@@ -81,9 +81,9 @@ func (p *HSMSecurityDomainClientUploadPoller) Poll(ctx context.Context) (*http.R
 	return p.pt.Poll(ctx)
 }
 
-	// FinalResponse performs a final GET to the service and returns the final response
-	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final HSMSecurityDomainClientUploadResponse will be returned.
+// FinalResponse performs a final GET to the service and returns the final response
+// for the polling operation. If there is an error performing the final GET then an error is returned.
+// If the final GET succeeded then the final HSMSecurityDomainClientUploadResponse will be returned.
 func (p *HSMSecurityDomainClientUploadPoller) FinalResponse(ctx context.Context) (HSMSecurityDomainClientUploadResponse, error) {
 	respType := HSMSecurityDomainClientUploadResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.SecurityDomainOperationStatus)
@@ -99,4 +99,3 @@ func (p *HSMSecurityDomainClientUploadPoller) FinalResponse(ctx context.Context)
 func (p *HSMSecurityDomainClientUploadPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
-

@@ -193,7 +193,7 @@ func (client *RoleDefinitionsClient) getHandleResponse(resp *http.Response) (Rol
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // scope - The scope of the role definition.
 // options - RoleDefinitionsClientListOptions contains the optional parameters for the RoleDefinitionsClient.List method.
-func (client *RoleDefinitionsClient) List(vaultBaseURL string, scope string, options *RoleDefinitionsClientListOptions) (*RoleDefinitionsClientListPager) {
+func (client *RoleDefinitionsClient) List(vaultBaseURL string, scope string, options *RoleDefinitionsClientListOptions) *RoleDefinitionsClientListPager {
 	return &RoleDefinitionsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
@@ -233,4 +233,3 @@ func (client *RoleDefinitionsClient) listHandleResponse(resp *http.Response) (Ro
 	}
 	return result, nil
 }
-

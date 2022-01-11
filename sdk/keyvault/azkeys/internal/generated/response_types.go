@@ -50,11 +50,11 @@ func (l HSMSecurityDomainClientDownloadPollerResponse) PollUntilDone(ctx context
 
 // Resume rehydrates a HSMSecurityDomainClientDownloadPollerResponse from the provided client and resume token.
 func (l *HSMSecurityDomainClientDownloadPollerResponse) Resume(ctx context.Context, client *HSMSecurityDomainClient, token string) error {
-	pt, err := runtime.NewPollerFromResumeToken("HSMSecurityDomainClient.Download",token, client.pl)
+	pt, err := runtime.NewPollerFromResumeToken("HSMSecurityDomainClient.Download", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &HSMSecurityDomainClientDownloadPoller {
+	poller := &HSMSecurityDomainClientDownloadPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -125,11 +125,11 @@ func (l HSMSecurityDomainClientUploadPollerResponse) PollUntilDone(ctx context.C
 
 // Resume rehydrates a HSMSecurityDomainClientUploadPollerResponse from the provided client and resume token.
 func (l *HSMSecurityDomainClientUploadPollerResponse) Resume(ctx context.Context, client *HSMSecurityDomainClient, token string) error {
-	pt, err := runtime.NewPollerFromResumeToken("HSMSecurityDomainClient.Upload",token, client.pl)
+	pt, err := runtime.NewPollerFromResumeToken("HSMSecurityDomainClient.Upload", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &HSMSecurityDomainClientUploadPoller {
+	poller := &HSMSecurityDomainClientUploadPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -542,4 +542,3 @@ type RoleDefinitionsClientListResponse struct {
 type RoleDefinitionsClientListResult struct {
 	RoleDefinitionListResult
 }
-

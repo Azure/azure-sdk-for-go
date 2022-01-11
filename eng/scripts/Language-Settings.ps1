@@ -6,7 +6,7 @@ $LanguageDisplayName = "go"
 function Get-GoModuleVersionInfo($modPath)
 {
   $NO_PREFIX_VERSION_LINE_REGEX = ".+\s*=\s*`"(?<bad_version>$([AzureEngSemanticVersion]::SEMVER_REGEX))`""
-  $VERSION_LINE_REGEX = ".+\s*=\s*`".*v(?<version>$([AzureEngSemanticVersion]::SEMVER_REGEX))`""
+  $VERSION_LINE_REGEX = ".+\s*=\s*`".*v(?<moduleVersion>$([AzureEngSemanticVersion]::SEMVER_REGEX))`""
 
   $versionFiles = Get-ChildItem -Recurse -Path $modPath -Filter *.go
 

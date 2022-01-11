@@ -78,28 +78,28 @@ func recoveryLevelToGenerated(d *DeletionRecoveryLevel) *generated.DeletionRecov
 	}
 }
 
-// JSONWebKeyCurveName - Elliptic curve name. For valid values, see JsonWebKeyCurveName.
-type JSONWebKeyCurveName string
+// KeyCurveName - Elliptic curve name.
+type KeyCurveName string
 
 const (
-	// JSONWebKeyCurveNameEd25519 - The Ed25519 Edwards curve.
-	JSONWebKeyCurveNameEd25519 JSONWebKeyCurveName = "Ed25519"
+	// Ed25519 - The Ed25519 Edwards curve.
+	Ed25519 KeyCurveName = "Ed25519"
 
-	// JSONWebKeyCurveNameP256 - The NIST P-256 elliptic curve, AKA SECG curve SECP256R1.
-	JSONWebKeyCurveNameP256 JSONWebKeyCurveName = "P-256"
+	// P256 - The NIST P-256 elliptic curve, AKA SECG curve SECP256R1.
+	P256 KeyCurveName = "P-256"
 
-	// JSONWebKeyCurveNameP256K - The SECG SECP256K1 elliptic curve.
-	JSONWebKeyCurveNameP256K JSONWebKeyCurveName = "P-256K"
+	// P256K - The SECG SECP256K1 elliptic curve.
+	P256K KeyCurveName = "P-256K"
 
-	// JSONWebKeyCurveNameP384 - The NIST P-384 elliptic curve, AKA SECG curve SECP384R1.
-	JSONWebKeyCurveNameP384 JSONWebKeyCurveName = "P-384"
+	// P384 - The NIST P-384 elliptic curve, AKA SECG curve SECP384R1.
+	P384 KeyCurveName = "P-384"
 
-	// JSONWebKeyCurveNameP521 - The NIST P-521 elliptic curve, AKA SECG curve SECP521R1.
-	JSONWebKeyCurveNameP521 JSONWebKeyCurveName = "P-521"
+	// P521 - The NIST P-521 elliptic curve, AKA SECG curve SECP521R1.
+	P521 KeyCurveName = "P-521"
 )
 
-// ToPtr returns a *JSONWebKeyCurveName pointing to the current value.
-func (c JSONWebKeyCurveName) ToPtr() *JSONWebKeyCurveName {
+// ToPtr returns a *KeyCurveName pointing to the current value.
+func (c KeyCurveName) ToPtr() *KeyCurveName {
 	return &c
 }
 

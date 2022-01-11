@@ -16,7 +16,7 @@ func TestToPtrMethods(t *testing.T) {
 	d := DeletionRecoveryLevelCustomizedRecoverable
 	require.Equal(t, d.ToPtr(), &d)
 
-	j := JSONWebKeyCurveNameP256
+	j := P256
 	require.Equal(t, j.ToPtr(), &j)
 
 	o := JSONWebKeyOperationDecrypt
@@ -29,7 +29,6 @@ func TestToPtrMethods(t *testing.T) {
 //nolint
 func TestToGeneratedMethods(t *testing.T) {
 	// If done incorrectly, this will have a nil pointer reference
-	var l *ListKeyVersionsOptions
-	l = nil
+	var l *ListKeyVersionsOptions = nil
 	_ = l.toGenerated()
 }

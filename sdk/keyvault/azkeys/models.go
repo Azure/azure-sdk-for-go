@@ -97,7 +97,7 @@ type KeyBundle struct {
 // JSONWebKey - As of http://tools.ietf.org/html/draft-ietf-jose-json-web-key-18
 type JSONWebKey struct {
 	// Elliptic curve name. For valid values, see JsonWebKeyCurveName.
-	Crv *JSONWebKeyCurveName `json:"crv,omitempty"`
+	Crv *KeyCurveName `json:"crv,omitempty"`
 
 	// RSA private exponent, or the D component of an EC or OKP private key.
 	D []byte `json:"d,omitempty"`
@@ -150,7 +150,7 @@ func jsonWebKeyFromGenerated(i *generated.JSONWebKey) *JSONWebKey {
 	}
 
 	return &JSONWebKey{
-		Crv:     (*JSONWebKeyCurveName)(i.Crv),
+		Crv:     (*KeyCurveName)(i.Crv),
 		D:       i.D,
 		DP:      i.DP,
 		DQ:      i.DQ,
@@ -180,7 +180,7 @@ func (j JSONWebKey) toGenerated() *generated.JSONWebKey {
 		K:      j.K,
 		KeyOps: j.KeyOps,
 		Kid:    j.ID,
-		Kty:    (*generated.JSONWebKeyType)(j.KeyType),
+		Kty:    (*generated.KeyType)(j.KeyType),
 		N:      j.N,
 		P:      j.P,
 		Q:      j.Q,
@@ -220,9 +220,9 @@ const (
 	RSAHSM KeyType = "RSA-HSM"
 )
 
-// convert KeyType to *generated.JSONWebKeyType
-func (j KeyType) toGenerated() *generated.JSONWebKeyType {
-	return generated.JSONWebKeyType(j).ToPtr()
+// convert KeyType to *generated.KeyType
+func (j KeyType) toGenerated() *generated.KeyType {
+	return generated.KeyType(j).ToPtr()
 }
 
 // KeyItem - The key item containing key metadata.

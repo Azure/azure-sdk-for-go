@@ -11,7 +11,7 @@ package internal
 import (
 	"context"
 	"errors"
-	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -23,28 +23,39 @@ import (
 // KeyVaultClient contains the methods for the KeyVaultClient group.
 // Don't use this type directly, use NewKeyVaultClient() instead.
 type KeyVaultClient struct {
-	con *Connection
+	pl runtime.Pipeline
 }
 
 // NewKeyVaultClient creates a new instance of KeyVaultClient with the specified values.
-func NewKeyVaultClient(con *Connection) *KeyVaultClient {
-	return &KeyVaultClient{con: con}
+// options - pass nil to accept the default values.
+func NewKeyVaultClient(options *azcore.ClientOptions) *KeyVaultClient {
+	cp := azcore.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	client := &KeyVaultClient{
+		pl: runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// BackupSecret - Requests that a backup of the specified secret be downloaded to the client. All versions of the secret will be downloaded. This operation
-// requires the secrets/backup permission.
-// If the operation fails it returns the *KeyVaultError error type.
+// BackupSecret - Requests that a backup of the specified secret be downloaded to the client. All versions of the secret will
+// be downloaded. This operation requires the secrets/backup permission.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
+// secretName - The name of the secret.
+// options - KeyVaultClientBackupSecretOptions contains the optional parameters for the KeyVaultClient.BackupSecret method.
 func (client *KeyVaultClient) BackupSecret(ctx context.Context, vaultBaseURL string, secretName string, options *KeyVaultClientBackupSecretOptions) (KeyVaultClientBackupSecretResponse, error) {
 	req, err := client.backupSecretCreateRequest(ctx, vaultBaseURL, secretName, options)
 	if err != nil {
 		return KeyVaultClientBackupSecretResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientBackupSecretResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KeyVaultClientBackupSecretResponse{}, client.backupSecretHandleError(resp)
+		return KeyVaultClientBackupSecretResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.backupSecretHandleResponse(resp)
 }
@@ -78,33 +89,23 @@ func (client *KeyVaultClient) backupSecretHandleResponse(resp *http.Response) (K
 	return result, nil
 }
 
-// backupSecretHandleError handles the BackupSecret error response.
-func (client *KeyVaultClient) backupSecretHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := KeyVaultError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// DeleteSecret - The DELETE operation applies to any secret stored in Azure Key Vault. DELETE cannot be applied to an individual version of a secret. This
-// operation requires the secrets/delete permission.
-// If the operation fails it returns the *KeyVaultError error type.
+// DeleteSecret - The DELETE operation applies to any secret stored in Azure Key Vault. DELETE cannot be applied to an individual
+// version of a secret. This operation requires the secrets/delete permission.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
+// secretName - The name of the secret.
+// options - KeyVaultClientDeleteSecretOptions contains the optional parameters for the KeyVaultClient.DeleteSecret method.
 func (client *KeyVaultClient) DeleteSecret(ctx context.Context, vaultBaseURL string, secretName string, options *KeyVaultClientDeleteSecretOptions) (KeyVaultClientDeleteSecretResponse, error) {
 	req, err := client.deleteSecretCreateRequest(ctx, vaultBaseURL, secretName, options)
 	if err != nil {
 		return KeyVaultClientDeleteSecretResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientDeleteSecretResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KeyVaultClientDeleteSecretResponse{}, client.deleteSecretHandleError(resp)
+		return KeyVaultClientDeleteSecretResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.deleteSecretHandleResponse(resp)
 }
@@ -138,33 +139,24 @@ func (client *KeyVaultClient) deleteSecretHandleResponse(resp *http.Response) (K
 	return result, nil
 }
 
-// deleteSecretHandleError handles the DeleteSecret error response.
-func (client *KeyVaultClient) deleteSecretHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := KeyVaultError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// GetDeletedSecret - The Get Deleted Secret operation returns the specified deleted secret along with its attributes. This operation requires the secrets/get
-// permission.
-// If the operation fails it returns the *KeyVaultError error type.
+// GetDeletedSecret - The Get Deleted Secret operation returns the specified deleted secret along with its attributes. This
+// operation requires the secrets/get permission.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
+// secretName - The name of the secret.
+// options - KeyVaultClientGetDeletedSecretOptions contains the optional parameters for the KeyVaultClient.GetDeletedSecret
+// method.
 func (client *KeyVaultClient) GetDeletedSecret(ctx context.Context, vaultBaseURL string, secretName string, options *KeyVaultClientGetDeletedSecretOptions) (KeyVaultClientGetDeletedSecretResponse, error) {
 	req, err := client.getDeletedSecretCreateRequest(ctx, vaultBaseURL, secretName, options)
 	if err != nil {
 		return KeyVaultClientGetDeletedSecretResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientGetDeletedSecretResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KeyVaultClientGetDeletedSecretResponse{}, client.getDeletedSecretHandleError(resp)
+		return KeyVaultClientGetDeletedSecretResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getDeletedSecretHandleResponse(resp)
 }
@@ -198,22 +190,12 @@ func (client *KeyVaultClient) getDeletedSecretHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// getDeletedSecretHandleError handles the GetDeletedSecret error response.
-func (client *KeyVaultClient) getDeletedSecretHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := KeyVaultError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// GetDeletedSecrets - The Get Deleted Secrets operation returns the secrets that have been deleted for a vault enabled for soft-delete. This operation
-// requires the secrets/list permission.
-// If the operation fails it returns the *KeyVaultError error type.
+// GetDeletedSecrets - The Get Deleted Secrets operation returns the secrets that have been deleted for a vault enabled for
+// soft-delete. This operation requires the secrets/list permission.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
+// options - KeyVaultClientGetDeletedSecretsOptions contains the optional parameters for the KeyVaultClient.GetDeletedSecrets
+// method.
 func (client *KeyVaultClient) GetDeletedSecrets(vaultBaseURL string, options *KeyVaultClientGetDeletedSecretsOptions) *KeyVaultClientGetDeletedSecretsPager {
 	return &KeyVaultClientGetDeletedSecretsPager{
 		client: client,
@@ -254,32 +236,25 @@ func (client *KeyVaultClient) getDeletedSecretsHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// getDeletedSecretsHandleError handles the GetDeletedSecrets error response.
-func (client *KeyVaultClient) getDeletedSecretsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := KeyVaultError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// GetSecret - The GET operation is applicable to any secret stored in Azure Key Vault. This operation requires the secrets/get permission.
-// If the operation fails it returns the *KeyVaultError error type.
+// GetSecret - The GET operation is applicable to any secret stored in Azure Key Vault. This operation requires the secrets/get
+// permission.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
+// secretName - The name of the secret.
+// secretVersion - The version of the secret. This URI fragment is optional. If not specified, the latest version of the secret
+// is returned.
+// options - KeyVaultClientGetSecretOptions contains the optional parameters for the KeyVaultClient.GetSecret method.
 func (client *KeyVaultClient) GetSecret(ctx context.Context, vaultBaseURL string, secretName string, secretVersion string, options *KeyVaultClientGetSecretOptions) (KeyVaultClientGetSecretResponse, error) {
 	req, err := client.getSecretCreateRequest(ctx, vaultBaseURL, secretName, secretVersion, options)
 	if err != nil {
 		return KeyVaultClientGetSecretResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientGetSecretResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KeyVaultClientGetSecretResponse{}, client.getSecretHandleError(resp)
+		return KeyVaultClientGetSecretResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getSecretHandleResponse(resp)
 }
@@ -317,22 +292,13 @@ func (client *KeyVaultClient) getSecretHandleResponse(resp *http.Response) (KeyV
 	return result, nil
 }
 
-// getSecretHandleError handles the GetSecret error response.
-func (client *KeyVaultClient) getSecretHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := KeyVaultError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// GetSecretVersions - The full secret identifier and attributes are provided in the response. No values are returned for the secrets. This operations requires
-// the secrets/list permission.
-// If the operation fails it returns the *KeyVaultError error type.
+// GetSecretVersions - The full secret identifier and attributes are provided in the response. No values are returned for
+// the secrets. This operations requires the secrets/list permission.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
+// secretName - The name of the secret.
+// options - KeyVaultClientGetSecretVersionsOptions contains the optional parameters for the KeyVaultClient.GetSecretVersions
+// method.
 func (client *KeyVaultClient) GetSecretVersions(vaultBaseURL string, secretName string, options *KeyVaultClientGetSecretVersionsOptions) *KeyVaultClientGetSecretVersionsPager {
 	return &KeyVaultClientGetSecretVersionsPager{
 		client: client,
@@ -377,23 +343,12 @@ func (client *KeyVaultClient) getSecretVersionsHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// getSecretVersionsHandleError handles the GetSecretVersions error response.
-func (client *KeyVaultClient) getSecretVersionsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := KeyVaultError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// GetSecrets - The Get Secrets operation is applicable to the entire vault. However, only the base secret identifier and its attributes are provided in
-// the response. Individual secret versions are not listed in the
+// GetSecrets - The Get Secrets operation is applicable to the entire vault. However, only the base secret identifier and
+// its attributes are provided in the response. Individual secret versions are not listed in the
 // response. This operation requires the secrets/list permission.
-// If the operation fails it returns the *KeyVaultError error type.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
+// options - KeyVaultClientGetSecretsOptions contains the optional parameters for the KeyVaultClient.GetSecrets method.
 func (client *KeyVaultClient) GetSecrets(vaultBaseURL string, options *KeyVaultClientGetSecretsOptions) *KeyVaultClientGetSecretsPager {
 	return &KeyVaultClientGetSecretsPager{
 		client: client,
@@ -434,34 +389,25 @@ func (client *KeyVaultClient) getSecretsHandleResponse(resp *http.Response) (Key
 	return result, nil
 }
 
-// getSecretsHandleError handles the GetSecrets error response.
-func (client *KeyVaultClient) getSecretsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := KeyVaultError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// PurgeDeletedSecret - The purge deleted secret operation removes the secret permanently, without the possibility of recovery. This operation can only
-// be enabled on a soft-delete enabled vault. This operation requires the
+// PurgeDeletedSecret - The purge deleted secret operation removes the secret permanently, without the possibility of recovery.
+// This operation can only be enabled on a soft-delete enabled vault. This operation requires the
 // secrets/purge permission.
-// If the operation fails it returns the *KeyVaultError error type.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
+// secretName - The name of the secret.
+// options - KeyVaultClientPurgeDeletedSecretOptions contains the optional parameters for the KeyVaultClient.PurgeDeletedSecret
+// method.
 func (client *KeyVaultClient) PurgeDeletedSecret(ctx context.Context, vaultBaseURL string, secretName string, options *KeyVaultClientPurgeDeletedSecretOptions) (KeyVaultClientPurgeDeletedSecretResponse, error) {
 	req, err := client.purgeDeletedSecretCreateRequest(ctx, vaultBaseURL, secretName, options)
 	if err != nil {
 		return KeyVaultClientPurgeDeletedSecretResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientPurgeDeletedSecretResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
-		return KeyVaultClientPurgeDeletedSecretResponse{}, client.purgeDeletedSecretHandleError(resp)
+		return KeyVaultClientPurgeDeletedSecretResponse{}, runtime.NewResponseError(resp)
 	}
 	return KeyVaultClientPurgeDeletedSecretResponse{RawResponse: resp}, nil
 }
@@ -486,33 +432,24 @@ func (client *KeyVaultClient) purgeDeletedSecretCreateRequest(ctx context.Contex
 	return req, nil
 }
 
-// purgeDeletedSecretHandleError handles the PurgeDeletedSecret error response.
-func (client *KeyVaultClient) purgeDeletedSecretHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := KeyVaultError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// RecoverDeletedSecret - Recovers the deleted secret in the specified vault. This operation can only be performed on a soft-delete enabled vault. This
-// operation requires the secrets/recover permission.
-// If the operation fails it returns the *KeyVaultError error type.
+// RecoverDeletedSecret - Recovers the deleted secret in the specified vault. This operation can only be performed on a soft-delete
+// enabled vault. This operation requires the secrets/recover permission.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
+// secretName - The name of the deleted secret.
+// options - KeyVaultClientRecoverDeletedSecretOptions contains the optional parameters for the KeyVaultClient.RecoverDeletedSecret
+// method.
 func (client *KeyVaultClient) RecoverDeletedSecret(ctx context.Context, vaultBaseURL string, secretName string, options *KeyVaultClientRecoverDeletedSecretOptions) (KeyVaultClientRecoverDeletedSecretResponse, error) {
 	req, err := client.recoverDeletedSecretCreateRequest(ctx, vaultBaseURL, secretName, options)
 	if err != nil {
 		return KeyVaultClientRecoverDeletedSecretResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientRecoverDeletedSecretResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KeyVaultClientRecoverDeletedSecretResponse{}, client.recoverDeletedSecretHandleError(resp)
+		return KeyVaultClientRecoverDeletedSecretResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.recoverDeletedSecretHandleResponse(resp)
 }
@@ -546,32 +483,23 @@ func (client *KeyVaultClient) recoverDeletedSecretHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// recoverDeletedSecretHandleError handles the RecoverDeletedSecret error response.
-func (client *KeyVaultClient) recoverDeletedSecretHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := KeyVaultError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// RestoreSecret - Restores a backed up secret, and all its versions, to a vault. This operation requires the secrets/restore permission.
-// If the operation fails it returns the *KeyVaultError error type.
+// RestoreSecret - Restores a backed up secret, and all its versions, to a vault. This operation requires the secrets/restore
+// permission.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
+// parameters - The parameters to restore the secret.
+// options - KeyVaultClientRestoreSecretOptions contains the optional parameters for the KeyVaultClient.RestoreSecret method.
 func (client *KeyVaultClient) RestoreSecret(ctx context.Context, vaultBaseURL string, parameters SecretRestoreParameters, options *KeyVaultClientRestoreSecretOptions) (KeyVaultClientRestoreSecretResponse, error) {
 	req, err := client.restoreSecretCreateRequest(ctx, vaultBaseURL, parameters, options)
 	if err != nil {
 		return KeyVaultClientRestoreSecretResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientRestoreSecretResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KeyVaultClientRestoreSecretResponse{}, client.restoreSecretHandleError(resp)
+		return KeyVaultClientRestoreSecretResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.restoreSecretHandleResponse(resp)
 }
@@ -601,33 +529,24 @@ func (client *KeyVaultClient) restoreSecretHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// restoreSecretHandleError handles the RestoreSecret error response.
-func (client *KeyVaultClient) restoreSecretHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := KeyVaultError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// SetSecret - The SET operation adds a secret to the Azure Key Vault. If the named secret already exists, Azure Key Vault creates a new version of that
-// secret. This operation requires the secrets/set permission.
-// If the operation fails it returns the *KeyVaultError error type.
+// SetSecret - The SET operation adds a secret to the Azure Key Vault. If the named secret already exists, Azure Key Vault
+// creates a new version of that secret. This operation requires the secrets/set permission.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
+// secretName - The name of the secret.
+// parameters - The parameters for setting the secret.
+// options - KeyVaultClientSetSecretOptions contains the optional parameters for the KeyVaultClient.SetSecret method.
 func (client *KeyVaultClient) SetSecret(ctx context.Context, vaultBaseURL string, secretName string, parameters SecretSetParameters, options *KeyVaultClientSetSecretOptions) (KeyVaultClientSetSecretResponse, error) {
 	req, err := client.setSecretCreateRequest(ctx, vaultBaseURL, secretName, parameters, options)
 	if err != nil {
 		return KeyVaultClientSetSecretResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientSetSecretResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KeyVaultClientSetSecretResponse{}, client.setSecretHandleError(resp)
+		return KeyVaultClientSetSecretResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.setSecretHandleResponse(resp)
 }
@@ -661,34 +580,26 @@ func (client *KeyVaultClient) setSecretHandleResponse(resp *http.Response) (KeyV
 	return result, nil
 }
 
-// setSecretHandleError handles the SetSecret error response.
-func (client *KeyVaultClient) setSecretHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := KeyVaultError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// UpdateSecret - The UPDATE operation changes specified attributes of an existing stored secret. Attributes that are not specified in the request are left
-// unchanged. The value of a secret itself cannot be changed.
+// UpdateSecret - The UPDATE operation changes specified attributes of an existing stored secret. Attributes that are not
+// specified in the request are left unchanged. The value of a secret itself cannot be changed.
 // This operation requires the secrets/set permission.
-// If the operation fails it returns the *KeyVaultError error type.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
+// secretName - The name of the secret.
+// secretVersion - The version of the secret.
+// parameters - The parameters for update secret operation.
+// options - KeyVaultClientUpdateSecretOptions contains the optional parameters for the KeyVaultClient.UpdateSecret method.
 func (client *KeyVaultClient) UpdateSecret(ctx context.Context, vaultBaseURL string, secretName string, secretVersion string, parameters SecretUpdateParameters, options *KeyVaultClientUpdateSecretOptions) (KeyVaultClientUpdateSecretResponse, error) {
 	req, err := client.updateSecretCreateRequest(ctx, vaultBaseURL, secretName, secretVersion, parameters, options)
 	if err != nil {
 		return KeyVaultClientUpdateSecretResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientUpdateSecretResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KeyVaultClientUpdateSecretResponse{}, client.updateSecretHandleError(resp)
+		return KeyVaultClientUpdateSecretResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateSecretHandleResponse(resp)
 }
@@ -724,17 +635,4 @@ func (client *KeyVaultClient) updateSecretHandleResponse(resp *http.Response) (K
 		return KeyVaultClientUpdateSecretResponse{}, err
 	}
 	return result, nil
-}
-
-// updateSecretHandleError handles the UpdateSecret error response.
-func (client *KeyVaultClient) updateSecretHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := KeyVaultError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

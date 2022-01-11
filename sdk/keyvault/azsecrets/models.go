@@ -49,7 +49,7 @@ type Secret struct {
 	Managed *bool `json:"managed,omitempty" azure:"ro"`
 }
 
-func secretFromGenerated(i internal.SecretBundle) Secret {
+func secretFromGenerated(i internal.DeletedSecretBundle) Secret {
 	return Secret{
 		Attributes:  secretAttributesFromGenerated(i.Attributes),
 		ContentType: i.ContentType,
@@ -91,13 +91,11 @@ func (s Attributes) toGenerated() *internal.SecretAttributes {
 	return &internal.SecretAttributes{
 		RecoverableDays: s.RecoverableDays,
 		RecoveryLevel:   s.RecoveryLevel.toGenerated(),
-		Attributes: internal.Attributes{
-			Enabled:   s.Enabled,
-			Expires:   s.Expires,
-			NotBefore: s.NotBefore,
-			Created:   s.Created,
-			Updated:   s.Updated,
-		},
+		Enabled:         s.Enabled,
+		Expires:         s.Expires,
+		NotBefore:       s.NotBefore,
+		Created:         s.Created,
+		Updated:         s.Updated,
 	}
 }
 
@@ -172,7 +170,13 @@ func deletedSecretItemFromGenerated(i *internal.DeletedSecretItem) DeletedSecret
 		RecoveryID:         i.RecoveryID,
 		DeletedDate:        i.DeletedDate,
 		ScheduledPurgeDate: i.ScheduledPurgeDate,
-		Item:               secretItemFromGenerated(&i.SecretItem),
+		Item: Item{
+			Attributes:  secretAttributesFromGenerated(i.Attributes),
+			ContentType: i.ContentType,
+			ID:          i.ID,
+			Tags:        convertPtrMap(i.Tags),
+			Managed:     i.Managed,
+		},
 	}
 }
 

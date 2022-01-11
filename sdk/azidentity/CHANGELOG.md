@@ -2,13 +2,9 @@
 
 ## 0.13.0 (2022-01-11)
 
-### Features Added
-
 ### Breaking Changes
 * Replaced `AuthenticationFailedError.RawResponse()` with a field having the same name
 * Unexported `CredentialUnavailableError`
-
-### Bugs Fixed
 
 ### Other Changes
 * `ManagedIdentityCredential` no longer probes IMDS before requesting a token

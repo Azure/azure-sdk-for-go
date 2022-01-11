@@ -263,13 +263,13 @@ func TestBackupKey(t *testing.T) {
 			require.NoError(t, err)
 
 			_, err = client.GetKey(ctx, key, nil)
-			var httpErr azcore.HTTPResponse
+			var httpErr *azcore.ResponseError
 			require.True(t, errors.As(err, &httpErr))
-			require.Equal(t, httpErr.RawResponse().StatusCode, http.StatusNotFound)
+			require.Equal(t, httpErr.RawResponse.StatusCode, http.StatusNotFound)
 
 			_, err = client.GetDeletedKey(ctx, key, nil)
 			require.True(t, errors.As(err, &httpErr))
-			require.Equal(t, httpErr.RawResponse().StatusCode, http.StatusNotFound)
+			require.Equal(t, httpErr.RawResponse.StatusCode, http.StatusNotFound)
 
 			time.Sleep(30 * delay())
 			// Poll this operation manually

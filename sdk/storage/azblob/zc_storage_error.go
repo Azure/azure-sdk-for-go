@@ -62,7 +62,7 @@ type StorageError struct {
 func handleError(err error) error {
 	var respErr *azcore.ResponseError
 	if errors.As(err, &respErr) {
-		return &InternalError{defunkifyStorageError(respErr)}
+		return &InternalError{responseErrorToStorageError(respErr)}
 	}
 
 	if err != nil {
@@ -72,8 +72,8 @@ func handleError(err error) error {
 	return nil
 }
 
-// defunkifyStorageError is a function that takes the "funky" ResponseError and reduces it to a storageError.
-func defunkifyStorageError(responseError *azcore.ResponseError) error {
+// converts an *azcore.ResponseError to a *StorageError, or if that fails, a *InternalError
+func responseErrorToStorageError(responseError *azcore.ResponseError) error {
 	var storageError StorageError
 	body, err := runtime.Payload(responseError.RawResponse)
 	if err != nil {
@@ -84,8 +84,6 @@ func defunkifyStorageError(responseError *azcore.ResponseError) error {
 			goto Default
 		}
 	}
-
-	// errors.Unwrap(responseError.Unwrap())
 
 	storageError.response = responseError.RawResponse
 

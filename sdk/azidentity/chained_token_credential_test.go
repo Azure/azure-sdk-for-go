@@ -164,7 +164,7 @@ func TestChainedTokenCredential_RepeatedGetTokenWithSuccessfulCredential(t *test
 	tk, err := cred.GetToken(context.Background(), getTokenOptions)
 	testGoodGetTokenResponse(t, tk, err)
 	if failedCredential.getTokenCalls != 1 {
-		t.Fatalf("The failed credential getToken should have been called once")
+		t.Fatal("The failed credential getToken should have been called once")
 	}
 	if successfulCredential.getTokenCalls != 1 {
 		t.Fatalf("The successful credential getToken should have been called once")

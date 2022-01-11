@@ -3,7 +3,7 @@
 ## 0.4.0 (2022-01-11)
 
 ### Other Changes
-* Bumps `azcore` dependency from `v0.20.0` to `v1.0.0`
+* Bumps `azcore` dependency from `v0.20.0` to `v0.21.0`
 
 ## 0.3.0 (2021-11-09)
 

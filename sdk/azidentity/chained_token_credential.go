@@ -54,21 +54,20 @@ func NewChainedTokenCredential(sources []azcore.TokenCredential, options *Chaine
 // ctx: Context controlling the request lifetime.
 // opts: Options for the token request, in particular the desired scope of the access token.
 func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (token *azcore.AccessToken, err error) {
-	var errList []CredentialUnavailableError
-
 	if c.successfulCredential != nil && !c.retrySources {
 		return c.successfulCredential.GetToken(ctx, opts)
 	}
+	var errList []credentialUnavailableError
 	for _, cred := range c.sources {
 		token, err = cred.GetToken(ctx, opts)
-		var credErr CredentialUnavailableError
+		var credErr credentialUnavailableError
 		if errors.As(err, &credErr) {
 			errList = append(errList, credErr)
 		} else if err != nil {
 			var authFailed AuthenticationFailedError
 			if errors.As(err, &authFailed) {
 				err = fmt.Errorf("Authentication failed:\n%s\n%s"+createChainedErrorMessage(errList), err)
-				authErr := newAuthenticationFailedError(err, authFailed.RawResponse())
+				authErr := newAuthenticationFailedError(err, authFailed.RawResponse)
 				return nil, authErr
 			}
 			return nil, err
@@ -86,7 +85,7 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.Token
 	return nil, credErr
 }
 
-func createChainedErrorMessage(errList []CredentialUnavailableError) string {
+func createChainedErrorMessage(errList []credentialUnavailableError) string {
 	msg := ""
 	for _, err := range errList {
 		msg += err.Error()

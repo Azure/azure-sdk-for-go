@@ -105,7 +105,7 @@ type CreateTableResponse struct {
 	RawResponse *http.Response
 }
 
-func createTableResponseFromGen(g *generated.TableCreateResponse) CreateTableResponse {
+func createTableResponseFromGen(g *generated.TableClientCreateResponse) CreateTableResponse {
 	if g == nil {
 		return CreateTableResponse{}
 	}
@@ -183,7 +183,7 @@ type ListEntitiesResponse struct {
 }
 
 // transforms a generated query response into the ListEntitiesPaged
-func newListEntitiesPage(resp *generated.TableQueryEntitiesResponse) (ListEntitiesPage, error) {
+func newListEntitiesPage(resp *generated.TableClientQueryEntitiesResponse) (ListEntitiesPage, error) {
 	marshalledValue := make([][]byte, 0)
 	for _, e := range resp.TableEntityQueryResponse.Value {
 		m, err := json.Marshal(e)
@@ -231,7 +231,7 @@ type ListEntitiesPager interface {
 type tableEntityQueryResponsePager struct {
 	tableClient       *Client
 	current           *ListEntitiesPage
-	tableQueryOptions *generated.TableQueryEntitiesOptions
+	tableQueryOptions *generated.TableClientQueryEntitiesOptions
 	listOptions       *ListEntitiesOptions
 	err               error
 }
@@ -251,7 +251,7 @@ func (p *tableEntityQueryResponsePager) NextPage(ctx context.Context) bool {
 	if p.err != nil || (p.current != nil && p.current.ContinuationNextPartitionKey == nil && p.current.ContinuationNextRowKey == nil) {
 		return false
 	}
-	var resp generated.TableQueryEntitiesResponse
+	var resp generated.TableClientQueryEntitiesResponse
 	resp, p.err = p.tableClient.client.QueryEntities(
 		ctx,
 		generated.Enum1Three0,
@@ -301,7 +301,7 @@ func (t *Client) List(listOptions *ListEntitiesOptions) ListEntitiesPager {
 	return &tableEntityQueryResponsePager{
 		tableClient: t,
 		listOptions: listOptions,
-		tableQueryOptions: &generated.TableQueryEntitiesOptions{
+		tableQueryOptions: &generated.TableClientQueryEntitiesOptions{
 			NextPartitionKey: listOptions.PartitionKey,
 			NextRowKey:       listOptions.RowKey,
 		},
@@ -312,8 +312,8 @@ func (t *Client) List(listOptions *ListEntitiesOptions) ListEntitiesPager {
 type GetEntityOptions struct {
 }
 
-func (g *GetEntityOptions) toGenerated() (*generated.TableQueryEntityWithPartitionAndRowKeyOptions, *generated.QueryOptions) {
-	return &generated.TableQueryEntityWithPartitionAndRowKeyOptions{}, &generated.QueryOptions{Format: generated.ODataMetadataFormatApplicationJSONODataMinimalmetadata.ToPtr()}
+func (g *GetEntityOptions) toGenerated() (*generated.TableClientQueryEntityWithPartitionAndRowKeyOptions, *generated.QueryOptions) {
+	return &generated.TableClientQueryEntityWithPartitionAndRowKeyOptions{}, &generated.QueryOptions{Format: generated.ODataMetadataFormatApplicationJSONODataMinimalmetadata.ToPtr()}
 }
 
 // GetEntityResponse is the return type for a GetEntity operation. The individual entities are stored in the Value property
@@ -329,7 +329,7 @@ type GetEntityResponse struct {
 }
 
 // newGetEntityResponse transforms a generated response to the GetEntityResponse type
-func newGetEntityResponse(g generated.TableQueryEntityWithPartitionAndRowKeyResponse) (GetEntityResponse, error) {
+func newGetEntityResponse(g generated.TableClientQueryEntityWithPartitionAndRowKeyResponse) (GetEntityResponse, error) {
 	marshalledValue, err := json.Marshal(g.Value)
 	if err != nil {
 		return GetEntityResponse{}, err
@@ -371,7 +371,7 @@ type AddEntityResponse struct {
 	ETag        azcore.ETag
 }
 
-func addEntityResponseFromGenerated(g *generated.TableInsertEntityResponse) AddEntityResponse {
+func addEntityResponseFromGenerated(g *generated.TableClientInsertEntityResponse) AddEntityResponse {
 	if g == nil {
 		return AddEntityResponse{}
 	}
@@ -395,7 +395,7 @@ func (t *Client) AddEntity(ctx context.Context, entity []byte, options *AddEntit
 	if err != nil {
 		return AddEntityResponse{}, err
 	}
-	resp, err := t.client.InsertEntity(ctx, generated.Enum1Three0, t.name, &generated.TableInsertEntityOptions{TableEntityProperties: mapEntity, ResponsePreference: generated.ResponseFormatReturnNoContent.ToPtr()}, nil)
+	resp, err := t.client.InsertEntity(ctx, generated.Enum1Three0, t.name, &generated.TableClientInsertEntityOptions{TableEntityProperties: mapEntity, ResponsePreference: generated.ResponseFormatReturnNoContent.ToPtr()}, nil)
 	if err != nil {
 		err = checkEntityForPkRk(&mapEntity, err)
 		return AddEntityResponse{}, err
@@ -407,15 +407,15 @@ type DeleteEntityOptions struct {
 	IfMatch *azcore.ETag
 }
 
-func (d *DeleteEntityOptions) toGenerated() *generated.TableDeleteEntityOptions {
-	return &generated.TableDeleteEntityOptions{}
+func (d *DeleteEntityOptions) toGenerated() *generated.TableClientDeleteEntityOptions {
+	return &generated.TableClientDeleteEntityOptions{}
 }
 
 type DeleteEntityResponse struct {
 	RawResponse *http.Response
 }
 
-func deleteEntityResponseFromGenerated(g *generated.TableDeleteEntityResponse) DeleteEntityResponse {
+func deleteEntityResponseFromGenerated(g *generated.TableClientDeleteEntityResponse) DeleteEntityResponse {
 	if g == nil {
 		return DeleteEntityResponse{}
 	}
@@ -442,21 +442,21 @@ type UpdateEntityOptions struct {
 	UpdateMode EntityUpdateMode
 }
 
-func (u *UpdateEntityOptions) toGeneratedMergeEntity(m map[string]interface{}) *generated.TableMergeEntityOptions {
+func (u *UpdateEntityOptions) toGeneratedMergeEntity(m map[string]interface{}) *generated.TableClientMergeEntityOptions {
 	if u == nil {
-		return &generated.TableMergeEntityOptions{}
+		return &generated.TableClientMergeEntityOptions{}
 	}
-	return &generated.TableMergeEntityOptions{
+	return &generated.TableClientMergeEntityOptions{
 		IfMatch:               to.StringPtr(string(*u.IfMatch)),
 		TableEntityProperties: m,
 	}
 }
 
-func (u *UpdateEntityOptions) toGeneratedUpdateEntity(m map[string]interface{}) *generated.TableUpdateEntityOptions {
+func (u *UpdateEntityOptions) toGeneratedUpdateEntity(m map[string]interface{}) *generated.TableClientUpdateEntityOptions {
 	if u == nil {
-		return &generated.TableUpdateEntityOptions{}
+		return &generated.TableClientUpdateEntityOptions{}
 	}
-	return &generated.TableUpdateEntityOptions{
+	return &generated.TableClientUpdateEntityOptions{
 		IfMatch:               to.StringPtr(string(*u.IfMatch)),
 		TableEntityProperties: m,
 	}
@@ -467,7 +467,7 @@ type UpdateEntityResponse struct {
 	ETag        azcore.ETag
 }
 
-func updateEntityResponseFromMergeGenerated(g *generated.TableMergeEntityResponse) UpdateEntityResponse {
+func updateEntityResponseFromMergeGenerated(g *generated.TableClientMergeEntityResponse) UpdateEntityResponse {
 	if g == nil {
 		return UpdateEntityResponse{}
 	}
@@ -482,7 +482,7 @@ func updateEntityResponseFromMergeGenerated(g *generated.TableMergeEntityRespons
 	}
 }
 
-func updateEntityResponseFromUpdateGenerated(g *generated.TableUpdateEntityResponse) UpdateEntityResponse {
+func updateEntityResponseFromUpdateGenerated(g *generated.TableClientUpdateEntityResponse) UpdateEntityResponse {
 	if g == nil {
 		return UpdateEntityResponse{}
 	}
@@ -566,7 +566,7 @@ type InsertEntityResponse struct {
 	ETag        azcore.ETag
 }
 
-func insertEntityFromGeneratedMerge(g *generated.TableMergeEntityResponse) InsertEntityResponse {
+func insertEntityFromGeneratedMerge(g *generated.TableClientMergeEntityResponse) InsertEntityResponse {
 	if g == nil {
 		return InsertEntityResponse{}
 	}
@@ -581,7 +581,7 @@ func insertEntityFromGeneratedMerge(g *generated.TableMergeEntityResponse) Inser
 	}
 }
 
-func insertEntityFromGeneratedUpdate(g *generated.TableUpdateEntityResponse) InsertEntityResponse {
+func insertEntityFromGeneratedUpdate(g *generated.TableClientUpdateEntityResponse) InsertEntityResponse {
 	if g == nil {
 		return InsertEntityResponse{}
 	}
@@ -626,7 +626,7 @@ func (t *Client) InsertEntity(ctx context.Context, entity []byte, options *Inser
 			t.name,
 			partKey,
 			rowkey,
-			&generated.TableMergeEntityOptions{TableEntityProperties: mapEntity},
+			&generated.TableClientMergeEntityOptions{TableEntityProperties: mapEntity},
 			&generated.QueryOptions{},
 		)
 		return insertEntityFromGeneratedMerge(&resp), err
@@ -637,7 +637,7 @@ func (t *Client) InsertEntity(ctx context.Context, entity []byte, options *Inser
 			t.name,
 			partKey,
 			rowkey,
-			&generated.TableUpdateEntityOptions{TableEntityProperties: mapEntity},
+			&generated.TableClientUpdateEntityOptions{TableEntityProperties: mapEntity},
 			&generated.QueryOptions{},
 		)
 		return insertEntityFromGeneratedUpdate(&resp), err
@@ -651,8 +651,8 @@ func (t *Client) InsertEntity(ctx context.Context, entity []byte, options *Inser
 type GetAccessPolicyOptions struct {
 }
 
-func (g *GetAccessPolicyOptions) toGenerated() *generated.TableGetAccessPolicyOptions {
-	return &generated.TableGetAccessPolicyOptions{}
+func (g *GetAccessPolicyOptions) toGenerated() *generated.TableClientGetAccessPolicyOptions {
+	return &generated.TableClientGetAccessPolicyOptions{}
 }
 
 type GetAccessPolicyResponse struct {
@@ -660,7 +660,7 @@ type GetAccessPolicyResponse struct {
 	SignedIdentifiers []*SignedIdentifier
 }
 
-func getAccessPolicyResponseFromGenerated(g *generated.TableGetAccessPolicyResponse) GetAccessPolicyResponse {
+func getAccessPolicyResponseFromGenerated(g *generated.TableClientGetAccessPolicyResponse) GetAccessPolicyResponse {
 	if g == nil {
 		return GetAccessPolicyResponse{}
 	}
@@ -689,7 +689,7 @@ type SetAccessPolicyResponse struct {
 	RawResponse *http.Response
 }
 
-func setAccessPolicyResponseFromGenerated(g *generated.TableSetAccessPolicyResponse) SetAccessPolicyResponse {
+func setAccessPolicyResponseFromGenerated(g *generated.TableClientSetAccessPolicyResponse) SetAccessPolicyResponse {
 	if g == nil {
 		return SetAccessPolicyResponse{}
 	}
@@ -697,12 +697,12 @@ func setAccessPolicyResponseFromGenerated(g *generated.TableSetAccessPolicyRespo
 		RawResponse: g.RawResponse,
 	}
 }
-func (s *SetAccessPolicyOptions) toGenerated() *generated.TableSetAccessPolicyOptions {
+func (s *SetAccessPolicyOptions) toGenerated() *generated.TableClientSetAccessPolicyOptions {
 	var sis []*generated.SignedIdentifier
 	for _, t := range s.TableACL {
 		sis = append(sis, toGeneratedSignedIdentifier(t))
 	}
-	return &generated.TableSetAccessPolicyOptions{
+	return &generated.TableClientSetAccessPolicyOptions{
 		TableACL: sis,
 	}
 }

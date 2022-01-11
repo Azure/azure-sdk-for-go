@@ -9,8 +9,8 @@
 package internal
 
 const (
-	module  = "aztables"
-	version = "v0.4.1"
+	moduleName    = "internal"
+	moduleVersion = "v0.5.0"
 )
 
 type Enum0 string

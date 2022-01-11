@@ -189,7 +189,7 @@ func shouldRecreateConnection(ctxForLogging context.Context, err error) bool {
 
 	shouldRecreate := isPermanentNetError(err) ||
 		isRetryableAMQPError(ctxForLogging, err) ||
-		isEOF(err) ||
+		errors.Is(err, io.EOF) ||
 		// these are distinct from a detach and probably indicate something
 		// wrong with the connection itself, rather than just the link
 		errors.Is(err, amqp.ErrSessionClosed) ||
@@ -245,10 +245,6 @@ func isPermanentNetError(err error) bool {
 	}
 
 	return false
-}
-
-func isEOF(err error) bool {
-	return errors.Is(err, io.EOF)
 }
 
 func IsCancelError(err error) bool {
@@ -308,7 +304,7 @@ func GetRecoveryKind(ctxForLogging context.Context, err error) recoveryKind {
 	}
 
 	// this is a carryover from another library. I haven't seen this in the wild.
-	if isEOF(err) {
+	if errors.Is(err, io.EOF) {
 		return RecoveryKindConn
 	}
 

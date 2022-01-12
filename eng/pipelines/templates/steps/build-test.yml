@@ -66,6 +66,15 @@ steps:
       displayName: 'Dump Test Proxy logs'
       condition: succeededOrFailed()
 
+  - task: AzureArtifacts.manifest-generator-task.manifest-generator-task.ManifestGeneratorTask@0
+    displayName: 'Generate BOM'
+    inputs:
+      BuildDropPath: ${{ parameters.ServiceDirectory }}
+
+  - publish: ${{ parameters.ServiceDirectory }}/_manifest
+    displayName: 'Publish BOM Manifest'
+    artifact: 'manifest'
+
   - task: PublishTestResults@2
     condition: succeededOrFailed()
     inputs:

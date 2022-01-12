@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -645,7 +646,7 @@ func TestReleaseKey(t *testing.T) {
 				t.Skip("Skipping test in playback")
 			}
 			_, err = http.DefaultClient.Do(req)
-			require.Error(t, err) // This URL doesn't exist so this should fail, will pass after 7.4-preview release
+			assert.Error(t, err) // This URL doesn't exist so this should fail, will pass after 7.4-preview release
 			// require.Equal(t, resp.StatusCode, http.StatusOK)
 			// defer resp.Body.Close()
 
@@ -658,7 +659,7 @@ func TestReleaseKey(t *testing.T) {
 			// require.NoError(t, err)
 
 			_, err = client.ReleaseKey(ctx, key, "target", nil)
-			require.Error(t, err)
+			assert.Error(t, err)
 		})
 	}
 }

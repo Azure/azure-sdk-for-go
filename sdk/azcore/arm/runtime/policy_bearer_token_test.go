@@ -16,7 +16,6 @@ import (
 	armpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
@@ -63,7 +62,7 @@ func defaultTestPipeline(srv azpolicy.Transporter, scope string) pipeline.Pipeli
 		mockCredential{},
 		runtime.PipelineOptions{},
 		&arm.ClientOptions{
-			ClientOptions: policy.ClientOptions{
+			ClientOptions: azpolicy.ClientOptions{
 				Retry:     retryOpts,
 				Transport: srv,
 			},

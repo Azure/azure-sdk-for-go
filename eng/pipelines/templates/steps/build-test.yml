@@ -68,11 +68,13 @@ steps:
 
   - task: AzureArtifacts.manifest-generator-task.manifest-generator-task.ManifestGeneratorTask@0
     displayName: 'Generate BOM'
+    condition: and(succeededOrFailed(), $(generate.bom))
     inputs:
-      BuildDropPath: $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }}
+      BuildDropPath: $(Build.ArtifactsDirectory)/
 
-  - publish: $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }}/_manifest
+  - publish: $(Build.ArtifactsDirectory)/_manifest
     displayName: 'Publish BOM Manifest'
+    condition: and(succeededOrFailed(), $(generate.bom))
     artifact: 'manifest'
 
   - task: PublishTestResults@2

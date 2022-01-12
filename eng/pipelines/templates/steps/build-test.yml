@@ -69,9 +69,9 @@ steps:
   - task: AzureArtifacts.manifest-generator-task.manifest-generator-task.ManifestGeneratorTask@0
     displayName: 'Generate BOM'
     inputs:
-      BuildDropPath: ${{ parameters.ServiceDirectory }}
+      BuildDropPath: $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }}
 
-  - publish: ${{ parameters.ServiceDirectory }}/_manifest
+  - publish: $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }}/_manifest
     displayName: 'Publish BOM Manifest'
     artifact: 'manifest'
 

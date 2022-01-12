@@ -14,7 +14,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
@@ -40,7 +39,7 @@ func TestNewPipelineTelemetry(t *testing.T) {
 			srv, close := mock.NewServer()
 			defer close()
 			srv.AppendResponse()
-			opt := azcore.ClientOptions{Telemetry: policy.TelemetryOptions{Disabled: disabled}, Transport: srv}
+			opt := policy.ClientOptions{Telemetry: policy.TelemetryOptions{Disabled: disabled}, Transport: srv}
 			req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 			if err != nil {
 				t.Fatalf("Unexpected error: %v", err)
@@ -64,7 +63,7 @@ func TestNewPipelineCustomTelemetry(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse()
-	opts := azcore.ClientOptions{Transport: srv, Telemetry: policy.TelemetryOptions{ApplicationID: appID}}
+	opts := policy.ClientOptions{Transport: srv, Telemetry: policy.TelemetryOptions{ApplicationID: appID}}
 	if opts.Telemetry.ApplicationID != appID {
 		t.Fatalf("telemetry was modified: %s", opts.Telemetry.ApplicationID)
 	}
@@ -89,7 +88,7 @@ func TestNewPipelineCustomPolicies(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusInternalServerError))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-	opts := azcore.ClientOptions{Transport: srv, Retry: policy.RetryOptions{RetryDelay: time.Microsecond, MaxRetries: 1}}
+	opts := policy.ClientOptions{Transport: srv, Retry: policy.RetryOptions{RetryDelay: time.Microsecond, MaxRetries: 1}}
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)

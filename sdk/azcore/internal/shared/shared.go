@@ -20,6 +20,27 @@ import (
 	"time"
 )
 
+// TokenRequestOptions contain specific parameter that may be used by credentials types when attempting to get a token.
+type TokenRequestOptions struct {
+	// Scopes contains the list of permission scopes required for the token.
+	Scopes []string
+	// TenantID contains the tenant ID to use in a multi-tenant authentication scenario, if TenantID is set
+	// it will override the tenant ID that was added at credential creation time.
+	TenantID string
+}
+
+// TokenCredential represents a credential capable of providing an OAuth token.
+type TokenCredential interface {
+	// GetToken requests an access token for the specified set of scopes.
+	GetToken(ctx context.Context, options TokenRequestOptions) (*AccessToken, error)
+}
+
+// AccessToken represents an Azure service bearer access token with expiry information.
+type AccessToken struct {
+	Token     string
+	ExpiresOn time.Time
+}
+
 // CtxWithHTTPHeaderKey is used as a context key for adding/retrieving http.Header.
 type CtxWithHTTPHeaderKey struct{}
 

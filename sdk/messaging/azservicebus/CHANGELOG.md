@@ -4,7 +4,12 @@
 
 ### Features Added
 
-- Support the pass-through of an Application ID when constructing an Azure Service Bus Client.
+- Support the pass-through of an Application ID when constructing an Azure Service Bus Client. PR#16558 (thanks halspang!)
+
+### Bugs Fixed 
+
+- Fixing connection/link recovery in Sender.SendMessages() and Sender.SendMessageBatch(). PR#16790
+- Fixing bug in the management link which could cause it to panic during recovery. PR#16790
 
 ## 0.3.2 (2021-12-08)
 

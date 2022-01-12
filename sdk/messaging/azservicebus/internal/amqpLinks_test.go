@@ -79,14 +79,14 @@ func TestAMQPLinks(t *testing.T) {
 	require.True(t, ok)
 }
 
-type permanentNetError struct {
+type fakeNetError struct {
 	temp    bool
 	timeout bool
 }
 
-func (pe permanentNetError) Timeout() bool   { return pe.timeout }
-func (pe permanentNetError) Temporary() bool { return pe.temp }
-func (pe permanentNetError) Error() string   { return "Fake but very permanent error" }
+func (pe fakeNetError) Timeout() bool   { return pe.timeout }
+func (pe fakeNetError) Temporary() bool { return pe.temp }
+func (pe fakeNetError) Error() string   { return "Fake but very permanent error" }
 
 func TestAMQPLinksRecovery(t *testing.T) {
 	sess := &FakeAMQPSession{}
@@ -124,7 +124,7 @@ func TestAMQPLinksRecovery(t *testing.T) {
 	require.Empty(t, ns.clientRevisions, "no connection recoveries happened")
 
 	// now let's initiate a recovery at the connection level
-	require.NoError(t, links.RecoverIfNeeded(ctx, 0, permanentNetError{}), permanentNetError{}.Error())
+	require.NoError(t, links.RecoverIfNeeded(ctx, 0, fakeNetError{}), fakeNetError{}.Error())
 	require.EqualValues(t, 1, ns.recovered, "client gets recovered")
 	require.EqualValues(t, 1, sender.Closed, "link is closed")
 	require.EqualValues(t, 1, createLinkCalled, "link is created")

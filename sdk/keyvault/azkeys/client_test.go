@@ -565,6 +565,7 @@ func TestGetDeletedKey(t *testing.T) {
 }
 
 func TestRotateKey(t *testing.T) {
+	t.Skipf("Skipping while service disabled feature")
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
 			alwaysSkipHSM(t, testType)
@@ -595,6 +596,7 @@ func TestRotateKey(t *testing.T) {
 }
 
 func TestGetKeyRotationPolicy(t *testing.T) {
+	t.Skipf("Skipping while service disabled feature")
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
 			alwaysSkipHSM(t, testType)
@@ -662,6 +664,7 @@ func TestReleaseKey(t *testing.T) {
 }
 
 func TestUpdateKeyRotationPolicy(t *testing.T) {
+	t.Skipf("Skipping while service disabled feature")
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
 			alwaysSkipHSM(t, testType)

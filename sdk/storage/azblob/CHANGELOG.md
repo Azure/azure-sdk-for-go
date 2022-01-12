@@ -1,10 +1,11 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 0.3.0 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
+* Updated to latest `azcore`.  Public surface area is unchanged.
 
 ### Bugs Fixed
 

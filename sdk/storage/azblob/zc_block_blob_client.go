@@ -5,10 +5,11 @@ package azblob
 
 import (
 	"context"
+	"io"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"io"
 )
 
 const (

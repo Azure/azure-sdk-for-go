@@ -10,11 +10,6 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/suite"
 	"io"
 	"io/ioutil"
 	"log"
@@ -26,7 +21,12 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/suite"
 )
 
 type azblobTestSuite struct {
@@ -533,7 +533,8 @@ func blockIDIntToBase64(blockID int) string {
 func validateStorageError(_assert *assert.Assertions, err error, code StorageErrorCode) {
 	_assert.NotNil(err)
 	var storageError *StorageError
-	_assert.Equal(errors.As(err, &storageError), true)
+	// TOOD: this should really be require.Equal so that if it fails we don't try the next line which will panic
+	_assert.Equal(true, errors.As(err, &storageError))
 
 	_assert.Equal(storageError.ErrorCode, code)
 }

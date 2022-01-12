@@ -11,8 +11,8 @@ param(
     [switch]$tidy,
     [string]$config = "autorest.md",
     [string]$autorestVersion = "3.6.2",
-    [string]$goExtension = "@autorest/go@4.0.0-preview.31",
-    [string]$testExtension = "@autorest/gotest@1.1.2",
+    [string]$goExtension = "@autorest/go@4.0.0-preview.35",
+    [string]$testExtension = "@autorest/gotest@1.2.0",
     [string]$outputFolder
 )
 

@@ -69,9 +69,9 @@ steps:
     displayName: 'Generate BOM'
     condition: and(succeededOrFailed(), eq(variables['generate.bom'], 'true'))
     inputs:
-      BuildDropPath: $(Build.ArtifactsDirectory)
+      BuildDropPath: $(Build.ArtifactStagingDirectory)
 
-  - publish: $(Build.ArtifactsDirectory)/_manifest
+  - publish: $(Build.ArtifactStagingDirectory)/_manifest
     displayName: 'Publish BOM Manifest'
     condition: and(succeededOrFailed(), eq(variables['generate.bom'], 'true'))
     artifact: 'manifest'

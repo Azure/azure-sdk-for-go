@@ -16,20 +16,17 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
 )
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/TargetComputeSizes_ListByReplicationProtectedItems.json
-func ExampleTargetComputeSizesClient_ListByReplicationProtectedItems() {
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationAppliances_List.json
+func ExampleReplicationAppliancesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armrecoveryservicessiterecovery.NewTargetComputeSizesClient("<resource-name>",
+	client := armrecoveryservicessiterecovery.NewReplicationAppliancesClient("<resource-name>",
 		"<resource-group-name>",
 		"<subscription-id>", cred, nil)
-	pager := client.ListByReplicationProtectedItems("<fabric-name>",
-		"<protection-container-name>",
-		"<replicated-protected-item-name>",
-		nil)
+	pager := client.List(&armrecoveryservicessiterecovery.ReplicationAppliancesClientListOptions{Filter: nil})
 	for {
 		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {

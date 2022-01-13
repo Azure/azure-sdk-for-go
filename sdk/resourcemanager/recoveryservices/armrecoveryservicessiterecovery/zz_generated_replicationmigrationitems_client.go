@@ -24,48 +24,66 @@ import (
 // ReplicationMigrationItemsClient contains the methods for the ReplicationMigrationItems group.
 // Don't use this type directly, use NewReplicationMigrationItemsClient() instead.
 type ReplicationMigrationItemsClient struct {
-	ep                string
-	pl                runtime.Pipeline
+	host              string
 	resourceName      string
 	resourceGroupName string
 	subscriptionID    string
+	pl                runtime.Pipeline
 }
 
 // NewReplicationMigrationItemsClient creates a new instance of ReplicationMigrationItemsClient with the specified values.
+// resourceName - The name of the recovery services vault.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// subscriptionID - The subscription Id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewReplicationMigrationItemsClient(resourceName string, resourceGroupName string, subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ReplicationMigrationItemsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ReplicationMigrationItemsClient{resourceName: resourceName, resourceGroupName: resourceGroupName, subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ReplicationMigrationItemsClient{
+		resourceName:      resourceName,
+		resourceGroupName: resourceGroupName,
+		subscriptionID:    subscriptionID,
+		host:              string(cp.Endpoint),
+		pl:                armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreate - The operation to create an ASR migration item (enable migration).
-// If the operation fails it returns a generic error.
-func (client *ReplicationMigrationItemsClient) BeginCreate(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, input EnableMigrationInput, options *ReplicationMigrationItemsBeginCreateOptions) (ReplicationMigrationItemsCreatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - Fabric name.
+// protectionContainerName - Protection container name.
+// migrationItemName - Migration item name.
+// input - Enable migration input.
+// options - ReplicationMigrationItemsClientBeginCreateOptions contains the optional parameters for the ReplicationMigrationItemsClient.BeginCreate
+// method.
+func (client *ReplicationMigrationItemsClient) BeginCreate(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, input EnableMigrationInput, options *ReplicationMigrationItemsClientBeginCreateOptions) (ReplicationMigrationItemsClientCreatePollerResponse, error) {
 	resp, err := client.create(ctx, fabricName, protectionContainerName, migrationItemName, input, options)
 	if err != nil {
-		return ReplicationMigrationItemsCreatePollerResponse{}, err
+		return ReplicationMigrationItemsClientCreatePollerResponse{}, err
 	}
-	result := ReplicationMigrationItemsCreatePollerResponse{
+	result := ReplicationMigrationItemsClientCreatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ReplicationMigrationItemsClient.Create", "", resp, client.pl, client.createHandleError)
+	pt, err := armruntime.NewPoller("ReplicationMigrationItemsClient.Create", "", resp, client.pl)
 	if err != nil {
-		return ReplicationMigrationItemsCreatePollerResponse{}, err
+		return ReplicationMigrationItemsClientCreatePollerResponse{}, err
 	}
-	result.Poller = &ReplicationMigrationItemsCreatePoller{
+	result.Poller = &ReplicationMigrationItemsClientCreatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - The operation to create an ASR migration item (enable migration).
-// If the operation fails it returns a generic error.
-func (client *ReplicationMigrationItemsClient) create(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, input EnableMigrationInput, options *ReplicationMigrationItemsBeginCreateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationMigrationItemsClient) create(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, input EnableMigrationInput, options *ReplicationMigrationItemsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, fabricName, protectionContainerName, migrationItemName, input, options)
 	if err != nil {
 		return nil, err
@@ -75,13 +93,13 @@ func (client *ReplicationMigrationItemsClient) create(ctx context.Context, fabri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.createHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *ReplicationMigrationItemsClient) createCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, input EnableMigrationInput, options *ReplicationMigrationItemsBeginCreateOptions) (*policy.Request, error) {
+func (client *ReplicationMigrationItemsClient) createCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, input EnableMigrationInput, options *ReplicationMigrationItemsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationMigrationItems/{migrationItemName}"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -107,52 +125,45 @@ func (client *ReplicationMigrationItemsClient) createCreateRequest(ctx context.C
 		return nil, errors.New("parameter migrationItemName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{migrationItemName}", url.PathEscape(migrationItemName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, input)
 }
 
-// createHandleError handles the Create error response.
-func (client *ReplicationMigrationItemsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginDelete - The operation to delete an ASR migration item.
-// If the operation fails it returns a generic error.
-func (client *ReplicationMigrationItemsClient) BeginDelete(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, options *ReplicationMigrationItemsBeginDeleteOptions) (ReplicationMigrationItemsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - Fabric name.
+// protectionContainerName - Protection container name.
+// migrationItemName - Migration item name.
+// options - ReplicationMigrationItemsClientBeginDeleteOptions contains the optional parameters for the ReplicationMigrationItemsClient.BeginDelete
+// method.
+func (client *ReplicationMigrationItemsClient) BeginDelete(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, options *ReplicationMigrationItemsClientBeginDeleteOptions) (ReplicationMigrationItemsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, fabricName, protectionContainerName, migrationItemName, options)
 	if err != nil {
-		return ReplicationMigrationItemsDeletePollerResponse{}, err
+		return ReplicationMigrationItemsClientDeletePollerResponse{}, err
 	}
-	result := ReplicationMigrationItemsDeletePollerResponse{
+	result := ReplicationMigrationItemsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ReplicationMigrationItemsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("ReplicationMigrationItemsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return ReplicationMigrationItemsDeletePollerResponse{}, err
+		return ReplicationMigrationItemsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &ReplicationMigrationItemsDeletePoller{
+	result.Poller = &ReplicationMigrationItemsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - The operation to delete an ASR migration item.
-// If the operation fails it returns a generic error.
-func (client *ReplicationMigrationItemsClient) deleteOperation(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, options *ReplicationMigrationItemsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationMigrationItemsClient) deleteOperation(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, options *ReplicationMigrationItemsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, fabricName, protectionContainerName, migrationItemName, options)
 	if err != nil {
 		return nil, err
@@ -162,13 +173,13 @@ func (client *ReplicationMigrationItemsClient) deleteOperation(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ReplicationMigrationItemsClient) deleteCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, options *ReplicationMigrationItemsBeginDeleteOptions) (*policy.Request, error) {
+func (client *ReplicationMigrationItemsClient) deleteCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, options *ReplicationMigrationItemsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationMigrationItems/{migrationItemName}"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -194,12 +205,12 @@ func (client *ReplicationMigrationItemsClient) deleteCreateRequest(ctx context.C
 		return nil, errors.New("parameter migrationItemName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{migrationItemName}", url.PathEscape(migrationItemName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	if options != nil && options.DeleteOption != nil {
 		reqQP.Set("deleteOption", *options.DeleteOption)
 	}
@@ -207,37 +218,30 @@ func (client *ReplicationMigrationItemsClient) deleteCreateRequest(ctx context.C
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ReplicationMigrationItemsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets the details of a migration item.
-// If the operation fails it returns a generic error.
-func (client *ReplicationMigrationItemsClient) Get(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, options *ReplicationMigrationItemsGetOptions) (ReplicationMigrationItemsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - Fabric unique name.
+// protectionContainerName - Protection container name.
+// migrationItemName - Migration item name.
+// options - ReplicationMigrationItemsClientGetOptions contains the optional parameters for the ReplicationMigrationItemsClient.Get
+// method.
+func (client *ReplicationMigrationItemsClient) Get(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, options *ReplicationMigrationItemsClientGetOptions) (ReplicationMigrationItemsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, fabricName, protectionContainerName, migrationItemName, options)
 	if err != nil {
-		return ReplicationMigrationItemsGetResponse{}, err
+		return ReplicationMigrationItemsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ReplicationMigrationItemsGetResponse{}, err
+		return ReplicationMigrationItemsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ReplicationMigrationItemsGetResponse{}, client.getHandleError(resp)
+		return ReplicationMigrationItemsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ReplicationMigrationItemsClient) getCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, options *ReplicationMigrationItemsGetOptions) (*policy.Request, error) {
+func (client *ReplicationMigrationItemsClient) getCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, options *ReplicationMigrationItemsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationMigrationItems/{migrationItemName}"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -263,54 +267,44 @@ func (client *ReplicationMigrationItemsClient) getCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter migrationItemName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{migrationItemName}", url.PathEscape(migrationItemName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ReplicationMigrationItemsClient) getHandleResponse(resp *http.Response) (ReplicationMigrationItemsGetResponse, error) {
-	result := ReplicationMigrationItemsGetResponse{RawResponse: resp}
+func (client *ReplicationMigrationItemsClient) getHandleResponse(resp *http.Response) (ReplicationMigrationItemsClientGetResponse, error) {
+	result := ReplicationMigrationItemsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MigrationItem); err != nil {
-		return ReplicationMigrationItemsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ReplicationMigrationItemsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ReplicationMigrationItemsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // List - Gets the list of migration items in the vault.
-// If the operation fails it returns a generic error.
-func (client *ReplicationMigrationItemsClient) List(options *ReplicationMigrationItemsListOptions) *ReplicationMigrationItemsListPager {
-	return &ReplicationMigrationItemsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - ReplicationMigrationItemsClientListOptions contains the optional parameters for the ReplicationMigrationItemsClient.List
+// method.
+func (client *ReplicationMigrationItemsClient) List(options *ReplicationMigrationItemsClientListOptions) *ReplicationMigrationItemsClientListPager {
+	return &ReplicationMigrationItemsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp ReplicationMigrationItemsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ReplicationMigrationItemsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.MigrationItemCollection.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ReplicationMigrationItemsClient) listCreateRequest(ctx context.Context, options *ReplicationMigrationItemsListOptions) (*policy.Request, error) {
+func (client *ReplicationMigrationItemsClient) listCreateRequest(ctx context.Context, options *ReplicationMigrationItemsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationMigrationItems"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -324,12 +318,12 @@ func (client *ReplicationMigrationItemsClient) listCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("skipToken", *options.SkipToken)
 	}
@@ -345,42 +339,34 @@ func (client *ReplicationMigrationItemsClient) listCreateRequest(ctx context.Con
 }
 
 // listHandleResponse handles the List response.
-func (client *ReplicationMigrationItemsClient) listHandleResponse(resp *http.Response) (ReplicationMigrationItemsListResponse, error) {
-	result := ReplicationMigrationItemsListResponse{RawResponse: resp}
+func (client *ReplicationMigrationItemsClient) listHandleResponse(resp *http.Response) (ReplicationMigrationItemsClientListResponse, error) {
+	result := ReplicationMigrationItemsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MigrationItemCollection); err != nil {
-		return ReplicationMigrationItemsListResponse{}, runtime.NewResponseError(err, resp)
+		return ReplicationMigrationItemsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *ReplicationMigrationItemsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByReplicationProtectionContainers - Gets the list of ASR migration items in the protection container.
-// If the operation fails it returns a generic error.
-func (client *ReplicationMigrationItemsClient) ListByReplicationProtectionContainers(fabricName string, protectionContainerName string, options *ReplicationMigrationItemsListByReplicationProtectionContainersOptions) *ReplicationMigrationItemsListByReplicationProtectionContainersPager {
-	return &ReplicationMigrationItemsListByReplicationProtectionContainersPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - Fabric name.
+// protectionContainerName - Protection container name.
+// options - ReplicationMigrationItemsClientListByReplicationProtectionContainersOptions contains the optional parameters
+// for the ReplicationMigrationItemsClient.ListByReplicationProtectionContainers method.
+func (client *ReplicationMigrationItemsClient) ListByReplicationProtectionContainers(fabricName string, protectionContainerName string, options *ReplicationMigrationItemsClientListByReplicationProtectionContainersOptions) *ReplicationMigrationItemsClientListByReplicationProtectionContainersPager {
+	return &ReplicationMigrationItemsClientListByReplicationProtectionContainersPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByReplicationProtectionContainersCreateRequest(ctx, fabricName, protectionContainerName, options)
 		},
-		advancer: func(ctx context.Context, resp ReplicationMigrationItemsListByReplicationProtectionContainersResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ReplicationMigrationItemsClientListByReplicationProtectionContainersResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.MigrationItemCollection.NextLink)
 		},
 	}
 }
 
 // listByReplicationProtectionContainersCreateRequest creates the ListByReplicationProtectionContainers request.
-func (client *ReplicationMigrationItemsClient) listByReplicationProtectionContainersCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, options *ReplicationMigrationItemsListByReplicationProtectionContainersOptions) (*policy.Request, error) {
+func (client *ReplicationMigrationItemsClient) listByReplicationProtectionContainersCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, options *ReplicationMigrationItemsClientListByReplicationProtectionContainersOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationMigrationItems"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -402,12 +388,12 @@ func (client *ReplicationMigrationItemsClient) listByReplicationProtectionContai
 		return nil, errors.New("parameter protectionContainerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{protectionContainerName}", url.PathEscape(protectionContainerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("skipToken", *options.SkipToken)
 	}
@@ -423,49 +409,43 @@ func (client *ReplicationMigrationItemsClient) listByReplicationProtectionContai
 }
 
 // listByReplicationProtectionContainersHandleResponse handles the ListByReplicationProtectionContainers response.
-func (client *ReplicationMigrationItemsClient) listByReplicationProtectionContainersHandleResponse(resp *http.Response) (ReplicationMigrationItemsListByReplicationProtectionContainersResponse, error) {
-	result := ReplicationMigrationItemsListByReplicationProtectionContainersResponse{RawResponse: resp}
+func (client *ReplicationMigrationItemsClient) listByReplicationProtectionContainersHandleResponse(resp *http.Response) (ReplicationMigrationItemsClientListByReplicationProtectionContainersResponse, error) {
+	result := ReplicationMigrationItemsClientListByReplicationProtectionContainersResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MigrationItemCollection); err != nil {
-		return ReplicationMigrationItemsListByReplicationProtectionContainersResponse{}, runtime.NewResponseError(err, resp)
+		return ReplicationMigrationItemsClientListByReplicationProtectionContainersResponse{}, err
 	}
 	return result, nil
 }
 
-// listByReplicationProtectionContainersHandleError handles the ListByReplicationProtectionContainers error response.
-func (client *ReplicationMigrationItemsClient) listByReplicationProtectionContainersHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginMigrate - The operation to initiate migration of the item.
-// If the operation fails it returns a generic error.
-func (client *ReplicationMigrationItemsClient) BeginMigrate(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, migrateInput MigrateInput, options *ReplicationMigrationItemsBeginMigrateOptions) (ReplicationMigrationItemsMigratePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - Fabric name.
+// protectionContainerName - Protection container name.
+// migrationItemName - Migration item name.
+// migrateInput - Migrate input.
+// options - ReplicationMigrationItemsClientBeginMigrateOptions contains the optional parameters for the ReplicationMigrationItemsClient.BeginMigrate
+// method.
+func (client *ReplicationMigrationItemsClient) BeginMigrate(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, migrateInput MigrateInput, options *ReplicationMigrationItemsClientBeginMigrateOptions) (ReplicationMigrationItemsClientMigratePollerResponse, error) {
 	resp, err := client.migrate(ctx, fabricName, protectionContainerName, migrationItemName, migrateInput, options)
 	if err != nil {
-		return ReplicationMigrationItemsMigratePollerResponse{}, err
+		return ReplicationMigrationItemsClientMigratePollerResponse{}, err
 	}
-	result := ReplicationMigrationItemsMigratePollerResponse{
+	result := ReplicationMigrationItemsClientMigratePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ReplicationMigrationItemsClient.Migrate", "", resp, client.pl, client.migrateHandleError)
+	pt, err := armruntime.NewPoller("ReplicationMigrationItemsClient.Migrate", "", resp, client.pl)
 	if err != nil {
-		return ReplicationMigrationItemsMigratePollerResponse{}, err
+		return ReplicationMigrationItemsClientMigratePollerResponse{}, err
 	}
-	result.Poller = &ReplicationMigrationItemsMigratePoller{
+	result.Poller = &ReplicationMigrationItemsClientMigratePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Migrate - The operation to initiate migration of the item.
-// If the operation fails it returns a generic error.
-func (client *ReplicationMigrationItemsClient) migrate(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, migrateInput MigrateInput, options *ReplicationMigrationItemsBeginMigrateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationMigrationItemsClient) migrate(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, migrateInput MigrateInput, options *ReplicationMigrationItemsClientBeginMigrateOptions) (*http.Response, error) {
 	req, err := client.migrateCreateRequest(ctx, fabricName, protectionContainerName, migrationItemName, migrateInput, options)
 	if err != nil {
 		return nil, err
@@ -475,13 +455,13 @@ func (client *ReplicationMigrationItemsClient) migrate(ctx context.Context, fabr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.migrateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // migrateCreateRequest creates the Migrate request.
-func (client *ReplicationMigrationItemsClient) migrateCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, migrateInput MigrateInput, options *ReplicationMigrationItemsBeginMigrateOptions) (*policy.Request, error) {
+func (client *ReplicationMigrationItemsClient) migrateCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, migrateInput MigrateInput, options *ReplicationMigrationItemsClientBeginMigrateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationMigrationItems/{migrationItemName}/migrate"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -507,52 +487,46 @@ func (client *ReplicationMigrationItemsClient) migrateCreateRequest(ctx context.
 		return nil, errors.New("parameter migrationItemName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{migrationItemName}", url.PathEscape(migrationItemName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, migrateInput)
 }
 
-// migrateHandleError handles the Migrate error response.
-func (client *ReplicationMigrationItemsClient) migrateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginResync - The operation to resynchronize replication of an ASR migration item.
-// If the operation fails it returns a generic error.
-func (client *ReplicationMigrationItemsClient) BeginResync(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, input ResyncInput, options *ReplicationMigrationItemsBeginResyncOptions) (ReplicationMigrationItemsResyncPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - Fabric name.
+// protectionContainerName - Protection container name.
+// migrationItemName - Migration item name.
+// input - Resync input.
+// options - ReplicationMigrationItemsClientBeginResyncOptions contains the optional parameters for the ReplicationMigrationItemsClient.BeginResync
+// method.
+func (client *ReplicationMigrationItemsClient) BeginResync(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, input ResyncInput, options *ReplicationMigrationItemsClientBeginResyncOptions) (ReplicationMigrationItemsClientResyncPollerResponse, error) {
 	resp, err := client.resync(ctx, fabricName, protectionContainerName, migrationItemName, input, options)
 	if err != nil {
-		return ReplicationMigrationItemsResyncPollerResponse{}, err
+		return ReplicationMigrationItemsClientResyncPollerResponse{}, err
 	}
-	result := ReplicationMigrationItemsResyncPollerResponse{
+	result := ReplicationMigrationItemsClientResyncPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ReplicationMigrationItemsClient.Resync", "", resp, client.pl, client.resyncHandleError)
+	pt, err := armruntime.NewPoller("ReplicationMigrationItemsClient.Resync", "", resp, client.pl)
 	if err != nil {
-		return ReplicationMigrationItemsResyncPollerResponse{}, err
+		return ReplicationMigrationItemsClientResyncPollerResponse{}, err
 	}
-	result.Poller = &ReplicationMigrationItemsResyncPoller{
+	result.Poller = &ReplicationMigrationItemsClientResyncPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Resync - The operation to resynchronize replication of an ASR migration item.
-// If the operation fails it returns a generic error.
-func (client *ReplicationMigrationItemsClient) resync(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, input ResyncInput, options *ReplicationMigrationItemsBeginResyncOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationMigrationItemsClient) resync(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, input ResyncInput, options *ReplicationMigrationItemsClientBeginResyncOptions) (*http.Response, error) {
 	req, err := client.resyncCreateRequest(ctx, fabricName, protectionContainerName, migrationItemName, input, options)
 	if err != nil {
 		return nil, err
@@ -562,13 +536,13 @@ func (client *ReplicationMigrationItemsClient) resync(ctx context.Context, fabri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.resyncHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // resyncCreateRequest creates the Resync request.
-func (client *ReplicationMigrationItemsClient) resyncCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, input ResyncInput, options *ReplicationMigrationItemsBeginResyncOptions) (*policy.Request, error) {
+func (client *ReplicationMigrationItemsClient) resyncCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, input ResyncInput, options *ReplicationMigrationItemsClientBeginResyncOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationMigrationItems/{migrationItemName}/resync"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -594,52 +568,46 @@ func (client *ReplicationMigrationItemsClient) resyncCreateRequest(ctx context.C
 		return nil, errors.New("parameter migrationItemName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{migrationItemName}", url.PathEscape(migrationItemName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, input)
 }
 
-// resyncHandleError handles the Resync error response.
-func (client *ReplicationMigrationItemsClient) resyncHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginTestMigrate - The operation to initiate test migration of the item.
-// If the operation fails it returns a generic error.
-func (client *ReplicationMigrationItemsClient) BeginTestMigrate(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, testMigrateInput TestMigrateInput, options *ReplicationMigrationItemsBeginTestMigrateOptions) (ReplicationMigrationItemsTestMigratePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - Fabric name.
+// protectionContainerName - Protection container name.
+// migrationItemName - Migration item name.
+// testMigrateInput - Test migrate input.
+// options - ReplicationMigrationItemsClientBeginTestMigrateOptions contains the optional parameters for the ReplicationMigrationItemsClient.BeginTestMigrate
+// method.
+func (client *ReplicationMigrationItemsClient) BeginTestMigrate(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, testMigrateInput TestMigrateInput, options *ReplicationMigrationItemsClientBeginTestMigrateOptions) (ReplicationMigrationItemsClientTestMigratePollerResponse, error) {
 	resp, err := client.testMigrate(ctx, fabricName, protectionContainerName, migrationItemName, testMigrateInput, options)
 	if err != nil {
-		return ReplicationMigrationItemsTestMigratePollerResponse{}, err
+		return ReplicationMigrationItemsClientTestMigratePollerResponse{}, err
 	}
-	result := ReplicationMigrationItemsTestMigratePollerResponse{
+	result := ReplicationMigrationItemsClientTestMigratePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ReplicationMigrationItemsClient.TestMigrate", "", resp, client.pl, client.testMigrateHandleError)
+	pt, err := armruntime.NewPoller("ReplicationMigrationItemsClient.TestMigrate", "", resp, client.pl)
 	if err != nil {
-		return ReplicationMigrationItemsTestMigratePollerResponse{}, err
+		return ReplicationMigrationItemsClientTestMigratePollerResponse{}, err
 	}
-	result.Poller = &ReplicationMigrationItemsTestMigratePoller{
+	result.Poller = &ReplicationMigrationItemsClientTestMigratePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // TestMigrate - The operation to initiate test migration of the item.
-// If the operation fails it returns a generic error.
-func (client *ReplicationMigrationItemsClient) testMigrate(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, testMigrateInput TestMigrateInput, options *ReplicationMigrationItemsBeginTestMigrateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationMigrationItemsClient) testMigrate(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, testMigrateInput TestMigrateInput, options *ReplicationMigrationItemsClientBeginTestMigrateOptions) (*http.Response, error) {
 	req, err := client.testMigrateCreateRequest(ctx, fabricName, protectionContainerName, migrationItemName, testMigrateInput, options)
 	if err != nil {
 		return nil, err
@@ -649,13 +617,13 @@ func (client *ReplicationMigrationItemsClient) testMigrate(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.testMigrateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // testMigrateCreateRequest creates the TestMigrate request.
-func (client *ReplicationMigrationItemsClient) testMigrateCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, testMigrateInput TestMigrateInput, options *ReplicationMigrationItemsBeginTestMigrateOptions) (*policy.Request, error) {
+func (client *ReplicationMigrationItemsClient) testMigrateCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, testMigrateInput TestMigrateInput, options *ReplicationMigrationItemsClientBeginTestMigrateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationMigrationItems/{migrationItemName}/testMigrate"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -681,52 +649,46 @@ func (client *ReplicationMigrationItemsClient) testMigrateCreateRequest(ctx cont
 		return nil, errors.New("parameter migrationItemName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{migrationItemName}", url.PathEscape(migrationItemName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, testMigrateInput)
 }
 
-// testMigrateHandleError handles the TestMigrate error response.
-func (client *ReplicationMigrationItemsClient) testMigrateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginTestMigrateCleanup - The operation to initiate test migrate cleanup.
-// If the operation fails it returns a generic error.
-func (client *ReplicationMigrationItemsClient) BeginTestMigrateCleanup(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, testMigrateCleanupInput TestMigrateCleanupInput, options *ReplicationMigrationItemsBeginTestMigrateCleanupOptions) (ReplicationMigrationItemsTestMigrateCleanupPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - Fabric name.
+// protectionContainerName - Protection container name.
+// migrationItemName - Migration item name.
+// testMigrateCleanupInput - Test migrate cleanup input.
+// options - ReplicationMigrationItemsClientBeginTestMigrateCleanupOptions contains the optional parameters for the ReplicationMigrationItemsClient.BeginTestMigrateCleanup
+// method.
+func (client *ReplicationMigrationItemsClient) BeginTestMigrateCleanup(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, testMigrateCleanupInput TestMigrateCleanupInput, options *ReplicationMigrationItemsClientBeginTestMigrateCleanupOptions) (ReplicationMigrationItemsClientTestMigrateCleanupPollerResponse, error) {
 	resp, err := client.testMigrateCleanup(ctx, fabricName, protectionContainerName, migrationItemName, testMigrateCleanupInput, options)
 	if err != nil {
-		return ReplicationMigrationItemsTestMigrateCleanupPollerResponse{}, err
+		return ReplicationMigrationItemsClientTestMigrateCleanupPollerResponse{}, err
 	}
-	result := ReplicationMigrationItemsTestMigrateCleanupPollerResponse{
+	result := ReplicationMigrationItemsClientTestMigrateCleanupPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ReplicationMigrationItemsClient.TestMigrateCleanup", "", resp, client.pl, client.testMigrateCleanupHandleError)
+	pt, err := armruntime.NewPoller("ReplicationMigrationItemsClient.TestMigrateCleanup", "", resp, client.pl)
 	if err != nil {
-		return ReplicationMigrationItemsTestMigrateCleanupPollerResponse{}, err
+		return ReplicationMigrationItemsClientTestMigrateCleanupPollerResponse{}, err
 	}
-	result.Poller = &ReplicationMigrationItemsTestMigrateCleanupPoller{
+	result.Poller = &ReplicationMigrationItemsClientTestMigrateCleanupPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // TestMigrateCleanup - The operation to initiate test migrate cleanup.
-// If the operation fails it returns a generic error.
-func (client *ReplicationMigrationItemsClient) testMigrateCleanup(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, testMigrateCleanupInput TestMigrateCleanupInput, options *ReplicationMigrationItemsBeginTestMigrateCleanupOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationMigrationItemsClient) testMigrateCleanup(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, testMigrateCleanupInput TestMigrateCleanupInput, options *ReplicationMigrationItemsClientBeginTestMigrateCleanupOptions) (*http.Response, error) {
 	req, err := client.testMigrateCleanupCreateRequest(ctx, fabricName, protectionContainerName, migrationItemName, testMigrateCleanupInput, options)
 	if err != nil {
 		return nil, err
@@ -736,13 +698,13 @@ func (client *ReplicationMigrationItemsClient) testMigrateCleanup(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.testMigrateCleanupHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // testMigrateCleanupCreateRequest creates the TestMigrateCleanup request.
-func (client *ReplicationMigrationItemsClient) testMigrateCleanupCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, testMigrateCleanupInput TestMigrateCleanupInput, options *ReplicationMigrationItemsBeginTestMigrateCleanupOptions) (*policy.Request, error) {
+func (client *ReplicationMigrationItemsClient) testMigrateCleanupCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, testMigrateCleanupInput TestMigrateCleanupInput, options *ReplicationMigrationItemsClientBeginTestMigrateCleanupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationMigrationItems/{migrationItemName}/testMigrateCleanup"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -768,52 +730,46 @@ func (client *ReplicationMigrationItemsClient) testMigrateCleanupCreateRequest(c
 		return nil, errors.New("parameter migrationItemName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{migrationItemName}", url.PathEscape(migrationItemName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, testMigrateCleanupInput)
 }
 
-// testMigrateCleanupHandleError handles the TestMigrateCleanup error response.
-func (client *ReplicationMigrationItemsClient) testMigrateCleanupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginUpdate - The operation to update the recovery settings of an ASR migration item.
-// If the operation fails it returns a generic error.
-func (client *ReplicationMigrationItemsClient) BeginUpdate(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, input UpdateMigrationItemInput, options *ReplicationMigrationItemsBeginUpdateOptions) (ReplicationMigrationItemsUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - Fabric name.
+// protectionContainerName - Protection container name.
+// migrationItemName - Migration item name.
+// input - Update migration item input.
+// options - ReplicationMigrationItemsClientBeginUpdateOptions contains the optional parameters for the ReplicationMigrationItemsClient.BeginUpdate
+// method.
+func (client *ReplicationMigrationItemsClient) BeginUpdate(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, input UpdateMigrationItemInput, options *ReplicationMigrationItemsClientBeginUpdateOptions) (ReplicationMigrationItemsClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, fabricName, protectionContainerName, migrationItemName, input, options)
 	if err != nil {
-		return ReplicationMigrationItemsUpdatePollerResponse{}, err
+		return ReplicationMigrationItemsClientUpdatePollerResponse{}, err
 	}
-	result := ReplicationMigrationItemsUpdatePollerResponse{
+	result := ReplicationMigrationItemsClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ReplicationMigrationItemsClient.Update", "", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("ReplicationMigrationItemsClient.Update", "", resp, client.pl)
 	if err != nil {
-		return ReplicationMigrationItemsUpdatePollerResponse{}, err
+		return ReplicationMigrationItemsClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &ReplicationMigrationItemsUpdatePoller{
+	result.Poller = &ReplicationMigrationItemsClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - The operation to update the recovery settings of an ASR migration item.
-// If the operation fails it returns a generic error.
-func (client *ReplicationMigrationItemsClient) update(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, input UpdateMigrationItemInput, options *ReplicationMigrationItemsBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationMigrationItemsClient) update(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, input UpdateMigrationItemInput, options *ReplicationMigrationItemsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, fabricName, protectionContainerName, migrationItemName, input, options)
 	if err != nil {
 		return nil, err
@@ -823,13 +779,13 @@ func (client *ReplicationMigrationItemsClient) update(ctx context.Context, fabri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ReplicationMigrationItemsClient) updateCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, input UpdateMigrationItemInput, options *ReplicationMigrationItemsBeginUpdateOptions) (*policy.Request, error) {
+func (client *ReplicationMigrationItemsClient) updateCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, input UpdateMigrationItemInput, options *ReplicationMigrationItemsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationMigrationItems/{migrationItemName}"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -855,25 +811,13 @@ func (client *ReplicationMigrationItemsClient) updateCreateRequest(ctx context.C
 		return nil, errors.New("parameter migrationItemName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{migrationItemName}", url.PathEscape(migrationItemName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, input)
-}
-
-// updateHandleError handles the Update error response.
-func (client *ReplicationMigrationItemsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

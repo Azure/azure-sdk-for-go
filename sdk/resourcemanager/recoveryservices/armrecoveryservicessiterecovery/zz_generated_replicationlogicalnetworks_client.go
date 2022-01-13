@@ -24,44 +24,60 @@ import (
 // ReplicationLogicalNetworksClient contains the methods for the ReplicationLogicalNetworks group.
 // Don't use this type directly, use NewReplicationLogicalNetworksClient() instead.
 type ReplicationLogicalNetworksClient struct {
-	ep                string
-	pl                runtime.Pipeline
+	host              string
 	resourceName      string
 	resourceGroupName string
 	subscriptionID    string
+	pl                runtime.Pipeline
 }
 
 // NewReplicationLogicalNetworksClient creates a new instance of ReplicationLogicalNetworksClient with the specified values.
+// resourceName - The name of the recovery services vault.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// subscriptionID - The subscription Id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewReplicationLogicalNetworksClient(resourceName string, resourceGroupName string, subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ReplicationLogicalNetworksClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ReplicationLogicalNetworksClient{resourceName: resourceName, resourceGroupName: resourceGroupName, subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ReplicationLogicalNetworksClient{
+		resourceName:      resourceName,
+		resourceGroupName: resourceGroupName,
+		subscriptionID:    subscriptionID,
+		host:              string(cp.Endpoint),
+		pl:                armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets the details of a logical network.
-// If the operation fails it returns a generic error.
-func (client *ReplicationLogicalNetworksClient) Get(ctx context.Context, fabricName string, logicalNetworkName string, options *ReplicationLogicalNetworksGetOptions) (ReplicationLogicalNetworksGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - Server Id.
+// logicalNetworkName - Logical network name.
+// options - ReplicationLogicalNetworksClientGetOptions contains the optional parameters for the ReplicationLogicalNetworksClient.Get
+// method.
+func (client *ReplicationLogicalNetworksClient) Get(ctx context.Context, fabricName string, logicalNetworkName string, options *ReplicationLogicalNetworksClientGetOptions) (ReplicationLogicalNetworksClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, fabricName, logicalNetworkName, options)
 	if err != nil {
-		return ReplicationLogicalNetworksGetResponse{}, err
+		return ReplicationLogicalNetworksClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ReplicationLogicalNetworksGetResponse{}, err
+		return ReplicationLogicalNetworksClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ReplicationLogicalNetworksGetResponse{}, client.getHandleError(resp)
+		return ReplicationLogicalNetworksClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ReplicationLogicalNetworksClient) getCreateRequest(ctx context.Context, fabricName string, logicalNetworkName string, options *ReplicationLogicalNetworksGetOptions) (*policy.Request, error) {
+func (client *ReplicationLogicalNetworksClient) getCreateRequest(ctx context.Context, fabricName string, logicalNetworkName string, options *ReplicationLogicalNetworksClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationLogicalNetworks/{logicalNetworkName}"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -83,54 +99,45 @@ func (client *ReplicationLogicalNetworksClient) getCreateRequest(ctx context.Con
 		return nil, errors.New("parameter logicalNetworkName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{logicalNetworkName}", url.PathEscape(logicalNetworkName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ReplicationLogicalNetworksClient) getHandleResponse(resp *http.Response) (ReplicationLogicalNetworksGetResponse, error) {
-	result := ReplicationLogicalNetworksGetResponse{RawResponse: resp}
+func (client *ReplicationLogicalNetworksClient) getHandleResponse(resp *http.Response) (ReplicationLogicalNetworksClientGetResponse, error) {
+	result := ReplicationLogicalNetworksClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LogicalNetwork); err != nil {
-		return ReplicationLogicalNetworksGetResponse{}, runtime.NewResponseError(err, resp)
+		return ReplicationLogicalNetworksClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ReplicationLogicalNetworksClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByReplicationFabrics - Lists all the logical networks of the Azure Site Recovery fabric.
-// If the operation fails it returns a generic error.
-func (client *ReplicationLogicalNetworksClient) ListByReplicationFabrics(fabricName string, options *ReplicationLogicalNetworksListByReplicationFabricsOptions) *ReplicationLogicalNetworksListByReplicationFabricsPager {
-	return &ReplicationLogicalNetworksListByReplicationFabricsPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - Server Id.
+// options - ReplicationLogicalNetworksClientListByReplicationFabricsOptions contains the optional parameters for the ReplicationLogicalNetworksClient.ListByReplicationFabrics
+// method.
+func (client *ReplicationLogicalNetworksClient) ListByReplicationFabrics(fabricName string, options *ReplicationLogicalNetworksClientListByReplicationFabricsOptions) *ReplicationLogicalNetworksClientListByReplicationFabricsPager {
+	return &ReplicationLogicalNetworksClientListByReplicationFabricsPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByReplicationFabricsCreateRequest(ctx, fabricName, options)
 		},
-		advancer: func(ctx context.Context, resp ReplicationLogicalNetworksListByReplicationFabricsResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ReplicationLogicalNetworksClientListByReplicationFabricsResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.LogicalNetworkCollection.NextLink)
 		},
 	}
 }
 
 // listByReplicationFabricsCreateRequest creates the ListByReplicationFabrics request.
-func (client *ReplicationLogicalNetworksClient) listByReplicationFabricsCreateRequest(ctx context.Context, fabricName string, options *ReplicationLogicalNetworksListByReplicationFabricsOptions) (*policy.Request, error) {
+func (client *ReplicationLogicalNetworksClient) listByReplicationFabricsCreateRequest(ctx context.Context, fabricName string, options *ReplicationLogicalNetworksClientListByReplicationFabricsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationLogicalNetworks"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -148,34 +155,22 @@ func (client *ReplicationLogicalNetworksClient) listByReplicationFabricsCreateRe
 		return nil, errors.New("parameter fabricName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{fabricName}", url.PathEscape(fabricName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByReplicationFabricsHandleResponse handles the ListByReplicationFabrics response.
-func (client *ReplicationLogicalNetworksClient) listByReplicationFabricsHandleResponse(resp *http.Response) (ReplicationLogicalNetworksListByReplicationFabricsResponse, error) {
-	result := ReplicationLogicalNetworksListByReplicationFabricsResponse{RawResponse: resp}
+func (client *ReplicationLogicalNetworksClient) listByReplicationFabricsHandleResponse(resp *http.Response) (ReplicationLogicalNetworksClientListByReplicationFabricsResponse, error) {
+	result := ReplicationLogicalNetworksClientListByReplicationFabricsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LogicalNetworkCollection); err != nil {
-		return ReplicationLogicalNetworksListByReplicationFabricsResponse{}, runtime.NewResponseError(err, resp)
+		return ReplicationLogicalNetworksClientListByReplicationFabricsResponse{}, err
 	}
 	return result, nil
-}
-
-// listByReplicationFabricsHandleError handles the ListByReplicationFabrics error response.
-func (client *ReplicationLogicalNetworksClient) listByReplicationFabricsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

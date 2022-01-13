@@ -21,21 +21,23 @@ import (
 	"strings"
 )
 
-// OperationsClient contains the methods for the Operations group.
-// Don't use this type directly, use NewOperationsClient() instead.
-type OperationsClient struct {
+// ReplicationAppliancesClient contains the methods for the ReplicationAppliances group.
+// Don't use this type directly, use NewReplicationAppliancesClient() instead.
+type ReplicationAppliancesClient struct {
 	host              string
+	resourceName      string
 	resourceGroupName string
 	subscriptionID    string
 	pl                runtime.Pipeline
 }
 
-// NewOperationsClient creates a new instance of OperationsClient with the specified values.
+// NewReplicationAppliancesClient creates a new instance of ReplicationAppliancesClient with the specified values.
+// resourceName - The name of the recovery services vault.
 // resourceGroupName - The name of the resource group where the recovery services vault is present.
 // subscriptionID - The subscription Id.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewOperationsClient(resourceGroupName string, subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *OperationsClient {
+func NewReplicationAppliancesClient(resourceName string, resourceGroupName string, subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ReplicationAppliancesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
@@ -43,7 +45,8 @@ func NewOperationsClient(resourceGroupName string, subscriptionID string, creden
 	if len(cp.Endpoint) == 0 {
 		cp.Endpoint = arm.AzurePublicCloud
 	}
-	client := &OperationsClient{
+	client := &ReplicationAppliancesClient{
+		resourceName:      resourceName,
 		resourceGroupName: resourceGroupName,
 		subscriptionID:    subscriptionID,
 		host:              string(cp.Endpoint),
@@ -52,24 +55,29 @@ func NewOperationsClient(resourceGroupName string, subscriptionID string, creden
 	return client
 }
 
-// List - Operation to return the list of available operations.
+// List - Gets the list of Azure Site Recovery appliances for the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
-// options - OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
-func (client *OperationsClient) List(options *OperationsClientListOptions) *OperationsClientListPager {
-	return &OperationsClientListPager{
+// options - ReplicationAppliancesClientListOptions contains the optional parameters for the ReplicationAppliancesClient.List
+// method.
+func (client *ReplicationAppliancesClient) List(options *ReplicationAppliancesClientListOptions) *ReplicationAppliancesClientListPager {
+	return &ReplicationAppliancesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp OperationsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.OperationsDiscoveryCollection.NextLink)
+		advancer: func(ctx context.Context, resp ReplicationAppliancesClientListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ApplianceCollection.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *OperationsClient) listCreateRequest(ctx context.Context, options *OperationsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/operations"
+func (client *ReplicationAppliancesClient) listCreateRequest(ctx context.Context, options *ReplicationAppliancesClientListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationAppliances"
+	if client.resourceName == "" {
+		return nil, errors.New("parameter client.resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(client.resourceName))
 	if client.resourceGroupName == "" {
 		return nil, errors.New("parameter client.resourceGroupName cannot be empty")
 	}
@@ -84,16 +92,19 @@ func (client *OperationsClient) listCreateRequest(ctx context.Context, options *
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
+	if options != nil && options.Filter != nil {
+		reqQP.Set("$filter", *options.Filter)
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *OperationsClient) listHandleResponse(resp *http.Response) (OperationsClientListResponse, error) {
-	result := OperationsClientListResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.OperationsDiscoveryCollection); err != nil {
-		return OperationsClientListResponse{}, err
+func (client *ReplicationAppliancesClient) listHandleResponse(resp *http.Response) (ReplicationAppliancesClientListResponse, error) {
+	result := ReplicationAppliancesClientListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ApplianceCollection); err != nil {
+		return ReplicationAppliancesClientListResponse{}, err
 	}
 	return result, nil
 }

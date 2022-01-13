@@ -19,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
 )
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationFabrics_List.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationFabrics_List.json
 func ExampleReplicationFabricsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,17 +30,21 @@ func ExampleReplicationFabricsClient_List() {
 		"<resource-group-name>",
 		"<subscription-id>", cred, nil)
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Fabric.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationFabrics_Get.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationFabrics_Get.json
 func ExampleReplicationFabricsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,14 +56,14 @@ func ExampleReplicationFabricsClient_Get() {
 		"<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<fabric-name>",
-		&armrecoveryservicessiterecovery.ReplicationFabricsGetOptions{Filter: nil})
+		&armrecoveryservicessiterecovery.ReplicationFabricsClientGetOptions{Filter: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Fabric.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationFabricsClientGetResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationFabrics_Create.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationFabrics_Create.json
 func ExampleReplicationFabricsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,10 +90,10 @@ func ExampleReplicationFabricsClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Fabric.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationFabricsClientCreateResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationFabrics_Purge.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationFabrics_Purge.json
 func ExampleReplicationFabricsClient_BeginPurge() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,7 +115,7 @@ func ExampleReplicationFabricsClient_BeginPurge() {
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationFabrics_CheckConsistency.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationFabrics_CheckConsistency.json
 func ExampleReplicationFabricsClient_BeginCheckConsistency() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,32 +135,10 @@ func ExampleReplicationFabricsClient_BeginCheckConsistency() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Fabric.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationFabricsClientCheckConsistencyResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationFabrics_MigrateToAad.json
-func ExampleReplicationFabricsClient_BeginMigrateToAAD() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armrecoveryservicessiterecovery.NewReplicationFabricsClient("<resource-name>",
-		"<resource-group-name>",
-		"<subscription-id>", cred, nil)
-	poller, err := client.BeginMigrateToAAD(ctx,
-		"<fabric-name>",
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationFabrics_ReassociateGateway.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationFabrics_ReassociateGateway.json
 func ExampleReplicationFabricsClient_BeginReassociateGateway() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -187,10 +169,10 @@ func ExampleReplicationFabricsClient_BeginReassociateGateway() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Fabric.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationFabricsClientReassociateGatewayResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationFabrics_Delete.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationFabrics_Delete.json
 func ExampleReplicationFabricsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -212,7 +194,7 @@ func ExampleReplicationFabricsClient_BeginDelete() {
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationFabrics_RenewCertificate.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationFabrics_RenewCertificate.json
 func ExampleReplicationFabricsClient_BeginRenewCertificate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -237,5 +219,5 @@ func ExampleReplicationFabricsClient_BeginRenewCertificate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Fabric.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationFabricsClientRenewCertificateResult)
 }

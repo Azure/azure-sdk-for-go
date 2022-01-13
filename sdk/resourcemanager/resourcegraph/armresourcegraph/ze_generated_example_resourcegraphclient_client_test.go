@@ -20,14 +20,14 @@ import (
 )
 
 // x-ms-original-file: specification/resourcegraph/resource-manager/Microsoft.ResourceGraph/preview/2021-06-01-preview/examples/ResourcesPropertiesQuery.json
-func ExampleResourceGraphClient_Resources() {
+func ExampleClient_Resources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armresourcegraph.NewResourceGraphClient(cred, nil)
-	_, err = client.Resources(ctx,
+	client := armresourcegraph.NewClient(cred, nil)
+	res, err := client.Resources(ctx,
 		armresourcegraph.QueryRequest{
 			Query: to.StringPtr("<query>"),
 			Subscriptions: []*string{
@@ -37,17 +37,18 @@ func ExampleResourceGraphClient_Resources() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ClientResourcesResult)
 }
 
 // x-ms-original-file: specification/resourcegraph/resource-manager/Microsoft.ResourceGraph/preview/2021-06-01-preview/examples/ResourcesHistoryMgsGet.json
-func ExampleResourceGraphClient_ResourcesHistory() {
+func ExampleClient_ResourcesHistory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armresourcegraph.NewResourceGraphClient(cred, nil)
-	_, err = client.ResourcesHistory(ctx,
+	client := armresourcegraph.NewClient(cred, nil)
+	res, err := client.ResourcesHistory(ctx,
 		armresourcegraph.ResourcesHistoryRequest{
 			ManagementGroups: []*string{
 				to.StringPtr("e927f598-c1d4-4f72-8541-95d83a6a4ac8"),
@@ -64,4 +65,5 @@ func ExampleResourceGraphClient_ResourcesHistory() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ClientResourcesHistoryResult)
 }

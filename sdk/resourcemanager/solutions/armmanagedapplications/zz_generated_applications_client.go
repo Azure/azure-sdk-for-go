@@ -11,7 +11,6 @@ package armmanagedapplications
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,59 @@ import (
 // ApplicationsClient contains the methods for the Applications group.
 // Don't use this type directly, use NewApplicationsClient() instead.
 type ApplicationsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewApplicationsClient creates a new instance of ApplicationsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewApplicationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ApplicationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ApplicationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ApplicationsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Creates a new managed application.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ApplicationsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, applicationName string, parameters Application, options *ApplicationsBeginCreateOrUpdateOptions) (ApplicationsCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// applicationName - The name of the managed application.
+// parameters - Parameters supplied to the create or update a managed application.
+// options - ApplicationsClientBeginCreateOrUpdateOptions contains the optional parameters for the ApplicationsClient.BeginCreateOrUpdate
+// method.
+func (client *ApplicationsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, applicationName string, parameters Application, options *ApplicationsClientBeginCreateOrUpdateOptions) (ApplicationsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, applicationName, parameters, options)
 	if err != nil {
-		return ApplicationsCreateOrUpdatePollerResponse{}, err
+		return ApplicationsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := ApplicationsCreateOrUpdatePollerResponse{
+	result := ApplicationsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ApplicationsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("ApplicationsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return ApplicationsCreateOrUpdatePollerResponse{}, err
+		return ApplicationsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &ApplicationsCreateOrUpdatePoller{
+	result.Poller = &ApplicationsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates a new managed application.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ApplicationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, applicationName string, parameters Application, options *ApplicationsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ApplicationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, applicationName string, parameters Application, options *ApplicationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, applicationName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +86,13 @@ func (client *ApplicationsClient) createOrUpdate(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ApplicationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, applicationName string, parameters Application, options *ApplicationsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ApplicationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, applicationName string, parameters Application, options *ApplicationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applications/{applicationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -94,7 +106,7 @@ func (client *ApplicationsClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter applicationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{applicationName}", url.PathEscape(applicationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -105,42 +117,33 @@ func (client *ApplicationsClient) createOrUpdateCreateRequest(ctx context.Contex
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ApplicationsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes the managed application.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ApplicationsClient) BeginDelete(ctx context.Context, resourceGroupName string, applicationName string, options *ApplicationsBeginDeleteOptions) (ApplicationsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// applicationName - The name of the managed application.
+// options - ApplicationsClientBeginDeleteOptions contains the optional parameters for the ApplicationsClient.BeginDelete
+// method.
+func (client *ApplicationsClient) BeginDelete(ctx context.Context, resourceGroupName string, applicationName string, options *ApplicationsClientBeginDeleteOptions) (ApplicationsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, applicationName, options)
 	if err != nil {
-		return ApplicationsDeletePollerResponse{}, err
+		return ApplicationsClientDeletePollerResponse{}, err
 	}
-	result := ApplicationsDeletePollerResponse{
+	result := ApplicationsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ApplicationsClient.Delete", "azure-async-operation", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("ApplicationsClient.Delete", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return ApplicationsDeletePollerResponse{}, err
+		return ApplicationsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &ApplicationsDeletePoller{
+	result.Poller = &ApplicationsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes the managed application.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ApplicationsClient) deleteOperation(ctx context.Context, resourceGroupName string, applicationName string, options *ApplicationsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ApplicationsClient) deleteOperation(ctx context.Context, resourceGroupName string, applicationName string, options *ApplicationsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, applicationName, options)
 	if err != nil {
 		return nil, err
@@ -150,13 +153,13 @@ func (client *ApplicationsClient) deleteOperation(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ApplicationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, applicationName string, options *ApplicationsBeginDeleteOptions) (*policy.Request, error) {
+func (client *ApplicationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, applicationName string, options *ApplicationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applications/{applicationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -170,7 +173,7 @@ func (client *ApplicationsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter applicationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{applicationName}", url.PathEscape(applicationName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -181,38 +184,28 @@ func (client *ApplicationsClient) deleteCreateRequest(ctx context.Context, resou
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ApplicationsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets the managed application.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ApplicationsClient) Get(ctx context.Context, resourceGroupName string, applicationName string, options *ApplicationsGetOptions) (ApplicationsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// applicationName - The name of the managed application.
+// options - ApplicationsClientGetOptions contains the optional parameters for the ApplicationsClient.Get method.
+func (client *ApplicationsClient) Get(ctx context.Context, resourceGroupName string, applicationName string, options *ApplicationsClientGetOptions) (ApplicationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, applicationName, options)
 	if err != nil {
-		return ApplicationsGetResponse{}, err
+		return ApplicationsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ApplicationsGetResponse{}, err
+		return ApplicationsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ApplicationsGetResponse{}, client.getHandleError(resp)
+		return ApplicationsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ApplicationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, applicationName string, options *ApplicationsGetOptions) (*policy.Request, error) {
+func (client *ApplicationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, applicationName string, options *ApplicationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applications/{applicationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -226,7 +219,7 @@ func (client *ApplicationsClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter applicationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{applicationName}", url.PathEscape(applicationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -238,46 +231,37 @@ func (client *ApplicationsClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client *ApplicationsClient) getHandleResponse(resp *http.Response) (ApplicationsGetResponse, error) {
-	result := ApplicationsGetResponse{RawResponse: resp}
+func (client *ApplicationsClient) getHandleResponse(resp *http.Response) (ApplicationsClientGetResponse, error) {
+	result := ApplicationsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Application); err != nil {
-		return ApplicationsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ApplicationsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ApplicationsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListAllowedUpgradePlans - List allowed upgrade plans for application.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ApplicationsClient) ListAllowedUpgradePlans(ctx context.Context, resourceGroupName string, applicationName string, options *ApplicationsListAllowedUpgradePlansOptions) (ApplicationsListAllowedUpgradePlansResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// applicationName - The name of the managed application.
+// options - ApplicationsClientListAllowedUpgradePlansOptions contains the optional parameters for the ApplicationsClient.ListAllowedUpgradePlans
+// method.
+func (client *ApplicationsClient) ListAllowedUpgradePlans(ctx context.Context, resourceGroupName string, applicationName string, options *ApplicationsClientListAllowedUpgradePlansOptions) (ApplicationsClientListAllowedUpgradePlansResponse, error) {
 	req, err := client.listAllowedUpgradePlansCreateRequest(ctx, resourceGroupName, applicationName, options)
 	if err != nil {
-		return ApplicationsListAllowedUpgradePlansResponse{}, err
+		return ApplicationsClientListAllowedUpgradePlansResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ApplicationsListAllowedUpgradePlansResponse{}, err
+		return ApplicationsClientListAllowedUpgradePlansResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ApplicationsListAllowedUpgradePlansResponse{}, client.listAllowedUpgradePlansHandleError(resp)
+		return ApplicationsClientListAllowedUpgradePlansResponse{}, runtime.NewResponseError(resp)
 	}
-	return ApplicationsListAllowedUpgradePlansResponse{RawResponse: resp}, nil
+	return ApplicationsClientListAllowedUpgradePlansResponse{RawResponse: resp}, nil
 }
 
 // listAllowedUpgradePlansCreateRequest creates the ListAllowedUpgradePlans request.
-func (client *ApplicationsClient) listAllowedUpgradePlansCreateRequest(ctx context.Context, resourceGroupName string, applicationName string, options *ApplicationsListAllowedUpgradePlansOptions) (*policy.Request, error) {
+func (client *ApplicationsClient) listAllowedUpgradePlansCreateRequest(ctx context.Context, resourceGroupName string, applicationName string, options *ApplicationsClientListAllowedUpgradePlansOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applications/{applicationName}/listAllowedUpgradePlans"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -291,7 +275,7 @@ func (client *ApplicationsClient) listAllowedUpgradePlansCreateRequest(ctx conte
 		return nil, errors.New("parameter applicationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{applicationName}", url.PathEscape(applicationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -302,35 +286,25 @@ func (client *ApplicationsClient) listAllowedUpgradePlansCreateRequest(ctx conte
 	return req, nil
 }
 
-// listAllowedUpgradePlansHandleError handles the ListAllowedUpgradePlans error response.
-func (client *ApplicationsClient) listAllowedUpgradePlansHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - Gets all the applications within a resource group.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ApplicationsClient) ListByResourceGroup(resourceGroupName string, options *ApplicationsListByResourceGroupOptions) *ApplicationsListByResourceGroupPager {
-	return &ApplicationsListByResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// options - ApplicationsClientListByResourceGroupOptions contains the optional parameters for the ApplicationsClient.ListByResourceGroup
+// method.
+func (client *ApplicationsClient) ListByResourceGroup(resourceGroupName string, options *ApplicationsClientListByResourceGroupOptions) *ApplicationsClientListByResourceGroupPager {
+	return &ApplicationsClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp ApplicationsListByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ApplicationsClientListByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ApplicationListResult.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ApplicationsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ApplicationsListByResourceGroupOptions) (*policy.Request, error) {
+func (client *ApplicationsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ApplicationsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applications"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -340,7 +314,7 @@ func (client *ApplicationsClient) listByResourceGroupCreateRequest(ctx context.C
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -352,49 +326,38 @@ func (client *ApplicationsClient) listByResourceGroupCreateRequest(ctx context.C
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *ApplicationsClient) listByResourceGroupHandleResponse(resp *http.Response) (ApplicationsListByResourceGroupResponse, error) {
-	result := ApplicationsListByResourceGroupResponse{RawResponse: resp}
+func (client *ApplicationsClient) listByResourceGroupHandleResponse(resp *http.Response) (ApplicationsClientListByResourceGroupResponse, error) {
+	result := ApplicationsClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationListResult); err != nil {
-		return ApplicationsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return ApplicationsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *ApplicationsClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListBySubscription - Gets all the applications within a subscription.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ApplicationsClient) ListBySubscription(options *ApplicationsListBySubscriptionOptions) *ApplicationsListBySubscriptionPager {
-	return &ApplicationsListBySubscriptionPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - ApplicationsClientListBySubscriptionOptions contains the optional parameters for the ApplicationsClient.ListBySubscription
+// method.
+func (client *ApplicationsClient) ListBySubscription(options *ApplicationsClientListBySubscriptionOptions) *ApplicationsClientListBySubscriptionPager {
+	return &ApplicationsClientListBySubscriptionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp ApplicationsListBySubscriptionResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ApplicationsClientListBySubscriptionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ApplicationListResult.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *ApplicationsClient) listBySubscriptionCreateRequest(ctx context.Context, options *ApplicationsListBySubscriptionOptions) (*policy.Request, error) {
+func (client *ApplicationsClient) listBySubscriptionCreateRequest(ctx context.Context, options *ApplicationsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Solutions/applications"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -406,50 +369,41 @@ func (client *ApplicationsClient) listBySubscriptionCreateRequest(ctx context.Co
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *ApplicationsClient) listBySubscriptionHandleResponse(resp *http.Response) (ApplicationsListBySubscriptionResponse, error) {
-	result := ApplicationsListBySubscriptionResponse{RawResponse: resp}
+func (client *ApplicationsClient) listBySubscriptionHandleResponse(resp *http.Response) (ApplicationsClientListBySubscriptionResponse, error) {
+	result := ApplicationsClientListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationListResult); err != nil {
-		return ApplicationsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return ApplicationsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *ApplicationsClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginRefreshPermissions - Refresh Permissions for application.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ApplicationsClient) BeginRefreshPermissions(ctx context.Context, resourceGroupName string, applicationName string, options *ApplicationsBeginRefreshPermissionsOptions) (ApplicationsRefreshPermissionsPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// applicationName - The name of the managed application.
+// options - ApplicationsClientBeginRefreshPermissionsOptions contains the optional parameters for the ApplicationsClient.BeginRefreshPermissions
+// method.
+func (client *ApplicationsClient) BeginRefreshPermissions(ctx context.Context, resourceGroupName string, applicationName string, options *ApplicationsClientBeginRefreshPermissionsOptions) (ApplicationsClientRefreshPermissionsPollerResponse, error) {
 	resp, err := client.refreshPermissions(ctx, resourceGroupName, applicationName, options)
 	if err != nil {
-		return ApplicationsRefreshPermissionsPollerResponse{}, err
+		return ApplicationsClientRefreshPermissionsPollerResponse{}, err
 	}
-	result := ApplicationsRefreshPermissionsPollerResponse{
+	result := ApplicationsClientRefreshPermissionsPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ApplicationsClient.RefreshPermissions", "", resp, client.pl, client.refreshPermissionsHandleError)
+	pt, err := armruntime.NewPoller("ApplicationsClient.RefreshPermissions", "", resp, client.pl)
 	if err != nil {
-		return ApplicationsRefreshPermissionsPollerResponse{}, err
+		return ApplicationsClientRefreshPermissionsPollerResponse{}, err
 	}
-	result.Poller = &ApplicationsRefreshPermissionsPoller{
+	result.Poller = &ApplicationsClientRefreshPermissionsPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // RefreshPermissions - Refresh Permissions for application.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ApplicationsClient) refreshPermissions(ctx context.Context, resourceGroupName string, applicationName string, options *ApplicationsBeginRefreshPermissionsOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ApplicationsClient) refreshPermissions(ctx context.Context, resourceGroupName string, applicationName string, options *ApplicationsClientBeginRefreshPermissionsOptions) (*http.Response, error) {
 	req, err := client.refreshPermissionsCreateRequest(ctx, resourceGroupName, applicationName, options)
 	if err != nil {
 		return nil, err
@@ -459,13 +413,13 @@ func (client *ApplicationsClient) refreshPermissions(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.refreshPermissionsHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // refreshPermissionsCreateRequest creates the RefreshPermissions request.
-func (client *ApplicationsClient) refreshPermissionsCreateRequest(ctx context.Context, resourceGroupName string, applicationName string, options *ApplicationsBeginRefreshPermissionsOptions) (*policy.Request, error) {
+func (client *ApplicationsClient) refreshPermissionsCreateRequest(ctx context.Context, resourceGroupName string, applicationName string, options *ApplicationsClientBeginRefreshPermissionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applications/{applicationName}/refreshPermissions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -479,7 +433,7 @@ func (client *ApplicationsClient) refreshPermissionsCreateRequest(ctx context.Co
 		return nil, errors.New("parameter applicationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{applicationName}", url.PathEscape(applicationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -490,38 +444,28 @@ func (client *ApplicationsClient) refreshPermissionsCreateRequest(ctx context.Co
 	return req, nil
 }
 
-// refreshPermissionsHandleError handles the RefreshPermissions error response.
-func (client *ApplicationsClient) refreshPermissionsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Updates an existing managed application. The only value that can be updated via PATCH currently is the tags.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ApplicationsClient) Update(ctx context.Context, resourceGroupName string, applicationName string, options *ApplicationsUpdateOptions) (ApplicationsUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// applicationName - The name of the managed application.
+// options - ApplicationsClientUpdateOptions contains the optional parameters for the ApplicationsClient.Update method.
+func (client *ApplicationsClient) Update(ctx context.Context, resourceGroupName string, applicationName string, options *ApplicationsClientUpdateOptions) (ApplicationsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, applicationName, options)
 	if err != nil {
-		return ApplicationsUpdateResponse{}, err
+		return ApplicationsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ApplicationsUpdateResponse{}, err
+		return ApplicationsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ApplicationsUpdateResponse{}, client.updateHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return ApplicationsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ApplicationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, applicationName string, options *ApplicationsUpdateOptions) (*policy.Request, error) {
+func (client *ApplicationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, applicationName string, options *ApplicationsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applications/{applicationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -535,7 +479,7 @@ func (client *ApplicationsClient) updateCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter applicationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{applicationName}", url.PathEscape(applicationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -550,23 +494,10 @@ func (client *ApplicationsClient) updateCreateRequest(ctx context.Context, resou
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ApplicationsClient) updateHandleResponse(resp *http.Response) (ApplicationsUpdateResponse, error) {
-	result := ApplicationsUpdateResponse{RawResponse: resp}
+func (client *ApplicationsClient) updateHandleResponse(resp *http.Response) (ApplicationsClientUpdateResponse, error) {
+	result := ApplicationsClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Application); err != nil {
-		return ApplicationsUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ApplicationsClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *ApplicationsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

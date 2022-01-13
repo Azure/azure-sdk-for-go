@@ -34,7 +34,7 @@ func ExampleApplicationDefinitionsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ApplicationDefinition.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ApplicationDefinitionsClientGetResult)
 }
 
 // x-ms-original-file: specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/deleteApplicationDefinition.json
@@ -90,7 +90,7 @@ func ExampleApplicationDefinitionsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ApplicationDefinition.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ApplicationDefinitionsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/updateApplicationDefinition.json
@@ -113,7 +113,7 @@ func ExampleApplicationDefinitionsClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ApplicationDefinition.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ApplicationDefinitionsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/listApplicationDefinitionsByResourceGroup.json
@@ -126,12 +126,16 @@ func ExampleApplicationDefinitionsClient_ListByResourceGroup() {
 	client := armmanagedapplications.NewApplicationDefinitionsClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ApplicationDefinition.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -145,12 +149,16 @@ func ExampleApplicationDefinitionsClient_ListBySubscription() {
 	ctx := context.Background()
 	client := armmanagedapplications.NewApplicationDefinitionsClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ApplicationDefinition.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

@@ -4,12 +4,38 @@
 package atom
 
 import (
+	"encoding/xml"
 	"fmt"
+	"io/ioutil"
 	"net/http"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 func NewResponseError(inner error, resp *http.Response) error {
-	return ResponseError{inner, resp}
+	bytes, err := ioutil.ReadAll(resp.Body)
+
+	if err != nil {
+		return &azcore.ResponseError{
+			StatusCode:  resp.StatusCode,
+			RawResponse: resp,
+		}
+	}
+
+	var ec *managementError
+
+	if err := xml.Unmarshal(bytes, &ec); err != nil {
+		return &azcore.ResponseError{
+			StatusCode:  resp.StatusCode,
+			RawResponse: resp,
+		}
+	}
+
+	return &azcore.ResponseError{
+		ErrorCode:   ec.Detail,
+		StatusCode:  resp.StatusCode,
+		RawResponse: resp,
+	}
 }
 
 // ResponseError conforms to the older azcore.HTTPResponse

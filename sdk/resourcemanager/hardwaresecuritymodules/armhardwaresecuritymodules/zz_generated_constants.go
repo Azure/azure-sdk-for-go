@@ -10,7 +10,7 @@ package armhardwaresecuritymodules
 
 const (
 	moduleName    = "armhardwaresecuritymodules"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v0.2.0"
 )
 
 // IdentityType - The type of identity.

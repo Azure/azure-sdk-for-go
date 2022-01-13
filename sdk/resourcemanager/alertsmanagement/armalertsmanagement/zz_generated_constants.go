@@ -10,7 +10,7 @@ package armalertsmanagement
 
 const (
 	moduleName    = "armalertsmanagement"
-	moduleVersion = "v0.2.0"
+	moduleVersion = "v0.3.0"
 )
 
 // ActionType - Action that should be applied.

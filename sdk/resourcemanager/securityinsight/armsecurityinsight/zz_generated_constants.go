@@ -10,7 +10,7 @@ package armsecurityinsight
 
 const (
 	moduleName    = "armsecurityinsight"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v0.2.0"
 )
 
 // AlertDetail - Alert detail

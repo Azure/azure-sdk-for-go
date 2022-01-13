@@ -14,13 +14,13 @@ import (
 	"net/http"
 )
 
-// EdgeOrderPartnerAPISManageInventoryMetadataPoller provides polling facilities until the operation reaches a terminal state.
-type EdgeOrderPartnerAPISManageInventoryMetadataPoller struct {
+// APISClientManageInventoryMetadataPoller provides polling facilities until the operation reaches a terminal state.
+type APISClientManageInventoryMetadataPoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *EdgeOrderPartnerAPISManageInventoryMetadataPoller) Done() bool {
+func (p *APISClientManageInventoryMetadataPoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -34,18 +34,18 @@ func (p *EdgeOrderPartnerAPISManageInventoryMetadataPoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *EdgeOrderPartnerAPISManageInventoryMetadataPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *APISClientManageInventoryMetadataPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final EdgeOrderPartnerAPISManageInventoryMetadataResponse will be returned.
-func (p *EdgeOrderPartnerAPISManageInventoryMetadataPoller) FinalResponse(ctx context.Context) (EdgeOrderPartnerAPISManageInventoryMetadataResponse, error) {
-	respType := EdgeOrderPartnerAPISManageInventoryMetadataResponse{}
+// If the final GET succeeded then the final APISClientManageInventoryMetadataResponse will be returned.
+func (p *APISClientManageInventoryMetadataPoller) FinalResponse(ctx context.Context) (APISClientManageInventoryMetadataResponse, error) {
+	respType := APISClientManageInventoryMetadataResponse{}
 	resp, err := p.pt.FinalResponse(ctx, nil)
 	if err != nil {
-		return EdgeOrderPartnerAPISManageInventoryMetadataResponse{}, err
+		return APISClientManageInventoryMetadataResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -53,6 +53,6 @@ func (p *EdgeOrderPartnerAPISManageInventoryMetadataPoller) FinalResponse(ctx co
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *EdgeOrderPartnerAPISManageInventoryMetadataPoller) ResumeToken() (string, error) {
+func (p *APISClientManageInventoryMetadataPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }

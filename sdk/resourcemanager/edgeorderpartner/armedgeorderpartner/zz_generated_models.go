@@ -15,6 +15,27 @@ import (
 	"time"
 )
 
+// APISClientBeginManageInventoryMetadataOptions contains the optional parameters for the APISClient.BeginManageInventoryMetadata
+// method.
+type APISClientBeginManageInventoryMetadataOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APISClientListOperationsPartnerOptions contains the optional parameters for the APISClient.ListOperationsPartner method.
+type APISClientListOperationsPartnerOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APISClientManageLinkOptions contains the optional parameters for the APISClient.ManageLink method.
+type APISClientManageLinkOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APISClientSearchInventoriesOptions contains the optional parameters for the APISClient.SearchInventories method.
+type APISClientSearchInventoriesOptions struct {
+	// placeholder for future optional parameters
+}
+
 type AdditionalErrorInfo struct {
 	// Any object
 	Info map[string]interface{} `json:"info,omitempty"`
@@ -80,8 +101,8 @@ type ConfigurationData struct {
 	// READ-ONLY; Configuration identifier of inventory
 	ConfigurationIdentifier *string `json:"configurationIdentifier,omitempty" azure:"ro"`
 
-	// READ-ONLY; Configuration identifier on device - this is used in case of any mismatch between actual configuration on inventory and configuration stored
-	// in service
+	// READ-ONLY; Configuration identifier on device - this is used in case of any mismatch between actual configuration on inventory
+	// and configuration stored in service
 	ConfigurationIdentifierOnDevice *string `json:"configurationIdentifierOnDevice,omitempty" azure:"ro"`
 
 	// READ-ONLY; Family identifier of inventory
@@ -111,26 +132,6 @@ func (c ConfigurationDetails) MarshalJSON() ([]byte, error) {
 type ConfigurationOnDevice struct {
 	// REQUIRED; Configuration identifier on device
 	ConfigurationIdentifier *string `json:"configurationIdentifier,omitempty"`
-}
-
-// EdgeOrderPartnerAPISBeginManageInventoryMetadataOptions contains the optional parameters for the EdgeOrderPartnerAPIS.BeginManageInventoryMetadata method.
-type EdgeOrderPartnerAPISBeginManageInventoryMetadataOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EdgeOrderPartnerAPISListOperationsPartnerOptions contains the optional parameters for the EdgeOrderPartnerAPIS.ListOperationsPartner method.
-type EdgeOrderPartnerAPISListOperationsPartnerOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EdgeOrderPartnerAPISManageLinkOptions contains the optional parameters for the EdgeOrderPartnerAPIS.ManageLink method.
-type EdgeOrderPartnerAPISManageLinkOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EdgeOrderPartnerAPISSearchInventoriesOptions contains the optional parameters for the EdgeOrderPartnerAPIS.SearchInventories method.
-type EdgeOrderPartnerAPISSearchInventoriesOptions struct {
-	// placeholder for future optional parameters
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
@@ -171,19 +172,11 @@ func (e ErrorDetail) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData
-// error response format.).
-// Implements the error and azcore.HTTPResponse interfaces.
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
 type ErrorResponse struct {
-	raw string
 	// The error object.
-	InnerError *ErrorDetail `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorDetail `json:"error,omitempty"`
 }
 
 // InventoryAdditionalDetails - Represents additional details about the partner inventory
@@ -293,13 +286,16 @@ type Operation struct {
 	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 	ActionType *ActionType `json:"actionType,omitempty" azure:"ro"`
 
-	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane operations.
+	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
+	// operations.
 	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
 
-	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write", "Microsoft.Compute/virtualMachines/capture/action"
+	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
+	// "Microsoft.Compute/virtualMachines/capture/action"
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default value is "user,system"
+	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+	// value is "user,system"
 	Origin *Origin `json:"origin,omitempty" azure:"ro"`
 }
 
@@ -308,18 +304,21 @@ type OperationDisplay struct {
 	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
 	Description *string `json:"description,omitempty" azure:"ro"`
 
-	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual Machine", "Restart Virtual
-	// Machine".
+	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
+	// Machine", "Restart Virtual Machine".
 	Operation *string `json:"operation,omitempty" azure:"ro"`
 
-	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft Compute".
+	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
+	// Compute".
 	Provider *string `json:"provider,omitempty" azure:"ro"`
 
-	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job Schedule Collections".
+	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
+	// Schedule Collections".
 	Resource *string `json:"resource,omitempty" azure:"ro"`
 }
 
-// OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
+// OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
+// get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results (if there are any).
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`

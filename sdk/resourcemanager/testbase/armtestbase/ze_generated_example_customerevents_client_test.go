@@ -30,12 +30,16 @@ func ExampleCustomerEventsClient_ListByTestBaseAccount() {
 	pager := client.ListByTestBaseAccount("<resource-group-name>",
 		"<test-base-account-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("CustomerEventResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -85,7 +89,7 @@ func ExampleCustomerEventsClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("CustomerEventResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.CustomerEventsClientCreateResult)
 }
 
 // x-ms-original-file: specification/testbase/resource-manager/Microsoft.TestBase/preview/2020-12-16-preview/examples/CustomerEventDelete.json
@@ -126,5 +130,5 @@ func ExampleCustomerEventsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("CustomerEventResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.CustomerEventsClientGetResult)
 }

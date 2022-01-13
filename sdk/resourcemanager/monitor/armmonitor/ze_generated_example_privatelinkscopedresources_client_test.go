@@ -35,7 +35,7 @@ func ExamplePrivateLinkScopedResourcesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ScopedResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateLinkScopedResourcesClientGetResult)
 }
 
 // x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/preview/2019-10-17-preview/examples/PrivateLinkScopedResourceUpdate.json
@@ -63,7 +63,7 @@ func ExamplePrivateLinkScopedResourcesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ScopedResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateLinkScopedResourcesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/preview/2019-10-17-preview/examples/PrivateLinkScopedResourceDelete.json
@@ -99,12 +99,16 @@ func ExamplePrivateLinkScopedResourcesClient_ListByPrivateLinkScope() {
 	pager := client.ListByPrivateLinkScope("<resource-group-name>",
 		"<scope-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ScopedResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

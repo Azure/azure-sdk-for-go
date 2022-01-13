@@ -12,6 +12,7 @@ import (
 	"context"
 	"log"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights"
 )
@@ -24,13 +25,14 @@ func ExampleProactiveDetectionConfigurationsClient_List() {
 	}
 	ctx := context.Background()
 	client := armapplicationinsights.NewProactiveDetectionConfigurationsClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ProactiveDetectionConfigurationsClientListResult)
 }
 
 // x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/ProactiveDetectionConfigurationGet.json
@@ -41,7 +43,7 @@ func ExampleProactiveDetectionConfigurationsClient_Get() {
 	}
 	ctx := context.Background()
 	client := armapplicationinsights.NewProactiveDetectionConfigurationsClient("<subscription-id>", cred, nil)
-	_, err = client.Get(ctx,
+	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		"<configuration-id>",
@@ -49,6 +51,7 @@ func ExampleProactiveDetectionConfigurationsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ProactiveDetectionConfigurationsClientGetResult)
 }
 
 // x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/ProactiveDetectionConfigurationUpdate.json
@@ -59,13 +62,31 @@ func ExampleProactiveDetectionConfigurationsClient_Update() {
 	}
 	ctx := context.Background()
 	client := armapplicationinsights.NewProactiveDetectionConfigurationsClient("<subscription-id>", cred, nil)
-	_, err = client.Update(ctx,
+	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		"<configuration-id>",
-		armapplicationinsights.ApplicationInsightsComponentProactiveDetectionConfiguration{},
+		armapplicationinsights.ComponentProactiveDetectionConfiguration{
+			CustomEmails: []*string{
+				to.StringPtr("foo@microsoft.com"),
+				to.StringPtr("foo2@microsoft.com")},
+			Enabled: to.BoolPtr(true),
+			Name:    to.StringPtr("<name>"),
+			RuleDefinitions: &armapplicationinsights.ComponentProactiveDetectionConfigurationRuleDefinitions{
+				Description:                to.StringPtr("<description>"),
+				DisplayName:                to.StringPtr("<display-name>"),
+				HelpURL:                    to.StringPtr("<help-url>"),
+				IsEnabledByDefault:         to.BoolPtr(true),
+				IsHidden:                   to.BoolPtr(false),
+				IsInPreview:                to.BoolPtr(false),
+				Name:                       to.StringPtr("<name>"),
+				SupportsEmailNotifications: to.BoolPtr(true),
+			},
+			SendEmailsToSubscriptionOwners: to.BoolPtr(true),
+		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ProactiveDetectionConfigurationsClientUpdateResult)
 }

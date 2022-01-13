@@ -10,62 +10,62 @@ package armbaremetalinfrastructure
 
 import "net/http"
 
-// AzureBareMetalInstancesGetResponse contains the response from method AzureBareMetalInstances.Get.
-type AzureBareMetalInstancesGetResponse struct {
-	AzureBareMetalInstancesGetResult
+// AzureBareMetalInstancesClientGetResponse contains the response from method AzureBareMetalInstancesClient.Get.
+type AzureBareMetalInstancesClientGetResponse struct {
+	AzureBareMetalInstancesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AzureBareMetalInstancesGetResult contains the result from method AzureBareMetalInstances.Get.
-type AzureBareMetalInstancesGetResult struct {
+// AzureBareMetalInstancesClientGetResult contains the result from method AzureBareMetalInstancesClient.Get.
+type AzureBareMetalInstancesClientGetResult struct {
 	AzureBareMetalInstance
 }
 
-// AzureBareMetalInstancesListByResourceGroupResponse contains the response from method AzureBareMetalInstances.ListByResourceGroup.
-type AzureBareMetalInstancesListByResourceGroupResponse struct {
-	AzureBareMetalInstancesListByResourceGroupResult
+// AzureBareMetalInstancesClientListByResourceGroupResponse contains the response from method AzureBareMetalInstancesClient.ListByResourceGroup.
+type AzureBareMetalInstancesClientListByResourceGroupResponse struct {
+	AzureBareMetalInstancesClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AzureBareMetalInstancesListByResourceGroupResult contains the result from method AzureBareMetalInstances.ListByResourceGroup.
-type AzureBareMetalInstancesListByResourceGroupResult struct {
+// AzureBareMetalInstancesClientListByResourceGroupResult contains the result from method AzureBareMetalInstancesClient.ListByResourceGroup.
+type AzureBareMetalInstancesClientListByResourceGroupResult struct {
 	AzureBareMetalInstancesListResult
 }
 
-// AzureBareMetalInstancesListBySubscriptionResponse contains the response from method AzureBareMetalInstances.ListBySubscription.
-type AzureBareMetalInstancesListBySubscriptionResponse struct {
-	AzureBareMetalInstancesListBySubscriptionResult
+// AzureBareMetalInstancesClientListBySubscriptionResponse contains the response from method AzureBareMetalInstancesClient.ListBySubscription.
+type AzureBareMetalInstancesClientListBySubscriptionResponse struct {
+	AzureBareMetalInstancesClientListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AzureBareMetalInstancesListBySubscriptionResult contains the result from method AzureBareMetalInstances.ListBySubscription.
-type AzureBareMetalInstancesListBySubscriptionResult struct {
+// AzureBareMetalInstancesClientListBySubscriptionResult contains the result from method AzureBareMetalInstancesClient.ListBySubscription.
+type AzureBareMetalInstancesClientListBySubscriptionResult struct {
 	AzureBareMetalInstancesListResult
 }
 
-// AzureBareMetalInstancesUpdateResponse contains the response from method AzureBareMetalInstances.Update.
-type AzureBareMetalInstancesUpdateResponse struct {
-	AzureBareMetalInstancesUpdateResult
+// AzureBareMetalInstancesClientUpdateResponse contains the response from method AzureBareMetalInstancesClient.Update.
+type AzureBareMetalInstancesClientUpdateResponse struct {
+	AzureBareMetalInstancesClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AzureBareMetalInstancesUpdateResult contains the result from method AzureBareMetalInstances.Update.
-type AzureBareMetalInstancesUpdateResult struct {
+// AzureBareMetalInstancesClientUpdateResult contains the result from method AzureBareMetalInstancesClient.Update.
+type AzureBareMetalInstancesClientUpdateResult struct {
 	AzureBareMetalInstance
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationList
 }

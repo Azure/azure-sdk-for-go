@@ -11,7 +11,6 @@ package armautomation
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,57 @@ import (
 // CertificateClient contains the methods for the Certificate group.
 // Don't use this type directly, use NewCertificateClient() instead.
 type CertificateClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewCertificateClient creates a new instance of CertificateClient with the specified values.
+// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+// forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewCertificateClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CertificateClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &CertificateClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &CertificateClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Create a certificate.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CertificateClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, automationAccountName string, certificateName string, parameters CertificateCreateOrUpdateParameters, options *CertificateCreateOrUpdateOptions) (CertificateCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// certificateName - The parameters supplied to the create or update certificate operation.
+// parameters - The parameters supplied to the create or update certificate operation.
+// options - CertificateClientCreateOrUpdateOptions contains the optional parameters for the CertificateClient.CreateOrUpdate
+// method.
+func (client *CertificateClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, automationAccountName string, certificateName string, parameters CertificateCreateOrUpdateParameters, options *CertificateClientCreateOrUpdateOptions) (CertificateClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, automationAccountName, certificateName, parameters, options)
 	if err != nil {
-		return CertificateCreateOrUpdateResponse{}, err
+		return CertificateClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CertificateCreateOrUpdateResponse{}, err
+		return CertificateClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return CertificateCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return CertificateClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *CertificateClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, certificateName string, parameters CertificateCreateOrUpdateParameters, options *CertificateCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *CertificateClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, certificateName string, parameters CertificateCreateOrUpdateParameters, options *CertificateClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/certificates/{certificateName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -78,7 +92,7 @@ func (client *CertificateClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,46 +104,37 @@ func (client *CertificateClient) createOrUpdateCreateRequest(ctx context.Context
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *CertificateClient) createOrUpdateHandleResponse(resp *http.Response) (CertificateCreateOrUpdateResponse, error) {
-	result := CertificateCreateOrUpdateResponse{RawResponse: resp}
+func (client *CertificateClient) createOrUpdateHandleResponse(resp *http.Response) (CertificateClientCreateOrUpdateResponse, error) {
+	result := CertificateClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Certificate); err != nil {
-		return CertificateCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return CertificateClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *CertificateClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete the certificate.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CertificateClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, certificateName string, options *CertificateDeleteOptions) (CertificateDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// certificateName - The name of certificate.
+// options - CertificateClientDeleteOptions contains the optional parameters for the CertificateClient.Delete method.
+func (client *CertificateClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, certificateName string, options *CertificateClientDeleteOptions) (CertificateClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, automationAccountName, certificateName, options)
 	if err != nil {
-		return CertificateDeleteResponse{}, err
+		return CertificateClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CertificateDeleteResponse{}, err
+		return CertificateClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CertificateDeleteResponse{}, client.deleteHandleError(resp)
+		return CertificateClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return CertificateDeleteResponse{RawResponse: resp}, nil
+	return CertificateClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *CertificateClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, certificateName string, options *CertificateDeleteOptions) (*policy.Request, error) {
+func (client *CertificateClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, certificateName string, options *CertificateClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/certificates/{certificateName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -147,7 +152,7 @@ func (client *CertificateClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -158,38 +163,29 @@ func (client *CertificateClient) deleteCreateRequest(ctx context.Context, resour
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *CertificateClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Retrieve the certificate identified by certificate name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CertificateClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, certificateName string, options *CertificateGetOptions) (CertificateGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// certificateName - The name of certificate.
+// options - CertificateClientGetOptions contains the optional parameters for the CertificateClient.Get method.
+func (client *CertificateClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, certificateName string, options *CertificateClientGetOptions) (CertificateClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, automationAccountName, certificateName, options)
 	if err != nil {
-		return CertificateGetResponse{}, err
+		return CertificateClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CertificateGetResponse{}, err
+		return CertificateClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CertificateGetResponse{}, client.getHandleError(resp)
+		return CertificateClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *CertificateClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, certificateName string, options *CertificateGetOptions) (*policy.Request, error) {
+func (client *CertificateClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, certificateName string, options *CertificateClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/certificates/{certificateName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -207,7 +203,7 @@ func (client *CertificateClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -219,43 +215,34 @@ func (client *CertificateClient) getCreateRequest(ctx context.Context, resourceG
 }
 
 // getHandleResponse handles the Get response.
-func (client *CertificateClient) getHandleResponse(resp *http.Response) (CertificateGetResponse, error) {
-	result := CertificateGetResponse{RawResponse: resp}
+func (client *CertificateClient) getHandleResponse(resp *http.Response) (CertificateClientGetResponse, error) {
+	result := CertificateClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Certificate); err != nil {
-		return CertificateGetResponse{}, runtime.NewResponseError(err, resp)
+		return CertificateClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *CertificateClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByAutomationAccount - Retrieve a list of certificates.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CertificateClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *CertificateListByAutomationAccountOptions) *CertificateListByAutomationAccountPager {
-	return &CertificateListByAutomationAccountPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// options - CertificateClientListByAutomationAccountOptions contains the optional parameters for the CertificateClient.ListByAutomationAccount
+// method.
+func (client *CertificateClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *CertificateClientListByAutomationAccountOptions) *CertificateClientListByAutomationAccountPager {
+	return &CertificateClientListByAutomationAccountPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
 		},
-		advancer: func(ctx context.Context, resp CertificateListByAutomationAccountResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp CertificateClientListByAutomationAccountResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.CertificateListResult.NextLink)
 		},
 	}
 }
 
 // listByAutomationAccountCreateRequest creates the ListByAutomationAccount request.
-func (client *CertificateClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, options *CertificateListByAutomationAccountOptions) (*policy.Request, error) {
+func (client *CertificateClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, options *CertificateClientListByAutomationAccountOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/certificates"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -269,7 +256,7 @@ func (client *CertificateClient) listByAutomationAccountCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -281,46 +268,38 @@ func (client *CertificateClient) listByAutomationAccountCreateRequest(ctx contex
 }
 
 // listByAutomationAccountHandleResponse handles the ListByAutomationAccount response.
-func (client *CertificateClient) listByAutomationAccountHandleResponse(resp *http.Response) (CertificateListByAutomationAccountResponse, error) {
-	result := CertificateListByAutomationAccountResponse{RawResponse: resp}
+func (client *CertificateClient) listByAutomationAccountHandleResponse(resp *http.Response) (CertificateClientListByAutomationAccountResponse, error) {
+	result := CertificateClientListByAutomationAccountResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateListResult); err != nil {
-		return CertificateListByAutomationAccountResponse{}, runtime.NewResponseError(err, resp)
+		return CertificateClientListByAutomationAccountResponse{}, err
 	}
 	return result, nil
 }
 
-// listByAutomationAccountHandleError handles the ListByAutomationAccount error response.
-func (client *CertificateClient) listByAutomationAccountHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Update a certificate.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CertificateClient) Update(ctx context.Context, resourceGroupName string, automationAccountName string, certificateName string, parameters CertificateUpdateParameters, options *CertificateUpdateOptions) (CertificateUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// certificateName - The parameters supplied to the update certificate operation.
+// parameters - The parameters supplied to the update certificate operation.
+// options - CertificateClientUpdateOptions contains the optional parameters for the CertificateClient.Update method.
+func (client *CertificateClient) Update(ctx context.Context, resourceGroupName string, automationAccountName string, certificateName string, parameters CertificateUpdateParameters, options *CertificateClientUpdateOptions) (CertificateClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, automationAccountName, certificateName, parameters, options)
 	if err != nil {
-		return CertificateUpdateResponse{}, err
+		return CertificateClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CertificateUpdateResponse{}, err
+		return CertificateClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CertificateUpdateResponse{}, client.updateHandleError(resp)
+		return CertificateClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *CertificateClient) updateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, certificateName string, parameters CertificateUpdateParameters, options *CertificateUpdateOptions) (*policy.Request, error) {
+func (client *CertificateClient) updateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, certificateName string, parameters CertificateUpdateParameters, options *CertificateClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/certificates/{certificateName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -338,7 +317,7 @@ func (client *CertificateClient) updateCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -350,23 +329,10 @@ func (client *CertificateClient) updateCreateRequest(ctx context.Context, resour
 }
 
 // updateHandleResponse handles the Update response.
-func (client *CertificateClient) updateHandleResponse(resp *http.Response) (CertificateUpdateResponse, error) {
-	result := CertificateUpdateResponse{RawResponse: resp}
+func (client *CertificateClient) updateHandleResponse(resp *http.Response) (CertificateClientUpdateResponse, error) {
+	result := CertificateClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Certificate); err != nil {
-		return CertificateUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return CertificateClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *CertificateClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

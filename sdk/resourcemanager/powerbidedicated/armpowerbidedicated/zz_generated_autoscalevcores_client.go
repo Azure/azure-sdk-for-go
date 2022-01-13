@@ -11,7 +11,6 @@ package armpowerbidedicated
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // AutoScaleVCoresClient contains the methods for the AutoScaleVCores group.
 // Don't use this type directly, use NewAutoScaleVCoresClient() instead.
 type AutoScaleVCoresClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewAutoScaleVCoresClient creates a new instance of AutoScaleVCoresClient with the specified values.
+// subscriptionID - A unique identifier for a Microsoft Azure subscription. The subscription ID forms part of the URI for
+// every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewAutoScaleVCoresClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AutoScaleVCoresClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &AutoScaleVCoresClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &AutoScaleVCoresClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Create - Provisions the specified auto scale v-core based on the configuration specified in the request.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AutoScaleVCoresClient) Create(ctx context.Context, resourceGroupName string, vcoreName string, vCoreParameters AutoScaleVCore, options *AutoScaleVCoresCreateOptions) (AutoScaleVCoresCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure Resource group of which a given PowerBIDedicated capacity is part. This name
+// must be at least 1 character in length, and no more than 90.
+// vcoreName - The name of the auto scale v-core. It must be a minimum of 3 characters, and a maximum of 63.
+// vCoreParameters - Contains the information used to provision the auto scale v-core.
+// options - AutoScaleVCoresClientCreateOptions contains the optional parameters for the AutoScaleVCoresClient.Create method.
+func (client *AutoScaleVCoresClient) Create(ctx context.Context, resourceGroupName string, vcoreName string, vCoreParameters AutoScaleVCore, options *AutoScaleVCoresClientCreateOptions) (AutoScaleVCoresClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, vcoreName, vCoreParameters, options)
 	if err != nil {
-		return AutoScaleVCoresCreateResponse{}, err
+		return AutoScaleVCoresClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AutoScaleVCoresCreateResponse{}, err
+		return AutoScaleVCoresClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AutoScaleVCoresCreateResponse{}, client.createHandleError(resp)
+		return AutoScaleVCoresClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *AutoScaleVCoresClient) createCreateRequest(ctx context.Context, resourceGroupName string, vcoreName string, vCoreParameters AutoScaleVCore, options *AutoScaleVCoresCreateOptions) (*policy.Request, error) {
+func (client *AutoScaleVCoresClient) createCreateRequest(ctx context.Context, resourceGroupName string, vcoreName string, vCoreParameters AutoScaleVCore, options *AutoScaleVCoresClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/autoScaleVCores/{vcoreName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -74,7 +87,7 @@ func (client *AutoScaleVCoresClient) createCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter vcoreName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vcoreName}", url.PathEscape(vcoreName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -86,46 +99,37 @@ func (client *AutoScaleVCoresClient) createCreateRequest(ctx context.Context, re
 }
 
 // createHandleResponse handles the Create response.
-func (client *AutoScaleVCoresClient) createHandleResponse(resp *http.Response) (AutoScaleVCoresCreateResponse, error) {
-	result := AutoScaleVCoresCreateResponse{RawResponse: resp}
+func (client *AutoScaleVCoresClient) createHandleResponse(resp *http.Response) (AutoScaleVCoresClientCreateResponse, error) {
+	result := AutoScaleVCoresClientCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutoScaleVCore); err != nil {
-		return AutoScaleVCoresCreateResponse{}, runtime.NewResponseError(err, resp)
+		return AutoScaleVCoresClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *AutoScaleVCoresClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes the specified auto scale v-core.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AutoScaleVCoresClient) Delete(ctx context.Context, resourceGroupName string, vcoreName string, options *AutoScaleVCoresDeleteOptions) (AutoScaleVCoresDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure Resource group of which a given PowerBIDedicated capacity is part. This name
+// must be at least 1 character in length, and no more than 90.
+// vcoreName - The name of the auto scale v-core. It must be a minimum of 3 characters, and a maximum of 63.
+// options - AutoScaleVCoresClientDeleteOptions contains the optional parameters for the AutoScaleVCoresClient.Delete method.
+func (client *AutoScaleVCoresClient) Delete(ctx context.Context, resourceGroupName string, vcoreName string, options *AutoScaleVCoresClientDeleteOptions) (AutoScaleVCoresClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, vcoreName, options)
 	if err != nil {
-		return AutoScaleVCoresDeleteResponse{}, err
+		return AutoScaleVCoresClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AutoScaleVCoresDeleteResponse{}, err
+		return AutoScaleVCoresClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return AutoScaleVCoresDeleteResponse{}, client.deleteHandleError(resp)
+		return AutoScaleVCoresClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return AutoScaleVCoresDeleteResponse{RawResponse: resp}, nil
+	return AutoScaleVCoresClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AutoScaleVCoresClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, vcoreName string, options *AutoScaleVCoresDeleteOptions) (*policy.Request, error) {
+func (client *AutoScaleVCoresClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, vcoreName string, options *AutoScaleVCoresClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/autoScaleVCores/{vcoreName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -139,7 +143,7 @@ func (client *AutoScaleVCoresClient) deleteCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter vcoreName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vcoreName}", url.PathEscape(vcoreName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -150,38 +154,29 @@ func (client *AutoScaleVCoresClient) deleteCreateRequest(ctx context.Context, re
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *AutoScaleVCoresClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets details about the specified auto scale v-core.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AutoScaleVCoresClient) Get(ctx context.Context, resourceGroupName string, vcoreName string, options *AutoScaleVCoresGetOptions) (AutoScaleVCoresGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure Resource group of which a given PowerBIDedicated capacity is part. This name
+// must be at least 1 character in length, and no more than 90.
+// vcoreName - The name of the auto scale v-core. It must be a minimum of 3 characters, and a maximum of 63.
+// options - AutoScaleVCoresClientGetOptions contains the optional parameters for the AutoScaleVCoresClient.Get method.
+func (client *AutoScaleVCoresClient) Get(ctx context.Context, resourceGroupName string, vcoreName string, options *AutoScaleVCoresClientGetOptions) (AutoScaleVCoresClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vcoreName, options)
 	if err != nil {
-		return AutoScaleVCoresGetResponse{}, err
+		return AutoScaleVCoresClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AutoScaleVCoresGetResponse{}, err
+		return AutoScaleVCoresClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AutoScaleVCoresGetResponse{}, client.getHandleError(resp)
+		return AutoScaleVCoresClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AutoScaleVCoresClient) getCreateRequest(ctx context.Context, resourceGroupName string, vcoreName string, options *AutoScaleVCoresGetOptions) (*policy.Request, error) {
+func (client *AutoScaleVCoresClient) getCreateRequest(ctx context.Context, resourceGroupName string, vcoreName string, options *AutoScaleVCoresClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/autoScaleVCores/{vcoreName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -195,7 +190,7 @@ func (client *AutoScaleVCoresClient) getCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter vcoreName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vcoreName}", url.PathEscape(vcoreName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -207,46 +202,37 @@ func (client *AutoScaleVCoresClient) getCreateRequest(ctx context.Context, resou
 }
 
 // getHandleResponse handles the Get response.
-func (client *AutoScaleVCoresClient) getHandleResponse(resp *http.Response) (AutoScaleVCoresGetResponse, error) {
-	result := AutoScaleVCoresGetResponse{RawResponse: resp}
+func (client *AutoScaleVCoresClient) getHandleResponse(resp *http.Response) (AutoScaleVCoresClientGetResponse, error) {
+	result := AutoScaleVCoresClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutoScaleVCore); err != nil {
-		return AutoScaleVCoresGetResponse{}, runtime.NewResponseError(err, resp)
+		return AutoScaleVCoresClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *AutoScaleVCoresClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - Gets all the auto scale v-cores for the given resource group.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AutoScaleVCoresClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, options *AutoScaleVCoresListByResourceGroupOptions) (AutoScaleVCoresListByResourceGroupResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure Resource group of which a given PowerBIDedicated capacity is part. This name
+// must be at least 1 character in length, and no more than 90.
+// options - AutoScaleVCoresClientListByResourceGroupOptions contains the optional parameters for the AutoScaleVCoresClient.ListByResourceGroup
+// method.
+func (client *AutoScaleVCoresClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, options *AutoScaleVCoresClientListByResourceGroupOptions) (AutoScaleVCoresClientListByResourceGroupResponse, error) {
 	req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 	if err != nil {
-		return AutoScaleVCoresListByResourceGroupResponse{}, err
+		return AutoScaleVCoresClientListByResourceGroupResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AutoScaleVCoresListByResourceGroupResponse{}, err
+		return AutoScaleVCoresClientListByResourceGroupResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AutoScaleVCoresListByResourceGroupResponse{}, client.listByResourceGroupHandleError(resp)
+		return AutoScaleVCoresClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByResourceGroupHandleResponse(resp)
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *AutoScaleVCoresClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *AutoScaleVCoresListByResourceGroupOptions) (*policy.Request, error) {
+func (client *AutoScaleVCoresClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *AutoScaleVCoresClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/autoScaleVCores"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -256,7 +242,7 @@ func (client *AutoScaleVCoresClient) listByResourceGroupCreateRequest(ctx contex
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -268,52 +254,41 @@ func (client *AutoScaleVCoresClient) listByResourceGroupCreateRequest(ctx contex
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *AutoScaleVCoresClient) listByResourceGroupHandleResponse(resp *http.Response) (AutoScaleVCoresListByResourceGroupResponse, error) {
-	result := AutoScaleVCoresListByResourceGroupResponse{RawResponse: resp}
+func (client *AutoScaleVCoresClient) listByResourceGroupHandleResponse(resp *http.Response) (AutoScaleVCoresClientListByResourceGroupResponse, error) {
+	result := AutoScaleVCoresClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutoScaleVCoreListResult); err != nil {
-		return AutoScaleVCoresListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return AutoScaleVCoresClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *AutoScaleVCoresClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListBySubscription - Lists all the auto scale v-cores for the given subscription.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AutoScaleVCoresClient) ListBySubscription(ctx context.Context, options *AutoScaleVCoresListBySubscriptionOptions) (AutoScaleVCoresListBySubscriptionResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - AutoScaleVCoresClientListBySubscriptionOptions contains the optional parameters for the AutoScaleVCoresClient.ListBySubscription
+// method.
+func (client *AutoScaleVCoresClient) ListBySubscription(ctx context.Context, options *AutoScaleVCoresClientListBySubscriptionOptions) (AutoScaleVCoresClientListBySubscriptionResponse, error) {
 	req, err := client.listBySubscriptionCreateRequest(ctx, options)
 	if err != nil {
-		return AutoScaleVCoresListBySubscriptionResponse{}, err
+		return AutoScaleVCoresClientListBySubscriptionResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AutoScaleVCoresListBySubscriptionResponse{}, err
+		return AutoScaleVCoresClientListBySubscriptionResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AutoScaleVCoresListBySubscriptionResponse{}, client.listBySubscriptionHandleError(resp)
+		return AutoScaleVCoresClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listBySubscriptionHandleResponse(resp)
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *AutoScaleVCoresClient) listBySubscriptionCreateRequest(ctx context.Context, options *AutoScaleVCoresListBySubscriptionOptions) (*policy.Request, error) {
+func (client *AutoScaleVCoresClient) listBySubscriptionCreateRequest(ctx context.Context, options *AutoScaleVCoresClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.PowerBIDedicated/autoScaleVCores"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -325,46 +300,38 @@ func (client *AutoScaleVCoresClient) listBySubscriptionCreateRequest(ctx context
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *AutoScaleVCoresClient) listBySubscriptionHandleResponse(resp *http.Response) (AutoScaleVCoresListBySubscriptionResponse, error) {
-	result := AutoScaleVCoresListBySubscriptionResponse{RawResponse: resp}
+func (client *AutoScaleVCoresClient) listBySubscriptionHandleResponse(resp *http.Response) (AutoScaleVCoresClientListBySubscriptionResponse, error) {
+	result := AutoScaleVCoresClientListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutoScaleVCoreListResult); err != nil {
-		return AutoScaleVCoresListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return AutoScaleVCoresClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *AutoScaleVCoresClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Updates the current state of the specified auto scale v-core.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AutoScaleVCoresClient) Update(ctx context.Context, resourceGroupName string, vcoreName string, vCoreUpdateParameters AutoScaleVCoreUpdateParameters, options *AutoScaleVCoresUpdateOptions) (AutoScaleVCoresUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure Resource group of which a given PowerBIDedicated capacity is part. This name
+// must be at least 1 character in length, and no more than 90.
+// vcoreName - The name of the auto scale v-core. It must be a minimum of 3 characters, and a maximum of 63.
+// vCoreUpdateParameters - Request object that contains the updated information for the auto scale v-core.
+// options - AutoScaleVCoresClientUpdateOptions contains the optional parameters for the AutoScaleVCoresClient.Update method.
+func (client *AutoScaleVCoresClient) Update(ctx context.Context, resourceGroupName string, vcoreName string, vCoreUpdateParameters AutoScaleVCoreUpdateParameters, options *AutoScaleVCoresClientUpdateOptions) (AutoScaleVCoresClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, vcoreName, vCoreUpdateParameters, options)
 	if err != nil {
-		return AutoScaleVCoresUpdateResponse{}, err
+		return AutoScaleVCoresClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AutoScaleVCoresUpdateResponse{}, err
+		return AutoScaleVCoresClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AutoScaleVCoresUpdateResponse{}, client.updateHandleError(resp)
+		return AutoScaleVCoresClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *AutoScaleVCoresClient) updateCreateRequest(ctx context.Context, resourceGroupName string, vcoreName string, vCoreUpdateParameters AutoScaleVCoreUpdateParameters, options *AutoScaleVCoresUpdateOptions) (*policy.Request, error) {
+func (client *AutoScaleVCoresClient) updateCreateRequest(ctx context.Context, resourceGroupName string, vcoreName string, vCoreUpdateParameters AutoScaleVCoreUpdateParameters, options *AutoScaleVCoresClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/autoScaleVCores/{vcoreName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -378,7 +345,7 @@ func (client *AutoScaleVCoresClient) updateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter vcoreName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vcoreName}", url.PathEscape(vcoreName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -390,23 +357,10 @@ func (client *AutoScaleVCoresClient) updateCreateRequest(ctx context.Context, re
 }
 
 // updateHandleResponse handles the Update response.
-func (client *AutoScaleVCoresClient) updateHandleResponse(resp *http.Response) (AutoScaleVCoresUpdateResponse, error) {
-	result := AutoScaleVCoresUpdateResponse{RawResponse: resp}
+func (client *AutoScaleVCoresClient) updateHandleResponse(resp *http.Response) (AutoScaleVCoresClientUpdateResponse, error) {
+	result := AutoScaleVCoresClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutoScaleVCore); err != nil {
-		return AutoScaleVCoresUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return AutoScaleVCoresClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *AutoScaleVCoresClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -24,46 +24,62 @@ import (
 // SQLPoolWorkloadClassifierClient contains the methods for the SQLPoolWorkloadClassifier group.
 // Don't use this type directly, use NewSQLPoolWorkloadClassifierClient() instead.
 type SQLPoolWorkloadClassifierClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSQLPoolWorkloadClassifierClient creates a new instance of SQLPoolWorkloadClassifierClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSQLPoolWorkloadClassifierClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SQLPoolWorkloadClassifierClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SQLPoolWorkloadClassifierClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SQLPoolWorkloadClassifierClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Create Or Update workload classifier for a Sql pool's workload group.
-// If the operation fails it returns a generic error.
-func (client *SQLPoolWorkloadClassifierClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, workloadGroupName string, workloadClassifierName string, parameters WorkloadClassifier, options *SQLPoolWorkloadClassifierBeginCreateOrUpdateOptions) (SQLPoolWorkloadClassifierCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// workloadGroupName - The name of the workload group.
+// workloadClassifierName - The name of the workload classifier.
+// parameters - The properties of the workload classifier.
+// options - SQLPoolWorkloadClassifierClientBeginCreateOrUpdateOptions contains the optional parameters for the SQLPoolWorkloadClassifierClient.BeginCreateOrUpdate
+// method.
+func (client *SQLPoolWorkloadClassifierClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, workloadGroupName string, workloadClassifierName string, parameters WorkloadClassifier, options *SQLPoolWorkloadClassifierClientBeginCreateOrUpdateOptions) (SQLPoolWorkloadClassifierClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName, parameters, options)
 	if err != nil {
-		return SQLPoolWorkloadClassifierCreateOrUpdatePollerResponse{}, err
+		return SQLPoolWorkloadClassifierClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := SQLPoolWorkloadClassifierCreateOrUpdatePollerResponse{
+	result := SQLPoolWorkloadClassifierClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SQLPoolWorkloadClassifierClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("SQLPoolWorkloadClassifierClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return SQLPoolWorkloadClassifierCreateOrUpdatePollerResponse{}, err
+		return SQLPoolWorkloadClassifierClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &SQLPoolWorkloadClassifierCreateOrUpdatePoller{
+	result.Poller = &SQLPoolWorkloadClassifierClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Create Or Update workload classifier for a Sql pool's workload group.
-// If the operation fails it returns a generic error.
-func (client *SQLPoolWorkloadClassifierClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, workloadGroupName string, workloadClassifierName string, parameters WorkloadClassifier, options *SQLPoolWorkloadClassifierBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SQLPoolWorkloadClassifierClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, workloadGroupName string, workloadClassifierName string, parameters WorkloadClassifier, options *SQLPoolWorkloadClassifierClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -73,13 +89,13 @@ func (client *SQLPoolWorkloadClassifierClient) createOrUpdate(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SQLPoolWorkloadClassifierClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, workloadGroupName string, workloadClassifierName string, parameters WorkloadClassifier, options *SQLPoolWorkloadClassifierBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *SQLPoolWorkloadClassifierClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, workloadGroupName string, workloadClassifierName string, parameters WorkloadClassifier, options *SQLPoolWorkloadClassifierClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/workloadGroups/{workloadGroupName}/workloadClassifiers/{workloadClassifierName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -105,7 +121,7 @@ func (client *SQLPoolWorkloadClassifierClient) createOrUpdateCreateRequest(ctx c
 		return nil, errors.New("parameter workloadClassifierName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workloadClassifierName}", url.PathEscape(workloadClassifierName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -116,41 +132,36 @@ func (client *SQLPoolWorkloadClassifierClient) createOrUpdateCreateRequest(ctx c
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *SQLPoolWorkloadClassifierClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginDelete - Remove workload classifier of a Sql pool's workload group.
-// If the operation fails it returns a generic error.
-func (client *SQLPoolWorkloadClassifierClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, workloadGroupName string, workloadClassifierName string, options *SQLPoolWorkloadClassifierBeginDeleteOptions) (SQLPoolWorkloadClassifierDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// workloadGroupName - The name of the workload group.
+// workloadClassifierName - The name of the workload classifier.
+// options - SQLPoolWorkloadClassifierClientBeginDeleteOptions contains the optional parameters for the SQLPoolWorkloadClassifierClient.BeginDelete
+// method.
+func (client *SQLPoolWorkloadClassifierClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, workloadGroupName string, workloadClassifierName string, options *SQLPoolWorkloadClassifierClientBeginDeleteOptions) (SQLPoolWorkloadClassifierClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName, options)
 	if err != nil {
-		return SQLPoolWorkloadClassifierDeletePollerResponse{}, err
+		return SQLPoolWorkloadClassifierClientDeletePollerResponse{}, err
 	}
-	result := SQLPoolWorkloadClassifierDeletePollerResponse{
+	result := SQLPoolWorkloadClassifierClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SQLPoolWorkloadClassifierClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("SQLPoolWorkloadClassifierClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return SQLPoolWorkloadClassifierDeletePollerResponse{}, err
+		return SQLPoolWorkloadClassifierClientDeletePollerResponse{}, err
 	}
-	result.Poller = &SQLPoolWorkloadClassifierDeletePoller{
+	result.Poller = &SQLPoolWorkloadClassifierClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Remove workload classifier of a Sql pool's workload group.
-// If the operation fails it returns a generic error.
-func (client *SQLPoolWorkloadClassifierClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, workloadGroupName string, workloadClassifierName string, options *SQLPoolWorkloadClassifierBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SQLPoolWorkloadClassifierClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, workloadGroupName string, workloadClassifierName string, options *SQLPoolWorkloadClassifierClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName, options)
 	if err != nil {
 		return nil, err
@@ -160,13 +171,13 @@ func (client *SQLPoolWorkloadClassifierClient) deleteOperation(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SQLPoolWorkloadClassifierClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, workloadGroupName string, workloadClassifierName string, options *SQLPoolWorkloadClassifierBeginDeleteOptions) (*policy.Request, error) {
+func (client *SQLPoolWorkloadClassifierClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, workloadGroupName string, workloadClassifierName string, options *SQLPoolWorkloadClassifierClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/workloadGroups/{workloadGroupName}/workloadClassifiers/{workloadClassifierName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -192,7 +203,7 @@ func (client *SQLPoolWorkloadClassifierClient) deleteCreateRequest(ctx context.C
 		return nil, errors.New("parameter workloadClassifierName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workloadClassifierName}", url.PathEscape(workloadClassifierName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -202,37 +213,32 @@ func (client *SQLPoolWorkloadClassifierClient) deleteCreateRequest(ctx context.C
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *SQLPoolWorkloadClassifierClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Get a workload classifier of Sql pool's workload group.
-// If the operation fails it returns a generic error.
-func (client *SQLPoolWorkloadClassifierClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, workloadGroupName string, workloadClassifierName string, options *SQLPoolWorkloadClassifierGetOptions) (SQLPoolWorkloadClassifierGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// workloadGroupName - The name of the workload group.
+// workloadClassifierName - The name of the workload classifier.
+// options - SQLPoolWorkloadClassifierClientGetOptions contains the optional parameters for the SQLPoolWorkloadClassifierClient.Get
+// method.
+func (client *SQLPoolWorkloadClassifierClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, workloadGroupName string, workloadClassifierName string, options *SQLPoolWorkloadClassifierClientGetOptions) (SQLPoolWorkloadClassifierClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName, options)
 	if err != nil {
-		return SQLPoolWorkloadClassifierGetResponse{}, err
+		return SQLPoolWorkloadClassifierClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLPoolWorkloadClassifierGetResponse{}, err
+		return SQLPoolWorkloadClassifierClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLPoolWorkloadClassifierGetResponse{}, client.getHandleError(resp)
+		return SQLPoolWorkloadClassifierClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SQLPoolWorkloadClassifierClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, workloadGroupName string, workloadClassifierName string, options *SQLPoolWorkloadClassifierGetOptions) (*policy.Request, error) {
+func (client *SQLPoolWorkloadClassifierClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, workloadGroupName string, workloadClassifierName string, options *SQLPoolWorkloadClassifierClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/workloadGroups/{workloadGroupName}/workloadClassifiers/{workloadClassifierName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -258,7 +264,7 @@ func (client *SQLPoolWorkloadClassifierClient) getCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter workloadClassifierName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workloadClassifierName}", url.PathEscape(workloadClassifierName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -270,42 +276,36 @@ func (client *SQLPoolWorkloadClassifierClient) getCreateRequest(ctx context.Cont
 }
 
 // getHandleResponse handles the Get response.
-func (client *SQLPoolWorkloadClassifierClient) getHandleResponse(resp *http.Response) (SQLPoolWorkloadClassifierGetResponse, error) {
-	result := SQLPoolWorkloadClassifierGetResponse{RawResponse: resp}
+func (client *SQLPoolWorkloadClassifierClient) getHandleResponse(resp *http.Response) (SQLPoolWorkloadClassifierClientGetResponse, error) {
+	result := SQLPoolWorkloadClassifierClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadClassifier); err != nil {
-		return SQLPoolWorkloadClassifierGetResponse{}, runtime.NewResponseError(err, resp)
+		return SQLPoolWorkloadClassifierClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *SQLPoolWorkloadClassifierClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // List - Get list of Sql pool's workload classifier for workload groups.
-// If the operation fails it returns a generic error.
-func (client *SQLPoolWorkloadClassifierClient) List(resourceGroupName string, workspaceName string, sqlPoolName string, workloadGroupName string, options *SQLPoolWorkloadClassifierListOptions) *SQLPoolWorkloadClassifierListPager {
-	return &SQLPoolWorkloadClassifierListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// workloadGroupName - The name of the workload group.
+// options - SQLPoolWorkloadClassifierClientListOptions contains the optional parameters for the SQLPoolWorkloadClassifierClient.List
+// method.
+func (client *SQLPoolWorkloadClassifierClient) List(resourceGroupName string, workspaceName string, sqlPoolName string, workloadGroupName string, options *SQLPoolWorkloadClassifierClientListOptions) *SQLPoolWorkloadClassifierClientListPager {
+	return &SQLPoolWorkloadClassifierClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp SQLPoolWorkloadClassifierListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp SQLPoolWorkloadClassifierClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.WorkloadClassifierListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *SQLPoolWorkloadClassifierClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, workloadGroupName string, options *SQLPoolWorkloadClassifierListOptions) (*policy.Request, error) {
+func (client *SQLPoolWorkloadClassifierClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, workloadGroupName string, options *SQLPoolWorkloadClassifierClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/workloadGroups/{workloadGroupName}/workloadClassifiers"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -327,7 +327,7 @@ func (client *SQLPoolWorkloadClassifierClient) listCreateRequest(ctx context.Con
 		return nil, errors.New("parameter workloadGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workloadGroupName}", url.PathEscape(workloadGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -339,22 +339,10 @@ func (client *SQLPoolWorkloadClassifierClient) listCreateRequest(ctx context.Con
 }
 
 // listHandleResponse handles the List response.
-func (client *SQLPoolWorkloadClassifierClient) listHandleResponse(resp *http.Response) (SQLPoolWorkloadClassifierListResponse, error) {
-	result := SQLPoolWorkloadClassifierListResponse{RawResponse: resp}
+func (client *SQLPoolWorkloadClassifierClient) listHandleResponse(resp *http.Response) (SQLPoolWorkloadClassifierClientListResponse, error) {
+	result := SQLPoolWorkloadClassifierClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadClassifierListResult); err != nil {
-		return SQLPoolWorkloadClassifierListResponse{}, runtime.NewResponseError(err, resp)
+		return SQLPoolWorkloadClassifierClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *SQLPoolWorkloadClassifierClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

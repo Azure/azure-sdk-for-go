@@ -11,7 +11,6 @@ package armdevtestlabs
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,46 +25,61 @@ import (
 // ServiceFabricsClient contains the methods for the ServiceFabrics group.
 // Don't use this type directly, use NewServiceFabricsClient() instead.
 type ServiceFabricsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewServiceFabricsClient creates a new instance of ServiceFabricsClient with the specified values.
+// subscriptionID - The subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewServiceFabricsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServiceFabricsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ServiceFabricsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ServiceFabricsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Create or replace an existing service fabric. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServiceFabricsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, userName string, name string, serviceFabric ServiceFabric, options *ServiceFabricsBeginCreateOrUpdateOptions) (ServiceFabricsCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// userName - The name of the user profile.
+// name - The name of the service fabric.
+// serviceFabric - A Service Fabric.
+// options - ServiceFabricsClientBeginCreateOrUpdateOptions contains the optional parameters for the ServiceFabricsClient.BeginCreateOrUpdate
+// method.
+func (client *ServiceFabricsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, userName string, name string, serviceFabric ServiceFabric, options *ServiceFabricsClientBeginCreateOrUpdateOptions) (ServiceFabricsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, labName, userName, name, serviceFabric, options)
 	if err != nil {
-		return ServiceFabricsCreateOrUpdatePollerResponse{}, err
+		return ServiceFabricsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := ServiceFabricsCreateOrUpdatePollerResponse{
+	result := ServiceFabricsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ServiceFabricsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("ServiceFabricsClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return ServiceFabricsCreateOrUpdatePollerResponse{}, err
+		return ServiceFabricsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &ServiceFabricsCreateOrUpdatePoller{
+	result.Poller = &ServiceFabricsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Create or replace an existing service fabric. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServiceFabricsClient) createOrUpdate(ctx context.Context, resourceGroupName string, labName string, userName string, name string, serviceFabric ServiceFabric, options *ServiceFabricsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ServiceFabricsClient) createOrUpdate(ctx context.Context, resourceGroupName string, labName string, userName string, name string, serviceFabric ServiceFabric, options *ServiceFabricsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, labName, userName, name, serviceFabric, options)
 	if err != nil {
 		return nil, err
@@ -75,13 +89,13 @@ func (client *ServiceFabricsClient) createOrUpdate(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ServiceFabricsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, labName string, userName string, name string, serviceFabric ServiceFabric, options *ServiceFabricsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ServiceFabricsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, labName string, userName string, name string, serviceFabric ServiceFabric, options *ServiceFabricsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/servicefabrics/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -103,7 +117,7 @@ func (client *ServiceFabricsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -114,42 +128,35 @@ func (client *ServiceFabricsClient) createOrUpdateCreateRequest(ctx context.Cont
 	return req, runtime.MarshalAsJSON(req, serviceFabric)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ServiceFabricsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Delete service fabric. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServiceFabricsClient) BeginDelete(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *ServiceFabricsBeginDeleteOptions) (ServiceFabricsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// userName - The name of the user profile.
+// name - The name of the service fabric.
+// options - ServiceFabricsClientBeginDeleteOptions contains the optional parameters for the ServiceFabricsClient.BeginDelete
+// method.
+func (client *ServiceFabricsClient) BeginDelete(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *ServiceFabricsClientBeginDeleteOptions) (ServiceFabricsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, labName, userName, name, options)
 	if err != nil {
-		return ServiceFabricsDeletePollerResponse{}, err
+		return ServiceFabricsClientDeletePollerResponse{}, err
 	}
-	result := ServiceFabricsDeletePollerResponse{
+	result := ServiceFabricsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ServiceFabricsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("ServiceFabricsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return ServiceFabricsDeletePollerResponse{}, err
+		return ServiceFabricsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &ServiceFabricsDeletePoller{
+	result.Poller = &ServiceFabricsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Delete service fabric. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServiceFabricsClient) deleteOperation(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *ServiceFabricsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ServiceFabricsClient) deleteOperation(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *ServiceFabricsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, labName, userName, name, options)
 	if err != nil {
 		return nil, err
@@ -159,13 +166,13 @@ func (client *ServiceFabricsClient) deleteOperation(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ServiceFabricsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *ServiceFabricsBeginDeleteOptions) (*policy.Request, error) {
+func (client *ServiceFabricsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *ServiceFabricsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/servicefabrics/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -187,7 +194,7 @@ func (client *ServiceFabricsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -198,38 +205,30 @@ func (client *ServiceFabricsClient) deleteCreateRequest(ctx context.Context, res
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ServiceFabricsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get service fabric.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServiceFabricsClient) Get(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *ServiceFabricsGetOptions) (ServiceFabricsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// userName - The name of the user profile.
+// name - The name of the service fabric.
+// options - ServiceFabricsClientGetOptions contains the optional parameters for the ServiceFabricsClient.Get method.
+func (client *ServiceFabricsClient) Get(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *ServiceFabricsClientGetOptions) (ServiceFabricsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, labName, userName, name, options)
 	if err != nil {
-		return ServiceFabricsGetResponse{}, err
+		return ServiceFabricsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServiceFabricsGetResponse{}, err
+		return ServiceFabricsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServiceFabricsGetResponse{}, client.getHandleError(resp)
+		return ServiceFabricsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ServiceFabricsClient) getCreateRequest(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *ServiceFabricsGetOptions) (*policy.Request, error) {
+func (client *ServiceFabricsClient) getCreateRequest(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *ServiceFabricsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/servicefabrics/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -251,7 +250,7 @@ func (client *ServiceFabricsClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -266,43 +265,34 @@ func (client *ServiceFabricsClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client *ServiceFabricsClient) getHandleResponse(resp *http.Response) (ServiceFabricsGetResponse, error) {
-	result := ServiceFabricsGetResponse{RawResponse: resp}
+func (client *ServiceFabricsClient) getHandleResponse(resp *http.Response) (ServiceFabricsClientGetResponse, error) {
+	result := ServiceFabricsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceFabric); err != nil {
-		return ServiceFabricsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ServiceFabricsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ServiceFabricsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List service fabrics in a given user profile.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServiceFabricsClient) List(resourceGroupName string, labName string, userName string, options *ServiceFabricsListOptions) *ServiceFabricsListPager {
-	return &ServiceFabricsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// userName - The name of the user profile.
+// options - ServiceFabricsClientListOptions contains the optional parameters for the ServiceFabricsClient.List method.
+func (client *ServiceFabricsClient) List(resourceGroupName string, labName string, userName string, options *ServiceFabricsClientListOptions) *ServiceFabricsClientListPager {
+	return &ServiceFabricsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, labName, userName, options)
 		},
-		advancer: func(ctx context.Context, resp ServiceFabricsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ServiceFabricsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ServiceFabricList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ServiceFabricsClient) listCreateRequest(ctx context.Context, resourceGroupName string, labName string, userName string, options *ServiceFabricsListOptions) (*policy.Request, error) {
+func (client *ServiceFabricsClient) listCreateRequest(ctx context.Context, resourceGroupName string, labName string, userName string, options *ServiceFabricsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/servicefabrics"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -320,7 +310,7 @@ func (client *ServiceFabricsClient) listCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter userName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{userName}", url.PathEscape(userName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -344,46 +334,39 @@ func (client *ServiceFabricsClient) listCreateRequest(ctx context.Context, resou
 }
 
 // listHandleResponse handles the List response.
-func (client *ServiceFabricsClient) listHandleResponse(resp *http.Response) (ServiceFabricsListResponse, error) {
-	result := ServiceFabricsListResponse{RawResponse: resp}
+func (client *ServiceFabricsClient) listHandleResponse(resp *http.Response) (ServiceFabricsClientListResponse, error) {
+	result := ServiceFabricsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceFabricList); err != nil {
-		return ServiceFabricsListResponse{}, runtime.NewResponseError(err, resp)
+		return ServiceFabricsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *ServiceFabricsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListApplicableSchedules - Lists the applicable start/stop schedules, if any.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServiceFabricsClient) ListApplicableSchedules(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *ServiceFabricsListApplicableSchedulesOptions) (ServiceFabricsListApplicableSchedulesResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// userName - The name of the user profile.
+// name - The name of the service fabric.
+// options - ServiceFabricsClientListApplicableSchedulesOptions contains the optional parameters for the ServiceFabricsClient.ListApplicableSchedules
+// method.
+func (client *ServiceFabricsClient) ListApplicableSchedules(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *ServiceFabricsClientListApplicableSchedulesOptions) (ServiceFabricsClientListApplicableSchedulesResponse, error) {
 	req, err := client.listApplicableSchedulesCreateRequest(ctx, resourceGroupName, labName, userName, name, options)
 	if err != nil {
-		return ServiceFabricsListApplicableSchedulesResponse{}, err
+		return ServiceFabricsClientListApplicableSchedulesResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServiceFabricsListApplicableSchedulesResponse{}, err
+		return ServiceFabricsClientListApplicableSchedulesResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServiceFabricsListApplicableSchedulesResponse{}, client.listApplicableSchedulesHandleError(resp)
+		return ServiceFabricsClientListApplicableSchedulesResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listApplicableSchedulesHandleResponse(resp)
 }
 
 // listApplicableSchedulesCreateRequest creates the ListApplicableSchedules request.
-func (client *ServiceFabricsClient) listApplicableSchedulesCreateRequest(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *ServiceFabricsListApplicableSchedulesOptions) (*policy.Request, error) {
+func (client *ServiceFabricsClient) listApplicableSchedulesCreateRequest(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *ServiceFabricsClientListApplicableSchedulesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/servicefabrics/{name}/listApplicableSchedules"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -405,7 +388,7 @@ func (client *ServiceFabricsClient) listApplicableSchedulesCreateRequest(ctx con
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -417,50 +400,43 @@ func (client *ServiceFabricsClient) listApplicableSchedulesCreateRequest(ctx con
 }
 
 // listApplicableSchedulesHandleResponse handles the ListApplicableSchedules response.
-func (client *ServiceFabricsClient) listApplicableSchedulesHandleResponse(resp *http.Response) (ServiceFabricsListApplicableSchedulesResponse, error) {
-	result := ServiceFabricsListApplicableSchedulesResponse{RawResponse: resp}
+func (client *ServiceFabricsClient) listApplicableSchedulesHandleResponse(resp *http.Response) (ServiceFabricsClientListApplicableSchedulesResponse, error) {
+	result := ServiceFabricsClientListApplicableSchedulesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicableSchedule); err != nil {
-		return ServiceFabricsListApplicableSchedulesResponse{}, runtime.NewResponseError(err, resp)
+		return ServiceFabricsClientListApplicableSchedulesResponse{}, err
 	}
 	return result, nil
 }
 
-// listApplicableSchedulesHandleError handles the ListApplicableSchedules error response.
-func (client *ServiceFabricsClient) listApplicableSchedulesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginStart - Start a service fabric. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServiceFabricsClient) BeginStart(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *ServiceFabricsBeginStartOptions) (ServiceFabricsStartPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// userName - The name of the user profile.
+// name - The name of the service fabric.
+// options - ServiceFabricsClientBeginStartOptions contains the optional parameters for the ServiceFabricsClient.BeginStart
+// method.
+func (client *ServiceFabricsClient) BeginStart(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *ServiceFabricsClientBeginStartOptions) (ServiceFabricsClientStartPollerResponse, error) {
 	resp, err := client.start(ctx, resourceGroupName, labName, userName, name, options)
 	if err != nil {
-		return ServiceFabricsStartPollerResponse{}, err
+		return ServiceFabricsClientStartPollerResponse{}, err
 	}
-	result := ServiceFabricsStartPollerResponse{
+	result := ServiceFabricsClientStartPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ServiceFabricsClient.Start", "", resp, client.pl, client.startHandleError)
+	pt, err := armruntime.NewPoller("ServiceFabricsClient.Start", "", resp, client.pl)
 	if err != nil {
-		return ServiceFabricsStartPollerResponse{}, err
+		return ServiceFabricsClientStartPollerResponse{}, err
 	}
-	result.Poller = &ServiceFabricsStartPoller{
+	result.Poller = &ServiceFabricsClientStartPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Start - Start a service fabric. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServiceFabricsClient) start(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *ServiceFabricsBeginStartOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ServiceFabricsClient) start(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *ServiceFabricsClientBeginStartOptions) (*http.Response, error) {
 	req, err := client.startCreateRequest(ctx, resourceGroupName, labName, userName, name, options)
 	if err != nil {
 		return nil, err
@@ -470,13 +446,13 @@ func (client *ServiceFabricsClient) start(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.startHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // startCreateRequest creates the Start request.
-func (client *ServiceFabricsClient) startCreateRequest(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *ServiceFabricsBeginStartOptions) (*policy.Request, error) {
+func (client *ServiceFabricsClient) startCreateRequest(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *ServiceFabricsClientBeginStartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/servicefabrics/{name}/start"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -498,7 +474,7 @@ func (client *ServiceFabricsClient) startCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -509,42 +485,35 @@ func (client *ServiceFabricsClient) startCreateRequest(ctx context.Context, reso
 	return req, nil
 }
 
-// startHandleError handles the Start error response.
-func (client *ServiceFabricsClient) startHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginStop - Stop a service fabric This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServiceFabricsClient) BeginStop(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *ServiceFabricsBeginStopOptions) (ServiceFabricsStopPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// userName - The name of the user profile.
+// name - The name of the service fabric.
+// options - ServiceFabricsClientBeginStopOptions contains the optional parameters for the ServiceFabricsClient.BeginStop
+// method.
+func (client *ServiceFabricsClient) BeginStop(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *ServiceFabricsClientBeginStopOptions) (ServiceFabricsClientStopPollerResponse, error) {
 	resp, err := client.stop(ctx, resourceGroupName, labName, userName, name, options)
 	if err != nil {
-		return ServiceFabricsStopPollerResponse{}, err
+		return ServiceFabricsClientStopPollerResponse{}, err
 	}
-	result := ServiceFabricsStopPollerResponse{
+	result := ServiceFabricsClientStopPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ServiceFabricsClient.Stop", "", resp, client.pl, client.stopHandleError)
+	pt, err := armruntime.NewPoller("ServiceFabricsClient.Stop", "", resp, client.pl)
 	if err != nil {
-		return ServiceFabricsStopPollerResponse{}, err
+		return ServiceFabricsClientStopPollerResponse{}, err
 	}
-	result.Poller = &ServiceFabricsStopPoller{
+	result.Poller = &ServiceFabricsClientStopPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Stop - Stop a service fabric This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServiceFabricsClient) stop(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *ServiceFabricsBeginStopOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ServiceFabricsClient) stop(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *ServiceFabricsClientBeginStopOptions) (*http.Response, error) {
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, labName, userName, name, options)
 	if err != nil {
 		return nil, err
@@ -554,13 +523,13 @@ func (client *ServiceFabricsClient) stop(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.stopHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // stopCreateRequest creates the Stop request.
-func (client *ServiceFabricsClient) stopCreateRequest(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *ServiceFabricsBeginStopOptions) (*policy.Request, error) {
+func (client *ServiceFabricsClient) stopCreateRequest(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *ServiceFabricsClientBeginStopOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/servicefabrics/{name}/stop"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -582,7 +551,7 @@ func (client *ServiceFabricsClient) stopCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -593,38 +562,31 @@ func (client *ServiceFabricsClient) stopCreateRequest(ctx context.Context, resou
 	return req, nil
 }
 
-// stopHandleError handles the Stop error response.
-func (client *ServiceFabricsClient) stopHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Allows modifying tags of service fabrics. All other properties will be ignored.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServiceFabricsClient) Update(ctx context.Context, resourceGroupName string, labName string, userName string, name string, serviceFabric ServiceFabricFragment, options *ServiceFabricsUpdateOptions) (ServiceFabricsUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// userName - The name of the user profile.
+// name - The name of the service fabric.
+// serviceFabric - A Service Fabric.
+// options - ServiceFabricsClientUpdateOptions contains the optional parameters for the ServiceFabricsClient.Update method.
+func (client *ServiceFabricsClient) Update(ctx context.Context, resourceGroupName string, labName string, userName string, name string, serviceFabric ServiceFabricFragment, options *ServiceFabricsClientUpdateOptions) (ServiceFabricsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, labName, userName, name, serviceFabric, options)
 	if err != nil {
-		return ServiceFabricsUpdateResponse{}, err
+		return ServiceFabricsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServiceFabricsUpdateResponse{}, err
+		return ServiceFabricsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServiceFabricsUpdateResponse{}, client.updateHandleError(resp)
+		return ServiceFabricsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ServiceFabricsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, labName string, userName string, name string, serviceFabric ServiceFabricFragment, options *ServiceFabricsUpdateOptions) (*policy.Request, error) {
+func (client *ServiceFabricsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, labName string, userName string, name string, serviceFabric ServiceFabricFragment, options *ServiceFabricsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/servicefabrics/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -646,7 +608,7 @@ func (client *ServiceFabricsClient) updateCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -658,23 +620,10 @@ func (client *ServiceFabricsClient) updateCreateRequest(ctx context.Context, res
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ServiceFabricsClient) updateHandleResponse(resp *http.Response) (ServiceFabricsUpdateResponse, error) {
-	result := ServiceFabricsUpdateResponse{RawResponse: resp}
+func (client *ServiceFabricsClient) updateHandleResponse(resp *http.Response) (ServiceFabricsClientUpdateResponse, error) {
+	result := ServiceFabricsClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceFabric); err != nil {
-		return ServiceFabricsUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ServiceFabricsClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *ServiceFabricsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

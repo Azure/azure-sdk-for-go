@@ -11,7 +11,6 @@ package armmaps
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,43 +24,56 @@ import (
 // CreatorsClient contains the methods for the Creators group.
 // Don't use this type directly, use NewCreatorsClient() instead.
 type CreatorsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewCreatorsClient creates a new instance of CreatorsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewCreatorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CreatorsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &CreatorsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &CreatorsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// CreateOrUpdate - Create or update a Maps Creator resource. Creator resource will manage Azure resources required to populate a custom set of mapping
-// data. It requires an account to exist before it can be created.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CreatorsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, creatorName string, creatorResource Creator, options *CreatorsCreateOrUpdateOptions) (CreatorsCreateOrUpdateResponse, error) {
+// CreateOrUpdate - Create or update a Maps Creator resource. Creator resource will manage Azure resources required to populate
+// a custom set of mapping data. It requires an account to exist before it can be created.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - The name of the Maps Account.
+// creatorName - The name of the Maps Creator instance.
+// creatorResource - The new or updated parameters for the Creator resource.
+// options - CreatorsClientCreateOrUpdateOptions contains the optional parameters for the CreatorsClient.CreateOrUpdate method.
+func (client *CreatorsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, creatorName string, creatorResource Creator, options *CreatorsClientCreateOrUpdateOptions) (CreatorsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, creatorName, creatorResource, options)
 	if err != nil {
-		return CreatorsCreateOrUpdateResponse{}, err
+		return CreatorsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CreatorsCreateOrUpdateResponse{}, err
+		return CreatorsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return CreatorsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return CreatorsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *CreatorsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, creatorName string, creatorResource Creator, options *CreatorsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *CreatorsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, creatorName string, creatorResource Creator, options *CreatorsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maps/accounts/{accountName}/creators/{creatorName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -79,7 +91,7 @@ func (client *CreatorsClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter creatorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{creatorName}", url.PathEscape(creatorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -91,46 +103,37 @@ func (client *CreatorsClient) createOrUpdateCreateRequest(ctx context.Context, r
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *CreatorsClient) createOrUpdateHandleResponse(resp *http.Response) (CreatorsCreateOrUpdateResponse, error) {
-	result := CreatorsCreateOrUpdateResponse{RawResponse: resp}
+func (client *CreatorsClient) createOrUpdateHandleResponse(resp *http.Response) (CreatorsClientCreateOrUpdateResponse, error) {
+	result := CreatorsClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Creator); err != nil {
-		return CreatorsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return CreatorsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *CreatorsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete a Maps Creator resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CreatorsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, creatorName string, options *CreatorsDeleteOptions) (CreatorsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - The name of the Maps Account.
+// creatorName - The name of the Maps Creator instance.
+// options - CreatorsClientDeleteOptions contains the optional parameters for the CreatorsClient.Delete method.
+func (client *CreatorsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, creatorName string, options *CreatorsClientDeleteOptions) (CreatorsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, creatorName, options)
 	if err != nil {
-		return CreatorsDeleteResponse{}, err
+		return CreatorsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CreatorsDeleteResponse{}, err
+		return CreatorsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return CreatorsDeleteResponse{}, client.deleteHandleError(resp)
+		return CreatorsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return CreatorsDeleteResponse{RawResponse: resp}, nil
+	return CreatorsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *CreatorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, creatorName string, options *CreatorsDeleteOptions) (*policy.Request, error) {
+func (client *CreatorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, creatorName string, options *CreatorsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maps/accounts/{accountName}/creators/{creatorName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -148,7 +151,7 @@ func (client *CreatorsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter creatorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{creatorName}", url.PathEscape(creatorName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -159,38 +162,29 @@ func (client *CreatorsClient) deleteCreateRequest(ctx context.Context, resourceG
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *CreatorsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get a Maps Creator resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CreatorsClient) Get(ctx context.Context, resourceGroupName string, accountName string, creatorName string, options *CreatorsGetOptions) (CreatorsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - The name of the Maps Account.
+// creatorName - The name of the Maps Creator instance.
+// options - CreatorsClientGetOptions contains the optional parameters for the CreatorsClient.Get method.
+func (client *CreatorsClient) Get(ctx context.Context, resourceGroupName string, accountName string, creatorName string, options *CreatorsClientGetOptions) (CreatorsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, creatorName, options)
 	if err != nil {
-		return CreatorsGetResponse{}, err
+		return CreatorsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CreatorsGetResponse{}, err
+		return CreatorsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CreatorsGetResponse{}, client.getHandleError(resp)
+		return CreatorsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *CreatorsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, creatorName string, options *CreatorsGetOptions) (*policy.Request, error) {
+func (client *CreatorsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, creatorName string, options *CreatorsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maps/accounts/{accountName}/creators/{creatorName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -208,7 +202,7 @@ func (client *CreatorsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter creatorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{creatorName}", url.PathEscape(creatorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -220,43 +214,33 @@ func (client *CreatorsClient) getCreateRequest(ctx context.Context, resourceGrou
 }
 
 // getHandleResponse handles the Get response.
-func (client *CreatorsClient) getHandleResponse(resp *http.Response) (CreatorsGetResponse, error) {
-	result := CreatorsGetResponse{RawResponse: resp}
+func (client *CreatorsClient) getHandleResponse(resp *http.Response) (CreatorsClientGetResponse, error) {
+	result := CreatorsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Creator); err != nil {
-		return CreatorsGetResponse{}, runtime.NewResponseError(err, resp)
+		return CreatorsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *CreatorsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByAccount - Get all Creator instances for an Azure Maps Account
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CreatorsClient) ListByAccount(resourceGroupName string, accountName string, options *CreatorsListByAccountOptions) *CreatorsListByAccountPager {
-	return &CreatorsListByAccountPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - The name of the Maps Account.
+// options - CreatorsClientListByAccountOptions contains the optional parameters for the CreatorsClient.ListByAccount method.
+func (client *CreatorsClient) ListByAccount(resourceGroupName string, accountName string, options *CreatorsClientListByAccountOptions) *CreatorsClientListByAccountPager {
+	return &CreatorsClientListByAccountPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByAccountCreateRequest(ctx, resourceGroupName, accountName, options)
 		},
-		advancer: func(ctx context.Context, resp CreatorsListByAccountResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp CreatorsClientListByAccountResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.CreatorList.NextLink)
 		},
 	}
 }
 
 // listByAccountCreateRequest creates the ListByAccount request.
-func (client *CreatorsClient) listByAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *CreatorsListByAccountOptions) (*policy.Request, error) {
+func (client *CreatorsClient) listByAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *CreatorsClientListByAccountOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maps/accounts/{accountName}/creators"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -270,7 +254,7 @@ func (client *CreatorsClient) listByAccountCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -282,46 +266,38 @@ func (client *CreatorsClient) listByAccountCreateRequest(ctx context.Context, re
 }
 
 // listByAccountHandleResponse handles the ListByAccount response.
-func (client *CreatorsClient) listByAccountHandleResponse(resp *http.Response) (CreatorsListByAccountResponse, error) {
-	result := CreatorsListByAccountResponse{RawResponse: resp}
+func (client *CreatorsClient) listByAccountHandleResponse(resp *http.Response) (CreatorsClientListByAccountResponse, error) {
+	result := CreatorsClientListByAccountResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CreatorList); err != nil {
-		return CreatorsListByAccountResponse{}, runtime.NewResponseError(err, resp)
+		return CreatorsClientListByAccountResponse{}, err
 	}
 	return result, nil
 }
 
-// listByAccountHandleError handles the ListByAccount error response.
-func (client *CreatorsClient) listByAccountHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Updates the Maps Creator resource. Only a subset of the parameters may be updated after creation, such as Tags.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CreatorsClient) Update(ctx context.Context, resourceGroupName string, accountName string, creatorName string, creatorUpdateParameters CreatorUpdateParameters, options *CreatorsUpdateOptions) (CreatorsUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - The name of the Maps Account.
+// creatorName - The name of the Maps Creator instance.
+// creatorUpdateParameters - The update parameters for Maps Creator.
+// options - CreatorsClientUpdateOptions contains the optional parameters for the CreatorsClient.Update method.
+func (client *CreatorsClient) Update(ctx context.Context, resourceGroupName string, accountName string, creatorName string, creatorUpdateParameters CreatorUpdateParameters, options *CreatorsClientUpdateOptions) (CreatorsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, creatorName, creatorUpdateParameters, options)
 	if err != nil {
-		return CreatorsUpdateResponse{}, err
+		return CreatorsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CreatorsUpdateResponse{}, err
+		return CreatorsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CreatorsUpdateResponse{}, client.updateHandleError(resp)
+		return CreatorsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *CreatorsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, creatorName string, creatorUpdateParameters CreatorUpdateParameters, options *CreatorsUpdateOptions) (*policy.Request, error) {
+func (client *CreatorsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, creatorName string, creatorUpdateParameters CreatorUpdateParameters, options *CreatorsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maps/accounts/{accountName}/creators/{creatorName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -339,7 +315,7 @@ func (client *CreatorsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter creatorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{creatorName}", url.PathEscape(creatorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -351,23 +327,10 @@ func (client *CreatorsClient) updateCreateRequest(ctx context.Context, resourceG
 }
 
 // updateHandleResponse handles the Update response.
-func (client *CreatorsClient) updateHandleResponse(resp *http.Response) (CreatorsUpdateResponse, error) {
-	result := CreatorsUpdateResponse{RawResponse: resp}
+func (client *CreatorsClient) updateHandleResponse(resp *http.Response) (CreatorsClientUpdateResponse, error) {
+	result := CreatorsClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Creator); err != nil {
-		return CreatorsUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return CreatorsClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *CreatorsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

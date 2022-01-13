@@ -11,7 +11,6 @@ package armchangeanalysis
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,44 +25,55 @@ import (
 // ResourceChangesClient contains the methods for the ResourceChanges group.
 // Don't use this type directly, use NewResourceChangesClient() instead.
 type ResourceChangesClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewResourceChangesClient creates a new instance of ResourceChangesClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewResourceChangesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *ResourceChangesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ResourceChangesClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ResourceChangesClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// List - List the changes of a resource within the specified time range. Customer data will be masked if the user doesn't have access.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ResourceChangesClient) List(resourceID string, startTime time.Time, endTime time.Time, options *ResourceChangesListOptions) *ResourceChangesListPager {
-	return &ResourceChangesListPager{
+// List - List the changes of a resource within the specified time range. Customer data will be masked if the user doesn't
+// have access.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceID - The identifier of the resource.
+// startTime - Specifies the start time of the changes request.
+// endTime - Specifies the end time of the changes request.
+// options - ResourceChangesClientListOptions contains the optional parameters for the ResourceChangesClient.List method.
+func (client *ResourceChangesClient) List(resourceID string, startTime time.Time, endTime time.Time, options *ResourceChangesClientListOptions) *ResourceChangesClientListPager {
+	return &ResourceChangesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceID, startTime, endTime, options)
 		},
-		advancer: func(ctx context.Context, resp ResourceChangesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ResourceChangesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ChangeList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ResourceChangesClient) listCreateRequest(ctx context.Context, resourceID string, startTime time.Time, endTime time.Time, options *ResourceChangesListOptions) (*policy.Request, error) {
+func (client *ResourceChangesClient) listCreateRequest(ctx context.Context, resourceID string, startTime time.Time, endTime time.Time, options *ResourceChangesClientListOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/providers/Microsoft.ChangeAnalysis/resourceChanges"
 	if resourceID == "" {
 		return nil, errors.New("parameter resourceID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", url.PathEscape(resourceID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -80,23 +90,10 @@ func (client *ResourceChangesClient) listCreateRequest(ctx context.Context, reso
 }
 
 // listHandleResponse handles the List response.
-func (client *ResourceChangesClient) listHandleResponse(resp *http.Response) (ResourceChangesListResponse, error) {
-	result := ResourceChangesListResponse{RawResponse: resp}
+func (client *ResourceChangesClient) listHandleResponse(resp *http.Response) (ResourceChangesClientListResponse, error) {
+	result := ResourceChangesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ChangeList); err != nil {
-		return ResourceChangesListResponse{}, runtime.NewResponseError(err, resp)
+		return ResourceChangesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *ResourceChangesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

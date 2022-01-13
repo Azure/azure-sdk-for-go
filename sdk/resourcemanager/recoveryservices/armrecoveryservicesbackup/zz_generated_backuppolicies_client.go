@@ -11,7 +11,6 @@ package armrecoveryservicesbackup
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,39 +24,51 @@ import (
 // BackupPoliciesClient contains the methods for the BackupPolicies group.
 // Don't use this type directly, use NewBackupPoliciesClient() instead.
 type BackupPoliciesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewBackupPoliciesClient creates a new instance of BackupPoliciesClient with the specified values.
+// subscriptionID - The subscription Id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewBackupPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *BackupPoliciesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &BackupPoliciesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &BackupPoliciesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// List - Lists of backup policies associated with Recovery Services Vault. API provides pagination parameters to fetch scoped results.
-// If the operation fails it returns the *CloudError error type.
-func (client *BackupPoliciesClient) List(vaultName string, resourceGroupName string, options *BackupPoliciesListOptions) *BackupPoliciesListPager {
-	return &BackupPoliciesListPager{
+// List - Lists of backup policies associated with Recovery Services Vault. API provides pagination parameters to fetch scoped
+// results.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultName - The name of the recovery services vault.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// options - BackupPoliciesClientListOptions contains the optional parameters for the BackupPoliciesClient.List method.
+func (client *BackupPoliciesClient) List(vaultName string, resourceGroupName string, options *BackupPoliciesClientListOptions) *BackupPoliciesClientListPager {
+	return &BackupPoliciesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, vaultName, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp BackupPoliciesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp BackupPoliciesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ProtectionPolicyResourceList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *BackupPoliciesClient) listCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, options *BackupPoliciesListOptions) (*policy.Request, error) {
+func (client *BackupPoliciesClient) listCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, options *BackupPoliciesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupPolicies"
 	if vaultName == "" {
 		return nil, errors.New("parameter vaultName cannot be empty")
@@ -71,12 +82,12 @@ func (client *BackupPoliciesClient) listCreateRequest(ctx context.Context, vault
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -86,23 +97,10 @@ func (client *BackupPoliciesClient) listCreateRequest(ctx context.Context, vault
 }
 
 // listHandleResponse handles the List response.
-func (client *BackupPoliciesClient) listHandleResponse(resp *http.Response) (BackupPoliciesListResponse, error) {
-	result := BackupPoliciesListResponse{RawResponse: resp}
+func (client *BackupPoliciesClient) listHandleResponse(resp *http.Response) (BackupPoliciesClientListResponse, error) {
+	result := BackupPoliciesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProtectionPolicyResourceList); err != nil {
-		return BackupPoliciesListResponse{}, runtime.NewResponseError(err, resp)
+		return BackupPoliciesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *BackupPoliciesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

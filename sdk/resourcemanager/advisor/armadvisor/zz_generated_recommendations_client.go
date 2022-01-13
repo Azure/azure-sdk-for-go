@@ -11,7 +11,6 @@ package armadvisor
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,49 +25,59 @@ import (
 // RecommendationsClient contains the methods for the Recommendations group.
 // Don't use this type directly, use NewRecommendationsClient() instead.
 type RecommendationsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewRecommendationsClient creates a new instance of RecommendationsClient with the specified values.
+// subscriptionID - The Azure subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewRecommendationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RecommendationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &RecommendationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &RecommendationsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// Generate - Initiates the recommendation generation or computation process for a subscription. This operation is asynchronous. The generated recommendations
-// are stored in a cache in the Advisor service.
-// If the operation fails it returns the *ArmErrorResponse error type.
-func (client *RecommendationsClient) Generate(ctx context.Context, options *RecommendationsGenerateOptions) (RecommendationsGenerateResponse, error) {
+// Generate - Initiates the recommendation generation or computation process for a subscription. This operation is asynchronous.
+// The generated recommendations are stored in a cache in the Advisor service.
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - RecommendationsClientGenerateOptions contains the optional parameters for the RecommendationsClient.Generate
+// method.
+func (client *RecommendationsClient) Generate(ctx context.Context, options *RecommendationsClientGenerateOptions) (RecommendationsClientGenerateResponse, error) {
 	req, err := client.generateCreateRequest(ctx, options)
 	if err != nil {
-		return RecommendationsGenerateResponse{}, err
+		return RecommendationsClientGenerateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RecommendationsGenerateResponse{}, err
+		return RecommendationsClientGenerateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return RecommendationsGenerateResponse{}, client.generateHandleError(resp)
+		return RecommendationsClientGenerateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.generateHandleResponse(resp)
 }
 
 // generateCreateRequest creates the Generate request.
-func (client *RecommendationsClient) generateCreateRequest(ctx context.Context, options *RecommendationsGenerateOptions) (*policy.Request, error) {
+func (client *RecommendationsClient) generateCreateRequest(ctx context.Context, options *RecommendationsClientGenerateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/generateRecommendations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -80,8 +89,8 @@ func (client *RecommendationsClient) generateCreateRequest(ctx context.Context, 
 }
 
 // generateHandleResponse handles the Generate response.
-func (client *RecommendationsClient) generateHandleResponse(resp *http.Response) (RecommendationsGenerateResponse, error) {
-	result := RecommendationsGenerateResponse{RawResponse: resp}
+func (client *RecommendationsClient) generateHandleResponse(resp *http.Response) (RecommendationsClientGenerateResponse, error) {
+	result := RecommendationsClientGenerateResponse{RawResponse: resp}
 	if val := resp.Header.Get("Location"); val != "" {
 		result.Location = &val
 	}
@@ -91,38 +100,28 @@ func (client *RecommendationsClient) generateHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// generateHandleError handles the Generate error response.
-func (client *RecommendationsClient) generateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ArmErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Obtains details of a cached recommendation.
-// If the operation fails it returns the *ArmErrorResponse error type.
-func (client *RecommendationsClient) Get(ctx context.Context, resourceURI string, recommendationID string, options *RecommendationsGetOptions) (RecommendationsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceURI - The fully qualified Azure Resource Manager identifier of the resource to which the recommendation applies.
+// recommendationID - The recommendation ID.
+// options - RecommendationsClientGetOptions contains the optional parameters for the RecommendationsClient.Get method.
+func (client *RecommendationsClient) Get(ctx context.Context, resourceURI string, recommendationID string, options *RecommendationsClientGetOptions) (RecommendationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceURI, recommendationID, options)
 	if err != nil {
-		return RecommendationsGetResponse{}, err
+		return RecommendationsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RecommendationsGetResponse{}, err
+		return RecommendationsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return RecommendationsGetResponse{}, client.getHandleError(resp)
+		return RecommendationsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *RecommendationsClient) getCreateRequest(ctx context.Context, resourceURI string, recommendationID string, options *RecommendationsGetOptions) (*policy.Request, error) {
+func (client *RecommendationsClient) getCreateRequest(ctx context.Context, resourceURI string, recommendationID string, options *RecommendationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Advisor/recommendations/{recommendationId}"
 	if resourceURI == "" {
 		return nil, errors.New("parameter resourceURI cannot be empty")
@@ -132,7 +131,7 @@ func (client *RecommendationsClient) getCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter recommendationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{recommendationId}", url.PathEscape(recommendationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -144,55 +143,45 @@ func (client *RecommendationsClient) getCreateRequest(ctx context.Context, resou
 }
 
 // getHandleResponse handles the Get response.
-func (client *RecommendationsClient) getHandleResponse(resp *http.Response) (RecommendationsGetResponse, error) {
-	result := RecommendationsGetResponse{RawResponse: resp}
+func (client *RecommendationsClient) getHandleResponse(resp *http.Response) (RecommendationsClientGetResponse, error) {
+	result := RecommendationsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceRecommendationBase); err != nil {
-		return RecommendationsGetResponse{}, runtime.NewResponseError(err, resp)
+		return RecommendationsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *RecommendationsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ArmErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// GetGenerateStatus - Retrieves the status of the recommendation computation or generation process. Invoke this API after calling the generation recommendation.
-// The URI of this API is returned in the Location field of the
+// GetGenerateStatus - Retrieves the status of the recommendation computation or generation process. Invoke this API after
+// calling the generation recommendation. The URI of this API is returned in the Location field of the
 // response header.
-// If the operation fails it returns the *ArmErrorResponse error type.
-func (client *RecommendationsClient) GetGenerateStatus(ctx context.Context, operationID string, options *RecommendationsGetGenerateStatusOptions) (RecommendationsGetGenerateStatusResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// operationID - The operation ID, which can be found from the Location field in the generate recommendation response header.
+// options - RecommendationsClientGetGenerateStatusOptions contains the optional parameters for the RecommendationsClient.GetGenerateStatus
+// method.
+func (client *RecommendationsClient) GetGenerateStatus(ctx context.Context, operationID string, options *RecommendationsClientGetGenerateStatusOptions) (RecommendationsClientGetGenerateStatusResponse, error) {
 	req, err := client.getGenerateStatusCreateRequest(ctx, operationID, options)
 	if err != nil {
-		return RecommendationsGetGenerateStatusResponse{}, err
+		return RecommendationsClientGetGenerateStatusResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RecommendationsGetGenerateStatusResponse{}, err
+		return RecommendationsClientGetGenerateStatusResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
-		return RecommendationsGetGenerateStatusResponse{}, client.getGenerateStatusHandleError(resp)
+		return RecommendationsClientGetGenerateStatusResponse{}, runtime.NewResponseError(resp)
 	}
-	return RecommendationsGetGenerateStatusResponse{RawResponse: resp}, nil
+	return RecommendationsClientGetGenerateStatusResponse{RawResponse: resp}, nil
 }
 
 // getGenerateStatusCreateRequest creates the GetGenerateStatus request.
-func (client *RecommendationsClient) getGenerateStatusCreateRequest(ctx context.Context, operationID string, options *RecommendationsGetGenerateStatusOptions) (*policy.Request, error) {
+func (client *RecommendationsClient) getGenerateStatusCreateRequest(ctx context.Context, operationID string, options *RecommendationsClientGetGenerateStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/generateRecommendations/{operationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -203,41 +192,29 @@ func (client *RecommendationsClient) getGenerateStatusCreateRequest(ctx context.
 	return req, nil
 }
 
-// getGenerateStatusHandleError handles the GetGenerateStatus error response.
-func (client *RecommendationsClient) getGenerateStatusHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ArmErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Obtains cached recommendations for a subscription. The recommendations are generated or computed by invoking generateRecommendations.
-// If the operation fails it returns the *ArmErrorResponse error type.
-func (client *RecommendationsClient) List(options *RecommendationsListOptions) *RecommendationsListPager {
-	return &RecommendationsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - RecommendationsClientListOptions contains the optional parameters for the RecommendationsClient.List method.
+func (client *RecommendationsClient) List(options *RecommendationsClientListOptions) *RecommendationsClientListPager {
+	return &RecommendationsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp RecommendationsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp RecommendationsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ResourceRecommendationBaseListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *RecommendationsClient) listCreateRequest(ctx context.Context, options *RecommendationsListOptions) (*policy.Request, error) {
+func (client *RecommendationsClient) listCreateRequest(ctx context.Context, options *RecommendationsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/recommendations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -258,23 +235,10 @@ func (client *RecommendationsClient) listCreateRequest(ctx context.Context, opti
 }
 
 // listHandleResponse handles the List response.
-func (client *RecommendationsClient) listHandleResponse(resp *http.Response) (RecommendationsListResponse, error) {
-	result := RecommendationsListResponse{RawResponse: resp}
+func (client *RecommendationsClient) listHandleResponse(resp *http.Response) (RecommendationsClientListResponse, error) {
+	result := RecommendationsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceRecommendationBaseListResult); err != nil {
-		return RecommendationsListResponse{}, runtime.NewResponseError(err, resp)
+		return RecommendationsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *RecommendationsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ArmErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

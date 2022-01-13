@@ -1,14 +1,724 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 0.3.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*LinkedStorageAccountsClient.ListByWorkspace` parameter(s) have been changed from `(context.Context, string, string, *LinkedStorageAccountsListByWorkspaceOptions)` to `(context.Context, string, string, *LinkedStorageAccountsClientListByWorkspaceOptions)`
+- Function `*LinkedStorageAccountsClient.ListByWorkspace` return value(s) have been changed from `(LinkedStorageAccountsListByWorkspaceResponse, error)` to `(LinkedStorageAccountsClientListByWorkspaceResponse, error)`
+- Function `*DataSourcesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, DataSource, *DataSourcesCreateOrUpdateOptions)` to `(context.Context, string, string, string, DataSource, *DataSourcesClientCreateOrUpdateOptions)`
+- Function `*DataSourcesClient.CreateOrUpdate` return value(s) have been changed from `(DataSourcesCreateOrUpdateResponse, error)` to `(DataSourcesClientCreateOrUpdateResponse, error)`
+- Function `*SavedSearchesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, SavedSearch, *SavedSearchesCreateOrUpdateOptions)` to `(context.Context, string, string, string, SavedSearch, *SavedSearchesClientCreateOrUpdateOptions)`
+- Function `*SavedSearchesClient.CreateOrUpdate` return value(s) have been changed from `(SavedSearchesCreateOrUpdateResponse, error)` to `(SavedSearchesClientCreateOrUpdateResponse, error)`
+- Function `*ClustersClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, Cluster, *ClustersBeginCreateOrUpdateOptions)` to `(context.Context, string, string, Cluster, *ClustersClientBeginCreateOrUpdateOptions)`
+- Function `*ClustersClient.BeginCreateOrUpdate` return value(s) have been changed from `(ClustersCreateOrUpdatePollerResponse, error)` to `(ClustersClientCreateOrUpdatePollerResponse, error)`
+- Function `*SharedKeysClient.GetSharedKeys` parameter(s) have been changed from `(context.Context, string, string, *SharedKeysGetSharedKeysOptions)` to `(context.Context, string, string, *SharedKeysClientGetSharedKeysOptions)`
+- Function `*SharedKeysClient.GetSharedKeys` return value(s) have been changed from `(SharedKeysGetSharedKeysResponse, error)` to `(SharedKeysClientGetSharedKeysResponse, error)`
+- Function `*OperationStatusesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *OperationStatusesGetOptions)` to `(context.Context, string, string, *OperationStatusesClientGetOptions)`
+- Function `*OperationStatusesClient.Get` return value(s) have been changed from `(OperationStatusesGetResponse, error)` to `(OperationStatusesClientGetResponse, error)`
+- Function `*WorkspacePurgeClient.Purge` parameter(s) have been changed from `(context.Context, string, string, WorkspacePurgeBody, *WorkspacePurgePurgeOptions)` to `(context.Context, string, string, WorkspacePurgeBody, *WorkspacePurgeClientPurgeOptions)`
+- Function `*WorkspacePurgeClient.Purge` return value(s) have been changed from `(WorkspacePurgePurgeResponse, error)` to `(WorkspacePurgeClientPurgeResponse, error)`
+- Function `*ClustersClient.ListByResourceGroup` parameter(s) have been changed from `(string, *ClustersListByResourceGroupOptions)` to `(string, *ClustersClientListByResourceGroupOptions)`
+- Function `*ClustersClient.ListByResourceGroup` return value(s) have been changed from `(*ClustersListByResourceGroupPager)` to `(*ClustersClientListByResourceGroupPager)`
+- Function `*DataExportsClient.ListByWorkspace` parameter(s) have been changed from `(context.Context, string, string, *DataExportsListByWorkspaceOptions)` to `(context.Context, string, string, *DataExportsClientListByWorkspaceOptions)`
+- Function `*DataExportsClient.ListByWorkspace` return value(s) have been changed from `(DataExportsListByWorkspaceResponse, error)` to `(DataExportsClientListByWorkspaceResponse, error)`
+- Function `*SharedKeysClient.Regenerate` parameter(s) have been changed from `(context.Context, string, string, *SharedKeysRegenerateOptions)` to `(context.Context, string, string, *SharedKeysClientRegenerateOptions)`
+- Function `*SharedKeysClient.Regenerate` return value(s) have been changed from `(SharedKeysRegenerateResponse, error)` to `(SharedKeysClientRegenerateResponse, error)`
+- Function `*SavedSearchesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *SavedSearchesGetOptions)` to `(context.Context, string, string, string, *SavedSearchesClientGetOptions)`
+- Function `*SavedSearchesClient.Get` return value(s) have been changed from `(SavedSearchesGetResponse, error)` to `(SavedSearchesClientGetResponse, error)`
+- Function `*StorageInsightConfigsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, StorageInsight, *StorageInsightConfigsCreateOrUpdateOptions)` to `(context.Context, string, string, string, StorageInsight, *StorageInsightConfigsClientCreateOrUpdateOptions)`
+- Function `*StorageInsightConfigsClient.CreateOrUpdate` return value(s) have been changed from `(StorageInsightConfigsCreateOrUpdateResponse, error)` to `(StorageInsightConfigsClientCreateOrUpdateResponse, error)`
+- Function `*IntelligencePacksClient.Disable` parameter(s) have been changed from `(context.Context, string, string, string, *IntelligencePacksDisableOptions)` to `(context.Context, string, string, string, *IntelligencePacksClientDisableOptions)`
+- Function `*IntelligencePacksClient.Disable` return value(s) have been changed from `(IntelligencePacksDisableResponse, error)` to `(IntelligencePacksClientDisableResponse, error)`
+- Function `*IntelligencePacksClient.Enable` parameter(s) have been changed from `(context.Context, string, string, string, *IntelligencePacksEnableOptions)` to `(context.Context, string, string, string, *IntelligencePacksClientEnableOptions)`
+- Function `*IntelligencePacksClient.Enable` return value(s) have been changed from `(IntelligencePacksEnableResponse, error)` to `(IntelligencePacksClientEnableResponse, error)`
+- Function `*WorkspacesClient.Update` parameter(s) have been changed from `(context.Context, string, string, WorkspacePatch, *WorkspacesUpdateOptions)` to `(context.Context, string, string, WorkspacePatch, *WorkspacesClientUpdateOptions)`
+- Function `*WorkspacesClient.Update` return value(s) have been changed from `(WorkspacesUpdateResponse, error)` to `(WorkspacesClientUpdateResponse, error)`
+- Function `*LinkedServicesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *LinkedServicesBeginDeleteOptions)` to `(context.Context, string, string, string, *LinkedServicesClientBeginDeleteOptions)`
+- Function `*LinkedServicesClient.BeginDelete` return value(s) have been changed from `(LinkedServicesDeletePollerResponse, error)` to `(LinkedServicesClientDeletePollerResponse, error)`
+- Function `*DeletedWorkspacesClient.ListByResourceGroup` parameter(s) have been changed from `(context.Context, string, *DeletedWorkspacesListByResourceGroupOptions)` to `(context.Context, string, *DeletedWorkspacesClientListByResourceGroupOptions)`
+- Function `*DeletedWorkspacesClient.ListByResourceGroup` return value(s) have been changed from `(DeletedWorkspacesListByResourceGroupResponse, error)` to `(DeletedWorkspacesClientListByResourceGroupResponse, error)`
+- Function `*DataSourcesClient.ListByWorkspace` parameter(s) have been changed from `(string, string, string, *DataSourcesListByWorkspaceOptions)` to `(string, string, string, *DataSourcesClientListByWorkspaceOptions)`
+- Function `*DataSourcesClient.ListByWorkspace` return value(s) have been changed from `(*DataSourcesListByWorkspacePager)` to `(*DataSourcesClientListByWorkspacePager)`
+- Function `*WorkspacesClient.List` parameter(s) have been changed from `(context.Context, *WorkspacesListOptions)` to `(context.Context, *WorkspacesClientListOptions)`
+- Function `*WorkspacesClient.List` return value(s) have been changed from `(WorkspacesListResponse, error)` to `(WorkspacesClientListResponse, error)`
+- Function `*LinkedStorageAccountsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, DataSourceType, LinkedStorageAccountsResource, *LinkedStorageAccountsCreateOrUpdateOptions)` to `(context.Context, string, string, DataSourceType, LinkedStorageAccountsResource, *LinkedStorageAccountsClientCreateOrUpdateOptions)`
+- Function `*LinkedStorageAccountsClient.CreateOrUpdate` return value(s) have been changed from `(LinkedStorageAccountsCreateOrUpdateResponse, error)` to `(LinkedStorageAccountsClientCreateOrUpdateResponse, error)`
+- Function `*WorkspacesClient.ListByResourceGroup` parameter(s) have been changed from `(context.Context, string, *WorkspacesListByResourceGroupOptions)` to `(context.Context, string, *WorkspacesClientListByResourceGroupOptions)`
+- Function `*WorkspacesClient.ListByResourceGroup` return value(s) have been changed from `(WorkspacesListByResourceGroupResponse, error)` to `(WorkspacesClientListByResourceGroupResponse, error)`
+- Function `*ManagementGroupsClient.List` parameter(s) have been changed from `(context.Context, string, string, *ManagementGroupsListOptions)` to `(context.Context, string, string, *ManagementGroupsClientListOptions)`
+- Function `*ManagementGroupsClient.List` return value(s) have been changed from `(ManagementGroupsListResponse, error)` to `(ManagementGroupsClientListResponse, error)`
+- Function `*AvailableServiceTiersClient.ListByWorkspace` parameter(s) have been changed from `(context.Context, string, string, *AvailableServiceTiersListByWorkspaceOptions)` to `(context.Context, string, string, *AvailableServiceTiersClientListByWorkspaceOptions)`
+- Function `*AvailableServiceTiersClient.ListByWorkspace` return value(s) have been changed from `(AvailableServiceTiersListByWorkspaceResponse, error)` to `(AvailableServiceTiersClientListByWorkspaceResponse, error)`
+- Function `*LinkedServicesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *LinkedServicesGetOptions)` to `(context.Context, string, string, string, *LinkedServicesClientGetOptions)`
+- Function `*LinkedServicesClient.Get` return value(s) have been changed from `(LinkedServicesGetResponse, error)` to `(LinkedServicesClientGetResponse, error)`
+- Function `*WorkspacesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *WorkspacesBeginDeleteOptions)` to `(context.Context, string, string, *WorkspacesClientBeginDeleteOptions)`
+- Function `*WorkspacesClient.BeginDelete` return value(s) have been changed from `(WorkspacesDeletePollerResponse, error)` to `(WorkspacesClientDeletePollerResponse, error)`
+- Function `*UsagesClient.List` parameter(s) have been changed from `(context.Context, string, string, *UsagesListOptions)` to `(context.Context, string, string, *UsagesClientListOptions)`
+- Function `*UsagesClient.List` return value(s) have been changed from `(UsagesListResponse, error)` to `(UsagesClientListResponse, error)`
+- Function `*ClustersClient.List` parameter(s) have been changed from `(*ClustersListOptions)` to `(*ClustersClientListOptions)`
+- Function `*ClustersClient.List` return value(s) have been changed from `(*ClustersListPager)` to `(*ClustersClientListPager)`
+- Function `*GatewaysClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *GatewaysDeleteOptions)` to `(context.Context, string, string, string, *GatewaysClientDeleteOptions)`
+- Function `*GatewaysClient.Delete` return value(s) have been changed from `(GatewaysDeleteResponse, error)` to `(GatewaysClientDeleteResponse, error)`
+- Function `*LinkedStorageAccountsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, DataSourceType, *LinkedStorageAccountsDeleteOptions)` to `(context.Context, string, string, DataSourceType, *LinkedStorageAccountsClientDeleteOptions)`
+- Function `*LinkedStorageAccountsClient.Delete` return value(s) have been changed from `(LinkedStorageAccountsDeleteResponse, error)` to `(LinkedStorageAccountsClientDeleteResponse, error)`
+- Function `*SchemaClient.Get` parameter(s) have been changed from `(context.Context, string, string, *SchemaGetOptions)` to `(context.Context, string, string, *SchemaClientGetOptions)`
+- Function `*SchemaClient.Get` return value(s) have been changed from `(SchemaGetResponse, error)` to `(SchemaClientGetResponse, error)`
+- Function `*DataExportsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, DataExport, *DataExportsCreateOrUpdateOptions)` to `(context.Context, string, string, string, DataExport, *DataExportsClientCreateOrUpdateOptions)`
+- Function `*DataExportsClient.CreateOrUpdate` return value(s) have been changed from `(DataExportsCreateOrUpdateResponse, error)` to `(DataExportsClientCreateOrUpdateResponse, error)`
+- Function `*DataSourcesClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *DataSourcesDeleteOptions)` to `(context.Context, string, string, string, *DataSourcesClientDeleteOptions)`
+- Function `*DataSourcesClient.Delete` return value(s) have been changed from `(DataSourcesDeleteResponse, error)` to `(DataSourcesClientDeleteResponse, error)`
+- Function `*DataSourcesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *DataSourcesGetOptions)` to `(context.Context, string, string, string, *DataSourcesClientGetOptions)`
+- Function `*DataSourcesClient.Get` return value(s) have been changed from `(DataSourcesGetResponse, error)` to `(DataSourcesClientGetResponse, error)`
+- Function `*DataExportsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *DataExportsDeleteOptions)` to `(context.Context, string, string, string, *DataExportsClientDeleteOptions)`
+- Function `*DataExportsClient.Delete` return value(s) have been changed from `(DataExportsDeleteResponse, error)` to `(DataExportsClientDeleteResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*WorkspacePurgeClient.GetPurgeStatus` parameter(s) have been changed from `(context.Context, string, string, string, *WorkspacePurgeGetPurgeStatusOptions)` to `(context.Context, string, string, string, *WorkspacePurgeClientGetPurgeStatusOptions)`
+- Function `*WorkspacePurgeClient.GetPurgeStatus` return value(s) have been changed from `(WorkspacePurgeGetPurgeStatusResponse, error)` to `(WorkspacePurgeClientGetPurgeStatusResponse, error)`
+- Function `*LinkedStorageAccountsClient.Get` parameter(s) have been changed from `(context.Context, string, string, DataSourceType, *LinkedStorageAccountsGetOptions)` to `(context.Context, string, string, DataSourceType, *LinkedStorageAccountsClientGetOptions)`
+- Function `*LinkedStorageAccountsClient.Get` return value(s) have been changed from `(LinkedStorageAccountsGetResponse, error)` to `(LinkedStorageAccountsClientGetResponse, error)`
+- Function `*DeletedWorkspacesClient.List` parameter(s) have been changed from `(context.Context, *DeletedWorkspacesListOptions)` to `(context.Context, *DeletedWorkspacesClientListOptions)`
+- Function `*DeletedWorkspacesClient.List` return value(s) have been changed from `(DeletedWorkspacesListResponse, error)` to `(DeletedWorkspacesClientListResponse, error)`
+- Function `*IntelligencePacksClient.List` parameter(s) have been changed from `(context.Context, string, string, *IntelligencePacksListOptions)` to `(context.Context, string, string, *IntelligencePacksClientListOptions)`
+- Function `*IntelligencePacksClient.List` return value(s) have been changed from `(IntelligencePacksListResponse, error)` to `(IntelligencePacksClientListResponse, error)`
+- Function `*DataExportsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *DataExportsGetOptions)` to `(context.Context, string, string, string, *DataExportsClientGetOptions)`
+- Function `*DataExportsClient.Get` return value(s) have been changed from `(DataExportsGetResponse, error)` to `(DataExportsClientGetResponse, error)`
+- Function `*StorageInsightConfigsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *StorageInsightConfigsDeleteOptions)` to `(context.Context, string, string, string, *StorageInsightConfigsClientDeleteOptions)`
+- Function `*StorageInsightConfigsClient.Delete` return value(s) have been changed from `(StorageInsightConfigsDeleteResponse, error)` to `(StorageInsightConfigsClientDeleteResponse, error)`
+- Function `*SavedSearchesClient.ListByWorkspace` parameter(s) have been changed from `(context.Context, string, string, *SavedSearchesListByWorkspaceOptions)` to `(context.Context, string, string, *SavedSearchesClientListByWorkspaceOptions)`
+- Function `*SavedSearchesClient.ListByWorkspace` return value(s) have been changed from `(SavedSearchesListByWorkspaceResponse, error)` to `(SavedSearchesClientListByWorkspaceResponse, error)`
+- Function `*WorkspacesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, Workspace, *WorkspacesBeginCreateOrUpdateOptions)` to `(context.Context, string, string, Workspace, *WorkspacesClientBeginCreateOrUpdateOptions)`
+- Function `*WorkspacesClient.BeginCreateOrUpdate` return value(s) have been changed from `(WorkspacesCreateOrUpdatePollerResponse, error)` to `(WorkspacesClientCreateOrUpdatePollerResponse, error)`
+- Function `*SavedSearchesClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *SavedSearchesDeleteOptions)` to `(context.Context, string, string, string, *SavedSearchesClientDeleteOptions)`
+- Function `*SavedSearchesClient.Delete` return value(s) have been changed from `(SavedSearchesDeleteResponse, error)` to `(SavedSearchesClientDeleteResponse, error)`
+- Function `*StorageInsightConfigsClient.ListByWorkspace` parameter(s) have been changed from `(string, string, *StorageInsightConfigsListByWorkspaceOptions)` to `(string, string, *StorageInsightConfigsClientListByWorkspaceOptions)`
+- Function `*StorageInsightConfigsClient.ListByWorkspace` return value(s) have been changed from `(*StorageInsightConfigsListByWorkspacePager)` to `(*StorageInsightConfigsClientListByWorkspacePager)`
+- Function `*ClustersClient.Get` parameter(s) have been changed from `(context.Context, string, string, *ClustersGetOptions)` to `(context.Context, string, string, *ClustersClientGetOptions)`
+- Function `*ClustersClient.Get` return value(s) have been changed from `(ClustersGetResponse, error)` to `(ClustersClientGetResponse, error)`
+- Function `*LinkedServicesClient.ListByWorkspace` parameter(s) have been changed from `(context.Context, string, string, *LinkedServicesListByWorkspaceOptions)` to `(context.Context, string, string, *LinkedServicesClientListByWorkspaceOptions)`
+- Function `*LinkedServicesClient.ListByWorkspace` return value(s) have been changed from `(LinkedServicesListByWorkspaceResponse, error)` to `(LinkedServicesClientListByWorkspaceResponse, error)`
+- Function `*WorkspacesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *WorkspacesGetOptions)` to `(context.Context, string, string, *WorkspacesClientGetOptions)`
+- Function `*WorkspacesClient.Get` return value(s) have been changed from `(WorkspacesGetResponse, error)` to `(WorkspacesClientGetResponse, error)`
+- Function `*ClustersClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *ClustersBeginDeleteOptions)` to `(context.Context, string, string, *ClustersClientBeginDeleteOptions)`
+- Function `*ClustersClient.BeginDelete` return value(s) have been changed from `(ClustersDeletePollerResponse, error)` to `(ClustersClientDeletePollerResponse, error)`
+- Function `*StorageInsightConfigsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *StorageInsightConfigsGetOptions)` to `(context.Context, string, string, string, *StorageInsightConfigsClientGetOptions)`
+- Function `*StorageInsightConfigsClient.Get` return value(s) have been changed from `(StorageInsightConfigsGetResponse, error)` to `(StorageInsightConfigsClientGetResponse, error)`
+- Function `*LinkedServicesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, LinkedService, *LinkedServicesBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, LinkedService, *LinkedServicesClientBeginCreateOrUpdateOptions)`
+- Function `*LinkedServicesClient.BeginCreateOrUpdate` return value(s) have been changed from `(LinkedServicesCreateOrUpdatePollerResponse, error)` to `(LinkedServicesClientCreateOrUpdatePollerResponse, error)`
+- Function `ClustersDeletePollerResponse.PollUntilDone` has been removed
+- Function `*LinkedServicesCreateOrUpdatePoller.Done` has been removed
+- Function `*ClustersDeletePoller.Poll` has been removed
+- Function `*LinkedServicesDeletePoller.ResumeToken` has been removed
+- Function `*ClustersListByResourceGroupPager.Err` has been removed
+- Function `*StorageInsightConfigsListByWorkspacePager.PageResponse` has been removed
+- Function `*LinkedServicesDeletePoller.Done` has been removed
+- Function `*ClustersCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `LinkedStorageAccountsResource.MarshalJSON` has been removed
+- Function `*ClustersCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ClustersListByResourceGroupPager.NextPage` has been removed
+- Function `*WorkspacesDeletePoller.ResumeToken` has been removed
+- Function `*LinkedServicesCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ClustersCreateOrUpdatePoller.Done` has been removed
+- Function `*LinkedServicesCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ClustersDeletePoller.ResumeToken` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `*ClustersClient.Update` has been removed
+- Function `*ClustersListPager.PageResponse` has been removed
+- Function `*StorageInsightConfigsListByWorkspacePager.Err` has been removed
+- Function `*WorkspacesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ClustersCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*LinkedServicesCreateOrUpdatePoller.Poll` has been removed
+- Function `*ClustersCreateOrUpdatePoller.Poll` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `*ClustersDeletePoller.FinalResponse` has been removed
+- Function `*StorageInsightConfigsListByWorkspacePager.NextPage` has been removed
+- Function `*WorkspacesCreateOrUpdatePoller.Done` has been removed
+- Function `*WorkspacesDeletePoller.FinalResponse` has been removed
+- Function `*WorkspacesCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `WorkspacesDeletePollerResponse.PollUntilDone` has been removed
+- Function `WorkspacesCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DataSourcesListByWorkspacePager.Err` has been removed
+- Function `*WorkspacesCreateOrUpdatePoller.Poll` has been removed
+- Function `ClustersCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `ErrorResponse.Error` has been removed
+- Function `*LinkedServicesDeletePoller.Poll` has been removed
+- Function `*WorkspacesCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `SavedSearch.MarshalJSON` has been removed
+- Function `*ClustersListPager.Err` has been removed
+- Function `*LinkedServicesDeletePoller.FinalResponse` has been removed
+- Function `*WorkspacesDeletePollerResponse.Resume` has been removed
+- Function `LinkedServicesCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*LinkedServicesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*WorkspacesDeletePoller.Done` has been removed
+- Function `*WorkspacesDeletePoller.Poll` has been removed
+- Function `LinkedServicesDeletePollerResponse.PollUntilDone` has been removed
+- Function `AzureEntityResource.MarshalJSON` has been removed
+- Function `*ClustersDeletePollerResponse.Resume` has been removed
+- Function `*DataSourcesListByWorkspacePager.NextPage` has been removed
+- Function `*DataSourcesListByWorkspacePager.PageResponse` has been removed
+- Function `*ClustersListPager.NextPage` has been removed
+- Function `DataExport.MarshalJSON` has been removed
+- Function `*LinkedServicesDeletePollerResponse.Resume` has been removed
+- Function `*ClustersListByResourceGroupPager.PageResponse` has been removed
+- Function `*ClustersDeletePoller.Done` has been removed
+- Struct `AvailableServiceTiersListByWorkspaceOptions` has been removed
+- Struct `AvailableServiceTiersListByWorkspaceResponse` has been removed
+- Struct `AvailableServiceTiersListByWorkspaceResult` has been removed
+- Struct `ClustersBeginCreateOrUpdateOptions` has been removed
+- Struct `ClustersBeginDeleteOptions` has been removed
+- Struct `ClustersCreateOrUpdatePoller` has been removed
+- Struct `ClustersCreateOrUpdatePollerResponse` has been removed
+- Struct `ClustersCreateOrUpdateResponse` has been removed
+- Struct `ClustersCreateOrUpdateResult` has been removed
+- Struct `ClustersDeletePoller` has been removed
+- Struct `ClustersDeletePollerResponse` has been removed
+- Struct `ClustersDeleteResponse` has been removed
+- Struct `ClustersGetOptions` has been removed
+- Struct `ClustersGetResponse` has been removed
+- Struct `ClustersGetResult` has been removed
+- Struct `ClustersListByResourceGroupOptions` has been removed
+- Struct `ClustersListByResourceGroupPager` has been removed
+- Struct `ClustersListByResourceGroupResponse` has been removed
+- Struct `ClustersListByResourceGroupResult` has been removed
+- Struct `ClustersListOptions` has been removed
+- Struct `ClustersListPager` has been removed
+- Struct `ClustersListResponse` has been removed
+- Struct `ClustersListResult` has been removed
+- Struct `ClustersUpdateOptions` has been removed
+- Struct `ClustersUpdateResponse` has been removed
+- Struct `ClustersUpdateResult` has been removed
+- Struct `DataExportsCreateOrUpdateOptions` has been removed
+- Struct `DataExportsCreateOrUpdateResponse` has been removed
+- Struct `DataExportsCreateOrUpdateResult` has been removed
+- Struct `DataExportsDeleteOptions` has been removed
+- Struct `DataExportsDeleteResponse` has been removed
+- Struct `DataExportsGetOptions` has been removed
+- Struct `DataExportsGetResponse` has been removed
+- Struct `DataExportsGetResult` has been removed
+- Struct `DataExportsListByWorkspaceOptions` has been removed
+- Struct `DataExportsListByWorkspaceResponse` has been removed
+- Struct `DataExportsListByWorkspaceResult` has been removed
+- Struct `DataSourcesCreateOrUpdateOptions` has been removed
+- Struct `DataSourcesCreateOrUpdateResponse` has been removed
+- Struct `DataSourcesCreateOrUpdateResult` has been removed
+- Struct `DataSourcesDeleteOptions` has been removed
+- Struct `DataSourcesDeleteResponse` has been removed
+- Struct `DataSourcesGetOptions` has been removed
+- Struct `DataSourcesGetResponse` has been removed
+- Struct `DataSourcesGetResult` has been removed
+- Struct `DataSourcesListByWorkspaceOptions` has been removed
+- Struct `DataSourcesListByWorkspacePager` has been removed
+- Struct `DataSourcesListByWorkspaceResponse` has been removed
+- Struct `DataSourcesListByWorkspaceResult` has been removed
+- Struct `DeletedWorkspacesListByResourceGroupOptions` has been removed
+- Struct `DeletedWorkspacesListByResourceGroupResponse` has been removed
+- Struct `DeletedWorkspacesListByResourceGroupResult` has been removed
+- Struct `DeletedWorkspacesListOptions` has been removed
+- Struct `DeletedWorkspacesListResponse` has been removed
+- Struct `DeletedWorkspacesListResult` has been removed
+- Struct `GatewaysDeleteOptions` has been removed
+- Struct `GatewaysDeleteResponse` has been removed
+- Struct `IntelligencePacksDisableOptions` has been removed
+- Struct `IntelligencePacksDisableResponse` has been removed
+- Struct `IntelligencePacksEnableOptions` has been removed
+- Struct `IntelligencePacksEnableResponse` has been removed
+- Struct `IntelligencePacksListOptions` has been removed
+- Struct `IntelligencePacksListResponse` has been removed
+- Struct `IntelligencePacksListResult` has been removed
+- Struct `LinkedServicesBeginCreateOrUpdateOptions` has been removed
+- Struct `LinkedServicesBeginDeleteOptions` has been removed
+- Struct `LinkedServicesCreateOrUpdatePoller` has been removed
+- Struct `LinkedServicesCreateOrUpdatePollerResponse` has been removed
+- Struct `LinkedServicesCreateOrUpdateResponse` has been removed
+- Struct `LinkedServicesCreateOrUpdateResult` has been removed
+- Struct `LinkedServicesDeletePoller` has been removed
+- Struct `LinkedServicesDeletePollerResponse` has been removed
+- Struct `LinkedServicesDeleteResponse` has been removed
+- Struct `LinkedServicesDeleteResult` has been removed
+- Struct `LinkedServicesGetOptions` has been removed
+- Struct `LinkedServicesGetResponse` has been removed
+- Struct `LinkedServicesGetResult` has been removed
+- Struct `LinkedServicesListByWorkspaceOptions` has been removed
+- Struct `LinkedServicesListByWorkspaceResponse` has been removed
+- Struct `LinkedServicesListByWorkspaceResult` has been removed
+- Struct `LinkedStorageAccountsCreateOrUpdateOptions` has been removed
+- Struct `LinkedStorageAccountsCreateOrUpdateResponse` has been removed
+- Struct `LinkedStorageAccountsCreateOrUpdateResult` has been removed
+- Struct `LinkedStorageAccountsDeleteOptions` has been removed
+- Struct `LinkedStorageAccountsDeleteResponse` has been removed
+- Struct `LinkedStorageAccountsGetOptions` has been removed
+- Struct `LinkedStorageAccountsGetResponse` has been removed
+- Struct `LinkedStorageAccountsGetResult` has been removed
+- Struct `LinkedStorageAccountsListByWorkspaceOptions` has been removed
+- Struct `LinkedStorageAccountsListByWorkspaceResponse` has been removed
+- Struct `LinkedStorageAccountsListByWorkspaceResult` has been removed
+- Struct `ManagementGroupsListOptions` has been removed
+- Struct `ManagementGroupsListResponse` has been removed
+- Struct `ManagementGroupsListResult` has been removed
+- Struct `OperationStatusesGetOptions` has been removed
+- Struct `OperationStatusesGetResponse` has been removed
+- Struct `OperationStatusesGetResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `SavedSearchesCreateOrUpdateOptions` has been removed
+- Struct `SavedSearchesCreateOrUpdateResponse` has been removed
+- Struct `SavedSearchesCreateOrUpdateResult` has been removed
+- Struct `SavedSearchesDeleteOptions` has been removed
+- Struct `SavedSearchesDeleteResponse` has been removed
+- Struct `SavedSearchesGetOptions` has been removed
+- Struct `SavedSearchesGetResponse` has been removed
+- Struct `SavedSearchesGetResult` has been removed
+- Struct `SavedSearchesListByWorkspaceOptions` has been removed
+- Struct `SavedSearchesListByWorkspaceResponse` has been removed
+- Struct `SavedSearchesListByWorkspaceResult` has been removed
+- Struct `SchemaGetOptions` has been removed
+- Struct `SchemaGetResponse` has been removed
+- Struct `SchemaGetResult` has been removed
+- Struct `SharedKeysGetSharedKeysOptions` has been removed
+- Struct `SharedKeysGetSharedKeysResponse` has been removed
+- Struct `SharedKeysGetSharedKeysResult` has been removed
+- Struct `SharedKeysRegenerateOptions` has been removed
+- Struct `SharedKeysRegenerateResponse` has been removed
+- Struct `SharedKeysRegenerateResult` has been removed
+- Struct `StorageInsightConfigsCreateOrUpdateOptions` has been removed
+- Struct `StorageInsightConfigsCreateOrUpdateResponse` has been removed
+- Struct `StorageInsightConfigsCreateOrUpdateResult` has been removed
+- Struct `StorageInsightConfigsDeleteOptions` has been removed
+- Struct `StorageInsightConfigsDeleteResponse` has been removed
+- Struct `StorageInsightConfigsGetOptions` has been removed
+- Struct `StorageInsightConfigsGetResponse` has been removed
+- Struct `StorageInsightConfigsGetResult` has been removed
+- Struct `StorageInsightConfigsListByWorkspaceOptions` has been removed
+- Struct `StorageInsightConfigsListByWorkspacePager` has been removed
+- Struct `StorageInsightConfigsListByWorkspaceResponse` has been removed
+- Struct `StorageInsightConfigsListByWorkspaceResult` has been removed
+- Struct `UsagesListOptions` has been removed
+- Struct `UsagesListResponse` has been removed
+- Struct `UsagesListResult` has been removed
+- Struct `WorkspacePurgeGetPurgeStatusOptions` has been removed
+- Struct `WorkspacePurgeGetPurgeStatusResponse` has been removed
+- Struct `WorkspacePurgeGetPurgeStatusResult` has been removed
+- Struct `WorkspacePurgePurgeOptions` has been removed
+- Struct `WorkspacePurgePurgeResponse` has been removed
+- Struct `WorkspacePurgePurgeResult` has been removed
+- Struct `WorkspacesBeginCreateOrUpdateOptions` has been removed
+- Struct `WorkspacesBeginDeleteOptions` has been removed
+- Struct `WorkspacesCreateOrUpdatePoller` has been removed
+- Struct `WorkspacesCreateOrUpdatePollerResponse` has been removed
+- Struct `WorkspacesCreateOrUpdateResponse` has been removed
+- Struct `WorkspacesCreateOrUpdateResult` has been removed
+- Struct `WorkspacesDeletePoller` has been removed
+- Struct `WorkspacesDeletePollerResponse` has been removed
+- Struct `WorkspacesDeleteResponse` has been removed
+- Struct `WorkspacesGetOptions` has been removed
+- Struct `WorkspacesGetResponse` has been removed
+- Struct `WorkspacesGetResult` has been removed
+- Struct `WorkspacesListByResourceGroupOptions` has been removed
+- Struct `WorkspacesListByResourceGroupResponse` has been removed
+- Struct `WorkspacesListByResourceGroupResult` has been removed
+- Struct `WorkspacesListOptions` has been removed
+- Struct `WorkspacesListResponse` has been removed
+- Struct `WorkspacesListResult` has been removed
+- Struct `WorkspacesUpdateOptions` has been removed
+- Struct `WorkspacesUpdateResponse` has been removed
+- Struct `WorkspacesUpdateResult` has been removed
+- Field `Resource` of struct `AzureEntityResource` has been removed
+- Field `ProxyResource` of struct `SavedSearch` has been removed
+- Field `Resource` of struct `TrackedResource` has been removed
+- Field `ProxyResource` of struct `StorageInsight` has been removed
+- Field `Resource` of struct `ProxyResource` has been removed
+- Field `ProxyResource` of struct `LinkedService` has been removed
+- Field `InnerError` of struct `ErrorResponse` has been removed
+- Field `ProxyResource` of struct `DataSource` has been removed
+- Field `TrackedResource` of struct `Cluster` has been removed
+- Field `TrackedResource` of struct `Workspace` has been removed
+- Field `AzureEntityResource` of struct `WorkspacePatch` has been removed
+- Field `ProxyResource` of struct `LinkedStorageAccountsResource` has been removed
+- Field `ProxyResource` of struct `DataExport` has been removed
 
 ### Features Added
 
-### Breaking Changes
+- New const `ProvisioningStateEnumUpdating`
+- New const `TableSubTypeEnumClassic`
+- New const `TablePlanEnumAnalytics`
+- New const `ProvisioningStateEnumSucceeded`
+- New const `ColumnDataTypeHintEnumArmPath`
+- New const `SourceEnumCustomer`
+- New const `CreatedByTypeApplication`
+- New const `CreatedByTypeManagedIdentity`
+- New const `TablePlanEnumBasic`
+- New const `ColumnTypeEnumDynamic`
+- New const `SourceEnumMicrosoft`
+- New const `ColumnDataTypeHintEnumIP`
+- New const `TableTypeEnumMicrosoft`
+- New const `ColumnTypeEnumGUID`
+- New const `ColumnTypeEnumLong`
+- New const `TableSubTypeEnumDataCollectionRuleBased`
+- New const `CreatedByTypeKey`
+- New const `ColumnTypeEnumString`
+- New const `ColumnDataTypeHintEnumURI`
+- New const `ColumnTypeEnumReal`
+- New const `ProvisioningStateEnumInProgress`
+- New const `TableTypeEnumRestoredLogs`
+- New const `ColumnTypeEnumBoolean`
+- New const `ColumnTypeEnumDateTime`
+- New const `ColumnTypeEnumInt`
+- New const `TableTypeEnumCustomLog`
+- New const `CreatedByTypeUser`
+- New const `ColumnDataTypeHintEnumGUID`
+- New const `TableSubTypeEnumAny`
+- New const `TableTypeEnumSearchResults`
+- New function `*StorageInsightConfigsClientListByWorkspacePager.PageResponse() StorageInsightConfigsClientListByWorkspaceResponse`
+- New function `PossibleTablePlanEnumValues() []TablePlanEnum`
+- New function `*WorkspacesClientDeletePollerResponse.Resume(context.Context, *WorkspacesClient, string) error`
+- New function `*TablesClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `ClustersClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ClustersClientUpdateResponse, error)`
+- New function `*TablesClient.BeginDelete(context.Context, string, string, string, *TablesClientBeginDeleteOptions) (TablesClientDeletePollerResponse, error)`
+- New function `*RestoredLogs.UnmarshalJSON([]byte) error`
+- New function `TablesListResult.MarshalJSON() ([]byte, error)`
+- New function `*ClustersClientDeletePoller.Done() bool`
+- New function `*TablesClientUpdatePoller.FinalResponse(context.Context) (TablesClientUpdateResponse, error)`
+- New function `*TablesClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WorkspacesClientDeletePoller.FinalResponse(context.Context) (WorkspacesClientDeleteResponse, error)`
+- New function `*ClustersClientListPager.PageResponse() ClustersClientListResponse`
+- New function `*StorageInsightConfigsClientListByWorkspacePager.NextPage(context.Context) bool`
+- New function `PossibleTableTypeEnumValues() []TableTypeEnum`
+- New function `PossibleTableSubTypeEnumValues() []TableSubTypeEnum`
+- New function `*ClustersClientListPager.Err() error`
+- New function `SourceEnum.ToPtr() *SourceEnum`
+- New function `TableTypeEnum.ToPtr() *TableTypeEnum`
+- New function `LinkedServicesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (LinkedServicesClientDeleteResponse, error)`
+- New function `*ClustersClientUpdatePoller.FinalResponse(context.Context) (ClustersClientUpdateResponse, error)`
+- New function `*ClustersClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `TablesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (TablesClientDeleteResponse, error)`
+- New function `*TablesClientDeletePoller.Done() bool`
+- New function `*TablesClientCreateOrUpdatePollerResponse.Resume(context.Context, *TablesClient, string) error`
+- New function `*TablesClientCreateOrUpdatePoller.FinalResponse(context.Context) (TablesClientCreateOrUpdateResponse, error)`
+- New function `*ClustersClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `ClustersClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ClustersClientDeleteResponse, error)`
+- New function `ColumnDataTypeHintEnum.ToPtr() *ColumnDataTypeHintEnum`
+- New function `TablePlanEnum.ToPtr() *TablePlanEnum`
+- New function `*DataSourcesClientListByWorkspacePager.NextPage(context.Context) bool`
+- New function `*WorkspacesClientCreateOrUpdatePoller.FinalResponse(context.Context) (WorkspacesClientCreateOrUpdateResponse, error)`
+- New function `*ClustersClientCreateOrUpdatePoller.FinalResponse(context.Context) (ClustersClientCreateOrUpdateResponse, error)`
+- New function `*DataSourcesClientListByWorkspacePager.PageResponse() DataSourcesClientListByWorkspaceResponse`
+- New function `*DataSourcesClientListByWorkspacePager.Err() error`
+- New function `*ClustersClientDeletePoller.ResumeToken() (string, error)`
+- New function `*LinkedServicesClientCreateOrUpdatePoller.Done() bool`
+- New function `Table.MarshalJSON() ([]byte, error)`
+- New function `*TablesClientDeletePoller.ResumeToken() (string, error)`
+- New function `SearchResults.MarshalJSON() ([]byte, error)`
+- New function `*LinkedServicesClientCreateOrUpdatePoller.FinalResponse(context.Context) (LinkedServicesClientCreateOrUpdateResponse, error)`
+- New function `*LinkedServicesClientDeletePollerResponse.Resume(context.Context, *LinkedServicesClient, string) error`
+- New function `*ClustersClientDeletePollerResponse.Resume(context.Context, *ClustersClient, string) error`
+- New function `TablesClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (TablesClientUpdateResponse, error)`
+- New function `ClustersClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ClustersClientCreateOrUpdateResponse, error)`
+- New function `PossibleSourceEnumValues() []SourceEnum`
+- New function `*TablesClient.BeginCreateOrUpdate(context.Context, string, string, string, Table, *TablesClientBeginCreateOrUpdateOptions) (TablesClientCreateOrUpdatePollerResponse, error)`
+- New function `CreatedByType.ToPtr() *CreatedByType`
+- New function `NewTablesClient(string, azcore.TokenCredential, *arm.ClientOptions) *TablesClient`
+- New function `ProvisioningStateEnum.ToPtr() *ProvisioningStateEnum`
+- New function `*ClustersClientUpdatePoller.Done() bool`
+- New function `TableSubTypeEnum.ToPtr() *TableSubTypeEnum`
+- New function `*SearchResults.UnmarshalJSON([]byte) error`
+- New function `PossibleProvisioningStateEnumValues() []ProvisioningStateEnum`
+- New function `*TablesClientDeletePoller.FinalResponse(context.Context) (TablesClientDeleteResponse, error)`
+- New function `*WorkspacesClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ClustersClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*WorkspacesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `SystemData.MarshalJSON() ([]byte, error)`
+- New function `*TablesClient.Get(context.Context, string, string, string, *TablesClientGetOptions) (TablesClientGetResponse, error)`
+- New function `*LinkedServicesClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*TablesClient.ListByWorkspace(context.Context, string, string, *TablesClientListByWorkspaceOptions) (TablesClientListByWorkspaceResponse, error)`
+- New function `*ClustersClientCreateOrUpdatePoller.Done() bool`
+- New function `*ClustersClientListPager.NextPage(context.Context) bool`
+- New function `*ClustersClientDeletePoller.FinalResponse(context.Context) (ClustersClientDeleteResponse, error)`
+- New function `*ClustersClientCreateOrUpdatePollerResponse.Resume(context.Context, *ClustersClient, string) error`
+- New function `WorkspacesClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (WorkspacesClientCreateOrUpdateResponse, error)`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*LinkedServicesClientCreateOrUpdatePollerResponse.Resume(context.Context, *LinkedServicesClient, string) error`
+- New function `*ClustersClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*ClustersClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SystemData.UnmarshalJSON([]byte) error`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*LinkedServicesClientDeletePoller.ResumeToken() (string, error)`
+- New function `PossibleColumnTypeEnumValues() []ColumnTypeEnum`
+- New function `*ClustersClientListByResourceGroupPager.Err() error`
+- New function `Schema.MarshalJSON() ([]byte, error)`
+- New function `*TablesClient.BeginUpdate(context.Context, string, string, string, Table, *TablesClientBeginUpdateOptions) (TablesClientUpdatePollerResponse, error)`
+- New function `*WorkspacesClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*TablesClientUpdatePollerResponse.Resume(context.Context, *TablesClient, string) error`
+- New function `*ClustersClientUpdatePollerResponse.Resume(context.Context, *ClustersClient, string) error`
+- New function `*LinkedServicesClientDeletePoller.FinalResponse(context.Context) (LinkedServicesClientDeleteResponse, error)`
+- New function `*LinkedServicesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*WorkspacesClientDeletePoller.Done() bool`
+- New function `*WorkspacesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*TablesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `ColumnTypeEnum.ToPtr() *ColumnTypeEnum`
+- New function `*TablesClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*StorageInsightConfigsClientListByWorkspacePager.Err() error`
+- New function `RestoredLogs.MarshalJSON() ([]byte, error)`
+- New function `*LinkedServicesClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*ClustersClient.BeginUpdate(context.Context, string, string, ClusterPatch, *ClustersClientBeginUpdateOptions) (ClustersClientUpdatePollerResponse, error)`
+- New function `*TablesClientUpdatePoller.ResumeToken() (string, error)`
+- New function `LinkedServicesClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (LinkedServicesClientCreateOrUpdateResponse, error)`
+- New function `WorkspacesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (WorkspacesClientDeleteResponse, error)`
+- New function `*ClustersClientListByResourceGroupPager.PageResponse() ClustersClientListByResourceGroupResponse`
+- New function `*OperationsClientListPager.Err() error`
+- New function `*ClustersClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*TablesClientCreateOrUpdatePoller.Done() bool`
+- New function `*WorkspacesClientCreateOrUpdatePollerResponse.Resume(context.Context, *WorkspacesClient, string) error`
+- New function `PossibleColumnDataTypeHintEnumValues() []ColumnDataTypeHintEnum`
+- New function `*TablesClientDeletePollerResponse.Resume(context.Context, *TablesClient, string) error`
+- New function `*TablesClientUpdatePoller.Done() bool`
+- New function `TablesClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (TablesClientCreateOrUpdateResponse, error)`
+- New function `PossibleCreatedByTypeValues() []CreatedByType`
+- New function `*LinkedServicesClientDeletePoller.Done() bool`
+- New function `*WorkspacesClientCreateOrUpdatePoller.Done() bool`
+- New struct `AvailableServiceTiersClientListByWorkspaceOptions`
+- New struct `AvailableServiceTiersClientListByWorkspaceResponse`
+- New struct `AvailableServiceTiersClientListByWorkspaceResult`
+- New struct `ClustersClientBeginCreateOrUpdateOptions`
+- New struct `ClustersClientBeginDeleteOptions`
+- New struct `ClustersClientBeginUpdateOptions`
+- New struct `ClustersClientCreateOrUpdatePoller`
+- New struct `ClustersClientCreateOrUpdatePollerResponse`
+- New struct `ClustersClientCreateOrUpdateResponse`
+- New struct `ClustersClientCreateOrUpdateResult`
+- New struct `ClustersClientDeletePoller`
+- New struct `ClustersClientDeletePollerResponse`
+- New struct `ClustersClientDeleteResponse`
+- New struct `ClustersClientGetOptions`
+- New struct `ClustersClientGetResponse`
+- New struct `ClustersClientGetResult`
+- New struct `ClustersClientListByResourceGroupOptions`
+- New struct `ClustersClientListByResourceGroupPager`
+- New struct `ClustersClientListByResourceGroupResponse`
+- New struct `ClustersClientListByResourceGroupResult`
+- New struct `ClustersClientListOptions`
+- New struct `ClustersClientListPager`
+- New struct `ClustersClientListResponse`
+- New struct `ClustersClientListResult`
+- New struct `ClustersClientUpdatePoller`
+- New struct `ClustersClientUpdatePollerResponse`
+- New struct `ClustersClientUpdateResponse`
+- New struct `ClustersClientUpdateResult`
+- New struct `Column`
+- New struct `DataExportsClientCreateOrUpdateOptions`
+- New struct `DataExportsClientCreateOrUpdateResponse`
+- New struct `DataExportsClientCreateOrUpdateResult`
+- New struct `DataExportsClientDeleteOptions`
+- New struct `DataExportsClientDeleteResponse`
+- New struct `DataExportsClientGetOptions`
+- New struct `DataExportsClientGetResponse`
+- New struct `DataExportsClientGetResult`
+- New struct `DataExportsClientListByWorkspaceOptions`
+- New struct `DataExportsClientListByWorkspaceResponse`
+- New struct `DataExportsClientListByWorkspaceResult`
+- New struct `DataSourcesClientCreateOrUpdateOptions`
+- New struct `DataSourcesClientCreateOrUpdateResponse`
+- New struct `DataSourcesClientCreateOrUpdateResult`
+- New struct `DataSourcesClientDeleteOptions`
+- New struct `DataSourcesClientDeleteResponse`
+- New struct `DataSourcesClientGetOptions`
+- New struct `DataSourcesClientGetResponse`
+- New struct `DataSourcesClientGetResult`
+- New struct `DataSourcesClientListByWorkspaceOptions`
+- New struct `DataSourcesClientListByWorkspacePager`
+- New struct `DataSourcesClientListByWorkspaceResponse`
+- New struct `DataSourcesClientListByWorkspaceResult`
+- New struct `DeletedWorkspacesClientListByResourceGroupOptions`
+- New struct `DeletedWorkspacesClientListByResourceGroupResponse`
+- New struct `DeletedWorkspacesClientListByResourceGroupResult`
+- New struct `DeletedWorkspacesClientListOptions`
+- New struct `DeletedWorkspacesClientListResponse`
+- New struct `DeletedWorkspacesClientListResult`
+- New struct `GatewaysClientDeleteOptions`
+- New struct `GatewaysClientDeleteResponse`
+- New struct `IntelligencePacksClientDisableOptions`
+- New struct `IntelligencePacksClientDisableResponse`
+- New struct `IntelligencePacksClientEnableOptions`
+- New struct `IntelligencePacksClientEnableResponse`
+- New struct `IntelligencePacksClientListOptions`
+- New struct `IntelligencePacksClientListResponse`
+- New struct `IntelligencePacksClientListResult`
+- New struct `LinkedServicesClientBeginCreateOrUpdateOptions`
+- New struct `LinkedServicesClientBeginDeleteOptions`
+- New struct `LinkedServicesClientCreateOrUpdatePoller`
+- New struct `LinkedServicesClientCreateOrUpdatePollerResponse`
+- New struct `LinkedServicesClientCreateOrUpdateResponse`
+- New struct `LinkedServicesClientCreateOrUpdateResult`
+- New struct `LinkedServicesClientDeletePoller`
+- New struct `LinkedServicesClientDeletePollerResponse`
+- New struct `LinkedServicesClientDeleteResponse`
+- New struct `LinkedServicesClientDeleteResult`
+- New struct `LinkedServicesClientGetOptions`
+- New struct `LinkedServicesClientGetResponse`
+- New struct `LinkedServicesClientGetResult`
+- New struct `LinkedServicesClientListByWorkspaceOptions`
+- New struct `LinkedServicesClientListByWorkspaceResponse`
+- New struct `LinkedServicesClientListByWorkspaceResult`
+- New struct `LinkedStorageAccountsClientCreateOrUpdateOptions`
+- New struct `LinkedStorageAccountsClientCreateOrUpdateResponse`
+- New struct `LinkedStorageAccountsClientCreateOrUpdateResult`
+- New struct `LinkedStorageAccountsClientDeleteOptions`
+- New struct `LinkedStorageAccountsClientDeleteResponse`
+- New struct `LinkedStorageAccountsClientGetOptions`
+- New struct `LinkedStorageAccountsClientGetResponse`
+- New struct `LinkedStorageAccountsClientGetResult`
+- New struct `LinkedStorageAccountsClientListByWorkspaceOptions`
+- New struct `LinkedStorageAccountsClientListByWorkspaceResponse`
+- New struct `LinkedStorageAccountsClientListByWorkspaceResult`
+- New struct `ManagementGroupsClientListOptions`
+- New struct `ManagementGroupsClientListResponse`
+- New struct `ManagementGroupsClientListResult`
+- New struct `OperationStatusesClientGetOptions`
+- New struct `OperationStatusesClientGetResponse`
+- New struct `OperationStatusesClientGetResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `RestoredLogs`
+- New struct `ResultStatistics`
+- New struct `SavedSearchesClientCreateOrUpdateOptions`
+- New struct `SavedSearchesClientCreateOrUpdateResponse`
+- New struct `SavedSearchesClientCreateOrUpdateResult`
+- New struct `SavedSearchesClientDeleteOptions`
+- New struct `SavedSearchesClientDeleteResponse`
+- New struct `SavedSearchesClientGetOptions`
+- New struct `SavedSearchesClientGetResponse`
+- New struct `SavedSearchesClientGetResult`
+- New struct `SavedSearchesClientListByWorkspaceOptions`
+- New struct `SavedSearchesClientListByWorkspaceResponse`
+- New struct `SavedSearchesClientListByWorkspaceResult`
+- New struct `Schema`
+- New struct `SchemaClientGetOptions`
+- New struct `SchemaClientGetResponse`
+- New struct `SchemaClientGetResult`
+- New struct `SearchResults`
+- New struct `SharedKeysClientGetSharedKeysOptions`
+- New struct `SharedKeysClientGetSharedKeysResponse`
+- New struct `SharedKeysClientGetSharedKeysResult`
+- New struct `SharedKeysClientRegenerateOptions`
+- New struct `SharedKeysClientRegenerateResponse`
+- New struct `SharedKeysClientRegenerateResult`
+- New struct `StorageInsightConfigsClientCreateOrUpdateOptions`
+- New struct `StorageInsightConfigsClientCreateOrUpdateResponse`
+- New struct `StorageInsightConfigsClientCreateOrUpdateResult`
+- New struct `StorageInsightConfigsClientDeleteOptions`
+- New struct `StorageInsightConfigsClientDeleteResponse`
+- New struct `StorageInsightConfigsClientGetOptions`
+- New struct `StorageInsightConfigsClientGetResponse`
+- New struct `StorageInsightConfigsClientGetResult`
+- New struct `StorageInsightConfigsClientListByWorkspaceOptions`
+- New struct `StorageInsightConfigsClientListByWorkspacePager`
+- New struct `StorageInsightConfigsClientListByWorkspaceResponse`
+- New struct `StorageInsightConfigsClientListByWorkspaceResult`
+- New struct `SystemData`
+- New struct `Table`
+- New struct `TableProperties`
+- New struct `TablesClient`
+- New struct `TablesClientBeginCreateOrUpdateOptions`
+- New struct `TablesClientBeginDeleteOptions`
+- New struct `TablesClientBeginUpdateOptions`
+- New struct `TablesClientCreateOrUpdatePoller`
+- New struct `TablesClientCreateOrUpdatePollerResponse`
+- New struct `TablesClientCreateOrUpdateResponse`
+- New struct `TablesClientCreateOrUpdateResult`
+- New struct `TablesClientDeletePoller`
+- New struct `TablesClientDeletePollerResponse`
+- New struct `TablesClientDeleteResponse`
+- New struct `TablesClientGetOptions`
+- New struct `TablesClientGetResponse`
+- New struct `TablesClientGetResult`
+- New struct `TablesClientListByWorkspaceOptions`
+- New struct `TablesClientListByWorkspaceResponse`
+- New struct `TablesClientListByWorkspaceResult`
+- New struct `TablesClientUpdatePoller`
+- New struct `TablesClientUpdatePollerResponse`
+- New struct `TablesClientUpdateResponse`
+- New struct `TablesClientUpdateResult`
+- New struct `TablesListResult`
+- New struct `UsagesClientListOptions`
+- New struct `UsagesClientListResponse`
+- New struct `UsagesClientListResult`
+- New struct `WorkspacePurgeClientGetPurgeStatusOptions`
+- New struct `WorkspacePurgeClientGetPurgeStatusResponse`
+- New struct `WorkspacePurgeClientGetPurgeStatusResult`
+- New struct `WorkspacePurgeClientPurgeOptions`
+- New struct `WorkspacePurgeClientPurgeResponse`
+- New struct `WorkspacePurgeClientPurgeResult`
+- New struct `WorkspacesClientBeginCreateOrUpdateOptions`
+- New struct `WorkspacesClientBeginDeleteOptions`
+- New struct `WorkspacesClientCreateOrUpdatePoller`
+- New struct `WorkspacesClientCreateOrUpdatePollerResponse`
+- New struct `WorkspacesClientCreateOrUpdateResponse`
+- New struct `WorkspacesClientCreateOrUpdateResult`
+- New struct `WorkspacesClientDeletePoller`
+- New struct `WorkspacesClientDeletePollerResponse`
+- New struct `WorkspacesClientDeleteResponse`
+- New struct `WorkspacesClientGetOptions`
+- New struct `WorkspacesClientGetResponse`
+- New struct `WorkspacesClientGetResult`
+- New struct `WorkspacesClientListByResourceGroupOptions`
+- New struct `WorkspacesClientListByResourceGroupResponse`
+- New struct `WorkspacesClientListByResourceGroupResult`
+- New struct `WorkspacesClientListOptions`
+- New struct `WorkspacesClientListResponse`
+- New struct `WorkspacesClientListResult`
+- New struct `WorkspacesClientUpdateOptions`
+- New struct `WorkspacesClientUpdateResponse`
+- New struct `WorkspacesClientUpdateResult`
+- New field `ID` in struct `StorageInsight`
+- New field `Name` in struct `StorageInsight`
+- New field `Type` in struct `StorageInsight`
+- New field `ID` in struct `SavedSearch`
+- New field `Name` in struct `SavedSearch`
+- New field `Type` in struct `SavedSearch`
+- New field `Name` in struct `LinkedStorageAccountsResource`
+- New field `Type` in struct `LinkedStorageAccountsResource`
+- New field `ID` in struct `LinkedStorageAccountsResource`
+- New field `ID` in struct `AzureEntityResource`
+- New field `Name` in struct `AzureEntityResource`
+- New field `Type` in struct `AzureEntityResource`
+- New field `ID` in struct `DataSource`
+- New field `Name` in struct `DataSource`
+- New field `Type` in struct `DataSource`
+- New field `ID` in struct `ProxyResource`
+- New field `Name` in struct `ProxyResource`
+- New field `Type` in struct `ProxyResource`
+- New field `Error` in struct `ErrorResponse`
+- New field `DefaultDataCollectionRuleResourceID` in struct `WorkspaceProperties`
+- New field `Location` in struct `Cluster`
+- New field `Tags` in struct `Cluster`
+- New field `ID` in struct `Cluster`
+- New field `Name` in struct `Cluster`
+- New field `Type` in struct `Cluster`
+- New field `ID` in struct `TrackedResource`
+- New field `Name` in struct `TrackedResource`
+- New field `Type` in struct `TrackedResource`
+- New field `Type` in struct `WorkspacePatch`
+- New field `Etag` in struct `WorkspacePatch`
+- New field `ID` in struct `WorkspacePatch`
+- New field `Name` in struct `WorkspacePatch`
+- New field `ID` in struct `DataExport`
+- New field `Name` in struct `DataExport`
+- New field `Type` in struct `DataExport`
+- New field `ID` in struct `Workspace`
+- New field `Name` in struct `Workspace`
+- New field `SystemData` in struct `Workspace`
+- New field `Type` in struct `Workspace`
+- New field `Location` in struct `Workspace`
+- New field `Tags` in struct `Workspace`
+- New field `Type` in struct `LinkedService`
+- New field `ID` in struct `LinkedService`
+- New field `Name` in struct `LinkedService`
 
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.2.0 (2021-10-29)
 

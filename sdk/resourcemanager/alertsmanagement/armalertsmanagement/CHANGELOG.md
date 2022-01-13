@@ -1,14 +1,431 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 0.3.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*SmartGroupsClient.GetHistory` parameter(s) have been changed from `(context.Context, string, *SmartGroupsGetHistoryOptions)` to `(context.Context, string, *SmartGroupsClientGetHistoryOptions)`
+- Function `*SmartGroupsClient.GetHistory` return value(s) have been changed from `(SmartGroupsGetHistoryResponse, error)` to `(SmartGroupsClientGetHistoryResponse, error)`
+- Function `*AlertsClient.GetSummary` parameter(s) have been changed from `(context.Context, AlertsSummaryGroupByFields, *AlertsGetSummaryOptions)` to `(context.Context, AlertsSummaryGroupByFields, *AlertsClientGetSummaryOptions)`
+- Function `*AlertsClient.GetSummary` return value(s) have been changed from `(AlertsGetSummaryResponse, error)` to `(AlertsClientGetSummaryResponse, error)`
+- Function `*AlertsClient.MetaData` parameter(s) have been changed from `(context.Context, Identifier, *AlertsMetaDataOptions)` to `(context.Context, Identifier, *AlertsClientMetaDataOptions)`
+- Function `*AlertsClient.MetaData` return value(s) have been changed from `(AlertsMetaDataResponse, error)` to `(AlertsClientMetaDataResponse, error)`
+- Function `*SmartGroupsClient.ChangeState` parameter(s) have been changed from `(context.Context, string, AlertState, *SmartGroupsChangeStateOptions)` to `(context.Context, string, AlertState, *SmartGroupsClientChangeStateOptions)`
+- Function `*SmartGroupsClient.ChangeState` return value(s) have been changed from `(SmartGroupsChangeStateResponse, error)` to `(SmartGroupsClientChangeStateResponse, error)`
+- Function `*SmartGroupsClient.GetAll` parameter(s) have been changed from `(*SmartGroupsGetAllOptions)` to `(*SmartGroupsClientGetAllOptions)`
+- Function `*SmartGroupsClient.GetAll` return value(s) have been changed from `(*SmartGroupsGetAllPager)` to `(*SmartGroupsClientGetAllPager)`
+- Function `*SmartGroupsClient.GetByID` parameter(s) have been changed from `(context.Context, string, *SmartGroupsGetByIDOptions)` to `(context.Context, string, *SmartGroupsClientGetByIDOptions)`
+- Function `*SmartGroupsClient.GetByID` return value(s) have been changed from `(SmartGroupsGetByIDResponse, error)` to `(SmartGroupsClientGetByIDResponse, error)`
+- Function `*AlertsClient.ChangeState` parameter(s) have been changed from `(context.Context, string, AlertState, *AlertsChangeStateOptions)` to `(context.Context, string, AlertState, *AlertsClientChangeStateOptions)`
+- Function `*AlertsClient.ChangeState` return value(s) have been changed from `(AlertsChangeStateResponse, error)` to `(AlertsClientChangeStateResponse, error)`
+- Function `*AlertsClient.GetAll` parameter(s) have been changed from `(*AlertsGetAllOptions)` to `(*AlertsClientGetAllOptions)`
+- Function `*AlertsClient.GetAll` return value(s) have been changed from `(*AlertsGetAllPager)` to `(*AlertsClientGetAllPager)`
+- Function `*AlertsClient.GetByID` parameter(s) have been changed from `(context.Context, string, *AlertsGetByIDOptions)` to `(context.Context, string, *AlertsClientGetByIDOptions)`
+- Function `*AlertsClient.GetByID` return value(s) have been changed from `(AlertsGetByIDResponse, error)` to `(AlertsClientGetByIDResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*AlertsClient.GetHistory` parameter(s) have been changed from `(context.Context, string, *AlertsGetHistoryOptions)` to `(context.Context, string, *AlertsClientGetHistoryOptions)`
+- Function `*AlertsClient.GetHistory` return value(s) have been changed from `(AlertsGetHistoryResponse, error)` to `(AlertsClientGetHistoryResponse, error)`
+- Type of `PatchObject.Tags` has been changed from `map[string]interface{}` to `map[string]*string`
+- Type of `SmartGroupAggregatedProperty.Count` has been changed from `*int32` to `*int64`
+- Type of `AlertsSummaryGroupItem.Count` has been changed from `*int32` to `*int64`
+- Type of `AlertsSummaryGroup.SmartGroupsCount` has been changed from `*int32` to `*int64`
+- Type of `AlertsSummaryGroup.Total` has been changed from `*int32` to `*int64`
+- Type of `SmartGroupProperties.AlertsCount` has been changed from `*int32` to `*int64`
+- Const `ActionRuleStatusDisabled` has been removed
+- Const `SuppressionTypeWeekly` has been removed
+- Const `SuppressionTypeAlways` has been removed
+- Const `AlertRuleStateDisabled` has been removed
+- Const `ScopeTypeResource` has been removed
+- Const `AlertRuleStateEnabled` has been removed
+- Const `ScopeTypeResourceGroup` has been removed
+- Const `Enum11Asc` has been removed
+- Const `SuppressionTypeDaily` has been removed
+- Const `ActionRuleTypeDiagnostics` has been removed
+- Const `ActionRuleStatusEnabled` has been removed
+- Const `Enum11Desc` has been removed
+- Const `SuppressionTypeOnce` has been removed
+- Const `ScopeTypeSubscription` has been removed
+- Const `ActionRuleTypeSuppression` has been removed
+- Const `ActionRuleTypeActionGroup` has been removed
+- Const `SuppressionTypeMonthly` has been removed
+- Function `AlertRuleProperties.MarshalJSON` has been removed
+- Function `*ActionRulesListByResourceGroupPager.Err` has been removed
+- Function `Enum11.ToPtr` has been removed
+- Function `SuppressionSchedule.MarshalJSON` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `ErrorResponse.Error` has been removed
+- Function `*SmartDetectorAlertRulesClient.ListByResourceGroup` has been removed
+- Function `*SmartDetectorAlertRulesListByResourceGroupPager.PageResponse` has been removed
+- Function `AlertRule.MarshalJSON` has been removed
+- Function `SmartDetectorErrorResponse.Error` has been removed
+- Function `*ActionRulesListBySubscriptionPager.NextPage` has been removed
+- Function `*ActionRulesListByResourceGroupPager.NextPage` has been removed
+- Function `*ActionRuleProperties.GetActionRuleProperties` has been removed
+- Function `SuppressionType.ToPtr` has been removed
+- Function `PossibleSuppressionTypeValues` has been removed
+- Function `*ActionRulesListBySubscriptionPager.Err` has been removed
+- Function `*ActionRulesClient.Update` has been removed
+- Function `*SmartDetectorAlertRulesListPager.Err` has been removed
+- Function `*ActionRulesListBySubscriptionPager.PageResponse` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `ErrorResponseAutoGenerated2.Error` has been removed
+- Function `Detector.MarshalJSON` has been removed
+- Function `ActionGroupsInformation.MarshalJSON` has been removed
+- Function `*AlertsGetAllPager.PageResponse` has been removed
+- Function `PossibleActionRuleTypeValues` has been removed
+- Function `AlertModification.MarshalJSON` has been removed
+- Function `AlertsSummary.MarshalJSON` has been removed
+- Function `AlertRulesList.MarshalJSON` has been removed
+- Function `*ActionGroup.UnmarshalJSON` has been removed
+- Function `AlertRuleState.ToPtr` has been removed
+- Function `ActionRulesList.MarshalJSON` has been removed
+- Function `*SmartGroupsGetAllPager.NextPage` has been removed
+- Function `SmartGroupModification.MarshalJSON` has been removed
+- Function `NewActionRulesClient` has been removed
+- Function `AzureResource.MarshalJSON` has been removed
+- Function `Scope.MarshalJSON` has been removed
+- Function `*AlertModification.UnmarshalJSON` has been removed
+- Function `*SmartDetectorAlertRulesClient.Patch` has been removed
+- Function `ActionGroup.MarshalJSON` has been removed
+- Function `*SmartDetectorAlertRulesClient.Delete` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `Diagnostics.MarshalJSON` has been removed
+- Function `ActionRule.MarshalJSON` has been removed
+- Function `*ActionRulesClient.GetByName` has been removed
+- Function `*Resource.UnmarshalJSON` has been removed
+- Function `*ActionRulesListByResourceGroupPager.PageResponse` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `ScopeType.ToPtr` has been removed
+- Function `*ActionRule.UnmarshalJSON` has been removed
+- Function `*SmartGroupModification.UnmarshalJSON` has been removed
+- Function `*ManagedResource.UnmarshalJSON` has been removed
+- Function `*SmartDetectorAlertRulesListByResourceGroupPager.NextPage` has been removed
+- Function `NewSmartDetectorAlertRulesClient` has been removed
+- Function `PossibleActionRuleStatusValues` has been removed
+- Function `*SmartGroupsGetAllPager.Err` has been removed
+- Function `*SmartDetectorAlertRulesListPager.PageResponse` has been removed
+- Function `ActionRuleStatus.ToPtr` has been removed
+- Function `*SmartGroup.UnmarshalJSON` has been removed
+- Function `*SmartDetectorAlertRulesClient.Get` has been removed
+- Function `*AlertsGetAllPager.Err` has been removed
+- Function `*ActionRulesClient.ListBySubscription` has been removed
+- Function `*Suppression.UnmarshalJSON` has been removed
+- Function `ErrorResponseAutoGenerated.Error` has been removed
+- Function `*SmartDetectorAlertRulesClient.List` has been removed
+- Function `PossibleAlertRuleStateValues` has been removed
+- Function `*AlertsSummary.UnmarshalJSON` has been removed
+- Function `*SmartDetectorAlertRulesListByResourceGroupPager.Err` has been removed
+- Function `PossibleScopeTypeValues` has been removed
+- Function `*ActionRulesClient.ListByResourceGroup` has been removed
+- Function `*Alert.UnmarshalJSON` has been removed
+- Function `PossibleEnum11Values` has been removed
+- Function `*SmartGroupsGetAllPager.PageResponse` has been removed
+- Function `*ActionRulesClient.CreateUpdate` has been removed
+- Function `*AlertsMetaDataProperties.UnmarshalJSON` has been removed
+- Function `*SmartDetectorAlertRulesClient.CreateOrUpdate` has been removed
+- Function `Alert.MarshalJSON` has been removed
+- Function `*SmartDetectorAlertRulesListPager.NextPage` has been removed
+- Function `ActionRuleType.ToPtr` has been removed
+- Function `*AlertsGetAllPager.NextPage` has been removed
+- Function `Suppression.MarshalJSON` has been removed
+- Function `SmartGroup.MarshalJSON` has been removed
+- Function `*ActionRulesClient.Delete` has been removed
+- Function `*ActionRuleProperties.UnmarshalJSON` has been removed
+- Function `AlertRulePatchObject.MarshalJSON` has been removed
+- Struct `ActionGroup` has been removed
+- Struct `ActionGroupsInformation` has been removed
+- Struct `ActionRule` has been removed
+- Struct `ActionRuleProperties` has been removed
+- Struct `ActionRulesClient` has been removed
+- Struct `ActionRulesCreateUpdateOptions` has been removed
+- Struct `ActionRulesCreateUpdateResponse` has been removed
+- Struct `ActionRulesCreateUpdateResult` has been removed
+- Struct `ActionRulesDeleteOptions` has been removed
+- Struct `ActionRulesDeleteResponse` has been removed
+- Struct `ActionRulesDeleteResult` has been removed
+- Struct `ActionRulesGetByNameOptions` has been removed
+- Struct `ActionRulesGetByNameResponse` has been removed
+- Struct `ActionRulesGetByNameResult` has been removed
+- Struct `ActionRulesList` has been removed
+- Struct `ActionRulesListByResourceGroupOptions` has been removed
+- Struct `ActionRulesListByResourceGroupPager` has been removed
+- Struct `ActionRulesListByResourceGroupResponse` has been removed
+- Struct `ActionRulesListByResourceGroupResult` has been removed
+- Struct `ActionRulesListBySubscriptionOptions` has been removed
+- Struct `ActionRulesListBySubscriptionPager` has been removed
+- Struct `ActionRulesListBySubscriptionResponse` has been removed
+- Struct `ActionRulesListBySubscriptionResult` has been removed
+- Struct `ActionRulesUpdateOptions` has been removed
+- Struct `ActionRulesUpdateResponse` has been removed
+- Struct `ActionRulesUpdateResult` has been removed
+- Struct `AlertRule` has been removed
+- Struct `AlertRulePatchObject` has been removed
+- Struct `AlertRulePatchProperties` has been removed
+- Struct `AlertRuleProperties` has been removed
+- Struct `AlertRulesList` has been removed
+- Struct `AlertsChangeStateOptions` has been removed
+- Struct `AlertsChangeStateResponse` has been removed
+- Struct `AlertsChangeStateResult` has been removed
+- Struct `AlertsGetAllOptions` has been removed
+- Struct `AlertsGetAllPager` has been removed
+- Struct `AlertsGetAllResponse` has been removed
+- Struct `AlertsGetAllResult` has been removed
+- Struct `AlertsGetByIDOptions` has been removed
+- Struct `AlertsGetByIDResponse` has been removed
+- Struct `AlertsGetByIDResult` has been removed
+- Struct `AlertsGetHistoryOptions` has been removed
+- Struct `AlertsGetHistoryResponse` has been removed
+- Struct `AlertsGetHistoryResult` has been removed
+- Struct `AlertsGetSummaryOptions` has been removed
+- Struct `AlertsGetSummaryResponse` has been removed
+- Struct `AlertsGetSummaryResult` has been removed
+- Struct `AlertsMetaDataOptions` has been removed
+- Struct `AlertsMetaDataResponse` has been removed
+- Struct `AlertsMetaDataResult` has been removed
+- Struct `AzureResource` has been removed
+- Struct `Conditions` has been removed
+- Struct `Detector` has been removed
+- Struct `Diagnostics` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `Scope` has been removed
+- Struct `SmartDetectorAlertRulesClient` has been removed
+- Struct `SmartDetectorAlertRulesCreateOrUpdateOptions` has been removed
+- Struct `SmartDetectorAlertRulesCreateOrUpdateResponse` has been removed
+- Struct `SmartDetectorAlertRulesCreateOrUpdateResult` has been removed
+- Struct `SmartDetectorAlertRulesDeleteOptions` has been removed
+- Struct `SmartDetectorAlertRulesDeleteResponse` has been removed
+- Struct `SmartDetectorAlertRulesGetOptions` has been removed
+- Struct `SmartDetectorAlertRulesGetResponse` has been removed
+- Struct `SmartDetectorAlertRulesGetResult` has been removed
+- Struct `SmartDetectorAlertRulesListByResourceGroupOptions` has been removed
+- Struct `SmartDetectorAlertRulesListByResourceGroupPager` has been removed
+- Struct `SmartDetectorAlertRulesListByResourceGroupResponse` has been removed
+- Struct `SmartDetectorAlertRulesListByResourceGroupResult` has been removed
+- Struct `SmartDetectorAlertRulesListOptions` has been removed
+- Struct `SmartDetectorAlertRulesListPager` has been removed
+- Struct `SmartDetectorAlertRulesListResponse` has been removed
+- Struct `SmartDetectorAlertRulesListResult` has been removed
+- Struct `SmartDetectorAlertRulesPatchOptions` has been removed
+- Struct `SmartDetectorAlertRulesPatchResponse` has been removed
+- Struct `SmartDetectorAlertRulesPatchResult` has been removed
+- Struct `SmartDetectorErrorResponse` has been removed
+- Struct `SmartGroupsChangeStateOptions` has been removed
+- Struct `SmartGroupsChangeStateResponse` has been removed
+- Struct `SmartGroupsChangeStateResult` has been removed
+- Struct `SmartGroupsGetAllOptions` has been removed
+- Struct `SmartGroupsGetAllPager` has been removed
+- Struct `SmartGroupsGetAllResponse` has been removed
+- Struct `SmartGroupsGetAllResult` has been removed
+- Struct `SmartGroupsGetByIDOptions` has been removed
+- Struct `SmartGroupsGetByIDResponse` has been removed
+- Struct `SmartGroupsGetByIDResult` has been removed
+- Struct `SmartGroupsGetHistoryOptions` has been removed
+- Struct `SmartGroupsGetHistoryResponse` has been removed
+- Struct `SmartGroupsGetHistoryResult` has been removed
+- Struct `Suppression` has been removed
+- Struct `SuppressionConfig` has been removed
+- Struct `SuppressionSchedule` has been removed
+- Struct `ThrottlingInformation` has been removed
+- Field `AlertsMetaDataProperties` of struct `MonitorServiceList` has been removed
+- Field `Resource` of struct `AlertModification` has been removed
+- Field `Resource` of struct `ManagedResource` has been removed
+- Field `Resource` of struct `Alert` has been removed
+- Field `Status` of struct `PatchProperties` has been removed
+- Field `InnerError` of struct `ErrorResponseAutoGenerated` has been removed
+- Field `InnerError` of struct `ErrorResponse` has been removed
+- Field `Resource` of struct `SmartGroup` has been removed
+- Field `InnerError` of struct `ErrorResponseAutoGenerated2` has been removed
+- Field `Resource` of struct `SmartGroupModification` has been removed
+- Field `Resource` of struct `AlertsSummary` has been removed
 
 ### Features Added
 
-### Breaking Changes
+- New const `FieldMonitorService`
+- New const `DaysOfWeekThursday`
+- New const `FieldTargetResource`
+- New const `CreatedByTypeApplication`
+- New const `DaysOfWeekSunday`
+- New const `RecurrenceTypeMonthly`
+- New const `SortOrderAsc`
+- New const `RecurrenceTypeDaily`
+- New const `FieldAlertContext`
+- New const `ActionTypeRemoveAllActionGroups`
+- New const `CreatedByTypeManagedIdentity`
+- New const `SortOrderDesc`
+- New const `FieldTargetResourceType`
+- New const `FieldAlertRuleID`
+- New const `DaysOfWeekMonday`
+- New const `FieldAlertRuleName`
+- New const `CreatedByTypeUser`
+- New const `FieldDescription`
+- New const `DaysOfWeekSaturday`
+- New const `CreatedByTypeKey`
+- New const `FieldSeverity`
+- New const `ActionTypeAddActionGroups`
+- New const `RecurrenceTypeWeekly`
+- New const `FieldTargetResourceGroup`
+- New const `DaysOfWeekWednesday`
+- New const `FieldSignalType`
+- New const `DaysOfWeekFriday`
+- New const `FieldMonitorCondition`
+- New const `DaysOfWeekTuesday`
+- New function `CreatedByType.ToPtr() *CreatedByType`
+- New function `*SmartGroupsClientGetAllPager.NextPage(context.Context) bool`
+- New function `PossibleActionTypeValues() []ActionType`
+- New function `*RemoveAllActionGroups.UnmarshalJSON([]byte) error`
+- New function `*SystemData.UnmarshalJSON([]byte) error`
+- New function `Schedule.MarshalJSON() ([]byte, error)`
+- New function `PossibleCreatedByTypeValues() []CreatedByType`
+- New function `*AlertProcessingRulesClient.CreateOrUpdate(context.Context, string, string, AlertProcessingRule, *AlertProcessingRulesClientCreateOrUpdateOptions) (AlertProcessingRulesClientCreateOrUpdateResponse, error)`
+- New function `*AlertProcessingRulesClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `ActionType.ToPtr() *ActionType`
+- New function `PossibleRecurrenceTypeValues() []RecurrenceType`
+- New function `DaysOfWeek.ToPtr() *DaysOfWeek`
+- New function `*MonthlyRecurrence.UnmarshalJSON([]byte) error`
+- New function `AlertProcessingRule.MarshalJSON() ([]byte, error)`
+- New function `*RemoveAllActionGroups.GetAction() *Action`
+- New function `Field.ToPtr() *Field`
+- New function `PossibleDaysOfWeekValues() []DaysOfWeek`
+- New function `*SmartGroupsClientGetAllPager.PageResponse() SmartGroupsClientGetAllResponse`
+- New function `*AlertProcessingRulesClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*AlertProcessingRulesClientListBySubscriptionPager.Err() error`
+- New function `*AlertProcessingRulesClientListBySubscriptionPager.PageResponse() AlertProcessingRulesClientListBySubscriptionResponse`
+- New function `*AddActionGroups.UnmarshalJSON([]byte) error`
+- New function `*OperationsClientListPager.Err() error`
+- New function `*DailyRecurrence.UnmarshalJSON([]byte) error`
+- New function `AlertProcessingRuleProperties.MarshalJSON() ([]byte, error)`
+- New function `*AddActionGroups.GetAction() *Action`
+- New function `*WeeklyRecurrence.UnmarshalJSON([]byte) error`
+- New function `*MonthlyRecurrence.GetRecurrence() *Recurrence`
+- New function `*MonitorServiceList.GetAlertsMetaDataProperties() *AlertsMetaDataProperties`
+- New function `DailyRecurrence.MarshalJSON() ([]byte, error)`
+- New function `*Recurrence.GetRecurrence() *Recurrence`
+- New function `PossibleFieldValues() []Field`
+- New function `*Schedule.UnmarshalJSON([]byte) error`
+- New function `*WeeklyRecurrence.GetRecurrence() *Recurrence`
+- New function `AlertProcessingRulesList.MarshalJSON() ([]byte, error)`
+- New function `WeeklyRecurrence.MarshalJSON() ([]byte, error)`
+- New function `SystemData.MarshalJSON() ([]byte, error)`
+- New function `*AlertProcessingRulesClientListByResourceGroupPager.Err() error`
+- New function `AddActionGroups.MarshalJSON() ([]byte, error)`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*AlertProcessingRulesClient.Update(context.Context, string, string, PatchObject, *AlertProcessingRulesClientUpdateOptions) (AlertProcessingRulesClientUpdateResponse, error)`
+- New function `*AlertProcessingRulesClient.GetByName(context.Context, string, string, *AlertProcessingRulesClientGetByNameOptions) (AlertProcessingRulesClientGetByNameResponse, error)`
+- New function `NewAlertProcessingRulesClient(string, azcore.TokenCredential, *arm.ClientOptions) *AlertProcessingRulesClient`
+- New function `*DailyRecurrence.GetRecurrence() *Recurrence`
+- New function `*AlertProcessingRulesClient.ListByResourceGroup(string, *AlertProcessingRulesClientListByResourceGroupOptions) *AlertProcessingRulesClientListByResourceGroupPager`
+- New function `*SmartGroupsClientGetAllPager.Err() error`
+- New function `PossibleSortOrderValues() []SortOrder`
+- New function `*AlertProcessingRulesClientListByResourceGroupPager.PageResponse() AlertProcessingRulesClientListByResourceGroupResponse`
+- New function `*Action.GetAction() *Action`
+- New function `*AlertProcessingRulesClient.Delete(context.Context, string, string, *AlertProcessingRulesClientDeleteOptions) (AlertProcessingRulesClientDeleteResponse, error)`
+- New function `RecurrenceType.ToPtr() *RecurrenceType`
+- New function `*AlertProcessingRuleProperties.UnmarshalJSON([]byte) error`
+- New function `*AlertsClientGetAllPager.NextPage(context.Context) bool`
+- New function `*AlertsClientGetAllPager.Err() error`
+- New function `MonthlyRecurrence.MarshalJSON() ([]byte, error)`
+- New function `*AlertsClientGetAllPager.PageResponse() AlertsClientGetAllResponse`
+- New function `RemoveAllActionGroups.MarshalJSON() ([]byte, error)`
+- New function `*AlertProcessingRulesClient.ListBySubscription(*AlertProcessingRulesClientListBySubscriptionOptions) *AlertProcessingRulesClientListBySubscriptionPager`
+- New function `SortOrder.ToPtr() *SortOrder`
+- New struct `Action`
+- New struct `AddActionGroups`
+- New struct `AlertProcessingRule`
+- New struct `AlertProcessingRuleProperties`
+- New struct `AlertProcessingRulesClient`
+- New struct `AlertProcessingRulesClientCreateOrUpdateOptions`
+- New struct `AlertProcessingRulesClientCreateOrUpdateResponse`
+- New struct `AlertProcessingRulesClientCreateOrUpdateResult`
+- New struct `AlertProcessingRulesClientDeleteOptions`
+- New struct `AlertProcessingRulesClientDeleteResponse`
+- New struct `AlertProcessingRulesClientDeleteResult`
+- New struct `AlertProcessingRulesClientGetByNameOptions`
+- New struct `AlertProcessingRulesClientGetByNameResponse`
+- New struct `AlertProcessingRulesClientGetByNameResult`
+- New struct `AlertProcessingRulesClientListByResourceGroupOptions`
+- New struct `AlertProcessingRulesClientListByResourceGroupPager`
+- New struct `AlertProcessingRulesClientListByResourceGroupResponse`
+- New struct `AlertProcessingRulesClientListByResourceGroupResult`
+- New struct `AlertProcessingRulesClientListBySubscriptionOptions`
+- New struct `AlertProcessingRulesClientListBySubscriptionPager`
+- New struct `AlertProcessingRulesClientListBySubscriptionResponse`
+- New struct `AlertProcessingRulesClientListBySubscriptionResult`
+- New struct `AlertProcessingRulesClientUpdateOptions`
+- New struct `AlertProcessingRulesClientUpdateResponse`
+- New struct `AlertProcessingRulesClientUpdateResult`
+- New struct `AlertProcessingRulesList`
+- New struct `AlertsClientChangeStateOptions`
+- New struct `AlertsClientChangeStateResponse`
+- New struct `AlertsClientChangeStateResult`
+- New struct `AlertsClientGetAllOptions`
+- New struct `AlertsClientGetAllPager`
+- New struct `AlertsClientGetAllResponse`
+- New struct `AlertsClientGetAllResult`
+- New struct `AlertsClientGetByIDOptions`
+- New struct `AlertsClientGetByIDResponse`
+- New struct `AlertsClientGetByIDResult`
+- New struct `AlertsClientGetHistoryOptions`
+- New struct `AlertsClientGetHistoryResponse`
+- New struct `AlertsClientGetHistoryResult`
+- New struct `AlertsClientGetSummaryOptions`
+- New struct `AlertsClientGetSummaryResponse`
+- New struct `AlertsClientGetSummaryResult`
+- New struct `AlertsClientMetaDataOptions`
+- New struct `AlertsClientMetaDataResponse`
+- New struct `AlertsClientMetaDataResult`
+- New struct `DailyRecurrence`
+- New struct `MonthlyRecurrence`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `Recurrence`
+- New struct `RemoveAllActionGroups`
+- New struct `Schedule`
+- New struct `SmartGroupsClientChangeStateOptions`
+- New struct `SmartGroupsClientChangeStateResponse`
+- New struct `SmartGroupsClientChangeStateResult`
+- New struct `SmartGroupsClientGetAllOptions`
+- New struct `SmartGroupsClientGetAllPager`
+- New struct `SmartGroupsClientGetAllResponse`
+- New struct `SmartGroupsClientGetAllResult`
+- New struct `SmartGroupsClientGetByIDOptions`
+- New struct `SmartGroupsClientGetByIDResponse`
+- New struct `SmartGroupsClientGetByIDResult`
+- New struct `SmartGroupsClientGetHistoryOptions`
+- New struct `SmartGroupsClientGetHistoryResponse`
+- New struct `SmartGroupsClientGetHistoryResult`
+- New struct `SystemData`
+- New struct `WeeklyRecurrence`
+- New field `Type` in struct `AlertModification`
+- New field `ID` in struct `AlertModification`
+- New field `Name` in struct `AlertModification`
+- New field `Error` in struct `ErrorResponseAutoGenerated`
+- New field `Field` in struct `Condition`
+- New field `Type` in struct `AlertsSummary`
+- New field `ID` in struct `AlertsSummary`
+- New field `Name` in struct `AlertsSummary`
+- New field `Name` in struct `SmartGroupModification`
+- New field `Type` in struct `SmartGroupModification`
+- New field `ID` in struct `SmartGroupModification`
+- New field `MetadataIdentifier` in struct `MonitorServiceList`
+- New field `ID` in struct `SmartGroup`
+- New field `Name` in struct `SmartGroup`
+- New field `Type` in struct `SmartGroup`
+- New field `Error` in struct `ErrorResponseAutoGenerated2`
+- New field `ID` in struct `Alert`
+- New field `Name` in struct `Alert`
+- New field `Type` in struct `Alert`
+- New field `Enabled` in struct `PatchProperties`
+- New field `Type` in struct `ManagedResource`
+- New field `ID` in struct `ManagedResource`
+- New field `Name` in struct `ManagedResource`
+- New field `Error` in struct `ErrorResponse`
 
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.2.0 (2021-10-29)
 

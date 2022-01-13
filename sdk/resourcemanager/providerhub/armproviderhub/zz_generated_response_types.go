@@ -15,46 +15,70 @@ import (
 	"time"
 )
 
-// CustomRolloutsCreateOrUpdateResponse contains the response from method CustomRollouts.CreateOrUpdate.
-type CustomRolloutsCreateOrUpdateResponse struct {
-	CustomRolloutsCreateOrUpdateResult
+// ClientCheckinManifestResponse contains the response from method Client.CheckinManifest.
+type ClientCheckinManifestResponse struct {
+	ClientCheckinManifestResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CustomRolloutsCreateOrUpdateResult contains the result from method CustomRollouts.CreateOrUpdate.
-type CustomRolloutsCreateOrUpdateResult struct {
+// ClientCheckinManifestResult contains the result from method Client.CheckinManifest.
+type ClientCheckinManifestResult struct {
+	CheckinManifestInfo
+}
+
+// ClientGenerateManifestResponse contains the response from method Client.GenerateManifest.
+type ClientGenerateManifestResponse struct {
+	ClientGenerateManifestResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ClientGenerateManifestResult contains the result from method Client.GenerateManifest.
+type ClientGenerateManifestResult struct {
+	ResourceProviderManifest
+}
+
+// CustomRolloutsClientCreateOrUpdateResponse contains the response from method CustomRolloutsClient.CreateOrUpdate.
+type CustomRolloutsClientCreateOrUpdateResponse struct {
+	CustomRolloutsClientCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CustomRolloutsClientCreateOrUpdateResult contains the result from method CustomRolloutsClient.CreateOrUpdate.
+type CustomRolloutsClientCreateOrUpdateResult struct {
 	CustomRollout
 }
 
-// CustomRolloutsGetResponse contains the response from method CustomRollouts.Get.
-type CustomRolloutsGetResponse struct {
-	CustomRolloutsGetResult
+// CustomRolloutsClientGetResponse contains the response from method CustomRolloutsClient.Get.
+type CustomRolloutsClientGetResponse struct {
+	CustomRolloutsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CustomRolloutsGetResult contains the result from method CustomRollouts.Get.
-type CustomRolloutsGetResult struct {
+// CustomRolloutsClientGetResult contains the result from method CustomRolloutsClient.Get.
+type CustomRolloutsClientGetResult struct {
 	CustomRollout
 }
 
-// CustomRolloutsListByProviderRegistrationResponse contains the response from method CustomRollouts.ListByProviderRegistration.
-type CustomRolloutsListByProviderRegistrationResponse struct {
-	CustomRolloutsListByProviderRegistrationResult
+// CustomRolloutsClientListByProviderRegistrationResponse contains the response from method CustomRolloutsClient.ListByProviderRegistration.
+type CustomRolloutsClientListByProviderRegistrationResponse struct {
+	CustomRolloutsClientListByProviderRegistrationResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CustomRolloutsListByProviderRegistrationResult contains the result from method CustomRollouts.ListByProviderRegistration.
-type CustomRolloutsListByProviderRegistrationResult struct {
+// CustomRolloutsClientListByProviderRegistrationResult contains the result from method CustomRolloutsClient.ListByProviderRegistration.
+type CustomRolloutsClientListByProviderRegistrationResult struct {
 	CustomRolloutArrayResponseWithContinuation
 }
 
-// DefaultRolloutsCreateOrUpdatePollerResponse contains the response from method DefaultRollouts.CreateOrUpdate.
-type DefaultRolloutsCreateOrUpdatePollerResponse struct {
+// DefaultRolloutsClientCreateOrUpdatePollerResponse contains the response from method DefaultRolloutsClient.CreateOrUpdate.
+type DefaultRolloutsClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *DefaultRolloutsCreateOrUpdatePoller
+	Poller *DefaultRolloutsClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -63,8 +87,8 @@ type DefaultRolloutsCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l DefaultRolloutsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DefaultRolloutsCreateOrUpdateResponse, error) {
-	respType := DefaultRolloutsCreateOrUpdateResponse{}
+func (l DefaultRolloutsClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DefaultRolloutsClientCreateOrUpdateResponse, error) {
+	respType := DefaultRolloutsClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.DefaultRollout)
 	if err != nil {
 		return respType, err
@@ -73,13 +97,13 @@ func (l DefaultRolloutsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.C
 	return respType, nil
 }
 
-// Resume rehydrates a DefaultRolloutsCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *DefaultRolloutsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *DefaultRolloutsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("DefaultRolloutsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a DefaultRolloutsClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *DefaultRolloutsClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *DefaultRolloutsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("DefaultRolloutsClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &DefaultRolloutsCreateOrUpdatePoller{
+	poller := &DefaultRolloutsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -91,167 +115,143 @@ func (l *DefaultRolloutsCreateOrUpdatePollerResponse) Resume(ctx context.Context
 	return nil
 }
 
-// DefaultRolloutsCreateOrUpdateResponse contains the response from method DefaultRollouts.CreateOrUpdate.
-type DefaultRolloutsCreateOrUpdateResponse struct {
-	DefaultRolloutsCreateOrUpdateResult
+// DefaultRolloutsClientCreateOrUpdateResponse contains the response from method DefaultRolloutsClient.CreateOrUpdate.
+type DefaultRolloutsClientCreateOrUpdateResponse struct {
+	DefaultRolloutsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DefaultRolloutsCreateOrUpdateResult contains the result from method DefaultRollouts.CreateOrUpdate.
-type DefaultRolloutsCreateOrUpdateResult struct {
+// DefaultRolloutsClientCreateOrUpdateResult contains the result from method DefaultRolloutsClient.CreateOrUpdate.
+type DefaultRolloutsClientCreateOrUpdateResult struct {
 	DefaultRollout
 }
 
-// DefaultRolloutsDeleteResponse contains the response from method DefaultRollouts.Delete.
-type DefaultRolloutsDeleteResponse struct {
+// DefaultRolloutsClientDeleteResponse contains the response from method DefaultRolloutsClient.Delete.
+type DefaultRolloutsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DefaultRolloutsGetResponse contains the response from method DefaultRollouts.Get.
-type DefaultRolloutsGetResponse struct {
-	DefaultRolloutsGetResult
+// DefaultRolloutsClientGetResponse contains the response from method DefaultRolloutsClient.Get.
+type DefaultRolloutsClientGetResponse struct {
+	DefaultRolloutsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DefaultRolloutsGetResult contains the result from method DefaultRollouts.Get.
-type DefaultRolloutsGetResult struct {
+// DefaultRolloutsClientGetResult contains the result from method DefaultRolloutsClient.Get.
+type DefaultRolloutsClientGetResult struct {
 	DefaultRollout
 }
 
-// DefaultRolloutsListByProviderRegistrationResponse contains the response from method DefaultRollouts.ListByProviderRegistration.
-type DefaultRolloutsListByProviderRegistrationResponse struct {
-	DefaultRolloutsListByProviderRegistrationResult
+// DefaultRolloutsClientListByProviderRegistrationResponse contains the response from method DefaultRolloutsClient.ListByProviderRegistration.
+type DefaultRolloutsClientListByProviderRegistrationResponse struct {
+	DefaultRolloutsClientListByProviderRegistrationResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DefaultRolloutsListByProviderRegistrationResult contains the result from method DefaultRollouts.ListByProviderRegistration.
-type DefaultRolloutsListByProviderRegistrationResult struct {
+// DefaultRolloutsClientListByProviderRegistrationResult contains the result from method DefaultRolloutsClient.ListByProviderRegistration.
+type DefaultRolloutsClientListByProviderRegistrationResult struct {
 	DefaultRolloutArrayResponseWithContinuation
 }
 
-// DefaultRolloutsStopResponse contains the response from method DefaultRollouts.Stop.
-type DefaultRolloutsStopResponse struct {
+// DefaultRolloutsClientStopResponse contains the response from method DefaultRolloutsClient.Stop.
+type DefaultRolloutsClientStopResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NotificationRegistrationsCreateOrUpdateResponse contains the response from method NotificationRegistrations.CreateOrUpdate.
-type NotificationRegistrationsCreateOrUpdateResponse struct {
-	NotificationRegistrationsCreateOrUpdateResult
+// NotificationRegistrationsClientCreateOrUpdateResponse contains the response from method NotificationRegistrationsClient.CreateOrUpdate.
+type NotificationRegistrationsClientCreateOrUpdateResponse struct {
+	NotificationRegistrationsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NotificationRegistrationsCreateOrUpdateResult contains the result from method NotificationRegistrations.CreateOrUpdate.
-type NotificationRegistrationsCreateOrUpdateResult struct {
+// NotificationRegistrationsClientCreateOrUpdateResult contains the result from method NotificationRegistrationsClient.CreateOrUpdate.
+type NotificationRegistrationsClientCreateOrUpdateResult struct {
 	NotificationRegistration
 }
 
-// NotificationRegistrationsDeleteResponse contains the response from method NotificationRegistrations.Delete.
-type NotificationRegistrationsDeleteResponse struct {
+// NotificationRegistrationsClientDeleteResponse contains the response from method NotificationRegistrationsClient.Delete.
+type NotificationRegistrationsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NotificationRegistrationsGetResponse contains the response from method NotificationRegistrations.Get.
-type NotificationRegistrationsGetResponse struct {
-	NotificationRegistrationsGetResult
+// NotificationRegistrationsClientGetResponse contains the response from method NotificationRegistrationsClient.Get.
+type NotificationRegistrationsClientGetResponse struct {
+	NotificationRegistrationsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NotificationRegistrationsGetResult contains the result from method NotificationRegistrations.Get.
-type NotificationRegistrationsGetResult struct {
+// NotificationRegistrationsClientGetResult contains the result from method NotificationRegistrationsClient.Get.
+type NotificationRegistrationsClientGetResult struct {
 	NotificationRegistration
 }
 
-// NotificationRegistrationsListByProviderRegistrationResponse contains the response from method NotificationRegistrations.ListByProviderRegistration.
-type NotificationRegistrationsListByProviderRegistrationResponse struct {
-	NotificationRegistrationsListByProviderRegistrationResult
+// NotificationRegistrationsClientListByProviderRegistrationResponse contains the response from method NotificationRegistrationsClient.ListByProviderRegistration.
+type NotificationRegistrationsClientListByProviderRegistrationResponse struct {
+	NotificationRegistrationsClientListByProviderRegistrationResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NotificationRegistrationsListByProviderRegistrationResult contains the result from method NotificationRegistrations.ListByProviderRegistration.
-type NotificationRegistrationsListByProviderRegistrationResult struct {
+// NotificationRegistrationsClientListByProviderRegistrationResult contains the result from method NotificationRegistrationsClient.ListByProviderRegistration.
+type NotificationRegistrationsClientListByProviderRegistrationResult struct {
 	NotificationRegistrationArrayResponseWithContinuation
 }
 
-// OperationsCreateOrUpdateResponse contains the response from method Operations.CreateOrUpdate.
-type OperationsCreateOrUpdateResponse struct {
-	OperationsCreateOrUpdateResult
+// OperationsClientCreateOrUpdateResponse contains the response from method OperationsClient.CreateOrUpdate.
+type OperationsClientCreateOrUpdateResponse struct {
+	OperationsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsCreateOrUpdateResult contains the result from method Operations.CreateOrUpdate.
-type OperationsCreateOrUpdateResult struct {
+// OperationsClientCreateOrUpdateResult contains the result from method OperationsClient.CreateOrUpdate.
+type OperationsClientCreateOrUpdateResult struct {
 	OperationsContent
 }
 
-// OperationsDeleteResponse contains the response from method Operations.Delete.
-type OperationsDeleteResponse struct {
+// OperationsClientDeleteResponse contains the response from method OperationsClient.Delete.
+type OperationsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListByProviderRegistrationResponse contains the response from method Operations.ListByProviderRegistration.
-type OperationsListByProviderRegistrationResponse struct {
-	OperationsListByProviderRegistrationResult
+// OperationsClientListByProviderRegistrationResponse contains the response from method OperationsClient.ListByProviderRegistration.
+type OperationsClientListByProviderRegistrationResponse struct {
+	OperationsClientListByProviderRegistrationResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListByProviderRegistrationResult contains the result from method Operations.ListByProviderRegistration.
-type OperationsListByProviderRegistrationResult struct {
+// OperationsClientListByProviderRegistrationResult contains the result from method OperationsClient.ListByProviderRegistration.
+type OperationsClientListByProviderRegistrationResult struct {
 	// Array of OperationsDefinition
 	OperationsDefinitionArray []*OperationsDefinition
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationsDefinitionArrayResponseWithContinuation
 }
 
-// ProviderHubCheckinManifestResponse contains the response from method ProviderHub.CheckinManifest.
-type ProviderHubCheckinManifestResponse struct {
-	ProviderHubCheckinManifestResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ProviderHubCheckinManifestResult contains the result from method ProviderHub.CheckinManifest.
-type ProviderHubCheckinManifestResult struct {
-	CheckinManifestInfo
-}
-
-// ProviderHubGenerateManifestResponse contains the response from method ProviderHub.GenerateManifest.
-type ProviderHubGenerateManifestResponse struct {
-	ProviderHubGenerateManifestResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ProviderHubGenerateManifestResult contains the result from method ProviderHub.GenerateManifest.
-type ProviderHubGenerateManifestResult struct {
-	ResourceProviderManifest
-}
-
-// ProviderRegistrationsCreateOrUpdatePollerResponse contains the response from method ProviderRegistrations.CreateOrUpdate.
-type ProviderRegistrationsCreateOrUpdatePollerResponse struct {
+// ProviderRegistrationsClientCreateOrUpdatePollerResponse contains the response from method ProviderRegistrationsClient.CreateOrUpdate.
+type ProviderRegistrationsClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ProviderRegistrationsCreateOrUpdatePoller
+	Poller *ProviderRegistrationsClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -260,8 +260,8 @@ type ProviderRegistrationsCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ProviderRegistrationsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ProviderRegistrationsCreateOrUpdateResponse, error) {
-	respType := ProviderRegistrationsCreateOrUpdateResponse{}
+func (l ProviderRegistrationsClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ProviderRegistrationsClientCreateOrUpdateResponse, error) {
+	respType := ProviderRegistrationsClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ProviderRegistration)
 	if err != nil {
 		return respType, err
@@ -270,13 +270,13 @@ func (l ProviderRegistrationsCreateOrUpdatePollerResponse) PollUntilDone(ctx con
 	return respType, nil
 }
 
-// Resume rehydrates a ProviderRegistrationsCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *ProviderRegistrationsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *ProviderRegistrationsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ProviderRegistrationsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a ProviderRegistrationsClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *ProviderRegistrationsClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *ProviderRegistrationsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ProviderRegistrationsClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ProviderRegistrationsCreateOrUpdatePoller{
+	poller := &ProviderRegistrationsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -288,65 +288,65 @@ func (l *ProviderRegistrationsCreateOrUpdatePollerResponse) Resume(ctx context.C
 	return nil
 }
 
-// ProviderRegistrationsCreateOrUpdateResponse contains the response from method ProviderRegistrations.CreateOrUpdate.
-type ProviderRegistrationsCreateOrUpdateResponse struct {
-	ProviderRegistrationsCreateOrUpdateResult
+// ProviderRegistrationsClientCreateOrUpdateResponse contains the response from method ProviderRegistrationsClient.CreateOrUpdate.
+type ProviderRegistrationsClientCreateOrUpdateResponse struct {
+	ProviderRegistrationsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProviderRegistrationsCreateOrUpdateResult contains the result from method ProviderRegistrations.CreateOrUpdate.
-type ProviderRegistrationsCreateOrUpdateResult struct {
+// ProviderRegistrationsClientCreateOrUpdateResult contains the result from method ProviderRegistrationsClient.CreateOrUpdate.
+type ProviderRegistrationsClientCreateOrUpdateResult struct {
 	ProviderRegistration
 }
 
-// ProviderRegistrationsDeleteResponse contains the response from method ProviderRegistrations.Delete.
-type ProviderRegistrationsDeleteResponse struct {
+// ProviderRegistrationsClientDeleteResponse contains the response from method ProviderRegistrationsClient.Delete.
+type ProviderRegistrationsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProviderRegistrationsGenerateOperationsResponse contains the response from method ProviderRegistrations.GenerateOperations.
-type ProviderRegistrationsGenerateOperationsResponse struct {
-	ProviderRegistrationsGenerateOperationsResult
+// ProviderRegistrationsClientGenerateOperationsResponse contains the response from method ProviderRegistrationsClient.GenerateOperations.
+type ProviderRegistrationsClientGenerateOperationsResponse struct {
+	ProviderRegistrationsClientGenerateOperationsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProviderRegistrationsGenerateOperationsResult contains the result from method ProviderRegistrations.GenerateOperations.
-type ProviderRegistrationsGenerateOperationsResult struct {
+// ProviderRegistrationsClientGenerateOperationsResult contains the result from method ProviderRegistrationsClient.GenerateOperations.
+type ProviderRegistrationsClientGenerateOperationsResult struct {
 	// Array of OperationsDefinition
 	OperationsDefinitionArray []*OperationsDefinition
 }
 
-// ProviderRegistrationsGetResponse contains the response from method ProviderRegistrations.Get.
-type ProviderRegistrationsGetResponse struct {
-	ProviderRegistrationsGetResult
+// ProviderRegistrationsClientGetResponse contains the response from method ProviderRegistrationsClient.Get.
+type ProviderRegistrationsClientGetResponse struct {
+	ProviderRegistrationsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProviderRegistrationsGetResult contains the result from method ProviderRegistrations.Get.
-type ProviderRegistrationsGetResult struct {
+// ProviderRegistrationsClientGetResult contains the result from method ProviderRegistrationsClient.Get.
+type ProviderRegistrationsClientGetResult struct {
 	ProviderRegistration
 }
 
-// ProviderRegistrationsListResponse contains the response from method ProviderRegistrations.List.
-type ProviderRegistrationsListResponse struct {
-	ProviderRegistrationsListResult
+// ProviderRegistrationsClientListResponse contains the response from method ProviderRegistrationsClient.List.
+type ProviderRegistrationsClientListResponse struct {
+	ProviderRegistrationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProviderRegistrationsListResult contains the result from method ProviderRegistrations.List.
-type ProviderRegistrationsListResult struct {
+// ProviderRegistrationsClientListResult contains the result from method ProviderRegistrationsClient.List.
+type ProviderRegistrationsClientListResult struct {
 	ProviderRegistrationArrayResponseWithContinuation
 }
 
-// ResourceTypeRegistrationsCreateOrUpdatePollerResponse contains the response from method ResourceTypeRegistrations.CreateOrUpdate.
-type ResourceTypeRegistrationsCreateOrUpdatePollerResponse struct {
+// ResourceTypeRegistrationsClientCreateOrUpdatePollerResponse contains the response from method ResourceTypeRegistrationsClient.CreateOrUpdate.
+type ResourceTypeRegistrationsClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ResourceTypeRegistrationsCreateOrUpdatePoller
+	Poller *ResourceTypeRegistrationsClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -355,8 +355,8 @@ type ResourceTypeRegistrationsCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ResourceTypeRegistrationsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ResourceTypeRegistrationsCreateOrUpdateResponse, error) {
-	respType := ResourceTypeRegistrationsCreateOrUpdateResponse{}
+func (l ResourceTypeRegistrationsClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ResourceTypeRegistrationsClientCreateOrUpdateResponse, error) {
+	respType := ResourceTypeRegistrationsClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ResourceTypeRegistration)
 	if err != nil {
 		return respType, err
@@ -365,13 +365,13 @@ func (l ResourceTypeRegistrationsCreateOrUpdatePollerResponse) PollUntilDone(ctx
 	return respType, nil
 }
 
-// Resume rehydrates a ResourceTypeRegistrationsCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *ResourceTypeRegistrationsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *ResourceTypeRegistrationsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ResourceTypeRegistrationsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a ResourceTypeRegistrationsClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *ResourceTypeRegistrationsClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *ResourceTypeRegistrationsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ResourceTypeRegistrationsClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ResourceTypeRegistrationsCreateOrUpdatePoller{
+	poller := &ResourceTypeRegistrationsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -383,212 +383,212 @@ func (l *ResourceTypeRegistrationsCreateOrUpdatePollerResponse) Resume(ctx conte
 	return nil
 }
 
-// ResourceTypeRegistrationsCreateOrUpdateResponse contains the response from method ResourceTypeRegistrations.CreateOrUpdate.
-type ResourceTypeRegistrationsCreateOrUpdateResponse struct {
-	ResourceTypeRegistrationsCreateOrUpdateResult
+// ResourceTypeRegistrationsClientCreateOrUpdateResponse contains the response from method ResourceTypeRegistrationsClient.CreateOrUpdate.
+type ResourceTypeRegistrationsClientCreateOrUpdateResponse struct {
+	ResourceTypeRegistrationsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ResourceTypeRegistrationsCreateOrUpdateResult contains the result from method ResourceTypeRegistrations.CreateOrUpdate.
-type ResourceTypeRegistrationsCreateOrUpdateResult struct {
+// ResourceTypeRegistrationsClientCreateOrUpdateResult contains the result from method ResourceTypeRegistrationsClient.CreateOrUpdate.
+type ResourceTypeRegistrationsClientCreateOrUpdateResult struct {
 	ResourceTypeRegistration
 }
 
-// ResourceTypeRegistrationsDeleteResponse contains the response from method ResourceTypeRegistrations.Delete.
-type ResourceTypeRegistrationsDeleteResponse struct {
+// ResourceTypeRegistrationsClientDeleteResponse contains the response from method ResourceTypeRegistrationsClient.Delete.
+type ResourceTypeRegistrationsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ResourceTypeRegistrationsGetResponse contains the response from method ResourceTypeRegistrations.Get.
-type ResourceTypeRegistrationsGetResponse struct {
-	ResourceTypeRegistrationsGetResult
+// ResourceTypeRegistrationsClientGetResponse contains the response from method ResourceTypeRegistrationsClient.Get.
+type ResourceTypeRegistrationsClientGetResponse struct {
+	ResourceTypeRegistrationsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ResourceTypeRegistrationsGetResult contains the result from method ResourceTypeRegistrations.Get.
-type ResourceTypeRegistrationsGetResult struct {
+// ResourceTypeRegistrationsClientGetResult contains the result from method ResourceTypeRegistrationsClient.Get.
+type ResourceTypeRegistrationsClientGetResult struct {
 	ResourceTypeRegistration
 }
 
-// ResourceTypeRegistrationsListByProviderRegistrationResponse contains the response from method ResourceTypeRegistrations.ListByProviderRegistration.
-type ResourceTypeRegistrationsListByProviderRegistrationResponse struct {
-	ResourceTypeRegistrationsListByProviderRegistrationResult
+// ResourceTypeRegistrationsClientListByProviderRegistrationResponse contains the response from method ResourceTypeRegistrationsClient.ListByProviderRegistration.
+type ResourceTypeRegistrationsClientListByProviderRegistrationResponse struct {
+	ResourceTypeRegistrationsClientListByProviderRegistrationResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ResourceTypeRegistrationsListByProviderRegistrationResult contains the result from method ResourceTypeRegistrations.ListByProviderRegistration.
-type ResourceTypeRegistrationsListByProviderRegistrationResult struct {
+// ResourceTypeRegistrationsClientListByProviderRegistrationResult contains the result from method ResourceTypeRegistrationsClient.ListByProviderRegistration.
+type ResourceTypeRegistrationsClientListByProviderRegistrationResult struct {
 	ResourceTypeRegistrationArrayResponseWithContinuation
 }
 
-// SKUsCreateOrUpdateNestedResourceTypeFirstResponse contains the response from method SKUs.CreateOrUpdateNestedResourceTypeFirst.
-type SKUsCreateOrUpdateNestedResourceTypeFirstResponse struct {
-	SKUsCreateOrUpdateNestedResourceTypeFirstResult
+// SKUsClientCreateOrUpdateNestedResourceTypeFirstResponse contains the response from method SKUsClient.CreateOrUpdateNestedResourceTypeFirst.
+type SKUsClientCreateOrUpdateNestedResourceTypeFirstResponse struct {
+	SKUsClientCreateOrUpdateNestedResourceTypeFirstResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SKUsCreateOrUpdateNestedResourceTypeFirstResult contains the result from method SKUs.CreateOrUpdateNestedResourceTypeFirst.
-type SKUsCreateOrUpdateNestedResourceTypeFirstResult struct {
+// SKUsClientCreateOrUpdateNestedResourceTypeFirstResult contains the result from method SKUsClient.CreateOrUpdateNestedResourceTypeFirst.
+type SKUsClientCreateOrUpdateNestedResourceTypeFirstResult struct {
 	SKUResource
 }
 
-// SKUsCreateOrUpdateNestedResourceTypeSecondResponse contains the response from method SKUs.CreateOrUpdateNestedResourceTypeSecond.
-type SKUsCreateOrUpdateNestedResourceTypeSecondResponse struct {
-	SKUsCreateOrUpdateNestedResourceTypeSecondResult
+// SKUsClientCreateOrUpdateNestedResourceTypeSecondResponse contains the response from method SKUsClient.CreateOrUpdateNestedResourceTypeSecond.
+type SKUsClientCreateOrUpdateNestedResourceTypeSecondResponse struct {
+	SKUsClientCreateOrUpdateNestedResourceTypeSecondResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SKUsCreateOrUpdateNestedResourceTypeSecondResult contains the result from method SKUs.CreateOrUpdateNestedResourceTypeSecond.
-type SKUsCreateOrUpdateNestedResourceTypeSecondResult struct {
+// SKUsClientCreateOrUpdateNestedResourceTypeSecondResult contains the result from method SKUsClient.CreateOrUpdateNestedResourceTypeSecond.
+type SKUsClientCreateOrUpdateNestedResourceTypeSecondResult struct {
 	SKUResource
 }
 
-// SKUsCreateOrUpdateNestedResourceTypeThirdResponse contains the response from method SKUs.CreateOrUpdateNestedResourceTypeThird.
-type SKUsCreateOrUpdateNestedResourceTypeThirdResponse struct {
-	SKUsCreateOrUpdateNestedResourceTypeThirdResult
+// SKUsClientCreateOrUpdateNestedResourceTypeThirdResponse contains the response from method SKUsClient.CreateOrUpdateNestedResourceTypeThird.
+type SKUsClientCreateOrUpdateNestedResourceTypeThirdResponse struct {
+	SKUsClientCreateOrUpdateNestedResourceTypeThirdResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SKUsCreateOrUpdateNestedResourceTypeThirdResult contains the result from method SKUs.CreateOrUpdateNestedResourceTypeThird.
-type SKUsCreateOrUpdateNestedResourceTypeThirdResult struct {
+// SKUsClientCreateOrUpdateNestedResourceTypeThirdResult contains the result from method SKUsClient.CreateOrUpdateNestedResourceTypeThird.
+type SKUsClientCreateOrUpdateNestedResourceTypeThirdResult struct {
 	SKUResource
 }
 
-// SKUsCreateOrUpdateResponse contains the response from method SKUs.CreateOrUpdate.
-type SKUsCreateOrUpdateResponse struct {
-	SKUsCreateOrUpdateResult
+// SKUsClientCreateOrUpdateResponse contains the response from method SKUsClient.CreateOrUpdate.
+type SKUsClientCreateOrUpdateResponse struct {
+	SKUsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SKUsCreateOrUpdateResult contains the result from method SKUs.CreateOrUpdate.
-type SKUsCreateOrUpdateResult struct {
+// SKUsClientCreateOrUpdateResult contains the result from method SKUsClient.CreateOrUpdate.
+type SKUsClientCreateOrUpdateResult struct {
 	SKUResource
 }
 
-// SKUsDeleteNestedResourceTypeFirstResponse contains the response from method SKUs.DeleteNestedResourceTypeFirst.
-type SKUsDeleteNestedResourceTypeFirstResponse struct {
+// SKUsClientDeleteNestedResourceTypeFirstResponse contains the response from method SKUsClient.DeleteNestedResourceTypeFirst.
+type SKUsClientDeleteNestedResourceTypeFirstResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SKUsDeleteNestedResourceTypeSecondResponse contains the response from method SKUs.DeleteNestedResourceTypeSecond.
-type SKUsDeleteNestedResourceTypeSecondResponse struct {
+// SKUsClientDeleteNestedResourceTypeSecondResponse contains the response from method SKUsClient.DeleteNestedResourceTypeSecond.
+type SKUsClientDeleteNestedResourceTypeSecondResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SKUsDeleteNestedResourceTypeThirdResponse contains the response from method SKUs.DeleteNestedResourceTypeThird.
-type SKUsDeleteNestedResourceTypeThirdResponse struct {
+// SKUsClientDeleteNestedResourceTypeThirdResponse contains the response from method SKUsClient.DeleteNestedResourceTypeThird.
+type SKUsClientDeleteNestedResourceTypeThirdResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SKUsDeleteResponse contains the response from method SKUs.Delete.
-type SKUsDeleteResponse struct {
+// SKUsClientDeleteResponse contains the response from method SKUsClient.Delete.
+type SKUsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SKUsGetNestedResourceTypeFirstResponse contains the response from method SKUs.GetNestedResourceTypeFirst.
-type SKUsGetNestedResourceTypeFirstResponse struct {
-	SKUsGetNestedResourceTypeFirstResult
+// SKUsClientGetNestedResourceTypeFirstResponse contains the response from method SKUsClient.GetNestedResourceTypeFirst.
+type SKUsClientGetNestedResourceTypeFirstResponse struct {
+	SKUsClientGetNestedResourceTypeFirstResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SKUsGetNestedResourceTypeFirstResult contains the result from method SKUs.GetNestedResourceTypeFirst.
-type SKUsGetNestedResourceTypeFirstResult struct {
+// SKUsClientGetNestedResourceTypeFirstResult contains the result from method SKUsClient.GetNestedResourceTypeFirst.
+type SKUsClientGetNestedResourceTypeFirstResult struct {
 	SKUResource
 }
 
-// SKUsGetNestedResourceTypeSecondResponse contains the response from method SKUs.GetNestedResourceTypeSecond.
-type SKUsGetNestedResourceTypeSecondResponse struct {
-	SKUsGetNestedResourceTypeSecondResult
+// SKUsClientGetNestedResourceTypeSecondResponse contains the response from method SKUsClient.GetNestedResourceTypeSecond.
+type SKUsClientGetNestedResourceTypeSecondResponse struct {
+	SKUsClientGetNestedResourceTypeSecondResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SKUsGetNestedResourceTypeSecondResult contains the result from method SKUs.GetNestedResourceTypeSecond.
-type SKUsGetNestedResourceTypeSecondResult struct {
+// SKUsClientGetNestedResourceTypeSecondResult contains the result from method SKUsClient.GetNestedResourceTypeSecond.
+type SKUsClientGetNestedResourceTypeSecondResult struct {
 	SKUResource
 }
 
-// SKUsGetNestedResourceTypeThirdResponse contains the response from method SKUs.GetNestedResourceTypeThird.
-type SKUsGetNestedResourceTypeThirdResponse struct {
-	SKUsGetNestedResourceTypeThirdResult
+// SKUsClientGetNestedResourceTypeThirdResponse contains the response from method SKUsClient.GetNestedResourceTypeThird.
+type SKUsClientGetNestedResourceTypeThirdResponse struct {
+	SKUsClientGetNestedResourceTypeThirdResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SKUsGetNestedResourceTypeThirdResult contains the result from method SKUs.GetNestedResourceTypeThird.
-type SKUsGetNestedResourceTypeThirdResult struct {
+// SKUsClientGetNestedResourceTypeThirdResult contains the result from method SKUsClient.GetNestedResourceTypeThird.
+type SKUsClientGetNestedResourceTypeThirdResult struct {
 	SKUResource
 }
 
-// SKUsGetResponse contains the response from method SKUs.Get.
-type SKUsGetResponse struct {
-	SKUsGetResult
+// SKUsClientGetResponse contains the response from method SKUsClient.Get.
+type SKUsClientGetResponse struct {
+	SKUsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SKUsGetResult contains the result from method SKUs.Get.
-type SKUsGetResult struct {
+// SKUsClientGetResult contains the result from method SKUsClient.Get.
+type SKUsClientGetResult struct {
 	SKUResource
 }
 
-// SKUsListByResourceTypeRegistrationsNestedResourceTypeFirstResponse contains the response from method SKUs.ListByResourceTypeRegistrationsNestedResourceTypeFirst.
-type SKUsListByResourceTypeRegistrationsNestedResourceTypeFirstResponse struct {
-	SKUsListByResourceTypeRegistrationsNestedResourceTypeFirstResult
+// SKUsClientListByResourceTypeRegistrationsNestedResourceTypeFirstResponse contains the response from method SKUsClient.ListByResourceTypeRegistrationsNestedResourceTypeFirst.
+type SKUsClientListByResourceTypeRegistrationsNestedResourceTypeFirstResponse struct {
+	SKUsClientListByResourceTypeRegistrationsNestedResourceTypeFirstResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SKUsListByResourceTypeRegistrationsNestedResourceTypeFirstResult contains the result from method SKUs.ListByResourceTypeRegistrationsNestedResourceTypeFirst.
-type SKUsListByResourceTypeRegistrationsNestedResourceTypeFirstResult struct {
+// SKUsClientListByResourceTypeRegistrationsNestedResourceTypeFirstResult contains the result from method SKUsClient.ListByResourceTypeRegistrationsNestedResourceTypeFirst.
+type SKUsClientListByResourceTypeRegistrationsNestedResourceTypeFirstResult struct {
 	SKUResourceArrayResponseWithContinuation
 }
 
-// SKUsListByResourceTypeRegistrationsNestedResourceTypeSecondResponse contains the response from method SKUs.ListByResourceTypeRegistrationsNestedResourceTypeSecond.
-type SKUsListByResourceTypeRegistrationsNestedResourceTypeSecondResponse struct {
-	SKUsListByResourceTypeRegistrationsNestedResourceTypeSecondResult
+// SKUsClientListByResourceTypeRegistrationsNestedResourceTypeSecondResponse contains the response from method SKUsClient.ListByResourceTypeRegistrationsNestedResourceTypeSecond.
+type SKUsClientListByResourceTypeRegistrationsNestedResourceTypeSecondResponse struct {
+	SKUsClientListByResourceTypeRegistrationsNestedResourceTypeSecondResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SKUsListByResourceTypeRegistrationsNestedResourceTypeSecondResult contains the result from method SKUs.ListByResourceTypeRegistrationsNestedResourceTypeSecond.
-type SKUsListByResourceTypeRegistrationsNestedResourceTypeSecondResult struct {
+// SKUsClientListByResourceTypeRegistrationsNestedResourceTypeSecondResult contains the result from method SKUsClient.ListByResourceTypeRegistrationsNestedResourceTypeSecond.
+type SKUsClientListByResourceTypeRegistrationsNestedResourceTypeSecondResult struct {
 	SKUResourceArrayResponseWithContinuation
 }
 
-// SKUsListByResourceTypeRegistrationsNestedResourceTypeThirdResponse contains the response from method SKUs.ListByResourceTypeRegistrationsNestedResourceTypeThird.
-type SKUsListByResourceTypeRegistrationsNestedResourceTypeThirdResponse struct {
-	SKUsListByResourceTypeRegistrationsNestedResourceTypeThirdResult
+// SKUsClientListByResourceTypeRegistrationsNestedResourceTypeThirdResponse contains the response from method SKUsClient.ListByResourceTypeRegistrationsNestedResourceTypeThird.
+type SKUsClientListByResourceTypeRegistrationsNestedResourceTypeThirdResponse struct {
+	SKUsClientListByResourceTypeRegistrationsNestedResourceTypeThirdResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SKUsListByResourceTypeRegistrationsNestedResourceTypeThirdResult contains the result from method SKUs.ListByResourceTypeRegistrationsNestedResourceTypeThird.
-type SKUsListByResourceTypeRegistrationsNestedResourceTypeThirdResult struct {
+// SKUsClientListByResourceTypeRegistrationsNestedResourceTypeThirdResult contains the result from method SKUsClient.ListByResourceTypeRegistrationsNestedResourceTypeThird.
+type SKUsClientListByResourceTypeRegistrationsNestedResourceTypeThirdResult struct {
 	SKUResourceArrayResponseWithContinuation
 }
 
-// SKUsListByResourceTypeRegistrationsResponse contains the response from method SKUs.ListByResourceTypeRegistrations.
-type SKUsListByResourceTypeRegistrationsResponse struct {
-	SKUsListByResourceTypeRegistrationsResult
+// SKUsClientListByResourceTypeRegistrationsResponse contains the response from method SKUsClient.ListByResourceTypeRegistrations.
+type SKUsClientListByResourceTypeRegistrationsResponse struct {
+	SKUsClientListByResourceTypeRegistrationsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SKUsListByResourceTypeRegistrationsResult contains the result from method SKUs.ListByResourceTypeRegistrations.
-type SKUsListByResourceTypeRegistrationsResult struct {
+// SKUsClientListByResourceTypeRegistrationsResult contains the result from method SKUsClient.ListByResourceTypeRegistrations.
+type SKUsClientListByResourceTypeRegistrationsResult struct {
 	SKUResourceArrayResponseWithContinuation
 }

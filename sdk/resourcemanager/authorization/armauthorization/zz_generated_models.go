@@ -171,35 +171,6 @@ func (a *AccessReviewDecisionTarget) GetAccessReviewDecisionTarget() *AccessRevi
 	return a
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AccessReviewDecisionTarget.
-func (a *AccessReviewDecisionTarget) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return a.unmarshalInternal(rawMsg)
-}
-
-func (a AccessReviewDecisionTarget) marshalInternal(objectMap map[string]interface{}, discValue DecisionTargetType) {
-	a.Type = &discValue
-	objectMap["type"] = a.Type
-}
-
-func (a *AccessReviewDecisionTarget) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "type":
-			err = unpopulate(val, &a.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // AccessReviewDefaultSettings - Access Review Default Settings.
 type AccessReviewDefaultSettings struct {
 	// Access Review properties.
@@ -215,13 +186,15 @@ type AccessReviewDefaultSettings struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// AccessReviewDefaultSettingsGetOptions contains the optional parameters for the AccessReviewDefaultSettings.Get method.
-type AccessReviewDefaultSettingsGetOptions struct {
+// AccessReviewDefaultSettingsClientGetOptions contains the optional parameters for the AccessReviewDefaultSettingsClient.Get
+// method.
+type AccessReviewDefaultSettingsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccessReviewDefaultSettingsPutOptions contains the optional parameters for the AccessReviewDefaultSettings.Put method.
-type AccessReviewDefaultSettingsPutOptions struct {
+// AccessReviewDefaultSettingsClientPutOptions contains the optional parameters for the AccessReviewDefaultSettingsClient.Put
+// method.
+type AccessReviewDefaultSettingsClientPutOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -240,18 +213,38 @@ type AccessReviewInstance struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// AccessReviewInstanceAcceptRecommendationsOptions contains the optional parameters for the AccessReviewInstance.AcceptRecommendations method.
-type AccessReviewInstanceAcceptRecommendationsOptions struct {
+// AccessReviewInstanceClientAcceptRecommendationsOptions contains the optional parameters for the AccessReviewInstanceClient.AcceptRecommendations
+// method.
+type AccessReviewInstanceClientAcceptRecommendationsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccessReviewInstanceApplyDecisionsOptions contains the optional parameters for the AccessReviewInstance.ApplyDecisions method.
-type AccessReviewInstanceApplyDecisionsOptions struct {
+// AccessReviewInstanceClientApplyDecisionsOptions contains the optional parameters for the AccessReviewInstanceClient.ApplyDecisions
+// method.
+type AccessReviewInstanceClientApplyDecisionsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccessReviewInstanceDecisionsListOptions contains the optional parameters for the AccessReviewInstanceDecisions.List method.
-type AccessReviewInstanceDecisionsListOptions struct {
+// AccessReviewInstanceClientResetDecisionsOptions contains the optional parameters for the AccessReviewInstanceClient.ResetDecisions
+// method.
+type AccessReviewInstanceClientResetDecisionsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewInstanceClientSendRemindersOptions contains the optional parameters for the AccessReviewInstanceClient.SendReminders
+// method.
+type AccessReviewInstanceClientSendRemindersOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewInstanceClientStopOptions contains the optional parameters for the AccessReviewInstanceClient.Stop method.
+type AccessReviewInstanceClientStopOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewInstanceDecisionsClientListOptions contains the optional parameters for the AccessReviewInstanceDecisionsClient.List
+// method.
+type AccessReviewInstanceDecisionsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -272,18 +265,21 @@ func (a AccessReviewInstanceListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AccessReviewInstanceMyDecisionsGetByIDOptions contains the optional parameters for the AccessReviewInstanceMyDecisions.GetByID method.
-type AccessReviewInstanceMyDecisionsGetByIDOptions struct {
+// AccessReviewInstanceMyDecisionsClientGetByIDOptions contains the optional parameters for the AccessReviewInstanceMyDecisionsClient.GetByID
+// method.
+type AccessReviewInstanceMyDecisionsClientGetByIDOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccessReviewInstanceMyDecisionsListOptions contains the optional parameters for the AccessReviewInstanceMyDecisions.List method.
-type AccessReviewInstanceMyDecisionsListOptions struct {
+// AccessReviewInstanceMyDecisionsClientListOptions contains the optional parameters for the AccessReviewInstanceMyDecisionsClient.List
+// method.
+type AccessReviewInstanceMyDecisionsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccessReviewInstanceMyDecisionsPatchOptions contains the optional parameters for the AccessReviewInstanceMyDecisions.Patch method.
-type AccessReviewInstanceMyDecisionsPatchOptions struct {
+// AccessReviewInstanceMyDecisionsClientPatchOptions contains the optional parameters for the AccessReviewInstanceMyDecisionsClient.Patch
+// method.
+type AccessReviewInstanceMyDecisionsClientPatchOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -334,39 +330,26 @@ func (a *AccessReviewInstanceProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// AccessReviewInstanceResetDecisionsOptions contains the optional parameters for the AccessReviewInstance.ResetDecisions method.
-type AccessReviewInstanceResetDecisionsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AccessReviewInstanceSendRemindersOptions contains the optional parameters for the AccessReviewInstance.SendReminders method.
-type AccessReviewInstanceSendRemindersOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AccessReviewInstanceStopOptions contains the optional parameters for the AccessReviewInstance.Stop method.
-type AccessReviewInstanceStopOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AccessReviewInstancesAssignedForMyApprovalGetByIDOptions contains the optional parameters for the AccessReviewInstancesAssignedForMyApproval.GetByID
+// AccessReviewInstancesAssignedForMyApprovalClientGetByIDOptions contains the optional parameters for the AccessReviewInstancesAssignedForMyApprovalClient.GetByID
 // method.
-type AccessReviewInstancesAssignedForMyApprovalGetByIDOptions struct {
+type AccessReviewInstancesAssignedForMyApprovalClientGetByIDOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccessReviewInstancesAssignedForMyApprovalListOptions contains the optional parameters for the AccessReviewInstancesAssignedForMyApproval.List method.
-type AccessReviewInstancesAssignedForMyApprovalListOptions struct {
+// AccessReviewInstancesAssignedForMyApprovalClientListOptions contains the optional parameters for the AccessReviewInstancesAssignedForMyApprovalClient.List
+// method.
+type AccessReviewInstancesAssignedForMyApprovalClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccessReviewInstancesGetByIDOptions contains the optional parameters for the AccessReviewInstances.GetByID method.
-type AccessReviewInstancesGetByIDOptions struct {
+// AccessReviewInstancesClientGetByIDOptions contains the optional parameters for the AccessReviewInstancesClient.GetByID
+// method.
+type AccessReviewInstancesClientGetByIDOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccessReviewInstancesListOptions contains the optional parameters for the AccessReviewInstances.List method.
-type AccessReviewInstancesListOptions struct {
+// AccessReviewInstancesClientListOptions contains the optional parameters for the AccessReviewInstancesClient.List method.
+type AccessReviewInstancesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -506,12 +489,13 @@ type AccessReviewScheduleDefinitionProperties struct {
 	// READ-ONLY; The user or other identity who created this review.
 	CreatedBy *AccessReviewActorIdentity `json:"createdBy,omitempty" azure:"ro"`
 
-	// READ-ONLY; This field specifies the type of reviewers for a review. Usually for a review, reviewers are explicitly assigned. However, in some cases,
-	// the reviewers may not be assigned and instead be chosen
+	// READ-ONLY; This field specifies the type of reviewers for a review. Usually for a review, reviewers are explicitly assigned.
+	// However, in some cases, the reviewers may not be assigned and instead be chosen
 	// dynamically. For example managers review or self review.
 	ReviewersType *AccessReviewScheduleDefinitionReviewersType `json:"reviewersType,omitempty" azure:"ro"`
 
-	// READ-ONLY; This is used to define what to include in scope of the review. The scope definition includes the resourceId and roleDefinitionId.
+	// READ-ONLY; This is used to define what to include in scope of the review. The scope definition includes the resourceId
+	// and roleDefinitionId.
 	Scope *AccessReviewScope `json:"scope,omitempty" azure:"ro"`
 
 	// READ-ONLY; This read-only field specifies the status of an accessReview.
@@ -534,42 +518,46 @@ func (a AccessReviewScheduleDefinitionProperties) MarshalJSON() ([]byte, error) 
 	return json.Marshal(objectMap)
 }
 
-// AccessReviewScheduleDefinitionsAssignedForMyApprovalListOptions contains the optional parameters for the AccessReviewScheduleDefinitionsAssignedForMyApproval.List
+// AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListOptions contains the optional parameters for the AccessReviewScheduleDefinitionsAssignedForMyApprovalClient.List
 // method.
-type AccessReviewScheduleDefinitionsAssignedForMyApprovalListOptions struct {
+type AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccessReviewScheduleDefinitionsCreateOrUpdateByIDOptions contains the optional parameters for the AccessReviewScheduleDefinitions.CreateOrUpdateByID
+// AccessReviewScheduleDefinitionsClientCreateOrUpdateByIDOptions contains the optional parameters for the AccessReviewScheduleDefinitionsClient.CreateOrUpdateByID
 // method.
-type AccessReviewScheduleDefinitionsCreateOrUpdateByIDOptions struct {
+type AccessReviewScheduleDefinitionsClientCreateOrUpdateByIDOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccessReviewScheduleDefinitionsDeleteByIDOptions contains the optional parameters for the AccessReviewScheduleDefinitions.DeleteByID method.
-type AccessReviewScheduleDefinitionsDeleteByIDOptions struct {
+// AccessReviewScheduleDefinitionsClientDeleteByIDOptions contains the optional parameters for the AccessReviewScheduleDefinitionsClient.DeleteByID
+// method.
+type AccessReviewScheduleDefinitionsClientDeleteByIDOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccessReviewScheduleDefinitionsGetByIDOptions contains the optional parameters for the AccessReviewScheduleDefinitions.GetByID method.
-type AccessReviewScheduleDefinitionsGetByIDOptions struct {
+// AccessReviewScheduleDefinitionsClientGetByIDOptions contains the optional parameters for the AccessReviewScheduleDefinitionsClient.GetByID
+// method.
+type AccessReviewScheduleDefinitionsClientGetByIDOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccessReviewScheduleDefinitionsListOptions contains the optional parameters for the AccessReviewScheduleDefinitions.List method.
-type AccessReviewScheduleDefinitionsListOptions struct {
+// AccessReviewScheduleDefinitionsClientListOptions contains the optional parameters for the AccessReviewScheduleDefinitionsClient.List
+// method.
+type AccessReviewScheduleDefinitionsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccessReviewScheduleDefinitionsStopOptions contains the optional parameters for the AccessReviewScheduleDefinitions.Stop method.
-type AccessReviewScheduleDefinitionsStopOptions struct {
+// AccessReviewScheduleDefinitionsClientStopOptions contains the optional parameters for the AccessReviewScheduleDefinitionsClient.Stop
+// method.
+type AccessReviewScheduleDefinitionsClientStopOptions struct {
 	// placeholder for future optional parameters
 }
 
 // AccessReviewScheduleSettings - Settings of an Access Review.
 type AccessReviewScheduleSettings struct {
-	// Flag to indicate whether auto-apply capability, to automatically change the target object access resource, is enabled. If not enabled, a user must, after
-	// the review completes, apply the access review.
+	// Flag to indicate whether auto-apply capability, to automatically change the target object access resource, is enabled.
+	// If not enabled, a user must, after the review completes, apply the access review.
 	AutoApplyDecisionsEnabled *bool `json:"autoApplyDecisionsEnabled,omitempty"`
 
 	// This specifies the behavior for the autoReview feature when an access review completes.
@@ -672,17 +660,9 @@ func (a ApprovalStage) MarshalJSON() ([]byte, error) {
 }
 
 // CloudError - An error response from the service.
-// Implements the error and azcore.HTTPResponse interfaces.
 type CloudError struct {
-	raw string
 	// An error response from the service.
-	InnerError *CloudErrorBody `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type CloudError.
-// The contents of the error text are not contractual and subject to change.
-func (e CloudError) Error() string {
-	return e.raw
+	Error *CloudErrorBody `json:"error,omitempty"`
 }
 
 // CloudErrorBody - An error response from the service.
@@ -714,7 +694,8 @@ type DenyAssignmentFilter struct {
 	// Return deny assignment with specified name.
 	DenyAssignmentName *string `json:"denyAssignmentName,omitempty"`
 
-	// Return all deny assignments where the specified principal is listed either in the principals list or exclude principals list of deny assignments.
+	// Return all deny assignments where the specified principal is listed either in the principals list or exclude principals
+	// list of deny assignments.
 	GdprExportPrincipalID *string `json:"gdprExportPrincipalId,omitempty"`
 
 	// Return all deny assignments where the specified principal is listed in the principals list of deny assignments.
@@ -804,57 +785,71 @@ func (d DenyAssignmentProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// DenyAssignmentsGetByIDOptions contains the optional parameters for the DenyAssignments.GetByID method.
-type DenyAssignmentsGetByIDOptions struct {
+// DenyAssignmentsClientGetByIDOptions contains the optional parameters for the DenyAssignmentsClient.GetByID method.
+type DenyAssignmentsClientGetByIDOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DenyAssignmentsGetOptions contains the optional parameters for the DenyAssignments.Get method.
-type DenyAssignmentsGetOptions struct {
+// DenyAssignmentsClientGetOptions contains the optional parameters for the DenyAssignmentsClient.Get method.
+type DenyAssignmentsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DenyAssignmentsListForResourceGroupOptions contains the optional parameters for the DenyAssignments.ListForResourceGroup method.
-type DenyAssignmentsListForResourceGroupOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all deny assignments at or above the scope. Use $filter=denyAssignmentName eq '{name}'
-	// to search deny assignments by name at specified scope. Use $filter=principalId eq '{id}' to return all deny assignments at, above and below the scope
-	// for the specified principal. Use $filter=gdprExportPrincipalId eq '{id}' to return all deny assignments at, above and below the scope for the specified
-	// principal. This filter is different from the principalId filter as it returns not only those deny assignments that contain the specified principal is
-	// the Principals list but also those deny assignments that contain the specified principal is the ExcludePrincipals list. Additionally, when gdprExportPrincipalId
-	// filter is used, only the deny assignment name and description properties are returned.
+// DenyAssignmentsClientListForResourceGroupOptions contains the optional parameters for the DenyAssignmentsClient.ListForResourceGroup
+// method.
+type DenyAssignmentsClientListForResourceGroupOptions struct {
+	// The filter to apply on the operation. Use $filter=atScope() to return all deny assignments at or above the scope. Use $filter=denyAssignmentName
+	// eq '{name}' to search deny assignments by name at
+	// specified scope. Use $filter=principalId eq '{id}' to return all deny assignments at, above and below the scope for the
+	// specified principal. Use $filter=gdprExportPrincipalId eq '{id}' to return all
+	// deny assignments at, above and below the scope for the specified principal. This filter is different from the principalId
+	// filter as it returns not only those deny assignments that contain the
+	// specified principal is the Principals list but also those deny assignments that contain the specified principal is the
+	// ExcludePrincipals list. Additionally, when gdprExportPrincipalId filter is used,
+	// only the deny assignment name and description properties are returned.
 	Filter *string
 }
 
-// DenyAssignmentsListForResourceOptions contains the optional parameters for the DenyAssignments.ListForResource method.
-type DenyAssignmentsListForResourceOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all deny assignments at or above the scope. Use $filter=denyAssignmentName eq '{name}'
-	// to search deny assignments by name at specified scope. Use $filter=principalId eq '{id}' to return all deny assignments at, above and below the scope
-	// for the specified principal. Use $filter=gdprExportPrincipalId eq '{id}' to return all deny assignments at, above and below the scope for the specified
-	// principal. This filter is different from the principalId filter as it returns not only those deny assignments that contain the specified principal is
-	// the Principals list but also those deny assignments that contain the specified principal is the ExcludePrincipals list. Additionally, when gdprExportPrincipalId
-	// filter is used, only the deny assignment name and description properties are returned.
+// DenyAssignmentsClientListForResourceOptions contains the optional parameters for the DenyAssignmentsClient.ListForResource
+// method.
+type DenyAssignmentsClientListForResourceOptions struct {
+	// The filter to apply on the operation. Use $filter=atScope() to return all deny assignments at or above the scope. Use $filter=denyAssignmentName
+	// eq '{name}' to search deny assignments by name at
+	// specified scope. Use $filter=principalId eq '{id}' to return all deny assignments at, above and below the scope for the
+	// specified principal. Use $filter=gdprExportPrincipalId eq '{id}' to return all
+	// deny assignments at, above and below the scope for the specified principal. This filter is different from the principalId
+	// filter as it returns not only those deny assignments that contain the
+	// specified principal is the Principals list but also those deny assignments that contain the specified principal is the
+	// ExcludePrincipals list. Additionally, when gdprExportPrincipalId filter is used,
+	// only the deny assignment name and description properties are returned.
 	Filter *string
 }
 
-// DenyAssignmentsListForScopeOptions contains the optional parameters for the DenyAssignments.ListForScope method.
-type DenyAssignmentsListForScopeOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all deny assignments at or above the scope. Use $filter=denyAssignmentName eq '{name}'
-	// to search deny assignments by name at specified scope. Use $filter=principalId eq '{id}' to return all deny assignments at, above and below the scope
-	// for the specified principal. Use $filter=gdprExportPrincipalId eq '{id}' to return all deny assignments at, above and below the scope for the specified
-	// principal. This filter is different from the principalId filter as it returns not only those deny assignments that contain the specified principal is
-	// the Principals list but also those deny assignments that contain the specified principal is the ExcludePrincipals list. Additionally, when gdprExportPrincipalId
-	// filter is used, only the deny assignment name and description properties are returned.
+// DenyAssignmentsClientListForScopeOptions contains the optional parameters for the DenyAssignmentsClient.ListForScope method.
+type DenyAssignmentsClientListForScopeOptions struct {
+	// The filter to apply on the operation. Use $filter=atScope() to return all deny assignments at or above the scope. Use $filter=denyAssignmentName
+	// eq '{name}' to search deny assignments by name at
+	// specified scope. Use $filter=principalId eq '{id}' to return all deny assignments at, above and below the scope for the
+	// specified principal. Use $filter=gdprExportPrincipalId eq '{id}' to return all
+	// deny assignments at, above and below the scope for the specified principal. This filter is different from the principalId
+	// filter as it returns not only those deny assignments that contain the
+	// specified principal is the Principals list but also those deny assignments that contain the specified principal is the
+	// ExcludePrincipals list. Additionally, when gdprExportPrincipalId filter is used,
+	// only the deny assignment name and description properties are returned.
 	Filter *string
 }
 
-// DenyAssignmentsListOptions contains the optional parameters for the DenyAssignments.List method.
-type DenyAssignmentsListOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all deny assignments at or above the scope. Use $filter=denyAssignmentName eq '{name}'
-	// to search deny assignments by name at specified scope. Use $filter=principalId eq '{id}' to return all deny assignments at, above and below the scope
-	// for the specified principal. Use $filter=gdprExportPrincipalId eq '{id}' to return all deny assignments at, above and below the scope for the specified
-	// principal. This filter is different from the principalId filter as it returns not only those deny assignments that contain the specified principal is
-	// the Principals list but also those deny assignments that contain the specified principal is the ExcludePrincipals list. Additionally, when gdprExportPrincipalId
-	// filter is used, only the deny assignment name and description properties are returned.
+// DenyAssignmentsClientListOptions contains the optional parameters for the DenyAssignmentsClient.List method.
+type DenyAssignmentsClientListOptions struct {
+	// The filter to apply on the operation. Use $filter=atScope() to return all deny assignments at or above the scope. Use $filter=denyAssignmentName
+	// eq '{name}' to search deny assignments by name at
+	// specified scope. Use $filter=principalId eq '{id}' to return all deny assignments at, above and below the scope for the
+	// specified principal. Use $filter=gdprExportPrincipalId eq '{id}' to return all
+	// deny assignments at, above and below the scope for the specified principal. This filter is different from the principalId
+	// filter as it returns not only those deny assignments that contain the
+	// specified principal is the Principals list but also those deny assignments that contain the specified principal is the
+	// ExcludePrincipals list. Additionally, when gdprExportPrincipalId filter is used,
+	// only the deny assignment name and description properties are returned.
 	Filter *string
 }
 
@@ -870,10 +865,12 @@ type EligibleChildResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// EligibleChildResourcesGetOptions contains the optional parameters for the EligibleChildResources.Get method.
-type EligibleChildResourcesGetOptions struct {
-	// The filter to apply on the operation. Use $filter=resourceType+eq+'Subscription' to filter on only resource of type = 'Subscription'. Use $filter=resourceType+eq+'subscription'+or+resourceType+eq+'resourcegroup'
-	// to filter on resource of type = 'Subscription' or 'ResourceGroup'
+// EligibleChildResourcesClientGetOptions contains the optional parameters for the EligibleChildResourcesClient.Get method.
+type EligibleChildResourcesClientGetOptions struct {
+	// The filter to apply on the operation. Use $filter=resourceType+eq+'Subscription' to filter on only resource of type = 'Subscription'.
+	// Use
+	// $filter=resourceType+eq+'subscription'+or+resourceType+eq+'resourcegroup' to filter on resource of type = 'Subscription'
+	// or 'ResourceGroup'
 	Filter *string
 }
 
@@ -904,17 +901,9 @@ type ErrorAdditionalInfo struct {
 }
 
 // ErrorDefinition - Error description and code explaining why an operation failed.
-// Implements the error and azcore.HTTPResponse interfaces.
 type ErrorDefinition struct {
-	raw string
 	// Error of the list gateway status.
-	InnerError *ErrorDefinitionProperties `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorDefinition.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorDefinition) Error() string {
-	return e.raw
+	Error *ErrorDefinitionProperties `json:"error,omitempty"`
 }
 
 // ErrorDefinitionProperties - Error description and code explaining why an operation failed.
@@ -955,19 +944,11 @@ func (e ErrorDetail) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData
-// error response format.).
-// Implements the error and azcore.HTTPResponse interfaces.
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
 type ErrorResponse struct {
-	raw string
 	// The error object.
-	InnerError *ErrorDetail `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorDetail `json:"error,omitempty"`
 }
 
 type ExpandedProperties struct {
@@ -1067,8 +1048,8 @@ func (o OperationListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1114,13 +1095,14 @@ func (p PermissionGetResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// PermissionsListForResourceGroupOptions contains the optional parameters for the Permissions.ListForResourceGroup method.
-type PermissionsListForResourceGroupOptions struct {
+// PermissionsClientListForResourceGroupOptions contains the optional parameters for the PermissionsClient.ListForResourceGroup
+// method.
+type PermissionsClientListForResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PermissionsListForResourceOptions contains the optional parameters for the Permissions.ListForResource method.
-type PermissionsListForResourceOptions struct {
+// PermissionsClientListForResourceOptions contains the optional parameters for the PermissionsClient.ListForResource method.
+type PermissionsClientListForResourceOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1292,14 +1274,16 @@ func (p ProviderOperationsMetadata) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ProviderOperationsMetadataGetOptions contains the optional parameters for the ProviderOperationsMetadata.Get method.
-type ProviderOperationsMetadataGetOptions struct {
+// ProviderOperationsMetadataClientGetOptions contains the optional parameters for the ProviderOperationsMetadataClient.Get
+// method.
+type ProviderOperationsMetadataClientGetOptions struct {
 	// Specifies whether to expand the values.
 	Expand *string
 }
 
-// ProviderOperationsMetadataListOptions contains the optional parameters for the ProviderOperationsMetadata.List method.
-type ProviderOperationsMetadataListOptions struct {
+// ProviderOperationsMetadataClientListOptions contains the optional parameters for the ProviderOperationsMetadataClient.List
+// method.
+type ProviderOperationsMetadataClientListOptions struct {
 	// Specifies whether to expand the values.
 	Expand *string
 }
@@ -1386,8 +1370,9 @@ func (r RoleAssignmentListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// RoleAssignmentMetricsGetMetricsForSubscriptionOptions contains the optional parameters for the RoleAssignmentMetrics.GetMetricsForSubscription method.
-type RoleAssignmentMetricsGetMetricsForSubscriptionOptions struct {
+// RoleAssignmentMetricsClientGetMetricsForSubscriptionOptions contains the optional parameters for the RoleAssignmentMetricsClient.GetMetricsForSubscription
+// method.
+type RoleAssignmentMetricsClientGetMetricsForSubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1739,16 +1724,20 @@ func (r *RoleAssignmentScheduleInstanceProperties) UnmarshalJSON(data []byte) er
 	return nil
 }
 
-// RoleAssignmentScheduleInstancesGetOptions contains the optional parameters for the RoleAssignmentScheduleInstances.Get method.
-type RoleAssignmentScheduleInstancesGetOptions struct {
+// RoleAssignmentScheduleInstancesClientGetOptions contains the optional parameters for the RoleAssignmentScheduleInstancesClient.Get
+// method.
+type RoleAssignmentScheduleInstancesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleAssignmentScheduleInstancesListForScopeOptions contains the optional parameters for the RoleAssignmentScheduleInstances.ListForScope method.
-type RoleAssignmentScheduleInstancesListForScopeOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all role assignment schedules at or above the scope. Use $filter=principalId eq
-	// {id} to return all role assignment schedules at, above or below the scope for the specified principal. Use $filter=assignedTo('{userId}') to return all
-	// role assignment schedule instances for the user. Use $filter=asTarget() to return all role assignment schedule instances created for the current user.
+// RoleAssignmentScheduleInstancesClientListForScopeOptions contains the optional parameters for the RoleAssignmentScheduleInstancesClient.ListForScope
+// method.
+type RoleAssignmentScheduleInstancesClientListForScopeOptions struct {
+	// The filter to apply on the operation. Use $filter=atScope() to return all role assignment schedules at or above the scope.
+	// Use $filter=principalId eq {id} to return all role assignment schedules at,
+	// above or below the scope for the specified principal. Use $filter=assignedTo('{userId}') to return all role assignment
+	// schedule instances for the user. Use $filter=asTarget() to return all role
+	// assignment schedule instances created for the current user.
 	Filter *string
 }
 
@@ -2206,120 +2195,137 @@ type RoleAssignmentScheduleRequestPropertiesTicketInfo struct {
 	TicketSystem *string `json:"ticketSystem,omitempty"`
 }
 
-// RoleAssignmentScheduleRequestsCancelOptions contains the optional parameters for the RoleAssignmentScheduleRequests.Cancel method.
-type RoleAssignmentScheduleRequestsCancelOptions struct {
+// RoleAssignmentScheduleRequestsClientCancelOptions contains the optional parameters for the RoleAssignmentScheduleRequestsClient.Cancel
+// method.
+type RoleAssignmentScheduleRequestsClientCancelOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleAssignmentScheduleRequestsCreateOptions contains the optional parameters for the RoleAssignmentScheduleRequests.Create method.
-type RoleAssignmentScheduleRequestsCreateOptions struct {
+// RoleAssignmentScheduleRequestsClientCreateOptions contains the optional parameters for the RoleAssignmentScheduleRequestsClient.Create
+// method.
+type RoleAssignmentScheduleRequestsClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleAssignmentScheduleRequestsGetOptions contains the optional parameters for the RoleAssignmentScheduleRequests.Get method.
-type RoleAssignmentScheduleRequestsGetOptions struct {
+// RoleAssignmentScheduleRequestsClientGetOptions contains the optional parameters for the RoleAssignmentScheduleRequestsClient.Get
+// method.
+type RoleAssignmentScheduleRequestsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleAssignmentScheduleRequestsListForScopeOptions contains the optional parameters for the RoleAssignmentScheduleRequests.ListForScope method.
-type RoleAssignmentScheduleRequestsListForScopeOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all role assignment schedule requests at or above the scope. Use $filter=principalId
-	// eq {id} to return all role assignment schedule requests at, above or below the scope for the specified principal. Use $filter=asRequestor() to return
-	// all role assignment schedule requests requested by the current user. Use $filter=asTarget() to return all role assignment schedule requests created for
-	// the current user. Use $filter=asApprover() to return all role assignment schedule requests where the current user is an approver.
+// RoleAssignmentScheduleRequestsClientListForScopeOptions contains the optional parameters for the RoleAssignmentScheduleRequestsClient.ListForScope
+// method.
+type RoleAssignmentScheduleRequestsClientListForScopeOptions struct {
+	// The filter to apply on the operation. Use $filter=atScope() to return all role assignment schedule requests at or above
+	// the scope. Use $filter=principalId eq {id} to return all role assignment
+	// schedule requests at, above or below the scope for the specified principal. Use $filter=asRequestor() to return all role
+	// assignment schedule requests requested by the current user. Use
+	// $filter=asTarget() to return all role assignment schedule requests created for the current user. Use $filter=asApprover()
+	// to return all role assignment schedule requests where the current user is an
+	// approver.
 	Filter *string
 }
 
-// RoleAssignmentSchedulesGetOptions contains the optional parameters for the RoleAssignmentSchedules.Get method.
-type RoleAssignmentSchedulesGetOptions struct {
+// RoleAssignmentSchedulesClientGetOptions contains the optional parameters for the RoleAssignmentSchedulesClient.Get method.
+type RoleAssignmentSchedulesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleAssignmentSchedulesListForScopeOptions contains the optional parameters for the RoleAssignmentSchedules.ListForScope method.
-type RoleAssignmentSchedulesListForScopeOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all role assignment schedules at or above the scope. Use $filter=principalId eq
-	// {id} to return all role assignment schedules at, above or below the scope for the specified principal. Use $filter=assignedTo('{userId}') to return all
-	// role assignment schedules for the current user. Use $filter=asTarget() to return all role assignment schedules created for the current user.
+// RoleAssignmentSchedulesClientListForScopeOptions contains the optional parameters for the RoleAssignmentSchedulesClient.ListForScope
+// method.
+type RoleAssignmentSchedulesClientListForScopeOptions struct {
+	// The filter to apply on the operation. Use $filter=atScope() to return all role assignment schedules at or above the scope.
+	// Use $filter=principalId eq {id} to return all role assignment schedules at,
+	// above or below the scope for the specified principal. Use $filter=assignedTo('{userId}') to return all role assignment
+	// schedules for the current user. Use $filter=asTarget() to return all role
+	// assignment schedules created for the current user.
 	Filter *string
 }
 
-// RoleAssignmentsCreateByIDOptions contains the optional parameters for the RoleAssignments.CreateByID method.
-type RoleAssignmentsCreateByIDOptions struct {
+// RoleAssignmentsClientCreateByIDOptions contains the optional parameters for the RoleAssignmentsClient.CreateByID method.
+type RoleAssignmentsClientCreateByIDOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleAssignmentsCreateOptions contains the optional parameters for the RoleAssignments.Create method.
-type RoleAssignmentsCreateOptions struct {
+// RoleAssignmentsClientCreateOptions contains the optional parameters for the RoleAssignmentsClient.Create method.
+type RoleAssignmentsClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleAssignmentsDeleteByIDOptions contains the optional parameters for the RoleAssignments.DeleteByID method.
-type RoleAssignmentsDeleteByIDOptions struct {
+// RoleAssignmentsClientDeleteByIDOptions contains the optional parameters for the RoleAssignmentsClient.DeleteByID method.
+type RoleAssignmentsClientDeleteByIDOptions struct {
 	// Tenant ID for cross-tenant request
 	TenantID *string
 }
 
-// RoleAssignmentsDeleteOptions contains the optional parameters for the RoleAssignments.Delete method.
-type RoleAssignmentsDeleteOptions struct {
+// RoleAssignmentsClientDeleteOptions contains the optional parameters for the RoleAssignmentsClient.Delete method.
+type RoleAssignmentsClientDeleteOptions struct {
 	// Tenant ID for cross-tenant request
 	TenantID *string
 }
 
-// RoleAssignmentsGetByIDOptions contains the optional parameters for the RoleAssignments.GetByID method.
-type RoleAssignmentsGetByIDOptions struct {
+// RoleAssignmentsClientGetByIDOptions contains the optional parameters for the RoleAssignmentsClient.GetByID method.
+type RoleAssignmentsClientGetByIDOptions struct {
 	// Tenant ID for cross-tenant request
 	TenantID *string
 }
 
-// RoleAssignmentsGetOptions contains the optional parameters for the RoleAssignments.Get method.
-type RoleAssignmentsGetOptions struct {
+// RoleAssignmentsClientGetOptions contains the optional parameters for the RoleAssignmentsClient.Get method.
+type RoleAssignmentsClientGetOptions struct {
 	// Tenant ID for cross-tenant request
 	TenantID *string
 }
 
-// RoleAssignmentsListForResourceGroupOptions contains the optional parameters for the RoleAssignments.ListForResourceGroup method.
-type RoleAssignmentsListForResourceGroupOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId eq {id} to
-	// return all role assignments at, above or below the scope for the specified principal.
-	Filter *string
-	// Tenant ID for cross-tenant request
-	TenantID *string
-}
-
-// RoleAssignmentsListForResourceOptions contains the optional parameters for the RoleAssignments.ListForResource method.
-type RoleAssignmentsListForResourceOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId eq {id} to
-	// return all role assignments at, above or below the scope for the specified principal.
-	Filter *string
-	// Tenant ID for cross-tenant request
-	TenantID *string
-}
-
-// RoleAssignmentsListForScopeOptions contains the optional parameters for the RoleAssignments.ListForScope method.
-type RoleAssignmentsListForScopeOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId eq {id} to
-	// return all role assignments at, above or below the scope for the specified principal.
+// RoleAssignmentsClientListForResourceGroupOptions contains the optional parameters for the RoleAssignmentsClient.ListForResourceGroup
+// method.
+type RoleAssignmentsClientListForResourceGroupOptions struct {
+	// The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId
+	// eq {id} to return all role assignments at, above or below the
+	// scope for the specified principal.
 	Filter *string
 	// Tenant ID for cross-tenant request
 	TenantID *string
 }
 
-// RoleAssignmentsListForSubscriptionOptions contains the optional parameters for the RoleAssignments.ListForSubscription method.
-type RoleAssignmentsListForSubscriptionOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId eq {id} to
-	// return all role assignments at, above or below the scope for the specified principal.
+// RoleAssignmentsClientListForResourceOptions contains the optional parameters for the RoleAssignmentsClient.ListForResource
+// method.
+type RoleAssignmentsClientListForResourceOptions struct {
+	// The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId
+	// eq {id} to return all role assignments at, above or below the
+	// scope for the specified principal.
 	Filter *string
 	// Tenant ID for cross-tenant request
 	TenantID *string
 }
 
-// RoleAssignmentsValidateByIDOptions contains the optional parameters for the RoleAssignments.ValidateByID method.
-type RoleAssignmentsValidateByIDOptions struct {
+// RoleAssignmentsClientListForScopeOptions contains the optional parameters for the RoleAssignmentsClient.ListForScope method.
+type RoleAssignmentsClientListForScopeOptions struct {
+	// The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId
+	// eq {id} to return all role assignments at, above or below the
+	// scope for the specified principal.
+	Filter *string
+	// Tenant ID for cross-tenant request
+	TenantID *string
+}
+
+// RoleAssignmentsClientListForSubscriptionOptions contains the optional parameters for the RoleAssignmentsClient.ListForSubscription
+// method.
+type RoleAssignmentsClientListForSubscriptionOptions struct {
+	// The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId
+	// eq {id} to return all role assignments at, above or below the
+	// scope for the specified principal.
+	Filter *string
+	// Tenant ID for cross-tenant request
+	TenantID *string
+}
+
+// RoleAssignmentsClientValidateByIDOptions contains the optional parameters for the RoleAssignmentsClient.ValidateByID method.
+type RoleAssignmentsClientValidateByIDOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleAssignmentsValidateOptions contains the optional parameters for the RoleAssignments.Validate method.
-type RoleAssignmentsValidateOptions struct {
+// RoleAssignmentsClientValidateOptions contains the optional parameters for the RoleAssignmentsClient.Validate method.
+type RoleAssignmentsClientValidateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -2393,28 +2399,29 @@ func (r RoleDefinitionProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// RoleDefinitionsCreateOrUpdateOptions contains the optional parameters for the RoleDefinitions.CreateOrUpdate method.
-type RoleDefinitionsCreateOrUpdateOptions struct {
+// RoleDefinitionsClientCreateOrUpdateOptions contains the optional parameters for the RoleDefinitionsClient.CreateOrUpdate
+// method.
+type RoleDefinitionsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleDefinitionsDeleteOptions contains the optional parameters for the RoleDefinitions.Delete method.
-type RoleDefinitionsDeleteOptions struct {
+// RoleDefinitionsClientDeleteOptions contains the optional parameters for the RoleDefinitionsClient.Delete method.
+type RoleDefinitionsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleDefinitionsGetByIDOptions contains the optional parameters for the RoleDefinitions.GetByID method.
-type RoleDefinitionsGetByIDOptions struct {
+// RoleDefinitionsClientGetByIDOptions contains the optional parameters for the RoleDefinitionsClient.GetByID method.
+type RoleDefinitionsClientGetByIDOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleDefinitionsGetOptions contains the optional parameters for the RoleDefinitions.Get method.
-type RoleDefinitionsGetOptions struct {
+// RoleDefinitionsClientGetOptions contains the optional parameters for the RoleDefinitionsClient.Get method.
+type RoleDefinitionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleDefinitionsListOptions contains the optional parameters for the RoleDefinitions.List method.
-type RoleDefinitionsListOptions struct {
+// RoleDefinitionsClientListOptions contains the optional parameters for the RoleDefinitionsClient.List method.
+type RoleDefinitionsClientListOptions struct {
 	// The filter to apply on the operation. Use atScopeAndBelow filter to search below the given scope as well.
 	Filter *string
 }
@@ -2612,16 +2619,20 @@ func (r *RoleEligibilityScheduleInstanceProperties) UnmarshalJSON(data []byte) e
 	return nil
 }
 
-// RoleEligibilityScheduleInstancesGetOptions contains the optional parameters for the RoleEligibilityScheduleInstances.Get method.
-type RoleEligibilityScheduleInstancesGetOptions struct {
+// RoleEligibilityScheduleInstancesClientGetOptions contains the optional parameters for the RoleEligibilityScheduleInstancesClient.Get
+// method.
+type RoleEligibilityScheduleInstancesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleEligibilityScheduleInstancesListForScopeOptions contains the optional parameters for the RoleEligibilityScheduleInstances.ListForScope method.
-type RoleEligibilityScheduleInstancesListForScopeOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all role assignment schedules at or above the scope. Use $filter=principalId eq
-	// {id} to return all role assignment schedules at, above or below the scope for the specified principal. Use $filter=assignedTo('{userId}') to return all
-	// role eligibility schedules for the user. Use $filter=asTarget() to return all role eligibility schedules created for the current user.
+// RoleEligibilityScheduleInstancesClientListForScopeOptions contains the optional parameters for the RoleEligibilityScheduleInstancesClient.ListForScope
+// method.
+type RoleEligibilityScheduleInstancesClientListForScopeOptions struct {
+	// The filter to apply on the operation. Use $filter=atScope() to return all role assignment schedules at or above the scope.
+	// Use $filter=principalId eq {id} to return all role assignment schedules at,
+	// above or below the scope for the specified principal. Use $filter=assignedTo('{userId}') to return all role eligibility
+	// schedules for the user. Use $filter=asTarget() to return all role eligibility
+	// schedules created for the current user.
 	Filter *string
 }
 
@@ -3058,60 +3069,73 @@ type RoleEligibilityScheduleRequestPropertiesTicketInfo struct {
 	TicketSystem *string `json:"ticketSystem,omitempty"`
 }
 
-// RoleEligibilityScheduleRequestsCancelOptions contains the optional parameters for the RoleEligibilityScheduleRequests.Cancel method.
-type RoleEligibilityScheduleRequestsCancelOptions struct {
+// RoleEligibilityScheduleRequestsClientCancelOptions contains the optional parameters for the RoleEligibilityScheduleRequestsClient.Cancel
+// method.
+type RoleEligibilityScheduleRequestsClientCancelOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleEligibilityScheduleRequestsCreateOptions contains the optional parameters for the RoleEligibilityScheduleRequests.Create method.
-type RoleEligibilityScheduleRequestsCreateOptions struct {
+// RoleEligibilityScheduleRequestsClientCreateOptions contains the optional parameters for the RoleEligibilityScheduleRequestsClient.Create
+// method.
+type RoleEligibilityScheduleRequestsClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleEligibilityScheduleRequestsGetOptions contains the optional parameters for the RoleEligibilityScheduleRequests.Get method.
-type RoleEligibilityScheduleRequestsGetOptions struct {
+// RoleEligibilityScheduleRequestsClientGetOptions contains the optional parameters for the RoleEligibilityScheduleRequestsClient.Get
+// method.
+type RoleEligibilityScheduleRequestsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleEligibilityScheduleRequestsListForScopeOptions contains the optional parameters for the RoleEligibilityScheduleRequests.ListForScope method.
-type RoleEligibilityScheduleRequestsListForScopeOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all role eligibility schedule requests at or above the scope. Use $filter=principalId
-	// eq {id} to return all role eligibility schedule requests at, above or below the scope for the specified principal. Use $filter=asRequestor() to return
-	// all role eligibility schedule requests requested by the current user. Use $filter=asTarget() to return all role eligibility schedule requests created
-	// for the current user. Use $filter=asApprover() to return all role eligibility schedule requests where the current user is an approver.
+// RoleEligibilityScheduleRequestsClientListForScopeOptions contains the optional parameters for the RoleEligibilityScheduleRequestsClient.ListForScope
+// method.
+type RoleEligibilityScheduleRequestsClientListForScopeOptions struct {
+	// The filter to apply on the operation. Use $filter=atScope() to return all role eligibility schedule requests at or above
+	// the scope. Use $filter=principalId eq {id} to return all role eligibility
+	// schedule requests at, above or below the scope for the specified principal. Use $filter=asRequestor() to return all role
+	// eligibility schedule requests requested by the current user. Use
+	// $filter=asTarget() to return all role eligibility schedule requests created for the current user. Use $filter=asApprover()
+	// to return all role eligibility schedule requests where the current user is an
+	// approver.
 	Filter *string
 }
 
-// RoleEligibilitySchedulesGetOptions contains the optional parameters for the RoleEligibilitySchedules.Get method.
-type RoleEligibilitySchedulesGetOptions struct {
+// RoleEligibilitySchedulesClientGetOptions contains the optional parameters for the RoleEligibilitySchedulesClient.Get method.
+type RoleEligibilitySchedulesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleEligibilitySchedulesListForScopeOptions contains the optional parameters for the RoleEligibilitySchedules.ListForScope method.
-type RoleEligibilitySchedulesListForScopeOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all role eligibility schedules at or above the scope. Use $filter=principalId eq
-	// {id} to return all role eligibility schedules at, above or below the scope for the specified principal. Use $filter=assignedTo('{userId}') to return
-	// all role eligibility schedules for the user. Use $filter=asTarget() to return all role eligibility schedules created for the current user.
+// RoleEligibilitySchedulesClientListForScopeOptions contains the optional parameters for the RoleEligibilitySchedulesClient.ListForScope
+// method.
+type RoleEligibilitySchedulesClientListForScopeOptions struct {
+	// The filter to apply on the operation. Use $filter=atScope() to return all role eligibility schedules at or above the scope.
+	// Use $filter=principalId eq {id} to return all role eligibility schedules at,
+	// above or below the scope for the specified principal. Use $filter=assignedTo('{userId}') to return all role eligibility
+	// schedules for the user. Use $filter=asTarget() to return all role eligibility
+	// schedules created for the current user.
 	Filter *string
 }
 
-// RoleManagementPoliciesDeleteOptions contains the optional parameters for the RoleManagementPolicies.Delete method.
-type RoleManagementPoliciesDeleteOptions struct {
+// RoleManagementPoliciesClientDeleteOptions contains the optional parameters for the RoleManagementPoliciesClient.Delete
+// method.
+type RoleManagementPoliciesClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleManagementPoliciesGetOptions contains the optional parameters for the RoleManagementPolicies.Get method.
-type RoleManagementPoliciesGetOptions struct {
+// RoleManagementPoliciesClientGetOptions contains the optional parameters for the RoleManagementPoliciesClient.Get method.
+type RoleManagementPoliciesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleManagementPoliciesListForScopeOptions contains the optional parameters for the RoleManagementPolicies.ListForScope method.
-type RoleManagementPoliciesListForScopeOptions struct {
+// RoleManagementPoliciesClientListForScopeOptions contains the optional parameters for the RoleManagementPoliciesClient.ListForScope
+// method.
+type RoleManagementPoliciesClientListForScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleManagementPoliciesUpdateOptions contains the optional parameters for the RoleManagementPolicies.Update method.
-type RoleManagementPoliciesUpdateOptions struct {
+// RoleManagementPoliciesClientUpdateOptions contains the optional parameters for the RoleManagementPoliciesClient.Update
+// method.
+type RoleManagementPoliciesClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -3142,16 +3166,35 @@ func (r RoleManagementPolicy) MarshalJSON() ([]byte, error) {
 
 // RoleManagementPolicyApprovalRule - The role management policy rule.
 type RoleManagementPolicyApprovalRule struct {
-	RoleManagementPolicyRule
+	// REQUIRED; The type of rule
+	RuleType *RoleManagementPolicyRuleType `json:"ruleType,omitempty"`
+
+	// The id of the rule.
+	ID *string `json:"id,omitempty"`
+
 	// The approval setting
 	Setting *ApprovalSettings `json:"setting,omitempty"`
+
+	// The target of the current rule.
+	Target *RoleManagementPolicyRuleTarget `json:"target,omitempty"`
+}
+
+// GetRoleManagementPolicyRule implements the RoleManagementPolicyRuleClassification interface for type RoleManagementPolicyApprovalRule.
+func (r *RoleManagementPolicyApprovalRule) GetRoleManagementPolicyRule() *RoleManagementPolicyRule {
+	return &RoleManagementPolicyRule{
+		ID:       r.ID,
+		RuleType: r.RuleType,
+		Target:   r.Target,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type RoleManagementPolicyApprovalRule.
 func (r RoleManagementPolicyApprovalRule) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.RoleManagementPolicyRule.marshalInternal(objectMap, RoleManagementPolicyRuleTypeRoleManagementPolicyApprovalRule)
+	populate(objectMap, "id", r.ID)
+	objectMap["ruleType"] = RoleManagementPolicyRuleTypeRoleManagementPolicyApprovalRule
 	populate(objectMap, "setting", r.Setting)
+	populate(objectMap, "target", r.Target)
 	return json.Marshal(objectMap)
 }
 
@@ -3164,16 +3207,22 @@ func (r *RoleManagementPolicyApprovalRule) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "id":
+			err = unpopulate(val, &r.ID)
+			delete(rawMsg, key)
+		case "ruleType":
+			err = unpopulate(val, &r.RuleType)
+			delete(rawMsg, key)
 		case "setting":
 			err = unpopulate(val, &r.Setting)
+			delete(rawMsg, key)
+		case "target":
+			err = unpopulate(val, &r.Target)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := r.RoleManagementPolicyRule.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -3225,42 +3274,65 @@ type RoleManagementPolicyAssignmentProperties struct {
 	PolicyAssignmentProperties *PolicyAssignmentProperties `json:"policyAssignmentProperties,omitempty" azure:"ro"`
 }
 
-// RoleManagementPolicyAssignmentsCreateOptions contains the optional parameters for the RoleManagementPolicyAssignments.Create method.
-type RoleManagementPolicyAssignmentsCreateOptions struct {
+// RoleManagementPolicyAssignmentsClientCreateOptions contains the optional parameters for the RoleManagementPolicyAssignmentsClient.Create
+// method.
+type RoleManagementPolicyAssignmentsClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleManagementPolicyAssignmentsDeleteOptions contains the optional parameters for the RoleManagementPolicyAssignments.Delete method.
-type RoleManagementPolicyAssignmentsDeleteOptions struct {
+// RoleManagementPolicyAssignmentsClientDeleteOptions contains the optional parameters for the RoleManagementPolicyAssignmentsClient.Delete
+// method.
+type RoleManagementPolicyAssignmentsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleManagementPolicyAssignmentsGetOptions contains the optional parameters for the RoleManagementPolicyAssignments.Get method.
-type RoleManagementPolicyAssignmentsGetOptions struct {
+// RoleManagementPolicyAssignmentsClientGetOptions contains the optional parameters for the RoleManagementPolicyAssignmentsClient.Get
+// method.
+type RoleManagementPolicyAssignmentsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleManagementPolicyAssignmentsListForScopeOptions contains the optional parameters for the RoleManagementPolicyAssignments.ListForScope method.
-type RoleManagementPolicyAssignmentsListForScopeOptions struct {
+// RoleManagementPolicyAssignmentsClientListForScopeOptions contains the optional parameters for the RoleManagementPolicyAssignmentsClient.ListForScope
+// method.
+type RoleManagementPolicyAssignmentsClientListForScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
 // RoleManagementPolicyAuthenticationContextRule - The role management policy rule.
 type RoleManagementPolicyAuthenticationContextRule struct {
-	RoleManagementPolicyRule
+	// REQUIRED; The type of rule
+	RuleType *RoleManagementPolicyRuleType `json:"ruleType,omitempty"`
+
 	// The claim value.
 	ClaimValue *string `json:"claimValue,omitempty"`
 
+	// The id of the rule.
+	ID *string `json:"id,omitempty"`
+
 	// The value indicating if rule is enabled.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
+
+	// The target of the current rule.
+	Target *RoleManagementPolicyRuleTarget `json:"target,omitempty"`
+}
+
+// GetRoleManagementPolicyRule implements the RoleManagementPolicyRuleClassification interface for type RoleManagementPolicyAuthenticationContextRule.
+func (r *RoleManagementPolicyAuthenticationContextRule) GetRoleManagementPolicyRule() *RoleManagementPolicyRule {
+	return &RoleManagementPolicyRule{
+		ID:       r.ID,
+		RuleType: r.RuleType,
+		Target:   r.Target,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type RoleManagementPolicyAuthenticationContextRule.
 func (r RoleManagementPolicyAuthenticationContextRule) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.RoleManagementPolicyRule.marshalInternal(objectMap, RoleManagementPolicyRuleTypeRoleManagementPolicyAuthenticationContextRule)
 	populate(objectMap, "claimValue", r.ClaimValue)
+	populate(objectMap, "id", r.ID)
 	populate(objectMap, "isEnabled", r.IsEnabled)
+	objectMap["ruleType"] = RoleManagementPolicyRuleTypeRoleManagementPolicyAuthenticationContextRule
+	populate(objectMap, "target", r.Target)
 	return json.Marshal(objectMap)
 }
 
@@ -3276,32 +3348,57 @@ func (r *RoleManagementPolicyAuthenticationContextRule) UnmarshalJSON(data []byt
 		case "claimValue":
 			err = unpopulate(val, &r.ClaimValue)
 			delete(rawMsg, key)
+		case "id":
+			err = unpopulate(val, &r.ID)
+			delete(rawMsg, key)
 		case "isEnabled":
 			err = unpopulate(val, &r.IsEnabled)
+			delete(rawMsg, key)
+		case "ruleType":
+			err = unpopulate(val, &r.RuleType)
+			delete(rawMsg, key)
+		case "target":
+			err = unpopulate(val, &r.Target)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := r.RoleManagementPolicyRule.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // RoleManagementPolicyEnablementRule - The role management policy rule.
 type RoleManagementPolicyEnablementRule struct {
-	RoleManagementPolicyRule
+	// REQUIRED; The type of rule
+	RuleType *RoleManagementPolicyRuleType `json:"ruleType,omitempty"`
+
 	// The list of enabled rules.
 	EnabledRules []*EnablementRules `json:"enabledRules,omitempty"`
+
+	// The id of the rule.
+	ID *string `json:"id,omitempty"`
+
+	// The target of the current rule.
+	Target *RoleManagementPolicyRuleTarget `json:"target,omitempty"`
+}
+
+// GetRoleManagementPolicyRule implements the RoleManagementPolicyRuleClassification interface for type RoleManagementPolicyEnablementRule.
+func (r *RoleManagementPolicyEnablementRule) GetRoleManagementPolicyRule() *RoleManagementPolicyRule {
+	return &RoleManagementPolicyRule{
+		ID:       r.ID,
+		RuleType: r.RuleType,
+		Target:   r.Target,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type RoleManagementPolicyEnablementRule.
 func (r RoleManagementPolicyEnablementRule) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.RoleManagementPolicyRule.marshalInternal(objectMap, RoleManagementPolicyRuleTypeRoleManagementPolicyEnablementRule)
 	populate(objectMap, "enabledRules", r.EnabledRules)
+	populate(objectMap, "id", r.ID)
+	objectMap["ruleType"] = RoleManagementPolicyRuleTypeRoleManagementPolicyEnablementRule
+	populate(objectMap, "target", r.Target)
 	return json.Marshal(objectMap)
 }
 
@@ -3317,33 +3414,58 @@ func (r *RoleManagementPolicyEnablementRule) UnmarshalJSON(data []byte) error {
 		case "enabledRules":
 			err = unpopulate(val, &r.EnabledRules)
 			delete(rawMsg, key)
+		case "id":
+			err = unpopulate(val, &r.ID)
+			delete(rawMsg, key)
+		case "ruleType":
+			err = unpopulate(val, &r.RuleType)
+			delete(rawMsg, key)
+		case "target":
+			err = unpopulate(val, &r.Target)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := r.RoleManagementPolicyRule.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
 
 // RoleManagementPolicyExpirationRule - The role management policy rule.
 type RoleManagementPolicyExpirationRule struct {
-	RoleManagementPolicyRule
+	// REQUIRED; The type of rule
+	RuleType *RoleManagementPolicyRuleType `json:"ruleType,omitempty"`
+
+	// The id of the rule.
+	ID *string `json:"id,omitempty"`
+
 	// The value indicating whether expiration is required.
 	IsExpirationRequired *bool `json:"isExpirationRequired,omitempty"`
 
 	// The maximum duration of expiration in timespan.
 	MaximumDuration *string `json:"maximumDuration,omitempty"`
+
+	// The target of the current rule.
+	Target *RoleManagementPolicyRuleTarget `json:"target,omitempty"`
+}
+
+// GetRoleManagementPolicyRule implements the RoleManagementPolicyRuleClassification interface for type RoleManagementPolicyExpirationRule.
+func (r *RoleManagementPolicyExpirationRule) GetRoleManagementPolicyRule() *RoleManagementPolicyRule {
+	return &RoleManagementPolicyRule{
+		ID:       r.ID,
+		RuleType: r.RuleType,
+		Target:   r.Target,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type RoleManagementPolicyExpirationRule.
 func (r RoleManagementPolicyExpirationRule) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.RoleManagementPolicyRule.marshalInternal(objectMap, RoleManagementPolicyRuleTypeRoleManagementPolicyExpirationRule)
+	populate(objectMap, "id", r.ID)
 	populate(objectMap, "isExpirationRequired", r.IsExpirationRequired)
 	populate(objectMap, "maximumDuration", r.MaximumDuration)
+	objectMap["ruleType"] = RoleManagementPolicyRuleTypeRoleManagementPolicyExpirationRule
+	populate(objectMap, "target", r.Target)
 	return json.Marshal(objectMap)
 }
 
@@ -3356,19 +3478,25 @@ func (r *RoleManagementPolicyExpirationRule) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "id":
+			err = unpopulate(val, &r.ID)
+			delete(rawMsg, key)
 		case "isExpirationRequired":
 			err = unpopulate(val, &r.IsExpirationRequired)
 			delete(rawMsg, key)
 		case "maximumDuration":
 			err = unpopulate(val, &r.MaximumDuration)
 			delete(rawMsg, key)
+		case "ruleType":
+			err = unpopulate(val, &r.RuleType)
+			delete(rawMsg, key)
+		case "target":
+			err = unpopulate(val, &r.Target)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := r.RoleManagementPolicyRule.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -3392,7 +3520,12 @@ func (r RoleManagementPolicyListResult) MarshalJSON() ([]byte, error) {
 
 // RoleManagementPolicyNotificationRule - The role management policy rule.
 type RoleManagementPolicyNotificationRule struct {
-	RoleManagementPolicyRule
+	// REQUIRED; The type of rule
+	RuleType *RoleManagementPolicyRuleType `json:"ruleType,omitempty"`
+
+	// The id of the rule.
+	ID *string `json:"id,omitempty"`
+
 	// Its value determine if the notification need to be sent to the recipient type specified in policy rule.
 	IsDefaultRecipientsEnabled *bool `json:"isDefaultRecipientsEnabled,omitempty"`
 
@@ -3407,17 +3540,31 @@ type RoleManagementPolicyNotificationRule struct {
 
 	// The recipient type.
 	RecipientType *RecipientType `json:"recipientType,omitempty"`
+
+	// The target of the current rule.
+	Target *RoleManagementPolicyRuleTarget `json:"target,omitempty"`
+}
+
+// GetRoleManagementPolicyRule implements the RoleManagementPolicyRuleClassification interface for type RoleManagementPolicyNotificationRule.
+func (r *RoleManagementPolicyNotificationRule) GetRoleManagementPolicyRule() *RoleManagementPolicyRule {
+	return &RoleManagementPolicyRule{
+		ID:       r.ID,
+		RuleType: r.RuleType,
+		Target:   r.Target,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type RoleManagementPolicyNotificationRule.
 func (r RoleManagementPolicyNotificationRule) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.RoleManagementPolicyRule.marshalInternal(objectMap, RoleManagementPolicyRuleTypeRoleManagementPolicyNotificationRule)
+	populate(objectMap, "id", r.ID)
 	populate(objectMap, "isDefaultRecipientsEnabled", r.IsDefaultRecipientsEnabled)
 	populate(objectMap, "notificationLevel", r.NotificationLevel)
 	populate(objectMap, "notificationRecipients", r.NotificationRecipients)
 	populate(objectMap, "notificationType", r.NotificationType)
 	populate(objectMap, "recipientType", r.RecipientType)
+	objectMap["ruleType"] = RoleManagementPolicyRuleTypeRoleManagementPolicyNotificationRule
+	populate(objectMap, "target", r.Target)
 	return json.Marshal(objectMap)
 }
 
@@ -3430,6 +3577,9 @@ func (r *RoleManagementPolicyNotificationRule) UnmarshalJSON(data []byte) error 
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "id":
+			err = unpopulate(val, &r.ID)
+			delete(rawMsg, key)
 		case "isDefaultRecipientsEnabled":
 			err = unpopulate(val, &r.IsDefaultRecipientsEnabled)
 			delete(rawMsg, key)
@@ -3445,13 +3595,16 @@ func (r *RoleManagementPolicyNotificationRule) UnmarshalJSON(data []byte) error 
 		case "recipientType":
 			err = unpopulate(val, &r.RecipientType)
 			delete(rawMsg, key)
+		case "ruleType":
+			err = unpopulate(val, &r.RuleType)
+			delete(rawMsg, key)
+		case "target":
+			err = unpopulate(val, &r.Target)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := r.RoleManagementPolicyRule.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -3570,43 +3723,6 @@ type RoleManagementPolicyRule struct {
 // GetRoleManagementPolicyRule implements the RoleManagementPolicyRuleClassification interface for type RoleManagementPolicyRule.
 func (r *RoleManagementPolicyRule) GetRoleManagementPolicyRule() *RoleManagementPolicyRule { return r }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type RoleManagementPolicyRule.
-func (r *RoleManagementPolicyRule) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return r.unmarshalInternal(rawMsg)
-}
-
-func (r RoleManagementPolicyRule) marshalInternal(objectMap map[string]interface{}, discValue RoleManagementPolicyRuleType) {
-	populate(objectMap, "id", r.ID)
-	r.RuleType = &discValue
-	objectMap["ruleType"] = r.RuleType
-	populate(objectMap, "target", r.Target)
-}
-
-func (r *RoleManagementPolicyRule) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &r.ID)
-			delete(rawMsg, key)
-		case "ruleType":
-			err = unpopulate(val, &r.RuleType)
-			delete(rawMsg, key)
-		case "target":
-			err = unpopulate(val, &r.Target)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // RoleManagementPolicyRuleTarget - The role management policy rule target.
 type RoleManagementPolicyRuleTarget struct {
 	// The caller of the setting.
@@ -3642,7 +3758,9 @@ func (r RoleManagementPolicyRuleTarget) MarshalJSON() ([]byte, error) {
 
 // ServicePrincipalDecisionTarget - Service Principal Decision Target
 type ServicePrincipalDecisionTarget struct {
-	AccessReviewDecisionTarget
+	// REQUIRED; The type of decision target : User/ServicePrincipal
+	Type *DecisionTargetType `json:"type,omitempty"`
+
 	// READ-ONLY; The appId for the service principal entity being reviewed
 	AppID *string `json:"appId,omitempty" azure:"ro"`
 
@@ -3653,13 +3771,20 @@ type ServicePrincipalDecisionTarget struct {
 	PrincipalName *string `json:"principalName,omitempty" azure:"ro"`
 }
 
+// GetAccessReviewDecisionTarget implements the AccessReviewDecisionTargetClassification interface for type ServicePrincipalDecisionTarget.
+func (s *ServicePrincipalDecisionTarget) GetAccessReviewDecisionTarget() *AccessReviewDecisionTarget {
+	return &AccessReviewDecisionTarget{
+		Type: s.Type,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type ServicePrincipalDecisionTarget.
 func (s ServicePrincipalDecisionTarget) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.AccessReviewDecisionTarget.marshalInternal(objectMap, DecisionTargetTypeServicePrincipal)
 	populate(objectMap, "appId", s.AppID)
 	populate(objectMap, "principalId", s.PrincipalID)
 	populate(objectMap, "principalName", s.PrincipalName)
+	objectMap["type"] = DecisionTargetTypeServicePrincipal
 	return json.Marshal(objectMap)
 }
 
@@ -3681,20 +3806,22 @@ func (s *ServicePrincipalDecisionTarget) UnmarshalJSON(data []byte) error {
 		case "principalName":
 			err = unpopulate(val, &s.PrincipalName)
 			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &s.Type)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := s.AccessReviewDecisionTarget.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
 
 // UserDecisionTarget - User Decision Target
 type UserDecisionTarget struct {
-	AccessReviewDecisionTarget
+	// REQUIRED; The type of decision target : User/ServicePrincipal
+	Type *DecisionTargetType `json:"type,omitempty"`
+
 	// READ-ONLY; The id of user whose access was reviewed.
 	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
 
@@ -3705,12 +3832,19 @@ type UserDecisionTarget struct {
 	UserPrincipalName *string `json:"userPrincipalName,omitempty" azure:"ro"`
 }
 
+// GetAccessReviewDecisionTarget implements the AccessReviewDecisionTargetClassification interface for type UserDecisionTarget.
+func (u *UserDecisionTarget) GetAccessReviewDecisionTarget() *AccessReviewDecisionTarget {
+	return &AccessReviewDecisionTarget{
+		Type: u.Type,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type UserDecisionTarget.
 func (u UserDecisionTarget) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	u.AccessReviewDecisionTarget.marshalInternal(objectMap, DecisionTargetTypeUser)
 	populate(objectMap, "principalId", u.PrincipalID)
 	populate(objectMap, "principalName", u.PrincipalName)
+	objectMap["type"] = DecisionTargetTypeUser
 	populate(objectMap, "userPrincipalName", u.UserPrincipalName)
 	return json.Marshal(objectMap)
 }
@@ -3730,6 +3864,9 @@ func (u *UserDecisionTarget) UnmarshalJSON(data []byte) error {
 		case "principalName":
 			err = unpopulate(val, &u.PrincipalName)
 			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &u.Type)
+			delete(rawMsg, key)
 		case "userPrincipalName":
 			err = unpopulate(val, &u.UserPrincipalName)
 			delete(rawMsg, key)
@@ -3737,9 +3874,6 @@ func (u *UserDecisionTarget) UnmarshalJSON(data []byte) error {
 		if err != nil {
 			return err
 		}
-	}
-	if err := u.AccessReviewDecisionTarget.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }

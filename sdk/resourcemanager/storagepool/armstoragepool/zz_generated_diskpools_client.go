@@ -11,7 +11,6 @@ package armstoragepool
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,61 @@ import (
 // DiskPoolsClient contains the methods for the DiskPools group.
 // Don't use this type directly, use NewDiskPoolsClient() instead.
 type DiskPoolsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDiskPoolsClient creates a new instance of DiskPoolsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDiskPoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DiskPoolsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &DiskPoolsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DiskPoolsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// BeginCreateOrUpdate - Create or Update Disk pool. This create or update operation can take 15 minutes to complete. This is expected service behavior.
-// If the operation fails it returns the *Error error type.
-func (client *DiskPoolsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, diskPoolName string, diskPoolCreatePayload DiskPoolCreate, options *DiskPoolsBeginCreateOrUpdateOptions) (DiskPoolsCreateOrUpdatePollerResponse, error) {
+// BeginCreateOrUpdate - Create or Update Disk pool. This create or update operation can take 15 minutes to complete. This
+// is expected service behavior.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// diskPoolName - The name of the Disk Pool.
+// diskPoolCreatePayload - Request payload for Disk Pool create operation
+// options - DiskPoolsClientBeginCreateOrUpdateOptions contains the optional parameters for the DiskPoolsClient.BeginCreateOrUpdate
+// method.
+func (client *DiskPoolsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, diskPoolName string, diskPoolCreatePayload DiskPoolCreate, options *DiskPoolsClientBeginCreateOrUpdateOptions) (DiskPoolsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, diskPoolName, diskPoolCreatePayload, options)
 	if err != nil {
-		return DiskPoolsCreateOrUpdatePollerResponse{}, err
+		return DiskPoolsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := DiskPoolsCreateOrUpdatePollerResponse{
+	result := DiskPoolsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DiskPoolsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("DiskPoolsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return DiskPoolsCreateOrUpdatePollerResponse{}, err
+		return DiskPoolsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &DiskPoolsCreateOrUpdatePoller{
+	result.Poller = &DiskPoolsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// CreateOrUpdate - Create or Update Disk pool. This create or update operation can take 15 minutes to complete. This is expected service behavior.
-// If the operation fails it returns the *Error error type.
-func (client *DiskPoolsClient) createOrUpdate(ctx context.Context, resourceGroupName string, diskPoolName string, diskPoolCreatePayload DiskPoolCreate, options *DiskPoolsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// CreateOrUpdate - Create or Update Disk pool. This create or update operation can take 15 minutes to complete. This is expected
+// service behavior.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DiskPoolsClient) createOrUpdate(ctx context.Context, resourceGroupName string, diskPoolName string, diskPoolCreatePayload DiskPoolCreate, options *DiskPoolsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, diskPoolName, diskPoolCreatePayload, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +88,13 @@ func (client *DiskPoolsClient) createOrUpdate(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DiskPoolsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, diskPoolName string, diskPoolCreatePayload DiskPoolCreate, options *DiskPoolsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *DiskPoolsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, diskPoolName string, diskPoolCreatePayload DiskPoolCreate, options *DiskPoolsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool/diskPools/{diskPoolName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -94,7 +108,7 @@ func (client *DiskPoolsClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter diskPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{diskPoolName}", url.PathEscape(diskPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -105,46 +119,37 @@ func (client *DiskPoolsClient) createOrUpdateCreateRequest(ctx context.Context, 
 	return req, runtime.MarshalAsJSON(req, diskPoolCreatePayload)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *DiskPoolsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginDeallocate - Shuts down the Disk Pool and releases the compute resources. You are not billed for the compute resources that this Disk Pool uses.
-// This operation can take 10 minutes to complete. This is expected
+// BeginDeallocate - Shuts down the Disk Pool and releases the compute resources. You are not billed for the compute resources
+// that this Disk Pool uses. This operation can take 10 minutes to complete. This is expected
 // service behavior.
-// If the operation fails it returns the *Error error type.
-func (client *DiskPoolsClient) BeginDeallocate(ctx context.Context, resourceGroupName string, diskPoolName string, options *DiskPoolsBeginDeallocateOptions) (DiskPoolsDeallocatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// diskPoolName - The name of the Disk Pool.
+// options - DiskPoolsClientBeginDeallocateOptions contains the optional parameters for the DiskPoolsClient.BeginDeallocate
+// method.
+func (client *DiskPoolsClient) BeginDeallocate(ctx context.Context, resourceGroupName string, diskPoolName string, options *DiskPoolsClientBeginDeallocateOptions) (DiskPoolsClientDeallocatePollerResponse, error) {
 	resp, err := client.deallocate(ctx, resourceGroupName, diskPoolName, options)
 	if err != nil {
-		return DiskPoolsDeallocatePollerResponse{}, err
+		return DiskPoolsClientDeallocatePollerResponse{}, err
 	}
-	result := DiskPoolsDeallocatePollerResponse{
+	result := DiskPoolsClientDeallocatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DiskPoolsClient.Deallocate", "azure-async-operation", resp, client.pl, client.deallocateHandleError)
+	pt, err := armruntime.NewPoller("DiskPoolsClient.Deallocate", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return DiskPoolsDeallocatePollerResponse{}, err
+		return DiskPoolsClientDeallocatePollerResponse{}, err
 	}
-	result.Poller = &DiskPoolsDeallocatePoller{
+	result.Poller = &DiskPoolsClientDeallocatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// Deallocate - Shuts down the Disk Pool and releases the compute resources. You are not billed for the compute resources that this Disk Pool uses. This
-// operation can take 10 minutes to complete. This is expected
+// Deallocate - Shuts down the Disk Pool and releases the compute resources. You are not billed for the compute resources
+// that this Disk Pool uses. This operation can take 10 minutes to complete. This is expected
 // service behavior.
-// If the operation fails it returns the *Error error type.
-func (client *DiskPoolsClient) deallocate(ctx context.Context, resourceGroupName string, diskPoolName string, options *DiskPoolsBeginDeallocateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DiskPoolsClient) deallocate(ctx context.Context, resourceGroupName string, diskPoolName string, options *DiskPoolsClientBeginDeallocateOptions) (*http.Response, error) {
 	req, err := client.deallocateCreateRequest(ctx, resourceGroupName, diskPoolName, options)
 	if err != nil {
 		return nil, err
@@ -154,13 +159,13 @@ func (client *DiskPoolsClient) deallocate(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.deallocateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deallocateCreateRequest creates the Deallocate request.
-func (client *DiskPoolsClient) deallocateCreateRequest(ctx context.Context, resourceGroupName string, diskPoolName string, options *DiskPoolsBeginDeallocateOptions) (*policy.Request, error) {
+func (client *DiskPoolsClient) deallocateCreateRequest(ctx context.Context, resourceGroupName string, diskPoolName string, options *DiskPoolsClientBeginDeallocateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool/diskPools/{diskPoolName}/deallocate"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -174,7 +179,7 @@ func (client *DiskPoolsClient) deallocateCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter diskPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{diskPoolName}", url.PathEscape(diskPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -185,42 +190,34 @@ func (client *DiskPoolsClient) deallocateCreateRequest(ctx context.Context, reso
 	return req, nil
 }
 
-// deallocateHandleError handles the Deallocate error response.
-func (client *DiskPoolsClient) deallocateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginDelete - Delete a Disk pool; attached disks are not affected. This delete operation can take 10 minutes to complete. This is expected service behavior.
-// If the operation fails it returns the *Error error type.
-func (client *DiskPoolsClient) BeginDelete(ctx context.Context, resourceGroupName string, diskPoolName string, options *DiskPoolsBeginDeleteOptions) (DiskPoolsDeletePollerResponse, error) {
+// BeginDelete - Delete a Disk pool; attached disks are not affected. This delete operation can take 10 minutes to complete.
+// This is expected service behavior.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// diskPoolName - The name of the Disk Pool.
+// options - DiskPoolsClientBeginDeleteOptions contains the optional parameters for the DiskPoolsClient.BeginDelete method.
+func (client *DiskPoolsClient) BeginDelete(ctx context.Context, resourceGroupName string, diskPoolName string, options *DiskPoolsClientBeginDeleteOptions) (DiskPoolsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, diskPoolName, options)
 	if err != nil {
-		return DiskPoolsDeletePollerResponse{}, err
+		return DiskPoolsClientDeletePollerResponse{}, err
 	}
-	result := DiskPoolsDeletePollerResponse{
+	result := DiskPoolsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DiskPoolsClient.Delete", "azure-async-operation", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("DiskPoolsClient.Delete", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return DiskPoolsDeletePollerResponse{}, err
+		return DiskPoolsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &DiskPoolsDeletePoller{
+	result.Poller = &DiskPoolsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// Delete - Delete a Disk pool; attached disks are not affected. This delete operation can take 10 minutes to complete. This is expected service behavior.
-// If the operation fails it returns the *Error error type.
-func (client *DiskPoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, diskPoolName string, options *DiskPoolsBeginDeleteOptions) (*http.Response, error) {
+// Delete - Delete a Disk pool; attached disks are not affected. This delete operation can take 10 minutes to complete. This
+// is expected service behavior.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DiskPoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, diskPoolName string, options *DiskPoolsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, diskPoolName, options)
 	if err != nil {
 		return nil, err
@@ -230,13 +227,13 @@ func (client *DiskPoolsClient) deleteOperation(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DiskPoolsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, diskPoolName string, options *DiskPoolsBeginDeleteOptions) (*policy.Request, error) {
+func (client *DiskPoolsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, diskPoolName string, options *DiskPoolsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool/diskPools/{diskPoolName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -250,7 +247,7 @@ func (client *DiskPoolsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter diskPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{diskPoolName}", url.PathEscape(diskPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -261,38 +258,28 @@ func (client *DiskPoolsClient) deleteCreateRequest(ctx context.Context, resource
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *DiskPoolsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get a Disk pool.
-// If the operation fails it returns the *Error error type.
-func (client *DiskPoolsClient) Get(ctx context.Context, resourceGroupName string, diskPoolName string, options *DiskPoolsGetOptions) (DiskPoolsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// diskPoolName - The name of the Disk Pool.
+// options - DiskPoolsClientGetOptions contains the optional parameters for the DiskPoolsClient.Get method.
+func (client *DiskPoolsClient) Get(ctx context.Context, resourceGroupName string, diskPoolName string, options *DiskPoolsClientGetOptions) (DiskPoolsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, diskPoolName, options)
 	if err != nil {
-		return DiskPoolsGetResponse{}, err
+		return DiskPoolsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DiskPoolsGetResponse{}, err
+		return DiskPoolsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DiskPoolsGetResponse{}, client.getHandleError(resp)
+		return DiskPoolsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DiskPoolsClient) getCreateRequest(ctx context.Context, resourceGroupName string, diskPoolName string, options *DiskPoolsGetOptions) (*policy.Request, error) {
+func (client *DiskPoolsClient) getCreateRequest(ctx context.Context, resourceGroupName string, diskPoolName string, options *DiskPoolsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool/diskPools/{diskPoolName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -306,7 +293,7 @@ func (client *DiskPoolsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter diskPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{diskPoolName}", url.PathEscape(diskPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -318,43 +305,33 @@ func (client *DiskPoolsClient) getCreateRequest(ctx context.Context, resourceGro
 }
 
 // getHandleResponse handles the Get response.
-func (client *DiskPoolsClient) getHandleResponse(resp *http.Response) (DiskPoolsGetResponse, error) {
-	result := DiskPoolsGetResponse{RawResponse: resp}
+func (client *DiskPoolsClient) getHandleResponse(resp *http.Response) (DiskPoolsClientGetResponse, error) {
+	result := DiskPoolsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiskPool); err != nil {
-		return DiskPoolsGetResponse{}, runtime.NewResponseError(err, resp)
+		return DiskPoolsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *DiskPoolsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - Gets a list of DiskPools in a resource group.
-// If the operation fails it returns the *Error error type.
-func (client *DiskPoolsClient) ListByResourceGroup(resourceGroupName string, options *DiskPoolsListByResourceGroupOptions) *DiskPoolsListByResourceGroupPager {
-	return &DiskPoolsListByResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// options - DiskPoolsClientListByResourceGroupOptions contains the optional parameters for the DiskPoolsClient.ListByResourceGroup
+// method.
+func (client *DiskPoolsClient) ListByResourceGroup(resourceGroupName string, options *DiskPoolsClientListByResourceGroupOptions) *DiskPoolsClientListByResourceGroupPager {
+	return &DiskPoolsClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp DiskPoolsListByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DiskPoolsClientListByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DiskPoolListResult.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *DiskPoolsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *DiskPoolsListByResourceGroupOptions) (*policy.Request, error) {
+func (client *DiskPoolsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *DiskPoolsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool/diskPools"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -364,7 +341,7 @@ func (client *DiskPoolsClient) listByResourceGroupCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -376,49 +353,38 @@ func (client *DiskPoolsClient) listByResourceGroupCreateRequest(ctx context.Cont
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *DiskPoolsClient) listByResourceGroupHandleResponse(resp *http.Response) (DiskPoolsListByResourceGroupResponse, error) {
-	result := DiskPoolsListByResourceGroupResponse{RawResponse: resp}
+func (client *DiskPoolsClient) listByResourceGroupHandleResponse(resp *http.Response) (DiskPoolsClientListByResourceGroupResponse, error) {
+	result := DiskPoolsClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiskPoolListResult); err != nil {
-		return DiskPoolsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return DiskPoolsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *DiskPoolsClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListBySubscription - Gets a list of Disk Pools in a subscription
-// If the operation fails it returns the *Error error type.
-func (client *DiskPoolsClient) ListBySubscription(options *DiskPoolsListBySubscriptionOptions) *DiskPoolsListBySubscriptionPager {
-	return &DiskPoolsListBySubscriptionPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - DiskPoolsClientListBySubscriptionOptions contains the optional parameters for the DiskPoolsClient.ListBySubscription
+// method.
+func (client *DiskPoolsClient) ListBySubscription(options *DiskPoolsClientListBySubscriptionOptions) *DiskPoolsClientListBySubscriptionPager {
+	return &DiskPoolsClientListBySubscriptionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp DiskPoolsListBySubscriptionResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DiskPoolsClientListBySubscriptionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DiskPoolListResult.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *DiskPoolsClient) listBySubscriptionCreateRequest(ctx context.Context, options *DiskPoolsListBySubscriptionOptions) (*policy.Request, error) {
+func (client *DiskPoolsClient) listBySubscriptionCreateRequest(ctx context.Context, options *DiskPoolsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.StoragePool/diskPools"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -430,43 +396,34 @@ func (client *DiskPoolsClient) listBySubscriptionCreateRequest(ctx context.Conte
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *DiskPoolsClient) listBySubscriptionHandleResponse(resp *http.Response) (DiskPoolsListBySubscriptionResponse, error) {
-	result := DiskPoolsListBySubscriptionResponse{RawResponse: resp}
+func (client *DiskPoolsClient) listBySubscriptionHandleResponse(resp *http.Response) (DiskPoolsClientListBySubscriptionResponse, error) {
+	result := DiskPoolsClientListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiskPoolListResult); err != nil {
-		return DiskPoolsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return DiskPoolsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *DiskPoolsClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListOutboundNetworkDependenciesEndpoints - Gets the network endpoints of all outbound dependencies of a Disk Pool
-// If the operation fails it returns the *Error error type.
-func (client *DiskPoolsClient) ListOutboundNetworkDependenciesEndpoints(resourceGroupName string, diskPoolName string, options *DiskPoolsListOutboundNetworkDependenciesEndpointsOptions) *DiskPoolsListOutboundNetworkDependenciesEndpointsPager {
-	return &DiskPoolsListOutboundNetworkDependenciesEndpointsPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// diskPoolName - The name of the Disk Pool.
+// options - DiskPoolsClientListOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the DiskPoolsClient.ListOutboundNetworkDependenciesEndpoints
+// method.
+func (client *DiskPoolsClient) ListOutboundNetworkDependenciesEndpoints(resourceGroupName string, diskPoolName string, options *DiskPoolsClientListOutboundNetworkDependenciesEndpointsOptions) *DiskPoolsClientListOutboundNetworkDependenciesEndpointsPager {
+	return &DiskPoolsClientListOutboundNetworkDependenciesEndpointsPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listOutboundNetworkDependenciesEndpointsCreateRequest(ctx, resourceGroupName, diskPoolName, options)
 		},
-		advancer: func(ctx context.Context, resp DiskPoolsListOutboundNetworkDependenciesEndpointsResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DiskPoolsClientListOutboundNetworkDependenciesEndpointsResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.OutboundEnvironmentEndpointList.NextLink)
 		},
 	}
 }
 
 // listOutboundNetworkDependenciesEndpointsCreateRequest creates the ListOutboundNetworkDependenciesEndpoints request.
-func (client *DiskPoolsClient) listOutboundNetworkDependenciesEndpointsCreateRequest(ctx context.Context, resourceGroupName string, diskPoolName string, options *DiskPoolsListOutboundNetworkDependenciesEndpointsOptions) (*policy.Request, error) {
+func (client *DiskPoolsClient) listOutboundNetworkDependenciesEndpointsCreateRequest(ctx context.Context, resourceGroupName string, diskPoolName string, options *DiskPoolsClientListOutboundNetworkDependenciesEndpointsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool/diskPools/{diskPoolName}/outboundNetworkDependenciesEndpoints"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -480,7 +437,7 @@ func (client *DiskPoolsClient) listOutboundNetworkDependenciesEndpointsCreateReq
 		return nil, errors.New("parameter diskPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{diskPoolName}", url.PathEscape(diskPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -492,50 +449,42 @@ func (client *DiskPoolsClient) listOutboundNetworkDependenciesEndpointsCreateReq
 }
 
 // listOutboundNetworkDependenciesEndpointsHandleResponse handles the ListOutboundNetworkDependenciesEndpoints response.
-func (client *DiskPoolsClient) listOutboundNetworkDependenciesEndpointsHandleResponse(resp *http.Response) (DiskPoolsListOutboundNetworkDependenciesEndpointsResponse, error) {
-	result := DiskPoolsListOutboundNetworkDependenciesEndpointsResponse{RawResponse: resp}
+func (client *DiskPoolsClient) listOutboundNetworkDependenciesEndpointsHandleResponse(resp *http.Response) (DiskPoolsClientListOutboundNetworkDependenciesEndpointsResponse, error) {
+	result := DiskPoolsClientListOutboundNetworkDependenciesEndpointsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OutboundEnvironmentEndpointList); err != nil {
-		return DiskPoolsListOutboundNetworkDependenciesEndpointsResponse{}, runtime.NewResponseError(err, resp)
+		return DiskPoolsClientListOutboundNetworkDependenciesEndpointsResponse{}, err
 	}
 	return result, nil
 }
 
-// listOutboundNetworkDependenciesEndpointsHandleError handles the ListOutboundNetworkDependenciesEndpoints error response.
-func (client *DiskPoolsClient) listOutboundNetworkDependenciesEndpointsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginStart - The operation to start a Disk Pool. This start operation can take 10 minutes to complete. This is expected service behavior.
-// If the operation fails it returns the *Error error type.
-func (client *DiskPoolsClient) BeginStart(ctx context.Context, resourceGroupName string, diskPoolName string, options *DiskPoolsBeginStartOptions) (DiskPoolsStartPollerResponse, error) {
+// BeginStart - The operation to start a Disk Pool. This start operation can take 10 minutes to complete. This is expected
+// service behavior.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// diskPoolName - The name of the Disk Pool.
+// options - DiskPoolsClientBeginStartOptions contains the optional parameters for the DiskPoolsClient.BeginStart method.
+func (client *DiskPoolsClient) BeginStart(ctx context.Context, resourceGroupName string, diskPoolName string, options *DiskPoolsClientBeginStartOptions) (DiskPoolsClientStartPollerResponse, error) {
 	resp, err := client.start(ctx, resourceGroupName, diskPoolName, options)
 	if err != nil {
-		return DiskPoolsStartPollerResponse{}, err
+		return DiskPoolsClientStartPollerResponse{}, err
 	}
-	result := DiskPoolsStartPollerResponse{
+	result := DiskPoolsClientStartPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DiskPoolsClient.Start", "azure-async-operation", resp, client.pl, client.startHandleError)
+	pt, err := armruntime.NewPoller("DiskPoolsClient.Start", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return DiskPoolsStartPollerResponse{}, err
+		return DiskPoolsClientStartPollerResponse{}, err
 	}
-	result.Poller = &DiskPoolsStartPoller{
+	result.Poller = &DiskPoolsClientStartPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// Start - The operation to start a Disk Pool. This start operation can take 10 minutes to complete. This is expected service behavior.
-// If the operation fails it returns the *Error error type.
-func (client *DiskPoolsClient) start(ctx context.Context, resourceGroupName string, diskPoolName string, options *DiskPoolsBeginStartOptions) (*http.Response, error) {
+// Start - The operation to start a Disk Pool. This start operation can take 10 minutes to complete. This is expected service
+// behavior.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DiskPoolsClient) start(ctx context.Context, resourceGroupName string, diskPoolName string, options *DiskPoolsClientBeginStartOptions) (*http.Response, error) {
 	req, err := client.startCreateRequest(ctx, resourceGroupName, diskPoolName, options)
 	if err != nil {
 		return nil, err
@@ -545,13 +494,13 @@ func (client *DiskPoolsClient) start(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.startHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // startCreateRequest creates the Start request.
-func (client *DiskPoolsClient) startCreateRequest(ctx context.Context, resourceGroupName string, diskPoolName string, options *DiskPoolsBeginStartOptions) (*policy.Request, error) {
+func (client *DiskPoolsClient) startCreateRequest(ctx context.Context, resourceGroupName string, diskPoolName string, options *DiskPoolsClientBeginStartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool/diskPools/{diskPoolName}/start"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -565,7 +514,7 @@ func (client *DiskPoolsClient) startCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter diskPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{diskPoolName}", url.PathEscape(diskPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -576,42 +525,33 @@ func (client *DiskPoolsClient) startCreateRequest(ctx context.Context, resourceG
 	return req, nil
 }
 
-// startHandleError handles the Start error response.
-func (client *DiskPoolsClient) startHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginUpdate - Update a Disk pool.
-// If the operation fails it returns the *Error error type.
-func (client *DiskPoolsClient) BeginUpdate(ctx context.Context, resourceGroupName string, diskPoolName string, diskPoolUpdatePayload DiskPoolUpdate, options *DiskPoolsBeginUpdateOptions) (DiskPoolsUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// diskPoolName - The name of the Disk Pool.
+// diskPoolUpdatePayload - Request payload for Disk Pool update operation.
+// options - DiskPoolsClientBeginUpdateOptions contains the optional parameters for the DiskPoolsClient.BeginUpdate method.
+func (client *DiskPoolsClient) BeginUpdate(ctx context.Context, resourceGroupName string, diskPoolName string, diskPoolUpdatePayload DiskPoolUpdate, options *DiskPoolsClientBeginUpdateOptions) (DiskPoolsClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, diskPoolName, diskPoolUpdatePayload, options)
 	if err != nil {
-		return DiskPoolsUpdatePollerResponse{}, err
+		return DiskPoolsClientUpdatePollerResponse{}, err
 	}
-	result := DiskPoolsUpdatePollerResponse{
+	result := DiskPoolsClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DiskPoolsClient.Update", "azure-async-operation", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("DiskPoolsClient.Update", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return DiskPoolsUpdatePollerResponse{}, err
+		return DiskPoolsClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &DiskPoolsUpdatePoller{
+	result.Poller = &DiskPoolsClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Update a Disk pool.
-// If the operation fails it returns the *Error error type.
-func (client *DiskPoolsClient) update(ctx context.Context, resourceGroupName string, diskPoolName string, diskPoolUpdatePayload DiskPoolUpdate, options *DiskPoolsBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DiskPoolsClient) update(ctx context.Context, resourceGroupName string, diskPoolName string, diskPoolUpdatePayload DiskPoolUpdate, options *DiskPoolsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, diskPoolName, diskPoolUpdatePayload, options)
 	if err != nil {
 		return nil, err
@@ -621,13 +561,13 @@ func (client *DiskPoolsClient) update(ctx context.Context, resourceGroupName str
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *DiskPoolsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, diskPoolName string, diskPoolUpdatePayload DiskPoolUpdate, options *DiskPoolsBeginUpdateOptions) (*policy.Request, error) {
+func (client *DiskPoolsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, diskPoolName string, diskPoolUpdatePayload DiskPoolUpdate, options *DiskPoolsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool/diskPools/{diskPoolName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -641,7 +581,7 @@ func (client *DiskPoolsClient) updateCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter diskPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{diskPoolName}", url.PathEscape(diskPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -652,44 +592,34 @@ func (client *DiskPoolsClient) updateCreateRequest(ctx context.Context, resource
 	return req, runtime.MarshalAsJSON(req, diskPoolUpdatePayload)
 }
 
-// updateHandleError handles the Update error response.
-func (client *DiskPoolsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginUpgrade - Upgrade replaces the underlying virtual machine hosts one at a time. This operation can take 10-15 minutes to complete. This is expected
-// service behavior.
-// If the operation fails it returns the *Error error type.
-func (client *DiskPoolsClient) BeginUpgrade(ctx context.Context, resourceGroupName string, diskPoolName string, options *DiskPoolsBeginUpgradeOptions) (DiskPoolsUpgradePollerResponse, error) {
+// BeginUpgrade - Upgrade replaces the underlying virtual machine hosts one at a time. This operation can take 10-15 minutes
+// to complete. This is expected service behavior.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// diskPoolName - The name of the Disk Pool.
+// options - DiskPoolsClientBeginUpgradeOptions contains the optional parameters for the DiskPoolsClient.BeginUpgrade method.
+func (client *DiskPoolsClient) BeginUpgrade(ctx context.Context, resourceGroupName string, diskPoolName string, options *DiskPoolsClientBeginUpgradeOptions) (DiskPoolsClientUpgradePollerResponse, error) {
 	resp, err := client.upgrade(ctx, resourceGroupName, diskPoolName, options)
 	if err != nil {
-		return DiskPoolsUpgradePollerResponse{}, err
+		return DiskPoolsClientUpgradePollerResponse{}, err
 	}
-	result := DiskPoolsUpgradePollerResponse{
+	result := DiskPoolsClientUpgradePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DiskPoolsClient.Upgrade", "azure-async-operation", resp, client.pl, client.upgradeHandleError)
+	pt, err := armruntime.NewPoller("DiskPoolsClient.Upgrade", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return DiskPoolsUpgradePollerResponse{}, err
+		return DiskPoolsClientUpgradePollerResponse{}, err
 	}
-	result.Poller = &DiskPoolsUpgradePoller{
+	result.Poller = &DiskPoolsClientUpgradePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// Upgrade - Upgrade replaces the underlying virtual machine hosts one at a time. This operation can take 10-15 minutes to complete. This is expected service
-// behavior.
-// If the operation fails it returns the *Error error type.
-func (client *DiskPoolsClient) upgrade(ctx context.Context, resourceGroupName string, diskPoolName string, options *DiskPoolsBeginUpgradeOptions) (*http.Response, error) {
+// Upgrade - Upgrade replaces the underlying virtual machine hosts one at a time. This operation can take 10-15 minutes to
+// complete. This is expected service behavior.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DiskPoolsClient) upgrade(ctx context.Context, resourceGroupName string, diskPoolName string, options *DiskPoolsClientBeginUpgradeOptions) (*http.Response, error) {
 	req, err := client.upgradeCreateRequest(ctx, resourceGroupName, diskPoolName, options)
 	if err != nil {
 		return nil, err
@@ -699,13 +629,13 @@ func (client *DiskPoolsClient) upgrade(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.upgradeHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // upgradeCreateRequest creates the Upgrade request.
-func (client *DiskPoolsClient) upgradeCreateRequest(ctx context.Context, resourceGroupName string, diskPoolName string, options *DiskPoolsBeginUpgradeOptions) (*policy.Request, error) {
+func (client *DiskPoolsClient) upgradeCreateRequest(ctx context.Context, resourceGroupName string, diskPoolName string, options *DiskPoolsClientBeginUpgradeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool/diskPools/{diskPoolName}/upgrade"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -719,7 +649,7 @@ func (client *DiskPoolsClient) upgradeCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter diskPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{diskPoolName}", url.PathEscape(diskPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -728,17 +658,4 @@ func (client *DiskPoolsClient) upgradeCreateRequest(ctx context.Context, resourc
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
-}
-
-// upgradeHandleError handles the Upgrade error response.
-func (client *DiskPoolsClient) upgradeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

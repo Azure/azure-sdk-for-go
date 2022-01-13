@@ -9,8 +9,8 @@
 package armvirtualmachineimagebuilder
 
 const (
-	module  = "armvirtualmachineimagebuilder"
-	version = "v0.1.0"
+	moduleName    = "armvirtualmachineimagebuilder"
+	moduleVersion = "v0.2.0"
 )
 
 // CreatedByType - The type of identity that created the resource.
@@ -104,7 +104,8 @@ func (c ProvisioningState) ToPtr() *ProvisioningState {
 	return &c
 }
 
-// ResourceIdentityType - The type of identity used for the image template. The type 'None' will remove any identities from the image template.
+// ResourceIdentityType - The type of identity used for the image template. The type 'None' will remove any identities from
+// the image template.
 type ResourceIdentityType string
 
 const (

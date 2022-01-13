@@ -1,5 +1,169 @@
 # Release History
 
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*LedgerClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, ConfidentialLedger, *LedgerBeginUpdateOptions)` to `(context.Context, string, string, ConfidentialLedger, *LedgerClientBeginUpdateOptions)`
+- Function `*LedgerClient.BeginUpdate` return value(s) have been changed from `(LedgerUpdatePollerResponse, error)` to `(LedgerClientUpdatePollerResponse, error)`
+- Function `*LedgerClient.ListBySubscription` parameter(s) have been changed from `(*LedgerListBySubscriptionOptions)` to `(*LedgerClientListBySubscriptionOptions)`
+- Function `*LedgerClient.ListBySubscription` return value(s) have been changed from `(*LedgerListBySubscriptionPager)` to `(*LedgerClientListBySubscriptionPager)`
+- Function `*LedgerClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *LedgerBeginDeleteOptions)` to `(context.Context, string, string, *LedgerClientBeginDeleteOptions)`
+- Function `*LedgerClient.BeginDelete` return value(s) have been changed from `(LedgerDeletePollerResponse, error)` to `(LedgerClientDeletePollerResponse, error)`
+- Function `*LedgerClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, ConfidentialLedger, *LedgerBeginCreateOptions)` to `(context.Context, string, string, ConfidentialLedger, *LedgerClientBeginCreateOptions)`
+- Function `*LedgerClient.BeginCreate` return value(s) have been changed from `(LedgerCreatePollerResponse, error)` to `(LedgerClientCreatePollerResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*LedgerClient.Get` parameter(s) have been changed from `(context.Context, string, string, *LedgerGetOptions)` to `(context.Context, string, string, *LedgerClientGetOptions)`
+- Function `*LedgerClient.Get` return value(s) have been changed from `(LedgerGetResponse, error)` to `(LedgerClientGetResponse, error)`
+- Function `*LedgerClient.ListByResourceGroup` parameter(s) have been changed from `(string, *LedgerListByResourceGroupOptions)` to `(string, *LedgerClientListByResourceGroupOptions)`
+- Function `*LedgerClient.ListByResourceGroup` return value(s) have been changed from `(*LedgerListByResourceGroupPager)` to `(*LedgerClientListByResourceGroupPager)`
+- Function `*LedgerDeletePollerResponse.Resume` has been removed
+- Function `LedgerUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*LedgerUpdatePoller.Done` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*LedgerUpdatePoller.Poll` has been removed
+- Function `LedgerCreatePollerResponse.PollUntilDone` has been removed
+- Function `*LedgerUpdatePollerResponse.Resume` has been removed
+- Function `*ConfidentialLedgerClient.CheckNameAvailability` has been removed
+- Function `*LedgerDeletePoller.FinalResponse` has been removed
+- Function `*LedgerListByResourceGroupPager.Err` has been removed
+- Function `*LedgerCreatePoller.ResumeToken` has been removed
+- Function `*LedgerCreatePollerResponse.Resume` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `Location.MarshalJSON` has been removed
+- Function `ConfidentialLedgerList.MarshalJSON` has been removed
+- Function `*LedgerListBySubscriptionPager.Err` has been removed
+- Function `*LedgerCreatePoller.Poll` has been removed
+- Function `NewConfidentialLedgerClient` has been removed
+- Function `ErrorResponse.Error` has been removed
+- Function `*LedgerUpdatePoller.FinalResponse` has been removed
+- Function `*LedgerListBySubscriptionPager.PageResponse` has been removed
+- Function `*LedgerCreatePoller.FinalResponse` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `*LedgerDeletePoller.Done` has been removed
+- Function `*LedgerListByResourceGroupPager.PageResponse` has been removed
+- Function `*LedgerListByResourceGroupPager.NextPage` has been removed
+- Function `*LedgerCreatePoller.Done` has been removed
+- Function `*LedgerUpdatePoller.ResumeToken` has been removed
+- Function `*LedgerDeletePoller.ResumeToken` has been removed
+- Function `*LedgerDeletePoller.Poll` has been removed
+- Function `LedgerDeletePollerResponse.PollUntilDone` has been removed
+- Function `*LedgerListBySubscriptionPager.NextPage` has been removed
+- Struct `ConfidentialLedgerCheckNameAvailabilityOptions` has been removed
+- Struct `ConfidentialLedgerCheckNameAvailabilityResponse` has been removed
+- Struct `ConfidentialLedgerCheckNameAvailabilityResult` has been removed
+- Struct `ConfidentialLedgerClient` has been removed
+- Struct `ConfidentialLedgerList` has been removed
+- Struct `LedgerBeginCreateOptions` has been removed
+- Struct `LedgerBeginDeleteOptions` has been removed
+- Struct `LedgerBeginUpdateOptions` has been removed
+- Struct `LedgerCreatePoller` has been removed
+- Struct `LedgerCreatePollerResponse` has been removed
+- Struct `LedgerCreateResponse` has been removed
+- Struct `LedgerCreateResult` has been removed
+- Struct `LedgerDeletePoller` has been removed
+- Struct `LedgerDeletePollerResponse` has been removed
+- Struct `LedgerDeleteResponse` has been removed
+- Struct `LedgerGetOptions` has been removed
+- Struct `LedgerGetResponse` has been removed
+- Struct `LedgerGetResult` has been removed
+- Struct `LedgerListByResourceGroupOptions` has been removed
+- Struct `LedgerListByResourceGroupPager` has been removed
+- Struct `LedgerListByResourceGroupResponse` has been removed
+- Struct `LedgerListByResourceGroupResult` has been removed
+- Struct `LedgerListBySubscriptionOptions` has been removed
+- Struct `LedgerListBySubscriptionPager` has been removed
+- Struct `LedgerListBySubscriptionResponse` has been removed
+- Struct `LedgerListBySubscriptionResult` has been removed
+- Struct `LedgerUpdatePoller` has been removed
+- Struct `LedgerUpdatePollerResponse` has been removed
+- Struct `LedgerUpdateResponse` has been removed
+- Struct `LedgerUpdateResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Field `InnerError` of struct `ErrorResponse` has been removed
+- Field `Location` of struct `ConfidentialLedger` has been removed
+- Field `Resource` of struct `ConfidentialLedger` has been removed
+- Field `Tags` of struct `ConfidentialLedger` has been removed
+
+### Features Added
+
+- New function `*LedgerClientListByResourceGroupPager.PageResponse() LedgerClientListByResourceGroupResponse`
+- New function `*LedgerClientDeletePoller.FinalResponse(context.Context) (LedgerClientDeleteResponse, error)`
+- New function `*LedgerClientDeletePoller.Done() bool`
+- New function `*LedgerClientDeletePollerResponse.Resume(context.Context, *LedgerClient, string) error`
+- New function `*OperationsClientListPager.Err() error`
+- New function `*LedgerClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `LedgerClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (LedgerClientUpdateResponse, error)`
+- New function `*LedgerClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `LedgerClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (LedgerClientDeleteResponse, error)`
+- New function `*LedgerClientCreatePoller.ResumeToken() (string, error)`
+- New function `*LedgerClientCreatePoller.FinalResponse(context.Context) (LedgerClientCreateResponse, error)`
+- New function `*LedgerClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*LedgerClientDeletePoller.ResumeToken() (string, error)`
+- New function `*LedgerClientListBySubscriptionPager.PageResponse() LedgerClientListBySubscriptionResponse`
+- New function `*LedgerClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*LedgerClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*LedgerClientListByResourceGroupPager.Err() error`
+- New function `LedgerClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (LedgerClientCreateResponse, error)`
+- New function `*LedgerClientUpdatePollerResponse.Resume(context.Context, *LedgerClient, string) error`
+- New function `*Client.CheckNameAvailability(context.Context, CheckNameAvailabilityRequest, *ClientCheckNameAvailabilityOptions) (ClientCheckNameAvailabilityResponse, error)`
+- New function `*LedgerClientUpdatePoller.FinalResponse(context.Context) (LedgerClientUpdateResponse, error)`
+- New function `*LedgerClientCreatePoller.Done() bool`
+- New function `NewClient(string, azcore.TokenCredential, *arm.ClientOptions) *Client`
+- New function `*LedgerClientListBySubscriptionPager.Err() error`
+- New function `*LedgerClientUpdatePoller.Done() bool`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*LedgerClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `List.MarshalJSON() ([]byte, error)`
+- New function `*LedgerClientCreatePollerResponse.Resume(context.Context, *LedgerClient, string) error`
+- New struct `Client`
+- New struct `ClientCheckNameAvailabilityOptions`
+- New struct `ClientCheckNameAvailabilityResponse`
+- New struct `ClientCheckNameAvailabilityResult`
+- New struct `LedgerClientBeginCreateOptions`
+- New struct `LedgerClientBeginDeleteOptions`
+- New struct `LedgerClientBeginUpdateOptions`
+- New struct `LedgerClientCreatePoller`
+- New struct `LedgerClientCreatePollerResponse`
+- New struct `LedgerClientCreateResponse`
+- New struct `LedgerClientCreateResult`
+- New struct `LedgerClientDeletePoller`
+- New struct `LedgerClientDeletePollerResponse`
+- New struct `LedgerClientDeleteResponse`
+- New struct `LedgerClientGetOptions`
+- New struct `LedgerClientGetResponse`
+- New struct `LedgerClientGetResult`
+- New struct `LedgerClientListByResourceGroupOptions`
+- New struct `LedgerClientListByResourceGroupPager`
+- New struct `LedgerClientListByResourceGroupResponse`
+- New struct `LedgerClientListByResourceGroupResult`
+- New struct `LedgerClientListBySubscriptionOptions`
+- New struct `LedgerClientListBySubscriptionPager`
+- New struct `LedgerClientListBySubscriptionResponse`
+- New struct `LedgerClientListBySubscriptionResult`
+- New struct `LedgerClientUpdatePoller`
+- New struct `LedgerClientUpdatePollerResponse`
+- New struct `LedgerClientUpdateResponse`
+- New struct `LedgerClientUpdateResult`
+- New struct `List`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New field `Error` in struct `ErrorResponse`
+- New field `ID` in struct `ConfidentialLedger`
+- New field `Name` in struct `ConfidentialLedger`
+- New field `SystemData` in struct `ConfidentialLedger`
+- New field `Type` in struct `ConfidentialLedger`
+- New field `Location` in struct `ConfidentialLedger`
+- New field `Tags` in struct `ConfidentialLedger`
+
+
 ## 0.1.0 (2021-12-01)
 
 - Initial preview release.

@@ -11,7 +11,6 @@ package armdeploymentmanager
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // ServicesClient contains the methods for the Services group.
 // Don't use this type directly, use NewServicesClient() instead.
 type ServicesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewServicesClient creates a new instance of ServicesClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServicesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ServicesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ServicesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Synchronously creates a new service or updates an existing service.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServicesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceTopologyName string, serviceName string, serviceInfo ServiceResource, options *ServicesCreateOrUpdateOptions) (ServicesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// serviceTopologyName - The name of the service topology .
+// serviceName - The name of the service resource.
+// serviceInfo - The service object
+// options - ServicesClientCreateOrUpdateOptions contains the optional parameters for the ServicesClient.CreateOrUpdate method.
+func (client *ServicesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceTopologyName string, serviceName string, serviceInfo ServiceResource, options *ServicesClientCreateOrUpdateOptions) (ServicesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceTopologyName, serviceName, serviceInfo, options)
 	if err != nil {
-		return ServicesCreateOrUpdateResponse{}, err
+		return ServicesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServicesCreateOrUpdateResponse{}, err
+		return ServicesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusCreated) {
-		return ServicesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return ServicesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ServicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceTopologyName string, serviceName string, serviceInfo ServiceResource, options *ServicesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ServicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceTopologyName string, serviceName string, serviceInfo ServiceResource, options *ServicesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager/serviceTopologies/{serviceTopologyName}/services/{serviceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +91,7 @@ func (client *ServicesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,46 +103,37 @@ func (client *ServicesClient) createOrUpdateCreateRequest(ctx context.Context, r
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ServicesClient) createOrUpdateHandleResponse(resp *http.Response) (ServicesCreateOrUpdateResponse, error) {
-	result := ServicesCreateOrUpdateResponse{RawResponse: resp}
+func (client *ServicesClient) createOrUpdateHandleResponse(resp *http.Response) (ServicesClientCreateOrUpdateResponse, error) {
+	result := ServicesClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceResource); err != nil {
-		return ServicesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ServicesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ServicesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes the service.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServicesClient) Delete(ctx context.Context, resourceGroupName string, serviceTopologyName string, serviceName string, options *ServicesDeleteOptions) (ServicesDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// serviceTopologyName - The name of the service topology .
+// serviceName - The name of the service resource.
+// options - ServicesClientDeleteOptions contains the optional parameters for the ServicesClient.Delete method.
+func (client *ServicesClient) Delete(ctx context.Context, resourceGroupName string, serviceTopologyName string, serviceName string, options *ServicesClientDeleteOptions) (ServicesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceTopologyName, serviceName, options)
 	if err != nil {
-		return ServicesDeleteResponse{}, err
+		return ServicesClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServicesDeleteResponse{}, err
+		return ServicesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return ServicesDeleteResponse{}, client.deleteHandleError(resp)
+		return ServicesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ServicesDeleteResponse{RawResponse: resp}, nil
+	return ServicesClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ServicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceTopologyName string, serviceName string, options *ServicesDeleteOptions) (*policy.Request, error) {
+func (client *ServicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceTopologyName string, serviceName string, options *ServicesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager/serviceTopologies/{serviceTopologyName}/services/{serviceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -147,7 +151,7 @@ func (client *ServicesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -158,38 +162,29 @@ func (client *ServicesClient) deleteCreateRequest(ctx context.Context, resourceG
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ServicesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets the service.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServicesClient) Get(ctx context.Context, resourceGroupName string, serviceTopologyName string, serviceName string, options *ServicesGetOptions) (ServicesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// serviceTopologyName - The name of the service topology .
+// serviceName - The name of the service resource.
+// options - ServicesClientGetOptions contains the optional parameters for the ServicesClient.Get method.
+func (client *ServicesClient) Get(ctx context.Context, resourceGroupName string, serviceTopologyName string, serviceName string, options *ServicesClientGetOptions) (ServicesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceTopologyName, serviceName, options)
 	if err != nil {
-		return ServicesGetResponse{}, err
+		return ServicesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServicesGetResponse{}, err
+		return ServicesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServicesGetResponse{}, client.getHandleError(resp)
+		return ServicesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ServicesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceTopologyName string, serviceName string, options *ServicesGetOptions) (*policy.Request, error) {
+func (client *ServicesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceTopologyName string, serviceName string, options *ServicesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager/serviceTopologies/{serviceTopologyName}/services/{serviceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -207,7 +202,7 @@ func (client *ServicesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -219,46 +214,36 @@ func (client *ServicesClient) getCreateRequest(ctx context.Context, resourceGrou
 }
 
 // getHandleResponse handles the Get response.
-func (client *ServicesClient) getHandleResponse(resp *http.Response) (ServicesGetResponse, error) {
-	result := ServicesGetResponse{RawResponse: resp}
+func (client *ServicesClient) getHandleResponse(resp *http.Response) (ServicesClientGetResponse, error) {
+	result := ServicesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceResource); err != nil {
-		return ServicesGetResponse{}, runtime.NewResponseError(err, resp)
+		return ServicesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ServicesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Lists the services in the service topology.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServicesClient) List(ctx context.Context, resourceGroupName string, serviceTopologyName string, options *ServicesListOptions) (ServicesListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// serviceTopologyName - The name of the service topology .
+// options - ServicesClientListOptions contains the optional parameters for the ServicesClient.List method.
+func (client *ServicesClient) List(ctx context.Context, resourceGroupName string, serviceTopologyName string, options *ServicesClientListOptions) (ServicesClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, serviceTopologyName, options)
 	if err != nil {
-		return ServicesListResponse{}, err
+		return ServicesClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServicesListResponse{}, err
+		return ServicesClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServicesListResponse{}, client.listHandleError(resp)
+		return ServicesClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *ServicesClient) listCreateRequest(ctx context.Context, resourceGroupName string, serviceTopologyName string, options *ServicesListOptions) (*policy.Request, error) {
+func (client *ServicesClient) listCreateRequest(ctx context.Context, resourceGroupName string, serviceTopologyName string, options *ServicesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager/serviceTopologies/{serviceTopologyName}/services"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -272,7 +257,7 @@ func (client *ServicesClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter serviceTopologyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceTopologyName}", url.PathEscape(serviceTopologyName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -284,23 +269,10 @@ func (client *ServicesClient) listCreateRequest(ctx context.Context, resourceGro
 }
 
 // listHandleResponse handles the List response.
-func (client *ServicesClient) listHandleResponse(resp *http.Response) (ServicesListResponse, error) {
-	result := ServicesListResponse{RawResponse: resp}
+func (client *ServicesClient) listHandleResponse(resp *http.Response) (ServicesClientListResponse, error) {
+	result := ServicesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceResourceArray); err != nil {
-		return ServicesListResponse{}, runtime.NewResponseError(err, resp)
+		return ServicesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *ServicesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

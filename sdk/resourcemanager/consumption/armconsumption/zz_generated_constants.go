@@ -9,8 +9,8 @@
 package armconsumption
 
 const (
-	module  = "armconsumption"
-	version = "v0.2.1"
+	moduleName    = "armconsumption"
+	moduleVersion = "v0.3.0"
 )
 
 // BillingFrequency - The billing frequency.
@@ -92,6 +92,65 @@ func PossibleChargeSummaryKindValues() []ChargeSummaryKind {
 
 // ToPtr returns a *ChargeSummaryKind pointing to the current value.
 func (c ChargeSummaryKind) ToPtr() *ChargeSummaryKind {
+	return &c
+}
+
+// CultureCode - Language in which the recipient will receive the notification
+type CultureCode string
+
+const (
+	CultureCodeCsCz CultureCode = "cs-cz"
+	CultureCodeDaDk CultureCode = "da-dk"
+	CultureCodeDeDe CultureCode = "de-de"
+	CultureCodeEnGb CultureCode = "en-gb"
+	CultureCodeEnUs CultureCode = "en-us"
+	CultureCodeEsEs CultureCode = "es-es"
+	CultureCodeFrFr CultureCode = "fr-fr"
+	CultureCodeHuHu CultureCode = "hu-hu"
+	CultureCodeItIt CultureCode = "it-it"
+	CultureCodeJaJp CultureCode = "ja-jp"
+	CultureCodeKoKr CultureCode = "ko-kr"
+	CultureCodeNbNo CultureCode = "nb-no"
+	CultureCodeNlNl CultureCode = "nl-nl"
+	CultureCodePlPl CultureCode = "pl-pl"
+	CultureCodePtBr CultureCode = "pt-br"
+	CultureCodePtPt CultureCode = "pt-pt"
+	CultureCodeRuRu CultureCode = "ru-ru"
+	CultureCodeSvSe CultureCode = "sv-se"
+	CultureCodeTrTr CultureCode = "tr-tr"
+	CultureCodeZhCn CultureCode = "zh-cn"
+	CultureCodeZhTw CultureCode = "zh-tw"
+)
+
+// PossibleCultureCodeValues returns the possible values for the CultureCode const type.
+func PossibleCultureCodeValues() []CultureCode {
+	return []CultureCode{
+		CultureCodeCsCz,
+		CultureCodeDaDk,
+		CultureCodeDeDe,
+		CultureCodeEnGb,
+		CultureCodeEnUs,
+		CultureCodeEsEs,
+		CultureCodeFrFr,
+		CultureCodeHuHu,
+		CultureCodeItIt,
+		CultureCodeJaJp,
+		CultureCodeKoKr,
+		CultureCodeNbNo,
+		CultureCodeNlNl,
+		CultureCodePlPl,
+		CultureCodePtBr,
+		CultureCodePtPt,
+		CultureCodeRuRu,
+		CultureCodeSvSe,
+		CultureCodeTrTr,
+		CultureCodeZhCn,
+		CultureCodeZhTw,
+	}
+}
+
+// ToPtr returns a *CultureCode pointing to the current value.
+func (c CultureCode) ToPtr() *CultureCode {
 	return &c
 }
 
@@ -363,13 +422,15 @@ func (c Term) ToPtr() *Term {
 type ThresholdType string
 
 const (
-	ThresholdTypeActual ThresholdType = "Actual"
+	ThresholdTypeActual     ThresholdType = "Actual"
+	ThresholdTypeForecasted ThresholdType = "Forecasted"
 )
 
 // PossibleThresholdTypeValues returns the possible values for the ThresholdType const type.
 func PossibleThresholdTypeValues() []ThresholdType {
 	return []ThresholdType{
 		ThresholdTypeActual,
+		ThresholdTypeForecasted,
 	}
 }
 
@@ -378,8 +439,8 @@ func (c ThresholdType) ToPtr() *ThresholdType {
 	return &c
 }
 
-// TimeGrainType - The time covered by a budget. Tracking of the amount will be reset based on the time grain. BillingMonth, BillingQuarter, and BillingAnnual
-// are only supported by WD customers
+// TimeGrainType - The time covered by a budget. Tracking of the amount will be reset based on the time grain. BillingMonth,
+// BillingQuarter, and BillingAnnual are only supported by WD customers
 type TimeGrainType string
 
 const (

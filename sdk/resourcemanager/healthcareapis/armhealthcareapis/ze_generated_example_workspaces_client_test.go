@@ -28,12 +28,16 @@ func ExampleWorkspacesClient_ListBySubscription() {
 	ctx := context.Background()
 	client := armhealthcareapis.NewWorkspacesClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Workspace.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -48,12 +52,16 @@ func ExampleWorkspacesClient_ListByResourceGroup() {
 	client := armhealthcareapis.NewWorkspacesClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Workspace.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -73,7 +81,7 @@ func ExampleWorkspacesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Workspace.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkspacesClientGetResult)
 }
 
 // x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2021-06-01-preview/examples/workspaces/Workspaces_Create.json
@@ -88,11 +96,7 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate() {
 		"<resource-group-name>",
 		"<workspace-name>",
 		armhealthcareapis.Workspace{
-			TaggedResource: armhealthcareapis.TaggedResource{
-				LocationBasedResource: armhealthcareapis.LocationBasedResource{
-					Location: to.StringPtr("<location>"),
-				},
-			},
+			Location:   to.StringPtr("<location>"),
 			Properties: &armhealthcareapis.WorkspaceProperties{},
 		},
 		nil)
@@ -103,7 +107,7 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Workspace.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkspacesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2021-06-01-preview/examples/workspaces/Workspaces_Patch.json
@@ -118,10 +122,8 @@ func ExampleWorkspacesClient_BeginUpdate() {
 		"<resource-group-name>",
 		"<workspace-name>",
 		armhealthcareapis.WorkspacePatchResource{
-			ResourceTags: armhealthcareapis.ResourceTags{
-				Tags: map[string]*string{
-					"tagKey": to.StringPtr("tagValue"),
-				},
+			Tags: map[string]*string{
+				"tagKey": to.StringPtr("tagValue"),
 			},
 		},
 		nil)
@@ -132,7 +134,7 @@ func ExampleWorkspacesClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Workspace.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkspacesClientUpdateResult)
 }
 
 // x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2021-06-01-preview/examples/workspaces/Workspaces_Delete.json

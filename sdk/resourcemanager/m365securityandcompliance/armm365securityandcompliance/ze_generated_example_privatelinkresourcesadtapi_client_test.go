@@ -24,13 +24,14 @@ func ExamplePrivateLinkResourcesAdtAPIClient_ListByService() {
 	}
 	ctx := context.Background()
 	client := armm365securityandcompliance.NewPrivateLinkResourcesAdtAPIClient("<subscription-id>", cred, nil)
-	_, err = client.ListByService(ctx,
+	res, err := client.ListByService(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.PrivateLinkResourcesAdtAPIClientListByServiceResult)
 }
 
 // x-ms-original-file: specification/m365securityandcompliance/resource-manager/Microsoft.M365SecurityAndCompliance/preview/2021-03-25-preview/examples/ManagementAPIPrivateLinkResourceGet.json
@@ -49,5 +50,5 @@ func ExamplePrivateLinkResourcesAdtAPIClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateLinkResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateLinkResourcesAdtAPIClientGetResult)
 }

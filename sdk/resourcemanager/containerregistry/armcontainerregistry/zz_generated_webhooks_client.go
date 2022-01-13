@@ -24,46 +24,59 @@ import (
 // WebhooksClient contains the methods for the Webhooks group.
 // Don't use this type directly, use NewWebhooksClient() instead.
 type WebhooksClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewWebhooksClient creates a new instance of WebhooksClient with the specified values.
+// subscriptionID - The Microsoft Azure subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewWebhooksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WebhooksClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &WebhooksClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &WebhooksClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreate - Creates a webhook for a container registry with the specified parameters.
-// If the operation fails it returns a generic error.
-func (client *WebhooksClient) BeginCreate(ctx context.Context, resourceGroupName string, registryName string, webhookName string, webhookCreateParameters WebhookCreateParameters, options *WebhooksBeginCreateOptions) (WebhooksCreatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group to which the container registry belongs.
+// registryName - The name of the container registry.
+// webhookName - The name of the webhook.
+// webhookCreateParameters - The parameters for creating a webhook.
+// options - WebhooksClientBeginCreateOptions contains the optional parameters for the WebhooksClient.BeginCreate method.
+func (client *WebhooksClient) BeginCreate(ctx context.Context, resourceGroupName string, registryName string, webhookName string, webhookCreateParameters WebhookCreateParameters, options *WebhooksClientBeginCreateOptions) (WebhooksClientCreatePollerResponse, error) {
 	resp, err := client.create(ctx, resourceGroupName, registryName, webhookName, webhookCreateParameters, options)
 	if err != nil {
-		return WebhooksCreatePollerResponse{}, err
+		return WebhooksClientCreatePollerResponse{}, err
 	}
-	result := WebhooksCreatePollerResponse{
+	result := WebhooksClientCreatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("WebhooksClient.Create", "", resp, client.pl, client.createHandleError)
+	pt, err := armruntime.NewPoller("WebhooksClient.Create", "", resp, client.pl)
 	if err != nil {
-		return WebhooksCreatePollerResponse{}, err
+		return WebhooksClientCreatePollerResponse{}, err
 	}
-	result.Poller = &WebhooksCreatePoller{
+	result.Poller = &WebhooksClientCreatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - Creates a webhook for a container registry with the specified parameters.
-// If the operation fails it returns a generic error.
-func (client *WebhooksClient) create(ctx context.Context, resourceGroupName string, registryName string, webhookName string, webhookCreateParameters WebhookCreateParameters, options *WebhooksBeginCreateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *WebhooksClient) create(ctx context.Context, resourceGroupName string, registryName string, webhookName string, webhookCreateParameters WebhookCreateParameters, options *WebhooksClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, registryName, webhookName, webhookCreateParameters, options)
 	if err != nil {
 		return nil, err
@@ -73,13 +86,13 @@ func (client *WebhooksClient) create(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *WebhooksClient) createCreateRequest(ctx context.Context, resourceGroupName string, registryName string, webhookName string, webhookCreateParameters WebhookCreateParameters, options *WebhooksBeginCreateOptions) (*policy.Request, error) {
+func (client *WebhooksClient) createCreateRequest(ctx context.Context, resourceGroupName string, registryName string, webhookName string, webhookCreateParameters WebhookCreateParameters, options *WebhooksClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/webhooks/{webhookName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -97,52 +110,44 @@ func (client *WebhooksClient) createCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter webhookName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{webhookName}", url.PathEscape(webhookName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01-preview")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, webhookCreateParameters)
 }
 
-// createHandleError handles the Create error response.
-func (client *WebhooksClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginDelete - Deletes a webhook from a container registry.
-// If the operation fails it returns a generic error.
-func (client *WebhooksClient) BeginDelete(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *WebhooksBeginDeleteOptions) (WebhooksDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group to which the container registry belongs.
+// registryName - The name of the container registry.
+// webhookName - The name of the webhook.
+// options - WebhooksClientBeginDeleteOptions contains the optional parameters for the WebhooksClient.BeginDelete method.
+func (client *WebhooksClient) BeginDelete(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *WebhooksClientBeginDeleteOptions) (WebhooksClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, registryName, webhookName, options)
 	if err != nil {
-		return WebhooksDeletePollerResponse{}, err
+		return WebhooksClientDeletePollerResponse{}, err
 	}
-	result := WebhooksDeletePollerResponse{
+	result := WebhooksClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("WebhooksClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("WebhooksClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return WebhooksDeletePollerResponse{}, err
+		return WebhooksClientDeletePollerResponse{}, err
 	}
-	result.Poller = &WebhooksDeletePoller{
+	result.Poller = &WebhooksClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a webhook from a container registry.
-// If the operation fails it returns a generic error.
-func (client *WebhooksClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *WebhooksBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *WebhooksClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *WebhooksClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, registryName, webhookName, options)
 	if err != nil {
 		return nil, err
@@ -152,13 +157,13 @@ func (client *WebhooksClient) deleteOperation(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *WebhooksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *WebhooksBeginDeleteOptions) (*policy.Request, error) {
+func (client *WebhooksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *WebhooksClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/webhooks/{webhookName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -176,47 +181,39 @@ func (client *WebhooksClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter webhookName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{webhookName}", url.PathEscape(webhookName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01-preview")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *WebhooksClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets the properties of the specified webhook.
-// If the operation fails it returns a generic error.
-func (client *WebhooksClient) Get(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *WebhooksGetOptions) (WebhooksGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group to which the container registry belongs.
+// registryName - The name of the container registry.
+// webhookName - The name of the webhook.
+// options - WebhooksClientGetOptions contains the optional parameters for the WebhooksClient.Get method.
+func (client *WebhooksClient) Get(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *WebhooksClientGetOptions) (WebhooksClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, registryName, webhookName, options)
 	if err != nil {
-		return WebhooksGetResponse{}, err
+		return WebhooksClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WebhooksGetResponse{}, err
+		return WebhooksClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WebhooksGetResponse{}, client.getHandleError(resp)
+		return WebhooksClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *WebhooksClient) getCreateRequest(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *WebhooksGetOptions) (*policy.Request, error) {
+func (client *WebhooksClient) getCreateRequest(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *WebhooksClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/webhooks/{webhookName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -234,57 +231,50 @@ func (client *WebhooksClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter webhookName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{webhookName}", url.PathEscape(webhookName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01-preview")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *WebhooksClient) getHandleResponse(resp *http.Response) (WebhooksGetResponse, error) {
-	result := WebhooksGetResponse{RawResponse: resp}
+func (client *WebhooksClient) getHandleResponse(resp *http.Response) (WebhooksClientGetResponse, error) {
+	result := WebhooksClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Webhook); err != nil {
-		return WebhooksGetResponse{}, runtime.NewResponseError(err, resp)
+		return WebhooksClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *WebhooksClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // GetCallbackConfig - Gets the configuration of service URI and custom headers for the webhook.
-// If the operation fails it returns a generic error.
-func (client *WebhooksClient) GetCallbackConfig(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *WebhooksGetCallbackConfigOptions) (WebhooksGetCallbackConfigResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group to which the container registry belongs.
+// registryName - The name of the container registry.
+// webhookName - The name of the webhook.
+// options - WebhooksClientGetCallbackConfigOptions contains the optional parameters for the WebhooksClient.GetCallbackConfig
+// method.
+func (client *WebhooksClient) GetCallbackConfig(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *WebhooksClientGetCallbackConfigOptions) (WebhooksClientGetCallbackConfigResponse, error) {
 	req, err := client.getCallbackConfigCreateRequest(ctx, resourceGroupName, registryName, webhookName, options)
 	if err != nil {
-		return WebhooksGetCallbackConfigResponse{}, err
+		return WebhooksClientGetCallbackConfigResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WebhooksGetCallbackConfigResponse{}, err
+		return WebhooksClientGetCallbackConfigResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WebhooksGetCallbackConfigResponse{}, client.getCallbackConfigHandleError(resp)
+		return WebhooksClientGetCallbackConfigResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getCallbackConfigHandleResponse(resp)
 }
 
 // getCallbackConfigCreateRequest creates the GetCallbackConfig request.
-func (client *WebhooksClient) getCallbackConfigCreateRequest(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *WebhooksGetCallbackConfigOptions) (*policy.Request, error) {
+func (client *WebhooksClient) getCallbackConfigCreateRequest(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *WebhooksClientGetCallbackConfigOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/webhooks/{webhookName}/getCallbackConfig"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -302,54 +292,45 @@ func (client *WebhooksClient) getCallbackConfigCreateRequest(ctx context.Context
 		return nil, errors.New("parameter webhookName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{webhookName}", url.PathEscape(webhookName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01-preview")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getCallbackConfigHandleResponse handles the GetCallbackConfig response.
-func (client *WebhooksClient) getCallbackConfigHandleResponse(resp *http.Response) (WebhooksGetCallbackConfigResponse, error) {
-	result := WebhooksGetCallbackConfigResponse{RawResponse: resp}
+func (client *WebhooksClient) getCallbackConfigHandleResponse(resp *http.Response) (WebhooksClientGetCallbackConfigResponse, error) {
+	result := WebhooksClientGetCallbackConfigResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CallbackConfig); err != nil {
-		return WebhooksGetCallbackConfigResponse{}, runtime.NewResponseError(err, resp)
+		return WebhooksClientGetCallbackConfigResponse{}, err
 	}
 	return result, nil
 }
 
-// getCallbackConfigHandleError handles the GetCallbackConfig error response.
-func (client *WebhooksClient) getCallbackConfigHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // List - Lists all the webhooks for the specified container registry.
-// If the operation fails it returns a generic error.
-func (client *WebhooksClient) List(resourceGroupName string, registryName string, options *WebhooksListOptions) *WebhooksListPager {
-	return &WebhooksListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group to which the container registry belongs.
+// registryName - The name of the container registry.
+// options - WebhooksClientListOptions contains the optional parameters for the WebhooksClient.List method.
+func (client *WebhooksClient) List(resourceGroupName string, registryName string, options *WebhooksClientListOptions) *WebhooksClientListPager {
+	return &WebhooksClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, registryName, options)
 		},
-		advancer: func(ctx context.Context, resp WebhooksListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp WebhooksClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.WebhookListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *WebhooksClient) listCreateRequest(ctx context.Context, resourceGroupName string, registryName string, options *WebhooksListOptions) (*policy.Request, error) {
+func (client *WebhooksClient) listCreateRequest(ctx context.Context, resourceGroupName string, registryName string, options *WebhooksClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/webhooks"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -363,54 +344,46 @@ func (client *WebhooksClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter registryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01-preview")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *WebhooksClient) listHandleResponse(resp *http.Response) (WebhooksListResponse, error) {
-	result := WebhooksListResponse{RawResponse: resp}
+func (client *WebhooksClient) listHandleResponse(resp *http.Response) (WebhooksClientListResponse, error) {
+	result := WebhooksClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WebhookListResult); err != nil {
-		return WebhooksListResponse{}, runtime.NewResponseError(err, resp)
+		return WebhooksClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *WebhooksClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListEvents - Lists recent events for the specified webhook.
-// If the operation fails it returns a generic error.
-func (client *WebhooksClient) ListEvents(resourceGroupName string, registryName string, webhookName string, options *WebhooksListEventsOptions) *WebhooksListEventsPager {
-	return &WebhooksListEventsPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group to which the container registry belongs.
+// registryName - The name of the container registry.
+// webhookName - The name of the webhook.
+// options - WebhooksClientListEventsOptions contains the optional parameters for the WebhooksClient.ListEvents method.
+func (client *WebhooksClient) ListEvents(resourceGroupName string, registryName string, webhookName string, options *WebhooksClientListEventsOptions) *WebhooksClientListEventsPager {
+	return &WebhooksClientListEventsPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listEventsCreateRequest(ctx, resourceGroupName, registryName, webhookName, options)
 		},
-		advancer: func(ctx context.Context, resp WebhooksListEventsResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp WebhooksClientListEventsResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.EventListResult.NextLink)
 		},
 	}
 }
 
 // listEventsCreateRequest creates the ListEvents request.
-func (client *WebhooksClient) listEventsCreateRequest(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *WebhooksListEventsOptions) (*policy.Request, error) {
+func (client *WebhooksClient) listEventsCreateRequest(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *WebhooksClientListEventsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/webhooks/{webhookName}/listEvents"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -428,57 +401,49 @@ func (client *WebhooksClient) listEventsCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter webhookName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{webhookName}", url.PathEscape(webhookName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01-preview")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listEventsHandleResponse handles the ListEvents response.
-func (client *WebhooksClient) listEventsHandleResponse(resp *http.Response) (WebhooksListEventsResponse, error) {
-	result := WebhooksListEventsResponse{RawResponse: resp}
+func (client *WebhooksClient) listEventsHandleResponse(resp *http.Response) (WebhooksClientListEventsResponse, error) {
+	result := WebhooksClientListEventsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventListResult); err != nil {
-		return WebhooksListEventsResponse{}, runtime.NewResponseError(err, resp)
+		return WebhooksClientListEventsResponse{}, err
 	}
 	return result, nil
 }
 
-// listEventsHandleError handles the ListEvents error response.
-func (client *WebhooksClient) listEventsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Ping - Triggers a ping event to be sent to the webhook.
-// If the operation fails it returns a generic error.
-func (client *WebhooksClient) Ping(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *WebhooksPingOptions) (WebhooksPingResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group to which the container registry belongs.
+// registryName - The name of the container registry.
+// webhookName - The name of the webhook.
+// options - WebhooksClientPingOptions contains the optional parameters for the WebhooksClient.Ping method.
+func (client *WebhooksClient) Ping(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *WebhooksClientPingOptions) (WebhooksClientPingResponse, error) {
 	req, err := client.pingCreateRequest(ctx, resourceGroupName, registryName, webhookName, options)
 	if err != nil {
-		return WebhooksPingResponse{}, err
+		return WebhooksClientPingResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WebhooksPingResponse{}, err
+		return WebhooksClientPingResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WebhooksPingResponse{}, client.pingHandleError(resp)
+		return WebhooksClientPingResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.pingHandleResponse(resp)
 }
 
 // pingCreateRequest creates the Ping request.
-func (client *WebhooksClient) pingCreateRequest(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *WebhooksPingOptions) (*policy.Request, error) {
+func (client *WebhooksClient) pingCreateRequest(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *WebhooksClientPingOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/webhooks/{webhookName}/ping"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -496,61 +461,54 @@ func (client *WebhooksClient) pingCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter webhookName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{webhookName}", url.PathEscape(webhookName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01-preview")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // pingHandleResponse handles the Ping response.
-func (client *WebhooksClient) pingHandleResponse(resp *http.Response) (WebhooksPingResponse, error) {
-	result := WebhooksPingResponse{RawResponse: resp}
+func (client *WebhooksClient) pingHandleResponse(resp *http.Response) (WebhooksClientPingResponse, error) {
+	result := WebhooksClientPingResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventInfo); err != nil {
-		return WebhooksPingResponse{}, runtime.NewResponseError(err, resp)
+		return WebhooksClientPingResponse{}, err
 	}
 	return result, nil
 }
 
-// pingHandleError handles the Ping error response.
-func (client *WebhooksClient) pingHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginUpdate - Updates a webhook with the specified parameters.
-// If the operation fails it returns a generic error.
-func (client *WebhooksClient) BeginUpdate(ctx context.Context, resourceGroupName string, registryName string, webhookName string, webhookUpdateParameters WebhookUpdateParameters, options *WebhooksBeginUpdateOptions) (WebhooksUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group to which the container registry belongs.
+// registryName - The name of the container registry.
+// webhookName - The name of the webhook.
+// webhookUpdateParameters - The parameters for updating a webhook.
+// options - WebhooksClientBeginUpdateOptions contains the optional parameters for the WebhooksClient.BeginUpdate method.
+func (client *WebhooksClient) BeginUpdate(ctx context.Context, resourceGroupName string, registryName string, webhookName string, webhookUpdateParameters WebhookUpdateParameters, options *WebhooksClientBeginUpdateOptions) (WebhooksClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, registryName, webhookName, webhookUpdateParameters, options)
 	if err != nil {
-		return WebhooksUpdatePollerResponse{}, err
+		return WebhooksClientUpdatePollerResponse{}, err
 	}
-	result := WebhooksUpdatePollerResponse{
+	result := WebhooksClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("WebhooksClient.Update", "", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("WebhooksClient.Update", "", resp, client.pl)
 	if err != nil {
-		return WebhooksUpdatePollerResponse{}, err
+		return WebhooksClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &WebhooksUpdatePoller{
+	result.Poller = &WebhooksClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Updates a webhook with the specified parameters.
-// If the operation fails it returns a generic error.
-func (client *WebhooksClient) update(ctx context.Context, resourceGroupName string, registryName string, webhookName string, webhookUpdateParameters WebhookUpdateParameters, options *WebhooksBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *WebhooksClient) update(ctx context.Context, resourceGroupName string, registryName string, webhookName string, webhookUpdateParameters WebhookUpdateParameters, options *WebhooksClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, registryName, webhookName, webhookUpdateParameters, options)
 	if err != nil {
 		return nil, err
@@ -560,13 +518,13 @@ func (client *WebhooksClient) update(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *WebhooksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, registryName string, webhookName string, webhookUpdateParameters WebhookUpdateParameters, options *WebhooksBeginUpdateOptions) (*policy.Request, error) {
+func (client *WebhooksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, registryName string, webhookName string, webhookUpdateParameters WebhookUpdateParameters, options *WebhooksClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/webhooks/{webhookName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -584,25 +542,13 @@ func (client *WebhooksClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter webhookName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{webhookName}", url.PathEscape(webhookName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01-preview")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, webhookUpdateParameters)
-}
-
-// updateHandleError handles the Update error response.
-func (client *WebhooksClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

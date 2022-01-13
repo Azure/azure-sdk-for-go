@@ -28,12 +28,16 @@ func ExampleNetworkExperimentProfilesClient_List() {
 	ctx := context.Background()
 	client := armfrontdoor.NewNetworkExperimentProfilesClient("<subscription-id>", cred, nil)
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Profile.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -48,12 +52,16 @@ func ExampleNetworkExperimentProfilesClient_ListByResourceGroup() {
 	client := armfrontdoor.NewNetworkExperimentProfilesClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Profile.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -73,7 +81,7 @@ func ExampleNetworkExperimentProfilesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Profile.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.NetworkExperimentProfilesClientGetResult)
 }
 
 // x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/NetworkExperimentCreateProfile.json
@@ -88,11 +96,9 @@ func ExampleNetworkExperimentProfilesClient_BeginCreateOrUpdate() {
 		"<profile-name>",
 		"<resource-group-name>",
 		armfrontdoor.Profile{
-			Resource: armfrontdoor.Resource{
-				Location: to.StringPtr("<location>"),
-			},
+			Location: to.StringPtr("<location>"),
 			Properties: &armfrontdoor.ProfileProperties{
-				EnabledState: armfrontdoor.StateEnabled.ToPtr(),
+				EnabledState: armfrontdoor.State("Enabled").ToPtr(),
 			},
 		},
 		nil)
@@ -103,7 +109,7 @@ func ExampleNetworkExperimentProfilesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Profile.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.NetworkExperimentProfilesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/NetworkExperimentUpdateProfile.json
@@ -119,7 +125,7 @@ func ExampleNetworkExperimentProfilesClient_BeginUpdate() {
 		"<profile-name>",
 		armfrontdoor.ProfileUpdateModel{
 			Properties: &armfrontdoor.ProfileUpdateProperties{
-				EnabledState: armfrontdoor.StateEnabled.ToPtr(),
+				EnabledState: armfrontdoor.State("Enabled").ToPtr(),
 			},
 			Tags: map[string]*string{
 				"key1": to.StringPtr("value1"),
@@ -134,7 +140,7 @@ func ExampleNetworkExperimentProfilesClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Profile.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.NetworkExperimentProfilesClientUpdateResult)
 }
 
 // x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/NetworkExperimentDeleteProfile.json

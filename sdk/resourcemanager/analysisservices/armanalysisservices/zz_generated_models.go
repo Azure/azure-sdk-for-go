@@ -14,98 +14,6 @@ import (
 	"reflect"
 )
 
-// AnalysisServicesServer - Represents an instance of an Analysis Services resource.
-type AnalysisServicesServer struct {
-	Resource
-	// Properties of the provision operation request.
-	Properties *AnalysisServicesServerProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AnalysisServicesServer.
-func (a AnalysisServicesServer) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
-}
-
-// AnalysisServicesServerMutableProperties - An object that represents a set of mutable Analysis Services resource properties.
-type AnalysisServicesServerMutableProperties struct {
-	// A collection of AS server administrators
-	AsAdministrators *ServerAdministrators `json:"asAdministrators,omitempty"`
-
-	// The SAS container URI to the backup container.
-	BackupBlobContainerURI *string `json:"backupBlobContainerUri,omitempty"`
-
-	// The gateway details configured for the AS server.
-	GatewayDetails *GatewayDetails `json:"gatewayDetails,omitempty"`
-
-	// The firewall settings for the AS server.
-	IPV4FirewallSettings *IPv4FirewallSettings `json:"ipV4FirewallSettings,omitempty"`
-
-	// The managed mode of the server (0 = not managed, 1 = managed).
-	ManagedMode *ManagedMode `json:"managedMode,omitempty"`
-
-	// How the read-write server's participation in the query pool is controlled.
-	// It can have the following values: * readOnly - indicates that the read-write server is intended not to participate in query operations
-	// * all - indicates that the read-write server can participate in query operations
-	// Specifying readOnly when capacity is 1 results in error.
-	QuerypoolConnectionMode *ConnectionMode `json:"querypoolConnectionMode,omitempty"`
-
-	// The server monitor mode for AS server
-	ServerMonitorMode *ServerMonitorMode `json:"serverMonitorMode,omitempty"`
-}
-
-// AnalysisServicesServerProperties - Properties of Analysis Services resource.
-type AnalysisServicesServerProperties struct {
-	AnalysisServicesServerMutableProperties
-	// The SKU of the Analysis Services resource.
-	SKU *ResourceSKU `json:"sku,omitempty"`
-
-	// READ-ONLY; The current deployment state of Analysis Services resource. The provisioningState is to indicate states for resource provisioning.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-
-	// READ-ONLY; The full name of the Analysis Services resource.
-	ServerFullName *string `json:"serverFullName,omitempty" azure:"ro"`
-
-	// READ-ONLY; The current state of Analysis Services resource. The state is to indicate more states outside of resource provisioning.
-	State *State `json:"state,omitempty" azure:"ro"`
-}
-
-// AnalysisServicesServerUpdateParameters - Provision request specification
-type AnalysisServicesServerUpdateParameters struct {
-	// Properties of the provision operation request.
-	Properties *AnalysisServicesServerMutableProperties `json:"properties,omitempty"`
-
-	// The SKU of the Analysis Services resource.
-	SKU *ResourceSKU `json:"sku,omitempty"`
-
-	// Key-value pairs of additional provisioning properties.
-	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AnalysisServicesServerUpdateParameters.
-func (a AnalysisServicesServerUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "sku", a.SKU)
-	populate(objectMap, "tags", a.Tags)
-	return json.Marshal(objectMap)
-}
-
-// AnalysisServicesServers - An array of Analysis Services resources.
-type AnalysisServicesServers struct {
-	// REQUIRED; An array of Analysis Services resources.
-	Value []*AnalysisServicesServer `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AnalysisServicesServers.
-func (a AnalysisServicesServers) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
 // CheckServerNameAvailabilityParameters - Details of server name request body.
 type CheckServerNameAvailabilityParameters struct {
 	// Name for checking availability.
@@ -178,17 +86,9 @@ func (e ErrorDetail) MarshalJSON() ([]byte, error) {
 }
 
 // ErrorResponse - Describes the format of Error response.
-// Implements the error and azcore.HTTPResponse interfaces.
 type ErrorResponse struct {
-	raw string
 	// The error object
-	InnerError *ErrorDetail `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorDetail `json:"error,omitempty"`
 }
 
 // GatewayDetails - The gateway details.
@@ -204,17 +104,9 @@ type GatewayDetails struct {
 }
 
 // GatewayListStatusError - Status of gateway is error.
-// Implements the error and azcore.HTTPResponse interfaces.
 type GatewayListStatusError struct {
-	raw string
 	// Error of the list gateway status.
-	InnerError *ErrorDetail `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type GatewayListStatusError.
-// The contents of the error text are not contractual and subject to change.
-func (e GatewayListStatusError) Error() string {
-	return e.raw
+	Error *ErrorDetail `json:"error,omitempty"`
 }
 
 // GatewayListStatusLive - Status of gateway is live.
@@ -336,7 +228,8 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty" azure:"ro"`
 }
 
-// OperationListResult - Result of listing consumption operations. It contains a list of operations and a URL link to get the next set of results.
+// OperationListResult - Result of listing consumption operations. It contains a list of operations and a URL link to get
+// the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -397,8 +290,8 @@ type OperationStatus struct {
 	Status *string `json:"status,omitempty"`
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -426,17 +319,13 @@ type Resource struct {
 // MarshalJSON implements the json.Marshaller interface for type Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "id", r.ID)
 	populate(objectMap, "location", r.Location)
 	populate(objectMap, "name", r.Name)
 	populate(objectMap, "sku", r.SKU)
 	populate(objectMap, "tags", r.Tags)
 	populate(objectMap, "type", r.Type)
+	return json.Marshal(objectMap)
 }
 
 // ResourceSKU - Represents the SKU name and Azure pricing tier for Analysis Services resource.
@@ -486,6 +375,43 @@ func (s SKUEnumerationForNewResourceResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Server - Represents an instance of an Analysis Services resource.
+type Server struct {
+	// REQUIRED; Location of the Analysis Services resource.
+	Location *string `json:"location,omitempty"`
+
+	// REQUIRED; The SKU of the Analysis Services resource.
+	SKU *ResourceSKU `json:"sku,omitempty"`
+
+	// Properties of the provision operation request.
+	Properties *ServerProperties `json:"properties,omitempty"`
+
+	// Key-value pairs of additional resource provisioning properties.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; An identifier that represents the Analysis Services resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the Analysis Services resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the Analysis Services resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Server.
+func (s Server) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "id", s.ID)
+	populate(objectMap, "location", s.Location)
+	populate(objectMap, "name", s.Name)
+	populate(objectMap, "properties", s.Properties)
+	populate(objectMap, "sku", s.SKU)
+	populate(objectMap, "tags", s.Tags)
+	populate(objectMap, "type", s.Type)
+	return json.Marshal(objectMap)
+}
+
 // ServerAdministrators - An array of administrator user identities.
 type ServerAdministrators struct {
 	// An array of administrator user identities.
@@ -499,78 +425,183 @@ func (s ServerAdministrators) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ServersBeginCreateOptions contains the optional parameters for the Servers.BeginCreate method.
-type ServersBeginCreateOptions struct {
+// ServerMutableProperties - An object that represents a set of mutable Analysis Services resource properties.
+type ServerMutableProperties struct {
+	// A collection of AS server administrators
+	AsAdministrators *ServerAdministrators `json:"asAdministrators,omitempty"`
+
+	// The SAS container URI to the backup container.
+	BackupBlobContainerURI *string `json:"backupBlobContainerUri,omitempty"`
+
+	// The gateway details configured for the AS server.
+	GatewayDetails *GatewayDetails `json:"gatewayDetails,omitempty"`
+
+	// The firewall settings for the AS server.
+	IPV4FirewallSettings *IPv4FirewallSettings `json:"ipV4FirewallSettings,omitempty"`
+
+	// The managed mode of the server (0 = not managed, 1 = managed).
+	ManagedMode *ManagedMode `json:"managedMode,omitempty"`
+
+	// How the read-write server's participation in the query pool is controlled.
+	// It can have the following values: * readOnly - indicates that the read-write server is intended not to participate in query
+	// operations
+	// * all - indicates that the read-write server can participate in query operations
+	// Specifying readOnly when capacity is 1 results in error.
+	QuerypoolConnectionMode *ConnectionMode `json:"querypoolConnectionMode,omitempty"`
+
+	// The server monitor mode for AS server
+	ServerMonitorMode *ServerMonitorMode `json:"serverMonitorMode,omitempty"`
+}
+
+// ServerProperties - Properties of Analysis Services resource.
+type ServerProperties struct {
+	// A collection of AS server administrators
+	AsAdministrators *ServerAdministrators `json:"asAdministrators,omitempty"`
+
+	// The SAS container URI to the backup container.
+	BackupBlobContainerURI *string `json:"backupBlobContainerUri,omitempty"`
+
+	// The gateway details configured for the AS server.
+	GatewayDetails *GatewayDetails `json:"gatewayDetails,omitempty"`
+
+	// The firewall settings for the AS server.
+	IPV4FirewallSettings *IPv4FirewallSettings `json:"ipV4FirewallSettings,omitempty"`
+
+	// The managed mode of the server (0 = not managed, 1 = managed).
+	ManagedMode *ManagedMode `json:"managedMode,omitempty"`
+
+	// How the read-write server's participation in the query pool is controlled.
+	// It can have the following values: * readOnly - indicates that the read-write server is intended not to participate in query
+	// operations
+	// * all - indicates that the read-write server can participate in query operations
+	// Specifying readOnly when capacity is 1 results in error.
+	QuerypoolConnectionMode *ConnectionMode `json:"querypoolConnectionMode,omitempty"`
+
+	// The SKU of the Analysis Services resource.
+	SKU *ResourceSKU `json:"sku,omitempty"`
+
+	// The server monitor mode for AS server
+	ServerMonitorMode *ServerMonitorMode `json:"serverMonitorMode,omitempty"`
+
+	// READ-ONLY; The current deployment state of Analysis Services resource. The provisioningState is to indicate states for
+	// resource provisioning.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; The full name of the Analysis Services resource.
+	ServerFullName *string `json:"serverFullName,omitempty" azure:"ro"`
+
+	// READ-ONLY; The current state of Analysis Services resource. The state is to indicate more states outside of resource provisioning.
+	State *State `json:"state,omitempty" azure:"ro"`
+}
+
+// ServerUpdateParameters - Provision request specification
+type ServerUpdateParameters struct {
+	// Properties of the provision operation request.
+	Properties *ServerMutableProperties `json:"properties,omitempty"`
+
+	// The SKU of the Analysis Services resource.
+	SKU *ResourceSKU `json:"sku,omitempty"`
+
+	// Key-value pairs of additional provisioning properties.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ServerUpdateParameters.
+func (s ServerUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "properties", s.Properties)
+	populate(objectMap, "sku", s.SKU)
+	populate(objectMap, "tags", s.Tags)
+	return json.Marshal(objectMap)
+}
+
+// Servers - An array of Analysis Services resources.
+type Servers struct {
+	// REQUIRED; An array of Analysis Services resources.
+	Value []*Server `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Servers.
+func (s Servers) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "value", s.Value)
+	return json.Marshal(objectMap)
+}
+
+// ServersClientBeginCreateOptions contains the optional parameters for the ServersClient.BeginCreate method.
+type ServersClientBeginCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServersBeginDeleteOptions contains the optional parameters for the Servers.BeginDelete method.
-type ServersBeginDeleteOptions struct {
+// ServersClientBeginDeleteOptions contains the optional parameters for the ServersClient.BeginDelete method.
+type ServersClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServersBeginResumeOptions contains the optional parameters for the Servers.BeginResume method.
-type ServersBeginResumeOptions struct {
+// ServersClientBeginResumeOptions contains the optional parameters for the ServersClient.BeginResume method.
+type ServersClientBeginResumeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServersBeginSuspendOptions contains the optional parameters for the Servers.BeginSuspend method.
-type ServersBeginSuspendOptions struct {
+// ServersClientBeginSuspendOptions contains the optional parameters for the ServersClient.BeginSuspend method.
+type ServersClientBeginSuspendOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServersBeginUpdateOptions contains the optional parameters for the Servers.BeginUpdate method.
-type ServersBeginUpdateOptions struct {
+// ServersClientBeginUpdateOptions contains the optional parameters for the ServersClient.BeginUpdate method.
+type ServersClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServersCheckNameAvailabilityOptions contains the optional parameters for the Servers.CheckNameAvailability method.
-type ServersCheckNameAvailabilityOptions struct {
+// ServersClientCheckNameAvailabilityOptions contains the optional parameters for the ServersClient.CheckNameAvailability
+// method.
+type ServersClientCheckNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServersDissociateGatewayOptions contains the optional parameters for the Servers.DissociateGateway method.
-type ServersDissociateGatewayOptions struct {
+// ServersClientDissociateGatewayOptions contains the optional parameters for the ServersClient.DissociateGateway method.
+type ServersClientDissociateGatewayOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServersGetDetailsOptions contains the optional parameters for the Servers.GetDetails method.
-type ServersGetDetailsOptions struct {
+// ServersClientGetDetailsOptions contains the optional parameters for the ServersClient.GetDetails method.
+type ServersClientGetDetailsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServersListByResourceGroupOptions contains the optional parameters for the Servers.ListByResourceGroup method.
-type ServersListByResourceGroupOptions struct {
+// ServersClientListByResourceGroupOptions contains the optional parameters for the ServersClient.ListByResourceGroup method.
+type ServersClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServersListGatewayStatusOptions contains the optional parameters for the Servers.ListGatewayStatus method.
-type ServersListGatewayStatusOptions struct {
+// ServersClientListGatewayStatusOptions contains the optional parameters for the ServersClient.ListGatewayStatus method.
+type ServersClientListGatewayStatusOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServersListOperationResultsOptions contains the optional parameters for the Servers.ListOperationResults method.
-type ServersListOperationResultsOptions struct {
+// ServersClientListOperationResultsOptions contains the optional parameters for the ServersClient.ListOperationResults method.
+type ServersClientListOperationResultsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServersListOperationStatusesOptions contains the optional parameters for the Servers.ListOperationStatuses method.
-type ServersListOperationStatusesOptions struct {
+// ServersClientListOperationStatusesOptions contains the optional parameters for the ServersClient.ListOperationStatuses
+// method.
+type ServersClientListOperationStatusesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServersListOptions contains the optional parameters for the Servers.List method.
-type ServersListOptions struct {
+// ServersClientListOptions contains the optional parameters for the ServersClient.List method.
+type ServersClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServersListSKUsForExistingOptions contains the optional parameters for the Servers.ListSKUsForExisting method.
-type ServersListSKUsForExistingOptions struct {
+// ServersClientListSKUsForExistingOptions contains the optional parameters for the ServersClient.ListSKUsForExisting method.
+type ServersClientListSKUsForExistingOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServersListSKUsForNewOptions contains the optional parameters for the Servers.ListSKUsForNew method.
-type ServersListSKUsForNewOptions struct {
+// ServersClientListSKUsForNewOptions contains the optional parameters for the ServersClient.ListSKUsForNew method.
+type ServersClientListSKUsForNewOptions struct {
 	// placeholder for future optional parameters
 }
 

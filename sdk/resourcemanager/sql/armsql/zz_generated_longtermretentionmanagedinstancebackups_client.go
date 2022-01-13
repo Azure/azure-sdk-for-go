@@ -25,46 +25,60 @@ import (
 // LongTermRetentionManagedInstanceBackupsClient contains the methods for the LongTermRetentionManagedInstanceBackups group.
 // Don't use this type directly, use NewLongTermRetentionManagedInstanceBackupsClient() instead.
 type LongTermRetentionManagedInstanceBackupsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewLongTermRetentionManagedInstanceBackupsClient creates a new instance of LongTermRetentionManagedInstanceBackupsClient with the specified values.
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewLongTermRetentionManagedInstanceBackupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LongTermRetentionManagedInstanceBackupsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &LongTermRetentionManagedInstanceBackupsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &LongTermRetentionManagedInstanceBackupsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginDelete - Deletes a long term retention backup.
-// If the operation fails it returns a generic error.
-func (client *LongTermRetentionManagedInstanceBackupsClient) BeginDelete(ctx context.Context, locationName string, managedInstanceName string, databaseName string, backupName string, options *LongTermRetentionManagedInstanceBackupsBeginDeleteOptions) (LongTermRetentionManagedInstanceBackupsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// locationName - The location of the database.
+// managedInstanceName - The name of the managed instance.
+// databaseName - The name of the managed database.
+// backupName - The backup name.
+// options - LongTermRetentionManagedInstanceBackupsClientBeginDeleteOptions contains the optional parameters for the LongTermRetentionManagedInstanceBackupsClient.BeginDelete
+// method.
+func (client *LongTermRetentionManagedInstanceBackupsClient) BeginDelete(ctx context.Context, locationName string, managedInstanceName string, databaseName string, backupName string, options *LongTermRetentionManagedInstanceBackupsClientBeginDeleteOptions) (LongTermRetentionManagedInstanceBackupsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, locationName, managedInstanceName, databaseName, backupName, options)
 	if err != nil {
-		return LongTermRetentionManagedInstanceBackupsDeletePollerResponse{}, err
+		return LongTermRetentionManagedInstanceBackupsClientDeletePollerResponse{}, err
 	}
-	result := LongTermRetentionManagedInstanceBackupsDeletePollerResponse{
+	result := LongTermRetentionManagedInstanceBackupsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("LongTermRetentionManagedInstanceBackupsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("LongTermRetentionManagedInstanceBackupsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return LongTermRetentionManagedInstanceBackupsDeletePollerResponse{}, err
+		return LongTermRetentionManagedInstanceBackupsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &LongTermRetentionManagedInstanceBackupsDeletePoller{
+	result.Poller = &LongTermRetentionManagedInstanceBackupsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a long term retention backup.
-// If the operation fails it returns a generic error.
-func (client *LongTermRetentionManagedInstanceBackupsClient) deleteOperation(ctx context.Context, locationName string, managedInstanceName string, databaseName string, backupName string, options *LongTermRetentionManagedInstanceBackupsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *LongTermRetentionManagedInstanceBackupsClient) deleteOperation(ctx context.Context, locationName string, managedInstanceName string, databaseName string, backupName string, options *LongTermRetentionManagedInstanceBackupsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, locationName, managedInstanceName, databaseName, backupName, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +88,13 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) deleteOperation(ctx
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *LongTermRetentionManagedInstanceBackupsClient) deleteCreateRequest(ctx context.Context, locationName string, managedInstanceName string, databaseName string, backupName string, options *LongTermRetentionManagedInstanceBackupsBeginDeleteOptions) (*policy.Request, error) {
+func (client *LongTermRetentionManagedInstanceBackupsClient) deleteCreateRequest(ctx context.Context, locationName string, managedInstanceName string, databaseName string, backupName string, options *LongTermRetentionManagedInstanceBackupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionDatabases/{databaseName}/longTermRetentionManagedInstanceBackups/{backupName}"
 	if locationName == "" {
 		return nil, errors.New("parameter locationName cannot be empty")
@@ -102,51 +116,47 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) deleteCreateRequest
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2021-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *LongTermRetentionManagedInstanceBackupsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginDeleteByResourceGroup - Deletes a long term retention backup.
-// If the operation fails it returns a generic error.
-func (client *LongTermRetentionManagedInstanceBackupsClient) BeginDeleteByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, backupName string, options *LongTermRetentionManagedInstanceBackupsBeginDeleteByResourceGroupOptions) (LongTermRetentionManagedInstanceBackupsDeleteByResourceGroupPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// locationName - The location of the database
+// managedInstanceName - The name of the managed instance.
+// databaseName - The name of the managed database.
+// backupName - The backup name.
+// options - LongTermRetentionManagedInstanceBackupsClientBeginDeleteByResourceGroupOptions contains the optional parameters
+// for the LongTermRetentionManagedInstanceBackupsClient.BeginDeleteByResourceGroup method.
+func (client *LongTermRetentionManagedInstanceBackupsClient) BeginDeleteByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, backupName string, options *LongTermRetentionManagedInstanceBackupsClientBeginDeleteByResourceGroupOptions) (LongTermRetentionManagedInstanceBackupsClientDeleteByResourceGroupPollerResponse, error) {
 	resp, err := client.deleteByResourceGroup(ctx, resourceGroupName, locationName, managedInstanceName, databaseName, backupName, options)
 	if err != nil {
-		return LongTermRetentionManagedInstanceBackupsDeleteByResourceGroupPollerResponse{}, err
+		return LongTermRetentionManagedInstanceBackupsClientDeleteByResourceGroupPollerResponse{}, err
 	}
-	result := LongTermRetentionManagedInstanceBackupsDeleteByResourceGroupPollerResponse{
+	result := LongTermRetentionManagedInstanceBackupsClientDeleteByResourceGroupPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("LongTermRetentionManagedInstanceBackupsClient.DeleteByResourceGroup", "", resp, client.pl, client.deleteByResourceGroupHandleError)
+	pt, err := armruntime.NewPoller("LongTermRetentionManagedInstanceBackupsClient.DeleteByResourceGroup", "", resp, client.pl)
 	if err != nil {
-		return LongTermRetentionManagedInstanceBackupsDeleteByResourceGroupPollerResponse{}, err
+		return LongTermRetentionManagedInstanceBackupsClientDeleteByResourceGroupPollerResponse{}, err
 	}
-	result.Poller = &LongTermRetentionManagedInstanceBackupsDeleteByResourceGroupPoller{
+	result.Poller = &LongTermRetentionManagedInstanceBackupsClientDeleteByResourceGroupPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // DeleteByResourceGroup - Deletes a long term retention backup.
-// If the operation fails it returns a generic error.
-func (client *LongTermRetentionManagedInstanceBackupsClient) deleteByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, backupName string, options *LongTermRetentionManagedInstanceBackupsBeginDeleteByResourceGroupOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *LongTermRetentionManagedInstanceBackupsClient) deleteByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, backupName string, options *LongTermRetentionManagedInstanceBackupsClientBeginDeleteByResourceGroupOptions) (*http.Response, error) {
 	req, err := client.deleteByResourceGroupCreateRequest(ctx, resourceGroupName, locationName, managedInstanceName, databaseName, backupName, options)
 	if err != nil {
 		return nil, err
@@ -156,13 +166,13 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) deleteByResourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.deleteByResourceGroupHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteByResourceGroupCreateRequest creates the DeleteByResourceGroup request.
-func (client *LongTermRetentionManagedInstanceBackupsClient) deleteByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, backupName string, options *LongTermRetentionManagedInstanceBackupsBeginDeleteByResourceGroupOptions) (*policy.Request, error) {
+func (client *LongTermRetentionManagedInstanceBackupsClient) deleteByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, backupName string, options *LongTermRetentionManagedInstanceBackupsClientBeginDeleteByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionDatabases/{databaseName}/longTermRetentionManagedInstanceBackups/{backupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -188,47 +198,41 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) deleteByResourceGro
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2021-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
-// deleteByResourceGroupHandleError handles the DeleteByResourceGroup error response.
-func (client *LongTermRetentionManagedInstanceBackupsClient) deleteByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets a long term retention backup for a managed database.
-// If the operation fails it returns a generic error.
-func (client *LongTermRetentionManagedInstanceBackupsClient) Get(ctx context.Context, locationName string, managedInstanceName string, databaseName string, backupName string, options *LongTermRetentionManagedInstanceBackupsGetOptions) (LongTermRetentionManagedInstanceBackupsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// locationName - The location of the database.
+// managedInstanceName - The name of the managed instance.
+// databaseName - The name of the managed database.
+// backupName - The backup name.
+// options - LongTermRetentionManagedInstanceBackupsClientGetOptions contains the optional parameters for the LongTermRetentionManagedInstanceBackupsClient.Get
+// method.
+func (client *LongTermRetentionManagedInstanceBackupsClient) Get(ctx context.Context, locationName string, managedInstanceName string, databaseName string, backupName string, options *LongTermRetentionManagedInstanceBackupsClientGetOptions) (LongTermRetentionManagedInstanceBackupsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, locationName, managedInstanceName, databaseName, backupName, options)
 	if err != nil {
-		return LongTermRetentionManagedInstanceBackupsGetResponse{}, err
+		return LongTermRetentionManagedInstanceBackupsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LongTermRetentionManagedInstanceBackupsGetResponse{}, err
+		return LongTermRetentionManagedInstanceBackupsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return LongTermRetentionManagedInstanceBackupsGetResponse{}, client.getHandleError(resp)
+		return LongTermRetentionManagedInstanceBackupsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *LongTermRetentionManagedInstanceBackupsClient) getCreateRequest(ctx context.Context, locationName string, managedInstanceName string, databaseName string, backupName string, options *LongTermRetentionManagedInstanceBackupsGetOptions) (*policy.Request, error) {
+func (client *LongTermRetentionManagedInstanceBackupsClient) getCreateRequest(ctx context.Context, locationName string, managedInstanceName string, databaseName string, backupName string, options *LongTermRetentionManagedInstanceBackupsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionDatabases/{databaseName}/longTermRetentionManagedInstanceBackups/{backupName}"
 	if locationName == "" {
 		return nil, errors.New("parameter locationName cannot be empty")
@@ -250,57 +254,53 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) getCreateRequest(ct
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2021-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *LongTermRetentionManagedInstanceBackupsClient) getHandleResponse(resp *http.Response) (LongTermRetentionManagedInstanceBackupsGetResponse, error) {
-	result := LongTermRetentionManagedInstanceBackupsGetResponse{RawResponse: resp}
+func (client *LongTermRetentionManagedInstanceBackupsClient) getHandleResponse(resp *http.Response) (LongTermRetentionManagedInstanceBackupsClientGetResponse, error) {
+	result := LongTermRetentionManagedInstanceBackupsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceLongTermRetentionBackup); err != nil {
-		return LongTermRetentionManagedInstanceBackupsGetResponse{}, runtime.NewResponseError(err, resp)
+		return LongTermRetentionManagedInstanceBackupsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *LongTermRetentionManagedInstanceBackupsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // GetByResourceGroup - Gets a long term retention backup for a managed database.
-// If the operation fails it returns a generic error.
-func (client *LongTermRetentionManagedInstanceBackupsClient) GetByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, backupName string, options *LongTermRetentionManagedInstanceBackupsGetByResourceGroupOptions) (LongTermRetentionManagedInstanceBackupsGetByResourceGroupResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// locationName - The location of the database.
+// managedInstanceName - The name of the managed instance.
+// databaseName - The name of the managed database.
+// backupName - The backup name.
+// options - LongTermRetentionManagedInstanceBackupsClientGetByResourceGroupOptions contains the optional parameters for the
+// LongTermRetentionManagedInstanceBackupsClient.GetByResourceGroup method.
+func (client *LongTermRetentionManagedInstanceBackupsClient) GetByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, backupName string, options *LongTermRetentionManagedInstanceBackupsClientGetByResourceGroupOptions) (LongTermRetentionManagedInstanceBackupsClientGetByResourceGroupResponse, error) {
 	req, err := client.getByResourceGroupCreateRequest(ctx, resourceGroupName, locationName, managedInstanceName, databaseName, backupName, options)
 	if err != nil {
-		return LongTermRetentionManagedInstanceBackupsGetByResourceGroupResponse{}, err
+		return LongTermRetentionManagedInstanceBackupsClientGetByResourceGroupResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LongTermRetentionManagedInstanceBackupsGetByResourceGroupResponse{}, err
+		return LongTermRetentionManagedInstanceBackupsClientGetByResourceGroupResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return LongTermRetentionManagedInstanceBackupsGetByResourceGroupResponse{}, client.getByResourceGroupHandleError(resp)
+		return LongTermRetentionManagedInstanceBackupsClientGetByResourceGroupResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getByResourceGroupHandleResponse(resp)
 }
 
 // getByResourceGroupCreateRequest creates the GetByResourceGroup request.
-func (client *LongTermRetentionManagedInstanceBackupsClient) getByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, backupName string, options *LongTermRetentionManagedInstanceBackupsGetByResourceGroupOptions) (*policy.Request, error) {
+func (client *LongTermRetentionManagedInstanceBackupsClient) getByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, backupName string, options *LongTermRetentionManagedInstanceBackupsClientGetByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionDatabases/{databaseName}/longTermRetentionManagedInstanceBackups/{backupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -326,54 +326,47 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) getByResourceGroupC
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2021-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getByResourceGroupHandleResponse handles the GetByResourceGroup response.
-func (client *LongTermRetentionManagedInstanceBackupsClient) getByResourceGroupHandleResponse(resp *http.Response) (LongTermRetentionManagedInstanceBackupsGetByResourceGroupResponse, error) {
-	result := LongTermRetentionManagedInstanceBackupsGetByResourceGroupResponse{RawResponse: resp}
+func (client *LongTermRetentionManagedInstanceBackupsClient) getByResourceGroupHandleResponse(resp *http.Response) (LongTermRetentionManagedInstanceBackupsClientGetByResourceGroupResponse, error) {
+	result := LongTermRetentionManagedInstanceBackupsClientGetByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceLongTermRetentionBackup); err != nil {
-		return LongTermRetentionManagedInstanceBackupsGetByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return LongTermRetentionManagedInstanceBackupsClientGetByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// getByResourceGroupHandleError handles the GetByResourceGroup error response.
-func (client *LongTermRetentionManagedInstanceBackupsClient) getByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByDatabase - Lists all long term retention backups for a managed database.
-// If the operation fails it returns a generic error.
-func (client *LongTermRetentionManagedInstanceBackupsClient) ListByDatabase(locationName string, managedInstanceName string, databaseName string, options *LongTermRetentionManagedInstanceBackupsListByDatabaseOptions) *LongTermRetentionManagedInstanceBackupsListByDatabasePager {
-	return &LongTermRetentionManagedInstanceBackupsListByDatabasePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// locationName - The location of the database.
+// managedInstanceName - The name of the managed instance.
+// databaseName - The name of the managed database.
+// options - LongTermRetentionManagedInstanceBackupsClientListByDatabaseOptions contains the optional parameters for the LongTermRetentionManagedInstanceBackupsClient.ListByDatabase
+// method.
+func (client *LongTermRetentionManagedInstanceBackupsClient) ListByDatabase(locationName string, managedInstanceName string, databaseName string, options *LongTermRetentionManagedInstanceBackupsClientListByDatabaseOptions) *LongTermRetentionManagedInstanceBackupsClientListByDatabasePager {
+	return &LongTermRetentionManagedInstanceBackupsClientListByDatabasePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByDatabaseCreateRequest(ctx, locationName, managedInstanceName, databaseName, options)
 		},
-		advancer: func(ctx context.Context, resp LongTermRetentionManagedInstanceBackupsListByDatabaseResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp LongTermRetentionManagedInstanceBackupsClientListByDatabaseResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ManagedInstanceLongTermRetentionBackupListResult.NextLink)
 		},
 	}
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
-func (client *LongTermRetentionManagedInstanceBackupsClient) listByDatabaseCreateRequest(ctx context.Context, locationName string, managedInstanceName string, databaseName string, options *LongTermRetentionManagedInstanceBackupsListByDatabaseOptions) (*policy.Request, error) {
+func (client *LongTermRetentionManagedInstanceBackupsClient) listByDatabaseCreateRequest(ctx context.Context, locationName string, managedInstanceName string, databaseName string, options *LongTermRetentionManagedInstanceBackupsClientListByDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionDatabases/{databaseName}/longTermRetentionManagedInstanceBackups"
 	if locationName == "" {
 		return nil, errors.New("parameter locationName cannot be empty")
@@ -391,7 +384,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByDatabaseCreat
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -402,49 +395,41 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByDatabaseCreat
 	if options != nil && options.DatabaseState != nil {
 		reqQP.Set("databaseState", string(*options.DatabaseState))
 	}
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2021-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByDatabaseHandleResponse handles the ListByDatabase response.
-func (client *LongTermRetentionManagedInstanceBackupsClient) listByDatabaseHandleResponse(resp *http.Response) (LongTermRetentionManagedInstanceBackupsListByDatabaseResponse, error) {
-	result := LongTermRetentionManagedInstanceBackupsListByDatabaseResponse{RawResponse: resp}
+func (client *LongTermRetentionManagedInstanceBackupsClient) listByDatabaseHandleResponse(resp *http.Response) (LongTermRetentionManagedInstanceBackupsClientListByDatabaseResponse, error) {
+	result := LongTermRetentionManagedInstanceBackupsClientListByDatabaseResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceLongTermRetentionBackupListResult); err != nil {
-		return LongTermRetentionManagedInstanceBackupsListByDatabaseResponse{}, runtime.NewResponseError(err, resp)
+		return LongTermRetentionManagedInstanceBackupsClientListByDatabaseResponse{}, err
 	}
 	return result, nil
 }
 
-// listByDatabaseHandleError handles the ListByDatabase error response.
-func (client *LongTermRetentionManagedInstanceBackupsClient) listByDatabaseHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByInstance - Lists the long term retention backups for a given managed instance.
-// If the operation fails it returns a generic error.
-func (client *LongTermRetentionManagedInstanceBackupsClient) ListByInstance(locationName string, managedInstanceName string, options *LongTermRetentionManagedInstanceBackupsListByInstanceOptions) *LongTermRetentionManagedInstanceBackupsListByInstancePager {
-	return &LongTermRetentionManagedInstanceBackupsListByInstancePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// locationName - The location of the database
+// managedInstanceName - The name of the managed instance.
+// options - LongTermRetentionManagedInstanceBackupsClientListByInstanceOptions contains the optional parameters for the LongTermRetentionManagedInstanceBackupsClient.ListByInstance
+// method.
+func (client *LongTermRetentionManagedInstanceBackupsClient) ListByInstance(locationName string, managedInstanceName string, options *LongTermRetentionManagedInstanceBackupsClientListByInstanceOptions) *LongTermRetentionManagedInstanceBackupsClientListByInstancePager {
+	return &LongTermRetentionManagedInstanceBackupsClientListByInstancePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByInstanceCreateRequest(ctx, locationName, managedInstanceName, options)
 		},
-		advancer: func(ctx context.Context, resp LongTermRetentionManagedInstanceBackupsListByInstanceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp LongTermRetentionManagedInstanceBackupsClientListByInstanceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ManagedInstanceLongTermRetentionBackupListResult.NextLink)
 		},
 	}
 }
 
 // listByInstanceCreateRequest creates the ListByInstance request.
-func (client *LongTermRetentionManagedInstanceBackupsClient) listByInstanceCreateRequest(ctx context.Context, locationName string, managedInstanceName string, options *LongTermRetentionManagedInstanceBackupsListByInstanceOptions) (*policy.Request, error) {
+func (client *LongTermRetentionManagedInstanceBackupsClient) listByInstanceCreateRequest(ctx context.Context, locationName string, managedInstanceName string, options *LongTermRetentionManagedInstanceBackupsClientListByInstanceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionManagedInstanceBackups"
 	if locationName == "" {
 		return nil, errors.New("parameter locationName cannot be empty")
@@ -458,7 +443,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByInstanceCreat
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -469,49 +454,40 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByInstanceCreat
 	if options != nil && options.DatabaseState != nil {
 		reqQP.Set("databaseState", string(*options.DatabaseState))
 	}
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2021-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByInstanceHandleResponse handles the ListByInstance response.
-func (client *LongTermRetentionManagedInstanceBackupsClient) listByInstanceHandleResponse(resp *http.Response) (LongTermRetentionManagedInstanceBackupsListByInstanceResponse, error) {
-	result := LongTermRetentionManagedInstanceBackupsListByInstanceResponse{RawResponse: resp}
+func (client *LongTermRetentionManagedInstanceBackupsClient) listByInstanceHandleResponse(resp *http.Response) (LongTermRetentionManagedInstanceBackupsClientListByInstanceResponse, error) {
+	result := LongTermRetentionManagedInstanceBackupsClientListByInstanceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceLongTermRetentionBackupListResult); err != nil {
-		return LongTermRetentionManagedInstanceBackupsListByInstanceResponse{}, runtime.NewResponseError(err, resp)
+		return LongTermRetentionManagedInstanceBackupsClientListByInstanceResponse{}, err
 	}
 	return result, nil
 }
 
-// listByInstanceHandleError handles the ListByInstance error response.
-func (client *LongTermRetentionManagedInstanceBackupsClient) listByInstanceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByLocation - Lists the long term retention backups for managed databases in a given location.
-// If the operation fails it returns a generic error.
-func (client *LongTermRetentionManagedInstanceBackupsClient) ListByLocation(locationName string, options *LongTermRetentionManagedInstanceBackupsListByLocationOptions) *LongTermRetentionManagedInstanceBackupsListByLocationPager {
-	return &LongTermRetentionManagedInstanceBackupsListByLocationPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// locationName - The location of the database.
+// options - LongTermRetentionManagedInstanceBackupsClientListByLocationOptions contains the optional parameters for the LongTermRetentionManagedInstanceBackupsClient.ListByLocation
+// method.
+func (client *LongTermRetentionManagedInstanceBackupsClient) ListByLocation(locationName string, options *LongTermRetentionManagedInstanceBackupsClientListByLocationOptions) *LongTermRetentionManagedInstanceBackupsClientListByLocationPager {
+	return &LongTermRetentionManagedInstanceBackupsClientListByLocationPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByLocationCreateRequest(ctx, locationName, options)
 		},
-		advancer: func(ctx context.Context, resp LongTermRetentionManagedInstanceBackupsListByLocationResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp LongTermRetentionManagedInstanceBackupsClientListByLocationResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ManagedInstanceLongTermRetentionBackupListResult.NextLink)
 		},
 	}
 }
 
 // listByLocationCreateRequest creates the ListByLocation request.
-func (client *LongTermRetentionManagedInstanceBackupsClient) listByLocationCreateRequest(ctx context.Context, locationName string, options *LongTermRetentionManagedInstanceBackupsListByLocationOptions) (*policy.Request, error) {
+func (client *LongTermRetentionManagedInstanceBackupsClient) listByLocationCreateRequest(ctx context.Context, locationName string, options *LongTermRetentionManagedInstanceBackupsClientListByLocationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionManagedInstanceBackups"
 	if locationName == "" {
 		return nil, errors.New("parameter locationName cannot be empty")
@@ -521,7 +497,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByLocationCreat
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -532,49 +508,44 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByLocationCreat
 	if options != nil && options.DatabaseState != nil {
 		reqQP.Set("databaseState", string(*options.DatabaseState))
 	}
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2021-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByLocationHandleResponse handles the ListByLocation response.
-func (client *LongTermRetentionManagedInstanceBackupsClient) listByLocationHandleResponse(resp *http.Response) (LongTermRetentionManagedInstanceBackupsListByLocationResponse, error) {
-	result := LongTermRetentionManagedInstanceBackupsListByLocationResponse{RawResponse: resp}
+func (client *LongTermRetentionManagedInstanceBackupsClient) listByLocationHandleResponse(resp *http.Response) (LongTermRetentionManagedInstanceBackupsClientListByLocationResponse, error) {
+	result := LongTermRetentionManagedInstanceBackupsClientListByLocationResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceLongTermRetentionBackupListResult); err != nil {
-		return LongTermRetentionManagedInstanceBackupsListByLocationResponse{}, runtime.NewResponseError(err, resp)
+		return LongTermRetentionManagedInstanceBackupsClientListByLocationResponse{}, err
 	}
 	return result, nil
 }
 
-// listByLocationHandleError handles the ListByLocation error response.
-func (client *LongTermRetentionManagedInstanceBackupsClient) listByLocationHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByResourceGroupDatabase - Lists all long term retention backups for a managed database.
-// If the operation fails it returns a generic error.
-func (client *LongTermRetentionManagedInstanceBackupsClient) ListByResourceGroupDatabase(resourceGroupName string, locationName string, managedInstanceName string, databaseName string, options *LongTermRetentionManagedInstanceBackupsListByResourceGroupDatabaseOptions) *LongTermRetentionManagedInstanceBackupsListByResourceGroupDatabasePager {
-	return &LongTermRetentionManagedInstanceBackupsListByResourceGroupDatabasePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// locationName - The location of the database
+// managedInstanceName - The name of the managed instance.
+// databaseName - The name of the managed database.
+// options - LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseOptions contains the optional parameters
+// for the LongTermRetentionManagedInstanceBackupsClient.ListByResourceGroupDatabase method.
+func (client *LongTermRetentionManagedInstanceBackupsClient) ListByResourceGroupDatabase(resourceGroupName string, locationName string, managedInstanceName string, databaseName string, options *LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseOptions) *LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabasePager {
+	return &LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabasePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupDatabaseCreateRequest(ctx, resourceGroupName, locationName, managedInstanceName, databaseName, options)
 		},
-		advancer: func(ctx context.Context, resp LongTermRetentionManagedInstanceBackupsListByResourceGroupDatabaseResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ManagedInstanceLongTermRetentionBackupListResult.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupDatabaseCreateRequest creates the ListByResourceGroupDatabase request.
-func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroupDatabaseCreateRequest(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, options *LongTermRetentionManagedInstanceBackupsListByResourceGroupDatabaseOptions) (*policy.Request, error) {
+func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroupDatabaseCreateRequest(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, options *LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionDatabases/{databaseName}/longTermRetentionManagedInstanceBackups"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -596,7 +567,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroup
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -607,49 +578,43 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroup
 	if options != nil && options.DatabaseState != nil {
 		reqQP.Set("databaseState", string(*options.DatabaseState))
 	}
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2021-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByResourceGroupDatabaseHandleResponse handles the ListByResourceGroupDatabase response.
-func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroupDatabaseHandleResponse(resp *http.Response) (LongTermRetentionManagedInstanceBackupsListByResourceGroupDatabaseResponse, error) {
-	result := LongTermRetentionManagedInstanceBackupsListByResourceGroupDatabaseResponse{RawResponse: resp}
+func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroupDatabaseHandleResponse(resp *http.Response) (LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseResponse, error) {
+	result := LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceLongTermRetentionBackupListResult); err != nil {
-		return LongTermRetentionManagedInstanceBackupsListByResourceGroupDatabaseResponse{}, runtime.NewResponseError(err, resp)
+		return LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupDatabaseHandleError handles the ListByResourceGroupDatabase error response.
-func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroupDatabaseHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByResourceGroupInstance - Lists the long term retention backups for a given managed instance.
-// If the operation fails it returns a generic error.
-func (client *LongTermRetentionManagedInstanceBackupsClient) ListByResourceGroupInstance(resourceGroupName string, locationName string, managedInstanceName string, options *LongTermRetentionManagedInstanceBackupsListByResourceGroupInstanceOptions) *LongTermRetentionManagedInstanceBackupsListByResourceGroupInstancePager {
-	return &LongTermRetentionManagedInstanceBackupsListByResourceGroupInstancePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// locationName - The location of the database.
+// managedInstanceName - The name of the managed instance.
+// options - LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceOptions contains the optional parameters
+// for the LongTermRetentionManagedInstanceBackupsClient.ListByResourceGroupInstance method.
+func (client *LongTermRetentionManagedInstanceBackupsClient) ListByResourceGroupInstance(resourceGroupName string, locationName string, managedInstanceName string, options *LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceOptions) *LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstancePager {
+	return &LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstancePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupInstanceCreateRequest(ctx, resourceGroupName, locationName, managedInstanceName, options)
 		},
-		advancer: func(ctx context.Context, resp LongTermRetentionManagedInstanceBackupsListByResourceGroupInstanceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ManagedInstanceLongTermRetentionBackupListResult.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupInstanceCreateRequest creates the ListByResourceGroupInstance request.
-func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroupInstanceCreateRequest(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, options *LongTermRetentionManagedInstanceBackupsListByResourceGroupInstanceOptions) (*policy.Request, error) {
+func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroupInstanceCreateRequest(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, options *LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionManagedInstanceBackups"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -667,7 +632,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroup
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -678,49 +643,42 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroup
 	if options != nil && options.DatabaseState != nil {
 		reqQP.Set("databaseState", string(*options.DatabaseState))
 	}
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2021-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByResourceGroupInstanceHandleResponse handles the ListByResourceGroupInstance response.
-func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroupInstanceHandleResponse(resp *http.Response) (LongTermRetentionManagedInstanceBackupsListByResourceGroupInstanceResponse, error) {
-	result := LongTermRetentionManagedInstanceBackupsListByResourceGroupInstanceResponse{RawResponse: resp}
+func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroupInstanceHandleResponse(resp *http.Response) (LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceResponse, error) {
+	result := LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceLongTermRetentionBackupListResult); err != nil {
-		return LongTermRetentionManagedInstanceBackupsListByResourceGroupInstanceResponse{}, runtime.NewResponseError(err, resp)
+		return LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupInstanceHandleError handles the ListByResourceGroupInstance error response.
-func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroupInstanceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByResourceGroupLocation - Lists the long term retention backups for managed databases in a given location.
-// If the operation fails it returns a generic error.
-func (client *LongTermRetentionManagedInstanceBackupsClient) ListByResourceGroupLocation(resourceGroupName string, locationName string, options *LongTermRetentionManagedInstanceBackupsListByResourceGroupLocationOptions) *LongTermRetentionManagedInstanceBackupsListByResourceGroupLocationPager {
-	return &LongTermRetentionManagedInstanceBackupsListByResourceGroupLocationPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// locationName - The location of the database.
+// options - LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationOptions contains the optional parameters
+// for the LongTermRetentionManagedInstanceBackupsClient.ListByResourceGroupLocation method.
+func (client *LongTermRetentionManagedInstanceBackupsClient) ListByResourceGroupLocation(resourceGroupName string, locationName string, options *LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationOptions) *LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationPager {
+	return &LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupLocationCreateRequest(ctx, resourceGroupName, locationName, options)
 		},
-		advancer: func(ctx context.Context, resp LongTermRetentionManagedInstanceBackupsListByResourceGroupLocationResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ManagedInstanceLongTermRetentionBackupListResult.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupLocationCreateRequest creates the ListByResourceGroupLocation request.
-func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroupLocationCreateRequest(ctx context.Context, resourceGroupName string, locationName string, options *LongTermRetentionManagedInstanceBackupsListByResourceGroupLocationOptions) (*policy.Request, error) {
+func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroupLocationCreateRequest(ctx context.Context, resourceGroupName string, locationName string, options *LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionManagedInstanceBackups"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -734,7 +692,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroup
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -745,29 +703,17 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroup
 	if options != nil && options.DatabaseState != nil {
 		reqQP.Set("databaseState", string(*options.DatabaseState))
 	}
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2021-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByResourceGroupLocationHandleResponse handles the ListByResourceGroupLocation response.
-func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroupLocationHandleResponse(resp *http.Response) (LongTermRetentionManagedInstanceBackupsListByResourceGroupLocationResponse, error) {
-	result := LongTermRetentionManagedInstanceBackupsListByResourceGroupLocationResponse{RawResponse: resp}
+func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroupLocationHandleResponse(resp *http.Response) (LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationResponse, error) {
+	result := LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceLongTermRetentionBackupListResult); err != nil {
-		return LongTermRetentionManagedInstanceBackupsListByResourceGroupLocationResponse{}, runtime.NewResponseError(err, resp)
+		return LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationResponse{}, err
 	}
 	return result, nil
-}
-
-// listByResourceGroupLocationHandleError handles the ListByResourceGroupLocation error response.
-func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroupLocationHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

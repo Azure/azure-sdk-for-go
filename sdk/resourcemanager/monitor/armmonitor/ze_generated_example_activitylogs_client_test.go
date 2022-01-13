@@ -25,13 +25,17 @@ func ExampleActivityLogsClient_List() {
 	ctx := context.Background()
 	client := armmonitor.NewActivityLogsClient("<subscription-id>", cred, nil)
 	pager := client.List("<filter>",
-		&armmonitor.ActivityLogsListOptions{Select: nil})
-	for pager.NextPage(ctx) {
+		&armmonitor.ActivityLogsClientListOptions{Select: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("EventData.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

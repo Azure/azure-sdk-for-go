@@ -25,7 +25,7 @@ func ExampleAccountsClient_CheckNameAvailability() {
 	}
 	ctx := context.Background()
 	client := armvisualstudio.NewAccountsClient("<subscription-id>", cred, nil)
-	_, err = client.CheckNameAvailability(ctx,
+	res, err := client.CheckNameAvailability(ctx,
 		armvisualstudio.CheckNameAvailabilityParameter{
 			ResourceName: to.StringPtr("<resource-name>"),
 			ResourceType: to.StringPtr("<resource-type>"),
@@ -34,6 +34,7 @@ func ExampleAccountsClient_CheckNameAvailability() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.AccountsClientCheckNameAvailabilityResult)
 }
 
 // x-ms-original-file: specification/visualstudio/resource-manager/Microsoft.VisualStudio/preview/2014-04-01-preview/examples/GetResources_List.json
@@ -44,12 +45,13 @@ func ExampleAccountsClient_ListByResourceGroup() {
 	}
 	ctx := context.Background()
 	client := armvisualstudio.NewAccountsClient("<subscription-id>", cred, nil)
-	_, err = client.ListByResourceGroup(ctx,
+	res, err := client.ListByResourceGroup(ctx,
 		"<resource-group-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.AccountsClientListByResourceGroupResult)
 }
 
 // x-ms-original-file: specification/visualstudio/resource-manager/Microsoft.VisualStudio/preview/2014-04-01-preview/examples/CreateResource.json
@@ -74,7 +76,7 @@ func ExampleAccountsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AccountResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AccountsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/visualstudio/resource-manager/Microsoft.VisualStudio/preview/2014-04-01-preview/examples/DeleteResource.json
@@ -109,7 +111,7 @@ func ExampleAccountsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AccountResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AccountsClientGetResult)
 }
 
 // x-ms-original-file: specification/visualstudio/resource-manager/Microsoft.VisualStudio/preview/2014-04-01-preview/examples/UpdateTags.json
@@ -132,5 +134,5 @@ func ExampleAccountsClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AccountResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AccountsClientUpdateResult)
 }

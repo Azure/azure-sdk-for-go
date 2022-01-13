@@ -15,22 +15,22 @@ import (
 	"time"
 )
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationList
 }
 
-// ProviderInstancesCreatePollerResponse contains the response from method ProviderInstances.Create.
-type ProviderInstancesCreatePollerResponse struct {
+// ProviderInstancesClientCreatePollerResponse contains the response from method ProviderInstancesClient.Create.
+type ProviderInstancesClientCreatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ProviderInstancesCreatePoller
+	Poller *ProviderInstancesClientCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -39,8 +39,8 @@ type ProviderInstancesCreatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ProviderInstancesCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ProviderInstancesCreateResponse, error) {
-	respType := ProviderInstancesCreateResponse{}
+func (l ProviderInstancesClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ProviderInstancesClientCreateResponse, error) {
+	respType := ProviderInstancesClientCreateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ProviderInstance)
 	if err != nil {
 		return respType, err
@@ -49,13 +49,13 @@ func (l ProviderInstancesCreatePollerResponse) PollUntilDone(ctx context.Context
 	return respType, nil
 }
 
-// Resume rehydrates a ProviderInstancesCreatePollerResponse from the provided client and resume token.
-func (l *ProviderInstancesCreatePollerResponse) Resume(ctx context.Context, client *ProviderInstancesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ProviderInstancesClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a ProviderInstancesClientCreatePollerResponse from the provided client and resume token.
+func (l *ProviderInstancesClientCreatePollerResponse) Resume(ctx context.Context, client *ProviderInstancesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ProviderInstancesClient.Create", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ProviderInstancesCreatePoller{
+	poller := &ProviderInstancesClientCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -67,22 +67,22 @@ func (l *ProviderInstancesCreatePollerResponse) Resume(ctx context.Context, clie
 	return nil
 }
 
-// ProviderInstancesCreateResponse contains the response from method ProviderInstances.Create.
-type ProviderInstancesCreateResponse struct {
-	ProviderInstancesCreateResult
+// ProviderInstancesClientCreateResponse contains the response from method ProviderInstancesClient.Create.
+type ProviderInstancesClientCreateResponse struct {
+	ProviderInstancesClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProviderInstancesCreateResult contains the result from method ProviderInstances.Create.
-type ProviderInstancesCreateResult struct {
+// ProviderInstancesClientCreateResult contains the result from method ProviderInstancesClient.Create.
+type ProviderInstancesClientCreateResult struct {
 	ProviderInstance
 }
 
-// ProviderInstancesDeletePollerResponse contains the response from method ProviderInstances.Delete.
-type ProviderInstancesDeletePollerResponse struct {
+// ProviderInstancesClientDeletePollerResponse contains the response from method ProviderInstancesClient.Delete.
+type ProviderInstancesClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ProviderInstancesDeletePoller
+	Poller *ProviderInstancesClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -91,8 +91,8 @@ type ProviderInstancesDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ProviderInstancesDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ProviderInstancesDeleteResponse, error) {
-	respType := ProviderInstancesDeleteResponse{}
+func (l ProviderInstancesClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ProviderInstancesClientDeleteResponse, error) {
+	respType := ProviderInstancesClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -101,13 +101,13 @@ func (l ProviderInstancesDeletePollerResponse) PollUntilDone(ctx context.Context
 	return respType, nil
 }
 
-// Resume rehydrates a ProviderInstancesDeletePollerResponse from the provided client and resume token.
-func (l *ProviderInstancesDeletePollerResponse) Resume(ctx context.Context, client *ProviderInstancesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ProviderInstancesClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a ProviderInstancesClientDeletePollerResponse from the provided client and resume token.
+func (l *ProviderInstancesClientDeletePollerResponse) Resume(ctx context.Context, client *ProviderInstancesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ProviderInstancesClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ProviderInstancesDeletePoller{
+	poller := &ProviderInstancesClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -119,40 +119,40 @@ func (l *ProviderInstancesDeletePollerResponse) Resume(ctx context.Context, clie
 	return nil
 }
 
-// ProviderInstancesDeleteResponse contains the response from method ProviderInstances.Delete.
-type ProviderInstancesDeleteResponse struct {
+// ProviderInstancesClientDeleteResponse contains the response from method ProviderInstancesClient.Delete.
+type ProviderInstancesClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProviderInstancesGetResponse contains the response from method ProviderInstances.Get.
-type ProviderInstancesGetResponse struct {
-	ProviderInstancesGetResult
+// ProviderInstancesClientGetResponse contains the response from method ProviderInstancesClient.Get.
+type ProviderInstancesClientGetResponse struct {
+	ProviderInstancesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProviderInstancesGetResult contains the result from method ProviderInstances.Get.
-type ProviderInstancesGetResult struct {
+// ProviderInstancesClientGetResult contains the result from method ProviderInstancesClient.Get.
+type ProviderInstancesClientGetResult struct {
 	ProviderInstance
 }
 
-// ProviderInstancesListResponse contains the response from method ProviderInstances.List.
-type ProviderInstancesListResponse struct {
-	ProviderInstancesListResult
+// ProviderInstancesClientListResponse contains the response from method ProviderInstancesClient.List.
+type ProviderInstancesClientListResponse struct {
+	ProviderInstancesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProviderInstancesListResult contains the result from method ProviderInstances.List.
-type ProviderInstancesListResult struct {
+// ProviderInstancesClientListResult contains the result from method ProviderInstancesClient.List.
+type ProviderInstancesClientListResult struct {
 	ProviderInstanceListResult
 }
 
-// SapMonitorsCreatePollerResponse contains the response from method SapMonitors.Create.
-type SapMonitorsCreatePollerResponse struct {
+// SapMonitorsClientCreatePollerResponse contains the response from method SapMonitorsClient.Create.
+type SapMonitorsClientCreatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *SapMonitorsCreatePoller
+	Poller *SapMonitorsClientCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -161,8 +161,8 @@ type SapMonitorsCreatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l SapMonitorsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SapMonitorsCreateResponse, error) {
-	respType := SapMonitorsCreateResponse{}
+func (l SapMonitorsClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SapMonitorsClientCreateResponse, error) {
+	respType := SapMonitorsClientCreateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SapMonitor)
 	if err != nil {
 		return respType, err
@@ -171,13 +171,13 @@ func (l SapMonitorsCreatePollerResponse) PollUntilDone(ctx context.Context, freq
 	return respType, nil
 }
 
-// Resume rehydrates a SapMonitorsCreatePollerResponse from the provided client and resume token.
-func (l *SapMonitorsCreatePollerResponse) Resume(ctx context.Context, client *SapMonitorsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SapMonitorsClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a SapMonitorsClientCreatePollerResponse from the provided client and resume token.
+func (l *SapMonitorsClientCreatePollerResponse) Resume(ctx context.Context, client *SapMonitorsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SapMonitorsClient.Create", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &SapMonitorsCreatePoller{
+	poller := &SapMonitorsClientCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -189,22 +189,22 @@ func (l *SapMonitorsCreatePollerResponse) Resume(ctx context.Context, client *Sa
 	return nil
 }
 
-// SapMonitorsCreateResponse contains the response from method SapMonitors.Create.
-type SapMonitorsCreateResponse struct {
-	SapMonitorsCreateResult
+// SapMonitorsClientCreateResponse contains the response from method SapMonitorsClient.Create.
+type SapMonitorsClientCreateResponse struct {
+	SapMonitorsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SapMonitorsCreateResult contains the result from method SapMonitors.Create.
-type SapMonitorsCreateResult struct {
+// SapMonitorsClientCreateResult contains the result from method SapMonitorsClient.Create.
+type SapMonitorsClientCreateResult struct {
 	SapMonitor
 }
 
-// SapMonitorsDeletePollerResponse contains the response from method SapMonitors.Delete.
-type SapMonitorsDeletePollerResponse struct {
+// SapMonitorsClientDeletePollerResponse contains the response from method SapMonitorsClient.Delete.
+type SapMonitorsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *SapMonitorsDeletePoller
+	Poller *SapMonitorsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -213,8 +213,8 @@ type SapMonitorsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l SapMonitorsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SapMonitorsDeleteResponse, error) {
-	respType := SapMonitorsDeleteResponse{}
+func (l SapMonitorsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SapMonitorsClientDeleteResponse, error) {
+	respType := SapMonitorsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -223,13 +223,13 @@ func (l SapMonitorsDeletePollerResponse) PollUntilDone(ctx context.Context, freq
 	return respType, nil
 }
 
-// Resume rehydrates a SapMonitorsDeletePollerResponse from the provided client and resume token.
-func (l *SapMonitorsDeletePollerResponse) Resume(ctx context.Context, client *SapMonitorsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SapMonitorsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a SapMonitorsClientDeletePollerResponse from the provided client and resume token.
+func (l *SapMonitorsClientDeletePollerResponse) Resume(ctx context.Context, client *SapMonitorsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SapMonitorsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &SapMonitorsDeletePoller{
+	poller := &SapMonitorsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -241,44 +241,44 @@ func (l *SapMonitorsDeletePollerResponse) Resume(ctx context.Context, client *Sa
 	return nil
 }
 
-// SapMonitorsDeleteResponse contains the response from method SapMonitors.Delete.
-type SapMonitorsDeleteResponse struct {
+// SapMonitorsClientDeleteResponse contains the response from method SapMonitorsClient.Delete.
+type SapMonitorsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SapMonitorsGetResponse contains the response from method SapMonitors.Get.
-type SapMonitorsGetResponse struct {
-	SapMonitorsGetResult
+// SapMonitorsClientGetResponse contains the response from method SapMonitorsClient.Get.
+type SapMonitorsClientGetResponse struct {
+	SapMonitorsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SapMonitorsGetResult contains the result from method SapMonitors.Get.
-type SapMonitorsGetResult struct {
+// SapMonitorsClientGetResult contains the result from method SapMonitorsClient.Get.
+type SapMonitorsClientGetResult struct {
 	SapMonitor
 }
 
-// SapMonitorsListResponse contains the response from method SapMonitors.List.
-type SapMonitorsListResponse struct {
-	SapMonitorsListResult
+// SapMonitorsClientListResponse contains the response from method SapMonitorsClient.List.
+type SapMonitorsClientListResponse struct {
+	SapMonitorsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SapMonitorsListResult contains the result from method SapMonitors.List.
-type SapMonitorsListResult struct {
+// SapMonitorsClientListResult contains the result from method SapMonitorsClient.List.
+type SapMonitorsClientListResult struct {
 	SapMonitorListResult
 }
 
-// SapMonitorsUpdateResponse contains the response from method SapMonitors.Update.
-type SapMonitorsUpdateResponse struct {
-	SapMonitorsUpdateResult
+// SapMonitorsClientUpdateResponse contains the response from method SapMonitorsClient.Update.
+type SapMonitorsClientUpdateResponse struct {
+	SapMonitorsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SapMonitorsUpdateResult contains the result from method SapMonitors.Update.
-type SapMonitorsUpdateResult struct {
+// SapMonitorsClientUpdateResult contains the result from method SapMonitorsClient.Update.
+type SapMonitorsClientUpdateResult struct {
 	SapMonitor
 }

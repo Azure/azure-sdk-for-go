@@ -17,48 +17,48 @@ import (
 )
 
 // x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-08-01/examples/TrafficManagerUserMetricsKeys-GET.json
-func ExampleTrafficManagerUserMetricsKeysClient_Get() {
+func ExampleUserMetricsKeysClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armtrafficmanager.NewTrafficManagerUserMetricsKeysClient("<subscription-id>", cred, nil)
+	client := armtrafficmanager.NewUserMetricsKeysClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("UserMetricsModel.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.UserMetricsKeysClientGetResult)
 }
 
 // x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-08-01/examples/TrafficManagerUserMetricsKeys-PUT.json
-func ExampleTrafficManagerUserMetricsKeysClient_CreateOrUpdate() {
+func ExampleUserMetricsKeysClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armtrafficmanager.NewTrafficManagerUserMetricsKeysClient("<subscription-id>", cred, nil)
-	res, err := client.CreateOrUpdate(ctx,
+	client := armtrafficmanager.NewUserMetricsKeysClient("<subscription-id>", cred, nil)
+	_, err = client.CreateOrUpdate(ctx,
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("UserMetricsModel.ID: %s\n", *res.ID)
 }
 
 // x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-08-01/examples/TrafficManagerUserMetricsKeys-DELETE.json
-func ExampleTrafficManagerUserMetricsKeysClient_Delete() {
+func ExampleUserMetricsKeysClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armtrafficmanager.NewTrafficManagerUserMetricsKeysClient("<subscription-id>", cred, nil)
-	_, err = client.Delete(ctx,
+	client := armtrafficmanager.NewUserMetricsKeysClient("<subscription-id>", cred, nil)
+	res, err := client.Delete(ctx,
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.UserMetricsKeysClientDeleteResult)
 }

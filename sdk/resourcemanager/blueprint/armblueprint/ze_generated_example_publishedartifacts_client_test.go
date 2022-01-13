@@ -33,7 +33,7 @@ func ExamplePublishedArtifactsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ArtifactClassification.GetArtifact().ID: %s\n", *res.GetArtifact().ID)
+	log.Printf("Response result: %#v\n", res.PublishedArtifactsClientGetResult)
 }
 
 // x-ms-original-file: specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPDef/SealedArtifact_List.json
@@ -48,12 +48,16 @@ func ExamplePublishedArtifactsClient_List() {
 		"<blueprint-name>",
 		"<version-id>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ArtifactClassification.GetArtifact().ID: %s\n", *v.GetArtifact().ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

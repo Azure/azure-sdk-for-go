@@ -11,7 +11,6 @@ package armsupport
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,41 +24,51 @@ import (
 // ProblemClassificationsClient contains the methods for the ProblemClassifications group.
 // Don't use this type directly, use NewProblemClassificationsClient() instead.
 type ProblemClassificationsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewProblemClassificationsClient creates a new instance of ProblemClassificationsClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewProblemClassificationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *ProblemClassificationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ProblemClassificationsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ProblemClassificationsClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Get problem classification details for a specific Azure service.
-// If the operation fails it returns the *ExceptionResponse error type.
-func (client *ProblemClassificationsClient) Get(ctx context.Context, serviceName string, problemClassificationName string, options *ProblemClassificationsGetOptions) (ProblemClassificationsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// serviceName - Name of the Azure service available for support.
+// problemClassificationName - Name of problem classification.
+// options - ProblemClassificationsClientGetOptions contains the optional parameters for the ProblemClassificationsClient.Get
+// method.
+func (client *ProblemClassificationsClient) Get(ctx context.Context, serviceName string, problemClassificationName string, options *ProblemClassificationsClientGetOptions) (ProblemClassificationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, serviceName, problemClassificationName, options)
 	if err != nil {
-		return ProblemClassificationsGetResponse{}, err
+		return ProblemClassificationsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProblemClassificationsGetResponse{}, err
+		return ProblemClassificationsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ProblemClassificationsGetResponse{}, client.getHandleError(resp)
+		return ProblemClassificationsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ProblemClassificationsClient) getCreateRequest(ctx context.Context, serviceName string, problemClassificationName string, options *ProblemClassificationsGetOptions) (*policy.Request, error) {
+func (client *ProblemClassificationsClient) getCreateRequest(ctx context.Context, serviceName string, problemClassificationName string, options *ProblemClassificationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Support/services/{serviceName}/problemClassifications/{problemClassificationName}"
 	if serviceName == "" {
 		return nil, errors.New("parameter serviceName cannot be empty")
@@ -69,7 +78,7 @@ func (client *ProblemClassificationsClient) getCreateRequest(ctx context.Context
 		return nil, errors.New("parameter problemClassificationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{problemClassificationName}", url.PathEscape(problemClassificationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -81,54 +90,44 @@ func (client *ProblemClassificationsClient) getCreateRequest(ctx context.Context
 }
 
 // getHandleResponse handles the Get response.
-func (client *ProblemClassificationsClient) getHandleResponse(resp *http.Response) (ProblemClassificationsGetResponse, error) {
-	result := ProblemClassificationsGetResponse{RawResponse: resp}
+func (client *ProblemClassificationsClient) getHandleResponse(resp *http.Response) (ProblemClassificationsClientGetResponse, error) {
+	result := ProblemClassificationsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProblemClassification); err != nil {
-		return ProblemClassificationsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ProblemClassificationsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ProblemClassificationsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ExceptionResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// List - Lists all the problem classifications (categories) available for a specific Azure service. Always use the service and problem classifications
-// obtained programmatically. This practice ensures that you
+// List - Lists all the problem classifications (categories) available for a specific Azure service. Always use the service
+// and problem classifications obtained programmatically. This practice ensures that you
 // always have the most recent set of service and problem classification Ids.
-// If the operation fails it returns the *ExceptionResponse error type.
-func (client *ProblemClassificationsClient) List(ctx context.Context, serviceName string, options *ProblemClassificationsListOptions) (ProblemClassificationsListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// serviceName - Name of the Azure service for which the problem classifications need to be retrieved.
+// options - ProblemClassificationsClientListOptions contains the optional parameters for the ProblemClassificationsClient.List
+// method.
+func (client *ProblemClassificationsClient) List(ctx context.Context, serviceName string, options *ProblemClassificationsClientListOptions) (ProblemClassificationsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, serviceName, options)
 	if err != nil {
-		return ProblemClassificationsListResponse{}, err
+		return ProblemClassificationsClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProblemClassificationsListResponse{}, err
+		return ProblemClassificationsClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ProblemClassificationsListResponse{}, client.listHandleError(resp)
+		return ProblemClassificationsClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *ProblemClassificationsClient) listCreateRequest(ctx context.Context, serviceName string, options *ProblemClassificationsListOptions) (*policy.Request, error) {
+func (client *ProblemClassificationsClient) listCreateRequest(ctx context.Context, serviceName string, options *ProblemClassificationsClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Support/services/{serviceName}/problemClassifications"
 	if serviceName == "" {
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -140,23 +139,10 @@ func (client *ProblemClassificationsClient) listCreateRequest(ctx context.Contex
 }
 
 // listHandleResponse handles the List response.
-func (client *ProblemClassificationsClient) listHandleResponse(resp *http.Response) (ProblemClassificationsListResponse, error) {
-	result := ProblemClassificationsListResponse{RawResponse: resp}
+func (client *ProblemClassificationsClient) listHandleResponse(resp *http.Response) (ProblemClassificationsClientListResponse, error) {
+	result := ProblemClassificationsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProblemClassificationsListResult); err != nil {
-		return ProblemClassificationsListResponse{}, runtime.NewResponseError(err, resp)
+		return ProblemClassificationsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *ProblemClassificationsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ExceptionResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -1,14 +1,1390 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 0.3.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*StreamingEndpointsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, StreamingEndpoint, *StreamingEndpointsBeginUpdateOptions)` to `(context.Context, string, string, string, StreamingEndpoint, *StreamingEndpointsClientBeginUpdateOptions)`
+- Function `*StreamingEndpointsClient.BeginUpdate` return value(s) have been changed from `(StreamingEndpointsUpdatePollerResponse, error)` to `(StreamingEndpointsClientUpdatePollerResponse, error)`
+- Function `*JobsClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, string, Job, *JobsUpdateOptions)` to `(context.Context, string, string, string, string, Job, *JobsClientUpdateOptions)`
+- Function `*JobsClient.Update` return value(s) have been changed from `(JobsUpdateResponse, error)` to `(JobsClientUpdateResponse, error)`
+- Function `*AssetFiltersClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, string, AssetFilter, *AssetFiltersUpdateOptions)` to `(context.Context, string, string, string, string, AssetFilter, *AssetFiltersClientUpdateOptions)`
+- Function `*AssetFiltersClient.Update` return value(s) have been changed from `(AssetFiltersUpdateResponse, error)` to `(AssetFiltersClientUpdateResponse, error)`
+- Function `*PrivateLinkResourcesClient.List` parameter(s) have been changed from `(context.Context, string, string, *PrivateLinkResourcesListOptions)` to `(context.Context, string, string, *PrivateLinkResourcesClientListOptions)`
+- Function `*PrivateLinkResourcesClient.List` return value(s) have been changed from `(PrivateLinkResourcesListResponse, error)` to `(PrivateLinkResourcesClientListResponse, error)`
+- Function `*AssetsClient.ListContainerSas` parameter(s) have been changed from `(context.Context, string, string, string, ListContainerSasInput, *AssetsListContainerSasOptions)` to `(context.Context, string, string, string, ListContainerSasInput, *AssetsClientListContainerSasOptions)`
+- Function `*AssetsClient.ListContainerSas` return value(s) have been changed from `(AssetsListContainerSasResponse, error)` to `(AssetsClientListContainerSasResponse, error)`
+- Function `*StreamingPoliciesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *StreamingPoliciesGetOptions)` to `(context.Context, string, string, string, *StreamingPoliciesClientGetOptions)`
+- Function `*StreamingPoliciesClient.Get` return value(s) have been changed from `(StreamingPoliciesGetResponse, error)` to `(StreamingPoliciesClientGetResponse, error)`
+- Function `*AssetFiltersClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, *AssetFiltersDeleteOptions)` to `(context.Context, string, string, string, string, *AssetFiltersClientDeleteOptions)`
+- Function `*AssetFiltersClient.Delete` return value(s) have been changed from `(AssetFiltersDeleteResponse, error)` to `(AssetFiltersClientDeleteResponse, error)`
+- Function `*StreamingLocatorsClient.Create` parameter(s) have been changed from `(context.Context, string, string, string, StreamingLocator, *StreamingLocatorsCreateOptions)` to `(context.Context, string, string, string, StreamingLocator, *StreamingLocatorsClientCreateOptions)`
+- Function `*StreamingLocatorsClient.Create` return value(s) have been changed from `(StreamingLocatorsCreateResponse, error)` to `(StreamingLocatorsClientCreateResponse, error)`
+- Function `*JobsClient.Create` parameter(s) have been changed from `(context.Context, string, string, string, string, Job, *JobsCreateOptions)` to `(context.Context, string, string, string, string, Job, *JobsClientCreateOptions)`
+- Function `*JobsClient.Create` return value(s) have been changed from `(JobsCreateResponse, error)` to `(JobsClientCreateResponse, error)`
+- Function `*AssetsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, Asset, *AssetsCreateOrUpdateOptions)` to `(context.Context, string, string, string, Asset, *AssetsClientCreateOrUpdateOptions)`
+- Function `*AssetsClient.CreateOrUpdate` return value(s) have been changed from `(AssetsCreateOrUpdateResponse, error)` to `(AssetsClientCreateOrUpdateResponse, error)`
+- Function `*StreamingPoliciesClient.List` parameter(s) have been changed from `(string, string, *StreamingPoliciesListOptions)` to `(string, string, *StreamingPoliciesClientListOptions)`
+- Function `*StreamingPoliciesClient.List` return value(s) have been changed from `(*StreamingPoliciesListPager)` to `(*StreamingPoliciesClientListPager)`
+- Function `*TransformsClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, Transform, *TransformsUpdateOptions)` to `(context.Context, string, string, string, Transform, *TransformsClientUpdateOptions)`
+- Function `*TransformsClient.Update` return value(s) have been changed from `(TransformsUpdateResponse, error)` to `(TransformsClientUpdateResponse, error)`
+- Function `*LiveEventsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, LiveEvent, *LiveEventsBeginUpdateOptions)` to `(context.Context, string, string, string, LiveEvent, *LiveEventsClientBeginUpdateOptions)`
+- Function `*LiveEventsClient.BeginUpdate` return value(s) have been changed from `(LiveEventsUpdatePollerResponse, error)` to `(LiveEventsClientUpdatePollerResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionsDeleteOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionsClientDeleteOptions)`
+- Function `*PrivateEndpointConnectionsClient.Delete` return value(s) have been changed from `(PrivateEndpointConnectionsDeleteResponse, error)` to `(PrivateEndpointConnectionsClientDeleteResponse, error)`
+- Function `*AssetFiltersClient.List` parameter(s) have been changed from `(string, string, string, *AssetFiltersListOptions)` to `(string, string, string, *AssetFiltersClientListOptions)`
+- Function `*AssetFiltersClient.List` return value(s) have been changed from `(*AssetFiltersListPager)` to `(*AssetFiltersClientListPager)`
+- Function `*AssetFiltersClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, AssetFilter, *AssetFiltersCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, AssetFilter, *AssetFiltersClientCreateOrUpdateOptions)`
+- Function `*AssetFiltersClient.CreateOrUpdate` return value(s) have been changed from `(AssetFiltersCreateOrUpdateResponse, error)` to `(AssetFiltersClientCreateOrUpdateResponse, error)`
+- Function `*LiveEventsClient.List` parameter(s) have been changed from `(string, string, *LiveEventsListOptions)` to `(string, string, *LiveEventsClientListOptions)`
+- Function `*LiveEventsClient.List` return value(s) have been changed from `(*LiveEventsListPager)` to `(*LiveEventsClientListPager)`
+- Function `*ContentKeyPoliciesClient.GetPolicyPropertiesWithSecrets` parameter(s) have been changed from `(context.Context, string, string, string, *ContentKeyPoliciesGetPolicyPropertiesWithSecretsOptions)` to `(context.Context, string, string, string, *ContentKeyPoliciesClientGetPolicyPropertiesWithSecretsOptions)`
+- Function `*ContentKeyPoliciesClient.GetPolicyPropertiesWithSecrets` return value(s) have been changed from `(ContentKeyPoliciesGetPolicyPropertiesWithSecretsResponse, error)` to `(ContentKeyPoliciesClientGetPolicyPropertiesWithSecretsResponse, error)`
+- Function `*LocationsClient.CheckNameAvailability` parameter(s) have been changed from `(context.Context, string, CheckNameAvailabilityInput, *LocationsCheckNameAvailabilityOptions)` to `(context.Context, string, CheckNameAvailabilityInput, *LocationsClientCheckNameAvailabilityOptions)`
+- Function `*LocationsClient.CheckNameAvailability` return value(s) have been changed from `(LocationsCheckNameAvailabilityResponse, error)` to `(LocationsClientCheckNameAvailabilityResponse, error)`
+- Function `*JobsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *JobsGetOptions)` to `(context.Context, string, string, string, string, *JobsClientGetOptions)`
+- Function `*JobsClient.Get` return value(s) have been changed from `(JobsGetResponse, error)` to `(JobsClientGetResponse, error)`
+- Function `*AssetsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *AssetsDeleteOptions)` to `(context.Context, string, string, string, *AssetsClientDeleteOptions)`
+- Function `*AssetsClient.Delete` return value(s) have been changed from `(AssetsDeleteResponse, error)` to `(AssetsClientDeleteResponse, error)`
+- Function `*ContentKeyPoliciesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, ContentKeyPolicy, *ContentKeyPoliciesCreateOrUpdateOptions)` to `(context.Context, string, string, string, ContentKeyPolicy, *ContentKeyPoliciesClientCreateOrUpdateOptions)`
+- Function `*ContentKeyPoliciesClient.CreateOrUpdate` return value(s) have been changed from `(ContentKeyPoliciesCreateOrUpdateResponse, error)` to `(ContentKeyPoliciesClientCreateOrUpdateResponse, error)`
+- Function `*LiveOutputsClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, string, string, LiveOutput, *LiveOutputsBeginCreateOptions)` to `(context.Context, string, string, string, string, LiveOutput, *LiveOutputsClientBeginCreateOptions)`
+- Function `*LiveOutputsClient.BeginCreate` return value(s) have been changed from `(LiveOutputsCreatePollerResponse, error)` to `(LiveOutputsClientCreatePollerResponse, error)`
+- Function `*TransformsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *TransformsGetOptions)` to `(context.Context, string, string, string, *TransformsClientGetOptions)`
+- Function `*TransformsClient.Get` return value(s) have been changed from `(TransformsGetResponse, error)` to `(TransformsClientGetResponse, error)`
+- Function `*StreamingLocatorsClient.List` parameter(s) have been changed from `(string, string, *StreamingLocatorsListOptions)` to `(string, string, *StreamingLocatorsClientListOptions)`
+- Function `*StreamingLocatorsClient.List` return value(s) have been changed from `(*StreamingLocatorsListPager)` to `(*StreamingLocatorsClientListPager)`
+- Function `*LiveEventsClient.BeginStop` parameter(s) have been changed from `(context.Context, string, string, string, LiveEventActionInput, *LiveEventsBeginStopOptions)` to `(context.Context, string, string, string, LiveEventActionInput, *LiveEventsClientBeginStopOptions)`
+- Function `*LiveEventsClient.BeginStop` return value(s) have been changed from `(LiveEventsStopPollerResponse, error)` to `(LiveEventsClientStopPollerResponse, error)`
+- Function `*AccountFiltersClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *AccountFiltersGetOptions)` to `(context.Context, string, string, string, *AccountFiltersClientGetOptions)`
+- Function `*AccountFiltersClient.Get` return value(s) have been changed from `(AccountFiltersGetResponse, error)` to `(AccountFiltersClientGetResponse, error)`
+- Function `*LiveEventsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *LiveEventsBeginDeleteOptions)` to `(context.Context, string, string, string, *LiveEventsClientBeginDeleteOptions)`
+- Function `*LiveEventsClient.BeginDelete` return value(s) have been changed from `(LiveEventsDeletePollerResponse, error)` to `(LiveEventsClientDeletePollerResponse, error)`
+- Function `*AccountFiltersClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, AccountFilter, *AccountFiltersCreateOrUpdateOptions)` to `(context.Context, string, string, string, AccountFilter, *AccountFiltersClientCreateOrUpdateOptions)`
+- Function `*AccountFiltersClient.CreateOrUpdate` return value(s) have been changed from `(AccountFiltersCreateOrUpdateResponse, error)` to `(AccountFiltersClientCreateOrUpdateResponse, error)`
+- Function `*AssetsClient.List` parameter(s) have been changed from `(string, string, *AssetsListOptions)` to `(string, string, *AssetsClientListOptions)`
+- Function `*AssetsClient.List` return value(s) have been changed from `(*AssetsListPager)` to `(*AssetsClientListPager)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(context.Context, *OperationsListOptions)` to `(context.Context, *OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(OperationsListResponse, error)` to `(OperationsClientListResponse, error)`
+- Function `*LiveEventsClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, string, LiveEvent, *LiveEventsBeginCreateOptions)` to `(context.Context, string, string, string, LiveEvent, *LiveEventsClientBeginCreateOptions)`
+- Function `*LiveEventsClient.BeginCreate` return value(s) have been changed from `(LiveEventsCreatePollerResponse, error)` to `(LiveEventsClientCreatePollerResponse, error)`
+- Function `*ContentKeyPoliciesClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, ContentKeyPolicy, *ContentKeyPoliciesUpdateOptions)` to `(context.Context, string, string, string, ContentKeyPolicy, *ContentKeyPoliciesClientUpdateOptions)`
+- Function `*ContentKeyPoliciesClient.Update` return value(s) have been changed from `(ContentKeyPoliciesUpdateResponse, error)` to `(ContentKeyPoliciesClientUpdateResponse, error)`
+- Function `*StreamingLocatorsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *StreamingLocatorsGetOptions)` to `(context.Context, string, string, string, *StreamingLocatorsClientGetOptions)`
+- Function `*StreamingLocatorsClient.Get` return value(s) have been changed from `(StreamingLocatorsGetResponse, error)` to `(StreamingLocatorsClientGetResponse, error)`
+- Function `*LiveEventsClient.BeginStart` parameter(s) have been changed from `(context.Context, string, string, string, *LiveEventsBeginStartOptions)` to `(context.Context, string, string, string, *LiveEventsClientBeginStartOptions)`
+- Function `*LiveEventsClient.BeginStart` return value(s) have been changed from `(LiveEventsStartPollerResponse, error)` to `(LiveEventsClientStartPollerResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.List` parameter(s) have been changed from `(context.Context, string, string, *PrivateEndpointConnectionsListOptions)` to `(context.Context, string, string, *PrivateEndpointConnectionsClientListOptions)`
+- Function `*PrivateEndpointConnectionsClient.List` return value(s) have been changed from `(PrivateEndpointConnectionsListResponse, error)` to `(PrivateEndpointConnectionsClientListResponse, error)`
+- Function `*AssetsClient.ListStreamingLocators` parameter(s) have been changed from `(context.Context, string, string, string, *AssetsListStreamingLocatorsOptions)` to `(context.Context, string, string, string, *AssetsClientListStreamingLocatorsOptions)`
+- Function `*AssetsClient.ListStreamingLocators` return value(s) have been changed from `(AssetsListStreamingLocatorsResponse, error)` to `(AssetsClientListStreamingLocatorsResponse, error)`
+- Function `*StreamingLocatorsClient.ListPaths` parameter(s) have been changed from `(context.Context, string, string, string, *StreamingLocatorsListPathsOptions)` to `(context.Context, string, string, string, *StreamingLocatorsClientListPathsOptions)`
+- Function `*StreamingLocatorsClient.ListPaths` return value(s) have been changed from `(StreamingLocatorsListPathsResponse, error)` to `(StreamingLocatorsClientListPathsResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsCreateOrUpdateOptions)` to `(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsClientCreateOrUpdateOptions)`
+- Function `*PrivateEndpointConnectionsClient.CreateOrUpdate` return value(s) have been changed from `(PrivateEndpointConnectionsCreateOrUpdateResponse, error)` to `(PrivateEndpointConnectionsClientCreateOrUpdateResponse, error)`
+- Function `*ContentKeyPoliciesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *ContentKeyPoliciesGetOptions)` to `(context.Context, string, string, string, *ContentKeyPoliciesClientGetOptions)`
+- Function `*ContentKeyPoliciesClient.Get` return value(s) have been changed from `(ContentKeyPoliciesGetResponse, error)` to `(ContentKeyPoliciesClientGetResponse, error)`
+- Function `*LiveOutputsClient.List` parameter(s) have been changed from `(string, string, string, *LiveOutputsListOptions)` to `(string, string, string, *LiveOutputsClientListOptions)`
+- Function `*LiveOutputsClient.List` return value(s) have been changed from `(*LiveOutputsListPager)` to `(*LiveOutputsClientListPager)`
+- Function `*StreamingEndpointsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *StreamingEndpointsGetOptions)` to `(context.Context, string, string, string, *StreamingEndpointsClientGetOptions)`
+- Function `*StreamingEndpointsClient.Get` return value(s) have been changed from `(StreamingEndpointsGetResponse, error)` to `(StreamingEndpointsClientGetResponse, error)`
+- Function `*StreamingLocatorsClient.ListContentKeys` parameter(s) have been changed from `(context.Context, string, string, string, *StreamingLocatorsListContentKeysOptions)` to `(context.Context, string, string, string, *StreamingLocatorsClientListContentKeysOptions)`
+- Function `*StreamingLocatorsClient.ListContentKeys` return value(s) have been changed from `(StreamingLocatorsListContentKeysResponse, error)` to `(StreamingLocatorsClientListContentKeysResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionsGetOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionsClientGetOptions)`
+- Function `*PrivateEndpointConnectionsClient.Get` return value(s) have been changed from `(PrivateEndpointConnectionsGetResponse, error)` to `(PrivateEndpointConnectionsClientGetResponse, error)`
+- Function `*JobsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, *JobsDeleteOptions)` to `(context.Context, string, string, string, string, *JobsClientDeleteOptions)`
+- Function `*JobsClient.Delete` return value(s) have been changed from `(JobsDeleteResponse, error)` to `(JobsClientDeleteResponse, error)`
+- Function `*JobsClient.List` parameter(s) have been changed from `(string, string, string, *JobsListOptions)` to `(string, string, string, *JobsClientListOptions)`
+- Function `*JobsClient.List` return value(s) have been changed from `(*JobsListPager)` to `(*JobsClientListPager)`
+- Function `*StreamingPoliciesClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *StreamingPoliciesDeleteOptions)` to `(context.Context, string, string, string, *StreamingPoliciesClientDeleteOptions)`
+- Function `*StreamingPoliciesClient.Delete` return value(s) have been changed from `(StreamingPoliciesDeleteResponse, error)` to `(StreamingPoliciesClientDeleteResponse, error)`
+- Function `*StreamingLocatorsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *StreamingLocatorsDeleteOptions)` to `(context.Context, string, string, string, *StreamingLocatorsClientDeleteOptions)`
+- Function `*StreamingLocatorsClient.Delete` return value(s) have been changed from `(StreamingLocatorsDeleteResponse, error)` to `(StreamingLocatorsClientDeleteResponse, error)`
+- Function `*StreamingPoliciesClient.Create` parameter(s) have been changed from `(context.Context, string, string, string, StreamingPolicy, *StreamingPoliciesCreateOptions)` to `(context.Context, string, string, string, StreamingPolicy, *StreamingPoliciesClientCreateOptions)`
+- Function `*StreamingPoliciesClient.Create` return value(s) have been changed from `(StreamingPoliciesCreateResponse, error)` to `(StreamingPoliciesClientCreateResponse, error)`
+- Function `*StreamingEndpointsClient.BeginStop` parameter(s) have been changed from `(context.Context, string, string, string, *StreamingEndpointsBeginStopOptions)` to `(context.Context, string, string, string, *StreamingEndpointsClientBeginStopOptions)`
+- Function `*StreamingEndpointsClient.BeginStop` return value(s) have been changed from `(StreamingEndpointsStopPollerResponse, error)` to `(StreamingEndpointsClientStopPollerResponse, error)`
+- Function `*TransformsClient.List` parameter(s) have been changed from `(string, string, *TransformsListOptions)` to `(string, string, *TransformsClientListOptions)`
+- Function `*TransformsClient.List` return value(s) have been changed from `(*TransformsListPager)` to `(*TransformsClientListPager)`
+- Function `*TransformsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *TransformsDeleteOptions)` to `(context.Context, string, string, string, *TransformsClientDeleteOptions)`
+- Function `*TransformsClient.Delete` return value(s) have been changed from `(TransformsDeleteResponse, error)` to `(TransformsClientDeleteResponse, error)`
+- Function `*AccountFiltersClient.List` parameter(s) have been changed from `(string, string, *AccountFiltersListOptions)` to `(string, string, *AccountFiltersClientListOptions)`
+- Function `*AccountFiltersClient.List` return value(s) have been changed from `(*AccountFiltersListPager)` to `(*AccountFiltersClientListPager)`
+- Function `*AccountFiltersClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, AccountFilter, *AccountFiltersUpdateOptions)` to `(context.Context, string, string, string, AccountFilter, *AccountFiltersClientUpdateOptions)`
+- Function `*AccountFiltersClient.Update` return value(s) have been changed from `(AccountFiltersUpdateResponse, error)` to `(AccountFiltersClientUpdateResponse, error)`
+- Function `*LiveOutputsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, string, *LiveOutputsBeginDeleteOptions)` to `(context.Context, string, string, string, string, *LiveOutputsClientBeginDeleteOptions)`
+- Function `*LiveOutputsClient.BeginDelete` return value(s) have been changed from `(LiveOutputsDeletePollerResponse, error)` to `(LiveOutputsClientDeletePollerResponse, error)`
+- Function `*StreamingEndpointsClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, string, StreamingEndpoint, *StreamingEndpointsBeginCreateOptions)` to `(context.Context, string, string, string, StreamingEndpoint, *StreamingEndpointsClientBeginCreateOptions)`
+- Function `*StreamingEndpointsClient.BeginCreate` return value(s) have been changed from `(StreamingEndpointsCreatePollerResponse, error)` to `(StreamingEndpointsClientCreatePollerResponse, error)`
+- Function `*StreamingEndpointsClient.BeginScale` parameter(s) have been changed from `(context.Context, string, string, string, StreamingEntityScaleUnit, *StreamingEndpointsBeginScaleOptions)` to `(context.Context, string, string, string, StreamingEntityScaleUnit, *StreamingEndpointsClientBeginScaleOptions)`
+- Function `*StreamingEndpointsClient.BeginScale` return value(s) have been changed from `(StreamingEndpointsScalePollerResponse, error)` to `(StreamingEndpointsClientScalePollerResponse, error)`
+- Function `*LiveOutputsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *LiveOutputsGetOptions)` to `(context.Context, string, string, string, string, *LiveOutputsClientGetOptions)`
+- Function `*LiveOutputsClient.Get` return value(s) have been changed from `(LiveOutputsGetResponse, error)` to `(LiveOutputsClientGetResponse, error)`
+- Function `*TransformsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, Transform, *TransformsCreateOrUpdateOptions)` to `(context.Context, string, string, string, Transform, *TransformsClientCreateOrUpdateOptions)`
+- Function `*TransformsClient.CreateOrUpdate` return value(s) have been changed from `(TransformsCreateOrUpdateResponse, error)` to `(TransformsClientCreateOrUpdateResponse, error)`
+- Function `*PrivateLinkResourcesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateLinkResourcesGetOptions)` to `(context.Context, string, string, string, *PrivateLinkResourcesClientGetOptions)`
+- Function `*PrivateLinkResourcesClient.Get` return value(s) have been changed from `(PrivateLinkResourcesGetResponse, error)` to `(PrivateLinkResourcesClientGetResponse, error)`
+- Function `*ContentKeyPoliciesClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *ContentKeyPoliciesDeleteOptions)` to `(context.Context, string, string, string, *ContentKeyPoliciesClientDeleteOptions)`
+- Function `*ContentKeyPoliciesClient.Delete` return value(s) have been changed from `(ContentKeyPoliciesDeleteResponse, error)` to `(ContentKeyPoliciesClientDeleteResponse, error)`
+- Function `*StreamingEndpointsClient.List` parameter(s) have been changed from `(string, string, *StreamingEndpointsListOptions)` to `(string, string, *StreamingEndpointsClientListOptions)`
+- Function `*StreamingEndpointsClient.List` return value(s) have been changed from `(*StreamingEndpointsListPager)` to `(*StreamingEndpointsClientListPager)`
+- Function `*StreamingEndpointsClient.BeginStart` parameter(s) have been changed from `(context.Context, string, string, string, *StreamingEndpointsBeginStartOptions)` to `(context.Context, string, string, string, *StreamingEndpointsClientBeginStartOptions)`
+- Function `*StreamingEndpointsClient.BeginStart` return value(s) have been changed from `(StreamingEndpointsStartPollerResponse, error)` to `(StreamingEndpointsClientStartPollerResponse, error)`
+- Function `*AssetFiltersClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *AssetFiltersGetOptions)` to `(context.Context, string, string, string, string, *AssetFiltersClientGetOptions)`
+- Function `*AssetFiltersClient.Get` return value(s) have been changed from `(AssetFiltersGetResponse, error)` to `(AssetFiltersClientGetResponse, error)`
+- Function `*StreamingEndpointsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *StreamingEndpointsBeginDeleteOptions)` to `(context.Context, string, string, string, *StreamingEndpointsClientBeginDeleteOptions)`
+- Function `*StreamingEndpointsClient.BeginDelete` return value(s) have been changed from `(StreamingEndpointsDeletePollerResponse, error)` to `(StreamingEndpointsClientDeletePollerResponse, error)`
+- Function `*AccountFiltersClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *AccountFiltersDeleteOptions)` to `(context.Context, string, string, string, *AccountFiltersClientDeleteOptions)`
+- Function `*AccountFiltersClient.Delete` return value(s) have been changed from `(AccountFiltersDeleteResponse, error)` to `(AccountFiltersClientDeleteResponse, error)`
+- Function `*LiveEventsClient.BeginAllocate` parameter(s) have been changed from `(context.Context, string, string, string, *LiveEventsBeginAllocateOptions)` to `(context.Context, string, string, string, *LiveEventsClientBeginAllocateOptions)`
+- Function `*LiveEventsClient.BeginAllocate` return value(s) have been changed from `(LiveEventsAllocatePollerResponse, error)` to `(LiveEventsClientAllocatePollerResponse, error)`
+- Function `*AssetsClient.GetEncryptionKey` parameter(s) have been changed from `(context.Context, string, string, string, *AssetsGetEncryptionKeyOptions)` to `(context.Context, string, string, string, *AssetsClientGetEncryptionKeyOptions)`
+- Function `*AssetsClient.GetEncryptionKey` return value(s) have been changed from `(AssetsGetEncryptionKeyResponse, error)` to `(AssetsClientGetEncryptionKeyResponse, error)`
+- Function `*AssetsClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, Asset, *AssetsUpdateOptions)` to `(context.Context, string, string, string, Asset, *AssetsClientUpdateOptions)`
+- Function `*AssetsClient.Update` return value(s) have been changed from `(AssetsUpdateResponse, error)` to `(AssetsClientUpdateResponse, error)`
+- Function `*LiveEventsClient.BeginReset` parameter(s) have been changed from `(context.Context, string, string, string, *LiveEventsBeginResetOptions)` to `(context.Context, string, string, string, *LiveEventsClientBeginResetOptions)`
+- Function `*LiveEventsClient.BeginReset` return value(s) have been changed from `(LiveEventsResetPollerResponse, error)` to `(LiveEventsClientResetPollerResponse, error)`
+- Function `*ContentKeyPoliciesClient.List` parameter(s) have been changed from `(string, string, *ContentKeyPoliciesListOptions)` to `(string, string, *ContentKeyPoliciesClientListOptions)`
+- Function `*ContentKeyPoliciesClient.List` return value(s) have been changed from `(*ContentKeyPoliciesListPager)` to `(*ContentKeyPoliciesClientListPager)`
+- Function `*AssetsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *AssetsGetOptions)` to `(context.Context, string, string, string, *AssetsClientGetOptions)`
+- Function `*AssetsClient.Get` return value(s) have been changed from `(AssetsGetResponse, error)` to `(AssetsClientGetResponse, error)`
+- Function `*LiveEventsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *LiveEventsGetOptions)` to `(context.Context, string, string, string, *LiveEventsClientGetOptions)`
+- Function `*LiveEventsClient.Get` return value(s) have been changed from `(LiveEventsGetResponse, error)` to `(LiveEventsClientGetResponse, error)`
+- Function `*JobsClient.CancelJob` parameter(s) have been changed from `(context.Context, string, string, string, string, *JobsCancelJobOptions)` to `(context.Context, string, string, string, string, *JobsClientCancelJobOptions)`
+- Function `*JobsClient.CancelJob` return value(s) have been changed from `(JobsCancelJobResponse, error)` to `(JobsClientCancelJobResponse, error)`
+- Function `*AccountFiltersListPager.NextPage` has been removed
+- Function `*StreamingEndpointsListPager.NextPage` has been removed
+- Function `*LiveEventsAllocatePoller.ResumeToken` has been removed
+- Function `*LiveOutputsCreatePoller.Poll` has been removed
+- Function `*LiveOutputsCreatePoller.FinalResponse` has been removed
+- Function `*AssetsListPager.Err` has been removed
+- Function `*AssetFiltersListPager.NextPage` has been removed
+- Function `*MediaservicesClient.Update` has been removed
+- Function `*StreamingEndpointsUpdatePoller.Poll` has been removed
+- Function `StreamingEndpointsStartPollerResponse.PollUntilDone` has been removed
+- Function `*StreamingEndpointsStartPoller.FinalResponse` has been removed
+- Function `*ContentKeyPolicyConfiguration.UnmarshalJSON` has been removed
+- Function `*StreamingEndpointsStopPoller.FinalResponse` has been removed
+- Function `*JobInput.UnmarshalJSON` has been removed
+- Function `LiveOutput.MarshalJSON` has been removed
+- Function `*LiveOutputsCreatePoller.Done` has been removed
+- Function `PrivateLinkResource.MarshalJSON` has been removed
+- Function `*LiveEventsUpdatePoller.Poll` has been removed
+- Function `*Layer.UnmarshalJSON` has been removed
+- Function `*LiveEventsStartPoller.Poll` has been removed
+- Function `*LiveOutputsDeletePoller.Done` has been removed
+- Function `*StreamingEndpointsStopPoller.Poll` has been removed
+- Function `*LiveOutputsListPager.Err` has been removed
+- Function `StreamingLocator.MarshalJSON` has been removed
+- Function `*StreamingPoliciesListPager.NextPage` has been removed
+- Function `*TransformsListPager.PageResponse` has been removed
+- Function `*MediaservicesClient.Delete` has been removed
+- Function `*MediaservicesClient.CreateOrUpdate` has been removed
+- Function `*LiveEventsStartPollerResponse.Resume` has been removed
+- Function `*StreamingEndpointsUpdatePoller.FinalResponse` has been removed
+- Function `NewMediaservicesClient` has been removed
+- Function `*StreamingEndpointsScalePoller.FinalResponse` has been removed
+- Function `*LiveEventsDeletePoller.Poll` has been removed
+- Function `*ContentKeyPoliciesListPager.NextPage` has been removed
+- Function `*StreamingEndpointsStartPoller.ResumeToken` has been removed
+- Function `*MediaservicesListBySubscriptionPager.PageResponse` has been removed
+- Function `*LiveEventsUpdatePoller.FinalResponse` has been removed
+- Function `*StreamingEndpointsStopPoller.Done` has been removed
+- Function `*LiveEventsDeletePoller.FinalResponse` has been removed
+- Function `*StreamingEndpointsDeletePoller.Done` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `*LiveOutputsListPager.PageResponse` has been removed
+- Function `*StreamingEndpointsListPager.PageResponse` has been removed
+- Function `*ContentKeyPolicyPlayReadyContentKeyLocation.UnmarshalJSON` has been removed
+- Function `*LiveEventsCreatePoller.Poll` has been removed
+- Function `*JobsListPager.PageResponse` has been removed
+- Function `*StreamingEndpointsUpdatePoller.ResumeToken` has been removed
+- Function `*LiveEventsCreatePollerResponse.Resume` has been removed
+- Function `*LiveEventsStartPoller.FinalResponse` has been removed
+- Function `*StreamingEndpointsCreatePollerResponse.Resume` has been removed
+- Function `*JobsListPager.Err` has been removed
+- Function `ErrorResponse.Error` has been removed
+- Function `*StreamingLocatorsListPager.PageResponse` has been removed
+- Function `*LiveEventsStartPoller.ResumeToken` has been removed
+- Function `*ContentKeyPolicyRestrictionTokenKey.UnmarshalJSON` has been removed
+- Function `*LiveOutputsCreatePollerResponse.Resume` has been removed
+- Function `LiveOutputsCreatePollerResponse.PollUntilDone` has been removed
+- Function `StreamingPolicy.MarshalJSON` has been removed
+- Function `*StreamingLocatorsListPager.Err` has been removed
+- Function `LiveEventsStopPollerResponse.PollUntilDone` has been removed
+- Function `*LiveEventsUpdatePoller.Done` has been removed
+- Function `*StreamingEndpointsStartPoller.Done` has been removed
+- Function `*LiveEventsAllocatePoller.Poll` has been removed
+- Function `*Codec.UnmarshalJSON` has been removed
+- Function `*Preset.UnmarshalJSON` has been removed
+- Function `*MediaservicesClient.Get` has been removed
+- Function `*MediaservicesListPager.Err` has been removed
+- Function `*StreamingEndpointsDeletePoller.FinalResponse` has been removed
+- Function `*StreamingEndpointsDeletePoller.Poll` has been removed
+- Function `*MediaservicesListBySubscriptionPager.Err` has been removed
+- Function `*LiveEventsListPager.Err` has been removed
+- Function `*TransformsListPager.Err` has been removed
+- Function `*LiveEventsAllocatePoller.Done` has been removed
+- Function `*StreamingEndpointsStopPoller.ResumeToken` has been removed
+- Function `*StreamingPoliciesListPager.PageResponse` has been removed
+- Function `*JobsListPager.NextPage` has been removed
+- Function `*LiveEventsCreatePoller.Done` has been removed
+- Function `*LiveEventsAllocatePoller.FinalResponse` has been removed
+- Function `*TrackDescriptor.UnmarshalJSON` has been removed
+- Function `*StreamingEndpointsListPager.Err` has been removed
+- Function `*LiveEventsAllocatePollerResponse.Resume` has been removed
+- Function `*StreamingEndpointsScalePoller.Poll` has been removed
+- Function `*AssetsListPager.NextPage` has been removed
+- Function `*MediaservicesClient.List` has been removed
+- Function `*AccountFiltersListPager.PageResponse` has been removed
+- Function `PrivateEndpointConnection.MarshalJSON` has been removed
+- Function `*StreamingEndpointsCreatePoller.ResumeToken` has been removed
+- Function `*StreamingEndpointsStopPollerResponse.Resume` has been removed
+- Function `*StreamingLocatorsListPager.NextPage` has been removed
+- Function `*LiveEventsStopPoller.Poll` has been removed
+- Function `LiveEventsStartPollerResponse.PollUntilDone` has been removed
+- Function `*LiveEventsStopPollerResponse.Resume` has been removed
+- Function `*StreamingPoliciesListPager.Err` has been removed
+- Function `*AccountFiltersListPager.Err` has been removed
+- Function `*StreamingEndpointsCreatePoller.Done` has been removed
+- Function `*StreamingEndpointsStartPollerResponse.Resume` has been removed
+- Function `*LiveEventsStopPoller.ResumeToken` has been removed
+- Function `StreamingEndpointsScalePollerResponse.PollUntilDone` has been removed
+- Function `*StreamingEndpointsCreatePoller.FinalResponse` has been removed
+- Function `LiveEventsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*LiveOutputsListPager.NextPage` has been removed
+- Function `*MediaservicesListPager.PageResponse` has been removed
+- Function `*LiveEventsUpdatePoller.ResumeToken` has been removed
+- Function `*AssetFiltersListPager.PageResponse` has been removed
+- Function `*StreamingEndpointsDeletePoller.ResumeToken` has been removed
+- Function `*LiveEventsResetPoller.ResumeToken` has been removed
+- Function `*MediaservicesListBySubscriptionPager.NextPage` has been removed
+- Function `*LiveEventsUpdatePollerResponse.Resume` has been removed
+- Function `StreamingEndpointsDeletePollerResponse.PollUntilDone` has been removed
+- Function `LiveEventsAllocatePollerResponse.PollUntilDone` has been removed
+- Function `*MediaservicesClient.SyncStorageKeys` has been removed
+- Function `*ContentKeyPoliciesListPager.PageResponse` has been removed
+- Function `*MediaservicesClient.ListBySubscription` has been removed
+- Function `*StreamingEndpointsScalePoller.ResumeToken` has been removed
+- Function `*LiveOutputsDeletePollerResponse.Resume` has been removed
+- Function `*StreamingEndpointsScalePollerResponse.Resume` has been removed
+- Function `StreamingEndpointsStopPollerResponse.PollUntilDone` has been removed
+- Function `*StreamingEndpointsUpdatePollerResponse.Resume` has been removed
+- Function `*MediaservicesClient.ListEdgePolicies` has been removed
+- Function `LiveEventsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `LiveEventsResetPollerResponse.PollUntilDone` has been removed
+- Function `*StreamingEndpointsCreatePoller.Poll` has been removed
+- Function `*LiveEventsResetPollerResponse.Resume` has been removed
+- Function `*ClipTime.UnmarshalJSON` has been removed
+- Function `*LiveEventsDeletePoller.Done` has been removed
+- Function `*LiveEventsStartPoller.Done` has been removed
+- Function `*LiveEventsListPager.PageResponse` has been removed
+- Function `*LiveOutputsDeletePoller.Poll` has been removed
+- Function `*LiveEventsStopPoller.Done` has been removed
+- Function `*LiveEventsCreatePoller.FinalResponse` has been removed
+- Function `*Format.UnmarshalJSON` has been removed
+- Function `*AssetFiltersListPager.Err` has been removed
+- Function `*StreamingEndpointsScalePoller.Done` has been removed
+- Function `*StreamingEndpointsUpdatePoller.Done` has been removed
+- Function `*LiveOutputsCreatePoller.ResumeToken` has been removed
+- Function `*LiveEventsCreatePoller.ResumeToken` has been removed
+- Function `*LiveOutputsDeletePoller.ResumeToken` has been removed
+- Function `*LiveEventsDeletePollerResponse.Resume` has been removed
+- Function `LiveOutputsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*LiveEventsResetPoller.FinalResponse` has been removed
+- Function `LiveEventsCreatePollerResponse.PollUntilDone` has been removed
+- Function `*LiveEventsStopPoller.FinalResponse` has been removed
+- Function `*AssetsListPager.PageResponse` has been removed
+- Function `*StreamingEndpointsStartPoller.Poll` has been removed
+- Function `*ContentKeyPoliciesListPager.Err` has been removed
+- Function `*MediaservicesListPager.NextPage` has been removed
+- Function `*LiveEventsResetPoller.Poll` has been removed
+- Function `*LiveEventsResetPoller.Done` has been removed
+- Function `*TransformsListPager.NextPage` has been removed
+- Function `*LiveOutputsDeletePoller.FinalResponse` has been removed
+- Function `StreamingEndpointsCreatePollerResponse.PollUntilDone` has been removed
+- Function `*ContentKeyPolicyRestriction.UnmarshalJSON` has been removed
+- Function `StreamingEndpointsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*LiveEventsDeletePoller.ResumeToken` has been removed
+- Function `*StreamingEndpointsDeletePollerResponse.Resume` has been removed
+- Function `*Overlay.UnmarshalJSON` has been removed
+- Function `*LiveEventsListPager.NextPage` has been removed
+- Struct `AccountFiltersCreateOrUpdateOptions` has been removed
+- Struct `AccountFiltersCreateOrUpdateResponse` has been removed
+- Struct `AccountFiltersCreateOrUpdateResult` has been removed
+- Struct `AccountFiltersDeleteOptions` has been removed
+- Struct `AccountFiltersDeleteResponse` has been removed
+- Struct `AccountFiltersGetOptions` has been removed
+- Struct `AccountFiltersGetResponse` has been removed
+- Struct `AccountFiltersGetResult` has been removed
+- Struct `AccountFiltersListOptions` has been removed
+- Struct `AccountFiltersListPager` has been removed
+- Struct `AccountFiltersListResponse` has been removed
+- Struct `AccountFiltersListResult` has been removed
+- Struct `AccountFiltersUpdateOptions` has been removed
+- Struct `AccountFiltersUpdateResponse` has been removed
+- Struct `AccountFiltersUpdateResult` has been removed
+- Struct `AssetFiltersCreateOrUpdateOptions` has been removed
+- Struct `AssetFiltersCreateOrUpdateResponse` has been removed
+- Struct `AssetFiltersCreateOrUpdateResult` has been removed
+- Struct `AssetFiltersDeleteOptions` has been removed
+- Struct `AssetFiltersDeleteResponse` has been removed
+- Struct `AssetFiltersGetOptions` has been removed
+- Struct `AssetFiltersGetResponse` has been removed
+- Struct `AssetFiltersGetResult` has been removed
+- Struct `AssetFiltersListOptions` has been removed
+- Struct `AssetFiltersListPager` has been removed
+- Struct `AssetFiltersListResponse` has been removed
+- Struct `AssetFiltersListResult` has been removed
+- Struct `AssetFiltersUpdateOptions` has been removed
+- Struct `AssetFiltersUpdateResponse` has been removed
+- Struct `AssetFiltersUpdateResult` has been removed
+- Struct `AssetsCreateOrUpdateOptions` has been removed
+- Struct `AssetsCreateOrUpdateResponse` has been removed
+- Struct `AssetsCreateOrUpdateResult` has been removed
+- Struct `AssetsDeleteOptions` has been removed
+- Struct `AssetsDeleteResponse` has been removed
+- Struct `AssetsGetEncryptionKeyOptions` has been removed
+- Struct `AssetsGetEncryptionKeyResponse` has been removed
+- Struct `AssetsGetEncryptionKeyResult` has been removed
+- Struct `AssetsGetOptions` has been removed
+- Struct `AssetsGetResponse` has been removed
+- Struct `AssetsGetResult` has been removed
+- Struct `AssetsListContainerSasOptions` has been removed
+- Struct `AssetsListContainerSasResponse` has been removed
+- Struct `AssetsListContainerSasResult` has been removed
+- Struct `AssetsListOptions` has been removed
+- Struct `AssetsListPager` has been removed
+- Struct `AssetsListResponse` has been removed
+- Struct `AssetsListResult` has been removed
+- Struct `AssetsListStreamingLocatorsOptions` has been removed
+- Struct `AssetsListStreamingLocatorsResponse` has been removed
+- Struct `AssetsListStreamingLocatorsResult` has been removed
+- Struct `AssetsUpdateOptions` has been removed
+- Struct `AssetsUpdateResponse` has been removed
+- Struct `AssetsUpdateResult` has been removed
+- Struct `ContentKeyPoliciesCreateOrUpdateOptions` has been removed
+- Struct `ContentKeyPoliciesCreateOrUpdateResponse` has been removed
+- Struct `ContentKeyPoliciesCreateOrUpdateResult` has been removed
+- Struct `ContentKeyPoliciesDeleteOptions` has been removed
+- Struct `ContentKeyPoliciesDeleteResponse` has been removed
+- Struct `ContentKeyPoliciesGetOptions` has been removed
+- Struct `ContentKeyPoliciesGetPolicyPropertiesWithSecretsOptions` has been removed
+- Struct `ContentKeyPoliciesGetPolicyPropertiesWithSecretsResponse` has been removed
+- Struct `ContentKeyPoliciesGetPolicyPropertiesWithSecretsResult` has been removed
+- Struct `ContentKeyPoliciesGetResponse` has been removed
+- Struct `ContentKeyPoliciesGetResult` has been removed
+- Struct `ContentKeyPoliciesListOptions` has been removed
+- Struct `ContentKeyPoliciesListPager` has been removed
+- Struct `ContentKeyPoliciesListResponse` has been removed
+- Struct `ContentKeyPoliciesListResult` has been removed
+- Struct `ContentKeyPoliciesUpdateOptions` has been removed
+- Struct `ContentKeyPoliciesUpdateResponse` has been removed
+- Struct `ContentKeyPoliciesUpdateResult` has been removed
+- Struct `JobsCancelJobOptions` has been removed
+- Struct `JobsCancelJobResponse` has been removed
+- Struct `JobsCreateOptions` has been removed
+- Struct `JobsCreateResponse` has been removed
+- Struct `JobsCreateResult` has been removed
+- Struct `JobsDeleteOptions` has been removed
+- Struct `JobsDeleteResponse` has been removed
+- Struct `JobsGetOptions` has been removed
+- Struct `JobsGetResponse` has been removed
+- Struct `JobsGetResult` has been removed
+- Struct `JobsListOptions` has been removed
+- Struct `JobsListPager` has been removed
+- Struct `JobsListResponse` has been removed
+- Struct `JobsListResult` has been removed
+- Struct `JobsUpdateOptions` has been removed
+- Struct `JobsUpdateResponse` has been removed
+- Struct `JobsUpdateResult` has been removed
+- Struct `LiveEventsAllocatePoller` has been removed
+- Struct `LiveEventsAllocatePollerResponse` has been removed
+- Struct `LiveEventsAllocateResponse` has been removed
+- Struct `LiveEventsBeginAllocateOptions` has been removed
+- Struct `LiveEventsBeginCreateOptions` has been removed
+- Struct `LiveEventsBeginDeleteOptions` has been removed
+- Struct `LiveEventsBeginResetOptions` has been removed
+- Struct `LiveEventsBeginStartOptions` has been removed
+- Struct `LiveEventsBeginStopOptions` has been removed
+- Struct `LiveEventsBeginUpdateOptions` has been removed
+- Struct `LiveEventsCreatePoller` has been removed
+- Struct `LiveEventsCreatePollerResponse` has been removed
+- Struct `LiveEventsCreateResponse` has been removed
+- Struct `LiveEventsCreateResult` has been removed
+- Struct `LiveEventsDeletePoller` has been removed
+- Struct `LiveEventsDeletePollerResponse` has been removed
+- Struct `LiveEventsDeleteResponse` has been removed
+- Struct `LiveEventsGetOptions` has been removed
+- Struct `LiveEventsGetResponse` has been removed
+- Struct `LiveEventsGetResult` has been removed
+- Struct `LiveEventsListOptions` has been removed
+- Struct `LiveEventsListPager` has been removed
+- Struct `LiveEventsListResponse` has been removed
+- Struct `LiveEventsListResult` has been removed
+- Struct `LiveEventsResetPoller` has been removed
+- Struct `LiveEventsResetPollerResponse` has been removed
+- Struct `LiveEventsResetResponse` has been removed
+- Struct `LiveEventsStartPoller` has been removed
+- Struct `LiveEventsStartPollerResponse` has been removed
+- Struct `LiveEventsStartResponse` has been removed
+- Struct `LiveEventsStopPoller` has been removed
+- Struct `LiveEventsStopPollerResponse` has been removed
+- Struct `LiveEventsStopResponse` has been removed
+- Struct `LiveEventsUpdatePoller` has been removed
+- Struct `LiveEventsUpdatePollerResponse` has been removed
+- Struct `LiveEventsUpdateResponse` has been removed
+- Struct `LiveEventsUpdateResult` has been removed
+- Struct `LiveOutputsBeginCreateOptions` has been removed
+- Struct `LiveOutputsBeginDeleteOptions` has been removed
+- Struct `LiveOutputsCreatePoller` has been removed
+- Struct `LiveOutputsCreatePollerResponse` has been removed
+- Struct `LiveOutputsCreateResponse` has been removed
+- Struct `LiveOutputsCreateResult` has been removed
+- Struct `LiveOutputsDeletePoller` has been removed
+- Struct `LiveOutputsDeletePollerResponse` has been removed
+- Struct `LiveOutputsDeleteResponse` has been removed
+- Struct `LiveOutputsGetOptions` has been removed
+- Struct `LiveOutputsGetResponse` has been removed
+- Struct `LiveOutputsGetResult` has been removed
+- Struct `LiveOutputsListOptions` has been removed
+- Struct `LiveOutputsListPager` has been removed
+- Struct `LiveOutputsListResponse` has been removed
+- Struct `LiveOutputsListResult` has been removed
+- Struct `LocationsCheckNameAvailabilityOptions` has been removed
+- Struct `LocationsCheckNameAvailabilityResponse` has been removed
+- Struct `LocationsCheckNameAvailabilityResult` has been removed
+- Struct `MediaservicesClient` has been removed
+- Struct `MediaservicesCreateOrUpdateOptions` has been removed
+- Struct `MediaservicesCreateOrUpdateResponse` has been removed
+- Struct `MediaservicesCreateOrUpdateResult` has been removed
+- Struct `MediaservicesDeleteOptions` has been removed
+- Struct `MediaservicesDeleteResponse` has been removed
+- Struct `MediaservicesGetOptions` has been removed
+- Struct `MediaservicesGetResponse` has been removed
+- Struct `MediaservicesGetResult` has been removed
+- Struct `MediaservicesListBySubscriptionOptions` has been removed
+- Struct `MediaservicesListBySubscriptionPager` has been removed
+- Struct `MediaservicesListBySubscriptionResponse` has been removed
+- Struct `MediaservicesListBySubscriptionResult` has been removed
+- Struct `MediaservicesListEdgePoliciesOptions` has been removed
+- Struct `MediaservicesListEdgePoliciesResponse` has been removed
+- Struct `MediaservicesListEdgePoliciesResult` has been removed
+- Struct `MediaservicesListOptions` has been removed
+- Struct `MediaservicesListPager` has been removed
+- Struct `MediaservicesListResponse` has been removed
+- Struct `MediaservicesListResult` has been removed
+- Struct `MediaservicesSyncStorageKeysOptions` has been removed
+- Struct `MediaservicesSyncStorageKeysResponse` has been removed
+- Struct `MediaservicesUpdateOptions` has been removed
+- Struct `MediaservicesUpdateResponse` has been removed
+- Struct `MediaservicesUpdateResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `PrivateEndpointConnectionsCreateOrUpdateOptions` has been removed
+- Struct `PrivateEndpointConnectionsCreateOrUpdateResponse` has been removed
+- Struct `PrivateEndpointConnectionsCreateOrUpdateResult` has been removed
+- Struct `PrivateEndpointConnectionsDeleteOptions` has been removed
+- Struct `PrivateEndpointConnectionsDeleteResponse` has been removed
+- Struct `PrivateEndpointConnectionsGetOptions` has been removed
+- Struct `PrivateEndpointConnectionsGetResponse` has been removed
+- Struct `PrivateEndpointConnectionsGetResult` has been removed
+- Struct `PrivateEndpointConnectionsListOptions` has been removed
+- Struct `PrivateEndpointConnectionsListResponse` has been removed
+- Struct `PrivateEndpointConnectionsListResult` has been removed
+- Struct `PrivateLinkResourcesGetOptions` has been removed
+- Struct `PrivateLinkResourcesGetResponse` has been removed
+- Struct `PrivateLinkResourcesGetResult` has been removed
+- Struct `PrivateLinkResourcesListOptions` has been removed
+- Struct `PrivateLinkResourcesListResponse` has been removed
+- Struct `PrivateLinkResourcesListResult` has been removed
+- Struct `StreamingEndpointsBeginCreateOptions` has been removed
+- Struct `StreamingEndpointsBeginDeleteOptions` has been removed
+- Struct `StreamingEndpointsBeginScaleOptions` has been removed
+- Struct `StreamingEndpointsBeginStartOptions` has been removed
+- Struct `StreamingEndpointsBeginStopOptions` has been removed
+- Struct `StreamingEndpointsBeginUpdateOptions` has been removed
+- Struct `StreamingEndpointsCreatePoller` has been removed
+- Struct `StreamingEndpointsCreatePollerResponse` has been removed
+- Struct `StreamingEndpointsCreateResponse` has been removed
+- Struct `StreamingEndpointsCreateResult` has been removed
+- Struct `StreamingEndpointsDeletePoller` has been removed
+- Struct `StreamingEndpointsDeletePollerResponse` has been removed
+- Struct `StreamingEndpointsDeleteResponse` has been removed
+- Struct `StreamingEndpointsGetOptions` has been removed
+- Struct `StreamingEndpointsGetResponse` has been removed
+- Struct `StreamingEndpointsGetResult` has been removed
+- Struct `StreamingEndpointsListOptions` has been removed
+- Struct `StreamingEndpointsListPager` has been removed
+- Struct `StreamingEndpointsListResponse` has been removed
+- Struct `StreamingEndpointsListResult` has been removed
+- Struct `StreamingEndpointsScalePoller` has been removed
+- Struct `StreamingEndpointsScalePollerResponse` has been removed
+- Struct `StreamingEndpointsScaleResponse` has been removed
+- Struct `StreamingEndpointsStartPoller` has been removed
+- Struct `StreamingEndpointsStartPollerResponse` has been removed
+- Struct `StreamingEndpointsStartResponse` has been removed
+- Struct `StreamingEndpointsStopPoller` has been removed
+- Struct `StreamingEndpointsStopPollerResponse` has been removed
+- Struct `StreamingEndpointsStopResponse` has been removed
+- Struct `StreamingEndpointsUpdatePoller` has been removed
+- Struct `StreamingEndpointsUpdatePollerResponse` has been removed
+- Struct `StreamingEndpointsUpdateResponse` has been removed
+- Struct `StreamingEndpointsUpdateResult` has been removed
+- Struct `StreamingLocatorsCreateOptions` has been removed
+- Struct `StreamingLocatorsCreateResponse` has been removed
+- Struct `StreamingLocatorsCreateResult` has been removed
+- Struct `StreamingLocatorsDeleteOptions` has been removed
+- Struct `StreamingLocatorsDeleteResponse` has been removed
+- Struct `StreamingLocatorsGetOptions` has been removed
+- Struct `StreamingLocatorsGetResponse` has been removed
+- Struct `StreamingLocatorsGetResult` has been removed
+- Struct `StreamingLocatorsListContentKeysOptions` has been removed
+- Struct `StreamingLocatorsListContentKeysResponse` has been removed
+- Struct `StreamingLocatorsListContentKeysResult` has been removed
+- Struct `StreamingLocatorsListOptions` has been removed
+- Struct `StreamingLocatorsListPager` has been removed
+- Struct `StreamingLocatorsListPathsOptions` has been removed
+- Struct `StreamingLocatorsListPathsResponse` has been removed
+- Struct `StreamingLocatorsListPathsResult` has been removed
+- Struct `StreamingLocatorsListResponse` has been removed
+- Struct `StreamingLocatorsListResult` has been removed
+- Struct `StreamingPoliciesCreateOptions` has been removed
+- Struct `StreamingPoliciesCreateResponse` has been removed
+- Struct `StreamingPoliciesCreateResult` has been removed
+- Struct `StreamingPoliciesDeleteOptions` has been removed
+- Struct `StreamingPoliciesDeleteResponse` has been removed
+- Struct `StreamingPoliciesGetOptions` has been removed
+- Struct `StreamingPoliciesGetResponse` has been removed
+- Struct `StreamingPoliciesGetResult` has been removed
+- Struct `StreamingPoliciesListOptions` has been removed
+- Struct `StreamingPoliciesListPager` has been removed
+- Struct `StreamingPoliciesListResponse` has been removed
+- Struct `StreamingPoliciesListResult` has been removed
+- Struct `TransformsCreateOrUpdateOptions` has been removed
+- Struct `TransformsCreateOrUpdateResponse` has been removed
+- Struct `TransformsCreateOrUpdateResult` has been removed
+- Struct `TransformsDeleteOptions` has been removed
+- Struct `TransformsDeleteResponse` has been removed
+- Struct `TransformsGetOptions` has been removed
+- Struct `TransformsGetResponse` has been removed
+- Struct `TransformsGetResult` has been removed
+- Struct `TransformsListOptions` has been removed
+- Struct `TransformsListPager` has been removed
+- Struct `TransformsListResponse` has been removed
+- Struct `TransformsListResult` has been removed
+- Struct `TransformsUpdateOptions` has been removed
+- Struct `TransformsUpdateResponse` has been removed
+- Struct `TransformsUpdateResult` has been removed
+- Field `ImageFormat` of struct `PNGFormat` has been removed
+- Field `Layer` of struct `VideoLayer` has been removed
+- Field `ProxyResource` of struct `AccountFilter` has been removed
+- Field `ProxyResource` of struct `AssetFilter` has been removed
+- Field `TrackDescriptor` of struct `AudioTrackDescriptor` has been removed
+- Field `ContentKeyPolicyRestriction` of struct `ContentKeyPolicyOpenRestriction` has been removed
+- Field `InputDefinition` of struct `FromEachInputFile` has been removed
+- Field `MultiBitrateFormat` of struct `Mp4Format` has been removed
+- Field `ContentKeyPolicyConfiguration` of struct `ContentKeyPolicyUnknownConfiguration` has been removed
+- Field `H265VideoLayer` of struct `H265Layer` has been removed
+- Field `Video` of struct `Image` has been removed
+- Field `ContentKeyPolicyRestrictionTokenKey` of struct `ContentKeyPolicyRsaTokenKey` has been removed
+- Field `ContentKeyPolicyConfiguration` of struct `ContentKeyPolicyClearKeyConfiguration` has been removed
+- Field `Overlay` of struct `VideoOverlay` has been removed
+- Field `ContentKeyPolicyConfiguration` of struct `ContentKeyPolicyFairPlayConfiguration` has been removed
+- Field `ProxyResource` of struct `ContentKeyPolicy` has been removed
+- Field `ClipTime` of struct `UTCClipTime` has been removed
+- Field `ImageFormat` of struct `JpgFormat` has been removed
+- Field `JobInput` of struct `JobInputClip` has been removed
+- Field `JobInput` of struct `JobInputs` has been removed
+- Field `Layer` of struct `H265VideoLayer` has been removed
+- Field `TrackedResource` of struct `MediaService` has been removed
+- Field `ProxyResource` of struct `Transform` has been removed
+- Field `JobInputClip` of struct `JobInputAsset` has been removed
+- Field `AudioTrackDescriptor` of struct `SelectAudioTrackByAttribute` has been removed
+- Field `ProxyResource` of struct `Asset` has been removed
+- Field `Video` of struct `H265Video` has been removed
+- Field `ProxyResource` of struct `StreamingLocator` has been removed
+- Field `Format` of struct `MultiBitrateFormat` has been removed
+- Field `Layer` of struct `JpgLayer` has been removed
+- Field `MultiBitrateFormat` of struct `TransportStreamFormat` has been removed
+- Field `AudioTrackDescriptor` of struct `SelectAudioTrackByID` has been removed
+- Field `TrackDescriptor` of struct `VideoTrackDescriptor` has been removed
+- Field `Format` of struct `ImageFormat` has been removed
+- Field `Image` of struct `JpgImage` has been removed
+- Field `Codec` of struct `CopyAudio` has been removed
+- Field `JobInputClip` of struct `JobInputHTTP` has been removed
+- Field `Preset` of struct `StandardEncoderPreset` has been removed
+- Field `Resource` of struct `PrivateLinkResource` has been removed
+- Field `AudioAnalyzerPreset` of struct `VideoAnalyzerPreset` has been removed
+- Field `VideoTrackDescriptor` of struct `SelectVideoTrackByID` has been removed
+- Field `ContentKeyPolicyRestrictionTokenKey` of struct `ContentKeyPolicySymmetricTokenKey` has been removed
+- Field `ContentKeyPolicyConfiguration` of struct `ContentKeyPolicyWidevineConfiguration` has been removed
+- Field `ContentKeyPolicyRestriction` of struct `ContentKeyPolicyUnknownRestriction` has been removed
+- Field `Codec` of struct `CopyVideo` has been removed
+- Field `JobOutput` of struct `JobOutputAsset` has been removed
+- Field `Preset` of struct `BuiltInStandardEncoderPreset` has been removed
+- Field `Resource` of struct `TrackedResource` has been removed
+- Field `ContentKeyPolicyRestrictionTokenKey` of struct `ContentKeyPolicyX509CertificateTokenKey` has been removed
+- Field `ContentKeyPolicyPlayReadyContentKeyLocation` of struct `ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader` has been removed
+- Field `Layer` of struct `PNGLayer` has been removed
+- Field `Codec` of struct `Video` has been removed
+- Field `InputDefinition` of struct `FromAllInputFile` has been removed
+- Field `VideoTrackDescriptor` of struct `SelectVideoTrackByAttribute` has been removed
+- Field `Resource` of struct `ProxyResource` has been removed
+- Field `ContentKeyPolicyPlayReadyContentKeyLocation` of struct `ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier` has been removed
+- Field `Audio` of struct `AacAudio` has been removed
+- Field `ProxyResource` of struct `Job` has been removed
+- Field `Preset` of struct `AudioAnalyzerPreset` has been removed
+- Field `InnerError` of struct `ErrorResponse` has been removed
+- Field `Video` of struct `H264Video` has been removed
+- Field `Image` of struct `PNGImage` has been removed
+- Field `ProxyResource` of struct `StreamingPolicy` has been removed
+- Field `ContentKeyPolicyConfiguration` of struct `ContentKeyPolicyPlayReadyConfiguration` has been removed
+- Field `InputDefinition` of struct `InputFile` has been removed
+- Field `Preset` of struct `FaceDetectorPreset` has been removed
+- Field `ContentKeyPolicyRestriction` of struct `ContentKeyPolicyTokenRestriction` has been removed
+- Field `JobInput` of struct `JobInputSequence` has been removed
+- Field `Resource` of struct `PrivateEndpointConnection` has been removed
+- Field `Overlay` of struct `AudioOverlay` has been removed
+- Field `ClipTime` of struct `AbsoluteClipTime` has been removed
+- Field `TrackedResource` of struct `StreamingEndpoint` has been removed
+- Field `VideoLayer` of struct `H264Layer` has been removed
+- Field `ProxyResource` of struct `LiveOutput` has been removed
+- Field `TrackedResource` of struct `LiveEvent` has been removed
+- Field `Codec` of struct `Audio` has been removed
 
 ### Features Added
 
-### Breaking Changes
+- New function `*VideoTrackDescriptor.GetTrackDescriptor() *TrackDescriptor`
+- New function `*JobsClientListPager.NextPage(context.Context) bool`
+- New function `*AudioOverlay.UnmarshalJSON([]byte) error`
+- New function `*LiveEventsClientStartPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*FromAllInputFile.UnmarshalJSON([]byte) error`
+- New function `*StreamingEndpointsClientListPager.NextPage(context.Context) bool`
+- New function `*LiveEventsClientResetPoller.FinalResponse(context.Context) (LiveEventsClientResetResponse, error)`
+- New function `*PNGFormat.GetFormat() *Format`
+- New function `*StreamingLocatorsClientListPager.NextPage(context.Context) bool`
+- New function `*StreamingPoliciesClientListPager.PageResponse() StreamingPoliciesClientListResponse`
+- New function `*LiveEventsClientDeletePollerResponse.Resume(context.Context, *LiveEventsClient, string) error`
+- New function `*Client.SyncStorageKeys(context.Context, string, string, SyncStorageKeysInput, *ClientSyncStorageKeysOptions) (ClientSyncStorageKeysResponse, error)`
+- New function `*JpgImage.GetCodec() *Codec`
+- New function `*VideoTrackDescriptor.UnmarshalJSON([]byte) error`
+- New function `*AssetsClientListPager.Err() error`
+- New function `*SelectAudioTrackByAttribute.GetTrackDescriptor() *TrackDescriptor`
+- New function `LiveEventsClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (LiveEventsClientCreateResponse, error)`
+- New function `*ClientListPager.PageResponse() ClientListResponse`
+- New function `*AbsoluteClipTime.GetClipTime() *ClipTime`
+- New function `*StreamingEndpointsClientCreatePoller.ResumeToken() (string, error)`
+- New function `*PNGImage.GetVideo() *Video`
+- New function `*ClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*CopyVideo.UnmarshalJSON([]byte) error`
+- New function `*LiveOutputsClientDeletePoller.FinalResponse(context.Context) (LiveOutputsClientDeleteResponse, error)`
+- New function `*Video.GetCodec() *Codec`
+- New function `*LiveOutputsClientListPager.PageResponse() LiveOutputsClientListResponse`
+- New function `StreamingEndpointsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (StreamingEndpointsClientUpdateResponse, error)`
+- New function `*ContentKeyPolicyUnknownRestriction.UnmarshalJSON([]byte) error`
+- New function `*PNGLayer.GetLayer() *Layer`
+- New function `StreamingEndpointsClientStartPollerResponse.PollUntilDone(context.Context, time.Duration) (StreamingEndpointsClientStartResponse, error)`
+- New function `*StreamingEndpointsClientScalePollerResponse.Resume(context.Context, *StreamingEndpointsClient, string) error`
+- New function `*LiveEventsClientStopPoller.FinalResponse(context.Context) (LiveEventsClientStopResponse, error)`
+- New function `StreamingEndpointsClientScalePollerResponse.PollUntilDone(context.Context, time.Duration) (StreamingEndpointsClientScaleResponse, error)`
+- New function `*ContentKeyPolicyTokenRestriction.GetContentKeyPolicyRestriction() *ContentKeyPolicyRestriction`
+- New function `*ContentKeyPolicyOpenRestriction.GetContentKeyPolicyRestriction() *ContentKeyPolicyRestriction`
+- New function `*LiveEventsClientStopPoller.ResumeToken() (string, error)`
+- New function `*AssetFiltersClientListPager.NextPage(context.Context) bool`
+- New function `*LiveEventsClientListPager.Err() error`
+- New function `*StreamingEndpointsClientListPager.Err() error`
+- New function `*JobInputAsset.GetJobInputClip() *JobInputClip`
+- New function `*AccountFiltersClientListPager.NextPage(context.Context) bool`
+- New function `*StreamingEndpointsClientDeletePoller.FinalResponse(context.Context) (StreamingEndpointsClientDeleteResponse, error)`
+- New function `*StreamingPoliciesClientListPager.Err() error`
+- New function `*AacAudio.GetAudio() *Audio`
+- New function `*ContentKeyPolicyPlayReadyConfiguration.GetContentKeyPolicyConfiguration() *ContentKeyPolicyConfiguration`
+- New function `*StreamingEndpointsClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*LiveOutputsClientDeletePollerResponse.Resume(context.Context, *LiveOutputsClient, string) error`
+- New function `*LiveOutputsClientCreatePoller.FinalResponse(context.Context) (LiveOutputsClientCreateResponse, error)`
+- New function `*JobOutputAsset.GetJobOutput() *JobOutput`
+- New function `*StreamingEndpointsClientStopPollerResponse.Resume(context.Context, *StreamingEndpointsClient, string) error`
+- New function `Video.MarshalJSON() ([]byte, error)`
+- New function `*LiveEventsClientDeletePoller.FinalResponse(context.Context) (LiveEventsClientDeleteResponse, error)`
+- New function `*LiveOutputsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*LiveEventsClientAllocatePoller.Done() bool`
+- New function `*LiveEventsClientAllocatePoller.FinalResponse(context.Context) (LiveEventsClientAllocateResponse, error)`
+- New function `*InputFile.GetInputDefinition() *InputDefinition`
+- New function `*AccountFiltersClientListPager.Err() error`
+- New function `*LiveEventsClientAllocatePollerResponse.Resume(context.Context, *LiveEventsClient, string) error`
+- New function `*ContentKeyPolicyClearKeyConfiguration.UnmarshalJSON([]byte) error`
+- New function `LiveEventsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (LiveEventsClientUpdateResponse, error)`
+- New function `*JobInputs.GetJobInput() *JobInput`
+- New function `*StreamingLocatorsClientListPager.Err() error`
+- New function `*LiveEventsClientUpdatePollerResponse.Resume(context.Context, *LiveEventsClient, string) error`
+- New function `LiveOutputsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (LiveOutputsClientDeleteResponse, error)`
+- New function `*ContentKeyPolicySymmetricTokenKey.GetContentKeyPolicyRestrictionTokenKey() *ContentKeyPolicyRestrictionTokenKey`
+- New function `*Mp4Format.UnmarshalJSON([]byte) error`
+- New function `*LiveEventsClientListPager.PageResponse() LiveEventsClientListResponse`
+- New function `*LiveEventsClientUpdatePoller.FinalResponse(context.Context) (LiveEventsClientUpdateResponse, error)`
+- New function `JobOutput.MarshalJSON() ([]byte, error)`
+- New function `*ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier.GetContentKeyPolicyPlayReadyContentKeyLocation() *ContentKeyPolicyPlayReadyContentKeyLocation`
+- New function `*AacAudio.GetCodec() *Codec`
+- New function `*LiveOutputsClientListPager.NextPage(context.Context) bool`
+- New function `*Audio.GetCodec() *Codec`
+- New function `*LiveEventsClientDeletePoller.Done() bool`
+- New function `LiveEventsClientResetPollerResponse.PollUntilDone(context.Context, time.Duration) (LiveEventsClientResetResponse, error)`
+- New function `*H265Video.GetVideo() *Video`
+- New function `LiveOutputsClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (LiveOutputsClientCreateResponse, error)`
+- New function `*JobInputHTTP.GetJobInputClip() *JobInputClip`
+- New function `*JpgFormat.UnmarshalJSON([]byte) error`
+- New function `*Mp4Format.GetMultiBitrateFormat() *MultiBitrateFormat`
+- New function `*ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader.GetContentKeyPolicyPlayReadyContentKeyLocation() *ContentKeyPolicyPlayReadyContentKeyLocation`
+- New function `*CopyAudio.UnmarshalJSON([]byte) error`
+- New function `*LiveEventsClientResetPoller.Done() bool`
+- New function `*TransportStreamFormat.GetMultiBitrateFormat() *MultiBitrateFormat`
+- New function `*LiveEventsClientCreatePoller.Done() bool`
+- New function `*PNGImage.GetCodec() *Codec`
+- New function `*FaceDetectorPreset.GetPreset() *Preset`
+- New function `*LiveEventsClientResetPoller.ResumeToken() (string, error)`
+- New function `*LiveEventsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PNGLayer.UnmarshalJSON([]byte) error`
+- New function `*ContentKeyPolicyFairPlayConfiguration.GetContentKeyPolicyConfiguration() *ContentKeyPolicyConfiguration`
+- New function `*SelectVideoTrackByID.GetVideoTrackDescriptor() *VideoTrackDescriptor`
+- New function `NewClient(string, azcore.TokenCredential, *arm.ClientOptions) *Client`
+- New function `*ContentKeyPolicyWidevineConfiguration.GetContentKeyPolicyConfiguration() *ContentKeyPolicyConfiguration`
+- New function `*TransformsClientListPager.PageResponse() TransformsClientListResponse`
+- New function `*LiveEventsClientStartPoller.Done() bool`
+- New function `*AudioAnalyzerPreset.GetPreset() *Preset`
+- New function `*StreamingEndpointsClientScalePoller.Done() bool`
+- New function `*LiveEventsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AssetsClientListPager.PageResponse() AssetsClientListResponse`
+- New function `*LiveEventsClientResetPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*StreamingPoliciesClientListPager.NextPage(context.Context) bool`
+- New function `*Client.CreateOrUpdate(context.Context, string, string, MediaService, *ClientCreateOrUpdateOptions) (ClientCreateOrUpdateResponse, error)`
+- New function `*LiveOutputsClientCreatePollerResponse.Resume(context.Context, *LiveOutputsClient, string) error`
+- New function `*StreamingLocatorsClientListPager.PageResponse() StreamingLocatorsClientListResponse`
+- New function `*ClientListBySubscriptionPager.Err() error`
+- New function `*LiveEventsClientAllocatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*LiveEventsClientStopPoller.Done() bool`
+- New function `*LiveEventsClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*LiveEventsClientResetPollerResponse.Resume(context.Context, *LiveEventsClient, string) error`
+- New function `*StandardEncoderPreset.GetPreset() *Preset`
+- New function `*LiveOutputsClientDeletePoller.Done() bool`
+- New function `*H264Video.GetCodec() *Codec`
+- New function `*SelectAudioTrackByAttribute.GetAudioTrackDescriptor() *AudioTrackDescriptor`
+- New function `*StreamingEndpointsClientCreatePollerResponse.Resume(context.Context, *StreamingEndpointsClient, string) error`
+- New function `*LiveEventsClientStopPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ContentKeyPolicyX509CertificateTokenKey.GetContentKeyPolicyRestrictionTokenKey() *ContentKeyPolicyRestrictionTokenKey`
+- New function `*LiveOutputsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*LiveOutputsClientListPager.Err() error`
+- New function `*FromAllInputFile.GetInputDefinition() *InputDefinition`
+- New function `*PNGFormat.UnmarshalJSON([]byte) error`
+- New function `*ContentKeyPolicyUnknownRestriction.GetContentKeyPolicyRestriction() *ContentKeyPolicyRestriction`
+- New function `*StreamingEndpointsClientDeletePollerResponse.Resume(context.Context, *StreamingEndpointsClient, string) error`
+- New function `*Image.GetCodec() *Codec`
+- New function `*LiveOutputsClientCreatePoller.Done() bool`
+- New function `*StreamingEndpointsClientUpdatePollerResponse.Resume(context.Context, *StreamingEndpointsClient, string) error`
+- New function `*LiveEventsClientCreatePollerResponse.Resume(context.Context, *LiveEventsClient, string) error`
+- New function `*JobInputSequence.GetJobInput() *JobInput`
+- New function `*PNGImage.GetImage() *Image`
+- New function `*StreamingEndpointsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ContentKeyPolicyClearKeyConfiguration.GetContentKeyPolicyConfiguration() *ContentKeyPolicyConfiguration`
+- New function `StreamingEndpointsClientStopPollerResponse.PollUntilDone(context.Context, time.Duration) (StreamingEndpointsClientStopResponse, error)`
+- New function `*BuiltInStandardEncoderPreset.GetPreset() *Preset`
+- New function `*ImageFormat.GetFormat() *Format`
+- New function `*TransportStreamFormat.GetFormat() *Format`
+- New function `*LiveEventsClientListPager.NextPage(context.Context) bool`
+- New function `*StreamingEndpointsClientCreatePoller.Done() bool`
+- New function `*StreamingEndpointsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*VideoLayer.GetLayer() *Layer`
+- New function `*LiveOutputsClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*TransformsClientListPager.Err() error`
+- New function `*StreamingEndpointsClientUpdatePoller.FinalResponse(context.Context) (StreamingEndpointsClientUpdateResponse, error)`
+- New function `*ContentKeyPolicyUnknownConfiguration.UnmarshalJSON([]byte) error`
+- New function `*MultiBitrateFormat.GetFormat() *Format`
+- New function `*StreamingEndpointsClientStartPoller.Done() bool`
+- New function `*H265Layer.GetLayer() *Layer`
+- New function `*JobsClientListPager.Err() error`
+- New function `*LiveEventsClientStartPoller.ResumeToken() (string, error)`
+- New function `*LiveEventsClientAllocatePoller.ResumeToken() (string, error)`
+- New function `*ImageFormat.UnmarshalJSON([]byte) error`
+- New function `*H265VideoLayer.GetLayer() *Layer`
+- New function `*JobsClientListPager.PageResponse() JobsClientListResponse`
+- New function `*VideoAnalyzerPreset.GetAudioAnalyzerPreset() *AudioAnalyzerPreset`
+- New function `*AssetFiltersClientListPager.Err() error`
+- New function `*H265Layer.GetH265VideoLayer() *H265VideoLayer`
+- New function `*FromEachInputFile.UnmarshalJSON([]byte) error`
+- New function `*Client.ListEdgePolicies(context.Context, string, string, ListEdgePoliciesInput, *ClientListEdgePoliciesOptions) (ClientListEdgePoliciesResponse, error)`
+- New function `*StreamingEndpointsClientCreatePoller.FinalResponse(context.Context) (StreamingEndpointsClientCreateResponse, error)`
+- New function `*PNGFormat.GetImageFormat() *ImageFormat`
+- New function `*CopyAudio.GetCodec() *Codec`
+- New function `*TransportStreamFormat.UnmarshalJSON([]byte) error`
+- New function `*ContentKeyPolicyRsaTokenKey.GetContentKeyPolicyRestrictionTokenKey() *ContentKeyPolicyRestrictionTokenKey`
+- New function `*ContentKeyPoliciesClientListPager.PageResponse() ContentKeyPoliciesClientListResponse`
+- New function `*StreamingEndpointsClientScalePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*Client.Get(context.Context, string, string, *ClientGetOptions) (ClientGetResponse, error)`
+- New function `InputDefinition.MarshalJSON() ([]byte, error)`
+- New function `*H265Video.GetCodec() *Codec`
+- New function `LiveEventsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (LiveEventsClientDeleteResponse, error)`
+- New function `StreamingEndpointsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (StreamingEndpointsClientDeleteResponse, error)`
+- New function `*AssetsClientListPager.NextPage(context.Context) bool`
+- New function `*ContentKeyPolicyOpenRestriction.UnmarshalJSON([]byte) error`
+- New function `*H264Layer.GetLayer() *Layer`
+- New function `*SelectAudioTrackByID.GetAudioTrackDescriptor() *AudioTrackDescriptor`
+- New function `*StreamingEndpointsClientListPager.PageResponse() StreamingEndpointsClientListResponse`
+- New function `*JpgLayer.GetLayer() *Layer`
+- New function `*ContentKeyPolicyUnknownConfiguration.GetContentKeyPolicyConfiguration() *ContentKeyPolicyConfiguration`
+- New function `*AccountFiltersClientListPager.PageResponse() AccountFiltersClientListResponse`
+- New function `*StreamingEndpointsClientStartPollerResponse.Resume(context.Context, *StreamingEndpointsClient, string) error`
+- New function `StreamingEndpointsClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (StreamingEndpointsClientCreateResponse, error)`
+- New function `*LiveEventsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*AudioOverlay.GetOverlay() *Overlay`
+- New function `*StreamingEndpointsClientStartPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*H264Video.GetVideo() *Video`
+- New function `LiveEventsClientStopPollerResponse.PollUntilDone(context.Context, time.Duration) (LiveEventsClientStopResponse, error)`
+- New function `*JpgImage.GetVideo() *Video`
+- New function `*StreamingEndpointsClientUpdatePoller.Done() bool`
+- New function `*AudioTrackDescriptor.GetTrackDescriptor() *TrackDescriptor`
+- New function `*H264Layer.GetVideoLayer() *VideoLayer`
+- New function `*LiveEventsClientCreatePoller.FinalResponse(context.Context) (LiveEventsClientCreateResponse, error)`
+- New function `*AssetFiltersClientListPager.PageResponse() AssetFiltersClientListResponse`
+- New function `*ContentKeyPoliciesClientListPager.Err() error`
+- New function `*StreamingEndpointsClientStopPoller.Done() bool`
+- New function `*ClientListBySubscriptionPager.PageResponse() ClientListBySubscriptionResponse`
+- New function `*UTCClipTime.GetClipTime() *ClipTime`
+- New function `*StreamingEndpointsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*LiveOutputsClientCreatePoller.ResumeToken() (string, error)`
+- New function `*StreamingEndpointsClientStopPoller.FinalResponse(context.Context) (StreamingEndpointsClientStopResponse, error)`
+- New function `LiveEventsClientAllocatePollerResponse.PollUntilDone(context.Context, time.Duration) (LiveEventsClientAllocateResponse, error)`
+- New function `*StreamingEndpointsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*SelectVideoTrackByID.GetTrackDescriptor() *TrackDescriptor`
+- New function `*LiveEventsClientCreatePoller.ResumeToken() (string, error)`
+- New function `*JobInputHTTP.GetJobInput() *JobInput`
+- New function `*CopyVideo.GetCodec() *Codec`
+- New function `*SelectVideoTrackByAttribute.GetVideoTrackDescriptor() *VideoTrackDescriptor`
+- New function `*StreamingEndpointsClientStartPoller.FinalResponse(context.Context) (StreamingEndpointsClientStartResponse, error)`
+- New function `*LiveEventsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*ClientListPager.Err() error`
+- New function `*JpgFormat.GetImageFormat() *ImageFormat`
+- New function `*StreamingEndpointsClientScalePoller.ResumeToken() (string, error)`
+- New function `*Client.Delete(context.Context, string, string, *ClientDeleteOptions) (ClientDeleteResponse, error)`
+- New function `*ContentKeyPoliciesClientListPager.NextPage(context.Context) bool`
+- New function `*StreamingEndpointsClientStopPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*Image.GetVideo() *Video`
+- New function `*StreamingEndpointsClientDeletePoller.Done() bool`
+- New function `*VideoAnalyzerPreset.GetPreset() *Preset`
+- New function `*StreamingEndpointsClientScalePoller.FinalResponse(context.Context) (StreamingEndpointsClientScaleResponse, error)`
+- New function `*ClientListPager.NextPage(context.Context) bool`
+- New function `*Client.List(string, *ClientListOptions) *ClientListPager`
+- New function `*SelectVideoTrackByAttribute.GetTrackDescriptor() *TrackDescriptor`
+- New function `*LiveEventsClientStartPollerResponse.Resume(context.Context, *LiveEventsClient, string) error`
+- New function `*Mp4Format.GetFormat() *Format`
+- New function `*StreamingEndpointsClientStartPoller.ResumeToken() (string, error)`
+- New function `*ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader.UnmarshalJSON([]byte) error`
+- New function `*JpgFormat.GetFormat() *Format`
+- New function `*JpgImage.GetImage() *Image`
+- New function `*JobInputClip.GetJobInput() *JobInput`
+- New function `*Client.ListBySubscription(*ClientListBySubscriptionOptions) *ClientListBySubscriptionPager`
+- New function `*LiveEventsClientStartPoller.FinalResponse(context.Context) (LiveEventsClientStartResponse, error)`
+- New function `*TransformsClientListPager.NextPage(context.Context) bool`
+- New function `*LiveEventsClientStopPollerResponse.Resume(context.Context, *LiveEventsClient, string) error`
+- New function `LiveEventsClientStartPollerResponse.PollUntilDone(context.Context, time.Duration) (LiveEventsClientStartResponse, error)`
+- New function `*SelectAudioTrackByID.GetTrackDescriptor() *TrackDescriptor`
+- New function `*VideoOverlay.GetOverlay() *Overlay`
+- New function `*Client.Update(context.Context, string, string, MediaServiceUpdate, *ClientUpdateOptions) (ClientUpdateResponse, error)`
+- New function `*StreamingEndpointsClientStopPoller.ResumeToken() (string, error)`
+- New function `*FromEachInputFile.GetInputDefinition() *InputDefinition`
+- New function `*JobInputAsset.GetJobInput() *JobInput`
+- New function `*LiveEventsClientUpdatePoller.Done() bool`
+- New struct `AccountFiltersClientCreateOrUpdateOptions`
+- New struct `AccountFiltersClientCreateOrUpdateResponse`
+- New struct `AccountFiltersClientCreateOrUpdateResult`
+- New struct `AccountFiltersClientDeleteOptions`
+- New struct `AccountFiltersClientDeleteResponse`
+- New struct `AccountFiltersClientGetOptions`
+- New struct `AccountFiltersClientGetResponse`
+- New struct `AccountFiltersClientGetResult`
+- New struct `AccountFiltersClientListOptions`
+- New struct `AccountFiltersClientListPager`
+- New struct `AccountFiltersClientListResponse`
+- New struct `AccountFiltersClientListResult`
+- New struct `AccountFiltersClientUpdateOptions`
+- New struct `AccountFiltersClientUpdateResponse`
+- New struct `AccountFiltersClientUpdateResult`
+- New struct `AssetFiltersClientCreateOrUpdateOptions`
+- New struct `AssetFiltersClientCreateOrUpdateResponse`
+- New struct `AssetFiltersClientCreateOrUpdateResult`
+- New struct `AssetFiltersClientDeleteOptions`
+- New struct `AssetFiltersClientDeleteResponse`
+- New struct `AssetFiltersClientGetOptions`
+- New struct `AssetFiltersClientGetResponse`
+- New struct `AssetFiltersClientGetResult`
+- New struct `AssetFiltersClientListOptions`
+- New struct `AssetFiltersClientListPager`
+- New struct `AssetFiltersClientListResponse`
+- New struct `AssetFiltersClientListResult`
+- New struct `AssetFiltersClientUpdateOptions`
+- New struct `AssetFiltersClientUpdateResponse`
+- New struct `AssetFiltersClientUpdateResult`
+- New struct `AssetsClientCreateOrUpdateOptions`
+- New struct `AssetsClientCreateOrUpdateResponse`
+- New struct `AssetsClientCreateOrUpdateResult`
+- New struct `AssetsClientDeleteOptions`
+- New struct `AssetsClientDeleteResponse`
+- New struct `AssetsClientGetEncryptionKeyOptions`
+- New struct `AssetsClientGetEncryptionKeyResponse`
+- New struct `AssetsClientGetEncryptionKeyResult`
+- New struct `AssetsClientGetOptions`
+- New struct `AssetsClientGetResponse`
+- New struct `AssetsClientGetResult`
+- New struct `AssetsClientListContainerSasOptions`
+- New struct `AssetsClientListContainerSasResponse`
+- New struct `AssetsClientListContainerSasResult`
+- New struct `AssetsClientListOptions`
+- New struct `AssetsClientListPager`
+- New struct `AssetsClientListResponse`
+- New struct `AssetsClientListResult`
+- New struct `AssetsClientListStreamingLocatorsOptions`
+- New struct `AssetsClientListStreamingLocatorsResponse`
+- New struct `AssetsClientListStreamingLocatorsResult`
+- New struct `AssetsClientUpdateOptions`
+- New struct `AssetsClientUpdateResponse`
+- New struct `AssetsClientUpdateResult`
+- New struct `Client`
+- New struct `ClientCreateOrUpdateOptions`
+- New struct `ClientCreateOrUpdateResponse`
+- New struct `ClientCreateOrUpdateResult`
+- New struct `ClientDeleteOptions`
+- New struct `ClientDeleteResponse`
+- New struct `ClientGetOptions`
+- New struct `ClientGetResponse`
+- New struct `ClientGetResult`
+- New struct `ClientListBySubscriptionOptions`
+- New struct `ClientListBySubscriptionPager`
+- New struct `ClientListBySubscriptionResponse`
+- New struct `ClientListBySubscriptionResult`
+- New struct `ClientListEdgePoliciesOptions`
+- New struct `ClientListEdgePoliciesResponse`
+- New struct `ClientListEdgePoliciesResult`
+- New struct `ClientListOptions`
+- New struct `ClientListPager`
+- New struct `ClientListResponse`
+- New struct `ClientListResult`
+- New struct `ClientSyncStorageKeysOptions`
+- New struct `ClientSyncStorageKeysResponse`
+- New struct `ClientUpdateOptions`
+- New struct `ClientUpdateResponse`
+- New struct `ClientUpdateResult`
+- New struct `ContentKeyPoliciesClientCreateOrUpdateOptions`
+- New struct `ContentKeyPoliciesClientCreateOrUpdateResponse`
+- New struct `ContentKeyPoliciesClientCreateOrUpdateResult`
+- New struct `ContentKeyPoliciesClientDeleteOptions`
+- New struct `ContentKeyPoliciesClientDeleteResponse`
+- New struct `ContentKeyPoliciesClientGetOptions`
+- New struct `ContentKeyPoliciesClientGetPolicyPropertiesWithSecretsOptions`
+- New struct `ContentKeyPoliciesClientGetPolicyPropertiesWithSecretsResponse`
+- New struct `ContentKeyPoliciesClientGetPolicyPropertiesWithSecretsResult`
+- New struct `ContentKeyPoliciesClientGetResponse`
+- New struct `ContentKeyPoliciesClientGetResult`
+- New struct `ContentKeyPoliciesClientListOptions`
+- New struct `ContentKeyPoliciesClientListPager`
+- New struct `ContentKeyPoliciesClientListResponse`
+- New struct `ContentKeyPoliciesClientListResult`
+- New struct `ContentKeyPoliciesClientUpdateOptions`
+- New struct `ContentKeyPoliciesClientUpdateResponse`
+- New struct `ContentKeyPoliciesClientUpdateResult`
+- New struct `JobsClientCancelJobOptions`
+- New struct `JobsClientCancelJobResponse`
+- New struct `JobsClientCreateOptions`
+- New struct `JobsClientCreateResponse`
+- New struct `JobsClientCreateResult`
+- New struct `JobsClientDeleteOptions`
+- New struct `JobsClientDeleteResponse`
+- New struct `JobsClientGetOptions`
+- New struct `JobsClientGetResponse`
+- New struct `JobsClientGetResult`
+- New struct `JobsClientListOptions`
+- New struct `JobsClientListPager`
+- New struct `JobsClientListResponse`
+- New struct `JobsClientListResult`
+- New struct `JobsClientUpdateOptions`
+- New struct `JobsClientUpdateResponse`
+- New struct `JobsClientUpdateResult`
+- New struct `LiveEventsClientAllocatePoller`
+- New struct `LiveEventsClientAllocatePollerResponse`
+- New struct `LiveEventsClientAllocateResponse`
+- New struct `LiveEventsClientBeginAllocateOptions`
+- New struct `LiveEventsClientBeginCreateOptions`
+- New struct `LiveEventsClientBeginDeleteOptions`
+- New struct `LiveEventsClientBeginResetOptions`
+- New struct `LiveEventsClientBeginStartOptions`
+- New struct `LiveEventsClientBeginStopOptions`
+- New struct `LiveEventsClientBeginUpdateOptions`
+- New struct `LiveEventsClientCreatePoller`
+- New struct `LiveEventsClientCreatePollerResponse`
+- New struct `LiveEventsClientCreateResponse`
+- New struct `LiveEventsClientCreateResult`
+- New struct `LiveEventsClientDeletePoller`
+- New struct `LiveEventsClientDeletePollerResponse`
+- New struct `LiveEventsClientDeleteResponse`
+- New struct `LiveEventsClientGetOptions`
+- New struct `LiveEventsClientGetResponse`
+- New struct `LiveEventsClientGetResult`
+- New struct `LiveEventsClientListOptions`
+- New struct `LiveEventsClientListPager`
+- New struct `LiveEventsClientListResponse`
+- New struct `LiveEventsClientListResult`
+- New struct `LiveEventsClientResetPoller`
+- New struct `LiveEventsClientResetPollerResponse`
+- New struct `LiveEventsClientResetResponse`
+- New struct `LiveEventsClientStartPoller`
+- New struct `LiveEventsClientStartPollerResponse`
+- New struct `LiveEventsClientStartResponse`
+- New struct `LiveEventsClientStopPoller`
+- New struct `LiveEventsClientStopPollerResponse`
+- New struct `LiveEventsClientStopResponse`
+- New struct `LiveEventsClientUpdatePoller`
+- New struct `LiveEventsClientUpdatePollerResponse`
+- New struct `LiveEventsClientUpdateResponse`
+- New struct `LiveEventsClientUpdateResult`
+- New struct `LiveOutputsClientBeginCreateOptions`
+- New struct `LiveOutputsClientBeginDeleteOptions`
+- New struct `LiveOutputsClientCreatePoller`
+- New struct `LiveOutputsClientCreatePollerResponse`
+- New struct `LiveOutputsClientCreateResponse`
+- New struct `LiveOutputsClientCreateResult`
+- New struct `LiveOutputsClientDeletePoller`
+- New struct `LiveOutputsClientDeletePollerResponse`
+- New struct `LiveOutputsClientDeleteResponse`
+- New struct `LiveOutputsClientGetOptions`
+- New struct `LiveOutputsClientGetResponse`
+- New struct `LiveOutputsClientGetResult`
+- New struct `LiveOutputsClientListOptions`
+- New struct `LiveOutputsClientListPager`
+- New struct `LiveOutputsClientListResponse`
+- New struct `LiveOutputsClientListResult`
+- New struct `LocationsClientCheckNameAvailabilityOptions`
+- New struct `LocationsClientCheckNameAvailabilityResponse`
+- New struct `LocationsClientCheckNameAvailabilityResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `PrivateEndpointConnectionsClientCreateOrUpdateOptions`
+- New struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse`
+- New struct `PrivateEndpointConnectionsClientCreateOrUpdateResult`
+- New struct `PrivateEndpointConnectionsClientDeleteOptions`
+- New struct `PrivateEndpointConnectionsClientDeleteResponse`
+- New struct `PrivateEndpointConnectionsClientGetOptions`
+- New struct `PrivateEndpointConnectionsClientGetResponse`
+- New struct `PrivateEndpointConnectionsClientGetResult`
+- New struct `PrivateEndpointConnectionsClientListOptions`
+- New struct `PrivateEndpointConnectionsClientListResponse`
+- New struct `PrivateEndpointConnectionsClientListResult`
+- New struct `PrivateLinkResourcesClientGetOptions`
+- New struct `PrivateLinkResourcesClientGetResponse`
+- New struct `PrivateLinkResourcesClientGetResult`
+- New struct `PrivateLinkResourcesClientListOptions`
+- New struct `PrivateLinkResourcesClientListResponse`
+- New struct `PrivateLinkResourcesClientListResult`
+- New struct `StreamingEndpointsClientBeginCreateOptions`
+- New struct `StreamingEndpointsClientBeginDeleteOptions`
+- New struct `StreamingEndpointsClientBeginScaleOptions`
+- New struct `StreamingEndpointsClientBeginStartOptions`
+- New struct `StreamingEndpointsClientBeginStopOptions`
+- New struct `StreamingEndpointsClientBeginUpdateOptions`
+- New struct `StreamingEndpointsClientCreatePoller`
+- New struct `StreamingEndpointsClientCreatePollerResponse`
+- New struct `StreamingEndpointsClientCreateResponse`
+- New struct `StreamingEndpointsClientCreateResult`
+- New struct `StreamingEndpointsClientDeletePoller`
+- New struct `StreamingEndpointsClientDeletePollerResponse`
+- New struct `StreamingEndpointsClientDeleteResponse`
+- New struct `StreamingEndpointsClientGetOptions`
+- New struct `StreamingEndpointsClientGetResponse`
+- New struct `StreamingEndpointsClientGetResult`
+- New struct `StreamingEndpointsClientListOptions`
+- New struct `StreamingEndpointsClientListPager`
+- New struct `StreamingEndpointsClientListResponse`
+- New struct `StreamingEndpointsClientListResult`
+- New struct `StreamingEndpointsClientScalePoller`
+- New struct `StreamingEndpointsClientScalePollerResponse`
+- New struct `StreamingEndpointsClientScaleResponse`
+- New struct `StreamingEndpointsClientStartPoller`
+- New struct `StreamingEndpointsClientStartPollerResponse`
+- New struct `StreamingEndpointsClientStartResponse`
+- New struct `StreamingEndpointsClientStopPoller`
+- New struct `StreamingEndpointsClientStopPollerResponse`
+- New struct `StreamingEndpointsClientStopResponse`
+- New struct `StreamingEndpointsClientUpdatePoller`
+- New struct `StreamingEndpointsClientUpdatePollerResponse`
+- New struct `StreamingEndpointsClientUpdateResponse`
+- New struct `StreamingEndpointsClientUpdateResult`
+- New struct `StreamingLocatorsClientCreateOptions`
+- New struct `StreamingLocatorsClientCreateResponse`
+- New struct `StreamingLocatorsClientCreateResult`
+- New struct `StreamingLocatorsClientDeleteOptions`
+- New struct `StreamingLocatorsClientDeleteResponse`
+- New struct `StreamingLocatorsClientGetOptions`
+- New struct `StreamingLocatorsClientGetResponse`
+- New struct `StreamingLocatorsClientGetResult`
+- New struct `StreamingLocatorsClientListContentKeysOptions`
+- New struct `StreamingLocatorsClientListContentKeysResponse`
+- New struct `StreamingLocatorsClientListContentKeysResult`
+- New struct `StreamingLocatorsClientListOptions`
+- New struct `StreamingLocatorsClientListPager`
+- New struct `StreamingLocatorsClientListPathsOptions`
+- New struct `StreamingLocatorsClientListPathsResponse`
+- New struct `StreamingLocatorsClientListPathsResult`
+- New struct `StreamingLocatorsClientListResponse`
+- New struct `StreamingLocatorsClientListResult`
+- New struct `StreamingPoliciesClientCreateOptions`
+- New struct `StreamingPoliciesClientCreateResponse`
+- New struct `StreamingPoliciesClientCreateResult`
+- New struct `StreamingPoliciesClientDeleteOptions`
+- New struct `StreamingPoliciesClientDeleteResponse`
+- New struct `StreamingPoliciesClientGetOptions`
+- New struct `StreamingPoliciesClientGetResponse`
+- New struct `StreamingPoliciesClientGetResult`
+- New struct `StreamingPoliciesClientListOptions`
+- New struct `StreamingPoliciesClientListPager`
+- New struct `StreamingPoliciesClientListResponse`
+- New struct `StreamingPoliciesClientListResult`
+- New struct `TransformsClientCreateOrUpdateOptions`
+- New struct `TransformsClientCreateOrUpdateResponse`
+- New struct `TransformsClientCreateOrUpdateResult`
+- New struct `TransformsClientDeleteOptions`
+- New struct `TransformsClientDeleteResponse`
+- New struct `TransformsClientGetOptions`
+- New struct `TransformsClientGetResponse`
+- New struct `TransformsClientGetResult`
+- New struct `TransformsClientListOptions`
+- New struct `TransformsClientListPager`
+- New struct `TransformsClientListResponse`
+- New struct `TransformsClientListResult`
+- New struct `TransformsClientUpdateOptions`
+- New struct `TransformsClientUpdateResponse`
+- New struct `TransformsClientUpdateResult`
+- New field `ODataType` in struct `UTCClipTime`
+- New field `ODataType` in struct `ContentKeyPolicySymmetricTokenKey`
+- New field `Type` in struct `PrivateEndpointConnection`
+- New field `ID` in struct `PrivateEndpointConnection`
+- New field `Name` in struct `PrivateEndpointConnection`
+- New field `ODataType` in struct `FromEachInputFile`
+- New field `IncludedTracks` in struct `FromEachInputFile`
+- New field `StretchMode` in struct `JpgImage`
+- New field `SyncMode` in struct `JpgImage`
+- New field `Start` in struct `JpgImage`
+- New field `KeyFrameInterval` in struct `JpgImage`
+- New field `Label` in struct `JpgImage`
+- New field `Step` in struct `JpgImage`
+- New field `ODataType` in struct `JpgImage`
+- New field `Range` in struct `JpgImage`
+- New field `Name` in struct `Job`
+- New field `Type` in struct `Job`
+- New field `ID` in struct `Job`
+- New field `ODataType` in struct `ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier`
+- New field `ODataType` in struct `VideoTrackDescriptor`
+- New field `ODataType` in struct `AbsoluteClipTime`
+- New field `ODataType` in struct `ContentKeyPolicyClearKeyConfiguration`
+- New field `FilenamePattern` in struct `JpgFormat`
+- New field `ODataType` in struct `JpgFormat`
+- New field `ID` in struct `PrivateLinkResource`
+- New field `Name` in struct `PrivateLinkResource`
+- New field `Type` in struct `PrivateLinkResource`
+- New field `ODataType` in struct `Audio`
+- New field `Label` in struct `Audio`
+- New field `StretchMode` in struct `H265Video`
+- New field `SyncMode` in struct `H265Video`
+- New field `ODataType` in struct `H265Video`
+- New field `KeyFrameInterval` in struct `H265Video`
+- New field `Label` in struct `H265Video`
+- New field `Type` in struct `StreamingLocator`
+- New field `ID` in struct `StreamingLocator`
+- New field `Name` in struct `StreamingLocator`
+- New field `ODataType` in struct `FromAllInputFile`
+- New field `IncludedTracks` in struct `FromAllInputFile`
+- New field `AdaptiveBFrame` in struct `H264Layer`
+- New field `FrameRate` in struct `H264Layer`
+- New field `MaxBitrate` in struct `H264Layer`
+- New field `Width` in struct `H264Layer`
+- New field `Bitrate` in struct `H264Layer`
+- New field `ODataType` in struct `H264Layer`
+- New field `BFrames` in struct `H264Layer`
+- New field `Height` in struct `H264Layer`
+- New field `Label` in struct `H264Layer`
+- New field `Slices` in struct `H264Layer`
+- New field `Type` in struct `StreamingPolicy`
+- New field `ID` in struct `StreamingPolicy`
+- New field `Name` in struct `StreamingPolicy`
+- New field `FadeOutDuration` in struct `AudioOverlay`
+- New field `Start` in struct `AudioOverlay`
+- New field `InputLabel` in struct `AudioOverlay`
+- New field `ODataType` in struct `AudioOverlay`
+- New field `AudioGainLevel` in struct `AudioOverlay`
+- New field `End` in struct `AudioOverlay`
+- New field `FadeInDuration` in struct `AudioOverlay`
+- New field `FilenamePattern` in struct `MultiBitrateFormat`
+- New field `ODataType` in struct `MultiBitrateFormat`
+- New field `ODataType` in struct `FaceDetectorPreset`
+- New field `ID` in struct `LiveEvent`
+- New field `Name` in struct `LiveEvent`
+- New field `Type` in struct `LiveEvent`
+- New field `Location` in struct `LiveEvent`
+- New field `Tags` in struct `LiveEvent`
+- New field `Type` in struct `LiveOutput`
+- New field `ID` in struct `LiveOutput`
+- New field `Name` in struct `LiveOutput`
+- New field `Name` in struct `ProxyResource`
+- New field `Type` in struct `ProxyResource`
+- New field `ID` in struct `ProxyResource`
+- New field `SyncMode` in struct `Image`
+- New field `ODataType` in struct `Image`
+- New field `KeyFrameInterval` in struct `Image`
+- New field `Label` in struct `Image`
+- New field `StretchMode` in struct `Image`
+- New field `ODataType` in struct `SelectAudioTrackByAttribute`
+- New field `ChannelMapping` in struct `SelectAudioTrackByAttribute`
+- New field `ODataType` in struct `JobInputs`
+- New field `ODataType` in struct `ContentKeyPolicyWidevineConfiguration`
+- New field `ODataType` in struct `SelectVideoTrackByAttribute`
+- New field `Type` in struct `AssetFilter`
+- New field `ID` in struct `AssetFilter`
+- New field `Name` in struct `AssetFilter`
+- New field `Name` in struct `TrackedResource`
+- New field `Type` in struct `TrackedResource`
+- New field `ID` in struct `TrackedResource`
+- New field `ODataType` in struct `PNGFormat`
+- New field `FilenamePattern` in struct `PNGFormat`
+- New field `ODataType` in struct `AudioAnalyzerPreset`
+- New field `FilenamePattern` in struct `ImageFormat`
+- New field `ODataType` in struct `ImageFormat`
+- New field `PresetOverride` in struct `JobOutputAsset`
+- New field `State` in struct `JobOutputAsset`
+- New field `EndTime` in struct `JobOutputAsset`
+- New field `Error` in struct `JobOutputAsset`
+- New field `Progress` in struct `JobOutputAsset`
+- New field `StartTime` in struct `JobOutputAsset`
+- New field `ODataType` in struct `JobOutputAsset`
+- New field `Label` in struct `JobOutputAsset`
+- New field `ODataType` in struct `ContentKeyPolicyFairPlayConfiguration`
+- New field `ODataType` in struct `ContentKeyPolicyTokenRestriction`
+- New field `ODataType` in struct `ContentKeyPolicyRsaTokenKey`
+- New field `ODataType` in struct `StandardEncoderPreset`
+- New field `ODataType` in struct `ContentKeyPolicyUnknownRestriction`
+- New field `Type` in struct `Transform`
+- New field `ID` in struct `Transform`
+- New field `Name` in struct `Transform`
+- New field `SyncMode` in struct `PNGImage`
+- New field `ODataType` in struct `PNGImage`
+- New field `Step` in struct `PNGImage`
+- New field `StretchMode` in struct `PNGImage`
+- New field `Start` in struct `PNGImage`
+- New field `KeyFrameInterval` in struct `PNGImage`
+- New field `Label` in struct `PNGImage`
+- New field `Range` in struct `PNGImage`
+- New field `ODataType` in struct `ContentKeyPolicyOpenRestriction`
+- New field `FilenamePattern` in struct `TransportStreamFormat`
+- New field `ODataType` in struct `TransportStreamFormat`
+- New field `OutputFiles` in struct `TransportStreamFormat`
+- New field `Tags` in struct `StreamingEndpoint`
+- New field `ID` in struct `StreamingEndpoint`
+- New field `Name` in struct `StreamingEndpoint`
+- New field `Type` in struct `StreamingEndpoint`
+- New field `Location` in struct `StreamingEndpoint`
+- New field `ODataType` in struct `BuiltInStandardEncoderPreset`
+- New field `ODataType` in struct `ContentKeyPolicyX509CertificateTokenKey`
+- New field `FilenamePattern` in struct `Mp4Format`
+- New field `ODataType` in struct `Mp4Format`
+- New field `OutputFiles` in struct `Mp4Format`
+- New field `ODataType` in struct `H265VideoLayer`
+- New field `Label` in struct `H265VideoLayer`
+- New field `Height` in struct `H265VideoLayer`
+- New field `Width` in struct `H265VideoLayer`
+- New field `ID` in struct `MediaService`
+- New field `Name` in struct `MediaService`
+- New field `Type` in struct `MediaService`
+- New field `Location` in struct `MediaService`
+- New field `Tags` in struct `MediaService`
+- New field `ODataType` in struct `SelectAudioTrackByID`
+- New field `ChannelMapping` in struct `SelectAudioTrackByID`
+- New field `Name` in struct `Asset`
+- New field `Type` in struct `Asset`
+- New field `ID` in struct `Asset`
+- New field `Width` in struct `PNGLayer`
+- New field `ODataType` in struct `PNGLayer`
+- New field `Height` in struct `PNGLayer`
+- New field `Label` in struct `PNGLayer`
+- New field `ODataType` in struct `InputFile`
+- New field `IncludedTracks` in struct `InputFile`
+- New field `ODataType` in struct `ContentKeyPolicyUnknownConfiguration`
+- New field `ODataType` in struct `ContentKeyPolicyPlayReadyConfiguration`
+- New field `ID` in struct `ContentKeyPolicy`
+- New field `Name` in struct `ContentKeyPolicy`
+- New field `Type` in struct `ContentKeyPolicy`
+- New field `Height` in struct `VideoLayer`
+- New field `Label` in struct `VideoLayer`
+- New field `Width` in struct `VideoLayer`
+- New field `ODataType` in struct `VideoLayer`
+- New field `ODataType` in struct `CopyAudio`
+- New field `Label` in struct `CopyAudio`
+- New field `ODataType` in struct `VideoOverlay`
+- New field `AudioGainLevel` in struct `VideoOverlay`
+- New field `End` in struct `VideoOverlay`
+- New field `FadeInDuration` in struct `VideoOverlay`
+- New field `Start` in struct `VideoOverlay`
+- New field `InputLabel` in struct `VideoOverlay`
+- New field `FadeOutDuration` in struct `VideoOverlay`
+- New field `SyncMode` in struct `H264Video`
+- New field `ODataType` in struct `H264Video`
+- New field `KeyFrameInterval` in struct `H264Video`
+- New field `Label` in struct `H264Video`
+- New field `StretchMode` in struct `H264Video`
+- New field `ODataType` in struct `JobInputClip`
+- New field `ODataType` in struct `CopyVideo`
+- New field `Label` in struct `CopyVideo`
+- New field `Label` in struct `AacAudio`
+- New field `SamplingRate` in struct `AacAudio`
+- New field `ODataType` in struct `AacAudio`
+- New field `Bitrate` in struct `AacAudio`
+- New field `Channels` in struct `AacAudio`
+- New field `ODataType` in struct `ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader`
+- New field `ODataType` in struct `JobInputHTTP`
+- New field `End` in struct `JobInputHTTP`
+- New field `Files` in struct `JobInputHTTP`
+- New field `InputDefinitions` in struct `JobInputHTTP`
+- New field `Label` in struct `JobInputHTTP`
+- New field `Start` in struct `JobInputHTTP`
+- New field `ODataType` in struct `Video`
+- New field `Label` in struct `Video`
+- New field `ODataType` in struct `SelectVideoTrackByID`
+- New field `FrameRate` in struct `H265Layer`
+- New field `AdaptiveBFrame` in struct `H265Layer`
+- New field `Label` in struct `H265Layer`
+- New field `Width` in struct `H265Layer`
+- New field `MaxBitrate` in struct `H265Layer`
+- New field `Bitrate` in struct `H265Layer`
+- New field `Height` in struct `H265Layer`
+- New field `ODataType` in struct `H265Layer`
+- New field `Slices` in struct `H265Layer`
+- New field `BFrames` in struct `H265Layer`
+- New field `Error` in struct `ErrorResponse`
+- New field `Label` in struct `JobInputAsset`
+- New field `Start` in struct `JobInputAsset`
+- New field `ODataType` in struct `JobInputAsset`
+- New field `End` in struct `JobInputAsset`
+- New field `Files` in struct `JobInputAsset`
+- New field `InputDefinitions` in struct `JobInputAsset`
+- New field `ID` in struct `AccountFilter`
+- New field `Name` in struct `AccountFilter`
+- New field `Type` in struct `AccountFilter`
+- New field `ODataType` in struct `AudioTrackDescriptor`
+- New field `ExperimentalOptions` in struct `VideoAnalyzerPreset`
+- New field `Mode` in struct `VideoAnalyzerPreset`
+- New field `ODataType` in struct `VideoAnalyzerPreset`
+- New field `AudioLanguage` in struct `VideoAnalyzerPreset`
+- New field `ODataType` in struct `JpgLayer`
+- New field `Height` in struct `JpgLayer`
+- New field `Label` in struct `JpgLayer`
+- New field `Width` in struct `JpgLayer`
+- New field `ODataType` in struct `JobInputSequence`
 
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.2.0 (2021-10-29)
 

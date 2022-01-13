@@ -11,7 +11,6 @@ package armcompute
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,44 +24,58 @@ import (
 // CapacityReservationGroupsClient contains the methods for the CapacityReservationGroups group.
 // Don't use this type directly, use NewCapacityReservationGroupsClient() instead.
 type CapacityReservationGroupsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewCapacityReservationGroupsClient creates a new instance of CapacityReservationGroupsClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewCapacityReservationGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CapacityReservationGroupsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &CapacityReservationGroupsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &CapacityReservationGroupsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// CreateOrUpdate - The operation to create or update a capacity reservation group. When updating a capacity reservation group, only tags may be modified.
-// Please refer to https://aka.ms/CapacityReservation for more
+// CreateOrUpdate - The operation to create or update a capacity reservation group. When updating a capacity reservation group,
+// only tags may be modified. Please refer to https://aka.ms/CapacityReservation for more
 // details.
-// If the operation fails it returns the *CloudError error type.
-func (client *CapacityReservationGroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, parameters CapacityReservationGroup, options *CapacityReservationGroupsCreateOrUpdateOptions) (CapacityReservationGroupsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// capacityReservationGroupName - The name of the capacity reservation group.
+// parameters - Parameters supplied to the Create capacity reservation Group.
+// options - CapacityReservationGroupsClientCreateOrUpdateOptions contains the optional parameters for the CapacityReservationGroupsClient.CreateOrUpdate
+// method.
+func (client *CapacityReservationGroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, parameters CapacityReservationGroup, options *CapacityReservationGroupsClientCreateOrUpdateOptions) (CapacityReservationGroupsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, capacityReservationGroupName, parameters, options)
 	if err != nil {
-		return CapacityReservationGroupsCreateOrUpdateResponse{}, err
+		return CapacityReservationGroupsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CapacityReservationGroupsCreateOrUpdateResponse{}, err
+		return CapacityReservationGroupsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return CapacityReservationGroupsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return CapacityReservationGroupsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *CapacityReservationGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, parameters CapacityReservationGroup, options *CapacityReservationGroupsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *CapacityReservationGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, parameters CapacityReservationGroup, options *CapacityReservationGroupsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/capacityReservationGroups/{capacityReservationGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -76,7 +89,7 @@ func (client *CapacityReservationGroupsClient) createOrUpdateCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -88,48 +101,39 @@ func (client *CapacityReservationGroupsClient) createOrUpdateCreateRequest(ctx c
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *CapacityReservationGroupsClient) createOrUpdateHandleResponse(resp *http.Response) (CapacityReservationGroupsCreateOrUpdateResponse, error) {
-	result := CapacityReservationGroupsCreateOrUpdateResponse{RawResponse: resp}
+func (client *CapacityReservationGroupsClient) createOrUpdateHandleResponse(resp *http.Response) (CapacityReservationGroupsClientCreateOrUpdateResponse, error) {
+	result := CapacityReservationGroupsClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CapacityReservationGroup); err != nil {
-		return CapacityReservationGroupsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return CapacityReservationGroupsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *CapacityReservationGroupsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Delete - The operation to delete a capacity reservation group. This operation is allowed only if all the associated resources are disassociated from
-// the reservation group and all capacity reservations under
+// Delete - The operation to delete a capacity reservation group. This operation is allowed only if all the associated resources
+// are disassociated from the reservation group and all capacity reservations under
 // the reservation group have also been deleted. Please refer to https://aka.ms/CapacityReservation for more details.
-// If the operation fails it returns the *CloudError error type.
-func (client *CapacityReservationGroupsClient) Delete(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, options *CapacityReservationGroupsDeleteOptions) (CapacityReservationGroupsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// capacityReservationGroupName - The name of the capacity reservation group.
+// options - CapacityReservationGroupsClientDeleteOptions contains the optional parameters for the CapacityReservationGroupsClient.Delete
+// method.
+func (client *CapacityReservationGroupsClient) Delete(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, options *CapacityReservationGroupsClientDeleteOptions) (CapacityReservationGroupsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, capacityReservationGroupName, options)
 	if err != nil {
-		return CapacityReservationGroupsDeleteResponse{}, err
+		return CapacityReservationGroupsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CapacityReservationGroupsDeleteResponse{}, err
+		return CapacityReservationGroupsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return CapacityReservationGroupsDeleteResponse{}, client.deleteHandleError(resp)
+		return CapacityReservationGroupsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return CapacityReservationGroupsDeleteResponse{RawResponse: resp}, nil
+	return CapacityReservationGroupsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *CapacityReservationGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, options *CapacityReservationGroupsDeleteOptions) (*policy.Request, error) {
+func (client *CapacityReservationGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, options *CapacityReservationGroupsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/capacityReservationGroups/{capacityReservationGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -143,7 +147,7 @@ func (client *CapacityReservationGroupsClient) deleteCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -154,38 +158,29 @@ func (client *CapacityReservationGroupsClient) deleteCreateRequest(ctx context.C
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *CapacityReservationGroupsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - The operation that retrieves information about a capacity reservation group.
-// If the operation fails it returns the *CloudError error type.
-func (client *CapacityReservationGroupsClient) Get(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, options *CapacityReservationGroupsGetOptions) (CapacityReservationGroupsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// capacityReservationGroupName - The name of the capacity reservation group.
+// options - CapacityReservationGroupsClientGetOptions contains the optional parameters for the CapacityReservationGroupsClient.Get
+// method.
+func (client *CapacityReservationGroupsClient) Get(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, options *CapacityReservationGroupsClientGetOptions) (CapacityReservationGroupsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, capacityReservationGroupName, options)
 	if err != nil {
-		return CapacityReservationGroupsGetResponse{}, err
+		return CapacityReservationGroupsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CapacityReservationGroupsGetResponse{}, err
+		return CapacityReservationGroupsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CapacityReservationGroupsGetResponse{}, client.getHandleError(resp)
+		return CapacityReservationGroupsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *CapacityReservationGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, options *CapacityReservationGroupsGetOptions) (*policy.Request, error) {
+func (client *CapacityReservationGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, options *CapacityReservationGroupsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/capacityReservationGroups/{capacityReservationGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -199,7 +194,7 @@ func (client *CapacityReservationGroupsClient) getCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -214,44 +209,34 @@ func (client *CapacityReservationGroupsClient) getCreateRequest(ctx context.Cont
 }
 
 // getHandleResponse handles the Get response.
-func (client *CapacityReservationGroupsClient) getHandleResponse(resp *http.Response) (CapacityReservationGroupsGetResponse, error) {
-	result := CapacityReservationGroupsGetResponse{RawResponse: resp}
+func (client *CapacityReservationGroupsClient) getHandleResponse(resp *http.Response) (CapacityReservationGroupsClientGetResponse, error) {
+	result := CapacityReservationGroupsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CapacityReservationGroup); err != nil {
-		return CapacityReservationGroupsGetResponse{}, runtime.NewResponseError(err, resp)
+		return CapacityReservationGroupsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *CapacityReservationGroupsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListByResourceGroup - Lists all of the capacity reservation groups in the specified resource group. Use the nextLink property in the response to get
-// the next page of capacity reservation groups.
-// If the operation fails it returns the *CloudError error type.
-func (client *CapacityReservationGroupsClient) ListByResourceGroup(resourceGroupName string, options *CapacityReservationGroupsListByResourceGroupOptions) *CapacityReservationGroupsListByResourceGroupPager {
-	return &CapacityReservationGroupsListByResourceGroupPager{
+// ListByResourceGroup - Lists all of the capacity reservation groups in the specified resource group. Use the nextLink property
+// in the response to get the next page of capacity reservation groups.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// options - CapacityReservationGroupsClientListByResourceGroupOptions contains the optional parameters for the CapacityReservationGroupsClient.ListByResourceGroup
+// method.
+func (client *CapacityReservationGroupsClient) ListByResourceGroup(resourceGroupName string, options *CapacityReservationGroupsClientListByResourceGroupOptions) *CapacityReservationGroupsClientListByResourceGroupPager {
+	return &CapacityReservationGroupsClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp CapacityReservationGroupsListByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp CapacityReservationGroupsClientListByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.CapacityReservationGroupListResult.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *CapacityReservationGroupsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *CapacityReservationGroupsListByResourceGroupOptions) (*policy.Request, error) {
+func (client *CapacityReservationGroupsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *CapacityReservationGroupsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/capacityReservationGroups"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -261,7 +246,7 @@ func (client *CapacityReservationGroupsClient) listByResourceGroupCreateRequest(
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -276,50 +261,39 @@ func (client *CapacityReservationGroupsClient) listByResourceGroupCreateRequest(
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *CapacityReservationGroupsClient) listByResourceGroupHandleResponse(resp *http.Response) (CapacityReservationGroupsListByResourceGroupResponse, error) {
-	result := CapacityReservationGroupsListByResourceGroupResponse{RawResponse: resp}
+func (client *CapacityReservationGroupsClient) listByResourceGroupHandleResponse(resp *http.Response) (CapacityReservationGroupsClientListByResourceGroupResponse, error) {
+	result := CapacityReservationGroupsClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CapacityReservationGroupListResult); err != nil {
-		return CapacityReservationGroupsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return CapacityReservationGroupsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *CapacityReservationGroupsClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListBySubscription - Lists all of the capacity reservation groups in the subscription. Use the nextLink property in the response to get the next page
-// of capacity reservation groups.
-// If the operation fails it returns the *CloudError error type.
-func (client *CapacityReservationGroupsClient) ListBySubscription(options *CapacityReservationGroupsListBySubscriptionOptions) *CapacityReservationGroupsListBySubscriptionPager {
-	return &CapacityReservationGroupsListBySubscriptionPager{
+// ListBySubscription - Lists all of the capacity reservation groups in the subscription. Use the nextLink property in the
+// response to get the next page of capacity reservation groups.
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - CapacityReservationGroupsClientListBySubscriptionOptions contains the optional parameters for the CapacityReservationGroupsClient.ListBySubscription
+// method.
+func (client *CapacityReservationGroupsClient) ListBySubscription(options *CapacityReservationGroupsClientListBySubscriptionOptions) *CapacityReservationGroupsClientListBySubscriptionPager {
+	return &CapacityReservationGroupsClientListBySubscriptionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp CapacityReservationGroupsListBySubscriptionResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp CapacityReservationGroupsClientListBySubscriptionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.CapacityReservationGroupListResult.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *CapacityReservationGroupsClient) listBySubscriptionCreateRequest(ctx context.Context, options *CapacityReservationGroupsListBySubscriptionOptions) (*policy.Request, error) {
+func (client *CapacityReservationGroupsClient) listBySubscriptionCreateRequest(ctx context.Context, options *CapacityReservationGroupsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/capacityReservationGroups"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -334,46 +308,39 @@ func (client *CapacityReservationGroupsClient) listBySubscriptionCreateRequest(c
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *CapacityReservationGroupsClient) listBySubscriptionHandleResponse(resp *http.Response) (CapacityReservationGroupsListBySubscriptionResponse, error) {
-	result := CapacityReservationGroupsListBySubscriptionResponse{RawResponse: resp}
+func (client *CapacityReservationGroupsClient) listBySubscriptionHandleResponse(resp *http.Response) (CapacityReservationGroupsClientListBySubscriptionResponse, error) {
+	result := CapacityReservationGroupsClientListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CapacityReservationGroupListResult); err != nil {
-		return CapacityReservationGroupsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return CapacityReservationGroupsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *CapacityReservationGroupsClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Update - The operation to update a capacity reservation group. When updating a capacity reservation group, only tags may be modified.
-// If the operation fails it returns the *CloudError error type.
-func (client *CapacityReservationGroupsClient) Update(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, parameters CapacityReservationGroupUpdate, options *CapacityReservationGroupsUpdateOptions) (CapacityReservationGroupsUpdateResponse, error) {
+// Update - The operation to update a capacity reservation group. When updating a capacity reservation group, only tags may
+// be modified.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// capacityReservationGroupName - The name of the capacity reservation group.
+// parameters - Parameters supplied to the Update capacity reservation Group operation.
+// options - CapacityReservationGroupsClientUpdateOptions contains the optional parameters for the CapacityReservationGroupsClient.Update
+// method.
+func (client *CapacityReservationGroupsClient) Update(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, parameters CapacityReservationGroupUpdate, options *CapacityReservationGroupsClientUpdateOptions) (CapacityReservationGroupsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, capacityReservationGroupName, parameters, options)
 	if err != nil {
-		return CapacityReservationGroupsUpdateResponse{}, err
+		return CapacityReservationGroupsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CapacityReservationGroupsUpdateResponse{}, err
+		return CapacityReservationGroupsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CapacityReservationGroupsUpdateResponse{}, client.updateHandleError(resp)
+		return CapacityReservationGroupsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *CapacityReservationGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, parameters CapacityReservationGroupUpdate, options *CapacityReservationGroupsUpdateOptions) (*policy.Request, error) {
+func (client *CapacityReservationGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, parameters CapacityReservationGroupUpdate, options *CapacityReservationGroupsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/capacityReservationGroups/{capacityReservationGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -387,7 +354,7 @@ func (client *CapacityReservationGroupsClient) updateCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -399,23 +366,10 @@ func (client *CapacityReservationGroupsClient) updateCreateRequest(ctx context.C
 }
 
 // updateHandleResponse handles the Update response.
-func (client *CapacityReservationGroupsClient) updateHandleResponse(resp *http.Response) (CapacityReservationGroupsUpdateResponse, error) {
-	result := CapacityReservationGroupsUpdateResponse{RawResponse: resp}
+func (client *CapacityReservationGroupsClient) updateHandleResponse(resp *http.Response) (CapacityReservationGroupsClientUpdateResponse, error) {
+	result := CapacityReservationGroupsClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CapacityReservationGroup); err != nil {
-		return CapacityReservationGroupsUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return CapacityReservationGroupsClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *CapacityReservationGroupsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -11,7 +11,6 @@ package armchaos
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,57 @@ import (
 // TargetsClient contains the methods for the Targets group.
 // Don't use this type directly, use NewTargetsClient() instead.
 type TargetsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewTargetsClient creates a new instance of TargetsClient with the specified values.
+// subscriptionID - GUID that represents an Azure subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewTargetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TargetsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &TargetsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &TargetsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Create or update a Target resource that extends a tracked regional resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TargetsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, targetName string, target Target, options *TargetsCreateOrUpdateOptions) (TargetsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - String that represents an Azure resource group.
+// parentProviderNamespace - String that represents a resource provider namespace.
+// parentResourceType - String that represents a resource type.
+// parentResourceName - String that represents a resource name.
+// targetName - String that represents a Target resource name.
+// target - Target resource to be created or updated.
+// options - TargetsClientCreateOrUpdateOptions contains the optional parameters for the TargetsClient.CreateOrUpdate method.
+func (client *TargetsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, targetName string, target Target, options *TargetsClientCreateOrUpdateOptions) (TargetsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName, targetName, target, options)
 	if err != nil {
-		return TargetsCreateOrUpdateResponse{}, err
+		return TargetsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TargetsCreateOrUpdateResponse{}, err
+		return TargetsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TargetsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return TargetsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *TargetsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, targetName string, target Target, options *TargetsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *TargetsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, targetName string, target Target, options *TargetsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{parentProviderNamespace}/{parentResourceType}/{parentResourceName}/providers/Microsoft.Chaos/targets/{targetName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -86,7 +100,7 @@ func (client *TargetsClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter targetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{targetName}", url.PathEscape(targetName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -98,46 +112,39 @@ func (client *TargetsClient) createOrUpdateCreateRequest(ctx context.Context, re
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *TargetsClient) createOrUpdateHandleResponse(resp *http.Response) (TargetsCreateOrUpdateResponse, error) {
-	result := TargetsCreateOrUpdateResponse{RawResponse: resp}
+func (client *TargetsClient) createOrUpdateHandleResponse(resp *http.Response) (TargetsClientCreateOrUpdateResponse, error) {
+	result := TargetsClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Target); err != nil {
-		return TargetsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return TargetsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *TargetsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete a Target resource that extends a tracked regional resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TargetsClient) Delete(ctx context.Context, resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, targetName string, options *TargetsDeleteOptions) (TargetsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - String that represents an Azure resource group.
+// parentProviderNamespace - String that represents a resource provider namespace.
+// parentResourceType - String that represents a resource type.
+// parentResourceName - String that represents a resource name.
+// targetName - String that represents a Target resource name.
+// options - TargetsClientDeleteOptions contains the optional parameters for the TargetsClient.Delete method.
+func (client *TargetsClient) Delete(ctx context.Context, resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, targetName string, options *TargetsClientDeleteOptions) (TargetsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName, targetName, options)
 	if err != nil {
-		return TargetsDeleteResponse{}, err
+		return TargetsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TargetsDeleteResponse{}, err
+		return TargetsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return TargetsDeleteResponse{}, client.deleteHandleError(resp)
+		return TargetsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return TargetsDeleteResponse{RawResponse: resp}, nil
+	return TargetsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *TargetsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, targetName string, options *TargetsDeleteOptions) (*policy.Request, error) {
+func (client *TargetsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, targetName string, options *TargetsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{parentProviderNamespace}/{parentResourceType}/{parentResourceName}/providers/Microsoft.Chaos/targets/{targetName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -163,7 +170,7 @@ func (client *TargetsClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter targetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{targetName}", url.PathEscape(targetName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -174,38 +181,31 @@ func (client *TargetsClient) deleteCreateRequest(ctx context.Context, resourceGr
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *TargetsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get a Target resource that extends a tracked regional resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TargetsClient) Get(ctx context.Context, resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, targetName string, options *TargetsGetOptions) (TargetsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - String that represents an Azure resource group.
+// parentProviderNamespace - String that represents a resource provider namespace.
+// parentResourceType - String that represents a resource type.
+// parentResourceName - String that represents a resource name.
+// targetName - String that represents a Target resource name.
+// options - TargetsClientGetOptions contains the optional parameters for the TargetsClient.Get method.
+func (client *TargetsClient) Get(ctx context.Context, resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, targetName string, options *TargetsClientGetOptions) (TargetsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName, targetName, options)
 	if err != nil {
-		return TargetsGetResponse{}, err
+		return TargetsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TargetsGetResponse{}, err
+		return TargetsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TargetsGetResponse{}, client.getHandleError(resp)
+		return TargetsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *TargetsClient) getCreateRequest(ctx context.Context, resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, targetName string, options *TargetsGetOptions) (*policy.Request, error) {
+func (client *TargetsClient) getCreateRequest(ctx context.Context, resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, targetName string, options *TargetsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{parentProviderNamespace}/{parentResourceType}/{parentResourceName}/providers/Microsoft.Chaos/targets/{targetName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -231,7 +231,7 @@ func (client *TargetsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter targetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{targetName}", url.PathEscape(targetName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -243,43 +243,35 @@ func (client *TargetsClient) getCreateRequest(ctx context.Context, resourceGroup
 }
 
 // getHandleResponse handles the Get response.
-func (client *TargetsClient) getHandleResponse(resp *http.Response) (TargetsGetResponse, error) {
-	result := TargetsGetResponse{RawResponse: resp}
+func (client *TargetsClient) getHandleResponse(resp *http.Response) (TargetsClientGetResponse, error) {
+	result := TargetsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Target); err != nil {
-		return TargetsGetResponse{}, runtime.NewResponseError(err, resp)
+		return TargetsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *TargetsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Get a list of Target resources that extend a tracked regional resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TargetsClient) List(resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, options *TargetsListOptions) *TargetsListPager {
-	return &TargetsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - String that represents an Azure resource group.
+// parentProviderNamespace - String that represents a resource provider namespace.
+// parentResourceType - String that represents a resource type.
+// parentResourceName - String that represents a resource name.
+// options - TargetsClientListOptions contains the optional parameters for the TargetsClient.List method.
+func (client *TargetsClient) List(resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, options *TargetsClientListOptions) *TargetsClientListPager {
+	return &TargetsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName, options)
 		},
-		advancer: func(ctx context.Context, resp TargetsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp TargetsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.TargetListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *TargetsClient) listCreateRequest(ctx context.Context, resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, options *TargetsListOptions) (*policy.Request, error) {
+func (client *TargetsClient) listCreateRequest(ctx context.Context, resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, options *TargetsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{parentProviderNamespace}/{parentResourceType}/{parentResourceName}/providers/Microsoft.Chaos/targets"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -301,7 +293,7 @@ func (client *TargetsClient) listCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter parentResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{parentResourceName}", url.PathEscape(parentResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -316,23 +308,10 @@ func (client *TargetsClient) listCreateRequest(ctx context.Context, resourceGrou
 }
 
 // listHandleResponse handles the List response.
-func (client *TargetsClient) listHandleResponse(resp *http.Response) (TargetsListResponse, error) {
-	result := TargetsListResponse{RawResponse: resp}
+func (client *TargetsClient) listHandleResponse(resp *http.Response) (TargetsClientListResponse, error) {
+	result := TargetsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TargetListResult); err != nil {
-		return TargetsListResponse{}, runtime.NewResponseError(err, resp)
+		return TargetsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *TargetsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

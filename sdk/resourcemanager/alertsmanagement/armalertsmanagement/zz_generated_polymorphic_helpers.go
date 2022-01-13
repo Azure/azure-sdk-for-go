@@ -10,7 +10,7 @@ package armalertsmanagement
 
 import "encoding/json"
 
-func unmarshalActionRulePropertiesClassification(rawMsg json.RawMessage) (ActionRulePropertiesClassification, error) {
+func unmarshalActionClassification(rawMsg json.RawMessage) (ActionClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
 	}
@@ -18,21 +18,19 @@ func unmarshalActionRulePropertiesClassification(rawMsg json.RawMessage) (Action
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
-	var b ActionRulePropertiesClassification
-	switch m["type"] {
-	case string(ActionRuleTypeActionGroup):
-		b = &ActionGroup{}
-	case string(ActionRuleTypeDiagnostics):
-		b = &Diagnostics{}
-	case string(ActionRuleTypeSuppression):
-		b = &Suppression{}
+	var b ActionClassification
+	switch m["actionType"] {
+	case string(ActionTypeAddActionGroups):
+		b = &AddActionGroups{}
+	case string(ActionTypeRemoveAllActionGroups):
+		b = &RemoveAllActionGroups{}
 	default:
-		b = &ActionRuleProperties{}
+		b = &Action{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
 }
 
-func unmarshalActionRulePropertiesClassificationArray(rawMsg json.RawMessage) ([]ActionRulePropertiesClassification, error) {
+func unmarshalActionClassificationArray(rawMsg json.RawMessage) ([]ActionClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
 	}
@@ -40,34 +38,15 @@ func unmarshalActionRulePropertiesClassificationArray(rawMsg json.RawMessage) ([
 	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
 		return nil, err
 	}
-	fArray := make([]ActionRulePropertiesClassification, len(rawMessages))
+	fArray := make([]ActionClassification, len(rawMessages))
 	for index, rawMessage := range rawMessages {
-		f, err := unmarshalActionRulePropertiesClassification(rawMessage)
+		f, err := unmarshalActionClassification(rawMessage)
 		if err != nil {
 			return nil, err
 		}
 		fArray[index] = f
 	}
 	return fArray, nil
-}
-
-func unmarshalActionRulePropertiesClassificationMap(rawMsg json.RawMessage) (map[string]ActionRulePropertiesClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]ActionRulePropertiesClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalActionRulePropertiesClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
 }
 
 func unmarshalAlertsMetaDataPropertiesClassification(rawMsg json.RawMessage) (AlertsMetaDataPropertiesClassification, error) {
@@ -88,7 +67,29 @@ func unmarshalAlertsMetaDataPropertiesClassification(rawMsg json.RawMessage) (Al
 	return b, json.Unmarshal(rawMsg, b)
 }
 
-func unmarshalAlertsMetaDataPropertiesClassificationArray(rawMsg json.RawMessage) ([]AlertsMetaDataPropertiesClassification, error) {
+func unmarshalRecurrenceClassification(rawMsg json.RawMessage) (RecurrenceClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var m map[string]interface{}
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b RecurrenceClassification
+	switch m["recurrenceType"] {
+	case string(RecurrenceTypeDaily):
+		b = &DailyRecurrence{}
+	case string(RecurrenceTypeMonthly):
+		b = &MonthlyRecurrence{}
+	case string(RecurrenceTypeWeekly):
+		b = &WeeklyRecurrence{}
+	default:
+		b = &Recurrence{}
+	}
+	return b, json.Unmarshal(rawMsg, b)
+}
+
+func unmarshalRecurrenceClassificationArray(rawMsg json.RawMessage) ([]RecurrenceClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
 	}
@@ -96,32 +97,13 @@ func unmarshalAlertsMetaDataPropertiesClassificationArray(rawMsg json.RawMessage
 	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
 		return nil, err
 	}
-	fArray := make([]AlertsMetaDataPropertiesClassification, len(rawMessages))
+	fArray := make([]RecurrenceClassification, len(rawMessages))
 	for index, rawMessage := range rawMessages {
-		f, err := unmarshalAlertsMetaDataPropertiesClassification(rawMessage)
+		f, err := unmarshalRecurrenceClassification(rawMessage)
 		if err != nil {
 			return nil, err
 		}
 		fArray[index] = f
 	}
 	return fArray, nil
-}
-
-func unmarshalAlertsMetaDataPropertiesClassificationMap(rawMsg json.RawMessage) (map[string]AlertsMetaDataPropertiesClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]AlertsMetaDataPropertiesClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalAlertsMetaDataPropertiesClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
 }

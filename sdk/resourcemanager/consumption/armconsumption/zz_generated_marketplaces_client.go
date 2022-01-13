@@ -10,7 +10,6 @@ package armconsumption
 
 import (
 	"context"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -24,41 +23,58 @@ import (
 // MarketplacesClient contains the methods for the Marketplaces group.
 // Don't use this type directly, use NewMarketplacesClient() instead.
 type MarketplacesClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewMarketplacesClient creates a new instance of MarketplacesClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewMarketplacesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *MarketplacesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &MarketplacesClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &MarketplacesClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// List - Lists the marketplaces for a scope at the defined scope. Marketplaces are available via this API only for May 1, 2014 or later.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MarketplacesClient) List(scope string, options *MarketplacesListOptions) *MarketplacesListPager {
-	return &MarketplacesListPager{
+// List - Lists the marketplaces for a scope at the defined scope. Marketplaces are available via this API only for May 1,
+// 2014 or later.
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope associated with marketplace operations. This includes '/subscriptions/{subscriptionId}/' for subscription
+// scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing
+// Account scope, '/providers/Microsoft.Billing/departments/{departmentId}' for Department scope, '/providers/Microsoft.Billing/enrollmentAccounts/{enrollmentAccountId}'
+// for EnrollmentAccount scope and
+// '/providers/Microsoft.Management/managementGroups/{managementGroupId}' for Management Group scope. For subscription, billing
+// account, department, enrollment account and ManagementGroup, you can also
+// add billing period to the scope using '/providers/Microsoft.Billing/billingPeriods/{billingPeriodName}'. For e.g. to specify
+// billing period at department scope use
+// '/providers/Microsoft.Billing/departments/{departmentId}/providers/Microsoft.Billing/billingPeriods/{billingPeriodName}'
+// options - MarketplacesClientListOptions contains the optional parameters for the MarketplacesClient.List method.
+func (client *MarketplacesClient) List(scope string, options *MarketplacesClientListOptions) *MarketplacesClientListPager {
+	return &MarketplacesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, scope, options)
 		},
-		advancer: func(ctx context.Context, resp MarketplacesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp MarketplacesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.MarketplacesListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *MarketplacesClient) listCreateRequest(ctx context.Context, scope string, options *MarketplacesListOptions) (*policy.Request, error) {
+func (client *MarketplacesClient) listCreateRequest(ctx context.Context, scope string, options *MarketplacesClientListOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Consumption/marketplaces"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -79,23 +95,10 @@ func (client *MarketplacesClient) listCreateRequest(ctx context.Context, scope s
 }
 
 // listHandleResponse handles the List response.
-func (client *MarketplacesClient) listHandleResponse(resp *http.Response) (MarketplacesListResponse, error) {
-	result := MarketplacesListResponse{RawResponse: resp}
+func (client *MarketplacesClient) listHandleResponse(resp *http.Response) (MarketplacesClientListResponse, error) {
+	result := MarketplacesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MarketplacesListResult); err != nil {
-		return MarketplacesListResponse{}, runtime.NewResponseError(err, resp)
+		return MarketplacesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *MarketplacesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -15,256 +15,256 @@ import (
 	"time"
 )
 
-// BotConnectionCreateResponse contains the response from method BotConnection.Create.
-type BotConnectionCreateResponse struct {
-	BotConnectionCreateResult
+// BotConnectionClientCreateResponse contains the response from method BotConnectionClient.Create.
+type BotConnectionClientCreateResponse struct {
+	BotConnectionClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BotConnectionCreateResult contains the result from method BotConnection.Create.
-type BotConnectionCreateResult struct {
+// BotConnectionClientCreateResult contains the result from method BotConnectionClient.Create.
+type BotConnectionClientCreateResult struct {
 	ConnectionSetting
 }
 
-// BotConnectionDeleteResponse contains the response from method BotConnection.Delete.
-type BotConnectionDeleteResponse struct {
+// BotConnectionClientDeleteResponse contains the response from method BotConnectionClient.Delete.
+type BotConnectionClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BotConnectionGetResponse contains the response from method BotConnection.Get.
-type BotConnectionGetResponse struct {
-	BotConnectionGetResult
+// BotConnectionClientGetResponse contains the response from method BotConnectionClient.Get.
+type BotConnectionClientGetResponse struct {
+	BotConnectionClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BotConnectionGetResult contains the result from method BotConnection.Get.
-type BotConnectionGetResult struct {
+// BotConnectionClientGetResult contains the result from method BotConnectionClient.Get.
+type BotConnectionClientGetResult struct {
 	ConnectionSetting
 }
 
-// BotConnectionListByBotServiceResponse contains the response from method BotConnection.ListByBotService.
-type BotConnectionListByBotServiceResponse struct {
-	BotConnectionListByBotServiceResult
+// BotConnectionClientListByBotServiceResponse contains the response from method BotConnectionClient.ListByBotService.
+type BotConnectionClientListByBotServiceResponse struct {
+	BotConnectionClientListByBotServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BotConnectionListByBotServiceResult contains the result from method BotConnection.ListByBotService.
-type BotConnectionListByBotServiceResult struct {
+// BotConnectionClientListByBotServiceResult contains the result from method BotConnectionClient.ListByBotService.
+type BotConnectionClientListByBotServiceResult struct {
 	ConnectionSettingResponseList
 }
 
-// BotConnectionListServiceProvidersResponse contains the response from method BotConnection.ListServiceProviders.
-type BotConnectionListServiceProvidersResponse struct {
-	BotConnectionListServiceProvidersResult
+// BotConnectionClientListServiceProvidersResponse contains the response from method BotConnectionClient.ListServiceProviders.
+type BotConnectionClientListServiceProvidersResponse struct {
+	BotConnectionClientListServiceProvidersResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BotConnectionListServiceProvidersResult contains the result from method BotConnection.ListServiceProviders.
-type BotConnectionListServiceProvidersResult struct {
+// BotConnectionClientListServiceProvidersResult contains the result from method BotConnectionClient.ListServiceProviders.
+type BotConnectionClientListServiceProvidersResult struct {
 	ServiceProviderResponseList
 }
 
-// BotConnectionListWithSecretsResponse contains the response from method BotConnection.ListWithSecrets.
-type BotConnectionListWithSecretsResponse struct {
-	BotConnectionListWithSecretsResult
+// BotConnectionClientListWithSecretsResponse contains the response from method BotConnectionClient.ListWithSecrets.
+type BotConnectionClientListWithSecretsResponse struct {
+	BotConnectionClientListWithSecretsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BotConnectionListWithSecretsResult contains the result from method BotConnection.ListWithSecrets.
-type BotConnectionListWithSecretsResult struct {
+// BotConnectionClientListWithSecretsResult contains the result from method BotConnectionClient.ListWithSecrets.
+type BotConnectionClientListWithSecretsResult struct {
 	ConnectionSetting
 }
 
-// BotConnectionUpdateResponse contains the response from method BotConnection.Update.
-type BotConnectionUpdateResponse struct {
-	BotConnectionUpdateResult
+// BotConnectionClientUpdateResponse contains the response from method BotConnectionClient.Update.
+type BotConnectionClientUpdateResponse struct {
+	BotConnectionClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BotConnectionUpdateResult contains the result from method BotConnection.Update.
-type BotConnectionUpdateResult struct {
+// BotConnectionClientUpdateResult contains the result from method BotConnectionClient.Update.
+type BotConnectionClientUpdateResult struct {
 	ConnectionSetting
 }
 
-// BotsCreateResponse contains the response from method Bots.Create.
-type BotsCreateResponse struct {
-	BotsCreateResult
+// BotsClientCreateResponse contains the response from method BotsClient.Create.
+type BotsClientCreateResponse struct {
+	BotsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BotsCreateResult contains the result from method Bots.Create.
-type BotsCreateResult struct {
+// BotsClientCreateResult contains the result from method BotsClient.Create.
+type BotsClientCreateResult struct {
 	Bot
 }
 
-// BotsDeleteResponse contains the response from method Bots.Delete.
-type BotsDeleteResponse struct {
+// BotsClientDeleteResponse contains the response from method BotsClient.Delete.
+type BotsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BotsGetCheckNameAvailabilityResponse contains the response from method Bots.GetCheckNameAvailability.
-type BotsGetCheckNameAvailabilityResponse struct {
-	BotsGetCheckNameAvailabilityResult
+// BotsClientGetCheckNameAvailabilityResponse contains the response from method BotsClient.GetCheckNameAvailability.
+type BotsClientGetCheckNameAvailabilityResponse struct {
+	BotsClientGetCheckNameAvailabilityResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BotsGetCheckNameAvailabilityResult contains the result from method Bots.GetCheckNameAvailability.
-type BotsGetCheckNameAvailabilityResult struct {
+// BotsClientGetCheckNameAvailabilityResult contains the result from method BotsClient.GetCheckNameAvailability.
+type BotsClientGetCheckNameAvailabilityResult struct {
 	CheckNameAvailabilityResponseBody
 }
 
-// BotsGetResponse contains the response from method Bots.Get.
-type BotsGetResponse struct {
-	BotsGetResult
+// BotsClientGetResponse contains the response from method BotsClient.Get.
+type BotsClientGetResponse struct {
+	BotsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BotsGetResult contains the result from method Bots.Get.
-type BotsGetResult struct {
+// BotsClientGetResult contains the result from method BotsClient.Get.
+type BotsClientGetResult struct {
 	Bot
 }
 
-// BotsListByResourceGroupResponse contains the response from method Bots.ListByResourceGroup.
-type BotsListByResourceGroupResponse struct {
-	BotsListByResourceGroupResult
+// BotsClientListByResourceGroupResponse contains the response from method BotsClient.ListByResourceGroup.
+type BotsClientListByResourceGroupResponse struct {
+	BotsClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BotsListByResourceGroupResult contains the result from method Bots.ListByResourceGroup.
-type BotsListByResourceGroupResult struct {
+// BotsClientListByResourceGroupResult contains the result from method BotsClient.ListByResourceGroup.
+type BotsClientListByResourceGroupResult struct {
 	BotResponseList
 }
 
-// BotsListResponse contains the response from method Bots.List.
-type BotsListResponse struct {
-	BotsListResult
+// BotsClientListResponse contains the response from method BotsClient.List.
+type BotsClientListResponse struct {
+	BotsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BotsListResult contains the result from method Bots.List.
-type BotsListResult struct {
+// BotsClientListResult contains the result from method BotsClient.List.
+type BotsClientListResult struct {
 	BotResponseList
 }
 
-// BotsUpdateResponse contains the response from method Bots.Update.
-type BotsUpdateResponse struct {
-	BotsUpdateResult
+// BotsClientUpdateResponse contains the response from method BotsClient.Update.
+type BotsClientUpdateResponse struct {
+	BotsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BotsUpdateResult contains the result from method Bots.Update.
-type BotsUpdateResult struct {
+// BotsClientUpdateResult contains the result from method BotsClient.Update.
+type BotsClientUpdateResult struct {
 	Bot
 }
 
-// ChannelsCreateResponse contains the response from method Channels.Create.
-type ChannelsCreateResponse struct {
-	ChannelsCreateResult
+// ChannelsClientCreateResponse contains the response from method ChannelsClient.Create.
+type ChannelsClientCreateResponse struct {
+	ChannelsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ChannelsCreateResult contains the result from method Channels.Create.
-type ChannelsCreateResult struct {
+// ChannelsClientCreateResult contains the result from method ChannelsClient.Create.
+type ChannelsClientCreateResult struct {
 	BotChannel
 }
 
-// ChannelsDeleteResponse contains the response from method Channels.Delete.
-type ChannelsDeleteResponse struct {
+// ChannelsClientDeleteResponse contains the response from method ChannelsClient.Delete.
+type ChannelsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ChannelsGetResponse contains the response from method Channels.Get.
-type ChannelsGetResponse struct {
-	ChannelsGetResult
+// ChannelsClientGetResponse contains the response from method ChannelsClient.Get.
+type ChannelsClientGetResponse struct {
+	ChannelsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ChannelsGetResult contains the result from method Channels.Get.
-type ChannelsGetResult struct {
+// ChannelsClientGetResult contains the result from method ChannelsClient.Get.
+type ChannelsClientGetResult struct {
 	BotChannel
 }
 
-// ChannelsListByResourceGroupResponse contains the response from method Channels.ListByResourceGroup.
-type ChannelsListByResourceGroupResponse struct {
-	ChannelsListByResourceGroupResult
+// ChannelsClientListByResourceGroupResponse contains the response from method ChannelsClient.ListByResourceGroup.
+type ChannelsClientListByResourceGroupResponse struct {
+	ChannelsClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ChannelsListByResourceGroupResult contains the result from method Channels.ListByResourceGroup.
-type ChannelsListByResourceGroupResult struct {
+// ChannelsClientListByResourceGroupResult contains the result from method ChannelsClient.ListByResourceGroup.
+type ChannelsClientListByResourceGroupResult struct {
 	ChannelResponseList
 }
 
-// ChannelsListWithKeysResponse contains the response from method Channels.ListWithKeys.
-type ChannelsListWithKeysResponse struct {
-	ChannelsListWithKeysResult
+// ChannelsClientListWithKeysResponse contains the response from method ChannelsClient.ListWithKeys.
+type ChannelsClientListWithKeysResponse struct {
+	ChannelsClientListWithKeysResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ChannelsListWithKeysResult contains the result from method Channels.ListWithKeys.
-type ChannelsListWithKeysResult struct {
+// ChannelsClientListWithKeysResult contains the result from method ChannelsClient.ListWithKeys.
+type ChannelsClientListWithKeysResult struct {
+	ListChannelWithKeysResponse
+}
+
+// ChannelsClientUpdateResponse contains the response from method ChannelsClient.Update.
+type ChannelsClientUpdateResponse struct {
+	ChannelsClientUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ChannelsClientUpdateResult contains the result from method ChannelsClient.Update.
+type ChannelsClientUpdateResult struct {
 	BotChannel
 }
 
-// ChannelsUpdateResponse contains the response from method Channels.Update.
-type ChannelsUpdateResponse struct {
-	ChannelsUpdateResult
+// DirectLineClientRegenerateKeysResponse contains the response from method DirectLineClient.RegenerateKeys.
+type DirectLineClientRegenerateKeysResponse struct {
+	DirectLineClientRegenerateKeysResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ChannelsUpdateResult contains the result from method Channels.Update.
-type ChannelsUpdateResult struct {
+// DirectLineClientRegenerateKeysResult contains the result from method DirectLineClient.RegenerateKeys.
+type DirectLineClientRegenerateKeysResult struct {
 	BotChannel
 }
 
-// DirectLineRegenerateKeysResponse contains the response from method DirectLine.RegenerateKeys.
-type DirectLineRegenerateKeysResponse struct {
-	DirectLineRegenerateKeysResult
+// HostSettingsClientGetResponse contains the response from method HostSettingsClient.Get.
+type HostSettingsClientGetResponse struct {
+	HostSettingsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DirectLineRegenerateKeysResult contains the result from method DirectLine.RegenerateKeys.
-type DirectLineRegenerateKeysResult struct {
-	BotChannel
-}
-
-// HostSettingsGetResponse contains the response from method HostSettings.Get.
-type HostSettingsGetResponse struct {
-	HostSettingsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// HostSettingsGetResult contains the result from method HostSettings.Get.
-type HostSettingsGetResult struct {
+// HostSettingsClientGetResult contains the result from method HostSettingsClient.Get.
+type HostSettingsClientGetResult struct {
 	HostSettingsResponse
 }
 
-// OperationResultsGetPollerResponse contains the response from method OperationResults.Get.
-type OperationResultsGetPollerResponse struct {
+// OperationResultsClientGetPollerResponse contains the response from method OperationResultsClient.Get.
+type OperationResultsClientGetPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *OperationResultsGetPoller
+	Poller *OperationResultsClientGetPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -273,8 +273,8 @@ type OperationResultsGetPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l OperationResultsGetPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (OperationResultsGetResponse, error) {
-	respType := OperationResultsGetResponse{}
+func (l OperationResultsClientGetPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (OperationResultsClientGetResponse, error) {
+	respType := OperationResultsClientGetResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.OperationResultsDescription)
 	if err != nil {
 		return respType, err
@@ -283,13 +283,13 @@ func (l OperationResultsGetPollerResponse) PollUntilDone(ctx context.Context, fr
 	return respType, nil
 }
 
-// Resume rehydrates a OperationResultsGetPollerResponse from the provided client and resume token.
-func (l *OperationResultsGetPollerResponse) Resume(ctx context.Context, client *OperationResultsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("OperationResultsClient.Get", token, client.pl, client.getHandleError)
+// Resume rehydrates a OperationResultsClientGetPollerResponse from the provided client and resume token.
+func (l *OperationResultsClientGetPollerResponse) Resume(ctx context.Context, client *OperationResultsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("OperationResultsClient.Get", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &OperationResultsGetPoller{
+	poller := &OperationResultsClientGetPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -301,80 +301,80 @@ func (l *OperationResultsGetPollerResponse) Resume(ctx context.Context, client *
 	return nil
 }
 
-// OperationResultsGetResponse contains the response from method OperationResults.Get.
-type OperationResultsGetResponse struct {
-	OperationResultsGetResult
+// OperationResultsClientGetResponse contains the response from method OperationResultsClient.Get.
+type OperationResultsClientGetResponse struct {
+	OperationResultsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationResultsGetResult contains the result from method OperationResults.Get.
-type OperationResultsGetResult struct {
+// OperationResultsClientGetResult contains the result from method OperationResultsClient.Get.
+type OperationResultsClientGetResult struct {
 	OperationResultsDescription
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationEntityListResult
 }
 
-// PrivateEndpointConnectionsCreateResponse contains the response from method PrivateEndpointConnections.Create.
-type PrivateEndpointConnectionsCreateResponse struct {
-	PrivateEndpointConnectionsCreateResult
+// PrivateEndpointConnectionsClientCreateResponse contains the response from method PrivateEndpointConnectionsClient.Create.
+type PrivateEndpointConnectionsClientCreateResponse struct {
+	PrivateEndpointConnectionsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsCreateResult contains the result from method PrivateEndpointConnections.Create.
-type PrivateEndpointConnectionsCreateResult struct {
+// PrivateEndpointConnectionsClientCreateResult contains the result from method PrivateEndpointConnectionsClient.Create.
+type PrivateEndpointConnectionsClientCreateResult struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsDeleteResponse contains the response from method PrivateEndpointConnections.Delete.
-type PrivateEndpointConnectionsDeleteResponse struct {
+// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.Delete.
+type PrivateEndpointConnectionsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsGetResponse contains the response from method PrivateEndpointConnections.Get.
-type PrivateEndpointConnectionsGetResponse struct {
-	PrivateEndpointConnectionsGetResult
+// PrivateEndpointConnectionsClientGetResponse contains the response from method PrivateEndpointConnectionsClient.Get.
+type PrivateEndpointConnectionsClientGetResponse struct {
+	PrivateEndpointConnectionsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsGetResult contains the result from method PrivateEndpointConnections.Get.
-type PrivateEndpointConnectionsGetResult struct {
+// PrivateEndpointConnectionsClientGetResult contains the result from method PrivateEndpointConnectionsClient.Get.
+type PrivateEndpointConnectionsClientGetResult struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsListResponse contains the response from method PrivateEndpointConnections.List.
-type PrivateEndpointConnectionsListResponse struct {
-	PrivateEndpointConnectionsListResult
+// PrivateEndpointConnectionsClientListResponse contains the response from method PrivateEndpointConnectionsClient.List.
+type PrivateEndpointConnectionsClientListResponse struct {
+	PrivateEndpointConnectionsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsListResult contains the result from method PrivateEndpointConnections.List.
-type PrivateEndpointConnectionsListResult struct {
+// PrivateEndpointConnectionsClientListResult contains the result from method PrivateEndpointConnectionsClient.List.
+type PrivateEndpointConnectionsClientListResult struct {
 	PrivateEndpointConnectionListResult
 }
 
-// PrivateLinkResourcesListByBotResourceResponse contains the response from method PrivateLinkResources.ListByBotResource.
-type PrivateLinkResourcesListByBotResourceResponse struct {
-	PrivateLinkResourcesListByBotResourceResult
+// PrivateLinkResourcesClientListByBotResourceResponse contains the response from method PrivateLinkResourcesClient.ListByBotResource.
+type PrivateLinkResourcesClientListByBotResourceResponse struct {
+	PrivateLinkResourcesClientListByBotResourceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkResourcesListByBotResourceResult contains the result from method PrivateLinkResources.ListByBotResource.
-type PrivateLinkResourcesListByBotResourceResult struct {
+// PrivateLinkResourcesClientListByBotResourceResult contains the result from method PrivateLinkResourcesClient.ListByBotResource.
+type PrivateLinkResourcesClientListByBotResourceResult struct {
 	PrivateLinkResourceListResult
 }

@@ -9,8 +9,8 @@
 package armcosmos
 
 const (
-	module  = "armcosmos"
-	version = "v0.2.1"
+	moduleName    = "armcosmos"
+	moduleVersion = "v0.3.0"
 )
 
 // APIType - Enum to indicate the API type of the restorable database account.
@@ -63,8 +63,8 @@ func (c AnalyticalStorageSchemaType) ToPtr() *AnalyticalStorageSchemaType {
 	return &c
 }
 
-// AuthenticationMethod - Which authentication method Cassandra should use to authenticate clients. 'None' turns off authentication, so should not be used
-// except in emergencies. 'Cassandra' is the default password based
+// AuthenticationMethod - Which authentication method Cassandra should use to authenticate clients. 'None' turns off authentication,
+// so should not be used except in emergencies. 'Cassandra' is the default password based
 // authentication. The default is 'Cassandra'.
 type AuthenticationMethod string
 
@@ -603,8 +603,8 @@ func (c OperationType) ToPtr() *OperationType {
 	return &c
 }
 
-// PartitionKind - Indicates the kind of algorithm used for partitioning. For MultiHash, multiple partition keys (upto three maximum) are supported for
-// container create
+// PartitionKind - Indicates the kind of algorithm used for partitioning. For MultiHash, multiple partition keys (upto three
+// maximum) are supported for container create
 type PartitionKind string
 
 const (
@@ -677,8 +677,8 @@ func (c PublicNetworkAccess) ToPtr() *PublicNetworkAccess {
 	return &c
 }
 
-// ResourceIdentityType - The type of identity used for the resource. The type 'SystemAssigned,UserAssigned' includes both an implicitly created identity
-// and a set of user assigned identities. The type 'None' will remove any
+// ResourceIdentityType - The type of identity used for the resource. The type 'SystemAssigned,UserAssigned' includes both
+// an implicitly created identity and a set of user assigned identities. The type 'None' will remove any
 // identities from the service.
 type ResourceIdentityType string
 

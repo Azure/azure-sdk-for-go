@@ -11,7 +11,6 @@ package armpeering
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,53 @@ import (
 // PeerAsnsClient contains the methods for the PeerAsns group.
 // Don't use this type directly, use NewPeerAsnsClient() instead.
 type PeerAsnsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewPeerAsnsClient creates a new instance of PeerAsnsClient with the specified values.
+// subscriptionID - The Azure subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewPeerAsnsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PeerAsnsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &PeerAsnsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &PeerAsnsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates a new peer ASN or updates an existing peer ASN with the specified name under the given subscription.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PeerAsnsClient) CreateOrUpdate(ctx context.Context, peerAsnName string, peerAsn PeerAsn, options *PeerAsnsCreateOrUpdateOptions) (PeerAsnsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// peerAsnName - The peer ASN name.
+// peerAsn - The peer ASN.
+// options - PeerAsnsClientCreateOrUpdateOptions contains the optional parameters for the PeerAsnsClient.CreateOrUpdate method.
+func (client *PeerAsnsClient) CreateOrUpdate(ctx context.Context, peerAsnName string, peerAsn PeerAsn, options *PeerAsnsClientCreateOrUpdateOptions) (PeerAsnsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, peerAsnName, peerAsn, options)
 	if err != nil {
-		return PeerAsnsCreateOrUpdateResponse{}, err
+		return PeerAsnsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PeerAsnsCreateOrUpdateResponse{}, err
+		return PeerAsnsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return PeerAsnsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return PeerAsnsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *PeerAsnsClient) createOrUpdateCreateRequest(ctx context.Context, peerAsnName string, peerAsn PeerAsn, options *PeerAsnsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *PeerAsnsClient) createOrUpdateCreateRequest(ctx context.Context, peerAsnName string, peerAsn PeerAsn, options *PeerAsnsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peerAsns/{peerAsnName}"
 	if peerAsnName == "" {
 		return nil, errors.New("parameter peerAsnName cannot be empty")
@@ -70,7 +80,7 @@ func (client *PeerAsnsClient) createOrUpdateCreateRequest(ctx context.Context, p
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -82,46 +92,35 @@ func (client *PeerAsnsClient) createOrUpdateCreateRequest(ctx context.Context, p
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *PeerAsnsClient) createOrUpdateHandleResponse(resp *http.Response) (PeerAsnsCreateOrUpdateResponse, error) {
-	result := PeerAsnsCreateOrUpdateResponse{RawResponse: resp}
+func (client *PeerAsnsClient) createOrUpdateHandleResponse(resp *http.Response) (PeerAsnsClientCreateOrUpdateResponse, error) {
+	result := PeerAsnsClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PeerAsn); err != nil {
-		return PeerAsnsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return PeerAsnsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *PeerAsnsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes an existing peer ASN with the specified name under the given subscription.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PeerAsnsClient) Delete(ctx context.Context, peerAsnName string, options *PeerAsnsDeleteOptions) (PeerAsnsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// peerAsnName - The peer ASN name.
+// options - PeerAsnsClientDeleteOptions contains the optional parameters for the PeerAsnsClient.Delete method.
+func (client *PeerAsnsClient) Delete(ctx context.Context, peerAsnName string, options *PeerAsnsClientDeleteOptions) (PeerAsnsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, peerAsnName, options)
 	if err != nil {
-		return PeerAsnsDeleteResponse{}, err
+		return PeerAsnsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PeerAsnsDeleteResponse{}, err
+		return PeerAsnsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return PeerAsnsDeleteResponse{}, client.deleteHandleError(resp)
+		return PeerAsnsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return PeerAsnsDeleteResponse{RawResponse: resp}, nil
+	return PeerAsnsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *PeerAsnsClient) deleteCreateRequest(ctx context.Context, peerAsnName string, options *PeerAsnsDeleteOptions) (*policy.Request, error) {
+func (client *PeerAsnsClient) deleteCreateRequest(ctx context.Context, peerAsnName string, options *PeerAsnsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peerAsns/{peerAsnName}"
 	if peerAsnName == "" {
 		return nil, errors.New("parameter peerAsnName cannot be empty")
@@ -131,7 +130,7 @@ func (client *PeerAsnsClient) deleteCreateRequest(ctx context.Context, peerAsnNa
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -142,38 +141,27 @@ func (client *PeerAsnsClient) deleteCreateRequest(ctx context.Context, peerAsnNa
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *PeerAsnsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets the peer ASN with the specified name under the given subscription.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PeerAsnsClient) Get(ctx context.Context, peerAsnName string, options *PeerAsnsGetOptions) (PeerAsnsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// peerAsnName - The peer ASN name.
+// options - PeerAsnsClientGetOptions contains the optional parameters for the PeerAsnsClient.Get method.
+func (client *PeerAsnsClient) Get(ctx context.Context, peerAsnName string, options *PeerAsnsClientGetOptions) (PeerAsnsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, peerAsnName, options)
 	if err != nil {
-		return PeerAsnsGetResponse{}, err
+		return PeerAsnsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PeerAsnsGetResponse{}, err
+		return PeerAsnsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PeerAsnsGetResponse{}, client.getHandleError(resp)
+		return PeerAsnsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *PeerAsnsClient) getCreateRequest(ctx context.Context, peerAsnName string, options *PeerAsnsGetOptions) (*policy.Request, error) {
+func (client *PeerAsnsClient) getCreateRequest(ctx context.Context, peerAsnName string, options *PeerAsnsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peerAsns/{peerAsnName}"
 	if peerAsnName == "" {
 		return nil, errors.New("parameter peerAsnName cannot be empty")
@@ -183,7 +171,7 @@ func (client *PeerAsnsClient) getCreateRequest(ctx context.Context, peerAsnName 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -195,49 +183,38 @@ func (client *PeerAsnsClient) getCreateRequest(ctx context.Context, peerAsnName 
 }
 
 // getHandleResponse handles the Get response.
-func (client *PeerAsnsClient) getHandleResponse(resp *http.Response) (PeerAsnsGetResponse, error) {
-	result := PeerAsnsGetResponse{RawResponse: resp}
+func (client *PeerAsnsClient) getHandleResponse(resp *http.Response) (PeerAsnsClientGetResponse, error) {
+	result := PeerAsnsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PeerAsn); err != nil {
-		return PeerAsnsGetResponse{}, runtime.NewResponseError(err, resp)
+		return PeerAsnsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *PeerAsnsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListBySubscription - Lists all of the peer ASNs under the given subscription.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PeerAsnsClient) ListBySubscription(options *PeerAsnsListBySubscriptionOptions) *PeerAsnsListBySubscriptionPager {
-	return &PeerAsnsListBySubscriptionPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - PeerAsnsClientListBySubscriptionOptions contains the optional parameters for the PeerAsnsClient.ListBySubscription
+// method.
+func (client *PeerAsnsClient) ListBySubscription(options *PeerAsnsClientListBySubscriptionOptions) *PeerAsnsClientListBySubscriptionPager {
+	return &PeerAsnsClientListBySubscriptionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp PeerAsnsListBySubscriptionResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp PeerAsnsClientListBySubscriptionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PeerAsnListResult.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *PeerAsnsClient) listBySubscriptionCreateRequest(ctx context.Context, options *PeerAsnsListBySubscriptionOptions) (*policy.Request, error) {
+func (client *PeerAsnsClient) listBySubscriptionCreateRequest(ctx context.Context, options *PeerAsnsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peerAsns"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -249,23 +226,10 @@ func (client *PeerAsnsClient) listBySubscriptionCreateRequest(ctx context.Contex
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *PeerAsnsClient) listBySubscriptionHandleResponse(resp *http.Response) (PeerAsnsListBySubscriptionResponse, error) {
-	result := PeerAsnsListBySubscriptionResponse{RawResponse: resp}
+func (client *PeerAsnsClient) listBySubscriptionHandleResponse(resp *http.Response) (PeerAsnsClientListBySubscriptionResponse, error) {
+	result := PeerAsnsClientListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PeerAsnListResult); err != nil {
-		return PeerAsnsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return PeerAsnsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *PeerAsnsClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -45,7 +45,7 @@ func ExampleFirewallRulesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("FirewallRule.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.FirewallRulesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/FirewallRuleDelete.json
@@ -86,7 +86,7 @@ func ExampleFirewallRulesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("FirewallRule.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.FirewallRulesClientGetResult)
 }
 
 // x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/FirewallRuleListByServer.json
@@ -97,11 +97,12 @@ func ExampleFirewallRulesClient_ListByServer() {
 	}
 	ctx := context.Background()
 	client := armmariadb.NewFirewallRulesClient("<subscription-id>", cred, nil)
-	_, err = client.ListByServer(ctx,
+	res, err := client.ListByServer(ctx,
 		"<resource-group-name>",
 		"<server-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.FirewallRulesClientListByServerResult)
 }

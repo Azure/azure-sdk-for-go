@@ -11,7 +11,6 @@ package armauthorization
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,61 @@ import (
 // RoleAssignmentsClient contains the methods for the RoleAssignments group.
 // Don't use this type directly, use NewRoleAssignmentsClient() instead.
 type RoleAssignmentsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewRoleAssignmentsClient creates a new instance of RoleAssignmentsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewRoleAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RoleAssignmentsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &RoleAssignmentsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &RoleAssignmentsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Create - Create or update a role assignment by scope and name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *RoleAssignmentsClient) Create(ctx context.Context, scope string, roleAssignmentName string, parameters RoleAssignmentCreateParameters, options *RoleAssignmentsCreateOptions) (RoleAssignmentsCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope of the operation or resource. Valid scopes are: subscription (format: '/subscriptions/{subscriptionId}'),
+// resource group (format:
+// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'
+// roleAssignmentName - The name of the role assignment. It can be any valid GUID.
+// parameters - Parameters for the role assignment.
+// options - RoleAssignmentsClientCreateOptions contains the optional parameters for the RoleAssignmentsClient.Create method.
+func (client *RoleAssignmentsClient) Create(ctx context.Context, scope string, roleAssignmentName string, parameters RoleAssignmentCreateParameters, options *RoleAssignmentsClientCreateOptions) (RoleAssignmentsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, scope, roleAssignmentName, parameters, options)
 	if err != nil {
-		return RoleAssignmentsCreateResponse{}, err
+		return RoleAssignmentsClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RoleAssignmentsCreateResponse{}, err
+		return RoleAssignmentsClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return RoleAssignmentsCreateResponse{}, client.createHandleError(resp)
+		return RoleAssignmentsClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *RoleAssignmentsClient) createCreateRequest(ctx context.Context, scope string, roleAssignmentName string, parameters RoleAssignmentCreateParameters, options *RoleAssignmentsCreateOptions) (*policy.Request, error) {
+func (client *RoleAssignmentsClient) createCreateRequest(ctx context.Context, scope string, roleAssignmentName string, parameters RoleAssignmentCreateParameters, options *RoleAssignmentsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentName}", roleAssignmentName)
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -76,49 +90,42 @@ func (client *RoleAssignmentsClient) createCreateRequest(ctx context.Context, sc
 }
 
 // createHandleResponse handles the Create response.
-func (client *RoleAssignmentsClient) createHandleResponse(resp *http.Response) (RoleAssignmentsCreateResponse, error) {
-	result := RoleAssignmentsCreateResponse{RawResponse: resp}
+func (client *RoleAssignmentsClient) createHandleResponse(resp *http.Response) (RoleAssignmentsClientCreateResponse, error) {
+	result := RoleAssignmentsClientCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignment); err != nil {
-		return RoleAssignmentsCreateResponse{}, runtime.NewResponseError(err, resp)
+		return RoleAssignmentsClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *RoleAssignmentsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // CreateByID - Create or update a role assignment by ID.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *RoleAssignmentsClient) CreateByID(ctx context.Context, roleAssignmentID string, parameters RoleAssignmentCreateParameters, options *RoleAssignmentsCreateByIDOptions) (RoleAssignmentsCreateByIDResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// roleAssignmentID - The fully qualified ID of the role assignment including scope, resource name, and resource type. Format:
+// /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}. Example:
+// /subscriptions//resourcegroups//providers/Microsoft.Authorization/roleAssignments/
+// parameters - Parameters for the role assignment.
+// options - RoleAssignmentsClientCreateByIDOptions contains the optional parameters for the RoleAssignmentsClient.CreateByID
+// method.
+func (client *RoleAssignmentsClient) CreateByID(ctx context.Context, roleAssignmentID string, parameters RoleAssignmentCreateParameters, options *RoleAssignmentsClientCreateByIDOptions) (RoleAssignmentsClientCreateByIDResponse, error) {
 	req, err := client.createByIDCreateRequest(ctx, roleAssignmentID, parameters, options)
 	if err != nil {
-		return RoleAssignmentsCreateByIDResponse{}, err
+		return RoleAssignmentsClientCreateByIDResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RoleAssignmentsCreateByIDResponse{}, err
+		return RoleAssignmentsClientCreateByIDResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return RoleAssignmentsCreateByIDResponse{}, client.createByIDHandleError(resp)
+		return RoleAssignmentsClientCreateByIDResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createByIDHandleResponse(resp)
 }
 
 // createByIDCreateRequest creates the CreateByID request.
-func (client *RoleAssignmentsClient) createByIDCreateRequest(ctx context.Context, roleAssignmentID string, parameters RoleAssignmentCreateParameters, options *RoleAssignmentsCreateByIDOptions) (*policy.Request, error) {
+func (client *RoleAssignmentsClient) createByIDCreateRequest(ctx context.Context, roleAssignmentID string, parameters RoleAssignmentCreateParameters, options *RoleAssignmentsClientCreateByIDOptions) (*policy.Request, error) {
 	urlPath := "/{roleAssignmentId}"
 	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentId}", roleAssignmentID)
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -130,50 +137,43 @@ func (client *RoleAssignmentsClient) createByIDCreateRequest(ctx context.Context
 }
 
 // createByIDHandleResponse handles the CreateByID response.
-func (client *RoleAssignmentsClient) createByIDHandleResponse(resp *http.Response) (RoleAssignmentsCreateByIDResponse, error) {
-	result := RoleAssignmentsCreateByIDResponse{RawResponse: resp}
+func (client *RoleAssignmentsClient) createByIDHandleResponse(resp *http.Response) (RoleAssignmentsClientCreateByIDResponse, error) {
+	result := RoleAssignmentsClientCreateByIDResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignment); err != nil {
-		return RoleAssignmentsCreateByIDResponse{}, runtime.NewResponseError(err, resp)
+		return RoleAssignmentsClientCreateByIDResponse{}, err
 	}
 	return result, nil
 }
 
-// createByIDHandleError handles the CreateByID error response.
-func (client *RoleAssignmentsClient) createByIDHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete a role assignment by scope and name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *RoleAssignmentsClient) Delete(ctx context.Context, scope string, roleAssignmentName string, options *RoleAssignmentsDeleteOptions) (RoleAssignmentsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope of the operation or resource. Valid scopes are: subscription (format: '/subscriptions/{subscriptionId}'),
+// resource group (format:
+// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'
+// roleAssignmentName - The name of the role assignment. It can be any valid GUID.
+// options - RoleAssignmentsClientDeleteOptions contains the optional parameters for the RoleAssignmentsClient.Delete method.
+func (client *RoleAssignmentsClient) Delete(ctx context.Context, scope string, roleAssignmentName string, options *RoleAssignmentsClientDeleteOptions) (RoleAssignmentsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, scope, roleAssignmentName, options)
 	if err != nil {
-		return RoleAssignmentsDeleteResponse{}, err
+		return RoleAssignmentsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RoleAssignmentsDeleteResponse{}, err
+		return RoleAssignmentsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return RoleAssignmentsDeleteResponse{}, client.deleteHandleError(resp)
+		return RoleAssignmentsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.deleteHandleResponse(resp)
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *RoleAssignmentsClient) deleteCreateRequest(ctx context.Context, scope string, roleAssignmentName string, options *RoleAssignmentsDeleteOptions) (*policy.Request, error) {
+func (client *RoleAssignmentsClient) deleteCreateRequest(ctx context.Context, scope string, roleAssignmentName string, options *RoleAssignmentsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentName}", roleAssignmentName)
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -188,49 +188,41 @@ func (client *RoleAssignmentsClient) deleteCreateRequest(ctx context.Context, sc
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *RoleAssignmentsClient) deleteHandleResponse(resp *http.Response) (RoleAssignmentsDeleteResponse, error) {
-	result := RoleAssignmentsDeleteResponse{RawResponse: resp}
+func (client *RoleAssignmentsClient) deleteHandleResponse(resp *http.Response) (RoleAssignmentsClientDeleteResponse, error) {
+	result := RoleAssignmentsClientDeleteResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignment); err != nil {
-		return RoleAssignmentsDeleteResponse{}, runtime.NewResponseError(err, resp)
+		return RoleAssignmentsClientDeleteResponse{}, err
 	}
 	return result, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *RoleAssignmentsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // DeleteByID - Delete a role assignment by ID.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *RoleAssignmentsClient) DeleteByID(ctx context.Context, roleAssignmentID string, options *RoleAssignmentsDeleteByIDOptions) (RoleAssignmentsDeleteByIDResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// roleAssignmentID - The fully qualified ID of the role assignment including scope, resource name, and resource type. Format:
+// /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}. Example:
+// /subscriptions//resourcegroups//providers/Microsoft.Authorization/roleAssignments/
+// options - RoleAssignmentsClientDeleteByIDOptions contains the optional parameters for the RoleAssignmentsClient.DeleteByID
+// method.
+func (client *RoleAssignmentsClient) DeleteByID(ctx context.Context, roleAssignmentID string, options *RoleAssignmentsClientDeleteByIDOptions) (RoleAssignmentsClientDeleteByIDResponse, error) {
 	req, err := client.deleteByIDCreateRequest(ctx, roleAssignmentID, options)
 	if err != nil {
-		return RoleAssignmentsDeleteByIDResponse{}, err
+		return RoleAssignmentsClientDeleteByIDResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RoleAssignmentsDeleteByIDResponse{}, err
+		return RoleAssignmentsClientDeleteByIDResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return RoleAssignmentsDeleteByIDResponse{}, client.deleteByIDHandleError(resp)
+		return RoleAssignmentsClientDeleteByIDResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.deleteByIDHandleResponse(resp)
 }
 
 // deleteByIDCreateRequest creates the DeleteByID request.
-func (client *RoleAssignmentsClient) deleteByIDCreateRequest(ctx context.Context, roleAssignmentID string, options *RoleAssignmentsDeleteByIDOptions) (*policy.Request, error) {
+func (client *RoleAssignmentsClient) deleteByIDCreateRequest(ctx context.Context, roleAssignmentID string, options *RoleAssignmentsClientDeleteByIDOptions) (*policy.Request, error) {
 	urlPath := "/{roleAssignmentId}"
 	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentId}", roleAssignmentID)
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -245,50 +237,43 @@ func (client *RoleAssignmentsClient) deleteByIDCreateRequest(ctx context.Context
 }
 
 // deleteByIDHandleResponse handles the DeleteByID response.
-func (client *RoleAssignmentsClient) deleteByIDHandleResponse(resp *http.Response) (RoleAssignmentsDeleteByIDResponse, error) {
-	result := RoleAssignmentsDeleteByIDResponse{RawResponse: resp}
+func (client *RoleAssignmentsClient) deleteByIDHandleResponse(resp *http.Response) (RoleAssignmentsClientDeleteByIDResponse, error) {
+	result := RoleAssignmentsClientDeleteByIDResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignment); err != nil {
-		return RoleAssignmentsDeleteByIDResponse{}, runtime.NewResponseError(err, resp)
+		return RoleAssignmentsClientDeleteByIDResponse{}, err
 	}
 	return result, nil
 }
 
-// deleteByIDHandleError handles the DeleteByID error response.
-func (client *RoleAssignmentsClient) deleteByIDHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get a role assignment by scope and name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *RoleAssignmentsClient) Get(ctx context.Context, scope string, roleAssignmentName string, options *RoleAssignmentsGetOptions) (RoleAssignmentsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope of the operation or resource. Valid scopes are: subscription (format: '/subscriptions/{subscriptionId}'),
+// resource group (format:
+// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'
+// roleAssignmentName - The name of the role assignment. It can be any valid GUID.
+// options - RoleAssignmentsClientGetOptions contains the optional parameters for the RoleAssignmentsClient.Get method.
+func (client *RoleAssignmentsClient) Get(ctx context.Context, scope string, roleAssignmentName string, options *RoleAssignmentsClientGetOptions) (RoleAssignmentsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, scope, roleAssignmentName, options)
 	if err != nil {
-		return RoleAssignmentsGetResponse{}, err
+		return RoleAssignmentsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RoleAssignmentsGetResponse{}, err
+		return RoleAssignmentsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return RoleAssignmentsGetResponse{}, client.getHandleError(resp)
+		return RoleAssignmentsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *RoleAssignmentsClient) getCreateRequest(ctx context.Context, scope string, roleAssignmentName string, options *RoleAssignmentsGetOptions) (*policy.Request, error) {
+func (client *RoleAssignmentsClient) getCreateRequest(ctx context.Context, scope string, roleAssignmentName string, options *RoleAssignmentsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentName}", roleAssignmentName)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -303,49 +288,40 @@ func (client *RoleAssignmentsClient) getCreateRequest(ctx context.Context, scope
 }
 
 // getHandleResponse handles the Get response.
-func (client *RoleAssignmentsClient) getHandleResponse(resp *http.Response) (RoleAssignmentsGetResponse, error) {
-	result := RoleAssignmentsGetResponse{RawResponse: resp}
+func (client *RoleAssignmentsClient) getHandleResponse(resp *http.Response) (RoleAssignmentsClientGetResponse, error) {
+	result := RoleAssignmentsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignment); err != nil {
-		return RoleAssignmentsGetResponse{}, runtime.NewResponseError(err, resp)
+		return RoleAssignmentsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *RoleAssignmentsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetByID - Get a role assignment by ID.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *RoleAssignmentsClient) GetByID(ctx context.Context, roleAssignmentID string, options *RoleAssignmentsGetByIDOptions) (RoleAssignmentsGetByIDResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// roleAssignmentID - The fully qualified ID of the role assignment including scope, resource name, and resource type. Format:
+// /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}. Example:
+// /subscriptions//resourcegroups//providers/Microsoft.Authorization/roleAssignments/
+// options - RoleAssignmentsClientGetByIDOptions contains the optional parameters for the RoleAssignmentsClient.GetByID method.
+func (client *RoleAssignmentsClient) GetByID(ctx context.Context, roleAssignmentID string, options *RoleAssignmentsClientGetByIDOptions) (RoleAssignmentsClientGetByIDResponse, error) {
 	req, err := client.getByIDCreateRequest(ctx, roleAssignmentID, options)
 	if err != nil {
-		return RoleAssignmentsGetByIDResponse{}, err
+		return RoleAssignmentsClientGetByIDResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RoleAssignmentsGetByIDResponse{}, err
+		return RoleAssignmentsClientGetByIDResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return RoleAssignmentsGetByIDResponse{}, client.getByIDHandleError(resp)
+		return RoleAssignmentsClientGetByIDResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getByIDHandleResponse(resp)
 }
 
 // getByIDCreateRequest creates the GetByID request.
-func (client *RoleAssignmentsClient) getByIDCreateRequest(ctx context.Context, roleAssignmentID string, options *RoleAssignmentsGetByIDOptions) (*policy.Request, error) {
+func (client *RoleAssignmentsClient) getByIDCreateRequest(ctx context.Context, roleAssignmentID string, options *RoleAssignmentsClientGetByIDOptions) (*policy.Request, error) {
 	urlPath := "/{roleAssignmentId}"
 	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentId}", roleAssignmentID)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -360,43 +336,36 @@ func (client *RoleAssignmentsClient) getByIDCreateRequest(ctx context.Context, r
 }
 
 // getByIDHandleResponse handles the GetByID response.
-func (client *RoleAssignmentsClient) getByIDHandleResponse(resp *http.Response) (RoleAssignmentsGetByIDResponse, error) {
-	result := RoleAssignmentsGetByIDResponse{RawResponse: resp}
+func (client *RoleAssignmentsClient) getByIDHandleResponse(resp *http.Response) (RoleAssignmentsClientGetByIDResponse, error) {
+	result := RoleAssignmentsClientGetByIDResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignment); err != nil {
-		return RoleAssignmentsGetByIDResponse{}, runtime.NewResponseError(err, resp)
+		return RoleAssignmentsClientGetByIDResponse{}, err
 	}
 	return result, nil
 }
 
-// getByIDHandleError handles the GetByID error response.
-func (client *RoleAssignmentsClient) getByIDHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListForResource - List all role assignments that apply to a resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *RoleAssignmentsClient) ListForResource(resourceGroupName string, resourceProviderNamespace string, resourceType string, resourceName string, options *RoleAssignmentsListForResourceOptions) *RoleAssignmentsListForResourcePager {
-	return &RoleAssignmentsListForResourcePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceProviderNamespace - The namespace of the resource provider.
+// resourceType - The resource type name. For example the type name of a web app is 'sites' (from Microsoft.Web/sites).
+// resourceName - The resource name.
+// options - RoleAssignmentsClientListForResourceOptions contains the optional parameters for the RoleAssignmentsClient.ListForResource
+// method.
+func (client *RoleAssignmentsClient) ListForResource(resourceGroupName string, resourceProviderNamespace string, resourceType string, resourceName string, options *RoleAssignmentsClientListForResourceOptions) *RoleAssignmentsClientListForResourcePager {
+	return &RoleAssignmentsClientListForResourcePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listForResourceCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, resourceType, resourceName, options)
 		},
-		advancer: func(ctx context.Context, resp RoleAssignmentsListForResourceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp RoleAssignmentsClientListForResourceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.RoleAssignmentListResult.NextLink)
 		},
 	}
 }
 
 // listForResourceCreateRequest creates the ListForResource request.
-func (client *RoleAssignmentsClient) listForResourceCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, resourceType string, resourceName string, options *RoleAssignmentsListForResourceOptions) (*policy.Request, error) {
+func (client *RoleAssignmentsClient) listForResourceCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, resourceType string, resourceName string, options *RoleAssignmentsClientListForResourceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/roleAssignments"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -409,7 +378,7 @@ func (client *RoleAssignmentsClient) listForResourceCreateRequest(ctx context.Co
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", resourceProviderNamespace)
 	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", resourceType)
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", resourceName)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -429,43 +398,33 @@ func (client *RoleAssignmentsClient) listForResourceCreateRequest(ctx context.Co
 }
 
 // listForResourceHandleResponse handles the ListForResource response.
-func (client *RoleAssignmentsClient) listForResourceHandleResponse(resp *http.Response) (RoleAssignmentsListForResourceResponse, error) {
-	result := RoleAssignmentsListForResourceResponse{RawResponse: resp}
+func (client *RoleAssignmentsClient) listForResourceHandleResponse(resp *http.Response) (RoleAssignmentsClientListForResourceResponse, error) {
+	result := RoleAssignmentsClientListForResourceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignmentListResult); err != nil {
-		return RoleAssignmentsListForResourceResponse{}, runtime.NewResponseError(err, resp)
+		return RoleAssignmentsClientListForResourceResponse{}, err
 	}
 	return result, nil
 }
 
-// listForResourceHandleError handles the ListForResource error response.
-func (client *RoleAssignmentsClient) listForResourceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListForResourceGroup - List all role assignments that apply to a resource group.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *RoleAssignmentsClient) ListForResourceGroup(resourceGroupName string, options *RoleAssignmentsListForResourceGroupOptions) *RoleAssignmentsListForResourceGroupPager {
-	return &RoleAssignmentsListForResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// options - RoleAssignmentsClientListForResourceGroupOptions contains the optional parameters for the RoleAssignmentsClient.ListForResourceGroup
+// method.
+func (client *RoleAssignmentsClient) ListForResourceGroup(resourceGroupName string, options *RoleAssignmentsClientListForResourceGroupOptions) *RoleAssignmentsClientListForResourceGroupPager {
+	return &RoleAssignmentsClientListForResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listForResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp RoleAssignmentsListForResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp RoleAssignmentsClientListForResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.RoleAssignmentListResult.NextLink)
 		},
 	}
 }
 
 // listForResourceGroupCreateRequest creates the ListForResourceGroup request.
-func (client *RoleAssignmentsClient) listForResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *RoleAssignmentsListForResourceGroupOptions) (*policy.Request, error) {
+func (client *RoleAssignmentsClient) listForResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *RoleAssignmentsClientListForResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization/roleAssignments"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -475,7 +434,7 @@ func (client *RoleAssignmentsClient) listForResourceGroupCreateRequest(ctx conte
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -495,46 +454,39 @@ func (client *RoleAssignmentsClient) listForResourceGroupCreateRequest(ctx conte
 }
 
 // listForResourceGroupHandleResponse handles the ListForResourceGroup response.
-func (client *RoleAssignmentsClient) listForResourceGroupHandleResponse(resp *http.Response) (RoleAssignmentsListForResourceGroupResponse, error) {
-	result := RoleAssignmentsListForResourceGroupResponse{RawResponse: resp}
+func (client *RoleAssignmentsClient) listForResourceGroupHandleResponse(resp *http.Response) (RoleAssignmentsClientListForResourceGroupResponse, error) {
+	result := RoleAssignmentsClientListForResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignmentListResult); err != nil {
-		return RoleAssignmentsListForResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return RoleAssignmentsClientListForResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listForResourceGroupHandleError handles the ListForResourceGroup error response.
-func (client *RoleAssignmentsClient) listForResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListForScope - List all role assignments that apply to a scope.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *RoleAssignmentsClient) ListForScope(scope string, options *RoleAssignmentsListForScopeOptions) *RoleAssignmentsListForScopePager {
-	return &RoleAssignmentsListForScopePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope of the operation or resource. Valid scopes are: subscription (format: '/subscriptions/{subscriptionId}'),
+// resource group (format:
+// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'
+// options - RoleAssignmentsClientListForScopeOptions contains the optional parameters for the RoleAssignmentsClient.ListForScope
+// method.
+func (client *RoleAssignmentsClient) ListForScope(scope string, options *RoleAssignmentsClientListForScopeOptions) *RoleAssignmentsClientListForScopePager {
+	return &RoleAssignmentsClientListForScopePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listForScopeCreateRequest(ctx, scope, options)
 		},
-		advancer: func(ctx context.Context, resp RoleAssignmentsListForScopeResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp RoleAssignmentsClientListForScopeResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.RoleAssignmentListResult.NextLink)
 		},
 	}
 }
 
 // listForScopeCreateRequest creates the ListForScope request.
-func (client *RoleAssignmentsClient) listForScopeCreateRequest(ctx context.Context, scope string, options *RoleAssignmentsListForScopeOptions) (*policy.Request, error) {
+func (client *RoleAssignmentsClient) listForScopeCreateRequest(ctx context.Context, scope string, options *RoleAssignmentsClientListForScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleAssignments"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -554,49 +506,38 @@ func (client *RoleAssignmentsClient) listForScopeCreateRequest(ctx context.Conte
 }
 
 // listForScopeHandleResponse handles the ListForScope response.
-func (client *RoleAssignmentsClient) listForScopeHandleResponse(resp *http.Response) (RoleAssignmentsListForScopeResponse, error) {
-	result := RoleAssignmentsListForScopeResponse{RawResponse: resp}
+func (client *RoleAssignmentsClient) listForScopeHandleResponse(resp *http.Response) (RoleAssignmentsClientListForScopeResponse, error) {
+	result := RoleAssignmentsClientListForScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignmentListResult); err != nil {
-		return RoleAssignmentsListForScopeResponse{}, runtime.NewResponseError(err, resp)
+		return RoleAssignmentsClientListForScopeResponse{}, err
 	}
 	return result, nil
 }
 
-// listForScopeHandleError handles the ListForScope error response.
-func (client *RoleAssignmentsClient) listForScopeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListForSubscription - List all role assignments that apply to a subscription.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *RoleAssignmentsClient) ListForSubscription(options *RoleAssignmentsListForSubscriptionOptions) *RoleAssignmentsListForSubscriptionPager {
-	return &RoleAssignmentsListForSubscriptionPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - RoleAssignmentsClientListForSubscriptionOptions contains the optional parameters for the RoleAssignmentsClient.ListForSubscription
+// method.
+func (client *RoleAssignmentsClient) ListForSubscription(options *RoleAssignmentsClientListForSubscriptionOptions) *RoleAssignmentsClientListForSubscriptionPager {
+	return &RoleAssignmentsClientListForSubscriptionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listForSubscriptionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp RoleAssignmentsListForSubscriptionResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp RoleAssignmentsClientListForSubscriptionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.RoleAssignmentListResult.NextLink)
 		},
 	}
 }
 
 // listForSubscriptionCreateRequest creates the ListForSubscription request.
-func (client *RoleAssignmentsClient) listForSubscriptionCreateRequest(ctx context.Context, options *RoleAssignmentsListForSubscriptionOptions) (*policy.Request, error) {
+func (client *RoleAssignmentsClient) listForSubscriptionCreateRequest(ctx context.Context, options *RoleAssignmentsClientListForSubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/roleAssignments"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -616,50 +557,45 @@ func (client *RoleAssignmentsClient) listForSubscriptionCreateRequest(ctx contex
 }
 
 // listForSubscriptionHandleResponse handles the ListForSubscription response.
-func (client *RoleAssignmentsClient) listForSubscriptionHandleResponse(resp *http.Response) (RoleAssignmentsListForSubscriptionResponse, error) {
-	result := RoleAssignmentsListForSubscriptionResponse{RawResponse: resp}
+func (client *RoleAssignmentsClient) listForSubscriptionHandleResponse(resp *http.Response) (RoleAssignmentsClientListForSubscriptionResponse, error) {
+	result := RoleAssignmentsClientListForSubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignmentListResult); err != nil {
-		return RoleAssignmentsListForSubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return RoleAssignmentsClientListForSubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// listForSubscriptionHandleError handles the ListForSubscription error response.
-func (client *RoleAssignmentsClient) listForSubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Validate - Validate a role assignment create or update operation by scope and name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *RoleAssignmentsClient) Validate(ctx context.Context, scope string, roleAssignmentName string, parameters RoleAssignmentCreateParameters, options *RoleAssignmentsValidateOptions) (RoleAssignmentsValidateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope of the operation or resource. Valid scopes are: subscription (format: '/subscriptions/{subscriptionId}'),
+// resource group (format:
+// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'
+// roleAssignmentName - The name of the role assignment. It can be any valid GUID.
+// parameters - Parameters for the role assignment.
+// options - RoleAssignmentsClientValidateOptions contains the optional parameters for the RoleAssignmentsClient.Validate
+// method.
+func (client *RoleAssignmentsClient) Validate(ctx context.Context, scope string, roleAssignmentName string, parameters RoleAssignmentCreateParameters, options *RoleAssignmentsClientValidateOptions) (RoleAssignmentsClientValidateResponse, error) {
 	req, err := client.validateCreateRequest(ctx, scope, roleAssignmentName, parameters, options)
 	if err != nil {
-		return RoleAssignmentsValidateResponse{}, err
+		return RoleAssignmentsClientValidateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RoleAssignmentsValidateResponse{}, err
+		return RoleAssignmentsClientValidateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return RoleAssignmentsValidateResponse{}, client.validateHandleError(resp)
+		return RoleAssignmentsClientValidateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.validateHandleResponse(resp)
 }
 
 // validateCreateRequest creates the Validate request.
-func (client *RoleAssignmentsClient) validateCreateRequest(ctx context.Context, scope string, roleAssignmentName string, parameters RoleAssignmentCreateParameters, options *RoleAssignmentsValidateOptions) (*policy.Request, error) {
+func (client *RoleAssignmentsClient) validateCreateRequest(ctx context.Context, scope string, roleAssignmentName string, parameters RoleAssignmentCreateParameters, options *RoleAssignmentsClientValidateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}/validate"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentName}", roleAssignmentName)
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -671,49 +607,42 @@ func (client *RoleAssignmentsClient) validateCreateRequest(ctx context.Context, 
 }
 
 // validateHandleResponse handles the Validate response.
-func (client *RoleAssignmentsClient) validateHandleResponse(resp *http.Response) (RoleAssignmentsValidateResponse, error) {
-	result := RoleAssignmentsValidateResponse{RawResponse: resp}
+func (client *RoleAssignmentsClient) validateHandleResponse(resp *http.Response) (RoleAssignmentsClientValidateResponse, error) {
+	result := RoleAssignmentsClientValidateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ValidationResponse); err != nil {
-		return RoleAssignmentsValidateResponse{}, runtime.NewResponseError(err, resp)
+		return RoleAssignmentsClientValidateResponse{}, err
 	}
 	return result, nil
 }
 
-// validateHandleError handles the Validate error response.
-func (client *RoleAssignmentsClient) validateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ValidateByID - Validate a role assignment create or update operation by ID.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *RoleAssignmentsClient) ValidateByID(ctx context.Context, roleAssignmentID string, parameters RoleAssignmentCreateParameters, options *RoleAssignmentsValidateByIDOptions) (RoleAssignmentsValidateByIDResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// roleAssignmentID - The fully qualified ID of the role assignment including scope, resource name, and resource type. Format:
+// /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}. Example:
+// /subscriptions//resourcegroups//providers/Microsoft.Authorization/roleAssignments/
+// parameters - Parameters for the role assignment.
+// options - RoleAssignmentsClientValidateByIDOptions contains the optional parameters for the RoleAssignmentsClient.ValidateByID
+// method.
+func (client *RoleAssignmentsClient) ValidateByID(ctx context.Context, roleAssignmentID string, parameters RoleAssignmentCreateParameters, options *RoleAssignmentsClientValidateByIDOptions) (RoleAssignmentsClientValidateByIDResponse, error) {
 	req, err := client.validateByIDCreateRequest(ctx, roleAssignmentID, parameters, options)
 	if err != nil {
-		return RoleAssignmentsValidateByIDResponse{}, err
+		return RoleAssignmentsClientValidateByIDResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RoleAssignmentsValidateByIDResponse{}, err
+		return RoleAssignmentsClientValidateByIDResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return RoleAssignmentsValidateByIDResponse{}, client.validateByIDHandleError(resp)
+		return RoleAssignmentsClientValidateByIDResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.validateByIDHandleResponse(resp)
 }
 
 // validateByIDCreateRequest creates the ValidateByID request.
-func (client *RoleAssignmentsClient) validateByIDCreateRequest(ctx context.Context, roleAssignmentID string, parameters RoleAssignmentCreateParameters, options *RoleAssignmentsValidateByIDOptions) (*policy.Request, error) {
+func (client *RoleAssignmentsClient) validateByIDCreateRequest(ctx context.Context, roleAssignmentID string, parameters RoleAssignmentCreateParameters, options *RoleAssignmentsClientValidateByIDOptions) (*policy.Request, error) {
 	urlPath := "/{roleAssignmentId}/validate"
 	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentId}", roleAssignmentID)
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -725,23 +654,10 @@ func (client *RoleAssignmentsClient) validateByIDCreateRequest(ctx context.Conte
 }
 
 // validateByIDHandleResponse handles the ValidateByID response.
-func (client *RoleAssignmentsClient) validateByIDHandleResponse(resp *http.Response) (RoleAssignmentsValidateByIDResponse, error) {
-	result := RoleAssignmentsValidateByIDResponse{RawResponse: resp}
+func (client *RoleAssignmentsClient) validateByIDHandleResponse(resp *http.Response) (RoleAssignmentsClientValidateByIDResponse, error) {
+	result := RoleAssignmentsClientValidateByIDResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ValidationResponse); err != nil {
-		return RoleAssignmentsValidateByIDResponse{}, runtime.NewResponseError(err, resp)
+		return RoleAssignmentsClientValidateByIDResponse{}, err
 	}
 	return result, nil
-}
-
-// validateByIDHandleError handles the ValidateByID error response.
-func (client *RoleAssignmentsClient) validateByIDHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

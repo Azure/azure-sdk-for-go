@@ -1,14 +1,786 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 0.3.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*SubscriptionsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, *SubscriptionsDeleteOptions)` to `(context.Context, string, string, string, string, *SubscriptionsClientDeleteOptions)`
+- Function `*SubscriptionsClient.Delete` return value(s) have been changed from `(SubscriptionsDeleteResponse, error)` to `(SubscriptionsClientDeleteResponse, error)`
+- Function `*DisasterRecoveryConfigsClient.ListAuthorizationRules` parameter(s) have been changed from `(string, string, string, *DisasterRecoveryConfigsListAuthorizationRulesOptions)` to `(string, string, string, *DisasterRecoveryConfigsClientListAuthorizationRulesOptions)`
+- Function `*DisasterRecoveryConfigsClient.ListAuthorizationRules` return value(s) have been changed from `(*DisasterRecoveryConfigsListAuthorizationRulesPager)` to `(*DisasterRecoveryConfigsClientListAuthorizationRulesPager)`
+- Function `*QueuesClient.GetAuthorizationRule` parameter(s) have been changed from `(context.Context, string, string, string, string, *QueuesGetAuthorizationRuleOptions)` to `(context.Context, string, string, string, string, *QueuesClientGetAuthorizationRuleOptions)`
+- Function `*QueuesClient.GetAuthorizationRule` return value(s) have been changed from `(QueuesGetAuthorizationRuleResponse, error)` to `(QueuesClientGetAuthorizationRuleResponse, error)`
+- Function `*SubscriptionsClient.ListByTopic` parameter(s) have been changed from `(string, string, string, *SubscriptionsListByTopicOptions)` to `(string, string, string, *SubscriptionsClientListByTopicOptions)`
+- Function `*SubscriptionsClient.ListByTopic` return value(s) have been changed from `(*SubscriptionsListByTopicPager)` to `(*SubscriptionsClientListByTopicPager)`
+- Function `*NamespacesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *NamespacesBeginDeleteOptions)` to `(context.Context, string, string, *NamespacesClientBeginDeleteOptions)`
+- Function `*NamespacesClient.BeginDelete` return value(s) have been changed from `(NamespacesDeletePollerResponse, error)` to `(NamespacesClientDeletePollerResponse, error)`
+- Function `*NamespacesClient.Update` parameter(s) have been changed from `(context.Context, string, string, SBNamespaceUpdateParameters, *NamespacesUpdateOptions)` to `(context.Context, string, string, SBNamespaceUpdateParameters, *NamespacesClientUpdateOptions)`
+- Function `*NamespacesClient.Update` return value(s) have been changed from `(NamespacesUpdateResponse, error)` to `(NamespacesClientUpdateResponse, error)`
+- Function `*QueuesClient.CreateOrUpdateAuthorizationRule` parameter(s) have been changed from `(context.Context, string, string, string, string, SBAuthorizationRule, *QueuesCreateOrUpdateAuthorizationRuleOptions)` to `(context.Context, string, string, string, string, SBAuthorizationRule, *QueuesClientCreateOrUpdateAuthorizationRuleOptions)`
+- Function `*QueuesClient.CreateOrUpdateAuthorizationRule` return value(s) have been changed from `(QueuesCreateOrUpdateAuthorizationRuleResponse, error)` to `(QueuesClientCreateOrUpdateAuthorizationRuleResponse, error)`
+- Function `*QueuesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, SBQueue, *QueuesCreateOrUpdateOptions)` to `(context.Context, string, string, string, SBQueue, *QueuesClientCreateOrUpdateOptions)`
+- Function `*QueuesClient.CreateOrUpdate` return value(s) have been changed from `(QueuesCreateOrUpdateResponse, error)` to `(QueuesClientCreateOrUpdateResponse, error)`
+- Function `*QueuesClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *QueuesDeleteOptions)` to `(context.Context, string, string, string, *QueuesClientDeleteOptions)`
+- Function `*QueuesClient.Delete` return value(s) have been changed from `(QueuesDeleteResponse, error)` to `(QueuesClientDeleteResponse, error)`
+- Function `*DisasterRecoveryConfigsClient.GetAuthorizationRule` parameter(s) have been changed from `(context.Context, string, string, string, string, *DisasterRecoveryConfigsGetAuthorizationRuleOptions)` to `(context.Context, string, string, string, string, *DisasterRecoveryConfigsClientGetAuthorizationRuleOptions)`
+- Function `*DisasterRecoveryConfigsClient.GetAuthorizationRule` return value(s) have been changed from `(DisasterRecoveryConfigsGetAuthorizationRuleResponse, error)` to `(DisasterRecoveryConfigsClientGetAuthorizationRuleResponse, error)`
+- Function `*MigrationConfigsClient.Get` parameter(s) have been changed from `(context.Context, string, string, MigrationConfigurationName, *MigrationConfigsGetOptions)` to `(context.Context, string, string, MigrationConfigurationName, *MigrationConfigsClientGetOptions)`
+- Function `*MigrationConfigsClient.Get` return value(s) have been changed from `(MigrationConfigsGetResponse, error)` to `(MigrationConfigsClientGetResponse, error)`
+- Function `*RulesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *RulesGetOptions)` to `(context.Context, string, string, string, string, string, *RulesClientGetOptions)`
+- Function `*RulesClient.Get` return value(s) have been changed from `(RulesGetResponse, error)` to `(RulesClientGetResponse, error)`
+- Function `*NamespacesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, SBNamespace, *NamespacesBeginCreateOrUpdateOptions)` to `(context.Context, string, string, SBNamespace, *NamespacesClientBeginCreateOrUpdateOptions)`
+- Function `*NamespacesClient.BeginCreateOrUpdate` return value(s) have been changed from `(NamespacesCreateOrUpdatePollerResponse, error)` to `(NamespacesClientCreateOrUpdatePollerResponse, error)`
+- Function `*DisasterRecoveryConfigsClient.BreakPairing` parameter(s) have been changed from `(context.Context, string, string, string, *DisasterRecoveryConfigsBreakPairingOptions)` to `(context.Context, string, string, string, *DisasterRecoveryConfigsClientBreakPairingOptions)`
+- Function `*DisasterRecoveryConfigsClient.BreakPairing` return value(s) have been changed from `(DisasterRecoveryConfigsBreakPairingResponse, error)` to `(DisasterRecoveryConfigsClientBreakPairingResponse, error)`
+- Function `*NamespacesClient.ListKeys` parameter(s) have been changed from `(context.Context, string, string, string, *NamespacesListKeysOptions)` to `(context.Context, string, string, string, *NamespacesClientListKeysOptions)`
+- Function `*NamespacesClient.ListKeys` return value(s) have been changed from `(NamespacesListKeysResponse, error)` to `(NamespacesClientListKeysResponse, error)`
+- Function `*NamespacesClient.GetNetworkRuleSet` parameter(s) have been changed from `(context.Context, string, string, *NamespacesGetNetworkRuleSetOptions)` to `(context.Context, string, string, *NamespacesClientGetNetworkRuleSetOptions)`
+- Function `*NamespacesClient.GetNetworkRuleSet` return value(s) have been changed from `(NamespacesGetNetworkRuleSetResponse, error)` to `(NamespacesClientGetNetworkRuleSetResponse, error)`
+- Function `*MigrationConfigsClient.CompleteMigration` parameter(s) have been changed from `(context.Context, string, string, MigrationConfigurationName, *MigrationConfigsCompleteMigrationOptions)` to `(context.Context, string, string, MigrationConfigurationName, *MigrationConfigsClientCompleteMigrationOptions)`
+- Function `*MigrationConfigsClient.CompleteMigration` return value(s) have been changed from `(MigrationConfigsCompleteMigrationResponse, error)` to `(MigrationConfigsClientCompleteMigrationResponse, error)`
+- Function `*DisasterRecoveryConfigsClient.ListKeys` parameter(s) have been changed from `(context.Context, string, string, string, string, *DisasterRecoveryConfigsListKeysOptions)` to `(context.Context, string, string, string, string, *DisasterRecoveryConfigsClientListKeysOptions)`
+- Function `*DisasterRecoveryConfigsClient.ListKeys` return value(s) have been changed from `(DisasterRecoveryConfigsListKeysResponse, error)` to `(DisasterRecoveryConfigsClientListKeysResponse, error)`
+- Function `*TopicsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *TopicsDeleteOptions)` to `(context.Context, string, string, string, *TopicsClientDeleteOptions)`
+- Function `*TopicsClient.Delete` return value(s) have been changed from `(TopicsDeleteResponse, error)` to `(TopicsClientDeleteResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsCreateOrUpdateOptions)` to `(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsClientCreateOrUpdateOptions)`
+- Function `*PrivateEndpointConnectionsClient.CreateOrUpdate` return value(s) have been changed from `(PrivateEndpointConnectionsCreateOrUpdateResponse, error)` to `(PrivateEndpointConnectionsClientCreateOrUpdateResponse, error)`
+- Function `*NamespacesClient.RegenerateKeys` parameter(s) have been changed from `(context.Context, string, string, string, RegenerateAccessKeyParameters, *NamespacesRegenerateKeysOptions)` to `(context.Context, string, string, string, RegenerateAccessKeyParameters, *NamespacesClientRegenerateKeysOptions)`
+- Function `*NamespacesClient.RegenerateKeys` return value(s) have been changed from `(NamespacesRegenerateKeysResponse, error)` to `(NamespacesClientRegenerateKeysResponse, error)`
+- Function `*SubscriptionsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, SBSubscription, *SubscriptionsCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, SBSubscription, *SubscriptionsClientCreateOrUpdateOptions)`
+- Function `*SubscriptionsClient.CreateOrUpdate` return value(s) have been changed from `(SubscriptionsCreateOrUpdateResponse, error)` to `(SubscriptionsClientCreateOrUpdateResponse, error)`
+- Function `*MigrationConfigsClient.Revert` parameter(s) have been changed from `(context.Context, string, string, MigrationConfigurationName, *MigrationConfigsRevertOptions)` to `(context.Context, string, string, MigrationConfigurationName, *MigrationConfigsClientRevertOptions)`
+- Function `*MigrationConfigsClient.Revert` return value(s) have been changed from `(MigrationConfigsRevertResponse, error)` to `(MigrationConfigsClientRevertResponse, error)`
+- Function `*SubscriptionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *SubscriptionsGetOptions)` to `(context.Context, string, string, string, string, *SubscriptionsClientGetOptions)`
+- Function `*SubscriptionsClient.Get` return value(s) have been changed from `(SubscriptionsGetResponse, error)` to `(SubscriptionsClientGetResponse, error)`
+- Function `*DisasterRecoveryConfigsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *DisasterRecoveryConfigsDeleteOptions)` to `(context.Context, string, string, string, *DisasterRecoveryConfigsClientDeleteOptions)`
+- Function `*DisasterRecoveryConfigsClient.Delete` return value(s) have been changed from `(DisasterRecoveryConfigsDeleteResponse, error)` to `(DisasterRecoveryConfigsClientDeleteResponse, error)`
+- Function `*QueuesClient.DeleteAuthorizationRule` parameter(s) have been changed from `(context.Context, string, string, string, string, *QueuesDeleteAuthorizationRuleOptions)` to `(context.Context, string, string, string, string, *QueuesClientDeleteAuthorizationRuleOptions)`
+- Function `*QueuesClient.DeleteAuthorizationRule` return value(s) have been changed from `(QueuesDeleteAuthorizationRuleResponse, error)` to `(QueuesClientDeleteAuthorizationRuleResponse, error)`
+- Function `*TopicsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *TopicsGetOptions)` to `(context.Context, string, string, string, *TopicsClientGetOptions)`
+- Function `*TopicsClient.Get` return value(s) have been changed from `(TopicsGetResponse, error)` to `(TopicsClientGetResponse, error)`
+- Function `*DisasterRecoveryConfigsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *DisasterRecoveryConfigsGetOptions)` to `(context.Context, string, string, string, *DisasterRecoveryConfigsClientGetOptions)`
+- Function `*DisasterRecoveryConfigsClient.Get` return value(s) have been changed from `(DisasterRecoveryConfigsGetResponse, error)` to `(DisasterRecoveryConfigsClientGetResponse, error)`
+- Function `*PrivateLinkResourcesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *PrivateLinkResourcesGetOptions)` to `(context.Context, string, string, *PrivateLinkResourcesClientGetOptions)`
+- Function `*PrivateLinkResourcesClient.Get` return value(s) have been changed from `(PrivateLinkResourcesGetResponse, error)` to `(PrivateLinkResourcesClientGetResponse, error)`
+- Function `*NamespacesClient.GetAuthorizationRule` parameter(s) have been changed from `(context.Context, string, string, string, *NamespacesGetAuthorizationRuleOptions)` to `(context.Context, string, string, string, *NamespacesClientGetAuthorizationRuleOptions)`
+- Function `*NamespacesClient.GetAuthorizationRule` return value(s) have been changed from `(NamespacesGetAuthorizationRuleResponse, error)` to `(NamespacesClientGetAuthorizationRuleResponse, error)`
+- Function `*TopicsClient.DeleteAuthorizationRule` parameter(s) have been changed from `(context.Context, string, string, string, string, *TopicsDeleteAuthorizationRuleOptions)` to `(context.Context, string, string, string, string, *TopicsClientDeleteAuthorizationRuleOptions)`
+- Function `*TopicsClient.DeleteAuthorizationRule` return value(s) have been changed from `(TopicsDeleteAuthorizationRuleResponse, error)` to `(TopicsClientDeleteAuthorizationRuleResponse, error)`
+- Function `*TopicsClient.ListByNamespace` parameter(s) have been changed from `(string, string, *TopicsListByNamespaceOptions)` to `(string, string, *TopicsClientListByNamespaceOptions)`
+- Function `*TopicsClient.ListByNamespace` return value(s) have been changed from `(*TopicsListByNamespacePager)` to `(*TopicsClientListByNamespacePager)`
+- Function `*NamespacesClient.ListByResourceGroup` parameter(s) have been changed from `(string, *NamespacesListByResourceGroupOptions)` to `(string, *NamespacesClientListByResourceGroupOptions)`
+- Function `*NamespacesClient.ListByResourceGroup` return value(s) have been changed from `(*NamespacesListByResourceGroupPager)` to `(*NamespacesClientListByResourceGroupPager)`
+- Function `*QueuesClient.ListAuthorizationRules` parameter(s) have been changed from `(string, string, string, *QueuesListAuthorizationRulesOptions)` to `(string, string, string, *QueuesClientListAuthorizationRulesOptions)`
+- Function `*QueuesClient.ListAuthorizationRules` return value(s) have been changed from `(*QueuesListAuthorizationRulesPager)` to `(*QueuesClientListAuthorizationRulesPager)`
+- Function `*NamespacesClient.CreateOrUpdateAuthorizationRule` parameter(s) have been changed from `(context.Context, string, string, string, SBAuthorizationRule, *NamespacesCreateOrUpdateAuthorizationRuleOptions)` to `(context.Context, string, string, string, SBAuthorizationRule, *NamespacesClientCreateOrUpdateAuthorizationRuleOptions)`
+- Function `*NamespacesClient.CreateOrUpdateAuthorizationRule` return value(s) have been changed from `(NamespacesCreateOrUpdateAuthorizationRuleResponse, error)` to `(NamespacesClientCreateOrUpdateAuthorizationRuleResponse, error)`
+- Function `*NamespacesClient.CheckNameAvailability` parameter(s) have been changed from `(context.Context, CheckNameAvailability, *NamespacesCheckNameAvailabilityOptions)` to `(context.Context, CheckNameAvailability, *NamespacesClientCheckNameAvailabilityOptions)`
+- Function `*NamespacesClient.CheckNameAvailability` return value(s) have been changed from `(NamespacesCheckNameAvailabilityResponse, error)` to `(NamespacesClientCheckNameAvailabilityResponse, error)`
+- Function `*NamespacesClient.List` parameter(s) have been changed from `(*NamespacesListOptions)` to `(*NamespacesClientListOptions)`
+- Function `*NamespacesClient.List` return value(s) have been changed from `(*NamespacesListPager)` to `(*NamespacesClientListPager)`
+- Function `*NamespacesClient.ListNetworkRuleSets` parameter(s) have been changed from `(string, string, *NamespacesListNetworkRuleSetsOptions)` to `(string, string, *NamespacesClientListNetworkRuleSetsOptions)`
+- Function `*NamespacesClient.ListNetworkRuleSets` return value(s) have been changed from `(*NamespacesListNetworkRuleSetsPager)` to `(*NamespacesClientListNetworkRuleSetsPager)`
+- Function `*RulesClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *RulesDeleteOptions)` to `(context.Context, string, string, string, string, string, *RulesClientDeleteOptions)`
+- Function `*RulesClient.Delete` return value(s) have been changed from `(RulesDeleteResponse, error)` to `(RulesClientDeleteResponse, error)`
+- Function `*TopicsClient.RegenerateKeys` parameter(s) have been changed from `(context.Context, string, string, string, string, RegenerateAccessKeyParameters, *TopicsRegenerateKeysOptions)` to `(context.Context, string, string, string, string, RegenerateAccessKeyParameters, *TopicsClientRegenerateKeysOptions)`
+- Function `*TopicsClient.RegenerateKeys` return value(s) have been changed from `(TopicsRegenerateKeysResponse, error)` to `(TopicsClientRegenerateKeysResponse, error)`
+- Function `*QueuesClient.RegenerateKeys` parameter(s) have been changed from `(context.Context, string, string, string, string, RegenerateAccessKeyParameters, *QueuesRegenerateKeysOptions)` to `(context.Context, string, string, string, string, RegenerateAccessKeyParameters, *QueuesClientRegenerateKeysOptions)`
+- Function `*QueuesClient.RegenerateKeys` return value(s) have been changed from `(QueuesRegenerateKeysResponse, error)` to `(QueuesClientRegenerateKeysResponse, error)`
+- Function `*DisasterRecoveryConfigsClient.FailOver` parameter(s) have been changed from `(context.Context, string, string, string, *DisasterRecoveryConfigsFailOverOptions)` to `(context.Context, string, string, string, *DisasterRecoveryConfigsClientFailOverOptions)`
+- Function `*DisasterRecoveryConfigsClient.FailOver` return value(s) have been changed from `(DisasterRecoveryConfigsFailOverResponse, error)` to `(DisasterRecoveryConfigsClientFailOverResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionsBeginDeleteOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionsClientBeginDeleteOptions)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(PrivateEndpointConnectionsDeletePollerResponse, error)` to `(PrivateEndpointConnectionsClientDeletePollerResponse, error)`
+- Function `*NamespacesClient.DeleteAuthorizationRule` parameter(s) have been changed from `(context.Context, string, string, string, *NamespacesDeleteAuthorizationRuleOptions)` to `(context.Context, string, string, string, *NamespacesClientDeleteAuthorizationRuleOptions)`
+- Function `*NamespacesClient.DeleteAuthorizationRule` return value(s) have been changed from `(NamespacesDeleteAuthorizationRuleResponse, error)` to `(NamespacesClientDeleteAuthorizationRuleResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*PrivateEndpointConnectionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionsGetOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionsClientGetOptions)`
+- Function `*PrivateEndpointConnectionsClient.Get` return value(s) have been changed from `(PrivateEndpointConnectionsGetResponse, error)` to `(PrivateEndpointConnectionsClientGetResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.List` parameter(s) have been changed from `(string, string, *PrivateEndpointConnectionsListOptions)` to `(string, string, *PrivateEndpointConnectionsClientListOptions)`
+- Function `*PrivateEndpointConnectionsClient.List` return value(s) have been changed from `(*PrivateEndpointConnectionsListPager)` to `(*PrivateEndpointConnectionsClientListPager)`
+- Function `*MigrationConfigsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, MigrationConfigurationName, *MigrationConfigsDeleteOptions)` to `(context.Context, string, string, MigrationConfigurationName, *MigrationConfigsClientDeleteOptions)`
+- Function `*MigrationConfigsClient.Delete` return value(s) have been changed from `(MigrationConfigsDeleteResponse, error)` to `(MigrationConfigsClientDeleteResponse, error)`
+- Function `*NamespacesClient.ListAuthorizationRules` parameter(s) have been changed from `(string, string, *NamespacesListAuthorizationRulesOptions)` to `(string, string, *NamespacesClientListAuthorizationRulesOptions)`
+- Function `*NamespacesClient.ListAuthorizationRules` return value(s) have been changed from `(*NamespacesListAuthorizationRulesPager)` to `(*NamespacesClientListAuthorizationRulesPager)`
+- Function `*TopicsClient.ListKeys` parameter(s) have been changed from `(context.Context, string, string, string, string, *TopicsListKeysOptions)` to `(context.Context, string, string, string, string, *TopicsClientListKeysOptions)`
+- Function `*TopicsClient.ListKeys` return value(s) have been changed from `(TopicsListKeysResponse, error)` to `(TopicsClientListKeysResponse, error)`
+- Function `*DisasterRecoveryConfigsClient.List` parameter(s) have been changed from `(string, string, *DisasterRecoveryConfigsListOptions)` to `(string, string, *DisasterRecoveryConfigsClientListOptions)`
+- Function `*DisasterRecoveryConfigsClient.List` return value(s) have been changed from `(*DisasterRecoveryConfigsListPager)` to `(*DisasterRecoveryConfigsClientListPager)`
+- Function `*TopicsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, SBTopic, *TopicsCreateOrUpdateOptions)` to `(context.Context, string, string, string, SBTopic, *TopicsClientCreateOrUpdateOptions)`
+- Function `*TopicsClient.CreateOrUpdate` return value(s) have been changed from `(TopicsCreateOrUpdateResponse, error)` to `(TopicsClientCreateOrUpdateResponse, error)`
+- Function `*QueuesClient.ListKeys` parameter(s) have been changed from `(context.Context, string, string, string, string, *QueuesListKeysOptions)` to `(context.Context, string, string, string, string, *QueuesClientListKeysOptions)`
+- Function `*QueuesClient.ListKeys` return value(s) have been changed from `(QueuesListKeysResponse, error)` to `(QueuesClientListKeysResponse, error)`
+- Function `*DisasterRecoveryConfigsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, ArmDisasterRecovery, *DisasterRecoveryConfigsCreateOrUpdateOptions)` to `(context.Context, string, string, string, ArmDisasterRecovery, *DisasterRecoveryConfigsClientCreateOrUpdateOptions)`
+- Function `*DisasterRecoveryConfigsClient.CreateOrUpdate` return value(s) have been changed from `(DisasterRecoveryConfigsCreateOrUpdateResponse, error)` to `(DisasterRecoveryConfigsClientCreateOrUpdateResponse, error)`
+- Function `*NamespacesClient.CreateOrUpdateNetworkRuleSet` parameter(s) have been changed from `(context.Context, string, string, NetworkRuleSet, *NamespacesCreateOrUpdateNetworkRuleSetOptions)` to `(context.Context, string, string, NetworkRuleSet, *NamespacesClientCreateOrUpdateNetworkRuleSetOptions)`
+- Function `*NamespacesClient.CreateOrUpdateNetworkRuleSet` return value(s) have been changed from `(NamespacesCreateOrUpdateNetworkRuleSetResponse, error)` to `(NamespacesClientCreateOrUpdateNetworkRuleSetResponse, error)`
+- Function `*RulesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, string, Rule, *RulesCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, string, Rule, *RulesClientCreateOrUpdateOptions)`
+- Function `*RulesClient.CreateOrUpdate` return value(s) have been changed from `(RulesCreateOrUpdateResponse, error)` to `(RulesClientCreateOrUpdateResponse, error)`
+- Function `*TopicsClient.ListAuthorizationRules` parameter(s) have been changed from `(string, string, string, *TopicsListAuthorizationRulesOptions)` to `(string, string, string, *TopicsClientListAuthorizationRulesOptions)`
+- Function `*TopicsClient.ListAuthorizationRules` return value(s) have been changed from `(*TopicsListAuthorizationRulesPager)` to `(*TopicsClientListAuthorizationRulesPager)`
+- Function `*QueuesClient.ListByNamespace` parameter(s) have been changed from `(string, string, *QueuesListByNamespaceOptions)` to `(string, string, *QueuesClientListByNamespaceOptions)`
+- Function `*QueuesClient.ListByNamespace` return value(s) have been changed from `(*QueuesListByNamespacePager)` to `(*QueuesClientListByNamespacePager)`
+- Function `*TopicsClient.CreateOrUpdateAuthorizationRule` parameter(s) have been changed from `(context.Context, string, string, string, string, SBAuthorizationRule, *TopicsCreateOrUpdateAuthorizationRuleOptions)` to `(context.Context, string, string, string, string, SBAuthorizationRule, *TopicsClientCreateOrUpdateAuthorizationRuleOptions)`
+- Function `*TopicsClient.CreateOrUpdateAuthorizationRule` return value(s) have been changed from `(TopicsCreateOrUpdateAuthorizationRuleResponse, error)` to `(TopicsClientCreateOrUpdateAuthorizationRuleResponse, error)`
+- Function `*DisasterRecoveryConfigsClient.CheckNameAvailability` parameter(s) have been changed from `(context.Context, string, string, CheckNameAvailability, *DisasterRecoveryConfigsCheckNameAvailabilityOptions)` to `(context.Context, string, string, CheckNameAvailability, *DisasterRecoveryConfigsClientCheckNameAvailabilityOptions)`
+- Function `*DisasterRecoveryConfigsClient.CheckNameAvailability` return value(s) have been changed from `(DisasterRecoveryConfigsCheckNameAvailabilityResponse, error)` to `(DisasterRecoveryConfigsClientCheckNameAvailabilityResponse, error)`
+- Function `*MigrationConfigsClient.BeginCreateAndStartMigration` parameter(s) have been changed from `(context.Context, string, string, MigrationConfigurationName, MigrationConfigProperties, *MigrationConfigsBeginCreateAndStartMigrationOptions)` to `(context.Context, string, string, MigrationConfigurationName, MigrationConfigProperties, *MigrationConfigsClientBeginCreateAndStartMigrationOptions)`
+- Function `*MigrationConfigsClient.BeginCreateAndStartMigration` return value(s) have been changed from `(MigrationConfigsCreateAndStartMigrationPollerResponse, error)` to `(MigrationConfigsClientCreateAndStartMigrationPollerResponse, error)`
+- Function `*RulesClient.ListBySubscriptions` parameter(s) have been changed from `(string, string, string, string, *RulesListBySubscriptionsOptions)` to `(string, string, string, string, *RulesClientListBySubscriptionsOptions)`
+- Function `*RulesClient.ListBySubscriptions` return value(s) have been changed from `(*RulesListBySubscriptionsPager)` to `(*RulesClientListBySubscriptionsPager)`
+- Function `*TopicsClient.GetAuthorizationRule` parameter(s) have been changed from `(context.Context, string, string, string, string, *TopicsGetAuthorizationRuleOptions)` to `(context.Context, string, string, string, string, *TopicsClientGetAuthorizationRuleOptions)`
+- Function `*TopicsClient.GetAuthorizationRule` return value(s) have been changed from `(TopicsGetAuthorizationRuleResponse, error)` to `(TopicsClientGetAuthorizationRuleResponse, error)`
+- Function `*NamespacesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *NamespacesGetOptions)` to `(context.Context, string, string, *NamespacesClientGetOptions)`
+- Function `*NamespacesClient.Get` return value(s) have been changed from `(NamespacesGetResponse, error)` to `(NamespacesClientGetResponse, error)`
+- Function `*MigrationConfigsClient.List` parameter(s) have been changed from `(string, string, *MigrationConfigsListOptions)` to `(string, string, *MigrationConfigsClientListOptions)`
+- Function `*MigrationConfigsClient.List` return value(s) have been changed from `(*MigrationConfigsListPager)` to `(*MigrationConfigsClientListPager)`
+- Function `*QueuesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *QueuesGetOptions)` to `(context.Context, string, string, string, *QueuesClientGetOptions)`
+- Function `*QueuesClient.Get` return value(s) have been changed from `(QueuesGetResponse, error)` to `(QueuesClientGetResponse, error)`
+- Type of `SBNamespaceUpdateParameters.Properties` has been changed from `*SBNamespaceProperties` to `*SBNamespaceUpdateProperties`
+- Function `*NamespacesDeletePoller.Poll` has been removed
+- Function `*NamespacesListPager.Err` has been removed
+- Function `*NamespacesListByResourceGroupPager.NextPage` has been removed
+- Function `SBSubscription.MarshalJSON` has been removed
+- Function `NetworkRuleSet.MarshalJSON` has been removed
+- Function `MigrationConfigsCreateAndStartMigrationPollerResponse.PollUntilDone` has been removed
+- Function `*SubscriptionsListByTopicPager.NextPage` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `*MigrationConfigsCreateAndStartMigrationPoller.Done` has been removed
+- Function `*PrivateEndpointConnectionsListPager.PageResponse` has been removed
+- Function `*NamespacesListPager.NextPage` has been removed
+- Function `*QueuesListAuthorizationRulesPager.PageResponse` has been removed
+- Function `*NamespacesListAuthorizationRulesPager.NextPage` has been removed
+- Function `*NamespacesCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*MigrationConfigsCreateAndStartMigrationPoller.FinalResponse` has been removed
+- Function `*NamespacesListByResourceGroupPager.PageResponse` has been removed
+- Function `*TopicsListAuthorizationRulesPager.PageResponse` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.ResumeToken` has been removed
+- Function `*RulesListBySubscriptionsPager.Err` has been removed
+- Function `*TopicsListByNamespacePager.NextPage` has been removed
+- Function `Rule.MarshalJSON` has been removed
+- Function `*NamespacesDeletePoller.Done` has been removed
+- Function `*TopicsListByNamespacePager.PageResponse` has been removed
+- Function `*SubscriptionsListByTopicPager.Err` has been removed
+- Function `*NamespacesListNetworkRuleSetsPager.PageResponse` has been removed
+- Function `*NamespacesListNetworkRuleSetsPager.NextPage` has been removed
+- Function `ErrorResponse.Error` has been removed
+- Function `*QueuesListAuthorizationRulesPager.NextPage` has been removed
+- Function `*NamespacesDeletePoller.ResumeToken` has been removed
+- Function `*RulesListBySubscriptionsPager.NextPage` has been removed
+- Function `*SubscriptionsListByTopicPager.PageResponse` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.Done` has been removed
+- Function `*QueuesListAuthorizationRulesPager.Err` has been removed
+- Function `*PrivateEndpointConnectionsListPager.NextPage` has been removed
+- Function `*QueuesListByNamespacePager.NextPage` has been removed
+- Function `*MigrationConfigsCreateAndStartMigrationPoller.Poll` has been removed
+- Function `*DisasterRecoveryConfigsListAuthorizationRulesPager.NextPage` has been removed
+- Function `*NamespacesCreateOrUpdatePoller.Done` has been removed
+- Function `*NamespacesDeletePollerResponse.Resume` has been removed
+- Function `*QueuesListByNamespacePager.Err` has been removed
+- Function `*QueuesListByNamespacePager.PageResponse` has been removed
+- Function `ArmDisasterRecovery.MarshalJSON` has been removed
+- Function `*MigrationConfigsListPager.Err` has been removed
+- Function `*NamespacesListNetworkRuleSetsPager.Err` has been removed
+- Function `*NamespacesListByResourceGroupPager.Err` has been removed
+- Function `*TopicsListByNamespacePager.Err` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.FinalResponse` has been removed
+- Function `*MigrationConfigsListPager.PageResponse` has been removed
+- Function `MigrationConfigProperties.MarshalJSON` has been removed
+- Function `*NamespacesListAuthorizationRulesPager.PageResponse` has been removed
+- Function `*DisasterRecoveryConfigsListPager.NextPage` has been removed
+- Function `*MigrationConfigsCreateAndStartMigrationPoller.ResumeToken` has been removed
+- Function `NamespacesDeletePollerResponse.PollUntilDone` has been removed
+- Function `*RulesListBySubscriptionsPager.PageResponse` has been removed
+- Function `*NamespacesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*NamespacesCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `PrivateEndpointConnectionsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*NamespacesListPager.PageResponse` has been removed
+- Function `SBQueue.MarshalJSON` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `SBAuthorizationRule.MarshalJSON` has been removed
+- Function `NamespacesCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateEndpointConnectionsDeletePollerResponse.Resume` has been removed
+- Function `*MigrationConfigsCreateAndStartMigrationPollerResponse.Resume` has been removed
+- Function `*TopicsListAuthorizationRulesPager.Err` has been removed
+- Function `*NamespacesCreateOrUpdatePoller.Poll` has been removed
+- Function `*DisasterRecoveryConfigsListPager.PageResponse` has been removed
+- Function `*DisasterRecoveryConfigsListAuthorizationRulesPager.Err` has been removed
+- Function `*DisasterRecoveryConfigsListAuthorizationRulesPager.PageResponse` has been removed
+- Function `PrivateEndpointConnection.MarshalJSON` has been removed
+- Function `*TopicsListAuthorizationRulesPager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionsListPager.Err` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.Poll` has been removed
+- Function `SBTopic.MarshalJSON` has been removed
+- Function `*NamespacesDeletePoller.FinalResponse` has been removed
+- Function `*DisasterRecoveryConfigsListPager.Err` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*NamespacesListAuthorizationRulesPager.Err` has been removed
+- Function `*MigrationConfigsListPager.NextPage` has been removed
+- Struct `DisasterRecoveryConfigsBreakPairingOptions` has been removed
+- Struct `DisasterRecoveryConfigsBreakPairingResponse` has been removed
+- Struct `DisasterRecoveryConfigsCheckNameAvailabilityOptions` has been removed
+- Struct `DisasterRecoveryConfigsCheckNameAvailabilityResponse` has been removed
+- Struct `DisasterRecoveryConfigsCheckNameAvailabilityResult` has been removed
+- Struct `DisasterRecoveryConfigsCreateOrUpdateOptions` has been removed
+- Struct `DisasterRecoveryConfigsCreateOrUpdateResponse` has been removed
+- Struct `DisasterRecoveryConfigsCreateOrUpdateResult` has been removed
+- Struct `DisasterRecoveryConfigsDeleteOptions` has been removed
+- Struct `DisasterRecoveryConfigsDeleteResponse` has been removed
+- Struct `DisasterRecoveryConfigsFailOverOptions` has been removed
+- Struct `DisasterRecoveryConfigsFailOverResponse` has been removed
+- Struct `DisasterRecoveryConfigsGetAuthorizationRuleOptions` has been removed
+- Struct `DisasterRecoveryConfigsGetAuthorizationRuleResponse` has been removed
+- Struct `DisasterRecoveryConfigsGetAuthorizationRuleResult` has been removed
+- Struct `DisasterRecoveryConfigsGetOptions` has been removed
+- Struct `DisasterRecoveryConfigsGetResponse` has been removed
+- Struct `DisasterRecoveryConfigsGetResult` has been removed
+- Struct `DisasterRecoveryConfigsListAuthorizationRulesOptions` has been removed
+- Struct `DisasterRecoveryConfigsListAuthorizationRulesPager` has been removed
+- Struct `DisasterRecoveryConfigsListAuthorizationRulesResponse` has been removed
+- Struct `DisasterRecoveryConfigsListAuthorizationRulesResult` has been removed
+- Struct `DisasterRecoveryConfigsListKeysOptions` has been removed
+- Struct `DisasterRecoveryConfigsListKeysResponse` has been removed
+- Struct `DisasterRecoveryConfigsListKeysResult` has been removed
+- Struct `DisasterRecoveryConfigsListOptions` has been removed
+- Struct `DisasterRecoveryConfigsListPager` has been removed
+- Struct `DisasterRecoveryConfigsListResponse` has been removed
+- Struct `DisasterRecoveryConfigsListResult` has been removed
+- Struct `MigrationConfigsBeginCreateAndStartMigrationOptions` has been removed
+- Struct `MigrationConfigsCompleteMigrationOptions` has been removed
+- Struct `MigrationConfigsCompleteMigrationResponse` has been removed
+- Struct `MigrationConfigsCreateAndStartMigrationPoller` has been removed
+- Struct `MigrationConfigsCreateAndStartMigrationPollerResponse` has been removed
+- Struct `MigrationConfigsCreateAndStartMigrationResponse` has been removed
+- Struct `MigrationConfigsCreateAndStartMigrationResult` has been removed
+- Struct `MigrationConfigsDeleteOptions` has been removed
+- Struct `MigrationConfigsDeleteResponse` has been removed
+- Struct `MigrationConfigsGetOptions` has been removed
+- Struct `MigrationConfigsGetResponse` has been removed
+- Struct `MigrationConfigsGetResult` has been removed
+- Struct `MigrationConfigsListOptions` has been removed
+- Struct `MigrationConfigsListPager` has been removed
+- Struct `MigrationConfigsListResponse` has been removed
+- Struct `MigrationConfigsListResult` has been removed
+- Struct `MigrationConfigsRevertOptions` has been removed
+- Struct `MigrationConfigsRevertResponse` has been removed
+- Struct `NamespacesBeginCreateOrUpdateOptions` has been removed
+- Struct `NamespacesBeginDeleteOptions` has been removed
+- Struct `NamespacesCheckNameAvailabilityOptions` has been removed
+- Struct `NamespacesCheckNameAvailabilityResponse` has been removed
+- Struct `NamespacesCheckNameAvailabilityResult` has been removed
+- Struct `NamespacesCreateOrUpdateAuthorizationRuleOptions` has been removed
+- Struct `NamespacesCreateOrUpdateAuthorizationRuleResponse` has been removed
+- Struct `NamespacesCreateOrUpdateAuthorizationRuleResult` has been removed
+- Struct `NamespacesCreateOrUpdateNetworkRuleSetOptions` has been removed
+- Struct `NamespacesCreateOrUpdateNetworkRuleSetResponse` has been removed
+- Struct `NamespacesCreateOrUpdateNetworkRuleSetResult` has been removed
+- Struct `NamespacesCreateOrUpdatePoller` has been removed
+- Struct `NamespacesCreateOrUpdatePollerResponse` has been removed
+- Struct `NamespacesCreateOrUpdateResponse` has been removed
+- Struct `NamespacesCreateOrUpdateResult` has been removed
+- Struct `NamespacesDeleteAuthorizationRuleOptions` has been removed
+- Struct `NamespacesDeleteAuthorizationRuleResponse` has been removed
+- Struct `NamespacesDeletePoller` has been removed
+- Struct `NamespacesDeletePollerResponse` has been removed
+- Struct `NamespacesDeleteResponse` has been removed
+- Struct `NamespacesGetAuthorizationRuleOptions` has been removed
+- Struct `NamespacesGetAuthorizationRuleResponse` has been removed
+- Struct `NamespacesGetAuthorizationRuleResult` has been removed
+- Struct `NamespacesGetNetworkRuleSetOptions` has been removed
+- Struct `NamespacesGetNetworkRuleSetResponse` has been removed
+- Struct `NamespacesGetNetworkRuleSetResult` has been removed
+- Struct `NamespacesGetOptions` has been removed
+- Struct `NamespacesGetResponse` has been removed
+- Struct `NamespacesGetResult` has been removed
+- Struct `NamespacesListAuthorizationRulesOptions` has been removed
+- Struct `NamespacesListAuthorizationRulesPager` has been removed
+- Struct `NamespacesListAuthorizationRulesResponse` has been removed
+- Struct `NamespacesListAuthorizationRulesResult` has been removed
+- Struct `NamespacesListByResourceGroupOptions` has been removed
+- Struct `NamespacesListByResourceGroupPager` has been removed
+- Struct `NamespacesListByResourceGroupResponse` has been removed
+- Struct `NamespacesListByResourceGroupResult` has been removed
+- Struct `NamespacesListKeysOptions` has been removed
+- Struct `NamespacesListKeysResponse` has been removed
+- Struct `NamespacesListKeysResult` has been removed
+- Struct `NamespacesListNetworkRuleSetsOptions` has been removed
+- Struct `NamespacesListNetworkRuleSetsPager` has been removed
+- Struct `NamespacesListNetworkRuleSetsResponse` has been removed
+- Struct `NamespacesListNetworkRuleSetsResult` has been removed
+- Struct `NamespacesListOptions` has been removed
+- Struct `NamespacesListPager` has been removed
+- Struct `NamespacesListResponse` has been removed
+- Struct `NamespacesListResult` has been removed
+- Struct `NamespacesRegenerateKeysOptions` has been removed
+- Struct `NamespacesRegenerateKeysResponse` has been removed
+- Struct `NamespacesRegenerateKeysResult` has been removed
+- Struct `NamespacesUpdateOptions` has been removed
+- Struct `NamespacesUpdateResponse` has been removed
+- Struct `NamespacesUpdateResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `PrivateEndpointConnectionsBeginDeleteOptions` has been removed
+- Struct `PrivateEndpointConnectionsCreateOrUpdateOptions` has been removed
+- Struct `PrivateEndpointConnectionsCreateOrUpdateResponse` has been removed
+- Struct `PrivateEndpointConnectionsCreateOrUpdateResult` has been removed
+- Struct `PrivateEndpointConnectionsDeletePoller` has been removed
+- Struct `PrivateEndpointConnectionsDeletePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsDeleteResponse` has been removed
+- Struct `PrivateEndpointConnectionsGetOptions` has been removed
+- Struct `PrivateEndpointConnectionsGetResponse` has been removed
+- Struct `PrivateEndpointConnectionsGetResult` has been removed
+- Struct `PrivateEndpointConnectionsListOptions` has been removed
+- Struct `PrivateEndpointConnectionsListPager` has been removed
+- Struct `PrivateEndpointConnectionsListResponse` has been removed
+- Struct `PrivateEndpointConnectionsListResult` has been removed
+- Struct `PrivateLinkResourcesGetOptions` has been removed
+- Struct `PrivateLinkResourcesGetResponse` has been removed
+- Struct `PrivateLinkResourcesGetResult` has been removed
+- Struct `QueuesCreateOrUpdateAuthorizationRuleOptions` has been removed
+- Struct `QueuesCreateOrUpdateAuthorizationRuleResponse` has been removed
+- Struct `QueuesCreateOrUpdateAuthorizationRuleResult` has been removed
+- Struct `QueuesCreateOrUpdateOptions` has been removed
+- Struct `QueuesCreateOrUpdateResponse` has been removed
+- Struct `QueuesCreateOrUpdateResult` has been removed
+- Struct `QueuesDeleteAuthorizationRuleOptions` has been removed
+- Struct `QueuesDeleteAuthorizationRuleResponse` has been removed
+- Struct `QueuesDeleteOptions` has been removed
+- Struct `QueuesDeleteResponse` has been removed
+- Struct `QueuesGetAuthorizationRuleOptions` has been removed
+- Struct `QueuesGetAuthorizationRuleResponse` has been removed
+- Struct `QueuesGetAuthorizationRuleResult` has been removed
+- Struct `QueuesGetOptions` has been removed
+- Struct `QueuesGetResponse` has been removed
+- Struct `QueuesGetResult` has been removed
+- Struct `QueuesListAuthorizationRulesOptions` has been removed
+- Struct `QueuesListAuthorizationRulesPager` has been removed
+- Struct `QueuesListAuthorizationRulesResponse` has been removed
+- Struct `QueuesListAuthorizationRulesResult` has been removed
+- Struct `QueuesListByNamespaceOptions` has been removed
+- Struct `QueuesListByNamespacePager` has been removed
+- Struct `QueuesListByNamespaceResponse` has been removed
+- Struct `QueuesListByNamespaceResult` has been removed
+- Struct `QueuesListKeysOptions` has been removed
+- Struct `QueuesListKeysResponse` has been removed
+- Struct `QueuesListKeysResult` has been removed
+- Struct `QueuesRegenerateKeysOptions` has been removed
+- Struct `QueuesRegenerateKeysResponse` has been removed
+- Struct `QueuesRegenerateKeysResult` has been removed
+- Struct `RulesCreateOrUpdateOptions` has been removed
+- Struct `RulesCreateOrUpdateResponse` has been removed
+- Struct `RulesCreateOrUpdateResult` has been removed
+- Struct `RulesDeleteOptions` has been removed
+- Struct `RulesDeleteResponse` has been removed
+- Struct `RulesGetOptions` has been removed
+- Struct `RulesGetResponse` has been removed
+- Struct `RulesGetResult` has been removed
+- Struct `RulesListBySubscriptionsOptions` has been removed
+- Struct `RulesListBySubscriptionsPager` has been removed
+- Struct `RulesListBySubscriptionsResponse` has been removed
+- Struct `RulesListBySubscriptionsResult` has been removed
+- Struct `SubscriptionsCreateOrUpdateOptions` has been removed
+- Struct `SubscriptionsCreateOrUpdateResponse` has been removed
+- Struct `SubscriptionsCreateOrUpdateResult` has been removed
+- Struct `SubscriptionsDeleteOptions` has been removed
+- Struct `SubscriptionsDeleteResponse` has been removed
+- Struct `SubscriptionsGetOptions` has been removed
+- Struct `SubscriptionsGetResponse` has been removed
+- Struct `SubscriptionsGetResult` has been removed
+- Struct `SubscriptionsListByTopicOptions` has been removed
+- Struct `SubscriptionsListByTopicPager` has been removed
+- Struct `SubscriptionsListByTopicResponse` has been removed
+- Struct `SubscriptionsListByTopicResult` has been removed
+- Struct `TopicsCreateOrUpdateAuthorizationRuleOptions` has been removed
+- Struct `TopicsCreateOrUpdateAuthorizationRuleResponse` has been removed
+- Struct `TopicsCreateOrUpdateAuthorizationRuleResult` has been removed
+- Struct `TopicsCreateOrUpdateOptions` has been removed
+- Struct `TopicsCreateOrUpdateResponse` has been removed
+- Struct `TopicsCreateOrUpdateResult` has been removed
+- Struct `TopicsDeleteAuthorizationRuleOptions` has been removed
+- Struct `TopicsDeleteAuthorizationRuleResponse` has been removed
+- Struct `TopicsDeleteOptions` has been removed
+- Struct `TopicsDeleteResponse` has been removed
+- Struct `TopicsGetAuthorizationRuleOptions` has been removed
+- Struct `TopicsGetAuthorizationRuleResponse` has been removed
+- Struct `TopicsGetAuthorizationRuleResult` has been removed
+- Struct `TopicsGetOptions` has been removed
+- Struct `TopicsGetResponse` has been removed
+- Struct `TopicsGetResult` has been removed
+- Struct `TopicsListAuthorizationRulesOptions` has been removed
+- Struct `TopicsListAuthorizationRulesPager` has been removed
+- Struct `TopicsListAuthorizationRulesResponse` has been removed
+- Struct `TopicsListAuthorizationRulesResult` has been removed
+- Struct `TopicsListByNamespaceOptions` has been removed
+- Struct `TopicsListByNamespacePager` has been removed
+- Struct `TopicsListByNamespaceResponse` has been removed
+- Struct `TopicsListByNamespaceResult` has been removed
+- Struct `TopicsListKeysOptions` has been removed
+- Struct `TopicsListKeysResponse` has been removed
+- Struct `TopicsListKeysResult` has been removed
+- Struct `TopicsRegenerateKeysOptions` has been removed
+- Struct `TopicsRegenerateKeysResponse` has been removed
+- Struct `TopicsRegenerateKeysResult` has been removed
+- Field `Resource` of struct `Rule` has been removed
+- Field `InnerError` of struct `ErrorResponse` has been removed
+- Field `Resource` of struct `NetworkRuleSet` has been removed
+- Field `Resource` of struct `TrackedResource` has been removed
+- Field `Resource` of struct `ArmDisasterRecovery` has been removed
+- Field `Resource` of struct `SBSubscription` has been removed
+- Field `Resource` of struct `SBAuthorizationRule` has been removed
+- Field `Action` of struct `SQLRuleAction` has been removed
+- Field `Resource` of struct `SBQueue` has been removed
+- Field `Resource` of struct `SBTopic` has been removed
+- Field `Resource` of struct `ResourceNamespacePatch` has been removed
+- Field `Resource` of struct `PrivateEndpointConnection` has been removed
+- Field `ResourceNamespacePatch` of struct `SBNamespaceUpdateParameters` has been removed
+- Field `Resource` of struct `MigrationConfigProperties` has been removed
+- Field `TrackedResource` of struct `SBNamespace` has been removed
 
 ### Features Added
 
-### Breaking Changes
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*TopicsClientListByNamespacePager.PageResponse() TopicsClientListByNamespaceResponse`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.Done() bool`
+- New function `*QueuesClientListAuthorizationRulesPager.Err() error`
+- New function `*RulesClientListBySubscriptionsPager.NextPage(context.Context) bool`
+- New function `NamespacesClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (NamespacesClientCreateOrUpdateResponse, error)`
+- New function `*TopicsClientListAuthorizationRulesPager.PageResponse() TopicsClientListAuthorizationRulesResponse`
+- New function `*NamespacesClientListPager.PageResponse() NamespacesClientListResponse`
+- New function `*NamespacesClientListAuthorizationRulesPager.Err() error`
+- New function `*NamespacesClientListNetworkRuleSetsPager.Err() error`
+- New function `*MigrationConfigsClientCreateAndStartMigrationPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*NamespacesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*TopicsClientListAuthorizationRulesPager.NextPage(context.Context) bool`
+- New function `*SubscriptionsClientListByTopicPager.NextPage(context.Context) bool`
+- New function `*NamespacesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DisasterRecoveryConfigsClientListAuthorizationRulesPager.Err() error`
+- New function `*QueuesClientListAuthorizationRulesPager.NextPage(context.Context) bool`
+- New function `*PrivateEndpointConnectionsClientListPager.NextPage(context.Context) bool`
+- New function `*PrivateEndpointConnectionsClientListPager.PageResponse() PrivateEndpointConnectionsClientListResponse`
+- New function `*DisasterRecoveryConfigsClientListPager.NextPage(context.Context) bool`
+- New function `*NamespacesClientDeletePollerResponse.Resume(context.Context, *NamespacesClient, string) error`
+- New function `*SBNamespaceUpdateProperties.UnmarshalJSON([]byte) error`
+- New function `*MigrationConfigsClientListPager.Err() error`
+- New function `*PrivateEndpointConnectionsClientListPager.Err() error`
+- New function `*NamespacesClientCreateOrUpdatePollerResponse.Resume(context.Context, *NamespacesClient, string) error`
+- New function `*TopicsClientListByNamespacePager.Err() error`
+- New function `*NamespacesClientCreateOrUpdatePoller.Done() bool`
+- New function `*NamespacesClientListAuthorizationRulesPager.PageResponse() NamespacesClientListAuthorizationRulesResponse`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*QueuesClientListByNamespacePager.PageResponse() QueuesClientListByNamespaceResponse`
+- New function `*NamespacesClientCreateOrUpdatePoller.FinalResponse(context.Context) (NamespacesClientCreateOrUpdateResponse, error)`
+- New function `*OperationsClientListPager.Err() error`
+- New function `*PrivateEndpointConnectionsClientDeletePollerResponse.Resume(context.Context, *PrivateEndpointConnectionsClient, string) error`
+- New function `*RulesClientListBySubscriptionsPager.PageResponse() RulesClientListBySubscriptionsResponse`
+- New function `*MigrationConfigsClientCreateAndStartMigrationPoller.Done() bool`
+- New function `MigrationConfigsClientCreateAndStartMigrationPollerResponse.PollUntilDone(context.Context, time.Duration) (MigrationConfigsClientCreateAndStartMigrationResponse, error)`
+- New function `*TopicsClientListAuthorizationRulesPager.Err() error`
+- New function `*TopicsClientListByNamespacePager.NextPage(context.Context) bool`
+- New function `SBNamespaceUpdateProperties.MarshalJSON() ([]byte, error)`
+- New function `*NamespacesClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*QueuesClientListAuthorizationRulesPager.PageResponse() QueuesClientListAuthorizationRulesResponse`
+- New function `*QueuesClientListByNamespacePager.NextPage(context.Context) bool`
+- New function `*DisasterRecoveryConfigsClientListAuthorizationRulesPager.NextPage(context.Context) bool`
+- New function `*NamespacesClientDeletePoller.Done() bool`
+- New function `*SubscriptionsClientListByTopicPager.PageResponse() SubscriptionsClientListByTopicResponse`
+- New function `*SubscriptionsClientListByTopicPager.Err() error`
+- New function `*DisasterRecoveryConfigsClientListPager.Err() error`
+- New function `*NamespacesClientListNetworkRuleSetsPager.NextPage(context.Context) bool`
+- New function `PrivateEndpointConnectionsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateEndpointConnectionsClientDeleteResponse, error)`
+- New function `*NamespacesClientDeletePoller.FinalResponse(context.Context) (NamespacesClientDeleteResponse, error)`
+- New function `*NamespacesClientListByResourceGroupPager.Err() error`
+- New function `*NamespacesClientListPager.Err() error`
+- New function `*NamespacesClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*RulesClientListBySubscriptionsPager.Err() error`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DisasterRecoveryConfigsClientListPager.PageResponse() DisasterRecoveryConfigsClientListResponse`
+- New function `*MigrationConfigsClientListPager.PageResponse() MigrationConfigsClientListResponse`
+- New function `*MigrationConfigsClientCreateAndStartMigrationPoller.ResumeToken() (string, error)`
+- New function `*NamespacesClientListByResourceGroupPager.PageResponse() NamespacesClientListByResourceGroupResponse`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*DisasterRecoveryConfigsClientListAuthorizationRulesPager.PageResponse() DisasterRecoveryConfigsClientListAuthorizationRulesResponse`
+- New function `*MigrationConfigsClientListPager.NextPage(context.Context) bool`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.FinalResponse(context.Context) (PrivateEndpointConnectionsClientDeleteResponse, error)`
+- New function `*NamespacesClientListPager.NextPage(context.Context) bool`
+- New function `*NamespacesClientListNetworkRuleSetsPager.PageResponse() NamespacesClientListNetworkRuleSetsResponse`
+- New function `NamespacesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (NamespacesClientDeleteResponse, error)`
+- New function `*NamespacesClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*QueuesClientListByNamespacePager.Err() error`
+- New function `*NamespacesClientListAuthorizationRulesPager.NextPage(context.Context) bool`
+- New function `*MigrationConfigsClientCreateAndStartMigrationPollerResponse.Resume(context.Context, *MigrationConfigsClient, string) error`
+- New function `*MigrationConfigsClientCreateAndStartMigrationPoller.FinalResponse(context.Context) (MigrationConfigsClientCreateAndStartMigrationResponse, error)`
+- New struct `DisasterRecoveryConfigsClientBreakPairingOptions`
+- New struct `DisasterRecoveryConfigsClientBreakPairingResponse`
+- New struct `DisasterRecoveryConfigsClientCheckNameAvailabilityOptions`
+- New struct `DisasterRecoveryConfigsClientCheckNameAvailabilityResponse`
+- New struct `DisasterRecoveryConfigsClientCheckNameAvailabilityResult`
+- New struct `DisasterRecoveryConfigsClientCreateOrUpdateOptions`
+- New struct `DisasterRecoveryConfigsClientCreateOrUpdateResponse`
+- New struct `DisasterRecoveryConfigsClientCreateOrUpdateResult`
+- New struct `DisasterRecoveryConfigsClientDeleteOptions`
+- New struct `DisasterRecoveryConfigsClientDeleteResponse`
+- New struct `DisasterRecoveryConfigsClientFailOverOptions`
+- New struct `DisasterRecoveryConfigsClientFailOverResponse`
+- New struct `DisasterRecoveryConfigsClientGetAuthorizationRuleOptions`
+- New struct `DisasterRecoveryConfigsClientGetAuthorizationRuleResponse`
+- New struct `DisasterRecoveryConfigsClientGetAuthorizationRuleResult`
+- New struct `DisasterRecoveryConfigsClientGetOptions`
+- New struct `DisasterRecoveryConfigsClientGetResponse`
+- New struct `DisasterRecoveryConfigsClientGetResult`
+- New struct `DisasterRecoveryConfigsClientListAuthorizationRulesOptions`
+- New struct `DisasterRecoveryConfigsClientListAuthorizationRulesPager`
+- New struct `DisasterRecoveryConfigsClientListAuthorizationRulesResponse`
+- New struct `DisasterRecoveryConfigsClientListAuthorizationRulesResult`
+- New struct `DisasterRecoveryConfigsClientListKeysOptions`
+- New struct `DisasterRecoveryConfigsClientListKeysResponse`
+- New struct `DisasterRecoveryConfigsClientListKeysResult`
+- New struct `DisasterRecoveryConfigsClientListOptions`
+- New struct `DisasterRecoveryConfigsClientListPager`
+- New struct `DisasterRecoveryConfigsClientListResponse`
+- New struct `DisasterRecoveryConfigsClientListResult`
+- New struct `MigrationConfigsClientBeginCreateAndStartMigrationOptions`
+- New struct `MigrationConfigsClientCompleteMigrationOptions`
+- New struct `MigrationConfigsClientCompleteMigrationResponse`
+- New struct `MigrationConfigsClientCreateAndStartMigrationPoller`
+- New struct `MigrationConfigsClientCreateAndStartMigrationPollerResponse`
+- New struct `MigrationConfigsClientCreateAndStartMigrationResponse`
+- New struct `MigrationConfigsClientCreateAndStartMigrationResult`
+- New struct `MigrationConfigsClientDeleteOptions`
+- New struct `MigrationConfigsClientDeleteResponse`
+- New struct `MigrationConfigsClientGetOptions`
+- New struct `MigrationConfigsClientGetResponse`
+- New struct `MigrationConfigsClientGetResult`
+- New struct `MigrationConfigsClientListOptions`
+- New struct `MigrationConfigsClientListPager`
+- New struct `MigrationConfigsClientListResponse`
+- New struct `MigrationConfigsClientListResult`
+- New struct `MigrationConfigsClientRevertOptions`
+- New struct `MigrationConfigsClientRevertResponse`
+- New struct `NamespacesClientBeginCreateOrUpdateOptions`
+- New struct `NamespacesClientBeginDeleteOptions`
+- New struct `NamespacesClientCheckNameAvailabilityOptions`
+- New struct `NamespacesClientCheckNameAvailabilityResponse`
+- New struct `NamespacesClientCheckNameAvailabilityResult`
+- New struct `NamespacesClientCreateOrUpdateAuthorizationRuleOptions`
+- New struct `NamespacesClientCreateOrUpdateAuthorizationRuleResponse`
+- New struct `NamespacesClientCreateOrUpdateAuthorizationRuleResult`
+- New struct `NamespacesClientCreateOrUpdateNetworkRuleSetOptions`
+- New struct `NamespacesClientCreateOrUpdateNetworkRuleSetResponse`
+- New struct `NamespacesClientCreateOrUpdateNetworkRuleSetResult`
+- New struct `NamespacesClientCreateOrUpdatePoller`
+- New struct `NamespacesClientCreateOrUpdatePollerResponse`
+- New struct `NamespacesClientCreateOrUpdateResponse`
+- New struct `NamespacesClientCreateOrUpdateResult`
+- New struct `NamespacesClientDeleteAuthorizationRuleOptions`
+- New struct `NamespacesClientDeleteAuthorizationRuleResponse`
+- New struct `NamespacesClientDeletePoller`
+- New struct `NamespacesClientDeletePollerResponse`
+- New struct `NamespacesClientDeleteResponse`
+- New struct `NamespacesClientGetAuthorizationRuleOptions`
+- New struct `NamespacesClientGetAuthorizationRuleResponse`
+- New struct `NamespacesClientGetAuthorizationRuleResult`
+- New struct `NamespacesClientGetNetworkRuleSetOptions`
+- New struct `NamespacesClientGetNetworkRuleSetResponse`
+- New struct `NamespacesClientGetNetworkRuleSetResult`
+- New struct `NamespacesClientGetOptions`
+- New struct `NamespacesClientGetResponse`
+- New struct `NamespacesClientGetResult`
+- New struct `NamespacesClientListAuthorizationRulesOptions`
+- New struct `NamespacesClientListAuthorizationRulesPager`
+- New struct `NamespacesClientListAuthorizationRulesResponse`
+- New struct `NamespacesClientListAuthorizationRulesResult`
+- New struct `NamespacesClientListByResourceGroupOptions`
+- New struct `NamespacesClientListByResourceGroupPager`
+- New struct `NamespacesClientListByResourceGroupResponse`
+- New struct `NamespacesClientListByResourceGroupResult`
+- New struct `NamespacesClientListKeysOptions`
+- New struct `NamespacesClientListKeysResponse`
+- New struct `NamespacesClientListKeysResult`
+- New struct `NamespacesClientListNetworkRuleSetsOptions`
+- New struct `NamespacesClientListNetworkRuleSetsPager`
+- New struct `NamespacesClientListNetworkRuleSetsResponse`
+- New struct `NamespacesClientListNetworkRuleSetsResult`
+- New struct `NamespacesClientListOptions`
+- New struct `NamespacesClientListPager`
+- New struct `NamespacesClientListResponse`
+- New struct `NamespacesClientListResult`
+- New struct `NamespacesClientRegenerateKeysOptions`
+- New struct `NamespacesClientRegenerateKeysResponse`
+- New struct `NamespacesClientRegenerateKeysResult`
+- New struct `NamespacesClientUpdateOptions`
+- New struct `NamespacesClientUpdateResponse`
+- New struct `NamespacesClientUpdateResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `PrivateEndpointConnectionsClientBeginDeleteOptions`
+- New struct `PrivateEndpointConnectionsClientCreateOrUpdateOptions`
+- New struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse`
+- New struct `PrivateEndpointConnectionsClientCreateOrUpdateResult`
+- New struct `PrivateEndpointConnectionsClientDeletePoller`
+- New struct `PrivateEndpointConnectionsClientDeletePollerResponse`
+- New struct `PrivateEndpointConnectionsClientDeleteResponse`
+- New struct `PrivateEndpointConnectionsClientGetOptions`
+- New struct `PrivateEndpointConnectionsClientGetResponse`
+- New struct `PrivateEndpointConnectionsClientGetResult`
+- New struct `PrivateEndpointConnectionsClientListOptions`
+- New struct `PrivateEndpointConnectionsClientListPager`
+- New struct `PrivateEndpointConnectionsClientListResponse`
+- New struct `PrivateEndpointConnectionsClientListResult`
+- New struct `PrivateLinkResourcesClientGetOptions`
+- New struct `PrivateLinkResourcesClientGetResponse`
+- New struct `PrivateLinkResourcesClientGetResult`
+- New struct `ProxyResource`
+- New struct `QueuesClientCreateOrUpdateAuthorizationRuleOptions`
+- New struct `QueuesClientCreateOrUpdateAuthorizationRuleResponse`
+- New struct `QueuesClientCreateOrUpdateAuthorizationRuleResult`
+- New struct `QueuesClientCreateOrUpdateOptions`
+- New struct `QueuesClientCreateOrUpdateResponse`
+- New struct `QueuesClientCreateOrUpdateResult`
+- New struct `QueuesClientDeleteAuthorizationRuleOptions`
+- New struct `QueuesClientDeleteAuthorizationRuleResponse`
+- New struct `QueuesClientDeleteOptions`
+- New struct `QueuesClientDeleteResponse`
+- New struct `QueuesClientGetAuthorizationRuleOptions`
+- New struct `QueuesClientGetAuthorizationRuleResponse`
+- New struct `QueuesClientGetAuthorizationRuleResult`
+- New struct `QueuesClientGetOptions`
+- New struct `QueuesClientGetResponse`
+- New struct `QueuesClientGetResult`
+- New struct `QueuesClientListAuthorizationRulesOptions`
+- New struct `QueuesClientListAuthorizationRulesPager`
+- New struct `QueuesClientListAuthorizationRulesResponse`
+- New struct `QueuesClientListAuthorizationRulesResult`
+- New struct `QueuesClientListByNamespaceOptions`
+- New struct `QueuesClientListByNamespacePager`
+- New struct `QueuesClientListByNamespaceResponse`
+- New struct `QueuesClientListByNamespaceResult`
+- New struct `QueuesClientListKeysOptions`
+- New struct `QueuesClientListKeysResponse`
+- New struct `QueuesClientListKeysResult`
+- New struct `QueuesClientRegenerateKeysOptions`
+- New struct `QueuesClientRegenerateKeysResponse`
+- New struct `QueuesClientRegenerateKeysResult`
+- New struct `RulesClientCreateOrUpdateOptions`
+- New struct `RulesClientCreateOrUpdateResponse`
+- New struct `RulesClientCreateOrUpdateResult`
+- New struct `RulesClientDeleteOptions`
+- New struct `RulesClientDeleteResponse`
+- New struct `RulesClientGetOptions`
+- New struct `RulesClientGetResponse`
+- New struct `RulesClientGetResult`
+- New struct `RulesClientListBySubscriptionsOptions`
+- New struct `RulesClientListBySubscriptionsPager`
+- New struct `RulesClientListBySubscriptionsResponse`
+- New struct `RulesClientListBySubscriptionsResult`
+- New struct `SBNamespaceUpdateProperties`
+- New struct `SubscriptionsClientCreateOrUpdateOptions`
+- New struct `SubscriptionsClientCreateOrUpdateResponse`
+- New struct `SubscriptionsClientCreateOrUpdateResult`
+- New struct `SubscriptionsClientDeleteOptions`
+- New struct `SubscriptionsClientDeleteResponse`
+- New struct `SubscriptionsClientGetOptions`
+- New struct `SubscriptionsClientGetResponse`
+- New struct `SubscriptionsClientGetResult`
+- New struct `SubscriptionsClientListByTopicOptions`
+- New struct `SubscriptionsClientListByTopicPager`
+- New struct `SubscriptionsClientListByTopicResponse`
+- New struct `SubscriptionsClientListByTopicResult`
+- New struct `TopicsClientCreateOrUpdateAuthorizationRuleOptions`
+- New struct `TopicsClientCreateOrUpdateAuthorizationRuleResponse`
+- New struct `TopicsClientCreateOrUpdateAuthorizationRuleResult`
+- New struct `TopicsClientCreateOrUpdateOptions`
+- New struct `TopicsClientCreateOrUpdateResponse`
+- New struct `TopicsClientCreateOrUpdateResult`
+- New struct `TopicsClientDeleteAuthorizationRuleOptions`
+- New struct `TopicsClientDeleteAuthorizationRuleResponse`
+- New struct `TopicsClientDeleteOptions`
+- New struct `TopicsClientDeleteResponse`
+- New struct `TopicsClientGetAuthorizationRuleOptions`
+- New struct `TopicsClientGetAuthorizationRuleResponse`
+- New struct `TopicsClientGetAuthorizationRuleResult`
+- New struct `TopicsClientGetOptions`
+- New struct `TopicsClientGetResponse`
+- New struct `TopicsClientGetResult`
+- New struct `TopicsClientListAuthorizationRulesOptions`
+- New struct `TopicsClientListAuthorizationRulesPager`
+- New struct `TopicsClientListAuthorizationRulesResponse`
+- New struct `TopicsClientListAuthorizationRulesResult`
+- New struct `TopicsClientListByNamespaceOptions`
+- New struct `TopicsClientListByNamespacePager`
+- New struct `TopicsClientListByNamespaceResponse`
+- New struct `TopicsClientListByNamespaceResult`
+- New struct `TopicsClientListKeysOptions`
+- New struct `TopicsClientListKeysResponse`
+- New struct `TopicsClientListKeysResult`
+- New struct `TopicsClientRegenerateKeysOptions`
+- New struct `TopicsClientRegenerateKeysResponse`
+- New struct `TopicsClientRegenerateKeysResult`
+- New field `ID` in struct `Rule`
+- New field `Location` in struct `Rule`
+- New field `Name` in struct `Rule`
+- New field `Type` in struct `Rule`
+- New field `Type` in struct `SBTopic`
+- New field `ID` in struct `SBTopic`
+- New field `Location` in struct `SBTopic`
+- New field `Name` in struct `SBTopic`
+- New field `IsDataAction` in struct `Operation`
+- New field `Origin` in struct `Operation`
+- New field `Properties` in struct `Operation`
+- New field `ID` in struct `TrackedResource`
+- New field `Name` in struct `TrackedResource`
+- New field `Type` in struct `TrackedResource`
+- New field `ID` in struct `SBSubscription`
+- New field `Location` in struct `SBSubscription`
+- New field `Name` in struct `SBSubscription`
+- New field `Type` in struct `SBSubscription`
+- New field `AlternateName` in struct `SBNamespaceProperties`
+- New field `Location` in struct `MigrationConfigProperties`
+- New field `Name` in struct `MigrationConfigProperties`
+- New field `Type` in struct `MigrationConfigProperties`
+- New field `ID` in struct `MigrationConfigProperties`
+- New field `Name` in struct `SBAuthorizationRule`
+- New field `Type` in struct `SBAuthorizationRule`
+- New field `ID` in struct `SBAuthorizationRule`
+- New field `Location` in struct `SBAuthorizationRule`
+- New field `RequiresPreprocessing` in struct `SQLRuleAction`
+- New field `SQLExpression` in struct `SQLRuleAction`
+- New field `CompatibilityLevel` in struct `SQLRuleAction`
+- New field `Name` in struct `NetworkRuleSet`
+- New field `Type` in struct `NetworkRuleSet`
+- New field `ID` in struct `NetworkRuleSet`
+- New field `Location` in struct `NetworkRuleSet`
+- New field `ID` in struct `ArmDisasterRecovery`
+- New field `Location` in struct `ArmDisasterRecovery`
+- New field `Name` in struct `ArmDisasterRecovery`
+- New field `Type` in struct `ArmDisasterRecovery`
+- New field `ID` in struct `PrivateEndpointConnection`
+- New field `Location` in struct `PrivateEndpointConnection`
+- New field `Name` in struct `PrivateEndpointConnection`
+- New field `Type` in struct `PrivateEndpointConnection`
+- New field `ID` in struct `SBNamespace`
+- New field `Type` in struct `SBNamespace`
+- New field `Location` in struct `SBNamespace`
+- New field `Tags` in struct `SBNamespace`
+- New field `Name` in struct `SBNamespace`
+- New field `Error` in struct `ErrorResponse`
+- New field `Type` in struct `SBQueue`
+- New field `ID` in struct `SBQueue`
+- New field `Location` in struct `SBQueue`
+- New field `Name` in struct `SBQueue`
+- New field `Description` in struct `OperationDisplay`
+- New field `Type` in struct `ResourceNamespacePatch`
+- New field `ID` in struct `ResourceNamespacePatch`
+- New field `Name` in struct `ResourceNamespacePatch`
+- New field `Tags` in struct `SBNamespaceUpdateParameters`
+- New field `ID` in struct `SBNamespaceUpdateParameters`
+- New field `Name` in struct `SBNamespaceUpdateParameters`
+- New field `Type` in struct `SBNamespaceUpdateParameters`
+- New field `Location` in struct `SBNamespaceUpdateParameters`
 
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.2.0 (2021-10-29)
 

@@ -16,23 +16,23 @@ import (
 	"reflect"
 )
 
-// ArcSettingsListByClusterPager provides operations for iterating over paged responses.
-type ArcSettingsListByClusterPager struct {
+// ArcSettingsClientListByClusterPager provides operations for iterating over paged responses.
+type ArcSettingsClientListByClusterPager struct {
 	client    *ArcSettingsClient
-	current   ArcSettingsListByClusterResponse
+	current   ArcSettingsClientListByClusterResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, ArcSettingsListByClusterResponse) (*policy.Request, error)
+	advancer  func(context.Context, ArcSettingsClientListByClusterResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *ArcSettingsListByClusterPager) Err() error {
+func (p *ArcSettingsClientListByClusterPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *ArcSettingsListByClusterPager) NextPage(ctx context.Context) bool {
+func (p *ArcSettingsClientListByClusterPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -53,7 +53,7 @@ func (p *ArcSettingsListByClusterPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByClusterHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByClusterHandleResponse(resp)
@@ -65,28 +65,28 @@ func (p *ArcSettingsListByClusterPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current ArcSettingsListByClusterResponse page.
-func (p *ArcSettingsListByClusterPager) PageResponse() ArcSettingsListByClusterResponse {
+// PageResponse returns the current ArcSettingsClientListByClusterResponse page.
+func (p *ArcSettingsClientListByClusterPager) PageResponse() ArcSettingsClientListByClusterResponse {
 	return p.current
 }
 
-// ClustersListByResourceGroupPager provides operations for iterating over paged responses.
-type ClustersListByResourceGroupPager struct {
+// ClustersClientListByResourceGroupPager provides operations for iterating over paged responses.
+type ClustersClientListByResourceGroupPager struct {
 	client    *ClustersClient
-	current   ClustersListByResourceGroupResponse
+	current   ClustersClientListByResourceGroupResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, ClustersListByResourceGroupResponse) (*policy.Request, error)
+	advancer  func(context.Context, ClustersClientListByResourceGroupResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *ClustersListByResourceGroupPager) Err() error {
+func (p *ClustersClientListByResourceGroupPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *ClustersListByResourceGroupPager) NextPage(ctx context.Context) bool {
+func (p *ClustersClientListByResourceGroupPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -107,7 +107,7 @@ func (p *ClustersListByResourceGroupPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByResourceGroupHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByResourceGroupHandleResponse(resp)
@@ -119,28 +119,28 @@ func (p *ClustersListByResourceGroupPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current ClustersListByResourceGroupResponse page.
-func (p *ClustersListByResourceGroupPager) PageResponse() ClustersListByResourceGroupResponse {
+// PageResponse returns the current ClustersClientListByResourceGroupResponse page.
+func (p *ClustersClientListByResourceGroupPager) PageResponse() ClustersClientListByResourceGroupResponse {
 	return p.current
 }
 
-// ClustersListBySubscriptionPager provides operations for iterating over paged responses.
-type ClustersListBySubscriptionPager struct {
+// ClustersClientListBySubscriptionPager provides operations for iterating over paged responses.
+type ClustersClientListBySubscriptionPager struct {
 	client    *ClustersClient
-	current   ClustersListBySubscriptionResponse
+	current   ClustersClientListBySubscriptionResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, ClustersListBySubscriptionResponse) (*policy.Request, error)
+	advancer  func(context.Context, ClustersClientListBySubscriptionResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *ClustersListBySubscriptionPager) Err() error {
+func (p *ClustersClientListBySubscriptionPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *ClustersListBySubscriptionPager) NextPage(ctx context.Context) bool {
+func (p *ClustersClientListBySubscriptionPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -161,7 +161,7 @@ func (p *ClustersListBySubscriptionPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listBySubscriptionHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listBySubscriptionHandleResponse(resp)
@@ -173,28 +173,28 @@ func (p *ClustersListBySubscriptionPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current ClustersListBySubscriptionResponse page.
-func (p *ClustersListBySubscriptionPager) PageResponse() ClustersListBySubscriptionResponse {
+// PageResponse returns the current ClustersClientListBySubscriptionResponse page.
+func (p *ClustersClientListBySubscriptionPager) PageResponse() ClustersClientListBySubscriptionResponse {
 	return p.current
 }
 
-// ExtensionsListByArcSettingPager provides operations for iterating over paged responses.
-type ExtensionsListByArcSettingPager struct {
+// ExtensionsClientListByArcSettingPager provides operations for iterating over paged responses.
+type ExtensionsClientListByArcSettingPager struct {
 	client    *ExtensionsClient
-	current   ExtensionsListByArcSettingResponse
+	current   ExtensionsClientListByArcSettingResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, ExtensionsListByArcSettingResponse) (*policy.Request, error)
+	advancer  func(context.Context, ExtensionsClientListByArcSettingResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *ExtensionsListByArcSettingPager) Err() error {
+func (p *ExtensionsClientListByArcSettingPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *ExtensionsListByArcSettingPager) NextPage(ctx context.Context) bool {
+func (p *ExtensionsClientListByArcSettingPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -215,7 +215,7 @@ func (p *ExtensionsListByArcSettingPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByArcSettingHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByArcSettingHandleResponse(resp)
@@ -227,7 +227,7 @@ func (p *ExtensionsListByArcSettingPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current ExtensionsListByArcSettingResponse page.
-func (p *ExtensionsListByArcSettingPager) PageResponse() ExtensionsListByArcSettingResponse {
+// PageResponse returns the current ExtensionsClientListByArcSettingResponse page.
+func (p *ExtensionsClientListByArcSettingPager) PageResponse() ExtensionsClientListByArcSettingResponse {
 	return p.current
 }

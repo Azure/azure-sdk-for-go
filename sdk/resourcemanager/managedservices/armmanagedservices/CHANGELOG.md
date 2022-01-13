@@ -1,5 +1,196 @@
 # Release History
 
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*RegistrationDefinitionsClient.List` parameter(s) have been changed from `(string, *RegistrationDefinitionsListOptions)` to `(string, *RegistrationDefinitionsClientListOptions)`
+- Function `*RegistrationDefinitionsClient.List` return value(s) have been changed from `(*RegistrationDefinitionsListPager)` to `(*RegistrationDefinitionsClientListPager)`
+- Function `*RegistrationAssignmentsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *RegistrationAssignmentsBeginDeleteOptions)` to `(context.Context, string, string, *RegistrationAssignmentsClientBeginDeleteOptions)`
+- Function `*RegistrationAssignmentsClient.BeginDelete` return value(s) have been changed from `(RegistrationAssignmentsDeletePollerResponse, error)` to `(RegistrationAssignmentsClientDeletePollerResponse, error)`
+- Function `*RegistrationAssignmentsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *RegistrationAssignmentsGetOptions)` to `(context.Context, string, string, *RegistrationAssignmentsClientGetOptions)`
+- Function `*RegistrationAssignmentsClient.Get` return value(s) have been changed from `(RegistrationAssignmentsGetResponse, error)` to `(RegistrationAssignmentsClientGetResponse, error)`
+- Function `*RegistrationDefinitionsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, RegistrationDefinition, *RegistrationDefinitionsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, RegistrationDefinition, *RegistrationDefinitionsClientBeginCreateOrUpdateOptions)`
+- Function `*RegistrationDefinitionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(RegistrationDefinitionsCreateOrUpdatePollerResponse, error)` to `(RegistrationDefinitionsClientCreateOrUpdatePollerResponse, error)`
+- Function `*MarketplaceRegistrationDefinitionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *MarketplaceRegistrationDefinitionsGetOptions)` to `(context.Context, string, string, *MarketplaceRegistrationDefinitionsClientGetOptions)`
+- Function `*MarketplaceRegistrationDefinitionsClient.Get` return value(s) have been changed from `(MarketplaceRegistrationDefinitionsGetResponse, error)` to `(MarketplaceRegistrationDefinitionsClientGetResponse, error)`
+- Function `*RegistrationAssignmentsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, RegistrationAssignment, *RegistrationAssignmentsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, RegistrationAssignment, *RegistrationAssignmentsClientBeginCreateOrUpdateOptions)`
+- Function `*RegistrationAssignmentsClient.BeginCreateOrUpdate` return value(s) have been changed from `(RegistrationAssignmentsCreateOrUpdatePollerResponse, error)` to `(RegistrationAssignmentsClientCreateOrUpdatePollerResponse, error)`
+- Function `*MarketplaceRegistrationDefinitionsWithoutScopeClient.Get` parameter(s) have been changed from `(context.Context, string, *MarketplaceRegistrationDefinitionsWithoutScopeGetOptions)` to `(context.Context, string, *MarketplaceRegistrationDefinitionsWithoutScopeClientGetOptions)`
+- Function `*MarketplaceRegistrationDefinitionsWithoutScopeClient.Get` return value(s) have been changed from `(MarketplaceRegistrationDefinitionsWithoutScopeGetResponse, error)` to `(MarketplaceRegistrationDefinitionsWithoutScopeClientGetResponse, error)`
+- Function `*MarketplaceRegistrationDefinitionsWithoutScopeClient.List` parameter(s) have been changed from `(*MarketplaceRegistrationDefinitionsWithoutScopeListOptions)` to `(*MarketplaceRegistrationDefinitionsWithoutScopeClientListOptions)`
+- Function `*MarketplaceRegistrationDefinitionsWithoutScopeClient.List` return value(s) have been changed from `(*MarketplaceRegistrationDefinitionsWithoutScopeListPager)` to `(*MarketplaceRegistrationDefinitionsWithoutScopeClientListPager)`
+- Function `*RegistrationDefinitionsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *RegistrationDefinitionsDeleteOptions)` to `(context.Context, string, string, *RegistrationDefinitionsClientDeleteOptions)`
+- Function `*RegistrationDefinitionsClient.Delete` return value(s) have been changed from `(RegistrationDefinitionsDeleteResponse, error)` to `(RegistrationDefinitionsClientDeleteResponse, error)`
+- Function `*MarketplaceRegistrationDefinitionsClient.List` parameter(s) have been changed from `(string, *MarketplaceRegistrationDefinitionsListOptions)` to `(string, *MarketplaceRegistrationDefinitionsClientListOptions)`
+- Function `*MarketplaceRegistrationDefinitionsClient.List` return value(s) have been changed from `(*MarketplaceRegistrationDefinitionsListPager)` to `(*MarketplaceRegistrationDefinitionsClientListPager)`
+- Function `*RegistrationAssignmentsClient.List` parameter(s) have been changed from `(string, *RegistrationAssignmentsListOptions)` to `(string, *RegistrationAssignmentsClientListOptions)`
+- Function `*RegistrationAssignmentsClient.List` return value(s) have been changed from `(*RegistrationAssignmentsListPager)` to `(*RegistrationAssignmentsClientListPager)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(context.Context, *OperationsListOptions)` to `(context.Context, *OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(OperationsListResponse, error)` to `(OperationsClientListResponse, error)`
+- Function `*RegistrationDefinitionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *RegistrationDefinitionsGetOptions)` to `(context.Context, string, string, *RegistrationDefinitionsClientGetOptions)`
+- Function `*RegistrationDefinitionsClient.Get` return value(s) have been changed from `(RegistrationDefinitionsGetResponse, error)` to `(RegistrationDefinitionsClientGetResponse, error)`
+- Function `*RegistrationAssignmentsDeletePoller.Poll` has been removed
+- Function `*RegistrationDefinitionsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*RegistrationAssignmentsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*RegistrationDefinitionsCreateOrUpdatePoller.Poll` has been removed
+- Function `*MarketplaceRegistrationDefinitionsListPager.NextPage` has been removed
+- Function `*RegistrationAssignmentsCreateOrUpdatePoller.Done` has been removed
+- Function `*MarketplaceRegistrationDefinitionsWithoutScopeListPager.PageResponse` has been removed
+- Function `*RegistrationAssignmentsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*RegistrationAssignmentsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*MarketplaceRegistrationDefinitionsWithoutScopeListPager.NextPage` has been removed
+- Function `ErrorResponse.Error` has been removed
+- Function `*RegistrationAssignmentsCreateOrUpdatePoller.Poll` has been removed
+- Function `*RegistrationAssignmentsListPager.PageResponse` has been removed
+- Function `*RegistrationDefinitionsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*RegistrationDefinitionsCreateOrUpdatePoller.Done` has been removed
+- Function `*RegistrationDefinitionsListPager.Err` has been removed
+- Function `*RegistrationAssignmentsDeletePoller.ResumeToken` has been removed
+- Function `*RegistrationAssignmentsDeletePoller.FinalResponse` has been removed
+- Function `*RegistrationDefinitionsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*RegistrationAssignmentsDeletePollerResponse.Resume` has been removed
+- Function `*MarketplaceRegistrationDefinitionsListPager.PageResponse` has been removed
+- Function `RegistrationDefinitionsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*RegistrationDefinitionsListPager.PageResponse` has been removed
+- Function `*MarketplaceRegistrationDefinitionsListPager.Err` has been removed
+- Function `*MarketplaceRegistrationDefinitionsWithoutScopeListPager.Err` has been removed
+- Function `RegistrationAssignmentsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `RegistrationAssignmentsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*RegistrationAssignmentsListPager.NextPage` has been removed
+- Function `*RegistrationDefinitionsListPager.NextPage` has been removed
+- Function `*RegistrationAssignmentsDeletePoller.Done` has been removed
+- Function `*RegistrationAssignmentsListPager.Err` has been removed
+- Struct `MarketplaceRegistrationDefinitionsGetOptions` has been removed
+- Struct `MarketplaceRegistrationDefinitionsGetResponse` has been removed
+- Struct `MarketplaceRegistrationDefinitionsGetResult` has been removed
+- Struct `MarketplaceRegistrationDefinitionsListOptions` has been removed
+- Struct `MarketplaceRegistrationDefinitionsListPager` has been removed
+- Struct `MarketplaceRegistrationDefinitionsListResponse` has been removed
+- Struct `MarketplaceRegistrationDefinitionsListResult` has been removed
+- Struct `MarketplaceRegistrationDefinitionsWithoutScopeGetOptions` has been removed
+- Struct `MarketplaceRegistrationDefinitionsWithoutScopeGetResponse` has been removed
+- Struct `MarketplaceRegistrationDefinitionsWithoutScopeGetResult` has been removed
+- Struct `MarketplaceRegistrationDefinitionsWithoutScopeListOptions` has been removed
+- Struct `MarketplaceRegistrationDefinitionsWithoutScopeListPager` has been removed
+- Struct `MarketplaceRegistrationDefinitionsWithoutScopeListResponse` has been removed
+- Struct `MarketplaceRegistrationDefinitionsWithoutScopeListResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `RegistrationAssignmentsBeginCreateOrUpdateOptions` has been removed
+- Struct `RegistrationAssignmentsBeginDeleteOptions` has been removed
+- Struct `RegistrationAssignmentsCreateOrUpdatePoller` has been removed
+- Struct `RegistrationAssignmentsCreateOrUpdatePollerResponse` has been removed
+- Struct `RegistrationAssignmentsCreateOrUpdateResponse` has been removed
+- Struct `RegistrationAssignmentsCreateOrUpdateResult` has been removed
+- Struct `RegistrationAssignmentsDeletePoller` has been removed
+- Struct `RegistrationAssignmentsDeletePollerResponse` has been removed
+- Struct `RegistrationAssignmentsDeleteResponse` has been removed
+- Struct `RegistrationAssignmentsGetOptions` has been removed
+- Struct `RegistrationAssignmentsGetResponse` has been removed
+- Struct `RegistrationAssignmentsGetResult` has been removed
+- Struct `RegistrationAssignmentsListOptions` has been removed
+- Struct `RegistrationAssignmentsListPager` has been removed
+- Struct `RegistrationAssignmentsListResponse` has been removed
+- Struct `RegistrationAssignmentsListResult` has been removed
+- Struct `RegistrationDefinitionsBeginCreateOrUpdateOptions` has been removed
+- Struct `RegistrationDefinitionsCreateOrUpdatePoller` has been removed
+- Struct `RegistrationDefinitionsCreateOrUpdatePollerResponse` has been removed
+- Struct `RegistrationDefinitionsCreateOrUpdateResponse` has been removed
+- Struct `RegistrationDefinitionsCreateOrUpdateResult` has been removed
+- Struct `RegistrationDefinitionsDeleteOptions` has been removed
+- Struct `RegistrationDefinitionsDeleteResponse` has been removed
+- Struct `RegistrationDefinitionsGetOptions` has been removed
+- Struct `RegistrationDefinitionsGetResponse` has been removed
+- Struct `RegistrationDefinitionsGetResult` has been removed
+- Struct `RegistrationDefinitionsListOptions` has been removed
+- Struct `RegistrationDefinitionsListPager` has been removed
+- Struct `RegistrationDefinitionsListResponse` has been removed
+- Struct `RegistrationDefinitionsListResult` has been removed
+- Field `InnerError` of struct `ErrorResponse` has been removed
+
+### Features Added
+
+- New function `*RegistrationAssignmentsClientListPager.PageResponse() RegistrationAssignmentsClientListResponse`
+- New function `*MarketplaceRegistrationDefinitionsWithoutScopeClientListPager.Err() error`
+- New function `*RegistrationAssignmentsClientDeletePollerResponse.Resume(context.Context, *RegistrationAssignmentsClient, string) error`
+- New function `RegistrationAssignmentsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (RegistrationAssignmentsClientCreateOrUpdateResponse, error)`
+- New function `*RegistrationDefinitionsClientCreateOrUpdatePoller.FinalResponse(context.Context) (RegistrationDefinitionsClientCreateOrUpdateResponse, error)`
+- New function `*RegistrationAssignmentsClientCreateOrUpdatePoller.FinalResponse(context.Context) (RegistrationAssignmentsClientCreateOrUpdateResponse, error)`
+- New function `*MarketplaceRegistrationDefinitionsClientListPager.NextPage(context.Context) bool`
+- New function `*MarketplaceRegistrationDefinitionsWithoutScopeClientListPager.PageResponse() MarketplaceRegistrationDefinitionsWithoutScopeClientListResponse`
+- New function `RegistrationAssignmentsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (RegistrationAssignmentsClientDeleteResponse, error)`
+- New function `*MarketplaceRegistrationDefinitionsWithoutScopeClientListPager.NextPage(context.Context) bool`
+- New function `*RegistrationAssignmentsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*RegistrationDefinitionsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*RegistrationAssignmentsClientCreateOrUpdatePoller.Done() bool`
+- New function `*RegistrationAssignmentsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*MarketplaceRegistrationDefinitionsClientListPager.Err() error`
+- New function `*RegistrationAssignmentsClientDeletePoller.Done() bool`
+- New function `*RegistrationAssignmentsClientListPager.NextPage(context.Context) bool`
+- New function `*RegistrationDefinitionsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*RegistrationAssignmentsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*RegistrationDefinitionsClientListPager.PageResponse() RegistrationDefinitionsClientListResponse`
+- New function `*RegistrationDefinitionsClientCreateOrUpdatePoller.Done() bool`
+- New function `*RegistrationAssignmentsClientCreateOrUpdatePollerResponse.Resume(context.Context, *RegistrationAssignmentsClient, string) error`
+- New function `RegistrationDefinitionsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (RegistrationDefinitionsClientCreateOrUpdateResponse, error)`
+- New function `*RegistrationDefinitionsClientListPager.Err() error`
+- New function `*RegistrationAssignmentsClientDeletePoller.FinalResponse(context.Context) (RegistrationAssignmentsClientDeleteResponse, error)`
+- New function `*RegistrationDefinitionsClientCreateOrUpdatePollerResponse.Resume(context.Context, *RegistrationDefinitionsClient, string) error`
+- New function `*RegistrationAssignmentsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*RegistrationDefinitionsClientListPager.NextPage(context.Context) bool`
+- New function `*MarketplaceRegistrationDefinitionsClientListPager.PageResponse() MarketplaceRegistrationDefinitionsClientListResponse`
+- New function `*RegistrationAssignmentsClientListPager.Err() error`
+- New struct `MarketplaceRegistrationDefinitionsClientGetOptions`
+- New struct `MarketplaceRegistrationDefinitionsClientGetResponse`
+- New struct `MarketplaceRegistrationDefinitionsClientGetResult`
+- New struct `MarketplaceRegistrationDefinitionsClientListOptions`
+- New struct `MarketplaceRegistrationDefinitionsClientListPager`
+- New struct `MarketplaceRegistrationDefinitionsClientListResponse`
+- New struct `MarketplaceRegistrationDefinitionsClientListResult`
+- New struct `MarketplaceRegistrationDefinitionsWithoutScopeClientGetOptions`
+- New struct `MarketplaceRegistrationDefinitionsWithoutScopeClientGetResponse`
+- New struct `MarketplaceRegistrationDefinitionsWithoutScopeClientGetResult`
+- New struct `MarketplaceRegistrationDefinitionsWithoutScopeClientListOptions`
+- New struct `MarketplaceRegistrationDefinitionsWithoutScopeClientListPager`
+- New struct `MarketplaceRegistrationDefinitionsWithoutScopeClientListResponse`
+- New struct `MarketplaceRegistrationDefinitionsWithoutScopeClientListResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `RegistrationAssignmentsClientBeginCreateOrUpdateOptions`
+- New struct `RegistrationAssignmentsClientBeginDeleteOptions`
+- New struct `RegistrationAssignmentsClientCreateOrUpdatePoller`
+- New struct `RegistrationAssignmentsClientCreateOrUpdatePollerResponse`
+- New struct `RegistrationAssignmentsClientCreateOrUpdateResponse`
+- New struct `RegistrationAssignmentsClientCreateOrUpdateResult`
+- New struct `RegistrationAssignmentsClientDeletePoller`
+- New struct `RegistrationAssignmentsClientDeletePollerResponse`
+- New struct `RegistrationAssignmentsClientDeleteResponse`
+- New struct `RegistrationAssignmentsClientGetOptions`
+- New struct `RegistrationAssignmentsClientGetResponse`
+- New struct `RegistrationAssignmentsClientGetResult`
+- New struct `RegistrationAssignmentsClientListOptions`
+- New struct `RegistrationAssignmentsClientListPager`
+- New struct `RegistrationAssignmentsClientListResponse`
+- New struct `RegistrationAssignmentsClientListResult`
+- New struct `RegistrationDefinitionsClientBeginCreateOrUpdateOptions`
+- New struct `RegistrationDefinitionsClientCreateOrUpdatePoller`
+- New struct `RegistrationDefinitionsClientCreateOrUpdatePollerResponse`
+- New struct `RegistrationDefinitionsClientCreateOrUpdateResponse`
+- New struct `RegistrationDefinitionsClientCreateOrUpdateResult`
+- New struct `RegistrationDefinitionsClientDeleteOptions`
+- New struct `RegistrationDefinitionsClientDeleteResponse`
+- New struct `RegistrationDefinitionsClientGetOptions`
+- New struct `RegistrationDefinitionsClientGetResponse`
+- New struct `RegistrationDefinitionsClientGetResult`
+- New struct `RegistrationDefinitionsClientListOptions`
+- New struct `RegistrationDefinitionsClientListPager`
+- New struct `RegistrationDefinitionsClientListResponse`
+- New struct `RegistrationDefinitionsClientListResult`
+- New field `Error` in struct `ErrorResponse`
+
+
 ## 0.1.0 (2021-12-07)
 
 - Init release.

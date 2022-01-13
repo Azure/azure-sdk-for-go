@@ -11,7 +11,6 @@ package armdatashare
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // DataSetMappingsClient contains the methods for the DataSetMappings group.
 // Don't use this type directly, use NewDataSetMappingsClient() instead.
 type DataSetMappingsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDataSetMappingsClient creates a new instance of DataSetMappingsClient with the specified values.
+// subscriptionID - The subscription identifier
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDataSetMappingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DataSetMappingsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &DataSetMappingsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DataSetMappingsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Create - Create a DataSetMapping
-// If the operation fails it returns the *DataShareError error type.
-func (client *DataSetMappingsClient) Create(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, dataSetMappingName string, dataSetMapping DataSetMappingClassification, options *DataSetMappingsCreateOptions) (DataSetMappingsCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// accountName - The name of the share account.
+// shareSubscriptionName - The name of the share subscription which will hold the data set sink.
+// dataSetMappingName - The name of the data set mapping to be created.
+// dataSetMapping - Destination data set configuration details.
+// options - DataSetMappingsClientCreateOptions contains the optional parameters for the DataSetMappingsClient.Create method.
+func (client *DataSetMappingsClient) Create(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, dataSetMappingName string, dataSetMapping DataSetMappingClassification, options *DataSetMappingsClientCreateOptions) (DataSetMappingsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, shareSubscriptionName, dataSetMappingName, dataSetMapping, options)
 	if err != nil {
-		return DataSetMappingsCreateResponse{}, err
+		return DataSetMappingsClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DataSetMappingsCreateResponse{}, err
+		return DataSetMappingsClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return DataSetMappingsCreateResponse{}, client.createHandleError(resp)
+		return DataSetMappingsClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *DataSetMappingsClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, dataSetMappingName string, dataSetMapping DataSetMappingClassification, options *DataSetMappingsCreateOptions) (*policy.Request, error) {
+func (client *DataSetMappingsClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, dataSetMappingName string, dataSetMapping DataSetMappingClassification, options *DataSetMappingsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shareSubscriptions/{shareSubscriptionName}/dataSetMappings/{dataSetMappingName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -82,7 +95,7 @@ func (client *DataSetMappingsClient) createCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter dataSetMappingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataSetMappingName}", url.PathEscape(dataSetMappingName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -94,46 +107,38 @@ func (client *DataSetMappingsClient) createCreateRequest(ctx context.Context, re
 }
 
 // createHandleResponse handles the Create response.
-func (client *DataSetMappingsClient) createHandleResponse(resp *http.Response) (DataSetMappingsCreateResponse, error) {
-	result := DataSetMappingsCreateResponse{RawResponse: resp}
+func (client *DataSetMappingsClient) createHandleResponse(resp *http.Response) (DataSetMappingsClientCreateResponse, error) {
+	result := DataSetMappingsClientCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
-		return DataSetMappingsCreateResponse{}, runtime.NewResponseError(err, resp)
+		return DataSetMappingsClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *DataSetMappingsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DataShareError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete a DataSetMapping in a shareSubscription
-// If the operation fails it returns the *DataShareError error type.
-func (client *DataSetMappingsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, dataSetMappingName string, options *DataSetMappingsDeleteOptions) (DataSetMappingsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// accountName - The name of the share account.
+// shareSubscriptionName - The name of the shareSubscription.
+// dataSetMappingName - The name of the dataSetMapping.
+// options - DataSetMappingsClientDeleteOptions contains the optional parameters for the DataSetMappingsClient.Delete method.
+func (client *DataSetMappingsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, dataSetMappingName string, options *DataSetMappingsClientDeleteOptions) (DataSetMappingsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, shareSubscriptionName, dataSetMappingName, options)
 	if err != nil {
-		return DataSetMappingsDeleteResponse{}, err
+		return DataSetMappingsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DataSetMappingsDeleteResponse{}, err
+		return DataSetMappingsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return DataSetMappingsDeleteResponse{}, client.deleteHandleError(resp)
+		return DataSetMappingsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return DataSetMappingsDeleteResponse{RawResponse: resp}, nil
+	return DataSetMappingsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DataSetMappingsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, dataSetMappingName string, options *DataSetMappingsDeleteOptions) (*policy.Request, error) {
+func (client *DataSetMappingsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, dataSetMappingName string, options *DataSetMappingsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shareSubscriptions/{shareSubscriptionName}/dataSetMappings/{dataSetMappingName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -155,7 +160,7 @@ func (client *DataSetMappingsClient) deleteCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter dataSetMappingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataSetMappingName}", url.PathEscape(dataSetMappingName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -166,38 +171,30 @@ func (client *DataSetMappingsClient) deleteCreateRequest(ctx context.Context, re
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *DataSetMappingsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DataShareError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get a DataSetMapping in a shareSubscription
-// If the operation fails it returns the *DataShareError error type.
-func (client *DataSetMappingsClient) Get(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, dataSetMappingName string, options *DataSetMappingsGetOptions) (DataSetMappingsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// accountName - The name of the share account.
+// shareSubscriptionName - The name of the shareSubscription.
+// dataSetMappingName - The name of the dataSetMapping.
+// options - DataSetMappingsClientGetOptions contains the optional parameters for the DataSetMappingsClient.Get method.
+func (client *DataSetMappingsClient) Get(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, dataSetMappingName string, options *DataSetMappingsClientGetOptions) (DataSetMappingsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, shareSubscriptionName, dataSetMappingName, options)
 	if err != nil {
-		return DataSetMappingsGetResponse{}, err
+		return DataSetMappingsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DataSetMappingsGetResponse{}, err
+		return DataSetMappingsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DataSetMappingsGetResponse{}, client.getHandleError(resp)
+		return DataSetMappingsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DataSetMappingsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, dataSetMappingName string, options *DataSetMappingsGetOptions) (*policy.Request, error) {
+func (client *DataSetMappingsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, dataSetMappingName string, options *DataSetMappingsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shareSubscriptions/{shareSubscriptionName}/dataSetMappings/{dataSetMappingName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -219,7 +216,7 @@ func (client *DataSetMappingsClient) getCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter dataSetMappingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataSetMappingName}", url.PathEscape(dataSetMappingName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -231,43 +228,35 @@ func (client *DataSetMappingsClient) getCreateRequest(ctx context.Context, resou
 }
 
 // getHandleResponse handles the Get response.
-func (client *DataSetMappingsClient) getHandleResponse(resp *http.Response) (DataSetMappingsGetResponse, error) {
-	result := DataSetMappingsGetResponse{RawResponse: resp}
+func (client *DataSetMappingsClient) getHandleResponse(resp *http.Response) (DataSetMappingsClientGetResponse, error) {
+	result := DataSetMappingsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
-		return DataSetMappingsGetResponse{}, runtime.NewResponseError(err, resp)
+		return DataSetMappingsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *DataSetMappingsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DataShareError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByShareSubscription - List DataSetMappings in a share subscription
-// If the operation fails it returns the *DataShareError error type.
-func (client *DataSetMappingsClient) ListByShareSubscription(resourceGroupName string, accountName string, shareSubscriptionName string, options *DataSetMappingsListByShareSubscriptionOptions) *DataSetMappingsListByShareSubscriptionPager {
-	return &DataSetMappingsListByShareSubscriptionPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// accountName - The name of the share account.
+// shareSubscriptionName - The name of the share subscription.
+// options - DataSetMappingsClientListByShareSubscriptionOptions contains the optional parameters for the DataSetMappingsClient.ListByShareSubscription
+// method.
+func (client *DataSetMappingsClient) ListByShareSubscription(resourceGroupName string, accountName string, shareSubscriptionName string, options *DataSetMappingsClientListByShareSubscriptionOptions) *DataSetMappingsClientListByShareSubscriptionPager {
+	return &DataSetMappingsClientListByShareSubscriptionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByShareSubscriptionCreateRequest(ctx, resourceGroupName, accountName, shareSubscriptionName, options)
 		},
-		advancer: func(ctx context.Context, resp DataSetMappingsListByShareSubscriptionResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DataSetMappingsClientListByShareSubscriptionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DataSetMappingList.NextLink)
 		},
 	}
 }
 
 // listByShareSubscriptionCreateRequest creates the ListByShareSubscription request.
-func (client *DataSetMappingsClient) listByShareSubscriptionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, options *DataSetMappingsListByShareSubscriptionOptions) (*policy.Request, error) {
+func (client *DataSetMappingsClient) listByShareSubscriptionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, options *DataSetMappingsClientListByShareSubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shareSubscriptions/{shareSubscriptionName}/dataSetMappings"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -285,7 +274,7 @@ func (client *DataSetMappingsClient) listByShareSubscriptionCreateRequest(ctx co
 		return nil, errors.New("parameter shareSubscriptionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{shareSubscriptionName}", url.PathEscape(shareSubscriptionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -306,23 +295,10 @@ func (client *DataSetMappingsClient) listByShareSubscriptionCreateRequest(ctx co
 }
 
 // listByShareSubscriptionHandleResponse handles the ListByShareSubscription response.
-func (client *DataSetMappingsClient) listByShareSubscriptionHandleResponse(resp *http.Response) (DataSetMappingsListByShareSubscriptionResponse, error) {
-	result := DataSetMappingsListByShareSubscriptionResponse{RawResponse: resp}
+func (client *DataSetMappingsClient) listByShareSubscriptionHandleResponse(resp *http.Response) (DataSetMappingsClientListByShareSubscriptionResponse, error) {
+	result := DataSetMappingsClientListByShareSubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataSetMappingList); err != nil {
-		return DataSetMappingsListByShareSubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return DataSetMappingsClientListByShareSubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// listByShareSubscriptionHandleError handles the ListByShareSubscription error response.
-func (client *DataSetMappingsClient) listByShareSubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DataShareError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

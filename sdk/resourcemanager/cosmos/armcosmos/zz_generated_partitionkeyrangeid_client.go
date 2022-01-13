@@ -24,42 +24,60 @@ import (
 // PartitionKeyRangeIDClient contains the methods for the PartitionKeyRangeID group.
 // Don't use this type directly, use NewPartitionKeyRangeIDClient() instead.
 type PartitionKeyRangeIDClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewPartitionKeyRangeIDClient creates a new instance of PartitionKeyRangeIDClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewPartitionKeyRangeIDClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PartitionKeyRangeIDClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &PartitionKeyRangeIDClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &PartitionKeyRangeIDClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // ListMetrics - Retrieves the metrics determined by the given filter for the given partition key range id.
-// If the operation fails it returns a generic error.
-func (client *PartitionKeyRangeIDClient) ListMetrics(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, collectionRid string, partitionKeyRangeID string, filter string, options *PartitionKeyRangeIDListMetricsOptions) (PartitionKeyRangeIDListMetricsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// databaseRid - Cosmos DB database rid.
+// collectionRid - Cosmos DB collection rid.
+// partitionKeyRangeID - Partition Key Range Id for which to get data.
+// filter - An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are
+// name.value (name of the metric, can have an or of multiple names), startTime, endTime,
+// and timeGrain. The supported operator is eq.
+// options - PartitionKeyRangeIDClientListMetricsOptions contains the optional parameters for the PartitionKeyRangeIDClient.ListMetrics
+// method.
+func (client *PartitionKeyRangeIDClient) ListMetrics(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, collectionRid string, partitionKeyRangeID string, filter string, options *PartitionKeyRangeIDClientListMetricsOptions) (PartitionKeyRangeIDClientListMetricsResponse, error) {
 	req, err := client.listMetricsCreateRequest(ctx, resourceGroupName, accountName, databaseRid, collectionRid, partitionKeyRangeID, filter, options)
 	if err != nil {
-		return PartitionKeyRangeIDListMetricsResponse{}, err
+		return PartitionKeyRangeIDClientListMetricsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PartitionKeyRangeIDListMetricsResponse{}, err
+		return PartitionKeyRangeIDClientListMetricsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PartitionKeyRangeIDListMetricsResponse{}, client.listMetricsHandleError(resp)
+		return PartitionKeyRangeIDClientListMetricsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listMetricsHandleResponse(resp)
 }
 
 // listMetricsCreateRequest creates the ListMetrics request.
-func (client *PartitionKeyRangeIDClient) listMetricsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, collectionRid string, partitionKeyRangeID string, filter string, options *PartitionKeyRangeIDListMetricsOptions) (*policy.Request, error) {
+func (client *PartitionKeyRangeIDClient) listMetricsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, collectionRid string, partitionKeyRangeID string, filter string, options *PartitionKeyRangeIDClientListMetricsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/databases/{databaseRid}/collections/{collectionRid}/partitionKeyRangeId/{partitionKeyRangeId}/metrics"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -85,7 +103,7 @@ func (client *PartitionKeyRangeIDClient) listMetricsCreateRequest(ctx context.Co
 		return nil, errors.New("parameter partitionKeyRangeID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{partitionKeyRangeId}", url.PathEscape(partitionKeyRangeID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -98,22 +116,10 @@ func (client *PartitionKeyRangeIDClient) listMetricsCreateRequest(ctx context.Co
 }
 
 // listMetricsHandleResponse handles the ListMetrics response.
-func (client *PartitionKeyRangeIDClient) listMetricsHandleResponse(resp *http.Response) (PartitionKeyRangeIDListMetricsResponse, error) {
-	result := PartitionKeyRangeIDListMetricsResponse{RawResponse: resp}
+func (client *PartitionKeyRangeIDClient) listMetricsHandleResponse(resp *http.Response) (PartitionKeyRangeIDClientListMetricsResponse, error) {
+	result := PartitionKeyRangeIDClientListMetricsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PartitionMetricListResult); err != nil {
-		return PartitionKeyRangeIDListMetricsResponse{}, runtime.NewResponseError(err, resp)
+		return PartitionKeyRangeIDClientListMetricsResponse{}, err
 	}
 	return result, nil
-}
-
-// listMetricsHandleError handles the ListMetrics error response.
-func (client *PartitionKeyRangeIDClient) listMetricsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

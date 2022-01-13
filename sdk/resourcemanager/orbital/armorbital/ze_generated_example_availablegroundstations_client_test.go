@@ -24,14 +24,18 @@ func ExampleAvailableGroundStationsClient_ListByCapability() {
 	}
 	ctx := context.Background()
 	client := armorbital.NewAvailableGroundStationsClient("<subscription-id>", cred, nil)
-	pager := client.ListByCapability(armorbital.Enum6EarthObservation,
+	pager := client.ListByCapability(armorbital.CapabilityType("EarthObservation"),
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("AvailableGroundStation.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -50,5 +54,5 @@ func ExampleAvailableGroundStationsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AvailableGroundStation.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AvailableGroundStationsClientGetResult)
 }

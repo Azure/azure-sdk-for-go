@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup"
 )
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/AzureIaasVm/ProtectionIntent_Validate.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/AzureIaasVm/ProtectionIntent_Validate.json
 func ExampleProtectionIntentClient_Validate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -25,21 +25,22 @@ func ExampleProtectionIntentClient_Validate() {
 	}
 	ctx := context.Background()
 	client := armrecoveryservicesbackup.NewProtectionIntentClient("<subscription-id>", cred, nil)
-	_, err = client.Validate(ctx,
+	res, err := client.Validate(ctx,
 		"<azure-region>",
 		armrecoveryservicesbackup.PreValidateEnableBackupRequest{
 			Properties:   to.StringPtr("<properties>"),
 			ResourceID:   to.StringPtr("<resource-id>"),
-			ResourceType: armrecoveryservicesbackup.DataSourceTypeVM.ToPtr(),
+			ResourceType: armrecoveryservicesbackup.DataSourceType("VM").ToPtr(),
 			VaultID:      to.StringPtr("<vault-id>"),
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ProtectionIntentClientValidateResult)
 }
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/AzureWorkload/BackupProtectionIntent_Get.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/AzureWorkload/BackupProtectionIntent_Get.json
 func ExampleProtectionIntentClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,10 +57,10 @@ func ExampleProtectionIntentClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ProtectionIntentResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ProtectionIntentClientGetResult)
 }
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/AzureIaasVm/ProtectionIntent_CreateOrUpdate.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/AzureIaasVm/ProtectionIntent_CreateOrUpdate.json
 func ExampleProtectionIntentClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,21 +75,19 @@ func ExampleProtectionIntentClient_CreateOrUpdate() {
 		"<intent-object-name>",
 		armrecoveryservicesbackup.ProtectionIntentResource{
 			Properties: &armrecoveryservicesbackup.AzureResourceProtectionIntent{
-				ProtectionIntent: armrecoveryservicesbackup.ProtectionIntent{
-					PolicyID:                 to.StringPtr("<policy-id>"),
-					ProtectionIntentItemType: to.StringPtr("<protection-intent-item-type>"),
-					SourceResourceID:         to.StringPtr("<source-resource-id>"),
-				},
+				PolicyID:                 to.StringPtr("<policy-id>"),
+				ProtectionIntentItemType: armrecoveryservicesbackup.ProtectionIntentItemType("AzureResourceItem").ToPtr(),
+				SourceResourceID:         to.StringPtr("<source-resource-id>"),
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ProtectionIntentResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ProtectionIntentClientCreateOrUpdateResult)
 }
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/AzureWorkload/BackupProtectionIntent_Delete.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/AzureWorkload/BackupProtectionIntent_Delete.json
 func ExampleProtectionIntentClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -31,5 +31,5 @@ func ExampleMicrosoftStorageSyncClient_LocationOperationStatus() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("LocationOperationStatus.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MicrosoftStorageSyncClientLocationOperationStatusResult)
 }

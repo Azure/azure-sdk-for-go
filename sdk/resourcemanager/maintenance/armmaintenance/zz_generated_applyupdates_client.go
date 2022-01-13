@@ -11,7 +11,6 @@ package armmaintenance
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,57 @@ import (
 // ApplyUpdatesClient contains the methods for the ApplyUpdates group.
 // Don't use this type directly, use NewApplyUpdatesClient() instead.
 type ApplyUpdatesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewApplyUpdatesClient creates a new instance of ApplyUpdatesClient with the specified values.
+// subscriptionID - Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewApplyUpdatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ApplyUpdatesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ApplyUpdatesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ApplyUpdatesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Apply maintenance updates to resource
-// If the operation fails it returns the *MaintenanceError error type.
-func (client *ApplyUpdatesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, options *ApplyUpdatesCreateOrUpdateOptions) (ApplyUpdatesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Resource group name
+// providerName - Resource provider name
+// resourceType - Resource type
+// resourceName - Resource identifier
+// options - ApplyUpdatesClientCreateOrUpdateOptions contains the optional parameters for the ApplyUpdatesClient.CreateOrUpdate
+// method.
+func (client *ApplyUpdatesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, options *ApplyUpdatesClientCreateOrUpdateOptions) (ApplyUpdatesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, providerName, resourceType, resourceName, options)
 	if err != nil {
-		return ApplyUpdatesCreateOrUpdateResponse{}, err
+		return ApplyUpdatesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ApplyUpdatesCreateOrUpdateResponse{}, err
+		return ApplyUpdatesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ApplyUpdatesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return ApplyUpdatesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ApplyUpdatesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, options *ApplyUpdatesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ApplyUpdatesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, options *ApplyUpdatesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/applyUpdates/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -82,7 +96,7 @@ func (client *ApplyUpdatesClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -94,46 +108,41 @@ func (client *ApplyUpdatesClient) createOrUpdateCreateRequest(ctx context.Contex
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ApplyUpdatesClient) createOrUpdateHandleResponse(resp *http.Response) (ApplyUpdatesCreateOrUpdateResponse, error) {
-	result := ApplyUpdatesCreateOrUpdateResponse{RawResponse: resp}
+func (client *ApplyUpdatesClient) createOrUpdateHandleResponse(resp *http.Response) (ApplyUpdatesClientCreateOrUpdateResponse, error) {
+	result := ApplyUpdatesClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplyUpdate); err != nil {
-		return ApplyUpdatesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ApplyUpdatesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ApplyUpdatesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := MaintenanceError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // CreateOrUpdateParent - Apply maintenance updates to resource with parent
-// If the operation fails it returns the *MaintenanceError error type.
-func (client *ApplyUpdatesClient) CreateOrUpdateParent(ctx context.Context, resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, options *ApplyUpdatesCreateOrUpdateParentOptions) (ApplyUpdatesCreateOrUpdateParentResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Resource group name
+// providerName - Resource provider name
+// resourceParentType - Resource parent type
+// resourceParentName - Resource parent identifier
+// resourceType - Resource type
+// resourceName - Resource identifier
+// options - ApplyUpdatesClientCreateOrUpdateParentOptions contains the optional parameters for the ApplyUpdatesClient.CreateOrUpdateParent
+// method.
+func (client *ApplyUpdatesClient) CreateOrUpdateParent(ctx context.Context, resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, options *ApplyUpdatesClientCreateOrUpdateParentOptions) (ApplyUpdatesClientCreateOrUpdateParentResponse, error) {
 	req, err := client.createOrUpdateParentCreateRequest(ctx, resourceGroupName, providerName, resourceParentType, resourceParentName, resourceType, resourceName, options)
 	if err != nil {
-		return ApplyUpdatesCreateOrUpdateParentResponse{}, err
+		return ApplyUpdatesClientCreateOrUpdateParentResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ApplyUpdatesCreateOrUpdateParentResponse{}, err
+		return ApplyUpdatesClientCreateOrUpdateParentResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ApplyUpdatesCreateOrUpdateParentResponse{}, client.createOrUpdateParentHandleError(resp)
+		return ApplyUpdatesClientCreateOrUpdateParentResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateParentHandleResponse(resp)
 }
 
 // createOrUpdateParentCreateRequest creates the CreateOrUpdateParent request.
-func (client *ApplyUpdatesClient) createOrUpdateParentCreateRequest(ctx context.Context, resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, options *ApplyUpdatesCreateOrUpdateParentOptions) (*policy.Request, error) {
+func (client *ApplyUpdatesClient) createOrUpdateParentCreateRequest(ctx context.Context, resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, options *ApplyUpdatesClientCreateOrUpdateParentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceParentType}/{resourceParentName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/applyUpdates/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -163,7 +172,7 @@ func (client *ApplyUpdatesClient) createOrUpdateParentCreateRequest(ctx context.
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -175,46 +184,39 @@ func (client *ApplyUpdatesClient) createOrUpdateParentCreateRequest(ctx context.
 }
 
 // createOrUpdateParentHandleResponse handles the CreateOrUpdateParent response.
-func (client *ApplyUpdatesClient) createOrUpdateParentHandleResponse(resp *http.Response) (ApplyUpdatesCreateOrUpdateParentResponse, error) {
-	result := ApplyUpdatesCreateOrUpdateParentResponse{RawResponse: resp}
+func (client *ApplyUpdatesClient) createOrUpdateParentHandleResponse(resp *http.Response) (ApplyUpdatesClientCreateOrUpdateParentResponse, error) {
+	result := ApplyUpdatesClientCreateOrUpdateParentResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplyUpdate); err != nil {
-		return ApplyUpdatesCreateOrUpdateParentResponse{}, runtime.NewResponseError(err, resp)
+		return ApplyUpdatesClientCreateOrUpdateParentResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateParentHandleError handles the CreateOrUpdateParent error response.
-func (client *ApplyUpdatesClient) createOrUpdateParentHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := MaintenanceError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Track maintenance updates to resource
-// If the operation fails it returns the *MaintenanceError error type.
-func (client *ApplyUpdatesClient) Get(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, applyUpdateName string, options *ApplyUpdatesGetOptions) (ApplyUpdatesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Resource group name
+// providerName - Resource provider name
+// resourceType - Resource type
+// resourceName - Resource identifier
+// applyUpdateName - applyUpdate Id
+// options - ApplyUpdatesClientGetOptions contains the optional parameters for the ApplyUpdatesClient.Get method.
+func (client *ApplyUpdatesClient) Get(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, applyUpdateName string, options *ApplyUpdatesClientGetOptions) (ApplyUpdatesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, providerName, resourceType, resourceName, applyUpdateName, options)
 	if err != nil {
-		return ApplyUpdatesGetResponse{}, err
+		return ApplyUpdatesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ApplyUpdatesGetResponse{}, err
+		return ApplyUpdatesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ApplyUpdatesGetResponse{}, client.getHandleError(resp)
+		return ApplyUpdatesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ApplyUpdatesClient) getCreateRequest(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, applyUpdateName string, options *ApplyUpdatesGetOptions) (*policy.Request, error) {
+func (client *ApplyUpdatesClient) getCreateRequest(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, applyUpdateName string, options *ApplyUpdatesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/applyUpdates/{applyUpdateName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -240,7 +242,7 @@ func (client *ApplyUpdatesClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter applyUpdateName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{applyUpdateName}", url.PathEscape(applyUpdateName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -252,46 +254,41 @@ func (client *ApplyUpdatesClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client *ApplyUpdatesClient) getHandleResponse(resp *http.Response) (ApplyUpdatesGetResponse, error) {
-	result := ApplyUpdatesGetResponse{RawResponse: resp}
+func (client *ApplyUpdatesClient) getHandleResponse(resp *http.Response) (ApplyUpdatesClientGetResponse, error) {
+	result := ApplyUpdatesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplyUpdate); err != nil {
-		return ApplyUpdatesGetResponse{}, runtime.NewResponseError(err, resp)
+		return ApplyUpdatesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ApplyUpdatesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := MaintenanceError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetParent - Track maintenance updates to resource with parent
-// If the operation fails it returns the *MaintenanceError error type.
-func (client *ApplyUpdatesClient) GetParent(ctx context.Context, resourceGroupName string, resourceParentType string, resourceParentName string, providerName string, resourceType string, resourceName string, applyUpdateName string, options *ApplyUpdatesGetParentOptions) (ApplyUpdatesGetParentResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Resource group name
+// resourceParentType - Resource parent type
+// resourceParentName - Resource parent identifier
+// providerName - Resource provider name
+// resourceType - Resource type
+// resourceName - Resource identifier
+// applyUpdateName - applyUpdate Id
+// options - ApplyUpdatesClientGetParentOptions contains the optional parameters for the ApplyUpdatesClient.GetParent method.
+func (client *ApplyUpdatesClient) GetParent(ctx context.Context, resourceGroupName string, resourceParentType string, resourceParentName string, providerName string, resourceType string, resourceName string, applyUpdateName string, options *ApplyUpdatesClientGetParentOptions) (ApplyUpdatesClientGetParentResponse, error) {
 	req, err := client.getParentCreateRequest(ctx, resourceGroupName, resourceParentType, resourceParentName, providerName, resourceType, resourceName, applyUpdateName, options)
 	if err != nil {
-		return ApplyUpdatesGetParentResponse{}, err
+		return ApplyUpdatesClientGetParentResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ApplyUpdatesGetParentResponse{}, err
+		return ApplyUpdatesClientGetParentResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ApplyUpdatesGetParentResponse{}, client.getParentHandleError(resp)
+		return ApplyUpdatesClientGetParentResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getParentHandleResponse(resp)
 }
 
 // getParentCreateRequest creates the GetParent request.
-func (client *ApplyUpdatesClient) getParentCreateRequest(ctx context.Context, resourceGroupName string, resourceParentType string, resourceParentName string, providerName string, resourceType string, resourceName string, applyUpdateName string, options *ApplyUpdatesGetParentOptions) (*policy.Request, error) {
+func (client *ApplyUpdatesClient) getParentCreateRequest(ctx context.Context, resourceGroupName string, resourceParentType string, resourceParentName string, providerName string, resourceType string, resourceName string, applyUpdateName string, options *ApplyUpdatesClientGetParentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceParentType}/{resourceParentName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/applyUpdates/{applyUpdateName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -325,7 +322,7 @@ func (client *ApplyUpdatesClient) getParentCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter applyUpdateName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{applyUpdateName}", url.PathEscape(applyUpdateName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -337,52 +334,40 @@ func (client *ApplyUpdatesClient) getParentCreateRequest(ctx context.Context, re
 }
 
 // getParentHandleResponse handles the GetParent response.
-func (client *ApplyUpdatesClient) getParentHandleResponse(resp *http.Response) (ApplyUpdatesGetParentResponse, error) {
-	result := ApplyUpdatesGetParentResponse{RawResponse: resp}
+func (client *ApplyUpdatesClient) getParentHandleResponse(resp *http.Response) (ApplyUpdatesClientGetParentResponse, error) {
+	result := ApplyUpdatesClientGetParentResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplyUpdate); err != nil {
-		return ApplyUpdatesGetParentResponse{}, runtime.NewResponseError(err, resp)
+		return ApplyUpdatesClientGetParentResponse{}, err
 	}
 	return result, nil
 }
 
-// getParentHandleError handles the GetParent error response.
-func (client *ApplyUpdatesClient) getParentHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := MaintenanceError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Get Configuration records within a subscription
-// If the operation fails it returns the *MaintenanceError error type.
-func (client *ApplyUpdatesClient) List(ctx context.Context, options *ApplyUpdatesListOptions) (ApplyUpdatesListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - ApplyUpdatesClientListOptions contains the optional parameters for the ApplyUpdatesClient.List method.
+func (client *ApplyUpdatesClient) List(ctx context.Context, options *ApplyUpdatesClientListOptions) (ApplyUpdatesClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, options)
 	if err != nil {
-		return ApplyUpdatesListResponse{}, err
+		return ApplyUpdatesClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ApplyUpdatesListResponse{}, err
+		return ApplyUpdatesClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ApplyUpdatesListResponse{}, client.listHandleError(resp)
+		return ApplyUpdatesClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *ApplyUpdatesClient) listCreateRequest(ctx context.Context, options *ApplyUpdatesListOptions) (*policy.Request, error) {
+func (client *ApplyUpdatesClient) listCreateRequest(ctx context.Context, options *ApplyUpdatesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/applyUpdates"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -394,23 +379,10 @@ func (client *ApplyUpdatesClient) listCreateRequest(ctx context.Context, options
 }
 
 // listHandleResponse handles the List response.
-func (client *ApplyUpdatesClient) listHandleResponse(resp *http.Response) (ApplyUpdatesListResponse, error) {
-	result := ApplyUpdatesListResponse{RawResponse: resp}
+func (client *ApplyUpdatesClient) listHandleResponse(resp *http.Response) (ApplyUpdatesClientListResponse, error) {
+	result := ApplyUpdatesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListApplyUpdate); err != nil {
-		return ApplyUpdatesListResponse{}, runtime.NewResponseError(err, resp)
+		return ApplyUpdatesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *ApplyUpdatesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := MaintenanceError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

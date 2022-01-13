@@ -19,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
 )
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationProtectionContainerMappings_ListByReplicationProtectionContainers.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationProtectionContainerMappings_ListByReplicationProtectionContainers.json
 func ExampleReplicationProtectionContainerMappingsClient_ListByReplicationProtectionContainers() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -32,17 +32,21 @@ func ExampleReplicationProtectionContainerMappingsClient_ListByReplicationProtec
 	pager := client.ListByReplicationProtectionContainers("<fabric-name>",
 		"<protection-container-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ProtectionContainerMapping.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationProtectionContainerMappings_Get.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationProtectionContainerMappings_Get.json
 func ExampleReplicationProtectionContainerMappingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,10 +64,10 @@ func ExampleReplicationProtectionContainerMappingsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ProtectionContainerMapping.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationProtectionContainerMappingsClientGetResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationProtectionContainerMappings_Create.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationProtectionContainerMappings_Create.json
 func ExampleReplicationProtectionContainerMappingsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,10 +98,10 @@ func ExampleReplicationProtectionContainerMappingsClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ProtectionContainerMapping.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationProtectionContainerMappingsClientCreateResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationProtectionContainerMappings_Purge.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationProtectionContainerMappings_Purge.json
 func ExampleReplicationProtectionContainerMappingsClient_BeginPurge() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,7 +125,7 @@ func ExampleReplicationProtectionContainerMappingsClient_BeginPurge() {
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationProtectionContainerMappings_Update.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationProtectionContainerMappings_Update.json
 func ExampleReplicationProtectionContainerMappingsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -138,10 +142,8 @@ func ExampleReplicationProtectionContainerMappingsClient_BeginUpdate() {
 		armrecoveryservicessiterecovery.UpdateProtectionContainerMappingInput{
 			Properties: &armrecoveryservicessiterecovery.UpdateProtectionContainerMappingInputProperties{
 				ProviderSpecificInput: &armrecoveryservicessiterecovery.A2AUpdateContainerMappingInput{
-					ReplicationProviderSpecificUpdateContainerMappingInput: armrecoveryservicessiterecovery.ReplicationProviderSpecificUpdateContainerMappingInput{
-						InstanceType: to.StringPtr("<instance-type>"),
-					},
-					AgentAutoUpdateStatus:  armrecoveryservicessiterecovery.AgentAutoUpdateStatusEnabled.ToPtr(),
+					InstanceType:           to.StringPtr("<instance-type>"),
+					AgentAutoUpdateStatus:  armrecoveryservicessiterecovery.AgentAutoUpdateStatus("Enabled").ToPtr(),
 					AutomationAccountArmID: to.StringPtr("<automation-account-arm-id>"),
 				},
 			},
@@ -154,10 +156,10 @@ func ExampleReplicationProtectionContainerMappingsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ProtectionContainerMapping.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationProtectionContainerMappingsClientUpdateResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationProtectionContainerMappings_Delete.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationProtectionContainerMappings_Delete.json
 func ExampleReplicationProtectionContainerMappingsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -186,7 +188,7 @@ func ExampleReplicationProtectionContainerMappingsClient_BeginDelete() {
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationProtectionContainerMappings_List.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationProtectionContainerMappings_List.json
 func ExampleReplicationProtectionContainerMappingsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -197,12 +199,16 @@ func ExampleReplicationProtectionContainerMappingsClient_List() {
 		"<resource-group-name>",
 		"<subscription-id>", cred, nil)
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ProtectionContainerMapping.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

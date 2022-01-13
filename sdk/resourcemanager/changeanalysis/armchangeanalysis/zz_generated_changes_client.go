@@ -11,7 +11,6 @@ package armchangeanalysis
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,39 +25,53 @@ import (
 // ChangesClient contains the methods for the Changes group.
 // Don't use this type directly, use NewChangesClient() instead.
 type ChangesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewChangesClient creates a new instance of ChangesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewChangesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ChangesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ChangesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ChangesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// ListChangesByResourceGroup - List the changes of a resource group within the specified time range. Customer data will always be masked.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ChangesClient) ListChangesByResourceGroup(resourceGroupName string, startTime time.Time, endTime time.Time, options *ChangesListChangesByResourceGroupOptions) *ChangesListChangesByResourceGroupPager {
-	return &ChangesListChangesByResourceGroupPager{
+// ListChangesByResourceGroup - List the changes of a resource group within the specified time range. Customer data will always
+// be masked.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// startTime - Specifies the start time of the changes request.
+// endTime - Specifies the end time of the changes request.
+// options - ChangesClientListChangesByResourceGroupOptions contains the optional parameters for the ChangesClient.ListChangesByResourceGroup
+// method.
+func (client *ChangesClient) ListChangesByResourceGroup(resourceGroupName string, startTime time.Time, endTime time.Time, options *ChangesClientListChangesByResourceGroupOptions) *ChangesClientListChangesByResourceGroupPager {
+	return &ChangesClientListChangesByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listChangesByResourceGroupCreateRequest(ctx, resourceGroupName, startTime, endTime, options)
 		},
-		advancer: func(ctx context.Context, resp ChangesListChangesByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ChangesClientListChangesByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ChangeList.NextLink)
 		},
 	}
 }
 
 // listChangesByResourceGroupCreateRequest creates the ListChangesByResourceGroup request.
-func (client *ChangesClient) listChangesByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, startTime time.Time, endTime time.Time, options *ChangesListChangesByResourceGroupOptions) (*policy.Request, error) {
+func (client *ChangesClient) listChangesByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, startTime time.Time, endTime time.Time, options *ChangesClientListChangesByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ChangeAnalysis/changes"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -68,7 +81,7 @@ func (client *ChangesClient) listChangesByResourceGroupCreateRequest(ctx context
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -85,49 +98,41 @@ func (client *ChangesClient) listChangesByResourceGroupCreateRequest(ctx context
 }
 
 // listChangesByResourceGroupHandleResponse handles the ListChangesByResourceGroup response.
-func (client *ChangesClient) listChangesByResourceGroupHandleResponse(resp *http.Response) (ChangesListChangesByResourceGroupResponse, error) {
-	result := ChangesListChangesByResourceGroupResponse{RawResponse: resp}
+func (client *ChangesClient) listChangesByResourceGroupHandleResponse(resp *http.Response) (ChangesClientListChangesByResourceGroupResponse, error) {
+	result := ChangesClientListChangesByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ChangeList); err != nil {
-		return ChangesListChangesByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return ChangesClientListChangesByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listChangesByResourceGroupHandleError handles the ListChangesByResourceGroup error response.
-func (client *ChangesClient) listChangesByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListChangesBySubscription - List the changes of a subscription within the specified time range. Customer data will always be masked.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ChangesClient) ListChangesBySubscription(startTime time.Time, endTime time.Time, options *ChangesListChangesBySubscriptionOptions) *ChangesListChangesBySubscriptionPager {
-	return &ChangesListChangesBySubscriptionPager{
+// ListChangesBySubscription - List the changes of a subscription within the specified time range. Customer data will always
+// be masked.
+// If the operation fails it returns an *azcore.ResponseError type.
+// startTime - Specifies the start time of the changes request.
+// endTime - Specifies the end time of the changes request.
+// options - ChangesClientListChangesBySubscriptionOptions contains the optional parameters for the ChangesClient.ListChangesBySubscription
+// method.
+func (client *ChangesClient) ListChangesBySubscription(startTime time.Time, endTime time.Time, options *ChangesClientListChangesBySubscriptionOptions) *ChangesClientListChangesBySubscriptionPager {
+	return &ChangesClientListChangesBySubscriptionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listChangesBySubscriptionCreateRequest(ctx, startTime, endTime, options)
 		},
-		advancer: func(ctx context.Context, resp ChangesListChangesBySubscriptionResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ChangesClientListChangesBySubscriptionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ChangeList.NextLink)
 		},
 	}
 }
 
 // listChangesBySubscriptionCreateRequest creates the ListChangesBySubscription request.
-func (client *ChangesClient) listChangesBySubscriptionCreateRequest(ctx context.Context, startTime time.Time, endTime time.Time, options *ChangesListChangesBySubscriptionOptions) (*policy.Request, error) {
+func (client *ChangesClient) listChangesBySubscriptionCreateRequest(ctx context.Context, startTime time.Time, endTime time.Time, options *ChangesClientListChangesBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ChangeAnalysis/changes"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -144,23 +149,10 @@ func (client *ChangesClient) listChangesBySubscriptionCreateRequest(ctx context.
 }
 
 // listChangesBySubscriptionHandleResponse handles the ListChangesBySubscription response.
-func (client *ChangesClient) listChangesBySubscriptionHandleResponse(resp *http.Response) (ChangesListChangesBySubscriptionResponse, error) {
-	result := ChangesListChangesBySubscriptionResponse{RawResponse: resp}
+func (client *ChangesClient) listChangesBySubscriptionHandleResponse(resp *http.Response) (ChangesClientListChangesBySubscriptionResponse, error) {
+	result := ChangesClientListChangesBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ChangeList); err != nil {
-		return ChangesListChangesBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return ChangesClientListChangesBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// listChangesBySubscriptionHandleError handles the ListChangesBySubscription error response.
-func (client *ChangesClient) listChangesBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

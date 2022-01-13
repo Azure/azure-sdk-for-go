@@ -11,7 +11,6 @@ package armreservations
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,45 +25,55 @@ import (
 // ReservationClient contains the methods for the Reservation group.
 // Don't use this type directly, use NewReservationClient() instead.
 type ReservationClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewReservationClient creates a new instance of ReservationClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewReservationClient(credential azcore.TokenCredential, options *arm.ClientOptions) *ReservationClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ReservationClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ReservationClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginAvailableScopes - Get Available Scopes for Reservation.
-// If the operation fails it returns the *Error error type.
-func (client *ReservationClient) BeginAvailableScopes(ctx context.Context, reservationOrderID string, reservationID string, body AvailableScopeRequest, options *ReservationBeginAvailableScopesOptions) (ReservationAvailableScopesPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// reservationOrderID - Order Id of the reservation
+// reservationID - Id of the Reservation Item
+// options - ReservationClientBeginAvailableScopesOptions contains the optional parameters for the ReservationClient.BeginAvailableScopes
+// method.
+func (client *ReservationClient) BeginAvailableScopes(ctx context.Context, reservationOrderID string, reservationID string, body AvailableScopeRequest, options *ReservationClientBeginAvailableScopesOptions) (ReservationClientAvailableScopesPollerResponse, error) {
 	resp, err := client.availableScopes(ctx, reservationOrderID, reservationID, body, options)
 	if err != nil {
-		return ReservationAvailableScopesPollerResponse{}, err
+		return ReservationClientAvailableScopesPollerResponse{}, err
 	}
-	result := ReservationAvailableScopesPollerResponse{
+	result := ReservationClientAvailableScopesPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ReservationClient.AvailableScopes", "", resp, client.pl, client.availableScopesHandleError)
+	pt, err := armruntime.NewPoller("ReservationClient.AvailableScopes", "", resp, client.pl)
 	if err != nil {
-		return ReservationAvailableScopesPollerResponse{}, err
+		return ReservationClientAvailableScopesPollerResponse{}, err
 	}
-	result.Poller = &ReservationAvailableScopesPoller{
+	result.Poller = &ReservationClientAvailableScopesPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // AvailableScopes - Get Available Scopes for Reservation.
-// If the operation fails it returns the *Error error type.
-func (client *ReservationClient) availableScopes(ctx context.Context, reservationOrderID string, reservationID string, body AvailableScopeRequest, options *ReservationBeginAvailableScopesOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReservationClient) availableScopes(ctx context.Context, reservationOrderID string, reservationID string, body AvailableScopeRequest, options *ReservationClientBeginAvailableScopesOptions) (*http.Response, error) {
 	req, err := client.availableScopesCreateRequest(ctx, reservationOrderID, reservationID, body, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +83,13 @@ func (client *ReservationClient) availableScopes(ctx context.Context, reservatio
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return nil, client.availableScopesHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // availableScopesCreateRequest creates the AvailableScopes request.
-func (client *ReservationClient) availableScopesCreateRequest(ctx context.Context, reservationOrderID string, reservationID string, body AvailableScopeRequest, options *ReservationBeginAvailableScopesOptions) (*policy.Request, error) {
+func (client *ReservationClient) availableScopesCreateRequest(ctx context.Context, reservationOrderID string, reservationID string, body AvailableScopeRequest, options *ReservationClientBeginAvailableScopesOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}/availableScopes"
 	if reservationOrderID == "" {
 		return nil, errors.New("parameter reservationOrderID cannot be empty")
@@ -90,7 +99,7 @@ func (client *ReservationClient) availableScopesCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter reservationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{reservationId}", url.PathEscape(reservationID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -101,38 +110,28 @@ func (client *ReservationClient) availableScopesCreateRequest(ctx context.Contex
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
-// availableScopesHandleError handles the AvailableScopes error response.
-func (client *ReservationClient) availableScopesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get specific Reservation details.
-// If the operation fails it returns the *Error error type.
-func (client *ReservationClient) Get(ctx context.Context, reservationID string, reservationOrderID string, options *ReservationGetOptions) (ReservationGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// reservationID - Id of the Reservation Item
+// reservationOrderID - Order Id of the reservation
+// options - ReservationClientGetOptions contains the optional parameters for the ReservationClient.Get method.
+func (client *ReservationClient) Get(ctx context.Context, reservationID string, reservationOrderID string, options *ReservationClientGetOptions) (ReservationClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, reservationID, reservationOrderID, options)
 	if err != nil {
-		return ReservationGetResponse{}, err
+		return ReservationClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ReservationGetResponse{}, err
+		return ReservationClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ReservationGetResponse{}, client.getHandleError(resp)
+		return ReservationClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ReservationClient) getCreateRequest(ctx context.Context, reservationID string, reservationOrderID string, options *ReservationGetOptions) (*policy.Request, error) {
+func (client *ReservationClient) getCreateRequest(ctx context.Context, reservationID string, reservationOrderID string, options *ReservationClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}"
 	if reservationID == "" {
 		return nil, errors.New("parameter reservationID cannot be empty")
@@ -142,7 +141,7 @@ func (client *ReservationClient) getCreateRequest(ctx context.Context, reservati
 		return nil, errors.New("parameter reservationOrderID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{reservationOrderId}", url.PathEscape(reservationOrderID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -157,49 +156,38 @@ func (client *ReservationClient) getCreateRequest(ctx context.Context, reservati
 }
 
 // getHandleResponse handles the Get response.
-func (client *ReservationClient) getHandleResponse(resp *http.Response) (ReservationGetResponse, error) {
-	result := ReservationGetResponse{RawResponse: resp}
+func (client *ReservationClient) getHandleResponse(resp *http.Response) (ReservationClientGetResponse, error) {
+	result := ReservationClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationResponse); err != nil {
-		return ReservationGetResponse{}, runtime.NewResponseError(err, resp)
+		return ReservationClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ReservationClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List Reservations within a single ReservationOrder.
-// If the operation fails it returns the *Error error type.
-func (client *ReservationClient) List(reservationOrderID string, options *ReservationListOptions) *ReservationListPager {
-	return &ReservationListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// reservationOrderID - Order Id of the reservation
+// options - ReservationClientListOptions contains the optional parameters for the ReservationClient.List method.
+func (client *ReservationClient) List(reservationOrderID string, options *ReservationClientListOptions) *ReservationClientListPager {
+	return &ReservationClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, reservationOrderID, options)
 		},
-		advancer: func(ctx context.Context, resp ReservationListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ReservationClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ReservationList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ReservationClient) listCreateRequest(ctx context.Context, reservationOrderID string, options *ReservationListOptions) (*policy.Request, error) {
+func (client *ReservationClient) listCreateRequest(ctx context.Context, reservationOrderID string, options *ReservationClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations"
 	if reservationOrderID == "" {
 		return nil, errors.New("parameter reservationOrderID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{reservationOrderId}", url.PathEscape(reservationOrderID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -211,45 +199,34 @@ func (client *ReservationClient) listCreateRequest(ctx context.Context, reservat
 }
 
 // listHandleResponse handles the List response.
-func (client *ReservationClient) listHandleResponse(resp *http.Response) (ReservationListResponse, error) {
-	result := ReservationListResponse{RawResponse: resp}
+func (client *ReservationClient) listHandleResponse(resp *http.Response) (ReservationClientListResponse, error) {
+	result := ReservationClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationList); err != nil {
-		return ReservationListResponse{}, runtime.NewResponseError(err, resp)
+		return ReservationClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *ReservationClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListAll - List the reservations and the roll up counts of reservations group by provisioning states that the user has access to in the current tenant.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ReservationClient) ListAll(options *ReservationListAllOptions) *ReservationListAllPager {
-	return &ReservationListAllPager{
+// ListAll - List the reservations and the roll up counts of reservations group by provisioning states that the user has access
+// to in the current tenant.
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - ReservationClientListAllOptions contains the optional parameters for the ReservationClient.ListAll method.
+func (client *ReservationClient) ListAll(options *ReservationClientListAllOptions) *ReservationClientListAllPager {
+	return &ReservationClientListAllPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listAllCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp ReservationListAllResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ReservationsListResult.NextLink)
+		advancer: func(ctx context.Context, resp ReservationClientListAllResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListResult.NextLink)
 		},
 	}
 }
 
 // listAllCreateRequest creates the ListAll request.
-func (client *ReservationClient) listAllCreateRequest(ctx context.Context, options *ReservationListAllOptions) (*policy.Request, error) {
+func (client *ReservationClient) listAllCreateRequest(ctx context.Context, options *ReservationClientListAllOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Capacity/reservations"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -279,43 +256,34 @@ func (client *ReservationClient) listAllCreateRequest(ctx context.Context, optio
 }
 
 // listAllHandleResponse handles the ListAll response.
-func (client *ReservationClient) listAllHandleResponse(resp *http.Response) (ReservationListAllResponse, error) {
-	result := ReservationListAllResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationsListResult); err != nil {
-		return ReservationListAllResponse{}, runtime.NewResponseError(err, resp)
+func (client *ReservationClient) listAllHandleResponse(resp *http.Response) (ReservationClientListAllResponse, error) {
+	result := ReservationClientListAllResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ListResult); err != nil {
+		return ReservationClientListAllResponse{}, err
 	}
 	return result, nil
 }
 
-// listAllHandleError handles the ListAll error response.
-func (client *ReservationClient) listAllHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListRevisions - List of all the revisions for the Reservation.
-// If the operation fails it returns the *Error error type.
-func (client *ReservationClient) ListRevisions(reservationID string, reservationOrderID string, options *ReservationListRevisionsOptions) *ReservationListRevisionsPager {
-	return &ReservationListRevisionsPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// reservationID - Id of the Reservation Item
+// reservationOrderID - Order Id of the reservation
+// options - ReservationClientListRevisionsOptions contains the optional parameters for the ReservationClient.ListRevisions
+// method.
+func (client *ReservationClient) ListRevisions(reservationID string, reservationOrderID string, options *ReservationClientListRevisionsOptions) *ReservationClientListRevisionsPager {
+	return &ReservationClientListRevisionsPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listRevisionsCreateRequest(ctx, reservationID, reservationOrderID, options)
 		},
-		advancer: func(ctx context.Context, resp ReservationListRevisionsResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ReservationClientListRevisionsResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ReservationList.NextLink)
 		},
 	}
 }
 
 // listRevisionsCreateRequest creates the ListRevisions request.
-func (client *ReservationClient) listRevisionsCreateRequest(ctx context.Context, reservationID string, reservationOrderID string, options *ReservationListRevisionsOptions) (*policy.Request, error) {
+func (client *ReservationClient) listRevisionsCreateRequest(ctx context.Context, reservationID string, reservationOrderID string, options *ReservationClientListRevisionsOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}/revisions"
 	if reservationID == "" {
 		return nil, errors.New("parameter reservationID cannot be empty")
@@ -325,7 +293,7 @@ func (client *ReservationClient) listRevisionsCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter reservationOrderID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{reservationOrderId}", url.PathEscape(reservationOrderID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -337,50 +305,41 @@ func (client *ReservationClient) listRevisionsCreateRequest(ctx context.Context,
 }
 
 // listRevisionsHandleResponse handles the ListRevisions response.
-func (client *ReservationClient) listRevisionsHandleResponse(resp *http.Response) (ReservationListRevisionsResponse, error) {
-	result := ReservationListRevisionsResponse{RawResponse: resp}
+func (client *ReservationClient) listRevisionsHandleResponse(resp *http.Response) (ReservationClientListRevisionsResponse, error) {
+	result := ReservationClientListRevisionsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationList); err != nil {
-		return ReservationListRevisionsResponse{}, runtime.NewResponseError(err, resp)
+		return ReservationClientListRevisionsResponse{}, err
 	}
 	return result, nil
 }
 
-// listRevisionsHandleError handles the ListRevisions error response.
-func (client *ReservationClient) listRevisionsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginMerge - Merge the specified Reservations into a new Reservation. The two Reservations being merged must have same properties.
-// If the operation fails it returns the *Error error type.
-func (client *ReservationClient) BeginMerge(ctx context.Context, reservationOrderID string, body MergeRequest, options *ReservationBeginMergeOptions) (ReservationMergePollerResponse, error) {
+// BeginMerge - Merge the specified Reservations into a new Reservation. The two Reservations being merged must have same
+// properties.
+// If the operation fails it returns an *azcore.ResponseError type.
+// reservationOrderID - Order Id of the reservation
+// body - Information needed for commercial request for a reservation
+// options - ReservationClientBeginMergeOptions contains the optional parameters for the ReservationClient.BeginMerge method.
+func (client *ReservationClient) BeginMerge(ctx context.Context, reservationOrderID string, body MergeRequest, options *ReservationClientBeginMergeOptions) (ReservationClientMergePollerResponse, error) {
 	resp, err := client.merge(ctx, reservationOrderID, body, options)
 	if err != nil {
-		return ReservationMergePollerResponse{}, err
+		return ReservationClientMergePollerResponse{}, err
 	}
-	result := ReservationMergePollerResponse{
+	result := ReservationClientMergePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ReservationClient.Merge", "location", resp, client.pl, client.mergeHandleError)
+	pt, err := armruntime.NewPoller("ReservationClient.Merge", "location", resp, client.pl)
 	if err != nil {
-		return ReservationMergePollerResponse{}, err
+		return ReservationClientMergePollerResponse{}, err
 	}
-	result.Poller = &ReservationMergePoller{
+	result.Poller = &ReservationClientMergePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Merge - Merge the specified Reservations into a new Reservation. The two Reservations being merged must have same properties.
-// If the operation fails it returns the *Error error type.
-func (client *ReservationClient) merge(ctx context.Context, reservationOrderID string, body MergeRequest, options *ReservationBeginMergeOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReservationClient) merge(ctx context.Context, reservationOrderID string, body MergeRequest, options *ReservationClientBeginMergeOptions) (*http.Response, error) {
 	req, err := client.mergeCreateRequest(ctx, reservationOrderID, body, options)
 	if err != nil {
 		return nil, err
@@ -390,19 +349,19 @@ func (client *ReservationClient) merge(ctx context.Context, reservationOrderID s
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.mergeHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // mergeCreateRequest creates the Merge request.
-func (client *ReservationClient) mergeCreateRequest(ctx context.Context, reservationOrderID string, body MergeRequest, options *ReservationBeginMergeOptions) (*policy.Request, error) {
+func (client *ReservationClient) mergeCreateRequest(ctx context.Context, reservationOrderID string, body MergeRequest, options *ReservationClientBeginMergeOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/merge"
 	if reservationOrderID == "" {
 		return nil, errors.New("parameter reservationOrderID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{reservationOrderId}", url.PathEscape(reservationOrderID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -413,42 +372,32 @@ func (client *ReservationClient) mergeCreateRequest(ctx context.Context, reserva
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
-// mergeHandleError handles the Merge error response.
-func (client *ReservationClient) mergeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginSplit - Split a Reservation into two Reservations with specified quantity distribution.
-// If the operation fails it returns the *Error error type.
-func (client *ReservationClient) BeginSplit(ctx context.Context, reservationOrderID string, body SplitRequest, options *ReservationBeginSplitOptions) (ReservationSplitPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// reservationOrderID - Order Id of the reservation
+// body - Information needed to Split a reservation item
+// options - ReservationClientBeginSplitOptions contains the optional parameters for the ReservationClient.BeginSplit method.
+func (client *ReservationClient) BeginSplit(ctx context.Context, reservationOrderID string, body SplitRequest, options *ReservationClientBeginSplitOptions) (ReservationClientSplitPollerResponse, error) {
 	resp, err := client.split(ctx, reservationOrderID, body, options)
 	if err != nil {
-		return ReservationSplitPollerResponse{}, err
+		return ReservationClientSplitPollerResponse{}, err
 	}
-	result := ReservationSplitPollerResponse{
+	result := ReservationClientSplitPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ReservationClient.Split", "location", resp, client.pl, client.splitHandleError)
+	pt, err := armruntime.NewPoller("ReservationClient.Split", "location", resp, client.pl)
 	if err != nil {
-		return ReservationSplitPollerResponse{}, err
+		return ReservationClientSplitPollerResponse{}, err
 	}
-	result.Poller = &ReservationSplitPoller{
+	result.Poller = &ReservationClientSplitPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Split - Split a Reservation into two Reservations with specified quantity distribution.
-// If the operation fails it returns the *Error error type.
-func (client *ReservationClient) split(ctx context.Context, reservationOrderID string, body SplitRequest, options *ReservationBeginSplitOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReservationClient) split(ctx context.Context, reservationOrderID string, body SplitRequest, options *ReservationClientBeginSplitOptions) (*http.Response, error) {
 	req, err := client.splitCreateRequest(ctx, reservationOrderID, body, options)
 	if err != nil {
 		return nil, err
@@ -458,19 +407,19 @@ func (client *ReservationClient) split(ctx context.Context, reservationOrderID s
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.splitHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // splitCreateRequest creates the Split request.
-func (client *ReservationClient) splitCreateRequest(ctx context.Context, reservationOrderID string, body SplitRequest, options *ReservationBeginSplitOptions) (*policy.Request, error) {
+func (client *ReservationClient) splitCreateRequest(ctx context.Context, reservationOrderID string, body SplitRequest, options *ReservationClientBeginSplitOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/split"
 	if reservationOrderID == "" {
 		return nil, errors.New("parameter reservationOrderID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{reservationOrderId}", url.PathEscape(reservationOrderID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -481,42 +430,33 @@ func (client *ReservationClient) splitCreateRequest(ctx context.Context, reserva
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
-// splitHandleError handles the Split error response.
-func (client *ReservationClient) splitHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginUpdate - Updates the applied scopes of the Reservation.
-// If the operation fails it returns the *Error error type.
-func (client *ReservationClient) BeginUpdate(ctx context.Context, reservationOrderID string, reservationID string, parameters Patch, options *ReservationBeginUpdateOptions) (ReservationUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// reservationOrderID - Order Id of the reservation
+// reservationID - Id of the Reservation Item
+// parameters - Information needed to patch a reservation item
+// options - ReservationClientBeginUpdateOptions contains the optional parameters for the ReservationClient.BeginUpdate method.
+func (client *ReservationClient) BeginUpdate(ctx context.Context, reservationOrderID string, reservationID string, parameters Patch, options *ReservationClientBeginUpdateOptions) (ReservationClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, reservationOrderID, reservationID, parameters, options)
 	if err != nil {
-		return ReservationUpdatePollerResponse{}, err
+		return ReservationClientUpdatePollerResponse{}, err
 	}
-	result := ReservationUpdatePollerResponse{
+	result := ReservationClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ReservationClient.Update", "", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("ReservationClient.Update", "", resp, client.pl)
 	if err != nil {
-		return ReservationUpdatePollerResponse{}, err
+		return ReservationClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &ReservationUpdatePoller{
+	result.Poller = &ReservationClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Updates the applied scopes of the Reservation.
-// If the operation fails it returns the *Error error type.
-func (client *ReservationClient) update(ctx context.Context, reservationOrderID string, reservationID string, parameters Patch, options *ReservationBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReservationClient) update(ctx context.Context, reservationOrderID string, reservationID string, parameters Patch, options *ReservationClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, reservationOrderID, reservationID, parameters, options)
 	if err != nil {
 		return nil, err
@@ -526,13 +466,13 @@ func (client *ReservationClient) update(ctx context.Context, reservationOrderID 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ReservationClient) updateCreateRequest(ctx context.Context, reservationOrderID string, reservationID string, parameters Patch, options *ReservationBeginUpdateOptions) (*policy.Request, error) {
+func (client *ReservationClient) updateCreateRequest(ctx context.Context, reservationOrderID string, reservationID string, parameters Patch, options *ReservationClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}"
 	if reservationOrderID == "" {
 		return nil, errors.New("parameter reservationOrderID cannot be empty")
@@ -542,7 +482,7 @@ func (client *ReservationClient) updateCreateRequest(ctx context.Context, reserv
 		return nil, errors.New("parameter reservationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{reservationId}", url.PathEscape(reservationID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -551,17 +491,4 @@ func (client *ReservationClient) updateCreateRequest(ctx context.Context, reserv
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
-}
-
-// updateHandleError handles the Update error response.
-func (client *ReservationClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

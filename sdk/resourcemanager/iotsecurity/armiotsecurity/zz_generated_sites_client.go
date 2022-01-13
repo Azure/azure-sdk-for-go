@@ -10,7 +10,6 @@ package armiotsecurity
 
 import (
 	"context"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -23,44 +22,53 @@ import (
 // SitesClient contains the methods for the Sites group.
 // Don't use this type directly, use NewSitesClient() instead.
 type SitesClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewSitesClient creates a new instance of SitesClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSitesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *SitesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SitesClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SitesClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Create or update IoT site
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SitesClient) CreateOrUpdate(ctx context.Context, scope string, siteModel SiteModel, options *SitesCreateOrUpdateOptions) (SitesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - Scope of the query (IoT Hub, /providers/Microsoft.Devices/iotHubs/myHub)
+// siteModel - The IoT sites model
+// options - SitesClientCreateOrUpdateOptions contains the optional parameters for the SitesClient.CreateOrUpdate method.
+func (client *SitesClient) CreateOrUpdate(ctx context.Context, scope string, siteModel SiteModel, options *SitesClientCreateOrUpdateOptions) (SitesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, scope, siteModel, options)
 	if err != nil {
-		return SitesCreateOrUpdateResponse{}, err
+		return SitesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SitesCreateOrUpdateResponse{}, err
+		return SitesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return SitesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return SitesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SitesClient) createOrUpdateCreateRequest(ctx context.Context, scope string, siteModel SiteModel, options *SitesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *SitesClient) createOrUpdateCreateRequest(ctx context.Context, scope string, siteModel SiteModel, options *SitesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.IoTSecurity/sites/default"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -72,49 +80,38 @@ func (client *SitesClient) createOrUpdateCreateRequest(ctx context.Context, scop
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *SitesClient) createOrUpdateHandleResponse(resp *http.Response) (SitesCreateOrUpdateResponse, error) {
-	result := SitesCreateOrUpdateResponse{RawResponse: resp}
+func (client *SitesClient) createOrUpdateHandleResponse(resp *http.Response) (SitesClientCreateOrUpdateResponse, error) {
+	result := SitesClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteModel); err != nil {
-		return SitesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return SitesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *SitesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete IoT site
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SitesClient) Delete(ctx context.Context, scope string, options *SitesDeleteOptions) (SitesDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - Scope of the query (IoT Hub, /providers/Microsoft.Devices/iotHubs/myHub)
+// options - SitesClientDeleteOptions contains the optional parameters for the SitesClient.Delete method.
+func (client *SitesClient) Delete(ctx context.Context, scope string, options *SitesClientDeleteOptions) (SitesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, scope, options)
 	if err != nil {
-		return SitesDeleteResponse{}, err
+		return SitesClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SitesDeleteResponse{}, err
+		return SitesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return SitesDeleteResponse{}, client.deleteHandleError(resp)
+		return SitesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return SitesDeleteResponse{RawResponse: resp}, nil
+	return SitesClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SitesClient) deleteCreateRequest(ctx context.Context, scope string, options *SitesDeleteOptions) (*policy.Request, error) {
+func (client *SitesClient) deleteCreateRequest(ctx context.Context, scope string, options *SitesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.IoTSecurity/sites/default"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -125,41 +122,30 @@ func (client *SitesClient) deleteCreateRequest(ctx context.Context, scope string
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *SitesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get IoT site
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SitesClient) Get(ctx context.Context, scope string, options *SitesGetOptions) (SitesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - Scope of the query (IoT Hub, /providers/Microsoft.Devices/iotHubs/myHub)
+// options - SitesClientGetOptions contains the optional parameters for the SitesClient.Get method.
+func (client *SitesClient) Get(ctx context.Context, scope string, options *SitesClientGetOptions) (SitesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, scope, options)
 	if err != nil {
-		return SitesGetResponse{}, err
+		return SitesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SitesGetResponse{}, err
+		return SitesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SitesGetResponse{}, client.getHandleError(resp)
+		return SitesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SitesClient) getCreateRequest(ctx context.Context, scope string, options *SitesGetOptions) (*policy.Request, error) {
+func (client *SitesClient) getCreateRequest(ctx context.Context, scope string, options *SitesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.IoTSecurity/sites/default"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -171,49 +157,38 @@ func (client *SitesClient) getCreateRequest(ctx context.Context, scope string, o
 }
 
 // getHandleResponse handles the Get response.
-func (client *SitesClient) getHandleResponse(resp *http.Response) (SitesGetResponse, error) {
-	result := SitesGetResponse{RawResponse: resp}
+func (client *SitesClient) getHandleResponse(resp *http.Response) (SitesClientGetResponse, error) {
+	result := SitesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteModel); err != nil {
-		return SitesGetResponse{}, runtime.NewResponseError(err, resp)
+		return SitesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *SitesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List IoT sites
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SitesClient) List(ctx context.Context, scope string, options *SitesListOptions) (SitesListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - Scope of the query (IoT Hub, /providers/Microsoft.Devices/iotHubs/myHub)
+// options - SitesClientListOptions contains the optional parameters for the SitesClient.List method.
+func (client *SitesClient) List(ctx context.Context, scope string, options *SitesClientListOptions) (SitesClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, scope, options)
 	if err != nil {
-		return SitesListResponse{}, err
+		return SitesClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SitesListResponse{}, err
+		return SitesClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SitesListResponse{}, client.listHandleError(resp)
+		return SitesClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *SitesClient) listCreateRequest(ctx context.Context, scope string, options *SitesListOptions) (*policy.Request, error) {
+func (client *SitesClient) listCreateRequest(ctx context.Context, scope string, options *SitesClientListOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.IoTSecurity/sites"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -225,23 +200,10 @@ func (client *SitesClient) listCreateRequest(ctx context.Context, scope string, 
 }
 
 // listHandleResponse handles the List response.
-func (client *SitesClient) listHandleResponse(resp *http.Response) (SitesListResponse, error) {
-	result := SitesListResponse{RawResponse: resp}
+func (client *SitesClient) listHandleResponse(resp *http.Response) (SitesClientListResponse, error) {
+	result := SitesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SitesList); err != nil {
-		return SitesListResponse{}, runtime.NewResponseError(err, resp)
+		return SitesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *SitesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -15,22 +15,22 @@ import (
 	"time"
 )
 
-// JobCollectionsCreateOrUpdateResponse contains the response from method JobCollections.CreateOrUpdate.
-type JobCollectionsCreateOrUpdateResponse struct {
-	JobCollectionsCreateOrUpdateResult
+// JobCollectionsClientCreateOrUpdateResponse contains the response from method JobCollectionsClient.CreateOrUpdate.
+type JobCollectionsClientCreateOrUpdateResponse struct {
+	JobCollectionsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobCollectionsCreateOrUpdateResult contains the result from method JobCollections.CreateOrUpdate.
-type JobCollectionsCreateOrUpdateResult struct {
+// JobCollectionsClientCreateOrUpdateResult contains the result from method JobCollectionsClient.CreateOrUpdate.
+type JobCollectionsClientCreateOrUpdateResult struct {
 	JobCollectionDefinition
 }
 
-// JobCollectionsDeletePollerResponse contains the response from method JobCollections.Delete.
-type JobCollectionsDeletePollerResponse struct {
+// JobCollectionsClientDeletePollerResponse contains the response from method JobCollectionsClient.Delete.
+type JobCollectionsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *JobCollectionsDeletePoller
+	Poller *JobCollectionsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -39,8 +39,8 @@ type JobCollectionsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l JobCollectionsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (JobCollectionsDeleteResponse, error) {
-	respType := JobCollectionsDeleteResponse{}
+func (l JobCollectionsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (JobCollectionsClientDeleteResponse, error) {
+	respType := JobCollectionsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -49,13 +49,13 @@ func (l JobCollectionsDeletePollerResponse) PollUntilDone(ctx context.Context, f
 	return respType, nil
 }
 
-// Resume rehydrates a JobCollectionsDeletePollerResponse from the provided client and resume token.
-func (l *JobCollectionsDeletePollerResponse) Resume(ctx context.Context, client *JobCollectionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("JobCollectionsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a JobCollectionsClientDeletePollerResponse from the provided client and resume token.
+func (l *JobCollectionsClientDeletePollerResponse) Resume(ctx context.Context, client *JobCollectionsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("JobCollectionsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &JobCollectionsDeletePoller{
+	poller := &JobCollectionsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -67,16 +67,16 @@ func (l *JobCollectionsDeletePollerResponse) Resume(ctx context.Context, client 
 	return nil
 }
 
-// JobCollectionsDeleteResponse contains the response from method JobCollections.Delete.
-type JobCollectionsDeleteResponse struct {
+// JobCollectionsClientDeleteResponse contains the response from method JobCollectionsClient.Delete.
+type JobCollectionsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobCollectionsDisablePollerResponse contains the response from method JobCollections.Disable.
-type JobCollectionsDisablePollerResponse struct {
+// JobCollectionsClientDisablePollerResponse contains the response from method JobCollectionsClient.Disable.
+type JobCollectionsClientDisablePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *JobCollectionsDisablePoller
+	Poller *JobCollectionsClientDisablePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -85,8 +85,8 @@ type JobCollectionsDisablePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l JobCollectionsDisablePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (JobCollectionsDisableResponse, error) {
-	respType := JobCollectionsDisableResponse{}
+func (l JobCollectionsClientDisablePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (JobCollectionsClientDisableResponse, error) {
+	respType := JobCollectionsClientDisableResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -95,13 +95,13 @@ func (l JobCollectionsDisablePollerResponse) PollUntilDone(ctx context.Context, 
 	return respType, nil
 }
 
-// Resume rehydrates a JobCollectionsDisablePollerResponse from the provided client and resume token.
-func (l *JobCollectionsDisablePollerResponse) Resume(ctx context.Context, client *JobCollectionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("JobCollectionsClient.Disable", token, client.pl, client.disableHandleError)
+// Resume rehydrates a JobCollectionsClientDisablePollerResponse from the provided client and resume token.
+func (l *JobCollectionsClientDisablePollerResponse) Resume(ctx context.Context, client *JobCollectionsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("JobCollectionsClient.Disable", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &JobCollectionsDisablePoller{
+	poller := &JobCollectionsClientDisablePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -113,16 +113,16 @@ func (l *JobCollectionsDisablePollerResponse) Resume(ctx context.Context, client
 	return nil
 }
 
-// JobCollectionsDisableResponse contains the response from method JobCollections.Disable.
-type JobCollectionsDisableResponse struct {
+// JobCollectionsClientDisableResponse contains the response from method JobCollectionsClient.Disable.
+type JobCollectionsClientDisableResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobCollectionsEnablePollerResponse contains the response from method JobCollections.Enable.
-type JobCollectionsEnablePollerResponse struct {
+// JobCollectionsClientEnablePollerResponse contains the response from method JobCollectionsClient.Enable.
+type JobCollectionsClientEnablePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *JobCollectionsEnablePoller
+	Poller *JobCollectionsClientEnablePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -131,8 +131,8 @@ type JobCollectionsEnablePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l JobCollectionsEnablePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (JobCollectionsEnableResponse, error) {
-	respType := JobCollectionsEnableResponse{}
+func (l JobCollectionsClientEnablePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (JobCollectionsClientEnableResponse, error) {
+	respType := JobCollectionsClientEnableResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -141,13 +141,13 @@ func (l JobCollectionsEnablePollerResponse) PollUntilDone(ctx context.Context, f
 	return respType, nil
 }
 
-// Resume rehydrates a JobCollectionsEnablePollerResponse from the provided client and resume token.
-func (l *JobCollectionsEnablePollerResponse) Resume(ctx context.Context, client *JobCollectionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("JobCollectionsClient.Enable", token, client.pl, client.enableHandleError)
+// Resume rehydrates a JobCollectionsClientEnablePollerResponse from the provided client and resume token.
+func (l *JobCollectionsClientEnablePollerResponse) Resume(ctx context.Context, client *JobCollectionsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("JobCollectionsClient.Enable", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &JobCollectionsEnablePoller{
+	poller := &JobCollectionsClientEnablePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -159,128 +159,128 @@ func (l *JobCollectionsEnablePollerResponse) Resume(ctx context.Context, client 
 	return nil
 }
 
-// JobCollectionsEnableResponse contains the response from method JobCollections.Enable.
-type JobCollectionsEnableResponse struct {
+// JobCollectionsClientEnableResponse contains the response from method JobCollectionsClient.Enable.
+type JobCollectionsClientEnableResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobCollectionsGetResponse contains the response from method JobCollections.Get.
-type JobCollectionsGetResponse struct {
-	JobCollectionsGetResult
+// JobCollectionsClientGetResponse contains the response from method JobCollectionsClient.Get.
+type JobCollectionsClientGetResponse struct {
+	JobCollectionsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobCollectionsGetResult contains the result from method JobCollections.Get.
-type JobCollectionsGetResult struct {
+// JobCollectionsClientGetResult contains the result from method JobCollectionsClient.Get.
+type JobCollectionsClientGetResult struct {
 	JobCollectionDefinition
 }
 
-// JobCollectionsListByResourceGroupResponse contains the response from method JobCollections.ListByResourceGroup.
-type JobCollectionsListByResourceGroupResponse struct {
-	JobCollectionsListByResourceGroupResult
+// JobCollectionsClientListByResourceGroupResponse contains the response from method JobCollectionsClient.ListByResourceGroup.
+type JobCollectionsClientListByResourceGroupResponse struct {
+	JobCollectionsClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobCollectionsListByResourceGroupResult contains the result from method JobCollections.ListByResourceGroup.
-type JobCollectionsListByResourceGroupResult struct {
+// JobCollectionsClientListByResourceGroupResult contains the result from method JobCollectionsClient.ListByResourceGroup.
+type JobCollectionsClientListByResourceGroupResult struct {
 	JobCollectionListResult
 }
 
-// JobCollectionsListBySubscriptionResponse contains the response from method JobCollections.ListBySubscription.
-type JobCollectionsListBySubscriptionResponse struct {
-	JobCollectionsListBySubscriptionResult
+// JobCollectionsClientListBySubscriptionResponse contains the response from method JobCollectionsClient.ListBySubscription.
+type JobCollectionsClientListBySubscriptionResponse struct {
+	JobCollectionsClientListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobCollectionsListBySubscriptionResult contains the result from method JobCollections.ListBySubscription.
-type JobCollectionsListBySubscriptionResult struct {
+// JobCollectionsClientListBySubscriptionResult contains the result from method JobCollectionsClient.ListBySubscription.
+type JobCollectionsClientListBySubscriptionResult struct {
 	JobCollectionListResult
 }
 
-// JobCollectionsPatchResponse contains the response from method JobCollections.Patch.
-type JobCollectionsPatchResponse struct {
-	JobCollectionsPatchResult
+// JobCollectionsClientPatchResponse contains the response from method JobCollectionsClient.Patch.
+type JobCollectionsClientPatchResponse struct {
+	JobCollectionsClientPatchResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobCollectionsPatchResult contains the result from method JobCollections.Patch.
-type JobCollectionsPatchResult struct {
+// JobCollectionsClientPatchResult contains the result from method JobCollectionsClient.Patch.
+type JobCollectionsClientPatchResult struct {
 	JobCollectionDefinition
 }
 
-// JobsCreateOrUpdateResponse contains the response from method Jobs.CreateOrUpdate.
-type JobsCreateOrUpdateResponse struct {
-	JobsCreateOrUpdateResult
+// JobsClientCreateOrUpdateResponse contains the response from method JobsClient.CreateOrUpdate.
+type JobsClientCreateOrUpdateResponse struct {
+	JobsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobsCreateOrUpdateResult contains the result from method Jobs.CreateOrUpdate.
-type JobsCreateOrUpdateResult struct {
+// JobsClientCreateOrUpdateResult contains the result from method JobsClient.CreateOrUpdate.
+type JobsClientCreateOrUpdateResult struct {
 	JobDefinition
 }
 
-// JobsDeleteResponse contains the response from method Jobs.Delete.
-type JobsDeleteResponse struct {
+// JobsClientDeleteResponse contains the response from method JobsClient.Delete.
+type JobsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobsGetResponse contains the response from method Jobs.Get.
-type JobsGetResponse struct {
-	JobsGetResult
+// JobsClientGetResponse contains the response from method JobsClient.Get.
+type JobsClientGetResponse struct {
+	JobsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobsGetResult contains the result from method Jobs.Get.
-type JobsGetResult struct {
+// JobsClientGetResult contains the result from method JobsClient.Get.
+type JobsClientGetResult struct {
 	JobDefinition
 }
 
-// JobsListJobHistoryResponse contains the response from method Jobs.ListJobHistory.
-type JobsListJobHistoryResponse struct {
-	JobsListJobHistoryResult
+// JobsClientListJobHistoryResponse contains the response from method JobsClient.ListJobHistory.
+type JobsClientListJobHistoryResponse struct {
+	JobsClientListJobHistoryResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobsListJobHistoryResult contains the result from method Jobs.ListJobHistory.
-type JobsListJobHistoryResult struct {
+// JobsClientListJobHistoryResult contains the result from method JobsClient.ListJobHistory.
+type JobsClientListJobHistoryResult struct {
 	JobHistoryListResult
 }
 
-// JobsListResponse contains the response from method Jobs.List.
-type JobsListResponse struct {
-	JobsListResult
+// JobsClientListResponse contains the response from method JobsClient.List.
+type JobsClientListResponse struct {
+	JobsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobsListResult contains the result from method Jobs.List.
-type JobsListResult struct {
+// JobsClientListResult contains the result from method JobsClient.List.
+type JobsClientListResult struct {
 	JobListResult
 }
 
-// JobsPatchResponse contains the response from method Jobs.Patch.
-type JobsPatchResponse struct {
-	JobsPatchResult
+// JobsClientPatchResponse contains the response from method JobsClient.Patch.
+type JobsClientPatchResponse struct {
+	JobsClientPatchResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobsPatchResult contains the result from method Jobs.Patch.
-type JobsPatchResult struct {
+// JobsClientPatchResult contains the result from method JobsClient.Patch.
+type JobsClientPatchResult struct {
 	JobDefinition
 }
 
-// JobsRunResponse contains the response from method Jobs.Run.
-type JobsRunResponse struct {
+// JobsClientRunResponse contains the response from method JobsClient.Run.
+type JobsClientRunResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }

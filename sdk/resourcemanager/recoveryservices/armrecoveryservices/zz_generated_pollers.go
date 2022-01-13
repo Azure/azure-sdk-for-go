@@ -14,13 +14,13 @@ import (
 	"net/http"
 )
 
-// VaultsCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
-type VaultsCreateOrUpdatePoller struct {
+// VaultsClientCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type VaultsClientCreateOrUpdatePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *VaultsCreateOrUpdatePoller) Done() bool {
+func (p *VaultsClientCreateOrUpdatePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -34,18 +34,18 @@ func (p *VaultsCreateOrUpdatePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *VaultsCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *VaultsClientCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final VaultsCreateOrUpdateResponse will be returned.
-func (p *VaultsCreateOrUpdatePoller) FinalResponse(ctx context.Context) (VaultsCreateOrUpdateResponse, error) {
-	respType := VaultsCreateOrUpdateResponse{}
+// If the final GET succeeded then the final VaultsClientCreateOrUpdateResponse will be returned.
+func (p *VaultsClientCreateOrUpdatePoller) FinalResponse(ctx context.Context) (VaultsClientCreateOrUpdateResponse, error) {
+	respType := VaultsClientCreateOrUpdateResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.Vault)
 	if err != nil {
-		return VaultsCreateOrUpdateResponse{}, err
+		return VaultsClientCreateOrUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -53,17 +53,17 @@ func (p *VaultsCreateOrUpdatePoller) FinalResponse(ctx context.Context) (VaultsC
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *VaultsCreateOrUpdatePoller) ResumeToken() (string, error) {
+func (p *VaultsClientCreateOrUpdatePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-// VaultsUpdatePoller provides polling facilities until the operation reaches a terminal state.
-type VaultsUpdatePoller struct {
+// VaultsClientUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type VaultsClientUpdatePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *VaultsUpdatePoller) Done() bool {
+func (p *VaultsClientUpdatePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -77,18 +77,18 @@ func (p *VaultsUpdatePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *VaultsUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *VaultsClientUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final VaultsUpdateResponse will be returned.
-func (p *VaultsUpdatePoller) FinalResponse(ctx context.Context) (VaultsUpdateResponse, error) {
-	respType := VaultsUpdateResponse{}
+// If the final GET succeeded then the final VaultsClientUpdateResponse will be returned.
+func (p *VaultsClientUpdatePoller) FinalResponse(ctx context.Context) (VaultsClientUpdateResponse, error) {
+	respType := VaultsClientUpdateResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.Vault)
 	if err != nil {
-		return VaultsUpdateResponse{}, err
+		return VaultsClientUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -96,6 +96,6 @@ func (p *VaultsUpdatePoller) FinalResponse(ctx context.Context) (VaultsUpdateRes
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *VaultsUpdatePoller) ResumeToken() (string, error) {
+func (p *VaultsClientUpdatePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }

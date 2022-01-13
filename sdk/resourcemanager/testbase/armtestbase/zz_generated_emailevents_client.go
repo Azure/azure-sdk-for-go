@@ -11,7 +11,6 @@ package armtestbase
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,54 @@ import (
 // EmailEventsClient contains the methods for the EmailEvents group.
 // Don't use this type directly, use NewEmailEventsClient() instead.
 type EmailEventsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewEmailEventsClient creates a new instance of EmailEventsClient with the specified values.
+// subscriptionID - The Azure subscription ID. This is a GUID-formatted string.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewEmailEventsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *EmailEventsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &EmailEventsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &EmailEventsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets a email event of a Test Base Account.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *EmailEventsClient) Get(ctx context.Context, resourceGroupName string, testBaseAccountName string, emailEventResourceName string, options *EmailEventsGetOptions) (EmailEventsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource.
+// testBaseAccountName - The resource name of the Test Base Account.
+// emailEventResourceName - The resource name of an email event.
+// options - EmailEventsClientGetOptions contains the optional parameters for the EmailEventsClient.Get method.
+func (client *EmailEventsClient) Get(ctx context.Context, resourceGroupName string, testBaseAccountName string, emailEventResourceName string, options *EmailEventsClientGetOptions) (EmailEventsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, testBaseAccountName, emailEventResourceName, options)
 	if err != nil {
-		return EmailEventsGetResponse{}, err
+		return EmailEventsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return EmailEventsGetResponse{}, err
+		return EmailEventsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return EmailEventsGetResponse{}, client.getHandleError(resp)
+		return EmailEventsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *EmailEventsClient) getCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, emailEventResourceName string, options *EmailEventsGetOptions) (*policy.Request, error) {
+func (client *EmailEventsClient) getCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, emailEventResourceName string, options *EmailEventsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/emailEvents/{emailEventResourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +89,7 @@ func (client *EmailEventsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter emailEventResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{emailEventResourceName}", url.PathEscape(emailEventResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,43 +101,33 @@ func (client *EmailEventsClient) getCreateRequest(ctx context.Context, resourceG
 }
 
 // getHandleResponse handles the Get response.
-func (client *EmailEventsClient) getHandleResponse(resp *http.Response) (EmailEventsGetResponse, error) {
-	result := EmailEventsGetResponse{RawResponse: resp}
+func (client *EmailEventsClient) getHandleResponse(resp *http.Response) (EmailEventsClientGetResponse, error) {
+	result := EmailEventsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EmailEventResource); err != nil {
-		return EmailEventsGetResponse{}, runtime.NewResponseError(err, resp)
+		return EmailEventsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *EmailEventsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Lists all the email events of a Test Base Account.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *EmailEventsClient) List(resourceGroupName string, testBaseAccountName string, options *EmailEventsListOptions) *EmailEventsListPager {
-	return &EmailEventsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource.
+// testBaseAccountName - The resource name of the Test Base Account.
+// options - EmailEventsClientListOptions contains the optional parameters for the EmailEventsClient.List method.
+func (client *EmailEventsClient) List(resourceGroupName string, testBaseAccountName string, options *EmailEventsClientListOptions) *EmailEventsClientListPager {
+	return &EmailEventsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, testBaseAccountName, options)
 		},
-		advancer: func(ctx context.Context, resp EmailEventsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp EmailEventsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.EmailEventListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *EmailEventsClient) listCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, options *EmailEventsListOptions) (*policy.Request, error) {
+func (client *EmailEventsClient) listCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, options *EmailEventsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/emailEvents"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -140,7 +141,7 @@ func (client *EmailEventsClient) listCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter testBaseAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{testBaseAccountName}", url.PathEscape(testBaseAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -152,23 +153,10 @@ func (client *EmailEventsClient) listCreateRequest(ctx context.Context, resource
 }
 
 // listHandleResponse handles the List response.
-func (client *EmailEventsClient) listHandleResponse(resp *http.Response) (EmailEventsListResponse, error) {
-	result := EmailEventsListResponse{RawResponse: resp}
+func (client *EmailEventsClient) listHandleResponse(resp *http.Response) (EmailEventsClientListResponse, error) {
+	result := EmailEventsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EmailEventListResult); err != nil {
-		return EmailEventsListResponse{}, runtime.NewResponseError(err, resp)
+		return EmailEventsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *EmailEventsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

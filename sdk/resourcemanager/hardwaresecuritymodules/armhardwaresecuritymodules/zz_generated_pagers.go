@@ -16,23 +16,23 @@ import (
 	"reflect"
 )
 
-// DedicatedHsmListByResourceGroupPager provides operations for iterating over paged responses.
-type DedicatedHsmListByResourceGroupPager struct {
+// DedicatedHsmClientListByResourceGroupPager provides operations for iterating over paged responses.
+type DedicatedHsmClientListByResourceGroupPager struct {
 	client    *DedicatedHsmClient
-	current   DedicatedHsmListByResourceGroupResponse
+	current   DedicatedHsmClientListByResourceGroupResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, DedicatedHsmListByResourceGroupResponse) (*policy.Request, error)
+	advancer  func(context.Context, DedicatedHsmClientListByResourceGroupResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *DedicatedHsmListByResourceGroupPager) Err() error {
+func (p *DedicatedHsmClientListByResourceGroupPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *DedicatedHsmListByResourceGroupPager) NextPage(ctx context.Context) bool {
+func (p *DedicatedHsmClientListByResourceGroupPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -53,7 +53,7 @@ func (p *DedicatedHsmListByResourceGroupPager) NextPage(ctx context.Context) boo
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByResourceGroupHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByResourceGroupHandleResponse(resp)
@@ -65,28 +65,28 @@ func (p *DedicatedHsmListByResourceGroupPager) NextPage(ctx context.Context) boo
 	return true
 }
 
-// PageResponse returns the current DedicatedHsmListByResourceGroupResponse page.
-func (p *DedicatedHsmListByResourceGroupPager) PageResponse() DedicatedHsmListByResourceGroupResponse {
+// PageResponse returns the current DedicatedHsmClientListByResourceGroupResponse page.
+func (p *DedicatedHsmClientListByResourceGroupPager) PageResponse() DedicatedHsmClientListByResourceGroupResponse {
 	return p.current
 }
 
-// DedicatedHsmListBySubscriptionPager provides operations for iterating over paged responses.
-type DedicatedHsmListBySubscriptionPager struct {
+// DedicatedHsmClientListBySubscriptionPager provides operations for iterating over paged responses.
+type DedicatedHsmClientListBySubscriptionPager struct {
 	client    *DedicatedHsmClient
-	current   DedicatedHsmListBySubscriptionResponse
+	current   DedicatedHsmClientListBySubscriptionResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, DedicatedHsmListBySubscriptionResponse) (*policy.Request, error)
+	advancer  func(context.Context, DedicatedHsmClientListBySubscriptionResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *DedicatedHsmListBySubscriptionPager) Err() error {
+func (p *DedicatedHsmClientListBySubscriptionPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *DedicatedHsmListBySubscriptionPager) NextPage(ctx context.Context) bool {
+func (p *DedicatedHsmClientListBySubscriptionPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -107,7 +107,7 @@ func (p *DedicatedHsmListBySubscriptionPager) NextPage(ctx context.Context) bool
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listBySubscriptionHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listBySubscriptionHandleResponse(resp)
@@ -119,7 +119,61 @@ func (p *DedicatedHsmListBySubscriptionPager) NextPage(ctx context.Context) bool
 	return true
 }
 
-// PageResponse returns the current DedicatedHsmListBySubscriptionResponse page.
-func (p *DedicatedHsmListBySubscriptionPager) PageResponse() DedicatedHsmListBySubscriptionResponse {
+// PageResponse returns the current DedicatedHsmClientListBySubscriptionResponse page.
+func (p *DedicatedHsmClientListBySubscriptionPager) PageResponse() DedicatedHsmClientListBySubscriptionResponse {
+	return p.current
+}
+
+// DedicatedHsmClientListOutboundNetworkDependenciesEndpointsPager provides operations for iterating over paged responses.
+type DedicatedHsmClientListOutboundNetworkDependenciesEndpointsPager struct {
+	client    *DedicatedHsmClient
+	current   DedicatedHsmClientListOutboundNetworkDependenciesEndpointsResponse
+	err       error
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, DedicatedHsmClientListOutboundNetworkDependenciesEndpointsResponse) (*policy.Request, error)
+}
+
+// Err returns the last error encountered while paging.
+func (p *DedicatedHsmClientListOutboundNetworkDependenciesEndpointsPager) Err() error {
+	return p.err
+}
+
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *DedicatedHsmClientListOutboundNetworkDependenciesEndpointsPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.OutboundEnvironmentEndpointCollection.NextLink == nil || len(*p.current.OutboundEnvironmentEndpointCollection.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.pl.Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		p.err = runtime.NewResponseError(resp)
+		return false
+	}
+	result, err := p.client.listOutboundNetworkDependenciesEndpointsHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+// PageResponse returns the current DedicatedHsmClientListOutboundNetworkDependenciesEndpointsResponse page.
+func (p *DedicatedHsmClientListOutboundNetworkDependenciesEndpointsPager) PageResponse() DedicatedHsmClientListOutboundNetworkDependenciesEndpointsResponse {
 	return p.current
 }

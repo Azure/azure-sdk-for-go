@@ -15,70 +15,70 @@ import (
 	"time"
 )
 
-// MarketplaceRegistrationDefinitionsGetResponse contains the response from method MarketplaceRegistrationDefinitions.Get.
-type MarketplaceRegistrationDefinitionsGetResponse struct {
-	MarketplaceRegistrationDefinitionsGetResult
+// MarketplaceRegistrationDefinitionsClientGetResponse contains the response from method MarketplaceRegistrationDefinitionsClient.Get.
+type MarketplaceRegistrationDefinitionsClientGetResponse struct {
+	MarketplaceRegistrationDefinitionsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MarketplaceRegistrationDefinitionsGetResult contains the result from method MarketplaceRegistrationDefinitions.Get.
-type MarketplaceRegistrationDefinitionsGetResult struct {
+// MarketplaceRegistrationDefinitionsClientGetResult contains the result from method MarketplaceRegistrationDefinitionsClient.Get.
+type MarketplaceRegistrationDefinitionsClientGetResult struct {
 	MarketplaceRegistrationDefinition
 }
 
-// MarketplaceRegistrationDefinitionsListResponse contains the response from method MarketplaceRegistrationDefinitions.List.
-type MarketplaceRegistrationDefinitionsListResponse struct {
-	MarketplaceRegistrationDefinitionsListResult
+// MarketplaceRegistrationDefinitionsClientListResponse contains the response from method MarketplaceRegistrationDefinitionsClient.List.
+type MarketplaceRegistrationDefinitionsClientListResponse struct {
+	MarketplaceRegistrationDefinitionsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MarketplaceRegistrationDefinitionsListResult contains the result from method MarketplaceRegistrationDefinitions.List.
-type MarketplaceRegistrationDefinitionsListResult struct {
+// MarketplaceRegistrationDefinitionsClientListResult contains the result from method MarketplaceRegistrationDefinitionsClient.List.
+type MarketplaceRegistrationDefinitionsClientListResult struct {
 	MarketplaceRegistrationDefinitionList
 }
 
-// MarketplaceRegistrationDefinitionsWithoutScopeGetResponse contains the response from method MarketplaceRegistrationDefinitionsWithoutScope.Get.
-type MarketplaceRegistrationDefinitionsWithoutScopeGetResponse struct {
-	MarketplaceRegistrationDefinitionsWithoutScopeGetResult
+// MarketplaceRegistrationDefinitionsWithoutScopeClientGetResponse contains the response from method MarketplaceRegistrationDefinitionsWithoutScopeClient.Get.
+type MarketplaceRegistrationDefinitionsWithoutScopeClientGetResponse struct {
+	MarketplaceRegistrationDefinitionsWithoutScopeClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MarketplaceRegistrationDefinitionsWithoutScopeGetResult contains the result from method MarketplaceRegistrationDefinitionsWithoutScope.Get.
-type MarketplaceRegistrationDefinitionsWithoutScopeGetResult struct {
+// MarketplaceRegistrationDefinitionsWithoutScopeClientGetResult contains the result from method MarketplaceRegistrationDefinitionsWithoutScopeClient.Get.
+type MarketplaceRegistrationDefinitionsWithoutScopeClientGetResult struct {
 	MarketplaceRegistrationDefinition
 }
 
-// MarketplaceRegistrationDefinitionsWithoutScopeListResponse contains the response from method MarketplaceRegistrationDefinitionsWithoutScope.List.
-type MarketplaceRegistrationDefinitionsWithoutScopeListResponse struct {
-	MarketplaceRegistrationDefinitionsWithoutScopeListResult
+// MarketplaceRegistrationDefinitionsWithoutScopeClientListResponse contains the response from method MarketplaceRegistrationDefinitionsWithoutScopeClient.List.
+type MarketplaceRegistrationDefinitionsWithoutScopeClientListResponse struct {
+	MarketplaceRegistrationDefinitionsWithoutScopeClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MarketplaceRegistrationDefinitionsWithoutScopeListResult contains the result from method MarketplaceRegistrationDefinitionsWithoutScope.List.
-type MarketplaceRegistrationDefinitionsWithoutScopeListResult struct {
+// MarketplaceRegistrationDefinitionsWithoutScopeClientListResult contains the result from method MarketplaceRegistrationDefinitionsWithoutScopeClient.List.
+type MarketplaceRegistrationDefinitionsWithoutScopeClientListResult struct {
 	MarketplaceRegistrationDefinitionList
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationList
 }
 
-// RegistrationAssignmentsCreateOrUpdatePollerResponse contains the response from method RegistrationAssignments.CreateOrUpdate.
-type RegistrationAssignmentsCreateOrUpdatePollerResponse struct {
+// RegistrationAssignmentsClientCreateOrUpdatePollerResponse contains the response from method RegistrationAssignmentsClient.CreateOrUpdate.
+type RegistrationAssignmentsClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *RegistrationAssignmentsCreateOrUpdatePoller
+	Poller *RegistrationAssignmentsClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -87,8 +87,8 @@ type RegistrationAssignmentsCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l RegistrationAssignmentsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (RegistrationAssignmentsCreateOrUpdateResponse, error) {
-	respType := RegistrationAssignmentsCreateOrUpdateResponse{}
+func (l RegistrationAssignmentsClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (RegistrationAssignmentsClientCreateOrUpdateResponse, error) {
+	respType := RegistrationAssignmentsClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.RegistrationAssignment)
 	if err != nil {
 		return respType, err
@@ -97,13 +97,13 @@ func (l RegistrationAssignmentsCreateOrUpdatePollerResponse) PollUntilDone(ctx c
 	return respType, nil
 }
 
-// Resume rehydrates a RegistrationAssignmentsCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *RegistrationAssignmentsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *RegistrationAssignmentsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("RegistrationAssignmentsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a RegistrationAssignmentsClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *RegistrationAssignmentsClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *RegistrationAssignmentsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("RegistrationAssignmentsClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &RegistrationAssignmentsCreateOrUpdatePoller{
+	poller := &RegistrationAssignmentsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -115,22 +115,22 @@ func (l *RegistrationAssignmentsCreateOrUpdatePollerResponse) Resume(ctx context
 	return nil
 }
 
-// RegistrationAssignmentsCreateOrUpdateResponse contains the response from method RegistrationAssignments.CreateOrUpdate.
-type RegistrationAssignmentsCreateOrUpdateResponse struct {
-	RegistrationAssignmentsCreateOrUpdateResult
+// RegistrationAssignmentsClientCreateOrUpdateResponse contains the response from method RegistrationAssignmentsClient.CreateOrUpdate.
+type RegistrationAssignmentsClientCreateOrUpdateResponse struct {
+	RegistrationAssignmentsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RegistrationAssignmentsCreateOrUpdateResult contains the result from method RegistrationAssignments.CreateOrUpdate.
-type RegistrationAssignmentsCreateOrUpdateResult struct {
+// RegistrationAssignmentsClientCreateOrUpdateResult contains the result from method RegistrationAssignmentsClient.CreateOrUpdate.
+type RegistrationAssignmentsClientCreateOrUpdateResult struct {
 	RegistrationAssignment
 }
 
-// RegistrationAssignmentsDeletePollerResponse contains the response from method RegistrationAssignments.Delete.
-type RegistrationAssignmentsDeletePollerResponse struct {
+// RegistrationAssignmentsClientDeletePollerResponse contains the response from method RegistrationAssignmentsClient.Delete.
+type RegistrationAssignmentsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *RegistrationAssignmentsDeletePoller
+	Poller *RegistrationAssignmentsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -139,8 +139,8 @@ type RegistrationAssignmentsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l RegistrationAssignmentsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (RegistrationAssignmentsDeleteResponse, error) {
-	respType := RegistrationAssignmentsDeleteResponse{}
+func (l RegistrationAssignmentsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (RegistrationAssignmentsClientDeleteResponse, error) {
+	respType := RegistrationAssignmentsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -149,13 +149,13 @@ func (l RegistrationAssignmentsDeletePollerResponse) PollUntilDone(ctx context.C
 	return respType, nil
 }
 
-// Resume rehydrates a RegistrationAssignmentsDeletePollerResponse from the provided client and resume token.
-func (l *RegistrationAssignmentsDeletePollerResponse) Resume(ctx context.Context, client *RegistrationAssignmentsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("RegistrationAssignmentsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a RegistrationAssignmentsClientDeletePollerResponse from the provided client and resume token.
+func (l *RegistrationAssignmentsClientDeletePollerResponse) Resume(ctx context.Context, client *RegistrationAssignmentsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("RegistrationAssignmentsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &RegistrationAssignmentsDeletePoller{
+	poller := &RegistrationAssignmentsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -167,40 +167,40 @@ func (l *RegistrationAssignmentsDeletePollerResponse) Resume(ctx context.Context
 	return nil
 }
 
-// RegistrationAssignmentsDeleteResponse contains the response from method RegistrationAssignments.Delete.
-type RegistrationAssignmentsDeleteResponse struct {
+// RegistrationAssignmentsClientDeleteResponse contains the response from method RegistrationAssignmentsClient.Delete.
+type RegistrationAssignmentsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RegistrationAssignmentsGetResponse contains the response from method RegistrationAssignments.Get.
-type RegistrationAssignmentsGetResponse struct {
-	RegistrationAssignmentsGetResult
+// RegistrationAssignmentsClientGetResponse contains the response from method RegistrationAssignmentsClient.Get.
+type RegistrationAssignmentsClientGetResponse struct {
+	RegistrationAssignmentsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RegistrationAssignmentsGetResult contains the result from method RegistrationAssignments.Get.
-type RegistrationAssignmentsGetResult struct {
+// RegistrationAssignmentsClientGetResult contains the result from method RegistrationAssignmentsClient.Get.
+type RegistrationAssignmentsClientGetResult struct {
 	RegistrationAssignment
 }
 
-// RegistrationAssignmentsListResponse contains the response from method RegistrationAssignments.List.
-type RegistrationAssignmentsListResponse struct {
-	RegistrationAssignmentsListResult
+// RegistrationAssignmentsClientListResponse contains the response from method RegistrationAssignmentsClient.List.
+type RegistrationAssignmentsClientListResponse struct {
+	RegistrationAssignmentsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RegistrationAssignmentsListResult contains the result from method RegistrationAssignments.List.
-type RegistrationAssignmentsListResult struct {
+// RegistrationAssignmentsClientListResult contains the result from method RegistrationAssignmentsClient.List.
+type RegistrationAssignmentsClientListResult struct {
 	RegistrationAssignmentList
 }
 
-// RegistrationDefinitionsCreateOrUpdatePollerResponse contains the response from method RegistrationDefinitions.CreateOrUpdate.
-type RegistrationDefinitionsCreateOrUpdatePollerResponse struct {
+// RegistrationDefinitionsClientCreateOrUpdatePollerResponse contains the response from method RegistrationDefinitionsClient.CreateOrUpdate.
+type RegistrationDefinitionsClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *RegistrationDefinitionsCreateOrUpdatePoller
+	Poller *RegistrationDefinitionsClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -209,8 +209,8 @@ type RegistrationDefinitionsCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l RegistrationDefinitionsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (RegistrationDefinitionsCreateOrUpdateResponse, error) {
-	respType := RegistrationDefinitionsCreateOrUpdateResponse{}
+func (l RegistrationDefinitionsClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (RegistrationDefinitionsClientCreateOrUpdateResponse, error) {
+	respType := RegistrationDefinitionsClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.RegistrationDefinition)
 	if err != nil {
 		return respType, err
@@ -219,13 +219,13 @@ func (l RegistrationDefinitionsCreateOrUpdatePollerResponse) PollUntilDone(ctx c
 	return respType, nil
 }
 
-// Resume rehydrates a RegistrationDefinitionsCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *RegistrationDefinitionsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *RegistrationDefinitionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("RegistrationDefinitionsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a RegistrationDefinitionsClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *RegistrationDefinitionsClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *RegistrationDefinitionsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("RegistrationDefinitionsClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &RegistrationDefinitionsCreateOrUpdatePoller{
+	poller := &RegistrationDefinitionsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -237,44 +237,44 @@ func (l *RegistrationDefinitionsCreateOrUpdatePollerResponse) Resume(ctx context
 	return nil
 }
 
-// RegistrationDefinitionsCreateOrUpdateResponse contains the response from method RegistrationDefinitions.CreateOrUpdate.
-type RegistrationDefinitionsCreateOrUpdateResponse struct {
-	RegistrationDefinitionsCreateOrUpdateResult
+// RegistrationDefinitionsClientCreateOrUpdateResponse contains the response from method RegistrationDefinitionsClient.CreateOrUpdate.
+type RegistrationDefinitionsClientCreateOrUpdateResponse struct {
+	RegistrationDefinitionsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RegistrationDefinitionsCreateOrUpdateResult contains the result from method RegistrationDefinitions.CreateOrUpdate.
-type RegistrationDefinitionsCreateOrUpdateResult struct {
+// RegistrationDefinitionsClientCreateOrUpdateResult contains the result from method RegistrationDefinitionsClient.CreateOrUpdate.
+type RegistrationDefinitionsClientCreateOrUpdateResult struct {
 	RegistrationDefinition
 }
 
-// RegistrationDefinitionsDeleteResponse contains the response from method RegistrationDefinitions.Delete.
-type RegistrationDefinitionsDeleteResponse struct {
+// RegistrationDefinitionsClientDeleteResponse contains the response from method RegistrationDefinitionsClient.Delete.
+type RegistrationDefinitionsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RegistrationDefinitionsGetResponse contains the response from method RegistrationDefinitions.Get.
-type RegistrationDefinitionsGetResponse struct {
-	RegistrationDefinitionsGetResult
+// RegistrationDefinitionsClientGetResponse contains the response from method RegistrationDefinitionsClient.Get.
+type RegistrationDefinitionsClientGetResponse struct {
+	RegistrationDefinitionsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RegistrationDefinitionsGetResult contains the result from method RegistrationDefinitions.Get.
-type RegistrationDefinitionsGetResult struct {
+// RegistrationDefinitionsClientGetResult contains the result from method RegistrationDefinitionsClient.Get.
+type RegistrationDefinitionsClientGetResult struct {
 	RegistrationDefinition
 }
 
-// RegistrationDefinitionsListResponse contains the response from method RegistrationDefinitions.List.
-type RegistrationDefinitionsListResponse struct {
-	RegistrationDefinitionsListResult
+// RegistrationDefinitionsClientListResponse contains the response from method RegistrationDefinitionsClient.List.
+type RegistrationDefinitionsClientListResponse struct {
+	RegistrationDefinitionsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RegistrationDefinitionsListResult contains the result from method RegistrationDefinitions.List.
-type RegistrationDefinitionsListResult struct {
+// RegistrationDefinitionsClientListResult contains the result from method RegistrationDefinitionsClient.List.
+type RegistrationDefinitionsClientListResult struct {
 	RegistrationDefinitionList
 }

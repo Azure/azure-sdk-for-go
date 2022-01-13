@@ -24,11 +24,12 @@ func ExampleWebTestLocationsClient_List() {
 	}
 	ctx := context.Background()
 	client := armapplicationinsights.NewWebTestLocationsClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.WebTestLocationsClientListResult)
 }

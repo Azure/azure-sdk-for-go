@@ -17,20 +17,39 @@ import (
 
 // DeviceService - The description of the Windows IoT Device Service.
 type DeviceService struct {
-	TrackedResource
-	// The Etag field is not required. If it is provided in the response body, it must also be provided as a header per the normal ETag convention.
+	// The Etag field is not required. If it is provided in the response body, it must also be provided as a header per the normal
+	// ETag convention.
 	Etag *string `json:"etag,omitempty"`
+
+	// The Azure Region where the resource lives
+	Location *string `json:"location,omitempty"`
 
 	// The properties of a Windows IoT Device Service.
 	Properties *DeviceServiceProperties `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type DeviceService.
 func (d DeviceService) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	d.TrackedResource.marshalInternal(objectMap)
 	populate(objectMap, "etag", d.Etag)
+	populate(objectMap, "id", d.ID)
+	populate(objectMap, "location", d.Location)
+	populate(objectMap, "name", d.Name)
 	populate(objectMap, "properties", d.Properties)
+	populate(objectMap, "tags", d.Tags)
+	populate(objectMap, "type", d.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -131,17 +150,9 @@ func (d *DeviceServiceProperties) UnmarshalJSON(data []byte) error {
 }
 
 // ErrorDetails - The details of the error.
-// Implements the error and azcore.HTTPResponse interfaces.
 type ErrorDetails struct {
-	raw string
 	// The error object.
-	InnerError *ErrorDetailsError `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorDetails.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorDetails) Error() string {
-	return e.raw
+	Error *ErrorDetailsError `json:"error,omitempty"`
 }
 
 // ErrorDetailsError - The error object.
@@ -189,8 +200,8 @@ type OperationEntity struct {
 	Origin *string `json:"origin,omitempty"`
 }
 
-// OperationListResult - Result of the request to list Windows IoT Device Service operations. It contains a list of operations and a URL link to get the
-// next set of results.
+// OperationListResult - Result of the request to list Windows IoT Device Service operations. It contains a list of operations
+// and a URL link to get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -207,14 +218,22 @@ func (o OperationListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProxyResource - The resource model definition for a ARM proxy resource. It will have everything other than required location and tags
+// ProxyResource - The resource model definition for a ARM proxy resource. It will have everything other than required location
+// and tags
 type ProxyResource struct {
-	Resource
+	// READ-ONLY; Fully qualified resource Id for the resource
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // Resource - The core properties of ARM resources
@@ -229,79 +248,73 @@ type Resource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
-}
-
-// ServicesCheckDeviceServiceNameAvailabilityOptions contains the optional parameters for the Services.CheckDeviceServiceNameAvailability method.
-type ServicesCheckDeviceServiceNameAvailabilityOptions struct {
+// ServicesClientCheckDeviceServiceNameAvailabilityOptions contains the optional parameters for the ServicesClient.CheckDeviceServiceNameAvailability
+// method.
+type ServicesClientCheckDeviceServiceNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServicesCreateOrUpdateOptions contains the optional parameters for the Services.CreateOrUpdate method.
-type ServicesCreateOrUpdateOptions struct {
-	// ETag of the Windows IoT Device Service. Do not specify for creating a new Windows IoT Device Service. Required to update an existing Windows IoT Device
-	// Service.
+// ServicesClientCreateOrUpdateOptions contains the optional parameters for the ServicesClient.CreateOrUpdate method.
+type ServicesClientCreateOrUpdateOptions struct {
+	// ETag of the Windows IoT Device Service. Do not specify for creating a new Windows IoT Device Service. Required to update
+	// an existing Windows IoT Device Service.
 	IfMatch *string
 }
 
-// ServicesDeleteOptions contains the optional parameters for the Services.Delete method.
-type ServicesDeleteOptions struct {
+// ServicesClientDeleteOptions contains the optional parameters for the ServicesClient.Delete method.
+type ServicesClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServicesGetOptions contains the optional parameters for the Services.Get method.
-type ServicesGetOptions struct {
+// ServicesClientGetOptions contains the optional parameters for the ServicesClient.Get method.
+type ServicesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServicesListByResourceGroupOptions contains the optional parameters for the Services.ListByResourceGroup method.
-type ServicesListByResourceGroupOptions struct {
+// ServicesClientListByResourceGroupOptions contains the optional parameters for the ServicesClient.ListByResourceGroup method.
+type ServicesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServicesListOptions contains the optional parameters for the Services.List method.
-type ServicesListOptions struct {
+// ServicesClientListOptions contains the optional parameters for the ServicesClient.List method.
+type ServicesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServicesUpdateOptions contains the optional parameters for the Services.Update method.
-type ServicesUpdateOptions struct {
-	// ETag of the Windows IoT Device Service. Do not specify for creating a brand new Windows IoT Device Service. Required to update an existing Windows IoT
-	// Device Service.
+// ServicesClientUpdateOptions contains the optional parameters for the ServicesClient.Update method.
+type ServicesClientUpdateOptions struct {
+	// ETag of the Windows IoT Device Service. Do not specify for creating a brand new Windows IoT Device Service. Required to
+	// update an existing Windows IoT Device Service.
 	IfMatch *string
 }
 
 // TrackedResource - The resource model definition for a ARM tracked top level resource
 type TrackedResource struct {
-	Resource
 	// The Azure Region where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.
 func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", t.ID)
 	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
 	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
+	return json.Marshal(objectMap)
 }
 
 func populate(m map[string]interface{}, k string, v interface{}) {

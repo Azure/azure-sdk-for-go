@@ -11,7 +11,6 @@ package armmachinelearningservices
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,50 +24,64 @@ import (
 // ComputeClient contains the methods for the Compute group.
 // Don't use this type directly, use NewComputeClient() instead.
 type ComputeClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewComputeClient creates a new instance of ComputeClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewComputeClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ComputeClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ComputeClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ComputeClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// BeginCreateOrUpdate - Creates or updates compute. This call will overwrite a compute if it exists. This is a nonrecoverable operation. If your intent
-// is to create a new compute, do a GET first to verify that it does not
+// BeginCreateOrUpdate - Creates or updates compute. This call will overwrite a compute if it exists. This is a nonrecoverable
+// operation. If your intent is to create a new compute, do a GET first to verify that it does not
 // exist yet.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ComputeClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, parameters ComputeResource, options *ComputeBeginCreateOrUpdateOptions) (ComputeCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - Name of Azure Machine Learning workspace.
+// computeName - Name of the Azure Machine Learning compute.
+// parameters - Payload with Machine Learning compute definition.
+// options - ComputeClientBeginCreateOrUpdateOptions contains the optional parameters for the ComputeClient.BeginCreateOrUpdate
+// method.
+func (client *ComputeClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, parameters ComputeResource, options *ComputeClientBeginCreateOrUpdateOptions) (ComputeClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, workspaceName, computeName, parameters, options)
 	if err != nil {
-		return ComputeCreateOrUpdatePollerResponse{}, err
+		return ComputeClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := ComputeCreateOrUpdatePollerResponse{
+	result := ComputeClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ComputeClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("ComputeClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return ComputeCreateOrUpdatePollerResponse{}, err
+		return ComputeClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &ComputeCreateOrUpdatePoller{
+	result.Poller = &ComputeClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// CreateOrUpdate - Creates or updates compute. This call will overwrite a compute if it exists. This is a nonrecoverable operation. If your intent is to
-// create a new compute, do a GET first to verify that it does not
+// CreateOrUpdate - Creates or updates compute. This call will overwrite a compute if it exists. This is a nonrecoverable
+// operation. If your intent is to create a new compute, do a GET first to verify that it does not
 // exist yet.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ComputeClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, parameters ComputeResource, options *ComputeBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ComputeClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, parameters ComputeResource, options *ComputeClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, computeName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -78,13 +91,13 @@ func (client *ComputeClient) createOrUpdate(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ComputeClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, parameters ComputeResource, options *ComputeBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ComputeClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, parameters ComputeResource, options *ComputeClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -102,7 +115,7 @@ func (client *ComputeClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter computeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{computeName}", url.PathEscape(computeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -113,42 +126,35 @@ func (client *ComputeClient) createOrUpdateCreateRequest(ctx context.Context, re
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ComputeClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes specified Machine Learning compute.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ComputeClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, underlyingResourceAction UnderlyingResourceAction, options *ComputeBeginDeleteOptions) (ComputeDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - Name of Azure Machine Learning workspace.
+// computeName - Name of the Azure Machine Learning compute.
+// underlyingResourceAction - Delete the underlying compute if 'Delete', or detach the underlying compute from workspace if
+// 'Detach'.
+// options - ComputeClientBeginDeleteOptions contains the optional parameters for the ComputeClient.BeginDelete method.
+func (client *ComputeClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, underlyingResourceAction UnderlyingResourceAction, options *ComputeClientBeginDeleteOptions) (ComputeClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, computeName, underlyingResourceAction, options)
 	if err != nil {
-		return ComputeDeletePollerResponse{}, err
+		return ComputeClientDeletePollerResponse{}, err
 	}
-	result := ComputeDeletePollerResponse{
+	result := ComputeClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ComputeClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("ComputeClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return ComputeDeletePollerResponse{}, err
+		return ComputeClientDeletePollerResponse{}, err
 	}
-	result.Poller = &ComputeDeletePoller{
+	result.Poller = &ComputeClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes specified Machine Learning compute.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ComputeClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, underlyingResourceAction UnderlyingResourceAction, options *ComputeBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ComputeClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, underlyingResourceAction UnderlyingResourceAction, options *ComputeClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, computeName, underlyingResourceAction, options)
 	if err != nil {
 		return nil, err
@@ -158,13 +164,13 @@ func (client *ComputeClient) deleteOperation(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ComputeClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, underlyingResourceAction UnderlyingResourceAction, options *ComputeBeginDeleteOptions) (*policy.Request, error) {
+func (client *ComputeClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, underlyingResourceAction UnderlyingResourceAction, options *ComputeClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -182,7 +188,7 @@ func (client *ComputeClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter computeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{computeName}", url.PathEscape(computeName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -194,39 +200,30 @@ func (client *ComputeClient) deleteCreateRequest(ctx context.Context, resourceGr
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ComputeClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Get - Gets compute definition by its name. Any secrets (storage keys, service credentials, etc) are not returned - use 'keys' nested resource to get
-// them.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ComputeClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeGetOptions) (ComputeGetResponse, error) {
+// Get - Gets compute definition by its name. Any secrets (storage keys, service credentials, etc) are not returned - use
+// 'keys' nested resource to get them.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - Name of Azure Machine Learning workspace.
+// computeName - Name of the Azure Machine Learning compute.
+// options - ComputeClientGetOptions contains the optional parameters for the ComputeClient.Get method.
+func (client *ComputeClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeClientGetOptions) (ComputeClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, computeName, options)
 	if err != nil {
-		return ComputeGetResponse{}, err
+		return ComputeClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ComputeGetResponse{}, err
+		return ComputeClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ComputeGetResponse{}, client.getHandleError(resp)
+		return ComputeClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ComputeClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeGetOptions) (*policy.Request, error) {
+func (client *ComputeClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -244,7 +241,7 @@ func (client *ComputeClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter computeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{computeName}", url.PathEscape(computeName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -256,43 +253,33 @@ func (client *ComputeClient) getCreateRequest(ctx context.Context, resourceGroup
 }
 
 // getHandleResponse handles the Get response.
-func (client *ComputeClient) getHandleResponse(resp *http.Response) (ComputeGetResponse, error) {
-	result := ComputeGetResponse{RawResponse: resp}
+func (client *ComputeClient) getHandleResponse(resp *http.Response) (ComputeClientGetResponse, error) {
+	result := ComputeClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComputeResource); err != nil {
-		return ComputeGetResponse{}, runtime.NewResponseError(err, resp)
+		return ComputeClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ComputeClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Gets computes in specified workspace.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ComputeClient) List(resourceGroupName string, workspaceName string, options *ComputeListOptions) *ComputeListPager {
-	return &ComputeListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - Name of Azure Machine Learning workspace.
+// options - ComputeClientListOptions contains the optional parameters for the ComputeClient.List method.
+func (client *ComputeClient) List(resourceGroupName string, workspaceName string, options *ComputeClientListOptions) *ComputeClientListPager {
+	return &ComputeClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
 		},
-		advancer: func(ctx context.Context, resp ComputeListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ComputeClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PaginatedComputeResourcesList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ComputeClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *ComputeListOptions) (*policy.Request, error) {
+func (client *ComputeClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *ComputeClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -306,7 +293,7 @@ func (client *ComputeClient) listCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -321,46 +308,37 @@ func (client *ComputeClient) listCreateRequest(ctx context.Context, resourceGrou
 }
 
 // listHandleResponse handles the List response.
-func (client *ComputeClient) listHandleResponse(resp *http.Response) (ComputeListResponse, error) {
-	result := ComputeListResponse{RawResponse: resp}
+func (client *ComputeClient) listHandleResponse(resp *http.Response) (ComputeClientListResponse, error) {
+	result := ComputeClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PaginatedComputeResourcesList); err != nil {
-		return ComputeListResponse{}, runtime.NewResponseError(err, resp)
+		return ComputeClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *ComputeClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListKeys - Gets secrets related to Machine Learning compute (storage keys, service credentials, etc).
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ComputeClient) ListKeys(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeListKeysOptions) (ComputeListKeysResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - Name of Azure Machine Learning workspace.
+// computeName - Name of the Azure Machine Learning compute.
+// options - ComputeClientListKeysOptions contains the optional parameters for the ComputeClient.ListKeys method.
+func (client *ComputeClient) ListKeys(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeClientListKeysOptions) (ComputeClientListKeysResponse, error) {
 	req, err := client.listKeysCreateRequest(ctx, resourceGroupName, workspaceName, computeName, options)
 	if err != nil {
-		return ComputeListKeysResponse{}, err
+		return ComputeClientListKeysResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ComputeListKeysResponse{}, err
+		return ComputeClientListKeysResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ComputeListKeysResponse{}, client.listKeysHandleError(resp)
+		return ComputeClientListKeysResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listKeysHandleResponse(resp)
 }
 
 // listKeysCreateRequest creates the ListKeys request.
-func (client *ComputeClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeListKeysOptions) (*policy.Request, error) {
+func (client *ComputeClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeClientListKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/listKeys"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -378,7 +356,7 @@ func (client *ComputeClient) listKeysCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter computeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{computeName}", url.PathEscape(computeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -390,43 +368,34 @@ func (client *ComputeClient) listKeysCreateRequest(ctx context.Context, resource
 }
 
 // listKeysHandleResponse handles the ListKeys response.
-func (client *ComputeClient) listKeysHandleResponse(resp *http.Response) (ComputeListKeysResponse, error) {
-	result := ComputeListKeysResponse{RawResponse: resp}
+func (client *ComputeClient) listKeysHandleResponse(resp *http.Response) (ComputeClientListKeysResponse, error) {
+	result := ComputeClientListKeysResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
-		return ComputeListKeysResponse{}, runtime.NewResponseError(err, resp)
+		return ComputeClientListKeysResponse{}, err
 	}
 	return result, nil
 }
 
-// listKeysHandleError handles the ListKeys error response.
-func (client *ComputeClient) listKeysHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListNodes - Get the details (e.g IP address, port etc) of all the compute nodes in the compute.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ComputeClient) ListNodes(resourceGroupName string, workspaceName string, computeName string, options *ComputeListNodesOptions) *ComputeListNodesPager {
-	return &ComputeListNodesPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - Name of Azure Machine Learning workspace.
+// computeName - Name of the Azure Machine Learning compute.
+// options - ComputeClientListNodesOptions contains the optional parameters for the ComputeClient.ListNodes method.
+func (client *ComputeClient) ListNodes(resourceGroupName string, workspaceName string, computeName string, options *ComputeClientListNodesOptions) *ComputeClientListNodesPager {
+	return &ComputeClientListNodesPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listNodesCreateRequest(ctx, resourceGroupName, workspaceName, computeName, options)
 		},
-		advancer: func(ctx context.Context, resp ComputeListNodesResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ComputeClientListNodesResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.AmlComputeNodesInformation.NextLink)
 		},
 	}
 }
 
 // listNodesCreateRequest creates the ListNodes request.
-func (client *ComputeClient) listNodesCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeListNodesOptions) (*policy.Request, error) {
+func (client *ComputeClient) listNodesCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeClientListNodesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/listNodes"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -444,7 +413,7 @@ func (client *ComputeClient) listNodesCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter computeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{computeName}", url.PathEscape(computeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -456,50 +425,41 @@ func (client *ComputeClient) listNodesCreateRequest(ctx context.Context, resourc
 }
 
 // listNodesHandleResponse handles the ListNodes response.
-func (client *ComputeClient) listNodesHandleResponse(resp *http.Response) (ComputeListNodesResponse, error) {
-	result := ComputeListNodesResponse{RawResponse: resp}
+func (client *ComputeClient) listNodesHandleResponse(resp *http.Response) (ComputeClientListNodesResponse, error) {
+	result := ComputeClientListNodesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AmlComputeNodesInformation); err != nil {
-		return ComputeListNodesResponse{}, runtime.NewResponseError(err, resp)
+		return ComputeClientListNodesResponse{}, err
 	}
 	return result, nil
 }
 
-// listNodesHandleError handles the ListNodes error response.
-func (client *ComputeClient) listNodesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginRestart - Posts a restart action to a compute instance
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ComputeClient) BeginRestart(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeBeginRestartOptions) (ComputeRestartPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - Name of Azure Machine Learning workspace.
+// computeName - Name of the Azure Machine Learning compute.
+// options - ComputeClientBeginRestartOptions contains the optional parameters for the ComputeClient.BeginRestart method.
+func (client *ComputeClient) BeginRestart(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeClientBeginRestartOptions) (ComputeClientRestartPollerResponse, error) {
 	resp, err := client.restart(ctx, resourceGroupName, workspaceName, computeName, options)
 	if err != nil {
-		return ComputeRestartPollerResponse{}, err
+		return ComputeClientRestartPollerResponse{}, err
 	}
-	result := ComputeRestartPollerResponse{
+	result := ComputeClientRestartPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ComputeClient.Restart", "", resp, client.pl, client.restartHandleError)
+	pt, err := armruntime.NewPoller("ComputeClient.Restart", "", resp, client.pl)
 	if err != nil {
-		return ComputeRestartPollerResponse{}, err
+		return ComputeClientRestartPollerResponse{}, err
 	}
-	result.Poller = &ComputeRestartPoller{
+	result.Poller = &ComputeClientRestartPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Restart - Posts a restart action to a compute instance
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ComputeClient) restart(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeBeginRestartOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ComputeClient) restart(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeClientBeginRestartOptions) (*http.Response, error) {
 	req, err := client.restartCreateRequest(ctx, resourceGroupName, workspaceName, computeName, options)
 	if err != nil {
 		return nil, err
@@ -509,13 +469,13 @@ func (client *ComputeClient) restart(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return nil, client.restartHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // restartCreateRequest creates the Restart request.
-func (client *ComputeClient) restartCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeBeginRestartOptions) (*policy.Request, error) {
+func (client *ComputeClient) restartCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeClientBeginRestartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/restart"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -533,7 +493,7 @@ func (client *ComputeClient) restartCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter computeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{computeName}", url.PathEscape(computeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -544,42 +504,33 @@ func (client *ComputeClient) restartCreateRequest(ctx context.Context, resourceG
 	return req, nil
 }
 
-// restartHandleError handles the Restart error response.
-func (client *ComputeClient) restartHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginStart - Posts a start action to a compute instance
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ComputeClient) BeginStart(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeBeginStartOptions) (ComputeStartPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - Name of Azure Machine Learning workspace.
+// computeName - Name of the Azure Machine Learning compute.
+// options - ComputeClientBeginStartOptions contains the optional parameters for the ComputeClient.BeginStart method.
+func (client *ComputeClient) BeginStart(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeClientBeginStartOptions) (ComputeClientStartPollerResponse, error) {
 	resp, err := client.start(ctx, resourceGroupName, workspaceName, computeName, options)
 	if err != nil {
-		return ComputeStartPollerResponse{}, err
+		return ComputeClientStartPollerResponse{}, err
 	}
-	result := ComputeStartPollerResponse{
+	result := ComputeClientStartPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ComputeClient.Start", "", resp, client.pl, client.startHandleError)
+	pt, err := armruntime.NewPoller("ComputeClient.Start", "", resp, client.pl)
 	if err != nil {
-		return ComputeStartPollerResponse{}, err
+		return ComputeClientStartPollerResponse{}, err
 	}
-	result.Poller = &ComputeStartPoller{
+	result.Poller = &ComputeClientStartPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Start - Posts a start action to a compute instance
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ComputeClient) start(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeBeginStartOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ComputeClient) start(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeClientBeginStartOptions) (*http.Response, error) {
 	req, err := client.startCreateRequest(ctx, resourceGroupName, workspaceName, computeName, options)
 	if err != nil {
 		return nil, err
@@ -589,13 +540,13 @@ func (client *ComputeClient) start(ctx context.Context, resourceGroupName string
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return nil, client.startHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // startCreateRequest creates the Start request.
-func (client *ComputeClient) startCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeBeginStartOptions) (*policy.Request, error) {
+func (client *ComputeClient) startCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeClientBeginStartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/start"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -613,7 +564,7 @@ func (client *ComputeClient) startCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter computeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{computeName}", url.PathEscape(computeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -624,42 +575,33 @@ func (client *ComputeClient) startCreateRequest(ctx context.Context, resourceGro
 	return req, nil
 }
 
-// startHandleError handles the Start error response.
-func (client *ComputeClient) startHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginStop - Posts a stop action to a compute instance
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ComputeClient) BeginStop(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeBeginStopOptions) (ComputeStopPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - Name of Azure Machine Learning workspace.
+// computeName - Name of the Azure Machine Learning compute.
+// options - ComputeClientBeginStopOptions contains the optional parameters for the ComputeClient.BeginStop method.
+func (client *ComputeClient) BeginStop(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeClientBeginStopOptions) (ComputeClientStopPollerResponse, error) {
 	resp, err := client.stop(ctx, resourceGroupName, workspaceName, computeName, options)
 	if err != nil {
-		return ComputeStopPollerResponse{}, err
+		return ComputeClientStopPollerResponse{}, err
 	}
-	result := ComputeStopPollerResponse{
+	result := ComputeClientStopPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ComputeClient.Stop", "", resp, client.pl, client.stopHandleError)
+	pt, err := armruntime.NewPoller("ComputeClient.Stop", "", resp, client.pl)
 	if err != nil {
-		return ComputeStopPollerResponse{}, err
+		return ComputeClientStopPollerResponse{}, err
 	}
-	result.Poller = &ComputeStopPoller{
+	result.Poller = &ComputeClientStopPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Stop - Posts a stop action to a compute instance
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ComputeClient) stop(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeBeginStopOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ComputeClient) stop(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeClientBeginStopOptions) (*http.Response, error) {
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, workspaceName, computeName, options)
 	if err != nil {
 		return nil, err
@@ -669,13 +611,13 @@ func (client *ComputeClient) stop(ctx context.Context, resourceGroupName string,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return nil, client.stopHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // stopCreateRequest creates the Stop request.
-func (client *ComputeClient) stopCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeBeginStopOptions) (*policy.Request, error) {
+func (client *ComputeClient) stopCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeClientBeginStopOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/stop"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -693,7 +635,7 @@ func (client *ComputeClient) stopCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter computeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{computeName}", url.PathEscape(computeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -704,42 +646,35 @@ func (client *ComputeClient) stopCreateRequest(ctx context.Context, resourceGrou
 	return req, nil
 }
 
-// stopHandleError handles the Stop error response.
-func (client *ComputeClient) stopHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginUpdate - Updates properties of a compute. This call will overwrite a compute if it exists. This is a nonrecoverable operation.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ComputeClient) BeginUpdate(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, parameters ClusterUpdateParameters, options *ComputeBeginUpdateOptions) (ComputeUpdatePollerResponse, error) {
+// BeginUpdate - Updates properties of a compute. This call will overwrite a compute if it exists. This is a nonrecoverable
+// operation.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - Name of Azure Machine Learning workspace.
+// computeName - Name of the Azure Machine Learning compute.
+// parameters - Additional parameters for cluster update.
+// options - ComputeClientBeginUpdateOptions contains the optional parameters for the ComputeClient.BeginUpdate method.
+func (client *ComputeClient) BeginUpdate(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, parameters ClusterUpdateParameters, options *ComputeClientBeginUpdateOptions) (ComputeClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, workspaceName, computeName, parameters, options)
 	if err != nil {
-		return ComputeUpdatePollerResponse{}, err
+		return ComputeClientUpdatePollerResponse{}, err
 	}
-	result := ComputeUpdatePollerResponse{
+	result := ComputeClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ComputeClient.Update", "", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("ComputeClient.Update", "", resp, client.pl)
 	if err != nil {
-		return ComputeUpdatePollerResponse{}, err
+		return ComputeClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &ComputeUpdatePoller{
+	result.Poller = &ComputeClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Updates properties of a compute. This call will overwrite a compute if it exists. This is a nonrecoverable operation.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ComputeClient) update(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, parameters ClusterUpdateParameters, options *ComputeBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ComputeClient) update(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, parameters ClusterUpdateParameters, options *ComputeClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, workspaceName, computeName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -749,13 +684,13 @@ func (client *ComputeClient) update(ctx context.Context, resourceGroupName strin
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ComputeClient) updateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, parameters ClusterUpdateParameters, options *ComputeBeginUpdateOptions) (*policy.Request, error) {
+func (client *ComputeClient) updateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, parameters ClusterUpdateParameters, options *ComputeClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -773,7 +708,7 @@ func (client *ComputeClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter computeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{computeName}", url.PathEscape(computeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -782,17 +717,4 @@ func (client *ComputeClient) updateCreateRequest(ctx context.Context, resourceGr
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
-}
-
-// updateHandleError handles the Update error response.
-func (client *ComputeClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

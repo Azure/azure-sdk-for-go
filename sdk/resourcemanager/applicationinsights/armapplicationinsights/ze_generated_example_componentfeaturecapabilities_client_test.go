@@ -24,11 +24,12 @@ func ExampleComponentFeatureCapabilitiesClient_Get() {
 	}
 	ctx := context.Background()
 	client := armapplicationinsights.NewComponentFeatureCapabilitiesClient("<subscription-id>", cred, nil)
-	_, err = client.Get(ctx,
+	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ComponentFeatureCapabilitiesClientGetResult)
 }

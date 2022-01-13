@@ -11,7 +11,6 @@ package armdesktopvirtualization
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,39 +24,50 @@ import (
 // StartMenuItemsClient contains the methods for the StartMenuItems group.
 // Don't use this type directly, use NewStartMenuItemsClient() instead.
 type StartMenuItemsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewStartMenuItemsClient creates a new instance of StartMenuItemsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewStartMenuItemsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *StartMenuItemsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &StartMenuItemsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &StartMenuItemsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - List start menu items in the given application group.
-// If the operation fails it returns the *CloudError error type.
-func (client *StartMenuItemsClient) List(resourceGroupName string, applicationGroupName string, options *StartMenuItemsListOptions) *StartMenuItemsListPager {
-	return &StartMenuItemsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// applicationGroupName - The name of the application group
+// options - StartMenuItemsClientListOptions contains the optional parameters for the StartMenuItemsClient.List method.
+func (client *StartMenuItemsClient) List(resourceGroupName string, applicationGroupName string, options *StartMenuItemsClientListOptions) *StartMenuItemsClientListPager {
+	return &StartMenuItemsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, applicationGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp StartMenuItemsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp StartMenuItemsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.StartMenuItemList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *StartMenuItemsClient) listCreateRequest(ctx context.Context, resourceGroupName string, applicationGroupName string, options *StartMenuItemsListOptions) (*policy.Request, error) {
+func (client *StartMenuItemsClient) listCreateRequest(ctx context.Context, resourceGroupName string, applicationGroupName string, options *StartMenuItemsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/applicationGroups/{applicationGroupName}/startMenuItems"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -71,7 +81,7 @@ func (client *StartMenuItemsClient) listCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter applicationGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{applicationGroupName}", url.PathEscape(applicationGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -83,23 +93,10 @@ func (client *StartMenuItemsClient) listCreateRequest(ctx context.Context, resou
 }
 
 // listHandleResponse handles the List response.
-func (client *StartMenuItemsClient) listHandleResponse(resp *http.Response) (StartMenuItemsListResponse, error) {
-	result := StartMenuItemsListResponse{RawResponse: resp}
+func (client *StartMenuItemsClient) listHandleResponse(resp *http.Response) (StartMenuItemsClientListResponse, error) {
+	result := StartMenuItemsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StartMenuItemList); err != nil {
-		return StartMenuItemsListResponse{}, runtime.NewResponseError(err, resp)
+		return StartMenuItemsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *StartMenuItemsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

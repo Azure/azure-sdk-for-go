@@ -29,15 +29,15 @@ func ExampleSourceControlConfigurationsClient_Get() {
 	client := armkubernetesconfiguration.NewSourceControlConfigurationsClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
-		armkubernetesconfiguration.Enum0MicrosoftKubernetes,
-		armkubernetesconfiguration.Enum1ConnectedClusters,
+		armkubernetesconfiguration.Enum0("Microsoft.Kubernetes"),
+		armkubernetesconfiguration.Enum1("connectedClusters"),
 		"<cluster-name>",
 		"<source-control-configuration-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SourceControlConfiguration.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SourceControlConfigurationsClientGetResult)
 }
 
 // x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/preview/2022-01-01-preview/examples/CreateSourceControlConfiguration.json
@@ -50,8 +50,8 @@ func ExampleSourceControlConfigurationsClient_CreateOrUpdate() {
 	client := armkubernetesconfiguration.NewSourceControlConfigurationsClient("<subscription-id>", cred, nil)
 	res, err := client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
-		armkubernetesconfiguration.Enum0MicrosoftKubernetes,
-		armkubernetesconfiguration.Enum1ConnectedClusters,
+		armkubernetesconfiguration.Enum0("Microsoft.Kubernetes"),
+		armkubernetesconfiguration.Enum1("connectedClusters"),
 		"<cluster-name>",
 		"<source-control-configuration-name>",
 		armkubernetesconfiguration.SourceControlConfiguration{
@@ -67,8 +67,8 @@ func ExampleSourceControlConfigurationsClient_CreateOrUpdate() {
 				OperatorInstanceName:  to.StringPtr("<operator-instance-name>"),
 				OperatorNamespace:     to.StringPtr("<operator-namespace>"),
 				OperatorParams:        to.StringPtr("<operator-params>"),
-				OperatorScope:         armkubernetesconfiguration.OperatorScopeTypeNamespace.ToPtr(),
-				OperatorType:          armkubernetesconfiguration.OperatorTypeFlux.ToPtr(),
+				OperatorScope:         armkubernetesconfiguration.OperatorScopeType("namespace").ToPtr(),
+				OperatorType:          armkubernetesconfiguration.OperatorType("Flux").ToPtr(),
 				RepositoryURL:         to.StringPtr("<repository-url>"),
 				SSHKnownHostsContents: to.StringPtr("<sshknown-hosts-contents>"),
 			},
@@ -77,7 +77,7 @@ func ExampleSourceControlConfigurationsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SourceControlConfiguration.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SourceControlConfigurationsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/preview/2022-01-01-preview/examples/DeleteSourceControlConfiguration.json
@@ -90,8 +90,8 @@ func ExampleSourceControlConfigurationsClient_BeginDelete() {
 	client := armkubernetesconfiguration.NewSourceControlConfigurationsClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
-		armkubernetesconfiguration.Enum0MicrosoftKubernetes,
-		armkubernetesconfiguration.Enum1ConnectedClusters,
+		armkubernetesconfiguration.Enum0("Microsoft.Kubernetes"),
+		armkubernetesconfiguration.Enum1("connectedClusters"),
 		"<cluster-name>",
 		"<source-control-configuration-name>",
 		nil)
@@ -113,16 +113,20 @@ func ExampleSourceControlConfigurationsClient_List() {
 	ctx := context.Background()
 	client := armkubernetesconfiguration.NewSourceControlConfigurationsClient("<subscription-id>", cred, nil)
 	pager := client.List("<resource-group-name>",
-		armkubernetesconfiguration.Enum0MicrosoftKubernetes,
-		armkubernetesconfiguration.Enum1ConnectedClusters,
+		armkubernetesconfiguration.Enum0("Microsoft.Kubernetes"),
+		armkubernetesconfiguration.Enum1("connectedClusters"),
 		"<cluster-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("SourceControlConfiguration.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

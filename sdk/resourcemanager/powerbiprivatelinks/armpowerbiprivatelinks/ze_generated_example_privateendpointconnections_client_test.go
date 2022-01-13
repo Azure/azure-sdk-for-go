@@ -33,12 +33,16 @@ func ExamplePrivateEndpointConnectionsClient_ListByResource() {
 	pager := client.ListByResource("<resource-group-name>",
 		"<azure-resource-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("PrivateEndpointConnection.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -59,7 +63,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateEndpointConnection.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateEndpointConnectionsClientGetResult)
 }
 
 // x-ms-original-file: specification/powerbiprivatelinks/resource-manager/Microsoft.PowerBI/stable/2020-06-01/examples/PrivateEndpointConnections_Create.json
@@ -82,7 +86,7 @@ func ExamplePrivateEndpointConnectionsClient_Create() {
 				PrivateLinkServiceConnectionState: &armpowerbiprivatelinks.ConnectionState{
 					Description:     to.StringPtr("<description>"),
 					ActionsRequired: to.StringPtr("<actions-required>"),
-					Status:          armpowerbiprivatelinks.PersistedConnectionStatusPending.ToPtr(),
+					Status:          armpowerbiprivatelinks.PersistedConnectionStatus("Approved ").ToPtr(),
 				},
 			},
 		},
@@ -90,7 +94,7 @@ func ExamplePrivateEndpointConnectionsClient_Create() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateEndpointConnection.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateEndpointConnectionsClientCreateResult)
 }
 
 // x-ms-original-file: specification/powerbiprivatelinks/resource-manager/Microsoft.PowerBI/stable/2020-06-01/examples/PrivateEndpointConnections_Delete.json

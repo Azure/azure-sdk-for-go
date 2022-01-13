@@ -17,9 +17,21 @@ import (
 
 // Alert - An individual alert.
 type Alert struct {
-	ProxyResource
+	// eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating
+	// the latest version or not.
+	ETag *string `json:"eTag,omitempty"`
+
 	// Alert properties.
 	Properties *AlertProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // AlertProperties - Alert properties.
@@ -75,6 +87,9 @@ type AlertPropertiesDetails struct {
 	// budget threshold amount
 	Amount *float64 `json:"amount,omitempty"`
 
+	// company name
+	CompanyName *string `json:"companyName,omitempty"`
+
 	// list of emails to contact
 	ContactEmails []*string `json:"contactEmails,omitempty"`
 
@@ -86,6 +101,21 @@ type AlertPropertiesDetails struct {
 
 	// current spend
 	CurrentSpend *float64 `json:"currentSpend,omitempty"`
+
+	// department name
+	DepartmentName *string `json:"departmentName,omitempty"`
+
+	// datetime of enrollmentEndDate
+	EnrollmentEndDate *string `json:"enrollmentEndDate,omitempty"`
+
+	// enrollment number
+	EnrollmentNumber *string `json:"enrollmentNumber,omitempty"`
+
+	// datetime of enrollmentStartDate
+	EnrollmentStartDate *string `json:"enrollmentStartDate,omitempty"`
+
+	// invoicing threshold
+	InvoicingThreshold *float64 `json:"invoicingThreshold,omitempty"`
 
 	// array of meters to filter by
 	MeterFilter []interface{} `json:"meterFilter,omitempty"`
@@ -125,10 +155,16 @@ type AlertPropertiesDetails struct {
 func (a AlertPropertiesDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "amount", a.Amount)
+	populate(objectMap, "companyName", a.CompanyName)
 	populate(objectMap, "contactEmails", a.ContactEmails)
 	populate(objectMap, "contactGroups", a.ContactGroups)
 	populate(objectMap, "contactRoles", a.ContactRoles)
 	populate(objectMap, "currentSpend", a.CurrentSpend)
+	populate(objectMap, "departmentName", a.DepartmentName)
+	populate(objectMap, "enrollmentEndDate", a.EnrollmentEndDate)
+	populate(objectMap, "enrollmentNumber", a.EnrollmentNumber)
+	populate(objectMap, "enrollmentStartDate", a.EnrollmentStartDate)
+	populate(objectMap, "invoicingThreshold", a.InvoicingThreshold)
 	populate(objectMap, "meterFilter", a.MeterFilter)
 	populate(objectMap, "operator", a.Operator)
 	populate(objectMap, "overridingAlert", a.OverridingAlert)
@@ -143,23 +179,23 @@ func (a AlertPropertiesDetails) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AlertsDismissOptions contains the optional parameters for the Alerts.Dismiss method.
-type AlertsDismissOptions struct {
+// AlertsClientDismissOptions contains the optional parameters for the AlertsClient.Dismiss method.
+type AlertsClientDismissOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AlertsGetOptions contains the optional parameters for the Alerts.Get method.
-type AlertsGetOptions struct {
+// AlertsClientGetOptions contains the optional parameters for the AlertsClient.Get method.
+type AlertsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AlertsListExternalOptions contains the optional parameters for the Alerts.ListExternal method.
-type AlertsListExternalOptions struct {
+// AlertsClientListExternalOptions contains the optional parameters for the AlertsClient.ListExternal method.
+type AlertsClientListExternalOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AlertsListOptions contains the optional parameters for the Alerts.List method.
-type AlertsListOptions struct {
+// AlertsClientListOptions contains the optional parameters for the AlertsClient.List method.
+type AlertsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -191,8 +227,8 @@ type CommonExportProperties struct {
 	// The format of the export being delivered. Currently only 'Csv' is supported.
 	Format *FormatType `json:"format,omitempty"`
 
-	// If set to true, exported data will be partitioned by size and placed in a blob directory together with a manifest file. Note: this option is currently
-	// available only for modern commerce scopes.
+	// If set to true, exported data will be partitioned by size and placed in a blob directory together with a manifest file.
+	// Note: this option is currently available only for modern commerce scopes.
 	PartitionData *bool `json:"partitionData,omitempty"`
 
 	// If requested, has the most recent execution history for the export.
@@ -205,7 +241,12 @@ type CommonExportProperties struct {
 // MarshalJSON implements the json.Marshaller interface for type CommonExportProperties.
 func (c CommonExportProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.marshalInternal(objectMap)
+	populate(objectMap, "definition", c.Definition)
+	populate(objectMap, "deliveryInfo", c.DeliveryInfo)
+	populate(objectMap, "format", c.Format)
+	populateTimeRFC3339(objectMap, "nextRunTimeEstimate", c.NextRunTimeEstimate)
+	populate(objectMap, "partitionData", c.PartitionData)
+	populate(objectMap, "runHistory", c.RunHistory)
 	return json.Marshal(objectMap)
 }
 
@@ -215,19 +256,6 @@ func (c *CommonExportProperties) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	return c.unmarshalInternal(rawMsg)
-}
-
-func (c CommonExportProperties) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "definition", c.Definition)
-	populate(objectMap, "deliveryInfo", c.DeliveryInfo)
-	populate(objectMap, "format", c.Format)
-	populateTimeRFC3339(objectMap, "nextRunTimeEstimate", c.NextRunTimeEstimate)
-	populate(objectMap, "partitionData", c.PartitionData)
-	populate(objectMap, "runHistory", c.RunHistory)
-}
-
-func (c *CommonExportProperties) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
@@ -259,16 +287,42 @@ func (c *CommonExportProperties) unmarshalInternal(rawMsg map[string]json.RawMes
 
 // Dimension - List of Dimension.
 type Dimension struct {
-	Resource
 	// Dimension properties.
 	Properties *DimensionProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; ETag of the resource.
+	ETag *string `json:"eTag,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Location of the resource.
+	Location *string `json:"location,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; SKU of the resource.
+	SKU *string `json:"sku,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource tags.
+	Tags map[string]*string `json:"tags,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Dimension.
 func (d Dimension) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	d.Resource.marshalInternal(objectMap)
+	populate(objectMap, "eTag", d.ETag)
+	populate(objectMap, "id", d.ID)
+	populate(objectMap, "location", d.Location)
+	populate(objectMap, "name", d.Name)
 	populate(objectMap, "properties", d.Properties)
+	populate(objectMap, "sku", d.SKU)
+	populate(objectMap, "tags", d.Tags)
+	populate(objectMap, "type", d.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -361,27 +415,32 @@ func (d *DimensionProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// DimensionsByExternalCloudProviderTypeOptions contains the optional parameters for the Dimensions.ByExternalCloudProviderType method.
-type DimensionsByExternalCloudProviderTypeOptions struct {
+// DimensionsClientByExternalCloudProviderTypeOptions contains the optional parameters for the DimensionsClient.ByExternalCloudProviderType
+// method.
+type DimensionsClientByExternalCloudProviderTypeOptions struct {
 	// May be used to expand the properties/data within a dimension category. By default, data is not included when listing dimensions.
 	Expand *string
-	// May be used to filter dimensions by properties/category, properties/usageStart, properties/usageEnd. Supported operators are 'eq','lt', 'gt', 'le', 'ge'.
+	// May be used to filter dimensions by properties/category, properties/usageStart, properties/usageEnd. Supported operators
+	// are 'eq','lt', 'gt', 'le', 'ge'.
 	Filter *string
-	// Skiptoken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element, the value of the nextLink
-	// element will include a skiptoken parameter that specifies a starting point to use for subsequent calls.
+	// Skiptoken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
+	// the value of the nextLink element will include a skiptoken parameter that
+	// specifies a starting point to use for subsequent calls.
 	Skiptoken *string
 	// May be used to limit the number of results to the most recent N dimension data.
 	Top *int32
 }
 
-// DimensionsListOptions contains the optional parameters for the Dimensions.List method.
-type DimensionsListOptions struct {
+// DimensionsClientListOptions contains the optional parameters for the DimensionsClient.List method.
+type DimensionsClientListOptions struct {
 	// May be used to expand the properties/data within a dimension category. By default, data is not included when listing dimensions.
 	Expand *string
-	// May be used to filter dimensions by properties/category, properties/usageStart, properties/usageEnd. Supported operators are 'eq','lt', 'gt', 'le', 'ge'.
+	// May be used to filter dimensions by properties/category, properties/usageStart, properties/usageEnd. Supported operators
+	// are 'eq','lt', 'gt', 'le', 'ge'.
 	Filter *string
-	// Skiptoken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element, the value of the nextLink
-	// element will include a skiptoken parameter that specifies a starting point to use for subsequent calls.
+	// Skiptoken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
+	// the value of the nextLink element will include a skiptoken parameter that
+	// specifies a starting point to use for subsequent calls.
 	Skiptoken *string
 	// May be used to limit the number of results to the most recent N dimension data.
 	Top *int32
@@ -462,30 +521,37 @@ type ErrorDetails struct {
 	Message *string `json:"message,omitempty" azure:"ro"`
 }
 
-// ErrorResponse - Error response indicates that the service is not able to process the incoming request. The reason is provided in the error message.
+// ErrorResponse - Error response indicates that the service is not able to process the incoming request. The reason is provided
+// in the error message.
 // Some Error responses:
-// * 429 TooManyRequests - Request is throttled. Retry after waiting for the time specified in the "x-ms-ratelimit-microsoft.consumption-retry-after" header.
+// * 429 TooManyRequests - Request is throttled. Retry after waiting for the time specified in the "x-ms-ratelimit-microsoft.consumption-retry-after"
+// header.
 //
 //
-// * 503 ServiceUnavailable - Service is temporarily unavailable. Retry after waiting for the time specified in the "Retry-After" header.
-// Implements the error and azcore.HTTPResponse interfaces.
+// * 503 ServiceUnavailable - Service is temporarily unavailable. Retry after waiting for the time specified in the "Retry-After"
+// header.
 type ErrorResponse struct {
-	raw string
 	// The details of the error.
-	InnerError *ErrorDetails `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorDetails `json:"error,omitempty"`
 }
 
 // Export - An export resource.
 type Export struct {
-	ProxyResource
+	// eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating
+	// the latest version or not.
+	ETag *string `json:"eTag,omitempty"`
+
 	// The properties of the export.
 	Properties *ExportProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ExportDataset - The definition for data in the export.
@@ -497,11 +563,11 @@ type ExportDataset struct {
 	Granularity *GranularityType `json:"granularity,omitempty"`
 }
 
-// ExportDatasetConfiguration - The export dataset configuration. Allows columns to be selected for the export. If not provided then the export will include
-// all available columns.
+// ExportDatasetConfiguration - The export dataset configuration. Allows columns to be selected for the export. If not provided
+// then the export will include all available columns.
 type ExportDatasetConfiguration struct {
-	// Array of column names to be included in the export. If not provided then the export will include all available columns. The available columns can vary
-	// by customer channel (see examples).
+	// Array of column names to be included in the export. If not provided then the export will include all available columns.
+	// The available columns can vary by customer channel (see examples).
 	Columns []*string `json:"columns,omitempty"`
 }
 
@@ -517,8 +583,8 @@ type ExportDefinition struct {
 	// REQUIRED; The time frame for pulling data for the export. If custom, then a specific time period must be provided.
 	Timeframe *TimeframeType `json:"timeframe,omitempty"`
 
-	// REQUIRED; The type of the export. Note that 'Usage' is equivalent to 'ActualCost' and is applicable to exports that do not yet provide data for charges
-	// or amortization for service reservations.
+	// REQUIRED; The type of the export. Note that 'Usage' is equivalent to 'ActualCost' and is applicable to exports that do
+	// not yet provide data for charges or amortization for service reservations.
 	Type *ExportType `json:"type,omitempty"`
 
 	// The definition for data in the export.
@@ -528,37 +594,39 @@ type ExportDefinition struct {
 	TimePeriod *ExportTimePeriod `json:"timePeriod,omitempty"`
 }
 
-// ExportDeliveryDestination - This represents the blob storage account location where exports of costs will be delivered. There are two ways to configure
-// the destination. The approach recommended for most customers is to specify
-// the resourceId of the storage account. This requires a one-time registration of the account's subscription with the Microsoft.CostManagementExports resource
-// provider in order to give Azure Cost
-// Management services access to the storage. When creating an export in the Azure portal this registration is performed automatically but API users may
-// need to register the subscription explicitly (for
-// more information see https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-manager-supported-services ). Another way to configure the
-// destination is available ONLY to Partners with a
-// Microsoft Partner Agreement plan who are global admins of their billing account. These Partners, instead of specifying the resourceId of a storage account,
-// can specify the storage account name along
-// with a SAS token for the account. This allows exports of costs to a storage account in any tenant. The SAS token should be created for the blob service
-// with Service/Container/Object resource types and
+// ExportDeliveryDestination - This represents the blob storage account location where exports of costs will be delivered.
+// There are two ways to configure the destination. The approach recommended for most customers is to specify
+// the resourceId of the storage account. This requires a one-time registration of the account's subscription with the Microsoft.CostManagementExports
+// resource provider in order to give Azure Cost
+// Management services access to the storage. When creating an export in the Azure portal this registration is performed automatically
+// but API users may need to register the subscription explicitly (for
+// more information see https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-manager-supported-services
+// ). Another way to configure the destination is available ONLY to Partners with a
+// Microsoft Partner Agreement plan who are global admins of their billing account. These Partners, instead of specifying
+// the resourceId of a storage account, can specify the storage account name along
+// with a SAS token for the account. This allows exports of costs to a storage account in any tenant. The SAS token should
+// be created for the blob service with Service/Container/Object resource types and
 // with Read/Write/Delete/List/Add/Create permissions (for more information see https://docs.microsoft.com/en-us/azure/cost-management-billing/costs/export-cost-data-storage-account-sas-key
 // ).
 type ExportDeliveryDestination struct {
 	// REQUIRED; The name of the container where exports will be uploaded. If the container does not exist it will be created.
 	Container *string `json:"container,omitempty"`
 
-	// The resource id of the storage account where exports will be delivered. This is not required if a sasToken and storageAccount are specified.
+	// The resource id of the storage account where exports will be delivered. This is not required if a sasToken and storageAccount
+	// are specified.
 	ResourceID *string `json:"resourceId,omitempty"`
 
 	// The name of the directory where exports will be uploaded.
 	RootFolderPath *string `json:"rootFolderPath,omitempty"`
 
-	// A SAS token for the storage account. For a restricted set of Azure customers this together with storageAccount can be specified instead of resourceId.
-	// Note: the value returned by the API for this
-	// property will always be obfuscated. Returning this same obfuscated value will not result in the SAS token being updated. To update this value a new SAS
-	// token must be specified.
+	// A SAS token for the storage account. For a restricted set of Azure customers this together with storageAccount can be specified
+	// instead of resourceId. Note: the value returned by the API for this
+	// property will always be obfuscated. Returning this same obfuscated value will not result in the SAS token being updated.
+	// To update this value a new SAS token must be specified.
 	SasToken *string `json:"sasToken,omitempty"`
 
-	// The storage account where exports will be uploaded. For a restricted set of Azure customers this together with sasToken can be specified instead of resourceId.
+	// The storage account where exports will be uploaded. For a restricted set of Azure customers this together with sasToken
+	// can be specified instead of resourceId.
 	StorageAccount *string `json:"storageAccount,omitempty"`
 }
 
@@ -570,9 +638,21 @@ type ExportDeliveryInfo struct {
 
 // ExportExecution - An export execution.
 type ExportExecution struct {
-	ProxyResource
+	// eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating
+	// the latest version or not.
+	ETag *string `json:"eTag,omitempty"`
+
 	// The properties of the export execution.
 	Properties *ExportExecutionProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ExportExecutionListResult - Result of listing the execution history of an export.
@@ -611,7 +691,8 @@ type ExportExecutionProperties struct {
 	// The last known status of the export execution.
 	Status *ExecutionStatus `json:"status,omitempty"`
 
-	// The identifier for the entity that executed the export. For OnDemand executions it is the user email. For scheduled executions it is 'System'.
+	// The identifier for the entity that executed the export. For OnDemand executions it is the user email. For scheduled executions
+	// it is 'System'.
 	SubmittedBy *string `json:"submittedBy,omitempty"`
 
 	// The time when export was queued to be executed.
@@ -692,15 +773,38 @@ func (e ExportListResult) MarshalJSON() ([]byte, error) {
 
 // ExportProperties - The properties of the export.
 type ExportProperties struct {
-	CommonExportProperties
+	// REQUIRED; Has the definition for the export.
+	Definition *ExportDefinition `json:"definition,omitempty"`
+
+	// REQUIRED; Has delivery information for the export.
+	DeliveryInfo *ExportDeliveryInfo `json:"deliveryInfo,omitempty"`
+
+	// The format of the export being delivered. Currently only 'Csv' is supported.
+	Format *FormatType `json:"format,omitempty"`
+
+	// If set to true, exported data will be partitioned by size and placed in a blob directory together with a manifest file.
+	// Note: this option is currently available only for modern commerce scopes.
+	PartitionData *bool `json:"partitionData,omitempty"`
+
+	// If requested, has the most recent execution history for the export.
+	RunHistory *ExportExecutionListResult `json:"runHistory,omitempty"`
+
 	// Has schedule information for the export.
 	Schedule *ExportSchedule `json:"schedule,omitempty"`
+
+	// READ-ONLY; If the export has an active schedule, provides an estimate of the next execution time.
+	NextRunTimeEstimate *time.Time `json:"nextRunTimeEstimate,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ExportProperties.
 func (e ExportProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	e.CommonExportProperties.marshalInternal(objectMap)
+	populate(objectMap, "definition", e.Definition)
+	populate(objectMap, "deliveryInfo", e.DeliveryInfo)
+	populate(objectMap, "format", e.Format)
+	populateTimeRFC3339(objectMap, "nextRunTimeEstimate", e.NextRunTimeEstimate)
+	populate(objectMap, "partitionData", e.PartitionData)
+	populate(objectMap, "runHistory", e.RunHistory)
 	populate(objectMap, "schedule", e.Schedule)
 	return json.Marshal(objectMap)
 }
@@ -714,6 +818,24 @@ func (e *ExportProperties) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "definition":
+			err = unpopulate(val, &e.Definition)
+			delete(rawMsg, key)
+		case "deliveryInfo":
+			err = unpopulate(val, &e.DeliveryInfo)
+			delete(rawMsg, key)
+		case "format":
+			err = unpopulate(val, &e.Format)
+			delete(rawMsg, key)
+		case "nextRunTimeEstimate":
+			err = unpopulateTimeRFC3339(val, &e.NextRunTimeEstimate)
+			delete(rawMsg, key)
+		case "partitionData":
+			err = unpopulate(val, &e.PartitionData)
+			delete(rawMsg, key)
+		case "runHistory":
+			err = unpopulate(val, &e.RunHistory)
+			delete(rawMsg, key)
 		case "schedule":
 			err = unpopulate(val, &e.Schedule)
 			delete(rawMsg, key)
@@ -721,9 +843,6 @@ func (e *ExportProperties) UnmarshalJSON(data []byte) error {
 		if err != nil {
 			return err
 		}
-	}
-	if err := e.CommonExportProperties.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -773,14 +892,16 @@ type ExportSchedule struct {
 	// The schedule recurrence.
 	Recurrence *RecurrenceType `json:"recurrence,omitempty"`
 
-	// Has start and end date of the recurrence. The start date must be in future. If present, the end date must be greater than start date.
+	// Has start and end date of the recurrence. The start date must be in future. If present, the end date must be greater than
+	// start date.
 	RecurrencePeriod *ExportRecurrencePeriod `json:"recurrencePeriod,omitempty"`
 
 	// The status of the export's schedule. If 'Inactive', the export's schedule is paused.
 	Status *StatusType `json:"status,omitempty"`
 }
 
-// ExportTimePeriod - The date range for data in the export. This should only be specified with timeFrame set to 'Custom'. The maximum date range is 3 months.
+// ExportTimePeriod - The date range for data in the export. This should only be specified with timeFrame set to 'Custom'.
+// The maximum date range is 3 months.
 type ExportTimePeriod struct {
 	// REQUIRED; The start date for export data.
 	From *time.Time `json:"from,omitempty"`
@@ -820,47 +941,65 @@ func (e *ExportTimePeriod) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// ExportsCreateOrUpdateOptions contains the optional parameters for the Exports.CreateOrUpdate method.
-type ExportsCreateOrUpdateOptions struct {
+// ExportsClientCreateOrUpdateOptions contains the optional parameters for the ExportsClient.CreateOrUpdate method.
+type ExportsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExportsDeleteOptions contains the optional parameters for the Exports.Delete method.
-type ExportsDeleteOptions struct {
+// ExportsClientDeleteOptions contains the optional parameters for the ExportsClient.Delete method.
+type ExportsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExportsExecuteOptions contains the optional parameters for the Exports.Execute method.
-type ExportsExecuteOptions struct {
+// ExportsClientExecuteOptions contains the optional parameters for the ExportsClient.Execute method.
+type ExportsClientExecuteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExportsGetExecutionHistoryOptions contains the optional parameters for the Exports.GetExecutionHistory method.
-type ExportsGetExecutionHistoryOptions struct {
+// ExportsClientGetExecutionHistoryOptions contains the optional parameters for the ExportsClient.GetExecutionHistory method.
+type ExportsClientGetExecutionHistoryOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExportsGetOptions contains the optional parameters for the Exports.Get method.
-type ExportsGetOptions struct {
-	// May be used to expand the properties within an export. Currently only 'runHistory' is supported and will return information for the last 10 executions
-	// of the export.
+// ExportsClientGetOptions contains the optional parameters for the ExportsClient.Get method.
+type ExportsClientGetOptions struct {
+	// May be used to expand the properties within an export. Currently only 'runHistory' is supported and will return information
+	// for the last 10 executions of the export.
 	Expand *string
 }
 
-// ExportsListOptions contains the optional parameters for the Exports.List method.
-type ExportsListOptions struct {
-	// May be used to expand the properties within an export. Currently only 'runHistory' is supported and will return information for the last execution of
-	// each export.
+// ExportsClientListOptions contains the optional parameters for the ExportsClient.List method.
+type ExportsClientListOptions struct {
+	// May be used to expand the properties within an export. Currently only 'runHistory' is supported and will return information
+	// for the last execution of each export.
 	Expand *string
+}
+
+// ForecastClientExternalCloudProviderUsageOptions contains the optional parameters for the ForecastClient.ExternalCloudProviderUsage
+// method.
+type ForecastClientExternalCloudProviderUsageOptions struct {
+	// May be used to filter forecasts by properties/usageDate (Utc time), properties/chargeType or properties/grain. The filter
+	// supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently
+	// support 'ne', 'or', or 'not'.
+	Filter *string
+}
+
+// ForecastClientUsageOptions contains the optional parameters for the ForecastClient.Usage method.
+type ForecastClientUsageOptions struct {
+	// May be used to filter forecasts by properties/usageDate (Utc time), properties/chargeType or properties/grain. The filter
+	// supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently
+	// support 'ne', 'or', or 'not'.
+	Filter *string
 }
 
 // ForecastDataset - The definition of data present in the forecast.
 type ForecastDataset struct {
-	// Dictionary of aggregation expression to use in the forecast. The key of each item in the dictionary is the alias for the aggregated column. forecast
-	// can have up to 2 aggregation clauses.
+	// Dictionary of aggregation expression to use in the forecast. The key of each item in the dictionary is the alias for the
+	// aggregated column. forecast can have up to 2 aggregation clauses.
 	Aggregation map[string]*QueryAggregation `json:"aggregation,omitempty"`
 
-	// Has configuration information for the data in the export. The configuration will be ignored if aggregation and grouping are provided.
+	// Has configuration information for the data in the export. The configuration will be ignored if aggregation and grouping
+	// are provided.
 	Configuration *QueryDatasetConfiguration `json:"configuration,omitempty"`
 
 	// Has filter expression to use in the forecast.
@@ -901,69 +1040,50 @@ type ForecastDefinition struct {
 	TimePeriod *QueryTimePeriod `json:"timePeriod,omitempty"`
 }
 
-// ForecastExternalCloudProviderUsageOptions contains the optional parameters for the Forecast.ExternalCloudProviderUsage method.
-type ForecastExternalCloudProviderUsageOptions struct {
-	// May be used to filter forecasts by properties/usageDate (Utc time), properties/chargeType or properties/grain. The filter supports 'eq', 'lt', 'gt',
-	// 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'.
-	Filter *string
-}
-
-// ForecastUsageOptions contains the optional parameters for the Forecast.Usage method.
-type ForecastUsageOptions struct {
-	// May be used to filter forecasts by properties/usageDate (Utc time), properties/chargeType or properties/grain. The filter supports 'eq', 'lt', 'gt',
-	// 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'.
-	Filter *string
-}
-
-// GenerateDetailedCostReportBeginCreateOperationOptions contains the optional parameters for the GenerateDetailedCostReport.BeginCreateOperation method.
-type GenerateDetailedCostReportBeginCreateOperationOptions struct {
+// GenerateDetailedCostReportClientBeginCreateOperationOptions contains the optional parameters for the GenerateDetailedCostReportClient.BeginCreateOperation
+// method.
+type GenerateDetailedCostReportClientBeginCreateOperationOptions struct {
 	// placeholder for future optional parameters
 }
 
 // GenerateDetailedCostReportDefinition - The definition of a cost detailed report.
 type GenerateDetailedCostReportDefinition struct {
-	// Billing Period in YearMonth(e.g. 202008) format. Only for legacy enterprise customers can use this. Can only have one of either timePeriod or invoiceId
-	// or billingPeriod parameters. If none provided
+	// Billing Period in YearMonth(e.g. 202008) format. Only for legacy enterprise customers can use this. Can only have one of
+	// either timePeriod or invoiceId or billingPeriod parameters. If none provided
 	// current month cost is provided.
 	BillingPeriod *string `json:"billingPeriod,omitempty"`
 
 	// Customer Id for Modern (Invoice Id and billing profile is also required for this).
 	CustomerID *string `json:"customerId,omitempty"`
 
-	// Invoice Id for PayAsYouGo customers and Modern billing profile scope. Can only have one of either timePeriod or invoiceId or billingPeriod parameters.
-	// If none provided current month cost is provided.
+	// Invoice Id for PayAsYouGo customers and Modern billing profile scope. Can only have one of either timePeriod or invoiceId
+	// or billingPeriod parameters. If none provided current month cost is provided.
 	InvoiceID *string `json:"invoiceId,omitempty"`
 
 	// The type of the detailed report. By default ActualCost is provided
 	Metric *GenerateDetailedCostReportMetricType `json:"metric,omitempty"`
 
-	// Has time period for pulling data for the cost detailed report. Can only have one of either timePeriod or invoiceId or billingPeriod parameters. If none
-	// provided current month cost is provided.
+	// Has time period for pulling data for the cost detailed report. Can only have one of either timePeriod or invoiceId or billingPeriod
+	// parameters. If none provided current month cost is provided.
 	TimePeriod *GenerateDetailedCostReportTimePeriod `json:"timePeriod,omitempty"`
 }
 
-// GenerateDetailedCostReportErrorResponse - Error response indicates that the service is not able to process the incoming request. The reason is provided
-// in the error message.
+// GenerateDetailedCostReportErrorResponse - Error response indicates that the service is not able to process the incoming
+// request. The reason is provided in the error message.
 // Some Error responses:
-// * 413 Request Entity Too Large - Request is throttled. The amount of data required to fulfill the request exceeds the maximum size permitted of 2Gb.
-// Please utilize our Exports feature instead.
+// * 413 Request Entity Too Large - Request is throttled. The amount of data required to fulfill the request exceeds the maximum
+// size permitted of 2Gb. Please utilize our Exports feature instead.
 //
 //
-// * 429 TooManyRequests - Request is throttled. Retry after waiting for the time specified in the "x-ms-ratelimit-microsoft.consumption-retry-after" header.
+// * 429 TooManyRequests - Request is throttled. Retry after waiting for the time specified in the "x-ms-ratelimit-microsoft.consumption-retry-after"
+// header.
 //
 //
-// * 503 ServiceUnavailable - Service is temporarily unavailable. Retry after waiting for the time specified in the "Retry-After" header.
-// Implements the error and azcore.HTTPResponse interfaces.
+// * 503 ServiceUnavailable - Service is temporarily unavailable. Retry after waiting for the time specified in the "Retry-After"
+// header.
 type GenerateDetailedCostReportErrorResponse struct {
-	raw string
 	// The details of the error.
-	InnerError *ErrorDetails `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type GenerateDetailedCostReportErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e GenerateDetailedCostReportErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorDetails `json:"error,omitempty"`
 }
 
 // GenerateDetailedCostReportOperationResult - The result of the long running operation for cost detailed report.
@@ -981,13 +1101,15 @@ type GenerateDetailedCostReportOperationResult struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// GenerateDetailedCostReportOperationResultsGetOptions contains the optional parameters for the GenerateDetailedCostReportOperationResults.Get method.
-type GenerateDetailedCostReportOperationResultsGetOptions struct {
+// GenerateDetailedCostReportOperationResultsClientGetOptions contains the optional parameters for the GenerateDetailedCostReportOperationResultsClient.Get
+// method.
+type GenerateDetailedCostReportOperationResultsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GenerateDetailedCostReportOperationStatusGetOptions contains the optional parameters for the GenerateDetailedCostReportOperationStatus.Get method.
-type GenerateDetailedCostReportOperationStatusGetOptions struct {
+// GenerateDetailedCostReportOperationStatusClientGetOptions contains the optional parameters for the GenerateDetailedCostReportOperationStatusClient.Get
+// method.
+type GenerateDetailedCostReportOperationStatusClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1054,7 +1176,8 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty" azure:"ro"`
 }
 
-// OperationListResult - Result of listing cost management operations. It contains a list of operations and a URL link to get the next set of results.
+// OperationListResult - Result of listing cost management operations. It contains a list of operations and a URL link to
+// get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -1071,8 +1194,8 @@ func (o OperationListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1087,7 +1210,8 @@ type PivotProperties struct {
 
 // ProxyResource - The Resource model definition.
 type ProxyResource struct {
-	// eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating the latest version or not.
+	// eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating
+	// the latest version or not.
 	ETag *string `json:"eTag,omitempty"`
 
 	// READ-ONLY; Resource Id.
@@ -1107,6 +1231,17 @@ type QueryAggregation struct {
 
 	// REQUIRED; The name of the column to aggregate.
 	Name *string `json:"name,omitempty"`
+}
+
+// QueryClientUsageByExternalCloudProviderTypeOptions contains the optional parameters for the QueryClient.UsageByExternalCloudProviderType
+// method.
+type QueryClientUsageByExternalCloudProviderTypeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// QueryClientUsageOptions contains the optional parameters for the QueryClient.Usage method.
+type QueryClientUsageOptions struct {
+	// placeholder for future optional parameters
 }
 
 // QueryColumn properties
@@ -1141,14 +1276,16 @@ func (q QueryComparisonExpression) MarshalJSON() ([]byte, error) {
 
 // QueryDataset - The definition of data present in the query.
 type QueryDataset struct {
-	// Dictionary of aggregation expression to use in the query. The key of each item in the dictionary is the alias for the aggregated column. Query can have
-	// up to 2 aggregation clauses.
+	// Dictionary of aggregation expression to use in the query. The key of each item in the dictionary is the alias for the aggregated
+	// column. Query can have up to 2 aggregation clauses.
 	Aggregation map[string]*QueryAggregation `json:"aggregation,omitempty"`
 
-	// Has configuration information for the data in the export. The configuration will be ignored if aggregation and grouping are provided.
+	// Has configuration information for the data in the export. The configuration will be ignored if aggregation and grouping
+	// are provided.
 	Configuration *QueryDatasetConfiguration `json:"configuration,omitempty"`
 
-	// The filter expression to use in the query. Please reference our Query API REST documentation for how to properly format the filter.
+	// The filter expression to use in the query. Please reference our Query API REST documentation for how to properly format
+	// the filter.
 	Filter *QueryFilter `json:"filter,omitempty"`
 
 	// The granularity of rows in the query.
@@ -1171,7 +1308,8 @@ func (q QueryDataset) MarshalJSON() ([]byte, error) {
 
 // QueryDatasetConfiguration - The configuration of dataset in the query.
 type QueryDatasetConfiguration struct {
-	// Array of column names to be included in the query. Any valid query column name is allowed. If not provided, then query includes all columns.
+	// Array of column names to be included in the query. Any valid query column name is allowed. If not provided, then query
+	// includes all columns.
 	Columns []*string `json:"columns,omitempty"`
 }
 
@@ -1258,16 +1396,42 @@ func (q QueryProperties) MarshalJSON() ([]byte, error) {
 
 // QueryResult - Result of query. It contains all columns listed under groupings and aggregation.
 type QueryResult struct {
-	Resource
 	// Query properties
 	Properties *QueryProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; ETag of the resource.
+	ETag *string `json:"eTag,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Location of the resource.
+	Location *string `json:"location,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; SKU of the resource.
+	SKU *string `json:"sku,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource tags.
+	Tags map[string]*string `json:"tags,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type QueryResult.
 func (q QueryResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	q.Resource.marshalInternal(objectMap)
+	populate(objectMap, "eTag", q.ETag)
+	populate(objectMap, "id", q.ID)
+	populate(objectMap, "location", q.Location)
+	populate(objectMap, "name", q.Name)
 	populate(objectMap, "properties", q.Properties)
+	populate(objectMap, "sku", q.SKU)
+	populate(objectMap, "tags", q.Tags)
+	populate(objectMap, "type", q.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -1311,16 +1475,6 @@ func (q *QueryTimePeriod) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// QueryUsageByExternalCloudProviderTypeOptions contains the optional parameters for the Query.UsageByExternalCloudProviderType method.
-type QueryUsageByExternalCloudProviderTypeOptions struct {
-	// placeholder for future optional parameters
-}
-
-// QueryUsageOptions contains the optional parameters for the Query.Usage method.
-type QueryUsageOptions struct {
-	// placeholder for future optional parameters
-}
-
 // ReportConfigAggregation - The aggregation expression to be used in the report.
 type ReportConfigAggregation struct {
 	// REQUIRED; The name of the aggregation function to use.
@@ -1353,11 +1507,12 @@ func (r ReportConfigComparisonExpression) MarshalJSON() ([]byte, error) {
 
 // ReportConfigDataset - The definition of data present in the report.
 type ReportConfigDataset struct {
-	// Dictionary of aggregation expression to use in the report. The key of each item in the dictionary is the alias for the aggregated column. Report can
-	// have up to 2 aggregation clauses.
+	// Dictionary of aggregation expression to use in the report. The key of each item in the dictionary is the alias for the
+	// aggregated column. Report can have up to 2 aggregation clauses.
 	Aggregation map[string]*ReportConfigAggregation `json:"aggregation,omitempty"`
 
-	// Has configuration information for the data in the report. The configuration will be ignored if aggregation and grouping are provided.
+	// Has configuration information for the data in the report. The configuration will be ignored if aggregation and grouping
+	// are provided.
 	Configuration *ReportConfigDatasetConfiguration `json:"configuration,omitempty"`
 
 	// Has filter expression to use in the report.
@@ -1387,7 +1542,8 @@ func (r ReportConfigDataset) MarshalJSON() ([]byte, error) {
 
 // ReportConfigDatasetConfiguration - The configuration of dataset in the report.
 type ReportConfigDatasetConfiguration struct {
-	// Array of column names to be included in the report. Any valid report column name is allowed. If not provided, then report includes all columns.
+	// Array of column names to be included in the report. Any valid report column name is allowed. If not provided, then report
+	// includes all columns.
 	Columns []*string `json:"columns,omitempty"`
 }
 
@@ -1403,8 +1559,8 @@ type ReportConfigDefinition struct {
 	// REQUIRED; The time frame for pulling data for the report. If custom, then a specific time period must be provided.
 	Timeframe *ReportTimeframeType `json:"timeframe,omitempty"`
 
-	// REQUIRED; The type of the report. Usage represents actual usage, forecast represents forecasted data and UsageAndForecast represents both usage and forecasted
-	// data. Actual usage and forecasted data can be
+	// REQUIRED; The type of the report. Usage represents actual usage, forecast represents forecasted data and UsageAndForecast
+	// represents both usage and forecasted data. Actual usage and forecasted data can be
 	// differentiated based on dates.
 	Type *ReportType `json:"type,omitempty"`
 
@@ -1424,7 +1580,7 @@ type ReportConfigFilter struct {
 	And []*ReportConfigFilter `json:"and,omitempty"`
 
 	// Has comparison expression for a dimension
-	Dimension *ReportConfigComparisonExpression `json:"dimension,omitempty"`
+	Dimensions *ReportConfigComparisonExpression `json:"dimensions,omitempty"`
 
 	// The logical "NOT" expression.
 	Not *ReportConfigFilter `json:"not,omitempty"`
@@ -1433,17 +1589,17 @@ type ReportConfigFilter struct {
 	Or []*ReportConfigFilter `json:"or,omitempty"`
 
 	// Has comparison expression for a tag
-	Tag *ReportConfigComparisonExpression `json:"tag,omitempty"`
+	Tags *ReportConfigComparisonExpression `json:"tags,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ReportConfigFilter.
 func (r ReportConfigFilter) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "and", r.And)
-	populate(objectMap, "dimension", r.Dimension)
+	populate(objectMap, "dimensions", r.Dimensions)
 	populate(objectMap, "not", r.Not)
 	populate(objectMap, "or", r.Or)
-	populate(objectMap, "tag", r.Tag)
+	populate(objectMap, "tags", r.Tags)
 	return json.Marshal(objectMap)
 }
 
@@ -1532,11 +1688,6 @@ type Resource struct {
 // MarshalJSON implements the json.Marshaller interface for type Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "eTag", r.ETag)
 	populate(objectMap, "id", r.ID)
 	populate(objectMap, "location", r.Location)
@@ -1544,6 +1695,7 @@ func (r Resource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "sku", r.SKU)
 	populate(objectMap, "tags", r.Tags)
 	populate(objectMap, "type", r.Type)
+	return json.Marshal(objectMap)
 }
 
 // ResourceAutoGenerated - The Resource model definition.
@@ -1579,9 +1731,21 @@ type Status struct {
 
 // View - States and configurations of Cost Analysis.
 type View struct {
-	ProxyResource
+	// eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating
+	// the latest version or not.
+	ETag *string `json:"eTag,omitempty"`
+
 	// The properties of the view.
 	Properties *ViewProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ViewListResult - Result of listing views. It contains a list of available views.
@@ -1628,12 +1792,14 @@ type ViewProperties struct {
 	// for resourceGroup
 	// scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}'
 	// for
-	// Department scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}' for EnrollmentAccount scope,
-	// 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for BillingProfile scope,
-	// 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for InvoiceSection scope, 'providers/Microsoft.Management/managementGroups/{managementGroupId}'
-	// for
-	// Management Group scope, '/providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountName}' for ExternalBillingAccount scope,
-	// and
+	// Department scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
+	// for EnrollmentAccount scope,
+	// 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for BillingProfile
+	// scope,
+	// 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for InvoiceSection
+	// scope, 'providers/Microsoft.Management/managementGroups/{managementGroupId}' for
+	// Management Group scope, '/providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountName}' for
+	// ExternalBillingAccount scope, and
 	// '/providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for ExternalSubscription scope.
 	Scope *string `json:"scope,omitempty"`
 
@@ -1721,43 +1887,43 @@ func (v *ViewProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// ViewsCreateOrUpdateByScopeOptions contains the optional parameters for the Views.CreateOrUpdateByScope method.
-type ViewsCreateOrUpdateByScopeOptions struct {
+// ViewsClientCreateOrUpdateByScopeOptions contains the optional parameters for the ViewsClient.CreateOrUpdateByScope method.
+type ViewsClientCreateOrUpdateByScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ViewsCreateOrUpdateOptions contains the optional parameters for the Views.CreateOrUpdate method.
-type ViewsCreateOrUpdateOptions struct {
+// ViewsClientCreateOrUpdateOptions contains the optional parameters for the ViewsClient.CreateOrUpdate method.
+type ViewsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ViewsDeleteByScopeOptions contains the optional parameters for the Views.DeleteByScope method.
-type ViewsDeleteByScopeOptions struct {
+// ViewsClientDeleteByScopeOptions contains the optional parameters for the ViewsClient.DeleteByScope method.
+type ViewsClientDeleteByScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ViewsDeleteOptions contains the optional parameters for the Views.Delete method.
-type ViewsDeleteOptions struct {
+// ViewsClientDeleteOptions contains the optional parameters for the ViewsClient.Delete method.
+type ViewsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ViewsGetByScopeOptions contains the optional parameters for the Views.GetByScope method.
-type ViewsGetByScopeOptions struct {
+// ViewsClientGetByScopeOptions contains the optional parameters for the ViewsClient.GetByScope method.
+type ViewsClientGetByScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ViewsGetOptions contains the optional parameters for the Views.Get method.
-type ViewsGetOptions struct {
+// ViewsClientGetOptions contains the optional parameters for the ViewsClient.Get method.
+type ViewsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ViewsListByScopeOptions contains the optional parameters for the Views.ListByScope method.
-type ViewsListByScopeOptions struct {
+// ViewsClientListByScopeOptions contains the optional parameters for the ViewsClient.ListByScope method.
+type ViewsClientListByScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ViewsListOptions contains the optional parameters for the Views.List method.
-type ViewsListOptions struct {
+// ViewsClientListOptions contains the optional parameters for the ViewsClient.List method.
+type ViewsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 

@@ -11,7 +11,6 @@ package armdeviceupdate
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,59 @@ import (
 // InstancesClient contains the methods for the Instances group.
 // Don't use this type directly, use NewInstancesClient() instead.
 type InstancesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewInstancesClient creates a new instance of InstancesClient with the specified values.
+// subscriptionID - The Azure subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewInstancesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *InstancesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &InstancesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &InstancesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreate - Creates or updates instance.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *InstancesClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, instanceName string, instance Instance, options *InstancesBeginCreateOptions) (InstancesCreatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// accountName - Account name.
+// instanceName - Instance name.
+// instance - Instance details.
+// options - InstancesClientBeginCreateOptions contains the optional parameters for the InstancesClient.BeginCreate method.
+func (client *InstancesClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, instanceName string, instance Instance, options *InstancesClientBeginCreateOptions) (InstancesClientCreatePollerResponse, error) {
 	resp, err := client.create(ctx, resourceGroupName, accountName, instanceName, instance, options)
 	if err != nil {
-		return InstancesCreatePollerResponse{}, err
+		return InstancesClientCreatePollerResponse{}, err
 	}
-	result := InstancesCreatePollerResponse{
+	result := InstancesClientCreatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("InstancesClient.Create", "azure-async-operation", resp, client.pl, client.createHandleError)
+	pt, err := armruntime.NewPoller("InstancesClient.Create", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return InstancesCreatePollerResponse{}, err
+		return InstancesClientCreatePollerResponse{}, err
 	}
-	result.Poller = &InstancesCreatePoller{
+	result.Poller = &InstancesClientCreatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - Creates or updates instance.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *InstancesClient) create(ctx context.Context, resourceGroupName string, accountName string, instanceName string, instance Instance, options *InstancesBeginCreateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *InstancesClient) create(ctx context.Context, resourceGroupName string, accountName string, instanceName string, instance Instance, options *InstancesClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, instanceName, instance, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +86,13 @@ func (client *InstancesClient) create(ctx context.Context, resourceGroupName str
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusCreated) {
-		return nil, client.createHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *InstancesClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, instanceName string, instance Instance, options *InstancesBeginCreateOptions) (*policy.Request, error) {
+func (client *InstancesClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, instanceName string, instance Instance, options *InstancesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/accounts/{accountName}/instances/{instanceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -98,7 +110,7 @@ func (client *InstancesClient) createCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter instanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{instanceName}", url.PathEscape(instanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -109,42 +121,33 @@ func (client *InstancesClient) createCreateRequest(ctx context.Context, resource
 	return req, runtime.MarshalAsJSON(req, instance)
 }
 
-// createHandleError handles the Create error response.
-func (client *InstancesClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes instance.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *InstancesClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, instanceName string, options *InstancesBeginDeleteOptions) (InstancesDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// accountName - Account name.
+// instanceName - Instance name.
+// options - InstancesClientBeginDeleteOptions contains the optional parameters for the InstancesClient.BeginDelete method.
+func (client *InstancesClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, instanceName string, options *InstancesClientBeginDeleteOptions) (InstancesClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, instanceName, options)
 	if err != nil {
-		return InstancesDeletePollerResponse{}, err
+		return InstancesClientDeletePollerResponse{}, err
 	}
-	result := InstancesDeletePollerResponse{
+	result := InstancesClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("InstancesClient.Delete", "location", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("InstancesClient.Delete", "location", resp, client.pl)
 	if err != nil {
-		return InstancesDeletePollerResponse{}, err
+		return InstancesClientDeletePollerResponse{}, err
 	}
-	result.Poller = &InstancesDeletePoller{
+	result.Poller = &InstancesClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes instance.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *InstancesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, instanceName string, options *InstancesBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *InstancesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, instanceName string, options *InstancesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, instanceName, options)
 	if err != nil {
 		return nil, err
@@ -154,13 +157,13 @@ func (client *InstancesClient) deleteOperation(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *InstancesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, instanceName string, options *InstancesBeginDeleteOptions) (*policy.Request, error) {
+func (client *InstancesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, instanceName string, options *InstancesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/accounts/{accountName}/instances/{instanceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -178,7 +181,7 @@ func (client *InstancesClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter instanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{instanceName}", url.PathEscape(instanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -189,38 +192,29 @@ func (client *InstancesClient) deleteCreateRequest(ctx context.Context, resource
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *InstancesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Returns instance details for the given instance and account name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *InstancesClient) Get(ctx context.Context, resourceGroupName string, accountName string, instanceName string, options *InstancesGetOptions) (InstancesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// accountName - Account name.
+// instanceName - Instance name.
+// options - InstancesClientGetOptions contains the optional parameters for the InstancesClient.Get method.
+func (client *InstancesClient) Get(ctx context.Context, resourceGroupName string, accountName string, instanceName string, options *InstancesClientGetOptions) (InstancesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, instanceName, options)
 	if err != nil {
-		return InstancesGetResponse{}, err
+		return InstancesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return InstancesGetResponse{}, err
+		return InstancesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return InstancesGetResponse{}, client.getHandleError(resp)
+		return InstancesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *InstancesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, instanceName string, options *InstancesGetOptions) (*policy.Request, error) {
+func (client *InstancesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, instanceName string, options *InstancesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/accounts/{accountName}/instances/{instanceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -238,7 +232,7 @@ func (client *InstancesClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter instanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{instanceName}", url.PathEscape(instanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -250,39 +244,29 @@ func (client *InstancesClient) getCreateRequest(ctx context.Context, resourceGro
 }
 
 // getHandleResponse handles the Get response.
-func (client *InstancesClient) getHandleResponse(resp *http.Response) (InstancesGetResponse, error) {
-	result := InstancesGetResponse{RawResponse: resp}
+func (client *InstancesClient) getHandleResponse(resp *http.Response) (InstancesClientGetResponse, error) {
+	result := InstancesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Instance); err != nil {
-		return InstancesGetResponse{}, runtime.NewResponseError(err, resp)
+		return InstancesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *InstancesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Head - Checks whether instance exists.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *InstancesClient) Head(ctx context.Context, resourceGroupName string, accountName string, instanceName string, options *InstancesHeadOptions) (InstancesHeadResponse, error) {
+// resourceGroupName - The resource group name.
+// accountName - Account name.
+// instanceName - Instance name.
+// options - InstancesClientHeadOptions contains the optional parameters for the InstancesClient.Head method.
+func (client *InstancesClient) Head(ctx context.Context, resourceGroupName string, accountName string, instanceName string, options *InstancesClientHeadOptions) (InstancesClientHeadResponse, error) {
 	req, err := client.headCreateRequest(ctx, resourceGroupName, accountName, instanceName, options)
 	if err != nil {
-		return InstancesHeadResponse{}, err
+		return InstancesClientHeadResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return InstancesHeadResponse{}, err
+		return InstancesClientHeadResponse{}, err
 	}
-	result := InstancesHeadResponse{RawResponse: resp}
+	result := InstancesClientHeadResponse{RawResponse: resp}
 	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
 		result.Success = true
 	}
@@ -290,7 +274,7 @@ func (client *InstancesClient) Head(ctx context.Context, resourceGroupName strin
 }
 
 // headCreateRequest creates the Head request.
-func (client *InstancesClient) headCreateRequest(ctx context.Context, resourceGroupName string, accountName string, instanceName string, options *InstancesHeadOptions) (*policy.Request, error) {
+func (client *InstancesClient) headCreateRequest(ctx context.Context, resourceGroupName string, accountName string, instanceName string, options *InstancesClientHeadOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/accounts/{accountName}/instances/{instanceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -308,7 +292,7 @@ func (client *InstancesClient) headCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter instanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{instanceName}", url.PathEscape(instanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -320,21 +304,24 @@ func (client *InstancesClient) headCreateRequest(ctx context.Context, resourceGr
 }
 
 // ListByAccount - Returns instances for the given account name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *InstancesClient) ListByAccount(resourceGroupName string, accountName string, options *InstancesListByAccountOptions) *InstancesListByAccountPager {
-	return &InstancesListByAccountPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// accountName - Account name.
+// options - InstancesClientListByAccountOptions contains the optional parameters for the InstancesClient.ListByAccount method.
+func (client *InstancesClient) ListByAccount(resourceGroupName string, accountName string, options *InstancesClientListByAccountOptions) *InstancesClientListByAccountPager {
+	return &InstancesClientListByAccountPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByAccountCreateRequest(ctx, resourceGroupName, accountName, options)
 		},
-		advancer: func(ctx context.Context, resp InstancesListByAccountResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp InstancesClientListByAccountResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.InstanceList.NextLink)
 		},
 	}
 }
 
 // listByAccountCreateRequest creates the ListByAccount request.
-func (client *InstancesClient) listByAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *InstancesListByAccountOptions) (*policy.Request, error) {
+func (client *InstancesClient) listByAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *InstancesClientListByAccountOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/accounts/{accountName}/instances"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -348,7 +335,7 @@ func (client *InstancesClient) listByAccountCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -360,46 +347,38 @@ func (client *InstancesClient) listByAccountCreateRequest(ctx context.Context, r
 }
 
 // listByAccountHandleResponse handles the ListByAccount response.
-func (client *InstancesClient) listByAccountHandleResponse(resp *http.Response) (InstancesListByAccountResponse, error) {
-	result := InstancesListByAccountResponse{RawResponse: resp}
+func (client *InstancesClient) listByAccountHandleResponse(resp *http.Response) (InstancesClientListByAccountResponse, error) {
+	result := InstancesClientListByAccountResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InstanceList); err != nil {
-		return InstancesListByAccountResponse{}, runtime.NewResponseError(err, resp)
+		return InstancesClientListByAccountResponse{}, err
 	}
 	return result, nil
 }
 
-// listByAccountHandleError handles the ListByAccount error response.
-func (client *InstancesClient) listByAccountHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Updates instance's tags.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *InstancesClient) Update(ctx context.Context, resourceGroupName string, accountName string, instanceName string, tagUpdatePayload TagUpdate, options *InstancesUpdateOptions) (InstancesUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// accountName - Account name.
+// instanceName - Instance name.
+// tagUpdatePayload - Updated tags.
+// options - InstancesClientUpdateOptions contains the optional parameters for the InstancesClient.Update method.
+func (client *InstancesClient) Update(ctx context.Context, resourceGroupName string, accountName string, instanceName string, tagUpdatePayload TagUpdate, options *InstancesClientUpdateOptions) (InstancesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, instanceName, tagUpdatePayload, options)
 	if err != nil {
-		return InstancesUpdateResponse{}, err
+		return InstancesClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return InstancesUpdateResponse{}, err
+		return InstancesClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return InstancesUpdateResponse{}, client.updateHandleError(resp)
+		return InstancesClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *InstancesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, instanceName string, tagUpdatePayload TagUpdate, options *InstancesUpdateOptions) (*policy.Request, error) {
+func (client *InstancesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, instanceName string, tagUpdatePayload TagUpdate, options *InstancesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/accounts/{accountName}/instances/{instanceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -417,7 +396,7 @@ func (client *InstancesClient) updateCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter instanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{instanceName}", url.PathEscape(instanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -429,23 +408,10 @@ func (client *InstancesClient) updateCreateRequest(ctx context.Context, resource
 }
 
 // updateHandleResponse handles the Update response.
-func (client *InstancesClient) updateHandleResponse(resp *http.Response) (InstancesUpdateResponse, error) {
-	result := InstancesUpdateResponse{RawResponse: resp}
+func (client *InstancesClient) updateHandleResponse(resp *http.Response) (InstancesClientUpdateResponse, error) {
+	result := InstancesClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Instance); err != nil {
-		return InstancesUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return InstancesClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *InstancesClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

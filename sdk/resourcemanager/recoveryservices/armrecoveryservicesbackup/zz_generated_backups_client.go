@@ -11,7 +11,6 @@ package armrecoveryservicesbackup
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,43 +24,58 @@ import (
 // BackupsClient contains the methods for the Backups group.
 // Don't use this type directly, use NewBackupsClient() instead.
 type BackupsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewBackupsClient creates a new instance of BackupsClient with the specified values.
+// subscriptionID - The subscription Id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewBackupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *BackupsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &BackupsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &BackupsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// Trigger - Triggers backup for specified backed up item. This is an asynchronous operation. To know the status of the operation, call GetProtectedItemOperationResult
-// API.
-// If the operation fails it returns the *CloudError error type.
-func (client *BackupsClient) Trigger(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, parameters BackupRequestResource, options *BackupsTriggerOptions) (BackupsTriggerResponse, error) {
+// Trigger - Triggers backup for specified backed up item. This is an asynchronous operation. To know the status of the operation,
+// call GetProtectedItemOperationResult API.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultName - The name of the recovery services vault.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// fabricName - Fabric name associated with the backup item.
+// containerName - Container name associated with the backup item.
+// protectedItemName - Backup item for which backup needs to be triggered.
+// parameters - resource backup request
+// options - BackupsClientTriggerOptions contains the optional parameters for the BackupsClient.Trigger method.
+func (client *BackupsClient) Trigger(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, parameters BackupRequestResource, options *BackupsClientTriggerOptions) (BackupsClientTriggerResponse, error) {
 	req, err := client.triggerCreateRequest(ctx, vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters, options)
 	if err != nil {
-		return BackupsTriggerResponse{}, err
+		return BackupsClientTriggerResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return BackupsTriggerResponse{}, err
+		return BackupsClientTriggerResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return BackupsTriggerResponse{}, client.triggerHandleError(resp)
+		return BackupsClientTriggerResponse{}, runtime.NewResponseError(resp)
 	}
-	return BackupsTriggerResponse{RawResponse: resp}, nil
+	return BackupsClientTriggerResponse{RawResponse: resp}, nil
 }
 
 // triggerCreateRequest creates the Trigger request.
-func (client *BackupsClient) triggerCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, parameters BackupRequestResource, options *BackupsTriggerOptions) (*policy.Request, error) {
+func (client *BackupsClient) triggerCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, parameters BackupRequestResource, options *BackupsClientTriggerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}/backup"
 	if vaultName == "" {
 		return nil, errors.New("parameter vaultName cannot be empty")
@@ -87,26 +101,13 @@ func (client *BackupsClient) triggerCreateRequest(ctx context.Context, vaultName
 		return nil, errors.New("parameter protectedItemName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{protectedItemName}", url.PathEscape(protectedItemName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
-}
-
-// triggerHandleError handles the Trigger error response.
-func (client *BackupsClient) triggerHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

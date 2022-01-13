@@ -9,8 +9,8 @@
 package armmarketplaceordering
 
 const (
-	module  = "armmarketplaceordering"
-	version = "v0.1.0"
+	moduleName    = "armmarketplaceordering"
+	moduleVersion = "v0.2.0"
 )
 
 // CreatedByType - The type of identity that created the resource.

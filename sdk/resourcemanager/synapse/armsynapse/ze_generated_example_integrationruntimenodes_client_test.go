@@ -25,7 +25,7 @@ func ExampleIntegrationRuntimeNodesClient_Get() {
 	}
 	ctx := context.Background()
 	client := armsynapse.NewIntegrationRuntimeNodesClient("<subscription-id>", cred, nil)
-	_, err = client.Get(ctx,
+	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<integration-runtime-name>",
@@ -34,6 +34,7 @@ func ExampleIntegrationRuntimeNodesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.IntegrationRuntimeNodesClientGetResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/IntegrationRuntimeNodes_Update.json
@@ -44,7 +45,7 @@ func ExampleIntegrationRuntimeNodesClient_Update() {
 	}
 	ctx := context.Background()
 	client := armsynapse.NewIntegrationRuntimeNodesClient("<subscription-id>", cred, nil)
-	_, err = client.Update(ctx,
+	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<integration-runtime-name>",
@@ -56,6 +57,7 @@ func ExampleIntegrationRuntimeNodesClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.IntegrationRuntimeNodesClientUpdateResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/IntegrationRuntimeNodes_Delete.json

@@ -11,7 +11,6 @@ package armmonitor
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,45 +24,68 @@ import (
 // ActivityLogsClient contains the methods for the ActivityLogs group.
 // Don't use this type directly, use NewActivityLogsClient() instead.
 type ActivityLogsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewActivityLogsClient creates a new instance of ActivityLogsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewActivityLogsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ActivityLogsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ActivityLogsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ActivityLogsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Provides the list of records from the activity logs.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ActivityLogsClient) List(filter string, options *ActivityLogsListOptions) *ActivityLogsListPager {
-	return &ActivityLogsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// filter - Reduces the set of data collected.
+// This argument is required and it also requires at least the start date/time.
+// The $filter argument is very restricted and allows only the following patterns.
+// - List events for a resource group: $filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z' and eventTimestamp le '2014-07-20T04:36:37.6407898Z'
+// and resourceGroupName eq 'resourceGroupName'.
+// - List events for resource: $filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z' and eventTimestamp le '2014-07-20T04:36:37.6407898Z'
+// and resourceUri eq 'resourceURI'.
+// - List events for a subscription in a time range: $filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z' and eventTimestamp
+// le '2014-07-20T04:36:37.6407898Z'.
+// - List events for a resource provider: $filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z' and eventTimestamp le '2014-07-20T04:36:37.6407898Z'
+// and resourceProvider eq 'resourceProviderName'.
+// - List events for a correlation Id: $filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z' and eventTimestamp le '2014-07-20T04:36:37.6407898Z'
+// and correlationId eq 'correlationID'.
+// NOTE: No other syntax is allowed.
+// options - ActivityLogsClientListOptions contains the optional parameters for the ActivityLogsClient.List method.
+func (client *ActivityLogsClient) List(filter string, options *ActivityLogsClientListOptions) *ActivityLogsClientListPager {
+	return &ActivityLogsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, filter, options)
 		},
-		advancer: func(ctx context.Context, resp ActivityLogsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ActivityLogsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.EventDataCollection.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ActivityLogsClient) listCreateRequest(ctx context.Context, filter string, options *ActivityLogsListOptions) (*policy.Request, error) {
+func (client *ActivityLogsClient) listCreateRequest(ctx context.Context, filter string, options *ActivityLogsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/eventtypes/management/values"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -79,23 +101,10 @@ func (client *ActivityLogsClient) listCreateRequest(ctx context.Context, filter 
 }
 
 // listHandleResponse handles the List response.
-func (client *ActivityLogsClient) listHandleResponse(resp *http.Response) (ActivityLogsListResponse, error) {
-	result := ActivityLogsListResponse{RawResponse: resp}
+func (client *ActivityLogsClient) listHandleResponse(resp *http.Response) (ActivityLogsClientListResponse, error) {
+	result := ActivityLogsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventDataCollection); err != nil {
-		return ActivityLogsListResponse{}, runtime.NewResponseError(err, resp)
+		return ActivityLogsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *ActivityLogsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

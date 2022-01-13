@@ -11,7 +11,6 @@ package armdatalakeanalytics
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,55 @@ import (
 // AccountsClient contains the methods for the Accounts group.
 // Don't use this type directly, use NewAccountsClient() instead.
 type AccountsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewAccountsClient creates a new instance of AccountsClient with the specified values.
+// subscriptionID - Get subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+// forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AccountsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &AccountsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &AccountsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CheckNameAvailability - Checks whether the specified account name is available or taken.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AccountsClient) CheckNameAvailability(ctx context.Context, location string, parameters CheckNameAvailabilityParameters, options *AccountsCheckNameAvailabilityOptions) (AccountsCheckNameAvailabilityResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// location - The resource location without whitespace.
+// parameters - Parameters supplied to check the Data Lake Analytics account name availability.
+// options - AccountsClientCheckNameAvailabilityOptions contains the optional parameters for the AccountsClient.CheckNameAvailability
+// method.
+func (client *AccountsClient) CheckNameAvailability(ctx context.Context, location string, parameters CheckNameAvailabilityParameters, options *AccountsClientCheckNameAvailabilityOptions) (AccountsClientCheckNameAvailabilityResponse, error) {
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, location, parameters, options)
 	if err != nil {
-		return AccountsCheckNameAvailabilityResponse{}, err
+		return AccountsClientCheckNameAvailabilityResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AccountsCheckNameAvailabilityResponse{}, err
+		return AccountsClientCheckNameAvailabilityResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AccountsCheckNameAvailabilityResponse{}, client.checkNameAvailabilityHandleError(resp)
+		return AccountsClientCheckNameAvailabilityResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.checkNameAvailabilityHandleResponse(resp)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *AccountsClient) checkNameAvailabilityCreateRequest(ctx context.Context, location string, parameters CheckNameAvailabilityParameters, options *AccountsCheckNameAvailabilityOptions) (*policy.Request, error) {
+func (client *AccountsClient) checkNameAvailabilityCreateRequest(ctx context.Context, location string, parameters CheckNameAvailabilityParameters, options *AccountsClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DataLakeAnalytics/locations/{location}/checkNameAvailability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -71,7 +83,7 @@ func (client *AccountsClient) checkNameAvailabilityCreateRequest(ctx context.Con
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -83,50 +95,43 @@ func (client *AccountsClient) checkNameAvailabilityCreateRequest(ctx context.Con
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *AccountsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (AccountsCheckNameAvailabilityResponse, error) {
-	result := AccountsCheckNameAvailabilityResponse{RawResponse: resp}
+func (client *AccountsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (AccountsClientCheckNameAvailabilityResponse, error) {
+	result := AccountsClientCheckNameAvailabilityResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NameAvailabilityInformation); err != nil {
-		return AccountsCheckNameAvailabilityResponse{}, runtime.NewResponseError(err, resp)
+		return AccountsClientCheckNameAvailabilityResponse{}, err
 	}
 	return result, nil
 }
 
-// checkNameAvailabilityHandleError handles the CheckNameAvailability error response.
-func (client *AccountsClient) checkNameAvailabilityHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginCreate - Creates the specified Data Lake Analytics account. This supplies the user with computation services for Data Lake Analytics workloads.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AccountsClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, parameters CreateDataLakeAnalyticsAccountParameters, options *AccountsBeginCreateOptions) (AccountsCreatePollerResponse, error) {
+// BeginCreate - Creates the specified Data Lake Analytics account. This supplies the user with computation services for Data
+// Lake Analytics workloads.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure resource group.
+// accountName - The name of the Data Lake Analytics account.
+// parameters - Parameters supplied to create a new Data Lake Analytics account.
+// options - AccountsClientBeginCreateOptions contains the optional parameters for the AccountsClient.BeginCreate method.
+func (client *AccountsClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, parameters CreateDataLakeAnalyticsAccountParameters, options *AccountsClientBeginCreateOptions) (AccountsClientCreatePollerResponse, error) {
 	resp, err := client.create(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
-		return AccountsCreatePollerResponse{}, err
+		return AccountsClientCreatePollerResponse{}, err
 	}
-	result := AccountsCreatePollerResponse{
+	result := AccountsClientCreatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("AccountsClient.Create", "", resp, client.pl, client.createHandleError)
+	pt, err := armruntime.NewPoller("AccountsClient.Create", "", resp, client.pl)
 	if err != nil {
-		return AccountsCreatePollerResponse{}, err
+		return AccountsClientCreatePollerResponse{}, err
 	}
-	result.Poller = &AccountsCreatePoller{
+	result.Poller = &AccountsClientCreatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// Create - Creates the specified Data Lake Analytics account. This supplies the user with computation services for Data Lake Analytics workloads.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AccountsClient) create(ctx context.Context, resourceGroupName string, accountName string, parameters CreateDataLakeAnalyticsAccountParameters, options *AccountsBeginCreateOptions) (*http.Response, error) {
+// Create - Creates the specified Data Lake Analytics account. This supplies the user with computation services for Data Lake
+// Analytics workloads.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AccountsClient) create(ctx context.Context, resourceGroupName string, accountName string, parameters CreateDataLakeAnalyticsAccountParameters, options *AccountsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -136,13 +141,13 @@ func (client *AccountsClient) create(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *AccountsClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, parameters CreateDataLakeAnalyticsAccountParameters, options *AccountsBeginCreateOptions) (*policy.Request, error) {
+func (client *AccountsClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, parameters CreateDataLakeAnalyticsAccountParameters, options *AccountsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -156,7 +161,7 @@ func (client *AccountsClient) createCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -167,42 +172,32 @@ func (client *AccountsClient) createCreateRequest(ctx context.Context, resourceG
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createHandleError handles the Create error response.
-func (client *AccountsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Begins the delete process for the Data Lake Analytics account object specified by the account name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AccountsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, options *AccountsBeginDeleteOptions) (AccountsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure resource group.
+// accountName - The name of the Data Lake Analytics account.
+// options - AccountsClientBeginDeleteOptions contains the optional parameters for the AccountsClient.BeginDelete method.
+func (client *AccountsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginDeleteOptions) (AccountsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, options)
 	if err != nil {
-		return AccountsDeletePollerResponse{}, err
+		return AccountsClientDeletePollerResponse{}, err
 	}
-	result := AccountsDeletePollerResponse{
+	result := AccountsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("AccountsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("AccountsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return AccountsDeletePollerResponse{}, err
+		return AccountsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &AccountsDeletePoller{
+	result.Poller = &AccountsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Begins the delete process for the Data Lake Analytics account object specified by the account name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AccountsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, options *AccountsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AccountsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return nil, err
@@ -212,13 +207,13 @@ func (client *AccountsClient) deleteOperation(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AccountsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *AccountsBeginDeleteOptions) (*policy.Request, error) {
+func (client *AccountsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -232,7 +227,7 @@ func (client *AccountsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -243,38 +238,28 @@ func (client *AccountsClient) deleteCreateRequest(ctx context.Context, resourceG
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *AccountsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets details of the specified Data Lake Analytics account.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AccountsClient) Get(ctx context.Context, resourceGroupName string, accountName string, options *AccountsGetOptions) (AccountsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure resource group.
+// accountName - The name of the Data Lake Analytics account.
+// options - AccountsClientGetOptions contains the optional parameters for the AccountsClient.Get method.
+func (client *AccountsClient) Get(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientGetOptions) (AccountsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
-		return AccountsGetResponse{}, err
+		return AccountsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AccountsGetResponse{}, err
+		return AccountsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AccountsGetResponse{}, client.getHandleError(resp)
+		return AccountsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AccountsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *AccountsGetOptions) (*policy.Request, error) {
+func (client *AccountsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -288,7 +273,7 @@ func (client *AccountsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -300,49 +285,38 @@ func (client *AccountsClient) getCreateRequest(ctx context.Context, resourceGrou
 }
 
 // getHandleResponse handles the Get response.
-func (client *AccountsClient) getHandleResponse(resp *http.Response) (AccountsGetResponse, error) {
-	result := AccountsGetResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DataLakeAnalyticsAccount); err != nil {
-		return AccountsGetResponse{}, runtime.NewResponseError(err, resp)
+func (client *AccountsClient) getHandleResponse(resp *http.Response) (AccountsClientGetResponse, error) {
+	result := AccountsClientGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Account); err != nil {
+		return AccountsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *AccountsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// List - Gets the first page of Data Lake Analytics accounts, if any, within the current subscription. This includes a link to the next page, if any.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AccountsClient) List(options *AccountsListOptions) *AccountsListPager {
-	return &AccountsListPager{
+// List - Gets the first page of Data Lake Analytics accounts, if any, within the current subscription. This includes a link
+// to the next page, if any.
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - AccountsClientListOptions contains the optional parameters for the AccountsClient.List method.
+func (client *AccountsClient) List(options *AccountsClientListOptions) *AccountsClientListPager {
+	return &AccountsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp AccountsListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DataLakeAnalyticsAccountListResult.NextLink)
+		advancer: func(ctx context.Context, resp AccountsClientListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.AccountListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *AccountsClient) listCreateRequest(ctx context.Context, options *AccountsListOptions) (*policy.Request, error) {
+func (client *AccountsClient) listCreateRequest(ctx context.Context, options *AccountsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DataLakeAnalytics/accounts"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -372,44 +346,34 @@ func (client *AccountsClient) listCreateRequest(ctx context.Context, options *Ac
 }
 
 // listHandleResponse handles the List response.
-func (client *AccountsClient) listHandleResponse(resp *http.Response) (AccountsListResponse, error) {
-	result := AccountsListResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DataLakeAnalyticsAccountListResult); err != nil {
-		return AccountsListResponse{}, runtime.NewResponseError(err, resp)
+func (client *AccountsClient) listHandleResponse(resp *http.Response) (AccountsClientListResponse, error) {
+	result := AccountsClientListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AccountListResult); err != nil {
+		return AccountsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *AccountsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListByResourceGroup - Gets the first page of Data Lake Analytics accounts, if any, within a specific resource group. This includes a link to the next
-// page, if any.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AccountsClient) ListByResourceGroup(resourceGroupName string, options *AccountsListByResourceGroupOptions) *AccountsListByResourceGroupPager {
-	return &AccountsListByResourceGroupPager{
+// ListByResourceGroup - Gets the first page of Data Lake Analytics accounts, if any, within a specific resource group. This
+// includes a link to the next page, if any.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure resource group.
+// options - AccountsClientListByResourceGroupOptions contains the optional parameters for the AccountsClient.ListByResourceGroup
+// method.
+func (client *AccountsClient) ListByResourceGroup(resourceGroupName string, options *AccountsClientListByResourceGroupOptions) *AccountsClientListByResourceGroupPager {
+	return &AccountsClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp AccountsListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DataLakeAnalyticsAccountListResult.NextLink)
+		advancer: func(ctx context.Context, resp AccountsClientListByResourceGroupResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.AccountListResult.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *AccountsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *AccountsListByResourceGroupOptions) (*policy.Request, error) {
+func (client *AccountsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *AccountsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -419,7 +383,7 @@ func (client *AccountsClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -449,50 +413,41 @@ func (client *AccountsClient) listByResourceGroupCreateRequest(ctx context.Conte
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *AccountsClient) listByResourceGroupHandleResponse(resp *http.Response) (AccountsListByResourceGroupResponse, error) {
-	result := AccountsListByResourceGroupResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DataLakeAnalyticsAccountListResult); err != nil {
-		return AccountsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+func (client *AccountsClient) listByResourceGroupHandleResponse(resp *http.Response) (AccountsClientListByResourceGroupResponse, error) {
+	result := AccountsClientListByResourceGroupResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AccountListResult); err != nil {
+		return AccountsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *AccountsClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginUpdate - Updates the Data Lake Analytics account object specified by the accountName with the contents of the account object.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AccountsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, options *AccountsBeginUpdateOptions) (AccountsUpdatePollerResponse, error) {
+// BeginUpdate - Updates the Data Lake Analytics account object specified by the accountName with the contents of the account
+// object.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure resource group.
+// accountName - The name of the Data Lake Analytics account.
+// options - AccountsClientBeginUpdateOptions contains the optional parameters for the AccountsClient.BeginUpdate method.
+func (client *AccountsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginUpdateOptions) (AccountsClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, accountName, options)
 	if err != nil {
-		return AccountsUpdatePollerResponse{}, err
+		return AccountsClientUpdatePollerResponse{}, err
 	}
-	result := AccountsUpdatePollerResponse{
+	result := AccountsClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("AccountsClient.Update", "", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("AccountsClient.Update", "", resp, client.pl)
 	if err != nil {
-		return AccountsUpdatePollerResponse{}, err
+		return AccountsClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &AccountsUpdatePoller{
+	result.Poller = &AccountsClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Updates the Data Lake Analytics account object specified by the accountName with the contents of the account object.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AccountsClient) update(ctx context.Context, resourceGroupName string, accountName string, options *AccountsBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AccountsClient) update(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return nil, err
@@ -502,13 +457,13 @@ func (client *AccountsClient) update(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *AccountsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *AccountsBeginUpdateOptions) (*policy.Request, error) {
+func (client *AccountsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -522,7 +477,7 @@ func (client *AccountsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -534,17 +489,4 @@ func (client *AccountsClient) updateCreateRequest(ctx context.Context, resourceG
 		return req, runtime.MarshalAsJSON(req, *options.Parameters)
 	}
 	return req, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *AccountsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

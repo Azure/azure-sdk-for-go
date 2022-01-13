@@ -11,7 +11,6 @@ package armhealthcareapis
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,60 @@ import (
 // DicomServicesClient contains the methods for the DicomServices group.
 // Don't use this type directly, use NewDicomServicesClient() instead.
 type DicomServicesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDicomServicesClient creates a new instance of DicomServicesClient with the specified values.
+// subscriptionID - The subscription identifier.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDicomServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DicomServicesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &DicomServicesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DicomServicesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Creates or updates a DICOM Service resource with the specified parameters.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *DicomServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, dicomServiceName string, dicomservice DicomService, options *DicomServicesBeginCreateOrUpdateOptions) (DicomServicesCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the service instance.
+// workspaceName - The name of workspace resource.
+// dicomServiceName - The name of DICOM Service resource.
+// dicomservice - The parameters for creating or updating a Dicom Service resource.
+// options - DicomServicesClientBeginCreateOrUpdateOptions contains the optional parameters for the DicomServicesClient.BeginCreateOrUpdate
+// method.
+func (client *DicomServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, dicomServiceName string, dicomservice DicomService, options *DicomServicesClientBeginCreateOrUpdateOptions) (DicomServicesClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, workspaceName, dicomServiceName, dicomservice, options)
 	if err != nil {
-		return DicomServicesCreateOrUpdatePollerResponse{}, err
+		return DicomServicesClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := DicomServicesCreateOrUpdatePollerResponse{
+	result := DicomServicesClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DicomServicesClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("DicomServicesClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return DicomServicesCreateOrUpdatePollerResponse{}, err
+		return DicomServicesClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &DicomServicesCreateOrUpdatePoller{
+	result.Poller = &DicomServicesClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a DICOM Service resource with the specified parameters.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *DicomServicesClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, dicomServiceName string, dicomservice DicomService, options *DicomServicesBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DicomServicesClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, dicomServiceName string, dicomservice DicomService, options *DicomServicesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, dicomServiceName, dicomservice, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +87,13 @@ func (client *DicomServicesClient) createOrUpdate(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DicomServicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, dicomServiceName string, dicomservice DicomService, options *DicomServicesBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *DicomServicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, dicomServiceName string, dicomservice DicomService, options *DicomServicesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/dicomservices/{dicomServiceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -98,7 +111,7 @@ func (client *DicomServicesClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter dicomServiceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dicomServiceName}", url.PathEscape(dicomServiceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -109,42 +122,34 @@ func (client *DicomServicesClient) createOrUpdateCreateRequest(ctx context.Conte
 	return req, runtime.MarshalAsJSON(req, dicomservice)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *DicomServicesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes a DICOM Service.
-// If the operation fails it returns the *Error error type.
-func (client *DicomServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, dicomServiceName string, workspaceName string, options *DicomServicesBeginDeleteOptions) (DicomServicesDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the service instance.
+// dicomServiceName - The name of DICOM Service resource.
+// workspaceName - The name of workspace resource.
+// options - DicomServicesClientBeginDeleteOptions contains the optional parameters for the DicomServicesClient.BeginDelete
+// method.
+func (client *DicomServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, dicomServiceName string, workspaceName string, options *DicomServicesClientBeginDeleteOptions) (DicomServicesClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, dicomServiceName, workspaceName, options)
 	if err != nil {
-		return DicomServicesDeletePollerResponse{}, err
+		return DicomServicesClientDeletePollerResponse{}, err
 	}
-	result := DicomServicesDeletePollerResponse{
+	result := DicomServicesClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DicomServicesClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("DicomServicesClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return DicomServicesDeletePollerResponse{}, err
+		return DicomServicesClientDeletePollerResponse{}, err
 	}
-	result.Poller = &DicomServicesDeletePoller{
+	result.Poller = &DicomServicesClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a DICOM Service.
-// If the operation fails it returns the *Error error type.
-func (client *DicomServicesClient) deleteOperation(ctx context.Context, resourceGroupName string, dicomServiceName string, workspaceName string, options *DicomServicesBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DicomServicesClient) deleteOperation(ctx context.Context, resourceGroupName string, dicomServiceName string, workspaceName string, options *DicomServicesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, dicomServiceName, workspaceName, options)
 	if err != nil {
 		return nil, err
@@ -154,13 +159,13 @@ func (client *DicomServicesClient) deleteOperation(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DicomServicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, dicomServiceName string, workspaceName string, options *DicomServicesBeginDeleteOptions) (*policy.Request, error) {
+func (client *DicomServicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, dicomServiceName string, workspaceName string, options *DicomServicesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/dicomservices/{dicomServiceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -178,7 +183,7 @@ func (client *DicomServicesClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -189,38 +194,29 @@ func (client *DicomServicesClient) deleteCreateRequest(ctx context.Context, reso
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *DicomServicesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets the properties of the specified DICOM Service.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *DicomServicesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, dicomServiceName string, options *DicomServicesGetOptions) (DicomServicesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the service instance.
+// workspaceName - The name of workspace resource.
+// dicomServiceName - The name of DICOM Service resource.
+// options - DicomServicesClientGetOptions contains the optional parameters for the DicomServicesClient.Get method.
+func (client *DicomServicesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, dicomServiceName string, options *DicomServicesClientGetOptions) (DicomServicesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, dicomServiceName, options)
 	if err != nil {
-		return DicomServicesGetResponse{}, err
+		return DicomServicesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DicomServicesGetResponse{}, err
+		return DicomServicesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DicomServicesGetResponse{}, client.getHandleError(resp)
+		return DicomServicesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DicomServicesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, dicomServiceName string, options *DicomServicesGetOptions) (*policy.Request, error) {
+func (client *DicomServicesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, dicomServiceName string, options *DicomServicesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/dicomservices/{dicomServiceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -238,7 +234,7 @@ func (client *DicomServicesClient) getCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter dicomServiceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dicomServiceName}", url.PathEscape(dicomServiceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -250,43 +246,34 @@ func (client *DicomServicesClient) getCreateRequest(ctx context.Context, resourc
 }
 
 // getHandleResponse handles the Get response.
-func (client *DicomServicesClient) getHandleResponse(resp *http.Response) (DicomServicesGetResponse, error) {
-	result := DicomServicesGetResponse{RawResponse: resp}
+func (client *DicomServicesClient) getHandleResponse(resp *http.Response) (DicomServicesClientGetResponse, error) {
+	result := DicomServicesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DicomService); err != nil {
-		return DicomServicesGetResponse{}, runtime.NewResponseError(err, resp)
+		return DicomServicesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *DicomServicesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByWorkspace - Lists all DICOM Services for the given workspace
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *DicomServicesClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *DicomServicesListByWorkspaceOptions) *DicomServicesListByWorkspacePager {
-	return &DicomServicesListByWorkspacePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the service instance.
+// workspaceName - The name of workspace resource.
+// options - DicomServicesClientListByWorkspaceOptions contains the optional parameters for the DicomServicesClient.ListByWorkspace
+// method.
+func (client *DicomServicesClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *DicomServicesClientListByWorkspaceOptions) *DicomServicesClientListByWorkspacePager {
+	return &DicomServicesClientListByWorkspacePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, options)
 		},
-		advancer: func(ctx context.Context, resp DicomServicesListByWorkspaceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DicomServicesClientListByWorkspaceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DicomServiceCollection.NextLink)
 		},
 	}
 }
 
 // listByWorkspaceCreateRequest creates the ListByWorkspace request.
-func (client *DicomServicesClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *DicomServicesListByWorkspaceOptions) (*policy.Request, error) {
+func (client *DicomServicesClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *DicomServicesClientListByWorkspaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/dicomservices"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -300,7 +287,7 @@ func (client *DicomServicesClient) listByWorkspaceCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -312,50 +299,43 @@ func (client *DicomServicesClient) listByWorkspaceCreateRequest(ctx context.Cont
 }
 
 // listByWorkspaceHandleResponse handles the ListByWorkspace response.
-func (client *DicomServicesClient) listByWorkspaceHandleResponse(resp *http.Response) (DicomServicesListByWorkspaceResponse, error) {
-	result := DicomServicesListByWorkspaceResponse{RawResponse: resp}
+func (client *DicomServicesClient) listByWorkspaceHandleResponse(resp *http.Response) (DicomServicesClientListByWorkspaceResponse, error) {
+	result := DicomServicesClientListByWorkspaceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DicomServiceCollection); err != nil {
-		return DicomServicesListByWorkspaceResponse{}, runtime.NewResponseError(err, resp)
+		return DicomServicesClientListByWorkspaceResponse{}, err
 	}
 	return result, nil
 }
 
-// listByWorkspaceHandleError handles the ListByWorkspace error response.
-func (client *DicomServicesClient) listByWorkspaceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginUpdate - Patch DICOM Service details.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *DicomServicesClient) BeginUpdate(ctx context.Context, resourceGroupName string, dicomServiceName string, workspaceName string, dicomservicePatchResource DicomServicePatchResource, options *DicomServicesBeginUpdateOptions) (DicomServicesUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the service instance.
+// dicomServiceName - The name of DICOM Service resource.
+// workspaceName - The name of workspace resource.
+// dicomservicePatchResource - The parameters for updating a Dicom Service.
+// options - DicomServicesClientBeginUpdateOptions contains the optional parameters for the DicomServicesClient.BeginUpdate
+// method.
+func (client *DicomServicesClient) BeginUpdate(ctx context.Context, resourceGroupName string, dicomServiceName string, workspaceName string, dicomservicePatchResource DicomServicePatchResource, options *DicomServicesClientBeginUpdateOptions) (DicomServicesClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, dicomServiceName, workspaceName, dicomservicePatchResource, options)
 	if err != nil {
-		return DicomServicesUpdatePollerResponse{}, err
+		return DicomServicesClientUpdatePollerResponse{}, err
 	}
-	result := DicomServicesUpdatePollerResponse{
+	result := DicomServicesClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DicomServicesClient.Update", "", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("DicomServicesClient.Update", "", resp, client.pl)
 	if err != nil {
-		return DicomServicesUpdatePollerResponse{}, err
+		return DicomServicesClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &DicomServicesUpdatePoller{
+	result.Poller = &DicomServicesClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Patch DICOM Service details.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *DicomServicesClient) update(ctx context.Context, resourceGroupName string, dicomServiceName string, workspaceName string, dicomservicePatchResource DicomServicePatchResource, options *DicomServicesBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DicomServicesClient) update(ctx context.Context, resourceGroupName string, dicomServiceName string, workspaceName string, dicomservicePatchResource DicomServicePatchResource, options *DicomServicesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, dicomServiceName, workspaceName, dicomservicePatchResource, options)
 	if err != nil {
 		return nil, err
@@ -365,13 +345,13 @@ func (client *DicomServicesClient) update(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *DicomServicesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, dicomServiceName string, workspaceName string, dicomservicePatchResource DicomServicePatchResource, options *DicomServicesBeginUpdateOptions) (*policy.Request, error) {
+func (client *DicomServicesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, dicomServiceName string, workspaceName string, dicomservicePatchResource DicomServicePatchResource, options *DicomServicesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/dicomservices/{dicomServiceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -389,7 +369,7 @@ func (client *DicomServicesClient) updateCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -398,17 +378,4 @@ func (client *DicomServicesClient) updateCreateRequest(ctx context.Context, reso
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, dicomservicePatchResource)
-}
-
-// updateHandleError handles the Update error response.
-func (client *DicomServicesClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

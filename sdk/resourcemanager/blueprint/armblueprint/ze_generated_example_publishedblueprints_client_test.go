@@ -24,15 +24,14 @@ func ExamplePublishedBlueprintsClient_Create() {
 	}
 	ctx := context.Background()
 	client := armblueprint.NewPublishedBlueprintsClient(cred, nil)
-	res, err := client.Create(ctx,
+	_, err = client.Create(ctx,
 		"<resource-scope>",
 		"<blueprint-name>",
 		"<version-id>",
-		&armblueprint.PublishedBlueprintsCreateOptions{PublishedBlueprint: nil})
+		&armblueprint.PublishedBlueprintsClientCreateOptions{PublishedBlueprint: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PublishedBlueprint.ID: %s\n", *res.ID)
 }
 
 // x-ms-original-file: specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPDef/SealedBlueprint_Get.json
@@ -51,7 +50,7 @@ func ExamplePublishedBlueprintsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PublishedBlueprint.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PublishedBlueprintsClientGetResult)
 }
 
 // x-ms-original-file: specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPDef/SealedBlueprint_Delete.json
@@ -70,7 +69,7 @@ func ExamplePublishedBlueprintsClient_Delete() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PublishedBlueprint.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PublishedBlueprintsClientDeleteResult)
 }
 
 // x-ms-original-file: specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPDef/SealedBlueprint_List.json
@@ -84,12 +83,16 @@ func ExamplePublishedBlueprintsClient_List() {
 	pager := client.List("<resource-scope>",
 		"<blueprint-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("PublishedBlueprint.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

@@ -11,7 +11,6 @@ package armcompute
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,62 @@ import (
 // DiskAccessesClient contains the methods for the DiskAccesses group.
 // Don't use this type directly, use NewDiskAccessesClient() instead.
 type DiskAccessesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDiskAccessesClient creates a new instance of DiskAccessesClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDiskAccessesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DiskAccessesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &DiskAccessesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DiskAccessesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Creates or updates a disk access resource
-// If the operation fails it returns the *CloudError error type.
-func (client *DiskAccessesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess DiskAccess, options *DiskAccessesBeginCreateOrUpdateOptions) (DiskAccessesCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// diskAccessName - The name of the disk access resource that is being created. The name can't be changed after the disk encryption
+// set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
+// maximum name length is 80 characters.
+// diskAccess - disk access object supplied in the body of the Put disk access operation.
+// options - DiskAccessesClientBeginCreateOrUpdateOptions contains the optional parameters for the DiskAccessesClient.BeginCreateOrUpdate
+// method.
+func (client *DiskAccessesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess DiskAccess, options *DiskAccessesClientBeginCreateOrUpdateOptions) (DiskAccessesClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, diskAccessName, diskAccess, options)
 	if err != nil {
-		return DiskAccessesCreateOrUpdatePollerResponse{}, err
+		return DiskAccessesClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := DiskAccessesCreateOrUpdatePollerResponse{
+	result := DiskAccessesClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DiskAccessesClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("DiskAccessesClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return DiskAccessesCreateOrUpdatePollerResponse{}, err
+		return DiskAccessesClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &DiskAccessesCreateOrUpdatePoller{
+	result.Poller = &DiskAccessesClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a disk access resource
-// If the operation fails it returns the *CloudError error type.
-func (client *DiskAccessesClient) createOrUpdate(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess DiskAccess, options *DiskAccessesBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DiskAccessesClient) createOrUpdate(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess DiskAccess, options *DiskAccessesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, diskAccessName, diskAccess, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +89,13 @@ func (client *DiskAccessesClient) createOrUpdate(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DiskAccessesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess DiskAccess, options *DiskAccessesBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *DiskAccessesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess DiskAccess, options *DiskAccessesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -94,53 +109,46 @@ func (client *DiskAccessesClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter diskAccessName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{diskAccessName}", url.PathEscape(diskAccessName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, diskAccess)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *DiskAccessesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes a disk access resource.
-// If the operation fails it returns the *CloudError error type.
-func (client *DiskAccessesClient) BeginDelete(ctx context.Context, resourceGroupName string, diskAccessName string, options *DiskAccessesBeginDeleteOptions) (DiskAccessesDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// diskAccessName - The name of the disk access resource that is being created. The name can't be changed after the disk encryption
+// set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
+// maximum name length is 80 characters.
+// options - DiskAccessesClientBeginDeleteOptions contains the optional parameters for the DiskAccessesClient.BeginDelete
+// method.
+func (client *DiskAccessesClient) BeginDelete(ctx context.Context, resourceGroupName string, diskAccessName string, options *DiskAccessesClientBeginDeleteOptions) (DiskAccessesClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, diskAccessName, options)
 	if err != nil {
-		return DiskAccessesDeletePollerResponse{}, err
+		return DiskAccessesClientDeletePollerResponse{}, err
 	}
-	result := DiskAccessesDeletePollerResponse{
+	result := DiskAccessesClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DiskAccessesClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("DiskAccessesClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return DiskAccessesDeletePollerResponse{}, err
+		return DiskAccessesClientDeletePollerResponse{}, err
 	}
-	result.Poller = &DiskAccessesDeletePoller{
+	result.Poller = &DiskAccessesClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a disk access resource.
-// If the operation fails it returns the *CloudError error type.
-func (client *DiskAccessesClient) deleteOperation(ctx context.Context, resourceGroupName string, diskAccessName string, options *DiskAccessesBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DiskAccessesClient) deleteOperation(ctx context.Context, resourceGroupName string, diskAccessName string, options *DiskAccessesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, diskAccessName, options)
 	if err != nil {
 		return nil, err
@@ -150,13 +158,13 @@ func (client *DiskAccessesClient) deleteOperation(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DiskAccessesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, diskAccessName string, options *DiskAccessesBeginDeleteOptions) (*policy.Request, error) {
+func (client *DiskAccessesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, diskAccessName string, options *DiskAccessesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -170,53 +178,47 @@ func (client *DiskAccessesClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter diskAccessName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{diskAccessName}", url.PathEscape(diskAccessName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *DiskAccessesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDeleteAPrivateEndpointConnection - Deletes a private endpoint connection under a disk access resource.
-// If the operation fails it returns the *CloudError error type.
-func (client *DiskAccessesClient) BeginDeleteAPrivateEndpointConnection(ctx context.Context, resourceGroupName string, diskAccessName string, privateEndpointConnectionName string, options *DiskAccessesBeginDeleteAPrivateEndpointConnectionOptions) (DiskAccessesDeleteAPrivateEndpointConnectionPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// diskAccessName - The name of the disk access resource that is being created. The name can't be changed after the disk encryption
+// set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
+// maximum name length is 80 characters.
+// privateEndpointConnectionName - The name of the private endpoint connection.
+// options - DiskAccessesClientBeginDeleteAPrivateEndpointConnectionOptions contains the optional parameters for the DiskAccessesClient.BeginDeleteAPrivateEndpointConnection
+// method.
+func (client *DiskAccessesClient) BeginDeleteAPrivateEndpointConnection(ctx context.Context, resourceGroupName string, diskAccessName string, privateEndpointConnectionName string, options *DiskAccessesClientBeginDeleteAPrivateEndpointConnectionOptions) (DiskAccessesClientDeleteAPrivateEndpointConnectionPollerResponse, error) {
 	resp, err := client.deleteAPrivateEndpointConnection(ctx, resourceGroupName, diskAccessName, privateEndpointConnectionName, options)
 	if err != nil {
-		return DiskAccessesDeleteAPrivateEndpointConnectionPollerResponse{}, err
+		return DiskAccessesClientDeleteAPrivateEndpointConnectionPollerResponse{}, err
 	}
-	result := DiskAccessesDeleteAPrivateEndpointConnectionPollerResponse{
+	result := DiskAccessesClientDeleteAPrivateEndpointConnectionPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DiskAccessesClient.DeleteAPrivateEndpointConnection", "", resp, client.pl, client.deleteAPrivateEndpointConnectionHandleError)
+	pt, err := armruntime.NewPoller("DiskAccessesClient.DeleteAPrivateEndpointConnection", "", resp, client.pl)
 	if err != nil {
-		return DiskAccessesDeleteAPrivateEndpointConnectionPollerResponse{}, err
+		return DiskAccessesClientDeleteAPrivateEndpointConnectionPollerResponse{}, err
 	}
-	result.Poller = &DiskAccessesDeleteAPrivateEndpointConnectionPoller{
+	result.Poller = &DiskAccessesClientDeleteAPrivateEndpointConnectionPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // DeleteAPrivateEndpointConnection - Deletes a private endpoint connection under a disk access resource.
-// If the operation fails it returns the *CloudError error type.
-func (client *DiskAccessesClient) deleteAPrivateEndpointConnection(ctx context.Context, resourceGroupName string, diskAccessName string, privateEndpointConnectionName string, options *DiskAccessesBeginDeleteAPrivateEndpointConnectionOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DiskAccessesClient) deleteAPrivateEndpointConnection(ctx context.Context, resourceGroupName string, diskAccessName string, privateEndpointConnectionName string, options *DiskAccessesClientBeginDeleteAPrivateEndpointConnectionOptions) (*http.Response, error) {
 	req, err := client.deleteAPrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, diskAccessName, privateEndpointConnectionName, options)
 	if err != nil {
 		return nil, err
@@ -226,13 +228,13 @@ func (client *DiskAccessesClient) deleteAPrivateEndpointConnection(ctx context.C
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteAPrivateEndpointConnectionHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteAPrivateEndpointConnectionCreateRequest creates the DeleteAPrivateEndpointConnection request.
-func (client *DiskAccessesClient) deleteAPrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, diskAccessName string, privateEndpointConnectionName string, options *DiskAccessesBeginDeleteAPrivateEndpointConnectionOptions) (*policy.Request, error) {
+func (client *DiskAccessesClient) deleteAPrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, diskAccessName string, privateEndpointConnectionName string, options *DiskAccessesClientBeginDeleteAPrivateEndpointConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -250,49 +252,41 @@ func (client *DiskAccessesClient) deleteAPrivateEndpointConnectionCreateRequest(
 		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// deleteAPrivateEndpointConnectionHandleError handles the DeleteAPrivateEndpointConnection error response.
-func (client *DiskAccessesClient) deleteAPrivateEndpointConnectionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets information about a disk access resource.
-// If the operation fails it returns the *CloudError error type.
-func (client *DiskAccessesClient) Get(ctx context.Context, resourceGroupName string, diskAccessName string, options *DiskAccessesGetOptions) (DiskAccessesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// diskAccessName - The name of the disk access resource that is being created. The name can't be changed after the disk encryption
+// set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
+// maximum name length is 80 characters.
+// options - DiskAccessesClientGetOptions contains the optional parameters for the DiskAccessesClient.Get method.
+func (client *DiskAccessesClient) Get(ctx context.Context, resourceGroupName string, diskAccessName string, options *DiskAccessesClientGetOptions) (DiskAccessesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, diskAccessName, options)
 	if err != nil {
-		return DiskAccessesGetResponse{}, err
+		return DiskAccessesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DiskAccessesGetResponse{}, err
+		return DiskAccessesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DiskAccessesGetResponse{}, client.getHandleError(resp)
+		return DiskAccessesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DiskAccessesClient) getCreateRequest(ctx context.Context, resourceGroupName string, diskAccessName string, options *DiskAccessesGetOptions) (*policy.Request, error) {
+func (client *DiskAccessesClient) getCreateRequest(ctx context.Context, resourceGroupName string, diskAccessName string, options *DiskAccessesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -306,58 +300,52 @@ func (client *DiskAccessesClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter diskAccessName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{diskAccessName}", url.PathEscape(diskAccessName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *DiskAccessesClient) getHandleResponse(resp *http.Response) (DiskAccessesGetResponse, error) {
-	result := DiskAccessesGetResponse{RawResponse: resp}
+func (client *DiskAccessesClient) getHandleResponse(resp *http.Response) (DiskAccessesClientGetResponse, error) {
+	result := DiskAccessesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiskAccess); err != nil {
-		return DiskAccessesGetResponse{}, runtime.NewResponseError(err, resp)
+		return DiskAccessesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *DiskAccessesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetAPrivateEndpointConnection - Gets information about a private endpoint connection under a disk access resource.
-// If the operation fails it returns the *CloudError error type.
-func (client *DiskAccessesClient) GetAPrivateEndpointConnection(ctx context.Context, resourceGroupName string, diskAccessName string, privateEndpointConnectionName string, options *DiskAccessesGetAPrivateEndpointConnectionOptions) (DiskAccessesGetAPrivateEndpointConnectionResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// diskAccessName - The name of the disk access resource that is being created. The name can't be changed after the disk encryption
+// set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
+// maximum name length is 80 characters.
+// privateEndpointConnectionName - The name of the private endpoint connection.
+// options - DiskAccessesClientGetAPrivateEndpointConnectionOptions contains the optional parameters for the DiskAccessesClient.GetAPrivateEndpointConnection
+// method.
+func (client *DiskAccessesClient) GetAPrivateEndpointConnection(ctx context.Context, resourceGroupName string, diskAccessName string, privateEndpointConnectionName string, options *DiskAccessesClientGetAPrivateEndpointConnectionOptions) (DiskAccessesClientGetAPrivateEndpointConnectionResponse, error) {
 	req, err := client.getAPrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, diskAccessName, privateEndpointConnectionName, options)
 	if err != nil {
-		return DiskAccessesGetAPrivateEndpointConnectionResponse{}, err
+		return DiskAccessesClientGetAPrivateEndpointConnectionResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DiskAccessesGetAPrivateEndpointConnectionResponse{}, err
+		return DiskAccessesClientGetAPrivateEndpointConnectionResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DiskAccessesGetAPrivateEndpointConnectionResponse{}, client.getAPrivateEndpointConnectionHandleError(resp)
+		return DiskAccessesClientGetAPrivateEndpointConnectionResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getAPrivateEndpointConnectionHandleResponse(resp)
 }
 
 // getAPrivateEndpointConnectionCreateRequest creates the GetAPrivateEndpointConnection request.
-func (client *DiskAccessesClient) getAPrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, diskAccessName string, privateEndpointConnectionName string, options *DiskAccessesGetAPrivateEndpointConnectionOptions) (*policy.Request, error) {
+func (client *DiskAccessesClient) getAPrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, diskAccessName string, privateEndpointConnectionName string, options *DiskAccessesClientGetAPrivateEndpointConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -375,58 +363,51 @@ func (client *DiskAccessesClient) getAPrivateEndpointConnectionCreateRequest(ctx
 		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getAPrivateEndpointConnectionHandleResponse handles the GetAPrivateEndpointConnection response.
-func (client *DiskAccessesClient) getAPrivateEndpointConnectionHandleResponse(resp *http.Response) (DiskAccessesGetAPrivateEndpointConnectionResponse, error) {
-	result := DiskAccessesGetAPrivateEndpointConnectionResponse{RawResponse: resp}
+func (client *DiskAccessesClient) getAPrivateEndpointConnectionHandleResponse(resp *http.Response) (DiskAccessesClientGetAPrivateEndpointConnectionResponse, error) {
+	result := DiskAccessesClientGetAPrivateEndpointConnectionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnection); err != nil {
-		return DiskAccessesGetAPrivateEndpointConnectionResponse{}, runtime.NewResponseError(err, resp)
+		return DiskAccessesClientGetAPrivateEndpointConnectionResponse{}, err
 	}
 	return result, nil
 }
 
-// getAPrivateEndpointConnectionHandleError handles the GetAPrivateEndpointConnection error response.
-func (client *DiskAccessesClient) getAPrivateEndpointConnectionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetPrivateLinkResources - Gets the private link resources possible under disk access resource
-// If the operation fails it returns a generic error.
-func (client *DiskAccessesClient) GetPrivateLinkResources(ctx context.Context, resourceGroupName string, diskAccessName string, options *DiskAccessesGetPrivateLinkResourcesOptions) (DiskAccessesGetPrivateLinkResourcesResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// diskAccessName - The name of the disk access resource that is being created. The name can't be changed after the disk encryption
+// set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
+// maximum name length is 80 characters.
+// options - DiskAccessesClientGetPrivateLinkResourcesOptions contains the optional parameters for the DiskAccessesClient.GetPrivateLinkResources
+// method.
+func (client *DiskAccessesClient) GetPrivateLinkResources(ctx context.Context, resourceGroupName string, diskAccessName string, options *DiskAccessesClientGetPrivateLinkResourcesOptions) (DiskAccessesClientGetPrivateLinkResourcesResponse, error) {
 	req, err := client.getPrivateLinkResourcesCreateRequest(ctx, resourceGroupName, diskAccessName, options)
 	if err != nil {
-		return DiskAccessesGetPrivateLinkResourcesResponse{}, err
+		return DiskAccessesClientGetPrivateLinkResourcesResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DiskAccessesGetPrivateLinkResourcesResponse{}, err
+		return DiskAccessesClientGetPrivateLinkResourcesResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DiskAccessesGetPrivateLinkResourcesResponse{}, client.getPrivateLinkResourcesHandleError(resp)
+		return DiskAccessesClientGetPrivateLinkResourcesResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getPrivateLinkResourcesHandleResponse(resp)
 }
 
 // getPrivateLinkResourcesCreateRequest creates the GetPrivateLinkResources request.
-func (client *DiskAccessesClient) getPrivateLinkResourcesCreateRequest(ctx context.Context, resourceGroupName string, diskAccessName string, options *DiskAccessesGetPrivateLinkResourcesOptions) (*policy.Request, error) {
+func (client *DiskAccessesClient) getPrivateLinkResourcesCreateRequest(ctx context.Context, resourceGroupName string, diskAccessName string, options *DiskAccessesClientGetPrivateLinkResourcesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}/privateLinkResources"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -440,108 +421,87 @@ func (client *DiskAccessesClient) getPrivateLinkResourcesCreateRequest(ctx conte
 		return nil, errors.New("parameter diskAccessName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{diskAccessName}", url.PathEscape(diskAccessName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getPrivateLinkResourcesHandleResponse handles the GetPrivateLinkResources response.
-func (client *DiskAccessesClient) getPrivateLinkResourcesHandleResponse(resp *http.Response) (DiskAccessesGetPrivateLinkResourcesResponse, error) {
-	result := DiskAccessesGetPrivateLinkResourcesResponse{RawResponse: resp}
+func (client *DiskAccessesClient) getPrivateLinkResourcesHandleResponse(resp *http.Response) (DiskAccessesClientGetPrivateLinkResourcesResponse, error) {
+	result := DiskAccessesClientGetPrivateLinkResourcesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourceListResult); err != nil {
-		return DiskAccessesGetPrivateLinkResourcesResponse{}, runtime.NewResponseError(err, resp)
+		return DiskAccessesClientGetPrivateLinkResourcesResponse{}, err
 	}
 	return result, nil
 }
 
-// getPrivateLinkResourcesHandleError handles the GetPrivateLinkResources error response.
-func (client *DiskAccessesClient) getPrivateLinkResourcesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // List - Lists all the disk access resources under a subscription.
-// If the operation fails it returns the *CloudError error type.
-func (client *DiskAccessesClient) List(options *DiskAccessesListOptions) *DiskAccessesListPager {
-	return &DiskAccessesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - DiskAccessesClientListOptions contains the optional parameters for the DiskAccessesClient.List method.
+func (client *DiskAccessesClient) List(options *DiskAccessesClientListOptions) *DiskAccessesClientListPager {
+	return &DiskAccessesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp DiskAccessesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DiskAccessesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DiskAccessList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *DiskAccessesClient) listCreateRequest(ctx context.Context, options *DiskAccessesListOptions) (*policy.Request, error) {
+func (client *DiskAccessesClient) listCreateRequest(ctx context.Context, options *DiskAccessesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/diskAccesses"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *DiskAccessesClient) listHandleResponse(resp *http.Response) (DiskAccessesListResponse, error) {
-	result := DiskAccessesListResponse{RawResponse: resp}
+func (client *DiskAccessesClient) listHandleResponse(resp *http.Response) (DiskAccessesClientListResponse, error) {
+	result := DiskAccessesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiskAccessList); err != nil {
-		return DiskAccessesListResponse{}, runtime.NewResponseError(err, resp)
+		return DiskAccessesClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *DiskAccessesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - Lists all the disk access resources under a resource group.
-// If the operation fails it returns the *CloudError error type.
-func (client *DiskAccessesClient) ListByResourceGroup(resourceGroupName string, options *DiskAccessesListByResourceGroupOptions) *DiskAccessesListByResourceGroupPager {
-	return &DiskAccessesListByResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// options - DiskAccessesClientListByResourceGroupOptions contains the optional parameters for the DiskAccessesClient.ListByResourceGroup
+// method.
+func (client *DiskAccessesClient) ListByResourceGroup(resourceGroupName string, options *DiskAccessesClientListByResourceGroupOptions) *DiskAccessesClientListByResourceGroupPager {
+	return &DiskAccessesClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp DiskAccessesListByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DiskAccessesClientListByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DiskAccessList.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *DiskAccessesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *DiskAccessesListByResourceGroupOptions) (*policy.Request, error) {
+func (client *DiskAccessesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *DiskAccessesClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -551,55 +511,48 @@ func (client *DiskAccessesClient) listByResourceGroupCreateRequest(ctx context.C
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *DiskAccessesClient) listByResourceGroupHandleResponse(resp *http.Response) (DiskAccessesListByResourceGroupResponse, error) {
-	result := DiskAccessesListByResourceGroupResponse{RawResponse: resp}
+func (client *DiskAccessesClient) listByResourceGroupHandleResponse(resp *http.Response) (DiskAccessesClientListByResourceGroupResponse, error) {
+	result := DiskAccessesClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiskAccessList); err != nil {
-		return DiskAccessesListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return DiskAccessesClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *DiskAccessesClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListPrivateEndpointConnections - List information about private endpoint connections under a disk access resource
-// If the operation fails it returns the *CloudError error type.
-func (client *DiskAccessesClient) ListPrivateEndpointConnections(resourceGroupName string, diskAccessName string, options *DiskAccessesListPrivateEndpointConnectionsOptions) *DiskAccessesListPrivateEndpointConnectionsPager {
-	return &DiskAccessesListPrivateEndpointConnectionsPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// diskAccessName - The name of the disk access resource that is being created. The name can't be changed after the disk encryption
+// set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
+// maximum name length is 80 characters.
+// options - DiskAccessesClientListPrivateEndpointConnectionsOptions contains the optional parameters for the DiskAccessesClient.ListPrivateEndpointConnections
+// method.
+func (client *DiskAccessesClient) ListPrivateEndpointConnections(resourceGroupName string, diskAccessName string, options *DiskAccessesClientListPrivateEndpointConnectionsOptions) *DiskAccessesClientListPrivateEndpointConnectionsPager {
+	return &DiskAccessesClientListPrivateEndpointConnectionsPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listPrivateEndpointConnectionsCreateRequest(ctx, resourceGroupName, diskAccessName, options)
 		},
-		advancer: func(ctx context.Context, resp DiskAccessesListPrivateEndpointConnectionsResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DiskAccessesClientListPrivateEndpointConnectionsResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateEndpointConnectionListResult.NextLink)
 		},
 	}
 }
 
 // listPrivateEndpointConnectionsCreateRequest creates the ListPrivateEndpointConnections request.
-func (client *DiskAccessesClient) listPrivateEndpointConnectionsCreateRequest(ctx context.Context, resourceGroupName string, diskAccessName string, options *DiskAccessesListPrivateEndpointConnectionsOptions) (*policy.Request, error) {
+func (client *DiskAccessesClient) listPrivateEndpointConnectionsCreateRequest(ctx context.Context, resourceGroupName string, diskAccessName string, options *DiskAccessesClientListPrivateEndpointConnectionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}/privateEndpointConnections"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -613,62 +566,56 @@ func (client *DiskAccessesClient) listPrivateEndpointConnectionsCreateRequest(ct
 		return nil, errors.New("parameter diskAccessName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{diskAccessName}", url.PathEscape(diskAccessName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listPrivateEndpointConnectionsHandleResponse handles the ListPrivateEndpointConnections response.
-func (client *DiskAccessesClient) listPrivateEndpointConnectionsHandleResponse(resp *http.Response) (DiskAccessesListPrivateEndpointConnectionsResponse, error) {
-	result := DiskAccessesListPrivateEndpointConnectionsResponse{RawResponse: resp}
+func (client *DiskAccessesClient) listPrivateEndpointConnectionsHandleResponse(resp *http.Response) (DiskAccessesClientListPrivateEndpointConnectionsResponse, error) {
+	result := DiskAccessesClientListPrivateEndpointConnectionsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionListResult); err != nil {
-		return DiskAccessesListPrivateEndpointConnectionsResponse{}, runtime.NewResponseError(err, resp)
+		return DiskAccessesClientListPrivateEndpointConnectionsResponse{}, err
 	}
 	return result, nil
 }
 
-// listPrivateEndpointConnectionsHandleError handles the ListPrivateEndpointConnections error response.
-func (client *DiskAccessesClient) listPrivateEndpointConnectionsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginUpdate - Updates (patches) a disk access resource.
-// If the operation fails it returns the *CloudError error type.
-func (client *DiskAccessesClient) BeginUpdate(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess DiskAccessUpdate, options *DiskAccessesBeginUpdateOptions) (DiskAccessesUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// diskAccessName - The name of the disk access resource that is being created. The name can't be changed after the disk encryption
+// set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
+// maximum name length is 80 characters.
+// diskAccess - disk access object supplied in the body of the Patch disk access operation.
+// options - DiskAccessesClientBeginUpdateOptions contains the optional parameters for the DiskAccessesClient.BeginUpdate
+// method.
+func (client *DiskAccessesClient) BeginUpdate(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess DiskAccessUpdate, options *DiskAccessesClientBeginUpdateOptions) (DiskAccessesClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, diskAccessName, diskAccess, options)
 	if err != nil {
-		return DiskAccessesUpdatePollerResponse{}, err
+		return DiskAccessesClientUpdatePollerResponse{}, err
 	}
-	result := DiskAccessesUpdatePollerResponse{
+	result := DiskAccessesClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DiskAccessesClient.Update", "", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("DiskAccessesClient.Update", "", resp, client.pl)
 	if err != nil {
-		return DiskAccessesUpdatePollerResponse{}, err
+		return DiskAccessesClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &DiskAccessesUpdatePoller{
+	result.Poller = &DiskAccessesClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Updates (patches) a disk access resource.
-// If the operation fails it returns the *CloudError error type.
-func (client *DiskAccessesClient) update(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess DiskAccessUpdate, options *DiskAccessesBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DiskAccessesClient) update(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess DiskAccessUpdate, options *DiskAccessesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, diskAccessName, diskAccess, options)
 	if err != nil {
 		return nil, err
@@ -678,13 +625,13 @@ func (client *DiskAccessesClient) update(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *DiskAccessesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess DiskAccessUpdate, options *DiskAccessesBeginUpdateOptions) (*policy.Request, error) {
+func (client *DiskAccessesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess DiskAccessUpdate, options *DiskAccessesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -698,55 +645,51 @@ func (client *DiskAccessesClient) updateCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter diskAccessName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{diskAccessName}", url.PathEscape(diskAccessName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, diskAccess)
 }
 
-// updateHandleError handles the Update error response.
-func (client *DiskAccessesClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginUpdateAPrivateEndpointConnection - Approve or reject a private endpoint connection under disk access resource, this can't be used to create a new
-// private endpoint connection.
-// If the operation fails it returns the *CloudError error type.
-func (client *DiskAccessesClient) BeginUpdateAPrivateEndpointConnection(ctx context.Context, resourceGroupName string, diskAccessName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, options *DiskAccessesBeginUpdateAPrivateEndpointConnectionOptions) (DiskAccessesUpdateAPrivateEndpointConnectionPollerResponse, error) {
+// BeginUpdateAPrivateEndpointConnection - Approve or reject a private endpoint connection under disk access resource, this
+// can't be used to create a new private endpoint connection.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// diskAccessName - The name of the disk access resource that is being created. The name can't be changed after the disk encryption
+// set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
+// maximum name length is 80 characters.
+// privateEndpointConnectionName - The name of the private endpoint connection.
+// privateEndpointConnection - private endpoint connection object supplied in the body of the Put private endpoint connection
+// operation.
+// options - DiskAccessesClientBeginUpdateAPrivateEndpointConnectionOptions contains the optional parameters for the DiskAccessesClient.BeginUpdateAPrivateEndpointConnection
+// method.
+func (client *DiskAccessesClient) BeginUpdateAPrivateEndpointConnection(ctx context.Context, resourceGroupName string, diskAccessName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, options *DiskAccessesClientBeginUpdateAPrivateEndpointConnectionOptions) (DiskAccessesClientUpdateAPrivateEndpointConnectionPollerResponse, error) {
 	resp, err := client.updateAPrivateEndpointConnection(ctx, resourceGroupName, diskAccessName, privateEndpointConnectionName, privateEndpointConnection, options)
 	if err != nil {
-		return DiskAccessesUpdateAPrivateEndpointConnectionPollerResponse{}, err
+		return DiskAccessesClientUpdateAPrivateEndpointConnectionPollerResponse{}, err
 	}
-	result := DiskAccessesUpdateAPrivateEndpointConnectionPollerResponse{
+	result := DiskAccessesClientUpdateAPrivateEndpointConnectionPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DiskAccessesClient.UpdateAPrivateEndpointConnection", "", resp, client.pl, client.updateAPrivateEndpointConnectionHandleError)
+	pt, err := armruntime.NewPoller("DiskAccessesClient.UpdateAPrivateEndpointConnection", "", resp, client.pl)
 	if err != nil {
-		return DiskAccessesUpdateAPrivateEndpointConnectionPollerResponse{}, err
+		return DiskAccessesClientUpdateAPrivateEndpointConnectionPollerResponse{}, err
 	}
-	result.Poller = &DiskAccessesUpdateAPrivateEndpointConnectionPoller{
+	result.Poller = &DiskAccessesClientUpdateAPrivateEndpointConnectionPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// UpdateAPrivateEndpointConnection - Approve or reject a private endpoint connection under disk access resource, this can't be used to create a new private
-// endpoint connection.
-// If the operation fails it returns the *CloudError error type.
-func (client *DiskAccessesClient) updateAPrivateEndpointConnection(ctx context.Context, resourceGroupName string, diskAccessName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, options *DiskAccessesBeginUpdateAPrivateEndpointConnectionOptions) (*http.Response, error) {
+// UpdateAPrivateEndpointConnection - Approve or reject a private endpoint connection under disk access resource, this can't
+// be used to create a new private endpoint connection.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DiskAccessesClient) updateAPrivateEndpointConnection(ctx context.Context, resourceGroupName string, diskAccessName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, options *DiskAccessesClientBeginUpdateAPrivateEndpointConnectionOptions) (*http.Response, error) {
 	req, err := client.updateAPrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, diskAccessName, privateEndpointConnectionName, privateEndpointConnection, options)
 	if err != nil {
 		return nil, err
@@ -756,13 +699,13 @@ func (client *DiskAccessesClient) updateAPrivateEndpointConnection(ctx context.C
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.updateAPrivateEndpointConnectionHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateAPrivateEndpointConnectionCreateRequest creates the UpdateAPrivateEndpointConnection request.
-func (client *DiskAccessesClient) updateAPrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, diskAccessName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, options *DiskAccessesBeginUpdateAPrivateEndpointConnectionOptions) (*policy.Request, error) {
+func (client *DiskAccessesClient) updateAPrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, diskAccessName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, options *DiskAccessesClientBeginUpdateAPrivateEndpointConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -780,26 +723,13 @@ func (client *DiskAccessesClient) updateAPrivateEndpointConnectionCreateRequest(
 		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, privateEndpointConnection)
-}
-
-// updateAPrivateEndpointConnectionHandleError handles the UpdateAPrivateEndpointConnection error response.
-func (client *DiskAccessesClient) updateAPrivateEndpointConnectionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

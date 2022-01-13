@@ -29,5 +29,5 @@ func ExampleGeographicHierarchiesClient_GetDefault() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("TrafficManagerGeographicHierarchy.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.GeographicHierarchiesClientGetDefaultResult)
 }

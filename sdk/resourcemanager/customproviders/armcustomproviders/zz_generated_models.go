@@ -38,18 +38,24 @@ type AssociationProperties struct {
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// AssociationsBeginCreateOrUpdateOptions contains the optional parameters for the Associations.BeginCreateOrUpdate method.
-type AssociationsBeginCreateOrUpdateOptions struct {
+// AssociationsClientBeginCreateOrUpdateOptions contains the optional parameters for the AssociationsClient.BeginCreateOrUpdate
+// method.
+type AssociationsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AssociationsBeginDeleteOptions contains the optional parameters for the Associations.BeginDelete method.
-type AssociationsBeginDeleteOptions struct {
+// AssociationsClientBeginDeleteOptions contains the optional parameters for the AssociationsClient.BeginDelete method.
+type AssociationsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AssociationsGetOptions contains the optional parameters for the Associations.Get method.
-type AssociationsGetOptions struct {
+// AssociationsClientGetOptions contains the optional parameters for the AssociationsClient.Get method.
+type AssociationsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AssociationsClientListAllOptions contains the optional parameters for the AssociationsClient.ListAll method.
+type AssociationsClientListAllOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -70,30 +76,51 @@ func (a AssociationsList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AssociationsListAllOptions contains the optional parameters for the Associations.ListAll method.
-type AssociationsListAllOptions struct {
-	// placeholder for future optional parameters
-}
-
 // CustomRPActionRouteDefinition - The route definition for an action implemented by the custom resource provider.
 type CustomRPActionRouteDefinition struct {
-	CustomRPRouteDefinition
+	// REQUIRED; The route definition endpoint URI that the custom resource provider will proxy requests to. This can be in the
+	// form of a flat URI (e.g. 'https://testendpoint/') or can specify to route via a path
+	// (e.g. 'https://testendpoint/{requestPath}')
+	Endpoint *string `json:"endpoint,omitempty"`
+
+	// REQUIRED; The name of the route definition. This becomes the name for the ARM extension (e.g.
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceProviders/{resourceProviderName}/{name}')
+	Name *string `json:"name,omitempty"`
+
 	// The routing types that are supported for action requests.
 	RoutingType *ActionRouting `json:"routingType,omitempty"`
 }
 
 // CustomRPManifest - A manifest file that defines the custom resource provider resources.
 type CustomRPManifest struct {
-	Resource
+	// REQUIRED; Resource location
+	Location *string `json:"location,omitempty"`
+
 	// The manifest for the custom resource provider
 	Properties *CustomRPManifestProperties `json:"properties,omitempty"`
+
+	// Resource tags
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type CustomRPManifest.
 func (c CustomRPManifest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", c.ID)
+	populate(objectMap, "location", c.Location)
+	populate(objectMap, "name", c.Name)
 	populate(objectMap, "properties", c.Properties)
+	populate(objectMap, "tags", c.Tags)
+	populate(objectMap, "type", c.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -124,15 +151,24 @@ func (c CustomRPManifestProperties) MarshalJSON() ([]byte, error) {
 
 // CustomRPResourceTypeRouteDefinition - The route definition for a resource implemented by the custom resource provider.
 type CustomRPResourceTypeRouteDefinition struct {
-	CustomRPRouteDefinition
+	// REQUIRED; The route definition endpoint URI that the custom resource provider will proxy requests to. This can be in the
+	// form of a flat URI (e.g. 'https://testendpoint/') or can specify to route via a path
+	// (e.g. 'https://testendpoint/{requestPath}')
+	Endpoint *string `json:"endpoint,omitempty"`
+
+	// REQUIRED; The name of the route definition. This becomes the name for the ARM extension (e.g.
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceProviders/{resourceProviderName}/{name}')
+	Name *string `json:"name,omitempty"`
+
 	// The routing types that are supported for resource requests.
 	RoutingType *ResourceTypeRouting `json:"routingType,omitempty"`
 }
 
-// CustomRPRouteDefinition - A route definition that defines an action or resource that can be interacted with through the custom resource provider.
+// CustomRPRouteDefinition - A route definition that defines an action or resource that can be interacted with through the
+// custom resource provider.
 type CustomRPRouteDefinition struct {
-	// REQUIRED; The route definition endpoint URI that the custom resource provider will proxy requests to. This can be in the form of a flat URI (e.g. 'https://testendpoint/')
-	// or can specify to route via a path
+	// REQUIRED; The route definition endpoint URI that the custom resource provider will proxy requests to. This can be in the
+	// form of a flat URI (e.g. 'https://testendpoint/') or can specify to route via a path
 	// (e.g. 'https://testendpoint/{requestPath}')
 	Endpoint *string `json:"endpoint,omitempty"`
 
@@ -150,33 +186,38 @@ type CustomRPValidations struct {
 	ValidationType *ValidationType `json:"validationType,omitempty"`
 }
 
-// CustomResourceProviderBeginCreateOrUpdateOptions contains the optional parameters for the CustomResourceProvider.BeginCreateOrUpdate method.
-type CustomResourceProviderBeginCreateOrUpdateOptions struct {
+// CustomResourceProviderClientBeginCreateOrUpdateOptions contains the optional parameters for the CustomResourceProviderClient.BeginCreateOrUpdate
+// method.
+type CustomResourceProviderClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CustomResourceProviderBeginDeleteOptions contains the optional parameters for the CustomResourceProvider.BeginDelete method.
-type CustomResourceProviderBeginDeleteOptions struct {
+// CustomResourceProviderClientBeginDeleteOptions contains the optional parameters for the CustomResourceProviderClient.BeginDelete
+// method.
+type CustomResourceProviderClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CustomResourceProviderGetOptions contains the optional parameters for the CustomResourceProvider.Get method.
-type CustomResourceProviderGetOptions struct {
+// CustomResourceProviderClientGetOptions contains the optional parameters for the CustomResourceProviderClient.Get method.
+type CustomResourceProviderClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CustomResourceProviderListByResourceGroupOptions contains the optional parameters for the CustomResourceProvider.ListByResourceGroup method.
-type CustomResourceProviderListByResourceGroupOptions struct {
+// CustomResourceProviderClientListByResourceGroupOptions contains the optional parameters for the CustomResourceProviderClient.ListByResourceGroup
+// method.
+type CustomResourceProviderClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CustomResourceProviderListBySubscriptionOptions contains the optional parameters for the CustomResourceProvider.ListBySubscription method.
-type CustomResourceProviderListBySubscriptionOptions struct {
+// CustomResourceProviderClientListBySubscriptionOptions contains the optional parameters for the CustomResourceProviderClient.ListBySubscription
+// method.
+type CustomResourceProviderClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CustomResourceProviderUpdateOptions contains the optional parameters for the CustomResourceProvider.Update method.
-type CustomResourceProviderUpdateOptions struct {
+// CustomResourceProviderClientUpdateOptions contains the optional parameters for the CustomResourceProviderClient.Update
+// method.
+type CustomResourceProviderClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -202,17 +243,9 @@ func (e ErrorDefinition) MarshalJSON() ([]byte, error) {
 }
 
 // ErrorResponse - Error response.
-// Implements the error and azcore.HTTPResponse interfaces.
 type ErrorResponse struct {
-	raw string
 	// The error details.
-	InnerError *ErrorDefinition `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorDefinition `json:"error,omitempty"`
 }
 
 // ListByCustomRPManifest - List of custom resource providers.
@@ -232,8 +265,8 @@ func (l ListByCustomRPManifest) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -258,16 +291,12 @@ type Resource struct {
 // MarshalJSON implements the json.Marshaller interface for type Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "id", r.ID)
 	populate(objectMap, "location", r.Location)
 	populate(objectMap, "name", r.Name)
 	populate(objectMap, "tags", r.Tags)
 	populate(objectMap, "type", r.Type)
+	return json.Marshal(objectMap)
 }
 
 // ResourceProviderOperation - Supported operations of this resource provider.

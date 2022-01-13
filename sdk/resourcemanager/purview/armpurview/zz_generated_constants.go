@@ -9,8 +9,8 @@
 package armpurview
 
 const (
-	module  = "armpurview"
-	version = "v0.1.0"
+	moduleName    = "armpurview"
+	moduleVersion = "v0.2.0"
 )
 
 // CreatedByType - The type of identity that created the resource.
@@ -213,13 +213,17 @@ func (c Status) ToPtr() *Status {
 type Type string
 
 const (
+	TypeNone           Type = "None"
 	TypeSystemAssigned Type = "SystemAssigned"
+	TypeUserAssigned   Type = "UserAssigned"
 )
 
 // PossibleTypeValues returns the possible values for the Type const type.
 func PossibleTypeValues() []Type {
 	return []Type{
+		TypeNone,
 		TypeSystemAssigned,
+		TypeUserAssigned,
 	}
 }
 

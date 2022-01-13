@@ -24,42 +24,55 @@ import (
 // SQLPoolSchemasClient contains the methods for the SQLPoolSchemas group.
 // Don't use this type directly, use NewSQLPoolSchemasClient() instead.
 type SQLPoolSchemasClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSQLPoolSchemasClient creates a new instance of SQLPoolSchemasClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSQLPoolSchemasClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SQLPoolSchemasClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SQLPoolSchemasClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SQLPoolSchemasClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Get Sql Pool schema
-// If the operation fails it returns a generic error.
-func (client *SQLPoolSchemasClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, schemaName string, options *SQLPoolSchemasGetOptions) (SQLPoolSchemasGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// schemaName - The name of the schema.
+// options - SQLPoolSchemasClientGetOptions contains the optional parameters for the SQLPoolSchemasClient.Get method.
+func (client *SQLPoolSchemasClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, schemaName string, options *SQLPoolSchemasClientGetOptions) (SQLPoolSchemasClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, schemaName, options)
 	if err != nil {
-		return SQLPoolSchemasGetResponse{}, err
+		return SQLPoolSchemasClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLPoolSchemasGetResponse{}, err
+		return SQLPoolSchemasClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLPoolSchemasGetResponse{}, client.getHandleError(resp)
+		return SQLPoolSchemasClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SQLPoolSchemasClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, schemaName string, options *SQLPoolSchemasGetOptions) (*policy.Request, error) {
+func (client *SQLPoolSchemasClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, schemaName string, options *SQLPoolSchemasClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/schemas/{schemaName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -81,7 +94,7 @@ func (client *SQLPoolSchemasClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter schemaName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{schemaName}", url.PathEscape(schemaName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -93,42 +106,34 @@ func (client *SQLPoolSchemasClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client *SQLPoolSchemasClient) getHandleResponse(resp *http.Response) (SQLPoolSchemasGetResponse, error) {
-	result := SQLPoolSchemasGetResponse{RawResponse: resp}
+func (client *SQLPoolSchemasClient) getHandleResponse(resp *http.Response) (SQLPoolSchemasClientGetResponse, error) {
+	result := SQLPoolSchemasClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLPoolSchema); err != nil {
-		return SQLPoolSchemasGetResponse{}, runtime.NewResponseError(err, resp)
+		return SQLPoolSchemasClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *SQLPoolSchemasClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // List - Gets schemas of a given SQL pool.
-// If the operation fails it returns a generic error.
-func (client *SQLPoolSchemasClient) List(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolSchemasListOptions) *SQLPoolSchemasListPager {
-	return &SQLPoolSchemasListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// options - SQLPoolSchemasClientListOptions contains the optional parameters for the SQLPoolSchemasClient.List method.
+func (client *SQLPoolSchemasClient) List(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolSchemasClientListOptions) *SQLPoolSchemasClientListPager {
+	return &SQLPoolSchemasClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, options)
 		},
-		advancer: func(ctx context.Context, resp SQLPoolSchemasListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp SQLPoolSchemasClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.SQLPoolSchemaListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *SQLPoolSchemasClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolSchemasListOptions) (*policy.Request, error) {
+func (client *SQLPoolSchemasClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolSchemasClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/schemas"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -146,7 +151,7 @@ func (client *SQLPoolSchemasClient) listCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter sqlPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sqlPoolName}", url.PathEscape(sqlPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -161,22 +166,10 @@ func (client *SQLPoolSchemasClient) listCreateRequest(ctx context.Context, resou
 }
 
 // listHandleResponse handles the List response.
-func (client *SQLPoolSchemasClient) listHandleResponse(resp *http.Response) (SQLPoolSchemasListResponse, error) {
-	result := SQLPoolSchemasListResponse{RawResponse: resp}
+func (client *SQLPoolSchemasClient) listHandleResponse(resp *http.Response) (SQLPoolSchemasClientListResponse, error) {
+	result := SQLPoolSchemasClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLPoolSchemaListResult); err != nil {
-		return SQLPoolSchemasListResponse{}, runtime.NewResponseError(err, resp)
+		return SQLPoolSchemasClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *SQLPoolSchemasClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

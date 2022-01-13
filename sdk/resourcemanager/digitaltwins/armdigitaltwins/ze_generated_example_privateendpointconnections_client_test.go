@@ -27,13 +27,14 @@ func ExamplePrivateEndpointConnectionsClient_List() {
 	}
 	ctx := context.Background()
 	client := armdigitaltwins.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.PrivateEndpointConnectionsClientListResult)
 }
 
 // x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2020-12-01/examples/PrivateEndpointConnectionByConnectionName_example.json
@@ -52,7 +53,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateEndpointConnection.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateEndpointConnectionsClientGetResult)
 }
 
 // x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2020-12-01/examples/PrivateEndpointConnectionDelete_example.json
@@ -91,13 +92,9 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 		"<private-endpoint-connection-name>",
 		armdigitaltwins.PrivateEndpointConnection{
 			Properties: &armdigitaltwins.PrivateEndpointConnectionProperties{
-				ConnectionProperties: armdigitaltwins.ConnectionProperties{
-					PrivateLinkServiceConnectionState: &armdigitaltwins.ConnectionPropertiesPrivateLinkServiceConnectionState{
-						ConnectionState: armdigitaltwins.ConnectionState{
-							Description: to.StringPtr("<description>"),
-							Status:      armdigitaltwins.PrivateLinkServiceConnectionStatusApproved.ToPtr(),
-						},
-					},
+				PrivateLinkServiceConnectionState: &armdigitaltwins.ConnectionPropertiesPrivateLinkServiceConnectionState{
+					Description: to.StringPtr("<description>"),
+					Status:      armdigitaltwins.PrivateLinkServiceConnectionStatus("Approved").ToPtr(),
 				},
 			},
 		},
@@ -109,5 +106,5 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateEndpointConnection.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateEndpointConnectionsClientCreateOrUpdateResult)
 }

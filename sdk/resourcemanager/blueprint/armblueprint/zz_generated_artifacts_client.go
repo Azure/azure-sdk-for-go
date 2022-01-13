@@ -11,7 +11,6 @@ package armblueprint
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,41 +24,54 @@ import (
 // ArtifactsClient contains the methods for the Artifacts group.
 // Don't use this type directly, use NewArtifactsClient() instead.
 type ArtifactsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewArtifactsClient creates a new instance of ArtifactsClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewArtifactsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *ArtifactsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ArtifactsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ArtifactsClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Create or update blueprint artifact.
-// If the operation fails it returns the *CloudError error type.
-func (client *ArtifactsClient) CreateOrUpdate(ctx context.Context, resourceScope string, blueprintName string, artifactName string, artifact ArtifactClassification, options *ArtifactsCreateOrUpdateOptions) (ArtifactsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
+// subscription (format: '/subscriptions/{subscriptionId}').
+// blueprintName - Name of the blueprint definition.
+// artifactName - Name of the blueprint artifact.
+// artifact - Blueprint artifact to create or update.
+// options - ArtifactsClientCreateOrUpdateOptions contains the optional parameters for the ArtifactsClient.CreateOrUpdate
+// method.
+func (client *ArtifactsClient) CreateOrUpdate(ctx context.Context, resourceScope string, blueprintName string, artifactName string, artifact ArtifactClassification, options *ArtifactsClientCreateOrUpdateOptions) (ArtifactsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceScope, blueprintName, artifactName, artifact, options)
 	if err != nil {
-		return ArtifactsCreateOrUpdateResponse{}, err
+		return ArtifactsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ArtifactsCreateOrUpdateResponse{}, err
+		return ArtifactsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusCreated) {
-		return ArtifactsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return ArtifactsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ArtifactsClient) createOrUpdateCreateRequest(ctx context.Context, resourceScope string, blueprintName string, artifactName string, artifact ArtifactClassification, options *ArtifactsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ArtifactsClient) createOrUpdateCreateRequest(ctx context.Context, resourceScope string, blueprintName string, artifactName string, artifact ArtifactClassification, options *ArtifactsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceScope}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/artifacts/{artifactName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceScope}", resourceScope)
 	if blueprintName == "" {
@@ -70,7 +82,7 @@ func (client *ArtifactsClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter artifactName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{artifactName}", url.PathEscape(artifactName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -82,46 +94,38 @@ func (client *ArtifactsClient) createOrUpdateCreateRequest(ctx context.Context, 
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ArtifactsClient) createOrUpdateHandleResponse(resp *http.Response) (ArtifactsCreateOrUpdateResponse, error) {
-	result := ArtifactsCreateOrUpdateResponse{RawResponse: resp}
+func (client *ArtifactsClient) createOrUpdateHandleResponse(resp *http.Response) (ArtifactsClientCreateOrUpdateResponse, error) {
+	result := ArtifactsClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
-		return ArtifactsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ArtifactsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ArtifactsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete a blueprint artifact.
-// If the operation fails it returns the *CloudError error type.
-func (client *ArtifactsClient) Delete(ctx context.Context, resourceScope string, blueprintName string, artifactName string, options *ArtifactsDeleteOptions) (ArtifactsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
+// subscription (format: '/subscriptions/{subscriptionId}').
+// blueprintName - Name of the blueprint definition.
+// artifactName - Name of the blueprint artifact.
+// options - ArtifactsClientDeleteOptions contains the optional parameters for the ArtifactsClient.Delete method.
+func (client *ArtifactsClient) Delete(ctx context.Context, resourceScope string, blueprintName string, artifactName string, options *ArtifactsClientDeleteOptions) (ArtifactsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceScope, blueprintName, artifactName, options)
 	if err != nil {
-		return ArtifactsDeleteResponse{}, err
+		return ArtifactsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ArtifactsDeleteResponse{}, err
+		return ArtifactsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return ArtifactsDeleteResponse{}, client.deleteHandleError(resp)
+		return ArtifactsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.deleteHandleResponse(resp)
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ArtifactsClient) deleteCreateRequest(ctx context.Context, resourceScope string, blueprintName string, artifactName string, options *ArtifactsDeleteOptions) (*policy.Request, error) {
+func (client *ArtifactsClient) deleteCreateRequest(ctx context.Context, resourceScope string, blueprintName string, artifactName string, options *ArtifactsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{resourceScope}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/artifacts/{artifactName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceScope}", resourceScope)
 	if blueprintName == "" {
@@ -132,7 +136,7 @@ func (client *ArtifactsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter artifactName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{artifactName}", url.PathEscape(artifactName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -144,46 +148,38 @@ func (client *ArtifactsClient) deleteCreateRequest(ctx context.Context, resource
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *ArtifactsClient) deleteHandleResponse(resp *http.Response) (ArtifactsDeleteResponse, error) {
-	result := ArtifactsDeleteResponse{RawResponse: resp}
+func (client *ArtifactsClient) deleteHandleResponse(resp *http.Response) (ArtifactsClientDeleteResponse, error) {
+	result := ArtifactsClientDeleteResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
-		return ArtifactsDeleteResponse{}, runtime.NewResponseError(err, resp)
+		return ArtifactsClientDeleteResponse{}, err
 	}
 	return result, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ArtifactsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get a blueprint artifact.
-// If the operation fails it returns the *CloudError error type.
-func (client *ArtifactsClient) Get(ctx context.Context, resourceScope string, blueprintName string, artifactName string, options *ArtifactsGetOptions) (ArtifactsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
+// subscription (format: '/subscriptions/{subscriptionId}').
+// blueprintName - Name of the blueprint definition.
+// artifactName - Name of the blueprint artifact.
+// options - ArtifactsClientGetOptions contains the optional parameters for the ArtifactsClient.Get method.
+func (client *ArtifactsClient) Get(ctx context.Context, resourceScope string, blueprintName string, artifactName string, options *ArtifactsClientGetOptions) (ArtifactsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceScope, blueprintName, artifactName, options)
 	if err != nil {
-		return ArtifactsGetResponse{}, err
+		return ArtifactsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ArtifactsGetResponse{}, err
+		return ArtifactsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ArtifactsGetResponse{}, client.getHandleError(resp)
+		return ArtifactsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ArtifactsClient) getCreateRequest(ctx context.Context, resourceScope string, blueprintName string, artifactName string, options *ArtifactsGetOptions) (*policy.Request, error) {
+func (client *ArtifactsClient) getCreateRequest(ctx context.Context, resourceScope string, blueprintName string, artifactName string, options *ArtifactsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceScope}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/artifacts/{artifactName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceScope}", resourceScope)
 	if blueprintName == "" {
@@ -194,7 +190,7 @@ func (client *ArtifactsClient) getCreateRequest(ctx context.Context, resourceSco
 		return nil, errors.New("parameter artifactName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{artifactName}", url.PathEscape(artifactName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -206,50 +202,41 @@ func (client *ArtifactsClient) getCreateRequest(ctx context.Context, resourceSco
 }
 
 // getHandleResponse handles the Get response.
-func (client *ArtifactsClient) getHandleResponse(resp *http.Response) (ArtifactsGetResponse, error) {
-	result := ArtifactsGetResponse{RawResponse: resp}
+func (client *ArtifactsClient) getHandleResponse(resp *http.Response) (ArtifactsClientGetResponse, error) {
+	result := ArtifactsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
-		return ArtifactsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ArtifactsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ArtifactsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List artifacts for a given blueprint definition.
-// If the operation fails it returns the *CloudError error type.
-func (client *ArtifactsClient) List(resourceScope string, blueprintName string, options *ArtifactsListOptions) *ArtifactsListPager {
-	return &ArtifactsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
+// subscription (format: '/subscriptions/{subscriptionId}').
+// blueprintName - Name of the blueprint definition.
+// options - ArtifactsClientListOptions contains the optional parameters for the ArtifactsClient.List method.
+func (client *ArtifactsClient) List(resourceScope string, blueprintName string, options *ArtifactsClientListOptions) *ArtifactsClientListPager {
+	return &ArtifactsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceScope, blueprintName, options)
 		},
-		advancer: func(ctx context.Context, resp ArtifactsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ArtifactsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ArtifactList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ArtifactsClient) listCreateRequest(ctx context.Context, resourceScope string, blueprintName string, options *ArtifactsListOptions) (*policy.Request, error) {
+func (client *ArtifactsClient) listCreateRequest(ctx context.Context, resourceScope string, blueprintName string, options *ArtifactsClientListOptions) (*policy.Request, error) {
 	urlPath := "/{resourceScope}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/artifacts"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceScope}", resourceScope)
 	if blueprintName == "" {
 		return nil, errors.New("parameter blueprintName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{blueprintName}", url.PathEscape(blueprintName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -261,23 +248,10 @@ func (client *ArtifactsClient) listCreateRequest(ctx context.Context, resourceSc
 }
 
 // listHandleResponse handles the List response.
-func (client *ArtifactsClient) listHandleResponse(resp *http.Response) (ArtifactsListResponse, error) {
-	result := ArtifactsListResponse{RawResponse: resp}
+func (client *ArtifactsClient) listHandleResponse(resp *http.Response) (ArtifactsClientListResponse, error) {
+	result := ArtifactsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ArtifactList); err != nil {
-		return ArtifactsListResponse{}, runtime.NewResponseError(err, resp)
+		return ArtifactsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *ArtifactsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

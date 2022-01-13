@@ -15,10 +15,10 @@ import (
 	"time"
 )
 
-// BotsCreatePollerResponse contains the response from method Bots.Create.
-type BotsCreatePollerResponse struct {
+// BotsClientCreatePollerResponse contains the response from method BotsClient.Create.
+type BotsClientCreatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *BotsCreatePoller
+	Poller *BotsClientCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -27,8 +27,8 @@ type BotsCreatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l BotsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (BotsCreateResponse, error) {
-	respType := BotsCreateResponse{}
+func (l BotsClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (BotsClientCreateResponse, error) {
+	respType := BotsClientCreateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.HealthBot)
 	if err != nil {
 		return respType, err
@@ -37,13 +37,13 @@ func (l BotsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.D
 	return respType, nil
 }
 
-// Resume rehydrates a BotsCreatePollerResponse from the provided client and resume token.
-func (l *BotsCreatePollerResponse) Resume(ctx context.Context, client *BotsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("BotsClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a BotsClientCreatePollerResponse from the provided client and resume token.
+func (l *BotsClientCreatePollerResponse) Resume(ctx context.Context, client *BotsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("BotsClient.Create", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &BotsCreatePoller{
+	poller := &BotsClientCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -55,22 +55,22 @@ func (l *BotsCreatePollerResponse) Resume(ctx context.Context, client *BotsClien
 	return nil
 }
 
-// BotsCreateResponse contains the response from method Bots.Create.
-type BotsCreateResponse struct {
-	BotsCreateResult
+// BotsClientCreateResponse contains the response from method BotsClient.Create.
+type BotsClientCreateResponse struct {
+	BotsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BotsCreateResult contains the result from method Bots.Create.
-type BotsCreateResult struct {
+// BotsClientCreateResult contains the result from method BotsClient.Create.
+type BotsClientCreateResult struct {
 	HealthBot
 }
 
-// BotsDeletePollerResponse contains the response from method Bots.Delete.
-type BotsDeletePollerResponse struct {
+// BotsClientDeletePollerResponse contains the response from method BotsClient.Delete.
+type BotsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *BotsDeletePoller
+	Poller *BotsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -79,8 +79,8 @@ type BotsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l BotsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (BotsDeleteResponse, error) {
-	respType := BotsDeleteResponse{}
+func (l BotsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (BotsClientDeleteResponse, error) {
+	respType := BotsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -89,13 +89,13 @@ func (l BotsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.D
 	return respType, nil
 }
 
-// Resume rehydrates a BotsDeletePollerResponse from the provided client and resume token.
-func (l *BotsDeletePollerResponse) Resume(ctx context.Context, client *BotsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("BotsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a BotsClientDeletePollerResponse from the provided client and resume token.
+func (l *BotsClientDeletePollerResponse) Resume(ctx context.Context, client *BotsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("BotsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &BotsDeletePoller{
+	poller := &BotsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -107,68 +107,68 @@ func (l *BotsDeletePollerResponse) Resume(ctx context.Context, client *BotsClien
 	return nil
 }
 
-// BotsDeleteResponse contains the response from method Bots.Delete.
-type BotsDeleteResponse struct {
+// BotsClientDeleteResponse contains the response from method BotsClient.Delete.
+type BotsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BotsGetResponse contains the response from method Bots.Get.
-type BotsGetResponse struct {
-	BotsGetResult
+// BotsClientGetResponse contains the response from method BotsClient.Get.
+type BotsClientGetResponse struct {
+	BotsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BotsGetResult contains the result from method Bots.Get.
-type BotsGetResult struct {
+// BotsClientGetResult contains the result from method BotsClient.Get.
+type BotsClientGetResult struct {
 	HealthBot
 }
 
-// BotsListByResourceGroupResponse contains the response from method Bots.ListByResourceGroup.
-type BotsListByResourceGroupResponse struct {
-	BotsListByResourceGroupResult
+// BotsClientListByResourceGroupResponse contains the response from method BotsClient.ListByResourceGroup.
+type BotsClientListByResourceGroupResponse struct {
+	BotsClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BotsListByResourceGroupResult contains the result from method Bots.ListByResourceGroup.
-type BotsListByResourceGroupResult struct {
+// BotsClientListByResourceGroupResult contains the result from method BotsClient.ListByResourceGroup.
+type BotsClientListByResourceGroupResult struct {
 	BotResponseList
 }
 
-// BotsListResponse contains the response from method Bots.List.
-type BotsListResponse struct {
-	BotsListResult
+// BotsClientListResponse contains the response from method BotsClient.List.
+type BotsClientListResponse struct {
+	BotsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BotsListResult contains the result from method Bots.List.
-type BotsListResult struct {
+// BotsClientListResult contains the result from method BotsClient.List.
+type BotsClientListResult struct {
 	BotResponseList
 }
 
-// BotsUpdateResponse contains the response from method Bots.Update.
-type BotsUpdateResponse struct {
-	BotsUpdateResult
+// BotsClientUpdateResponse contains the response from method BotsClient.Update.
+type BotsClientUpdateResponse struct {
+	BotsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BotsUpdateResult contains the result from method Bots.Update.
-type BotsUpdateResult struct {
+// BotsClientUpdateResult contains the result from method BotsClient.Update.
+type BotsClientUpdateResult struct {
 	HealthBot
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	AvailableOperations
 }

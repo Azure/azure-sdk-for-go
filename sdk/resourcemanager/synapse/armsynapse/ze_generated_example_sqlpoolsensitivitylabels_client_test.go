@@ -28,13 +28,17 @@ func ExampleSQLPoolSensitivityLabelsClient_ListCurrent() {
 	pager := client.ListCurrent("<resource-group-name>",
 		"<workspace-name>",
 		"<sql-pool-name>",
-		&armsynapse.SQLPoolSensitivityLabelsListCurrentOptions{Filter: nil})
-	for pager.NextPage(ctx) {
+		&armsynapse.SQLPoolSensitivityLabelsClientListCurrentOptions{Filter: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("SensitivityLabel.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -113,16 +117,20 @@ func ExampleSQLPoolSensitivityLabelsClient_ListRecommended() {
 	pager := client.ListRecommended("<resource-group-name>",
 		"<workspace-name>",
 		"<sql-pool-name>",
-		&armsynapse.SQLPoolSensitivityLabelsListRecommendedOptions{IncludeDisabledRecommendations: nil,
+		&armsynapse.SQLPoolSensitivityLabelsClientListRecommendedOptions{IncludeDisabledRecommendations: nil,
 			SkipToken: nil,
 			Filter:    nil,
 		})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("SensitivityLabel.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -154,7 +162,7 @@ func ExampleSQLPoolSensitivityLabelsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SensitivityLabel.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SQLPoolSensitivityLabelsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DeleteSqlPoolColumnSensitivityLabel.json
@@ -198,7 +206,7 @@ func ExampleSQLPoolSensitivityLabelsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SensitivityLabel.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SQLPoolSensitivityLabelsClientGetResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/RecommendedColumnSensitivityLabelEnable.json

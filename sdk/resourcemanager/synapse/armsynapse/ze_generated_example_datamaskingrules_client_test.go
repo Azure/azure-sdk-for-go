@@ -44,7 +44,7 @@ func ExampleDataMaskingRulesClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DataMaskingRule.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DataMaskingRulesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DataMaskingRuleGet.json
@@ -64,23 +64,5 @@ func ExampleDataMaskingRulesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DataMaskingRule.ID: %s\n", *res.ID)
-}
-
-// x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DataMaskingRuleList.json
-func ExampleDataMaskingRulesClient_ListBySQLPool() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armsynapse.NewDataMaskingRulesClient("<subscription-id>", cred, nil)
-	_, err = client.ListBySQLPool(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<sql-pool-name>",
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	log.Printf("Response result: %#v\n", res.DataMaskingRulesClientGetResult)
 }

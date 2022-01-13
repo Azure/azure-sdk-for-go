@@ -26,13 +26,17 @@ func ExampleMarketplaceRegistrationDefinitionsClient_List() {
 	ctx := context.Background()
 	client := armmanagedservices.NewMarketplaceRegistrationDefinitionsClient(cred, nil)
 	pager := client.List("<scope>",
-		&armmanagedservices.MarketplaceRegistrationDefinitionsListOptions{Filter: to.StringPtr("<filter>")})
-	for pager.NextPage(ctx) {
+		&armmanagedservices.MarketplaceRegistrationDefinitionsClientListOptions{Filter: to.StringPtr("<filter>")})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("MarketplaceRegistrationDefinition.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -52,5 +56,5 @@ func ExampleMarketplaceRegistrationDefinitionsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MarketplaceRegistrationDefinition.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MarketplaceRegistrationDefinitionsClientGetResult)
 }

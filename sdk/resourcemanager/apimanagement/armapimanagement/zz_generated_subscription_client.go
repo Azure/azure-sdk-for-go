@@ -11,7 +11,6 @@ package armapimanagement
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,57 @@ import (
 // SubscriptionClient contains the methods for the Subscription group.
 // Don't use this type directly, use NewSubscriptionClient() instead.
 type SubscriptionClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSubscriptionClient creates a new instance of SubscriptionClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSubscriptionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SubscriptionClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SubscriptionClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SubscriptionClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates or updates the subscription of specified user to the specified product.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SubscriptionClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, sid string, parameters SubscriptionCreateParameters, options *SubscriptionCreateOrUpdateOptions) (SubscriptionCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// sid - Subscription entity Identifier. The entity represents the association between a user and a product in API Management.
+// parameters - Create parameters.
+// options - SubscriptionClientCreateOrUpdateOptions contains the optional parameters for the SubscriptionClient.CreateOrUpdate
+// method.
+func (client *SubscriptionClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, sid string, parameters SubscriptionCreateParameters, options *SubscriptionClientCreateOrUpdateOptions) (SubscriptionClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, sid, parameters, options)
 	if err != nil {
-		return SubscriptionCreateOrUpdateResponse{}, err
+		return SubscriptionClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SubscriptionCreateOrUpdateResponse{}, err
+		return SubscriptionClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return SubscriptionCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return SubscriptionClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SubscriptionClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, sid string, parameters SubscriptionCreateParameters, options *SubscriptionCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *SubscriptionClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, sid string, parameters SubscriptionCreateParameters, options *SubscriptionClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/subscriptions/{sid}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -79,7 +93,7 @@ func (client *SubscriptionClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -100,49 +114,42 @@ func (client *SubscriptionClient) createOrUpdateCreateRequest(ctx context.Contex
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *SubscriptionClient) createOrUpdateHandleResponse(resp *http.Response) (SubscriptionCreateOrUpdateResponse, error) {
-	result := SubscriptionCreateOrUpdateResponse{RawResponse: resp}
+func (client *SubscriptionClient) createOrUpdateHandleResponse(resp *http.Response) (SubscriptionClientCreateOrUpdateResponse, error) {
+	result := SubscriptionClientCreateOrUpdateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionContract); err != nil {
-		return SubscriptionCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return SubscriptionClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *SubscriptionClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes the specified subscription.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SubscriptionClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, sid string, ifMatch string, options *SubscriptionDeleteOptions) (SubscriptionDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// sid - Subscription entity Identifier. The entity represents the association between a user and a product in API Management.
+// ifMatch - ETag of the Entity. ETag should match the current entity state from the header response of the GET request or
+// it should be * for unconditional update.
+// options - SubscriptionClientDeleteOptions contains the optional parameters for the SubscriptionClient.Delete method.
+func (client *SubscriptionClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, sid string, ifMatch string, options *SubscriptionClientDeleteOptions) (SubscriptionClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, sid, ifMatch, options)
 	if err != nil {
-		return SubscriptionDeleteResponse{}, err
+		return SubscriptionClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SubscriptionDeleteResponse{}, err
+		return SubscriptionClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return SubscriptionDeleteResponse{}, client.deleteHandleError(resp)
+		return SubscriptionClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return SubscriptionDeleteResponse{RawResponse: resp}, nil
+	return SubscriptionClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SubscriptionClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, sid string, ifMatch string, options *SubscriptionDeleteOptions) (*policy.Request, error) {
+func (client *SubscriptionClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, sid string, ifMatch string, options *SubscriptionClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/subscriptions/{sid}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -160,7 +167,7 @@ func (client *SubscriptionClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -172,38 +179,29 @@ func (client *SubscriptionClient) deleteCreateRequest(ctx context.Context, resou
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *SubscriptionClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets the specified Subscription entity.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SubscriptionClient) Get(ctx context.Context, resourceGroupName string, serviceName string, sid string, options *SubscriptionGetOptions) (SubscriptionGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// sid - Subscription entity Identifier. The entity represents the association between a user and a product in API Management.
+// options - SubscriptionClientGetOptions contains the optional parameters for the SubscriptionClient.Get method.
+func (client *SubscriptionClient) Get(ctx context.Context, resourceGroupName string, serviceName string, sid string, options *SubscriptionClientGetOptions) (SubscriptionClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, sid, options)
 	if err != nil {
-		return SubscriptionGetResponse{}, err
+		return SubscriptionClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SubscriptionGetResponse{}, err
+		return SubscriptionClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SubscriptionGetResponse{}, client.getHandleError(resp)
+		return SubscriptionClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SubscriptionClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, sid string, options *SubscriptionGetOptions) (*policy.Request, error) {
+func (client *SubscriptionClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, sid string, options *SubscriptionClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/subscriptions/{sid}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -221,7 +219,7 @@ func (client *SubscriptionClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -233,46 +231,37 @@ func (client *SubscriptionClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client *SubscriptionClient) getHandleResponse(resp *http.Response) (SubscriptionGetResponse, error) {
-	result := SubscriptionGetResponse{RawResponse: resp}
+func (client *SubscriptionClient) getHandleResponse(resp *http.Response) (SubscriptionClientGetResponse, error) {
+	result := SubscriptionClientGetResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionContract); err != nil {
-		return SubscriptionGetResponse{}, runtime.NewResponseError(err, resp)
+		return SubscriptionClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *SubscriptionClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetEntityTag - Gets the entity state (Etag) version of the apimanagement subscription specified by its identifier.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SubscriptionClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, sid string, options *SubscriptionGetEntityTagOptions) (SubscriptionGetEntityTagResponse, error) {
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// sid - Subscription entity Identifier. The entity represents the association between a user and a product in API Management.
+// options - SubscriptionClientGetEntityTagOptions contains the optional parameters for the SubscriptionClient.GetEntityTag
+// method.
+func (client *SubscriptionClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, sid string, options *SubscriptionClientGetEntityTagOptions) (SubscriptionClientGetEntityTagResponse, error) {
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, sid, options)
 	if err != nil {
-		return SubscriptionGetEntityTagResponse{}, err
+		return SubscriptionClientGetEntityTagResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SubscriptionGetEntityTagResponse{}, err
+		return SubscriptionClientGetEntityTagResponse{}, err
 	}
 	return client.getEntityTagHandleResponse(resp)
 }
 
 // getEntityTagCreateRequest creates the GetEntityTag request.
-func (client *SubscriptionClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, sid string, options *SubscriptionGetEntityTagOptions) (*policy.Request, error) {
+func (client *SubscriptionClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, sid string, options *SubscriptionClientGetEntityTagOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/subscriptions/{sid}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -290,7 +279,7 @@ func (client *SubscriptionClient) getEntityTagCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -302,8 +291,8 @@ func (client *SubscriptionClient) getEntityTagCreateRequest(ctx context.Context,
 }
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
-func (client *SubscriptionClient) getEntityTagHandleResponse(resp *http.Response) (SubscriptionGetEntityTagResponse, error) {
-	result := SubscriptionGetEntityTagResponse{RawResponse: resp}
+func (client *SubscriptionClient) getEntityTagHandleResponse(resp *http.Response) (SubscriptionClientGetEntityTagResponse, error) {
+	result := SubscriptionClientGetEntityTagResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -314,21 +303,24 @@ func (client *SubscriptionClient) getEntityTagHandleResponse(resp *http.Response
 }
 
 // List - Lists all subscriptions of the API Management service instance.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SubscriptionClient) List(resourceGroupName string, serviceName string, options *SubscriptionListOptions) *SubscriptionListPager {
-	return &SubscriptionListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// options - SubscriptionClientListOptions contains the optional parameters for the SubscriptionClient.List method.
+func (client *SubscriptionClient) List(resourceGroupName string, serviceName string, options *SubscriptionClientListOptions) *SubscriptionClientListPager {
+	return &SubscriptionClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, serviceName, options)
 		},
-		advancer: func(ctx context.Context, resp SubscriptionListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp SubscriptionClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.SubscriptionCollection.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *SubscriptionClient) listCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *SubscriptionListOptions) (*policy.Request, error) {
+func (client *SubscriptionClient) listCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *SubscriptionClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/subscriptions"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -342,7 +334,7 @@ func (client *SubscriptionClient) listCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -363,46 +355,38 @@ func (client *SubscriptionClient) listCreateRequest(ctx context.Context, resourc
 }
 
 // listHandleResponse handles the List response.
-func (client *SubscriptionClient) listHandleResponse(resp *http.Response) (SubscriptionListResponse, error) {
-	result := SubscriptionListResponse{RawResponse: resp}
+func (client *SubscriptionClient) listHandleResponse(resp *http.Response) (SubscriptionClientListResponse, error) {
+	result := SubscriptionClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionCollection); err != nil {
-		return SubscriptionListResponse{}, runtime.NewResponseError(err, resp)
+		return SubscriptionClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *SubscriptionClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListSecrets - Gets the specified Subscription keys.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SubscriptionClient) ListSecrets(ctx context.Context, resourceGroupName string, serviceName string, sid string, options *SubscriptionListSecretsOptions) (SubscriptionListSecretsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// sid - Subscription entity Identifier. The entity represents the association between a user and a product in API Management.
+// options - SubscriptionClientListSecretsOptions contains the optional parameters for the SubscriptionClient.ListSecrets
+// method.
+func (client *SubscriptionClient) ListSecrets(ctx context.Context, resourceGroupName string, serviceName string, sid string, options *SubscriptionClientListSecretsOptions) (SubscriptionClientListSecretsResponse, error) {
 	req, err := client.listSecretsCreateRequest(ctx, resourceGroupName, serviceName, sid, options)
 	if err != nil {
-		return SubscriptionListSecretsResponse{}, err
+		return SubscriptionClientListSecretsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SubscriptionListSecretsResponse{}, err
+		return SubscriptionClientListSecretsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SubscriptionListSecretsResponse{}, client.listSecretsHandleError(resp)
+		return SubscriptionClientListSecretsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listSecretsHandleResponse(resp)
 }
 
 // listSecretsCreateRequest creates the ListSecrets request.
-func (client *SubscriptionClient) listSecretsCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, sid string, options *SubscriptionListSecretsOptions) (*policy.Request, error) {
+func (client *SubscriptionClient) listSecretsCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, sid string, options *SubscriptionClientListSecretsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/subscriptions/{sid}/listSecrets"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -420,7 +404,7 @@ func (client *SubscriptionClient) listSecretsCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -432,49 +416,41 @@ func (client *SubscriptionClient) listSecretsCreateRequest(ctx context.Context, 
 }
 
 // listSecretsHandleResponse handles the ListSecrets response.
-func (client *SubscriptionClient) listSecretsHandleResponse(resp *http.Response) (SubscriptionListSecretsResponse, error) {
-	result := SubscriptionListSecretsResponse{RawResponse: resp}
+func (client *SubscriptionClient) listSecretsHandleResponse(resp *http.Response) (SubscriptionClientListSecretsResponse, error) {
+	result := SubscriptionClientListSecretsResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionKeysContract); err != nil {
-		return SubscriptionListSecretsResponse{}, runtime.NewResponseError(err, resp)
+		return SubscriptionClientListSecretsResponse{}, err
 	}
 	return result, nil
 }
 
-// listSecretsHandleError handles the ListSecrets error response.
-func (client *SubscriptionClient) listSecretsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // RegeneratePrimaryKey - Regenerates primary key of existing subscription of the API Management service instance.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SubscriptionClient) RegeneratePrimaryKey(ctx context.Context, resourceGroupName string, serviceName string, sid string, options *SubscriptionRegeneratePrimaryKeyOptions) (SubscriptionRegeneratePrimaryKeyResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// sid - Subscription entity Identifier. The entity represents the association between a user and a product in API Management.
+// options - SubscriptionClientRegeneratePrimaryKeyOptions contains the optional parameters for the SubscriptionClient.RegeneratePrimaryKey
+// method.
+func (client *SubscriptionClient) RegeneratePrimaryKey(ctx context.Context, resourceGroupName string, serviceName string, sid string, options *SubscriptionClientRegeneratePrimaryKeyOptions) (SubscriptionClientRegeneratePrimaryKeyResponse, error) {
 	req, err := client.regeneratePrimaryKeyCreateRequest(ctx, resourceGroupName, serviceName, sid, options)
 	if err != nil {
-		return SubscriptionRegeneratePrimaryKeyResponse{}, err
+		return SubscriptionClientRegeneratePrimaryKeyResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SubscriptionRegeneratePrimaryKeyResponse{}, err
+		return SubscriptionClientRegeneratePrimaryKeyResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
-		return SubscriptionRegeneratePrimaryKeyResponse{}, client.regeneratePrimaryKeyHandleError(resp)
+		return SubscriptionClientRegeneratePrimaryKeyResponse{}, runtime.NewResponseError(resp)
 	}
-	return SubscriptionRegeneratePrimaryKeyResponse{RawResponse: resp}, nil
+	return SubscriptionClientRegeneratePrimaryKeyResponse{RawResponse: resp}, nil
 }
 
 // regeneratePrimaryKeyCreateRequest creates the RegeneratePrimaryKey request.
-func (client *SubscriptionClient) regeneratePrimaryKeyCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, sid string, options *SubscriptionRegeneratePrimaryKeyOptions) (*policy.Request, error) {
+func (client *SubscriptionClient) regeneratePrimaryKeyCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, sid string, options *SubscriptionClientRegeneratePrimaryKeyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/subscriptions/{sid}/regeneratePrimaryKey"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -492,7 +468,7 @@ func (client *SubscriptionClient) regeneratePrimaryKeyCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -503,38 +479,30 @@ func (client *SubscriptionClient) regeneratePrimaryKeyCreateRequest(ctx context.
 	return req, nil
 }
 
-// regeneratePrimaryKeyHandleError handles the RegeneratePrimaryKey error response.
-func (client *SubscriptionClient) regeneratePrimaryKeyHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // RegenerateSecondaryKey - Regenerates secondary key of existing subscription of the API Management service instance.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SubscriptionClient) RegenerateSecondaryKey(ctx context.Context, resourceGroupName string, serviceName string, sid string, options *SubscriptionRegenerateSecondaryKeyOptions) (SubscriptionRegenerateSecondaryKeyResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// sid - Subscription entity Identifier. The entity represents the association between a user and a product in API Management.
+// options - SubscriptionClientRegenerateSecondaryKeyOptions contains the optional parameters for the SubscriptionClient.RegenerateSecondaryKey
+// method.
+func (client *SubscriptionClient) RegenerateSecondaryKey(ctx context.Context, resourceGroupName string, serviceName string, sid string, options *SubscriptionClientRegenerateSecondaryKeyOptions) (SubscriptionClientRegenerateSecondaryKeyResponse, error) {
 	req, err := client.regenerateSecondaryKeyCreateRequest(ctx, resourceGroupName, serviceName, sid, options)
 	if err != nil {
-		return SubscriptionRegenerateSecondaryKeyResponse{}, err
+		return SubscriptionClientRegenerateSecondaryKeyResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SubscriptionRegenerateSecondaryKeyResponse{}, err
+		return SubscriptionClientRegenerateSecondaryKeyResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
-		return SubscriptionRegenerateSecondaryKeyResponse{}, client.regenerateSecondaryKeyHandleError(resp)
+		return SubscriptionClientRegenerateSecondaryKeyResponse{}, runtime.NewResponseError(resp)
 	}
-	return SubscriptionRegenerateSecondaryKeyResponse{RawResponse: resp}, nil
+	return SubscriptionClientRegenerateSecondaryKeyResponse{RawResponse: resp}, nil
 }
 
 // regenerateSecondaryKeyCreateRequest creates the RegenerateSecondaryKey request.
-func (client *SubscriptionClient) regenerateSecondaryKeyCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, sid string, options *SubscriptionRegenerateSecondaryKeyOptions) (*policy.Request, error) {
+func (client *SubscriptionClient) regenerateSecondaryKeyCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, sid string, options *SubscriptionClientRegenerateSecondaryKeyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/subscriptions/{sid}/regenerateSecondaryKey"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -552,7 +520,7 @@ func (client *SubscriptionClient) regenerateSecondaryKeyCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -563,38 +531,32 @@ func (client *SubscriptionClient) regenerateSecondaryKeyCreateRequest(ctx contex
 	return req, nil
 }
 
-// regenerateSecondaryKeyHandleError handles the RegenerateSecondaryKey error response.
-func (client *SubscriptionClient) regenerateSecondaryKeyHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Updates the details of a subscription specified by its identifier.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SubscriptionClient) Update(ctx context.Context, resourceGroupName string, serviceName string, sid string, ifMatch string, parameters SubscriptionUpdateParameters, options *SubscriptionUpdateOptions) (SubscriptionUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// sid - Subscription entity Identifier. The entity represents the association between a user and a product in API Management.
+// ifMatch - ETag of the Entity. ETag should match the current entity state from the header response of the GET request or
+// it should be * for unconditional update.
+// parameters - Update parameters.
+// options - SubscriptionClientUpdateOptions contains the optional parameters for the SubscriptionClient.Update method.
+func (client *SubscriptionClient) Update(ctx context.Context, resourceGroupName string, serviceName string, sid string, ifMatch string, parameters SubscriptionUpdateParameters, options *SubscriptionClientUpdateOptions) (SubscriptionClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, sid, ifMatch, parameters, options)
 	if err != nil {
-		return SubscriptionUpdateResponse{}, err
+		return SubscriptionClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SubscriptionUpdateResponse{}, err
+		return SubscriptionClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SubscriptionUpdateResponse{}, client.updateHandleError(resp)
+		return SubscriptionClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *SubscriptionClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, sid string, ifMatch string, parameters SubscriptionUpdateParameters, options *SubscriptionUpdateOptions) (*policy.Request, error) {
+func (client *SubscriptionClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, sid string, ifMatch string, parameters SubscriptionUpdateParameters, options *SubscriptionClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/subscriptions/{sid}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -612,7 +574,7 @@ func (client *SubscriptionClient) updateCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -631,26 +593,13 @@ func (client *SubscriptionClient) updateCreateRequest(ctx context.Context, resou
 }
 
 // updateHandleResponse handles the Update response.
-func (client *SubscriptionClient) updateHandleResponse(resp *http.Response) (SubscriptionUpdateResponse, error) {
-	result := SubscriptionUpdateResponse{RawResponse: resp}
+func (client *SubscriptionClient) updateHandleResponse(resp *http.Response) (SubscriptionClientUpdateResponse, error) {
+	result := SubscriptionClientUpdateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionContract); err != nil {
-		return SubscriptionUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return SubscriptionClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *SubscriptionClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -30,12 +30,16 @@ func ExampleInstructionsClient_ListByBillingProfile() {
 	pager := client.ListByBillingProfile("<billing-account-name>",
 		"<billing-profile-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Instruction.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -56,7 +60,7 @@ func ExampleInstructionsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Instruction.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.InstructionsClientGetResult)
 }
 
 // x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/PutInstruction.json
@@ -82,5 +86,5 @@ func ExampleInstructionsClient_Put() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Instruction.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.InstructionsClientPutResult)
 }

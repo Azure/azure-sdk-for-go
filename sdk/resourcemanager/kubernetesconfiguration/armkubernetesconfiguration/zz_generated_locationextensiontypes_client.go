@@ -11,7 +11,6 @@ package armkubernetesconfiguration
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,39 +24,50 @@ import (
 // LocationExtensionTypesClient contains the methods for the LocationExtensionTypes group.
 // Don't use this type directly, use NewLocationExtensionTypesClient() instead.
 type LocationExtensionTypesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewLocationExtensionTypesClient creates a new instance of LocationExtensionTypesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewLocationExtensionTypesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LocationExtensionTypesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &LocationExtensionTypesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &LocationExtensionTypesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - List all Extension Types
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LocationExtensionTypesClient) List(location string, options *LocationExtensionTypesListOptions) *LocationExtensionTypesListPager {
-	return &LocationExtensionTypesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// location - extension location
+// options - LocationExtensionTypesClientListOptions contains the optional parameters for the LocationExtensionTypesClient.List
+// method.
+func (client *LocationExtensionTypesClient) List(location string, options *LocationExtensionTypesClientListOptions) *LocationExtensionTypesClientListPager {
+	return &LocationExtensionTypesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, location, options)
 		},
-		advancer: func(ctx context.Context, resp LocationExtensionTypesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp LocationExtensionTypesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ExtensionTypeList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *LocationExtensionTypesClient) listCreateRequest(ctx context.Context, location string, options *LocationExtensionTypesListOptions) (*policy.Request, error) {
+func (client *LocationExtensionTypesClient) listCreateRequest(ctx context.Context, location string, options *LocationExtensionTypesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.KubernetesConfiguration/locations/{location}/extensionTypes"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -67,7 +77,7 @@ func (client *LocationExtensionTypesClient) listCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -79,23 +89,10 @@ func (client *LocationExtensionTypesClient) listCreateRequest(ctx context.Contex
 }
 
 // listHandleResponse handles the List response.
-func (client *LocationExtensionTypesClient) listHandleResponse(resp *http.Response) (LocationExtensionTypesListResponse, error) {
-	result := LocationExtensionTypesListResponse{RawResponse: resp}
+func (client *LocationExtensionTypesClient) listHandleResponse(resp *http.Response) (LocationExtensionTypesClientListResponse, error) {
+	result := LocationExtensionTypesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExtensionTypeList); err != nil {
-		return LocationExtensionTypesListResponse{}, runtime.NewResponseError(err, resp)
+		return LocationExtensionTypesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *LocationExtensionTypesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

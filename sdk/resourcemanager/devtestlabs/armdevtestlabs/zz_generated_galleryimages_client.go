@@ -11,7 +11,6 @@ package armdevtestlabs
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,39 +25,50 @@ import (
 // GalleryImagesClient contains the methods for the GalleryImages group.
 // Don't use this type directly, use NewGalleryImagesClient() instead.
 type GalleryImagesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewGalleryImagesClient creates a new instance of GalleryImagesClient with the specified values.
+// subscriptionID - The subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewGalleryImagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *GalleryImagesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &GalleryImagesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &GalleryImagesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - List gallery images in a given lab.
-// If the operation fails it returns the *CloudError error type.
-func (client *GalleryImagesClient) List(resourceGroupName string, labName string, options *GalleryImagesListOptions) *GalleryImagesListPager {
-	return &GalleryImagesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// options - GalleryImagesClientListOptions contains the optional parameters for the GalleryImagesClient.List method.
+func (client *GalleryImagesClient) List(resourceGroupName string, labName string, options *GalleryImagesClientListOptions) *GalleryImagesClientListPager {
+	return &GalleryImagesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, labName, options)
 		},
-		advancer: func(ctx context.Context, resp GalleryImagesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp GalleryImagesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.GalleryImageList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *GalleryImagesClient) listCreateRequest(ctx context.Context, resourceGroupName string, labName string, options *GalleryImagesListOptions) (*policy.Request, error) {
+func (client *GalleryImagesClient) listCreateRequest(ctx context.Context, resourceGroupName string, labName string, options *GalleryImagesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/galleryimages"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -72,7 +82,7 @@ func (client *GalleryImagesClient) listCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter labName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{labName}", url.PathEscape(labName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -96,23 +106,10 @@ func (client *GalleryImagesClient) listCreateRequest(ctx context.Context, resour
 }
 
 // listHandleResponse handles the List response.
-func (client *GalleryImagesClient) listHandleResponse(resp *http.Response) (GalleryImagesListResponse, error) {
-	result := GalleryImagesListResponse{RawResponse: resp}
+func (client *GalleryImagesClient) listHandleResponse(resp *http.Response) (GalleryImagesClientListResponse, error) {
+	result := GalleryImagesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GalleryImageList); err != nil {
-		return GalleryImagesListResponse{}, runtime.NewResponseError(err, resp)
+		return GalleryImagesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *GalleryImagesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -25,14 +25,12 @@ func ExampleArtifactsClient_CreateOrUpdate() {
 	}
 	ctx := context.Background()
 	client := armblueprint.NewArtifactsClient(cred, nil)
-	res, err := client.CreateOrUpdate(ctx,
+	_, err = client.CreateOrUpdate(ctx,
 		"<resource-scope>",
 		"<blueprint-name>",
 		"<artifact-name>",
 		&armblueprint.TemplateArtifact{
-			Artifact: armblueprint.Artifact{
-				Kind: armblueprint.ArtifactKindTemplate.ToPtr(),
-			},
+			Kind: armblueprint.ArtifactKind("template").ToPtr(),
 			Properties: &armblueprint.TemplateArtifactProperties{
 				Parameters: map[string]*armblueprint.ParameterValue{
 					"storageAccountType": {
@@ -121,7 +119,6 @@ func ExampleArtifactsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ArtifactClassification.GetArtifact().ID: %s\n", *res.GetArtifact().ID)
 }
 
 // x-ms-original-file: specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPDef/ARMTemplateArtifact_Get.json
@@ -140,7 +137,7 @@ func ExampleArtifactsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ArtifactClassification.GetArtifact().ID: %s\n", *res.GetArtifact().ID)
+	log.Printf("Response result: %#v\n", res.ArtifactsClientGetResult)
 }
 
 // x-ms-original-file: specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPDef/ARMTemplateArtifact_Delete.json
@@ -159,7 +156,7 @@ func ExampleArtifactsClient_Delete() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ArtifactClassification.GetArtifact().ID: %s\n", *res.GetArtifact().ID)
+	log.Printf("Response result: %#v\n", res.ArtifactsClientDeleteResult)
 }
 
 // x-ms-original-file: specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPDef/Artifact_List.json
@@ -173,12 +170,16 @@ func ExampleArtifactsClient_List() {
 	pager := client.List("<resource-scope>",
 		"<blueprint-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ArtifactClassification.GetArtifact().ID: %s\n", *v.GetArtifact().ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

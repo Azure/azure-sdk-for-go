@@ -24,44 +24,61 @@ import (
 // RecoveryPointsClient contains the methods for the RecoveryPoints group.
 // Don't use this type directly, use NewRecoveryPointsClient() instead.
 type RecoveryPointsClient struct {
-	ep                string
-	pl                runtime.Pipeline
+	host              string
 	resourceName      string
 	resourceGroupName string
 	subscriptionID    string
+	pl                runtime.Pipeline
 }
 
 // NewRecoveryPointsClient creates a new instance of RecoveryPointsClient with the specified values.
+// resourceName - The name of the recovery services vault.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// subscriptionID - The subscription Id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewRecoveryPointsClient(resourceName string, resourceGroupName string, subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RecoveryPointsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &RecoveryPointsClient{resourceName: resourceName, resourceGroupName: resourceGroupName, subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &RecoveryPointsClient{
+		resourceName:      resourceName,
+		resourceGroupName: resourceGroupName,
+		subscriptionID:    subscriptionID,
+		host:              string(cp.Endpoint),
+		pl:                armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Get the details of specified recovery point.
-// If the operation fails it returns a generic error.
-func (client *RecoveryPointsClient) Get(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, recoveryPointName string, options *RecoveryPointsGetOptions) (RecoveryPointsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - The fabric name.
+// protectionContainerName - The protection container name.
+// replicatedProtectedItemName - The replication protected item name.
+// recoveryPointName - The recovery point name.
+// options - RecoveryPointsClientGetOptions contains the optional parameters for the RecoveryPointsClient.Get method.
+func (client *RecoveryPointsClient) Get(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, recoveryPointName string, options *RecoveryPointsClientGetOptions) (RecoveryPointsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, recoveryPointName, options)
 	if err != nil {
-		return RecoveryPointsGetResponse{}, err
+		return RecoveryPointsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RecoveryPointsGetResponse{}, err
+		return RecoveryPointsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return RecoveryPointsGetResponse{}, client.getHandleError(resp)
+		return RecoveryPointsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *RecoveryPointsClient) getCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, recoveryPointName string, options *RecoveryPointsGetOptions) (*policy.Request, error) {
+func (client *RecoveryPointsClient) getCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, recoveryPointName string, options *RecoveryPointsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/recoveryPoints/{recoveryPointName}"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -91,54 +108,47 @@ func (client *RecoveryPointsClient) getCreateRequest(ctx context.Context, fabric
 		return nil, errors.New("parameter recoveryPointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{recoveryPointName}", url.PathEscape(recoveryPointName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *RecoveryPointsClient) getHandleResponse(resp *http.Response) (RecoveryPointsGetResponse, error) {
-	result := RecoveryPointsGetResponse{RawResponse: resp}
+func (client *RecoveryPointsClient) getHandleResponse(resp *http.Response) (RecoveryPointsClientGetResponse, error) {
+	result := RecoveryPointsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecoveryPoint); err != nil {
-		return RecoveryPointsGetResponse{}, runtime.NewResponseError(err, resp)
+		return RecoveryPointsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *RecoveryPointsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByReplicationProtectedItems - Lists the available recovery points for a replication protected item.
-// If the operation fails it returns a generic error.
-func (client *RecoveryPointsClient) ListByReplicationProtectedItems(fabricName string, protectionContainerName string, replicatedProtectedItemName string, options *RecoveryPointsListByReplicationProtectedItemsOptions) *RecoveryPointsListByReplicationProtectedItemsPager {
-	return &RecoveryPointsListByReplicationProtectedItemsPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - The fabric name.
+// protectionContainerName - The protection container name.
+// replicatedProtectedItemName - The replication protected item name.
+// options - RecoveryPointsClientListByReplicationProtectedItemsOptions contains the optional parameters for the RecoveryPointsClient.ListByReplicationProtectedItems
+// method.
+func (client *RecoveryPointsClient) ListByReplicationProtectedItems(fabricName string, protectionContainerName string, replicatedProtectedItemName string, options *RecoveryPointsClientListByReplicationProtectedItemsOptions) *RecoveryPointsClientListByReplicationProtectedItemsPager {
+	return &RecoveryPointsClientListByReplicationProtectedItemsPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByReplicationProtectedItemsCreateRequest(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, options)
 		},
-		advancer: func(ctx context.Context, resp RecoveryPointsListByReplicationProtectedItemsResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp RecoveryPointsClientListByReplicationProtectedItemsResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.RecoveryPointCollection.NextLink)
 		},
 	}
 }
 
 // listByReplicationProtectedItemsCreateRequest creates the ListByReplicationProtectedItems request.
-func (client *RecoveryPointsClient) listByReplicationProtectedItemsCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, options *RecoveryPointsListByReplicationProtectedItemsOptions) (*policy.Request, error) {
+func (client *RecoveryPointsClient) listByReplicationProtectedItemsCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, options *RecoveryPointsClientListByReplicationProtectedItemsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/recoveryPoints"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -164,34 +174,22 @@ func (client *RecoveryPointsClient) listByReplicationProtectedItemsCreateRequest
 		return nil, errors.New("parameter replicatedProtectedItemName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{replicatedProtectedItemName}", url.PathEscape(replicatedProtectedItemName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByReplicationProtectedItemsHandleResponse handles the ListByReplicationProtectedItems response.
-func (client *RecoveryPointsClient) listByReplicationProtectedItemsHandleResponse(resp *http.Response) (RecoveryPointsListByReplicationProtectedItemsResponse, error) {
-	result := RecoveryPointsListByReplicationProtectedItemsResponse{RawResponse: resp}
+func (client *RecoveryPointsClient) listByReplicationProtectedItemsHandleResponse(resp *http.Response) (RecoveryPointsClientListByReplicationProtectedItemsResponse, error) {
+	result := RecoveryPointsClientListByReplicationProtectedItemsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecoveryPointCollection); err != nil {
-		return RecoveryPointsListByReplicationProtectedItemsResponse{}, runtime.NewResponseError(err, resp)
+		return RecoveryPointsClientListByReplicationProtectedItemsResponse{}, err
 	}
 	return result, nil
-}
-
-// listByReplicationProtectedItemsHandleError handles the ListByReplicationProtectedItems error response.
-func (client *RecoveryPointsClient) listByReplicationProtectedItemsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

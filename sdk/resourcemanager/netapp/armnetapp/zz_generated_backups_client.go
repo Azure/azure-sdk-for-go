@@ -24,46 +24,62 @@ import (
 // BackupsClient contains the methods for the Backups group.
 // Don't use this type directly, use NewBackupsClient() instead.
 type BackupsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewBackupsClient creates a new instance of BackupsClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewBackupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *BackupsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &BackupsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &BackupsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreate - Create a backup for the volume
-// If the operation fails it returns a generic error.
-func (client *BackupsClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, backupName string, body Backup, options *BackupsBeginCreateOptions) (BackupsCreatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// accountName - The name of the NetApp account
+// poolName - The name of the capacity pool
+// volumeName - The name of the volume
+// backupName - The name of the backup
+// body - Backup object supplied in the body of the operation.
+// options - BackupsClientBeginCreateOptions contains the optional parameters for the BackupsClient.BeginCreate method.
+func (client *BackupsClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, backupName string, body Backup, options *BackupsClientBeginCreateOptions) (BackupsClientCreatePollerResponse, error) {
 	resp, err := client.create(ctx, resourceGroupName, accountName, poolName, volumeName, backupName, body, options)
 	if err != nil {
-		return BackupsCreatePollerResponse{}, err
+		return BackupsClientCreatePollerResponse{}, err
 	}
-	result := BackupsCreatePollerResponse{
+	result := BackupsClientCreatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("BackupsClient.Create", "location", resp, client.pl, client.createHandleError)
+	pt, err := armruntime.NewPoller("BackupsClient.Create", "location", resp, client.pl)
 	if err != nil {
-		return BackupsCreatePollerResponse{}, err
+		return BackupsClientCreatePollerResponse{}, err
 	}
-	result.Poller = &BackupsCreatePoller{
+	result.Poller = &BackupsClientCreatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - Create a backup for the volume
-// If the operation fails it returns a generic error.
-func (client *BackupsClient) create(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, backupName string, body Backup, options *BackupsBeginCreateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *BackupsClient) create(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, backupName string, body Backup, options *BackupsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, backupName, body, options)
 	if err != nil {
 		return nil, err
@@ -73,13 +89,13 @@ func (client *BackupsClient) create(ctx context.Context, resourceGroupName strin
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.createHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *BackupsClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, backupName string, body Backup, options *BackupsBeginCreateOptions) (*policy.Request, error) {
+func (client *BackupsClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, backupName string, body Backup, options *BackupsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/backups/{backupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -105,7 +121,7 @@ func (client *BackupsClient) createCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter backupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{backupName}", url.PathEscape(backupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -116,41 +132,35 @@ func (client *BackupsClient) createCreateRequest(ctx context.Context, resourceGr
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
-// createHandleError handles the Create error response.
-func (client *BackupsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginDelete - Delete a backup of the volume
-// If the operation fails it returns a generic error.
-func (client *BackupsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, backupName string, options *BackupsBeginDeleteOptions) (BackupsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// accountName - The name of the NetApp account
+// poolName - The name of the capacity pool
+// volumeName - The name of the volume
+// backupName - The name of the backup
+// options - BackupsClientBeginDeleteOptions contains the optional parameters for the BackupsClient.BeginDelete method.
+func (client *BackupsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, backupName string, options *BackupsClientBeginDeleteOptions) (BackupsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, poolName, volumeName, backupName, options)
 	if err != nil {
-		return BackupsDeletePollerResponse{}, err
+		return BackupsClientDeletePollerResponse{}, err
 	}
-	result := BackupsDeletePollerResponse{
+	result := BackupsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("BackupsClient.Delete", "location", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("BackupsClient.Delete", "location", resp, client.pl)
 	if err != nil {
-		return BackupsDeletePollerResponse{}, err
+		return BackupsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &BackupsDeletePoller{
+	result.Poller = &BackupsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Delete a backup of the volume
-// If the operation fails it returns a generic error.
-func (client *BackupsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, backupName string, options *BackupsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *BackupsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, backupName string, options *BackupsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, backupName, options)
 	if err != nil {
 		return nil, err
@@ -160,13 +170,13 @@ func (client *BackupsClient) deleteOperation(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *BackupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, backupName string, options *BackupsBeginDeleteOptions) (*policy.Request, error) {
+func (client *BackupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, backupName string, options *BackupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/backups/{backupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -192,7 +202,7 @@ func (client *BackupsClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter backupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{backupName}", url.PathEscape(backupName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -202,37 +212,31 @@ func (client *BackupsClient) deleteCreateRequest(ctx context.Context, resourceGr
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *BackupsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets the specified backup of the volume
-// If the operation fails it returns a generic error.
-func (client *BackupsClient) Get(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, backupName string, options *BackupsGetOptions) (BackupsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// accountName - The name of the NetApp account
+// poolName - The name of the capacity pool
+// volumeName - The name of the volume
+// backupName - The name of the backup
+// options - BackupsClientGetOptions contains the optional parameters for the BackupsClient.Get method.
+func (client *BackupsClient) Get(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, backupName string, options *BackupsClientGetOptions) (BackupsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, backupName, options)
 	if err != nil {
-		return BackupsGetResponse{}, err
+		return BackupsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return BackupsGetResponse{}, err
+		return BackupsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return BackupsGetResponse{}, client.getHandleError(resp)
+		return BackupsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *BackupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, backupName string, options *BackupsGetOptions) (*policy.Request, error) {
+func (client *BackupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, backupName string, options *BackupsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/backups/{backupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -258,7 +262,7 @@ func (client *BackupsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter backupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{backupName}", url.PathEscape(backupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -270,45 +274,38 @@ func (client *BackupsClient) getCreateRequest(ctx context.Context, resourceGroup
 }
 
 // getHandleResponse handles the Get response.
-func (client *BackupsClient) getHandleResponse(resp *http.Response) (BackupsGetResponse, error) {
-	result := BackupsGetResponse{RawResponse: resp}
+func (client *BackupsClient) getHandleResponse(resp *http.Response) (BackupsClientGetResponse, error) {
+	result := BackupsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Backup); err != nil {
-		return BackupsGetResponse{}, runtime.NewResponseError(err, resp)
+		return BackupsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *BackupsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // GetStatus - Get the status of the backup for a volume
-// If the operation fails it returns a generic error.
-func (client *BackupsClient) GetStatus(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *BackupsGetStatusOptions) (BackupsGetStatusResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// accountName - The name of the NetApp account
+// poolName - The name of the capacity pool
+// volumeName - The name of the volume
+// options - BackupsClientGetStatusOptions contains the optional parameters for the BackupsClient.GetStatus method.
+func (client *BackupsClient) GetStatus(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *BackupsClientGetStatusOptions) (BackupsClientGetStatusResponse, error) {
 	req, err := client.getStatusCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
 	if err != nil {
-		return BackupsGetStatusResponse{}, err
+		return BackupsClientGetStatusResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return BackupsGetStatusResponse{}, err
+		return BackupsClientGetStatusResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return BackupsGetStatusResponse{}, client.getStatusHandleError(resp)
+		return BackupsClientGetStatusResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getStatusHandleResponse(resp)
 }
 
 // getStatusCreateRequest creates the GetStatus request.
-func (client *BackupsClient) getStatusCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *BackupsGetStatusOptions) (*policy.Request, error) {
+func (client *BackupsClient) getStatusCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *BackupsClientGetStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/backupStatus"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -330,7 +327,7 @@ func (client *BackupsClient) getStatusCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter volumeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -342,45 +339,39 @@ func (client *BackupsClient) getStatusCreateRequest(ctx context.Context, resourc
 }
 
 // getStatusHandleResponse handles the GetStatus response.
-func (client *BackupsClient) getStatusHandleResponse(resp *http.Response) (BackupsGetStatusResponse, error) {
-	result := BackupsGetStatusResponse{RawResponse: resp}
+func (client *BackupsClient) getStatusHandleResponse(resp *http.Response) (BackupsClientGetStatusResponse, error) {
+	result := BackupsClientGetStatusResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupStatus); err != nil {
-		return BackupsGetStatusResponse{}, runtime.NewResponseError(err, resp)
+		return BackupsClientGetStatusResponse{}, err
 	}
 	return result, nil
 }
 
-// getStatusHandleError handles the GetStatus error response.
-func (client *BackupsClient) getStatusHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // GetVolumeRestoreStatus - Get the status of the restore for a volume
-// If the operation fails it returns a generic error.
-func (client *BackupsClient) GetVolumeRestoreStatus(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *BackupsGetVolumeRestoreStatusOptions) (BackupsGetVolumeRestoreStatusResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// accountName - The name of the NetApp account
+// poolName - The name of the capacity pool
+// volumeName - The name of the volume
+// options - BackupsClientGetVolumeRestoreStatusOptions contains the optional parameters for the BackupsClient.GetVolumeRestoreStatus
+// method.
+func (client *BackupsClient) GetVolumeRestoreStatus(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *BackupsClientGetVolumeRestoreStatusOptions) (BackupsClientGetVolumeRestoreStatusResponse, error) {
 	req, err := client.getVolumeRestoreStatusCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
 	if err != nil {
-		return BackupsGetVolumeRestoreStatusResponse{}, err
+		return BackupsClientGetVolumeRestoreStatusResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return BackupsGetVolumeRestoreStatusResponse{}, err
+		return BackupsClientGetVolumeRestoreStatusResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return BackupsGetVolumeRestoreStatusResponse{}, client.getVolumeRestoreStatusHandleError(resp)
+		return BackupsClientGetVolumeRestoreStatusResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getVolumeRestoreStatusHandleResponse(resp)
 }
 
 // getVolumeRestoreStatusCreateRequest creates the GetVolumeRestoreStatus request.
-func (client *BackupsClient) getVolumeRestoreStatusCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *BackupsGetVolumeRestoreStatusOptions) (*policy.Request, error) {
+func (client *BackupsClient) getVolumeRestoreStatusCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *BackupsClientGetVolumeRestoreStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/restoreStatus"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -402,7 +393,7 @@ func (client *BackupsClient) getVolumeRestoreStatusCreateRequest(ctx context.Con
 		return nil, errors.New("parameter volumeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -414,45 +405,38 @@ func (client *BackupsClient) getVolumeRestoreStatusCreateRequest(ctx context.Con
 }
 
 // getVolumeRestoreStatusHandleResponse handles the GetVolumeRestoreStatus response.
-func (client *BackupsClient) getVolumeRestoreStatusHandleResponse(resp *http.Response) (BackupsGetVolumeRestoreStatusResponse, error) {
-	result := BackupsGetVolumeRestoreStatusResponse{RawResponse: resp}
+func (client *BackupsClient) getVolumeRestoreStatusHandleResponse(resp *http.Response) (BackupsClientGetVolumeRestoreStatusResponse, error) {
+	result := BackupsClientGetVolumeRestoreStatusResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestoreStatus); err != nil {
-		return BackupsGetVolumeRestoreStatusResponse{}, runtime.NewResponseError(err, resp)
+		return BackupsClientGetVolumeRestoreStatusResponse{}, err
 	}
 	return result, nil
 }
 
-// getVolumeRestoreStatusHandleError handles the GetVolumeRestoreStatus error response.
-func (client *BackupsClient) getVolumeRestoreStatusHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // List - List all backups for a volume
-// If the operation fails it returns a generic error.
-func (client *BackupsClient) List(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *BackupsListOptions) (BackupsListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// accountName - The name of the NetApp account
+// poolName - The name of the capacity pool
+// volumeName - The name of the volume
+// options - BackupsClientListOptions contains the optional parameters for the BackupsClient.List method.
+func (client *BackupsClient) List(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *BackupsClientListOptions) (BackupsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
 	if err != nil {
-		return BackupsListResponse{}, err
+		return BackupsClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return BackupsListResponse{}, err
+		return BackupsClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return BackupsListResponse{}, client.listHandleError(resp)
+		return BackupsClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *BackupsClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *BackupsListOptions) (*policy.Request, error) {
+func (client *BackupsClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *BackupsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/backups"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -474,7 +458,7 @@ func (client *BackupsClient) listCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter volumeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -486,49 +470,43 @@ func (client *BackupsClient) listCreateRequest(ctx context.Context, resourceGrou
 }
 
 // listHandleResponse handles the List response.
-func (client *BackupsClient) listHandleResponse(resp *http.Response) (BackupsListResponse, error) {
-	result := BackupsListResponse{RawResponse: resp}
+func (client *BackupsClient) listHandleResponse(resp *http.Response) (BackupsClientListResponse, error) {
+	result := BackupsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupsList); err != nil {
-		return BackupsListResponse{}, runtime.NewResponseError(err, resp)
+		return BackupsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *BackupsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginUpdate - Patch a backup for the volume
-// If the operation fails it returns a generic error.
-func (client *BackupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, backupName string, options *BackupsBeginUpdateOptions) (BackupsUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// accountName - The name of the NetApp account
+// poolName - The name of the capacity pool
+// volumeName - The name of the volume
+// backupName - The name of the backup
+// options - BackupsClientBeginUpdateOptions contains the optional parameters for the BackupsClient.BeginUpdate method.
+func (client *BackupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, backupName string, options *BackupsClientBeginUpdateOptions) (BackupsClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, accountName, poolName, volumeName, backupName, options)
 	if err != nil {
-		return BackupsUpdatePollerResponse{}, err
+		return BackupsClientUpdatePollerResponse{}, err
 	}
-	result := BackupsUpdatePollerResponse{
+	result := BackupsClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("BackupsClient.Update", "location", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("BackupsClient.Update", "location", resp, client.pl)
 	if err != nil {
-		return BackupsUpdatePollerResponse{}, err
+		return BackupsClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &BackupsUpdatePoller{
+	result.Poller = &BackupsClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Patch a backup for the volume
-// If the operation fails it returns a generic error.
-func (client *BackupsClient) update(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, backupName string, options *BackupsBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *BackupsClient) update(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, backupName string, options *BackupsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, backupName, options)
 	if err != nil {
 		return nil, err
@@ -538,13 +516,13 @@ func (client *BackupsClient) update(ctx context.Context, resourceGroupName strin
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *BackupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, backupName string, options *BackupsBeginUpdateOptions) (*policy.Request, error) {
+func (client *BackupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, backupName string, options *BackupsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/backups/{backupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -570,7 +548,7 @@ func (client *BackupsClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter backupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{backupName}", url.PathEscape(backupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -582,16 +560,4 @@ func (client *BackupsClient) updateCreateRequest(ctx context.Context, resourceGr
 		return req, runtime.MarshalAsJSON(req, *options.Body)
 	}
 	return req, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *BackupsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

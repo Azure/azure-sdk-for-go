@@ -11,7 +11,6 @@ package armvmwarecloudsimple
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,53 @@ import (
 // PrivateCloudsClient contains the methods for the PrivateClouds group.
 // Don't use this type directly, use NewPrivateCloudsClient() instead.
 type PrivateCloudsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewPrivateCloudsClient creates a new instance of PrivateCloudsClient with the specified values.
+// subscriptionID - The subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewPrivateCloudsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateCloudsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &PrivateCloudsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &PrivateCloudsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Returns private cloud by its name
-// If the operation fails it returns the *CSRPError error type.
-func (client *PrivateCloudsClient) Get(ctx context.Context, pcName string, regionID string, options *PrivateCloudsGetOptions) (PrivateCloudsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// pcName - The private cloud name
+// regionID - The region Id (westus, eastus)
+// options - PrivateCloudsClientGetOptions contains the optional parameters for the PrivateCloudsClient.Get method.
+func (client *PrivateCloudsClient) Get(ctx context.Context, pcName string, regionID string, options *PrivateCloudsClientGetOptions) (PrivateCloudsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, pcName, regionID, options)
 	if err != nil {
-		return PrivateCloudsGetResponse{}, err
+		return PrivateCloudsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateCloudsGetResponse{}, err
+		return PrivateCloudsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateCloudsGetResponse{}, client.getHandleError(resp)
+		return PrivateCloudsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *PrivateCloudsClient) getCreateRequest(ctx context.Context, pcName string, regionID string, options *PrivateCloudsGetOptions) (*policy.Request, error) {
+func (client *PrivateCloudsClient) getCreateRequest(ctx context.Context, pcName string, regionID string, options *PrivateCloudsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.VMwareCloudSimple/locations/{regionId}/privateClouds/{pcName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -74,7 +84,7 @@ func (client *PrivateCloudsClient) getCreateRequest(ctx context.Context, pcName 
 		return nil, errors.New("parameter regionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{regionId}", url.PathEscape(regionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -86,43 +96,32 @@ func (client *PrivateCloudsClient) getCreateRequest(ctx context.Context, pcName 
 }
 
 // getHandleResponse handles the Get response.
-func (client *PrivateCloudsClient) getHandleResponse(resp *http.Response) (PrivateCloudsGetResponse, error) {
-	result := PrivateCloudsGetResponse{RawResponse: resp}
+func (client *PrivateCloudsClient) getHandleResponse(resp *http.Response) (PrivateCloudsClientGetResponse, error) {
+	result := PrivateCloudsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateCloud); err != nil {
-		return PrivateCloudsGetResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateCloudsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *PrivateCloudsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CSRPError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Returns list of private clouds in particular region
-// If the operation fails it returns the *CSRPError error type.
-func (client *PrivateCloudsClient) List(regionID string, options *PrivateCloudsListOptions) *PrivateCloudsListPager {
-	return &PrivateCloudsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// regionID - The region Id (westus, eastus)
+// options - PrivateCloudsClientListOptions contains the optional parameters for the PrivateCloudsClient.List method.
+func (client *PrivateCloudsClient) List(regionID string, options *PrivateCloudsClientListOptions) *PrivateCloudsClientListPager {
+	return &PrivateCloudsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, regionID, options)
 		},
-		advancer: func(ctx context.Context, resp PrivateCloudsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp PrivateCloudsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateCloudList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *PrivateCloudsClient) listCreateRequest(ctx context.Context, regionID string, options *PrivateCloudsListOptions) (*policy.Request, error) {
+func (client *PrivateCloudsClient) listCreateRequest(ctx context.Context, regionID string, options *PrivateCloudsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.VMwareCloudSimple/locations/{regionId}/privateClouds"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -132,7 +131,7 @@ func (client *PrivateCloudsClient) listCreateRequest(ctx context.Context, region
 		return nil, errors.New("parameter regionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{regionId}", url.PathEscape(regionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -144,23 +143,10 @@ func (client *PrivateCloudsClient) listCreateRequest(ctx context.Context, region
 }
 
 // listHandleResponse handles the List response.
-func (client *PrivateCloudsClient) listHandleResponse(resp *http.Response) (PrivateCloudsListResponse, error) {
-	result := PrivateCloudsListResponse{RawResponse: resp}
+func (client *PrivateCloudsClient) listHandleResponse(resp *http.Response) (PrivateCloudsClientListResponse, error) {
+	result := PrivateCloudsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateCloudList); err != nil {
-		return PrivateCloudsListResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateCloudsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *PrivateCloudsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CSRPError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

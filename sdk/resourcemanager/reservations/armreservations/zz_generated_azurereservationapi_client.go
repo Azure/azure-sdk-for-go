@@ -11,7 +11,6 @@ package armreservations
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,47 +24,57 @@ import (
 // AzureReservationAPIClient contains the methods for the AzureReservationAPI group.
 // Don't use this type directly, use NewAzureReservationAPIClient() instead.
 type AzureReservationAPIClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewAzureReservationAPIClient creates a new instance of AzureReservationAPIClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewAzureReservationAPIClient(credential azcore.TokenCredential, options *arm.ClientOptions) *AzureReservationAPIClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &AzureReservationAPIClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &AzureReservationAPIClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// GetAppliedReservationList - Get applicable Reservations that are applied to this subscription or a resource group under this subscription.
-// If the operation fails it returns the *Error error type.
-func (client *AzureReservationAPIClient) GetAppliedReservationList(ctx context.Context, subscriptionID string, options *AzureReservationAPIGetAppliedReservationListOptions) (AzureReservationAPIGetAppliedReservationListResponse, error) {
+// GetAppliedReservationList - Get applicable Reservations that are applied to this subscription or a resource group under
+// this subscription.
+// If the operation fails it returns an *azcore.ResponseError type.
+// subscriptionID - Id of the subscription
+// options - AzureReservationAPIClientGetAppliedReservationListOptions contains the optional parameters for the AzureReservationAPIClient.GetAppliedReservationList
+// method.
+func (client *AzureReservationAPIClient) GetAppliedReservationList(ctx context.Context, subscriptionID string, options *AzureReservationAPIClientGetAppliedReservationListOptions) (AzureReservationAPIClientGetAppliedReservationListResponse, error) {
 	req, err := client.getAppliedReservationListCreateRequest(ctx, subscriptionID, options)
 	if err != nil {
-		return AzureReservationAPIGetAppliedReservationListResponse{}, err
+		return AzureReservationAPIClientGetAppliedReservationListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AzureReservationAPIGetAppliedReservationListResponse{}, err
+		return AzureReservationAPIClientGetAppliedReservationListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AzureReservationAPIGetAppliedReservationListResponse{}, client.getAppliedReservationListHandleError(resp)
+		return AzureReservationAPIClientGetAppliedReservationListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getAppliedReservationListHandleResponse(resp)
 }
 
 // getAppliedReservationListCreateRequest creates the GetAppliedReservationList request.
-func (client *AzureReservationAPIClient) getAppliedReservationListCreateRequest(ctx context.Context, subscriptionID string, options *AzureReservationAPIGetAppliedReservationListOptions) (*policy.Request, error) {
+func (client *AzureReservationAPIClient) getAppliedReservationListCreateRequest(ctx context.Context, subscriptionID string, options *AzureReservationAPIClientGetAppliedReservationListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/appliedReservations"
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -77,52 +86,42 @@ func (client *AzureReservationAPIClient) getAppliedReservationListCreateRequest(
 }
 
 // getAppliedReservationListHandleResponse handles the GetAppliedReservationList response.
-func (client *AzureReservationAPIClient) getAppliedReservationListHandleResponse(resp *http.Response) (AzureReservationAPIGetAppliedReservationListResponse, error) {
-	result := AzureReservationAPIGetAppliedReservationListResponse{RawResponse: resp}
+func (client *AzureReservationAPIClient) getAppliedReservationListHandleResponse(resp *http.Response) (AzureReservationAPIClientGetAppliedReservationListResponse, error) {
+	result := AzureReservationAPIClientGetAppliedReservationListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppliedReservations); err != nil {
-		return AzureReservationAPIGetAppliedReservationListResponse{}, runtime.NewResponseError(err, resp)
+		return AzureReservationAPIClientGetAppliedReservationListResponse{}, err
 	}
 	return result, nil
 }
 
-// getAppliedReservationListHandleError handles the GetAppliedReservationList error response.
-func (client *AzureReservationAPIClient) getAppliedReservationListHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetCatalog - Get the regions and skus that are available for RI purchase for the specified Azure subscription.
-// If the operation fails it returns the *Error error type.
-func (client *AzureReservationAPIClient) GetCatalog(ctx context.Context, subscriptionID string, options *AzureReservationAPIGetCatalogOptions) (AzureReservationAPIGetCatalogResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// subscriptionID - Id of the subscription
+// options - AzureReservationAPIClientGetCatalogOptions contains the optional parameters for the AzureReservationAPIClient.GetCatalog
+// method.
+func (client *AzureReservationAPIClient) GetCatalog(ctx context.Context, subscriptionID string, options *AzureReservationAPIClientGetCatalogOptions) (AzureReservationAPIClientGetCatalogResponse, error) {
 	req, err := client.getCatalogCreateRequest(ctx, subscriptionID, options)
 	if err != nil {
-		return AzureReservationAPIGetCatalogResponse{}, err
+		return AzureReservationAPIClientGetCatalogResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AzureReservationAPIGetCatalogResponse{}, err
+		return AzureReservationAPIClientGetCatalogResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AzureReservationAPIGetCatalogResponse{}, client.getCatalogHandleError(resp)
+		return AzureReservationAPIClientGetCatalogResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getCatalogHandleResponse(resp)
 }
 
 // getCatalogCreateRequest creates the GetCatalog request.
-func (client *AzureReservationAPIClient) getCatalogCreateRequest(ctx context.Context, subscriptionID string, options *AzureReservationAPIGetCatalogOptions) (*policy.Request, error) {
+func (client *AzureReservationAPIClient) getCatalogCreateRequest(ctx context.Context, subscriptionID string, options *AzureReservationAPIClientGetCatalogOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/catalogs"
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -140,23 +139,10 @@ func (client *AzureReservationAPIClient) getCatalogCreateRequest(ctx context.Con
 }
 
 // getCatalogHandleResponse handles the GetCatalog response.
-func (client *AzureReservationAPIClient) getCatalogHandleResponse(resp *http.Response) (AzureReservationAPIGetCatalogResponse, error) {
-	result := AzureReservationAPIGetCatalogResponse{RawResponse: resp}
+func (client *AzureReservationAPIClient) getCatalogHandleResponse(resp *http.Response) (AzureReservationAPIClientGetCatalogResponse, error) {
+	result := AzureReservationAPIClientGetCatalogResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CatalogArray); err != nil {
-		return AzureReservationAPIGetCatalogResponse{}, runtime.NewResponseError(err, resp)
+		return AzureReservationAPIClientGetCatalogResponse{}, err
 	}
 	return result, nil
-}
-
-// getCatalogHandleError handles the GetCatalog error response.
-func (client *AzureReservationAPIClient) getCatalogHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -24,42 +24,57 @@ import (
 // SQLPoolColumnsClient contains the methods for the SQLPoolColumns group.
 // Don't use this type directly, use NewSQLPoolColumnsClient() instead.
 type SQLPoolColumnsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSQLPoolColumnsClient creates a new instance of SQLPoolColumnsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSQLPoolColumnsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SQLPoolColumnsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SQLPoolColumnsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SQLPoolColumnsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Get Sql pool column
-// If the operation fails it returns a generic error.
-func (client *SQLPoolColumnsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, schemaName string, tableName string, columnName string, options *SQLPoolColumnsGetOptions) (SQLPoolColumnsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// schemaName - The name of the schema.
+// tableName - The name of the table.
+// columnName - The name of the column.
+// options - SQLPoolColumnsClientGetOptions contains the optional parameters for the SQLPoolColumnsClient.Get method.
+func (client *SQLPoolColumnsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, schemaName string, tableName string, columnName string, options *SQLPoolColumnsClientGetOptions) (SQLPoolColumnsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName, options)
 	if err != nil {
-		return SQLPoolColumnsGetResponse{}, err
+		return SQLPoolColumnsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLPoolColumnsGetResponse{}, err
+		return SQLPoolColumnsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLPoolColumnsGetResponse{}, client.getHandleError(resp)
+		return SQLPoolColumnsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SQLPoolColumnsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, schemaName string, tableName string, columnName string, options *SQLPoolColumnsGetOptions) (*policy.Request, error) {
+func (client *SQLPoolColumnsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, schemaName string, tableName string, columnName string, options *SQLPoolColumnsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -89,7 +104,7 @@ func (client *SQLPoolColumnsClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter columnName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{columnName}", url.PathEscape(columnName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -101,22 +116,10 @@ func (client *SQLPoolColumnsClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client *SQLPoolColumnsClient) getHandleResponse(resp *http.Response) (SQLPoolColumnsGetResponse, error) {
-	result := SQLPoolColumnsGetResponse{RawResponse: resp}
+func (client *SQLPoolColumnsClient) getHandleResponse(resp *http.Response) (SQLPoolColumnsClientGetResponse, error) {
+	result := SQLPoolColumnsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLPoolColumn); err != nil {
-		return SQLPoolColumnsGetResponse{}, runtime.NewResponseError(err, resp)
+		return SQLPoolColumnsClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *SQLPoolColumnsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

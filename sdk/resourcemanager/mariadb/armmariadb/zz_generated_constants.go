@@ -9,8 +9,8 @@
 package armmariadb
 
 const (
-	module  = "armmariadb"
-	version = "v0.1.0"
+	moduleName    = "armmariadb"
+	moduleVersion = "v0.2.0"
 )
 
 // CreateMode - The mode to create a new server.
@@ -178,7 +178,8 @@ func (c PrivateLinkServiceConnectionStateStatus) ToPtr() *PrivateLinkServiceConn
 	return &c
 }
 
-// PublicNetworkAccessEnum - Whether or not public network access is allowed for this server. Value is optional but if passed in, must be 'Enabled' or 'Disabled'
+// PublicNetworkAccessEnum - Whether or not public network access is allowed for this server. Value is optional but if passed
+// in, must be 'Enabled' or 'Disabled'
 type PublicNetworkAccessEnum string
 
 const (

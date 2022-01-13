@@ -1,5 +1,321 @@
 # Release History
 
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*TransactionNodesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *TransactionNodesGetOptions)` to `(context.Context, string, string, string, *TransactionNodesClientGetOptions)`
+- Function `*TransactionNodesClient.Get` return value(s) have been changed from `(TransactionNodesGetResponse, error)` to `(TransactionNodesClientGetResponse, error)`
+- Function `*LocationsClient.ListConsortiums` parameter(s) have been changed from `(context.Context, string, *LocationsListConsortiumsOptions)` to `(context.Context, string, *LocationsClientListConsortiumsOptions)`
+- Function `*LocationsClient.ListConsortiums` return value(s) have been changed from `(LocationsListConsortiumsResponse, error)` to `(LocationsClientListConsortiumsResponse, error)`
+- Function `*SKUsClient.List` parameter(s) have been changed from `(context.Context, *SKUsListOptions)` to `(context.Context, *SKUsClientListOptions)`
+- Function `*SKUsClient.List` return value(s) have been changed from `(SKUsListResponse, error)` to `(SKUsClientListResponse, error)`
+- Function `*TransactionNodesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *TransactionNodesBeginDeleteOptions)` to `(context.Context, string, string, string, *TransactionNodesClientBeginDeleteOptions)`
+- Function `*TransactionNodesClient.BeginDelete` return value(s) have been changed from `(TransactionNodesDeletePollerResponse, error)` to `(TransactionNodesClientDeletePollerResponse, error)`
+- Function `*TransactionNodesClient.List` parameter(s) have been changed from `(string, string, *TransactionNodesListOptions)` to `(string, string, *TransactionNodesClientListOptions)`
+- Function `*TransactionNodesClient.List` return value(s) have been changed from `(*TransactionNodesListPager)` to `(*TransactionNodesClientListPager)`
+- Function `*TransactionNodesClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, *TransactionNodesUpdateOptions)` to `(context.Context, string, string, string, *TransactionNodesClientUpdateOptions)`
+- Function `*TransactionNodesClient.Update` return value(s) have been changed from `(TransactionNodesUpdateResponse, error)` to `(TransactionNodesClientUpdateResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*TransactionNodesClient.ListRegenerateAPIKeys` parameter(s) have been changed from `(context.Context, string, string, string, *TransactionNodesListRegenerateAPIKeysOptions)` to `(context.Context, string, string, string, *TransactionNodesClientListRegenerateAPIKeysOptions)`
+- Function `*TransactionNodesClient.ListRegenerateAPIKeys` return value(s) have been changed from `(TransactionNodesListRegenerateAPIKeysResponse, error)` to `(TransactionNodesClientListRegenerateAPIKeysResponse, error)`
+- Function `*TransactionNodesClient.ListAPIKeys` parameter(s) have been changed from `(context.Context, string, string, string, *TransactionNodesListAPIKeysOptions)` to `(context.Context, string, string, string, *TransactionNodesClientListAPIKeysOptions)`
+- Function `*TransactionNodesClient.ListAPIKeys` return value(s) have been changed from `(TransactionNodesListAPIKeysResponse, error)` to `(TransactionNodesClientListAPIKeysResponse, error)`
+- Function `*LocationsClient.CheckNameAvailability` parameter(s) have been changed from `(context.Context, string, *LocationsCheckNameAvailabilityOptions)` to `(context.Context, string, *LocationsClientCheckNameAvailabilityOptions)`
+- Function `*LocationsClient.CheckNameAvailability` return value(s) have been changed from `(LocationsCheckNameAvailabilityResponse, error)` to `(LocationsClientCheckNameAvailabilityResponse, error)`
+- Function `*TransactionNodesClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, string, *TransactionNodesBeginCreateOptions)` to `(context.Context, string, string, string, *TransactionNodesClientBeginCreateOptions)`
+- Function `*TransactionNodesClient.BeginCreate` return value(s) have been changed from `(TransactionNodesCreatePollerResponse, error)` to `(TransactionNodesClientCreatePollerResponse, error)`
+- Function `*TransactionNodesCreatePoller.Done` has been removed
+- Function `*TransactionNodesDeletePoller.Done` has been removed
+- Function `*TransactionNodesListPager.PageResponse` has been removed
+- Function `*BlockchainMembersListPager.Err` has been removed
+- Function `*BlockchainMembersClient.Update` has been removed
+- Function `*BlockchainMembersCreatePoller.FinalResponse` has been removed
+- Function `*TransactionNodesDeletePoller.FinalResponse` has been removed
+- Function `*TransactionNodesDeletePoller.Poll` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*TransactionNodesCreatePoller.Poll` has been removed
+- Function `BlockchainMembersCreatePollerResponse.PollUntilDone` has been removed
+- Function `*BlockchainMembersListPager.PageResponse` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `BlockchainMemberUpdate.MarshalJSON` has been removed
+- Function `*BlockchainMembersListAllPager.NextPage` has been removed
+- Function `*BlockchainMembersClient.Get` has been removed
+- Function `BlockchainMemberProperties.MarshalJSON` has been removed
+- Function `*TransactionNodesCreatePoller.ResumeToken` has been removed
+- Function `*TransactionNodesCreatePoller.FinalResponse` has been removed
+- Function `*BlockchainMembersDeletePollerResponse.Resume` has been removed
+- Function `NewBlockchainMemberOperationResultsClient` has been removed
+- Function `TransactionNode.MarshalJSON` has been removed
+- Function `*BlockchainMembersClient.ListAPIKeys` has been removed
+- Function `TransactionNodesDeletePollerResponse.PollUntilDone` has been removed
+- Function `*BlockchainMembersClient.BeginDelete` has been removed
+- Function `*TransactionNodesListPager.Err` has been removed
+- Function `*BlockchainMembersListAllPager.Err` has been removed
+- Function `*BlockchainMembersListConsortiumMembersPager.Err` has been removed
+- Function `*BlockchainMembersDeletePoller.FinalResponse` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `*BlockchainMembersCreatePoller.ResumeToken` has been removed
+- Function `*BlockchainMembersCreatePoller.Done` has been removed
+- Function `*BlockchainMembersClient.List` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*TransactionNodesCreatePollerResponse.Resume` has been removed
+- Function `BlockchainMembersDeletePollerResponse.PollUntilDone` has been removed
+- Function `*TransactionNodesListPager.NextPage` has been removed
+- Function `*BlockchainMembersClient.BeginCreate` has been removed
+- Function `*BlockchainMembersListConsortiumMembersPager.PageResponse` has been removed
+- Function `*BlockchainMembersListAllPager.PageResponse` has been removed
+- Function `*BlockchainMembersDeletePoller.Poll` has been removed
+- Function `*BlockchainMembersClient.ListRegenerateAPIKeys` has been removed
+- Function `*BlockchainMembersDeletePoller.Done` has been removed
+- Function `*BlockchainMembersListPager.NextPage` has been removed
+- Function `*BlockchainMembersClient.ListAll` has been removed
+- Function `*BlockchainMembersListConsortiumMembersPager.NextPage` has been removed
+- Function `BlockchainMemberCollection.MarshalJSON` has been removed
+- Function `NewBlockchainMembersClient` has been removed
+- Function `*BlockchainMembersClient.ListConsortiumMembers` has been removed
+- Function `*BlockchainMembersCreatePollerResponse.Resume` has been removed
+- Function `*BlockchainMembersCreatePoller.Poll` has been removed
+- Function `*BlockchainMemberOperationResultsClient.Get` has been removed
+- Function `BlockchainMember.MarshalJSON` has been removed
+- Function `*TransactionNodesDeletePoller.ResumeToken` has been removed
+- Function `TransactionNodesCreatePollerResponse.PollUntilDone` has been removed
+- Function `*TransactionNodesDeletePollerResponse.Resume` has been removed
+- Function `BlockchainMemberPropertiesUpdate.MarshalJSON` has been removed
+- Function `*BlockchainMembersDeletePoller.ResumeToken` has been removed
+- Struct `BlockchainMember` has been removed
+- Struct `BlockchainMemberCollection` has been removed
+- Struct `BlockchainMemberNodesSKU` has been removed
+- Struct `BlockchainMemberOperationResultsClient` has been removed
+- Struct `BlockchainMemberOperationResultsGetOptions` has been removed
+- Struct `BlockchainMemberOperationResultsGetResponse` has been removed
+- Struct `BlockchainMemberOperationResultsGetResult` has been removed
+- Struct `BlockchainMemberProperties` has been removed
+- Struct `BlockchainMemberPropertiesUpdate` has been removed
+- Struct `BlockchainMemberUpdate` has been removed
+- Struct `BlockchainMembersBeginCreateOptions` has been removed
+- Struct `BlockchainMembersBeginDeleteOptions` has been removed
+- Struct `BlockchainMembersClient` has been removed
+- Struct `BlockchainMembersCreatePoller` has been removed
+- Struct `BlockchainMembersCreatePollerResponse` has been removed
+- Struct `BlockchainMembersCreateResponse` has been removed
+- Struct `BlockchainMembersCreateResult` has been removed
+- Struct `BlockchainMembersDeletePoller` has been removed
+- Struct `BlockchainMembersDeletePollerResponse` has been removed
+- Struct `BlockchainMembersDeleteResponse` has been removed
+- Struct `BlockchainMembersGetOptions` has been removed
+- Struct `BlockchainMembersGetResponse` has been removed
+- Struct `BlockchainMembersGetResult` has been removed
+- Struct `BlockchainMembersListAPIKeysOptions` has been removed
+- Struct `BlockchainMembersListAPIKeysResponse` has been removed
+- Struct `BlockchainMembersListAPIKeysResult` has been removed
+- Struct `BlockchainMembersListAllOptions` has been removed
+- Struct `BlockchainMembersListAllPager` has been removed
+- Struct `BlockchainMembersListAllResponse` has been removed
+- Struct `BlockchainMembersListAllResult` has been removed
+- Struct `BlockchainMembersListConsortiumMembersOptions` has been removed
+- Struct `BlockchainMembersListConsortiumMembersPager` has been removed
+- Struct `BlockchainMembersListConsortiumMembersResponse` has been removed
+- Struct `BlockchainMembersListConsortiumMembersResult` has been removed
+- Struct `BlockchainMembersListOptions` has been removed
+- Struct `BlockchainMembersListPager` has been removed
+- Struct `BlockchainMembersListRegenerateAPIKeysOptions` has been removed
+- Struct `BlockchainMembersListRegenerateAPIKeysResponse` has been removed
+- Struct `BlockchainMembersListRegenerateAPIKeysResult` has been removed
+- Struct `BlockchainMembersListResponse` has been removed
+- Struct `BlockchainMembersListResult` has been removed
+- Struct `BlockchainMembersUpdateOptions` has been removed
+- Struct `BlockchainMembersUpdateResponse` has been removed
+- Struct `BlockchainMembersUpdateResult` has been removed
+- Struct `LocationsCheckNameAvailabilityOptions` has been removed
+- Struct `LocationsCheckNameAvailabilityResponse` has been removed
+- Struct `LocationsCheckNameAvailabilityResult` has been removed
+- Struct `LocationsListConsortiumsOptions` has been removed
+- Struct `LocationsListConsortiumsResponse` has been removed
+- Struct `LocationsListConsortiumsResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `SKUsListOptions` has been removed
+- Struct `SKUsListResponse` has been removed
+- Struct `SKUsListResult` has been removed
+- Struct `TransactionNodesBeginCreateOptions` has been removed
+- Struct `TransactionNodesBeginDeleteOptions` has been removed
+- Struct `TransactionNodesCreatePoller` has been removed
+- Struct `TransactionNodesCreatePollerResponse` has been removed
+- Struct `TransactionNodesCreateResponse` has been removed
+- Struct `TransactionNodesCreateResult` has been removed
+- Struct `TransactionNodesDeletePoller` has been removed
+- Struct `TransactionNodesDeletePollerResponse` has been removed
+- Struct `TransactionNodesDeleteResponse` has been removed
+- Struct `TransactionNodesGetOptions` has been removed
+- Struct `TransactionNodesGetResponse` has been removed
+- Struct `TransactionNodesGetResult` has been removed
+- Struct `TransactionNodesListAPIKeysOptions` has been removed
+- Struct `TransactionNodesListAPIKeysResponse` has been removed
+- Struct `TransactionNodesListAPIKeysResult` has been removed
+- Struct `TransactionNodesListOptions` has been removed
+- Struct `TransactionNodesListPager` has been removed
+- Struct `TransactionNodesListRegenerateAPIKeysOptions` has been removed
+- Struct `TransactionNodesListRegenerateAPIKeysResponse` has been removed
+- Struct `TransactionNodesListRegenerateAPIKeysResult` has been removed
+- Struct `TransactionNodesListResponse` has been removed
+- Struct `TransactionNodesListResult` has been removed
+- Struct `TransactionNodesUpdateOptions` has been removed
+- Struct `TransactionNodesUpdateResponse` has been removed
+- Struct `TransactionNodesUpdateResult` has been removed
+- Field `Resource` of struct `TrackedResource` has been removed
+- Field `Resource` of struct `TransactionNode` has been removed
+
+### Features Added
+
+- New function `*MembersClient.Get(context.Context, string, string, *MembersClientGetOptions) (MembersClientGetResponse, error)`
+- New function `*MembersClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*MembersClientListPager.Err() error`
+- New function `*MembersClientListAllPager.Err() error`
+- New function `*TransactionNodesClientDeletePoller.ResumeToken() (string, error)`
+- New function `NewMemberOperationResultsClient(string, azcore.TokenCredential, *arm.ClientOptions) *MemberOperationResultsClient`
+- New function `*MembersClient.BeginDelete(context.Context, string, string, *MembersClientBeginDeleteOptions) (MembersClientDeletePollerResponse, error)`
+- New function `*MembersClientListConsortiumMembersPager.PageResponse() MembersClientListConsortiumMembersResponse`
+- New function `*MembersClient.ListAll(*MembersClientListAllOptions) *MembersClientListAllPager`
+- New function `*MembersClient.ListAPIKeys(context.Context, string, string, *MembersClientListAPIKeysOptions) (MembersClientListAPIKeysResponse, error)`
+- New function `*MembersClientListPager.PageResponse() MembersClientListResponse`
+- New function `MemberUpdate.MarshalJSON() ([]byte, error)`
+- New function `TransactionNodesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (TransactionNodesClientDeleteResponse, error)`
+- New function `*MembersClientListPager.NextPage(context.Context) bool`
+- New function `*MembersClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `MembersClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (MembersClientDeleteResponse, error)`
+- New function `*MembersClient.ListRegenerateAPIKeys(context.Context, string, string, *MembersClientListRegenerateAPIKeysOptions) (MembersClientListRegenerateAPIKeysResponse, error)`
+- New function `*MembersClientDeletePoller.ResumeToken() (string, error)`
+- New function `MemberCollection.MarshalJSON() ([]byte, error)`
+- New function `*TransactionNodesClientListPager.NextPage(context.Context) bool`
+- New function `*MembersClient.Update(context.Context, string, string, *MembersClientUpdateOptions) (MembersClientUpdateResponse, error)`
+- New function `*TransactionNodesClientCreatePollerResponse.Resume(context.Context, *TransactionNodesClient, string) error`
+- New function `*MembersClientCreatePoller.FinalResponse(context.Context) (MembersClientCreateResponse, error)`
+- New function `*MembersClientDeletePoller.Done() bool`
+- New function `MemberPropertiesUpdate.MarshalJSON() ([]byte, error)`
+- New function `MembersClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (MembersClientCreateResponse, error)`
+- New function `*MembersClient.ListConsortiumMembers(string, string, *MembersClientListConsortiumMembersOptions) *MembersClientListConsortiumMembersPager`
+- New function `*TransactionNodesClientListPager.PageResponse() TransactionNodesClientListResponse`
+- New function `*TransactionNodesClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*MembersClientDeletePollerResponse.Resume(context.Context, *MembersClient, string) error`
+- New function `Member.MarshalJSON() ([]byte, error)`
+- New function `MemberProperties.MarshalJSON() ([]byte, error)`
+- New function `*TransactionNodesClientCreatePoller.Done() bool`
+- New function `*TransactionNodesClientCreatePoller.ResumeToken() (string, error)`
+- New function `*TransactionNodesClientDeletePoller.Done() bool`
+- New function `*MembersClient.BeginCreate(context.Context, string, string, *MembersClientBeginCreateOptions) (MembersClientCreatePollerResponse, error)`
+- New function `*MembersClientCreatePoller.ResumeToken() (string, error)`
+- New function `*TransactionNodesClientCreatePoller.FinalResponse(context.Context) (TransactionNodesClientCreateResponse, error)`
+- New function `*TransactionNodesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*MembersClientDeletePoller.FinalResponse(context.Context) (MembersClientDeleteResponse, error)`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*MemberOperationResultsClient.Get(context.Context, string, string, *MemberOperationResultsClientGetOptions) (MemberOperationResultsClientGetResponse, error)`
+- New function `NewMembersClient(string, azcore.TokenCredential, *arm.ClientOptions) *MembersClient`
+- New function `*MembersClientListAllPager.NextPage(context.Context) bool`
+- New function `*TransactionNodesClientListPager.Err() error`
+- New function `*OperationsClientListPager.Err() error`
+- New function `*MembersClient.List(string, *MembersClientListOptions) *MembersClientListPager`
+- New function `*TransactionNodesClientDeletePoller.FinalResponse(context.Context) (TransactionNodesClientDeleteResponse, error)`
+- New function `*MembersClientListConsortiumMembersPager.NextPage(context.Context) bool`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*MembersClientCreatePoller.Done() bool`
+- New function `*MembersClientCreatePollerResponse.Resume(context.Context, *MembersClient, string) error`
+- New function `TransactionNodesClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (TransactionNodesClientCreateResponse, error)`
+- New function `*TransactionNodesClientDeletePollerResponse.Resume(context.Context, *TransactionNodesClient, string) error`
+- New function `*MembersClientListAllPager.PageResponse() MembersClientListAllResponse`
+- New function `*MembersClientListConsortiumMembersPager.Err() error`
+- New struct `LocationsClientCheckNameAvailabilityOptions`
+- New struct `LocationsClientCheckNameAvailabilityResponse`
+- New struct `LocationsClientCheckNameAvailabilityResult`
+- New struct `LocationsClientListConsortiumsOptions`
+- New struct `LocationsClientListConsortiumsResponse`
+- New struct `LocationsClientListConsortiumsResult`
+- New struct `Member`
+- New struct `MemberCollection`
+- New struct `MemberNodesSKU`
+- New struct `MemberOperationResultsClient`
+- New struct `MemberOperationResultsClientGetOptions`
+- New struct `MemberOperationResultsClientGetResponse`
+- New struct `MemberOperationResultsClientGetResult`
+- New struct `MemberProperties`
+- New struct `MemberPropertiesUpdate`
+- New struct `MemberUpdate`
+- New struct `MembersClient`
+- New struct `MembersClientBeginCreateOptions`
+- New struct `MembersClientBeginDeleteOptions`
+- New struct `MembersClientCreatePoller`
+- New struct `MembersClientCreatePollerResponse`
+- New struct `MembersClientCreateResponse`
+- New struct `MembersClientCreateResult`
+- New struct `MembersClientDeletePoller`
+- New struct `MembersClientDeletePollerResponse`
+- New struct `MembersClientDeleteResponse`
+- New struct `MembersClientGetOptions`
+- New struct `MembersClientGetResponse`
+- New struct `MembersClientGetResult`
+- New struct `MembersClientListAPIKeysOptions`
+- New struct `MembersClientListAPIKeysResponse`
+- New struct `MembersClientListAPIKeysResult`
+- New struct `MembersClientListAllOptions`
+- New struct `MembersClientListAllPager`
+- New struct `MembersClientListAllResponse`
+- New struct `MembersClientListAllResult`
+- New struct `MembersClientListConsortiumMembersOptions`
+- New struct `MembersClientListConsortiumMembersPager`
+- New struct `MembersClientListConsortiumMembersResponse`
+- New struct `MembersClientListConsortiumMembersResult`
+- New struct `MembersClientListOptions`
+- New struct `MembersClientListPager`
+- New struct `MembersClientListRegenerateAPIKeysOptions`
+- New struct `MembersClientListRegenerateAPIKeysResponse`
+- New struct `MembersClientListRegenerateAPIKeysResult`
+- New struct `MembersClientListResponse`
+- New struct `MembersClientListResult`
+- New struct `MembersClientUpdateOptions`
+- New struct `MembersClientUpdateResponse`
+- New struct `MembersClientUpdateResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `SKUsClientListOptions`
+- New struct `SKUsClientListResponse`
+- New struct `SKUsClientListResult`
+- New struct `TransactionNodesClientBeginCreateOptions`
+- New struct `TransactionNodesClientBeginDeleteOptions`
+- New struct `TransactionNodesClientCreatePoller`
+- New struct `TransactionNodesClientCreatePollerResponse`
+- New struct `TransactionNodesClientCreateResponse`
+- New struct `TransactionNodesClientCreateResult`
+- New struct `TransactionNodesClientDeletePoller`
+- New struct `TransactionNodesClientDeletePollerResponse`
+- New struct `TransactionNodesClientDeleteResponse`
+- New struct `TransactionNodesClientGetOptions`
+- New struct `TransactionNodesClientGetResponse`
+- New struct `TransactionNodesClientGetResult`
+- New struct `TransactionNodesClientListAPIKeysOptions`
+- New struct `TransactionNodesClientListAPIKeysResponse`
+- New struct `TransactionNodesClientListAPIKeysResult`
+- New struct `TransactionNodesClientListOptions`
+- New struct `TransactionNodesClientListPager`
+- New struct `TransactionNodesClientListRegenerateAPIKeysOptions`
+- New struct `TransactionNodesClientListRegenerateAPIKeysResponse`
+- New struct `TransactionNodesClientListRegenerateAPIKeysResult`
+- New struct `TransactionNodesClientListResponse`
+- New struct `TransactionNodesClientListResult`
+- New struct `TransactionNodesClientUpdateOptions`
+- New struct `TransactionNodesClientUpdateResponse`
+- New struct `TransactionNodesClientUpdateResult`
+- New field `ID` in struct `TransactionNode`
+- New field `Name` in struct `TransactionNode`
+- New field `Type` in struct `TransactionNode`
+- New field `ID` in struct `TrackedResource`
+- New field `Name` in struct `TrackedResource`
+- New field `Type` in struct `TrackedResource`
+
+
 ## 0.1.0 (2021-11-30)
 
 - Initial preview release.

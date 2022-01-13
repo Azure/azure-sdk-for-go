@@ -9,8 +9,8 @@
 package armsql
 
 const (
-	module  = "armsql"
-	version = "v0.2.1"
+	moduleName    = "armsql"
+	moduleVersion = "v0.3.0"
 )
 
 type AdministratorName string
@@ -50,7 +50,8 @@ func (c AdministratorType) ToPtr() *AdministratorType {
 	return &c
 }
 
-// AdvisorStatus - Gets the status of availability of this advisor to customers. Possible values are 'GA', 'PublicPreview', 'LimitedPublicPreview' and 'PrivatePreview'.
+// AdvisorStatus - Gets the status of availability of this advisor to customers. Possible values are 'GA', 'PublicPreview',
+// 'LimitedPublicPreview' and 'PrivatePreview'.
 type AdvisorStatus string
 
 const (
@@ -119,8 +120,8 @@ func (c AuthenticationName) ToPtr() *AuthenticationName {
 	return &c
 }
 
-// AutoExecuteStatus - Gets the auto-execute status (whether to let the system execute the recommendations) of this advisor. Possible values are 'Enabled'
-// and 'Disabled'
+// AutoExecuteStatus - Gets the auto-execute status (whether to let the system execute the recommendations) of this advisor.
+// Possible values are 'Enabled' and 'Disabled'
 type AutoExecuteStatus string
 
 const (
@@ -143,8 +144,8 @@ func (c AutoExecuteStatus) ToPtr() *AutoExecuteStatus {
 	return &c
 }
 
-// AutoExecuteStatusInheritedFrom - Gets the resource from which current value of auto-execute status is inherited. Auto-execute status can be set on (and
-// inherited from) different levels in the resource hierarchy. Possible values are
+// AutoExecuteStatusInheritedFrom - Gets the resource from which current value of auto-execute status is inherited. Auto-execute
+// status can be set on (and inherited from) different levels in the resource hierarchy. Possible values are
 // 'Subscription', 'Server', 'ElasticPool', 'Database' and 'Default' (when status is not explicitly set on any level).
 type AutoExecuteStatusInheritedFrom string
 
@@ -318,19 +319,21 @@ func (c AutomaticTuningServerReason) ToPtr() *AutomaticTuningServerReason {
 	return &c
 }
 
-// BackupStorageRedundancy - The storage redundancy type of the copied backup
+// BackupStorageRedundancy - The storage account type used to store backups for this database.
 type BackupStorageRedundancy string
 
 const (
-	BackupStorageRedundancyGeo   BackupStorageRedundancy = "Geo"
-	BackupStorageRedundancyLocal BackupStorageRedundancy = "Local"
-	BackupStorageRedundancyZone  BackupStorageRedundancy = "Zone"
+	BackupStorageRedundancyGeo     BackupStorageRedundancy = "Geo"
+	BackupStorageRedundancyGeoZone BackupStorageRedundancy = "GeoZone"
+	BackupStorageRedundancyLocal   BackupStorageRedundancy = "Local"
+	BackupStorageRedundancyZone    BackupStorageRedundancy = "Zone"
 )
 
 // PossibleBackupStorageRedundancyValues returns the possible values for the BackupStorageRedundancy const type.
 func PossibleBackupStorageRedundancyValues() []BackupStorageRedundancy {
 	return []BackupStorageRedundancy{
 		BackupStorageRedundancyGeo,
+		BackupStorageRedundancyGeoZone,
 		BackupStorageRedundancyLocal,
 		BackupStorageRedundancyZone,
 	}
@@ -341,7 +344,8 @@ func (c BackupStorageRedundancy) ToPtr() *BackupStorageRedundancy {
 	return &c
 }
 
-// BlobAuditingPolicyState - Specifies the state of the audit. If state is Enabled, storageEndpoint or isAzureMonitorTargetEnabled are required.
+// BlobAuditingPolicyState - Specifies the state of the audit. If state is Enabled, storageEndpoint or isAzureMonitorTargetEnabled
+// are required.
 type BlobAuditingPolicyState string
 
 const (
@@ -434,7 +438,8 @@ func (c CatalogCollationType) ToPtr() *CatalogCollationType {
 	return &c
 }
 
-// CheckNameAvailabilityReason - The reason code explaining why the name is unavailable. Will be undefined if the name is available.
+// CheckNameAvailabilityReason - The reason code explaining why the name is unavailable. Will be undefined if the name is
+// available.
 type CheckNameAvailabilityReason string
 
 const (
@@ -560,20 +565,22 @@ func (c ConnectionPolicyName) ToPtr() *ConnectionPolicyName {
 
 // CreateMode - Specifies the mode of database creation.
 // Default: regular database creation.
-// Copy: creates a database as a copy of an existing database. sourceDatabaseId must be specified as the resource ID of the source database.
-// Secondary: creates a database as a secondary replica of an existing database. sourceDatabaseId must be specified as the resource ID of the existing primary
-// database.
-// PointInTimeRestore: Creates a database by restoring a point in time backup of an existing database. sourceDatabaseId must be specified as the resource
-// ID of the existing database, and
+// Copy: creates a database as a copy of an existing database. sourceDatabaseId must be specified as the resource ID of the
+// source database.
+// Secondary: creates a database as a secondary replica of an existing database. sourceDatabaseId must be specified as the
+// resource ID of the existing primary database.
+// PointInTimeRestore: Creates a database by restoring a point in time backup of an existing database. sourceDatabaseId must
+// be specified as the resource ID of the existing database, and
 // restorePointInTime must be specified.
-// Recovery: Creates a database by restoring a geo-replicated backup. sourceDatabaseId must be specified as the recoverable database resource ID to restore.
-// Restore: Creates a database by restoring a backup of a deleted database. sourceDatabaseId must be specified. If sourceDatabaseId is the database's original
-// resource ID, then sourceDatabaseDeletionDate
-// must be specified. Otherwise sourceDatabaseId must be the restorable dropped database resource ID and sourceDatabaseDeletionDate is ignored. restorePointInTime
-// may also be specified to restore from an
+// Recovery: Creates a database by restoring a geo-replicated backup. sourceDatabaseId must be specified as the recoverable
+// database resource ID to restore.
+// Restore: Creates a database by restoring a backup of a deleted database. sourceDatabaseId must be specified. If sourceDatabaseId
+// is the database's original resource ID, then sourceDatabaseDeletionDate
+// must be specified. Otherwise sourceDatabaseId must be the restorable dropped database resource ID and sourceDatabaseDeletionDate
+// is ignored. restorePointInTime may also be specified to restore from an
 // earlier point in time.
-// RestoreLongTermRetentionBackup: Creates a database by restoring from a long term retention vault. recoveryServicesRecoveryPointResourceId must be specified
-// as the recovery point resource ID.
+// RestoreLongTermRetentionBackup: Creates a database by restoring from a long term retention vault. recoveryServicesRecoveryPointResourceId
+// must be specified as the recovery point resource ID.
 // Copy, Secondary, and RestoreLongTermRetentionBackup are not supported for DataWarehouse edition.
 type CreateMode string
 
@@ -636,29 +643,6 @@ func (c CreatedByType) ToPtr() *CreatedByType {
 	return &c
 }
 
-// CurrentBackupStorageRedundancy - The storage account type used to store backups for this database.
-type CurrentBackupStorageRedundancy string
-
-const (
-	CurrentBackupStorageRedundancyGeo   CurrentBackupStorageRedundancy = "Geo"
-	CurrentBackupStorageRedundancyLocal CurrentBackupStorageRedundancy = "Local"
-	CurrentBackupStorageRedundancyZone  CurrentBackupStorageRedundancy = "Zone"
-)
-
-// PossibleCurrentBackupStorageRedundancyValues returns the possible values for the CurrentBackupStorageRedundancy const type.
-func PossibleCurrentBackupStorageRedundancyValues() []CurrentBackupStorageRedundancy {
-	return []CurrentBackupStorageRedundancy{
-		CurrentBackupStorageRedundancyGeo,
-		CurrentBackupStorageRedundancyLocal,
-		CurrentBackupStorageRedundancyZone,
-	}
-}
-
-// ToPtr returns a *CurrentBackupStorageRedundancy pointing to the current value.
-func (c CurrentBackupStorageRedundancy) ToPtr() *CurrentBackupStorageRedundancy {
-	return &c
-}
-
 // DNSRefreshConfigurationPropertiesStatus - The status of the DNS refresh operation.
 type DNSRefreshConfigurationPropertiesStatus string
 
@@ -709,8 +693,8 @@ func (c DataMaskingFunction) ToPtr() *DataMaskingFunction {
 	return &c
 }
 
-// DataMaskingRuleState - The rule state. Used to delete a rule. To delete an existing rule, specify the schemaName, tableName, columnName, maskingFunction,
-// and specify ruleState as disabled. However, if the rule doesn't
+// DataMaskingRuleState - The rule state. Used to delete a rule. To delete an existing rule, specify the schemaName, tableName,
+// columnName, maskingFunction, and specify ruleState as disabled. However, if the rule doesn't
 // already exist, the rule will be created with ruleState set to enabled, regardless of the provided value of ruleState.
 type DataMaskingRuleState string
 
@@ -771,8 +755,29 @@ func (c DataWarehouseUserActivityName) ToPtr() *DataWarehouseUserActivityName {
 	return &c
 }
 
-// DatabaseLicenseType - The license type to apply for this database. LicenseIncluded if you need a license, or BasePrice if you have a license and are
-// eligible for the Azure Hybrid Benefit.
+// DatabaseIdentityType - The identity type
+type DatabaseIdentityType string
+
+const (
+	DatabaseIdentityTypeNone         DatabaseIdentityType = "None"
+	DatabaseIdentityTypeUserAssigned DatabaseIdentityType = "UserAssigned"
+)
+
+// PossibleDatabaseIdentityTypeValues returns the possible values for the DatabaseIdentityType const type.
+func PossibleDatabaseIdentityTypeValues() []DatabaseIdentityType {
+	return []DatabaseIdentityType{
+		DatabaseIdentityTypeNone,
+		DatabaseIdentityTypeUserAssigned,
+	}
+}
+
+// ToPtr returns a *DatabaseIdentityType pointing to the current value.
+func (c DatabaseIdentityType) ToPtr() *DatabaseIdentityType {
+	return &c
+}
+
+// DatabaseLicenseType - The license type to apply for this database. LicenseIncluded if you need a license, or BasePrice
+// if you have a license and are eligible for the Azure Hybrid Benefit.
 type DatabaseLicenseType string
 
 const (
@@ -793,8 +798,8 @@ func (c DatabaseLicenseType) ToPtr() *DatabaseLicenseType {
 	return &c
 }
 
-// DatabaseReadScale - The state of read-only routing. If enabled, connections that have application intent set to readonly in their connection string may
-// be routed to a readonly secondary replica in the same region.
+// DatabaseReadScale - The state of read-only routing. If enabled, connections that have application intent set to readonly
+// in their connection string may be routed to a readonly secondary replica in the same region.
 type DatabaseReadScale string
 
 const (
@@ -861,6 +866,9 @@ const (
 	DatabaseStatusScaling                           DatabaseStatus = "Scaling"
 	DatabaseStatusShutdown                          DatabaseStatus = "Shutdown"
 	DatabaseStatusStandby                           DatabaseStatus = "Standby"
+	DatabaseStatusStarting                          DatabaseStatus = "Starting"
+	DatabaseStatusStopped                           DatabaseStatus = "Stopped"
+	DatabaseStatusStopping                          DatabaseStatus = "Stopping"
 	DatabaseStatusSuspect                           DatabaseStatus = "Suspect"
 )
 
@@ -887,6 +895,9 @@ func PossibleDatabaseStatusValues() []DatabaseStatus {
 		DatabaseStatusScaling,
 		DatabaseStatusShutdown,
 		DatabaseStatusStandby,
+		DatabaseStatusStarting,
+		DatabaseStatusStopped,
+		DatabaseStatusStopping,
 		DatabaseStatusSuspect,
 	}
 }
@@ -927,8 +938,8 @@ func (c DayOfWeek) ToPtr() *DayOfWeek {
 	return &c
 }
 
-// DiffBackupIntervalInHours - The differential backup interval in hours. This is how many interval hours between each differential backup will be supported.
-// This is only applicable to live databases but not dropped databases.
+// DiffBackupIntervalInHours - The differential backup interval in hours. This is how many interval hours between each differential
+// backup will be supported. This is only applicable to live databases but not dropped databases.
 type DiffBackupIntervalInHours int32
 
 const (
@@ -1011,30 +1022,6 @@ func (c EncryptionProtectorName) ToPtr() *EncryptionProtectorName {
 	return &c
 }
 
-type Enum75 string
-
-const (
-	Enum75All     Enum75 = "All"
-	Enum75Error   Enum75 = "Error"
-	Enum75Success Enum75 = "Success"
-	Enum75Warning Enum75 = "Warning"
-)
-
-// PossibleEnum75Values returns the possible values for the Enum75 const type.
-func PossibleEnum75Values() []Enum75 {
-	return []Enum75{
-		Enum75All,
-		Enum75Error,
-		Enum75Success,
-		Enum75Warning,
-	}
-}
-
-// ToPtr returns a *Enum75 pointing to the current value.
-func (c Enum75) ToPtr() *Enum75 {
-	return &c
-}
-
 // FailoverGroupReplicationRole - Local replication role of the failover group instance.
 type FailoverGroupReplicationRole string
 
@@ -1095,8 +1082,8 @@ func (c GeoBackupPolicyState) ToPtr() *GeoBackupPolicyState {
 	return &c
 }
 
-// IdentityType - The identity type. Set this to 'SystemAssigned' in order to automatically create and assign an Azure Active Directory principal for the
-// resource.
+// IdentityType - The identity type. Set this to 'SystemAssigned' in order to automatically create and assign an Azure Active
+// Directory principal for the resource.
 type IdentityType string
 
 const (
@@ -1163,8 +1150,8 @@ func (c InstanceFailoverGroupReplicationRole) ToPtr() *InstanceFailoverGroupRepl
 	return &c
 }
 
-// InstancePoolLicenseType - The license type. Possible values are 'LicenseIncluded' (price for SQL license is included) and 'BasePrice' (without SQL license
-// price).
+// InstancePoolLicenseType - The license type. Possible values are 'LicenseIncluded' (price for SQL license is included) and
+// 'BasePrice' (without SQL license price).
 type InstancePoolLicenseType string
 
 const (
@@ -1480,12 +1467,12 @@ func (c LongTermRetentionPolicyName) ToPtr() *LongTermRetentionPolicyName {
 	return &c
 }
 
-// ManagedDatabaseCreateMode - Managed database create mode. PointInTimeRestore: Create a database by restoring a point in time backup of an existing database.
-// SourceDatabaseName, SourceManagedInstanceName and PointInTime must be
-// specified. RestoreExternalBackup: Create a database by restoring from external backup files. Collation, StorageContainerUri and StorageContainerSasToken
-// must be specified. Recovery: Creates a database
-// by restoring a geo-replicated backup. RecoverableDatabaseId must be specified as the recoverable database resource ID to restore. RestoreLongTermRetentionBackup:
-// Create a database by restoring from a
+// ManagedDatabaseCreateMode - Managed database create mode. PointInTimeRestore: Create a database by restoring a point in
+// time backup of an existing database. SourceDatabaseName, SourceManagedInstanceName and PointInTime must be
+// specified. RestoreExternalBackup: Create a database by restoring from external backup files. Collation, StorageContainerUri
+// and StorageContainerSasToken must be specified. Recovery: Creates a database
+// by restoring a geo-replicated backup. RecoverableDatabaseId must be specified as the recoverable database resource ID to
+// restore. RestoreLongTermRetentionBackup: Create a database by restoring from a
 // long term retention backup (longTermRetentionBackupResourceId required).
 type ManagedDatabaseCreateMode string
 
@@ -1563,8 +1550,8 @@ func (c ManagedInstanceAdministratorType) ToPtr() *ManagedInstanceAdministratorT
 	return &c
 }
 
-// ManagedInstanceLicenseType - The license type. Possible values are 'LicenseIncluded' (regular price inclusive of a new SQL license) and 'BasePrice' (discounted
-// AHB price for bringing your own SQL licenses).
+// ManagedInstanceLicenseType - The license type. Possible values are 'LicenseIncluded' (regular price inclusive of a new
+// SQL license) and 'BasePrice' (discounted AHB price for bringing your own SQL licenses).
 type ManagedInstanceLicenseType string
 
 const (
@@ -1606,22 +1593,40 @@ func (c ManagedInstanceLongTermRetentionPolicyName) ToPtr() *ManagedInstanceLong
 type ManagedInstancePropertiesProvisioningState string
 
 const (
-	ManagedInstancePropertiesProvisioningStateCreating  ManagedInstancePropertiesProvisioningState = "Creating"
-	ManagedInstancePropertiesProvisioningStateDeleting  ManagedInstancePropertiesProvisioningState = "Deleting"
-	ManagedInstancePropertiesProvisioningStateFailed    ManagedInstancePropertiesProvisioningState = "Failed"
-	ManagedInstancePropertiesProvisioningStateSucceeded ManagedInstancePropertiesProvisioningState = "Succeeded"
-	ManagedInstancePropertiesProvisioningStateUnknown   ManagedInstancePropertiesProvisioningState = "Unknown"
-	ManagedInstancePropertiesProvisioningStateUpdating  ManagedInstancePropertiesProvisioningState = "Updating"
+	ManagedInstancePropertiesProvisioningStateAccepted     ManagedInstancePropertiesProvisioningState = "Accepted"
+	ManagedInstancePropertiesProvisioningStateCanceled     ManagedInstancePropertiesProvisioningState = "Canceled"
+	ManagedInstancePropertiesProvisioningStateCreated      ManagedInstancePropertiesProvisioningState = "Created"
+	ManagedInstancePropertiesProvisioningStateCreating     ManagedInstancePropertiesProvisioningState = "Creating"
+	ManagedInstancePropertiesProvisioningStateDeleted      ManagedInstancePropertiesProvisioningState = "Deleted"
+	ManagedInstancePropertiesProvisioningStateDeleting     ManagedInstancePropertiesProvisioningState = "Deleting"
+	ManagedInstancePropertiesProvisioningStateFailed       ManagedInstancePropertiesProvisioningState = "Failed"
+	ManagedInstancePropertiesProvisioningStateNotSpecified ManagedInstancePropertiesProvisioningState = "NotSpecified"
+	ManagedInstancePropertiesProvisioningStateRegistering  ManagedInstancePropertiesProvisioningState = "Registering"
+	ManagedInstancePropertiesProvisioningStateRunning      ManagedInstancePropertiesProvisioningState = "Running"
+	ManagedInstancePropertiesProvisioningStateSucceeded    ManagedInstancePropertiesProvisioningState = "Succeeded"
+	ManagedInstancePropertiesProvisioningStateTimedOut     ManagedInstancePropertiesProvisioningState = "TimedOut"
+	ManagedInstancePropertiesProvisioningStateUnknown      ManagedInstancePropertiesProvisioningState = "Unknown"
+	ManagedInstancePropertiesProvisioningStateUnrecognized ManagedInstancePropertiesProvisioningState = "Unrecognized"
+	ManagedInstancePropertiesProvisioningStateUpdating     ManagedInstancePropertiesProvisioningState = "Updating"
 )
 
 // PossibleManagedInstancePropertiesProvisioningStateValues returns the possible values for the ManagedInstancePropertiesProvisioningState const type.
 func PossibleManagedInstancePropertiesProvisioningStateValues() []ManagedInstancePropertiesProvisioningState {
 	return []ManagedInstancePropertiesProvisioningState{
+		ManagedInstancePropertiesProvisioningStateAccepted,
+		ManagedInstancePropertiesProvisioningStateCanceled,
+		ManagedInstancePropertiesProvisioningStateCreated,
 		ManagedInstancePropertiesProvisioningStateCreating,
+		ManagedInstancePropertiesProvisioningStateDeleted,
 		ManagedInstancePropertiesProvisioningStateDeleting,
 		ManagedInstancePropertiesProvisioningStateFailed,
+		ManagedInstancePropertiesProvisioningStateNotSpecified,
+		ManagedInstancePropertiesProvisioningStateRegistering,
+		ManagedInstancePropertiesProvisioningStateRunning,
 		ManagedInstancePropertiesProvisioningStateSucceeded,
+		ManagedInstancePropertiesProvisioningStateTimedOut,
 		ManagedInstancePropertiesProvisioningStateUnknown,
+		ManagedInstancePropertiesProvisioningStateUnrecognized,
 		ManagedInstancePropertiesProvisioningStateUpdating,
 	}
 }
@@ -1656,7 +1661,8 @@ func (c ManagedInstanceProxyOverride) ToPtr() *ManagedInstanceProxyOverride {
 
 // ManagedServerCreateMode - Specifies the mode of database creation.
 // Default: Regular instance creation.
-// Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and SourceManagedInstanceId must be specified.
+// Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and SourceManagedInstanceId
+// must be specified.
 type ManagedServerCreateMode string
 
 const (
@@ -2072,8 +2078,8 @@ func (c ReadOnlyEndpointFailoverPolicy) ToPtr() *ReadOnlyEndpointFailoverPolicy 
 	return &c
 }
 
-// ReadWriteEndpointFailoverPolicy - Failover policy of the read-write endpoint for the failover group. If failoverPolicy is Automatic then failoverWithDataLossGracePeriodMinutes
-// is required.
+// ReadWriteEndpointFailoverPolicy - Failover policy of the read-write endpoint for the failover group. If failoverPolicy
+// is Automatic then failoverWithDataLossGracePeriodMinutes is required.
 type ReadWriteEndpointFailoverPolicy string
 
 const (
@@ -2094,14 +2100,14 @@ func (c ReadWriteEndpointFailoverPolicy) ToPtr() *ReadWriteEndpointFailoverPolic
 	return &c
 }
 
-// RecommendedActionCurrentState - Current state the recommended action is in. Some commonly used states are: Active -> recommended action is active and
-// no action has been taken yet. Pending -> recommended action is approved for and is
-// awaiting execution. Executing -> recommended action is being applied on the user database. Verifying -> recommended action was applied and is being verified
-// of its usefulness by the system. Success ->
-// recommended action was applied and improvement found during verification. Pending Revert -> verification found little or no improvement so recommended
-// action is queued for revert or user has manually
-// reverted. Reverting -> changes made while applying recommended action are being reverted on the user database. Reverted -> successfully reverted the
-// changes made by recommended action on user
+// RecommendedActionCurrentState - Current state the recommended action is in. Some commonly used states are: Active -> recommended
+// action is active and no action has been taken yet. Pending -> recommended action is approved for and is
+// awaiting execution. Executing -> recommended action is being applied on the user database. Verifying -> recommended action
+// was applied and is being verified of its usefulness by the system. Success ->
+// recommended action was applied and improvement found during verification. Pending Revert -> verification found little or
+// no improvement so recommended action is queued for revert or user has manually
+// reverted. Reverting -> changes made while applying recommended action are being reverted on the user database. Reverted
+// -> successfully reverted the changes made by recommended action on user
 // database. Ignored -> user explicitly ignored/discarded the recommended action.
 type RecommendedActionCurrentState string
 
@@ -2281,52 +2287,6 @@ func (c ReplicationState) ToPtr() *ReplicationState {
 	return &c
 }
 
-// RequestedBackupStorageRedundancy - The storage redundancy type of the copied backup
-type RequestedBackupStorageRedundancy string
-
-const (
-	RequestedBackupStorageRedundancyGeo   RequestedBackupStorageRedundancy = "Geo"
-	RequestedBackupStorageRedundancyLocal RequestedBackupStorageRedundancy = "Local"
-	RequestedBackupStorageRedundancyZone  RequestedBackupStorageRedundancy = "Zone"
-)
-
-// PossibleRequestedBackupStorageRedundancyValues returns the possible values for the RequestedBackupStorageRedundancy const type.
-func PossibleRequestedBackupStorageRedundancyValues() []RequestedBackupStorageRedundancy {
-	return []RequestedBackupStorageRedundancy{
-		RequestedBackupStorageRedundancyGeo,
-		RequestedBackupStorageRedundancyLocal,
-		RequestedBackupStorageRedundancyZone,
-	}
-}
-
-// ToPtr returns a *RequestedBackupStorageRedundancy pointing to the current value.
-func (c RequestedBackupStorageRedundancy) ToPtr() *RequestedBackupStorageRedundancy {
-	return &c
-}
-
-// RestorableDroppedDatabasePropertiesBackupStorageRedundancy - The storage account type used to store backups for this database.
-type RestorableDroppedDatabasePropertiesBackupStorageRedundancy string
-
-const (
-	RestorableDroppedDatabasePropertiesBackupStorageRedundancyGeo   RestorableDroppedDatabasePropertiesBackupStorageRedundancy = "Geo"
-	RestorableDroppedDatabasePropertiesBackupStorageRedundancyLocal RestorableDroppedDatabasePropertiesBackupStorageRedundancy = "Local"
-	RestorableDroppedDatabasePropertiesBackupStorageRedundancyZone  RestorableDroppedDatabasePropertiesBackupStorageRedundancy = "Zone"
-)
-
-// PossibleRestorableDroppedDatabasePropertiesBackupStorageRedundancyValues returns the possible values for the RestorableDroppedDatabasePropertiesBackupStorageRedundancy const type.
-func PossibleRestorableDroppedDatabasePropertiesBackupStorageRedundancyValues() []RestorableDroppedDatabasePropertiesBackupStorageRedundancy {
-	return []RestorableDroppedDatabasePropertiesBackupStorageRedundancy{
-		RestorableDroppedDatabasePropertiesBackupStorageRedundancyGeo,
-		RestorableDroppedDatabasePropertiesBackupStorageRedundancyLocal,
-		RestorableDroppedDatabasePropertiesBackupStorageRedundancyZone,
-	}
-}
-
-// ToPtr returns a *RestorableDroppedDatabasePropertiesBackupStorageRedundancy pointing to the current value.
-func (c RestorableDroppedDatabasePropertiesBackupStorageRedundancy) ToPtr() *RestorableDroppedDatabasePropertiesBackupStorageRedundancy {
-	return &c
-}
-
 type RestoreDetailsName string
 
 const (
@@ -2449,8 +2409,8 @@ func (c SecurityAlertPolicyName) ToPtr() *SecurityAlertPolicyName {
 	return &c
 }
 
-// SecurityAlertPolicyState - Specifies the state of the policy, whether it is enabled or disabled or a policy has not been applied yet on the specific
-// database.
+// SecurityAlertPolicyState - Specifies the state of the policy, whether it is enabled or disabled or a policy has not been
+// applied yet on the specific database.
 type SecurityAlertPolicyState string
 
 const (
@@ -2473,8 +2433,8 @@ func (c SecurityAlertPolicyState) ToPtr() *SecurityAlertPolicyState {
 	return &c
 }
 
-// SecurityAlertsPolicyState - Specifies the state of the policy, whether it is enabled or disabled or a policy has not been applied yet on the specific
-// database.
+// SecurityAlertsPolicyState - Specifies the state of the policy, whether it is enabled or disabled or a policy has not been
+// applied yet on the specific database.
 type SecurityAlertsPolicyState string
 
 const (
@@ -2628,8 +2588,8 @@ func (c ServerKeyType) ToPtr() *ServerKeyType {
 	return &c
 }
 
-// ServerNetworkAccessFlag - Whether or not public endpoint access is allowed for this server. Value is optional but if passed in, must be 'Enabled' or
-// 'Disabled'
+// ServerNetworkAccessFlag - Whether or not public endpoint access is allowed for this server. Value is optional but if passed
+// in, must be 'Enabled' or 'Disabled'
 type ServerNetworkAccessFlag string
 
 const (
@@ -2838,6 +2798,27 @@ func (c ServiceObjectiveName) ToPtr() *ServiceObjectiveName {
 	return &c
 }
 
+// ServicePrincipalType - Service principal type.
+type ServicePrincipalType string
+
+const (
+	ServicePrincipalTypeNone           ServicePrincipalType = "None"
+	ServicePrincipalTypeSystemAssigned ServicePrincipalType = "SystemAssigned"
+)
+
+// PossibleServicePrincipalTypeValues returns the possible values for the ServicePrincipalType const type.
+func PossibleServicePrincipalTypeValues() []ServicePrincipalType {
+	return []ServicePrincipalType{
+		ServicePrincipalTypeNone,
+		ServicePrincipalTypeSystemAssigned,
+	}
+}
+
+// ToPtr returns a *ServicePrincipalType pointing to the current value.
+func (c ServicePrincipalType) ToPtr() *ServicePrincipalType {
+	return &c
+}
+
 type ShortTermRetentionPolicyName string
 
 const (
@@ -2853,30 +2834,6 @@ func PossibleShortTermRetentionPolicyNameValues() []ShortTermRetentionPolicyName
 
 // ToPtr returns a *ShortTermRetentionPolicyName pointing to the current value.
 func (c ShortTermRetentionPolicyName) ToPtr() *ShortTermRetentionPolicyName {
-	return &c
-}
-
-// StorageAccountType - The storage account type used to store backups for this instance. The options are LRS (LocallyRedundantStorage), ZRS (ZoneRedundantStorage)
-// and GRS (GeoRedundantStorage)
-type StorageAccountType string
-
-const (
-	StorageAccountTypeGRS StorageAccountType = "GRS"
-	StorageAccountTypeLRS StorageAccountType = "LRS"
-	StorageAccountTypeZRS StorageAccountType = "ZRS"
-)
-
-// PossibleStorageAccountTypeValues returns the possible values for the StorageAccountType const type.
-func PossibleStorageAccountTypeValues() []StorageAccountType {
-	return []StorageAccountType{
-		StorageAccountTypeGRS,
-		StorageAccountTypeLRS,
-		StorageAccountTypeZRS,
-	}
-}
-
-// ToPtr returns a *StorageAccountType pointing to the current value.
-func (c StorageAccountType) ToPtr() *StorageAccountType {
 	return &c
 }
 
@@ -3043,6 +3000,30 @@ func (c SyncGroupState) ToPtr() *SyncGroupState {
 	return &c
 }
 
+type SyncGroupsType string
+
+const (
+	SyncGroupsTypeAll     SyncGroupsType = "All"
+	SyncGroupsTypeError   SyncGroupsType = "Error"
+	SyncGroupsTypeSuccess SyncGroupsType = "Success"
+	SyncGroupsTypeWarning SyncGroupsType = "Warning"
+)
+
+// PossibleSyncGroupsTypeValues returns the possible values for the SyncGroupsType const type.
+func PossibleSyncGroupsTypeValues() []SyncGroupsType {
+	return []SyncGroupsType{
+		SyncGroupsTypeAll,
+		SyncGroupsTypeError,
+		SyncGroupsTypeSuccess,
+		SyncGroupsTypeWarning,
+	}
+}
+
+// ToPtr returns a *SyncGroupsType pointing to the current value.
+func (c SyncGroupsType) ToPtr() *SyncGroupsType {
+	return &c
+}
+
 // SyncMemberDbType - Type of the sync agent linked database.
 type SyncMemberDbType string
 
@@ -3137,29 +3118,6 @@ func PossibleTableTemporalTypeValues() []TableTemporalType {
 
 // ToPtr returns a *TableTemporalType pointing to the current value.
 func (c TableTemporalType) ToPtr() *TableTemporalType {
-	return &c
-}
-
-// TargetBackupStorageRedundancy - The storage redundancy type of the copied backup
-type TargetBackupStorageRedundancy string
-
-const (
-	TargetBackupStorageRedundancyGeo   TargetBackupStorageRedundancy = "Geo"
-	TargetBackupStorageRedundancyLocal TargetBackupStorageRedundancy = "Local"
-	TargetBackupStorageRedundancyZone  TargetBackupStorageRedundancy = "Zone"
-)
-
-// PossibleTargetBackupStorageRedundancyValues returns the possible values for the TargetBackupStorageRedundancy const type.
-func PossibleTargetBackupStorageRedundancyValues() []TargetBackupStorageRedundancy {
-	return []TargetBackupStorageRedundancy{
-		TargetBackupStorageRedundancyGeo,
-		TargetBackupStorageRedundancyLocal,
-		TargetBackupStorageRedundancyZone,
-	}
-}
-
-// ToPtr returns a *TargetBackupStorageRedundancy pointing to the current value.
-func (c TargetBackupStorageRedundancy) ToPtr() *TargetBackupStorageRedundancy {
 	return &c
 }
 

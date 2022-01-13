@@ -9,12 +9,12 @@
 package armresourcegraph
 
 const (
-	module  = "armresourcegraph"
-	version = "v0.1.0"
+	moduleName    = "armresourcegraph"
+	moduleVersion = "v0.2.0"
 )
 
-// AuthorizationScopeFilter - Defines what level of authorization resources should be returned based on the which subscriptions and management groups are
-// passed as scopes.
+// AuthorizationScopeFilter - Defines what level of authorization resources should be returned based on the which subscriptions
+// and management groups are passed as scopes.
 type AuthorizationScopeFilter string
 
 const (

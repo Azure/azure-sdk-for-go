@@ -11,7 +11,6 @@ package armservicefabricmesh
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,43 +24,55 @@ import (
 // SecretClient contains the methods for the Secret group.
 // Don't use this type directly, use NewSecretClient() instead.
 type SecretClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSecretClient creates a new instance of SecretClient with the specified values.
+// subscriptionID - The customer subscription identifier
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSecretClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SecretClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SecretClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SecretClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// Create - Creates a secret resource with the specified name, description and properties. If a secret resource with the same name exists, then it is updated
-// with the specified description and properties.
-// If the operation fails it returns the *ErrorModel error type.
-func (client *SecretClient) Create(ctx context.Context, resourceGroupName string, secretResourceName string, secretResourceDescription SecretResourceDescription, options *SecretCreateOptions) (SecretCreateResponse, error) {
+// Create - Creates a secret resource with the specified name, description and properties. If a secret resource with the same
+// name exists, then it is updated with the specified description and properties.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Azure resource group name
+// secretResourceName - The name of the secret resource.
+// secretResourceDescription - Description for creating a secret resource.
+// options - SecretClientCreateOptions contains the optional parameters for the SecretClient.Create method.
+func (client *SecretClient) Create(ctx context.Context, resourceGroupName string, secretResourceName string, secretResourceDescription SecretResourceDescription, options *SecretClientCreateOptions) (SecretClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, secretResourceName, secretResourceDescription, options)
 	if err != nil {
-		return SecretCreateResponse{}, err
+		return SecretClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SecretCreateResponse{}, err
+		return SecretClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return SecretCreateResponse{}, client.createHandleError(resp)
+		return SecretClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *SecretClient) createCreateRequest(ctx context.Context, resourceGroupName string, secretResourceName string, secretResourceDescription SecretResourceDescription, options *SecretCreateOptions) (*policy.Request, error) {
+func (client *SecretClient) createCreateRequest(ctx context.Context, resourceGroupName string, secretResourceName string, secretResourceDescription SecretResourceDescription, options *SecretClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabricMesh/secrets/{secretResourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -72,7 +83,7 @@ func (client *SecretClient) createCreateRequest(ctx context.Context, resourceGro
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{secretResourceName}", secretResourceName)
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -84,46 +95,36 @@ func (client *SecretClient) createCreateRequest(ctx context.Context, resourceGro
 }
 
 // createHandleResponse handles the Create response.
-func (client *SecretClient) createHandleResponse(resp *http.Response) (SecretCreateResponse, error) {
-	result := SecretCreateResponse{RawResponse: resp}
+func (client *SecretClient) createHandleResponse(resp *http.Response) (SecretClientCreateResponse, error) {
+	result := SecretClientCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecretResourceDescription); err != nil {
-		return SecretCreateResponse{}, runtime.NewResponseError(err, resp)
+		return SecretClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *SecretClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorModel{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes the secret resource identified by the name.
-// If the operation fails it returns the *ErrorModel error type.
-func (client *SecretClient) Delete(ctx context.Context, resourceGroupName string, secretResourceName string, options *SecretDeleteOptions) (SecretDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Azure resource group name
+// secretResourceName - The name of the secret resource.
+// options - SecretClientDeleteOptions contains the optional parameters for the SecretClient.Delete method.
+func (client *SecretClient) Delete(ctx context.Context, resourceGroupName string, secretResourceName string, options *SecretClientDeleteOptions) (SecretClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, secretResourceName, options)
 	if err != nil {
-		return SecretDeleteResponse{}, err
+		return SecretClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SecretDeleteResponse{}, err
+		return SecretClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return SecretDeleteResponse{}, client.deleteHandleError(resp)
+		return SecretClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return SecretDeleteResponse{RawResponse: resp}, nil
+	return SecretClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SecretClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, secretResourceName string, options *SecretDeleteOptions) (*policy.Request, error) {
+func (client *SecretClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, secretResourceName string, options *SecretClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabricMesh/secrets/{secretResourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -134,7 +135,7 @@ func (client *SecretClient) deleteCreateRequest(ctx context.Context, resourceGro
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{secretResourceName}", secretResourceName)
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -145,38 +146,29 @@ func (client *SecretClient) deleteCreateRequest(ctx context.Context, resourceGro
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *SecretClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorModel{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Get - Gets the information about the secret resource with the given name. The information include the description and other properties of the secret.
-// If the operation fails it returns the *ErrorModel error type.
-func (client *SecretClient) Get(ctx context.Context, resourceGroupName string, secretResourceName string, options *SecretGetOptions) (SecretGetResponse, error) {
+// Get - Gets the information about the secret resource with the given name. The information include the description and other
+// properties of the secret.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Azure resource group name
+// secretResourceName - The name of the secret resource.
+// options - SecretClientGetOptions contains the optional parameters for the SecretClient.Get method.
+func (client *SecretClient) Get(ctx context.Context, resourceGroupName string, secretResourceName string, options *SecretClientGetOptions) (SecretClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, secretResourceName, options)
 	if err != nil {
-		return SecretGetResponse{}, err
+		return SecretClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SecretGetResponse{}, err
+		return SecretClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SecretGetResponse{}, client.getHandleError(resp)
+		return SecretClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SecretClient) getCreateRequest(ctx context.Context, resourceGroupName string, secretResourceName string, options *SecretGetOptions) (*policy.Request, error) {
+func (client *SecretClient) getCreateRequest(ctx context.Context, resourceGroupName string, secretResourceName string, options *SecretClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabricMesh/secrets/{secretResourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -187,7 +179,7 @@ func (client *SecretClient) getCreateRequest(ctx context.Context, resourceGroupN
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{secretResourceName}", secretResourceName)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -199,44 +191,34 @@ func (client *SecretClient) getCreateRequest(ctx context.Context, resourceGroupN
 }
 
 // getHandleResponse handles the Get response.
-func (client *SecretClient) getHandleResponse(resp *http.Response) (SecretGetResponse, error) {
-	result := SecretGetResponse{RawResponse: resp}
+func (client *SecretClient) getHandleResponse(resp *http.Response) (SecretClientGetResponse, error) {
+	result := SecretClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecretResourceDescription); err != nil {
-		return SecretGetResponse{}, runtime.NewResponseError(err, resp)
+		return SecretClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *SecretClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorModel{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListByResourceGroup - Gets the information about all secret resources in a given resource group. The information include the description and other properties
-// of the Secret.
-// If the operation fails it returns the *ErrorModel error type.
-func (client *SecretClient) ListByResourceGroup(resourceGroupName string, options *SecretListByResourceGroupOptions) *SecretListByResourceGroupPager {
-	return &SecretListByResourceGroupPager{
+// ListByResourceGroup - Gets the information about all secret resources in a given resource group. The information include
+// the description and other properties of the Secret.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Azure resource group name
+// options - SecretClientListByResourceGroupOptions contains the optional parameters for the SecretClient.ListByResourceGroup
+// method.
+func (client *SecretClient) ListByResourceGroup(resourceGroupName string, options *SecretClientListByResourceGroupOptions) *SecretClientListByResourceGroupPager {
+	return &SecretClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp SecretListByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp SecretClientListByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.SecretResourceDescriptionList.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *SecretClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *SecretListByResourceGroupOptions) (*policy.Request, error) {
+func (client *SecretClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *SecretClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabricMesh/secrets"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -246,7 +228,7 @@ func (client *SecretClient) listByResourceGroupCreateRequest(ctx context.Context
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -258,50 +240,39 @@ func (client *SecretClient) listByResourceGroupCreateRequest(ctx context.Context
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *SecretClient) listByResourceGroupHandleResponse(resp *http.Response) (SecretListByResourceGroupResponse, error) {
-	result := SecretListByResourceGroupResponse{RawResponse: resp}
+func (client *SecretClient) listByResourceGroupHandleResponse(resp *http.Response) (SecretClientListByResourceGroupResponse, error) {
+	result := SecretClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecretResourceDescriptionList); err != nil {
-		return SecretListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return SecretClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *SecretClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorModel{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListBySubscription - Gets the information about all secret resources in a given resource group. The information include the description and other properties
-// of the secret.
-// If the operation fails it returns the *ErrorModel error type.
-func (client *SecretClient) ListBySubscription(options *SecretListBySubscriptionOptions) *SecretListBySubscriptionPager {
-	return &SecretListBySubscriptionPager{
+// ListBySubscription - Gets the information about all secret resources in a given resource group. The information include
+// the description and other properties of the secret.
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - SecretClientListBySubscriptionOptions contains the optional parameters for the SecretClient.ListBySubscription
+// method.
+func (client *SecretClient) ListBySubscription(options *SecretClientListBySubscriptionOptions) *SecretClientListBySubscriptionPager {
+	return &SecretClientListBySubscriptionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp SecretListBySubscriptionResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp SecretClientListBySubscriptionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.SecretResourceDescriptionList.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *SecretClient) listBySubscriptionCreateRequest(ctx context.Context, options *SecretListBySubscriptionOptions) (*policy.Request, error) {
+func (client *SecretClient) listBySubscriptionCreateRequest(ctx context.Context, options *SecretClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceFabricMesh/secrets"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -313,23 +284,10 @@ func (client *SecretClient) listBySubscriptionCreateRequest(ctx context.Context,
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *SecretClient) listBySubscriptionHandleResponse(resp *http.Response) (SecretListBySubscriptionResponse, error) {
-	result := SecretListBySubscriptionResponse{RawResponse: resp}
+func (client *SecretClient) listBySubscriptionHandleResponse(resp *http.Response) (SecretClientListBySubscriptionResponse, error) {
+	result := SecretClientListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecretResourceDescriptionList); err != nil {
-		return SecretListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return SecretClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *SecretClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorModel{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

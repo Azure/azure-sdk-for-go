@@ -11,7 +11,6 @@ package armmanagedapplications
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,59 @@ import (
 // JitRequestsClient contains the methods for the JitRequests group.
 // Don't use this type directly, use NewJitRequestsClient() instead.
 type JitRequestsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewJitRequestsClient creates a new instance of JitRequestsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewJitRequestsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *JitRequestsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &JitRequestsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &JitRequestsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Creates or updates the JIT request.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *JitRequestsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, jitRequestName string, parameters JitRequestDefinition, options *JitRequestsBeginCreateOrUpdateOptions) (JitRequestsCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// jitRequestName - The name of the JIT request.
+// parameters - Parameters supplied to the update JIT request.
+// options - JitRequestsClientBeginCreateOrUpdateOptions contains the optional parameters for the JitRequestsClient.BeginCreateOrUpdate
+// method.
+func (client *JitRequestsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, jitRequestName string, parameters JitRequestDefinition, options *JitRequestsClientBeginCreateOrUpdateOptions) (JitRequestsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, jitRequestName, parameters, options)
 	if err != nil {
-		return JitRequestsCreateOrUpdatePollerResponse{}, err
+		return JitRequestsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := JitRequestsCreateOrUpdatePollerResponse{
+	result := JitRequestsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("JitRequestsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("JitRequestsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return JitRequestsCreateOrUpdatePollerResponse{}, err
+		return JitRequestsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &JitRequestsCreateOrUpdatePoller{
+	result.Poller = &JitRequestsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates the JIT request.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *JitRequestsClient) createOrUpdate(ctx context.Context, resourceGroupName string, jitRequestName string, parameters JitRequestDefinition, options *JitRequestsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *JitRequestsClient) createOrUpdate(ctx context.Context, resourceGroupName string, jitRequestName string, parameters JitRequestDefinition, options *JitRequestsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, jitRequestName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +86,13 @@ func (client *JitRequestsClient) createOrUpdate(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *JitRequestsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, jitRequestName string, parameters JitRequestDefinition, options *JitRequestsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *JitRequestsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, jitRequestName string, parameters JitRequestDefinition, options *JitRequestsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/jitRequests/{jitRequestName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -94,7 +106,7 @@ func (client *JitRequestsClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter jitRequestName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jitRequestName}", url.PathEscape(jitRequestName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -105,38 +117,28 @@ func (client *JitRequestsClient) createOrUpdateCreateRequest(ctx context.Context
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *JitRequestsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes the JIT request.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *JitRequestsClient) Delete(ctx context.Context, resourceGroupName string, jitRequestName string, options *JitRequestsDeleteOptions) (JitRequestsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// jitRequestName - The name of the JIT request.
+// options - JitRequestsClientDeleteOptions contains the optional parameters for the JitRequestsClient.Delete method.
+func (client *JitRequestsClient) Delete(ctx context.Context, resourceGroupName string, jitRequestName string, options *JitRequestsClientDeleteOptions) (JitRequestsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, jitRequestName, options)
 	if err != nil {
-		return JitRequestsDeleteResponse{}, err
+		return JitRequestsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return JitRequestsDeleteResponse{}, err
+		return JitRequestsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return JitRequestsDeleteResponse{}, client.deleteHandleError(resp)
+		return JitRequestsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return JitRequestsDeleteResponse{RawResponse: resp}, nil
+	return JitRequestsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *JitRequestsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, jitRequestName string, options *JitRequestsDeleteOptions) (*policy.Request, error) {
+func (client *JitRequestsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, jitRequestName string, options *JitRequestsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/jitRequests/{jitRequestName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -150,7 +152,7 @@ func (client *JitRequestsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter jitRequestName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jitRequestName}", url.PathEscape(jitRequestName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -161,38 +163,28 @@ func (client *JitRequestsClient) deleteCreateRequest(ctx context.Context, resour
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *JitRequestsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets the JIT request.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *JitRequestsClient) Get(ctx context.Context, resourceGroupName string, jitRequestName string, options *JitRequestsGetOptions) (JitRequestsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// jitRequestName - The name of the JIT request.
+// options - JitRequestsClientGetOptions contains the optional parameters for the JitRequestsClient.Get method.
+func (client *JitRequestsClient) Get(ctx context.Context, resourceGroupName string, jitRequestName string, options *JitRequestsClientGetOptions) (JitRequestsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, jitRequestName, options)
 	if err != nil {
-		return JitRequestsGetResponse{}, err
+		return JitRequestsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return JitRequestsGetResponse{}, err
+		return JitRequestsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return JitRequestsGetResponse{}, client.getHandleError(resp)
+		return JitRequestsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *JitRequestsClient) getCreateRequest(ctx context.Context, resourceGroupName string, jitRequestName string, options *JitRequestsGetOptions) (*policy.Request, error) {
+func (client *JitRequestsClient) getCreateRequest(ctx context.Context, resourceGroupName string, jitRequestName string, options *JitRequestsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/jitRequests/{jitRequestName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -206,7 +198,7 @@ func (client *JitRequestsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter jitRequestName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jitRequestName}", url.PathEscape(jitRequestName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -218,46 +210,36 @@ func (client *JitRequestsClient) getCreateRequest(ctx context.Context, resourceG
 }
 
 // getHandleResponse handles the Get response.
-func (client *JitRequestsClient) getHandleResponse(resp *http.Response) (JitRequestsGetResponse, error) {
-	result := JitRequestsGetResponse{RawResponse: resp}
+func (client *JitRequestsClient) getHandleResponse(resp *http.Response) (JitRequestsClientGetResponse, error) {
+	result := JitRequestsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JitRequestDefinition); err != nil {
-		return JitRequestsGetResponse{}, runtime.NewResponseError(err, resp)
+		return JitRequestsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *JitRequestsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - Retrieves all JIT requests within the resource group.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *JitRequestsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, options *JitRequestsListByResourceGroupOptions) (JitRequestsListByResourceGroupResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// options - JitRequestsClientListByResourceGroupOptions contains the optional parameters for the JitRequestsClient.ListByResourceGroup
+// method.
+func (client *JitRequestsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, options *JitRequestsClientListByResourceGroupOptions) (JitRequestsClientListByResourceGroupResponse, error) {
 	req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 	if err != nil {
-		return JitRequestsListByResourceGroupResponse{}, err
+		return JitRequestsClientListByResourceGroupResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return JitRequestsListByResourceGroupResponse{}, err
+		return JitRequestsClientListByResourceGroupResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return JitRequestsListByResourceGroupResponse{}, client.listByResourceGroupHandleError(resp)
+		return JitRequestsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByResourceGroupHandleResponse(resp)
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *JitRequestsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *JitRequestsListByResourceGroupOptions) (*policy.Request, error) {
+func (client *JitRequestsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *JitRequestsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/jitRequests"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -267,7 +249,7 @@ func (client *JitRequestsClient) listByResourceGroupCreateRequest(ctx context.Co
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -279,52 +261,41 @@ func (client *JitRequestsClient) listByResourceGroupCreateRequest(ctx context.Co
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *JitRequestsClient) listByResourceGroupHandleResponse(resp *http.Response) (JitRequestsListByResourceGroupResponse, error) {
-	result := JitRequestsListByResourceGroupResponse{RawResponse: resp}
+func (client *JitRequestsClient) listByResourceGroupHandleResponse(resp *http.Response) (JitRequestsClientListByResourceGroupResponse, error) {
+	result := JitRequestsClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JitRequestDefinitionListResult); err != nil {
-		return JitRequestsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return JitRequestsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *JitRequestsClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListBySubscription - Retrieves all JIT requests within the subscription.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *JitRequestsClient) ListBySubscription(ctx context.Context, options *JitRequestsListBySubscriptionOptions) (JitRequestsListBySubscriptionResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - JitRequestsClientListBySubscriptionOptions contains the optional parameters for the JitRequestsClient.ListBySubscription
+// method.
+func (client *JitRequestsClient) ListBySubscription(ctx context.Context, options *JitRequestsClientListBySubscriptionOptions) (JitRequestsClientListBySubscriptionResponse, error) {
 	req, err := client.listBySubscriptionCreateRequest(ctx, options)
 	if err != nil {
-		return JitRequestsListBySubscriptionResponse{}, err
+		return JitRequestsClientListBySubscriptionResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return JitRequestsListBySubscriptionResponse{}, err
+		return JitRequestsClientListBySubscriptionResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return JitRequestsListBySubscriptionResponse{}, client.listBySubscriptionHandleError(resp)
+		return JitRequestsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listBySubscriptionHandleResponse(resp)
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *JitRequestsClient) listBySubscriptionCreateRequest(ctx context.Context, options *JitRequestsListBySubscriptionOptions) (*policy.Request, error) {
+func (client *JitRequestsClient) listBySubscriptionCreateRequest(ctx context.Context, options *JitRequestsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Solutions/jitRequests"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -336,46 +307,37 @@ func (client *JitRequestsClient) listBySubscriptionCreateRequest(ctx context.Con
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *JitRequestsClient) listBySubscriptionHandleResponse(resp *http.Response) (JitRequestsListBySubscriptionResponse, error) {
-	result := JitRequestsListBySubscriptionResponse{RawResponse: resp}
+func (client *JitRequestsClient) listBySubscriptionHandleResponse(resp *http.Response) (JitRequestsClientListBySubscriptionResponse, error) {
+	result := JitRequestsClientListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JitRequestDefinitionListResult); err != nil {
-		return JitRequestsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return JitRequestsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *JitRequestsClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Updates the JIT request.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *JitRequestsClient) Update(ctx context.Context, resourceGroupName string, jitRequestName string, parameters JitRequestPatchable, options *JitRequestsUpdateOptions) (JitRequestsUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// jitRequestName - The name of the JIT request.
+// parameters - Parameters supplied to the update JIT request.
+// options - JitRequestsClientUpdateOptions contains the optional parameters for the JitRequestsClient.Update method.
+func (client *JitRequestsClient) Update(ctx context.Context, resourceGroupName string, jitRequestName string, parameters JitRequestPatchable, options *JitRequestsClientUpdateOptions) (JitRequestsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, jitRequestName, parameters, options)
 	if err != nil {
-		return JitRequestsUpdateResponse{}, err
+		return JitRequestsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return JitRequestsUpdateResponse{}, err
+		return JitRequestsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return JitRequestsUpdateResponse{}, client.updateHandleError(resp)
+		return JitRequestsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *JitRequestsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, jitRequestName string, parameters JitRequestPatchable, options *JitRequestsUpdateOptions) (*policy.Request, error) {
+func (client *JitRequestsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, jitRequestName string, parameters JitRequestPatchable, options *JitRequestsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/jitRequests/{jitRequestName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -389,7 +351,7 @@ func (client *JitRequestsClient) updateCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter jitRequestName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jitRequestName}", url.PathEscape(jitRequestName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -401,23 +363,10 @@ func (client *JitRequestsClient) updateCreateRequest(ctx context.Context, resour
 }
 
 // updateHandleResponse handles the Update response.
-func (client *JitRequestsClient) updateHandleResponse(resp *http.Response) (JitRequestsUpdateResponse, error) {
-	result := JitRequestsUpdateResponse{RawResponse: resp}
+func (client *JitRequestsClient) updateHandleResponse(resp *http.Response) (JitRequestsClientUpdateResponse, error) {
+	result := JitRequestsClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JitRequestDefinition); err != nil {
-		return JitRequestsUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return JitRequestsClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *JitRequestsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

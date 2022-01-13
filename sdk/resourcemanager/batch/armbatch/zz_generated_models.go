@@ -15,6 +15,346 @@ import (
 	"time"
 )
 
+// Account - Contains information about an Azure Batch account.
+type Account struct {
+	// The identity of the Batch account.
+	Identity *AccountIdentity `json:"identity,omitempty"`
+
+	// The properties associated with the account.
+	Properties *AccountProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The ID of the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The location of the resource.
+	Location *string `json:"location,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The tags of the resource.
+	Tags map[string]*string `json:"tags,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Account.
+func (a Account) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "id", a.ID)
+	populate(objectMap, "identity", a.Identity)
+	populate(objectMap, "location", a.Location)
+	populate(objectMap, "name", a.Name)
+	populate(objectMap, "properties", a.Properties)
+	populate(objectMap, "tags", a.Tags)
+	populate(objectMap, "type", a.Type)
+	return json.Marshal(objectMap)
+}
+
+// AccountClientBeginCreateOptions contains the optional parameters for the AccountClient.BeginCreate method.
+type AccountClientBeginCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccountClientBeginDeleteOptions contains the optional parameters for the AccountClient.BeginDelete method.
+type AccountClientBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccountClientGetKeysOptions contains the optional parameters for the AccountClient.GetKeys method.
+type AccountClientGetKeysOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccountClientGetOptions contains the optional parameters for the AccountClient.Get method.
+type AccountClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccountClientListByResourceGroupOptions contains the optional parameters for the AccountClient.ListByResourceGroup method.
+type AccountClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccountClientListOptions contains the optional parameters for the AccountClient.List method.
+type AccountClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccountClientListOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the AccountClient.ListOutboundNetworkDependenciesEndpoints
+// method.
+type AccountClientListOutboundNetworkDependenciesEndpointsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccountClientRegenerateKeyOptions contains the optional parameters for the AccountClient.RegenerateKey method.
+type AccountClientRegenerateKeyOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccountClientSynchronizeAutoStorageKeysOptions contains the optional parameters for the AccountClient.SynchronizeAutoStorageKeys
+// method.
+type AccountClientSynchronizeAutoStorageKeysOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccountClientUpdateOptions contains the optional parameters for the AccountClient.Update method.
+type AccountClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccountCreateParameters - Parameters supplied to the Create operation.
+type AccountCreateParameters struct {
+	// REQUIRED; The region in which to create the account.
+	Location *string `json:"location,omitempty"`
+
+	// The identity of the Batch account.
+	Identity *AccountIdentity `json:"identity,omitempty"`
+
+	// The properties of the Batch account.
+	Properties *AccountCreateProperties `json:"properties,omitempty"`
+
+	// The user-specified tags associated with the account.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AccountCreateParameters.
+func (a AccountCreateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "identity", a.Identity)
+	populate(objectMap, "location", a.Location)
+	populate(objectMap, "properties", a.Properties)
+	populate(objectMap, "tags", a.Tags)
+	return json.Marshal(objectMap)
+}
+
+// AccountCreateProperties - The properties of a Batch account.
+type AccountCreateProperties struct {
+	// List of allowed authentication modes for the Batch account that can be used to authenticate with the data plane. This does
+	// not affect authentication with the control plane.
+	AllowedAuthenticationModes []*AuthenticationMode `json:"allowedAuthenticationModes,omitempty"`
+
+	// The properties related to the auto-storage account.
+	AutoStorage *AutoStorageBaseProperties `json:"autoStorage,omitempty"`
+
+	// Configures how customer data is encrypted inside the Batch account. By default, accounts are encrypted using a Microsoft
+	// managed key. For additional control, a customer-managed key can be used
+	// instead.
+	Encryption *EncryptionProperties `json:"encryption,omitempty"`
+
+	// A reference to the Azure key vault associated with the Batch account.
+	KeyVaultReference *KeyVaultReference `json:"keyVaultReference,omitempty"`
+
+	// The pool allocation mode also affects how clients may authenticate to the Batch Service API. If the mode is BatchService,
+	// clients may authenticate using access keys or Azure Active Directory. If the
+	// mode is UserSubscription, clients must use Azure Active Directory. The default is BatchService.
+	PoolAllocationMode *PoolAllocationMode `json:"poolAllocationMode,omitempty"`
+
+	// If not specified, the default value is 'enabled'.
+	PublicNetworkAccess *PublicNetworkAccessType `json:"publicNetworkAccess,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AccountCreateProperties.
+func (a AccountCreateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "allowedAuthenticationModes", a.AllowedAuthenticationModes)
+	populate(objectMap, "autoStorage", a.AutoStorage)
+	populate(objectMap, "encryption", a.Encryption)
+	populate(objectMap, "keyVaultReference", a.KeyVaultReference)
+	populate(objectMap, "poolAllocationMode", a.PoolAllocationMode)
+	populate(objectMap, "publicNetworkAccess", a.PublicNetworkAccess)
+	return json.Marshal(objectMap)
+}
+
+// AccountIdentity - The identity of the Batch account, if configured. This is used when the user specifies 'Microsoft.KeyVault'
+// as their Batch account encryption configuration or when ManagedIdentity is selected as the
+// auto-storage authentication mode.
+type AccountIdentity struct {
+	// REQUIRED; The type of identity used for the Batch account.
+	Type *ResourceIdentityType `json:"type,omitempty"`
+
+	// The list of user identities associated with the Batch account.
+	UserAssignedIdentities map[string]*UserAssignedIdentities `json:"userAssignedIdentities,omitempty"`
+
+	// READ-ONLY; The principal id of the Batch account. This property will only be provided for a system assigned identity.
+	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The tenant id associated with the Batch account. This property will only be provided for a system assigned identity.
+	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AccountIdentity.
+func (a AccountIdentity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "principalId", a.PrincipalID)
+	populate(objectMap, "tenantId", a.TenantID)
+	populate(objectMap, "type", a.Type)
+	populate(objectMap, "userAssignedIdentities", a.UserAssignedIdentities)
+	return json.Marshal(objectMap)
+}
+
+// AccountKeys - A set of Azure Batch account keys.
+type AccountKeys struct {
+	// READ-ONLY; The Batch account name.
+	AccountName *string `json:"accountName,omitempty" azure:"ro"`
+
+	// READ-ONLY; The primary key associated with the account.
+	Primary *string `json:"primary,omitempty" azure:"ro"`
+
+	// READ-ONLY; The secondary key associated with the account.
+	Secondary *string `json:"secondary,omitempty" azure:"ro"`
+}
+
+// AccountListResult - Values returned by the List operation.
+type AccountListResult struct {
+	// The continuation token.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// The collection of Batch accounts returned by the listing operation.
+	Value []*Account `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AccountListResult.
+func (a AccountListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", a.NextLink)
+	populate(objectMap, "value", a.Value)
+	return json.Marshal(objectMap)
+}
+
+// AccountProperties - Account specific properties.
+type AccountProperties struct {
+	// READ-ONLY; The account endpoint used to interact with the Batch service.
+	AccountEndpoint *string `json:"accountEndpoint,omitempty" azure:"ro"`
+
+	// READ-ONLY; The active job and job schedule quota for the Batch account.
+	ActiveJobAndJobScheduleQuota *int32 `json:"activeJobAndJobScheduleQuota,omitempty" azure:"ro"`
+
+	// READ-ONLY; List of allowed authentication modes for the Batch account that can be used to authenticate with the data plane.
+	// This does not affect authentication with the control plane.
+	AllowedAuthenticationModes []*AuthenticationMode `json:"allowedAuthenticationModes,omitempty" azure:"ro"`
+
+	// READ-ONLY; Contains information about the auto-storage account associated with a Batch account.
+	AutoStorage *AutoStorageProperties `json:"autoStorage,omitempty" azure:"ro"`
+
+	// READ-ONLY; For accounts with PoolAllocationMode set to UserSubscription, quota is managed on the subscription so this value
+	// is not returned.
+	DedicatedCoreQuota *int32 `json:"dedicatedCoreQuota,omitempty" azure:"ro"`
+
+	// READ-ONLY; A list of the dedicated core quota per Virtual Machine family for the Batch account. For accounts with PoolAllocationMode
+	// set to UserSubscription, quota is managed on the subscription so this value is
+	// not returned.
+	DedicatedCoreQuotaPerVMFamily []*VirtualMachineFamilyCoreQuota `json:"dedicatedCoreQuotaPerVMFamily,omitempty" azure:"ro"`
+
+	// READ-ONLY; Batch is transitioning its core quota system for dedicated cores to be enforced per Virtual Machine family.
+	// During this transitional phase, the dedicated core quota per Virtual Machine family may not
+	// yet be enforced. If this flag is false, dedicated core quota is enforced via the old dedicatedCoreQuota property on the
+	// account and does not consider Virtual Machine family. If this flag is true,
+	// dedicated core quota is enforced via the dedicatedCoreQuotaPerVMFamily property on the account, and the old dedicatedCoreQuota
+	// does not apply.
+	DedicatedCoreQuotaPerVMFamilyEnforced *bool `json:"dedicatedCoreQuotaPerVMFamilyEnforced,omitempty" azure:"ro"`
+
+	// READ-ONLY; Configures how customer data is encrypted inside the Batch account. By default, accounts are encrypted using
+	// a Microsoft managed key. For additional control, a customer-managed key can be used
+	// instead.
+	Encryption *EncryptionProperties `json:"encryption,omitempty" azure:"ro"`
+
+	// READ-ONLY; Identifies the Azure key vault associated with a Batch account.
+	KeyVaultReference *KeyVaultReference `json:"keyVaultReference,omitempty" azure:"ro"`
+
+	// READ-ONLY; For accounts with PoolAllocationMode set to UserSubscription, quota is managed on the subscription so this value
+	// is not returned.
+	LowPriorityCoreQuota *int32 `json:"lowPriorityCoreQuota,omitempty" azure:"ro"`
+
+	// READ-ONLY; The allocation mode for creating pools in the Batch account.
+	PoolAllocationMode *PoolAllocationMode `json:"poolAllocationMode,omitempty" azure:"ro"`
+
+	// READ-ONLY; The pool quota for the Batch account.
+	PoolQuota *int32 `json:"poolQuota,omitempty" azure:"ro"`
+
+	// READ-ONLY; List of private endpoint connections associated with the Batch account
+	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty" azure:"ro"`
+
+	// READ-ONLY; The provisioned state of the resource
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; If not specified, the default value is 'enabled'.
+	PublicNetworkAccess *PublicNetworkAccessType `json:"publicNetworkAccess,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AccountProperties.
+func (a AccountProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "accountEndpoint", a.AccountEndpoint)
+	populate(objectMap, "activeJobAndJobScheduleQuota", a.ActiveJobAndJobScheduleQuota)
+	populate(objectMap, "allowedAuthenticationModes", a.AllowedAuthenticationModes)
+	populate(objectMap, "autoStorage", a.AutoStorage)
+	populate(objectMap, "dedicatedCoreQuota", a.DedicatedCoreQuota)
+	populate(objectMap, "dedicatedCoreQuotaPerVMFamily", a.DedicatedCoreQuotaPerVMFamily)
+	populate(objectMap, "dedicatedCoreQuotaPerVMFamilyEnforced", a.DedicatedCoreQuotaPerVMFamilyEnforced)
+	populate(objectMap, "encryption", a.Encryption)
+	populate(objectMap, "keyVaultReference", a.KeyVaultReference)
+	populate(objectMap, "lowPriorityCoreQuota", a.LowPriorityCoreQuota)
+	populate(objectMap, "poolAllocationMode", a.PoolAllocationMode)
+	populate(objectMap, "poolQuota", a.PoolQuota)
+	populate(objectMap, "privateEndpointConnections", a.PrivateEndpointConnections)
+	populate(objectMap, "provisioningState", a.ProvisioningState)
+	populate(objectMap, "publicNetworkAccess", a.PublicNetworkAccess)
+	return json.Marshal(objectMap)
+}
+
+// AccountRegenerateKeyParameters - Parameters supplied to the RegenerateKey operation.
+type AccountRegenerateKeyParameters struct {
+	// REQUIRED; The type of account key to regenerate.
+	KeyName *AccountKeyType `json:"keyName,omitempty"`
+}
+
+// AccountUpdateParameters - Parameters for updating an Azure Batch account.
+type AccountUpdateParameters struct {
+	// The identity of the Batch account.
+	Identity *AccountIdentity `json:"identity,omitempty"`
+
+	// The properties of the account.
+	Properties *AccountUpdateProperties `json:"properties,omitempty"`
+
+	// The user-specified tags associated with the account.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AccountUpdateParameters.
+func (a AccountUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "identity", a.Identity)
+	populate(objectMap, "properties", a.Properties)
+	populate(objectMap, "tags", a.Tags)
+	return json.Marshal(objectMap)
+}
+
+// AccountUpdateProperties - The properties of a Batch account.
+type AccountUpdateProperties struct {
+	// List of allowed authentication modes for the Batch account that can be used to authenticate with the data plane. This does
+	// not affect authentication with the control plane.
+	AllowedAuthenticationModes []*AuthenticationMode `json:"allowedAuthenticationModes,omitempty"`
+
+	// The properties related to the auto-storage account.
+	AutoStorage *AutoStorageBaseProperties `json:"autoStorage,omitempty"`
+
+	// Configures how customer data is encrypted inside the Batch account. By default, accounts are encrypted using a Microsoft
+	// managed key. For additional control, a customer-managed key can be used
+	// instead.
+	Encryption *EncryptionProperties `json:"encryption,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AccountUpdateProperties.
+func (a AccountUpdateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "allowedAuthenticationModes", a.AllowedAuthenticationModes)
+	populate(objectMap, "autoStorage", a.AutoStorage)
+	populate(objectMap, "encryption", a.Encryption)
+	return json.Marshal(objectMap)
+}
+
 // ActivateApplicationPackageParameters - Parameters for an activating an application package.
 type ActivateApplicationPackageParameters struct {
 	// REQUIRED; The format of the application package binary file.
@@ -23,79 +363,101 @@ type ActivateApplicationPackageParameters struct {
 
 // Application - Contains information about an application in a Batch account.
 type Application struct {
-	ProxyResource
 	// The properties associated with the Application.
 	Properties *ApplicationProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The ETag of the resource, used for concurrency statements.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
+
+	// READ-ONLY; The ID of the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Application.
 func (a Application) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.ProxyResource.marshalInternal(objectMap)
+	populate(objectMap, "etag", a.Etag)
+	populate(objectMap, "id", a.ID)
+	populate(objectMap, "name", a.Name)
 	populate(objectMap, "properties", a.Properties)
+	populate(objectMap, "type", a.Type)
 	return json.Marshal(objectMap)
 }
 
-// ApplicationCreateOptions contains the optional parameters for the Application.Create method.
-type ApplicationCreateOptions struct {
+// ApplicationClientCreateOptions contains the optional parameters for the ApplicationClient.Create method.
+type ApplicationClientCreateOptions struct {
 	// The parameters for the request.
 	Parameters *Application
 }
 
-// ApplicationDeleteOptions contains the optional parameters for the Application.Delete method.
-type ApplicationDeleteOptions struct {
+// ApplicationClientDeleteOptions contains the optional parameters for the ApplicationClient.Delete method.
+type ApplicationClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationGetOptions contains the optional parameters for the Application.Get method.
-type ApplicationGetOptions struct {
+// ApplicationClientGetOptions contains the optional parameters for the ApplicationClient.Get method.
+type ApplicationClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationListOptions contains the optional parameters for the Application.List method.
-type ApplicationListOptions struct {
+// ApplicationClientListOptions contains the optional parameters for the ApplicationClient.List method.
+type ApplicationClientListOptions struct {
 	// The maximum number of items to return in the response.
 	Maxresults *int32
 }
 
-// ApplicationPackage - An application package which represents a particular version of an application.
-type ApplicationPackage struct {
-	ProxyResource
-	// The properties associated with the Application Package.
-	Properties *ApplicationPackageProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ApplicationPackage.
-func (a ApplicationPackage) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
-}
-
-// ApplicationPackageActivateOptions contains the optional parameters for the ApplicationPackage.Activate method.
-type ApplicationPackageActivateOptions struct {
+// ApplicationClientUpdateOptions contains the optional parameters for the ApplicationClient.Update method.
+type ApplicationClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationPackageCreateOptions contains the optional parameters for the ApplicationPackage.Create method.
-type ApplicationPackageCreateOptions struct {
+// ApplicationPackage - An application package which represents a particular version of an application.
+type ApplicationPackage struct {
+	// The properties associated with the Application Package.
+	Properties *ApplicationPackageProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The ETag of the resource, used for concurrency statements.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
+
+	// READ-ONLY; The ID of the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ApplicationPackageClientActivateOptions contains the optional parameters for the ApplicationPackageClient.Activate method.
+type ApplicationPackageClientActivateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ApplicationPackageClientCreateOptions contains the optional parameters for the ApplicationPackageClient.Create method.
+type ApplicationPackageClientCreateOptions struct {
 	// The parameters for the request.
 	Parameters *ApplicationPackage
 }
 
-// ApplicationPackageDeleteOptions contains the optional parameters for the ApplicationPackage.Delete method.
-type ApplicationPackageDeleteOptions struct {
+// ApplicationPackageClientDeleteOptions contains the optional parameters for the ApplicationPackageClient.Delete method.
+type ApplicationPackageClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationPackageGetOptions contains the optional parameters for the ApplicationPackage.Get method.
-type ApplicationPackageGetOptions struct {
+// ApplicationPackageClientGetOptions contains the optional parameters for the ApplicationPackageClient.Get method.
+type ApplicationPackageClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationPackageListOptions contains the optional parameters for the ApplicationPackage.List method.
-type ApplicationPackageListOptions struct {
+// ApplicationPackageClientListOptions contains the optional parameters for the ApplicationPackageClient.List method.
+type ApplicationPackageClientListOptions struct {
 	// The maximum number of items to return in the response.
 	Maxresults *int32
 }
@@ -163,8 +525,8 @@ func (a *ApplicationPackageProperties) UnmarshalJSON(data []byte) error {
 
 // ApplicationPackageReference - Link to an application package inside the batch account
 type ApplicationPackageReference struct {
-	// REQUIRED; The ID of the application package to install. This must be inside the same batch account as the pool. This can either be a reference to a specific
-	// version or the default version if one exists.
+	// REQUIRED; The ID of the application package to install. This must be inside the same batch account as the pool. This can
+	// either be a reference to a specific version or the default version if one exists.
 	ID *string `json:"id,omitempty"`
 
 	// If this is omitted, and no default version is specified for this application, the request fails with the error code InvalidApplicationPackageReferences.
@@ -178,16 +540,12 @@ type ApplicationProperties struct {
 	// A value indicating whether packages within the application may be overwritten using the same version string.
 	AllowUpdates *bool `json:"allowUpdates,omitempty"`
 
-	// The package to use if a client requests the application but does not specify a version. This property can only be set to the name of an existing package.
+	// The package to use if a client requests the application but does not specify a version. This property can only be set to
+	// the name of an existing package.
 	DefaultVersion *string `json:"defaultVersion,omitempty"`
 
 	// The display name for the application.
 	DisplayName *string `json:"displayName,omitempty"`
-}
-
-// ApplicationUpdateOptions contains the optional parameters for the Application.Update method.
-type ApplicationUpdateOptions struct {
-	// placeholder for future optional parameters
 }
 
 // AutoScaleRun - The results and errors from an execution of a pool autoscale formula.
@@ -279,34 +637,45 @@ type AutoStorageBaseProperties struct {
 	NodeIdentityReference *ComputeNodeIdentityReference `json:"nodeIdentityReference,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AutoStorageBaseProperties.
-func (a AutoStorageBaseProperties) MarshalJSON() ([]byte, error) {
+// AutoStorageProperties - Contains information about the auto-storage account associated with a Batch account.
+type AutoStorageProperties struct {
+	// REQUIRED; The UTC time at which storage keys were last synchronized with the Batch account.
+	LastKeySync *time.Time `json:"lastKeySync,omitempty"`
+
+	// REQUIRED; The resource ID of the storage account to be used for auto-storage account.
+	StorageAccountID *string `json:"storageAccountId,omitempty"`
+
+	// The authentication mode which the Batch service will use to manage the auto-storage account.
+	AuthenticationMode *AutoStorageAuthenticationMode `json:"authenticationMode,omitempty"`
+
+	// The identity referenced here must be assigned to pools which have compute nodes that need access to auto-storage.
+	NodeIdentityReference *ComputeNodeIdentityReference `json:"nodeIdentityReference,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AutoStorageProperties.
+func (a AutoStorageProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.marshalInternal(objectMap)
+	populate(objectMap, "authenticationMode", a.AuthenticationMode)
+	populateTimeRFC3339(objectMap, "lastKeySync", a.LastKeySync)
+	populate(objectMap, "nodeIdentityReference", a.NodeIdentityReference)
+	populate(objectMap, "storageAccountId", a.StorageAccountID)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AutoStorageBaseProperties.
-func (a *AutoStorageBaseProperties) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type AutoStorageProperties.
+func (a *AutoStorageProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	return a.unmarshalInternal(rawMsg)
-}
-
-func (a AutoStorageBaseProperties) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "authenticationMode", a.AuthenticationMode)
-	populate(objectMap, "nodeIdentityReference", a.NodeIdentityReference)
-	populate(objectMap, "storageAccountId", a.StorageAccountID)
-}
-
-func (a *AutoStorageBaseProperties) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "authenticationMode":
 			err = unpopulate(val, &a.AuthenticationMode)
+			delete(rawMsg, key)
+		case "lastKeySync":
+			err = unpopulateTimeRFC3339(val, &a.LastKeySync)
 			delete(rawMsg, key)
 		case "nodeIdentityReference":
 			err = unpopulate(val, &a.NodeIdentityReference)
@@ -322,53 +691,15 @@ func (a *AutoStorageBaseProperties) unmarshalInternal(rawMsg map[string]json.Raw
 	return nil
 }
 
-// AutoStorageProperties - Contains information about the auto-storage account associated with a Batch account.
-type AutoStorageProperties struct {
-	AutoStorageBaseProperties
-	// REQUIRED; The UTC time at which storage keys were last synchronized with the Batch account.
-	LastKeySync *time.Time `json:"lastKeySync,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AutoStorageProperties.
-func (a AutoStorageProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.AutoStorageBaseProperties.marshalInternal(objectMap)
-	populateTimeRFC3339(objectMap, "lastKeySync", a.LastKeySync)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AutoStorageProperties.
-func (a *AutoStorageProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "lastKeySync":
-			err = unpopulateTimeRFC3339(val, &a.LastKeySync)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := a.AutoStorageBaseProperties.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
 // AutoUserSpecification - Specifies the parameters for the auto user that runs a task on the Batch service.
 type AutoUserSpecification struct {
 	// The default value is nonAdmin.
 	ElevationLevel *ElevationLevel `json:"elevationLevel,omitempty"`
 
-	// The default value is Pool. If the pool is running Windows a value of Task should be specified if stricter isolation between tasks is required. For example,
-	// if the task mutates the registry in a way
-	// which could impact other tasks, or if certificates have been specified on the pool which should not be accessible by normal tasks but should be accessible
-	// by start tasks.
+	// The default value is Pool. If the pool is running Windows a value of Task should be specified if stricter isolation between
+	// tasks is required. For example, if the task mutates the registry in a way
+	// which could impact other tasks, or if certificates have been specified on the pool which should not be accessible by normal
+	// tasks but should be accessible by start tasks.
 	Scope *AutoUserScope `json:"scope,omitempty"`
 }
 
@@ -380,7 +711,8 @@ type AzureBlobFileSystemConfiguration struct {
 	// REQUIRED; The Azure Blob Storage Container name.
 	ContainerName *string `json:"containerName,omitempty"`
 
-	// REQUIRED; All file systems are mounted relative to the Batch mounts directory, accessible via the AZBATCHNODEMOUNTSDIR environment variable.
+	// REQUIRED; All file systems are mounted relative to the Batch mounts directory, accessible via the AZBATCHNODEMOUNTSDIR
+	// environment variable.
 	RelativeMountPath *string `json:"relativeMountPath,omitempty"`
 
 	// This property is mutually exclusive with both sasKey and identity; exactly one must be specified.
@@ -407,354 +739,12 @@ type AzureFileShareConfiguration struct {
 	// REQUIRED; This is of the form 'https://{account}.file.core.windows.net/'.
 	AzureFileURL *string `json:"azureFileUrl,omitempty"`
 
-	// REQUIRED; All file systems are mounted relative to the Batch mounts directory, accessible via the AZBATCHNODEMOUNTSDIR environment variable.
+	// REQUIRED; All file systems are mounted relative to the Batch mounts directory, accessible via the AZBATCHNODEMOUNTSDIR
+	// environment variable.
 	RelativeMountPath *string `json:"relativeMountPath,omitempty"`
 
 	// These are 'net use' options in Windows and 'mount' options in Linux.
 	MountOptions *string `json:"mountOptions,omitempty"`
-}
-
-// BatchAccount - Contains information about an Azure Batch account.
-type BatchAccount struct {
-	Resource
-	// The identity of the Batch account.
-	Identity *BatchAccountIdentity `json:"identity,omitempty"`
-
-	// The properties associated with the account.
-	Properties *BatchAccountProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BatchAccount.
-func (b BatchAccount) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	b.Resource.marshalInternal(objectMap)
-	populate(objectMap, "identity", b.Identity)
-	populate(objectMap, "properties", b.Properties)
-	return json.Marshal(objectMap)
-}
-
-// BatchAccountBeginCreateOptions contains the optional parameters for the BatchAccount.BeginCreate method.
-type BatchAccountBeginCreateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BatchAccountBeginDeleteOptions contains the optional parameters for the BatchAccount.BeginDelete method.
-type BatchAccountBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BatchAccountCreateParameters - Parameters supplied to the Create operation.
-type BatchAccountCreateParameters struct {
-	// REQUIRED; The region in which to create the account.
-	Location *string `json:"location,omitempty"`
-
-	// The identity of the Batch account.
-	Identity *BatchAccountIdentity `json:"identity,omitempty"`
-
-	// The properties of the Batch account.
-	Properties *BatchAccountCreateProperties `json:"properties,omitempty"`
-
-	// The user-specified tags associated with the account.
-	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BatchAccountCreateParameters.
-func (b BatchAccountCreateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "identity", b.Identity)
-	populate(objectMap, "location", b.Location)
-	populate(objectMap, "properties", b.Properties)
-	populate(objectMap, "tags", b.Tags)
-	return json.Marshal(objectMap)
-}
-
-// BatchAccountCreateProperties - The properties of a Batch account.
-type BatchAccountCreateProperties struct {
-	// List of allowed authentication modes for the Batch account that can be used to authenticate with the data plane. This does not affect authentication
-	// with the control plane.
-	AllowedAuthenticationModes []*AuthenticationMode `json:"allowedAuthenticationModes,omitempty"`
-
-	// The properties related to the auto-storage account.
-	AutoStorage *AutoStorageBaseProperties `json:"autoStorage,omitempty"`
-
-	// Configures how customer data is encrypted inside the Batch account. By default, accounts are encrypted using a Microsoft managed key. For additional
-	// control, a customer-managed key can be used
-	// instead.
-	Encryption *EncryptionProperties `json:"encryption,omitempty"`
-
-	// A reference to the Azure key vault associated with the Batch account.
-	KeyVaultReference *KeyVaultReference `json:"keyVaultReference,omitempty"`
-
-	// The pool allocation mode also affects how clients may authenticate to the Batch Service API. If the mode is BatchService, clients may authenticate using
-	// access keys or Azure Active Directory. If the
-	// mode is UserSubscription, clients must use Azure Active Directory. The default is BatchService.
-	PoolAllocationMode *PoolAllocationMode `json:"poolAllocationMode,omitempty"`
-
-	// If not specified, the default value is 'enabled'.
-	PublicNetworkAccess *PublicNetworkAccessType `json:"publicNetworkAccess,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BatchAccountCreateProperties.
-func (b BatchAccountCreateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "allowedAuthenticationModes", b.AllowedAuthenticationModes)
-	populate(objectMap, "autoStorage", b.AutoStorage)
-	populate(objectMap, "encryption", b.Encryption)
-	populate(objectMap, "keyVaultReference", b.KeyVaultReference)
-	populate(objectMap, "poolAllocationMode", b.PoolAllocationMode)
-	populate(objectMap, "publicNetworkAccess", b.PublicNetworkAccess)
-	return json.Marshal(objectMap)
-}
-
-// BatchAccountGetKeysOptions contains the optional parameters for the BatchAccount.GetKeys method.
-type BatchAccountGetKeysOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BatchAccountGetOptions contains the optional parameters for the BatchAccount.Get method.
-type BatchAccountGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BatchAccountIdentity - The identity of the Batch account, if configured. This is used when the user specifies 'Microsoft.KeyVault' as their Batch account
-// encryption configuration or when ManagedIdentity is selected as the
-// auto-storage authentication mode.
-type BatchAccountIdentity struct {
-	// REQUIRED; The type of identity used for the Batch account.
-	Type *ResourceIdentityType `json:"type,omitempty"`
-
-	// The list of user identities associated with the Batch account.
-	UserAssignedIdentities map[string]*UserAssignedIdentities `json:"userAssignedIdentities,omitempty"`
-
-	// READ-ONLY; The principal id of the Batch account. This property will only be provided for a system assigned identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
-
-	// READ-ONLY; The tenant id associated with the Batch account. This property will only be provided for a system assigned identity.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BatchAccountIdentity.
-func (b BatchAccountIdentity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "principalId", b.PrincipalID)
-	populate(objectMap, "tenantId", b.TenantID)
-	populate(objectMap, "type", b.Type)
-	populate(objectMap, "userAssignedIdentities", b.UserAssignedIdentities)
-	return json.Marshal(objectMap)
-}
-
-// BatchAccountKeys - A set of Azure Batch account keys.
-type BatchAccountKeys struct {
-	// READ-ONLY; The Batch account name.
-	AccountName *string `json:"accountName,omitempty" azure:"ro"`
-
-	// READ-ONLY; The primary key associated with the account.
-	Primary *string `json:"primary,omitempty" azure:"ro"`
-
-	// READ-ONLY; The secondary key associated with the account.
-	Secondary *string `json:"secondary,omitempty" azure:"ro"`
-}
-
-// BatchAccountListByResourceGroupOptions contains the optional parameters for the BatchAccount.ListByResourceGroup method.
-type BatchAccountListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BatchAccountListOptions contains the optional parameters for the BatchAccount.List method.
-type BatchAccountListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BatchAccountListOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the BatchAccount.ListOutboundNetworkDependenciesEndpoints
-// method.
-type BatchAccountListOutboundNetworkDependenciesEndpointsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BatchAccountListResult - Values returned by the List operation.
-type BatchAccountListResult struct {
-	// The continuation token.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// The collection of Batch accounts returned by the listing operation.
-	Value []*BatchAccount `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BatchAccountListResult.
-func (b BatchAccountListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", b.NextLink)
-	populate(objectMap, "value", b.Value)
-	return json.Marshal(objectMap)
-}
-
-// BatchAccountProperties - Account specific properties.
-type BatchAccountProperties struct {
-	// READ-ONLY; The account endpoint used to interact with the Batch service.
-	AccountEndpoint *string `json:"accountEndpoint,omitempty" azure:"ro"`
-
-	// READ-ONLY; The active job and job schedule quota for the Batch account.
-	ActiveJobAndJobScheduleQuota *int32 `json:"activeJobAndJobScheduleQuota,omitempty" azure:"ro"`
-
-	// READ-ONLY; List of allowed authentication modes for the Batch account that can be used to authenticate with the data plane. This does not affect authentication
-	// with the control plane.
-	AllowedAuthenticationModes []*AuthenticationMode `json:"allowedAuthenticationModes,omitempty" azure:"ro"`
-
-	// READ-ONLY; Contains information about the auto-storage account associated with a Batch account.
-	AutoStorage *AutoStorageProperties `json:"autoStorage,omitempty" azure:"ro"`
-
-	// READ-ONLY; For accounts with PoolAllocationMode set to UserSubscription, quota is managed on the subscription so this value is not returned.
-	DedicatedCoreQuota *int32 `json:"dedicatedCoreQuota,omitempty" azure:"ro"`
-
-	// READ-ONLY; A list of the dedicated core quota per Virtual Machine family for the Batch account. For accounts with PoolAllocationMode set to UserSubscription,
-	// quota is managed on the subscription so this value is
-	// not returned.
-	DedicatedCoreQuotaPerVMFamily []*VirtualMachineFamilyCoreQuota `json:"dedicatedCoreQuotaPerVMFamily,omitempty" azure:"ro"`
-
-	// READ-ONLY; Batch is transitioning its core quota system for dedicated cores to be enforced per Virtual Machine family. During this transitional phase,
-	// the dedicated core quota per Virtual Machine family may not
-	// yet be enforced. If this flag is false, dedicated core quota is enforced via the old dedicatedCoreQuota property on the account and does not consider
-	// Virtual Machine family. If this flag is true,
-	// dedicated core quota is enforced via the dedicatedCoreQuotaPerVMFamily property on the account, and the old dedicatedCoreQuota does not apply.
-	DedicatedCoreQuotaPerVMFamilyEnforced *bool `json:"dedicatedCoreQuotaPerVMFamilyEnforced,omitempty" azure:"ro"`
-
-	// READ-ONLY; Configures how customer data is encrypted inside the Batch account. By default, accounts are encrypted using a Microsoft managed key. For
-	// additional control, a customer-managed key can be used
-	// instead.
-	Encryption *EncryptionProperties `json:"encryption,omitempty" azure:"ro"`
-
-	// READ-ONLY; Identifies the Azure key vault associated with a Batch account.
-	KeyVaultReference *KeyVaultReference `json:"keyVaultReference,omitempty" azure:"ro"`
-
-	// READ-ONLY; For accounts with PoolAllocationMode set to UserSubscription, quota is managed on the subscription so this value is not returned.
-	LowPriorityCoreQuota *int32 `json:"lowPriorityCoreQuota,omitempty" azure:"ro"`
-
-	// READ-ONLY; The allocation mode for creating pools in the Batch account.
-	PoolAllocationMode *PoolAllocationMode `json:"poolAllocationMode,omitempty" azure:"ro"`
-
-	// READ-ONLY; The pool quota for the Batch account.
-	PoolQuota *int32 `json:"poolQuota,omitempty" azure:"ro"`
-
-	// READ-ONLY; List of private endpoint connections associated with the Batch account
-	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty" azure:"ro"`
-
-	// READ-ONLY; The provisioned state of the resource
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-
-	// READ-ONLY; If not specified, the default value is 'enabled'.
-	PublicNetworkAccess *PublicNetworkAccessType `json:"publicNetworkAccess,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BatchAccountProperties.
-func (b BatchAccountProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "accountEndpoint", b.AccountEndpoint)
-	populate(objectMap, "activeJobAndJobScheduleQuota", b.ActiveJobAndJobScheduleQuota)
-	populate(objectMap, "allowedAuthenticationModes", b.AllowedAuthenticationModes)
-	populate(objectMap, "autoStorage", b.AutoStorage)
-	populate(objectMap, "dedicatedCoreQuota", b.DedicatedCoreQuota)
-	populate(objectMap, "dedicatedCoreQuotaPerVMFamily", b.DedicatedCoreQuotaPerVMFamily)
-	populate(objectMap, "dedicatedCoreQuotaPerVMFamilyEnforced", b.DedicatedCoreQuotaPerVMFamilyEnforced)
-	populate(objectMap, "encryption", b.Encryption)
-	populate(objectMap, "keyVaultReference", b.KeyVaultReference)
-	populate(objectMap, "lowPriorityCoreQuota", b.LowPriorityCoreQuota)
-	populate(objectMap, "poolAllocationMode", b.PoolAllocationMode)
-	populate(objectMap, "poolQuota", b.PoolQuota)
-	populate(objectMap, "privateEndpointConnections", b.PrivateEndpointConnections)
-	populate(objectMap, "provisioningState", b.ProvisioningState)
-	populate(objectMap, "publicNetworkAccess", b.PublicNetworkAccess)
-	return json.Marshal(objectMap)
-}
-
-// BatchAccountRegenerateKeyOptions contains the optional parameters for the BatchAccount.RegenerateKey method.
-type BatchAccountRegenerateKeyOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BatchAccountRegenerateKeyParameters - Parameters supplied to the RegenerateKey operation.
-type BatchAccountRegenerateKeyParameters struct {
-	// REQUIRED; The type of account key to regenerate.
-	KeyName *AccountKeyType `json:"keyName,omitempty"`
-}
-
-// BatchAccountSynchronizeAutoStorageKeysOptions contains the optional parameters for the BatchAccount.SynchronizeAutoStorageKeys method.
-type BatchAccountSynchronizeAutoStorageKeysOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BatchAccountUpdateOptions contains the optional parameters for the BatchAccount.Update method.
-type BatchAccountUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BatchAccountUpdateParameters - Parameters for updating an Azure Batch account.
-type BatchAccountUpdateParameters struct {
-	// The identity of the Batch account.
-	Identity *BatchAccountIdentity `json:"identity,omitempty"`
-
-	// The properties of the account.
-	Properties *BatchAccountUpdateProperties `json:"properties,omitempty"`
-
-	// The user-specified tags associated with the account.
-	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BatchAccountUpdateParameters.
-func (b BatchAccountUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "identity", b.Identity)
-	populate(objectMap, "properties", b.Properties)
-	populate(objectMap, "tags", b.Tags)
-	return json.Marshal(objectMap)
-}
-
-// BatchAccountUpdateProperties - The properties of a Batch account.
-type BatchAccountUpdateProperties struct {
-	// List of allowed authentication modes for the Batch account that can be used to authenticate with the data plane. This does not affect authentication
-	// with the control plane.
-	AllowedAuthenticationModes []*AuthenticationMode `json:"allowedAuthenticationModes,omitempty"`
-
-	// The properties related to the auto-storage account.
-	AutoStorage *AutoStorageBaseProperties `json:"autoStorage,omitempty"`
-
-	// Configures how customer data is encrypted inside the Batch account. By default, accounts are encrypted using a Microsoft managed key. For additional
-	// control, a customer-managed key can be used
-	// instead.
-	Encryption *EncryptionProperties `json:"encryption,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BatchAccountUpdateProperties.
-func (b BatchAccountUpdateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "allowedAuthenticationModes", b.AllowedAuthenticationModes)
-	populate(objectMap, "autoStorage", b.AutoStorage)
-	populate(objectMap, "encryption", b.Encryption)
-	return json.Marshal(objectMap)
-}
-
-// BatchLocationQuota - Quotas associated with a Batch region for a particular subscription.
-type BatchLocationQuota struct {
-	// READ-ONLY; The number of Batch accounts that may be created under the subscription in the specified region.
-	AccountQuota *int32 `json:"accountQuota,omitempty" azure:"ro"`
-}
-
-// BatchPoolIdentity - The identity of the Batch pool, if configured. If the pool identity is updated during update an existing pool, only the new vms which
-// are created after the pool shrinks to 0 will have the updated
-// identities
-type BatchPoolIdentity struct {
-	// REQUIRED; The type of identity used for the Batch Pool.
-	Type *PoolIdentityType `json:"type,omitempty"`
-
-	// The list of user identities associated with the Batch pool.
-	UserAssignedIdentities map[string]*UserAssignedIdentities `json:"userAssignedIdentities,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BatchPoolIdentity.
-func (b BatchPoolIdentity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "type", b.Type)
-	populate(objectMap, "userAssignedIdentities", b.UserAssignedIdentities)
-	return json.Marshal(objectMap)
 }
 
 // CIFSMountConfiguration - Information used to connect to a CIFS file system.
@@ -762,7 +752,8 @@ type CIFSMountConfiguration struct {
 	// REQUIRED; The password to use for authentication against the CIFS file system.
 	Password *string `json:"password,omitempty"`
 
-	// REQUIRED; All file systems are mounted relative to the Batch mounts directory, accessible via the AZBATCHNODEMOUNTSDIR environment variable.
+	// REQUIRED; All file systems are mounted relative to the Batch mounts directory, accessible via the AZBATCHNODEMOUNTSDIR
+	// environment variable.
 	RelativeMountPath *string `json:"relativeMountPath,omitempty"`
 
 	// REQUIRED; The URI of the file system to mount.
@@ -777,17 +768,20 @@ type CIFSMountConfiguration struct {
 
 // Certificate - Contains information about a certificate.
 type Certificate struct {
-	ProxyResource
 	// The properties associated with the certificate.
 	Properties *CertificateProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type Certificate.
-func (c Certificate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	c.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", c.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; The ETag of the resource, used for concurrency statements.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
+
+	// READ-ONLY; The ID of the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // CertificateBaseProperties - Base certificate properties.
@@ -802,147 +796,110 @@ type CertificateBaseProperties struct {
 	ThumbprintAlgorithm *string `json:"thumbprintAlgorithm,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CertificateBaseProperties.
-func (c CertificateBaseProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	c.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type CertificateBaseProperties.
-func (c *CertificateBaseProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return c.unmarshalInternal(rawMsg)
-}
-
-func (c CertificateBaseProperties) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "format", c.Format)
-	populate(objectMap, "thumbprint", c.Thumbprint)
-	populate(objectMap, "thumbprintAlgorithm", c.ThumbprintAlgorithm)
-}
-
-func (c *CertificateBaseProperties) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "format":
-			err = unpopulate(val, &c.Format)
-			delete(rawMsg, key)
-		case "thumbprint":
-			err = unpopulate(val, &c.Thumbprint)
-			delete(rawMsg, key)
-		case "thumbprintAlgorithm":
-			err = unpopulate(val, &c.ThumbprintAlgorithm)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// CertificateBeginDeleteOptions contains the optional parameters for the Certificate.BeginDelete method.
-type CertificateBeginDeleteOptions struct {
+// CertificateClientBeginDeleteOptions contains the optional parameters for the CertificateClient.BeginDelete method.
+type CertificateClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CertificateCancelDeletionOptions contains the optional parameters for the Certificate.CancelDeletion method.
-type CertificateCancelDeletionOptions struct {
+// CertificateClientCancelDeletionOptions contains the optional parameters for the CertificateClient.CancelDeletion method.
+type CertificateClientCancelDeletionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CertificateCreateOptions contains the optional parameters for the Certificate.Create method.
-type CertificateCreateOptions struct {
-	// The entity state (ETag) version of the certificate to update. A value of "*" can be used to apply the operation only if the certificate already exists.
-	// If omitted, this operation will always be applied.
+// CertificateClientCreateOptions contains the optional parameters for the CertificateClient.Create method.
+type CertificateClientCreateOptions struct {
+	// The entity state (ETag) version of the certificate to update. A value of "*" can be used to apply the operation only if
+	// the certificate already exists. If omitted, this operation will always be
+	// applied.
 	IfMatch *string
-	// Set to '*' to allow a new certificate to be created, but to prevent updating an existing certificate. Other values will be ignored.
+	// Set to '*' to allow a new certificate to be created, but to prevent updating an existing certificate. Other values will
+	// be ignored.
 	IfNoneMatch *string
+}
+
+// CertificateClientGetOptions contains the optional parameters for the CertificateClient.Get method.
+type CertificateClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CertificateClientListByBatchAccountOptions contains the optional parameters for the CertificateClient.ListByBatchAccount
+// method.
+type CertificateClientListByBatchAccountOptions struct {
+	// OData filter expression. Valid properties for filtering are "properties/provisioningState", "properties/provisioningStateTransitionTime",
+	// "name".
+	Filter *string
+	// The maximum number of items to return in the response.
+	Maxresults *int32
+	// Comma separated list of properties that should be returned. e.g. "properties/provisioningState". Only top level properties
+	// under properties/ are valid for selection.
+	Select *string
+}
+
+// CertificateClientUpdateOptions contains the optional parameters for the CertificateClient.Update method.
+type CertificateClientUpdateOptions struct {
+	// The entity state (ETag) version of the certificate to update. This value can be omitted or set to "*" to apply the operation
+	// unconditionally.
+	IfMatch *string
 }
 
 // CertificateCreateOrUpdateParameters - Contains information about a certificate.
 type CertificateCreateOrUpdateParameters struct {
-	ProxyResource
 	// The properties associated with the certificate.
 	Properties *CertificateCreateOrUpdateProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The ETag of the resource, used for concurrency statements.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
+
+	// READ-ONLY; The ID of the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type CertificateCreateOrUpdateParameters.
 func (c CertificateCreateOrUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.ProxyResource.marshalInternal(objectMap)
+	populate(objectMap, "etag", c.Etag)
+	populate(objectMap, "id", c.ID)
+	populate(objectMap, "name", c.Name)
 	populate(objectMap, "properties", c.Properties)
+	populate(objectMap, "type", c.Type)
 	return json.Marshal(objectMap)
 }
 
 // CertificateCreateOrUpdateProperties - Certificate properties for create operations
 type CertificateCreateOrUpdateProperties struct {
-	CertificateBaseProperties
 	// REQUIRED; The maximum size is 10KB.
 	Data *string `json:"data,omitempty"`
 
+	// The format of the certificate - either Pfx or Cer. If omitted, the default is Pfx.
+	Format *CertificateFormat `json:"format,omitempty"`
+
 	// This must not be specified if the certificate format is Cer.
 	Password *string `json:"password,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type CertificateCreateOrUpdateProperties.
-func (c CertificateCreateOrUpdateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	c.CertificateBaseProperties.marshalInternal(objectMap)
-	populate(objectMap, "data", c.Data)
-	populate(objectMap, "password", c.Password)
-	return json.Marshal(objectMap)
-}
+	// This must match the thumbprint from the name.
+	Thumbprint *string `json:"thumbprint,omitempty"`
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type CertificateCreateOrUpdateProperties.
-func (c *CertificateCreateOrUpdateProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "data":
-			err = unpopulate(val, &c.Data)
-			delete(rawMsg, key)
-		case "password":
-			err = unpopulate(val, &c.Password)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := c.CertificateBaseProperties.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// CertificateGetOptions contains the optional parameters for the Certificate.Get method.
-type CertificateGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CertificateListByBatchAccountOptions contains the optional parameters for the Certificate.ListByBatchAccount method.
-type CertificateListByBatchAccountOptions struct {
-	// OData filter expression. Valid properties for filtering are "properties/provisioningState", "properties/provisioningStateTransitionTime", "name".
-	Filter *string
-	// The maximum number of items to return in the response.
-	Maxresults *int32
-	// Comma separated list of properties that should be returned. e.g. "properties/provisioningState". Only top level properties under properties/ are valid
-	// for selection.
-	Select *string
+	// This must match the first portion of the certificate name. Currently required to be 'SHA1'.
+	ThumbprintAlgorithm *string `json:"thumbprintAlgorithm,omitempty"`
 }
 
 // CertificateProperties - Certificate properties.
 type CertificateProperties struct {
-	CertificateBaseProperties
+	// The format of the certificate - either Pfx or Cer. If omitted, the default is Pfx.
+	Format *CertificateFormat `json:"format,omitempty"`
+
+	// This must match the thumbprint from the name.
+	Thumbprint *string `json:"thumbprint,omitempty"`
+
+	// This must match the first portion of the certificate name. Currently required to be 'SHA1'.
+	ThumbprintAlgorithm *string `json:"thumbprintAlgorithm,omitempty"`
+
 	// READ-ONLY; This is only returned when the certificate provisioningState is 'Failed'.
 	DeleteCertificateError *DeleteCertificateError `json:"deleteCertificateError,omitempty" azure:"ro"`
 
@@ -965,13 +922,15 @@ type CertificateProperties struct {
 // MarshalJSON implements the json.Marshaller interface for type CertificateProperties.
 func (c CertificateProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.CertificateBaseProperties.marshalInternal(objectMap)
 	populate(objectMap, "deleteCertificateError", c.DeleteCertificateError)
+	populate(objectMap, "format", c.Format)
 	populate(objectMap, "previousProvisioningState", c.PreviousProvisioningState)
 	populateTimeRFC3339(objectMap, "previousProvisioningStateTransitionTime", c.PreviousProvisioningStateTransitionTime)
 	populate(objectMap, "provisioningState", c.ProvisioningState)
 	populateTimeRFC3339(objectMap, "provisioningStateTransitionTime", c.ProvisioningStateTransitionTime)
 	populate(objectMap, "publicData", c.PublicData)
+	populate(objectMap, "thumbprint", c.Thumbprint)
+	populate(objectMap, "thumbprintAlgorithm", c.ThumbprintAlgorithm)
 	return json.Marshal(objectMap)
 }
 
@@ -986,6 +945,9 @@ func (c *CertificateProperties) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "deleteCertificateError":
 			err = unpopulate(val, &c.DeleteCertificateError)
+			delete(rawMsg, key)
+		case "format":
+			err = unpopulate(val, &c.Format)
 			delete(rawMsg, key)
 		case "previousProvisioningState":
 			err = unpopulate(val, &c.PreviousProvisioningState)
@@ -1002,35 +964,40 @@ func (c *CertificateProperties) UnmarshalJSON(data []byte) error {
 		case "publicData":
 			err = unpopulate(val, &c.PublicData)
 			delete(rawMsg, key)
+		case "thumbprint":
+			err = unpopulate(val, &c.Thumbprint)
+			delete(rawMsg, key)
+		case "thumbprintAlgorithm":
+			err = unpopulate(val, &c.ThumbprintAlgorithm)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := c.CertificateBaseProperties.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
-// CertificateReference - A reference to a certificate to be installed on compute nodes in a pool. This must exist inside the same account as the pool.
+// CertificateReference - A reference to a certificate to be installed on compute nodes in a pool. This must exist inside
+// the same account as the pool.
 type CertificateReference struct {
-	// REQUIRED; The fully qualified ID of the certificate to install on the pool. This must be inside the same batch account as the pool.
+	// REQUIRED; The fully qualified ID of the certificate to install on the pool. This must be inside the same batch account
+	// as the pool.
 	ID *string `json:"id,omitempty"`
 
-	// The default value is currentUser. This property is applicable only for pools configured with Windows nodes (that is, created with cloudServiceConfiguration,
-	// or with virtualMachineConfiguration using a
-	// Windows image reference). For Linux compute nodes, the certificates are stored in a directory inside the task working directory and an environment variable
-	// AZBATCHCERTIFICATES_DIR is supplied to the
-	// task to query for this location. For certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g.,
-	// /home/{user-name}/certs) and certificates are
+	// The default value is currentUser. This property is applicable only for pools configured with Windows nodes (that is, created
+	// with cloudServiceConfiguration, or with virtualMachineConfiguration using a
+	// Windows image reference). For Linux compute nodes, the certificates are stored in a directory inside the task working directory
+	// and an environment variable AZBATCHCERTIFICATES_DIR is supplied to the
+	// task to query for this location. For certificates with visibility of 'remoteUser', a 'certs' directory is created in the
+	// user's home directory (e.g., /home/{user-name}/certs) and certificates are
 	// placed in that directory.
 	StoreLocation *CertificateStoreLocation `json:"storeLocation,omitempty"`
 
-	// This property is applicable only for pools configured with Windows nodes (that is, created with cloudServiceConfiguration, or with virtualMachineConfiguration
-	// using a Windows image reference). Common
-	// store names include: My, Root, CA, Trust, Disallowed, TrustedPeople, TrustedPublisher, AuthRoot, AddressBook, but any custom store name can also be used.
-	// The default value is My.
+	// This property is applicable only for pools configured with Windows nodes (that is, created with cloudServiceConfiguration,
+	// or with virtualMachineConfiguration using a Windows image reference). Common
+	// store names include: My, Root, CA, Trust, Disallowed, TrustedPeople, TrustedPublisher, AuthRoot, AddressBook, but any custom
+	// store name can also be used. The default value is My.
 	StoreName *string `json:"storeName,omitempty"`
 
 	// Which user accounts on the compute node should have access to the private data of the certificate.
@@ -1047,12 +1014,6 @@ func (c CertificateReference) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// CertificateUpdateOptions contains the optional parameters for the Certificate.Update method.
-type CertificateUpdateOptions struct {
-	// The entity state (ETag) version of the certificate to update. This value can be omitted or set to "*" to apply the operation unconditionally.
-	IfMatch *string
-}
-
 // CheckNameAvailabilityParameters - Parameters for a check name availability request.
 type CheckNameAvailabilityParameters struct {
 	// REQUIRED; The name to check for availability
@@ -1067,26 +1028,19 @@ type CheckNameAvailabilityResult struct {
 	// READ-ONLY; Gets an error message explaining the Reason value in more detail.
 	Message *string `json:"message,omitempty" azure:"ro"`
 
-	// READ-ONLY; Gets a boolean value that indicates whether the name is available for you to use. If true, the name is available. If false, the name has already
-	// been taken or invalid and cannot be used.
+	// READ-ONLY; Gets a boolean value that indicates whether the name is available for you to use. If true, the name is available.
+	// If false, the name has already been taken or invalid and cannot be used.
 	NameAvailable *bool `json:"nameAvailable,omitempty" azure:"ro"`
 
-	// READ-ONLY; Gets the reason that a Batch account name could not be used. The Reason element is only returned if NameAvailable is false.
+	// READ-ONLY; Gets the reason that a Batch account name could not be used. The Reason element is only returned if NameAvailable
+	// is false.
 	Reason *NameAvailabilityReason `json:"reason,omitempty" azure:"ro"`
 }
 
 // CloudError - An error response from the Batch service.
-// Implements the error and azcore.HTTPResponse interfaces.
 type CloudError struct {
-	raw string
 	// The body of the error response.
-	InnerError *CloudErrorBody `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type CloudError.
-// The contents of the error text are not contractual and subject to change.
-func (e CloudError) Error() string {
-	return e.raw
+	Error *CloudErrorBody `json:"error,omitempty"`
 }
 
 // CloudErrorBody - An error response from the Batch service.
@@ -1116,9 +1070,10 @@ func (c CloudErrorBody) MarshalJSON() ([]byte, error) {
 
 // CloudServiceConfiguration - The configuration for nodes in a pool based on the Azure Cloud Services platform.
 type CloudServiceConfiguration struct {
-	// REQUIRED; Possible values are: 2 - OS Family 2, equivalent to Windows Server 2008 R2 SP1. 3 - OS Family 3, equivalent to Windows Server 2012. 4 - OS
-	// Family 4, equivalent to Windows Server 2012 R2. 5 - OS Family
-	// 5, equivalent to Windows Server 2016. 6 - OS Family 6, equivalent to Windows Server 2019. For more information, see Azure Guest OS Releases
+	// REQUIRED; Possible values are: 2 - OS Family 2, equivalent to Windows Server 2008 R2 SP1. 3 - OS Family 3, equivalent to
+	// Windows Server 2012. 4 - OS Family 4, equivalent to Windows Server 2012 R2. 5 - OS Family
+	// 5, equivalent to Windows Server 2016. 6 - OS Family 6, equivalent to Windows Server 2019. For more information, see Azure
+	// Guest OS Releases
 	// (https://azure.microsoft.com/documentation/articles/cloud-services-guestos-update-matrix/#releases).
 	OSFamily *string `json:"osFamily,omitempty"`
 
@@ -1126,7 +1081,8 @@ type CloudServiceConfiguration struct {
 	OSVersion *string `json:"osVersion,omitempty"`
 }
 
-// ComputeNodeIdentityReference - The reference to a user assigned identity associated with the Batch pool which a compute node will use.
+// ComputeNodeIdentityReference - The reference to a user assigned identity associated with the Batch pool which a compute
+// node will use.
 type ComputeNodeIdentityReference struct {
 	// The ARM resource id of the user assigned identity.
 	ResourceID *string `json:"resourceId,omitempty"`
@@ -1137,11 +1093,12 @@ type ContainerConfiguration struct {
 	// REQUIRED; The container technology to be used.
 	Type *string `json:"type,omitempty"`
 
-	// This is the full image reference, as would be specified to "docker pull". An image will be sourced from the default Docker registry unless the image
-	// is fully qualified with an alternative registry.
+	// This is the full image reference, as would be specified to "docker pull". An image will be sourced from the default Docker
+	// registry unless the image is fully qualified with an alternative registry.
 	ContainerImageNames []*string `json:"containerImageNames,omitempty"`
 
-	// If any images must be downloaded from a private registry which requires credentials, then those credentials must be provided here.
+	// If any images must be downloaded from a private registry which requires credentials, then those credentials must be provided
+	// here.
 	ContainerRegistries []*ContainerRegistry `json:"containerRegistries,omitempty"`
 }
 
@@ -1169,24 +1126,25 @@ type ContainerRegistry struct {
 	UserName *string `json:"username,omitempty"`
 }
 
-// DataDisk - Settings which will be used by the data disks associated to Compute Nodes in the Pool. When using attached data disks, you need to mount and
-// format the disks from within a VM to use them.
+// DataDisk - Settings which will be used by the data disks associated to Compute Nodes in the Pool. When using attached data
+// disks, you need to mount and format the disks from within a VM to use them.
 type DataDisk struct {
 	// REQUIRED; The initial disk size in GB when creating new data disk.
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
 
-	// REQUIRED; The lun is used to uniquely identify each data disk. If attaching multiple disks, each should have a distinct lun. The value must be between
-	// 0 and 63, inclusive.
+	// REQUIRED; The lun is used to uniquely identify each data disk. If attaching multiple disks, each should have a distinct
+	// lun. The value must be between 0 and 63, inclusive.
 	Lun *int32 `json:"lun,omitempty"`
 
 	// Values are:
-	// none - The caching mode for the disk is not enabled. readOnly - The caching mode for the disk is read only. readWrite - The caching mode for the disk
-	// is read and write.
+	// none - The caching mode for the disk is not enabled. readOnly - The caching mode for the disk is read only. readWrite -
+	// The caching mode for the disk is read and write.
 	// The default value for caching is none. For information about the caching options see: https://blogs.msdn.microsoft.com/windowsazurestorage/2012/06/27/exploring-windows-azure-drives-disks-and-images/.
 	Caching *CachingType `json:"caching,omitempty"`
 
 	// If omitted, the default is "Standard_LRS". Values are:
-	// StandardLRS - The data disk should use standard locally redundant storage. PremiumLRS - The data disk should use premium locally redundant storage.
+	// StandardLRS - The data disk should use standard locally redundant storage. PremiumLRS - The data disk should use premium
+	// locally redundant storage.
 	StorageAccountType *StorageAccountType `json:"storageAccountType,omitempty"`
 }
 
@@ -1217,8 +1175,8 @@ func (d DeleteCertificateError) MarshalJSON() ([]byte, error) {
 
 // DeploymentConfiguration - Deployment configuration properties.
 type DeploymentConfiguration struct {
-	// This property and virtualMachineConfiguration are mutually exclusive and one of the properties must be specified. This property cannot be specified if
-	// the Batch account was created with its
+	// This property and virtualMachineConfiguration are mutually exclusive and one of the properties must be specified. This
+	// property cannot be specified if the Batch account was created with its
 	// poolAllocationMode property set to 'UserSubscription'.
 	CloudServiceConfiguration *CloudServiceConfiguration `json:"cloudServiceConfiguration,omitempty"`
 
@@ -1228,16 +1186,16 @@ type DeploymentConfiguration struct {
 
 // DiffDiskSettings - Specifies the ephemeral Disk Settings for the operating system disk used by the virtual machine.
 type DiffDiskSettings struct {
-	// This property can be used by user in the request to choose which location the operating system should be in. e.g., cache disk space for Ephemeral OS
-	// disk provisioning. For more information on
+	// This property can be used by user in the request to choose which location the operating system should be in. e.g., cache
+	// disk space for Ephemeral OS disk provisioning. For more information on
 	// Ephemeral OS disk size requirements, please refer to Ephemeral OS disk size requirements for Windows VMs at
 	// https://docs.microsoft.com/en-us/azure/virtual-machines/windows/ephemeral-os-disks#size-requirements and Linux VMs at
 	// https://docs.microsoft.com/en-us/azure/virtual-machines/linux/ephemeral-os-disks#size-requirements.
 	Placement *string `json:"placement,omitempty"`
 }
 
-// DiskEncryptionConfiguration - The disk encryption configuration applied on compute nodes in the pool. Disk encryption configuration is not supported
-// on Linux pool created with Virtual Machine Image or Shared Image Gallery Image.
+// DiskEncryptionConfiguration - The disk encryption configuration applied on compute nodes in the pool. Disk encryption configuration
+// is not supported on Linux pool created with Virtual Machine Image or Shared Image Gallery Image.
 type DiskEncryptionConfiguration struct {
 	// On Linux pool, only "TemporaryDisk" is supported; on Windows pool, "OsDisk" and "TemporaryDisk" must be specified.
 	Targets []*DiskEncryptionTarget `json:"targets,omitempty"`
@@ -1250,8 +1208,8 @@ func (d DiskEncryptionConfiguration) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// EncryptionProperties - Configures how customer data is encrypted inside the Batch account. By default, accounts are encrypted using a Microsoft managed
-// key. For additional control, a customer-managed key can be used
+// EncryptionProperties - Configures how customer data is encrypted inside the Batch account. By default, accounts are encrypted
+// using a Microsoft managed key. For additional control, a customer-managed key can be used
 // instead.
 type EncryptionProperties struct {
 	// Type of the key source.
@@ -1302,8 +1260,8 @@ type FixedScaleSettings struct {
 	// If omitted, the default value is Requeue.
 	NodeDeallocationOption *ComputeNodeDeallocationOption `json:"nodeDeallocationOption,omitempty"`
 
-	// The default value is 15 minutes. Timeout values use ISO 8601 format. For example, use PT10M for 10 minutes. The minimum value is 5 minutes. If you specify
-	// a value less than 5 minutes, the Batch
+	// The default value is 15 minutes. Timeout values use ISO 8601 format. For example, use PT10M for 10 minutes. The minimum
+	// value is 5 minutes. If you specify a value less than 5 minutes, the Batch
 	// service rejects the request with an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
 	ResizeTimeout *string `json:"resizeTimeout,omitempty"`
 
@@ -1314,12 +1272,12 @@ type FixedScaleSettings struct {
 	TargetLowPriorityNodes *int32 `json:"targetLowPriorityNodes,omitempty"`
 }
 
-// ImageReference - A reference to an Azure Virtual Machines Marketplace image or the Azure Image resource of a custom Virtual Machine. To get the list
-// of all imageReferences verified by Azure Batch, see the 'List
+// ImageReference - A reference to an Azure Virtual Machines Marketplace image or the Azure Image resource of a custom Virtual
+// Machine. To get the list of all imageReferences verified by Azure Batch, see the 'List
 // supported node agent SKUs' operation.
 type ImageReference struct {
-	// This property is mutually exclusive with other properties. The Shared Image Gallery image must have replicas in the same region as the Azure Batch account.
-	// For information about the firewall settings
+	// This property is mutually exclusive with other properties. The Shared Image Gallery image must have replicas in the same
+	// region as the Azure Batch account. For information about the firewall settings
 	// for the Batch node agent to communicate with the Batch service see https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
 	ID *string `json:"id,omitempty"`
 
@@ -1338,32 +1296,33 @@ type ImageReference struct {
 
 // InboundNatPool - A inbound NAT pool that can be used to address specific ports on compute nodes in a Batch pool externally.
 type InboundNatPool struct {
-	// REQUIRED; This must be unique within a Batch pool. Acceptable values are between 1 and 65535 except for 22, 3389, 29876 and 29877 as these are reserved.
-	// If any reserved values are provided the request fails
+	// REQUIRED; This must be unique within a Batch pool. Acceptable values are between 1 and 65535 except for 22, 3389, 29876
+	// and 29877 as these are reserved. If any reserved values are provided the request fails
 	// with HTTP status code 400.
 	BackendPort *int32 `json:"backendPort,omitempty"`
 
-	// REQUIRED; Acceptable values range between 1 and 65534 except ports from 50000 to 55000 which are reserved by the Batch service. All ranges within a pool
-	// must be distinct and cannot overlap. If any reserved or
+	// REQUIRED; Acceptable values range between 1 and 65534 except ports from 50000 to 55000 which are reserved by the Batch
+	// service. All ranges within a pool must be distinct and cannot overlap. If any reserved or
 	// overlapping values are provided the request fails with HTTP status code 400.
 	FrontendPortRangeEnd *int32 `json:"frontendPortRangeEnd,omitempty"`
 
-	// REQUIRED; Acceptable values range between 1 and 65534 except ports from 50000 to 55000 which are reserved. All ranges within a pool must be distinct
-	// and cannot overlap. If any reserved or overlapping values are
+	// REQUIRED; Acceptable values range between 1 and 65534 except ports from 50000 to 55000 which are reserved. All ranges within
+	// a pool must be distinct and cannot overlap. If any reserved or overlapping values are
 	// provided the request fails with HTTP status code 400.
 	FrontendPortRangeStart *int32 `json:"frontendPortRangeStart,omitempty"`
 
-	// REQUIRED; The name must be unique within a Batch pool, can contain letters, numbers, underscores, periods, and hyphens. Names must start with a letter
-	// or number, must end with a letter, number, or underscore,
+	// REQUIRED; The name must be unique within a Batch pool, can contain letters, numbers, underscores, periods, and hyphens.
+	// Names must start with a letter or number, must end with a letter, number, or underscore,
 	// and cannot exceed 77 characters. If any invalid values are provided the request fails with HTTP status code 400.
 	Name *string `json:"name,omitempty"`
 
 	// REQUIRED; The protocol of the endpoint.
 	Protocol *InboundEndpointProtocol `json:"protocol,omitempty"`
 
-	// The maximum number of rules that can be specified across all the endpoints on a Batch pool is 25. If no network security group rules are specified, a
-	// default rule will be created to allow inbound
-	// access to the specified backendPort. If the maximum number of network security group rules is exceeded the request fails with HTTP status code 400.
+	// The maximum number of rules that can be specified across all the endpoints on a Batch pool is 25. If no network security
+	// group rules are specified, a default rule will be created to allow inbound
+	// access to the specified backendPort. If the maximum number of network security group rules is exceeded the request fails
+	// with HTTP status code 400.
 	NetworkSecurityGroupRules []*NetworkSecurityGroupRule `json:"networkSecurityGroupRules,omitempty"`
 }
 
@@ -1381,10 +1340,10 @@ func (i InboundNatPool) MarshalJSON() ([]byte, error) {
 
 // KeyVaultProperties - KeyVault configuration when using an encryption KeySource of Microsoft.KeyVault.
 type KeyVaultProperties struct {
-	// Full path to the versioned secret. Example https://mykeyvault.vault.azure.net/keys/testkey/6e34a81fef704045975661e297a4c053. To be usable the following
-	// prerequisites must be met:
-	// The Batch Account has a System Assigned identity The account identity has been granted Key/Get, Key/Unwrap and Key/Wrap permissions The KeyVault has
-	// soft-delete and purge protection enabled
+	// Full path to the versioned secret. Example https://mykeyvault.vault.azure.net/keys/testkey/6e34a81fef704045975661e297a4c053.
+	// To be usable the following prerequisites must be met:
+	// The Batch Account has a System Assigned identity The account identity has been granted Key/Get, Key/Unwrap and Key/Wrap
+	// permissions The KeyVault has soft-delete and purge protection enabled
 	KeyIdentifier *string `json:"keyIdentifier,omitempty"`
 }
 
@@ -1399,17 +1358,19 @@ type KeyVaultReference struct {
 
 // LinuxUserConfiguration - Properties used to create a user account on a Linux node.
 type LinuxUserConfiguration struct {
-	// The uid and gid properties must be specified together or not at all. If not specified the underlying operating system picks the gid.
+	// The uid and gid properties must be specified together or not at all. If not specified the underlying operating system picks
+	// the gid.
 	Gid *int32 `json:"gid,omitempty"`
 
-	// The private key must not be password protected. The private key is used to automatically configure asymmetric-key based authentication for SSH between
-	// nodes in a Linux pool when the pool's
-	// enableInterNodeCommunication property is true (it is ignored if enableInterNodeCommunication is false). It does this by placing the key pair into the
-	// user's .ssh directory. If not specified,
+	// The private key must not be password protected. The private key is used to automatically configure asymmetric-key based
+	// authentication for SSH between nodes in a Linux pool when the pool's
+	// enableInterNodeCommunication property is true (it is ignored if enableInterNodeCommunication is false). It does this by
+	// placing the key pair into the user's .ssh directory. If not specified,
 	// password-less SSH is not configured between nodes (no modification of the user's .ssh directory is done).
 	SSHPrivateKey *string `json:"sshPrivateKey,omitempty"`
 
-	// The uid and gid properties must be specified together or not at all. If not specified the underlying operating system picks the uid.
+	// The uid and gid properties must be specified together or not at all. If not specified the underlying operating system picks
+	// the uid.
 	UID *int32 `json:"uid,omitempty"`
 }
 
@@ -1515,30 +1476,39 @@ func (l ListPrivateLinkResourcesResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// LocationCheckNameAvailabilityOptions contains the optional parameters for the Location.CheckNameAvailability method.
-type LocationCheckNameAvailabilityOptions struct {
+// LocationClientCheckNameAvailabilityOptions contains the optional parameters for the LocationClient.CheckNameAvailability
+// method.
+type LocationClientCheckNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LocationGetQuotasOptions contains the optional parameters for the Location.GetQuotas method.
-type LocationGetQuotasOptions struct {
+// LocationClientGetQuotasOptions contains the optional parameters for the LocationClient.GetQuotas method.
+type LocationClientGetQuotasOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LocationListSupportedCloudServiceSKUsOptions contains the optional parameters for the Location.ListSupportedCloudServiceSKUs method.
-type LocationListSupportedCloudServiceSKUsOptions struct {
+// LocationClientListSupportedCloudServiceSKUsOptions contains the optional parameters for the LocationClient.ListSupportedCloudServiceSKUs
+// method.
+type LocationClientListSupportedCloudServiceSKUsOptions struct {
 	// OData filter expression. Valid properties for filtering are "familyName".
 	Filter *string
 	// The maximum number of items to return in the response.
 	Maxresults *int32
 }
 
-// LocationListSupportedVirtualMachineSKUsOptions contains the optional parameters for the Location.ListSupportedVirtualMachineSKUs method.
-type LocationListSupportedVirtualMachineSKUsOptions struct {
+// LocationClientListSupportedVirtualMachineSKUsOptions contains the optional parameters for the LocationClient.ListSupportedVirtualMachineSKUs
+// method.
+type LocationClientListSupportedVirtualMachineSKUsOptions struct {
 	// OData filter expression. Valid properties for filtering are "familyName".
 	Filter *string
 	// The maximum number of items to return in the response.
 	Maxresults *int32
+}
+
+// LocationQuota - Quotas associated with a Batch region for a particular subscription.
+type LocationQuota struct {
+	// READ-ONLY; The number of Batch accounts that may be created under the subscription in the specified region.
+	AccountQuota *int32 `json:"accountQuota,omitempty" azure:"ro"`
 }
 
 // MetadataItem - The Batch service does not assign any meaning to this metadata; it is solely for the use of user code.
@@ -1567,7 +1537,8 @@ type MountConfiguration struct {
 
 // NFSMountConfiguration - Information used to connect to an NFS file system.
 type NFSMountConfiguration struct {
-	// REQUIRED; All file systems are mounted relative to the Batch mounts directory, accessible via the AZBATCHNODEMOUNTSDIR environment variable.
+	// REQUIRED; All file systems are mounted relative to the Batch mounts directory, accessible via the AZBATCHNODEMOUNTSDIR
+	// environment variable.
 	RelativeMountPath *string `json:"relativeMountPath,omitempty"`
 
 	// REQUIRED; The URI of the file system to mount.
@@ -1585,20 +1556,20 @@ type NetworkConfiguration struct {
 	// This property is only supported on Pools with the virtualMachineConfiguration property.
 	PublicIPAddressConfiguration *PublicIPAddressConfiguration `json:"publicIPAddressConfiguration,omitempty"`
 
-	// The virtual network must be in the same region and subscription as the Azure Batch account. The specified subnet should have enough free IP addresses
-	// to accommodate the number of nodes in the pool. If
-	// the subnet doesn't have enough free IP addresses, the pool will partially allocate compute nodes and a resize error will occur. The 'MicrosoftAzureBatch'
-	// service principal must have the 'Classic
-	// Virtual Machine Contributor' Role-Based Access Control (RBAC) role for the specified VNet. The specified subnet must allow communication from the Azure
-	// Batch service to be able to schedule tasks on
-	// the compute nodes. This can be verified by checking if the specified VNet has any associated Network Security Groups (NSG). If communication to the compute
-	// nodes in the specified subnet is denied by
-	// an NSG, then the Batch service will set the state of the compute nodes to unusable. If the specified VNet has any associated Network Security Groups
-	// (NSG), then a few reserved system ports must be
-	// enabled for inbound communication. For pools created with a virtual machine configuration, enable ports 29876 and 29877, as well as port 22 for Linux
-	// and port 3389 for Windows. For pools created with
-	// a cloud service configuration, enable ports 10100, 20100, and 30100. Also enable outbound connections to Azure Storage on port 443. For cloudServiceConfiguration
-	// pools, only 'classic' VNETs are
+	// The virtual network must be in the same region and subscription as the Azure Batch account. The specified subnet should
+	// have enough free IP addresses to accommodate the number of nodes in the pool. If
+	// the subnet doesn't have enough free IP addresses, the pool will partially allocate compute nodes and a resize error will
+	// occur. The 'MicrosoftAzureBatch' service principal must have the 'Classic
+	// Virtual Machine Contributor' Role-Based Access Control (RBAC) role for the specified VNet. The specified subnet must allow
+	// communication from the Azure Batch service to be able to schedule tasks on
+	// the compute nodes. This can be verified by checking if the specified VNet has any associated Network Security Groups (NSG).
+	// If communication to the compute nodes in the specified subnet is denied by
+	// an NSG, then the Batch service will set the state of the compute nodes to unusable. If the specified VNet has any associated
+	// Network Security Groups (NSG), then a few reserved system ports must be
+	// enabled for inbound communication. For pools created with a virtual machine configuration, enable ports 29876 and 29877,
+	// as well as port 22 for Linux and port 3389 for Windows. For pools created with
+	// a cloud service configuration, enable ports 10100, 20100, and 30100. Also enable outbound connections to Azure Storage
+	// on port 443. For cloudServiceConfiguration pools, only 'classic' VNETs are
 	// supported. For more details see: https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration
 	SubnetID *string `json:"subnetId,omitempty"`
 }
@@ -1608,20 +1579,20 @@ type NetworkSecurityGroupRule struct {
 	// REQUIRED; The action that should be taken for a specified IP address, subnet range or tag.
 	Access *NetworkSecurityGroupRuleAccess `json:"access,omitempty"`
 
-	// REQUIRED; Priorities within a pool must be unique and are evaluated in order of priority. The lower the number the higher the priority. For example,
-	// rules could be specified with order numbers of 150, 250, and
-	// 350. The rule with the order number of 150 takes precedence over the rule that has an order of 250. Allowed priorities are 150 to 4096. If any reserved
-	// or duplicate values are provided the request
+	// REQUIRED; Priorities within a pool must be unique and are evaluated in order of priority. The lower the number the higher
+	// the priority. For example, rules could be specified with order numbers of 150, 250, and
+	// 350. The rule with the order number of 150 takes precedence over the rule that has an order of 250. Allowed priorities
+	// are 150 to 4096. If any reserved or duplicate values are provided the request
 	// fails with HTTP status code 400.
 	Priority *int32 `json:"priority,omitempty"`
 
-	// REQUIRED; Valid values are a single IP address (i.e. 10.10.10.10), IP subnet (i.e. 192.168.1.0/24), default tag, or * (for all addresses). If any other
-	// values are provided the request fails with HTTP status
+	// REQUIRED; Valid values are a single IP address (i.e. 10.10.10.10), IP subnet (i.e. 192.168.1.0/24), default tag, or * (for
+	// all addresses). If any other values are provided the request fails with HTTP status
 	// code 400.
 	SourceAddressPrefix *string `json:"sourceAddressPrefix,omitempty"`
 
-	// Valid values are '*' (for all ports 0 - 65535) or arrays of ports or port ranges (i.e. 100-200). The ports should in the range of 0 to 65535 and the
-	// port ranges or ports can't overlap. If any other
+	// Valid values are '*' (for all ports 0 - 65535) or arrays of ports or port ranges (i.e. 100-200). The ports should in the
+	// range of 0 to 65535 and the port ranges or ports can't overlap. If any other
 	// values are provided the request fails with HTTP status code 400. Default value will be *.
 	SourcePortRanges []*string `json:"sourcePortRanges,omitempty"`
 }
@@ -1681,7 +1652,8 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
-// OperationListResult - Result of the request to list REST API operations. It contains a list of operations and a URL nextLink to get the next set of results.
+// OperationListResult - Result of the request to list REST API operations. It contains a list of operations and a URL nextLink
+// to get the next set of results.
 type OperationListResult struct {
 	// The URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -1698,12 +1670,13 @@ func (o OperationListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OutboundEnvironmentEndpoint - A collection of related endpoints from the same service for which the Batch service requires outbound access.
+// OutboundEnvironmentEndpoint - A collection of related endpoints from the same service for which the Batch service requires
+// outbound access.
 type OutboundEnvironmentEndpoint struct {
 	// READ-ONLY; The type of service that the Batch service connects to.
 	Category *string `json:"category,omitempty" azure:"ro"`
@@ -1739,46 +1712,90 @@ func (o OutboundEnvironmentEndpointCollection) MarshalJSON() ([]byte, error) {
 
 // Pool - Contains information about a pool.
 type Pool struct {
-	ProxyResource
 	// The type of identity used for the Batch Pool.
-	Identity *BatchPoolIdentity `json:"identity,omitempty"`
+	Identity *PoolIdentity `json:"identity,omitempty"`
 
 	// The properties associated with the pool.
 	Properties *PoolProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The ETag of the resource, used for concurrency statements.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
+
+	// READ-ONLY; The ID of the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Pool.
 func (p Pool) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	p.ProxyResource.marshalInternal(objectMap)
+	populate(objectMap, "etag", p.Etag)
+	populate(objectMap, "id", p.ID)
 	populate(objectMap, "identity", p.Identity)
+	populate(objectMap, "name", p.Name)
 	populate(objectMap, "properties", p.Properties)
+	populate(objectMap, "type", p.Type)
 	return json.Marshal(objectMap)
 }
 
-// PoolBeginDeleteOptions contains the optional parameters for the Pool.BeginDelete method.
-type PoolBeginDeleteOptions struct {
+// PoolClientBeginDeleteOptions contains the optional parameters for the PoolClient.BeginDelete method.
+type PoolClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PoolCreateOptions contains the optional parameters for the Pool.Create method.
-type PoolCreateOptions struct {
-	// The entity state (ETag) version of the pool to update. A value of "*" can be used to apply the operation only if the pool already exists. If omitted,
-	// this operation will always be applied.
+// PoolClientCreateOptions contains the optional parameters for the PoolClient.Create method.
+type PoolClientCreateOptions struct {
+	// The entity state (ETag) version of the pool to update. A value of "*" can be used to apply the operation only if the pool
+	// already exists. If omitted, this operation will always be applied.
 	IfMatch *string
 	// Set to '*' to allow a new pool to be created, but to prevent updating an existing pool. Other values will be ignored.
 	IfNoneMatch *string
 }
 
-// PoolDisableAutoScaleOptions contains the optional parameters for the Pool.DisableAutoScale method.
-type PoolDisableAutoScaleOptions struct {
+// PoolClientDisableAutoScaleOptions contains the optional parameters for the PoolClient.DisableAutoScale method.
+type PoolClientDisableAutoScaleOptions struct {
 	// placeholder for future optional parameters
+}
+
+// PoolClientGetOptions contains the optional parameters for the PoolClient.Get method.
+type PoolClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PoolClientListByBatchAccountOptions contains the optional parameters for the PoolClient.ListByBatchAccount method.
+type PoolClientListByBatchAccountOptions struct {
+	// OData filter expression. Valid properties for filtering are:
+	// name properties/allocationState properties/allocationStateTransitionTime properties/creationTime properties/provisioningState
+	// properties/provisioningStateTransitionTime properties/lastModified
+	// properties/vmSize properties/interNodeCommunication properties/scaleSettings/autoScale properties/scaleSettings/fixedScale
+	Filter *string
+	// The maximum number of items to return in the response.
+	Maxresults *int32
+	// Comma separated list of properties that should be returned. e.g. "properties/provisioningState". Only top level properties
+	// under properties/ are valid for selection.
+	Select *string
+}
+
+// PoolClientStopResizeOptions contains the optional parameters for the PoolClient.StopResize method.
+type PoolClientStopResizeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PoolClientUpdateOptions contains the optional parameters for the PoolClient.Update method.
+type PoolClientUpdateOptions struct {
+	// The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to apply the operation unconditionally.
+	IfMatch *string
 }
 
 // PoolEndpointConfiguration - The endpoint configuration for a pool.
 type PoolEndpointConfiguration struct {
-	// REQUIRED; The maximum number of inbound NAT pools per Batch pool is 5. If the maximum number of inbound NAT pools is exceeded the request fails with
-	// HTTP status code 400. This cannot be specified if the
+	// REQUIRED; The maximum number of inbound NAT pools per Batch pool is 5. If the maximum number of inbound NAT pools is exceeded
+	// the request fails with HTTP status code 400. This cannot be specified if the
 	// IPAddressProvisioningType is NoPublicIPAddresses.
 	InboundNatPools []*InboundNatPool `json:"inboundNatPools,omitempty"`
 }
@@ -1790,60 +1807,52 @@ func (p PoolEndpointConfiguration) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// PoolGetOptions contains the optional parameters for the Pool.Get method.
-type PoolGetOptions struct {
-	// placeholder for future optional parameters
+// PoolIdentity - The identity of the Batch pool, if configured. If the pool identity is updated during update an existing
+// pool, only the new vms which are created after the pool shrinks to 0 will have the updated
+// identities
+type PoolIdentity struct {
+	// REQUIRED; The type of identity used for the Batch Pool.
+	Type *PoolIdentityType `json:"type,omitempty"`
+
+	// The list of user identities associated with the Batch pool.
+	UserAssignedIdentities map[string]*UserAssignedIdentities `json:"userAssignedIdentities,omitempty"`
 }
 
-// PoolListByBatchAccountOptions contains the optional parameters for the Pool.ListByBatchAccount method.
-type PoolListByBatchAccountOptions struct {
-	// OData filter expression. Valid properties for filtering are:
-	// name
-	// properties/allocationState
-	// properties/allocationStateTransitionTime
-	// properties/creationTime
-	// properties/provisioningState
-	// properties/provisioningStateTransitionTime
-	// properties/lastModified
-	// properties/vmSize
-	// properties/interNodeCommunication
-	// properties/scaleSettings/autoScale
-	// properties/scaleSettings/fixedScale
-	Filter *string
-	// The maximum number of items to return in the response.
-	Maxresults *int32
-	// Comma separated list of properties that should be returned. e.g. "properties/provisioningState". Only top level properties under properties/ are valid
-	// for selection.
-	Select *string
+// MarshalJSON implements the json.Marshaller interface for type PoolIdentity.
+func (p PoolIdentity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "type", p.Type)
+	populate(objectMap, "userAssignedIdentities", p.UserAssignedIdentities)
+	return json.Marshal(objectMap)
 }
 
 // PoolProperties - Pool properties.
 type PoolProperties struct {
-	// The list of application licenses must be a subset of available Batch service application licenses. If a license is requested which is not supported,
-	// pool creation will fail.
+	// The list of application licenses must be a subset of available Batch service application licenses. If a license is requested
+	// which is not supported, pool creation will fail.
 	ApplicationLicenses []*string `json:"applicationLicenses,omitempty"`
 
-	// Changes to application package references affect all new compute nodes joining the pool, but do not affect compute nodes that are already in the pool
-	// until they are rebooted or reimaged. There is a
+	// Changes to application package references affect all new compute nodes joining the pool, but do not affect compute nodes
+	// that are already in the pool until they are rebooted or reimaged. There is a
 	// maximum of 10 application package references on any given pool.
 	ApplicationPackages []*ApplicationPackageReference `json:"applicationPackages,omitempty"`
 
-	// For Windows compute nodes, the Batch service installs the certificates to the specified certificate store and location. For Linux compute nodes, the
-	// certificates are stored in a directory inside the
-	// task working directory and an environment variable AZBATCHCERTIFICATES_DIR is supplied to the task to query for this location. For certificates with
-	// visibility of 'remoteUser', a 'certs' directory is
+	// For Windows compute nodes, the Batch service installs the certificates to the specified certificate store and location.
+	// For Linux compute nodes, the certificates are stored in a directory inside the
+	// task working directory and an environment variable AZBATCHCERTIFICATES_DIR is supplied to the task to query for this location.
+	// For certificates with visibility of 'remoteUser', a 'certs' directory is
 	// created in the user's home directory (e.g., /home/{user-name}/certs) and certificates are placed in that directory.
 	Certificates []*CertificateReference `json:"certificates,omitempty"`
 
-	// Using CloudServiceConfiguration specifies that the nodes should be creating using Azure Cloud Services (PaaS), while VirtualMachineConfiguration uses
-	// Azure Virtual Machines (IaaS).
+	// Using CloudServiceConfiguration specifies that the nodes should be creating using Azure Cloud Services (PaaS), while VirtualMachineConfiguration
+	// uses Azure Virtual Machines (IaaS).
 	DeploymentConfiguration *DeploymentConfiguration `json:"deploymentConfiguration,omitempty"`
 
 	// The display name need not be unique and can contain any Unicode characters up to a maximum length of 1024.
 	DisplayName *string `json:"displayName,omitempty"`
 
-	// This imposes restrictions on which nodes can be assigned to the pool. Enabling this value can reduce the chance of the requested number of nodes to be
-	// allocated in the pool. If not specified, this
+	// This imposes restrictions on which nodes can be assigned to the pool. Enabling this value can reduce the chance of the
+	// requested number of nodes to be allocated in the pool. If not specified, this
 	// value defaults to 'Disabled'.
 	InterNodeCommunication *InterNodeCommunicationState `json:"interNodeCommunication,omitempty"`
 
@@ -1856,8 +1865,8 @@ type PoolProperties struct {
 	// The network configuration for a pool.
 	NetworkConfiguration *NetworkConfiguration `json:"networkConfiguration,omitempty"`
 
-	// Defines the desired size of the pool. This can either be 'fixedScale' where the requested targetDedicatedNodes is specified, or 'autoScale' which defines
-	// a formula which is periodically reevaluated.
+	// Defines the desired size of the pool. This can either be 'fixedScale' where the requested targetDedicatedNodes is specified,
+	// or 'autoScale' which defines a formula which is periodically reevaluated.
 	// If this property is not specified, the pool will have a fixed scale with 0 targetDedicatedNodes.
 	ScaleSettings *ScaleSettings `json:"scaleSettings,omitempty"`
 
@@ -1873,14 +1882,15 @@ type PoolProperties struct {
 	// The list of user accounts to be created on each node in the pool.
 	UserAccounts []*UserAccount `json:"userAccounts,omitempty"`
 
-	// For information about available sizes of virtual machines for Cloud Services pools (pools created with cloudServiceConfiguration), see Sizes for Cloud
-	// Services
-	// (https://azure.microsoft.com/documentation/articles/cloud-services-sizes-specs/). Batch supports all Cloud Services VM sizes except ExtraSmall. For information
-	// about available VM sizes for pools using
-	// images from the Virtual Machines Marketplace (pools created with virtualMachineConfiguration) see Sizes for Virtual Machines (Linux)
+	// For information about available sizes of virtual machines for Cloud Services pools (pools created with cloudServiceConfiguration),
+	// see Sizes for Cloud Services
+	// (https://azure.microsoft.com/documentation/articles/cloud-services-sizes-specs/). Batch supports all Cloud Services VM
+	// sizes except ExtraSmall. For information about available VM sizes for pools using
+	// images from the Virtual Machines Marketplace (pools created with virtualMachineConfiguration) see Sizes for Virtual Machines
+	// (Linux)
 	// (https://azure.microsoft.com/documentation/articles/virtual-machines-linux-sizes/) or Sizes for Virtual Machines (Windows)
-	// (https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/). Batch supports all Azure VM sizes except STANDARDA0 and those with
-	// premium storage (STANDARDGS, STANDARDDS, and
+	// (https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/). Batch supports all Azure VM sizes
+	// except STANDARDA0 and those with premium storage (STANDARDGS, STANDARDDS, and
 	// STANDARDDSV2 series).
 	VMSize *string `json:"vmSize,omitempty"`
 
@@ -1902,8 +1912,8 @@ type PoolProperties struct {
 	// READ-ONLY; The number of low-priority compute nodes currently in the pool.
 	CurrentLowPriorityNodes *int32 `json:"currentLowPriorityNodes,omitempty" azure:"ro"`
 
-	// READ-ONLY; This is the last time at which the pool level data, such as the targetDedicatedNodes or autoScaleSettings, changed. It does not factor in
-	// node-level changes such as a compute node changing state.
+	// READ-ONLY; This is the last time at which the pool level data, such as the targetDedicatedNodes or autoScaleSettings, changed.
+	// It does not factor in node-level changes such as a compute node changing state.
 	LastModified *time.Time `json:"lastModified,omitempty" azure:"ro"`
 
 	// READ-ONLY; The current state of the pool.
@@ -1912,8 +1922,8 @@ type PoolProperties struct {
 	// READ-ONLY; The time at which the pool entered its current state.
 	ProvisioningStateTransitionTime *time.Time `json:"provisioningStateTransitionTime,omitempty" azure:"ro"`
 
-	// READ-ONLY; Describes either the current operation (if the pool AllocationState is Resizing) or the previously completed operation (if the AllocationState
-	// is Steady).
+	// READ-ONLY; Describes either the current operation (if the pool AllocationState is Resizing) or the previously completed
+	// operation (if the AllocationState is Steady).
 	ResizeOperationStatus *ResizeOperationStatus `json:"resizeOperationStatus,omitempty" azure:"ro"`
 }
 
@@ -2040,17 +2050,6 @@ func (p *PoolProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// PoolStopResizeOptions contains the optional parameters for the Pool.StopResize method.
-type PoolStopResizeOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PoolUpdateOptions contains the optional parameters for the Pool.Update method.
-type PoolUpdateOptions struct {
-	// The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to apply the operation unconditionally.
-	IfMatch *string
-}
-
 // PrivateEndpoint - The private endpoint of the private endpoint connection.
 type PrivateEndpoint struct {
 	// READ-ONLY; The ARM resource identifier of the private endpoint. This is of the form /subscriptions/{subscription}/resourceGroups/{group}/providers/Microsoft.Network/privateEndpoints/{privateEndpoint}.
@@ -2059,32 +2058,50 @@ type PrivateEndpoint struct {
 
 // PrivateEndpointConnection - Contains information about a private link resource.
 type PrivateEndpointConnection struct {
-	ProxyResource
 	// The properties associated with the private endpoint connection.
 	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The ETag of the resource, used for concurrency statements.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
+
+	// READ-ONLY; The ID of the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnection.
 func (p PrivateEndpointConnection) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	p.ProxyResource.marshalInternal(objectMap)
+	populate(objectMap, "etag", p.Etag)
+	populate(objectMap, "id", p.ID)
+	populate(objectMap, "name", p.Name)
 	populate(objectMap, "properties", p.Properties)
+	populate(objectMap, "type", p.Type)
 	return json.Marshal(objectMap)
 }
 
-// PrivateEndpointConnectionBeginUpdateOptions contains the optional parameters for the PrivateEndpointConnection.BeginUpdate method.
-type PrivateEndpointConnectionBeginUpdateOptions struct {
-	// The state (ETag) version of the private endpoint connection to update. This value can be omitted or set to "*" to apply the operation unconditionally.
+// PrivateEndpointConnectionClientBeginUpdateOptions contains the optional parameters for the PrivateEndpointConnectionClient.BeginUpdate
+// method.
+type PrivateEndpointConnectionClientBeginUpdateOptions struct {
+	// The state (ETag) version of the private endpoint connection to update. This value can be omitted or set to "*" to apply
+	// the operation unconditionally.
 	IfMatch *string
 }
 
-// PrivateEndpointConnectionGetOptions contains the optional parameters for the PrivateEndpointConnection.Get method.
-type PrivateEndpointConnectionGetOptions struct {
+// PrivateEndpointConnectionClientGetOptions contains the optional parameters for the PrivateEndpointConnectionClient.Get
+// method.
+type PrivateEndpointConnectionClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionListByBatchAccountOptions contains the optional parameters for the PrivateEndpointConnection.ListByBatchAccount method.
-type PrivateEndpointConnectionListByBatchAccountOptions struct {
+// PrivateEndpointConnectionClientListByBatchAccountOptions contains the optional parameters for the PrivateEndpointConnectionClient.ListByBatchAccount
+// method.
+type PrivateEndpointConnectionClientListByBatchAccountOptions struct {
 	// The maximum number of items to return in the response.
 	Maxresults *int32
 }
@@ -2103,26 +2120,30 @@ type PrivateEndpointConnectionProperties struct {
 
 // PrivateLinkResource - Contains information about a private link resource.
 type PrivateLinkResource struct {
-	ProxyResource
 	// The properties associated with the private link resource.
 	Properties *PrivateLinkResourceProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The ETag of the resource, used for concurrency statements.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
+
+	// READ-ONLY; The ID of the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResource.
-func (p PrivateLinkResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	return json.Marshal(objectMap)
-}
-
-// PrivateLinkResourceGetOptions contains the optional parameters for the PrivateLinkResource.Get method.
-type PrivateLinkResourceGetOptions struct {
+// PrivateLinkResourceClientGetOptions contains the optional parameters for the PrivateLinkResourceClient.Get method.
+type PrivateLinkResourceClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkResourceListByBatchAccountOptions contains the optional parameters for the PrivateLinkResource.ListByBatchAccount method.
-type PrivateLinkResourceListByBatchAccountOptions struct {
+// PrivateLinkResourceClientListByBatchAccountOptions contains the optional parameters for the PrivateLinkResourceClient.ListByBatchAccount
+// method.
+type PrivateLinkResourceClientListByBatchAccountOptions struct {
 	// The maximum number of items to return in the response.
 	Maxresults *int32
 }
@@ -2175,24 +2196,10 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ProxyResource.
-func (p ProxyResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (p ProxyResource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "etag", p.Etag)
-	populate(objectMap, "id", p.ID)
-	populate(objectMap, "name", p.Name)
-	populate(objectMap, "type", p.Type)
-}
-
 // PublicIPAddressConfiguration - The public IP Address configuration of the networking configuration of a Pool.
 type PublicIPAddressConfiguration struct {
-	// The number of IPs specified here limits the maximum size of the Pool - 100 dedicated nodes or 100 low-priority nodes can be allocated for each public
-	// IP. For example, a pool needing 250 dedicated VMs
+	// The number of IPs specified here limits the maximum size of the Pool - 100 dedicated nodes or 100 low-priority nodes can
+	// be allocated for each public IP. For example, a pool needing 250 dedicated VMs
 	// would need at least 3 public IPs specified. Each element of this collection is of the form: /subscriptions/{subscription}/resourceGroups/{group}/providers/Microsoft.Network/publicIPAddresses/{ip}.
 	IPAddressIDs []*string `json:"ipAddressIds,omitempty"`
 
@@ -2229,8 +2236,8 @@ func (r ResizeError) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ResizeOperationStatus - Describes either the current operation (if the pool AllocationState is Resizing) or the previously completed operation (if the
-// AllocationState is Steady).
+// ResizeOperationStatus - Describes either the current operation (if the pool AllocationState is Resizing) or the previously
+// completed operation (if the AllocationState is Steady).
 type ResizeOperationStatus struct {
 	// This property is set only if an error occurred during the last pool resize, and only when the pool allocationState is Steady.
 	Errors []*ResizeError `json:"errors,omitempty"`
@@ -2238,8 +2245,8 @@ type ResizeOperationStatus struct {
 	// The default value is requeue.
 	NodeDeallocationOption *ComputeNodeDeallocationOption `json:"nodeDeallocationOption,omitempty"`
 
-	// The default value is 15 minutes. The minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service returns an error; if you
-	// are calling the REST API directly, the HTTP
+	// The default value is 15 minutes. The minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch
+	// service returns an error; if you are calling the REST API directly, the HTTP
 	// status code is 400 (Bad Request).
 	ResizeTimeout *string `json:"resizeTimeout,omitempty"`
 
@@ -2321,56 +2328,53 @@ type Resource struct {
 // MarshalJSON implements the json.Marshaller interface for type Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "id", r.ID)
 	populate(objectMap, "location", r.Location)
 	populate(objectMap, "name", r.Name)
 	populate(objectMap, "tags", r.Tags)
 	populate(objectMap, "type", r.Type)
+	return json.Marshal(objectMap)
 }
 
 // ResourceFile - A single file or multiple files to be downloaded to a compute node.
 type ResourceFile struct {
-	// The autoStorageContainerName, storageContainerUrl and httpUrl properties are mutually exclusive and one of them must be specified.
+	// The autoStorageContainerName, storageContainerUrl and httpUrl properties are mutually exclusive and one of them must be
+	// specified.
 	AutoStorageContainerName *string `json:"autoStorageContainerName,omitempty"`
 
-	// The property is valid only when autoStorageContainerName or storageContainerUrl is used. This prefix can be a partial filename or a subdirectory. If
-	// a prefix is not specified, all the files in the
+	// The property is valid only when autoStorageContainerName or storageContainerUrl is used. This prefix can be a partial filename
+	// or a subdirectory. If a prefix is not specified, all the files in the
 	// container will be downloaded.
 	BlobPrefix *string `json:"blobPrefix,omitempty"`
 
-	// This property applies only to files being downloaded to Linux compute nodes. It will be ignored if it is specified for a resourceFile which will be downloaded
-	// to a Windows node. If this property is
+	// This property applies only to files being downloaded to Linux compute nodes. It will be ignored if it is specified for
+	// a resourceFile which will be downloaded to a Windows node. If this property is
 	// not specified for a Linux node, then a default value of 0770 is applied to the file.
 	FileMode *string `json:"fileMode,omitempty"`
 
-	// If the httpUrl property is specified, the filePath is required and describes the path which the file will be downloaded to, including the filename. Otherwise,
-	// if the autoStorageContainerName or
-	// storageContainerUrl property is specified, filePath is optional and is the directory to download the files to. In the case where filePath is used as
-	// a directory, any directory structure already
-	// associated with the input data will be retained in full and appended to the specified filePath directory. The specified relative path cannot break out
-	// of the task's working directory (for example by
+	// If the httpUrl property is specified, the filePath is required and describes the path which the file will be downloaded
+	// to, including the filename. Otherwise, if the autoStorageContainerName or
+	// storageContainerUrl property is specified, filePath is optional and is the directory to download the files to. In the case
+	// where filePath is used as a directory, any directory structure already
+	// associated with the input data will be retained in full and appended to the specified filePath directory. The specified
+	// relative path cannot break out of the task's working directory (for example by
 	// using '..').
 	FilePath *string `json:"filePath,omitempty"`
 
-	// The autoStorageContainerName, storageContainerUrl and httpUrl properties are mutually exclusive and one of them must be specified. If the URL points
-	// to Azure Blob Storage, it must be readable from
-	// compute nodes. There are three ways to get such a URL for a blob in Azure storage: include a Shared Access Signature (SAS) granting read permissions
-	// on the blob, use a managed identity with read
+	// The autoStorageContainerName, storageContainerUrl and httpUrl properties are mutually exclusive and one of them must be
+	// specified. If the URL points to Azure Blob Storage, it must be readable from
+	// compute nodes. There are three ways to get such a URL for a blob in Azure storage: include a Shared Access Signature (SAS)
+	// granting read permissions on the blob, use a managed identity with read
 	// permission, or set the ACL for the blob or its container to allow public access.
 	HTTPURL *string `json:"httpUrl,omitempty"`
 
 	// The reference to a user assigned identity associated with the Batch pool which a compute node will use.
 	IdentityReference *ComputeNodeIdentityReference `json:"identityReference,omitempty"`
 
-	// The autoStorageContainerName, storageContainerUrl and httpUrl properties are mutually exclusive and one of them must be specified. This URL must be readable
-	// and listable from compute nodes. There are
-	// three ways to get such a URL for a container in Azure storage: include a Shared Access Signature (SAS) granting read and list permissions on the container,
-	// use a managed identity with read and list
+	// The autoStorageContainerName, storageContainerUrl and httpUrl properties are mutually exclusive and one of them must be
+	// specified. This URL must be readable and listable from compute nodes. There are
+	// three ways to get such a URL for a container in Azure storage: include a Shared Access Signature (SAS) granting read and
+	// list permissions on the container, use a managed identity with read and list
 	// permissions, or set the ACL for the container to allow public access.
 	StorageContainerURL *string `json:"storageContainerUrl,omitempty"`
 }
@@ -2384,8 +2388,8 @@ type SKUCapability struct {
 	Value *string `json:"value,omitempty" azure:"ro"`
 }
 
-// ScaleSettings - Defines the desired size of the pool. This can either be 'fixedScale' where the requested targetDedicatedNodes is specified, or 'autoScale'
-// which defines a formula which is periodically reevaluated.
+// ScaleSettings - Defines the desired size of the pool. This can either be 'fixedScale' where the requested targetDedicatedNodes
+// is specified, or 'autoScale' which defines a formula which is periodically reevaluated.
 // If this property is not specified, the pool will have a fixed scale with 0 targetDedicatedNodes.
 type ScaleSettings struct {
 	// This property and fixedScale are mutually exclusive and one of the properties must be specified.
@@ -2395,30 +2399,30 @@ type ScaleSettings struct {
 	FixedScale *FixedScaleSettings `json:"fixedScale,omitempty"`
 }
 
-// StartTask - In some cases the start task may be re-run even though the node was not rebooted. Due to this, start tasks should be idempotent and exit
-// gracefully if the setup they're performing has already been
-// done. Special care should be taken to avoid start tasks which create breakaway process or install/launch services from the start task working directory,
-// as this will block Batch from being able to
+// StartTask - In some cases the start task may be re-run even though the node was not rebooted. Due to this, start tasks
+// should be idempotent and exit gracefully if the setup they're performing has already been
+// done. Special care should be taken to avoid start tasks which create breakaway process or install/launch services from
+// the start task working directory, as this will block Batch from being able to
 // re-run the start task.
 type StartTask struct {
-	// The command line does not run under a shell, and therefore cannot take advantage of shell features such as environment variable expansion. If you want
-	// to take advantage of such features, you should
-	// invoke the shell in the command line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux. Required if any other properties
-	// of the startTask are specified.
+	// The command line does not run under a shell, and therefore cannot take advantage of shell features such as environment
+	// variable expansion. If you want to take advantage of such features, you should
+	// invoke the shell in the command line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux.
+	// Required if any other properties of the startTask are specified.
 	CommandLine *string `json:"commandLine,omitempty"`
 
-	// When this is specified, all directories recursively below the AZBATCHNODEROOTDIR (the root of Azure Batch directories on the node) are mapped into the
-	// container, all task environment variables are
+	// When this is specified, all directories recursively below the AZBATCHNODEROOTDIR (the root of Azure Batch directories on
+	// the node) are mapped into the container, all task environment variables are
 	// mapped into the container, and the task command line is executed in the container.
 	ContainerSettings *TaskContainerSettings `json:"containerSettings,omitempty"`
 
 	// A list of environment variable settings for the start task.
 	EnvironmentSettings []*EnvironmentSetting `json:"environmentSettings,omitempty"`
 
-	// The Batch service retries a task if its exit code is nonzero. Note that this value specifically controls the number of retries. The Batch service will
-	// try the task once, and may then retry up to this
-	// limit. For example, if the maximum retry count is 3, Batch tries the task up to 4 times (one initial try and 3 retries). If the maximum retry count is
-	// 0, the Batch service does not retry the task. If
+	// The Batch service retries a task if its exit code is nonzero. Note that this value specifically controls the number of
+	// retries. The Batch service will try the task once, and may then retry up to this
+	// limit. For example, if the maximum retry count is 3, Batch tries the task up to 4 times (one initial try and 3 retries).
+	// If the maximum retry count is 0, the Batch service does not retry the task. If
 	// the maximum retry count is -1, the Batch service retries the task without limit.
 	MaxTaskRetryCount *int32 `json:"maxTaskRetryCount,omitempty"`
 
@@ -2428,12 +2432,12 @@ type StartTask struct {
 	// If omitted, the task runs as a non-administrative user unique to the task.
 	UserIdentity *UserIdentity `json:"userIdentity,omitempty"`
 
-	// If true and the start task fails on a compute node, the Batch service retries the start task up to its maximum retry count (maxTaskRetryCount). If the
-	// task has still not completed successfully after
-	// all retries, then the Batch service marks the compute node unusable, and will not schedule tasks to it. This condition can be detected via the node state
-	// and scheduling error detail. If false, the
-	// Batch service will not wait for the start task to complete. In this case, other tasks can start executing on the compute node while the start task is
-	// still running; and even if the start task fails,
+	// If true and the start task fails on a compute node, the Batch service retries the start task up to its maximum retry count
+	// (maxTaskRetryCount). If the task has still not completed successfully after
+	// all retries, then the Batch service marks the compute node unusable, and will not schedule tasks to it. This condition
+	// can be detected via the node state and scheduling error detail. If false, the
+	// Batch service will not wait for the start task to complete. In this case, other tasks can start executing on the compute
+	// node while the start task is still running; and even if the start task fails,
 	// new tasks will continue to be scheduled on the node. The default is true.
 	WaitForSuccess *bool `json:"waitForSuccess,omitempty"`
 }
@@ -2491,11 +2495,12 @@ func (s SupportedSKUsResult) MarshalJSON() ([]byte, error) {
 
 // TaskContainerSettings - The container settings for a task.
 type TaskContainerSettings struct {
-	// REQUIRED; This is the full image reference, as would be specified to "docker pull". If no tag is provided as part of the image name, the tag ":latest"
-	// is used as a default.
+	// REQUIRED; This is the full image reference, as would be specified to "docker pull". If no tag is provided as part of the
+	// image name, the tag ":latest" is used as a default.
 	ImageName *string `json:"imageName,omitempty"`
 
-	// These additional options are supplied as arguments to the "docker create" command, in addition to those controlled by the Batch Service.
+	// These additional options are supplied as arguments to the "docker create" command, in addition to those controlled by the
+	// Batch Service.
 	ContainerRunOptions *string `json:"containerRunOptions,omitempty"`
 
 	// This setting can be omitted if was already provided at pool creation.
@@ -2519,15 +2524,16 @@ type UserAccount struct {
 	// REQUIRED; The password for the user account.
 	Password *string `json:"password,omitempty"`
 
-	// nonAdmin - The auto user is a standard user without elevated access. admin - The auto user is a user with elevated access and operates with full Administrator
-	// permissions. The default value is
+	// nonAdmin - The auto user is a standard user without elevated access. admin - The auto user is a user with elevated access
+	// and operates with full Administrator permissions. The default value is
 	// nonAdmin.
 	ElevationLevel *ElevationLevel `json:"elevationLevel,omitempty"`
 
 	// This property is ignored if specified on a Windows pool. If not specified, the user is created with the default options.
 	LinuxUserConfiguration *LinuxUserConfiguration `json:"linuxUserConfiguration,omitempty"`
 
-	// This property can only be specified if the user is on a Windows pool. If not specified and on a Windows pool, the user is created with the default options.
+	// This property can only be specified if the user is on a Windows pool. If not specified and on a Windows pool, the user
+	// is created with the default options.
 	WindowsUserConfiguration *WindowsUserConfiguration `json:"windowsUserConfiguration,omitempty"`
 }
 
@@ -2560,8 +2566,8 @@ type VMExtension struct {
 	// REQUIRED; The type of the extensions.
 	Type *string `json:"type,omitempty"`
 
-	// Indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed, however, the extension will not
-	// upgrade minor versions unless redeployed, even
+	// Indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed,
+	// however, the extension will not upgrade minor versions unless redeployed, even
 	// with this property set to true.
 	AutoUpgradeMinorVersion *bool `json:"autoUpgradeMinorVersion,omitempty"`
 
@@ -2594,20 +2600,20 @@ func (v VMExtension) MarshalJSON() ([]byte, error) {
 
 // VirtualMachineConfiguration - The configuration for compute nodes in a pool based on the Azure Virtual Machines infrastructure.
 type VirtualMachineConfiguration struct {
-	// REQUIRED; A reference to an Azure Virtual Machines Marketplace image or the Azure Image resource of a custom Virtual Machine. To get the list of all
-	// imageReferences verified by Azure Batch, see the 'List
+	// REQUIRED; A reference to an Azure Virtual Machines Marketplace image or the Azure Image resource of a custom Virtual Machine.
+	// To get the list of all imageReferences verified by Azure Batch, see the 'List
 	// supported node agent SKUs' operation.
 	ImageReference *ImageReference `json:"imageReference,omitempty"`
 
-	// REQUIRED; The Batch node agent is a program that runs on each node in the pool, and provides the command-and-control interface between the node and the
-	// Batch service. There are different implementations of the
-	// node agent, known as SKUs, for different operating systems. You must specify a node agent SKU which matches the selected image reference. To get the
-	// list of supported node agent SKUs along with their
+	// REQUIRED; The Batch node agent is a program that runs on each node in the pool, and provides the command-and-control interface
+	// between the node and the Batch service. There are different implementations of the
+	// node agent, known as SKUs, for different operating systems. You must specify a node agent SKU which matches the selected
+	// image reference. To get the list of supported node agent SKUs along with their
 	// list of verified image references, see the 'List supported node agent SKUs' operation.
 	NodeAgentSKUID *string `json:"nodeAgentSkuId,omitempty"`
 
-	// If specified, setup is performed on each node in the pool to allow tasks to run in containers. All regular tasks and job manager tasks run on this pool
-	// must specify the containerSettings property, and
+	// If specified, setup is performed on each node in the pool to allow tasks to run in containers. All regular tasks and job
+	// manager tasks run on this pool must specify the containerSettings property, and
 	// all other tasks may specify it.
 	ContainerConfiguration *ContainerConfiguration `json:"containerConfiguration,omitempty"`
 
@@ -2620,8 +2626,8 @@ type VirtualMachineConfiguration struct {
 	// If specified, the extensions mentioned in this configuration will be installed on each node.
 	Extensions []*VMExtension `json:"extensions,omitempty"`
 
-	// This only applies to images that contain the Windows operating system, and should only be used when you hold valid on-premises licenses for the nodes
-	// which will be deployed. If omitted, no on-premises
+	// This only applies to images that contain the Windows operating system, and should only be used when you hold valid on-premises
+	// licenses for the nodes which will be deployed. If omitted, no on-premises
 	// licensing discount is applied. Values are:
 	// WindowsServer - The on-premises license is for Windows Server. WindowsClient - The on-premises license is for Windows Client.
 	LicenseType *string `json:"licenseType,omitempty"`
@@ -2669,8 +2675,8 @@ type WindowsConfiguration struct {
 
 // WindowsUserConfiguration - Properties used to create a user account on a Windows node.
 type WindowsUserConfiguration struct {
-	// Specifies login mode for the user. The default value for VirtualMachineConfiguration pools is interactive mode and for CloudServiceConfiguration pools
-	// is batch mode.
+	// Specifies login mode for the user. The default value for VirtualMachineConfiguration pools is interactive mode and for
+	// CloudServiceConfiguration pools is batch mode.
 	LoginMode *LoginMode `json:"loginMode,omitempty"`
 }
 

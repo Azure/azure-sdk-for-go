@@ -11,7 +11,6 @@ package armmanagedservices
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,48 +24,60 @@ import (
 // MarketplaceRegistrationDefinitionsClient contains the methods for the MarketplaceRegistrationDefinitions group.
 // Don't use this type directly, use NewMarketplaceRegistrationDefinitionsClient() instead.
 type MarketplaceRegistrationDefinitionsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewMarketplaceRegistrationDefinitionsClient creates a new instance of MarketplaceRegistrationDefinitionsClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewMarketplaceRegistrationDefinitionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *MarketplaceRegistrationDefinitionsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &MarketplaceRegistrationDefinitionsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &MarketplaceRegistrationDefinitionsClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Get the marketplace registration definition for the marketplace identifier.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MarketplaceRegistrationDefinitionsClient) Get(ctx context.Context, scope string, marketplaceIdentifier string, options *MarketplaceRegistrationDefinitionsGetOptions) (MarketplaceRegistrationDefinitionsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope of the resource.
+// marketplaceIdentifier - The Azure Marketplace identifier. Expected formats: {publisher}.{product[-preview]}.{planName}.{version}
+// or {publisher}.{product[-preview]}.{planName} or {publisher}.{product[-preview]} or
+// {publisher}).
+// options - MarketplaceRegistrationDefinitionsClientGetOptions contains the optional parameters for the MarketplaceRegistrationDefinitionsClient.Get
+// method.
+func (client *MarketplaceRegistrationDefinitionsClient) Get(ctx context.Context, scope string, marketplaceIdentifier string, options *MarketplaceRegistrationDefinitionsClientGetOptions) (MarketplaceRegistrationDefinitionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, scope, marketplaceIdentifier, options)
 	if err != nil {
-		return MarketplaceRegistrationDefinitionsGetResponse{}, err
+		return MarketplaceRegistrationDefinitionsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MarketplaceRegistrationDefinitionsGetResponse{}, err
+		return MarketplaceRegistrationDefinitionsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return MarketplaceRegistrationDefinitionsGetResponse{}, client.getHandleError(resp)
+		return MarketplaceRegistrationDefinitionsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *MarketplaceRegistrationDefinitionsClient) getCreateRequest(ctx context.Context, scope string, marketplaceIdentifier string, options *MarketplaceRegistrationDefinitionsGetOptions) (*policy.Request, error) {
+func (client *MarketplaceRegistrationDefinitionsClient) getCreateRequest(ctx context.Context, scope string, marketplaceIdentifier string, options *MarketplaceRegistrationDefinitionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.ManagedServices/marketplaceRegistrationDefinitions/{marketplaceIdentifier}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if marketplaceIdentifier == "" {
 		return nil, errors.New("parameter marketplaceIdentifier cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{marketplaceIdentifier}", url.PathEscape(marketplaceIdentifier))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -78,46 +89,36 @@ func (client *MarketplaceRegistrationDefinitionsClient) getCreateRequest(ctx con
 }
 
 // getHandleResponse handles the Get response.
-func (client *MarketplaceRegistrationDefinitionsClient) getHandleResponse(resp *http.Response) (MarketplaceRegistrationDefinitionsGetResponse, error) {
-	result := MarketplaceRegistrationDefinitionsGetResponse{RawResponse: resp}
+func (client *MarketplaceRegistrationDefinitionsClient) getHandleResponse(resp *http.Response) (MarketplaceRegistrationDefinitionsClientGetResponse, error) {
+	result := MarketplaceRegistrationDefinitionsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MarketplaceRegistrationDefinition); err != nil {
-		return MarketplaceRegistrationDefinitionsGetResponse{}, runtime.NewResponseError(err, resp)
+		return MarketplaceRegistrationDefinitionsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *MarketplaceRegistrationDefinitionsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Gets a list of the marketplace registration definitions for the marketplace identifier.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MarketplaceRegistrationDefinitionsClient) List(scope string, options *MarketplaceRegistrationDefinitionsListOptions) *MarketplaceRegistrationDefinitionsListPager {
-	return &MarketplaceRegistrationDefinitionsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope of the resource.
+// options - MarketplaceRegistrationDefinitionsClientListOptions contains the optional parameters for the MarketplaceRegistrationDefinitionsClient.List
+// method.
+func (client *MarketplaceRegistrationDefinitionsClient) List(scope string, options *MarketplaceRegistrationDefinitionsClientListOptions) *MarketplaceRegistrationDefinitionsClientListPager {
+	return &MarketplaceRegistrationDefinitionsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, scope, options)
 		},
-		advancer: func(ctx context.Context, resp MarketplaceRegistrationDefinitionsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp MarketplaceRegistrationDefinitionsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.MarketplaceRegistrationDefinitionList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *MarketplaceRegistrationDefinitionsClient) listCreateRequest(ctx context.Context, scope string, options *MarketplaceRegistrationDefinitionsListOptions) (*policy.Request, error) {
+func (client *MarketplaceRegistrationDefinitionsClient) listCreateRequest(ctx context.Context, scope string, options *MarketplaceRegistrationDefinitionsClientListOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.ManagedServices/marketplaceRegistrationDefinitions"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -132,23 +133,10 @@ func (client *MarketplaceRegistrationDefinitionsClient) listCreateRequest(ctx co
 }
 
 // listHandleResponse handles the List response.
-func (client *MarketplaceRegistrationDefinitionsClient) listHandleResponse(resp *http.Response) (MarketplaceRegistrationDefinitionsListResponse, error) {
-	result := MarketplaceRegistrationDefinitionsListResponse{RawResponse: resp}
+func (client *MarketplaceRegistrationDefinitionsClient) listHandleResponse(resp *http.Response) (MarketplaceRegistrationDefinitionsClientListResponse, error) {
+	result := MarketplaceRegistrationDefinitionsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MarketplaceRegistrationDefinitionList); err != nil {
-		return MarketplaceRegistrationDefinitionsListResponse{}, runtime.NewResponseError(err, resp)
+		return MarketplaceRegistrationDefinitionsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *MarketplaceRegistrationDefinitionsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

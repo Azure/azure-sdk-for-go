@@ -24,46 +24,62 @@ import (
 // WorkloadGroupsClient contains the methods for the WorkloadGroups group.
 // Don't use this type directly, use NewWorkloadGroupsClient() instead.
 type WorkloadGroupsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewWorkloadGroupsClient creates a new instance of WorkloadGroupsClient with the specified values.
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewWorkloadGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WorkloadGroupsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &WorkloadGroupsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &WorkloadGroupsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Creates or updates a workload group.
-// If the operation fails it returns a generic error.
-func (client *WorkloadGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, parameters WorkloadGroup, options *WorkloadGroupsBeginCreateOrUpdateOptions) (WorkloadGroupsCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database.
+// workloadGroupName - The name of the workload group.
+// parameters - The requested workload group state.
+// options - WorkloadGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the WorkloadGroupsClient.BeginCreateOrUpdate
+// method.
+func (client *WorkloadGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, parameters WorkloadGroup, options *WorkloadGroupsClientBeginCreateOrUpdateOptions) (WorkloadGroupsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, databaseName, workloadGroupName, parameters, options)
 	if err != nil {
-		return WorkloadGroupsCreateOrUpdatePollerResponse{}, err
+		return WorkloadGroupsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := WorkloadGroupsCreateOrUpdatePollerResponse{
+	result := WorkloadGroupsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("WorkloadGroupsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("WorkloadGroupsClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return WorkloadGroupsCreateOrUpdatePollerResponse{}, err
+		return WorkloadGroupsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &WorkloadGroupsCreateOrUpdatePoller{
+	result.Poller = &WorkloadGroupsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a workload group.
-// If the operation fails it returns a generic error.
-func (client *WorkloadGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, parameters WorkloadGroup, options *WorkloadGroupsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *WorkloadGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, parameters WorkloadGroup, options *WorkloadGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, databaseName, workloadGroupName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -73,13 +89,13 @@ func (client *WorkloadGroupsClient) createOrUpdate(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *WorkloadGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, parameters WorkloadGroup, options *WorkloadGroupsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *WorkloadGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, parameters WorkloadGroup, options *WorkloadGroupsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/workloadGroups/{workloadGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -101,7 +117,7 @@ func (client *WorkloadGroupsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -112,41 +128,36 @@ func (client *WorkloadGroupsClient) createOrUpdateCreateRequest(ctx context.Cont
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *WorkloadGroupsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginDelete - Deletes a workload group.
-// If the operation fails it returns a generic error.
-func (client *WorkloadGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, options *WorkloadGroupsBeginDeleteOptions) (WorkloadGroupsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database.
+// workloadGroupName - The name of the workload group to delete.
+// options - WorkloadGroupsClientBeginDeleteOptions contains the optional parameters for the WorkloadGroupsClient.BeginDelete
+// method.
+func (client *WorkloadGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, options *WorkloadGroupsClientBeginDeleteOptions) (WorkloadGroupsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, serverName, databaseName, workloadGroupName, options)
 	if err != nil {
-		return WorkloadGroupsDeletePollerResponse{}, err
+		return WorkloadGroupsClientDeletePollerResponse{}, err
 	}
-	result := WorkloadGroupsDeletePollerResponse{
+	result := WorkloadGroupsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("WorkloadGroupsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("WorkloadGroupsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return WorkloadGroupsDeletePollerResponse{}, err
+		return WorkloadGroupsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &WorkloadGroupsDeletePoller{
+	result.Poller = &WorkloadGroupsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a workload group.
-// If the operation fails it returns a generic error.
-func (client *WorkloadGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, options *WorkloadGroupsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *WorkloadGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, options *WorkloadGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, databaseName, workloadGroupName, options)
 	if err != nil {
 		return nil, err
@@ -156,13 +167,13 @@ func (client *WorkloadGroupsClient) deleteOperation(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *WorkloadGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, options *WorkloadGroupsBeginDeleteOptions) (*policy.Request, error) {
+func (client *WorkloadGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, options *WorkloadGroupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/workloadGroups/{workloadGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -184,7 +195,7 @@ func (client *WorkloadGroupsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -194,37 +205,31 @@ func (client *WorkloadGroupsClient) deleteCreateRequest(ctx context.Context, res
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *WorkloadGroupsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets a workload group
-// If the operation fails it returns a generic error.
-func (client *WorkloadGroupsClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, options *WorkloadGroupsGetOptions) (WorkloadGroupsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database.
+// workloadGroupName - The name of the workload group.
+// options - WorkloadGroupsClientGetOptions contains the optional parameters for the WorkloadGroupsClient.Get method.
+func (client *WorkloadGroupsClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, options *WorkloadGroupsClientGetOptions) (WorkloadGroupsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, databaseName, workloadGroupName, options)
 	if err != nil {
-		return WorkloadGroupsGetResponse{}, err
+		return WorkloadGroupsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WorkloadGroupsGetResponse{}, err
+		return WorkloadGroupsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WorkloadGroupsGetResponse{}, client.getHandleError(resp)
+		return WorkloadGroupsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *WorkloadGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, options *WorkloadGroupsGetOptions) (*policy.Request, error) {
+func (client *WorkloadGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, options *WorkloadGroupsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/workloadGroups/{workloadGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -246,7 +251,7 @@ func (client *WorkloadGroupsClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -258,42 +263,36 @@ func (client *WorkloadGroupsClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client *WorkloadGroupsClient) getHandleResponse(resp *http.Response) (WorkloadGroupsGetResponse, error) {
-	result := WorkloadGroupsGetResponse{RawResponse: resp}
+func (client *WorkloadGroupsClient) getHandleResponse(resp *http.Response) (WorkloadGroupsClientGetResponse, error) {
+	result := WorkloadGroupsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadGroup); err != nil {
-		return WorkloadGroupsGetResponse{}, runtime.NewResponseError(err, resp)
+		return WorkloadGroupsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *WorkloadGroupsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByDatabase - Gets the list of workload groups
-// If the operation fails it returns a generic error.
-func (client *WorkloadGroupsClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *WorkloadGroupsListByDatabaseOptions) *WorkloadGroupsListByDatabasePager {
-	return &WorkloadGroupsListByDatabasePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database.
+// options - WorkloadGroupsClientListByDatabaseOptions contains the optional parameters for the WorkloadGroupsClient.ListByDatabase
+// method.
+func (client *WorkloadGroupsClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *WorkloadGroupsClientListByDatabaseOptions) *WorkloadGroupsClientListByDatabasePager {
+	return &WorkloadGroupsClientListByDatabasePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
 		},
-		advancer: func(ctx context.Context, resp WorkloadGroupsListByDatabaseResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp WorkloadGroupsClientListByDatabaseResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.WorkloadGroupListResult.NextLink)
 		},
 	}
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
-func (client *WorkloadGroupsClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *WorkloadGroupsListByDatabaseOptions) (*policy.Request, error) {
+func (client *WorkloadGroupsClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *WorkloadGroupsClientListByDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/workloadGroups"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -311,7 +310,7 @@ func (client *WorkloadGroupsClient) listByDatabaseCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -323,22 +322,10 @@ func (client *WorkloadGroupsClient) listByDatabaseCreateRequest(ctx context.Cont
 }
 
 // listByDatabaseHandleResponse handles the ListByDatabase response.
-func (client *WorkloadGroupsClient) listByDatabaseHandleResponse(resp *http.Response) (WorkloadGroupsListByDatabaseResponse, error) {
-	result := WorkloadGroupsListByDatabaseResponse{RawResponse: resp}
+func (client *WorkloadGroupsClient) listByDatabaseHandleResponse(resp *http.Response) (WorkloadGroupsClientListByDatabaseResponse, error) {
+	result := WorkloadGroupsClientListByDatabaseResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadGroupListResult); err != nil {
-		return WorkloadGroupsListByDatabaseResponse{}, runtime.NewResponseError(err, resp)
+		return WorkloadGroupsClientListByDatabaseResponse{}, err
 	}
 	return result, nil
-}
-
-// listByDatabaseHandleError handles the ListByDatabase error response.
-func (client *WorkloadGroupsClient) listByDatabaseHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

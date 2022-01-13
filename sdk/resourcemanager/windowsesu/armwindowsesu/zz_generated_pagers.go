@@ -16,23 +16,23 @@ import (
 	"reflect"
 )
 
-// MultipleActivationKeysListByResourceGroupPager provides operations for iterating over paged responses.
-type MultipleActivationKeysListByResourceGroupPager struct {
+// MultipleActivationKeysClientListByResourceGroupPager provides operations for iterating over paged responses.
+type MultipleActivationKeysClientListByResourceGroupPager struct {
 	client    *MultipleActivationKeysClient
-	current   MultipleActivationKeysListByResourceGroupResponse
+	current   MultipleActivationKeysClientListByResourceGroupResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, MultipleActivationKeysListByResourceGroupResponse) (*policy.Request, error)
+	advancer  func(context.Context, MultipleActivationKeysClientListByResourceGroupResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *MultipleActivationKeysListByResourceGroupPager) Err() error {
+func (p *MultipleActivationKeysClientListByResourceGroupPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *MultipleActivationKeysListByResourceGroupPager) NextPage(ctx context.Context) bool {
+func (p *MultipleActivationKeysClientListByResourceGroupPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -53,7 +53,7 @@ func (p *MultipleActivationKeysListByResourceGroupPager) NextPage(ctx context.Co
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByResourceGroupHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByResourceGroupHandleResponse(resp)
@@ -65,28 +65,28 @@ func (p *MultipleActivationKeysListByResourceGroupPager) NextPage(ctx context.Co
 	return true
 }
 
-// PageResponse returns the current MultipleActivationKeysListByResourceGroupResponse page.
-func (p *MultipleActivationKeysListByResourceGroupPager) PageResponse() MultipleActivationKeysListByResourceGroupResponse {
+// PageResponse returns the current MultipleActivationKeysClientListByResourceGroupResponse page.
+func (p *MultipleActivationKeysClientListByResourceGroupPager) PageResponse() MultipleActivationKeysClientListByResourceGroupResponse {
 	return p.current
 }
 
-// MultipleActivationKeysListPager provides operations for iterating over paged responses.
-type MultipleActivationKeysListPager struct {
+// MultipleActivationKeysClientListPager provides operations for iterating over paged responses.
+type MultipleActivationKeysClientListPager struct {
 	client    *MultipleActivationKeysClient
-	current   MultipleActivationKeysListResponse
+	current   MultipleActivationKeysClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, MultipleActivationKeysListResponse) (*policy.Request, error)
+	advancer  func(context.Context, MultipleActivationKeysClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *MultipleActivationKeysListPager) Err() error {
+func (p *MultipleActivationKeysClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *MultipleActivationKeysListPager) NextPage(ctx context.Context) bool {
+func (p *MultipleActivationKeysClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -107,7 +107,7 @@ func (p *MultipleActivationKeysListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -119,28 +119,28 @@ func (p *MultipleActivationKeysListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current MultipleActivationKeysListResponse page.
-func (p *MultipleActivationKeysListPager) PageResponse() MultipleActivationKeysListResponse {
+// PageResponse returns the current MultipleActivationKeysClientListResponse page.
+func (p *MultipleActivationKeysClientListPager) PageResponse() MultipleActivationKeysClientListResponse {
 	return p.current
 }
 
-// OperationsListPager provides operations for iterating over paged responses.
-type OperationsListPager struct {
+// OperationsClientListPager provides operations for iterating over paged responses.
+type OperationsClientListPager struct {
 	client    *OperationsClient
-	current   OperationsListResponse
+	current   OperationsClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, OperationsListResponse) (*policy.Request, error)
+	advancer  func(context.Context, OperationsClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *OperationsListPager) Err() error {
+func (p *OperationsClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *OperationsListPager) NextPage(ctx context.Context) bool {
+func (p *OperationsClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -161,7 +161,7 @@ func (p *OperationsListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -173,7 +173,7 @@ func (p *OperationsListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current OperationsListResponse page.
-func (p *OperationsListPager) PageResponse() OperationsListResponse {
+// PageResponse returns the current OperationsClientListResponse page.
+func (p *OperationsClientListPager) PageResponse() OperationsClientListResponse {
 	return p.current
 }

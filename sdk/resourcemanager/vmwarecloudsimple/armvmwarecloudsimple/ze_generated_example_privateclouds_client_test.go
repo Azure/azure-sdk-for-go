@@ -26,12 +26,16 @@ func ExamplePrivateCloudsClient_List() {
 	client := armvmwarecloudsimple.NewPrivateCloudsClient("<subscription-id>", cred, nil)
 	pager := client.List("<region-id>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("PrivateCloud.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -51,5 +55,5 @@ func ExamplePrivateCloudsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateCloud.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateCloudsClientGetResult)
 }

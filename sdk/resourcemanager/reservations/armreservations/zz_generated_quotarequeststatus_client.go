@@ -11,7 +11,6 @@ package armreservations
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,43 +25,54 @@ import (
 // QuotaRequestStatusClient contains the methods for the QuotaRequestStatus group.
 // Don't use this type directly, use NewQuotaRequestStatusClient() instead.
 type QuotaRequestStatusClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewQuotaRequestStatusClient creates a new instance of QuotaRequestStatusClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewQuotaRequestStatusClient(credential azcore.TokenCredential, options *arm.ClientOptions) *QuotaRequestStatusClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &QuotaRequestStatusClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &QuotaRequestStatusClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// Get - For the specified Azure region (location), get the details and status of the quota request by the quota request ID for the resources of the resource
-// provider. The PUT request for the quota (service
+// Get - For the specified Azure region (location), get the details and status of the quota request by the quota request ID
+// for the resources of the resource provider. The PUT request for the quota (service
 // limit) returns a response with the requestId parameter.
-// If the operation fails it returns the *ExceptionResponse error type.
-func (client *QuotaRequestStatusClient) Get(ctx context.Context, subscriptionID string, providerID string, location string, id string, options *QuotaRequestStatusGetOptions) (QuotaRequestStatusGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// subscriptionID - Azure subscription ID.
+// providerID - Azure resource provider ID.
+// location - Azure region.
+// id - Quota Request ID.
+// options - QuotaRequestStatusClientGetOptions contains the optional parameters for the QuotaRequestStatusClient.Get method.
+func (client *QuotaRequestStatusClient) Get(ctx context.Context, subscriptionID string, providerID string, location string, id string, options *QuotaRequestStatusClientGetOptions) (QuotaRequestStatusClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, subscriptionID, providerID, location, id, options)
 	if err != nil {
-		return QuotaRequestStatusGetResponse{}, err
+		return QuotaRequestStatusClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return QuotaRequestStatusGetResponse{}, err
+		return QuotaRequestStatusClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return QuotaRequestStatusGetResponse{}, client.getHandleError(resp)
+		return QuotaRequestStatusClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *QuotaRequestStatusClient) getCreateRequest(ctx context.Context, subscriptionID string, providerID string, location string, id string, options *QuotaRequestStatusGetOptions) (*policy.Request, error) {
+func (client *QuotaRequestStatusClient) getCreateRequest(ctx context.Context, subscriptionID string, providerID string, location string, id string, options *QuotaRequestStatusClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/resourceProviders/{providerId}/locations/{location}/serviceLimitsRequests/{id}"
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -80,7 +90,7 @@ func (client *QuotaRequestStatusClient) getCreateRequest(ctx context.Context, su
 		return nil, errors.New("parameter id cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{id}", url.PathEscape(id))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -92,44 +102,35 @@ func (client *QuotaRequestStatusClient) getCreateRequest(ctx context.Context, su
 }
 
 // getHandleResponse handles the Get response.
-func (client *QuotaRequestStatusClient) getHandleResponse(resp *http.Response) (QuotaRequestStatusGetResponse, error) {
-	result := QuotaRequestStatusGetResponse{RawResponse: resp}
+func (client *QuotaRequestStatusClient) getHandleResponse(resp *http.Response) (QuotaRequestStatusClientGetResponse, error) {
+	result := QuotaRequestStatusClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QuotaRequestDetails); err != nil {
-		return QuotaRequestStatusGetResponse{}, runtime.NewResponseError(err, resp)
+		return QuotaRequestStatusClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *QuotaRequestStatusClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ExceptionResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// List - For the specified Azure region (location), subscription, and resource provider, get the history of the quota requests for the past year. To select
-// specific quota requests, use the oData filter.
-// If the operation fails it returns the *ExceptionResponse error type.
-func (client *QuotaRequestStatusClient) List(subscriptionID string, providerID string, location string, options *QuotaRequestStatusListOptions) *QuotaRequestStatusListPager {
-	return &QuotaRequestStatusListPager{
+// List - For the specified Azure region (location), subscription, and resource provider, get the history of the quota requests
+// for the past year. To select specific quota requests, use the oData filter.
+// If the operation fails it returns an *azcore.ResponseError type.
+// subscriptionID - Azure subscription ID.
+// providerID - Azure resource provider ID.
+// location - Azure region.
+// options - QuotaRequestStatusClientListOptions contains the optional parameters for the QuotaRequestStatusClient.List method.
+func (client *QuotaRequestStatusClient) List(subscriptionID string, providerID string, location string, options *QuotaRequestStatusClientListOptions) *QuotaRequestStatusClientListPager {
+	return &QuotaRequestStatusClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, subscriptionID, providerID, location, options)
 		},
-		advancer: func(ctx context.Context, resp QuotaRequestStatusListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp QuotaRequestStatusClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.QuotaRequestDetailsList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *QuotaRequestStatusClient) listCreateRequest(ctx context.Context, subscriptionID string, providerID string, location string, options *QuotaRequestStatusListOptions) (*policy.Request, error) {
+func (client *QuotaRequestStatusClient) listCreateRequest(ctx context.Context, subscriptionID string, providerID string, location string, options *QuotaRequestStatusClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/resourceProviders/{providerId}/locations/{location}/serviceLimitsRequests"
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -143,7 +144,7 @@ func (client *QuotaRequestStatusClient) listCreateRequest(ctx context.Context, s
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -164,23 +165,10 @@ func (client *QuotaRequestStatusClient) listCreateRequest(ctx context.Context, s
 }
 
 // listHandleResponse handles the List response.
-func (client *QuotaRequestStatusClient) listHandleResponse(resp *http.Response) (QuotaRequestStatusListResponse, error) {
-	result := QuotaRequestStatusListResponse{RawResponse: resp}
+func (client *QuotaRequestStatusClient) listHandleResponse(resp *http.Response) (QuotaRequestStatusClientListResponse, error) {
+	result := QuotaRequestStatusClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QuotaRequestDetailsList); err != nil {
-		return QuotaRequestStatusListResponse{}, runtime.NewResponseError(err, resp)
+		return QuotaRequestStatusClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *QuotaRequestStatusClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ExceptionResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

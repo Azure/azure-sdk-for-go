@@ -76,6 +76,31 @@ func (a *AuthorizationProfile) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// ClientGetOptions contains the optional parameters for the Client.Get method.
+type ClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientListAllOptions contains the optional parameters for the Client.ListAll method.
+type ClientListAllOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientListOptions contains the optional parameters for the Client.List method.
+type ClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientRegisterOptions contains the optional parameters for the Client.Register method.
+type ClientRegisterOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientUnregisterOptions contains the optional parameters for the Client.Unregister method.
+type ClientUnregisterOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ErrorDefinition - Error definition.
 type ErrorDefinition struct {
 	// Internal error details.
@@ -98,17 +123,9 @@ func (e ErrorDefinition) MarshalJSON() ([]byte, error) {
 }
 
 // ErrorResponse - Error response indicates that the service is not able to process the incoming request.
-// Implements the error and azcore.HTTPResponse interfaces.
 type ErrorResponse struct {
-	raw string
 	// The error details.
-	InnerError *ErrorDefinition `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorDefinition `json:"error,omitempty"`
 }
 
 // FeatureClientListOperationsOptions contains the optional parameters for the FeatureClient.ListOperations method.
@@ -154,31 +171,6 @@ type FeatureResult struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// FeaturesGetOptions contains the optional parameters for the Features.Get method.
-type FeaturesGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// FeaturesListAllOptions contains the optional parameters for the Features.ListAll method.
-type FeaturesListAllOptions struct {
-	// placeholder for future optional parameters
-}
-
-// FeaturesListOptions contains the optional parameters for the Features.List method.
-type FeaturesListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// FeaturesRegisterOptions contains the optional parameters for the Features.Register method.
-type FeaturesRegisterOptions struct {
-	// placeholder for future optional parameters
-}
-
-// FeaturesUnregisterOptions contains the optional parameters for the Features.Unregister method.
-type FeaturesUnregisterOptions struct {
-	// placeholder for future optional parameters
-}
-
 // Operation - Microsoft.Features operation
 type Operation struct {
 	// The object that represents the operation.
@@ -200,8 +192,8 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
-// OperationListResult - Result of the request to list Microsoft.Features operations. It contains a list of operations and a URL link to get the next set
-// of results.
+// OperationListResult - Result of the request to list Microsoft.Features operations. It contains a list of operations and
+// a URL link to get the next set of results.
 type OperationListResult struct {
 	// URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -232,8 +224,16 @@ type ProxyResource struct {
 
 // SubscriptionFeatureRegistration - Subscription feature registration details
 type SubscriptionFeatureRegistration struct {
-	ProxyResource
 	Properties *SubscriptionFeatureRegistrationProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Azure resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // SubscriptionFeatureRegistrationList - The list of subscription feature registrations.
@@ -376,31 +376,34 @@ func (s *SubscriptionFeatureRegistrationProperties) UnmarshalJSON(data []byte) e
 	return nil
 }
 
-// SubscriptionFeatureRegistrationsCreateOrUpdateOptions contains the optional parameters for the SubscriptionFeatureRegistrations.CreateOrUpdate method.
-type SubscriptionFeatureRegistrationsCreateOrUpdateOptions struct {
+// SubscriptionFeatureRegistrationsClientCreateOrUpdateOptions contains the optional parameters for the SubscriptionFeatureRegistrationsClient.CreateOrUpdate
+// method.
+type SubscriptionFeatureRegistrationsClientCreateOrUpdateOptions struct {
 	// Subscription Feature Registration Type details.
 	SubscriptionFeatureRegistrationType *SubscriptionFeatureRegistration
 }
 
-// SubscriptionFeatureRegistrationsDeleteOptions contains the optional parameters for the SubscriptionFeatureRegistrations.Delete method.
-type SubscriptionFeatureRegistrationsDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SubscriptionFeatureRegistrationsGetOptions contains the optional parameters for the SubscriptionFeatureRegistrations.Get method.
-type SubscriptionFeatureRegistrationsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SubscriptionFeatureRegistrationsListAllBySubscriptionOptions contains the optional parameters for the SubscriptionFeatureRegistrations.ListAllBySubscription
+// SubscriptionFeatureRegistrationsClientDeleteOptions contains the optional parameters for the SubscriptionFeatureRegistrationsClient.Delete
 // method.
-type SubscriptionFeatureRegistrationsListAllBySubscriptionOptions struct {
+type SubscriptionFeatureRegistrationsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SubscriptionFeatureRegistrationsListBySubscriptionOptions contains the optional parameters for the SubscriptionFeatureRegistrations.ListBySubscription
+// SubscriptionFeatureRegistrationsClientGetOptions contains the optional parameters for the SubscriptionFeatureRegistrationsClient.Get
 // method.
-type SubscriptionFeatureRegistrationsListBySubscriptionOptions struct {
+type SubscriptionFeatureRegistrationsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SubscriptionFeatureRegistrationsClientListAllBySubscriptionOptions contains the optional parameters for the SubscriptionFeatureRegistrationsClient.ListAllBySubscription
+// method.
+type SubscriptionFeatureRegistrationsClientListAllBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SubscriptionFeatureRegistrationsClientListBySubscriptionOptions contains the optional parameters for the SubscriptionFeatureRegistrationsClient.ListBySubscription
+// method.
+type SubscriptionFeatureRegistrationsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 

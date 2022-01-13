@@ -11,7 +11,6 @@ package armsubscription
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,47 +24,56 @@ import (
 // BillingAccountClient contains the methods for the BillingAccount group.
 // Don't use this type directly, use NewBillingAccountClient() instead.
 type BillingAccountClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewBillingAccountClient creates a new instance of BillingAccountClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewBillingAccountClient(credential azcore.TokenCredential, options *arm.ClientOptions) *BillingAccountClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &BillingAccountClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &BillingAccountClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // GetPolicy - Get Billing Account Policy.
-// If the operation fails it returns the *ErrorResponseBody error type.
-func (client *BillingAccountClient) GetPolicy(ctx context.Context, billingAccountID string, options *BillingAccountGetPolicyOptions) (BillingAccountGetPolicyResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// billingAccountID - Billing Account Id.
+// options - BillingAccountClientGetPolicyOptions contains the optional parameters for the BillingAccountClient.GetPolicy
+// method.
+func (client *BillingAccountClient) GetPolicy(ctx context.Context, billingAccountID string, options *BillingAccountClientGetPolicyOptions) (BillingAccountClientGetPolicyResponse, error) {
 	req, err := client.getPolicyCreateRequest(ctx, billingAccountID, options)
 	if err != nil {
-		return BillingAccountGetPolicyResponse{}, err
+		return BillingAccountClientGetPolicyResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return BillingAccountGetPolicyResponse{}, err
+		return BillingAccountClientGetPolicyResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return BillingAccountGetPolicyResponse{}, client.getPolicyHandleError(resp)
+		return BillingAccountClientGetPolicyResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getPolicyHandleResponse(resp)
 }
 
 // getPolicyCreateRequest creates the GetPolicy request.
-func (client *BillingAccountClient) getPolicyCreateRequest(ctx context.Context, billingAccountID string, options *BillingAccountGetPolicyOptions) (*policy.Request, error) {
+func (client *BillingAccountClient) getPolicyCreateRequest(ctx context.Context, billingAccountID string, options *BillingAccountClientGetPolicyOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.Subscription/policies/default"
 	if billingAccountID == "" {
 		return nil, errors.New("parameter billingAccountID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{billingAccountId}", url.PathEscape(billingAccountID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -77,23 +85,10 @@ func (client *BillingAccountClient) getPolicyCreateRequest(ctx context.Context, 
 }
 
 // getPolicyHandleResponse handles the GetPolicy response.
-func (client *BillingAccountClient) getPolicyHandleResponse(resp *http.Response) (BillingAccountGetPolicyResponse, error) {
-	result := BillingAccountGetPolicyResponse{RawResponse: resp}
+func (client *BillingAccountClient) getPolicyHandleResponse(resp *http.Response) (BillingAccountClientGetPolicyResponse, error) {
+	result := BillingAccountClientGetPolicyResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BillingAccountPoliciesResponse); err != nil {
-		return BillingAccountGetPolicyResponse{}, runtime.NewResponseError(err, resp)
+		return BillingAccountClientGetPolicyResponse{}, err
 	}
 	return result, nil
-}
-
-// getPolicyHandleError handles the GetPolicy error response.
-func (client *BillingAccountClient) getPolicyHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponseBody{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

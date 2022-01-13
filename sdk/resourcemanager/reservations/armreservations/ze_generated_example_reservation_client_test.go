@@ -40,10 +40,11 @@ func ExampleReservationClient_BeginAvailableScopes() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ReservationClientAvailableScopesResult)
 }
 
 // x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2021-07-01/examples/SplitReservation.json
@@ -68,10 +69,11 @@ func ExampleReservationClient_BeginSplit() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ReservationClientSplitResult)
 }
 
 // x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2021-07-01/examples/MergeReservations.json
@@ -95,10 +97,11 @@ func ExampleReservationClient_BeginMerge() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ReservationClientMergeResult)
 }
 
 // x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2021-07-01/examples/GetReservationsFromOrder.json
@@ -111,12 +114,16 @@ func ExampleReservationClient_List() {
 	client := armreservations.NewReservationClient(cred, nil)
 	pager := client.List("<reservation-order-id>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ReservationResponse.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -132,11 +139,11 @@ func ExampleReservationClient_Get() {
 	res, err := client.Get(ctx,
 		"<reservation-id>",
 		"<reservation-order-id>",
-		&armreservations.ReservationGetOptions{Expand: to.StringPtr("<expand>")})
+		&armreservations.ReservationClientGetOptions{Expand: to.StringPtr("<expand>")})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ReservationResponse.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReservationClientGetResult)
 }
 
 // x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2021-07-01/examples/UpdateReservation.json
@@ -152,8 +159,8 @@ func ExampleReservationClient_BeginUpdate() {
 		"<reservation-id>",
 		armreservations.Patch{
 			Properties: &armreservations.PatchProperties{
-				AppliedScopeType:    armreservations.AppliedScopeTypeShared.ToPtr(),
-				InstanceFlexibility: armreservations.InstanceFlexibilityOff.ToPtr(),
+				AppliedScopeType:    armreservations.AppliedScopeType("Shared").ToPtr(),
+				InstanceFlexibility: armreservations.InstanceFlexibility("Off").ToPtr(),
 			},
 		},
 		nil)
@@ -164,7 +171,7 @@ func ExampleReservationClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ReservationResponse.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReservationClientUpdateResult)
 }
 
 // x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2021-07-01/examples/GetReservationRevisions.json
@@ -178,12 +185,16 @@ func ExampleReservationClient_ListRevisions() {
 	pager := client.ListRevisions("<reservation-id>",
 		"<reservation-order-id>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ReservationResponse.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -196,19 +207,23 @@ func ExampleReservationClient_ListAll() {
 	}
 	ctx := context.Background()
 	client := armreservations.NewReservationClient(cred, nil)
-	pager := client.ListAll(&armreservations.ReservationListAllOptions{Filter: to.StringPtr("<filter>"),
+	pager := client.ListAll(&armreservations.ReservationClientListAllOptions{Filter: to.StringPtr("<filter>"),
 		Orderby:        to.StringPtr("<orderby>"),
 		RefreshSummary: nil,
 		Skiptoken:      to.Float32Ptr(50),
 		SelectedState:  nil,
 		Take:           to.Float32Ptr(1),
 	})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ReservationResponse.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

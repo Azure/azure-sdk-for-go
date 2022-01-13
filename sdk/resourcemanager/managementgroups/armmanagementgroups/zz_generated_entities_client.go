@@ -10,7 +10,6 @@ package armmanagementgroups
 
 import (
 	"context"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -23,40 +22,47 @@ import (
 // EntitiesClient contains the methods for the Entities group.
 // Don't use this type directly, use NewEntitiesClient() instead.
 type EntitiesClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewEntitiesClient creates a new instance of EntitiesClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewEntitiesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *EntitiesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &EntitiesClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &EntitiesClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - List all entities (Management Groups, Subscriptions, etc.) for the authenticated user.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *EntitiesClient) List(options *EntitiesListOptions) *EntitiesListPager {
-	return &EntitiesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - EntitiesClientListOptions contains the optional parameters for the EntitiesClient.List method.
+func (client *EntitiesClient) List(options *EntitiesClientListOptions) *EntitiesClientListPager {
+	return &EntitiesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp EntitiesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp EntitiesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.EntityListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *EntitiesClient) listCreateRequest(ctx context.Context, options *EntitiesListOptions) (*policy.Request, error) {
+func (client *EntitiesClient) listCreateRequest(ctx context.Context, options *EntitiesClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/getEntities"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -95,23 +101,10 @@ func (client *EntitiesClient) listCreateRequest(ctx context.Context, options *En
 }
 
 // listHandleResponse handles the List response.
-func (client *EntitiesClient) listHandleResponse(resp *http.Response) (EntitiesListResponse, error) {
-	result := EntitiesListResponse{RawResponse: resp}
+func (client *EntitiesClient) listHandleResponse(resp *http.Response) (EntitiesClientListResponse, error) {
+	result := EntitiesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EntityListResult); err != nil {
-		return EntitiesListResponse{}, runtime.NewResponseError(err, resp)
+		return EntitiesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *EntitiesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

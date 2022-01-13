@@ -11,7 +11,6 @@ package armpostgresql
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,59 @@ import (
 // ServerParametersClient contains the methods for the ServerParameters group.
 // Don't use this type directly, use NewServerParametersClient() instead.
 type ServerParametersClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewServerParametersClient creates a new instance of ServerParametersClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewServerParametersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServerParametersClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ServerParametersClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ServerParametersClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginListUpdateConfigurations - Update a list of configurations in a given server.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServerParametersClient) BeginListUpdateConfigurations(ctx context.Context, resourceGroupName string, serverName string, value ConfigurationListResult, options *ServerParametersBeginListUpdateConfigurationsOptions) (ServerParametersListUpdateConfigurationsPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// serverName - The name of the server.
+// value - The parameters for updating a list of server configuration.
+// options - ServerParametersClientBeginListUpdateConfigurationsOptions contains the optional parameters for the ServerParametersClient.BeginListUpdateConfigurations
+// method.
+func (client *ServerParametersClient) BeginListUpdateConfigurations(ctx context.Context, resourceGroupName string, serverName string, value ConfigurationListResult, options *ServerParametersClientBeginListUpdateConfigurationsOptions) (ServerParametersClientListUpdateConfigurationsPollerResponse, error) {
 	resp, err := client.listUpdateConfigurations(ctx, resourceGroupName, serverName, value, options)
 	if err != nil {
-		return ServerParametersListUpdateConfigurationsPollerResponse{}, err
+		return ServerParametersClientListUpdateConfigurationsPollerResponse{}, err
 	}
-	result := ServerParametersListUpdateConfigurationsPollerResponse{
+	result := ServerParametersClientListUpdateConfigurationsPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ServerParametersClient.ListUpdateConfigurations", "azure-async-operation", resp, client.pl, client.listUpdateConfigurationsHandleError)
+	pt, err := armruntime.NewPoller("ServerParametersClient.ListUpdateConfigurations", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return ServerParametersListUpdateConfigurationsPollerResponse{}, err
+		return ServerParametersClientListUpdateConfigurationsPollerResponse{}, err
 	}
-	result.Poller = &ServerParametersListUpdateConfigurationsPoller{
+	result.Poller = &ServerParametersClientListUpdateConfigurationsPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // ListUpdateConfigurations - Update a list of configurations in a given server.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServerParametersClient) listUpdateConfigurations(ctx context.Context, resourceGroupName string, serverName string, value ConfigurationListResult, options *ServerParametersBeginListUpdateConfigurationsOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ServerParametersClient) listUpdateConfigurations(ctx context.Context, resourceGroupName string, serverName string, value ConfigurationListResult, options *ServerParametersClientBeginListUpdateConfigurationsOptions) (*http.Response, error) {
 	req, err := client.listUpdateConfigurationsCreateRequest(ctx, resourceGroupName, serverName, value, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +86,13 @@ func (client *ServerParametersClient) listUpdateConfigurations(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.listUpdateConfigurationsHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // listUpdateConfigurationsCreateRequest creates the ListUpdateConfigurations request.
-func (client *ServerParametersClient) listUpdateConfigurationsCreateRequest(ctx context.Context, resourceGroupName string, serverName string, value ConfigurationListResult, options *ServerParametersBeginListUpdateConfigurationsOptions) (*policy.Request, error) {
+func (client *ServerParametersClient) listUpdateConfigurationsCreateRequest(ctx context.Context, resourceGroupName string, serverName string, value ConfigurationListResult, options *ServerParametersClientBeginListUpdateConfigurationsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/servers/{serverName}/updateConfigurations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -94,7 +106,7 @@ func (client *ServerParametersClient) listUpdateConfigurationsCreateRequest(ctx 
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -103,17 +115,4 @@ func (client *ServerParametersClient) listUpdateConfigurationsCreateRequest(ctx 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, value)
-}
-
-// listUpdateConfigurationsHandleError handles the ListUpdateConfigurations error response.
-func (client *ServerParametersClient) listUpdateConfigurationsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -31,12 +31,16 @@ func ExampleSQLPoolRestorePointsClient_List() {
 		"<workspace-name>",
 		"<sql-pool-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("RestorePoint.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -64,7 +68,7 @@ func ExampleSQLPoolRestorePointsClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RestorePoint.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SQLPoolRestorePointsClientCreateResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/SqlPoolRestorePointsGet.json
@@ -84,7 +88,7 @@ func ExampleSQLPoolRestorePointsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RestorePoint.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SQLPoolRestorePointsClientGetResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/SqlPoolRestorePointsDelete.json

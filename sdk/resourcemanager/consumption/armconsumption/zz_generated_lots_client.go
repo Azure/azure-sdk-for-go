@@ -11,7 +11,6 @@ package armconsumption
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,55 @@ import (
 // LotsClient contains the methods for the Lots group.
 // Don't use this type directly, use NewLotsClient() instead.
 type LotsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewLotsClient creates a new instance of LotsClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewLotsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *LotsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &LotsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &LotsClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// ListByBillingAccount - Lists all Azure credits and Microsoft Azure consumption commitments for a billing account or a billing profile. Microsoft Azure
-// consumption commitments are only supported for the billing account
+// ListByBillingAccount - Lists all Azure credits and Microsoft Azure consumption commitments for a billing account or a billing
+// profile. Microsoft Azure consumption commitments are only supported for the billing account
 // scope.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LotsClient) ListByBillingAccount(billingAccountID string, options *LotsListByBillingAccountOptions) *LotsListByBillingAccountPager {
-	return &LotsListByBillingAccountPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// billingAccountID - BillingAccount ID
+// options - LotsClientListByBillingAccountOptions contains the optional parameters for the LotsClient.ListByBillingAccount
+// method.
+func (client *LotsClient) ListByBillingAccount(billingAccountID string, options *LotsClientListByBillingAccountOptions) *LotsClientListByBillingAccountPager {
+	return &LotsClientListByBillingAccountPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByBillingAccountCreateRequest(ctx, billingAccountID, options)
 		},
-		advancer: func(ctx context.Context, resp LotsListByBillingAccountResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp LotsClientListByBillingAccountResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.Lots.NextLink)
 		},
 	}
 }
 
 // listByBillingAccountCreateRequest creates the ListByBillingAccount request.
-func (client *LotsClient) listByBillingAccountCreateRequest(ctx context.Context, billingAccountID string, options *LotsListByBillingAccountOptions) (*policy.Request, error) {
+func (client *LotsClient) listByBillingAccountCreateRequest(ctx context.Context, billingAccountID string, options *LotsClientListByBillingAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.Consumption/lots"
 	if billingAccountID == "" {
 		return nil, errors.New("parameter billingAccountID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{billingAccountId}", url.PathEscape(billingAccountID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -79,45 +87,36 @@ func (client *LotsClient) listByBillingAccountCreateRequest(ctx context.Context,
 }
 
 // listByBillingAccountHandleResponse handles the ListByBillingAccount response.
-func (client *LotsClient) listByBillingAccountHandleResponse(resp *http.Response) (LotsListByBillingAccountResponse, error) {
-	result := LotsListByBillingAccountResponse{RawResponse: resp}
+func (client *LotsClient) listByBillingAccountHandleResponse(resp *http.Response) (LotsClientListByBillingAccountResponse, error) {
+	result := LotsClientListByBillingAccountResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Lots); err != nil {
-		return LotsListByBillingAccountResponse{}, runtime.NewResponseError(err, resp)
+		return LotsClientListByBillingAccountResponse{}, err
 	}
 	return result, nil
 }
 
-// listByBillingAccountHandleError handles the ListByBillingAccount error response.
-func (client *LotsClient) listByBillingAccountHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListByBillingProfile - Lists all Azure credits and Microsoft Azure consumption commitments for a billing account or a billing profile. Microsoft Azure
-// consumption commitments are only supported for the billing account
+// ListByBillingProfile - Lists all Azure credits and Microsoft Azure consumption commitments for a billing account or a billing
+// profile. Microsoft Azure consumption commitments are only supported for the billing account
 // scope.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LotsClient) ListByBillingProfile(billingAccountID string, billingProfileID string, options *LotsListByBillingProfileOptions) *LotsListByBillingProfilePager {
-	return &LotsListByBillingProfilePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// billingAccountID - BillingAccount ID
+// billingProfileID - Azure Billing Profile ID.
+// options - LotsClientListByBillingProfileOptions contains the optional parameters for the LotsClient.ListByBillingProfile
+// method.
+func (client *LotsClient) ListByBillingProfile(billingAccountID string, billingProfileID string, options *LotsClientListByBillingProfileOptions) *LotsClientListByBillingProfilePager {
+	return &LotsClientListByBillingProfilePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByBillingProfileCreateRequest(ctx, billingAccountID, billingProfileID, options)
 		},
-		advancer: func(ctx context.Context, resp LotsListByBillingProfileResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp LotsClientListByBillingProfileResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.Lots.NextLink)
 		},
 	}
 }
 
 // listByBillingProfileCreateRequest creates the ListByBillingProfile request.
-func (client *LotsClient) listByBillingProfileCreateRequest(ctx context.Context, billingAccountID string, billingProfileID string, options *LotsListByBillingProfileOptions) (*policy.Request, error) {
+func (client *LotsClient) listByBillingProfileCreateRequest(ctx context.Context, billingAccountID string, billingProfileID string, options *LotsClientListByBillingProfileOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/providers/Microsoft.Consumption/lots"
 	if billingAccountID == "" {
 		return nil, errors.New("parameter billingAccountID cannot be empty")
@@ -127,7 +126,7 @@ func (client *LotsClient) listByBillingProfileCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter billingProfileID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{billingProfileId}", url.PathEscape(billingProfileID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -139,23 +138,10 @@ func (client *LotsClient) listByBillingProfileCreateRequest(ctx context.Context,
 }
 
 // listByBillingProfileHandleResponse handles the ListByBillingProfile response.
-func (client *LotsClient) listByBillingProfileHandleResponse(resp *http.Response) (LotsListByBillingProfileResponse, error) {
-	result := LotsListByBillingProfileResponse{RawResponse: resp}
+func (client *LotsClient) listByBillingProfileHandleResponse(resp *http.Response) (LotsClientListByBillingProfileResponse, error) {
+	result := LotsClientListByBillingProfileResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Lots); err != nil {
-		return LotsListByBillingProfileResponse{}, runtime.NewResponseError(err, resp)
+		return LotsClientListByBillingProfileResponse{}, err
 	}
 	return result, nil
-}
-
-// listByBillingProfileHandleError handles the ListByBillingProfile error response.
-func (client *LotsClient) listByBillingProfileHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -14,13 +14,13 @@ import (
 	"net/http"
 )
 
-// ExperimentsCancelPoller provides polling facilities until the operation reaches a terminal state.
-type ExperimentsCancelPoller struct {
+// ExperimentsClientCancelPoller provides polling facilities until the operation reaches a terminal state.
+type ExperimentsClientCancelPoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *ExperimentsCancelPoller) Done() bool {
+func (p *ExperimentsClientCancelPoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -34,18 +34,18 @@ func (p *ExperimentsCancelPoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *ExperimentsCancelPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *ExperimentsClientCancelPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final ExperimentsCancelResponse will be returned.
-func (p *ExperimentsCancelPoller) FinalResponse(ctx context.Context) (ExperimentsCancelResponse, error) {
-	respType := ExperimentsCancelResponse{}
+// If the final GET succeeded then the final ExperimentsClientCancelResponse will be returned.
+func (p *ExperimentsClientCancelPoller) FinalResponse(ctx context.Context) (ExperimentsClientCancelResponse, error) {
+	respType := ExperimentsClientCancelResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.ExperimentCancelOperationResult)
 	if err != nil {
-		return ExperimentsCancelResponse{}, err
+		return ExperimentsClientCancelResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -53,17 +53,17 @@ func (p *ExperimentsCancelPoller) FinalResponse(ctx context.Context) (Experiment
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *ExperimentsCancelPoller) ResumeToken() (string, error) {
+func (p *ExperimentsClientCancelPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-// ExperimentsCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
-type ExperimentsCreateOrUpdatePoller struct {
+// ExperimentsClientCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type ExperimentsClientCreateOrUpdatePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *ExperimentsCreateOrUpdatePoller) Done() bool {
+func (p *ExperimentsClientCreateOrUpdatePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -77,18 +77,18 @@ func (p *ExperimentsCreateOrUpdatePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *ExperimentsCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *ExperimentsClientCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final ExperimentsCreateOrUpdateResponse will be returned.
-func (p *ExperimentsCreateOrUpdatePoller) FinalResponse(ctx context.Context) (ExperimentsCreateOrUpdateResponse, error) {
-	respType := ExperimentsCreateOrUpdateResponse{}
+// If the final GET succeeded then the final ExperimentsClientCreateOrUpdateResponse will be returned.
+func (p *ExperimentsClientCreateOrUpdatePoller) FinalResponse(ctx context.Context) (ExperimentsClientCreateOrUpdateResponse, error) {
+	respType := ExperimentsClientCreateOrUpdateResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.Experiment)
 	if err != nil {
-		return ExperimentsCreateOrUpdateResponse{}, err
+		return ExperimentsClientCreateOrUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -96,6 +96,6 @@ func (p *ExperimentsCreateOrUpdatePoller) FinalResponse(ctx context.Context) (Ex
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *ExperimentsCreateOrUpdatePoller) ResumeToken() (string, error) {
+func (p *ExperimentsClientCreateOrUpdatePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }

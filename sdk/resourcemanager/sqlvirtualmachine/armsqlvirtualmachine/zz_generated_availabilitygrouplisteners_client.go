@@ -24,46 +24,61 @@ import (
 // AvailabilityGroupListenersClient contains the methods for the AvailabilityGroupListeners group.
 // Don't use this type directly, use NewAvailabilityGroupListenersClient() instead.
 type AvailabilityGroupListenersClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewAvailabilityGroupListenersClient creates a new instance of AvailabilityGroupListenersClient with the specified values.
+// subscriptionID - Subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewAvailabilityGroupListenersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AvailabilityGroupListenersClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &AvailabilityGroupListenersClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &AvailabilityGroupListenersClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Creates or updates an availability group listener.
-// If the operation fails it returns a generic error.
-func (client *AvailabilityGroupListenersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, availabilityGroupListenerName string, parameters AvailabilityGroupListener, options *AvailabilityGroupListenersBeginCreateOrUpdateOptions) (AvailabilityGroupListenersCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
+// Manager API or the portal.
+// sqlVirtualMachineGroupName - Name of the SQL virtual machine group.
+// availabilityGroupListenerName - Name of the availability group listener.
+// parameters - The availability group listener.
+// options - AvailabilityGroupListenersClientBeginCreateOrUpdateOptions contains the optional parameters for the AvailabilityGroupListenersClient.BeginCreateOrUpdate
+// method.
+func (client *AvailabilityGroupListenersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, availabilityGroupListenerName string, parameters AvailabilityGroupListener, options *AvailabilityGroupListenersClientBeginCreateOrUpdateOptions) (AvailabilityGroupListenersClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, parameters, options)
 	if err != nil {
-		return AvailabilityGroupListenersCreateOrUpdatePollerResponse{}, err
+		return AvailabilityGroupListenersClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := AvailabilityGroupListenersCreateOrUpdatePollerResponse{
+	result := AvailabilityGroupListenersClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("AvailabilityGroupListenersClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("AvailabilityGroupListenersClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return AvailabilityGroupListenersCreateOrUpdatePollerResponse{}, err
+		return AvailabilityGroupListenersClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &AvailabilityGroupListenersCreateOrUpdatePoller{
+	result.Poller = &AvailabilityGroupListenersClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates an availability group listener.
-// If the operation fails it returns a generic error.
-func (client *AvailabilityGroupListenersClient) createOrUpdate(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, availabilityGroupListenerName string, parameters AvailabilityGroupListener, options *AvailabilityGroupListenersBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AvailabilityGroupListenersClient) createOrUpdate(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, availabilityGroupListenerName string, parameters AvailabilityGroupListener, options *AvailabilityGroupListenersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -73,13 +88,13 @@ func (client *AvailabilityGroupListenersClient) createOrUpdate(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *AvailabilityGroupListenersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, availabilityGroupListenerName string, parameters AvailabilityGroupListener, options *AvailabilityGroupListenersBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *AvailabilityGroupListenersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, availabilityGroupListenerName string, parameters AvailabilityGroupListener, options *AvailabilityGroupListenersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups/{sqlVirtualMachineGroupName}/availabilityGroupListeners/{availabilityGroupListenerName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -97,7 +112,7 @@ func (client *AvailabilityGroupListenersClient) createOrUpdateCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -108,41 +123,35 @@ func (client *AvailabilityGroupListenersClient) createOrUpdateCreateRequest(ctx 
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *AvailabilityGroupListenersClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginDelete - Deletes an availability group listener.
-// If the operation fails it returns a generic error.
-func (client *AvailabilityGroupListenersClient) BeginDelete(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, availabilityGroupListenerName string, options *AvailabilityGroupListenersBeginDeleteOptions) (AvailabilityGroupListenersDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
+// Manager API or the portal.
+// sqlVirtualMachineGroupName - Name of the SQL virtual machine group.
+// availabilityGroupListenerName - Name of the availability group listener.
+// options - AvailabilityGroupListenersClientBeginDeleteOptions contains the optional parameters for the AvailabilityGroupListenersClient.BeginDelete
+// method.
+func (client *AvailabilityGroupListenersClient) BeginDelete(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, availabilityGroupListenerName string, options *AvailabilityGroupListenersClientBeginDeleteOptions) (AvailabilityGroupListenersClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, options)
 	if err != nil {
-		return AvailabilityGroupListenersDeletePollerResponse{}, err
+		return AvailabilityGroupListenersClientDeletePollerResponse{}, err
 	}
-	result := AvailabilityGroupListenersDeletePollerResponse{
+	result := AvailabilityGroupListenersClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("AvailabilityGroupListenersClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("AvailabilityGroupListenersClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return AvailabilityGroupListenersDeletePollerResponse{}, err
+		return AvailabilityGroupListenersClientDeletePollerResponse{}, err
 	}
-	result.Poller = &AvailabilityGroupListenersDeletePoller{
+	result.Poller = &AvailabilityGroupListenersClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes an availability group listener.
-// If the operation fails it returns a generic error.
-func (client *AvailabilityGroupListenersClient) deleteOperation(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, availabilityGroupListenerName string, options *AvailabilityGroupListenersBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AvailabilityGroupListenersClient) deleteOperation(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, availabilityGroupListenerName string, options *AvailabilityGroupListenersClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, options)
 	if err != nil {
 		return nil, err
@@ -152,13 +161,13 @@ func (client *AvailabilityGroupListenersClient) deleteOperation(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AvailabilityGroupListenersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, availabilityGroupListenerName string, options *AvailabilityGroupListenersBeginDeleteOptions) (*policy.Request, error) {
+func (client *AvailabilityGroupListenersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, availabilityGroupListenerName string, options *AvailabilityGroupListenersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups/{sqlVirtualMachineGroupName}/availabilityGroupListeners/{availabilityGroupListenerName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -176,7 +185,7 @@ func (client *AvailabilityGroupListenersClient) deleteCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -186,37 +195,31 @@ func (client *AvailabilityGroupListenersClient) deleteCreateRequest(ctx context.
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *AvailabilityGroupListenersClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets an availability group listener.
-// If the operation fails it returns a generic error.
-func (client *AvailabilityGroupListenersClient) Get(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, availabilityGroupListenerName string, options *AvailabilityGroupListenersGetOptions) (AvailabilityGroupListenersGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
+// Manager API or the portal.
+// sqlVirtualMachineGroupName - Name of the SQL virtual machine group.
+// availabilityGroupListenerName - Name of the availability group listener.
+// options - AvailabilityGroupListenersClientGetOptions contains the optional parameters for the AvailabilityGroupListenersClient.Get
+// method.
+func (client *AvailabilityGroupListenersClient) Get(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, availabilityGroupListenerName string, options *AvailabilityGroupListenersClientGetOptions) (AvailabilityGroupListenersClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, options)
 	if err != nil {
-		return AvailabilityGroupListenersGetResponse{}, err
+		return AvailabilityGroupListenersClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AvailabilityGroupListenersGetResponse{}, err
+		return AvailabilityGroupListenersClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AvailabilityGroupListenersGetResponse{}, client.getHandleError(resp)
+		return AvailabilityGroupListenersClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AvailabilityGroupListenersClient) getCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, availabilityGroupListenerName string, options *AvailabilityGroupListenersGetOptions) (*policy.Request, error) {
+func (client *AvailabilityGroupListenersClient) getCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, availabilityGroupListenerName string, options *AvailabilityGroupListenersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups/{sqlVirtualMachineGroupName}/availabilityGroupListeners/{availabilityGroupListenerName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -234,7 +237,7 @@ func (client *AvailabilityGroupListenersClient) getCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -246,42 +249,35 @@ func (client *AvailabilityGroupListenersClient) getCreateRequest(ctx context.Con
 }
 
 // getHandleResponse handles the Get response.
-func (client *AvailabilityGroupListenersClient) getHandleResponse(resp *http.Response) (AvailabilityGroupListenersGetResponse, error) {
-	result := AvailabilityGroupListenersGetResponse{RawResponse: resp}
+func (client *AvailabilityGroupListenersClient) getHandleResponse(resp *http.Response) (AvailabilityGroupListenersClientGetResponse, error) {
+	result := AvailabilityGroupListenersClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailabilityGroupListener); err != nil {
-		return AvailabilityGroupListenersGetResponse{}, runtime.NewResponseError(err, resp)
+		return AvailabilityGroupListenersClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *AvailabilityGroupListenersClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByGroup - Lists all availability group listeners in a SQL virtual machine group.
-// If the operation fails it returns a generic error.
-func (client *AvailabilityGroupListenersClient) ListByGroup(resourceGroupName string, sqlVirtualMachineGroupName string, options *AvailabilityGroupListenersListByGroupOptions) *AvailabilityGroupListenersListByGroupPager {
-	return &AvailabilityGroupListenersListByGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
+// Manager API or the portal.
+// sqlVirtualMachineGroupName - Name of the SQL virtual machine group.
+// options - AvailabilityGroupListenersClientListByGroupOptions contains the optional parameters for the AvailabilityGroupListenersClient.ListByGroup
+// method.
+func (client *AvailabilityGroupListenersClient) ListByGroup(resourceGroupName string, sqlVirtualMachineGroupName string, options *AvailabilityGroupListenersClientListByGroupOptions) *AvailabilityGroupListenersClientListByGroupPager {
+	return &AvailabilityGroupListenersClientListByGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByGroupCreateRequest(ctx, resourceGroupName, sqlVirtualMachineGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp AvailabilityGroupListenersListByGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp AvailabilityGroupListenersClientListByGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.AvailabilityGroupListenerListResult.NextLink)
 		},
 	}
 }
 
 // listByGroupCreateRequest creates the ListByGroup request.
-func (client *AvailabilityGroupListenersClient) listByGroupCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, options *AvailabilityGroupListenersListByGroupOptions) (*policy.Request, error) {
+func (client *AvailabilityGroupListenersClient) listByGroupCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, options *AvailabilityGroupListenersClientListByGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups/{sqlVirtualMachineGroupName}/availabilityGroupListeners"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -295,7 +291,7 @@ func (client *AvailabilityGroupListenersClient) listByGroupCreateRequest(ctx con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -307,22 +303,10 @@ func (client *AvailabilityGroupListenersClient) listByGroupCreateRequest(ctx con
 }
 
 // listByGroupHandleResponse handles the ListByGroup response.
-func (client *AvailabilityGroupListenersClient) listByGroupHandleResponse(resp *http.Response) (AvailabilityGroupListenersListByGroupResponse, error) {
-	result := AvailabilityGroupListenersListByGroupResponse{RawResponse: resp}
+func (client *AvailabilityGroupListenersClient) listByGroupHandleResponse(resp *http.Response) (AvailabilityGroupListenersClientListByGroupResponse, error) {
+	result := AvailabilityGroupListenersClientListByGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailabilityGroupListenerListResult); err != nil {
-		return AvailabilityGroupListenersListByGroupResponse{}, runtime.NewResponseError(err, resp)
+		return AvailabilityGroupListenersClientListByGroupResponse{}, err
 	}
 	return result, nil
-}
-
-// listByGroupHandleError handles the ListByGroup error response.
-func (client *AvailabilityGroupListenersClient) listByGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

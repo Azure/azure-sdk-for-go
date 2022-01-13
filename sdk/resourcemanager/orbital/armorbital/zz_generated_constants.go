@@ -9,8 +9,8 @@
 package armorbital
 
 const (
-	module  = "armorbital"
-	version = "v0.1.0"
+	moduleName    = "armorbital"
+	moduleVersion = "v0.2.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -99,6 +99,26 @@ func (c Capability) ToPtr() *Capability {
 	return &c
 }
 
+type CapabilityType string
+
+const (
+	CapabilityTypeCommunication    CapabilityType = "Communication"
+	CapabilityTypeEarthObservation CapabilityType = "EarthObservation"
+)
+
+// PossibleCapabilityTypeValues returns the possible values for the CapabilityType const type.
+func PossibleCapabilityTypeValues() []CapabilityType {
+	return []CapabilityType{
+		CapabilityTypeCommunication,
+		CapabilityTypeEarthObservation,
+	}
+}
+
+// ToPtr returns a *CapabilityType pointing to the current value.
+func (c CapabilityType) ToPtr() *CapabilityType {
+	return &c
+}
+
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
 
@@ -145,27 +165,8 @@ func (c Direction) ToPtr() *Direction {
 	return &c
 }
 
-type Enum6 string
-
-const (
-	Enum6Communication    Enum6 = "Communication"
-	Enum6EarthObservation Enum6 = "EarthObservation"
-)
-
-// PossibleEnum6Values returns the possible values for the Enum6 const type.
-func PossibleEnum6Values() []Enum6 {
-	return []Enum6{
-		Enum6Communication,
-		Enum6EarthObservation,
-	}
-}
-
-// ToPtr returns a *Enum6 pointing to the current value.
-func (c Enum6) ToPtr() *Enum6 {
-	return &c
-}
-
-// Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default value is "user,system"
+// Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+// value is "user,system"
 type Origin string
 
 const (

@@ -24,11 +24,12 @@ func ExampleVaultsClient_List() {
 	}
 	ctx := context.Background()
 	client := armnetapp.NewVaultsClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.VaultsClientListResult)
 }

@@ -11,7 +11,6 @@ package armagrifood
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,48 +24,59 @@ import (
 // LocationsClient contains the methods for the Locations group.
 // Don't use this type directly, use NewLocationsClient() instead.
 type LocationsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewLocationsClient creates a new instance of LocationsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LocationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &LocationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &LocationsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CheckNameAvailability - Checks the name availability of the resource with requested resource name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LocationsClient) CheckNameAvailability(ctx context.Context, body CheckNameAvailabilityRequest, options *LocationsCheckNameAvailabilityOptions) (LocationsCheckNameAvailabilityResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// body - NameAvailabilityRequest object.
+// options - LocationsClientCheckNameAvailabilityOptions contains the optional parameters for the LocationsClient.CheckNameAvailability
+// method.
+func (client *LocationsClient) CheckNameAvailability(ctx context.Context, body CheckNameAvailabilityRequest, options *LocationsClientCheckNameAvailabilityOptions) (LocationsClientCheckNameAvailabilityResponse, error) {
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, body, options)
 	if err != nil {
-		return LocationsCheckNameAvailabilityResponse{}, err
+		return LocationsClientCheckNameAvailabilityResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LocationsCheckNameAvailabilityResponse{}, err
+		return LocationsClientCheckNameAvailabilityResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return LocationsCheckNameAvailabilityResponse{}, client.checkNameAvailabilityHandleError(resp)
+		return LocationsClientCheckNameAvailabilityResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.checkNameAvailabilityHandleResponse(resp)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *LocationsClient) checkNameAvailabilityCreateRequest(ctx context.Context, body CheckNameAvailabilityRequest, options *LocationsCheckNameAvailabilityOptions) (*policy.Request, error) {
+func (client *LocationsClient) checkNameAvailabilityCreateRequest(ctx context.Context, body CheckNameAvailabilityRequest, options *LocationsClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AgFoodPlatform/checkNameAvailability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -78,23 +88,10 @@ func (client *LocationsClient) checkNameAvailabilityCreateRequest(ctx context.Co
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *LocationsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (LocationsCheckNameAvailabilityResponse, error) {
-	result := LocationsCheckNameAvailabilityResponse{RawResponse: resp}
+func (client *LocationsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (LocationsClientCheckNameAvailabilityResponse, error) {
+	result := LocationsClientCheckNameAvailabilityResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityResponse); err != nil {
-		return LocationsCheckNameAvailabilityResponse{}, runtime.NewResponseError(err, resp)
+		return LocationsClientCheckNameAvailabilityResponse{}, err
 	}
 	return result, nil
-}
-
-// checkNameAvailabilityHandleError handles the CheckNameAvailability error response.
-func (client *LocationsClient) checkNameAvailabilityHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

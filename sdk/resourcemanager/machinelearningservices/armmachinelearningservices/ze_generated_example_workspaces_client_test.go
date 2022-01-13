@@ -34,7 +34,7 @@ func ExampleWorkspacesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Workspace.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkspacesClientGetResult)
 }
 
 // x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2021-07-01/examples/Workspace/create.json
@@ -69,7 +69,7 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate() {
 						KeyIdentifier:    to.StringPtr("<key-identifier>"),
 						KeyVaultArmID:    to.StringPtr("<key-vault-arm-id>"),
 					},
-					Status: armmachinelearningservices.EncryptionStatusEnabled.ToPtr(),
+					Status: armmachinelearningservices.EncryptionStatus("Enabled").ToPtr(),
 				},
 				FriendlyName: to.StringPtr("<friendly-name>"),
 				HbiWorkspace: to.BoolPtr(false),
@@ -81,7 +81,7 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate() {
 							GroupID:               to.StringPtr("<group-id>"),
 							PrivateLinkResourceID: to.StringPtr("<private-link-resource-id>"),
 							RequestMessage:        to.StringPtr("<request-message>"),
-							Status:                armmachinelearningservices.PrivateEndpointServiceConnectionStatusApproved.ToPtr(),
+							Status:                armmachinelearningservices.PrivateEndpointServiceConnectionStatus("Approved").ToPtr(),
 						},
 					}},
 				StorageAccount: to.StringPtr("<storage-account>"),
@@ -95,7 +95,7 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Workspace.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkspacesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2021-07-01/examples/Workspace/delete.json
@@ -134,14 +134,14 @@ func ExampleWorkspacesClient_Update() {
 			Properties: &armmachinelearningservices.WorkspacePropertiesUpdateParameters{
 				Description:         to.StringPtr("<description>"),
 				FriendlyName:        to.StringPtr("<friendly-name>"),
-				PublicNetworkAccess: armmachinelearningservices.PublicNetworkAccessDisabled.ToPtr(),
+				PublicNetworkAccess: armmachinelearningservices.PublicNetworkAccess("Disabled").ToPtr(),
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Workspace.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkspacesClientUpdateResult)
 }
 
 // x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2021-07-01/examples/Workspace/listByResourceGroup.json
@@ -153,13 +153,17 @@ func ExampleWorkspacesClient_ListByResourceGroup() {
 	ctx := context.Background()
 	client := armmachinelearningservices.NewWorkspacesClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
-		&armmachinelearningservices.WorkspacesListByResourceGroupOptions{Skip: nil})
-	for pager.NextPage(ctx) {
+		&armmachinelearningservices.WorkspacesClientListByResourceGroupOptions{Skip: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Workspace.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -175,7 +179,7 @@ func ExampleWorkspacesClient_BeginDiagnose() {
 	poller, err := client.BeginDiagnose(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
-		&armmachinelearningservices.WorkspacesBeginDiagnoseOptions{Parameters: &armmachinelearningservices.DiagnoseWorkspaceParameters{
+		&armmachinelearningservices.WorkspacesClientBeginDiagnoseOptions{Parameters: &armmachinelearningservices.DiagnoseWorkspaceParameters{
 			Value: &armmachinelearningservices.DiagnoseRequestProperties{
 				ApplicationInsights: map[string]map[string]interface{}{},
 				ContainerRegistry:   map[string]map[string]interface{}{},
@@ -192,10 +196,11 @@ func ExampleWorkspacesClient_BeginDiagnose() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.WorkspacesClientDiagnoseResult)
 }
 
 // x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2021-07-01/examples/Workspace/listKeys.json
@@ -206,13 +211,14 @@ func ExampleWorkspacesClient_ListKeys() {
 	}
 	ctx := context.Background()
 	client := armmachinelearningservices.NewWorkspacesClient("<subscription-id>", cred, nil)
-	_, err = client.ListKeys(ctx,
+	res, err := client.ListKeys(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.WorkspacesClientListKeysResult)
 }
 
 // x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2021-07-01/examples/Workspace/resyncKeys.json
@@ -244,13 +250,17 @@ func ExampleWorkspacesClient_ListBySubscription() {
 	}
 	ctx := context.Background()
 	client := armmachinelearningservices.NewWorkspacesClient("<subscription-id>", cred, nil)
-	pager := client.ListBySubscription(&armmachinelearningservices.WorkspacesListBySubscriptionOptions{Skip: nil})
-	for pager.NextPage(ctx) {
+	pager := client.ListBySubscription(&armmachinelearningservices.WorkspacesClientListBySubscriptionOptions{Skip: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Workspace.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -263,13 +273,14 @@ func ExampleWorkspacesClient_ListNotebookAccessToken() {
 	}
 	ctx := context.Background()
 	client := armmachinelearningservices.NewWorkspacesClient("<subscription-id>", cred, nil)
-	_, err = client.ListNotebookAccessToken(ctx,
+	res, err := client.ListNotebookAccessToken(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.WorkspacesClientListNotebookAccessTokenResult)
 }
 
 // x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2021-07-01/examples/Notebook/prepare.json
@@ -287,10 +298,11 @@ func ExampleWorkspacesClient_BeginPrepareNotebook() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.WorkspacesClientPrepareNotebookResult)
 }
 
 // x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2021-07-01/examples/Workspace/listStorageAccountKeys.json
@@ -301,13 +313,14 @@ func ExampleWorkspacesClient_ListStorageAccountKeys() {
 	}
 	ctx := context.Background()
 	client := armmachinelearningservices.NewWorkspacesClient("<subscription-id>", cred, nil)
-	_, err = client.ListStorageAccountKeys(ctx,
+	res, err := client.ListStorageAccountKeys(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.WorkspacesClientListStorageAccountKeysResult)
 }
 
 // x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2021-07-01/examples/Notebook/listKeys.json
@@ -318,13 +331,14 @@ func ExampleWorkspacesClient_ListNotebookKeys() {
 	}
 	ctx := context.Background()
 	client := armmachinelearningservices.NewWorkspacesClient("<subscription-id>", cred, nil)
-	_, err = client.ListNotebookKeys(ctx,
+	res, err := client.ListNotebookKeys(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.WorkspacesClientListNotebookKeysResult)
 }
 
 // x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2021-07-01/examples/ExternalFQDN/get.json
@@ -335,11 +349,12 @@ func ExampleWorkspacesClient_ListOutboundNetworkDependenciesEndpoints() {
 	}
 	ctx := context.Background()
 	client := armmachinelearningservices.NewWorkspacesClient("<subscription-id>", cred, nil)
-	_, err = client.ListOutboundNetworkDependenciesEndpoints(ctx,
+	res, err := client.ListOutboundNetworkDependenciesEndpoints(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.WorkspacesClientListOutboundNetworkDependenciesEndpointsResult)
 }

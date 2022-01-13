@@ -9,8 +9,8 @@
 package armlogic
 
 const (
-	module  = "armlogic"
-	version = "v0.2.1"
+	moduleName    = "armlogic"
+	moduleVersion = "v0.3.0"
 )
 
 // APIDeploymentParameterVisibility - The Api deployment parameter visibility.
@@ -428,7 +428,8 @@ func (c IntegrationServiceEnvironmentAccessEndpointType) ToPtr() *IntegrationSer
 	return &c
 }
 
-// IntegrationServiceEnvironmentNetworkDependencyCategoryType - The integration service environment network dependency category type.
+// IntegrationServiceEnvironmentNetworkDependencyCategoryType - The integration service environment network dependency category
+// type.
 type IntegrationServiceEnvironmentNetworkDependencyCategoryType string
 
 const (
@@ -469,7 +470,8 @@ func (c IntegrationServiceEnvironmentNetworkDependencyCategoryType) ToPtr() *Int
 	return &c
 }
 
-// IntegrationServiceEnvironmentNetworkDependencyHealthState - The integration service environment network dependency health state.
+// IntegrationServiceEnvironmentNetworkDependencyHealthState - The integration service environment network dependency health
+// state.
 type IntegrationServiceEnvironmentNetworkDependencyHealthState string
 
 const (
@@ -494,7 +496,8 @@ func (c IntegrationServiceEnvironmentNetworkDependencyHealthState) ToPtr() *Inte
 	return &c
 }
 
-// IntegrationServiceEnvironmentNetworkEndPointAccessibilityState - The integration service environment network endpoint accessibility state.
+// IntegrationServiceEnvironmentNetworkEndPointAccessibilityState - The integration service environment network endpoint accessibility
+// state.
 type IntegrationServiceEnvironmentNetworkEndPointAccessibilityState string
 
 const (
@@ -588,8 +591,8 @@ func (c KeyType) ToPtr() *KeyType {
 	return &c
 }
 
-// ManagedServiceIdentityType - Type of managed service identity. The type 'SystemAssigned' includes an implicitly created identity. The type 'None' will
-// remove any identities from the resource.
+// ManagedServiceIdentityType - Type of managed service identity. The type 'SystemAssigned' includes an implicitly created
+// identity. The type 'None' will remove any identities from the resource.
 type ManagedServiceIdentityType string
 
 const (

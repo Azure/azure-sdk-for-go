@@ -30,44 +30,6 @@ func unmarshalCertificatePropertiesClassification(rawMsg json.RawMessage) (Certi
 	return b, json.Unmarshal(rawMsg, b)
 }
 
-func unmarshalCertificatePropertiesClassificationArray(rawMsg json.RawMessage) ([]CertificatePropertiesClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]CertificatePropertiesClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalCertificatePropertiesClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalCertificatePropertiesClassificationMap(rawMsg json.RawMessage) (map[string]CertificatePropertiesClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]CertificatePropertiesClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalCertificatePropertiesClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
-}
-
 func unmarshalCustomPersistentDiskPropertiesClassification(rawMsg json.RawMessage) (CustomPersistentDiskPropertiesClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -84,44 +46,6 @@ func unmarshalCustomPersistentDiskPropertiesClassification(rawMsg json.RawMessag
 		b = &CustomPersistentDiskProperties{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
-}
-
-func unmarshalCustomPersistentDiskPropertiesClassificationArray(rawMsg json.RawMessage) ([]CustomPersistentDiskPropertiesClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]CustomPersistentDiskPropertiesClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalCustomPersistentDiskPropertiesClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalCustomPersistentDiskPropertiesClassificationMap(rawMsg json.RawMessage) (map[string]CustomPersistentDiskPropertiesClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]CustomPersistentDiskPropertiesClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalCustomPersistentDiskPropertiesClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
 }
 
 func unmarshalStoragePropertiesClassification(rawMsg json.RawMessage) (StoragePropertiesClassification, error) {
@@ -142,40 +66,30 @@ func unmarshalStoragePropertiesClassification(rawMsg json.RawMessage) (StoragePr
 	return b, json.Unmarshal(rawMsg, b)
 }
 
-func unmarshalStoragePropertiesClassificationArray(rawMsg json.RawMessage) ([]StoragePropertiesClassification, error) {
+func unmarshalUserSourceInfoClassification(rawMsg json.RawMessage) (UserSourceInfoClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+	var m map[string]interface{}
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
-	fArray := make([]StoragePropertiesClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalStoragePropertiesClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
+	var b UserSourceInfoClassification
+	switch m["type"] {
+	case "BuildResult":
+		b = &BuildResultUserSourceInfo{}
+	case "Container":
+		b = &CustomContainerUserSourceInfo{}
+	case "Jar":
+		b = &JarUploadedUserSourceInfo{}
+	case "NetCoreZip":
+		b = &NetCoreZipUploadedUserSourceInfo{}
+	case "Source":
+		b = &SourceUploadedUserSourceInfo{}
+	case "UploadedUserSourceInfo":
+		b = &UploadedUserSourceInfo{}
+	default:
+		b = &UserSourceInfo{}
 	}
-	return fArray, nil
-}
-
-func unmarshalStoragePropertiesClassificationMap(rawMsg json.RawMessage) (map[string]StoragePropertiesClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]StoragePropertiesClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalStoragePropertiesClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
+	return b, json.Unmarshal(rawMsg, b)
 }

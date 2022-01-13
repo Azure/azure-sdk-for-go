@@ -11,7 +11,6 @@ package armstoragepool
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,39 +24,49 @@ import (
 // DiskPoolZonesClient contains the methods for the DiskPoolZones group.
 // Don't use this type directly, use NewDiskPoolZonesClient() instead.
 type DiskPoolZonesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDiskPoolZonesClient creates a new instance of DiskPoolZonesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDiskPoolZonesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DiskPoolZonesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &DiskPoolZonesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DiskPoolZonesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Lists available Disk Pool Skus in an Azure location.
-// If the operation fails it returns the *Error error type.
-func (client *DiskPoolZonesClient) List(location string, options *DiskPoolZonesListOptions) *DiskPoolZonesListPager {
-	return &DiskPoolZonesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// location - The location of the resource.
+// options - DiskPoolZonesClientListOptions contains the optional parameters for the DiskPoolZonesClient.List method.
+func (client *DiskPoolZonesClient) List(location string, options *DiskPoolZonesClientListOptions) *DiskPoolZonesClientListPager {
+	return &DiskPoolZonesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, location, options)
 		},
-		advancer: func(ctx context.Context, resp DiskPoolZonesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DiskPoolZonesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DiskPoolZoneListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *DiskPoolZonesClient) listCreateRequest(ctx context.Context, location string, options *DiskPoolZonesListOptions) (*policy.Request, error) {
+func (client *DiskPoolZonesClient) listCreateRequest(ctx context.Context, location string, options *DiskPoolZonesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.StoragePool/locations/{location}/diskPoolZones"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -67,7 +76,7 @@ func (client *DiskPoolZonesClient) listCreateRequest(ctx context.Context, locati
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -79,23 +88,10 @@ func (client *DiskPoolZonesClient) listCreateRequest(ctx context.Context, locati
 }
 
 // listHandleResponse handles the List response.
-func (client *DiskPoolZonesClient) listHandleResponse(resp *http.Response) (DiskPoolZonesListResponse, error) {
-	result := DiskPoolZonesListResponse{RawResponse: resp}
+func (client *DiskPoolZonesClient) listHandleResponse(resp *http.Response) (DiskPoolZonesClientListResponse, error) {
+	result := DiskPoolZonesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiskPoolZoneListResult); err != nil {
-		return DiskPoolZonesListResponse{}, runtime.NewResponseError(err, resp)
+		return DiskPoolZonesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *DiskPoolZonesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

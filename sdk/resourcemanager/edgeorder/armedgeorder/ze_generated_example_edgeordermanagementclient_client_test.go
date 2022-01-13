@@ -20,84 +20,102 @@ import (
 )
 
 // x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListOperations.json
-func ExampleEdgeOrderManagementClient_ListOperations() {
+func ExampleManagementClient_ListOperations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
+	client := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
 	pager := client.ListOperations(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListAddressesAtSubscriptionLevel.json
-func ExampleEdgeOrderManagementClient_ListAddressesAtSubscriptionLevel() {
+func ExampleManagementClient_ListAddressesAtSubscriptionLevel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
-	pager := client.ListAddressesAtSubscriptionLevel(&armedgeorder.EdgeOrderManagementClientListAddressesAtSubscriptionLevelOptions{Filter: nil,
+	client := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
+	pager := client.ListAddressesAtSubscriptionLevel(&armedgeorder.ManagementClientListAddressesAtSubscriptionLevelOptions{Filter: nil,
 		SkipToken: nil,
 	})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("AddressResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListProductFamilies.json
-func ExampleEdgeOrderManagementClient_ListProductFamilies() {
+func ExampleManagementClient_ListProductFamilies() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
+	client := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
 	pager := client.ListProductFamilies(armedgeorder.ProductFamiliesRequest{
 		FilterableProperties: map[string][]*armedgeorder.FilterableProperty{
 			"azurestackedge": {
 				{
-					Type: armedgeorder.SupportedFilterTypesShipToCountries.ToPtr(),
+					Type: armedgeorder.SupportedFilterTypes("ShipToCountries").ToPtr(),
 					SupportedValues: []*string{
 						to.StringPtr("US")},
 				}},
 		},
 	},
-		&armedgeorder.EdgeOrderManagementClientListProductFamiliesOptions{Expand: nil,
+		&armedgeorder.ManagementClientListProductFamiliesOptions{Expand: nil,
 			SkipToken: nil,
 		})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListConfigurations.json
-func ExampleEdgeOrderManagementClient_ListConfigurations() {
+func ExampleManagementClient_ListConfigurations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
+	client := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
 	pager := client.ListConfigurations(armedgeorder.ConfigurationsRequest{
 		ConfigurationFilters: []*armedgeorder.ConfigurationFilters{
 			{
 				FilterableProperty: []*armedgeorder.FilterableProperty{
 					{
-						Type: armedgeorder.SupportedFilterTypesShipToCountries.ToPtr(),
+						Type: armedgeorder.SupportedFilterTypes("ShipToCountries").ToPtr(),
 						SupportedValues: []*string{
 							to.StringPtr("US")},
 					}},
@@ -108,101 +126,127 @@ func ExampleEdgeOrderManagementClient_ListConfigurations() {
 				},
 			}},
 	},
-		&armedgeorder.EdgeOrderManagementClientListConfigurationsOptions{SkipToken: nil})
-	for pager.NextPage(ctx) {
+		&armedgeorder.ManagementClientListConfigurationsOptions{SkipToken: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListProductFamiliesMetadata.json
-func ExampleEdgeOrderManagementClient_ListProductFamiliesMetadata() {
+func ExampleManagementClient_ListProductFamiliesMetadata() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
-	pager := client.ListProductFamiliesMetadata(&armedgeorder.EdgeOrderManagementClientListProductFamiliesMetadataOptions{SkipToken: nil})
-	for pager.NextPage(ctx) {
+	client := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
+	pager := client.ListProductFamiliesMetadata(&armedgeorder.ManagementClientListProductFamiliesMetadataOptions{SkipToken: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListOrderAtSubscriptionLevel.json
-func ExampleEdgeOrderManagementClient_ListOrderAtSubscriptionLevel() {
+func ExampleManagementClient_ListOrderAtSubscriptionLevel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
-	pager := client.ListOrderAtSubscriptionLevel(&armedgeorder.EdgeOrderManagementClientListOrderAtSubscriptionLevelOptions{SkipToken: nil})
-	for pager.NextPage(ctx) {
+	client := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
+	pager := client.ListOrderAtSubscriptionLevel(&armedgeorder.ManagementClientListOrderAtSubscriptionLevelOptions{SkipToken: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("OrderResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListOrderItemsAtSubscriptionLevel.json
-func ExampleEdgeOrderManagementClient_ListOrderItemsAtSubscriptionLevel() {
+func ExampleManagementClient_ListOrderItemsAtSubscriptionLevel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
-	pager := client.ListOrderItemsAtSubscriptionLevel(&armedgeorder.EdgeOrderManagementClientListOrderItemsAtSubscriptionLevelOptions{Filter: nil,
+	client := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
+	pager := client.ListOrderItemsAtSubscriptionLevel(&armedgeorder.ManagementClientListOrderItemsAtSubscriptionLevelOptions{Filter: nil,
 		Expand:    nil,
 		SkipToken: nil,
 	})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("OrderItemResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListAddressesAtResourceGroupLevel.json
-func ExampleEdgeOrderManagementClient_ListAddressesAtResourceGroupLevel() {
+func ExampleManagementClient_ListAddressesAtResourceGroupLevel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
+	client := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
 	pager := client.ListAddressesAtResourceGroupLevel("<resource-group-name>",
-		&armedgeorder.EdgeOrderManagementClientListAddressesAtResourceGroupLevelOptions{Filter: nil,
+		&armedgeorder.ManagementClientListAddressesAtResourceGroupLevelOptions{Filter: nil,
 			SkipToken: nil,
 		})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("AddressResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/GetAddressByName.json
-func ExampleEdgeOrderManagementClient_GetAddressByName() {
+func ExampleManagementClient_GetAddressByName() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
+	client := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
 	res, err := client.GetAddressByName(ctx,
 		"<address-name>",
 		"<resource-group-name>",
@@ -210,24 +254,22 @@ func ExampleEdgeOrderManagementClient_GetAddressByName() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AddressResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ManagementClientGetAddressByNameResult)
 }
 
 // x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/CreateAddress.json
-func ExampleEdgeOrderManagementClient_BeginCreateAddress() {
+func ExampleManagementClient_BeginCreateAddress() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
+	client := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginCreateAddress(ctx,
 		"<address-name>",
 		"<resource-group-name>",
 		armedgeorder.AddressResource{
-			TrackedResource: armedgeorder.TrackedResource{
-				Location: to.StringPtr("<location>"),
-			},
+			Location: to.StringPtr("<location>"),
 			Properties: &armedgeorder.AddressProperties{
 				ContactDetails: &armedgeorder.ContactDetails{
 					ContactName: to.StringPtr("<contact-name>"),
@@ -237,7 +279,7 @@ func ExampleEdgeOrderManagementClient_BeginCreateAddress() {
 					PhoneExtension: to.StringPtr("<phone-extension>"),
 				},
 				ShippingAddress: &armedgeorder.ShippingAddress{
-					AddressType:     armedgeorder.AddressTypeNone.ToPtr(),
+					AddressType:     armedgeorder.AddressType("None").ToPtr(),
 					City:            to.StringPtr("<city>"),
 					CompanyName:     to.StringPtr("<company-name>"),
 					Country:         to.StringPtr("<country>"),
@@ -256,17 +298,17 @@ func ExampleEdgeOrderManagementClient_BeginCreateAddress() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AddressResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ManagementClientCreateAddressResult)
 }
 
 // x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/DeleteAddressByName.json
-func ExampleEdgeOrderManagementClient_BeginDeleteAddressByName() {
+func ExampleManagementClient_BeginDeleteAddressByName() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
+	client := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginDeleteAddressByName(ctx,
 		"<address-name>",
 		"<resource-group-name>",
@@ -281,13 +323,13 @@ func ExampleEdgeOrderManagementClient_BeginDeleteAddressByName() {
 }
 
 // x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/UpdateAddress.json
-func ExampleEdgeOrderManagementClient_BeginUpdateAddress() {
+func ExampleManagementClient_BeginUpdateAddress() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
+	client := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginUpdateAddress(ctx,
 		"<address-name>",
 		"<resource-group-name>",
@@ -301,7 +343,7 @@ func ExampleEdgeOrderManagementClient_BeginUpdateAddress() {
 					PhoneExtension: to.StringPtr("<phone-extension>"),
 				},
 				ShippingAddress: &armedgeorder.ShippingAddress{
-					AddressType:     armedgeorder.AddressTypeNone.ToPtr(),
+					AddressType:     armedgeorder.AddressType("None").ToPtr(),
 					City:            to.StringPtr("<city>"),
 					CompanyName:     to.StringPtr("<company-name>"),
 					Country:         to.StringPtr("<country>"),
@@ -318,7 +360,7 @@ func ExampleEdgeOrderManagementClient_BeginUpdateAddress() {
 				"Work":     to.StringPtr("Engineering"),
 			},
 		},
-		&armedgeorder.EdgeOrderManagementClientBeginUpdateAddressOptions{IfMatch: nil})
+		&armedgeorder.ManagementClientBeginUpdateAddressOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -326,37 +368,41 @@ func ExampleEdgeOrderManagementClient_BeginUpdateAddress() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AddressResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ManagementClientUpdateAddressResult)
 }
 
 // x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListOrderAtResourceGroupLevel.json
-func ExampleEdgeOrderManagementClient_ListOrderAtResourceGroupLevel() {
+func ExampleManagementClient_ListOrderAtResourceGroupLevel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
+	client := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
 	pager := client.ListOrderAtResourceGroupLevel("<resource-group-name>",
-		&armedgeorder.EdgeOrderManagementClientListOrderAtResourceGroupLevelOptions{SkipToken: nil})
-	for pager.NextPage(ctx) {
+		&armedgeorder.ManagementClientListOrderAtResourceGroupLevelOptions{SkipToken: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("OrderResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/GetOrderByName.json
-func ExampleEdgeOrderManagementClient_GetOrderByName() {
+func ExampleManagementClient_GetOrderByName() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
+	client := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
 	res, err := client.GetOrderByName(ctx,
 		"<order-name>",
 		"<resource-group-name>",
@@ -365,68 +411,70 @@ func ExampleEdgeOrderManagementClient_GetOrderByName() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("OrderResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ManagementClientGetOrderByNameResult)
 }
 
 // x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListOrderItemsAtResourceGroupLevel.json
-func ExampleEdgeOrderManagementClient_ListOrderItemsAtResourceGroupLevel() {
+func ExampleManagementClient_ListOrderItemsAtResourceGroupLevel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
+	client := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
 	pager := client.ListOrderItemsAtResourceGroupLevel("<resource-group-name>",
-		&armedgeorder.EdgeOrderManagementClientListOrderItemsAtResourceGroupLevelOptions{Filter: nil,
+		&armedgeorder.ManagementClientListOrderItemsAtResourceGroupLevelOptions{Filter: nil,
 			Expand:    nil,
 			SkipToken: nil,
 		})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("OrderItemResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/GetOrderItemByName.json
-func ExampleEdgeOrderManagementClient_GetOrderItemByName() {
+func ExampleManagementClient_GetOrderItemByName() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
+	client := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
 	res, err := client.GetOrderItemByName(ctx,
 		"<order-item-name>",
 		"<resource-group-name>",
-		&armedgeorder.EdgeOrderManagementClientGetOrderItemByNameOptions{Expand: nil})
+		&armedgeorder.ManagementClientGetOrderItemByNameOptions{Expand: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("OrderItemResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ManagementClientGetOrderItemByNameResult)
 }
 
 // x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/CreateOrderItem.json
-func ExampleEdgeOrderManagementClient_BeginCreateOrderItem() {
+func ExampleManagementClient_BeginCreateOrderItem() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
+	client := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginCreateOrderItem(ctx,
 		"<order-item-name>",
 		"<resource-group-name>",
 		armedgeorder.OrderItemResource{
-			TrackedResource: armedgeorder.TrackedResource{
-				Location: to.StringPtr("<location>"),
-				Tags: map[string]*string{
-					"carrot": to.StringPtr("vegetable"),
-					"mango":  to.StringPtr("fruit"),
-				},
+			Location: to.StringPtr("<location>"),
+			Tags: map[string]*string{
+				"carrot": to.StringPtr("vegetable"),
+				"mango":  to.StringPtr("fruit"),
 			},
 			Properties: &armedgeorder.OrderItemProperties{
 				AddressDetails: &armedgeorder.AddressDetails{
@@ -439,7 +487,7 @@ func ExampleEdgeOrderManagementClient_BeginCreateOrderItem() {
 							Phone: to.StringPtr("<phone>"),
 						},
 						ShippingAddress: &armedgeorder.ShippingAddress{
-							AddressType:     armedgeorder.AddressTypeResidential.ToPtr(),
+							AddressType:     armedgeorder.AddressType("Residential").ToPtr(),
 							City:            to.StringPtr("<city>"),
 							CompanyName:     to.StringPtr("<company-name>"),
 							Country:         to.StringPtr("<country>"),
@@ -453,10 +501,10 @@ func ExampleEdgeOrderManagementClient_BeginCreateOrderItem() {
 				},
 				OrderID: to.StringPtr("<order-id>"),
 				OrderItemDetails: &armedgeorder.OrderItemDetails{
-					OrderItemType: armedgeorder.OrderItemTypePurchase.ToPtr(),
+					OrderItemType: armedgeorder.OrderItemType("Purchase").ToPtr(),
 					Preferences: &armedgeorder.Preferences{
 						TransportPreferences: &armedgeorder.TransportPreferences{
-							PreferredShipmentType: armedgeorder.TransportShipmentTypesMicrosoftManaged.ToPtr(),
+							PreferredShipmentType: armedgeorder.TransportShipmentTypes("MicrosoftManaged").ToPtr(),
 						},
 					},
 					ProductDetails: &armedgeorder.ProductDetails{
@@ -478,17 +526,17 @@ func ExampleEdgeOrderManagementClient_BeginCreateOrderItem() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("OrderItemResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ManagementClientCreateOrderItemResult)
 }
 
 // x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/DeleteOrderItemByName.json
-func ExampleEdgeOrderManagementClient_BeginDeleteOrderItemByName() {
+func ExampleManagementClient_BeginDeleteOrderItemByName() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
+	client := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginDeleteOrderItemByName(ctx,
 		"<order-item-name>",
 		"<resource-group-name>",
@@ -503,13 +551,13 @@ func ExampleEdgeOrderManagementClient_BeginDeleteOrderItemByName() {
 }
 
 // x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/UpdateOrderItem.json
-func ExampleEdgeOrderManagementClient_BeginUpdateOrderItem() {
+func ExampleManagementClient_BeginUpdateOrderItem() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
+	client := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginUpdateOrderItem(ctx,
 		"<order-item-name>",
 		"<resource-group-name>",
@@ -525,7 +573,7 @@ func ExampleEdgeOrderManagementClient_BeginUpdateOrderItem() {
 				},
 				Preferences: &armedgeorder.Preferences{
 					TransportPreferences: &armedgeorder.TransportPreferences{
-						PreferredShipmentType: armedgeorder.TransportShipmentTypesCustomerManaged.ToPtr(),
+						PreferredShipmentType: armedgeorder.TransportShipmentTypes("CustomerManaged").ToPtr(),
 					},
 				},
 			},
@@ -535,7 +583,7 @@ func ExampleEdgeOrderManagementClient_BeginUpdateOrderItem() {
 				"tiger":  to.StringPtr("animal"),
 			},
 		},
-		&armedgeorder.EdgeOrderManagementClientBeginUpdateOrderItemOptions{IfMatch: nil})
+		&armedgeorder.ManagementClientBeginUpdateOrderItemOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -543,17 +591,17 @@ func ExampleEdgeOrderManagementClient_BeginUpdateOrderItem() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("OrderItemResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ManagementClientUpdateOrderItemResult)
 }
 
 // x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/CancelOrderItem.json
-func ExampleEdgeOrderManagementClient_CancelOrderItem() {
+func ExampleManagementClient_CancelOrderItem() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
+	client := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
 	_, err = client.CancelOrderItem(ctx,
 		"<order-item-name>",
 		"<resource-group-name>",
@@ -567,13 +615,13 @@ func ExampleEdgeOrderManagementClient_CancelOrderItem() {
 }
 
 // x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ReturnOrderItem.json
-func ExampleEdgeOrderManagementClient_BeginReturnOrderItem() {
+func ExampleManagementClient_BeginReturnOrderItem() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
+	client := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginReturnOrderItem(ctx,
 		"<order-item-name>",
 		"<resource-group-name>",

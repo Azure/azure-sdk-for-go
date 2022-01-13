@@ -1,5 +1,221 @@
 # Release History
 
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*CreatorsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, Creator, *CreatorsCreateOrUpdateOptions)` to `(context.Context, string, string, string, Creator, *CreatorsClientCreateOrUpdateOptions)`
+- Function `*CreatorsClient.CreateOrUpdate` return value(s) have been changed from `(CreatorsCreateOrUpdateResponse, error)` to `(CreatorsClientCreateOrUpdateResponse, error)`
+- Function `*AccountsClient.RegenerateKeys` parameter(s) have been changed from `(context.Context, string, string, MapsKeySpecification, *AccountsRegenerateKeysOptions)` to `(context.Context, string, string, KeySpecification, *AccountsClientRegenerateKeysOptions)`
+- Function `*AccountsClient.RegenerateKeys` return value(s) have been changed from `(AccountsRegenerateKeysResponse, error)` to `(AccountsClientRegenerateKeysResponse, error)`
+- Function `*AccountsClient.ListByResourceGroup` parameter(s) have been changed from `(string, *AccountsListByResourceGroupOptions)` to `(string, *AccountsClientListByResourceGroupOptions)`
+- Function `*AccountsClient.ListByResourceGroup` return value(s) have been changed from `(*AccountsListByResourceGroupPager)` to `(*AccountsClientListByResourceGroupPager)`
+- Function `*AccountsClient.ListBySubscription` parameter(s) have been changed from `(*AccountsListBySubscriptionOptions)` to `(*AccountsClientListBySubscriptionOptions)`
+- Function `*AccountsClient.ListBySubscription` return value(s) have been changed from `(*AccountsListBySubscriptionPager)` to `(*AccountsClientListBySubscriptionPager)`
+- Function `*AccountsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *AccountsDeleteOptions)` to `(context.Context, string, string, *AccountsClientDeleteOptions)`
+- Function `*AccountsClient.Delete` return value(s) have been changed from `(AccountsDeleteResponse, error)` to `(AccountsClientDeleteResponse, error)`
+- Function `*AccountsClient.ListSas` parameter(s) have been changed from `(context.Context, string, string, AccountSasParameters, *AccountsListSasOptions)` to `(context.Context, string, string, AccountSasParameters, *AccountsClientListSasOptions)`
+- Function `*AccountsClient.ListSas` return value(s) have been changed from `(AccountsListSasResponse, error)` to `(AccountsClientListSasResponse, error)`
+- Function `*AccountsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *AccountsGetOptions)` to `(context.Context, string, string, *AccountsClientGetOptions)`
+- Function `*AccountsClient.Get` return value(s) have been changed from `(AccountsGetResponse, error)` to `(AccountsClientGetResponse, error)`
+- Function `*CreatorsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *CreatorsDeleteOptions)` to `(context.Context, string, string, string, *CreatorsClientDeleteOptions)`
+- Function `*CreatorsClient.Delete` return value(s) have been changed from `(CreatorsDeleteResponse, error)` to `(CreatorsClientDeleteResponse, error)`
+- Function `*CreatorsClient.ListByAccount` parameter(s) have been changed from `(string, string, *CreatorsListByAccountOptions)` to `(string, string, *CreatorsClientListByAccountOptions)`
+- Function `*CreatorsClient.ListByAccount` return value(s) have been changed from `(*CreatorsListByAccountPager)` to `(*CreatorsClientListByAccountPager)`
+- Function `*CreatorsClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, CreatorUpdateParameters, *CreatorsUpdateOptions)` to `(context.Context, string, string, string, CreatorUpdateParameters, *CreatorsClientUpdateOptions)`
+- Function `*CreatorsClient.Update` return value(s) have been changed from `(CreatorsUpdateResponse, error)` to `(CreatorsClientUpdateResponse, error)`
+- Function `*AccountsClient.ListKeys` parameter(s) have been changed from `(context.Context, string, string, *AccountsListKeysOptions)` to `(context.Context, string, string, *AccountsClientListKeysOptions)`
+- Function `*AccountsClient.ListKeys` return value(s) have been changed from `(AccountsListKeysResponse, error)` to `(AccountsClientListKeysResponse, error)`
+- Function `*AccountsClient.Update` parameter(s) have been changed from `(context.Context, string, string, MapsAccountUpdateParameters, *AccountsUpdateOptions)` to `(context.Context, string, string, AccountUpdateParameters, *AccountsClientUpdateOptions)`
+- Function `*AccountsClient.Update` return value(s) have been changed from `(AccountsUpdateResponse, error)` to `(AccountsClientUpdateResponse, error)`
+- Function `*CreatorsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *CreatorsGetOptions)` to `(context.Context, string, string, string, *CreatorsClientGetOptions)`
+- Function `*CreatorsClient.Get` return value(s) have been changed from `(CreatorsGetResponse, error)` to `(CreatorsClientGetResponse, error)`
+- Function `*AccountsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, MapsAccount, *AccountsCreateOrUpdateOptions)` to `(context.Context, string, string, Account, *AccountsClientCreateOrUpdateOptions)`
+- Function `*AccountsClient.CreateOrUpdate` return value(s) have been changed from `(AccountsCreateOrUpdateResponse, error)` to `(AccountsClientCreateOrUpdateResponse, error)`
+- Function `*MapsListSubscriptionOperationsPager.PageResponse` has been removed
+- Function `ErrorResponse.Error` has been removed
+- Function `MapsAccountUpdateParameters.MarshalJSON` has been removed
+- Function `MapsAccounts.MarshalJSON` has been removed
+- Function `*CreatorsListByAccountPager.PageResponse` has been removed
+- Function `MapsOperations.MarshalJSON` has been removed
+- Function `*CreatorsListByAccountPager.Err` has been removed
+- Function `*AccountsListByResourceGroupPager.Err` has been removed
+- Function `*AccountsListByResourceGroupPager.NextPage` has been removed
+- Function `*MapsListOperationsPager.NextPage` has been removed
+- Function `*MapsListSubscriptionOperationsPager.NextPage` has been removed
+- Function `MapsAccount.MarshalJSON` has been removed
+- Function `*AccountsListBySubscriptionPager.PageResponse` has been removed
+- Function `*CreatorsListByAccountPager.NextPage` has been removed
+- Function `*MapsListOperationsPager.Err` has been removed
+- Function `*AccountsListBySubscriptionPager.Err` has been removed
+- Function `*MapsClient.ListOperations` has been removed
+- Function `*MapsListOperationsPager.PageResponse` has been removed
+- Function `NewMapsClient` has been removed
+- Function `*AccountsListBySubscriptionPager.NextPage` has been removed
+- Function `*MapsClient.ListSubscriptionOperations` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `*MapsListSubscriptionOperationsPager.Err` has been removed
+- Function `*AccountsListByResourceGroupPager.PageResponse` has been removed
+- Function `MapsAccountProperties.MarshalJSON` has been removed
+- Struct `AccountsCreateOrUpdateOptions` has been removed
+- Struct `AccountsCreateOrUpdateResponse` has been removed
+- Struct `AccountsCreateOrUpdateResult` has been removed
+- Struct `AccountsDeleteOptions` has been removed
+- Struct `AccountsDeleteResponse` has been removed
+- Struct `AccountsGetOptions` has been removed
+- Struct `AccountsGetResponse` has been removed
+- Struct `AccountsGetResult` has been removed
+- Struct `AccountsListByResourceGroupOptions` has been removed
+- Struct `AccountsListByResourceGroupPager` has been removed
+- Struct `AccountsListByResourceGroupResponse` has been removed
+- Struct `AccountsListByResourceGroupResult` has been removed
+- Struct `AccountsListBySubscriptionOptions` has been removed
+- Struct `AccountsListBySubscriptionPager` has been removed
+- Struct `AccountsListBySubscriptionResponse` has been removed
+- Struct `AccountsListBySubscriptionResult` has been removed
+- Struct `AccountsListKeysOptions` has been removed
+- Struct `AccountsListKeysResponse` has been removed
+- Struct `AccountsListKeysResult` has been removed
+- Struct `AccountsListSasOptions` has been removed
+- Struct `AccountsListSasResponse` has been removed
+- Struct `AccountsListSasResult` has been removed
+- Struct `AccountsRegenerateKeysOptions` has been removed
+- Struct `AccountsRegenerateKeysResponse` has been removed
+- Struct `AccountsRegenerateKeysResult` has been removed
+- Struct `AccountsUpdateOptions` has been removed
+- Struct `AccountsUpdateResponse` has been removed
+- Struct `AccountsUpdateResult` has been removed
+- Struct `CreatorsCreateOrUpdateOptions` has been removed
+- Struct `CreatorsCreateOrUpdateResponse` has been removed
+- Struct `CreatorsCreateOrUpdateResult` has been removed
+- Struct `CreatorsDeleteOptions` has been removed
+- Struct `CreatorsDeleteResponse` has been removed
+- Struct `CreatorsGetOptions` has been removed
+- Struct `CreatorsGetResponse` has been removed
+- Struct `CreatorsGetResult` has been removed
+- Struct `CreatorsListByAccountOptions` has been removed
+- Struct `CreatorsListByAccountPager` has been removed
+- Struct `CreatorsListByAccountResponse` has been removed
+- Struct `CreatorsListByAccountResult` has been removed
+- Struct `CreatorsUpdateOptions` has been removed
+- Struct `CreatorsUpdateResponse` has been removed
+- Struct `CreatorsUpdateResult` has been removed
+- Struct `MapsAccount` has been removed
+- Struct `MapsAccountKeys` has been removed
+- Struct `MapsAccountProperties` has been removed
+- Struct `MapsAccountSasToken` has been removed
+- Struct `MapsAccountUpdateParameters` has been removed
+- Struct `MapsAccounts` has been removed
+- Struct `MapsClient` has been removed
+- Struct `MapsKeySpecification` has been removed
+- Struct `MapsListOperationsOptions` has been removed
+- Struct `MapsListOperationsPager` has been removed
+- Struct `MapsListOperationsResponse` has been removed
+- Struct `MapsListOperationsResult` has been removed
+- Struct `MapsListSubscriptionOperationsOptions` has been removed
+- Struct `MapsListSubscriptionOperationsPager` has been removed
+- Struct `MapsListSubscriptionOperationsResponse` has been removed
+- Struct `MapsListSubscriptionOperationsResult` has been removed
+- Struct `MapsOperations` has been removed
+- Field `TrackedResource` of struct `Creator` has been removed
+- Field `Resource` of struct `TrackedResource` has been removed
+- Field `InnerError` of struct `ErrorResponse` has been removed
+
+### Features Added
+
+- New function `NewClient(string, azcore.TokenCredential, *arm.ClientOptions) *Client`
+- New function `Accounts.MarshalJSON() ([]byte, error)`
+- New function `*AccountsClientListBySubscriptionPager.PageResponse() AccountsClientListBySubscriptionResponse`
+- New function `*ClientListSubscriptionOperationsPager.Err() error`
+- New function `*ClientListSubscriptionOperationsPager.NextPage(context.Context) bool`
+- New function `*CreatorsClientListByAccountPager.Err() error`
+- New function `*AccountsClientListBySubscriptionPager.Err() error`
+- New function `*ClientListOperationsPager.PageResponse() ClientListOperationsResponse`
+- New function `Account.MarshalJSON() ([]byte, error)`
+- New function `*Client.ListSubscriptionOperations(*ClientListSubscriptionOperationsOptions) *ClientListSubscriptionOperationsPager`
+- New function `*CreatorsClientListByAccountPager.PageResponse() CreatorsClientListByAccountResponse`
+- New function `*AccountsClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*AccountsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*AccountsClientListByResourceGroupPager.PageResponse() AccountsClientListByResourceGroupResponse`
+- New function `Operations.MarshalJSON() ([]byte, error)`
+- New function `*AccountsClientListByResourceGroupPager.Err() error`
+- New function `AccountUpdateParameters.MarshalJSON() ([]byte, error)`
+- New function `*CreatorsClientListByAccountPager.NextPage(context.Context) bool`
+- New function `*ClientListSubscriptionOperationsPager.PageResponse() ClientListSubscriptionOperationsResponse`
+- New function `*ClientListOperationsPager.Err() error`
+- New function `*Client.ListOperations(*ClientListOperationsOptions) *ClientListOperationsPager`
+- New function `*ClientListOperationsPager.NextPage(context.Context) bool`
+- New function `AccountProperties.MarshalJSON() ([]byte, error)`
+- New struct `Account`
+- New struct `AccountKeys`
+- New struct `AccountProperties`
+- New struct `AccountSasToken`
+- New struct `AccountUpdateParameters`
+- New struct `Accounts`
+- New struct `AccountsClientCreateOrUpdateOptions`
+- New struct `AccountsClientCreateOrUpdateResponse`
+- New struct `AccountsClientCreateOrUpdateResult`
+- New struct `AccountsClientDeleteOptions`
+- New struct `AccountsClientDeleteResponse`
+- New struct `AccountsClientGetOptions`
+- New struct `AccountsClientGetResponse`
+- New struct `AccountsClientGetResult`
+- New struct `AccountsClientListByResourceGroupOptions`
+- New struct `AccountsClientListByResourceGroupPager`
+- New struct `AccountsClientListByResourceGroupResponse`
+- New struct `AccountsClientListByResourceGroupResult`
+- New struct `AccountsClientListBySubscriptionOptions`
+- New struct `AccountsClientListBySubscriptionPager`
+- New struct `AccountsClientListBySubscriptionResponse`
+- New struct `AccountsClientListBySubscriptionResult`
+- New struct `AccountsClientListKeysOptions`
+- New struct `AccountsClientListKeysResponse`
+- New struct `AccountsClientListKeysResult`
+- New struct `AccountsClientListSasOptions`
+- New struct `AccountsClientListSasResponse`
+- New struct `AccountsClientListSasResult`
+- New struct `AccountsClientRegenerateKeysOptions`
+- New struct `AccountsClientRegenerateKeysResponse`
+- New struct `AccountsClientRegenerateKeysResult`
+- New struct `AccountsClientUpdateOptions`
+- New struct `AccountsClientUpdateResponse`
+- New struct `AccountsClientUpdateResult`
+- New struct `Client`
+- New struct `ClientListOperationsOptions`
+- New struct `ClientListOperationsPager`
+- New struct `ClientListOperationsResponse`
+- New struct `ClientListOperationsResult`
+- New struct `ClientListSubscriptionOperationsOptions`
+- New struct `ClientListSubscriptionOperationsPager`
+- New struct `ClientListSubscriptionOperationsResponse`
+- New struct `ClientListSubscriptionOperationsResult`
+- New struct `CreatorsClientCreateOrUpdateOptions`
+- New struct `CreatorsClientCreateOrUpdateResponse`
+- New struct `CreatorsClientCreateOrUpdateResult`
+- New struct `CreatorsClientDeleteOptions`
+- New struct `CreatorsClientDeleteResponse`
+- New struct `CreatorsClientGetOptions`
+- New struct `CreatorsClientGetResponse`
+- New struct `CreatorsClientGetResult`
+- New struct `CreatorsClientListByAccountOptions`
+- New struct `CreatorsClientListByAccountPager`
+- New struct `CreatorsClientListByAccountResponse`
+- New struct `CreatorsClientListByAccountResult`
+- New struct `CreatorsClientUpdateOptions`
+- New struct `CreatorsClientUpdateResponse`
+- New struct `CreatorsClientUpdateResult`
+- New struct `KeySpecification`
+- New struct `Operations`
+- New field `ID` in struct `TrackedResource`
+- New field `Name` in struct `TrackedResource`
+- New field `Type` in struct `TrackedResource`
+- New field `Name` in struct `Creator`
+- New field `Type` in struct `Creator`
+- New field `Location` in struct `Creator`
+- New field `Tags` in struct `Creator`
+- New field `ID` in struct `Creator`
+- New field `Error` in struct `ErrorResponse`
+
+
 ## 0.1.0 (2021-12-07)
 
 - Init release.

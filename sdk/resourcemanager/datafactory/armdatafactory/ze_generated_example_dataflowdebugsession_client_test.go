@@ -32,17 +32,13 @@ func ExampleDataFlowDebugSessionClient_BeginCreate() {
 		"<factory-name>",
 		armdatafactory.CreateDataFlowDebugSessionRequest{
 			IntegrationRuntime: &armdatafactory.IntegrationRuntimeDebugResource{
-				SubResourceDebugResource: armdatafactory.SubResourceDebugResource{
-					Name: to.StringPtr("<name>"),
-				},
+				Name: to.StringPtr("<name>"),
 				Properties: &armdatafactory.ManagedIntegrationRuntime{
-					IntegrationRuntime: armdatafactory.IntegrationRuntime{
-						Type: armdatafactory.IntegrationRuntimeTypeManaged.ToPtr(),
-					},
+					Type: armdatafactory.IntegrationRuntimeType("Managed").ToPtr(),
 					TypeProperties: &armdatafactory.ManagedIntegrationRuntimeTypeProperties{
 						ComputeProperties: &armdatafactory.IntegrationRuntimeComputeProperties{
 							DataFlowProperties: &armdatafactory.IntegrationRuntimeDataFlowProperties{
-								ComputeType: armdatafactory.DataFlowComputeTypeGeneral.ToPtr(),
+								ComputeType: armdatafactory.DataFlowComputeType("General").ToPtr(),
 								CoreCount:   to.Int32Ptr(48),
 								TimeToLive:  to.Int32Ptr(10),
 							},
@@ -57,10 +53,11 @@ func ExampleDataFlowDebugSessionClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.DataFlowDebugSessionClientCreateResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlowDebugSession_QueryByFactory.json
@@ -74,9 +71,16 @@ func ExampleDataFlowDebugSessionClient_QueryByFactory() {
 	pager := client.QueryByFactory("<resource-group-name>",
 		"<factory-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -89,29 +93,23 @@ func ExampleDataFlowDebugSessionClient_AddDataFlow() {
 	}
 	ctx := context.Background()
 	client := armdatafactory.NewDataFlowDebugSessionClient("<subscription-id>", cred, nil)
-	_, err = client.AddDataFlow(ctx,
+	res, err := client.AddDataFlow(ctx,
 		"<resource-group-name>",
 		"<factory-name>",
 		armdatafactory.DataFlowDebugPackage{
 			DataFlow: &armdatafactory.DataFlowDebugResource{
-				SubResourceDebugResource: armdatafactory.SubResourceDebugResource{
-					Name: to.StringPtr("<name>"),
-				},
+				Name: to.StringPtr("<name>"),
 				Properties: &armdatafactory.MappingDataFlow{
-					DataFlow: armdatafactory.DataFlow{
-						Type: to.StringPtr("<type>"),
-					},
+					Type: to.StringPtr("<type>"),
 					TypeProperties: &armdatafactory.MappingDataFlowTypeProperties{
 						Script: to.StringPtr("<script>"),
 						Sinks:  []*armdatafactory.DataFlowSink{},
 						Sources: []*armdatafactory.DataFlowSource{
 							{
-								Transformation: armdatafactory.Transformation{
-									Name: to.StringPtr("<name>"),
-									Dataset: &armdatafactory.DatasetReference{
-										Type:          armdatafactory.DatasetReferenceTypeDatasetReference.ToPtr(),
-										ReferenceName: to.StringPtr("<reference-name>"),
-									},
+								Name: to.StringPtr("<name>"),
+								Dataset: &armdatafactory.DatasetReference{
+									Type:          armdatafactory.DatasetReferenceType("DatasetReference").ToPtr(),
+									ReferenceName: to.StringPtr("<reference-name>"),
 								},
 							}},
 						Transformations: []*armdatafactory.Transformation{},
@@ -120,22 +118,18 @@ func ExampleDataFlowDebugSessionClient_AddDataFlow() {
 			},
 			Datasets: []*armdatafactory.DatasetDebugResource{
 				{
-					SubResourceDebugResource: armdatafactory.SubResourceDebugResource{
-						Name: to.StringPtr("<name>"),
-					},
+					Name: to.StringPtr("<name>"),
 					Properties: &armdatafactory.DelimitedTextDataset{
-						Dataset: armdatafactory.Dataset{
-							Type: to.StringPtr("<type>"),
-							Schema: map[string]interface{}{
-								"0": map[string]interface{}{
-									"type": "String",
-								},
+						Type: to.StringPtr("<type>"),
+						Schema: map[string]interface{}{
+							"0": map[string]interface{}{
+								"type": "String",
 							},
-							Annotations: []map[string]interface{}{},
-							LinkedServiceName: &armdatafactory.LinkedServiceReference{
-								Type:          armdatafactory.LinkedServiceReferenceTypeLinkedServiceReference.ToPtr(),
-								ReferenceName: to.StringPtr("<reference-name>"),
-							},
+						},
+						Annotations: []map[string]interface{}{},
+						LinkedServiceName: &armdatafactory.LinkedServiceReference{
+							Type:          armdatafactory.LinkedServiceReferenceType("LinkedServiceReference").ToPtr(),
+							ReferenceName: to.StringPtr("<reference-name>"),
 						},
 						TypeProperties: &armdatafactory.DelimitedTextDatasetTypeProperties{
 							ColumnDelimiter: map[string]interface{}{
@@ -146,26 +140,24 @@ func ExampleDataFlowDebugSessionClient_AddDataFlow() {
 							},
 							FirstRowAsHeader: map[string]interface{}{},
 							Location: &armdatafactory.AzureBlobStorageLocation{
-								DatasetLocation: armdatafactory.DatasetLocation{
-									Type: to.StringPtr("<type>"),
-									FileName: map[string]interface{}{
-										"0":  "A",
-										"1":  "n",
-										"2":  "s",
-										"3":  "i",
-										"4":  "e",
-										"5":  "n",
-										"6":  "c",
-										"7":  "o",
-										"8":  "d",
-										"9":  "i",
-										"10": "n",
-										"11": "g",
-										"12": ".",
-										"13": "c",
-										"14": "s",
-										"15": "v",
-									},
+								Type: to.StringPtr("<type>"),
+								FileName: map[string]interface{}{
+									"0":  "A",
+									"1":  "n",
+									"2":  "s",
+									"3":  "i",
+									"4":  "e",
+									"5":  "n",
+									"6":  "c",
+									"7":  "o",
+									"8":  "d",
+									"9":  "i",
+									"10": "n",
+									"11": "g",
+									"12": ".",
+									"13": "c",
+									"14": "s",
+									"15": "v",
 								},
 								Container: map[string]interface{}{
 									"0":  "d",
@@ -224,14 +216,10 @@ func ExampleDataFlowDebugSessionClient_AddDataFlow() {
 			},
 			LinkedServices: []*armdatafactory.LinkedServiceDebugResource{
 				{
-					SubResourceDebugResource: armdatafactory.SubResourceDebugResource{
-						Name: to.StringPtr("<name>"),
-					},
+					Name: to.StringPtr("<name>"),
 					Properties: &armdatafactory.AzureBlobStorageLinkedService{
-						LinkedService: armdatafactory.LinkedService{
-							Type:        to.StringPtr("<type>"),
-							Annotations: []map[string]interface{}{},
-						},
+						Type:        to.StringPtr("<type>"),
+						Annotations: []map[string]interface{}{},
 						TypeProperties: &armdatafactory.AzureBlobStorageLinkedServiceTypeProperties{
 							ConnectionString: map[string]interface{}{
 								"0":  "D",
@@ -334,6 +322,7 @@ func ExampleDataFlowDebugSessionClient_AddDataFlow() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.DataFlowDebugSessionClientAddDataFlowResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlowDebugSession_Delete.json
@@ -368,7 +357,7 @@ func ExampleDataFlowDebugSessionClient_BeginExecuteCommand() {
 		"<resource-group-name>",
 		"<factory-name>",
 		armdatafactory.DataFlowDebugCommandRequest{
-			Command: armdatafactory.DataFlowDebugCommandTypeExecutePreviewQuery.ToPtr(),
+			Command: armdatafactory.DataFlowDebugCommandType("executePreviewQuery").ToPtr(),
 			CommandPayload: &armdatafactory.DataFlowDebugCommandPayload{
 				RowLimits:  to.Int32Ptr(100),
 				StreamName: to.StringPtr("<stream-name>"),
@@ -379,8 +368,9 @@ func ExampleDataFlowDebugSessionClient_BeginExecuteCommand() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.DataFlowDebugSessionClientExecuteCommandResult)
 }

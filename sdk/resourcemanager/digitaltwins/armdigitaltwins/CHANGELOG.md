@@ -1,5 +1,396 @@
 # Release History
 
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*PrivateEndpointConnectionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionsGetOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionsClientGetOptions)`
+- Function `*PrivateEndpointConnectionsClient.Get` return value(s) have been changed from `(PrivateEndpointConnectionsGetResponse, error)` to `(PrivateEndpointConnectionsClientGetResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.List` parameter(s) have been changed from `(context.Context, string, string, *PrivateEndpointConnectionsListOptions)` to `(context.Context, string, string, *PrivateEndpointConnectionsClientListOptions)`
+- Function `*PrivateEndpointConnectionsClient.List` return value(s) have been changed from `(PrivateEndpointConnectionsListResponse, error)` to `(PrivateEndpointConnectionsClientListResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions)`
+- Function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(PrivateEndpointConnectionsCreateOrUpdatePollerResponse, error)` to `(PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionsBeginDeleteOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionsClientBeginDeleteOptions)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(PrivateEndpointConnectionsDeletePollerResponse, error)` to `(PrivateEndpointConnectionsClientDeletePollerResponse, error)`
+- Function `*PrivateLinkResourcesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateLinkResourcesGetOptions)` to `(context.Context, string, string, string, *PrivateLinkResourcesClientGetOptions)`
+- Function `*PrivateLinkResourcesClient.Get` return value(s) have been changed from `(PrivateLinkResourcesGetResponse, error)` to `(PrivateLinkResourcesClientGetResponse, error)`
+- Function `*PrivateLinkResourcesClient.List` parameter(s) have been changed from `(context.Context, string, string, *PrivateLinkResourcesListOptions)` to `(context.Context, string, string, *PrivateLinkResourcesClientListOptions)`
+- Function `*PrivateLinkResourcesClient.List` return value(s) have been changed from `(PrivateLinkResourcesListResponse, error)` to `(PrivateLinkResourcesClientListResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*PrivateEndpointConnectionsDeletePoller.FinalResponse` has been removed
+- Function `*DigitalTwinsDeletePoller.Poll` has been removed
+- Function `*DigitalTwinsClient.BeginUpdate` has been removed
+- Function `*DigitalTwinsEndpointListPager.PageResponse` has been removed
+- Function `*DigitalTwinsListByResourceGroupPager.NextPage` has been removed
+- Function `DigitalTwinsEndpointResourceListResult.MarshalJSON` has been removed
+- Function `*DigitalTwinsClient.Get` has been removed
+- Function `*PrivateEndpointConnectionsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*DigitalTwinsClient.BeginDelete` has been removed
+- Function `DigitalTwinsProperties.MarshalJSON` has been removed
+- Function `DigitalTwinsResource.MarshalJSON` has been removed
+- Function `*DigitalTwinsEndpointClient.BeginCreateOrUpdate` has been removed
+- Function `*DigitalTwinsEndpointListPager.NextPage` has been removed
+- Function `*DigitalTwinsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*PrivateEndpointConnectionsCreateOrUpdatePoller.Poll` has been removed
+- Function `*DigitalTwinsCreateOrUpdatePoller.Poll` has been removed
+- Function `NewDigitalTwinsEndpointClient` has been removed
+- Function `*DigitalTwinsDeletePoller.Done` has been removed
+- Function `*DigitalTwinsEndpointResourceProperties.UnmarshalJSON` has been removed
+- Function `*DigitalTwinsProperties.UnmarshalJSON` has been removed
+- Function `ErrorResponse.Error` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.Done` has been removed
+- Function `PrivateEndpointConnectionsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateEndpointConnectionsDeletePollerResponse.Resume` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `DigitalTwinsDescriptionListResult.MarshalJSON` has been removed
+- Function `*DigitalTwinsClient.ListByResourceGroup` has been removed
+- Function `*DigitalTwinsEndpointCreateOrUpdatePoller.Poll` has been removed
+- Function `*DigitalTwinsClient.BeginCreateOrUpdate` has been removed
+- Function `*DigitalTwinsListPager.Err` has been removed
+- Function `DigitalTwinsDescription.MarshalJSON` has been removed
+- Function `*DigitalTwinsListPager.PageResponse` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*DigitalTwinsEndpointDeletePollerResponse.Resume` has been removed
+- Function `*DigitalTwinsDeletePollerResponse.Resume` has been removed
+- Function `*PrivateEndpointConnectionsCreateOrUpdatePoller.Done` has been removed
+- Function `*DigitalTwinsEndpointClient.BeginDelete` has been removed
+- Function `*DigitalTwinsEndpointResourceProperties.GetDigitalTwinsEndpointResourceProperties` has been removed
+- Function `*DigitalTwinsUpdatePoller.Done` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `NewDigitalTwinsClient` has been removed
+- Function `*DigitalTwinsEndpointDeletePoller.Poll` has been removed
+- Function `DigitalTwinsEndpointResource.MarshalJSON` has been removed
+- Function `*DigitalTwinsEndpointDeletePoller.ResumeToken` has been removed
+- Function `*DigitalTwinsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*DigitalTwinsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `PrivateEndpointConnectionsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*DigitalTwinsListByResourceGroupPager.PageResponse` has been removed
+- Function `*DigitalTwinsUpdatePoller.FinalResponse` has been removed
+- Function `*DigitalTwinsEndpointCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*DigitalTwinsEndpointDeletePoller.Done` has been removed
+- Function `*DigitalTwinsEndpointClient.Get` has been removed
+- Function `*DigitalTwinsUpdatePoller.ResumeToken` has been removed
+- Function `*DigitalTwinsClient.CheckNameAvailability` has been removed
+- Function `*DigitalTwinsDeletePoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*DigitalTwinsDeletePoller.FinalResponse` has been removed
+- Function `*DigitalTwinsCreateOrUpdatePoller.Done` has been removed
+- Function `*PrivateEndpointConnectionsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*DigitalTwinsEndpointListPager.Err` has been removed
+- Function `*DigitalTwinsEndpointDeletePoller.FinalResponse` has been removed
+- Function `DigitalTwinsEndpointCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DigitalTwinsEndpointResource.UnmarshalJSON` has been removed
+- Function `*ExternalResource.UnmarshalJSON` has been removed
+- Function `*DigitalTwinsEndpointCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `DigitalTwinsPatchDescription.MarshalJSON` has been removed
+- Function `*DigitalTwinsUpdatePoller.Poll` has been removed
+- Function `*DigitalTwinsEndpointClient.List` has been removed
+- Function `DigitalTwinsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DigitalTwinsClient.List` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.Poll` has been removed
+- Function `*DigitalTwinsUpdatePollerResponse.Resume` has been removed
+- Function `ExternalResource.MarshalJSON` has been removed
+- Function `*DigitalTwinsListByResourceGroupPager.Err` has been removed
+- Function `*DigitalTwinsEndpointCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `DigitalTwinsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*DigitalTwinsListPager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.ResumeToken` has been removed
+- Function `DigitalTwinsEndpointDeletePollerResponse.PollUntilDone` has been removed
+- Function `*DigitalTwinsEndpointCreateOrUpdatePoller.Done` has been removed
+- Function `DigitalTwinsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Struct `DigitalTwinsBeginCreateOrUpdateOptions` has been removed
+- Struct `DigitalTwinsBeginDeleteOptions` has been removed
+- Struct `DigitalTwinsBeginUpdateOptions` has been removed
+- Struct `DigitalTwinsCheckNameAvailabilityOptions` has been removed
+- Struct `DigitalTwinsCheckNameAvailabilityResponse` has been removed
+- Struct `DigitalTwinsCheckNameAvailabilityResult` has been removed
+- Struct `DigitalTwinsClient` has been removed
+- Struct `DigitalTwinsCreateOrUpdatePoller` has been removed
+- Struct `DigitalTwinsCreateOrUpdatePollerResponse` has been removed
+- Struct `DigitalTwinsCreateOrUpdateResponse` has been removed
+- Struct `DigitalTwinsCreateOrUpdateResult` has been removed
+- Struct `DigitalTwinsDeletePoller` has been removed
+- Struct `DigitalTwinsDeletePollerResponse` has been removed
+- Struct `DigitalTwinsDeleteResponse` has been removed
+- Struct `DigitalTwinsDeleteResult` has been removed
+- Struct `DigitalTwinsDescription` has been removed
+- Struct `DigitalTwinsDescriptionListResult` has been removed
+- Struct `DigitalTwinsEndpointBeginCreateOrUpdateOptions` has been removed
+- Struct `DigitalTwinsEndpointBeginDeleteOptions` has been removed
+- Struct `DigitalTwinsEndpointClient` has been removed
+- Struct `DigitalTwinsEndpointCreateOrUpdatePoller` has been removed
+- Struct `DigitalTwinsEndpointCreateOrUpdatePollerResponse` has been removed
+- Struct `DigitalTwinsEndpointCreateOrUpdateResponse` has been removed
+- Struct `DigitalTwinsEndpointCreateOrUpdateResult` has been removed
+- Struct `DigitalTwinsEndpointDeletePoller` has been removed
+- Struct `DigitalTwinsEndpointDeletePollerResponse` has been removed
+- Struct `DigitalTwinsEndpointDeleteResponse` has been removed
+- Struct `DigitalTwinsEndpointDeleteResult` has been removed
+- Struct `DigitalTwinsEndpointGetOptions` has been removed
+- Struct `DigitalTwinsEndpointGetResponse` has been removed
+- Struct `DigitalTwinsEndpointGetResult` has been removed
+- Struct `DigitalTwinsEndpointListOptions` has been removed
+- Struct `DigitalTwinsEndpointListPager` has been removed
+- Struct `DigitalTwinsEndpointListResponse` has been removed
+- Struct `DigitalTwinsEndpointListResult` has been removed
+- Struct `DigitalTwinsEndpointResource` has been removed
+- Struct `DigitalTwinsEndpointResourceListResult` has been removed
+- Struct `DigitalTwinsEndpointResourceProperties` has been removed
+- Struct `DigitalTwinsGetOptions` has been removed
+- Struct `DigitalTwinsGetResponse` has been removed
+- Struct `DigitalTwinsGetResult` has been removed
+- Struct `DigitalTwinsIdentity` has been removed
+- Struct `DigitalTwinsListByResourceGroupOptions` has been removed
+- Struct `DigitalTwinsListByResourceGroupPager` has been removed
+- Struct `DigitalTwinsListByResourceGroupResponse` has been removed
+- Struct `DigitalTwinsListByResourceGroupResult` has been removed
+- Struct `DigitalTwinsListOptions` has been removed
+- Struct `DigitalTwinsListPager` has been removed
+- Struct `DigitalTwinsListResponse` has been removed
+- Struct `DigitalTwinsListResult` has been removed
+- Struct `DigitalTwinsPatchDescription` has been removed
+- Struct `DigitalTwinsPatchProperties` has been removed
+- Struct `DigitalTwinsProperties` has been removed
+- Struct `DigitalTwinsResource` has been removed
+- Struct `DigitalTwinsUpdatePoller` has been removed
+- Struct `DigitalTwinsUpdatePollerResponse` has been removed
+- Struct `DigitalTwinsUpdateResponse` has been removed
+- Struct `DigitalTwinsUpdateResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `PrivateEndpointConnectionsBeginCreateOrUpdateOptions` has been removed
+- Struct `PrivateEndpointConnectionsBeginDeleteOptions` has been removed
+- Struct `PrivateEndpointConnectionsCreateOrUpdatePoller` has been removed
+- Struct `PrivateEndpointConnectionsCreateOrUpdatePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsCreateOrUpdateResponse` has been removed
+- Struct `PrivateEndpointConnectionsCreateOrUpdateResult` has been removed
+- Struct `PrivateEndpointConnectionsDeletePoller` has been removed
+- Struct `PrivateEndpointConnectionsDeletePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsDeleteResponse` has been removed
+- Struct `PrivateEndpointConnectionsGetOptions` has been removed
+- Struct `PrivateEndpointConnectionsGetResponse` has been removed
+- Struct `PrivateEndpointConnectionsGetResult` has been removed
+- Struct `PrivateEndpointConnectionsListOptions` has been removed
+- Struct `PrivateEndpointConnectionsListResponse` has been removed
+- Struct `PrivateEndpointConnectionsListResult` has been removed
+- Struct `PrivateLinkResourcesGetOptions` has been removed
+- Struct `PrivateLinkResourcesGetResponse` has been removed
+- Struct `PrivateLinkResourcesGetResult` has been removed
+- Struct `PrivateLinkResourcesListOptions` has been removed
+- Struct `PrivateLinkResourcesListResponse` has been removed
+- Struct `PrivateLinkResourcesListResult` has been removed
+- Field `DigitalTwinsEndpointResourceProperties` of struct `ServiceBus` has been removed
+- Field `ConnectionProperties` of struct `PrivateEndpointConnectionProperties` has been removed
+- Field `GroupIDInformationPropertiesAutoGenerated` of struct `GroupIDInformationProperties` has been removed
+- Field `InnerError` of struct `ErrorResponse` has been removed
+- Field `ConnectionState` of struct `ConnectionPropertiesPrivateLinkServiceConnectionState` has been removed
+- Field `DigitalTwinsEndpointResourceProperties` of struct `EventHub` has been removed
+- Field `DigitalTwinsEndpointResourceProperties` of struct `EventGrid` has been removed
+- Field `PrivateEndpoint` of struct `ConnectionPropertiesPrivateEndpoint` has been removed
+
+### Features Added
+
+- New function `*EndpointClient.Get(context.Context, string, string, string, *EndpointClientGetOptions) (EndpointClientGetResponse, error)`
+- New function `*EndpointClientDeletePoller.FinalResponse(context.Context) (EndpointClientDeleteResponse, error)`
+- New function `*EndpointClientCreateOrUpdatePoller.Done() bool`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `Properties.MarshalJSON() ([]byte, error)`
+- New function `*EndpointClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*EndpointClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*EndpointClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `ClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ClientCreateOrUpdateResponse, error)`
+- New function `*ClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*EndpointClientCreateOrUpdatePoller.FinalResponse(context.Context) (EndpointClientCreateOrUpdateResponse, error)`
+- New function `*ClientDeletePollerResponse.Resume(context.Context, *Client, string) error`
+- New function `PatchDescription.MarshalJSON() ([]byte, error)`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*Client.CheckNameAvailability(context.Context, string, CheckNameRequest, *ClientCheckNameAvailabilityOptions) (ClientCheckNameAvailabilityResponse, error)`
+- New function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*Client.BeginDelete(context.Context, string, string, *ClientBeginDeleteOptions) (ClientDeletePollerResponse, error)`
+- New function `*ClientCreateOrUpdatePoller.Done() bool`
+- New function `*PrivateEndpointConnectionsClientDeletePollerResponse.Resume(context.Context, *PrivateEndpointConnectionsClient, string) error`
+- New function `*ServiceBus.GetEndpointResourceProperties() *EndpointResourceProperties`
+- New function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.FinalResponse(context.Context) (PrivateEndpointConnectionsClientCreateOrUpdateResponse, error)`
+- New function `ClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ClientDeleteResponse, error)`
+- New function `EndpointResourceListResult.MarshalJSON() ([]byte, error)`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.Done() bool`
+- New function `*EndpointResource.UnmarshalJSON([]byte) error`
+- New function `ClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ClientUpdateResponse, error)`
+- New function `NewEndpointClient(string, azcore.TokenCredential, *arm.ClientOptions) *EndpointClient`
+- New function `*EndpointClient.List(string, string, *EndpointClientListOptions) *EndpointClientListPager`
+- New function `*PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse.Resume(context.Context, *PrivateEndpointConnectionsClient, string) error`
+- New function `EndpointResource.MarshalJSON() ([]byte, error)`
+- New function `*EndpointClient.BeginCreateOrUpdate(context.Context, string, string, string, EndpointResource, *EndpointClientBeginCreateOrUpdateOptions) (EndpointClientCreateOrUpdatePollerResponse, error)`
+- New function `*Client.BeginUpdate(context.Context, string, string, PatchDescription, *ClientBeginUpdateOptions) (ClientUpdatePollerResponse, error)`
+- New function `*EndpointResourceProperties.UnmarshalJSON([]byte) error`
+- New function `*ClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*EndpointClientCreateOrUpdatePollerResponse.Resume(context.Context, *EndpointClient, string) error`
+- New function `*ClientListPager.Err() error`
+- New function `*Client.List(*ClientListOptions) *ClientListPager`
+- New function `*ClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*EventHub.GetEndpointResourceProperties() *EndpointResourceProperties`
+- New function `*ClientListPager.NextPage(context.Context) bool`
+- New function `*Client.ListByResourceGroup(string, *ClientListByResourceGroupOptions) *ClientListByResourceGroupPager`
+- New function `PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateEndpointConnectionsClientCreateOrUpdateResponse, error)`
+- New function `EndpointClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (EndpointClientCreateOrUpdateResponse, error)`
+- New function `*ClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `PrivateEndpointConnectionProperties.MarshalJSON() ([]byte, error)`
+- New function `*EndpointClient.BeginDelete(context.Context, string, string, string, *EndpointClientBeginDeleteOptions) (EndpointClientDeletePollerResponse, error)`
+- New function `*ClientListPager.PageResponse() ClientListResponse`
+- New function `EndpointClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (EndpointClientDeleteResponse, error)`
+- New function `*Client.BeginCreateOrUpdate(context.Context, string, string, Description, *ClientBeginCreateOrUpdateOptions) (ClientCreateOrUpdatePollerResponse, error)`
+- New function `*ClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ClientListByResourceGroupPager.PageResponse() ClientListByResourceGroupResponse`
+- New function `*ClientListByResourceGroupPager.Err() error`
+- New function `NewClient(string, azcore.TokenCredential, *arm.ClientOptions) *Client`
+- New function `EndpointResourceProperties.MarshalJSON() ([]byte, error)`
+- New function `*EndpointClientListPager.PageResponse() EndpointClientListResponse`
+- New function `*ClientDeletePoller.Done() bool`
+- New function `*EndpointClientDeletePoller.ResumeToken() (string, error)`
+- New function `*ClientDeletePoller.ResumeToken() (string, error)`
+- New function `*ClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ClientUpdatePoller.Done() bool`
+- New function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.Done() bool`
+- New function `*ClientUpdatePoller.FinalResponse(context.Context) (ClientUpdateResponse, error)`
+- New function `*EventGrid.GetEndpointResourceProperties() *EndpointResourceProperties`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*EndpointClientListPager.NextPage(context.Context) bool`
+- New function `*ClientCreateOrUpdatePollerResponse.Resume(context.Context, *Client, string) error`
+- New function `*ClientDeletePoller.FinalResponse(context.Context) (ClientDeleteResponse, error)`
+- New function `Description.MarshalJSON() ([]byte, error)`
+- New function `*OperationsClientListPager.Err() error`
+- New function `PrivateEndpointConnectionsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateEndpointConnectionsClientDeleteResponse, error)`
+- New function `*EndpointClientDeletePollerResponse.Resume(context.Context, *EndpointClient, string) error`
+- New function `*EndpointResourceProperties.GetEndpointResourceProperties() *EndpointResourceProperties`
+- New function `DescriptionListResult.MarshalJSON() ([]byte, error)`
+- New function `*ClientUpdatePollerResponse.Resume(context.Context, *Client, string) error`
+- New function `*Client.Get(context.Context, string, string, *ClientGetOptions) (ClientGetResponse, error)`
+- New function `*ClientCreateOrUpdatePoller.FinalResponse(context.Context) (ClientCreateOrUpdateResponse, error)`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.FinalResponse(context.Context) (PrivateEndpointConnectionsClientDeleteResponse, error)`
+- New function `*Properties.UnmarshalJSON([]byte) error`
+- New function `*EndpointClientDeletePoller.Done() bool`
+- New function `Resource.MarshalJSON() ([]byte, error)`
+- New function `GroupIDInformationProperties.MarshalJSON() ([]byte, error)`
+- New function `*EndpointClientListPager.Err() error`
+- New struct `Client`
+- New struct `ClientBeginCreateOrUpdateOptions`
+- New struct `ClientBeginDeleteOptions`
+- New struct `ClientBeginUpdateOptions`
+- New struct `ClientCheckNameAvailabilityOptions`
+- New struct `ClientCheckNameAvailabilityResponse`
+- New struct `ClientCheckNameAvailabilityResult`
+- New struct `ClientCreateOrUpdatePoller`
+- New struct `ClientCreateOrUpdatePollerResponse`
+- New struct `ClientCreateOrUpdateResponse`
+- New struct `ClientCreateOrUpdateResult`
+- New struct `ClientDeletePoller`
+- New struct `ClientDeletePollerResponse`
+- New struct `ClientDeleteResponse`
+- New struct `ClientDeleteResult`
+- New struct `ClientGetOptions`
+- New struct `ClientGetResponse`
+- New struct `ClientGetResult`
+- New struct `ClientListByResourceGroupOptions`
+- New struct `ClientListByResourceGroupPager`
+- New struct `ClientListByResourceGroupResponse`
+- New struct `ClientListByResourceGroupResult`
+- New struct `ClientListOptions`
+- New struct `ClientListPager`
+- New struct `ClientListResponse`
+- New struct `ClientListResult`
+- New struct `ClientUpdatePoller`
+- New struct `ClientUpdatePollerResponse`
+- New struct `ClientUpdateResponse`
+- New struct `ClientUpdateResult`
+- New struct `Description`
+- New struct `DescriptionListResult`
+- New struct `EndpointClient`
+- New struct `EndpointClientBeginCreateOrUpdateOptions`
+- New struct `EndpointClientBeginDeleteOptions`
+- New struct `EndpointClientCreateOrUpdatePoller`
+- New struct `EndpointClientCreateOrUpdatePollerResponse`
+- New struct `EndpointClientCreateOrUpdateResponse`
+- New struct `EndpointClientCreateOrUpdateResult`
+- New struct `EndpointClientDeletePoller`
+- New struct `EndpointClientDeletePollerResponse`
+- New struct `EndpointClientDeleteResponse`
+- New struct `EndpointClientDeleteResult`
+- New struct `EndpointClientGetOptions`
+- New struct `EndpointClientGetResponse`
+- New struct `EndpointClientGetResult`
+- New struct `EndpointClientListOptions`
+- New struct `EndpointClientListPager`
+- New struct `EndpointClientListResponse`
+- New struct `EndpointClientListResult`
+- New struct `EndpointResource`
+- New struct `EndpointResourceListResult`
+- New struct `EndpointResourceProperties`
+- New struct `Identity`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `PatchDescription`
+- New struct `PatchProperties`
+- New struct `PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions`
+- New struct `PrivateEndpointConnectionsClientBeginDeleteOptions`
+- New struct `PrivateEndpointConnectionsClientCreateOrUpdatePoller`
+- New struct `PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse`
+- New struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse`
+- New struct `PrivateEndpointConnectionsClientCreateOrUpdateResult`
+- New struct `PrivateEndpointConnectionsClientDeletePoller`
+- New struct `PrivateEndpointConnectionsClientDeletePollerResponse`
+- New struct `PrivateEndpointConnectionsClientDeleteResponse`
+- New struct `PrivateEndpointConnectionsClientGetOptions`
+- New struct `PrivateEndpointConnectionsClientGetResponse`
+- New struct `PrivateEndpointConnectionsClientGetResult`
+- New struct `PrivateEndpointConnectionsClientListOptions`
+- New struct `PrivateEndpointConnectionsClientListResponse`
+- New struct `PrivateEndpointConnectionsClientListResult`
+- New struct `PrivateLinkResourcesClientGetOptions`
+- New struct `PrivateLinkResourcesClientGetResponse`
+- New struct `PrivateLinkResourcesClientGetResult`
+- New struct `PrivateLinkResourcesClientListOptions`
+- New struct `PrivateLinkResourcesClientListResponse`
+- New struct `PrivateLinkResourcesClientListResult`
+- New struct `Properties`
+- New struct `Resource`
+- New field `Status` in struct `ConnectionPropertiesPrivateLinkServiceConnectionState`
+- New field `ActionsRequired` in struct `ConnectionPropertiesPrivateLinkServiceConnectionState`
+- New field `Description` in struct `ConnectionPropertiesPrivateLinkServiceConnectionState`
+- New field `RequiredMembers` in struct `GroupIDInformationProperties`
+- New field `RequiredZoneNames` in struct `GroupIDInformationProperties`
+- New field `GroupID` in struct `GroupIDInformationProperties`
+- New field `ID` in struct `ConnectionPropertiesPrivateEndpoint`
+- New field `AuthenticationType` in struct `EventHub`
+- New field `DeadLetterSecret` in struct `EventHub`
+- New field `ProvisioningState` in struct `EventHub`
+- New field `DeadLetterURI` in struct `EventHub`
+- New field `CreatedTime` in struct `EventHub`
+- New field `EndpointType` in struct `EventHub`
+- New field `Error` in struct `ErrorResponse`
+- New field `DeadLetterURI` in struct `ServiceBus`
+- New field `CreatedTime` in struct `ServiceBus`
+- New field `AuthenticationType` in struct `ServiceBus`
+- New field `DeadLetterSecret` in struct `ServiceBus`
+- New field `EndpointType` in struct `ServiceBus`
+- New field `ProvisioningState` in struct `ServiceBus`
+- New field `ProvisioningState` in struct `PrivateEndpointConnectionProperties`
+- New field `GroupIDs` in struct `PrivateEndpointConnectionProperties`
+- New field `PrivateEndpoint` in struct `PrivateEndpointConnectionProperties`
+- New field `PrivateLinkServiceConnectionState` in struct `PrivateEndpointConnectionProperties`
+- New field `CreatedTime` in struct `EventGrid`
+- New field `DeadLetterSecret` in struct `EventGrid`
+- New field `ProvisioningState` in struct `EventGrid`
+- New field `EndpointType` in struct `EventGrid`
+- New field `AuthenticationType` in struct `EventGrid`
+- New field `DeadLetterURI` in struct `EventGrid`
+
+
 ## 0.1.0 (2021-12-07)
 
 - Initial preview release.

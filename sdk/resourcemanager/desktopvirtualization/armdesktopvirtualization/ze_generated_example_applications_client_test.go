@@ -33,7 +33,7 @@ func ExampleApplicationsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Application.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ApplicationsClientGetResult)
 }
 
 // x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/Application_Create.json
@@ -52,7 +52,7 @@ func ExampleApplicationsClient_CreateOrUpdate() {
 			Properties: &armdesktopvirtualization.ApplicationProperties{
 				Description:          to.StringPtr("<description>"),
 				CommandLineArguments: to.StringPtr("<command-line-arguments>"),
-				CommandLineSetting:   armdesktopvirtualization.CommandLineSettingAllow.ToPtr(),
+				CommandLineSetting:   armdesktopvirtualization.CommandLineSetting("Allow").ToPtr(),
 				FilePath:             to.StringPtr("<file-path>"),
 				FriendlyName:         to.StringPtr("<friendly-name>"),
 				IconIndex:            to.Int32Ptr(1),
@@ -64,7 +64,7 @@ func ExampleApplicationsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Application.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ApplicationsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/Application_Delete.json
@@ -97,26 +97,24 @@ func ExampleApplicationsClient_Update() {
 		"<resource-group-name>",
 		"<application-group-name>",
 		"<application-name>",
-		&armdesktopvirtualization.ApplicationsUpdateOptions{Application: &armdesktopvirtualization.ApplicationPatch{
+		&armdesktopvirtualization.ApplicationsClientUpdateOptions{Application: &armdesktopvirtualization.ApplicationPatch{
 			Properties: &armdesktopvirtualization.ApplicationPatchProperties{
-				Description:              to.StringPtr("<description>"),
-				ApplicationType:          armdesktopvirtualization.RemoteApplicationTypeInBuilt.ToPtr(),
-				CommandLineArguments:     to.StringPtr("<command-line-arguments>"),
-				CommandLineSetting:       armdesktopvirtualization.CommandLineSettingAllow.ToPtr(),
-				FilePath:                 to.StringPtr("<file-path>"),
-				FriendlyName:             to.StringPtr("<friendly-name>"),
-				IconIndex:                to.Int32Ptr(1),
-				IconPath:                 to.StringPtr("<icon-path>"),
-				MsixPackageApplicationID: to.StringPtr("<msix-package-application-id>"),
-				MsixPackageFamilyName:    to.StringPtr("<msix-package-family-name>"),
-				ShowInPortal:             to.BoolPtr(true),
+				Description:          to.StringPtr("<description>"),
+				ApplicationType:      armdesktopvirtualization.RemoteApplicationType("InBuilt").ToPtr(),
+				CommandLineArguments: to.StringPtr("<command-line-arguments>"),
+				CommandLineSetting:   armdesktopvirtualization.CommandLineSetting("Allow").ToPtr(),
+				FilePath:             to.StringPtr("<file-path>"),
+				FriendlyName:         to.StringPtr("<friendly-name>"),
+				IconIndex:            to.Int32Ptr(1),
+				IconPath:             to.StringPtr("<icon-path>"),
+				ShowInPortal:         to.BoolPtr(true),
 			},
 		},
 		})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Application.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ApplicationsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/Application_List.json
@@ -130,12 +128,16 @@ func ExampleApplicationsClient_List() {
 	pager := client.List("<resource-group-name>",
 		"<application-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Application.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

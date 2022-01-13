@@ -9,8 +9,8 @@
 package armhealthbot
 
 const (
-	module  = "armhealthbot"
-	version = "v0.1.0"
+	moduleName    = "armhealthbot"
+	moduleVersion = "v0.2.0"
 )
 
 // IdentityType - The type of identity that creates/modifies resources
@@ -38,8 +38,8 @@ func (c IdentityType) ToPtr() *IdentityType {
 	return &c
 }
 
-// ResourceIdentityType - The identity type. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user assigned
-// identities. The type 'None' will remove any identities from the Azure
+// ResourceIdentityType - The identity type. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity
+// and a set of user assigned identities. The type 'None' will remove any identities from the Azure
 // Health Bot
 type ResourceIdentityType string
 

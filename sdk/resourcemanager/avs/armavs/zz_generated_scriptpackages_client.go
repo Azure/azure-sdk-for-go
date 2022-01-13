@@ -11,7 +11,6 @@ package armavs
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,54 @@ import (
 // ScriptPackagesClient contains the methods for the ScriptPackages group.
 // Don't use this type directly, use NewScriptPackagesClient() instead.
 type ScriptPackagesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewScriptPackagesClient creates a new instance of ScriptPackagesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewScriptPackagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ScriptPackagesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ScriptPackagesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ScriptPackagesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Get a script package available to run on a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *ScriptPackagesClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, scriptPackageName string, options *ScriptPackagesGetOptions) (ScriptPackagesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateCloudName - Name of the private cloud
+// scriptPackageName - Name of the script package in the private cloud
+// options - ScriptPackagesClientGetOptions contains the optional parameters for the ScriptPackagesClient.Get method.
+func (client *ScriptPackagesClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, scriptPackageName string, options *ScriptPackagesClientGetOptions) (ScriptPackagesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, privateCloudName, scriptPackageName, options)
 	if err != nil {
-		return ScriptPackagesGetResponse{}, err
+		return ScriptPackagesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ScriptPackagesGetResponse{}, err
+		return ScriptPackagesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ScriptPackagesGetResponse{}, client.getHandleError(resp)
+		return ScriptPackagesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ScriptPackagesClient) getCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, scriptPackageName string, options *ScriptPackagesGetOptions) (*policy.Request, error) {
+func (client *ScriptPackagesClient) getCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, scriptPackageName string, options *ScriptPackagesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/scriptPackages/{scriptPackageName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +89,7 @@ func (client *ScriptPackagesClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter scriptPackageName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scriptPackageName}", url.PathEscape(scriptPackageName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,43 +101,33 @@ func (client *ScriptPackagesClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client *ScriptPackagesClient) getHandleResponse(resp *http.Response) (ScriptPackagesGetResponse, error) {
-	result := ScriptPackagesGetResponse{RawResponse: resp}
+func (client *ScriptPackagesClient) getHandleResponse(resp *http.Response) (ScriptPackagesClientGetResponse, error) {
+	result := ScriptPackagesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ScriptPackage); err != nil {
-		return ScriptPackagesGetResponse{}, runtime.NewResponseError(err, resp)
+		return ScriptPackagesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ScriptPackagesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List script packages available to run on the private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *ScriptPackagesClient) List(resourceGroupName string, privateCloudName string, options *ScriptPackagesListOptions) *ScriptPackagesListPager {
-	return &ScriptPackagesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateCloudName - Name of the private cloud
+// options - ScriptPackagesClientListOptions contains the optional parameters for the ScriptPackagesClient.List method.
+func (client *ScriptPackagesClient) List(resourceGroupName string, privateCloudName string, options *ScriptPackagesClientListOptions) *ScriptPackagesClientListPager {
+	return &ScriptPackagesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, privateCloudName, options)
 		},
-		advancer: func(ctx context.Context, resp ScriptPackagesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ScriptPackagesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ScriptPackagesList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ScriptPackagesClient) listCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, options *ScriptPackagesListOptions) (*policy.Request, error) {
+func (client *ScriptPackagesClient) listCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, options *ScriptPackagesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/scriptPackages"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -140,7 +141,7 @@ func (client *ScriptPackagesClient) listCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter privateCloudName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -152,23 +153,10 @@ func (client *ScriptPackagesClient) listCreateRequest(ctx context.Context, resou
 }
 
 // listHandleResponse handles the List response.
-func (client *ScriptPackagesClient) listHandleResponse(resp *http.Response) (ScriptPackagesListResponse, error) {
-	result := ScriptPackagesListResponse{RawResponse: resp}
+func (client *ScriptPackagesClient) listHandleResponse(resp *http.Response) (ScriptPackagesClientListResponse, error) {
+	result := ScriptPackagesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ScriptPackagesList); err != nil {
-		return ScriptPackagesListResponse{}, runtime.NewResponseError(err, resp)
+		return ScriptPackagesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *ScriptPackagesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

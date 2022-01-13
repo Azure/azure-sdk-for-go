@@ -41,7 +41,7 @@ func ExampleProviderShareSubscriptionsClient_Adjust() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ProviderShareSubscription.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ProviderShareSubscriptionsClientAdjustResult)
 }
 
 // x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/ProviderShareSubscriptions_Reinstate.json
@@ -66,7 +66,7 @@ func ExampleProviderShareSubscriptionsClient_Reinstate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ProviderShareSubscription.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ProviderShareSubscriptionsClientReinstateResult)
 }
 
 // x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/ProviderShareSubscriptions_Revoke.json
@@ -90,7 +90,7 @@ func ExampleProviderShareSubscriptionsClient_BeginRevoke() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ProviderShareSubscription.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ProviderShareSubscriptionsClientRevokeResult)
 }
 
 // x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/ProviderShareSubscriptions_GetByShare.json
@@ -110,7 +110,7 @@ func ExampleProviderShareSubscriptionsClient_GetByShare() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ProviderShareSubscription.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ProviderShareSubscriptionsClientGetByShareResult)
 }
 
 // x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/ProviderShareSubscriptions_ListByShare.json
@@ -124,13 +124,17 @@ func ExampleProviderShareSubscriptionsClient_ListByShare() {
 	pager := client.ListByShare("<resource-group-name>",
 		"<account-name>",
 		"<share-name>",
-		&armdatashare.ProviderShareSubscriptionsListByShareOptions{SkipToken: nil})
-	for pager.NextPage(ctx) {
+		&armdatashare.ProviderShareSubscriptionsClientListByShareOptions{SkipToken: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ProviderShareSubscription.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

@@ -16,27 +16,27 @@ import (
 	"reflect"
 )
 
-// ActionRulesListByResourceGroupPager provides operations for iterating over paged responses.
-type ActionRulesListByResourceGroupPager struct {
-	client    *ActionRulesClient
-	current   ActionRulesListByResourceGroupResponse
+// AlertProcessingRulesClientListByResourceGroupPager provides operations for iterating over paged responses.
+type AlertProcessingRulesClientListByResourceGroupPager struct {
+	client    *AlertProcessingRulesClient
+	current   AlertProcessingRulesClientListByResourceGroupResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, ActionRulesListByResourceGroupResponse) (*policy.Request, error)
+	advancer  func(context.Context, AlertProcessingRulesClientListByResourceGroupResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *ActionRulesListByResourceGroupPager) Err() error {
+func (p *AlertProcessingRulesClientListByResourceGroupPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *ActionRulesListByResourceGroupPager) NextPage(ctx context.Context) bool {
+func (p *AlertProcessingRulesClientListByResourceGroupPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.ActionRulesList.NextLink == nil || len(*p.current.ActionRulesList.NextLink) == 0 {
+		if p.current.AlertProcessingRulesList.NextLink == nil || len(*p.current.AlertProcessingRulesList.NextLink) == 0 {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
@@ -53,7 +53,7 @@ func (p *ActionRulesListByResourceGroupPager) NextPage(ctx context.Context) bool
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByResourceGroupHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByResourceGroupHandleResponse(resp)
@@ -65,32 +65,32 @@ func (p *ActionRulesListByResourceGroupPager) NextPage(ctx context.Context) bool
 	return true
 }
 
-// PageResponse returns the current ActionRulesListByResourceGroupResponse page.
-func (p *ActionRulesListByResourceGroupPager) PageResponse() ActionRulesListByResourceGroupResponse {
+// PageResponse returns the current AlertProcessingRulesClientListByResourceGroupResponse page.
+func (p *AlertProcessingRulesClientListByResourceGroupPager) PageResponse() AlertProcessingRulesClientListByResourceGroupResponse {
 	return p.current
 }
 
-// ActionRulesListBySubscriptionPager provides operations for iterating over paged responses.
-type ActionRulesListBySubscriptionPager struct {
-	client    *ActionRulesClient
-	current   ActionRulesListBySubscriptionResponse
+// AlertProcessingRulesClientListBySubscriptionPager provides operations for iterating over paged responses.
+type AlertProcessingRulesClientListBySubscriptionPager struct {
+	client    *AlertProcessingRulesClient
+	current   AlertProcessingRulesClientListBySubscriptionResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, ActionRulesListBySubscriptionResponse) (*policy.Request, error)
+	advancer  func(context.Context, AlertProcessingRulesClientListBySubscriptionResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *ActionRulesListBySubscriptionPager) Err() error {
+func (p *AlertProcessingRulesClientListBySubscriptionPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *ActionRulesListBySubscriptionPager) NextPage(ctx context.Context) bool {
+func (p *AlertProcessingRulesClientListBySubscriptionPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.ActionRulesList.NextLink == nil || len(*p.current.ActionRulesList.NextLink) == 0 {
+		if p.current.AlertProcessingRulesList.NextLink == nil || len(*p.current.AlertProcessingRulesList.NextLink) == 0 {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
@@ -107,7 +107,7 @@ func (p *ActionRulesListBySubscriptionPager) NextPage(ctx context.Context) bool 
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listBySubscriptionHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listBySubscriptionHandleResponse(resp)
@@ -119,28 +119,28 @@ func (p *ActionRulesListBySubscriptionPager) NextPage(ctx context.Context) bool 
 	return true
 }
 
-// PageResponse returns the current ActionRulesListBySubscriptionResponse page.
-func (p *ActionRulesListBySubscriptionPager) PageResponse() ActionRulesListBySubscriptionResponse {
+// PageResponse returns the current AlertProcessingRulesClientListBySubscriptionResponse page.
+func (p *AlertProcessingRulesClientListBySubscriptionPager) PageResponse() AlertProcessingRulesClientListBySubscriptionResponse {
 	return p.current
 }
 
-// AlertsGetAllPager provides operations for iterating over paged responses.
-type AlertsGetAllPager struct {
+// AlertsClientGetAllPager provides operations for iterating over paged responses.
+type AlertsClientGetAllPager struct {
 	client    *AlertsClient
-	current   AlertsGetAllResponse
+	current   AlertsClientGetAllResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, AlertsGetAllResponse) (*policy.Request, error)
+	advancer  func(context.Context, AlertsClientGetAllResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *AlertsGetAllPager) Err() error {
+func (p *AlertsClientGetAllPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *AlertsGetAllPager) NextPage(ctx context.Context) bool {
+func (p *AlertsClientGetAllPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -161,7 +161,7 @@ func (p *AlertsGetAllPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.getAllHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.getAllHandleResponse(resp)
@@ -173,28 +173,28 @@ func (p *AlertsGetAllPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current AlertsGetAllResponse page.
-func (p *AlertsGetAllPager) PageResponse() AlertsGetAllResponse {
+// PageResponse returns the current AlertsClientGetAllResponse page.
+func (p *AlertsClientGetAllPager) PageResponse() AlertsClientGetAllResponse {
 	return p.current
 }
 
-// OperationsListPager provides operations for iterating over paged responses.
-type OperationsListPager struct {
+// OperationsClientListPager provides operations for iterating over paged responses.
+type OperationsClientListPager struct {
 	client    *OperationsClient
-	current   OperationsListResponse
+	current   OperationsClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, OperationsListResponse) (*policy.Request, error)
+	advancer  func(context.Context, OperationsClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *OperationsListPager) Err() error {
+func (p *OperationsClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *OperationsListPager) NextPage(ctx context.Context) bool {
+func (p *OperationsClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -215,7 +215,7 @@ func (p *OperationsListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -227,136 +227,28 @@ func (p *OperationsListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current OperationsListResponse page.
-func (p *OperationsListPager) PageResponse() OperationsListResponse {
+// PageResponse returns the current OperationsClientListResponse page.
+func (p *OperationsClientListPager) PageResponse() OperationsClientListResponse {
 	return p.current
 }
 
-// SmartDetectorAlertRulesListByResourceGroupPager provides operations for iterating over paged responses.
-type SmartDetectorAlertRulesListByResourceGroupPager struct {
-	client    *SmartDetectorAlertRulesClient
-	current   SmartDetectorAlertRulesListByResourceGroupResponse
-	err       error
-	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, SmartDetectorAlertRulesListByResourceGroupResponse) (*policy.Request, error)
-}
-
-// Err returns the last error encountered while paging.
-func (p *SmartDetectorAlertRulesListByResourceGroupPager) Err() error {
-	return p.err
-}
-
-// NextPage returns true if the pager advanced to the next page.
-// Returns false if there are no more pages or an error occurred.
-func (p *SmartDetectorAlertRulesListByResourceGroupPager) NextPage(ctx context.Context) bool {
-	var req *policy.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.AlertRulesList.NextLink == nil || len(*p.current.AlertRulesList.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.client.pl.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByResourceGroupHandleError(resp)
-		return false
-	}
-	result, err := p.client.listByResourceGroupHandleResponse(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-// PageResponse returns the current SmartDetectorAlertRulesListByResourceGroupResponse page.
-func (p *SmartDetectorAlertRulesListByResourceGroupPager) PageResponse() SmartDetectorAlertRulesListByResourceGroupResponse {
-	return p.current
-}
-
-// SmartDetectorAlertRulesListPager provides operations for iterating over paged responses.
-type SmartDetectorAlertRulesListPager struct {
-	client    *SmartDetectorAlertRulesClient
-	current   SmartDetectorAlertRulesListResponse
-	err       error
-	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, SmartDetectorAlertRulesListResponse) (*policy.Request, error)
-}
-
-// Err returns the last error encountered while paging.
-func (p *SmartDetectorAlertRulesListPager) Err() error {
-	return p.err
-}
-
-// NextPage returns true if the pager advanced to the next page.
-// Returns false if there are no more pages or an error occurred.
-func (p *SmartDetectorAlertRulesListPager) NextPage(ctx context.Context) bool {
-	var req *policy.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.AlertRulesList.NextLink == nil || len(*p.current.AlertRulesList.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.client.pl.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
-		return false
-	}
-	result, err := p.client.listHandleResponse(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-// PageResponse returns the current SmartDetectorAlertRulesListResponse page.
-func (p *SmartDetectorAlertRulesListPager) PageResponse() SmartDetectorAlertRulesListResponse {
-	return p.current
-}
-
-// SmartGroupsGetAllPager provides operations for iterating over paged responses.
-type SmartGroupsGetAllPager struct {
+// SmartGroupsClientGetAllPager provides operations for iterating over paged responses.
+type SmartGroupsClientGetAllPager struct {
 	client    *SmartGroupsClient
-	current   SmartGroupsGetAllResponse
+	current   SmartGroupsClientGetAllResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, SmartGroupsGetAllResponse) (*policy.Request, error)
+	advancer  func(context.Context, SmartGroupsClientGetAllResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *SmartGroupsGetAllPager) Err() error {
+func (p *SmartGroupsClientGetAllPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *SmartGroupsGetAllPager) NextPage(ctx context.Context) bool {
+func (p *SmartGroupsClientGetAllPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -377,7 +269,7 @@ func (p *SmartGroupsGetAllPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.getAllHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.getAllHandleResponse(resp)
@@ -389,7 +281,7 @@ func (p *SmartGroupsGetAllPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current SmartGroupsGetAllResponse page.
-func (p *SmartGroupsGetAllPager) PageResponse() SmartGroupsGetAllResponse {
+// PageResponse returns the current SmartGroupsClientGetAllResponse page.
+func (p *SmartGroupsClientGetAllPager) PageResponse() SmartGroupsClientGetAllResponse {
 	return p.current
 }

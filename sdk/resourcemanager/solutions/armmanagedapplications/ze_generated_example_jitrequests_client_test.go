@@ -34,7 +34,7 @@ func ExampleJitRequestsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("JitRequestDefinition.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.JitRequestsClientGetResult)
 }
 
 // x-ms-original-file: specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/createOrUpdateJitRequest.json
@@ -57,7 +57,7 @@ func ExampleJitRequestsClient_BeginCreateOrUpdate() {
 						RoleDefinitionID: to.StringPtr("<role-definition-id>"),
 					}},
 				JitSchedulingPolicy: &armmanagedapplications.JitSchedulingPolicy{
-					Type:      armmanagedapplications.JitSchedulingTypeOnce.ToPtr(),
+					Type:      armmanagedapplications.JitSchedulingType("Once").ToPtr(),
 					Duration:  to.StringPtr("<duration>"),
 					StartTime: to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-22T05:48:30.6661804Z"); return t }()),
 				},
@@ -71,7 +71,7 @@ func ExampleJitRequestsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("JitRequestDefinition.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.JitRequestsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/updateJitRequest.json
@@ -94,7 +94,7 @@ func ExampleJitRequestsClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("JitRequestDefinition.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.JitRequestsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/deleteJitRequest.json
@@ -122,11 +122,12 @@ func ExampleJitRequestsClient_ListBySubscription() {
 	}
 	ctx := context.Background()
 	client := armmanagedapplications.NewJitRequestsClient("<subscription-id>", cred, nil)
-	_, err = client.ListBySubscription(ctx,
+	res, err := client.ListBySubscription(ctx,
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.JitRequestsClientListBySubscriptionResult)
 }
 
 // x-ms-original-file: specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/listJitRequestsByResourceGroup.json
@@ -137,10 +138,11 @@ func ExampleJitRequestsClient_ListByResourceGroup() {
 	}
 	ctx := context.Background()
 	client := armmanagedapplications.NewJitRequestsClient("<subscription-id>", cred, nil)
-	_, err = client.ListByResourceGroup(ctx,
+	res, err := client.ListByResourceGroup(ctx,
 		"<resource-group-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.JitRequestsClientListByResourceGroupResult)
 }

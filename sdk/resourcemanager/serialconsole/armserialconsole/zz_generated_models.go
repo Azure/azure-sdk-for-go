@@ -15,17 +15,9 @@ import (
 )
 
 // CloudError - An error response from the service.
-// Implements the error and azcore.HTTPResponse interfaces.
 type CloudError struct {
-	raw string
 	// Cloud error body.
-	InnerError *CloudErrorBody `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type CloudError.
-// The contents of the error text are not contractual and subject to change.
-func (e CloudError) Error() string {
-	return e.raw
+	Error *CloudErrorBody `json:"error,omitempty"`
 }
 
 // CloudErrorBody - An error response from the Batch service.
@@ -74,29 +66,67 @@ type GetSerialConsoleSubscriptionNotFound struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// MicrosoftSerialConsoleClientDisableConsoleOptions contains the optional parameters for the MicrosoftSerialConsoleClient.DisableConsole method.
+// MicrosoftSerialConsoleClientDisableConsoleOptions contains the optional parameters for the MicrosoftSerialConsoleClient.DisableConsole
+// method.
 type MicrosoftSerialConsoleClientDisableConsoleOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MicrosoftSerialConsoleClientEnableConsoleOptions contains the optional parameters for the MicrosoftSerialConsoleClient.EnableConsole method.
+// MicrosoftSerialConsoleClientEnableConsoleOptions contains the optional parameters for the MicrosoftSerialConsoleClient.EnableConsole
+// method.
 type MicrosoftSerialConsoleClientEnableConsoleOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MicrosoftSerialConsoleClientGetConsoleStatusOptions contains the optional parameters for the MicrosoftSerialConsoleClient.GetConsoleStatus method.
+// MicrosoftSerialConsoleClientGetConsoleStatusOptions contains the optional parameters for the MicrosoftSerialConsoleClient.GetConsoleStatus
+// method.
 type MicrosoftSerialConsoleClientGetConsoleStatusOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MicrosoftSerialConsoleClientListOperationsOptions contains the optional parameters for the MicrosoftSerialConsoleClient.ListOperations method.
+// MicrosoftSerialConsoleClientListOperationsOptions contains the optional parameters for the MicrosoftSerialConsoleClient.ListOperations
+// method.
 type MicrosoftSerialConsoleClientListOperationsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProxyResource - The resource model definition for a ARM proxy resource. It will have everything other than required location and tags
+// Operations - Serial Console operations
+type Operations struct {
+	// A list of Serial Console operations
+	Value []*OperationsValueItem `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Operations.
+func (o Operations) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "value", o.Value)
+	return json.Marshal(objectMap)
+}
+
+type OperationsValueItem struct {
+	Display      *OperationsValueItemDisplay `json:"display,omitempty"`
+	IsDataAction *string                     `json:"isDataAction,omitempty"`
+	Name         *string                     `json:"name,omitempty"`
+}
+
+type OperationsValueItemDisplay struct {
+	Description *string `json:"description,omitempty"`
+	Operation   *string `json:"operation,omitempty"`
+	Provider    *string `json:"provider,omitempty"`
+	Resource    *string `json:"resource,omitempty"`
+}
+
+// ProxyResource - The resource model definition for a ARM proxy resource. It will have everything other than required location
+// and tags
 type ProxyResource struct {
-	Resource
+	// READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // Resource - The Resource model definition.
@@ -111,43 +141,19 @@ type Resource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// SerialConsoleOperations - Serial Console operations
-type SerialConsoleOperations struct {
-	// A list of Serial Console operations
-	Value []*SerialConsoleOperationsValueItem `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SerialConsoleOperations.
-func (s SerialConsoleOperations) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
-type SerialConsoleOperationsValueItem struct {
-	Display      *SerialConsoleOperationsValueItemDisplay `json:"display,omitempty"`
-	IsDataAction *string                                  `json:"isDataAction,omitempty"`
-	Name         *string                                  `json:"name,omitempty"`
-}
-
-type SerialConsoleOperationsValueItemDisplay struct {
-	Description *string `json:"description,omitempty"`
-	Operation   *string `json:"operation,omitempty"`
-	Provider    *string `json:"provider,omitempty"`
-	Resource    *string `json:"resource,omitempty"`
-}
-
-// SerialConsoleStatus - Returns whether or not Serial Console is disabled.
-type SerialConsoleStatus struct {
-	// Whether or not Serial Console is disabled.
-	Disabled *bool `json:"disabled,omitempty"`
-}
-
 // SerialPort - Represents the serial port of the parent resource.
 type SerialPort struct {
-	ProxyResource
 	// The properties of the serial port.
 	Properties *SerialPortProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // SerialPortConnectResult - Returns a connection string to the serial port of the resource.
@@ -175,34 +181,41 @@ type SerialPortProperties struct {
 	State *SerialPortState `json:"state,omitempty"`
 }
 
-// SerialPortsConnectOptions contains the optional parameters for the SerialPorts.Connect method.
-type SerialPortsConnectOptions struct {
+// SerialPortsClientConnectOptions contains the optional parameters for the SerialPortsClient.Connect method.
+type SerialPortsClientConnectOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SerialPortsCreateOptions contains the optional parameters for the SerialPorts.Create method.
-type SerialPortsCreateOptions struct {
+// SerialPortsClientCreateOptions contains the optional parameters for the SerialPortsClient.Create method.
+type SerialPortsClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SerialPortsDeleteOptions contains the optional parameters for the SerialPorts.Delete method.
-type SerialPortsDeleteOptions struct {
+// SerialPortsClientDeleteOptions contains the optional parameters for the SerialPortsClient.Delete method.
+type SerialPortsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SerialPortsGetOptions contains the optional parameters for the SerialPorts.Get method.
-type SerialPortsGetOptions struct {
+// SerialPortsClientGetOptions contains the optional parameters for the SerialPortsClient.Get method.
+type SerialPortsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SerialPortsListBySubscriptionsOptions contains the optional parameters for the SerialPorts.ListBySubscriptions method.
-type SerialPortsListBySubscriptionsOptions struct {
+// SerialPortsClientListBySubscriptionsOptions contains the optional parameters for the SerialPortsClient.ListBySubscriptions
+// method.
+type SerialPortsClientListBySubscriptionsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SerialPortsListOptions contains the optional parameters for the SerialPorts.List method.
-type SerialPortsListOptions struct {
+// SerialPortsClientListOptions contains the optional parameters for the SerialPortsClient.List method.
+type SerialPortsClientListOptions struct {
 	// placeholder for future optional parameters
+}
+
+// Status - Returns whether or not Serial Console is disabled.
+type Status struct {
+	// Whether or not Serial Console is disabled.
+	Disabled *bool `json:"disabled,omitempty"`
 }
 
 func populate(m map[string]interface{}, k string, v interface{}) {

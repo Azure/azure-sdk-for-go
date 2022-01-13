@@ -11,7 +11,6 @@ package armcompute
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,61 @@ import (
 // RestorePointsClient contains the methods for the RestorePoints group.
 // Don't use this type directly, use NewRestorePointsClient() instead.
 type RestorePointsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewRestorePointsClient creates a new instance of RestorePointsClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewRestorePointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RestorePointsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &RestorePointsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &RestorePointsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreate - The operation to create the restore point. Updating properties of an existing restore point is not allowed
-// If the operation fails it returns the *CloudError error type.
-func (client *RestorePointsClient) BeginCreate(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, parameters RestorePoint, options *RestorePointsBeginCreateOptions) (RestorePointsCreatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// restorePointCollectionName - The name of the restore point collection.
+// restorePointName - The name of the restore point.
+// parameters - Parameters supplied to the Create restore point operation.
+// options - RestorePointsClientBeginCreateOptions contains the optional parameters for the RestorePointsClient.BeginCreate
+// method.
+func (client *RestorePointsClient) BeginCreate(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, parameters RestorePoint, options *RestorePointsClientBeginCreateOptions) (RestorePointsClientCreatePollerResponse, error) {
 	resp, err := client.create(ctx, resourceGroupName, restorePointCollectionName, restorePointName, parameters, options)
 	if err != nil {
-		return RestorePointsCreatePollerResponse{}, err
+		return RestorePointsClientCreatePollerResponse{}, err
 	}
-	result := RestorePointsCreatePollerResponse{
+	result := RestorePointsClientCreatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("RestorePointsClient.Create", "", resp, client.pl, client.createHandleError)
+	pt, err := armruntime.NewPoller("RestorePointsClient.Create", "", resp, client.pl)
 	if err != nil {
-		return RestorePointsCreatePollerResponse{}, err
+		return RestorePointsClientCreatePollerResponse{}, err
 	}
-	result.Poller = &RestorePointsCreatePoller{
+	result.Poller = &RestorePointsClientCreatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - The operation to create the restore point. Updating properties of an existing restore point is not allowed
-// If the operation fails it returns the *CloudError error type.
-func (client *RestorePointsClient) create(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, parameters RestorePoint, options *RestorePointsBeginCreateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *RestorePointsClient) create(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, parameters RestorePoint, options *RestorePointsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, restorePointCollectionName, restorePointName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +88,13 @@ func (client *RestorePointsClient) create(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusCreated) {
-		return nil, client.createHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *RestorePointsClient) createCreateRequest(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, parameters RestorePoint, options *RestorePointsBeginCreateOptions) (*policy.Request, error) {
+func (client *RestorePointsClient) createCreateRequest(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, parameters RestorePoint, options *RestorePointsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{restorePointCollectionName}/restorePoints/{restorePointName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -98,7 +112,7 @@ func (client *RestorePointsClient) createCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter restorePointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{restorePointName}", url.PathEscape(restorePointName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -109,42 +123,34 @@ func (client *RestorePointsClient) createCreateRequest(ctx context.Context, reso
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createHandleError handles the Create error response.
-func (client *RestorePointsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - The operation to delete the restore point.
-// If the operation fails it returns the *CloudError error type.
-func (client *RestorePointsClient) BeginDelete(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, options *RestorePointsBeginDeleteOptions) (RestorePointsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// restorePointCollectionName - The name of the Restore Point Collection.
+// restorePointName - The name of the restore point.
+// options - RestorePointsClientBeginDeleteOptions contains the optional parameters for the RestorePointsClient.BeginDelete
+// method.
+func (client *RestorePointsClient) BeginDelete(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, options *RestorePointsClientBeginDeleteOptions) (RestorePointsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, restorePointCollectionName, restorePointName, options)
 	if err != nil {
-		return RestorePointsDeletePollerResponse{}, err
+		return RestorePointsClientDeletePollerResponse{}, err
 	}
-	result := RestorePointsDeletePollerResponse{
+	result := RestorePointsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("RestorePointsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("RestorePointsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return RestorePointsDeletePollerResponse{}, err
+		return RestorePointsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &RestorePointsDeletePoller{
+	result.Poller = &RestorePointsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - The operation to delete the restore point.
-// If the operation fails it returns the *CloudError error type.
-func (client *RestorePointsClient) deleteOperation(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, options *RestorePointsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *RestorePointsClient) deleteOperation(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, options *RestorePointsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, restorePointCollectionName, restorePointName, options)
 	if err != nil {
 		return nil, err
@@ -154,13 +160,13 @@ func (client *RestorePointsClient) deleteOperation(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *RestorePointsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, options *RestorePointsBeginDeleteOptions) (*policy.Request, error) {
+func (client *RestorePointsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, options *RestorePointsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{restorePointCollectionName}/restorePoints/{restorePointName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -178,7 +184,7 @@ func (client *RestorePointsClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter restorePointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{restorePointName}", url.PathEscape(restorePointName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -189,38 +195,29 @@ func (client *RestorePointsClient) deleteCreateRequest(ctx context.Context, reso
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *RestorePointsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - The operation to get the restore point.
-// If the operation fails it returns the *CloudError error type.
-func (client *RestorePointsClient) Get(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, options *RestorePointsGetOptions) (RestorePointsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// restorePointCollectionName - The name of the restore point collection.
+// restorePointName - The name of the restore point.
+// options - RestorePointsClientGetOptions contains the optional parameters for the RestorePointsClient.Get method.
+func (client *RestorePointsClient) Get(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, options *RestorePointsClientGetOptions) (RestorePointsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, restorePointCollectionName, restorePointName, options)
 	if err != nil {
-		return RestorePointsGetResponse{}, err
+		return RestorePointsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RestorePointsGetResponse{}, err
+		return RestorePointsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return RestorePointsGetResponse{}, client.getHandleError(resp)
+		return RestorePointsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *RestorePointsClient) getCreateRequest(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, options *RestorePointsGetOptions) (*policy.Request, error) {
+func (client *RestorePointsClient) getCreateRequest(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, options *RestorePointsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{restorePointCollectionName}/restorePoints/{restorePointName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -238,7 +235,7 @@ func (client *RestorePointsClient) getCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter restorePointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{restorePointName}", url.PathEscape(restorePointName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -250,23 +247,10 @@ func (client *RestorePointsClient) getCreateRequest(ctx context.Context, resourc
 }
 
 // getHandleResponse handles the Get response.
-func (client *RestorePointsClient) getHandleResponse(resp *http.Response) (RestorePointsGetResponse, error) {
-	result := RestorePointsGetResponse{RawResponse: resp}
+func (client *RestorePointsClient) getHandleResponse(resp *http.Response) (RestorePointsClientGetResponse, error) {
+	result := RestorePointsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestorePoint); err != nil {
-		return RestorePointsGetResponse{}, runtime.NewResponseError(err, resp)
+		return RestorePointsClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *RestorePointsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

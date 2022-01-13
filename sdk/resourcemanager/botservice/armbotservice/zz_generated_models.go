@@ -17,16 +17,40 @@ import (
 
 // AlexaChannel - Alexa channel definition
 type AlexaChannel struct {
-	Channel
+	// REQUIRED; The channel name
+	ChannelName *string `json:"channelName,omitempty"`
+
+	// Entity Tag of the resource
+	Etag *string `json:"etag,omitempty"`
+
+	// Specifies the location of the resource.
+	Location *string `json:"location,omitempty"`
+
 	// The set of properties specific to Alexa channel resource
 	Properties *AlexaChannelProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Provisioning state of the resource
+	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// GetChannel implements the ChannelClassification interface for type AlexaChannel.
+func (a *AlexaChannel) GetChannel() *Channel {
+	return &Channel{
+		ChannelName:       a.ChannelName,
+		Etag:              a.Etag,
+		ProvisioningState: a.ProvisioningState,
+		Location:          a.Location,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AlexaChannel.
 func (a AlexaChannel) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.Channel.marshalInternal(objectMap, "AlexaChannel")
+	objectMap["channelName"] = "AlexaChannel"
+	populate(objectMap, "etag", a.Etag)
+	populate(objectMap, "location", a.Location)
 	populate(objectMap, "properties", a.Properties)
+	populate(objectMap, "provisioningState", a.ProvisioningState)
 	return json.Marshal(objectMap)
 }
 
@@ -39,16 +63,25 @@ func (a *AlexaChannel) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "channelName":
+			err = unpopulate(val, &a.ChannelName)
+			delete(rawMsg, key)
+		case "etag":
+			err = unpopulate(val, &a.Etag)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, &a.Location)
+			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, &a.Properties)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, &a.ProvisioningState)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := a.Channel.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -70,54 +103,99 @@ type AlexaChannelProperties struct {
 
 // Bot resource definition
 type Bot struct {
-	Resource
+	// Entity Tag
+	Etag *string `json:"etag,omitempty"`
+
+	// Required. Gets or sets the Kind of the resource.
+	Kind *Kind `json:"kind,omitempty"`
+
+	// Specifies the location of the resource.
+	Location *string `json:"location,omitempty"`
+
 	// The set of properties specific to bot resource
 	Properties *BotProperties `json:"properties,omitempty"`
+
+	// Gets or sets the SKU of the resource.
+	SKU *SKU `json:"sku,omitempty"`
+
+	// Contains resource tags defined as key/value pairs.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Specifies the resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Specifies the name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Specifies the type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+
+	// READ-ONLY; Entity zones
+	Zones []*string `json:"zones,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Bot.
 func (b Bot) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	b.Resource.marshalInternal(objectMap)
+	populate(objectMap, "etag", b.Etag)
+	populate(objectMap, "id", b.ID)
+	populate(objectMap, "kind", b.Kind)
+	populate(objectMap, "location", b.Location)
+	populate(objectMap, "name", b.Name)
 	populate(objectMap, "properties", b.Properties)
+	populate(objectMap, "sku", b.SKU)
+	populate(objectMap, "tags", b.Tags)
+	populate(objectMap, "type", b.Type)
+	populate(objectMap, "zones", b.Zones)
 	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Bot.
-func (b *Bot) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &b.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := b.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // BotChannel - Bot channel resource definition
 type BotChannel struct {
-	Resource
+	// Entity Tag
+	Etag *string `json:"etag,omitempty"`
+
+	// Required. Gets or sets the Kind of the resource.
+	Kind *Kind `json:"kind,omitempty"`
+
+	// Specifies the location of the resource.
+	Location *string `json:"location,omitempty"`
+
 	// The set of properties specific to bot channel resource
 	Properties ChannelClassification `json:"properties,omitempty"`
+
+	// Gets or sets the SKU of the resource.
+	SKU *SKU `json:"sku,omitempty"`
+
+	// Contains resource tags defined as key/value pairs.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Specifies the resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Specifies the name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Specifies the type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+
+	// READ-ONLY; Entity zones
+	Zones []*string `json:"zones,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type BotChannel.
 func (b BotChannel) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	b.Resource.marshalInternal(objectMap)
+	populate(objectMap, "etag", b.Etag)
+	populate(objectMap, "id", b.ID)
+	populate(objectMap, "kind", b.Kind)
+	populate(objectMap, "location", b.Location)
+	populate(objectMap, "name", b.Name)
 	populate(objectMap, "properties", b.Properties)
+	populate(objectMap, "sku", b.SKU)
+	populate(objectMap, "tags", b.Tags)
+	populate(objectMap, "type", b.Type)
+	populate(objectMap, "zones", b.Zones)
 	return json.Marshal(objectMap)
 }
 
@@ -130,52 +208,79 @@ func (b *BotChannel) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "etag":
+			err = unpopulate(val, &b.Etag)
+			delete(rawMsg, key)
+		case "id":
+			err = unpopulate(val, &b.ID)
+			delete(rawMsg, key)
+		case "kind":
+			err = unpopulate(val, &b.Kind)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, &b.Location)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &b.Name)
+			delete(rawMsg, key)
 		case "properties":
 			b.Properties, err = unmarshalChannelClassification(val)
+			delete(rawMsg, key)
+		case "sku":
+			err = unpopulate(val, &b.SKU)
+			delete(rawMsg, key)
+		case "tags":
+			err = unpopulate(val, &b.Tags)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &b.Type)
+			delete(rawMsg, key)
+		case "zones":
+			err = unpopulate(val, &b.Zones)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := b.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
-// BotConnectionCreateOptions contains the optional parameters for the BotConnection.Create method.
-type BotConnectionCreateOptions struct {
+// BotConnectionClientCreateOptions contains the optional parameters for the BotConnectionClient.Create method.
+type BotConnectionClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BotConnectionDeleteOptions contains the optional parameters for the BotConnection.Delete method.
-type BotConnectionDeleteOptions struct {
+// BotConnectionClientDeleteOptions contains the optional parameters for the BotConnectionClient.Delete method.
+type BotConnectionClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BotConnectionGetOptions contains the optional parameters for the BotConnection.Get method.
-type BotConnectionGetOptions struct {
+// BotConnectionClientGetOptions contains the optional parameters for the BotConnectionClient.Get method.
+type BotConnectionClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BotConnectionListByBotServiceOptions contains the optional parameters for the BotConnection.ListByBotService method.
-type BotConnectionListByBotServiceOptions struct {
+// BotConnectionClientListByBotServiceOptions contains the optional parameters for the BotConnectionClient.ListByBotService
+// method.
+type BotConnectionClientListByBotServiceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BotConnectionListServiceProvidersOptions contains the optional parameters for the BotConnection.ListServiceProviders method.
-type BotConnectionListServiceProvidersOptions struct {
+// BotConnectionClientListServiceProvidersOptions contains the optional parameters for the BotConnectionClient.ListServiceProviders
+// method.
+type BotConnectionClientListServiceProvidersOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BotConnectionListWithSecretsOptions contains the optional parameters for the BotConnection.ListWithSecrets method.
-type BotConnectionListWithSecretsOptions struct {
+// BotConnectionClientListWithSecretsOptions contains the optional parameters for the BotConnectionClient.ListWithSecrets
+// method.
+type BotConnectionClientListWithSecretsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BotConnectionUpdateOptions contains the optional parameters for the BotConnection.Update method.
-type BotConnectionUpdateOptions struct {
+// BotConnectionClientUpdateOptions contains the optional parameters for the BotConnectionClient.Update method.
+type BotConnectionClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -190,8 +295,14 @@ type BotProperties struct {
 	// REQUIRED; Microsoft App Id for the bot
 	MsaAppID *string `json:"msaAppId,omitempty"`
 
+	// Contains resource all settings defined as key/value pairs.
+	AllSettings map[string]*string `json:"allSettings,omitempty"`
+
 	// The hint (e.g. keyVault secret resourceId) on how to fetch the app secret
 	AppPasswordHint *string `json:"appPasswordHint,omitempty"`
+
+	// The CMK encryption status
+	CmekEncryptionStatus *string `json:"cmekEncryptionStatus,omitempty"`
 
 	// The CMK Url
 	CmekKeyVaultURL *string `json:"cmekKeyVaultUrl,omitempty"`
@@ -220,14 +331,17 @@ type BotProperties struct {
 	// Whether the bot is developerAppInsightsApiKey set
 	IsDeveloperAppInsightsAPIKeySet *bool `json:"isDeveloperAppInsightsApiKeySet,omitempty"`
 
-	// Whether the bot is in an isolated network
-	IsIsolated *bool `json:"isIsolated,omitempty"`
+	// Whether the bot is streaming supported
+	IsStreamingSupported *bool `json:"isStreamingSupported,omitempty"`
 
 	// Collection of LUIS App Ids
 	LuisAppIDs []*string `json:"luisAppIds,omitempty"`
 
 	// The LUIS Key
 	LuisKey *string `json:"luisKey,omitempty"`
+
+	// The bot's manifest url
+	ManifestURL *string `json:"manifestUrl,omitempty"`
 
 	// Microsoft App Managed Identity Resource Id for the bot
 	MsaAppMSIResourceID *string `json:"msaAppMSIResourceId,omitempty"`
@@ -241,8 +355,20 @@ type BotProperties struct {
 	// The hint to browser (e.g. protocol handler) on how to open the bot for authoring
 	OpenWithHint *string `json:"openWithHint,omitempty"`
 
+	// Contains resource parameters defined as key/value pairs.
+	Parameters map[string]*string `json:"parameters,omitempty"`
+
+	// Whether the bot is in an isolated network
+	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
+
+	// Publishing credentials of the resource
+	PublishingCredentials *string `json:"publishingCredentials,omitempty"`
+
 	// The channel schema transformation version for the bot
 	SchemaTransformationVersion *string `json:"schemaTransformationVersion,omitempty"`
+
+	// The storage resourceId for the bot
+	StorageResourceID *string `json:"storageResourceId,omitempty"`
 
 	// READ-ONLY; Collection of channels for which the bot is configured
 	ConfiguredChannels []*string `json:"configuredChannels,omitempty" azure:"ro"`
@@ -258,12 +384,17 @@ type BotProperties struct {
 
 	// READ-ONLY; List of Private Endpoint Connections configured for the bot
 	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty" azure:"ro"`
+
+	// READ-ONLY; Provisioning state of the resource
+	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type BotProperties.
 func (b BotProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	populate(objectMap, "allSettings", b.AllSettings)
 	populate(objectMap, "appPasswordHint", b.AppPasswordHint)
+	populate(objectMap, "cmekEncryptionStatus", b.CmekEncryptionStatus)
 	populate(objectMap, "cmekKeyVaultUrl", b.CmekKeyVaultURL)
 	populate(objectMap, "configuredChannels", b.ConfiguredChannels)
 	populate(objectMap, "description", b.Description)
@@ -278,17 +409,23 @@ func (b BotProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "iconUrl", b.IconURL)
 	populate(objectMap, "isCmekEnabled", b.IsCmekEnabled)
 	populate(objectMap, "isDeveloperAppInsightsApiKeySet", b.IsDeveloperAppInsightsAPIKeySet)
-	populate(objectMap, "isIsolated", b.IsIsolated)
+	populate(objectMap, "isStreamingSupported", b.IsStreamingSupported)
 	populate(objectMap, "luisAppIds", b.LuisAppIDs)
 	populate(objectMap, "luisKey", b.LuisKey)
+	populate(objectMap, "manifestUrl", b.ManifestURL)
 	populate(objectMap, "migrationToken", b.MigrationToken)
 	populate(objectMap, "msaAppId", b.MsaAppID)
 	populate(objectMap, "msaAppMSIResourceId", b.MsaAppMSIResourceID)
 	populate(objectMap, "msaAppTenantId", b.MsaAppTenantID)
 	populate(objectMap, "msaAppType", b.MsaAppType)
 	populate(objectMap, "openWithHint", b.OpenWithHint)
+	populate(objectMap, "parameters", b.Parameters)
 	populate(objectMap, "privateEndpointConnections", b.PrivateEndpointConnections)
+	populate(objectMap, "provisioningState", b.ProvisioningState)
+	populate(objectMap, "publicNetworkAccess", b.PublicNetworkAccess)
+	populate(objectMap, "publishingCredentials", b.PublishingCredentials)
 	populate(objectMap, "schemaTransformationVersion", b.SchemaTransformationVersion)
+	populate(objectMap, "storageResourceId", b.StorageResourceID)
 	return json.Marshal(objectMap)
 }
 
@@ -309,38 +446,39 @@ func (b BotResponseList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// BotsCreateOptions contains the optional parameters for the Bots.Create method.
-type BotsCreateOptions struct {
+// BotsClientCreateOptions contains the optional parameters for the BotsClient.Create method.
+type BotsClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BotsDeleteOptions contains the optional parameters for the Bots.Delete method.
-type BotsDeleteOptions struct {
+// BotsClientDeleteOptions contains the optional parameters for the BotsClient.Delete method.
+type BotsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BotsGetCheckNameAvailabilityOptions contains the optional parameters for the Bots.GetCheckNameAvailability method.
-type BotsGetCheckNameAvailabilityOptions struct {
+// BotsClientGetCheckNameAvailabilityOptions contains the optional parameters for the BotsClient.GetCheckNameAvailability
+// method.
+type BotsClientGetCheckNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BotsGetOptions contains the optional parameters for the Bots.Get method.
-type BotsGetOptions struct {
+// BotsClientGetOptions contains the optional parameters for the BotsClient.Get method.
+type BotsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BotsListByResourceGroupOptions contains the optional parameters for the Bots.ListByResourceGroup method.
-type BotsListByResourceGroupOptions struct {
+// BotsClientListByResourceGroupOptions contains the optional parameters for the BotsClient.ListByResourceGroup method.
+type BotsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BotsListOptions contains the optional parameters for the Bots.List method.
-type BotsListOptions struct {
+// BotsClientListOptions contains the optional parameters for the BotsClient.List method.
+type BotsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BotsUpdateOptions contains the optional parameters for the Bots.Update method.
-type BotsUpdateOptions struct {
+// BotsClientUpdateOptions contains the optional parameters for the BotsClient.Update method.
+type BotsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -361,43 +499,16 @@ type Channel struct {
 
 	// Entity Tag of the resource
 	Etag *string `json:"etag,omitempty"`
+
+	// Specifies the location of the resource.
+	Location *string `json:"location,omitempty"`
+
+	// READ-ONLY; Provisioning state of the resource
+	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 }
 
 // GetChannel implements the ChannelClassification interface for type Channel.
 func (c *Channel) GetChannel() *Channel { return c }
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Channel.
-func (c *Channel) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return c.unmarshalInternal(rawMsg)
-}
-
-func (c Channel) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	c.ChannelName = &discValue
-	objectMap["channelName"] = c.ChannelName
-	populate(objectMap, "etag", c.Etag)
-}
-
-func (c *Channel) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "channelName":
-			err = unpopulate(val, &c.ChannelName)
-			delete(rawMsg, key)
-		case "etag":
-			err = unpopulate(val, &c.Etag)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
 
 // ChannelResponseList - The list of bot service channel operation response.
 type ChannelResponseList struct {
@@ -416,37 +527,83 @@ func (c ChannelResponseList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ChannelsCreateOptions contains the optional parameters for the Channels.Create method.
-type ChannelsCreateOptions struct {
+// ChannelSettings - Channel settings definition
+type ChannelSettings struct {
+	// The bot id
+	BotID *string `json:"botId,omitempty"`
+
+	// The bot icon url
+	BotIconURL *string `json:"botIconUrl,omitempty"`
+
+	// The channel display name
+	ChannelDisplayName *string `json:"channelDisplayName,omitempty"`
+
+	// The channel id
+	ChannelID *string `json:"channelId,omitempty"`
+
+	// Opt-out of local authentication and ensure only MSI and AAD can be used exclusively for authentication.
+	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
+
+	// The extensionKey1
+	ExtensionKey1 *string `json:"extensionKey1,omitempty"`
+
+	// The extensionKey2
+	ExtensionKey2 *string `json:"extensionKey2,omitempty"`
+
+	// Whether this channel is enabled for the bot
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+
+	// The list of sites
+	Sites []*Site `json:"sites,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ChannelSettings.
+func (c ChannelSettings) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "botId", c.BotID)
+	populate(objectMap, "botIconUrl", c.BotIconURL)
+	populate(objectMap, "channelDisplayName", c.ChannelDisplayName)
+	populate(objectMap, "channelId", c.ChannelID)
+	populate(objectMap, "disableLocalAuth", c.DisableLocalAuth)
+	populate(objectMap, "extensionKey1", c.ExtensionKey1)
+	populate(objectMap, "extensionKey2", c.ExtensionKey2)
+	populate(objectMap, "isEnabled", c.IsEnabled)
+	populate(objectMap, "sites", c.Sites)
+	return json.Marshal(objectMap)
+}
+
+// ChannelsClientCreateOptions contains the optional parameters for the ChannelsClient.Create method.
+type ChannelsClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ChannelsDeleteOptions contains the optional parameters for the Channels.Delete method.
-type ChannelsDeleteOptions struct {
+// ChannelsClientDeleteOptions contains the optional parameters for the ChannelsClient.Delete method.
+type ChannelsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ChannelsGetOptions contains the optional parameters for the Channels.Get method.
-type ChannelsGetOptions struct {
+// ChannelsClientGetOptions contains the optional parameters for the ChannelsClient.Get method.
+type ChannelsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ChannelsListByResourceGroupOptions contains the optional parameters for the Channels.ListByResourceGroup method.
-type ChannelsListByResourceGroupOptions struct {
+// ChannelsClientListByResourceGroupOptions contains the optional parameters for the ChannelsClient.ListByResourceGroup method.
+type ChannelsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ChannelsListWithKeysOptions contains the optional parameters for the Channels.ListWithKeys method.
-type ChannelsListWithKeysOptions struct {
+// ChannelsClientListWithKeysOptions contains the optional parameters for the ChannelsClient.ListWithKeys method.
+type ChannelsClientListWithKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ChannelsUpdateOptions contains the optional parameters for the Channels.Update method.
-type ChannelsUpdateOptions struct {
+// ChannelsClientUpdateOptions contains the optional parameters for the ChannelsClient.Update method.
+type ChannelsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CheckNameAvailabilityRequestBody - The request body for a request to Bot Service Management to check availability of a bot name.
+// CheckNameAvailabilityRequestBody - The request body for a request to Bot Service Management to check availability of a
+// bot name.
 type CheckNameAvailabilityRequestBody struct {
 	// the name of the bot for which availability needs to be checked.
 	Name *string `json:"name,omitempty"`
@@ -455,7 +612,8 @@ type CheckNameAvailabilityRequestBody struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// CheckNameAvailabilityResponseBody - The response body returned for a request to Bot Service Management to check availability of a bot name.
+// CheckNameAvailabilityResponseBody - The response body returned for a request to Bot Service Management to check availability
+// of a bot name.
 type CheckNameAvailabilityResponseBody struct {
 	// additional message from the bot management api showing why a bot name is not available
 	Message *string `json:"message,omitempty"`
@@ -472,40 +630,51 @@ type ConnectionItemName struct {
 
 // ConnectionSetting - Bot channel resource definition
 type ConnectionSetting struct {
-	Resource
+	// Entity Tag
+	Etag *string `json:"etag,omitempty"`
+
+	// Required. Gets or sets the Kind of the resource.
+	Kind *Kind `json:"kind,omitempty"`
+
+	// Specifies the location of the resource.
+	Location *string `json:"location,omitempty"`
+
 	// The set of properties specific to bot channel resource
 	Properties *ConnectionSettingProperties `json:"properties,omitempty"`
+
+	// Gets or sets the SKU of the resource.
+	SKU *SKU `json:"sku,omitempty"`
+
+	// Contains resource tags defined as key/value pairs.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Specifies the resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Specifies the name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Specifies the type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+
+	// READ-ONLY; Entity zones
+	Zones []*string `json:"zones,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ConnectionSetting.
 func (c ConnectionSetting) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.Resource.marshalInternal(objectMap)
+	populate(objectMap, "etag", c.Etag)
+	populate(objectMap, "id", c.ID)
+	populate(objectMap, "kind", c.Kind)
+	populate(objectMap, "location", c.Location)
+	populate(objectMap, "name", c.Name)
 	populate(objectMap, "properties", c.Properties)
+	populate(objectMap, "sku", c.SKU)
+	populate(objectMap, "tags", c.Tags)
+	populate(objectMap, "type", c.Type)
+	populate(objectMap, "zones", c.Zones)
 	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ConnectionSetting.
-func (c *ConnectionSetting) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &c.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := c.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // ConnectionSettingParameter - Extra Parameter in a Connection Setting Properties to indicate service provider specific properties
@@ -525,8 +694,17 @@ type ConnectionSettingProperties struct {
 	// Client Secret associated with the Connection Setting
 	ClientSecret *string `json:"clientSecret,omitempty"`
 
+	// Id associated with the Connection Setting.
+	ID *string `json:"id,omitempty"`
+
+	// Name associated with the Connection Setting.
+	Name *string `json:"name,omitempty"`
+
 	// Service Provider Parameters associated with the Connection Setting
 	Parameters []*ConnectionSettingParameter `json:"parameters,omitempty"`
+
+	// Provisioning state of the resource
+	ProvisioningState *string `json:"provisioningState,omitempty"`
 
 	// Scopes associated with the Connection Setting
 	Scopes *string `json:"scopes,omitempty"`
@@ -546,7 +724,10 @@ func (c ConnectionSettingProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "clientId", c.ClientID)
 	populate(objectMap, "clientSecret", c.ClientSecret)
+	populate(objectMap, "id", c.ID)
+	populate(objectMap, "name", c.Name)
 	populate(objectMap, "parameters", c.Parameters)
+	populate(objectMap, "provisioningState", c.ProvisioningState)
 	populate(objectMap, "scopes", c.Scopes)
 	populate(objectMap, "serviceProviderDisplayName", c.ServiceProviderDisplayName)
 	populate(objectMap, "serviceProviderId", c.ServiceProviderID)
@@ -573,18 +754,38 @@ func (c ConnectionSettingResponseList) MarshalJSON() ([]byte, error) {
 
 // DirectLineChannel - Direct Line channel definition
 type DirectLineChannel struct {
-	Channel
+	// REQUIRED; The channel name
+	ChannelName *string `json:"channelName,omitempty"`
+
+	// Entity Tag of the resource
+	Etag *string `json:"etag,omitempty"`
+
+	// Specifies the location of the resource.
+	Location *string `json:"location,omitempty"`
+
 	// The set of properties specific to Direct Line channel resource
 	Properties *DirectLineChannelProperties `json:"properties,omitempty"`
 
-	// Provisioning state of the resource
-	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// READ-ONLY; Provisioning state of the resource
+	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// GetChannel implements the ChannelClassification interface for type DirectLineChannel.
+func (d *DirectLineChannel) GetChannel() *Channel {
+	return &Channel{
+		ChannelName:       d.ChannelName,
+		Etag:              d.Etag,
+		ProvisioningState: d.ProvisioningState,
+		Location:          d.Location,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type DirectLineChannel.
 func (d DirectLineChannel) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	d.Channel.marshalInternal(objectMap, "DirectLineChannel")
+	objectMap["channelName"] = "DirectLineChannel"
+	populate(objectMap, "etag", d.Etag)
+	populate(objectMap, "location", d.Location)
 	populate(objectMap, "properties", d.Properties)
 	populate(objectMap, "provisioningState", d.ProvisioningState)
 	return json.Marshal(objectMap)
@@ -599,6 +800,15 @@ func (d *DirectLineChannel) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "channelName":
+			err = unpopulate(val, &d.ChannelName)
+			delete(rawMsg, key)
+		case "etag":
+			err = unpopulate(val, &d.Etag)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, &d.Location)
+			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, &d.Properties)
 			delete(rawMsg, key)
@@ -609,9 +819,6 @@ func (d *DirectLineChannel) UnmarshalJSON(data []byte) error {
 		if err != nil {
 			return err
 		}
-	}
-	if err := d.Channel.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -633,8 +840,8 @@ func (d DirectLineChannelProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// DirectLineRegenerateKeysOptions contains the optional parameters for the DirectLine.RegenerateKeys method.
-type DirectLineRegenerateKeysOptions struct {
+// DirectLineClientRegenerateKeysOptions contains the optional parameters for the DirectLineClient.RegenerateKeys method.
+type DirectLineClientRegenerateKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -689,18 +896,38 @@ func (d DirectLineSite) MarshalJSON() ([]byte, error) {
 
 // DirectLineSpeechChannel - DirectLine Speech channel definition
 type DirectLineSpeechChannel struct {
-	Channel
+	// REQUIRED; The channel name
+	ChannelName *string `json:"channelName,omitempty"`
+
+	// Entity Tag of the resource
+	Etag *string `json:"etag,omitempty"`
+
+	// Specifies the location of the resource.
+	Location *string `json:"location,omitempty"`
+
 	// The set of properties specific to DirectLine Speech channel resource
 	Properties *DirectLineSpeechChannelProperties `json:"properties,omitempty"`
 
-	// Provisioning state of the resource
-	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// READ-ONLY; Provisioning state of the resource
+	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// GetChannel implements the ChannelClassification interface for type DirectLineSpeechChannel.
+func (d *DirectLineSpeechChannel) GetChannel() *Channel {
+	return &Channel{
+		ChannelName:       d.ChannelName,
+		Etag:              d.Etag,
+		ProvisioningState: d.ProvisioningState,
+		Location:          d.Location,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type DirectLineSpeechChannel.
 func (d DirectLineSpeechChannel) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	d.Channel.marshalInternal(objectMap, "DirectLineSpeechChannel")
+	objectMap["channelName"] = "DirectLineSpeechChannel"
+	populate(objectMap, "etag", d.Etag)
+	populate(objectMap, "location", d.Location)
 	populate(objectMap, "properties", d.Properties)
 	populate(objectMap, "provisioningState", d.ProvisioningState)
 	return json.Marshal(objectMap)
@@ -715,6 +942,15 @@ func (d *DirectLineSpeechChannel) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "channelName":
+			err = unpopulate(val, &d.ChannelName)
+			delete(rawMsg, key)
+		case "etag":
+			err = unpopulate(val, &d.Etag)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, &d.Location)
+			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, &d.Properties)
 			delete(rawMsg, key)
@@ -725,9 +961,6 @@ func (d *DirectLineSpeechChannel) UnmarshalJSON(data []byte) error {
 		if err != nil {
 			return err
 		}
-	}
-	if err := d.Channel.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -755,18 +988,38 @@ type DirectLineSpeechChannelProperties struct {
 
 // EmailChannel - Email channel definition
 type EmailChannel struct {
-	Channel
+	// REQUIRED; The channel name
+	ChannelName *string `json:"channelName,omitempty"`
+
+	// Entity Tag of the resource
+	Etag *string `json:"etag,omitempty"`
+
+	// Specifies the location of the resource.
+	Location *string `json:"location,omitempty"`
+
 	// The set of properties specific to email channel resource
 	Properties *EmailChannelProperties `json:"properties,omitempty"`
 
-	// Provisioning state of the resource
-	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// READ-ONLY; Provisioning state of the resource
+	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// GetChannel implements the ChannelClassification interface for type EmailChannel.
+func (e *EmailChannel) GetChannel() *Channel {
+	return &Channel{
+		ChannelName:       e.ChannelName,
+		Etag:              e.Etag,
+		ProvisioningState: e.ProvisioningState,
+		Location:          e.Location,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type EmailChannel.
 func (e EmailChannel) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	e.Channel.marshalInternal(objectMap, "EmailChannel")
+	objectMap["channelName"] = "EmailChannel"
+	populate(objectMap, "etag", e.Etag)
+	populate(objectMap, "location", e.Location)
 	populate(objectMap, "properties", e.Properties)
 	populate(objectMap, "provisioningState", e.ProvisioningState)
 	return json.Marshal(objectMap)
@@ -781,6 +1034,15 @@ func (e *EmailChannel) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "channelName":
+			err = unpopulate(val, &e.ChannelName)
+			delete(rawMsg, key)
+		case "etag":
+			err = unpopulate(val, &e.Etag)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, &e.Location)
+			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, &e.Properties)
 			delete(rawMsg, key)
@@ -791,9 +1053,6 @@ func (e *EmailChannel) UnmarshalJSON(data []byte) error {
 		if err != nil {
 			return err
 		}
-	}
-	if err := e.Channel.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -811,17 +1070,9 @@ type EmailChannelProperties struct {
 }
 
 // Error - Bot Service error object.
-// Implements the error and azcore.HTTPResponse interfaces.
 type Error struct {
-	raw string
 	// The error body.
-	InnerError *ErrorBody `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type Error.
-// The contents of the error text are not contractual and subject to change.
-func (e Error) Error() string {
-	return e.raw
+	Error *ErrorBody `json:"error,omitempty"`
 }
 
 // ErrorBody - Bot Service error body.
@@ -835,21 +1086,37 @@ type ErrorBody struct {
 
 // FacebookChannel - Facebook channel definition
 type FacebookChannel struct {
-	Channel
-	// Location of the resource
+	// REQUIRED; The channel name
+	ChannelName *string `json:"channelName,omitempty"`
+
+	// Entity Tag of the resource
+	Etag *string `json:"etag,omitempty"`
+
+	// Specifies the location of the resource.
 	Location *string `json:"location,omitempty"`
 
 	// The set of properties specific to bot facebook channel
 	Properties *FacebookChannelProperties `json:"properties,omitempty"`
 
-	// Provisioning state of the resource
-	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// READ-ONLY; Provisioning state of the resource
+	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// GetChannel implements the ChannelClassification interface for type FacebookChannel.
+func (f *FacebookChannel) GetChannel() *Channel {
+	return &Channel{
+		ChannelName:       f.ChannelName,
+		Etag:              f.Etag,
+		ProvisioningState: f.ProvisioningState,
+		Location:          f.Location,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type FacebookChannel.
 func (f FacebookChannel) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	f.Channel.marshalInternal(objectMap, "FacebookChannel")
+	objectMap["channelName"] = "FacebookChannel"
+	populate(objectMap, "etag", f.Etag)
 	populate(objectMap, "location", f.Location)
 	populate(objectMap, "properties", f.Properties)
 	populate(objectMap, "provisioningState", f.ProvisioningState)
@@ -865,6 +1132,12 @@ func (f *FacebookChannel) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "channelName":
+			err = unpopulate(val, &f.ChannelName)
+			delete(rawMsg, key)
+		case "etag":
+			err = unpopulate(val, &f.Etag)
+			delete(rawMsg, key)
 		case "location":
 			err = unpopulate(val, &f.Location)
 			delete(rawMsg, key)
@@ -878,9 +1151,6 @@ func (f *FacebookChannel) UnmarshalJSON(data []byte) error {
 		if err != nil {
 			return err
 		}
-	}
-	if err := f.Channel.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -927,8 +1197,8 @@ type FacebookPage struct {
 	AccessToken *string `json:"accessToken,omitempty"`
 }
 
-// HostSettingsGetOptions contains the optional parameters for the HostSettings.Get method.
-type HostSettingsGetOptions struct {
+// HostSettingsClientGetOptions contains the optional parameters for the HostSettingsClient.Get method.
+type HostSettingsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -961,16 +1231,40 @@ type HostSettingsResponse struct {
 
 // KikChannel - Kik channel definition
 type KikChannel struct {
-	Channel
+	// REQUIRED; The channel name
+	ChannelName *string `json:"channelName,omitempty"`
+
+	// Entity Tag of the resource
+	Etag *string `json:"etag,omitempty"`
+
+	// Specifies the location of the resource.
+	Location *string `json:"location,omitempty"`
+
 	// The set of properties specific to Kik channel resource
 	Properties *KikChannelProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Provisioning state of the resource
+	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// GetChannel implements the ChannelClassification interface for type KikChannel.
+func (k *KikChannel) GetChannel() *Channel {
+	return &Channel{
+		ChannelName:       k.ChannelName,
+		Etag:              k.Etag,
+		ProvisioningState: k.ProvisioningState,
+		Location:          k.Location,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type KikChannel.
 func (k KikChannel) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	k.Channel.marshalInternal(objectMap, "KikChannel")
+	objectMap["channelName"] = "KikChannel"
+	populate(objectMap, "etag", k.Etag)
+	populate(objectMap, "location", k.Location)
 	populate(objectMap, "properties", k.Properties)
+	populate(objectMap, "provisioningState", k.ProvisioningState)
 	return json.Marshal(objectMap)
 }
 
@@ -983,16 +1277,25 @@ func (k *KikChannel) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "channelName":
+			err = unpopulate(val, &k.ChannelName)
+			delete(rawMsg, key)
+		case "etag":
+			err = unpopulate(val, &k.Etag)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, &k.Location)
+			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, &k.Properties)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, &k.ProvisioningState)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := k.Channel.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -1014,16 +1317,40 @@ type KikChannelProperties struct {
 
 // LineChannel - Line channel definition
 type LineChannel struct {
-	Channel
+	// REQUIRED; The channel name
+	ChannelName *string `json:"channelName,omitempty"`
+
+	// Entity Tag of the resource
+	Etag *string `json:"etag,omitempty"`
+
+	// Specifies the location of the resource.
+	Location *string `json:"location,omitempty"`
+
 	// The set of properties specific to line channel resource
 	Properties *LineChannelProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Provisioning state of the resource
+	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// GetChannel implements the ChannelClassification interface for type LineChannel.
+func (l *LineChannel) GetChannel() *Channel {
+	return &Channel{
+		ChannelName:       l.ChannelName,
+		Etag:              l.Etag,
+		ProvisioningState: l.ProvisioningState,
+		Location:          l.Location,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type LineChannel.
 func (l LineChannel) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	l.Channel.marshalInternal(objectMap, "LineChannel")
+	objectMap["channelName"] = "LineChannel"
+	populate(objectMap, "etag", l.Etag)
+	populate(objectMap, "location", l.Location)
 	populate(objectMap, "properties", l.Properties)
+	populate(objectMap, "provisioningState", l.ProvisioningState)
 	return json.Marshal(objectMap)
 }
 
@@ -1036,16 +1363,25 @@ func (l *LineChannel) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "channelName":
+			err = unpopulate(val, &l.ChannelName)
+			delete(rawMsg, key)
+		case "etag":
+			err = unpopulate(val, &l.Etag)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, &l.Location)
+			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, &l.Properties)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, &l.ProvisioningState)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := l.Channel.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -1083,20 +1419,150 @@ type LineRegistration struct {
 	GeneratedID *string `json:"generatedId,omitempty" azure:"ro"`
 }
 
+// ListChannelWithKeysResponse - The ARM channel of list channel with keys operation response.
+type ListChannelWithKeysResponse struct {
+	// Entity Tag
+	Etag *string `json:"etag,omitempty"`
+
+	// Required. Gets or sets the Kind of the resource.
+	Kind *Kind `json:"kind,omitempty"`
+
+	// Specifies the location of the resource.
+	Location *string `json:"location,omitempty"`
+
+	// The set of properties specific to bot channel resource
+	Properties ChannelClassification `json:"properties,omitempty"`
+
+	// The set of properties specific to bot channel resource
+	Resource ChannelClassification `json:"resource,omitempty"`
+
+	// Gets or sets the SKU of the resource.
+	SKU *SKU `json:"sku,omitempty"`
+
+	// Channel settings
+	Setting *ChannelSettings `json:"setting,omitempty"`
+
+	// Contains resource tags defined as key/value pairs.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Specifies the resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Specifies the name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Specifies the type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+
+	// READ-ONLY; Entity zones
+	Zones []*string `json:"zones,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ListChannelWithKeysResponse.
+func (l ListChannelWithKeysResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "etag", l.Etag)
+	populate(objectMap, "id", l.ID)
+	populate(objectMap, "kind", l.Kind)
+	populate(objectMap, "location", l.Location)
+	populate(objectMap, "name", l.Name)
+	populate(objectMap, "properties", l.Properties)
+	populate(objectMap, "resource", l.Resource)
+	populate(objectMap, "sku", l.SKU)
+	populate(objectMap, "setting", l.Setting)
+	populate(objectMap, "tags", l.Tags)
+	populate(objectMap, "type", l.Type)
+	populate(objectMap, "zones", l.Zones)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ListChannelWithKeysResponse.
+func (l *ListChannelWithKeysResponse) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "etag":
+			err = unpopulate(val, &l.Etag)
+			delete(rawMsg, key)
+		case "id":
+			err = unpopulate(val, &l.ID)
+			delete(rawMsg, key)
+		case "kind":
+			err = unpopulate(val, &l.Kind)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, &l.Location)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &l.Name)
+			delete(rawMsg, key)
+		case "properties":
+			l.Properties, err = unmarshalChannelClassification(val)
+			delete(rawMsg, key)
+		case "resource":
+			l.Resource, err = unmarshalChannelClassification(val)
+			delete(rawMsg, key)
+		case "sku":
+			err = unpopulate(val, &l.SKU)
+			delete(rawMsg, key)
+		case "setting":
+			err = unpopulate(val, &l.Setting)
+			delete(rawMsg, key)
+		case "tags":
+			err = unpopulate(val, &l.Tags)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &l.Type)
+			delete(rawMsg, key)
+		case "zones":
+			err = unpopulate(val, &l.Zones)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 // MsTeamsChannel - Microsoft Teams channel definition
 type MsTeamsChannel struct {
-	Channel
+	// REQUIRED; The channel name
+	ChannelName *string `json:"channelName,omitempty"`
+
+	// Entity Tag of the resource
+	Etag *string `json:"etag,omitempty"`
+
+	// Specifies the location of the resource.
+	Location *string `json:"location,omitempty"`
+
 	// The set of properties specific to Microsoft Teams channel resource
 	Properties *MsTeamsChannelProperties `json:"properties,omitempty"`
 
-	// Provisioning state of the resource
-	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// READ-ONLY; Provisioning state of the resource
+	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// GetChannel implements the ChannelClassification interface for type MsTeamsChannel.
+func (m *MsTeamsChannel) GetChannel() *Channel {
+	return &Channel{
+		ChannelName:       m.ChannelName,
+		Etag:              m.Etag,
+		ProvisioningState: m.ProvisioningState,
+		Location:          m.Location,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type MsTeamsChannel.
 func (m MsTeamsChannel) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	m.Channel.marshalInternal(objectMap, "MsTeamsChannel")
+	objectMap["channelName"] = "MsTeamsChannel"
+	populate(objectMap, "etag", m.Etag)
+	populate(objectMap, "location", m.Location)
 	populate(objectMap, "properties", m.Properties)
 	populate(objectMap, "provisioningState", m.ProvisioningState)
 	return json.Marshal(objectMap)
@@ -1111,6 +1577,15 @@ func (m *MsTeamsChannel) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "channelName":
+			err = unpopulate(val, &m.ChannelName)
+			delete(rawMsg, key)
+		case "etag":
+			err = unpopulate(val, &m.Etag)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, &m.Location)
+			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, &m.Properties)
 			delete(rawMsg, key)
@@ -1122,9 +1597,6 @@ func (m *MsTeamsChannel) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := m.Channel.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
@@ -1133,8 +1605,14 @@ type MsTeamsChannelProperties struct {
 	// REQUIRED; Whether this channel is enabled for the bot
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 
+	// Whether this channel accepted terms
+	AcceptedTerms *bool `json:"acceptedTerms,omitempty"`
+
 	// Webhook for Microsoft Teams channel calls
 	CallingWebHook *string `json:"callingWebHook,omitempty"`
+
+	// Deployment environment for Microsoft Teams channel calls
+	DeploymentEnvironment *string `json:"deploymentEnvironment,omitempty"`
 
 	// Enable calling for Microsoft Teams channel
 	EnableCalling *bool `json:"enableCalling,omitempty"`
@@ -1190,8 +1668,8 @@ func (o OperationEntityListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationResultsBeginGetOptions contains the optional parameters for the OperationResults.BeginGet method.
-type OperationResultsBeginGetOptions struct {
+// OperationResultsClientBeginGetOptions contains the optional parameters for the OperationResultsClient.BeginGet method.
+type OperationResultsClientBeginGetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1249,8 +1727,8 @@ func (o *OperationResultsDescription) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1262,9 +1740,17 @@ type PrivateEndpoint struct {
 
 // PrivateEndpointConnection - The Private Endpoint Connection resource.
 type PrivateEndpointConnection struct {
-	PrivateLinkResourceBase
 	// Resource properties.
 	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PrivateEndpointConnectionListResult - List of private endpoint connection associated with the specified storage account
@@ -1292,31 +1778,43 @@ type PrivateEndpointConnectionProperties struct {
 	ProvisioningState *PrivateEndpointConnectionProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// PrivateEndpointConnectionsCreateOptions contains the optional parameters for the PrivateEndpointConnections.Create method.
-type PrivateEndpointConnectionsCreateOptions struct {
+// PrivateEndpointConnectionsClientCreateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Create
+// method.
+type PrivateEndpointConnectionsClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsDeleteOptions contains the optional parameters for the PrivateEndpointConnections.Delete method.
-type PrivateEndpointConnectionsDeleteOptions struct {
+// PrivateEndpointConnectionsClientDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Delete
+// method.
+type PrivateEndpointConnectionsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsGetOptions contains the optional parameters for the PrivateEndpointConnections.Get method.
-type PrivateEndpointConnectionsGetOptions struct {
+// PrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get
+// method.
+type PrivateEndpointConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsListOptions contains the optional parameters for the PrivateEndpointConnections.List method.
-type PrivateEndpointConnectionsListOptions struct {
+// PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.List
+// method.
+type PrivateEndpointConnectionsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // PrivateLinkResource - A private link resource
 type PrivateLinkResource struct {
-	PrivateLinkResourceBase
 	// Resource properties.
 	Properties *PrivateLinkResourceProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PrivateLinkResourceBase - Common fields that are returned in the response for all BotService Private Link Resources
@@ -1365,12 +1863,14 @@ func (p PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// PrivateLinkResourcesListByBotResourceOptions contains the optional parameters for the PrivateLinkResources.ListByBotResource method.
-type PrivateLinkResourcesListByBotResourceOptions struct {
+// PrivateLinkResourcesClientListByBotResourceOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByBotResource
+// method.
+type PrivateLinkResourcesClientListByBotResourceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer and provider.
+// PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer
+// and provider.
 type PrivateLinkServiceConnectionState struct {
 	// A message indicating if changes on the service provider require any updates on the consumer.
 	ActionsRequired *string `json:"actionsRequired,omitempty"`
@@ -1415,20 +1915,6 @@ type Resource struct {
 // MarshalJSON implements the json.Marshaller interface for type Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Resource.
-func (r *Resource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return r.unmarshalInternal(rawMsg)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "etag", r.Etag)
 	populate(objectMap, "id", r.ID)
 	populate(objectMap, "kind", r.Kind)
@@ -1438,45 +1924,7 @@ func (r Resource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "tags", r.Tags)
 	populate(objectMap, "type", r.Type)
 	populate(objectMap, "zones", r.Zones)
-}
-
-func (r *Resource) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &r.Etag)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &r.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &r.Kind)
-			delete(rawMsg, key)
-		case "location":
-			err = unpopulate(val, &r.Location)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &r.Name)
-			delete(rawMsg, key)
-		case "sku":
-			err = unpopulate(val, &r.SKU)
-			delete(rawMsg, key)
-		case "tags":
-			err = unpopulate(val, &r.Tags)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &r.Type)
-			delete(rawMsg, key)
-		case "zones":
-			err = unpopulate(val, &r.Zones)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+	return json.Marshal(objectMap)
 }
 
 // SKU - The SKU of the cognitive services account.
@@ -1508,11 +1956,26 @@ type ServiceProviderParameter struct {
 	// READ-ONLY; Help Url for the Service Provider
 	HelpURL *string `json:"helpUrl,omitempty" azure:"ro"`
 
+	// READ-ONLY; Meta data for the Service Provider
+	Metadata *ServiceProviderParameterMetadata `json:"metadata,omitempty" azure:"ro"`
+
 	// READ-ONLY; Name of the Service Provider
 	Name *string `json:"name,omitempty" azure:"ro"`
 
 	// READ-ONLY; Type of the Service Provider
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ServiceProviderParameterMetadata - Meta data for the Service Provider
+type ServiceProviderParameterMetadata struct {
+	// the constraints of the bot meta data.
+	Constraints *ServiceProviderParameterMetadataConstraints `json:"constraints,omitempty"`
+}
+
+// ServiceProviderParameterMetadataConstraints - the constraints of the bot meta data.
+type ServiceProviderParameterMetadataConstraints struct {
+	// Whether required the constraints of the bot meta data.
+	Required *bool `json:"required,omitempty"`
 }
 
 // ServiceProviderProperties - The Object used to describe a Service Provider supported by Bot Service
@@ -1565,6 +2028,67 @@ func (s ServiceProviderResponseList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Site - A site for the channel
+type Site struct {
+	// REQUIRED; Whether this site is enabled for DirectLine channel
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+
+	// REQUIRED; Whether this site is enabled for Bot Framework V1 protocol.
+	IsV1Enabled *bool `json:"isV1Enabled,omitempty"`
+
+	// REQUIRED; Whether this site is enabled for Bot Framework V1 protocol.
+	IsV3Enabled *bool `json:"isV3Enabled,omitempty"`
+
+	// REQUIRED; Whether this site is enabled for preview versions of Webchat
+	IsWebchatPreviewEnabled *bool `json:"isWebchatPreviewEnabled,omitempty"`
+
+	// REQUIRED; Site name
+	SiteName *string `json:"siteName,omitempty"`
+
+	// Entity Tag
+	ETag *string `json:"eTag,omitempty"`
+
+	// Whether this site is enabled for block user upload.
+	IsBlockUserUploadEnabled *bool `json:"isBlockUserUploadEnabled,omitempty"`
+
+	// Whether this site is enabled for authentication with Bot Framework.
+	IsSecureSiteEnabled *bool `json:"isSecureSiteEnabled,omitempty"`
+
+	// Whether this site is token enabled for channel
+	IsTokenEnabled *bool `json:"isTokenEnabled,omitempty"`
+
+	// List of Trusted Origin URLs for this site. This field is applicable only if isSecureSiteEnabled is True.
+	TrustedOrigins []*string `json:"trustedOrigins,omitempty"`
+
+	// READ-ONLY; Primary key. Value only returned through POST to the action Channel List API, otherwise empty.
+	Key *string `json:"key,omitempty" azure:"ro"`
+
+	// READ-ONLY; Secondary key. Value only returned through POST to the action Channel List API, otherwise empty.
+	Key2 *string `json:"key2,omitempty" azure:"ro"`
+
+	// READ-ONLY; Site Id
+	SiteID *string `json:"siteId,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Site.
+func (s Site) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "eTag", s.ETag)
+	populate(objectMap, "isBlockUserUploadEnabled", s.IsBlockUserUploadEnabled)
+	populate(objectMap, "isEnabled", s.IsEnabled)
+	populate(objectMap, "isSecureSiteEnabled", s.IsSecureSiteEnabled)
+	populate(objectMap, "isTokenEnabled", s.IsTokenEnabled)
+	populate(objectMap, "isV1Enabled", s.IsV1Enabled)
+	populate(objectMap, "isV3Enabled", s.IsV3Enabled)
+	populate(objectMap, "isWebchatPreviewEnabled", s.IsWebchatPreviewEnabled)
+	populate(objectMap, "key", s.Key)
+	populate(objectMap, "key2", s.Key2)
+	populate(objectMap, "siteId", s.SiteID)
+	populate(objectMap, "siteName", s.SiteName)
+	populate(objectMap, "trustedOrigins", s.TrustedOrigins)
+	return json.Marshal(objectMap)
+}
+
 // SiteInfo - Site information for WebChat or DirectLine Channels to identify which site to regenerate keys for.
 type SiteInfo struct {
 	// REQUIRED; Determines which key is to be regenerated
@@ -1576,16 +2100,40 @@ type SiteInfo struct {
 
 // SkypeChannel - Skype channel definition
 type SkypeChannel struct {
-	Channel
+	// REQUIRED; The channel name
+	ChannelName *string `json:"channelName,omitempty"`
+
+	// Entity Tag of the resource
+	Etag *string `json:"etag,omitempty"`
+
+	// Specifies the location of the resource.
+	Location *string `json:"location,omitempty"`
+
 	// The set of properties specific to Skype channel resource
 	Properties *SkypeChannelProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Provisioning state of the resource
+	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// GetChannel implements the ChannelClassification interface for type SkypeChannel.
+func (s *SkypeChannel) GetChannel() *Channel {
+	return &Channel{
+		ChannelName:       s.ChannelName,
+		Etag:              s.Etag,
+		ProvisioningState: s.ProvisioningState,
+		Location:          s.Location,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type SkypeChannel.
 func (s SkypeChannel) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.Channel.marshalInternal(objectMap, "SkypeChannel")
+	objectMap["channelName"] = "SkypeChannel"
+	populate(objectMap, "etag", s.Etag)
+	populate(objectMap, "location", s.Location)
 	populate(objectMap, "properties", s.Properties)
+	populate(objectMap, "provisioningState", s.ProvisioningState)
 	return json.Marshal(objectMap)
 }
 
@@ -1598,16 +2146,25 @@ func (s *SkypeChannel) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "channelName":
+			err = unpopulate(val, &s.ChannelName)
+			delete(rawMsg, key)
+		case "etag":
+			err = unpopulate(val, &s.Etag)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, &s.Location)
+			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, &s.Properties)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, &s.ProvisioningState)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := s.Channel.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -1647,20 +2204,40 @@ type SkypeChannelProperties struct {
 
 // SlackChannel - Slack channel definition
 type SlackChannel struct {
-	Channel
-	// Location of the resource
+	// REQUIRED; The channel name
+	ChannelName *string `json:"channelName,omitempty"`
+
+	// Entity Tag of the resource
+	Etag *string `json:"etag,omitempty"`
+
+	// Specifies the location of the resource.
 	Location *string `json:"location,omitempty"`
 
 	// The set of properties specific to Slack channel resource
 	Properties *SlackChannelProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Provisioning state of the resource
+	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// GetChannel implements the ChannelClassification interface for type SlackChannel.
+func (s *SlackChannel) GetChannel() *Channel {
+	return &Channel{
+		ChannelName:       s.ChannelName,
+		Etag:              s.Etag,
+		ProvisioningState: s.ProvisioningState,
+		Location:          s.Location,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type SlackChannel.
 func (s SlackChannel) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.Channel.marshalInternal(objectMap, "SlackChannel")
+	objectMap["channelName"] = "SlackChannel"
+	populate(objectMap, "etag", s.Etag)
 	populate(objectMap, "location", s.Location)
 	populate(objectMap, "properties", s.Properties)
+	populate(objectMap, "provisioningState", s.ProvisioningState)
 	return json.Marshal(objectMap)
 }
 
@@ -1673,19 +2250,25 @@ func (s *SlackChannel) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "channelName":
+			err = unpopulate(val, &s.ChannelName)
+			delete(rawMsg, key)
+		case "etag":
+			err = unpopulate(val, &s.Etag)
+			delete(rawMsg, key)
 		case "location":
 			err = unpopulate(val, &s.Location)
 			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, &s.Properties)
 			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, &s.ProvisioningState)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := s.Channel.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -1728,16 +2311,40 @@ type SlackChannelProperties struct {
 
 // SmsChannel - Sms channel definition
 type SmsChannel struct {
-	Channel
+	// REQUIRED; The channel name
+	ChannelName *string `json:"channelName,omitempty"`
+
+	// Entity Tag of the resource
+	Etag *string `json:"etag,omitempty"`
+
+	// Specifies the location of the resource.
+	Location *string `json:"location,omitempty"`
+
 	// The set of properties specific to Sms channel resource
 	Properties *SmsChannelProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Provisioning state of the resource
+	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// GetChannel implements the ChannelClassification interface for type SmsChannel.
+func (s *SmsChannel) GetChannel() *Channel {
+	return &Channel{
+		ChannelName:       s.ChannelName,
+		Etag:              s.Etag,
+		ProvisioningState: s.ProvisioningState,
+		Location:          s.Location,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type SmsChannel.
 func (s SmsChannel) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.Channel.marshalInternal(objectMap, "SmsChannel")
+	objectMap["channelName"] = "SmsChannel"
+	populate(objectMap, "etag", s.Etag)
+	populate(objectMap, "location", s.Location)
 	populate(objectMap, "properties", s.Properties)
+	populate(objectMap, "provisioningState", s.ProvisioningState)
 	return json.Marshal(objectMap)
 }
 
@@ -1750,16 +2357,25 @@ func (s *SmsChannel) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "channelName":
+			err = unpopulate(val, &s.ChannelName)
+			delete(rawMsg, key)
+		case "etag":
+			err = unpopulate(val, &s.Etag)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, &s.Location)
+			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, &s.Properties)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, &s.ProvisioningState)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := s.Channel.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -1784,18 +2400,38 @@ type SmsChannelProperties struct {
 
 // TelegramChannel - Telegram channel definition
 type TelegramChannel struct {
-	Channel
+	// REQUIRED; The channel name
+	ChannelName *string `json:"channelName,omitempty"`
+
+	// Entity Tag of the resource
+	Etag *string `json:"etag,omitempty"`
+
+	// Specifies the location of the resource.
+	Location *string `json:"location,omitempty"`
+
 	// The set of properties specific to Telegram channel resource
 	Properties *TelegramChannelProperties `json:"properties,omitempty"`
 
-	// Provisioning state of the resource
-	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// READ-ONLY; Provisioning state of the resource
+	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// GetChannel implements the ChannelClassification interface for type TelegramChannel.
+func (t *TelegramChannel) GetChannel() *Channel {
+	return &Channel{
+		ChannelName:       t.ChannelName,
+		Etag:              t.Etag,
+		ProvisioningState: t.ProvisioningState,
+		Location:          t.Location,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TelegramChannel.
 func (t TelegramChannel) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.Channel.marshalInternal(objectMap, "TelegramChannel")
+	objectMap["channelName"] = "TelegramChannel"
+	populate(objectMap, "etag", t.Etag)
+	populate(objectMap, "location", t.Location)
 	populate(objectMap, "properties", t.Properties)
 	populate(objectMap, "provisioningState", t.ProvisioningState)
 	return json.Marshal(objectMap)
@@ -1810,6 +2446,15 @@ func (t *TelegramChannel) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "channelName":
+			err = unpopulate(val, &t.ChannelName)
+			delete(rawMsg, key)
+		case "etag":
+			err = unpopulate(val, &t.Etag)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, &t.Location)
+			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, &t.Properties)
 			delete(rawMsg, key)
@@ -1820,9 +2465,6 @@ func (t *TelegramChannel) UnmarshalJSON(data []byte) error {
 		if err != nil {
 			return err
 		}
-	}
-	if err := t.Channel.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -1841,20 +2483,40 @@ type TelegramChannelProperties struct {
 
 // WebChatChannel - Web Chat channel definition
 type WebChatChannel struct {
-	Channel
-	// Location of the resource
+	// REQUIRED; The channel name
+	ChannelName *string `json:"channelName,omitempty"`
+
+	// Entity Tag of the resource
+	Etag *string `json:"etag,omitempty"`
+
+	// Specifies the location of the resource.
 	Location *string `json:"location,omitempty"`
 
 	// The set of properties specific to Web Chat channel resource
 	Properties *WebChatChannelProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Provisioning state of the resource
+	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// GetChannel implements the ChannelClassification interface for type WebChatChannel.
+func (w *WebChatChannel) GetChannel() *Channel {
+	return &Channel{
+		ChannelName:       w.ChannelName,
+		Etag:              w.Etag,
+		ProvisioningState: w.ProvisioningState,
+		Location:          w.Location,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type WebChatChannel.
 func (w WebChatChannel) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	w.Channel.marshalInternal(objectMap, "WebChatChannel")
+	objectMap["channelName"] = "WebChatChannel"
+	populate(objectMap, "etag", w.Etag)
 	populate(objectMap, "location", w.Location)
 	populate(objectMap, "properties", w.Properties)
+	populate(objectMap, "provisioningState", w.ProvisioningState)
 	return json.Marshal(objectMap)
 }
 
@@ -1867,19 +2529,25 @@ func (w *WebChatChannel) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "channelName":
+			err = unpopulate(val, &w.ChannelName)
+			delete(rawMsg, key)
+		case "etag":
+			err = unpopulate(val, &w.Etag)
+			delete(rawMsg, key)
 		case "location":
 			err = unpopulate(val, &w.Location)
 			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, &w.Properties)
 			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, &w.ProvisioningState)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := w.Channel.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }

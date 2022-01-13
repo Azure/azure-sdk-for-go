@@ -11,7 +11,6 @@ package armapplicationinsights
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,54 @@ import (
 // AnnotationsClient contains the methods for the Annotations group.
 // Don't use this type directly, use NewAnnotationsClient() instead.
 type AnnotationsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewAnnotationsClient creates a new instance of AnnotationsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewAnnotationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AnnotationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &AnnotationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &AnnotationsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Create - Create an Annotation of an Application Insights component.
-// If the operation fails it returns the *AnnotationError error type.
-func (client *AnnotationsClient) Create(ctx context.Context, resourceGroupName string, resourceName string, annotationProperties Annotation, options *AnnotationsCreateOptions) (AnnotationsCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// annotationProperties - Properties that need to be specified to create an annotation of a Application Insights component.
+// options - AnnotationsClientCreateOptions contains the optional parameters for the AnnotationsClient.Create method.
+func (client *AnnotationsClient) Create(ctx context.Context, resourceGroupName string, resourceName string, annotationProperties Annotation, options *AnnotationsClientCreateOptions) (AnnotationsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, resourceName, annotationProperties, options)
 	if err != nil {
-		return AnnotationsCreateResponse{}, err
+		return AnnotationsClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AnnotationsCreateResponse{}, err
+		return AnnotationsClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AnnotationsCreateResponse{}, client.createHandleError(resp)
+		return AnnotationsClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *AnnotationsClient) createCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, annotationProperties Annotation, options *AnnotationsCreateOptions) (*policy.Request, error) {
+func (client *AnnotationsClient) createCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, annotationProperties Annotation, options *AnnotationsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/Annotations"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -74,7 +85,7 @@ func (client *AnnotationsClient) createCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -86,46 +97,37 @@ func (client *AnnotationsClient) createCreateRequest(ctx context.Context, resour
 }
 
 // createHandleResponse handles the Create response.
-func (client *AnnotationsClient) createHandleResponse(resp *http.Response) (AnnotationsCreateResponse, error) {
-	result := AnnotationsCreateResponse{RawResponse: resp}
+func (client *AnnotationsClient) createHandleResponse(resp *http.Response) (AnnotationsClientCreateResponse, error) {
+	result := AnnotationsClientCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AnnotationArray); err != nil {
-		return AnnotationsCreateResponse{}, runtime.NewResponseError(err, resp)
+		return AnnotationsClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *AnnotationsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := AnnotationError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete an Annotation of an Application Insights component.
-// If the operation fails it returns a generic error.
-func (client *AnnotationsClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, annotationID string, options *AnnotationsDeleteOptions) (AnnotationsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// annotationID - The unique annotation ID. This is unique within a Application Insights component.
+// options - AnnotationsClientDeleteOptions contains the optional parameters for the AnnotationsClient.Delete method.
+func (client *AnnotationsClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, annotationID string, options *AnnotationsClientDeleteOptions) (AnnotationsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, annotationID, options)
 	if err != nil {
-		return AnnotationsDeleteResponse{}, err
+		return AnnotationsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AnnotationsDeleteResponse{}, err
+		return AnnotationsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AnnotationsDeleteResponse{}, client.deleteHandleError(resp)
+		return AnnotationsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return AnnotationsDeleteResponse{RawResponse: resp}, nil
+	return AnnotationsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AnnotationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, annotationID string, options *AnnotationsDeleteOptions) (*policy.Request, error) {
+func (client *AnnotationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, annotationID string, options *AnnotationsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/Annotations/{annotationId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -143,7 +145,7 @@ func (client *AnnotationsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter annotationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{annotationId}", url.PathEscape(annotationID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -153,37 +155,29 @@ func (client *AnnotationsClient) deleteCreateRequest(ctx context.Context, resour
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *AnnotationsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Get the annotation for given id.
-// If the operation fails it returns the *AnnotationError error type.
-func (client *AnnotationsClient) Get(ctx context.Context, resourceGroupName string, resourceName string, annotationID string, options *AnnotationsGetOptions) (AnnotationsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// annotationID - The unique annotation ID. This is unique within a Application Insights component.
+// options - AnnotationsClientGetOptions contains the optional parameters for the AnnotationsClient.Get method.
+func (client *AnnotationsClient) Get(ctx context.Context, resourceGroupName string, resourceName string, annotationID string, options *AnnotationsClientGetOptions) (AnnotationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, annotationID, options)
 	if err != nil {
-		return AnnotationsGetResponse{}, err
+		return AnnotationsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AnnotationsGetResponse{}, err
+		return AnnotationsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AnnotationsGetResponse{}, client.getHandleError(resp)
+		return AnnotationsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AnnotationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, annotationID string, options *AnnotationsGetOptions) (*policy.Request, error) {
+func (client *AnnotationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, annotationID string, options *AnnotationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/Annotations/{annotationId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -201,7 +195,7 @@ func (client *AnnotationsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter annotationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{annotationId}", url.PathEscape(annotationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -213,46 +207,38 @@ func (client *AnnotationsClient) getCreateRequest(ctx context.Context, resourceG
 }
 
 // getHandleResponse handles the Get response.
-func (client *AnnotationsClient) getHandleResponse(resp *http.Response) (AnnotationsGetResponse, error) {
-	result := AnnotationsGetResponse{RawResponse: resp}
+func (client *AnnotationsClient) getHandleResponse(resp *http.Response) (AnnotationsClientGetResponse, error) {
+	result := AnnotationsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AnnotationArray); err != nil {
-		return AnnotationsGetResponse{}, runtime.NewResponseError(err, resp)
+		return AnnotationsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *AnnotationsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := AnnotationError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Gets the list of annotations for a component for given time range
-// If the operation fails it returns the *AnnotationError error type.
-func (client *AnnotationsClient) List(ctx context.Context, resourceGroupName string, resourceName string, start string, end string, options *AnnotationsListOptions) (AnnotationsListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// start - The start time to query from for annotations, cannot be older than 90 days from current date.
+// end - The end time to query for annotations.
+// options - AnnotationsClientListOptions contains the optional parameters for the AnnotationsClient.List method.
+func (client *AnnotationsClient) List(ctx context.Context, resourceGroupName string, resourceName string, start string, end string, options *AnnotationsClientListOptions) (AnnotationsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, resourceName, start, end, options)
 	if err != nil {
-		return AnnotationsListResponse{}, err
+		return AnnotationsClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AnnotationsListResponse{}, err
+		return AnnotationsClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AnnotationsListResponse{}, client.listHandleError(resp)
+		return AnnotationsClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *AnnotationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, start string, end string, options *AnnotationsListOptions) (*policy.Request, error) {
+func (client *AnnotationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, start string, end string, options *AnnotationsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/Annotations"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -266,7 +252,7 @@ func (client *AnnotationsClient) listCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -280,23 +266,10 @@ func (client *AnnotationsClient) listCreateRequest(ctx context.Context, resource
 }
 
 // listHandleResponse handles the List response.
-func (client *AnnotationsClient) listHandleResponse(resp *http.Response) (AnnotationsListResponse, error) {
-	result := AnnotationsListResponse{RawResponse: resp}
+func (client *AnnotationsClient) listHandleResponse(resp *http.Response) (AnnotationsClientListResponse, error) {
+	result := AnnotationsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AnnotationsListResult); err != nil {
-		return AnnotationsListResponse{}, runtime.NewResponseError(err, resp)
+		return AnnotationsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *AnnotationsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := AnnotationError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

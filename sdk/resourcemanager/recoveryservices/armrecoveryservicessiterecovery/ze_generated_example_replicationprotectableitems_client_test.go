@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
 )
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationProtectableItems_ListByReplicationProtectionContainers.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationProtectableItems_ListByReplicationProtectionContainers.json
 func ExampleReplicationProtectableItemsClient_ListByReplicationProtectionContainers() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,21 +28,25 @@ func ExampleReplicationProtectableItemsClient_ListByReplicationProtectionContain
 		"<subscription-id>", cred, nil)
 	pager := client.ListByReplicationProtectionContainers("<fabric-name>",
 		"<protection-container-name>",
-		&armrecoveryservicessiterecovery.ReplicationProtectableItemsListByReplicationProtectionContainersOptions{Filter: nil,
+		&armrecoveryservicessiterecovery.ReplicationProtectableItemsClientListByReplicationProtectionContainersOptions{Filter: nil,
 			Take:      nil,
 			SkipToken: nil,
 		})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ProtectableItem.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationProtectableItems_Get.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationProtectableItems_Get.json
 func ExampleReplicationProtectableItemsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,5 +64,5 @@ func ExampleReplicationProtectableItemsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ProtectableItem.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationProtectableItemsClientGetResult)
 }

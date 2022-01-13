@@ -11,7 +11,6 @@ package armcompute
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // CommunityGalleryImagesClient contains the methods for the CommunityGalleryImages group.
 // Don't use this type directly, use NewCommunityGalleryImagesClient() instead.
 type CommunityGalleryImagesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewCommunityGalleryImagesClient creates a new instance of CommunityGalleryImagesClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewCommunityGalleryImagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CommunityGalleryImagesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &CommunityGalleryImagesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &CommunityGalleryImagesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Get a community gallery image.
-// If the operation fails it returns the *CloudError error type.
-func (client *CommunityGalleryImagesClient) Get(ctx context.Context, location string, publicGalleryName string, galleryImageName string, options *CommunityGalleryImagesGetOptions) (CommunityGalleryImagesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// location - Resource location.
+// publicGalleryName - The public name of the community gallery.
+// galleryImageName - The name of the community gallery image definition.
+// options - CommunityGalleryImagesClientGetOptions contains the optional parameters for the CommunityGalleryImagesClient.Get
+// method.
+func (client *CommunityGalleryImagesClient) Get(ctx context.Context, location string, publicGalleryName string, galleryImageName string, options *CommunityGalleryImagesClientGetOptions) (CommunityGalleryImagesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, location, publicGalleryName, galleryImageName, options)
 	if err != nil {
-		return CommunityGalleryImagesGetResponse{}, err
+		return CommunityGalleryImagesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CommunityGalleryImagesGetResponse{}, err
+		return CommunityGalleryImagesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CommunityGalleryImagesGetResponse{}, client.getHandleError(resp)
+		return CommunityGalleryImagesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *CommunityGalleryImagesClient) getCreateRequest(ctx context.Context, location string, publicGalleryName string, galleryImageName string, options *CommunityGalleryImagesGetOptions) (*policy.Request, error) {
+func (client *CommunityGalleryImagesClient) getCreateRequest(ctx context.Context, location string, publicGalleryName string, galleryImageName string, options *CommunityGalleryImagesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/communityGalleries/{publicGalleryName}/images/{galleryImageName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +91,7 @@ func (client *CommunityGalleryImagesClient) getCreateRequest(ctx context.Context
 		return nil, errors.New("parameter galleryImageName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{galleryImageName}", url.PathEscape(galleryImageName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,23 +103,10 @@ func (client *CommunityGalleryImagesClient) getCreateRequest(ctx context.Context
 }
 
 // getHandleResponse handles the Get response.
-func (client *CommunityGalleryImagesClient) getHandleResponse(resp *http.Response) (CommunityGalleryImagesGetResponse, error) {
-	result := CommunityGalleryImagesGetResponse{RawResponse: resp}
+func (client *CommunityGalleryImagesClient) getHandleResponse(resp *http.Response) (CommunityGalleryImagesClientGetResponse, error) {
+	result := CommunityGalleryImagesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CommunityGalleryImage); err != nil {
-		return CommunityGalleryImagesGetResponse{}, runtime.NewResponseError(err, resp)
+		return CommunityGalleryImagesClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *CommunityGalleryImagesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

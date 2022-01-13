@@ -24,10 +24,11 @@ func ExampleGetClient_TenantOptedIn() {
 	}
 	ctx := context.Background()
 	client := armcustomerlockbox.NewGetClient(cred, nil)
-	_, err = client.TenantOptedIn(ctx,
+	res, err := client.TenantOptedIn(ctx,
 		"<tenant-id>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.GetClientTenantOptedInResult)
 }

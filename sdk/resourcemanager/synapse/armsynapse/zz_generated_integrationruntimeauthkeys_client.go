@@ -11,7 +11,6 @@ package armsynapse
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // IntegrationRuntimeAuthKeysClient contains the methods for the IntegrationRuntimeAuthKeys group.
 // Don't use this type directly, use NewIntegrationRuntimeAuthKeysClient() instead.
 type IntegrationRuntimeAuthKeysClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewIntegrationRuntimeAuthKeysClient creates a new instance of IntegrationRuntimeAuthKeysClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewIntegrationRuntimeAuthKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IntegrationRuntimeAuthKeysClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &IntegrationRuntimeAuthKeysClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &IntegrationRuntimeAuthKeysClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - List authentication keys in an integration runtime
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationRuntimeAuthKeysClient) List(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, options *IntegrationRuntimeAuthKeysListOptions) (IntegrationRuntimeAuthKeysListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// integrationRuntimeName - Integration runtime name
+// options - IntegrationRuntimeAuthKeysClientListOptions contains the optional parameters for the IntegrationRuntimeAuthKeysClient.List
+// method.
+func (client *IntegrationRuntimeAuthKeysClient) List(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, options *IntegrationRuntimeAuthKeysClientListOptions) (IntegrationRuntimeAuthKeysClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, workspaceName, integrationRuntimeName, options)
 	if err != nil {
-		return IntegrationRuntimeAuthKeysListResponse{}, err
+		return IntegrationRuntimeAuthKeysClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationRuntimeAuthKeysListResponse{}, err
+		return IntegrationRuntimeAuthKeysClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IntegrationRuntimeAuthKeysListResponse{}, client.listHandleError(resp)
+		return IntegrationRuntimeAuthKeysClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *IntegrationRuntimeAuthKeysClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, options *IntegrationRuntimeAuthKeysListOptions) (*policy.Request, error) {
+func (client *IntegrationRuntimeAuthKeysClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, options *IntegrationRuntimeAuthKeysClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/listAuthKeys"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +90,7 @@ func (client *IntegrationRuntimeAuthKeysClient) listCreateRequest(ctx context.Co
 		return nil, errors.New("parameter integrationRuntimeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationRuntimeName}", url.PathEscape(integrationRuntimeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,46 +102,39 @@ func (client *IntegrationRuntimeAuthKeysClient) listCreateRequest(ctx context.Co
 }
 
 // listHandleResponse handles the List response.
-func (client *IntegrationRuntimeAuthKeysClient) listHandleResponse(resp *http.Response) (IntegrationRuntimeAuthKeysListResponse, error) {
-	result := IntegrationRuntimeAuthKeysListResponse{RawResponse: resp}
+func (client *IntegrationRuntimeAuthKeysClient) listHandleResponse(resp *http.Response) (IntegrationRuntimeAuthKeysClientListResponse, error) {
+	result := IntegrationRuntimeAuthKeysClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationRuntimeAuthKeys); err != nil {
-		return IntegrationRuntimeAuthKeysListResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationRuntimeAuthKeysClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *IntegrationRuntimeAuthKeysClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Regenerate - Regenerate the authentication key for an integration runtime
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationRuntimeAuthKeysClient) Regenerate(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, regenerateKeyParameters IntegrationRuntimeRegenerateKeyParameters, options *IntegrationRuntimeAuthKeysRegenerateOptions) (IntegrationRuntimeAuthKeysRegenerateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// integrationRuntimeName - Integration runtime name
+// regenerateKeyParameters - The parameters for regenerating integration runtime authentication key.
+// options - IntegrationRuntimeAuthKeysClientRegenerateOptions contains the optional parameters for the IntegrationRuntimeAuthKeysClient.Regenerate
+// method.
+func (client *IntegrationRuntimeAuthKeysClient) Regenerate(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, regenerateKeyParameters IntegrationRuntimeRegenerateKeyParameters, options *IntegrationRuntimeAuthKeysClientRegenerateOptions) (IntegrationRuntimeAuthKeysClientRegenerateResponse, error) {
 	req, err := client.regenerateCreateRequest(ctx, resourceGroupName, workspaceName, integrationRuntimeName, regenerateKeyParameters, options)
 	if err != nil {
-		return IntegrationRuntimeAuthKeysRegenerateResponse{}, err
+		return IntegrationRuntimeAuthKeysClientRegenerateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationRuntimeAuthKeysRegenerateResponse{}, err
+		return IntegrationRuntimeAuthKeysClientRegenerateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IntegrationRuntimeAuthKeysRegenerateResponse{}, client.regenerateHandleError(resp)
+		return IntegrationRuntimeAuthKeysClientRegenerateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.regenerateHandleResponse(resp)
 }
 
 // regenerateCreateRequest creates the Regenerate request.
-func (client *IntegrationRuntimeAuthKeysClient) regenerateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, regenerateKeyParameters IntegrationRuntimeRegenerateKeyParameters, options *IntegrationRuntimeAuthKeysRegenerateOptions) (*policy.Request, error) {
+func (client *IntegrationRuntimeAuthKeysClient) regenerateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, regenerateKeyParameters IntegrationRuntimeRegenerateKeyParameters, options *IntegrationRuntimeAuthKeysClientRegenerateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/regenerateAuthKey"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -147,7 +152,7 @@ func (client *IntegrationRuntimeAuthKeysClient) regenerateCreateRequest(ctx cont
 		return nil, errors.New("parameter integrationRuntimeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationRuntimeName}", url.PathEscape(integrationRuntimeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -159,23 +164,10 @@ func (client *IntegrationRuntimeAuthKeysClient) regenerateCreateRequest(ctx cont
 }
 
 // regenerateHandleResponse handles the Regenerate response.
-func (client *IntegrationRuntimeAuthKeysClient) regenerateHandleResponse(resp *http.Response) (IntegrationRuntimeAuthKeysRegenerateResponse, error) {
-	result := IntegrationRuntimeAuthKeysRegenerateResponse{RawResponse: resp}
+func (client *IntegrationRuntimeAuthKeysClient) regenerateHandleResponse(resp *http.Response) (IntegrationRuntimeAuthKeysClientRegenerateResponse, error) {
+	result := IntegrationRuntimeAuthKeysClientRegenerateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationRuntimeAuthKeys); err != nil {
-		return IntegrationRuntimeAuthKeysRegenerateResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationRuntimeAuthKeysClientRegenerateResponse{}, err
 	}
 	return result, nil
-}
-
-// regenerateHandleError handles the Regenerate error response.
-func (client *IntegrationRuntimeAuthKeysClient) regenerateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -24,48 +24,63 @@ import (
 // ReplicationFabricsClient contains the methods for the ReplicationFabrics group.
 // Don't use this type directly, use NewReplicationFabricsClient() instead.
 type ReplicationFabricsClient struct {
-	ep                string
-	pl                runtime.Pipeline
+	host              string
 	resourceName      string
 	resourceGroupName string
 	subscriptionID    string
+	pl                runtime.Pipeline
 }
 
 // NewReplicationFabricsClient creates a new instance of ReplicationFabricsClient with the specified values.
+// resourceName - The name of the recovery services vault.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// subscriptionID - The subscription Id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewReplicationFabricsClient(resourceName string, resourceGroupName string, subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ReplicationFabricsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ReplicationFabricsClient{resourceName: resourceName, resourceGroupName: resourceGroupName, subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ReplicationFabricsClient{
+		resourceName:      resourceName,
+		resourceGroupName: resourceGroupName,
+		subscriptionID:    subscriptionID,
+		host:              string(cp.Endpoint),
+		pl:                armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCheckConsistency - The operation to perform a consistency check on the fabric.
-// If the operation fails it returns a generic error.
-func (client *ReplicationFabricsClient) BeginCheckConsistency(ctx context.Context, fabricName string, options *ReplicationFabricsBeginCheckConsistencyOptions) (ReplicationFabricsCheckConsistencyPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - Fabric name.
+// options - ReplicationFabricsClientBeginCheckConsistencyOptions contains the optional parameters for the ReplicationFabricsClient.BeginCheckConsistency
+// method.
+func (client *ReplicationFabricsClient) BeginCheckConsistency(ctx context.Context, fabricName string, options *ReplicationFabricsClientBeginCheckConsistencyOptions) (ReplicationFabricsClientCheckConsistencyPollerResponse, error) {
 	resp, err := client.checkConsistency(ctx, fabricName, options)
 	if err != nil {
-		return ReplicationFabricsCheckConsistencyPollerResponse{}, err
+		return ReplicationFabricsClientCheckConsistencyPollerResponse{}, err
 	}
-	result := ReplicationFabricsCheckConsistencyPollerResponse{
+	result := ReplicationFabricsClientCheckConsistencyPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ReplicationFabricsClient.CheckConsistency", "", resp, client.pl, client.checkConsistencyHandleError)
+	pt, err := armruntime.NewPoller("ReplicationFabricsClient.CheckConsistency", "", resp, client.pl)
 	if err != nil {
-		return ReplicationFabricsCheckConsistencyPollerResponse{}, err
+		return ReplicationFabricsClientCheckConsistencyPollerResponse{}, err
 	}
-	result.Poller = &ReplicationFabricsCheckConsistencyPoller{
+	result.Poller = &ReplicationFabricsClientCheckConsistencyPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CheckConsistency - The operation to perform a consistency check on the fabric.
-// If the operation fails it returns a generic error.
-func (client *ReplicationFabricsClient) checkConsistency(ctx context.Context, fabricName string, options *ReplicationFabricsBeginCheckConsistencyOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationFabricsClient) checkConsistency(ctx context.Context, fabricName string, options *ReplicationFabricsClientBeginCheckConsistencyOptions) (*http.Response, error) {
 	req, err := client.checkConsistencyCreateRequest(ctx, fabricName, options)
 	if err != nil {
 		return nil, err
@@ -75,13 +90,13 @@ func (client *ReplicationFabricsClient) checkConsistency(ctx context.Context, fa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.checkConsistencyHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // checkConsistencyCreateRequest creates the CheckConsistency request.
-func (client *ReplicationFabricsClient) checkConsistencyCreateRequest(ctx context.Context, fabricName string, options *ReplicationFabricsBeginCheckConsistencyOptions) (*policy.Request, error) {
+func (client *ReplicationFabricsClient) checkConsistencyCreateRequest(ctx context.Context, fabricName string, options *ReplicationFabricsClientBeginCheckConsistencyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/checkConsistency"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -99,52 +114,44 @@ func (client *ReplicationFabricsClient) checkConsistencyCreateRequest(ctx contex
 		return nil, errors.New("parameter fabricName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{fabricName}", url.PathEscape(fabricName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// checkConsistencyHandleError handles the CheckConsistency error response.
-func (client *ReplicationFabricsClient) checkConsistencyHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginCreate - The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
-// If the operation fails it returns a generic error.
-func (client *ReplicationFabricsClient) BeginCreate(ctx context.Context, fabricName string, input FabricCreationInput, options *ReplicationFabricsBeginCreateOptions) (ReplicationFabricsCreatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - Name of the ASR fabric.
+// input - Fabric creation input.
+// options - ReplicationFabricsClientBeginCreateOptions contains the optional parameters for the ReplicationFabricsClient.BeginCreate
+// method.
+func (client *ReplicationFabricsClient) BeginCreate(ctx context.Context, fabricName string, input FabricCreationInput, options *ReplicationFabricsClientBeginCreateOptions) (ReplicationFabricsClientCreatePollerResponse, error) {
 	resp, err := client.create(ctx, fabricName, input, options)
 	if err != nil {
-		return ReplicationFabricsCreatePollerResponse{}, err
+		return ReplicationFabricsClientCreatePollerResponse{}, err
 	}
-	result := ReplicationFabricsCreatePollerResponse{
+	result := ReplicationFabricsClientCreatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ReplicationFabricsClient.Create", "", resp, client.pl, client.createHandleError)
+	pt, err := armruntime.NewPoller("ReplicationFabricsClient.Create", "", resp, client.pl)
 	if err != nil {
-		return ReplicationFabricsCreatePollerResponse{}, err
+		return ReplicationFabricsClientCreatePollerResponse{}, err
 	}
-	result.Poller = &ReplicationFabricsCreatePoller{
+	result.Poller = &ReplicationFabricsClientCreatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
-// If the operation fails it returns a generic error.
-func (client *ReplicationFabricsClient) create(ctx context.Context, fabricName string, input FabricCreationInput, options *ReplicationFabricsBeginCreateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationFabricsClient) create(ctx context.Context, fabricName string, input FabricCreationInput, options *ReplicationFabricsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, fabricName, input, options)
 	if err != nil {
 		return nil, err
@@ -154,13 +161,13 @@ func (client *ReplicationFabricsClient) create(ctx context.Context, fabricName s
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.createHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *ReplicationFabricsClient) createCreateRequest(ctx context.Context, fabricName string, input FabricCreationInput, options *ReplicationFabricsBeginCreateOptions) (*policy.Request, error) {
+func (client *ReplicationFabricsClient) createCreateRequest(ctx context.Context, fabricName string, input FabricCreationInput, options *ReplicationFabricsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -178,52 +185,43 @@ func (client *ReplicationFabricsClient) createCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter fabricName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{fabricName}", url.PathEscape(fabricName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, input)
 }
 
-// createHandleError handles the Create error response.
-func (client *ReplicationFabricsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginDelete - The operation to delete or remove an Azure Site Recovery fabric.
-// If the operation fails it returns a generic error.
-func (client *ReplicationFabricsClient) BeginDelete(ctx context.Context, fabricName string, options *ReplicationFabricsBeginDeleteOptions) (ReplicationFabricsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - ASR fabric to delete.
+// options - ReplicationFabricsClientBeginDeleteOptions contains the optional parameters for the ReplicationFabricsClient.BeginDelete
+// method.
+func (client *ReplicationFabricsClient) BeginDelete(ctx context.Context, fabricName string, options *ReplicationFabricsClientBeginDeleteOptions) (ReplicationFabricsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, fabricName, options)
 	if err != nil {
-		return ReplicationFabricsDeletePollerResponse{}, err
+		return ReplicationFabricsClientDeletePollerResponse{}, err
 	}
-	result := ReplicationFabricsDeletePollerResponse{
+	result := ReplicationFabricsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ReplicationFabricsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("ReplicationFabricsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return ReplicationFabricsDeletePollerResponse{}, err
+		return ReplicationFabricsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &ReplicationFabricsDeletePoller{
+	result.Poller = &ReplicationFabricsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - The operation to delete or remove an Azure Site Recovery fabric.
-// If the operation fails it returns a generic error.
-func (client *ReplicationFabricsClient) deleteOperation(ctx context.Context, fabricName string, options *ReplicationFabricsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationFabricsClient) deleteOperation(ctx context.Context, fabricName string, options *ReplicationFabricsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, fabricName, options)
 	if err != nil {
 		return nil, err
@@ -233,13 +231,13 @@ func (client *ReplicationFabricsClient) deleteOperation(ctx context.Context, fab
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ReplicationFabricsClient) deleteCreateRequest(ctx context.Context, fabricName string, options *ReplicationFabricsBeginDeleteOptions) (*policy.Request, error) {
+func (client *ReplicationFabricsClient) deleteCreateRequest(ctx context.Context, fabricName string, options *ReplicationFabricsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/remove"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -257,47 +255,37 @@ func (client *ReplicationFabricsClient) deleteCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter fabricName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{fabricName}", url.PathEscape(fabricName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ReplicationFabricsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets the details of an Azure Site Recovery fabric.
-// If the operation fails it returns a generic error.
-func (client *ReplicationFabricsClient) Get(ctx context.Context, fabricName string, options *ReplicationFabricsGetOptions) (ReplicationFabricsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - Fabric name.
+// options - ReplicationFabricsClientGetOptions contains the optional parameters for the ReplicationFabricsClient.Get method.
+func (client *ReplicationFabricsClient) Get(ctx context.Context, fabricName string, options *ReplicationFabricsClientGetOptions) (ReplicationFabricsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, fabricName, options)
 	if err != nil {
-		return ReplicationFabricsGetResponse{}, err
+		return ReplicationFabricsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ReplicationFabricsGetResponse{}, err
+		return ReplicationFabricsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ReplicationFabricsGetResponse{}, client.getHandleError(resp)
+		return ReplicationFabricsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ReplicationFabricsClient) getCreateRequest(ctx context.Context, fabricName string, options *ReplicationFabricsGetOptions) (*policy.Request, error) {
+func (client *ReplicationFabricsClient) getCreateRequest(ctx context.Context, fabricName string, options *ReplicationFabricsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -315,12 +303,12 @@ func (client *ReplicationFabricsClient) getCreateRequest(ctx context.Context, fa
 		return nil, errors.New("parameter fabricName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{fabricName}", url.PathEscape(fabricName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -330,42 +318,31 @@ func (client *ReplicationFabricsClient) getCreateRequest(ctx context.Context, fa
 }
 
 // getHandleResponse handles the Get response.
-func (client *ReplicationFabricsClient) getHandleResponse(resp *http.Response) (ReplicationFabricsGetResponse, error) {
-	result := ReplicationFabricsGetResponse{RawResponse: resp}
+func (client *ReplicationFabricsClient) getHandleResponse(resp *http.Response) (ReplicationFabricsClientGetResponse, error) {
+	result := ReplicationFabricsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Fabric); err != nil {
-		return ReplicationFabricsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ReplicationFabricsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ReplicationFabricsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // List - Gets a list of the Azure Site Recovery fabrics in the vault.
-// If the operation fails it returns a generic error.
-func (client *ReplicationFabricsClient) List(options *ReplicationFabricsListOptions) *ReplicationFabricsListPager {
-	return &ReplicationFabricsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - ReplicationFabricsClientListOptions contains the optional parameters for the ReplicationFabricsClient.List method.
+func (client *ReplicationFabricsClient) List(options *ReplicationFabricsClientListOptions) *ReplicationFabricsClientListPager {
+	return &ReplicationFabricsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp ReplicationFabricsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ReplicationFabricsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.FabricCollection.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ReplicationFabricsClient) listCreateRequest(ctx context.Context, options *ReplicationFabricsListOptions) (*policy.Request, error) {
+func (client *ReplicationFabricsClient) listCreateRequest(ctx context.Context, options *ReplicationFabricsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -379,61 +356,52 @@ func (client *ReplicationFabricsClient) listCreateRequest(ctx context.Context, o
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ReplicationFabricsClient) listHandleResponse(resp *http.Response) (ReplicationFabricsListResponse, error) {
-	result := ReplicationFabricsListResponse{RawResponse: resp}
+func (client *ReplicationFabricsClient) listHandleResponse(resp *http.Response) (ReplicationFabricsClientListResponse, error) {
+	result := ReplicationFabricsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FabricCollection); err != nil {
-		return ReplicationFabricsListResponse{}, runtime.NewResponseError(err, resp)
+		return ReplicationFabricsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *ReplicationFabricsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginMigrateToAAD - The operation to migrate an Azure Site Recovery fabric to AAD.
-// If the operation fails it returns a generic error.
-func (client *ReplicationFabricsClient) BeginMigrateToAAD(ctx context.Context, fabricName string, options *ReplicationFabricsBeginMigrateToAADOptions) (ReplicationFabricsMigrateToAADPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - ASR fabric to migrate.
+// options - ReplicationFabricsClientBeginMigrateToAADOptions contains the optional parameters for the ReplicationFabricsClient.BeginMigrateToAAD
+// method.
+func (client *ReplicationFabricsClient) BeginMigrateToAAD(ctx context.Context, fabricName string, options *ReplicationFabricsClientBeginMigrateToAADOptions) (ReplicationFabricsClientMigrateToAADPollerResponse, error) {
 	resp, err := client.migrateToAAD(ctx, fabricName, options)
 	if err != nil {
-		return ReplicationFabricsMigrateToAADPollerResponse{}, err
+		return ReplicationFabricsClientMigrateToAADPollerResponse{}, err
 	}
-	result := ReplicationFabricsMigrateToAADPollerResponse{
+	result := ReplicationFabricsClientMigrateToAADPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ReplicationFabricsClient.MigrateToAAD", "", resp, client.pl, client.migrateToAADHandleError)
+	pt, err := armruntime.NewPoller("ReplicationFabricsClient.MigrateToAAD", "", resp, client.pl)
 	if err != nil {
-		return ReplicationFabricsMigrateToAADPollerResponse{}, err
+		return ReplicationFabricsClientMigrateToAADPollerResponse{}, err
 	}
-	result.Poller = &ReplicationFabricsMigrateToAADPoller{
+	result.Poller = &ReplicationFabricsClientMigrateToAADPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // MigrateToAAD - The operation to migrate an Azure Site Recovery fabric to AAD.
-// If the operation fails it returns a generic error.
-func (client *ReplicationFabricsClient) migrateToAAD(ctx context.Context, fabricName string, options *ReplicationFabricsBeginMigrateToAADOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationFabricsClient) migrateToAAD(ctx context.Context, fabricName string, options *ReplicationFabricsClientBeginMigrateToAADOptions) (*http.Response, error) {
 	req, err := client.migrateToAADCreateRequest(ctx, fabricName, options)
 	if err != nil {
 		return nil, err
@@ -443,13 +411,13 @@ func (client *ReplicationFabricsClient) migrateToAAD(ctx context.Context, fabric
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.migrateToAADHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // migrateToAADCreateRequest creates the MigrateToAAD request.
-func (client *ReplicationFabricsClient) migrateToAADCreateRequest(ctx context.Context, fabricName string, options *ReplicationFabricsBeginMigrateToAADOptions) (*policy.Request, error) {
+func (client *ReplicationFabricsClient) migrateToAADCreateRequest(ctx context.Context, fabricName string, options *ReplicationFabricsClientBeginMigrateToAADOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/migratetoaad"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -467,51 +435,42 @@ func (client *ReplicationFabricsClient) migrateToAADCreateRequest(ctx context.Co
 		return nil, errors.New("parameter fabricName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{fabricName}", url.PathEscape(fabricName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
-// migrateToAADHandleError handles the MigrateToAAD error response.
-func (client *ReplicationFabricsClient) migrateToAADHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginPurge - The operation to purge(force delete) an Azure Site Recovery fabric.
-// If the operation fails it returns a generic error.
-func (client *ReplicationFabricsClient) BeginPurge(ctx context.Context, fabricName string, options *ReplicationFabricsBeginPurgeOptions) (ReplicationFabricsPurgePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - ASR fabric to purge.
+// options - ReplicationFabricsClientBeginPurgeOptions contains the optional parameters for the ReplicationFabricsClient.BeginPurge
+// method.
+func (client *ReplicationFabricsClient) BeginPurge(ctx context.Context, fabricName string, options *ReplicationFabricsClientBeginPurgeOptions) (ReplicationFabricsClientPurgePollerResponse, error) {
 	resp, err := client.purge(ctx, fabricName, options)
 	if err != nil {
-		return ReplicationFabricsPurgePollerResponse{}, err
+		return ReplicationFabricsClientPurgePollerResponse{}, err
 	}
-	result := ReplicationFabricsPurgePollerResponse{
+	result := ReplicationFabricsClientPurgePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ReplicationFabricsClient.Purge", "", resp, client.pl, client.purgeHandleError)
+	pt, err := armruntime.NewPoller("ReplicationFabricsClient.Purge", "", resp, client.pl)
 	if err != nil {
-		return ReplicationFabricsPurgePollerResponse{}, err
+		return ReplicationFabricsClientPurgePollerResponse{}, err
 	}
-	result.Poller = &ReplicationFabricsPurgePoller{
+	result.Poller = &ReplicationFabricsClientPurgePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Purge - The operation to purge(force delete) an Azure Site Recovery fabric.
-// If the operation fails it returns a generic error.
-func (client *ReplicationFabricsClient) purge(ctx context.Context, fabricName string, options *ReplicationFabricsBeginPurgeOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationFabricsClient) purge(ctx context.Context, fabricName string, options *ReplicationFabricsClientBeginPurgeOptions) (*http.Response, error) {
 	req, err := client.purgeCreateRequest(ctx, fabricName, options)
 	if err != nil {
 		return nil, err
@@ -521,13 +480,13 @@ func (client *ReplicationFabricsClient) purge(ctx context.Context, fabricName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.purgeHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // purgeCreateRequest creates the Purge request.
-func (client *ReplicationFabricsClient) purgeCreateRequest(ctx context.Context, fabricName string, options *ReplicationFabricsBeginPurgeOptions) (*policy.Request, error) {
+func (client *ReplicationFabricsClient) purgeCreateRequest(ctx context.Context, fabricName string, options *ReplicationFabricsClientBeginPurgeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -545,51 +504,43 @@ func (client *ReplicationFabricsClient) purgeCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter fabricName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{fabricName}", url.PathEscape(fabricName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
-// purgeHandleError handles the Purge error response.
-func (client *ReplicationFabricsClient) purgeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginReassociateGateway - The operation to move replications from a process server to another process server.
-// If the operation fails it returns a generic error.
-func (client *ReplicationFabricsClient) BeginReassociateGateway(ctx context.Context, fabricName string, failoverProcessServerRequest FailoverProcessServerRequest, options *ReplicationFabricsBeginReassociateGatewayOptions) (ReplicationFabricsReassociateGatewayPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - The name of the fabric containing the process server.
+// failoverProcessServerRequest - The input to the failover process server operation.
+// options - ReplicationFabricsClientBeginReassociateGatewayOptions contains the optional parameters for the ReplicationFabricsClient.BeginReassociateGateway
+// method.
+func (client *ReplicationFabricsClient) BeginReassociateGateway(ctx context.Context, fabricName string, failoverProcessServerRequest FailoverProcessServerRequest, options *ReplicationFabricsClientBeginReassociateGatewayOptions) (ReplicationFabricsClientReassociateGatewayPollerResponse, error) {
 	resp, err := client.reassociateGateway(ctx, fabricName, failoverProcessServerRequest, options)
 	if err != nil {
-		return ReplicationFabricsReassociateGatewayPollerResponse{}, err
+		return ReplicationFabricsClientReassociateGatewayPollerResponse{}, err
 	}
-	result := ReplicationFabricsReassociateGatewayPollerResponse{
+	result := ReplicationFabricsClientReassociateGatewayPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ReplicationFabricsClient.ReassociateGateway", "", resp, client.pl, client.reassociateGatewayHandleError)
+	pt, err := armruntime.NewPoller("ReplicationFabricsClient.ReassociateGateway", "", resp, client.pl)
 	if err != nil {
-		return ReplicationFabricsReassociateGatewayPollerResponse{}, err
+		return ReplicationFabricsClientReassociateGatewayPollerResponse{}, err
 	}
-	result.Poller = &ReplicationFabricsReassociateGatewayPoller{
+	result.Poller = &ReplicationFabricsClientReassociateGatewayPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // ReassociateGateway - The operation to move replications from a process server to another process server.
-// If the operation fails it returns a generic error.
-func (client *ReplicationFabricsClient) reassociateGateway(ctx context.Context, fabricName string, failoverProcessServerRequest FailoverProcessServerRequest, options *ReplicationFabricsBeginReassociateGatewayOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationFabricsClient) reassociateGateway(ctx context.Context, fabricName string, failoverProcessServerRequest FailoverProcessServerRequest, options *ReplicationFabricsClientBeginReassociateGatewayOptions) (*http.Response, error) {
 	req, err := client.reassociateGatewayCreateRequest(ctx, fabricName, failoverProcessServerRequest, options)
 	if err != nil {
 		return nil, err
@@ -599,13 +550,13 @@ func (client *ReplicationFabricsClient) reassociateGateway(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.reassociateGatewayHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // reassociateGatewayCreateRequest creates the ReassociateGateway request.
-func (client *ReplicationFabricsClient) reassociateGatewayCreateRequest(ctx context.Context, fabricName string, failoverProcessServerRequest FailoverProcessServerRequest, options *ReplicationFabricsBeginReassociateGatewayOptions) (*policy.Request, error) {
+func (client *ReplicationFabricsClient) reassociateGatewayCreateRequest(ctx context.Context, fabricName string, failoverProcessServerRequest FailoverProcessServerRequest, options *ReplicationFabricsClientBeginReassociateGatewayOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/reassociateGateway"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -623,52 +574,44 @@ func (client *ReplicationFabricsClient) reassociateGatewayCreateRequest(ctx cont
 		return nil, errors.New("parameter fabricName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{fabricName}", url.PathEscape(fabricName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, failoverProcessServerRequest)
 }
 
-// reassociateGatewayHandleError handles the ReassociateGateway error response.
-func (client *ReplicationFabricsClient) reassociateGatewayHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginRenewCertificate - Renews the connection certificate for the ASR replication fabric.
-// If the operation fails it returns a generic error.
-func (client *ReplicationFabricsClient) BeginRenewCertificate(ctx context.Context, fabricName string, renewCertificate RenewCertificateInput, options *ReplicationFabricsBeginRenewCertificateOptions) (ReplicationFabricsRenewCertificatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - fabric name to renew certs for.
+// renewCertificate - Renew certificate input.
+// options - ReplicationFabricsClientBeginRenewCertificateOptions contains the optional parameters for the ReplicationFabricsClient.BeginRenewCertificate
+// method.
+func (client *ReplicationFabricsClient) BeginRenewCertificate(ctx context.Context, fabricName string, renewCertificate RenewCertificateInput, options *ReplicationFabricsClientBeginRenewCertificateOptions) (ReplicationFabricsClientRenewCertificatePollerResponse, error) {
 	resp, err := client.renewCertificate(ctx, fabricName, renewCertificate, options)
 	if err != nil {
-		return ReplicationFabricsRenewCertificatePollerResponse{}, err
+		return ReplicationFabricsClientRenewCertificatePollerResponse{}, err
 	}
-	result := ReplicationFabricsRenewCertificatePollerResponse{
+	result := ReplicationFabricsClientRenewCertificatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ReplicationFabricsClient.RenewCertificate", "", resp, client.pl, client.renewCertificateHandleError)
+	pt, err := armruntime.NewPoller("ReplicationFabricsClient.RenewCertificate", "", resp, client.pl)
 	if err != nil {
-		return ReplicationFabricsRenewCertificatePollerResponse{}, err
+		return ReplicationFabricsClientRenewCertificatePollerResponse{}, err
 	}
-	result.Poller = &ReplicationFabricsRenewCertificatePoller{
+	result.Poller = &ReplicationFabricsClientRenewCertificatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // RenewCertificate - Renews the connection certificate for the ASR replication fabric.
-// If the operation fails it returns a generic error.
-func (client *ReplicationFabricsClient) renewCertificate(ctx context.Context, fabricName string, renewCertificate RenewCertificateInput, options *ReplicationFabricsBeginRenewCertificateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationFabricsClient) renewCertificate(ctx context.Context, fabricName string, renewCertificate RenewCertificateInput, options *ReplicationFabricsClientBeginRenewCertificateOptions) (*http.Response, error) {
 	req, err := client.renewCertificateCreateRequest(ctx, fabricName, renewCertificate, options)
 	if err != nil {
 		return nil, err
@@ -678,13 +621,13 @@ func (client *ReplicationFabricsClient) renewCertificate(ctx context.Context, fa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.renewCertificateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // renewCertificateCreateRequest creates the RenewCertificate request.
-func (client *ReplicationFabricsClient) renewCertificateCreateRequest(ctx context.Context, fabricName string, renewCertificate RenewCertificateInput, options *ReplicationFabricsBeginRenewCertificateOptions) (*policy.Request, error) {
+func (client *ReplicationFabricsClient) renewCertificateCreateRequest(ctx context.Context, fabricName string, renewCertificate RenewCertificateInput, options *ReplicationFabricsClientBeginRenewCertificateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/renewCertificate"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -702,25 +645,13 @@ func (client *ReplicationFabricsClient) renewCertificateCreateRequest(ctx contex
 		return nil, errors.New("parameter fabricName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{fabricName}", url.PathEscape(fabricName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, renewCertificate)
-}
-
-// renewCertificateHandleError handles the RenewCertificate error response.
-func (client *ReplicationFabricsClient) renewCertificateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

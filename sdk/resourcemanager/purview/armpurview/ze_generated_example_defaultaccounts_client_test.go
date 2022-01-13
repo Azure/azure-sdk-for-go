@@ -25,13 +25,14 @@ func ExampleDefaultAccountsClient_Get() {
 	}
 	ctx := context.Background()
 	client := armpurview.NewDefaultAccountsClient(cred, nil)
-	_, err = client.Get(ctx,
+	res, err := client.Get(ctx,
 		"<scope-tenant-id>",
-		armpurview.ScopeTypeTenant,
-		&armpurview.DefaultAccountsGetOptions{Scope: to.StringPtr("<scope>")})
+		armpurview.ScopeType("Tenant"),
+		&armpurview.DefaultAccountsClientGetOptions{Scope: to.StringPtr("<scope>")})
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.DefaultAccountsClientGetResult)
 }
 
 // x-ms-original-file: specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/DefaultAccounts_Set.json
@@ -42,19 +43,20 @@ func ExampleDefaultAccountsClient_Set() {
 	}
 	ctx := context.Background()
 	client := armpurview.NewDefaultAccountsClient(cred, nil)
-	_, err = client.Set(ctx,
+	res, err := client.Set(ctx,
 		armpurview.DefaultAccountPayload{
 			AccountName:       to.StringPtr("<account-name>"),
 			ResourceGroupName: to.StringPtr("<resource-group-name>"),
 			Scope:             to.StringPtr("<scope>"),
 			ScopeTenantID:     to.StringPtr("<scope-tenant-id>"),
-			ScopeType:         armpurview.ScopeTypeTenant.ToPtr(),
+			ScopeType:         armpurview.ScopeType("Tenant").ToPtr(),
 			SubscriptionID:    to.StringPtr("<subscription-id>"),
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.DefaultAccountsClientSetResult)
 }
 
 // x-ms-original-file: specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/DefaultAccounts_Remove.json
@@ -67,8 +69,8 @@ func ExampleDefaultAccountsClient_Remove() {
 	client := armpurview.NewDefaultAccountsClient(cred, nil)
 	_, err = client.Remove(ctx,
 		"<scope-tenant-id>",
-		armpurview.ScopeTypeTenant,
-		&armpurview.DefaultAccountsRemoveOptions{Scope: to.StringPtr("<scope>")})
+		armpurview.ScopeType("Tenant"),
+		&armpurview.DefaultAccountsClientRemoveOptions{Scope: to.StringPtr("<scope>")})
 	if err != nil {
 		log.Fatal(err)
 	}

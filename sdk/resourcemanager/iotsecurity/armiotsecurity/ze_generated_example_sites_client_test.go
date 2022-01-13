@@ -25,12 +25,13 @@ func ExampleSitesClient_List() {
 	}
 	ctx := context.Background()
 	client := armiotsecurity.NewSitesClient(cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<scope>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.SitesClientListResult)
 }
 
 // x-ms-original-file: specification/iotsecurity/resource-manager/Microsoft.IoTSecurity/preview/2021-02-01-preview/examples/Sites/Get.json
@@ -47,7 +48,7 @@ func ExampleSitesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SiteModel.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SitesClientGetResult)
 }
 
 // x-ms-original-file: specification/iotsecurity/resource-manager/Microsoft.IoTSecurity/preview/2021-02-01-preview/examples/Sites/Put.json
@@ -73,7 +74,7 @@ func ExampleSitesClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SiteModel.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SitesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/iotsecurity/resource-manager/Microsoft.IoTSecurity/preview/2021-02-01-preview/examples/Sites/Delete.json

@@ -11,6 +11,7 @@ package armcontainerservice_test
 import (
 	"context"
 	"log"
+
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -18,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice"
 )
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/MaintenanceConfigurationsList.json
+// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/MaintenanceConfigurationsList.json
 func ExampleMaintenanceConfigurationsClient_ListByManagedCluster() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,17 +30,21 @@ func ExampleMaintenanceConfigurationsClient_ListByManagedCluster() {
 	pager := client.ListByManagedCluster("<resource-group-name>",
 		"<resource-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("MaintenanceConfiguration.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/MaintenanceConfigurationsGet.json
+// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/MaintenanceConfigurationsGet.json
 func ExampleMaintenanceConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,10 +60,10 @@ func ExampleMaintenanceConfigurationsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MaintenanceConfiguration.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MaintenanceConfigurationsClientGetResult)
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/MaintenanceConfigurationsCreate_Update.json
+// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/MaintenanceConfigurationsCreate_Update.json
 func ExampleMaintenanceConfigurationsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,7 +84,7 @@ func ExampleMaintenanceConfigurationsClient_CreateOrUpdate() {
 					}},
 				TimeInWeek: []*armcontainerservice.TimeInWeek{
 					{
-						Day: armcontainerservice.WeekDayMonday.ToPtr(),
+						Day: armcontainerservice.WeekDay("Monday").ToPtr(),
 						HourSlots: []*int32{
 							to.Int32Ptr(1),
 							to.Int32Ptr(2)},
@@ -90,10 +95,10 @@ func ExampleMaintenanceConfigurationsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MaintenanceConfiguration.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MaintenanceConfigurationsClientCreateOrUpdateResult)
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/MaintenanceConfigurationsDelete.json
+// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/MaintenanceConfigurationsDelete.json
 func ExampleMaintenanceConfigurationsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

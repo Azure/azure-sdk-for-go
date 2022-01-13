@@ -24,42 +24,54 @@ import (
 // GatewaysClient contains the methods for the Gateways group.
 // Don't use this type directly, use NewGatewaysClient() instead.
 type GatewaysClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewGatewaysClient creates a new instance of GatewaysClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewGatewaysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *GatewaysClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &GatewaysClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &GatewaysClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Delete - Delete a Log Analytics gateway.
-// If the operation fails it returns a generic error.
-func (client *GatewaysClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, gatewayID string, options *GatewaysDeleteOptions) (GatewaysDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// gatewayID - The Log Analytics gateway Id.
+// options - GatewaysClientDeleteOptions contains the optional parameters for the GatewaysClient.Delete method.
+func (client *GatewaysClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, gatewayID string, options *GatewaysClientDeleteOptions) (GatewaysClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, gatewayID, options)
 	if err != nil {
-		return GatewaysDeleteResponse{}, err
+		return GatewaysClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return GatewaysDeleteResponse{}, err
+		return GatewaysClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return GatewaysDeleteResponse{}, client.deleteHandleError(resp)
+		return GatewaysClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return GatewaysDeleteResponse{RawResponse: resp}, nil
+	return GatewaysClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *GatewaysClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, gatewayID string, options *GatewaysDeleteOptions) (*policy.Request, error) {
+func (client *GatewaysClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, gatewayID string, options *GatewaysClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/gateways/{gatewayId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -77,7 +89,7 @@ func (client *GatewaysClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter gatewayID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{gatewayId}", url.PathEscape(gatewayID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -85,16 +97,4 @@ func (client *GatewaysClient) deleteCreateRequest(ctx context.Context, resourceG
 	reqQP.Set("api-version", "2020-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
-}
-
-// deleteHandleError handles the Delete error response.
-func (client *GatewaysClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

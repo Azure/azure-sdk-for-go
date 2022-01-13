@@ -29,13 +29,17 @@ func ExamplePrivateEndpointConnectionsClient_ListByAccount() {
 	client := armpurview.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
 	pager := client.ListByAccount("<resource-group-name>",
 		"<account-name>",
-		&armpurview.PrivateEndpointConnectionsListByAccountOptions{SkipToken: nil})
-	for pager.NextPage(ctx) {
+		&armpurview.PrivateEndpointConnectionsClientListByAccountOptions{SkipToken: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("PrivateEndpointConnection.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -56,7 +60,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateEndpointConnection.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateEndpointConnectionsClientGetResult)
 }
 
 // x-ms-original-file: specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/PrivateEndpointConnections_CreateOrUpdate.json
@@ -75,7 +79,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 			Properties: &armpurview.PrivateEndpointConnectionProperties{
 				PrivateLinkServiceConnectionState: &armpurview.PrivateLinkServiceConnectionState{
 					Description: to.StringPtr("<description>"),
-					Status:      armpurview.StatusApproved.ToPtr(),
+					Status:      armpurview.Status("Approved").ToPtr(),
 				},
 			},
 		},
@@ -87,7 +91,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateEndpointConnection.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateEndpointConnectionsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/PrivateEndpointConnections_Delete.json

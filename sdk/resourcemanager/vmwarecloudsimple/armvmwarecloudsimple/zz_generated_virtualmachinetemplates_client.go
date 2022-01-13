@@ -11,7 +11,6 @@ package armvmwarecloudsimple
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // VirtualMachineTemplatesClient contains the methods for the VirtualMachineTemplates group.
 // Don't use this type directly, use NewVirtualMachineTemplatesClient() instead.
 type VirtualMachineTemplatesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewVirtualMachineTemplatesClient creates a new instance of VirtualMachineTemplatesClient with the specified values.
+// subscriptionID - The subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewVirtualMachineTemplatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VirtualMachineTemplatesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &VirtualMachineTemplatesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &VirtualMachineTemplatesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Returns virtual machine templates by its name
-// If the operation fails it returns the *CSRPError error type.
-func (client *VirtualMachineTemplatesClient) Get(ctx context.Context, regionID string, pcName string, virtualMachineTemplateName string, options *VirtualMachineTemplatesGetOptions) (VirtualMachineTemplatesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// regionID - The region Id (westus, eastus)
+// pcName - The private cloud name
+// virtualMachineTemplateName - virtual machine template id (vsphereId)
+// options - VirtualMachineTemplatesClientGetOptions contains the optional parameters for the VirtualMachineTemplatesClient.Get
+// method.
+func (client *VirtualMachineTemplatesClient) Get(ctx context.Context, regionID string, pcName string, virtualMachineTemplateName string, options *VirtualMachineTemplatesClientGetOptions) (VirtualMachineTemplatesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, regionID, pcName, virtualMachineTemplateName, options)
 	if err != nil {
-		return VirtualMachineTemplatesGetResponse{}, err
+		return VirtualMachineTemplatesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VirtualMachineTemplatesGetResponse{}, err
+		return VirtualMachineTemplatesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return VirtualMachineTemplatesGetResponse{}, client.getHandleError(resp)
+		return VirtualMachineTemplatesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *VirtualMachineTemplatesClient) getCreateRequest(ctx context.Context, regionID string, pcName string, virtualMachineTemplateName string, options *VirtualMachineTemplatesGetOptions) (*policy.Request, error) {
+func (client *VirtualMachineTemplatesClient) getCreateRequest(ctx context.Context, regionID string, pcName string, virtualMachineTemplateName string, options *VirtualMachineTemplatesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.VMwareCloudSimple/locations/{regionId}/privateClouds/{pcName}/virtualMachineTemplates/{virtualMachineTemplateName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +90,7 @@ func (client *VirtualMachineTemplatesClient) getCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter virtualMachineTemplateName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{virtualMachineTemplateName}", url.PathEscape(virtualMachineTemplateName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,43 +102,35 @@ func (client *VirtualMachineTemplatesClient) getCreateRequest(ctx context.Contex
 }
 
 // getHandleResponse handles the Get response.
-func (client *VirtualMachineTemplatesClient) getHandleResponse(resp *http.Response) (VirtualMachineTemplatesGetResponse, error) {
-	result := VirtualMachineTemplatesGetResponse{RawResponse: resp}
+func (client *VirtualMachineTemplatesClient) getHandleResponse(resp *http.Response) (VirtualMachineTemplatesClientGetResponse, error) {
+	result := VirtualMachineTemplatesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineTemplate); err != nil {
-		return VirtualMachineTemplatesGetResponse{}, runtime.NewResponseError(err, resp)
+		return VirtualMachineTemplatesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *VirtualMachineTemplatesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CSRPError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Returns list of virtual machine templates in region for private cloud
-// If the operation fails it returns the *CSRPError error type.
-func (client *VirtualMachineTemplatesClient) List(pcName string, regionID string, resourcePoolName string, options *VirtualMachineTemplatesListOptions) *VirtualMachineTemplatesListPager {
-	return &VirtualMachineTemplatesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// pcName - The private cloud name
+// regionID - The region Id (westus, eastus)
+// resourcePoolName - Resource pool used to derive vSphere cluster which contains VM templates
+// options - VirtualMachineTemplatesClientListOptions contains the optional parameters for the VirtualMachineTemplatesClient.List
+// method.
+func (client *VirtualMachineTemplatesClient) List(pcName string, regionID string, resourcePoolName string, options *VirtualMachineTemplatesClientListOptions) *VirtualMachineTemplatesClientListPager {
+	return &VirtualMachineTemplatesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, pcName, regionID, resourcePoolName, options)
 		},
-		advancer: func(ctx context.Context, resp VirtualMachineTemplatesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp VirtualMachineTemplatesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.VirtualMachineTemplateListResponse.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *VirtualMachineTemplatesClient) listCreateRequest(ctx context.Context, pcName string, regionID string, resourcePoolName string, options *VirtualMachineTemplatesListOptions) (*policy.Request, error) {
+func (client *VirtualMachineTemplatesClient) listCreateRequest(ctx context.Context, pcName string, regionID string, resourcePoolName string, options *VirtualMachineTemplatesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.VMwareCloudSimple/locations/{regionId}/privateClouds/{pcName}/virtualMachineTemplates"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -140,7 +144,7 @@ func (client *VirtualMachineTemplatesClient) listCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter regionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{regionId}", url.PathEscape(regionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -153,23 +157,10 @@ func (client *VirtualMachineTemplatesClient) listCreateRequest(ctx context.Conte
 }
 
 // listHandleResponse handles the List response.
-func (client *VirtualMachineTemplatesClient) listHandleResponse(resp *http.Response) (VirtualMachineTemplatesListResponse, error) {
-	result := VirtualMachineTemplatesListResponse{RawResponse: resp}
+func (client *VirtualMachineTemplatesClient) listHandleResponse(resp *http.Response) (VirtualMachineTemplatesClientListResponse, error) {
+	result := VirtualMachineTemplatesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineTemplateListResponse); err != nil {
-		return VirtualMachineTemplatesListResponse{}, runtime.NewResponseError(err, resp)
+		return VirtualMachineTemplatesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *VirtualMachineTemplatesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CSRPError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

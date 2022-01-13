@@ -24,10 +24,11 @@ func ExampleLocationBasedPerformanceTierClient_List() {
 	}
 	ctx := context.Background()
 	client := armmariadb.NewLocationBasedPerformanceTierClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<location-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.LocationBasedPerformanceTierClientListResult)
 }

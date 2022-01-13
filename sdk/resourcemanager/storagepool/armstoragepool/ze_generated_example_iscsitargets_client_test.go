@@ -30,12 +30,16 @@ func ExampleIscsiTargetsClient_ListByDiskPool() {
 	pager := client.ListByDiskPool("<resource-group-name>",
 		"<disk-pool-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("IscsiTarget.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -54,7 +58,7 @@ func ExampleIscsiTargetsClient_BeginCreateOrUpdate() {
 		"<iscsi-target-name>",
 		armstoragepool.IscsiTargetCreate{
 			Properties: &armstoragepool.IscsiTargetCreateProperties{
-				ACLMode: armstoragepool.IscsiTargetACLModeDynamic.ToPtr(),
+				ACLMode: armstoragepool.IscsiTargetACLMode("Dynamic").ToPtr(),
 				Luns: []*armstoragepool.IscsiLun{
 					{
 						Name:                       to.StringPtr("<name>"),
@@ -71,7 +75,7 @@ func ExampleIscsiTargetsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("IscsiTarget.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.IscsiTargetsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/storagepool/resource-manager/Microsoft.StoragePool/stable/2021-08-01/examples/IscsiTargets_Patch.json
@@ -109,7 +113,7 @@ func ExampleIscsiTargetsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("IscsiTarget.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.IscsiTargetsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/storagepool/resource-manager/Microsoft.StoragePool/stable/2021-08-01/examples/IscsiTargets_Delete.json
@@ -150,5 +154,5 @@ func ExampleIscsiTargetsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("IscsiTarget.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.IscsiTargetsClientGetResult)
 }

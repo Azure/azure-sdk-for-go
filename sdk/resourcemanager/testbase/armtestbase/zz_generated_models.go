@@ -15,7 +15,250 @@ import (
 	"time"
 )
 
-// AnalysisResultListResult - A list of Analysis Results. It will only contain one element as all the data will be nested in a singleton object.
+// AccountListResult - A list of Test Base Accounts.
+type AccountListResult struct {
+	// The list of Test Base Accounts.
+	Value []*AccountResource `json:"value,omitempty"`
+
+	// READ-ONLY; Link to the next set of results. Not empty if value contains incomplete list of results.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AccountListResult.
+func (a AccountListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", a.NextLink)
+	populate(objectMap, "value", a.Value)
+	return json.Marshal(objectMap)
+}
+
+// AccountResource - The Test Base Account resource.
+type AccountResource struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
+	// Properties of a Test Base Account.
+	Properties *AccountResourceProperties `json:"properties,omitempty"`
+
+	// The tags of the resource.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Etag.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The system metadata relating to this resource
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AccountResource.
+func (a AccountResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "etag", a.Etag)
+	populate(objectMap, "id", a.ID)
+	populate(objectMap, "location", a.Location)
+	populate(objectMap, "name", a.Name)
+	populate(objectMap, "properties", a.Properties)
+	populate(objectMap, "systemData", a.SystemData)
+	populate(objectMap, "tags", a.Tags)
+	populate(objectMap, "type", a.Type)
+	return json.Marshal(objectMap)
+}
+
+// AccountResourceProperties - The properties of a Test Base Account resource.
+type AccountResourceProperties struct {
+	// REQUIRED; The SKU of the Test Base Account.
+	SKU *AccountSKU `json:"sku,omitempty"`
+
+	// READ-ONLY; The access level of the Test Base Account.
+	AccessLevel *string `json:"accessLevel,omitempty" azure:"ro"`
+
+	// READ-ONLY; The provisioning state of the resource.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// AccountSKU - Describes a Test Base Account SKU.
+type AccountSKU struct {
+	// REQUIRED; The name of the SKU. This is typically a letter + number code, such as B0 or S0.
+	Name *string `json:"name,omitempty"`
+
+	// REQUIRED; The tier of this particular SKU.
+	Tier *Tier `json:"tier,omitempty"`
+
+	// The locations that the SKU is available.
+	Locations []*string `json:"locations,omitempty"`
+
+	// The type of resource the SKU applies to.
+	ResourceType *string `json:"resourceType,omitempty"`
+
+	// READ-ONLY; The capabilities of a SKU.
+	Capabilities []*AccountSKUCapability `json:"capabilities,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AccountSKU.
+func (a AccountSKU) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "capabilities", a.Capabilities)
+	populate(objectMap, "locations", a.Locations)
+	populate(objectMap, "name", a.Name)
+	populate(objectMap, "resourceType", a.ResourceType)
+	populate(objectMap, "tier", a.Tier)
+	return json.Marshal(objectMap)
+}
+
+// AccountSKUCapability - Properties of the Test Base Account SKU Capability.
+type AccountSKUCapability struct {
+	// REQUIRED; An invariant to describe the feature, such as 'SLA'.
+	Name *string `json:"name,omitempty"`
+
+	// REQUIRED; An invariant if the feature is measured by quantity, such as 99.9%.
+	Value *string `json:"value,omitempty"`
+}
+
+// AccountSKUListResult - A list of Test Base Account SKUs.
+type AccountSKUListResult struct {
+	// The list of Test Base Account SKUs.
+	Value []*AccountSKU `json:"value,omitempty"`
+
+	// READ-ONLY; Link to the next set of results. Not empty if value contains incomplete list of results.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AccountSKUListResult.
+func (a AccountSKUListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", a.NextLink)
+	populate(objectMap, "value", a.Value)
+	return json.Marshal(objectMap)
+}
+
+// AccountUpdateParameterProperties - Parameters supplied to update a Test Base Account.
+type AccountUpdateParameterProperties struct {
+	// The SKU of the Test Base Account.
+	SKU *AccountSKU `json:"sku,omitempty"`
+}
+
+// AccountUpdateParameters - Parameters supplied to update a Test Base Account.
+type AccountUpdateParameters struct {
+	// Test Base Account update parameters.
+	Properties *AccountUpdateParameterProperties `json:"properties,omitempty"`
+
+	// The tags of the Test Base Account.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AccountUpdateParameters.
+func (a AccountUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "properties", a.Properties)
+	populate(objectMap, "tags", a.Tags)
+	return json.Marshal(objectMap)
+}
+
+// AccountUsageData - The usage data of a Test Base Account.
+type AccountUsageData struct {
+	// Current value for the usage quota.
+	CurrentValue *int64 `json:"currentValue,omitempty"`
+
+	// Fully qualified ARM resource id
+	ID *string `json:"id,omitempty"`
+
+	// The maximum permitted value for the usage quota. If there is no limit, this value will be -1.
+	Limit *int64 `json:"limit,omitempty"`
+
+	// Localizable String object containing the name and a localized value.
+	Name *AccountUsageName `json:"name,omitempty"`
+
+	// Representing the units of the usage quota. Possible values are: Count, Bytes, Seconds, Percent, CountPerSecond, BytesPerSecond.
+	Unit *string `json:"unit,omitempty"`
+}
+
+// AccountUsageDataList - A list of Test Base Account usage data.
+type AccountUsageDataList struct {
+	// The list of Test Base Account usage data.
+	Value []*AccountUsageData `json:"value,omitempty"`
+
+	// READ-ONLY; Link to the next set of results. Not empty if value contains incomplete list of results.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AccountUsageDataList.
+func (a AccountUsageDataList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", a.NextLink)
+	populate(objectMap, "value", a.Value)
+	return json.Marshal(objectMap)
+}
+
+// AccountUsageName - Localizable String object containing the name and a localized value.
+type AccountUsageName struct {
+	// Localized name of the usage.
+	LocalizedValue *string `json:"localizedValue,omitempty"`
+
+	// The identifier of the usage.
+	Value *string `json:"value,omitempty"`
+}
+
+// AccountsClientBeginCreateOptions contains the optional parameters for the AccountsClient.BeginCreate method.
+type AccountsClientBeginCreateOptions struct {
+	// The flag indicating if we would like to restore the Test Base Accounts which were soft deleted before.
+	Restore *bool
+}
+
+// AccountsClientBeginDeleteOptions contains the optional parameters for the AccountsClient.BeginDelete method.
+type AccountsClientBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccountsClientBeginOffboardOptions contains the optional parameters for the AccountsClient.BeginOffboard method.
+type AccountsClientBeginOffboardOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccountsClientBeginUpdateOptions contains the optional parameters for the AccountsClient.BeginUpdate method.
+type AccountsClientBeginUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccountsClientCheckPackageNameAvailabilityOptions contains the optional parameters for the AccountsClient.CheckPackageNameAvailability
+// method.
+type AccountsClientCheckPackageNameAvailabilityOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccountsClientGetFileUploadURLOptions contains the optional parameters for the AccountsClient.GetFileUploadURL method.
+type AccountsClientGetFileUploadURLOptions struct {
+	// Parameters supplied to the Test Base Account GetFileUploadURL operation.
+	Parameters *GetFileUploadURLParameters
+}
+
+// AccountsClientGetOptions contains the optional parameters for the AccountsClient.Get method.
+type AccountsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccountsClientListByResourceGroupOptions contains the optional parameters for the AccountsClient.ListByResourceGroup method.
+type AccountsClientListByResourceGroupOptions struct {
+	// The flag indicating if we need to include the Test Base Accounts which were soft deleted before.
+	GetDeleted *bool
+}
+
+// AccountsClientListBySubscriptionOptions contains the optional parameters for the AccountsClient.ListBySubscription method.
+type AccountsClientListBySubscriptionOptions struct {
+	// The flag indicating if we need to include the Test Base Accounts which were soft deleted before.
+	GetDeleted *bool
+}
+
+// AnalysisResultListResult - A list of Analysis Results. It will only contain one element as all the data will be nested
+// in a singleton object.
 type AnalysisResultListResult struct {
 	// The list of Analysis Results.
 	Value []*AnalysisResultSingletonResource `json:"value,omitempty"`
@@ -34,20 +277,30 @@ func (a AnalysisResultListResult) MarshalJSON() ([]byte, error) {
 
 // AnalysisResultSingletonResource - The Analysis Result Singleton Resource.
 type AnalysisResultSingletonResource struct {
-	ProxyResource
 	// Properties of an Analysis Result.
 	Properties AnalysisResultSingletonResourcePropertiesClassification `json:"properties,omitempty"`
 
+	// READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system metadata relating to this resource
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AnalysisResultSingletonResource.
 func (a AnalysisResultSingletonResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.ProxyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", a.ID)
+	populate(objectMap, "name", a.Name)
 	populate(objectMap, "properties", a.Properties)
 	populate(objectMap, "systemData", a.SystemData)
+	populate(objectMap, "type", a.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -60,19 +313,25 @@ func (a *AnalysisResultSingletonResource) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "id":
+			err = unpopulate(val, &a.ID)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &a.Name)
+			delete(rawMsg, key)
 		case "properties":
 			a.Properties, err = unmarshalAnalysisResultSingletonResourcePropertiesClassification(val)
 			delete(rawMsg, key)
 		case "systemData":
 			err = unpopulate(val, &a.SystemData)
 			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &a.Type)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := a.ProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -97,61 +356,29 @@ type AnalysisResultSingletonResourceProperties struct {
 	Grade *Grade `json:"grade,omitempty"`
 }
 
-// GetAnalysisResultSingletonResourceProperties implements the AnalysisResultSingletonResourcePropertiesClassification interface for type AnalysisResultSingletonResourceProperties.
+// GetAnalysisResultSingletonResourceProperties implements the AnalysisResultSingletonResourcePropertiesClassification interface
+// for type AnalysisResultSingletonResourceProperties.
 func (a *AnalysisResultSingletonResourceProperties) GetAnalysisResultSingletonResourceProperties() *AnalysisResultSingletonResourceProperties {
 	return a
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AnalysisResultSingletonResourceProperties.
-func (a *AnalysisResultSingletonResourceProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return a.unmarshalInternal(rawMsg)
-}
-
-func (a AnalysisResultSingletonResourceProperties) marshalInternal(objectMap map[string]interface{}, discValue AnalysisResultType) {
-	a.AnalysisResultType = &discValue
-	objectMap["analysisResultType"] = a.AnalysisResultType
-	populate(objectMap, "grade", a.Grade)
-}
-
-func (a *AnalysisResultSingletonResourceProperties) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "analysisResultType":
-			err = unpopulate(val, &a.AnalysisResultType)
-			delete(rawMsg, key)
-		case "grade":
-			err = unpopulate(val, &a.Grade)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// AnalysisResultsGetOptions contains the optional parameters for the AnalysisResults.Get method.
-type AnalysisResultsGetOptions struct {
+// AnalysisResultsClientGetOptions contains the optional parameters for the AnalysisResultsClient.Get method.
+type AnalysisResultsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AnalysisResultsListOptions contains the optional parameters for the AnalysisResults.List method.
-type AnalysisResultsListOptions struct {
+// AnalysisResultsClientListOptions contains the optional parameters for the AnalysisResultsClient.List method.
+type AnalysisResultsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AvailableOSGetOptions contains the optional parameters for the AvailableOS.Get method.
-type AvailableOSGetOptions struct {
+// AvailableOSClientGetOptions contains the optional parameters for the AvailableOSClient.Get method.
+type AvailableOSClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AvailableOSListOptions contains the optional parameters for the AvailableOS.List method.
-type AvailableOSListOptions struct {
+// AvailableOSClientListOptions contains the optional parameters for the AvailableOSClient.List method.
+type AvailableOSClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -195,61 +422,49 @@ type AvailableOSProperties struct {
 
 // AvailableOSResource - The Available OS resource.
 type AvailableOSResource struct {
-	ProxyResource
 	// Available OS properties.
 	Properties *AvailableOSProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system metadata relating to this resource
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type AvailableOSResource.
-func (a AvailableOSResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "systemData", a.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AvailableOSResource.
-func (a *AvailableOSResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &a.SystemData)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := a.ProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // CPURegressionResultSingletonResourceProperties - The properties of CPU Regression Result.
 type CPURegressionResultSingletonResourceProperties struct {
-	AnalysisResultSingletonResourceProperties
+	// REQUIRED; Type of the Analysis Result.
+	AnalysisResultType *AnalysisResultType `json:"analysisResultType,omitempty"`
+
 	// The result array data.
 	CPURegressionResults []*RegressionResult `json:"cpuRegressionResults,omitempty"`
+
+	// The grade of the test.
+	Grade *Grade `json:"grade,omitempty"`
+}
+
+// GetAnalysisResultSingletonResourceProperties implements the AnalysisResultSingletonResourcePropertiesClassification interface
+// for type CPURegressionResultSingletonResourceProperties.
+func (c *CPURegressionResultSingletonResourceProperties) GetAnalysisResultSingletonResourceProperties() *AnalysisResultSingletonResourceProperties {
+	return &AnalysisResultSingletonResourceProperties{
+		Grade:              c.Grade,
+		AnalysisResultType: c.AnalysisResultType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type CPURegressionResultSingletonResourceProperties.
 func (c CPURegressionResultSingletonResourceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.AnalysisResultSingletonResourceProperties.marshalInternal(objectMap, AnalysisResultTypeCPURegression)
+	objectMap["analysisResultType"] = AnalysisResultTypeCPURegression
 	populate(objectMap, "cpuRegressionResults", c.CPURegressionResults)
+	populate(objectMap, "grade", c.Grade)
 	return json.Marshal(objectMap)
 }
 
@@ -262,32 +477,50 @@ func (c *CPURegressionResultSingletonResourceProperties) UnmarshalJSON(data []by
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "analysisResultType":
+			err = unpopulate(val, &c.AnalysisResultType)
+			delete(rawMsg, key)
 		case "cpuRegressionResults":
 			err = unpopulate(val, &c.CPURegressionResults)
+			delete(rawMsg, key)
+		case "grade":
+			err = unpopulate(val, &c.Grade)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := c.AnalysisResultSingletonResourceProperties.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // CPUUtilizationResultSingletonResourceProperties - The properties of CPU Utilization Result.
 type CPUUtilizationResultSingletonResourceProperties struct {
-	AnalysisResultSingletonResourceProperties
+	// REQUIRED; Type of the Analysis Result.
+	AnalysisResultType *AnalysisResultType `json:"analysisResultType,omitempty"`
+
 	// The result array data.
 	CPUUtilizationResults []*UtilizationResult `json:"cpuUtilizationResults,omitempty"`
+
+	// The grade of the test.
+	Grade *Grade `json:"grade,omitempty"`
+}
+
+// GetAnalysisResultSingletonResourceProperties implements the AnalysisResultSingletonResourcePropertiesClassification interface
+// for type CPUUtilizationResultSingletonResourceProperties.
+func (c *CPUUtilizationResultSingletonResourceProperties) GetAnalysisResultSingletonResourceProperties() *AnalysisResultSingletonResourceProperties {
+	return &AnalysisResultSingletonResourceProperties{
+		Grade:              c.Grade,
+		AnalysisResultType: c.AnalysisResultType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type CPUUtilizationResultSingletonResourceProperties.
 func (c CPUUtilizationResultSingletonResourceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.AnalysisResultSingletonResourceProperties.marshalInternal(objectMap, AnalysisResultTypeCPUUtilization)
+	objectMap["analysisResultType"] = AnalysisResultTypeCPUUtilization
 	populate(objectMap, "cpuUtilizationResults", c.CPUUtilizationResults)
+	populate(objectMap, "grade", c.Grade)
 	return json.Marshal(objectMap)
 }
 
@@ -300,16 +533,19 @@ func (c *CPUUtilizationResultSingletonResourceProperties) UnmarshalJSON(data []b
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "analysisResultType":
+			err = unpopulate(val, &c.AnalysisResultType)
+			delete(rawMsg, key)
 		case "cpuUtilizationResults":
 			err = unpopulate(val, &c.CPUUtilizationResults)
+			delete(rawMsg, key)
+		case "grade":
+			err = unpopulate(val, &c.Grade)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := c.AnalysisResultSingletonResourceProperties.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -395,66 +631,40 @@ func (c CustomerEventProperties) MarshalJSON() ([]byte, error) {
 
 // CustomerEventResource - The Customer Notification Event resource.
 type CustomerEventResource struct {
-	ProxyResource
 	// Customer Notification Event properties.
 	Properties *CustomerEventProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system metadata relating to this resource
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CustomerEventResource.
-func (c CustomerEventResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	c.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", c.Properties)
-	populate(objectMap, "systemData", c.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type CustomerEventResource.
-func (c *CustomerEventResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &c.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &c.SystemData)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := c.ProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// CustomerEventsBeginCreateOptions contains the optional parameters for the CustomerEvents.BeginCreate method.
-type CustomerEventsBeginCreateOptions struct {
+// CustomerEventsClientBeginCreateOptions contains the optional parameters for the CustomerEventsClient.BeginCreate method.
+type CustomerEventsClientBeginCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CustomerEventsBeginDeleteOptions contains the optional parameters for the CustomerEvents.BeginDelete method.
-type CustomerEventsBeginDeleteOptions struct {
+// CustomerEventsClientBeginDeleteOptions contains the optional parameters for the CustomerEventsClient.BeginDelete method.
+type CustomerEventsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CustomerEventsGetOptions contains the optional parameters for the CustomerEvents.Get method.
-type CustomerEventsGetOptions struct {
+// CustomerEventsClientGetOptions contains the optional parameters for the CustomerEventsClient.Get method.
+type CustomerEventsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CustomerEventsListByTestBaseAccountOptions contains the optional parameters for the CustomerEvents.ListByTestBaseAccount method.
-type CustomerEventsListByTestBaseAccountOptions struct {
+// CustomerEventsClientListByTestBaseAccountOptions contains the optional parameters for the CustomerEventsClient.ListByTestBaseAccount
+// method.
+type CustomerEventsClientListByTestBaseAccountOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -542,56 +752,29 @@ type EmailEventProperties struct {
 
 // EmailEventResource - The email event resource.
 type EmailEventResource struct {
-	ProxyResource
 	// Email Event properties.
 	Properties *EmailEventProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system metadata relating to this resource
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type EmailEventResource.
-func (e EmailEventResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	e.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", e.Properties)
-	populate(objectMap, "systemData", e.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EmailEventResource.
-func (e *EmailEventResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &e.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &e.SystemData)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := e.ProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// EmailEventsGetOptions contains the optional parameters for the EmailEvents.Get method.
-type EmailEventsGetOptions struct {
+// EmailEventsClientGetOptions contains the optional parameters for the EmailEventsClient.Get method.
+type EmailEventsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EmailEventsListOptions contains the optional parameters for the EmailEvents.List method.
-type EmailEventsListOptions struct {
+// EmailEventsClientListOptions contains the optional parameters for the EmailEventsClient.List method.
+type EmailEventsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -621,17 +804,9 @@ func (e ErrorDefinition) MarshalJSON() ([]byte, error) {
 }
 
 // ErrorResponse - The error response send when an operation fails.
-// Implements the error and azcore.HTTPResponse interfaces.
 type ErrorResponse struct {
-	raw string
 	// The error details.
-	InnerError *ErrorDefinition `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorDefinition `json:"error,omitempty"`
 }
 
 // FavoriteProcessListResult - A list of favorite processes for a package.
@@ -653,73 +828,46 @@ func (f FavoriteProcessListResult) MarshalJSON() ([]byte, error) {
 
 // FavoriteProcessProperties - Properties of a favorite process identifier.
 type FavoriteProcessProperties struct {
-	// REQUIRED; The actual name of the favorite process. It will be equal to resource name except for the scenario that the process name contains characters
-	// that are not allowed in the resource name.
+	// REQUIRED; The actual name of the favorite process. It will be equal to resource name except for the scenario that the process
+	// name contains characters that are not allowed in the resource name.
 	ActualProcessName *string `json:"actualProcessName,omitempty"`
 }
 
 // FavoriteProcessResource - A favorite process identifier.
 type FavoriteProcessResource struct {
-	ProxyResource
 	// Properties of a favorite process identifier.
 	Properties *FavoriteProcessProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system metadata relating to this resource
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type FavoriteProcessResource.
-func (f FavoriteProcessResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	f.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", f.Properties)
-	populate(objectMap, "systemData", f.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type FavoriteProcessResource.
-func (f *FavoriteProcessResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &f.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &f.SystemData)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := f.ProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// FavoriteProcessesCreateOptions contains the optional parameters for the FavoriteProcesses.Create method.
-type FavoriteProcessesCreateOptions struct {
+// FavoriteProcessesClientCreateOptions contains the optional parameters for the FavoriteProcessesClient.Create method.
+type FavoriteProcessesClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FavoriteProcessesDeleteOptions contains the optional parameters for the FavoriteProcesses.Delete method.
-type FavoriteProcessesDeleteOptions struct {
+// FavoriteProcessesClientDeleteOptions contains the optional parameters for the FavoriteProcessesClient.Delete method.
+type FavoriteProcessesClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FavoriteProcessesGetOptions contains the optional parameters for the FavoriteProcesses.Get method.
-type FavoriteProcessesGetOptions struct {
+// FavoriteProcessesClientGetOptions contains the optional parameters for the FavoriteProcessesClient.Get method.
+type FavoriteProcessesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FavoriteProcessesListOptions contains the optional parameters for the FavoriteProcesses.List method.
-type FavoriteProcessesListOptions struct {
+// FavoriteProcessesClientListOptions contains the optional parameters for the FavoriteProcessesClient.List method.
+type FavoriteProcessesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -757,56 +905,29 @@ type FlightingRingProperties struct {
 
 // FlightingRingResource - The flighting ring resource.
 type FlightingRingResource struct {
-	ProxyResource
 	// Flighting Ring properties.
 	Properties *FlightingRingProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system metadata relating to this resource
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type FlightingRingResource.
-func (f FlightingRingResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	f.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", f.Properties)
-	populate(objectMap, "systemData", f.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type FlightingRingResource.
-func (f *FlightingRingResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &f.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &f.SystemData)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := f.ProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// FlightingRingsGetOptions contains the optional parameters for the FlightingRings.Get method.
-type FlightingRingsGetOptions struct {
+// FlightingRingsClientGetOptions contains the optional parameters for the FlightingRingsClient.Get method.
+type FlightingRingsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FlightingRingsListOptions contains the optional parameters for the FlightingRings.List method.
-type FlightingRingsListOptions struct {
+// FlightingRingsClientListOptions contains the optional parameters for the FlightingRingsClient.List method.
+type FlightingRingsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -833,15 +954,30 @@ type IdentifiedFailure struct {
 
 // MemoryRegressionResultSingletonResourceProperties - The properties of Memory Regression Result.
 type MemoryRegressionResultSingletonResourceProperties struct {
-	AnalysisResultSingletonResourceProperties
+	// REQUIRED; Type of the Analysis Result.
+	AnalysisResultType *AnalysisResultType `json:"analysisResultType,omitempty"`
+
+	// The grade of the test.
+	Grade *Grade `json:"grade,omitempty"`
+
 	// The result array data.
 	MemoryRegressionResults []*RegressionResult `json:"memoryRegressionResults,omitempty"`
+}
+
+// GetAnalysisResultSingletonResourceProperties implements the AnalysisResultSingletonResourcePropertiesClassification interface
+// for type MemoryRegressionResultSingletonResourceProperties.
+func (m *MemoryRegressionResultSingletonResourceProperties) GetAnalysisResultSingletonResourceProperties() *AnalysisResultSingletonResourceProperties {
+	return &AnalysisResultSingletonResourceProperties{
+		Grade:              m.Grade,
+		AnalysisResultType: m.AnalysisResultType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type MemoryRegressionResultSingletonResourceProperties.
 func (m MemoryRegressionResultSingletonResourceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	m.AnalysisResultSingletonResourceProperties.marshalInternal(objectMap, AnalysisResultTypeMemoryRegression)
+	objectMap["analysisResultType"] = AnalysisResultTypeMemoryRegression
+	populate(objectMap, "grade", m.Grade)
 	populate(objectMap, "memoryRegressionResults", m.MemoryRegressionResults)
 	return json.Marshal(objectMap)
 }
@@ -855,6 +991,12 @@ func (m *MemoryRegressionResultSingletonResourceProperties) UnmarshalJSON(data [
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "analysisResultType":
+			err = unpopulate(val, &m.AnalysisResultType)
+			delete(rawMsg, key)
+		case "grade":
+			err = unpopulate(val, &m.Grade)
+			delete(rawMsg, key)
 		case "memoryRegressionResults":
 			err = unpopulate(val, &m.MemoryRegressionResults)
 			delete(rawMsg, key)
@@ -863,23 +1005,35 @@ func (m *MemoryRegressionResultSingletonResourceProperties) UnmarshalJSON(data [
 			return err
 		}
 	}
-	if err := m.AnalysisResultSingletonResourceProperties.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // MemoryUtilizationResultSingletonResourceProperties - The properties of Memory Utilization Result.
 type MemoryUtilizationResultSingletonResourceProperties struct {
-	AnalysisResultSingletonResourceProperties
+	// REQUIRED; Type of the Analysis Result.
+	AnalysisResultType *AnalysisResultType `json:"analysisResultType,omitempty"`
+
+	// The grade of the test.
+	Grade *Grade `json:"grade,omitempty"`
+
 	// The result array data.
 	MemoryUtilizationResults []*UtilizationResult `json:"memoryUtilizationResults,omitempty"`
+}
+
+// GetAnalysisResultSingletonResourceProperties implements the AnalysisResultSingletonResourcePropertiesClassification interface
+// for type MemoryUtilizationResultSingletonResourceProperties.
+func (m *MemoryUtilizationResultSingletonResourceProperties) GetAnalysisResultSingletonResourceProperties() *AnalysisResultSingletonResourceProperties {
+	return &AnalysisResultSingletonResourceProperties{
+		Grade:              m.Grade,
+		AnalysisResultType: m.AnalysisResultType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type MemoryUtilizationResultSingletonResourceProperties.
 func (m MemoryUtilizationResultSingletonResourceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	m.AnalysisResultSingletonResourceProperties.marshalInternal(objectMap, AnalysisResultTypeMemoryUtilization)
+	objectMap["analysisResultType"] = AnalysisResultTypeMemoryUtilization
+	populate(objectMap, "grade", m.Grade)
 	populate(objectMap, "memoryUtilizationResults", m.MemoryUtilizationResults)
 	return json.Marshal(objectMap)
 }
@@ -893,6 +1047,12 @@ func (m *MemoryUtilizationResultSingletonResourceProperties) UnmarshalJSON(data 
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "analysisResultType":
+			err = unpopulate(val, &m.AnalysisResultType)
+			delete(rawMsg, key)
+		case "grade":
+			err = unpopulate(val, &m.Grade)
+			delete(rawMsg, key)
 		case "memoryUtilizationResults":
 			err = unpopulate(val, &m.MemoryUtilizationResults)
 			delete(rawMsg, key)
@@ -900,9 +1060,6 @@ func (m *MemoryUtilizationResultSingletonResourceProperties) UnmarshalJSON(data 
 		if err != nil {
 			return err
 		}
-	}
-	if err := m.AnalysisResultSingletonResourceProperties.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -1022,47 +1179,20 @@ func (o *OSUpdateProperties) UnmarshalJSON(data []byte) error {
 
 // OSUpdateResource - An OS Update.
 type OSUpdateResource struct {
-	ProxyResource
 	// Properties of an OS Update.
 	Properties *OSUpdateProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system metadata relating to this resource
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type OSUpdateResource.
-func (o OSUpdateResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	o.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", o.Properties)
-	populate(objectMap, "systemData", o.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type OSUpdateResource.
-func (o *OSUpdateResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &o.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &o.SystemData)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := o.ProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // OSUpdateTestSummary - The summary of a test.
@@ -1168,13 +1298,13 @@ func (o *OSUpdateTestSummary) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// OSUpdatesGetOptions contains the optional parameters for the OSUpdates.Get method.
-type OSUpdatesGetOptions struct {
+// OSUpdatesClientGetOptions contains the optional parameters for the OSUpdatesClient.Get method.
+type OSUpdatesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OSUpdatesListOptions contains the optional parameters for the OSUpdates.List method.
-type OSUpdatesListOptions struct {
+// OSUpdatesClientListOptions contains the optional parameters for the OSUpdatesClient.List method.
+type OSUpdatesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1257,8 +1387,8 @@ func (o OperationListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1406,47 +1536,43 @@ func (p *PackageProperties) UnmarshalJSON(data []byte) error {
 
 // PackageResource - The Test Base Package resource.
 type PackageResource struct {
-	TrackedResource
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
 	// Test Base Package properties.
 	Properties *PackageProperties `json:"properties,omitempty"`
 
+	// The tags of the resource.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Etag.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system metadata relating to this resource
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type PackageResource.
 func (p PackageResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	p.TrackedResource.marshalInternal(objectMap)
+	populate(objectMap, "etag", p.Etag)
+	populate(objectMap, "id", p.ID)
+	populate(objectMap, "location", p.Location)
+	populate(objectMap, "name", p.Name)
 	populate(objectMap, "properties", p.Properties)
 	populate(objectMap, "systemData", p.SystemData)
+	populate(objectMap, "tags", p.Tags)
+	populate(objectMap, "type", p.Type)
 	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PackageResource.
-func (p *PackageResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &p.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &p.SystemData)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := p.TrackedResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // PackageUpdateParameterProperties - Parameters supplied to update a Test Base Package.
@@ -1516,55 +1642,53 @@ func (p PackageValidationResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// PackagesBeginCreateOptions contains the optional parameters for the Packages.BeginCreate method.
-type PackagesBeginCreateOptions struct {
+// PackagesClientBeginCreateOptions contains the optional parameters for the PackagesClient.BeginCreate method.
+type PackagesClientBeginCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PackagesBeginDeleteOptions contains the optional parameters for the Packages.BeginDelete method.
-type PackagesBeginDeleteOptions struct {
+// PackagesClientBeginDeleteOptions contains the optional parameters for the PackagesClient.BeginDelete method.
+type PackagesClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PackagesBeginHardDeleteOptions contains the optional parameters for the Packages.BeginHardDelete method.
-type PackagesBeginHardDeleteOptions struct {
+// PackagesClientBeginHardDeleteOptions contains the optional parameters for the PackagesClient.BeginHardDelete method.
+type PackagesClientBeginHardDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PackagesBeginUpdateOptions contains the optional parameters for the Packages.BeginUpdate method.
-type PackagesBeginUpdateOptions struct {
+// PackagesClientBeginUpdateOptions contains the optional parameters for the PackagesClient.BeginUpdate method.
+type PackagesClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PackagesGetDownloadURLOptions contains the optional parameters for the Packages.GetDownloadURL method.
-type PackagesGetDownloadURLOptions struct {
+// PackagesClientGetDownloadURLOptions contains the optional parameters for the PackagesClient.GetDownloadURL method.
+type PackagesClientGetDownloadURLOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PackagesGetOptions contains the optional parameters for the Packages.Get method.
-type PackagesGetOptions struct {
+// PackagesClientGetOptions contains the optional parameters for the PackagesClient.Get method.
+type PackagesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PackagesListByTestBaseAccountOptions contains the optional parameters for the Packages.ListByTestBaseAccount method.
-type PackagesListByTestBaseAccountOptions struct {
+// PackagesClientListByTestBaseAccountOptions contains the optional parameters for the PackagesClient.ListByTestBaseAccount
+// method.
+type PackagesClientListByTestBaseAccountOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProxyResource - The resource model definition for an ARM proxy resource. It will have everything other than required location and tags
+// ProxyResource - The resource model definition for an ARM proxy resource. It will have everything other than required location
+// and tags
 type ProxyResource struct {
-	Resource
-}
+	// READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-func (p ProxyResource) marshalInternal(objectMap map[string]interface{}) {
-	p.Resource.marshalInternal(objectMap)
-}
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
 
-func (p *ProxyResource) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	if err := p.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // RegressionResult - The regression result.
@@ -1626,15 +1750,30 @@ type ReliabilityResult struct {
 
 // ReliabilityResultSingletonResourceProperties - The properties of Reliability Result.
 type ReliabilityResultSingletonResourceProperties struct {
-	AnalysisResultSingletonResourceProperties
+	// REQUIRED; Type of the Analysis Result.
+	AnalysisResultType *AnalysisResultType `json:"analysisResultType,omitempty"`
+
+	// The grade of the test.
+	Grade *Grade `json:"grade,omitempty"`
+
 	// The result array data.
 	ReliabilityResults []*ReliabilityResult `json:"reliabilityResults,omitempty"`
+}
+
+// GetAnalysisResultSingletonResourceProperties implements the AnalysisResultSingletonResourcePropertiesClassification interface
+// for type ReliabilityResultSingletonResourceProperties.
+func (r *ReliabilityResultSingletonResourceProperties) GetAnalysisResultSingletonResourceProperties() *AnalysisResultSingletonResourceProperties {
+	return &AnalysisResultSingletonResourceProperties{
+		Grade:              r.Grade,
+		AnalysisResultType: r.AnalysisResultType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ReliabilityResultSingletonResourceProperties.
 func (r ReliabilityResultSingletonResourceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.AnalysisResultSingletonResourceProperties.marshalInternal(objectMap, AnalysisResultTypeReliability)
+	objectMap["analysisResultType"] = AnalysisResultTypeReliability
+	populate(objectMap, "grade", r.Grade)
 	populate(objectMap, "reliabilityResults", r.ReliabilityResults)
 	return json.Marshal(objectMap)
 }
@@ -1648,6 +1787,12 @@ func (r *ReliabilityResultSingletonResourceProperties) UnmarshalJSON(data []byte
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "analysisResultType":
+			err = unpopulate(val, &r.AnalysisResultType)
+			delete(rawMsg, key)
+		case "grade":
+			err = unpopulate(val, &r.Grade)
+			delete(rawMsg, key)
 		case "reliabilityResults":
 			err = unpopulate(val, &r.ReliabilityResults)
 			delete(rawMsg, key)
@@ -1655,9 +1800,6 @@ func (r *ReliabilityResultSingletonResourceProperties) UnmarshalJSON(data []byte
 		if err != nil {
 			return err
 		}
-	}
-	if err := r.AnalysisResultSingletonResourceProperties.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -1674,51 +1816,8 @@ type Resource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Resource.
-func (r *Resource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return r.unmarshalInternal(rawMsg)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
-}
-
-func (r *Resource) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &r.ID)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &r.Name)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &r.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// SKUsListOptions contains the optional parameters for the SKUs.List method.
-type SKUsListOptions struct {
+// SKUsClientListOptions contains the optional parameters for the SKUsClient.List method.
+type SKUsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1785,15 +1884,30 @@ func (s *ScriptExecutionResult) UnmarshalJSON(data []byte) error {
 
 // ScriptExecutionResultSingletonResourceProperties - The properties of Script Execution Result.
 type ScriptExecutionResultSingletonResourceProperties struct {
-	AnalysisResultSingletonResourceProperties
+	// REQUIRED; Type of the Analysis Result.
+	AnalysisResultType *AnalysisResultType `json:"analysisResultType,omitempty"`
+
+	// The grade of the test.
+	Grade *Grade `json:"grade,omitempty"`
+
 	// The result array data.
 	ScriptExecutionResults []*ScriptExecutionResult `json:"scriptExecutionResults,omitempty"`
+}
+
+// GetAnalysisResultSingletonResourceProperties implements the AnalysisResultSingletonResourcePropertiesClassification interface
+// for type ScriptExecutionResultSingletonResourceProperties.
+func (s *ScriptExecutionResultSingletonResourceProperties) GetAnalysisResultSingletonResourceProperties() *AnalysisResultSingletonResourceProperties {
+	return &AnalysisResultSingletonResourceProperties{
+		Grade:              s.Grade,
+		AnalysisResultType: s.AnalysisResultType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ScriptExecutionResultSingletonResourceProperties.
 func (s ScriptExecutionResultSingletonResourceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.AnalysisResultSingletonResourceProperties.marshalInternal(objectMap, AnalysisResultTypeScriptExecution)
+	objectMap["analysisResultType"] = AnalysisResultTypeScriptExecution
+	populate(objectMap, "grade", s.Grade)
 	populate(objectMap, "scriptExecutionResults", s.ScriptExecutionResults)
 	return json.Marshal(objectMap)
 }
@@ -1807,6 +1921,12 @@ func (s *ScriptExecutionResultSingletonResourceProperties) UnmarshalJSON(data []
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "analysisResultType":
+			err = unpopulate(val, &s.AnalysisResultType)
+			delete(rawMsg, key)
+		case "grade":
+			err = unpopulate(val, &s.Grade)
+			delete(rawMsg, key)
 		case "scriptExecutionResults":
 			err = unpopulate(val, &s.ScriptExecutionResults)
 			delete(rawMsg, key)
@@ -1814,9 +1934,6 @@ func (s *ScriptExecutionResultSingletonResourceProperties) UnmarshalJSON(data []
 		if err != nil {
 			return err
 		}
-	}
-	if err := s.AnalysisResultSingletonResourceProperties.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -1966,15 +2083,30 @@ func (t TestAnalysisResult) MarshalJSON() ([]byte, error) {
 
 // TestAnalysisResultSingletonResourceProperties - The properties of Test Analysis Result.
 type TestAnalysisResultSingletonResourceProperties struct {
-	AnalysisResultSingletonResourceProperties
+	// REQUIRED; Type of the Analysis Result.
+	AnalysisResultType *AnalysisResultType `json:"analysisResultType,omitempty"`
+
+	// The grade of the test.
+	Grade *Grade `json:"grade,omitempty"`
+
 	// The result of test analysis.
 	TestAnalysisResult *TestAnalysisResult `json:"testAnalysisResult,omitempty"`
+}
+
+// GetAnalysisResultSingletonResourceProperties implements the AnalysisResultSingletonResourcePropertiesClassification interface
+// for type TestAnalysisResultSingletonResourceProperties.
+func (t *TestAnalysisResultSingletonResourceProperties) GetAnalysisResultSingletonResourceProperties() *AnalysisResultSingletonResourceProperties {
+	return &AnalysisResultSingletonResourceProperties{
+		Grade:              t.Grade,
+		AnalysisResultType: t.AnalysisResultType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TestAnalysisResultSingletonResourceProperties.
 func (t TestAnalysisResultSingletonResourceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.AnalysisResultSingletonResourceProperties.marshalInternal(objectMap, AnalysisResultTypeTestAnalysis)
+	objectMap["analysisResultType"] = AnalysisResultTypeTestAnalysis
+	populate(objectMap, "grade", t.Grade)
 	populate(objectMap, "testAnalysisResult", t.TestAnalysisResult)
 	return json.Marshal(objectMap)
 }
@@ -1988,6 +2120,12 @@ func (t *TestAnalysisResultSingletonResourceProperties) UnmarshalJSON(data []byt
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "analysisResultType":
+			err = unpopulate(val, &t.AnalysisResultType)
+			delete(rawMsg, key)
+		case "grade":
+			err = unpopulate(val, &t.Grade)
+			delete(rawMsg, key)
 		case "testAnalysisResult":
 			err = unpopulate(val, &t.TestAnalysisResult)
 			delete(rawMsg, key)
@@ -1996,255 +2134,7 @@ func (t *TestAnalysisResultSingletonResourceProperties) UnmarshalJSON(data []byt
 			return err
 		}
 	}
-	if err := t.AnalysisResultSingletonResourceProperties.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
-}
-
-// TestBaseAccountListResult - A list of Test Base Accounts.
-type TestBaseAccountListResult struct {
-	// The list of Test Base Accounts.
-	Value []*TestBaseAccountResource `json:"value,omitempty"`
-
-	// READ-ONLY; Link to the next set of results. Not empty if value contains incomplete list of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TestBaseAccountListResult.
-func (t TestBaseAccountListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", t.NextLink)
-	populate(objectMap, "value", t.Value)
-	return json.Marshal(objectMap)
-}
-
-// TestBaseAccountResource - The Test Base Account resource.
-type TestBaseAccountResource struct {
-	TrackedResource
-	// Properties of a Test Base Account.
-	Properties *TestBaseAccountResourceProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; The system metadata relating to this resource
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TestBaseAccountResource.
-func (t TestBaseAccountResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	t.TrackedResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", t.Properties)
-	populate(objectMap, "systemData", t.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type TestBaseAccountResource.
-func (t *TestBaseAccountResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &t.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &t.SystemData)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := t.TrackedResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// TestBaseAccountResourceProperties - The properties of a Test Base Account resource.
-type TestBaseAccountResourceProperties struct {
-	// REQUIRED; The SKU of the Test Base Account.
-	SKU *TestBaseAccountSKU `json:"sku,omitempty"`
-
-	// READ-ONLY; The access level of the Test Base Account.
-	AccessLevel *string `json:"accessLevel,omitempty" azure:"ro"`
-
-	// READ-ONLY; The provisioning state of the resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// TestBaseAccountSKU - Describes a Test Base Account SKU.
-type TestBaseAccountSKU struct {
-	// REQUIRED; The name of the SKU. This is typically a letter + number code, such as B0 or S0.
-	Name *string `json:"name,omitempty"`
-
-	// REQUIRED; The tier of this particular SKU.
-	Tier *Tier `json:"tier,omitempty"`
-
-	// The locations that the SKU is available.
-	Locations []*string `json:"locations,omitempty"`
-
-	// The type of resource the SKU applies to.
-	ResourceType *string `json:"resourceType,omitempty"`
-
-	// READ-ONLY; The capabilities of a SKU.
-	Capabilities []*TestBaseAccountSKUCapability `json:"capabilities,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TestBaseAccountSKU.
-func (t TestBaseAccountSKU) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "capabilities", t.Capabilities)
-	populate(objectMap, "locations", t.Locations)
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "resourceType", t.ResourceType)
-	populate(objectMap, "tier", t.Tier)
-	return json.Marshal(objectMap)
-}
-
-// TestBaseAccountSKUCapability - Properties of the Test Base Account SKU Capability.
-type TestBaseAccountSKUCapability struct {
-	// REQUIRED; An invariant to describe the feature, such as 'SLA'.
-	Name *string `json:"name,omitempty"`
-
-	// REQUIRED; An invariant if the feature is measured by quantity, such as 99.9%.
-	Value *string `json:"value,omitempty"`
-}
-
-// TestBaseAccountSKUListResult - A list of Test Base Account SKUs.
-type TestBaseAccountSKUListResult struct {
-	// The list of Test Base Account SKUs.
-	Value []*TestBaseAccountSKU `json:"value,omitempty"`
-
-	// READ-ONLY; Link to the next set of results. Not empty if value contains incomplete list of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TestBaseAccountSKUListResult.
-func (t TestBaseAccountSKUListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", t.NextLink)
-	populate(objectMap, "value", t.Value)
-	return json.Marshal(objectMap)
-}
-
-// TestBaseAccountUpdateParameterProperties - Parameters supplied to update a Test Base Account.
-type TestBaseAccountUpdateParameterProperties struct {
-	// The SKU of the Test Base Account.
-	SKU *TestBaseAccountSKU `json:"sku,omitempty"`
-}
-
-// TestBaseAccountUpdateParameters - Parameters supplied to update a Test Base Account.
-type TestBaseAccountUpdateParameters struct {
-	// Test Base Account update parameters.
-	Properties *TestBaseAccountUpdateParameterProperties `json:"properties,omitempty"`
-
-	// The tags of the Test Base Account.
-	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TestBaseAccountUpdateParameters.
-func (t TestBaseAccountUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", t.Properties)
-	populate(objectMap, "tags", t.Tags)
-	return json.Marshal(objectMap)
-}
-
-// TestBaseAccountUsageData - The usage data of a Test Base Account.
-type TestBaseAccountUsageData struct {
-	// Current value for the usage quota.
-	CurrentValue *int64 `json:"currentValue,omitempty"`
-
-	// Fully qualified ARM resource id
-	ID *string `json:"id,omitempty"`
-
-	// The maximum permitted value for the usage quota. If there is no limit, this value will be -1.
-	Limit *int64 `json:"limit,omitempty"`
-
-	// Localizable String object containing the name and a localized value.
-	Name *TestBaseAccountUsageName `json:"name,omitempty"`
-
-	// Representing the units of the usage quota. Possible values are: Count, Bytes, Seconds, Percent, CountPerSecond, BytesPerSecond.
-	Unit *string `json:"unit,omitempty"`
-}
-
-// TestBaseAccountUsageDataList - A list of Test Base Account usage data.
-type TestBaseAccountUsageDataList struct {
-	// The list of Test Base Account usage data.
-	Value []*TestBaseAccountUsageData `json:"value,omitempty"`
-
-	// READ-ONLY; Link to the next set of results. Not empty if value contains incomplete list of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TestBaseAccountUsageDataList.
-func (t TestBaseAccountUsageDataList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", t.NextLink)
-	populate(objectMap, "value", t.Value)
-	return json.Marshal(objectMap)
-}
-
-// TestBaseAccountUsageName - Localizable String object containing the name and a localized value.
-type TestBaseAccountUsageName struct {
-	// Localized name of the usage.
-	LocalizedValue *string `json:"localizedValue,omitempty"`
-
-	// The identifier of the usage.
-	Value *string `json:"value,omitempty"`
-}
-
-// TestBaseAccountsBeginCreateOptions contains the optional parameters for the TestBaseAccounts.BeginCreate method.
-type TestBaseAccountsBeginCreateOptions struct {
-	// The flag indicating if we would like to restore the Test Base Accounts which were soft deleted before.
-	Restore *bool
-}
-
-// TestBaseAccountsBeginDeleteOptions contains the optional parameters for the TestBaseAccounts.BeginDelete method.
-type TestBaseAccountsBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TestBaseAccountsBeginOffboardOptions contains the optional parameters for the TestBaseAccounts.BeginOffboard method.
-type TestBaseAccountsBeginOffboardOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TestBaseAccountsBeginUpdateOptions contains the optional parameters for the TestBaseAccounts.BeginUpdate method.
-type TestBaseAccountsBeginUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TestBaseAccountsCheckPackageNameAvailabilityOptions contains the optional parameters for the TestBaseAccounts.CheckPackageNameAvailability method.
-type TestBaseAccountsCheckPackageNameAvailabilityOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TestBaseAccountsGetFileUploadURLOptions contains the optional parameters for the TestBaseAccounts.GetFileUploadURL method.
-type TestBaseAccountsGetFileUploadURLOptions struct {
-	// Parameters supplied to the Test Base Account GetFileUploadURL operation.
-	Parameters *GetFileUploadURLParameters
-}
-
-// TestBaseAccountsGetOptions contains the optional parameters for the TestBaseAccounts.Get method.
-type TestBaseAccountsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TestBaseAccountsListByResourceGroupOptions contains the optional parameters for the TestBaseAccounts.ListByResourceGroup method.
-type TestBaseAccountsListByResourceGroupOptions struct {
-	// The flag indicating if we need to include the Test Base Accounts which were soft deleted before.
-	GetDeleted *bool
-}
-
-// TestBaseAccountsListBySubscriptionOptions contains the optional parameters for the TestBaseAccounts.ListBySubscription method.
-type TestBaseAccountsListBySubscriptionOptions struct {
-	// The flag indicating if we need to include the Test Base Accounts which were soft deleted before.
-	GetDeleted *bool
 }
 
 // TestResultAnalysisSummary - The summary of a Test Analysis Result.
@@ -2444,77 +2334,51 @@ func (t *TestResultProperties) UnmarshalJSON(data []byte) error {
 
 // TestResultResource - The Test Result Resource.
 type TestResultResource struct {
-	ProxyResource
 	// The properties of a Test Result.
 	Properties *TestResultProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system metadata relating to this resource
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TestResultResource.
-func (t TestResultResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	t.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", t.Properties)
-	populate(objectMap, "systemData", t.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type TestResultResource.
-func (t *TestResultResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &t.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &t.SystemData)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := t.ProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// TestResultsGetDownloadURLOptions contains the optional parameters for the TestResults.GetDownloadURL method.
-type TestResultsGetDownloadURLOptions struct {
+// TestResultsClientGetDownloadURLOptions contains the optional parameters for the TestResultsClient.GetDownloadURL method.
+type TestResultsClientGetDownloadURLOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TestResultsGetOptions contains the optional parameters for the TestResults.Get method.
-type TestResultsGetOptions struct {
+// TestResultsClientGetOptions contains the optional parameters for the TestResultsClient.Get method.
+type TestResultsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TestResultsGetVideoDownloadURLOptions contains the optional parameters for the TestResults.GetVideoDownloadURL method.
-type TestResultsGetVideoDownloadURLOptions struct {
+// TestResultsClientGetVideoDownloadURLOptions contains the optional parameters for the TestResultsClient.GetVideoDownloadURL
+// method.
+type TestResultsClientGetVideoDownloadURLOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TestResultsListOptions contains the optional parameters for the TestResults.List method.
-type TestResultsListOptions struct {
+// TestResultsClientListOptions contains the optional parameters for the TestResultsClient.List method.
+type TestResultsClientListOptions struct {
 	// Odata filter
 	Filter *string
 }
 
-// TestSummariesGetOptions contains the optional parameters for the TestSummaries.Get method.
-type TestSummariesGetOptions struct {
+// TestSummariesClientGetOptions contains the optional parameters for the TestSummariesClient.Get method.
+type TestSummariesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TestSummariesListOptions contains the optional parameters for the TestSummaries.List method.
-type TestSummariesListOptions struct {
+// TestSummariesClientListOptions contains the optional parameters for the TestSummariesClient.List method.
+type TestSummariesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -2570,47 +2434,20 @@ type TestSummaryProperties struct {
 
 // TestSummaryResource - Summary of a Test.
 type TestSummaryResource struct {
-	ProxyResource
 	// Properties of a Test Summary.
 	Properties *TestSummaryProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system metadata relating to this resource
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type TestSummaryResource.
-func (t TestSummaryResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	t.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", t.Properties)
-	populate(objectMap, "systemData", t.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type TestSummaryResource.
-func (t *TestSummaryResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &t.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &t.SystemData)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := t.ProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // TestTypeListResult - A list of test types.
@@ -2638,62 +2475,34 @@ type TestTypeProperties struct {
 
 // TestTypeResource - The test type resource.
 type TestTypeResource struct {
-	ProxyResource
 	// Test Type properties.
 	Properties *TestTypeProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system metadata relating to this resource
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TestTypeResource.
-func (t TestTypeResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	t.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", t.Properties)
-	populate(objectMap, "systemData", t.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type TestTypeResource.
-func (t *TestTypeResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &t.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &t.SystemData)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := t.ProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// TestTypesGetOptions contains the optional parameters for the TestTypes.Get method.
-type TestTypesGetOptions struct {
+// TestTypesClientGetOptions contains the optional parameters for the TestTypesClient.Get method.
+type TestTypesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TestTypesListOptions contains the optional parameters for the TestTypes.List method.
-type TestTypesListOptions struct {
+// TestTypesClientListOptions contains the optional parameters for the TestTypesClient.List method.
+type TestTypesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // TrackedResource - The resource model definition for an ARM tracked top level resource
 type TrackedResource struct {
-	Resource
 	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
@@ -2702,57 +2511,31 @@ type TrackedResource struct {
 
 	// READ-ONLY; Resource Etag.
 	Etag *string `json:"etag,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.
 func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
+	populate(objectMap, "etag", t.Etag)
+	populate(objectMap, "id", t.ID)
+	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
+	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type TrackedResource.
-func (t *TrackedResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return t.unmarshalInternal(rawMsg)
-}
-
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
-	populate(objectMap, "etag", t.Etag)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "tags", t.Tags)
-}
-
-func (t *TrackedResource) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &t.Etag)
-			delete(rawMsg, key)
-		case "location":
-			err = unpopulate(val, &t.Location)
-			delete(rawMsg, key)
-		case "tags":
-			err = unpopulate(val, &t.Tags)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := t.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// UsageListOptions contains the optional parameters for the Usage.List method.
-type UsageListOptions struct {
+// UsageClientListOptions contains the optional parameters for the UsageClient.List method.
+type UsageClientListOptions struct {
 	// Odata filter
 	Filter *string
 }

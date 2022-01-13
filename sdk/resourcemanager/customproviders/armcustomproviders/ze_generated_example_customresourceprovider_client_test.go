@@ -31,25 +31,19 @@ func ExampleCustomResourceProviderClient_BeginCreateOrUpdate() {
 		"<resource-group-name>",
 		"<resource-provider-name>",
 		armcustomproviders.CustomRPManifest{
-			Resource: armcustomproviders.Resource{
-				Location: to.StringPtr("<location>"),
-			},
+			Location: to.StringPtr("<location>"),
 			Properties: &armcustomproviders.CustomRPManifestProperties{
 				Actions: []*armcustomproviders.CustomRPActionRouteDefinition{
 					{
-						CustomRPRouteDefinition: armcustomproviders.CustomRPRouteDefinition{
-							Name:     to.StringPtr("<name>"),
-							Endpoint: to.StringPtr("<endpoint>"),
-						},
-						RoutingType: armcustomproviders.ActionRoutingProxy.ToPtr(),
+						Name:        to.StringPtr("<name>"),
+						Endpoint:    to.StringPtr("<endpoint>"),
+						RoutingType: armcustomproviders.ActionRouting("Proxy").ToPtr(),
 					}},
 				ResourceTypes: []*armcustomproviders.CustomRPResourceTypeRouteDefinition{
 					{
-						CustomRPRouteDefinition: armcustomproviders.CustomRPRouteDefinition{
-							Name:     to.StringPtr("<name>"),
-							Endpoint: to.StringPtr("<endpoint>"),
-						},
-						RoutingType: armcustomproviders.ResourceTypeRoutingProxyCache.ToPtr(),
+						Name:        to.StringPtr("<name>"),
+						Endpoint:    to.StringPtr("<endpoint>"),
+						RoutingType: armcustomproviders.ResourceTypeRouting("Proxy,Cache").ToPtr(),
 					}},
 			},
 		},
@@ -61,7 +55,7 @@ func ExampleCustomResourceProviderClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("CustomRPManifest.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.CustomResourceProviderClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/customproviders/resource-manager/Microsoft.CustomProviders/preview/2018-09-01-preview/examples/deleteCustomRP.json
@@ -100,7 +94,7 @@ func ExampleCustomResourceProviderClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("CustomRPManifest.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.CustomResourceProviderClientGetResult)
 }
 
 // x-ms-original-file: specification/customproviders/resource-manager/Microsoft.CustomProviders/preview/2018-09-01-preview/examples/updateCustomRP.json
@@ -121,7 +115,7 @@ func ExampleCustomResourceProviderClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("CustomRPManifest.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.CustomResourceProviderClientUpdateResult)
 }
 
 // x-ms-original-file: specification/customproviders/resource-manager/Microsoft.CustomProviders/preview/2018-09-01-preview/examples/listCustomRPsByResourceGroup.json
@@ -134,12 +128,16 @@ func ExampleCustomResourceProviderClient_ListByResourceGroup() {
 	client := armcustomproviders.NewCustomResourceProviderClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("CustomRPManifest.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -153,12 +151,16 @@ func ExampleCustomResourceProviderClient_ListBySubscription() {
 	ctx := context.Background()
 	client := armcustomproviders.NewCustomResourceProviderClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("CustomRPManifest.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

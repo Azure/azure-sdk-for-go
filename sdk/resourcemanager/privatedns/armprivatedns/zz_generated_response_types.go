@@ -15,10 +15,10 @@ import (
 	"time"
 )
 
-// PrivateZonesCreateOrUpdatePollerResponse contains the response from method PrivateZones.CreateOrUpdate.
-type PrivateZonesCreateOrUpdatePollerResponse struct {
+// PrivateZonesClientCreateOrUpdatePollerResponse contains the response from method PrivateZonesClient.CreateOrUpdate.
+type PrivateZonesClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PrivateZonesCreateOrUpdatePoller
+	Poller *PrivateZonesClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -27,8 +27,8 @@ type PrivateZonesCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateZonesCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateZonesCreateOrUpdateResponse, error) {
-	respType := PrivateZonesCreateOrUpdateResponse{}
+func (l PrivateZonesClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateZonesClientCreateOrUpdateResponse, error) {
+	respType := PrivateZonesClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PrivateZone)
 	if err != nil {
 		return respType, err
@@ -37,13 +37,13 @@ func (l PrivateZonesCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Cont
 	return respType, nil
 }
 
-// Resume rehydrates a PrivateZonesCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *PrivateZonesCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PrivateZonesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateZonesClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a PrivateZonesClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *PrivateZonesClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PrivateZonesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateZonesClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PrivateZonesCreateOrUpdatePoller{
+	poller := &PrivateZonesClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -55,22 +55,22 @@ func (l *PrivateZonesCreateOrUpdatePollerResponse) Resume(ctx context.Context, c
 	return nil
 }
 
-// PrivateZonesCreateOrUpdateResponse contains the response from method PrivateZones.CreateOrUpdate.
-type PrivateZonesCreateOrUpdateResponse struct {
-	PrivateZonesCreateOrUpdateResult
+// PrivateZonesClientCreateOrUpdateResponse contains the response from method PrivateZonesClient.CreateOrUpdate.
+type PrivateZonesClientCreateOrUpdateResponse struct {
+	PrivateZonesClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateZonesCreateOrUpdateResult contains the result from method PrivateZones.CreateOrUpdate.
-type PrivateZonesCreateOrUpdateResult struct {
+// PrivateZonesClientCreateOrUpdateResult contains the result from method PrivateZonesClient.CreateOrUpdate.
+type PrivateZonesClientCreateOrUpdateResult struct {
 	PrivateZone
 }
 
-// PrivateZonesDeletePollerResponse contains the response from method PrivateZones.Delete.
-type PrivateZonesDeletePollerResponse struct {
+// PrivateZonesClientDeletePollerResponse contains the response from method PrivateZonesClient.Delete.
+type PrivateZonesClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PrivateZonesDeletePoller
+	Poller *PrivateZonesClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -79,8 +79,8 @@ type PrivateZonesDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateZonesDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateZonesDeleteResponse, error) {
-	respType := PrivateZonesDeleteResponse{}
+func (l PrivateZonesClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateZonesClientDeleteResponse, error) {
+	respType := PrivateZonesClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -89,13 +89,13 @@ func (l PrivateZonesDeletePollerResponse) PollUntilDone(ctx context.Context, fre
 	return respType, nil
 }
 
-// Resume rehydrates a PrivateZonesDeletePollerResponse from the provided client and resume token.
-func (l *PrivateZonesDeletePollerResponse) Resume(ctx context.Context, client *PrivateZonesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateZonesClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a PrivateZonesClientDeletePollerResponse from the provided client and resume token.
+func (l *PrivateZonesClientDeletePollerResponse) Resume(ctx context.Context, client *PrivateZonesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateZonesClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PrivateZonesDeletePoller{
+	poller := &PrivateZonesClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -107,52 +107,52 @@ func (l *PrivateZonesDeletePollerResponse) Resume(ctx context.Context, client *P
 	return nil
 }
 
-// PrivateZonesDeleteResponse contains the response from method PrivateZones.Delete.
-type PrivateZonesDeleteResponse struct {
+// PrivateZonesClientDeleteResponse contains the response from method PrivateZonesClient.Delete.
+type PrivateZonesClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateZonesGetResponse contains the response from method PrivateZones.Get.
-type PrivateZonesGetResponse struct {
-	PrivateZonesGetResult
+// PrivateZonesClientGetResponse contains the response from method PrivateZonesClient.Get.
+type PrivateZonesClientGetResponse struct {
+	PrivateZonesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateZonesGetResult contains the result from method PrivateZones.Get.
-type PrivateZonesGetResult struct {
+// PrivateZonesClientGetResult contains the result from method PrivateZonesClient.Get.
+type PrivateZonesClientGetResult struct {
 	PrivateZone
 }
 
-// PrivateZonesListByResourceGroupResponse contains the response from method PrivateZones.ListByResourceGroup.
-type PrivateZonesListByResourceGroupResponse struct {
-	PrivateZonesListByResourceGroupResult
+// PrivateZonesClientListByResourceGroupResponse contains the response from method PrivateZonesClient.ListByResourceGroup.
+type PrivateZonesClientListByResourceGroupResponse struct {
+	PrivateZonesClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateZonesListByResourceGroupResult contains the result from method PrivateZones.ListByResourceGroup.
-type PrivateZonesListByResourceGroupResult struct {
+// PrivateZonesClientListByResourceGroupResult contains the result from method PrivateZonesClient.ListByResourceGroup.
+type PrivateZonesClientListByResourceGroupResult struct {
 	PrivateZoneListResult
 }
 
-// PrivateZonesListResponse contains the response from method PrivateZones.List.
-type PrivateZonesListResponse struct {
-	PrivateZonesListResult
+// PrivateZonesClientListResponse contains the response from method PrivateZonesClient.List.
+type PrivateZonesClientListResponse struct {
+	PrivateZonesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateZonesListResult contains the result from method PrivateZones.List.
-type PrivateZonesListResult struct {
+// PrivateZonesClientListResult contains the result from method PrivateZonesClient.List.
+type PrivateZonesClientListResult struct {
 	PrivateZoneListResult
 }
 
-// PrivateZonesUpdatePollerResponse contains the response from method PrivateZones.Update.
-type PrivateZonesUpdatePollerResponse struct {
+// PrivateZonesClientUpdatePollerResponse contains the response from method PrivateZonesClient.Update.
+type PrivateZonesClientUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PrivateZonesUpdatePoller
+	Poller *PrivateZonesClientUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -161,8 +161,8 @@ type PrivateZonesUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateZonesUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateZonesUpdateResponse, error) {
-	respType := PrivateZonesUpdateResponse{}
+func (l PrivateZonesClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateZonesClientUpdateResponse, error) {
+	respType := PrivateZonesClientUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PrivateZone)
 	if err != nil {
 		return respType, err
@@ -171,13 +171,13 @@ func (l PrivateZonesUpdatePollerResponse) PollUntilDone(ctx context.Context, fre
 	return respType, nil
 }
 
-// Resume rehydrates a PrivateZonesUpdatePollerResponse from the provided client and resume token.
-func (l *PrivateZonesUpdatePollerResponse) Resume(ctx context.Context, client *PrivateZonesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateZonesClient.Update", token, client.pl, client.updateHandleError)
+// Resume rehydrates a PrivateZonesClientUpdatePollerResponse from the provided client and resume token.
+func (l *PrivateZonesClientUpdatePollerResponse) Resume(ctx context.Context, client *PrivateZonesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateZonesClient.Update", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PrivateZonesUpdatePoller{
+	poller := &PrivateZonesClientUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -189,88 +189,88 @@ func (l *PrivateZonesUpdatePollerResponse) Resume(ctx context.Context, client *P
 	return nil
 }
 
-// PrivateZonesUpdateResponse contains the response from method PrivateZones.Update.
-type PrivateZonesUpdateResponse struct {
-	PrivateZonesUpdateResult
+// PrivateZonesClientUpdateResponse contains the response from method PrivateZonesClient.Update.
+type PrivateZonesClientUpdateResponse struct {
+	PrivateZonesClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateZonesUpdateResult contains the result from method PrivateZones.Update.
-type PrivateZonesUpdateResult struct {
+// PrivateZonesClientUpdateResult contains the result from method PrivateZonesClient.Update.
+type PrivateZonesClientUpdateResult struct {
 	PrivateZone
 }
 
-// RecordSetsCreateOrUpdateResponse contains the response from method RecordSets.CreateOrUpdate.
-type RecordSetsCreateOrUpdateResponse struct {
-	RecordSetsCreateOrUpdateResult
+// RecordSetsClientCreateOrUpdateResponse contains the response from method RecordSetsClient.CreateOrUpdate.
+type RecordSetsClientCreateOrUpdateResponse struct {
+	RecordSetsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RecordSetsCreateOrUpdateResult contains the result from method RecordSets.CreateOrUpdate.
-type RecordSetsCreateOrUpdateResult struct {
+// RecordSetsClientCreateOrUpdateResult contains the result from method RecordSetsClient.CreateOrUpdate.
+type RecordSetsClientCreateOrUpdateResult struct {
 	RecordSet
 }
 
-// RecordSetsDeleteResponse contains the response from method RecordSets.Delete.
-type RecordSetsDeleteResponse struct {
+// RecordSetsClientDeleteResponse contains the response from method RecordSetsClient.Delete.
+type RecordSetsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RecordSetsGetResponse contains the response from method RecordSets.Get.
-type RecordSetsGetResponse struct {
-	RecordSetsGetResult
+// RecordSetsClientGetResponse contains the response from method RecordSetsClient.Get.
+type RecordSetsClientGetResponse struct {
+	RecordSetsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RecordSetsGetResult contains the result from method RecordSets.Get.
-type RecordSetsGetResult struct {
+// RecordSetsClientGetResult contains the result from method RecordSetsClient.Get.
+type RecordSetsClientGetResult struct {
 	RecordSet
 }
 
-// RecordSetsListByTypeResponse contains the response from method RecordSets.ListByType.
-type RecordSetsListByTypeResponse struct {
-	RecordSetsListByTypeResult
+// RecordSetsClientListByTypeResponse contains the response from method RecordSetsClient.ListByType.
+type RecordSetsClientListByTypeResponse struct {
+	RecordSetsClientListByTypeResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RecordSetsListByTypeResult contains the result from method RecordSets.ListByType.
-type RecordSetsListByTypeResult struct {
+// RecordSetsClientListByTypeResult contains the result from method RecordSetsClient.ListByType.
+type RecordSetsClientListByTypeResult struct {
 	RecordSetListResult
 }
 
-// RecordSetsListResponse contains the response from method RecordSets.List.
-type RecordSetsListResponse struct {
-	RecordSetsListResult
+// RecordSetsClientListResponse contains the response from method RecordSetsClient.List.
+type RecordSetsClientListResponse struct {
+	RecordSetsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RecordSetsListResult contains the result from method RecordSets.List.
-type RecordSetsListResult struct {
+// RecordSetsClientListResult contains the result from method RecordSetsClient.List.
+type RecordSetsClientListResult struct {
 	RecordSetListResult
 }
 
-// RecordSetsUpdateResponse contains the response from method RecordSets.Update.
-type RecordSetsUpdateResponse struct {
-	RecordSetsUpdateResult
+// RecordSetsClientUpdateResponse contains the response from method RecordSetsClient.Update.
+type RecordSetsClientUpdateResponse struct {
+	RecordSetsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RecordSetsUpdateResult contains the result from method RecordSets.Update.
-type RecordSetsUpdateResult struct {
+// RecordSetsClientUpdateResult contains the result from method RecordSetsClient.Update.
+type RecordSetsClientUpdateResult struct {
 	RecordSet
 }
 
-// VirtualNetworkLinksCreateOrUpdatePollerResponse contains the response from method VirtualNetworkLinks.CreateOrUpdate.
-type VirtualNetworkLinksCreateOrUpdatePollerResponse struct {
+// VirtualNetworkLinksClientCreateOrUpdatePollerResponse contains the response from method VirtualNetworkLinksClient.CreateOrUpdate.
+type VirtualNetworkLinksClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *VirtualNetworkLinksCreateOrUpdatePoller
+	Poller *VirtualNetworkLinksClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -279,8 +279,8 @@ type VirtualNetworkLinksCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l VirtualNetworkLinksCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (VirtualNetworkLinksCreateOrUpdateResponse, error) {
-	respType := VirtualNetworkLinksCreateOrUpdateResponse{}
+func (l VirtualNetworkLinksClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (VirtualNetworkLinksClientCreateOrUpdateResponse, error) {
+	respType := VirtualNetworkLinksClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.VirtualNetworkLink)
 	if err != nil {
 		return respType, err
@@ -289,13 +289,13 @@ func (l VirtualNetworkLinksCreateOrUpdatePollerResponse) PollUntilDone(ctx conte
 	return respType, nil
 }
 
-// Resume rehydrates a VirtualNetworkLinksCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *VirtualNetworkLinksCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *VirtualNetworkLinksClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("VirtualNetworkLinksClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a VirtualNetworkLinksClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *VirtualNetworkLinksClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *VirtualNetworkLinksClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("VirtualNetworkLinksClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &VirtualNetworkLinksCreateOrUpdatePoller{
+	poller := &VirtualNetworkLinksClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -307,22 +307,22 @@ func (l *VirtualNetworkLinksCreateOrUpdatePollerResponse) Resume(ctx context.Con
 	return nil
 }
 
-// VirtualNetworkLinksCreateOrUpdateResponse contains the response from method VirtualNetworkLinks.CreateOrUpdate.
-type VirtualNetworkLinksCreateOrUpdateResponse struct {
-	VirtualNetworkLinksCreateOrUpdateResult
+// VirtualNetworkLinksClientCreateOrUpdateResponse contains the response from method VirtualNetworkLinksClient.CreateOrUpdate.
+type VirtualNetworkLinksClientCreateOrUpdateResponse struct {
+	VirtualNetworkLinksClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VirtualNetworkLinksCreateOrUpdateResult contains the result from method VirtualNetworkLinks.CreateOrUpdate.
-type VirtualNetworkLinksCreateOrUpdateResult struct {
+// VirtualNetworkLinksClientCreateOrUpdateResult contains the result from method VirtualNetworkLinksClient.CreateOrUpdate.
+type VirtualNetworkLinksClientCreateOrUpdateResult struct {
 	VirtualNetworkLink
 }
 
-// VirtualNetworkLinksDeletePollerResponse contains the response from method VirtualNetworkLinks.Delete.
-type VirtualNetworkLinksDeletePollerResponse struct {
+// VirtualNetworkLinksClientDeletePollerResponse contains the response from method VirtualNetworkLinksClient.Delete.
+type VirtualNetworkLinksClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *VirtualNetworkLinksDeletePoller
+	Poller *VirtualNetworkLinksClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -331,8 +331,8 @@ type VirtualNetworkLinksDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l VirtualNetworkLinksDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (VirtualNetworkLinksDeleteResponse, error) {
-	respType := VirtualNetworkLinksDeleteResponse{}
+func (l VirtualNetworkLinksClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (VirtualNetworkLinksClientDeleteResponse, error) {
+	respType := VirtualNetworkLinksClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -341,13 +341,13 @@ func (l VirtualNetworkLinksDeletePollerResponse) PollUntilDone(ctx context.Conte
 	return respType, nil
 }
 
-// Resume rehydrates a VirtualNetworkLinksDeletePollerResponse from the provided client and resume token.
-func (l *VirtualNetworkLinksDeletePollerResponse) Resume(ctx context.Context, client *VirtualNetworkLinksClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("VirtualNetworkLinksClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a VirtualNetworkLinksClientDeletePollerResponse from the provided client and resume token.
+func (l *VirtualNetworkLinksClientDeletePollerResponse) Resume(ctx context.Context, client *VirtualNetworkLinksClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("VirtualNetworkLinksClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &VirtualNetworkLinksDeletePoller{
+	poller := &VirtualNetworkLinksClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -359,40 +359,40 @@ func (l *VirtualNetworkLinksDeletePollerResponse) Resume(ctx context.Context, cl
 	return nil
 }
 
-// VirtualNetworkLinksDeleteResponse contains the response from method VirtualNetworkLinks.Delete.
-type VirtualNetworkLinksDeleteResponse struct {
+// VirtualNetworkLinksClientDeleteResponse contains the response from method VirtualNetworkLinksClient.Delete.
+type VirtualNetworkLinksClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VirtualNetworkLinksGetResponse contains the response from method VirtualNetworkLinks.Get.
-type VirtualNetworkLinksGetResponse struct {
-	VirtualNetworkLinksGetResult
+// VirtualNetworkLinksClientGetResponse contains the response from method VirtualNetworkLinksClient.Get.
+type VirtualNetworkLinksClientGetResponse struct {
+	VirtualNetworkLinksClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VirtualNetworkLinksGetResult contains the result from method VirtualNetworkLinks.Get.
-type VirtualNetworkLinksGetResult struct {
+// VirtualNetworkLinksClientGetResult contains the result from method VirtualNetworkLinksClient.Get.
+type VirtualNetworkLinksClientGetResult struct {
 	VirtualNetworkLink
 }
 
-// VirtualNetworkLinksListResponse contains the response from method VirtualNetworkLinks.List.
-type VirtualNetworkLinksListResponse struct {
-	VirtualNetworkLinksListResult
+// VirtualNetworkLinksClientListResponse contains the response from method VirtualNetworkLinksClient.List.
+type VirtualNetworkLinksClientListResponse struct {
+	VirtualNetworkLinksClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VirtualNetworkLinksListResult contains the result from method VirtualNetworkLinks.List.
-type VirtualNetworkLinksListResult struct {
+// VirtualNetworkLinksClientListResult contains the result from method VirtualNetworkLinksClient.List.
+type VirtualNetworkLinksClientListResult struct {
 	VirtualNetworkLinkListResult
 }
 
-// VirtualNetworkLinksUpdatePollerResponse contains the response from method VirtualNetworkLinks.Update.
-type VirtualNetworkLinksUpdatePollerResponse struct {
+// VirtualNetworkLinksClientUpdatePollerResponse contains the response from method VirtualNetworkLinksClient.Update.
+type VirtualNetworkLinksClientUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *VirtualNetworkLinksUpdatePoller
+	Poller *VirtualNetworkLinksClientUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -401,8 +401,8 @@ type VirtualNetworkLinksUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l VirtualNetworkLinksUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (VirtualNetworkLinksUpdateResponse, error) {
-	respType := VirtualNetworkLinksUpdateResponse{}
+func (l VirtualNetworkLinksClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (VirtualNetworkLinksClientUpdateResponse, error) {
+	respType := VirtualNetworkLinksClientUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.VirtualNetworkLink)
 	if err != nil {
 		return respType, err
@@ -411,13 +411,13 @@ func (l VirtualNetworkLinksUpdatePollerResponse) PollUntilDone(ctx context.Conte
 	return respType, nil
 }
 
-// Resume rehydrates a VirtualNetworkLinksUpdatePollerResponse from the provided client and resume token.
-func (l *VirtualNetworkLinksUpdatePollerResponse) Resume(ctx context.Context, client *VirtualNetworkLinksClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("VirtualNetworkLinksClient.Update", token, client.pl, client.updateHandleError)
+// Resume rehydrates a VirtualNetworkLinksClientUpdatePollerResponse from the provided client and resume token.
+func (l *VirtualNetworkLinksClientUpdatePollerResponse) Resume(ctx context.Context, client *VirtualNetworkLinksClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("VirtualNetworkLinksClient.Update", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &VirtualNetworkLinksUpdatePoller{
+	poller := &VirtualNetworkLinksClientUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -429,14 +429,14 @@ func (l *VirtualNetworkLinksUpdatePollerResponse) Resume(ctx context.Context, cl
 	return nil
 }
 
-// VirtualNetworkLinksUpdateResponse contains the response from method VirtualNetworkLinks.Update.
-type VirtualNetworkLinksUpdateResponse struct {
-	VirtualNetworkLinksUpdateResult
+// VirtualNetworkLinksClientUpdateResponse contains the response from method VirtualNetworkLinksClient.Update.
+type VirtualNetworkLinksClientUpdateResponse struct {
+	VirtualNetworkLinksClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VirtualNetworkLinksUpdateResult contains the result from method VirtualNetworkLinks.Update.
-type VirtualNetworkLinksUpdateResult struct {
+// VirtualNetworkLinksClientUpdateResult contains the result from method VirtualNetworkLinksClient.Update.
+type VirtualNetworkLinksClientUpdateResult struct {
 	VirtualNetworkLink
 }

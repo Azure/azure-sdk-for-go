@@ -11,7 +11,6 @@ package armcontainerinstance
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,55 @@ import (
 // ContainersClient contains the methods for the Containers group.
 // Don't use this type directly, use NewContainersClient() instead.
 type ContainersClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewContainersClient creates a new instance of ContainersClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewContainersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ContainersClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ContainersClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ContainersClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Attach - Attach to the output stream of a specific container instance in a specified resource group and container group.
-// If the operation fails it returns the *CloudError error type.
-func (client *ContainersClient) Attach(ctx context.Context, resourceGroupName string, containerGroupName string, containerName string, options *ContainersAttachOptions) (ContainersAttachResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// containerGroupName - The name of the container group.
+// containerName - The name of the container instance.
+// options - ContainersClientAttachOptions contains the optional parameters for the ContainersClient.Attach method.
+func (client *ContainersClient) Attach(ctx context.Context, resourceGroupName string, containerGroupName string, containerName string, options *ContainersClientAttachOptions) (ContainersClientAttachResponse, error) {
 	req, err := client.attachCreateRequest(ctx, resourceGroupName, containerGroupName, containerName, options)
 	if err != nil {
-		return ContainersAttachResponse{}, err
+		return ContainersClientAttachResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ContainersAttachResponse{}, err
+		return ContainersClientAttachResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ContainersAttachResponse{}, client.attachHandleError(resp)
+		return ContainersClientAttachResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.attachHandleResponse(resp)
 }
 
 // attachCreateRequest creates the Attach request.
-func (client *ContainersClient) attachCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, containerName string, options *ContainersAttachOptions) (*policy.Request, error) {
+func (client *ContainersClient) attachCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, containerName string, options *ContainersClientAttachOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}/containers/{containerName}/attach"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -79,58 +91,51 @@ func (client *ContainersClient) attachCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter containerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{containerName}", url.PathEscape(containerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // attachHandleResponse handles the Attach response.
-func (client *ContainersClient) attachHandleResponse(resp *http.Response) (ContainersAttachResponse, error) {
-	result := ContainersAttachResponse{RawResponse: resp}
+func (client *ContainersClient) attachHandleResponse(resp *http.Response) (ContainersClientAttachResponse, error) {
+	result := ContainersClientAttachResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContainerAttachResponse); err != nil {
-		return ContainersAttachResponse{}, runtime.NewResponseError(err, resp)
+		return ContainersClientAttachResponse{}, err
 	}
 	return result, nil
 }
 
-// attachHandleError handles the Attach error response.
-func (client *ContainersClient) attachHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ExecuteCommand - Executes a command for a specific container instance in a specified resource group and container group.
-// If the operation fails it returns the *CloudError error type.
-func (client *ContainersClient) ExecuteCommand(ctx context.Context, resourceGroupName string, containerGroupName string, containerName string, containerExecRequest ContainerExecRequest, options *ContainersExecuteCommandOptions) (ContainersExecuteCommandResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// containerGroupName - The name of the container group.
+// containerName - The name of the container instance.
+// containerExecRequest - The request for the exec command.
+// options - ContainersClientExecuteCommandOptions contains the optional parameters for the ContainersClient.ExecuteCommand
+// method.
+func (client *ContainersClient) ExecuteCommand(ctx context.Context, resourceGroupName string, containerGroupName string, containerName string, containerExecRequest ContainerExecRequest, options *ContainersClientExecuteCommandOptions) (ContainersClientExecuteCommandResponse, error) {
 	req, err := client.executeCommandCreateRequest(ctx, resourceGroupName, containerGroupName, containerName, containerExecRequest, options)
 	if err != nil {
-		return ContainersExecuteCommandResponse{}, err
+		return ContainersClientExecuteCommandResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ContainersExecuteCommandResponse{}, err
+		return ContainersClientExecuteCommandResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ContainersExecuteCommandResponse{}, client.executeCommandHandleError(resp)
+		return ContainersClientExecuteCommandResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.executeCommandHandleResponse(resp)
 }
 
 // executeCommandCreateRequest creates the ExecuteCommand request.
-func (client *ContainersClient) executeCommandCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, containerName string, containerExecRequest ContainerExecRequest, options *ContainersExecuteCommandOptions) (*policy.Request, error) {
+func (client *ContainersClient) executeCommandCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, containerName string, containerExecRequest ContainerExecRequest, options *ContainersClientExecuteCommandOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}/containers/{containerName}/exec"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -148,58 +153,49 @@ func (client *ContainersClient) executeCommandCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter containerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{containerName}", url.PathEscape(containerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, containerExecRequest)
 }
 
 // executeCommandHandleResponse handles the ExecuteCommand response.
-func (client *ContainersClient) executeCommandHandleResponse(resp *http.Response) (ContainersExecuteCommandResponse, error) {
-	result := ContainersExecuteCommandResponse{RawResponse: resp}
+func (client *ContainersClient) executeCommandHandleResponse(resp *http.Response) (ContainersClientExecuteCommandResponse, error) {
+	result := ContainersClientExecuteCommandResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContainerExecResponse); err != nil {
-		return ContainersExecuteCommandResponse{}, runtime.NewResponseError(err, resp)
+		return ContainersClientExecuteCommandResponse{}, err
 	}
 	return result, nil
 }
 
-// executeCommandHandleError handles the ExecuteCommand error response.
-func (client *ContainersClient) executeCommandHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListLogs - Get the logs for a specified container instance in a specified resource group and container group.
-// If the operation fails it returns the *CloudError error type.
-func (client *ContainersClient) ListLogs(ctx context.Context, resourceGroupName string, containerGroupName string, containerName string, options *ContainersListLogsOptions) (ContainersListLogsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// containerGroupName - The name of the container group.
+// containerName - The name of the container instance.
+// options - ContainersClientListLogsOptions contains the optional parameters for the ContainersClient.ListLogs method.
+func (client *ContainersClient) ListLogs(ctx context.Context, resourceGroupName string, containerGroupName string, containerName string, options *ContainersClientListLogsOptions) (ContainersClientListLogsResponse, error) {
 	req, err := client.listLogsCreateRequest(ctx, resourceGroupName, containerGroupName, containerName, options)
 	if err != nil {
-		return ContainersListLogsResponse{}, err
+		return ContainersClientListLogsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ContainersListLogsResponse{}, err
+		return ContainersClientListLogsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ContainersListLogsResponse{}, client.listLogsHandleError(resp)
+		return ContainersClientListLogsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listLogsHandleResponse(resp)
 }
 
 // listLogsCreateRequest creates the ListLogs request.
-func (client *ContainersClient) listLogsCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, containerName string, options *ContainersListLogsOptions) (*policy.Request, error) {
+func (client *ContainersClient) listLogsCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, containerName string, options *ContainersClientListLogsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}/containers/{containerName}/logs"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -217,12 +213,12 @@ func (client *ContainersClient) listLogsCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter containerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{containerName}", url.PathEscape(containerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01")
+	reqQP.Set("api-version", "2021-10-01")
 	if options != nil && options.Tail != nil {
 		reqQP.Set("tail", strconv.FormatInt(int64(*options.Tail), 10))
 	}
@@ -235,23 +231,10 @@ func (client *ContainersClient) listLogsCreateRequest(ctx context.Context, resou
 }
 
 // listLogsHandleResponse handles the ListLogs response.
-func (client *ContainersClient) listLogsHandleResponse(resp *http.Response) (ContainersListLogsResponse, error) {
-	result := ContainersListLogsResponse{RawResponse: resp}
+func (client *ContainersClient) listLogsHandleResponse(resp *http.Response) (ContainersClientListLogsResponse, error) {
+	result := ContainersClientListLogsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Logs); err != nil {
-		return ContainersListLogsResponse{}, runtime.NewResponseError(err, resp)
+		return ContainersClientListLogsResponse{}, err
 	}
 	return result, nil
-}
-
-// listLogsHandleError handles the ListLogs error response.
-func (client *ContainersClient) listLogsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

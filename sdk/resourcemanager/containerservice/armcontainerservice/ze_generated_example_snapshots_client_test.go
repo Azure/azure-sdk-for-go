@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice"
 )
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/SnapshotsList.json
+// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/SnapshotsList.json
 func ExampleSnapshotsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -26,17 +26,21 @@ func ExampleSnapshotsClient_List() {
 	ctx := context.Background()
 	client := armcontainerservice.NewSnapshotsClient("<subscription-id>", cred, nil)
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Snapshot.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/SnapshotsListByResourceGroup.json
+// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/SnapshotsListByResourceGroup.json
 func ExampleSnapshotsClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,17 +50,21 @@ func ExampleSnapshotsClient_ListByResourceGroup() {
 	client := armcontainerservice.NewSnapshotsClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Snapshot.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/SnapshotsGet.json
+// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/SnapshotsGet.json
 func ExampleSnapshotsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,10 +79,10 @@ func ExampleSnapshotsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Snapshot.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SnapshotsClientGetResult)
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/SnapshotsCreate.json
+// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/SnapshotsCreate.json
 func ExampleSnapshotsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,12 +94,10 @@ func ExampleSnapshotsClient_CreateOrUpdate() {
 		"<resource-group-name>",
 		"<resource-name>",
 		armcontainerservice.Snapshot{
-			Resource: armcontainerservice.Resource{
-				Location: to.StringPtr("<location>"),
-				Tags: map[string]*string{
-					"key1": to.StringPtr("val1"),
-					"key2": to.StringPtr("val2"),
-				},
+			Location: to.StringPtr("<location>"),
+			Tags: map[string]*string{
+				"key1": to.StringPtr("val1"),
+				"key2": to.StringPtr("val2"),
 			},
 			Properties: &armcontainerservice.SnapshotProperties{
 				CreationData: &armcontainerservice.CreationData{
@@ -103,10 +109,10 @@ func ExampleSnapshotsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Snapshot.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SnapshotsClientCreateOrUpdateResult)
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/SnapshotsUpdateTags.json
+// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/SnapshotsUpdateTags.json
 func ExampleSnapshotsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,10 +133,10 @@ func ExampleSnapshotsClient_UpdateTags() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Snapshot.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SnapshotsClientUpdateTagsResult)
 }
 
-// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/SnapshotsDelete.json
+// x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2021-11-01-preview/examples/SnapshotsDelete.json
 func ExampleSnapshotsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

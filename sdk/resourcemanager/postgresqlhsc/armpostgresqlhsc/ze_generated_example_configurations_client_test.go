@@ -31,12 +31,16 @@ func ExampleConfigurationsClient_ListByServer() {
 		"<server-group-name>",
 		"<server-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ServerConfiguration.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -52,12 +56,16 @@ func ExampleConfigurationsClient_ListByServerGroup() {
 	pager := client.ListByServerGroup("<resource-group-name>",
 		"<server-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ServerGroupConfiguration.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -78,11 +86,11 @@ func ExampleConfigurationsClient_BeginUpdate() {
 			Properties: &armpostgresqlhsc.ServerGroupConfigurationProperties{
 				ServerRoleGroupConfigurations: []*armpostgresqlhsc.ServerRoleGroupConfiguration{
 					{
-						Role:  armpostgresqlhsc.ServerRoleCoordinator.ToPtr(),
+						Role:  armpostgresqlhsc.ServerRole("Coordinator").ToPtr(),
 						Value: to.StringPtr("<value>"),
 					},
 					{
-						Role:  armpostgresqlhsc.ServerRoleWorker.ToPtr(),
+						Role:  armpostgresqlhsc.ServerRole("Worker").ToPtr(),
 						Value: to.StringPtr("<value>"),
 					}},
 			},
@@ -95,7 +103,7 @@ func ExampleConfigurationsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ServerGroupConfiguration.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ConfigurationsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2020-10-05-privatepreview/examples/ConfigurationGet.json
@@ -114,5 +122,5 @@ func ExampleConfigurationsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ServerGroupConfiguration.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ConfigurationsClientGetResult)
 }

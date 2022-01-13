@@ -24,16 +24,17 @@ func ExampleAnalysisResultsClient_List() {
 	}
 	ctx := context.Background()
 	client := armtestbase.NewAnalysisResultsClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<test-base-account-name>",
 		"<package-name>",
 		"<test-result-name>",
-		armtestbase.AnalysisResultTypeCPURegression,
+		armtestbase.AnalysisResultType("CPURegression"),
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.AnalysisResultsClientListResult)
 }
 
 // x-ms-original-file: specification/testbase/resource-manager/Microsoft.TestBase/preview/2020-12-16-preview/examples/CPURegressionAnalysisResultGet.json
@@ -49,10 +50,10 @@ func ExampleAnalysisResultsClient_Get() {
 		"<test-base-account-name>",
 		"<package-name>",
 		"<test-result-name>",
-		armtestbase.AnalysisResultNameCPURegression,
+		armtestbase.AnalysisResultName("cpuRegression"),
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AnalysisResultSingletonResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AnalysisResultsClientGetResult)
 }

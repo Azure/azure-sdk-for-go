@@ -32,44 +32,6 @@ func unmarshalPartitionSchemeDescriptionClassification(rawMsg json.RawMessage) (
 	return b, json.Unmarshal(rawMsg, b)
 }
 
-func unmarshalPartitionSchemeDescriptionClassificationArray(rawMsg json.RawMessage) ([]PartitionSchemeDescriptionClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]PartitionSchemeDescriptionClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalPartitionSchemeDescriptionClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalPartitionSchemeDescriptionClassificationMap(rawMsg json.RawMessage) (map[string]PartitionSchemeDescriptionClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]PartitionSchemeDescriptionClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalPartitionSchemeDescriptionClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
-}
-
 func unmarshalServicePlacementPolicyDescriptionClassification(rawMsg json.RawMessage) (ServicePlacementPolicyDescriptionClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -105,25 +67,6 @@ func unmarshalServicePlacementPolicyDescriptionClassificationArray(rawMsg json.R
 	return fArray, nil
 }
 
-func unmarshalServicePlacementPolicyDescriptionClassificationMap(rawMsg json.RawMessage) (map[string]ServicePlacementPolicyDescriptionClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]ServicePlacementPolicyDescriptionClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalServicePlacementPolicyDescriptionClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
-}
-
 func unmarshalServiceResourcePropertiesClassification(rawMsg json.RawMessage) (ServiceResourcePropertiesClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -144,44 +87,6 @@ func unmarshalServiceResourcePropertiesClassification(rawMsg json.RawMessage) (S
 	return b, json.Unmarshal(rawMsg, b)
 }
 
-func unmarshalServiceResourcePropertiesClassificationArray(rawMsg json.RawMessage) ([]ServiceResourcePropertiesClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]ServiceResourcePropertiesClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalServiceResourcePropertiesClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalServiceResourcePropertiesClassificationMap(rawMsg json.RawMessage) (map[string]ServiceResourcePropertiesClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]ServiceResourcePropertiesClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalServiceResourcePropertiesClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
-}
-
 func unmarshalServiceResourceUpdatePropertiesClassification(rawMsg json.RawMessage) (ServiceResourceUpdatePropertiesClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -200,42 +105,4 @@ func unmarshalServiceResourceUpdatePropertiesClassification(rawMsg json.RawMessa
 		b = &ServiceResourceUpdateProperties{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
-}
-
-func unmarshalServiceResourceUpdatePropertiesClassificationArray(rawMsg json.RawMessage) ([]ServiceResourceUpdatePropertiesClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]ServiceResourceUpdatePropertiesClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalServiceResourceUpdatePropertiesClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalServiceResourceUpdatePropertiesClassificationMap(rawMsg json.RawMessage) (map[string]ServiceResourceUpdatePropertiesClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]ServiceResourceUpdatePropertiesClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalServiceResourceUpdatePropertiesClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
 }

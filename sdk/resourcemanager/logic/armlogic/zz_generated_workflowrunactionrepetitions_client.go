@@ -11,7 +11,6 @@ package armlogic
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,57 @@ import (
 // WorkflowRunActionRepetitionsClient contains the methods for the WorkflowRunActionRepetitions group.
 // Don't use this type directly, use NewWorkflowRunActionRepetitionsClient() instead.
 type WorkflowRunActionRepetitionsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewWorkflowRunActionRepetitionsClient creates a new instance of WorkflowRunActionRepetitionsClient with the specified values.
+// subscriptionID - The subscription id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewWorkflowRunActionRepetitionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WorkflowRunActionRepetitionsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &WorkflowRunActionRepetitionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &WorkflowRunActionRepetitionsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Get a workflow run action repetition.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *WorkflowRunActionRepetitionsClient) Get(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string, repetitionName string, options *WorkflowRunActionRepetitionsGetOptions) (WorkflowRunActionRepetitionsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// workflowName - The workflow name.
+// runName - The workflow run name.
+// actionName - The workflow action name.
+// repetitionName - The workflow repetition.
+// options - WorkflowRunActionRepetitionsClientGetOptions contains the optional parameters for the WorkflowRunActionRepetitionsClient.Get
+// method.
+func (client *WorkflowRunActionRepetitionsClient) Get(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string, repetitionName string, options *WorkflowRunActionRepetitionsClientGetOptions) (WorkflowRunActionRepetitionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workflowName, runName, actionName, repetitionName, options)
 	if err != nil {
-		return WorkflowRunActionRepetitionsGetResponse{}, err
+		return WorkflowRunActionRepetitionsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WorkflowRunActionRepetitionsGetResponse{}, err
+		return WorkflowRunActionRepetitionsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WorkflowRunActionRepetitionsGetResponse{}, client.getHandleError(resp)
+		return WorkflowRunActionRepetitionsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *WorkflowRunActionRepetitionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string, repetitionName string, options *WorkflowRunActionRepetitionsGetOptions) (*policy.Request, error) {
+func (client *WorkflowRunActionRepetitionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string, repetitionName string, options *WorkflowRunActionRepetitionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/runs/{runName}/actions/{actionName}/repetitions/{repetitionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -86,7 +100,7 @@ func (client *WorkflowRunActionRepetitionsClient) getCreateRequest(ctx context.C
 		return nil, errors.New("parameter repetitionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{repetitionName}", url.PathEscape(repetitionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -98,46 +112,39 @@ func (client *WorkflowRunActionRepetitionsClient) getCreateRequest(ctx context.C
 }
 
 // getHandleResponse handles the Get response.
-func (client *WorkflowRunActionRepetitionsClient) getHandleResponse(resp *http.Response) (WorkflowRunActionRepetitionsGetResponse, error) {
-	result := WorkflowRunActionRepetitionsGetResponse{RawResponse: resp}
+func (client *WorkflowRunActionRepetitionsClient) getHandleResponse(resp *http.Response) (WorkflowRunActionRepetitionsClientGetResponse, error) {
+	result := WorkflowRunActionRepetitionsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowRunActionRepetitionDefinition); err != nil {
-		return WorkflowRunActionRepetitionsGetResponse{}, runtime.NewResponseError(err, resp)
+		return WorkflowRunActionRepetitionsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *WorkflowRunActionRepetitionsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Get all of a workflow run action repetitions.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *WorkflowRunActionRepetitionsClient) List(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string, options *WorkflowRunActionRepetitionsListOptions) (WorkflowRunActionRepetitionsListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// workflowName - The workflow name.
+// runName - The workflow run name.
+// actionName - The workflow action name.
+// options - WorkflowRunActionRepetitionsClientListOptions contains the optional parameters for the WorkflowRunActionRepetitionsClient.List
+// method.
+func (client *WorkflowRunActionRepetitionsClient) List(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string, options *WorkflowRunActionRepetitionsClientListOptions) (WorkflowRunActionRepetitionsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, workflowName, runName, actionName, options)
 	if err != nil {
-		return WorkflowRunActionRepetitionsListResponse{}, err
+		return WorkflowRunActionRepetitionsClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WorkflowRunActionRepetitionsListResponse{}, err
+		return WorkflowRunActionRepetitionsClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WorkflowRunActionRepetitionsListResponse{}, client.listHandleError(resp)
+		return WorkflowRunActionRepetitionsClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *WorkflowRunActionRepetitionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string, options *WorkflowRunActionRepetitionsListOptions) (*policy.Request, error) {
+func (client *WorkflowRunActionRepetitionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string, options *WorkflowRunActionRepetitionsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/runs/{runName}/actions/{actionName}/repetitions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -159,7 +166,7 @@ func (client *WorkflowRunActionRepetitionsClient) listCreateRequest(ctx context.
 		return nil, errors.New("parameter actionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{actionName}", url.PathEscape(actionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -171,46 +178,40 @@ func (client *WorkflowRunActionRepetitionsClient) listCreateRequest(ctx context.
 }
 
 // listHandleResponse handles the List response.
-func (client *WorkflowRunActionRepetitionsClient) listHandleResponse(resp *http.Response) (WorkflowRunActionRepetitionsListResponse, error) {
-	result := WorkflowRunActionRepetitionsListResponse{RawResponse: resp}
+func (client *WorkflowRunActionRepetitionsClient) listHandleResponse(resp *http.Response) (WorkflowRunActionRepetitionsClientListResponse, error) {
+	result := WorkflowRunActionRepetitionsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowRunActionRepetitionDefinitionCollection); err != nil {
-		return WorkflowRunActionRepetitionsListResponse{}, runtime.NewResponseError(err, resp)
+		return WorkflowRunActionRepetitionsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *WorkflowRunActionRepetitionsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListExpressionTraces - Lists a workflow run expression trace.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *WorkflowRunActionRepetitionsClient) ListExpressionTraces(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string, repetitionName string, options *WorkflowRunActionRepetitionsListExpressionTracesOptions) (WorkflowRunActionRepetitionsListExpressionTracesResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// workflowName - The workflow name.
+// runName - The workflow run name.
+// actionName - The workflow action name.
+// repetitionName - The workflow repetition.
+// options - WorkflowRunActionRepetitionsClientListExpressionTracesOptions contains the optional parameters for the WorkflowRunActionRepetitionsClient.ListExpressionTraces
+// method.
+func (client *WorkflowRunActionRepetitionsClient) ListExpressionTraces(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string, repetitionName string, options *WorkflowRunActionRepetitionsClientListExpressionTracesOptions) (WorkflowRunActionRepetitionsClientListExpressionTracesResponse, error) {
 	req, err := client.listExpressionTracesCreateRequest(ctx, resourceGroupName, workflowName, runName, actionName, repetitionName, options)
 	if err != nil {
-		return WorkflowRunActionRepetitionsListExpressionTracesResponse{}, err
+		return WorkflowRunActionRepetitionsClientListExpressionTracesResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WorkflowRunActionRepetitionsListExpressionTracesResponse{}, err
+		return WorkflowRunActionRepetitionsClientListExpressionTracesResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WorkflowRunActionRepetitionsListExpressionTracesResponse{}, client.listExpressionTracesHandleError(resp)
+		return WorkflowRunActionRepetitionsClientListExpressionTracesResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listExpressionTracesHandleResponse(resp)
 }
 
 // listExpressionTracesCreateRequest creates the ListExpressionTraces request.
-func (client *WorkflowRunActionRepetitionsClient) listExpressionTracesCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string, repetitionName string, options *WorkflowRunActionRepetitionsListExpressionTracesOptions) (*policy.Request, error) {
+func (client *WorkflowRunActionRepetitionsClient) listExpressionTracesCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string, repetitionName string, options *WorkflowRunActionRepetitionsClientListExpressionTracesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/runs/{runName}/actions/{actionName}/repetitions/{repetitionName}/listExpressionTraces"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -236,7 +237,7 @@ func (client *WorkflowRunActionRepetitionsClient) listExpressionTracesCreateRequ
 		return nil, errors.New("parameter repetitionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{repetitionName}", url.PathEscape(repetitionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -248,23 +249,10 @@ func (client *WorkflowRunActionRepetitionsClient) listExpressionTracesCreateRequ
 }
 
 // listExpressionTracesHandleResponse handles the ListExpressionTraces response.
-func (client *WorkflowRunActionRepetitionsClient) listExpressionTracesHandleResponse(resp *http.Response) (WorkflowRunActionRepetitionsListExpressionTracesResponse, error) {
-	result := WorkflowRunActionRepetitionsListExpressionTracesResponse{RawResponse: resp}
+func (client *WorkflowRunActionRepetitionsClient) listExpressionTracesHandleResponse(resp *http.Response) (WorkflowRunActionRepetitionsClientListExpressionTracesResponse, error) {
+	result := WorkflowRunActionRepetitionsClientListExpressionTracesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExpressionTraces); err != nil {
-		return WorkflowRunActionRepetitionsListExpressionTracesResponse{}, runtime.NewResponseError(err, resp)
+		return WorkflowRunActionRepetitionsClientListExpressionTracesResponse{}, err
 	}
 	return result, nil
-}
-
-// listExpressionTracesHandleError handles the ListExpressionTraces error response.
-func (client *WorkflowRunActionRepetitionsClient) listExpressionTracesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -11,7 +11,6 @@ package armlogic
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // WorkflowRunOperationsClient contains the methods for the WorkflowRunOperations group.
 // Don't use this type directly, use NewWorkflowRunOperationsClient() instead.
 type WorkflowRunOperationsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewWorkflowRunOperationsClient creates a new instance of WorkflowRunOperationsClient with the specified values.
+// subscriptionID - The subscription id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewWorkflowRunOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WorkflowRunOperationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &WorkflowRunOperationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &WorkflowRunOperationsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets an operation for a run.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *WorkflowRunOperationsClient) Get(ctx context.Context, resourceGroupName string, workflowName string, runName string, operationID string, options *WorkflowRunOperationsGetOptions) (WorkflowRunOperationsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// workflowName - The workflow name.
+// runName - The workflow run name.
+// operationID - The workflow operation id.
+// options - WorkflowRunOperationsClientGetOptions contains the optional parameters for the WorkflowRunOperationsClient.Get
+// method.
+func (client *WorkflowRunOperationsClient) Get(ctx context.Context, resourceGroupName string, workflowName string, runName string, operationID string, options *WorkflowRunOperationsClientGetOptions) (WorkflowRunOperationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workflowName, runName, operationID, options)
 	if err != nil {
-		return WorkflowRunOperationsGetResponse{}, err
+		return WorkflowRunOperationsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WorkflowRunOperationsGetResponse{}, err
+		return WorkflowRunOperationsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WorkflowRunOperationsGetResponse{}, client.getHandleError(resp)
+		return WorkflowRunOperationsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *WorkflowRunOperationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, runName string, operationID string, options *WorkflowRunOperationsGetOptions) (*policy.Request, error) {
+func (client *WorkflowRunOperationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, runName string, operationID string, options *WorkflowRunOperationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/runs/{runName}/operations/{operationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -82,7 +95,7 @@ func (client *WorkflowRunOperationsClient) getCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter operationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -94,23 +107,10 @@ func (client *WorkflowRunOperationsClient) getCreateRequest(ctx context.Context,
 }
 
 // getHandleResponse handles the Get response.
-func (client *WorkflowRunOperationsClient) getHandleResponse(resp *http.Response) (WorkflowRunOperationsGetResponse, error) {
-	result := WorkflowRunOperationsGetResponse{RawResponse: resp}
+func (client *WorkflowRunOperationsClient) getHandleResponse(resp *http.Response) (WorkflowRunOperationsClientGetResponse, error) {
+	result := WorkflowRunOperationsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowRun); err != nil {
-		return WorkflowRunOperationsGetResponse{}, runtime.NewResponseError(err, resp)
+		return WorkflowRunOperationsClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *WorkflowRunOperationsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

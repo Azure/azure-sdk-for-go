@@ -15,43 +15,444 @@ import (
 	"time"
 )
 
-// AccountsBeginCreateOptions contains the optional parameters for the Accounts.BeginCreate method.
-type AccountsBeginCreateOptions struct {
+// Account - A Data Lake Analytics account object, containing all information associated with the named Data Lake Analytics
+// account.
+type Account struct {
+	// READ-ONLY; The resource identifier.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource location.
+	Location *string `json:"location,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The properties defined by Data Lake Analytics all properties are specific to each resource provider.
+	Properties *AccountProperties `json:"properties,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource tags.
+	Tags map[string]*string `json:"tags,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Account.
+func (a Account) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "id", a.ID)
+	populate(objectMap, "location", a.Location)
+	populate(objectMap, "name", a.Name)
+	populate(objectMap, "properties", a.Properties)
+	populate(objectMap, "tags", a.Tags)
+	populate(objectMap, "type", a.Type)
+	return json.Marshal(objectMap)
+}
+
+// AccountBasic - A Data Lake Analytics account object, containing all information associated with the named Data Lake Analytics
+// account.
+type AccountBasic struct {
+	// READ-ONLY; The resource identifier.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource location.
+	Location *string `json:"location,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The properties defined by Data Lake Analytics all properties are specific to each resource provider.
+	Properties *AccountPropertiesBasic `json:"properties,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource tags.
+	Tags map[string]*string `json:"tags,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AccountBasic.
+func (a AccountBasic) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "id", a.ID)
+	populate(objectMap, "location", a.Location)
+	populate(objectMap, "name", a.Name)
+	populate(objectMap, "properties", a.Properties)
+	populate(objectMap, "tags", a.Tags)
+	populate(objectMap, "type", a.Type)
+	return json.Marshal(objectMap)
+}
+
+// AccountListResult - Data Lake Analytics account list information.
+type AccountListResult struct {
+	// READ-ONLY; The current number of data lake analytics accounts under this subscription.
+	Count *int32 `json:"count,omitempty" azure:"ro"`
+
+	// READ-ONLY; The link (url) to the next page of results.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; The results of the list operation.
+	Value []*AccountBasic `json:"value,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AccountListResult.
+func (a AccountListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "count", a.Count)
+	populate(objectMap, "nextLink", a.NextLink)
+	populate(objectMap, "value", a.Value)
+	return json.Marshal(objectMap)
+}
+
+// AccountProperties - The account specific properties that are associated with an underlying Data Lake Analytics account.
+// Returned only when retrieving a specific account.
+type AccountProperties struct {
+	// The current state of allowing or disallowing IPs originating within Azure through the firewall. If the firewall is disabled,
+	// this is not enforced.
+	FirewallAllowAzureIPs *FirewallAllowAzureIPsState `json:"firewallAllowAzureIps,omitempty"`
+
+	// The current state of the IP address firewall for this account.
+	FirewallState *FirewallState `json:"firewallState,omitempty"`
+
+	// The maximum supported degree of parallelism for this account.
+	MaxDegreeOfParallelism *int32 `json:"maxDegreeOfParallelism,omitempty"`
+
+	// The maximum supported degree of parallelism per job for this account.
+	MaxDegreeOfParallelismPerJob *int32 `json:"maxDegreeOfParallelismPerJob,omitempty"`
+
+	// The maximum supported jobs running under the account at the same time.
+	MaxJobCount *int32 `json:"maxJobCount,omitempty"`
+
+	// The commitment tier for the next month.
+	NewTier *TierType `json:"newTier,omitempty"`
+
+	// The list of Data Lake Store accounts associated with this account.
+	PublicDataLakeStoreAccounts []*DataLakeStoreAccountInformation `json:"publicDataLakeStoreAccounts,omitempty"`
+
+	// The number of days that job metadata is retained.
+	QueryStoreRetention *int32 `json:"queryStoreRetention,omitempty"`
+
+	// READ-ONLY; The unique identifier associated with this Data Lake Analytics account.
+	AccountID *string `json:"accountId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The list of compute policies associated with this account.
+	ComputePolicies []*ComputePolicy `json:"computePolicies,omitempty" azure:"ro"`
+
+	// READ-ONLY; The account creation time.
+	CreationTime *time.Time `json:"creationTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; The commitment tier in use for the current month.
+	CurrentTier *TierType `json:"currentTier,omitempty" azure:"ro"`
+
+	// READ-ONLY; The list of Data Lake Store accounts associated with this account.
+	DataLakeStoreAccounts []*DataLakeStoreAccountInformation `json:"dataLakeStoreAccounts,omitempty" azure:"ro"`
+
+	// READ-ONLY; The current state of the DebugDataAccessLevel for this account.
+	DebugDataAccessLevel *DebugDataAccessLevel `json:"debugDataAccessLevel,omitempty" azure:"ro"`
+
+	// READ-ONLY; The default Data Lake Store account associated with this account.
+	DefaultDataLakeStoreAccount *string `json:"defaultDataLakeStoreAccount,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the default Data Lake Store account associated with this account.
+	DefaultDataLakeStoreAccountType *string `json:"defaultDataLakeStoreAccountType,omitempty" azure:"ro"`
+
+	// READ-ONLY; The full CName endpoint for this account.
+	Endpoint *string `json:"endpoint,omitempty" azure:"ro"`
+
+	// READ-ONLY; The list of firewall rules associated with this account.
+	FirewallRules []*FirewallRule `json:"firewallRules,omitempty" azure:"ro"`
+
+	// READ-ONLY; The list of hiveMetastores associated with this account.
+	HiveMetastores []*HiveMetastore `json:"hiveMetastores,omitempty" azure:"ro"`
+
+	// READ-ONLY; The account last modified time.
+	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; The maximum supported active jobs under the account at the same time.
+	MaxActiveJobCountPerUser *int32 `json:"maxActiveJobCountPerUser,omitempty" azure:"ro"`
+
+	// READ-ONLY; The maximum supported active jobs under the account at the same time.
+	MaxJobRunningTimeInMin *int32 `json:"maxJobRunningTimeInMin,omitempty" azure:"ro"`
+
+	// READ-ONLY; The maximum supported jobs queued under the account at the same time.
+	MaxQueuedJobCountPerUser *int32 `json:"maxQueuedJobCountPerUser,omitempty" azure:"ro"`
+
+	// READ-ONLY; The minimum supported priority per job for this account.
+	MinPriorityPerJob *int32 `json:"minPriorityPerJob,omitempty" azure:"ro"`
+
+	// READ-ONLY; The provisioning status of the Data Lake Analytics account.
+	ProvisioningState *DataLakeAnalyticsAccountStatus `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; The state of the Data Lake Analytics account.
+	State *DataLakeAnalyticsAccountState `json:"state,omitempty" azure:"ro"`
+
+	// READ-ONLY; The list of Azure Blob Storage accounts associated with this account.
+	StorageAccounts []*StorageAccountInformation `json:"storageAccounts,omitempty" azure:"ro"`
+
+	// READ-ONLY; The system defined maximum supported degree of parallelism for this account, which restricts the maximum value
+	// of parallelism the user can set for the account.
+	SystemMaxDegreeOfParallelism *int32 `json:"systemMaxDegreeOfParallelism,omitempty" azure:"ro"`
+
+	// READ-ONLY; The system defined maximum supported jobs running under the account at the same time, which restricts the maximum
+	// number of running jobs the user can set for the account.
+	SystemMaxJobCount *int32 `json:"systemMaxJobCount,omitempty" azure:"ro"`
+
+	// READ-ONLY; The list of virtualNetwork rules associated with this account.
+	VirtualNetworkRules []*VirtualNetworkRule `json:"virtualNetworkRules,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AccountProperties.
+func (a AccountProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "accountId", a.AccountID)
+	populate(objectMap, "computePolicies", a.ComputePolicies)
+	populateTimeRFC3339(objectMap, "creationTime", a.CreationTime)
+	populate(objectMap, "currentTier", a.CurrentTier)
+	populate(objectMap, "dataLakeStoreAccounts", a.DataLakeStoreAccounts)
+	populate(objectMap, "debugDataAccessLevel", a.DebugDataAccessLevel)
+	populate(objectMap, "defaultDataLakeStoreAccount", a.DefaultDataLakeStoreAccount)
+	populate(objectMap, "defaultDataLakeStoreAccountType", a.DefaultDataLakeStoreAccountType)
+	populate(objectMap, "endpoint", a.Endpoint)
+	populate(objectMap, "firewallAllowAzureIps", a.FirewallAllowAzureIPs)
+	populate(objectMap, "firewallRules", a.FirewallRules)
+	populate(objectMap, "firewallState", a.FirewallState)
+	populate(objectMap, "hiveMetastores", a.HiveMetastores)
+	populateTimeRFC3339(objectMap, "lastModifiedTime", a.LastModifiedTime)
+	populate(objectMap, "maxActiveJobCountPerUser", a.MaxActiveJobCountPerUser)
+	populate(objectMap, "maxDegreeOfParallelism", a.MaxDegreeOfParallelism)
+	populate(objectMap, "maxDegreeOfParallelismPerJob", a.MaxDegreeOfParallelismPerJob)
+	populate(objectMap, "maxJobCount", a.MaxJobCount)
+	populate(objectMap, "maxJobRunningTimeInMin", a.MaxJobRunningTimeInMin)
+	populate(objectMap, "maxQueuedJobCountPerUser", a.MaxQueuedJobCountPerUser)
+	populate(objectMap, "minPriorityPerJob", a.MinPriorityPerJob)
+	populate(objectMap, "newTier", a.NewTier)
+	populate(objectMap, "provisioningState", a.ProvisioningState)
+	populate(objectMap, "publicDataLakeStoreAccounts", a.PublicDataLakeStoreAccounts)
+	populate(objectMap, "queryStoreRetention", a.QueryStoreRetention)
+	populate(objectMap, "state", a.State)
+	populate(objectMap, "storageAccounts", a.StorageAccounts)
+	populate(objectMap, "systemMaxDegreeOfParallelism", a.SystemMaxDegreeOfParallelism)
+	populate(objectMap, "systemMaxJobCount", a.SystemMaxJobCount)
+	populate(objectMap, "virtualNetworkRules", a.VirtualNetworkRules)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AccountProperties.
+func (a *AccountProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "accountId":
+			err = unpopulate(val, &a.AccountID)
+			delete(rawMsg, key)
+		case "computePolicies":
+			err = unpopulate(val, &a.ComputePolicies)
+			delete(rawMsg, key)
+		case "creationTime":
+			err = unpopulateTimeRFC3339(val, &a.CreationTime)
+			delete(rawMsg, key)
+		case "currentTier":
+			err = unpopulate(val, &a.CurrentTier)
+			delete(rawMsg, key)
+		case "dataLakeStoreAccounts":
+			err = unpopulate(val, &a.DataLakeStoreAccounts)
+			delete(rawMsg, key)
+		case "debugDataAccessLevel":
+			err = unpopulate(val, &a.DebugDataAccessLevel)
+			delete(rawMsg, key)
+		case "defaultDataLakeStoreAccount":
+			err = unpopulate(val, &a.DefaultDataLakeStoreAccount)
+			delete(rawMsg, key)
+		case "defaultDataLakeStoreAccountType":
+			err = unpopulate(val, &a.DefaultDataLakeStoreAccountType)
+			delete(rawMsg, key)
+		case "endpoint":
+			err = unpopulate(val, &a.Endpoint)
+			delete(rawMsg, key)
+		case "firewallAllowAzureIps":
+			err = unpopulate(val, &a.FirewallAllowAzureIPs)
+			delete(rawMsg, key)
+		case "firewallRules":
+			err = unpopulate(val, &a.FirewallRules)
+			delete(rawMsg, key)
+		case "firewallState":
+			err = unpopulate(val, &a.FirewallState)
+			delete(rawMsg, key)
+		case "hiveMetastores":
+			err = unpopulate(val, &a.HiveMetastores)
+			delete(rawMsg, key)
+		case "lastModifiedTime":
+			err = unpopulateTimeRFC3339(val, &a.LastModifiedTime)
+			delete(rawMsg, key)
+		case "maxActiveJobCountPerUser":
+			err = unpopulate(val, &a.MaxActiveJobCountPerUser)
+			delete(rawMsg, key)
+		case "maxDegreeOfParallelism":
+			err = unpopulate(val, &a.MaxDegreeOfParallelism)
+			delete(rawMsg, key)
+		case "maxDegreeOfParallelismPerJob":
+			err = unpopulate(val, &a.MaxDegreeOfParallelismPerJob)
+			delete(rawMsg, key)
+		case "maxJobCount":
+			err = unpopulate(val, &a.MaxJobCount)
+			delete(rawMsg, key)
+		case "maxJobRunningTimeInMin":
+			err = unpopulate(val, &a.MaxJobRunningTimeInMin)
+			delete(rawMsg, key)
+		case "maxQueuedJobCountPerUser":
+			err = unpopulate(val, &a.MaxQueuedJobCountPerUser)
+			delete(rawMsg, key)
+		case "minPriorityPerJob":
+			err = unpopulate(val, &a.MinPriorityPerJob)
+			delete(rawMsg, key)
+		case "newTier":
+			err = unpopulate(val, &a.NewTier)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, &a.ProvisioningState)
+			delete(rawMsg, key)
+		case "publicDataLakeStoreAccounts":
+			err = unpopulate(val, &a.PublicDataLakeStoreAccounts)
+			delete(rawMsg, key)
+		case "queryStoreRetention":
+			err = unpopulate(val, &a.QueryStoreRetention)
+			delete(rawMsg, key)
+		case "state":
+			err = unpopulate(val, &a.State)
+			delete(rawMsg, key)
+		case "storageAccounts":
+			err = unpopulate(val, &a.StorageAccounts)
+			delete(rawMsg, key)
+		case "systemMaxDegreeOfParallelism":
+			err = unpopulate(val, &a.SystemMaxDegreeOfParallelism)
+			delete(rawMsg, key)
+		case "systemMaxJobCount":
+			err = unpopulate(val, &a.SystemMaxJobCount)
+			delete(rawMsg, key)
+		case "virtualNetworkRules":
+			err = unpopulate(val, &a.VirtualNetworkRules)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// AccountPropertiesBasic - The basic account specific properties that are associated with an underlying Data Lake Analytics
+// account.
+type AccountPropertiesBasic struct {
+	// READ-ONLY; The unique identifier associated with this Data Lake Analytics account.
+	AccountID *string `json:"accountId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The account creation time.
+	CreationTime *time.Time `json:"creationTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; The full CName endpoint for this account.
+	Endpoint *string `json:"endpoint,omitempty" azure:"ro"`
+
+	// READ-ONLY; The account last modified time.
+	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; The provisioning status of the Data Lake Analytics account.
+	ProvisioningState *DataLakeAnalyticsAccountStatus `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; The state of the Data Lake Analytics account.
+	State *DataLakeAnalyticsAccountState `json:"state,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AccountPropertiesBasic.
+func (a AccountPropertiesBasic) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "accountId", a.AccountID)
+	populateTimeRFC3339(objectMap, "creationTime", a.CreationTime)
+	populate(objectMap, "endpoint", a.Endpoint)
+	populateTimeRFC3339(objectMap, "lastModifiedTime", a.LastModifiedTime)
+	populate(objectMap, "provisioningState", a.ProvisioningState)
+	populate(objectMap, "state", a.State)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AccountPropertiesBasic.
+func (a *AccountPropertiesBasic) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "accountId":
+			err = unpopulate(val, &a.AccountID)
+			delete(rawMsg, key)
+		case "creationTime":
+			err = unpopulateTimeRFC3339(val, &a.CreationTime)
+			delete(rawMsg, key)
+		case "endpoint":
+			err = unpopulate(val, &a.Endpoint)
+			delete(rawMsg, key)
+		case "lastModifiedTime":
+			err = unpopulateTimeRFC3339(val, &a.LastModifiedTime)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, &a.ProvisioningState)
+			delete(rawMsg, key)
+		case "state":
+			err = unpopulate(val, &a.State)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// AccountsClientBeginCreateOptions contains the optional parameters for the AccountsClient.BeginCreate method.
+type AccountsClientBeginCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountsBeginDeleteOptions contains the optional parameters for the Accounts.BeginDelete method.
-type AccountsBeginDeleteOptions struct {
+// AccountsClientBeginDeleteOptions contains the optional parameters for the AccountsClient.BeginDelete method.
+type AccountsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountsBeginUpdateOptions contains the optional parameters for the Accounts.BeginUpdate method.
-type AccountsBeginUpdateOptions struct {
+// AccountsClientBeginUpdateOptions contains the optional parameters for the AccountsClient.BeginUpdate method.
+type AccountsClientBeginUpdateOptions struct {
 	// Parameters supplied to the update Data Lake Analytics account operation.
 	Parameters *UpdateDataLakeAnalyticsAccountParameters
 }
 
-// AccountsCheckNameAvailabilityOptions contains the optional parameters for the Accounts.CheckNameAvailability method.
-type AccountsCheckNameAvailabilityOptions struct {
+// AccountsClientCheckNameAvailabilityOptions contains the optional parameters for the AccountsClient.CheckNameAvailability
+// method.
+type AccountsClientCheckNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountsGetOptions contains the optional parameters for the Accounts.Get method.
-type AccountsGetOptions struct {
+// AccountsClientGetOptions contains the optional parameters for the AccountsClient.Get method.
+type AccountsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountsListByResourceGroupOptions contains the optional parameters for the Accounts.ListByResourceGroup method.
-type AccountsListByResourceGroupOptions struct {
-	// The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true.
-	// Optional.
+// AccountsClientListByResourceGroupOptions contains the optional parameters for the AccountsClient.ListByResourceGroup method.
+type AccountsClientListByResourceGroupOptions struct {
+	// The Boolean value of true or false to request a count of the matching resources included with the resources in the response,
+	// e.g. Categories?$count=true. Optional.
 	Count *bool
 	// OData filter. Optional.
 	Filter *string
-	// OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted,
-	// e.g. Categories?$orderby=CategoryName desc. Optional.
+	// OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the
+	// order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc.
+	// Optional.
 	Orderby *string
-	// OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+	// OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description.
+	// Optional.
 	Select *string
 	// The number of items to skip over before returning elements. Optional.
 	Skip *int32
@@ -59,17 +460,19 @@ type AccountsListByResourceGroupOptions struct {
 	Top *int32
 }
 
-// AccountsListOptions contains the optional parameters for the Accounts.List method.
-type AccountsListOptions struct {
-	// The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true.
-	// Optional.
+// AccountsClientListOptions contains the optional parameters for the AccountsClient.List method.
+type AccountsClientListOptions struct {
+	// The Boolean value of true or false to request a count of the matching resources included with the resources in the response,
+	// e.g. Categories?$count=true. Optional.
 	Count *bool
 	// OData filter. Optional.
 	Filter *string
-	// OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted,
-	// e.g. Categories?$orderby=CategoryName desc. Optional.
+	// OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the
+	// order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc.
+	// Optional.
 	Orderby *string
-	// OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+	// OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description.
+	// Optional.
 	Select *string
 	// The number of items to skip over before returning elements. Optional.
 	Skip *int32
@@ -89,7 +492,8 @@ type AddDataLakeStoreProperties struct {
 	Suffix *string `json:"suffix,omitempty"`
 }
 
-// AddDataLakeStoreWithAccountParameters - The parameters used to add a new Data Lake Store account while creating a new Data Lake Analytics account.
+// AddDataLakeStoreWithAccountParameters - The parameters used to add a new Data Lake Store account while creating a new Data
+// Lake Analytics account.
 type AddDataLakeStoreWithAccountParameters struct {
 	// REQUIRED; The unique name of the Data Lake Store account to add.
 	Name *string `json:"name,omitempty"`
@@ -113,7 +517,8 @@ type AddStorageAccountProperties struct {
 	Suffix *string `json:"suffix,omitempty"`
 }
 
-// AddStorageAccountWithAccountParameters - The parameters used to add a new Azure Storage account while creating a new Data Lake Analytics account.
+// AddStorageAccountWithAccountParameters - The parameters used to add a new Azure Storage account while creating a new Data
+// Lake Analytics account.
 type AddStorageAccountWithAccountParameters struct {
 	// REQUIRED; The unique name of the Azure Storage account to add.
 	Name *string `json:"name,omitempty"`
@@ -149,37 +554,47 @@ type CheckNameAvailabilityParameters struct {
 	Type *CheckNameAvailabilityParametersType `json:"type,omitempty"`
 }
 
-// ComputePoliciesCreateOrUpdateOptions contains the optional parameters for the ComputePolicies.CreateOrUpdate method.
-type ComputePoliciesCreateOrUpdateOptions struct {
+// ComputePoliciesClientCreateOrUpdateOptions contains the optional parameters for the ComputePoliciesClient.CreateOrUpdate
+// method.
+type ComputePoliciesClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ComputePoliciesDeleteOptions contains the optional parameters for the ComputePolicies.Delete method.
-type ComputePoliciesDeleteOptions struct {
+// ComputePoliciesClientDeleteOptions contains the optional parameters for the ComputePoliciesClient.Delete method.
+type ComputePoliciesClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ComputePoliciesGetOptions contains the optional parameters for the ComputePolicies.Get method.
-type ComputePoliciesGetOptions struct {
+// ComputePoliciesClientGetOptions contains the optional parameters for the ComputePoliciesClient.Get method.
+type ComputePoliciesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ComputePoliciesListByAccountOptions contains the optional parameters for the ComputePolicies.ListByAccount method.
-type ComputePoliciesListByAccountOptions struct {
+// ComputePoliciesClientListByAccountOptions contains the optional parameters for the ComputePoliciesClient.ListByAccount
+// method.
+type ComputePoliciesClientListByAccountOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ComputePoliciesUpdateOptions contains the optional parameters for the ComputePolicies.Update method.
-type ComputePoliciesUpdateOptions struct {
+// ComputePoliciesClientUpdateOptions contains the optional parameters for the ComputePoliciesClient.Update method.
+type ComputePoliciesClientUpdateOptions struct {
 	// Parameters supplied to update the compute policy.
 	Parameters *UpdateComputePolicyParameters
 }
 
 // ComputePolicy - Data Lake Analytics compute policy information.
 type ComputePolicy struct {
-	SubResource
+	// READ-ONLY; The resource identifier.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The compute policy properties.
 	Properties *ComputePolicyProperties `json:"properties,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ComputePolicyListResult - The list of compute policies in the account.
@@ -214,7 +629,8 @@ type ComputePolicyProperties struct {
 	ObjectType *AADObjectType `json:"objectType,omitempty" azure:"ro"`
 }
 
-// CreateComputePolicyWithAccountParameters - The parameters used to create a new compute policy while creating a new Data Lake Analytics account.
+// CreateComputePolicyWithAccountParameters - The parameters used to create a new compute policy while creating a new Data
+// Lake Analytics account.
 type CreateComputePolicyWithAccountParameters struct {
 	// REQUIRED; The unique name of the compute policy to create.
 	Name *string `json:"name,omitempty"`
@@ -254,7 +670,8 @@ type CreateDataLakeAnalyticsAccountProperties struct {
 	// The list of compute policies associated with this account.
 	ComputePolicies []*CreateComputePolicyWithAccountParameters `json:"computePolicies,omitempty"`
 
-	// The current state of allowing or disallowing IPs originating within Azure through the firewall. If the firewall is disabled, this is not enforced.
+	// The current state of allowing or disallowing IPs originating within Azure through the firewall. If the firewall is disabled,
+	// this is not enforced.
 	FirewallAllowAzureIPs *FirewallAllowAzureIPsState `json:"firewallAllowAzureIps,omitempty"`
 
 	// The list of firewall rules associated with this account.
@@ -304,7 +721,8 @@ func (c CreateDataLakeAnalyticsAccountProperties) MarshalJSON() ([]byte, error) 
 	return json.Marshal(objectMap)
 }
 
-// CreateFirewallRuleWithAccountParameters - The parameters used to create a new firewall rule while creating a new Data Lake Analytics account.
+// CreateFirewallRuleWithAccountParameters - The parameters used to create a new firewall rule while creating a new Data Lake
+// Analytics account.
 type CreateFirewallRuleWithAccountParameters struct {
 	// REQUIRED; The unique name of the firewall rule to create.
 	Name *string `json:"name,omitempty"`
@@ -327,10 +745,12 @@ type CreateOrUpdateComputePolicyProperties struct {
 	// REQUIRED; The type of AAD object the object identifier refers to.
 	ObjectType *AADObjectType `json:"objectType,omitempty"`
 
-	// The maximum degree of parallelism per job this user can use to submit jobs. This property, the min priority per job property, or both must be passed.
+	// The maximum degree of parallelism per job this user can use to submit jobs. This property, the min priority per job property,
+	// or both must be passed.
 	MaxDegreeOfParallelismPerJob *int32 `json:"maxDegreeOfParallelismPerJob,omitempty"`
 
-	// The minimum priority per job this user can use to submit jobs. This property, the max degree of parallelism per job property, or both must be passed.
+	// The minimum priority per job this user can use to submit jobs. This property, the max degree of parallelism per job property,
+	// or both must be passed.
 	MinPriorityPerJob *int32 `json:"minPriorityPerJob,omitempty"`
 }
 
@@ -342,347 +762,28 @@ type CreateOrUpdateFirewallRuleParameters struct {
 
 // CreateOrUpdateFirewallRuleProperties - The firewall rule properties to use when creating a new firewall rule.
 type CreateOrUpdateFirewallRuleProperties struct {
-	// REQUIRED; The end IP address for the firewall rule. This can be either ipv4 or ipv6. Start and End should be in the same protocol.
+	// REQUIRED; The end IP address for the firewall rule. This can be either ipv4 or ipv6. Start and End should be in the same
+	// protocol.
 	EndIPAddress *string `json:"endIpAddress,omitempty"`
 
-	// REQUIRED; The start IP address for the firewall rule. This can be either ipv4 or ipv6. Start and End should be in the same protocol.
+	// REQUIRED; The start IP address for the firewall rule. This can be either ipv4 or ipv6. Start and End should be in the same
+	// protocol.
 	StartIPAddress *string `json:"startIpAddress,omitempty"`
-}
-
-// DataLakeAnalyticsAccount - A Data Lake Analytics account object, containing all information associated with the named Data Lake Analytics account.
-type DataLakeAnalyticsAccount struct {
-	Resource
-	// READ-ONLY; The properties defined by Data Lake Analytics all properties are specific to each resource provider.
-	Properties *DataLakeAnalyticsAccountProperties `json:"properties,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DataLakeAnalyticsAccount.
-func (d DataLakeAnalyticsAccount) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", d.Properties)
-	return json.Marshal(objectMap)
-}
-
-// DataLakeAnalyticsAccountBasic - A Data Lake Analytics account object, containing all information associated with the named Data Lake Analytics account.
-type DataLakeAnalyticsAccountBasic struct {
-	Resource
-	// READ-ONLY; The properties defined by Data Lake Analytics all properties are specific to each resource provider.
-	Properties *DataLakeAnalyticsAccountPropertiesBasic `json:"properties,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DataLakeAnalyticsAccountBasic.
-func (d DataLakeAnalyticsAccountBasic) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", d.Properties)
-	return json.Marshal(objectMap)
-}
-
-// DataLakeAnalyticsAccountListResult - Data Lake Analytics account list information.
-type DataLakeAnalyticsAccountListResult struct {
-	// READ-ONLY; The current number of data lake analytics accounts under this subscription.
-	Count *int32 `json:"count,omitempty" azure:"ro"`
-
-	// READ-ONLY; The link (url) to the next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-
-	// READ-ONLY; The results of the list operation.
-	Value []*DataLakeAnalyticsAccountBasic `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DataLakeAnalyticsAccountListResult.
-func (d DataLakeAnalyticsAccountListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "count", d.Count)
-	populate(objectMap, "nextLink", d.NextLink)
-	populate(objectMap, "value", d.Value)
-	return json.Marshal(objectMap)
-}
-
-// DataLakeAnalyticsAccountProperties - The account specific properties that are associated with an underlying Data Lake Analytics account. Returned only
-// when retrieving a specific account.
-type DataLakeAnalyticsAccountProperties struct {
-	DataLakeAnalyticsAccountPropertiesBasic
-	// The current state of allowing or disallowing IPs originating within Azure through the firewall. If the firewall is disabled, this is not enforced.
-	FirewallAllowAzureIPs *FirewallAllowAzureIPsState `json:"firewallAllowAzureIps,omitempty"`
-
-	// The current state of the IP address firewall for this account.
-	FirewallState *FirewallState `json:"firewallState,omitempty"`
-
-	// The maximum supported degree of parallelism for this account.
-	MaxDegreeOfParallelism *int32 `json:"maxDegreeOfParallelism,omitempty"`
-
-	// The maximum supported degree of parallelism per job for this account.
-	MaxDegreeOfParallelismPerJob *int32 `json:"maxDegreeOfParallelismPerJob,omitempty"`
-
-	// The maximum supported jobs running under the account at the same time.
-	MaxJobCount *int32 `json:"maxJobCount,omitempty"`
-
-	// The commitment tier for the next month.
-	NewTier *TierType `json:"newTier,omitempty"`
-
-	// The list of Data Lake Store accounts associated with this account.
-	PublicDataLakeStoreAccounts []*DataLakeStoreAccountInformation `json:"publicDataLakeStoreAccounts,omitempty"`
-
-	// The number of days that job metadata is retained.
-	QueryStoreRetention *int32 `json:"queryStoreRetention,omitempty"`
-
-	// READ-ONLY; The list of compute policies associated with this account.
-	ComputePolicies []*ComputePolicy `json:"computePolicies,omitempty" azure:"ro"`
-
-	// READ-ONLY; The commitment tier in use for the current month.
-	CurrentTier *TierType `json:"currentTier,omitempty" azure:"ro"`
-
-	// READ-ONLY; The list of Data Lake Store accounts associated with this account.
-	DataLakeStoreAccounts []*DataLakeStoreAccountInformation `json:"dataLakeStoreAccounts,omitempty" azure:"ro"`
-
-	// READ-ONLY; The current state of the DebugDataAccessLevel for this account.
-	DebugDataAccessLevel *DebugDataAccessLevel `json:"debugDataAccessLevel,omitempty" azure:"ro"`
-
-	// READ-ONLY; The default Data Lake Store account associated with this account.
-	DefaultDataLakeStoreAccount *string `json:"defaultDataLakeStoreAccount,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the default Data Lake Store account associated with this account.
-	DefaultDataLakeStoreAccountType *string `json:"defaultDataLakeStoreAccountType,omitempty" azure:"ro"`
-
-	// READ-ONLY; The list of firewall rules associated with this account.
-	FirewallRules []*FirewallRule `json:"firewallRules,omitempty" azure:"ro"`
-
-	// READ-ONLY; The list of hiveMetastores associated with this account.
-	HiveMetastores []*HiveMetastore `json:"hiveMetastores,omitempty" azure:"ro"`
-
-	// READ-ONLY; The maximum supported active jobs under the account at the same time.
-	MaxActiveJobCountPerUser *int32 `json:"maxActiveJobCountPerUser,omitempty" azure:"ro"`
-
-	// READ-ONLY; The maximum supported active jobs under the account at the same time.
-	MaxJobRunningTimeInMin *int32 `json:"maxJobRunningTimeInMin,omitempty" azure:"ro"`
-
-	// READ-ONLY; The maximum supported jobs queued under the account at the same time.
-	MaxQueuedJobCountPerUser *int32 `json:"maxQueuedJobCountPerUser,omitempty" azure:"ro"`
-
-	// READ-ONLY; The minimum supported priority per job for this account.
-	MinPriorityPerJob *int32 `json:"minPriorityPerJob,omitempty" azure:"ro"`
-
-	// READ-ONLY; The list of Azure Blob Storage accounts associated with this account.
-	StorageAccounts []*StorageAccountInformation `json:"storageAccounts,omitempty" azure:"ro"`
-
-	// READ-ONLY; The system defined maximum supported degree of parallelism for this account, which restricts the maximum value of parallelism the user can
-	// set for the account.
-	SystemMaxDegreeOfParallelism *int32 `json:"systemMaxDegreeOfParallelism,omitempty" azure:"ro"`
-
-	// READ-ONLY; The system defined maximum supported jobs running under the account at the same time, which restricts the maximum number of running jobs the
-	// user can set for the account.
-	SystemMaxJobCount *int32 `json:"systemMaxJobCount,omitempty" azure:"ro"`
-
-	// READ-ONLY; The list of virtualNetwork rules associated with this account.
-	VirtualNetworkRules []*VirtualNetworkRule `json:"virtualNetworkRules,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DataLakeAnalyticsAccountProperties.
-func (d DataLakeAnalyticsAccountProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.DataLakeAnalyticsAccountPropertiesBasic.marshalInternal(objectMap)
-	populate(objectMap, "computePolicies", d.ComputePolicies)
-	populate(objectMap, "currentTier", d.CurrentTier)
-	populate(objectMap, "dataLakeStoreAccounts", d.DataLakeStoreAccounts)
-	populate(objectMap, "debugDataAccessLevel", d.DebugDataAccessLevel)
-	populate(objectMap, "defaultDataLakeStoreAccount", d.DefaultDataLakeStoreAccount)
-	populate(objectMap, "defaultDataLakeStoreAccountType", d.DefaultDataLakeStoreAccountType)
-	populate(objectMap, "firewallAllowAzureIps", d.FirewallAllowAzureIPs)
-	populate(objectMap, "firewallRules", d.FirewallRules)
-	populate(objectMap, "firewallState", d.FirewallState)
-	populate(objectMap, "hiveMetastores", d.HiveMetastores)
-	populate(objectMap, "maxActiveJobCountPerUser", d.MaxActiveJobCountPerUser)
-	populate(objectMap, "maxDegreeOfParallelism", d.MaxDegreeOfParallelism)
-	populate(objectMap, "maxDegreeOfParallelismPerJob", d.MaxDegreeOfParallelismPerJob)
-	populate(objectMap, "maxJobCount", d.MaxJobCount)
-	populate(objectMap, "maxJobRunningTimeInMin", d.MaxJobRunningTimeInMin)
-	populate(objectMap, "maxQueuedJobCountPerUser", d.MaxQueuedJobCountPerUser)
-	populate(objectMap, "minPriorityPerJob", d.MinPriorityPerJob)
-	populate(objectMap, "newTier", d.NewTier)
-	populate(objectMap, "publicDataLakeStoreAccounts", d.PublicDataLakeStoreAccounts)
-	populate(objectMap, "queryStoreRetention", d.QueryStoreRetention)
-	populate(objectMap, "storageAccounts", d.StorageAccounts)
-	populate(objectMap, "systemMaxDegreeOfParallelism", d.SystemMaxDegreeOfParallelism)
-	populate(objectMap, "systemMaxJobCount", d.SystemMaxJobCount)
-	populate(objectMap, "virtualNetworkRules", d.VirtualNetworkRules)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DataLakeAnalyticsAccountProperties.
-func (d *DataLakeAnalyticsAccountProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "computePolicies":
-			err = unpopulate(val, &d.ComputePolicies)
-			delete(rawMsg, key)
-		case "currentTier":
-			err = unpopulate(val, &d.CurrentTier)
-			delete(rawMsg, key)
-		case "dataLakeStoreAccounts":
-			err = unpopulate(val, &d.DataLakeStoreAccounts)
-			delete(rawMsg, key)
-		case "debugDataAccessLevel":
-			err = unpopulate(val, &d.DebugDataAccessLevel)
-			delete(rawMsg, key)
-		case "defaultDataLakeStoreAccount":
-			err = unpopulate(val, &d.DefaultDataLakeStoreAccount)
-			delete(rawMsg, key)
-		case "defaultDataLakeStoreAccountType":
-			err = unpopulate(val, &d.DefaultDataLakeStoreAccountType)
-			delete(rawMsg, key)
-		case "firewallAllowAzureIps":
-			err = unpopulate(val, &d.FirewallAllowAzureIPs)
-			delete(rawMsg, key)
-		case "firewallRules":
-			err = unpopulate(val, &d.FirewallRules)
-			delete(rawMsg, key)
-		case "firewallState":
-			err = unpopulate(val, &d.FirewallState)
-			delete(rawMsg, key)
-		case "hiveMetastores":
-			err = unpopulate(val, &d.HiveMetastores)
-			delete(rawMsg, key)
-		case "maxActiveJobCountPerUser":
-			err = unpopulate(val, &d.MaxActiveJobCountPerUser)
-			delete(rawMsg, key)
-		case "maxDegreeOfParallelism":
-			err = unpopulate(val, &d.MaxDegreeOfParallelism)
-			delete(rawMsg, key)
-		case "maxDegreeOfParallelismPerJob":
-			err = unpopulate(val, &d.MaxDegreeOfParallelismPerJob)
-			delete(rawMsg, key)
-		case "maxJobCount":
-			err = unpopulate(val, &d.MaxJobCount)
-			delete(rawMsg, key)
-		case "maxJobRunningTimeInMin":
-			err = unpopulate(val, &d.MaxJobRunningTimeInMin)
-			delete(rawMsg, key)
-		case "maxQueuedJobCountPerUser":
-			err = unpopulate(val, &d.MaxQueuedJobCountPerUser)
-			delete(rawMsg, key)
-		case "minPriorityPerJob":
-			err = unpopulate(val, &d.MinPriorityPerJob)
-			delete(rawMsg, key)
-		case "newTier":
-			err = unpopulate(val, &d.NewTier)
-			delete(rawMsg, key)
-		case "publicDataLakeStoreAccounts":
-			err = unpopulate(val, &d.PublicDataLakeStoreAccounts)
-			delete(rawMsg, key)
-		case "queryStoreRetention":
-			err = unpopulate(val, &d.QueryStoreRetention)
-			delete(rawMsg, key)
-		case "storageAccounts":
-			err = unpopulate(val, &d.StorageAccounts)
-			delete(rawMsg, key)
-		case "systemMaxDegreeOfParallelism":
-			err = unpopulate(val, &d.SystemMaxDegreeOfParallelism)
-			delete(rawMsg, key)
-		case "systemMaxJobCount":
-			err = unpopulate(val, &d.SystemMaxJobCount)
-			delete(rawMsg, key)
-		case "virtualNetworkRules":
-			err = unpopulate(val, &d.VirtualNetworkRules)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := d.DataLakeAnalyticsAccountPropertiesBasic.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// DataLakeAnalyticsAccountPropertiesBasic - The basic account specific properties that are associated with an underlying Data Lake Analytics account.
-type DataLakeAnalyticsAccountPropertiesBasic struct {
-	// READ-ONLY; The unique identifier associated with this Data Lake Analytics account.
-	AccountID *string `json:"accountId,omitempty" azure:"ro"`
-
-	// READ-ONLY; The account creation time.
-	CreationTime *time.Time `json:"creationTime,omitempty" azure:"ro"`
-
-	// READ-ONLY; The full CName endpoint for this account.
-	Endpoint *string `json:"endpoint,omitempty" azure:"ro"`
-
-	// READ-ONLY; The account last modified time.
-	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty" azure:"ro"`
-
-	// READ-ONLY; The provisioning status of the Data Lake Analytics account.
-	ProvisioningState *DataLakeAnalyticsAccountStatus `json:"provisioningState,omitempty" azure:"ro"`
-
-	// READ-ONLY; The state of the Data Lake Analytics account.
-	State *DataLakeAnalyticsAccountState `json:"state,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DataLakeAnalyticsAccountPropertiesBasic.
-func (d DataLakeAnalyticsAccountPropertiesBasic) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DataLakeAnalyticsAccountPropertiesBasic.
-func (d *DataLakeAnalyticsAccountPropertiesBasic) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return d.unmarshalInternal(rawMsg)
-}
-
-func (d DataLakeAnalyticsAccountPropertiesBasic) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "accountId", d.AccountID)
-	populateTimeRFC3339(objectMap, "creationTime", d.CreationTime)
-	populate(objectMap, "endpoint", d.Endpoint)
-	populateTimeRFC3339(objectMap, "lastModifiedTime", d.LastModifiedTime)
-	populate(objectMap, "provisioningState", d.ProvisioningState)
-	populate(objectMap, "state", d.State)
-}
-
-func (d *DataLakeAnalyticsAccountPropertiesBasic) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "accountId":
-			err = unpopulate(val, &d.AccountID)
-			delete(rawMsg, key)
-		case "creationTime":
-			err = unpopulateTimeRFC3339(val, &d.CreationTime)
-			delete(rawMsg, key)
-		case "endpoint":
-			err = unpopulate(val, &d.Endpoint)
-			delete(rawMsg, key)
-		case "lastModifiedTime":
-			err = unpopulateTimeRFC3339(val, &d.LastModifiedTime)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &d.ProvisioningState)
-			delete(rawMsg, key)
-		case "state":
-			err = unpopulate(val, &d.State)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // DataLakeStoreAccountInformation - Data Lake Store account information.
 type DataLakeStoreAccountInformation struct {
-	SubResource
 	// The Data Lake Store account properties.
 	Properties *DataLakeStoreAccountInformationProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The resource identifier.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // DataLakeStoreAccountInformationListResult - Data Lake Store account list information.
@@ -708,33 +809,36 @@ type DataLakeStoreAccountInformationProperties struct {
 	Suffix *string `json:"suffix,omitempty" azure:"ro"`
 }
 
-// DataLakeStoreAccountsAddOptions contains the optional parameters for the DataLakeStoreAccounts.Add method.
-type DataLakeStoreAccountsAddOptions struct {
+// DataLakeStoreAccountsClientAddOptions contains the optional parameters for the DataLakeStoreAccountsClient.Add method.
+type DataLakeStoreAccountsClientAddOptions struct {
 	// The details of the Data Lake Store account.
 	Parameters *AddDataLakeStoreParameters
 }
 
-// DataLakeStoreAccountsDeleteOptions contains the optional parameters for the DataLakeStoreAccounts.Delete method.
-type DataLakeStoreAccountsDeleteOptions struct {
+// DataLakeStoreAccountsClientDeleteOptions contains the optional parameters for the DataLakeStoreAccountsClient.Delete method.
+type DataLakeStoreAccountsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DataLakeStoreAccountsGetOptions contains the optional parameters for the DataLakeStoreAccounts.Get method.
-type DataLakeStoreAccountsGetOptions struct {
+// DataLakeStoreAccountsClientGetOptions contains the optional parameters for the DataLakeStoreAccountsClient.Get method.
+type DataLakeStoreAccountsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DataLakeStoreAccountsListByAccountOptions contains the optional parameters for the DataLakeStoreAccounts.ListByAccount method.
-type DataLakeStoreAccountsListByAccountOptions struct {
-	// The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true.
-	// Optional.
+// DataLakeStoreAccountsClientListByAccountOptions contains the optional parameters for the DataLakeStoreAccountsClient.ListByAccount
+// method.
+type DataLakeStoreAccountsClientListByAccountOptions struct {
+	// The Boolean value of true or false to request a count of the matching resources included with the resources in the response,
+	// e.g. Categories?$count=true. Optional.
 	Count *bool
 	// OData filter. Optional.
 	Filter *string
-	// OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted,
-	// e.g. Categories?$orderby=CategoryName desc. Optional.
+	// OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the
+	// order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc.
+	// Optional.
 	Orderby *string
-	// OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+	// OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description.
+	// Optional.
 	Select *string
 	// The number of items to skip over before returning elements. Optional.
 	Skip *int32
@@ -780,26 +884,26 @@ func (e ErrorDetail) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData
-// error response format.).
-// Implements the error and azcore.HTTPResponse interfaces.
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
 type ErrorResponse struct {
-	raw string
 	// The error object.
-	InnerError *ErrorDetail `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorDetail `json:"error,omitempty"`
 }
 
 // FirewallRule - Data Lake Analytics firewall rule information.
 type FirewallRule struct {
-	SubResource
+	// READ-ONLY; The resource identifier.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The firewall rule properties.
 	Properties *FirewallRuleProperties `json:"properties,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // FirewallRuleListResult - Data Lake Analytics firewall rule list information.
@@ -821,43 +925,53 @@ func (f FirewallRuleListResult) MarshalJSON() ([]byte, error) {
 
 // FirewallRuleProperties - The firewall rule properties.
 type FirewallRuleProperties struct {
-	// READ-ONLY; The end IP address for the firewall rule. This can be either ipv4 or ipv6. Start and End should be in the same protocol.
+	// READ-ONLY; The end IP address for the firewall rule. This can be either ipv4 or ipv6. Start and End should be in the same
+	// protocol.
 	EndIPAddress *string `json:"endIpAddress,omitempty" azure:"ro"`
 
-	// READ-ONLY; The start IP address for the firewall rule. This can be either ipv4 or ipv6. Start and End should be in the same protocol.
+	// READ-ONLY; The start IP address for the firewall rule. This can be either ipv4 or ipv6. Start and End should be in the
+	// same protocol.
 	StartIPAddress *string `json:"startIpAddress,omitempty" azure:"ro"`
 }
 
-// FirewallRulesCreateOrUpdateOptions contains the optional parameters for the FirewallRules.CreateOrUpdate method.
-type FirewallRulesCreateOrUpdateOptions struct {
+// FirewallRulesClientCreateOrUpdateOptions contains the optional parameters for the FirewallRulesClient.CreateOrUpdate method.
+type FirewallRulesClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FirewallRulesDeleteOptions contains the optional parameters for the FirewallRules.Delete method.
-type FirewallRulesDeleteOptions struct {
+// FirewallRulesClientDeleteOptions contains the optional parameters for the FirewallRulesClient.Delete method.
+type FirewallRulesClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FirewallRulesGetOptions contains the optional parameters for the FirewallRules.Get method.
-type FirewallRulesGetOptions struct {
+// FirewallRulesClientGetOptions contains the optional parameters for the FirewallRulesClient.Get method.
+type FirewallRulesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FirewallRulesListByAccountOptions contains the optional parameters for the FirewallRules.ListByAccount method.
-type FirewallRulesListByAccountOptions struct {
+// FirewallRulesClientListByAccountOptions contains the optional parameters for the FirewallRulesClient.ListByAccount method.
+type FirewallRulesClientListByAccountOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FirewallRulesUpdateOptions contains the optional parameters for the FirewallRules.Update method.
-type FirewallRulesUpdateOptions struct {
+// FirewallRulesClientUpdateOptions contains the optional parameters for the FirewallRulesClient.Update method.
+type FirewallRulesClientUpdateOptions struct {
 	// Parameters supplied to update the firewall rule.
 	Parameters *UpdateFirewallRuleParameters
 }
 
 type HiveMetastore struct {
-	SubResource
+	// READ-ONLY; The resource identifier.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The HiveMetastoreProperties rule properties.
 	Properties *HiveMetastoreProperties `json:"properties,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // HiveMetastoreListResult - Data Lake Analytics HiveMetastore list information.
@@ -898,8 +1012,8 @@ type HiveMetastoreProperties struct {
 	UserName *string `json:"userName,omitempty" azure:"ro"`
 }
 
-// LocationsGetCapabilityOptions contains the optional parameters for the Locations.GetCapability method.
-type LocationsGetCapabilityOptions struct {
+// LocationsClientGetCapabilityOptions contains the optional parameters for the LocationsClient.GetCapability method.
+type LocationsClientGetCapabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -908,7 +1022,8 @@ type NameAvailabilityInformation struct {
 	// READ-ONLY; The message describing why the Data Lake Analytics account name is not available, if nameAvailable is false.
 	Message *string `json:"message,omitempty" azure:"ro"`
 
-	// READ-ONLY; The Boolean value of true or false to indicate whether the Data Lake Analytics account name is available or not.
+	// READ-ONLY; The Boolean value of true or false to indicate whether the Data Lake Analytics account name is available or
+	// not.
 	NameAvailable *bool `json:"nameAvailable,omitempty" azure:"ro"`
 
 	// READ-ONLY; The reason why the Data Lake Analytics account name is not available, if nameAvailable is false.
@@ -1034,8 +1149,8 @@ func (o OperationMetaServiceSpecification) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1060,16 +1175,12 @@ type Resource struct {
 // MarshalJSON implements the json.Marshaller interface for type Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "id", r.ID)
 	populate(objectMap, "location", r.Location)
 	populate(objectMap, "name", r.Name)
 	populate(objectMap, "tags", r.Tags)
 	populate(objectMap, "type", r.Type)
+	return json.Marshal(objectMap)
 }
 
 // SasTokenInformation - SAS token information.
@@ -1078,7 +1189,8 @@ type SasTokenInformation struct {
 	AccessToken *string `json:"accessToken,omitempty" azure:"ro"`
 }
 
-// SasTokenInformationListResult - The SAS response that contains the storage account, container and associated SAS token for connection use.
+// SasTokenInformationListResult - The SAS response that contains the storage account, container and associated SAS token
+// for connection use.
 type SasTokenInformationListResult struct {
 	// READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -1097,9 +1209,17 @@ func (s SasTokenInformationListResult) MarshalJSON() ([]byte, error) {
 
 // StorageAccountInformation - Azure Storage account information.
 type StorageAccountInformation struct {
-	SubResource
+	// READ-ONLY; The resource identifier.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The Azure Storage account properties.
 	Properties *StorageAccountInformationProperties `json:"properties,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // StorageAccountInformationListResult - Azure Storage account list information.
@@ -1125,37 +1245,41 @@ type StorageAccountInformationProperties struct {
 	Suffix *string `json:"suffix,omitempty" azure:"ro"`
 }
 
-// StorageAccountsAddOptions contains the optional parameters for the StorageAccounts.Add method.
-type StorageAccountsAddOptions struct {
+// StorageAccountsClientAddOptions contains the optional parameters for the StorageAccountsClient.Add method.
+type StorageAccountsClientAddOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StorageAccountsDeleteOptions contains the optional parameters for the StorageAccounts.Delete method.
-type StorageAccountsDeleteOptions struct {
+// StorageAccountsClientDeleteOptions contains the optional parameters for the StorageAccountsClient.Delete method.
+type StorageAccountsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StorageAccountsGetOptions contains the optional parameters for the StorageAccounts.Get method.
-type StorageAccountsGetOptions struct {
+// StorageAccountsClientGetOptions contains the optional parameters for the StorageAccountsClient.Get method.
+type StorageAccountsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StorageAccountsGetStorageContainerOptions contains the optional parameters for the StorageAccounts.GetStorageContainer method.
-type StorageAccountsGetStorageContainerOptions struct {
+// StorageAccountsClientGetStorageContainerOptions contains the optional parameters for the StorageAccountsClient.GetStorageContainer
+// method.
+type StorageAccountsClientGetStorageContainerOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StorageAccountsListByAccountOptions contains the optional parameters for the StorageAccounts.ListByAccount method.
-type StorageAccountsListByAccountOptions struct {
-	// The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true.
-	// Optional.
+// StorageAccountsClientListByAccountOptions contains the optional parameters for the StorageAccountsClient.ListByAccount
+// method.
+type StorageAccountsClientListByAccountOptions struct {
+	// The Boolean value of true or false to request a count of the matching resources included with the resources in the response,
+	// e.g. Categories?$count=true. Optional.
 	Count *bool
 	// The OData filter. Optional.
 	Filter *string
-	// OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted,
-	// e.g. Categories?$orderby=CategoryName desc. Optional.
+	// OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the
+	// order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc.
+	// Optional.
 	Orderby *string
-	// OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+	// OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description.
+	// Optional.
 	Select *string
 	// The number of items to skip over before returning elements. Optional.
 	Skip *int32
@@ -1163,30 +1287,42 @@ type StorageAccountsListByAccountOptions struct {
 	Top *int32
 }
 
-// StorageAccountsListSasTokensOptions contains the optional parameters for the StorageAccounts.ListSasTokens method.
-type StorageAccountsListSasTokensOptions struct {
+// StorageAccountsClientListSasTokensOptions contains the optional parameters for the StorageAccountsClient.ListSasTokens
+// method.
+type StorageAccountsClientListSasTokensOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StorageAccountsListStorageContainersOptions contains the optional parameters for the StorageAccounts.ListStorageContainers method.
-type StorageAccountsListStorageContainersOptions struct {
+// StorageAccountsClientListStorageContainersOptions contains the optional parameters for the StorageAccountsClient.ListStorageContainers
+// method.
+type StorageAccountsClientListStorageContainersOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StorageAccountsUpdateOptions contains the optional parameters for the StorageAccounts.Update method.
-type StorageAccountsUpdateOptions struct {
-	// The parameters containing the access key and suffix to update the storage account with, if any. Passing nothing results in no change.
+// StorageAccountsClientUpdateOptions contains the optional parameters for the StorageAccountsClient.Update method.
+type StorageAccountsClientUpdateOptions struct {
+	// The parameters containing the access key and suffix to update the storage account with, if any. Passing nothing results
+	// in no change.
 	Parameters *UpdateStorageAccountParameters
 }
 
 // StorageContainer - Azure Storage blob container information.
 type StorageContainer struct {
-	SubResource
+	// READ-ONLY; The resource identifier.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The properties of the blob container.
 	Properties *StorageContainerProperties `json:"properties,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// StorageContainerListResult - The list of blob containers associated with the storage account attached to the Data Lake Analytics account.
+// StorageContainerListResult - The list of blob containers associated with the storage account attached to the Data Lake
+// Analytics account.
 type StorageContainerListResult struct {
 	// READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -1263,10 +1399,12 @@ func (u UpdateComputePolicyParameters) MarshalJSON() ([]byte, error) {
 
 // UpdateComputePolicyProperties - The compute policy properties to use when updating a compute policy.
 type UpdateComputePolicyProperties struct {
-	// The maximum degree of parallelism per job this user can use to submit jobs. This property, the min priority per job property, or both must be passed.
+	// The maximum degree of parallelism per job this user can use to submit jobs. This property, the min priority per job property,
+	// or both must be passed.
 	MaxDegreeOfParallelismPerJob *int32 `json:"maxDegreeOfParallelismPerJob,omitempty"`
 
-	// The minimum priority per job this user can use to submit jobs. This property, the max degree of parallelism per job property, or both must be passed.
+	// The minimum priority per job this user can use to submit jobs. This property, the max degree of parallelism per job property,
+	// or both must be passed.
 	MinPriorityPerJob *int32 `json:"minPriorityPerJob,omitempty"`
 
 	// The AAD object identifier for the entity to create a policy for.
@@ -1276,7 +1414,8 @@ type UpdateComputePolicyProperties struct {
 	ObjectType *AADObjectType `json:"objectType,omitempty"`
 }
 
-// UpdateComputePolicyWithAccountParameters - The parameters used to update a compute policy while updating a Data Lake Analytics account.
+// UpdateComputePolicyWithAccountParameters - The parameters used to update a compute policy while updating a Data Lake Analytics
+// account.
 type UpdateComputePolicyWithAccountParameters struct {
 	// REQUIRED; The unique name of the compute policy to update.
 	Name *string `json:"name,omitempty"`
@@ -1302,7 +1441,8 @@ func (u UpdateDataLakeAnalyticsAccountParameters) MarshalJSON() ([]byte, error) 
 	return json.Marshal(objectMap)
 }
 
-// UpdateDataLakeAnalyticsAccountProperties - The properties to update that are associated with an underlying Data Lake Analytics account.
+// UpdateDataLakeAnalyticsAccountProperties - The properties to update that are associated with an underlying Data Lake Analytics
+// account.
 type UpdateDataLakeAnalyticsAccountProperties struct {
 	// The list of compute policies associated with this account.
 	ComputePolicies []*UpdateComputePolicyWithAccountParameters `json:"computePolicies,omitempty"`
@@ -1310,14 +1450,15 @@ type UpdateDataLakeAnalyticsAccountProperties struct {
 	// The list of Data Lake Store accounts associated with this account.
 	DataLakeStoreAccounts []*UpdateDataLakeStoreWithAccountParameters `json:"dataLakeStoreAccounts,omitempty"`
 
-	// The current state of allowing or disallowing IPs originating within Azure through the firewall. If the firewall is disabled, this is not enforced.
+	// The current state of allowing or disallowing IPs originating within Azure through the firewall. If the firewall is disabled,
+	// this is not enforced.
 	FirewallAllowAzureIPs *FirewallAllowAzureIPsState `json:"firewallAllowAzureIps,omitempty"`
 
 	// The list of firewall rules associated with this account.
 	FirewallRules []*UpdateFirewallRuleWithAccountParameters `json:"firewallRules,omitempty"`
 
-	// The current state of the IP address firewall for this account. Disabling the firewall does not remove existing rules, they will just be ignored until
-	// the firewall is re-enabled.
+	// The current state of the IP address firewall for this account. Disabling the firewall does not remove existing rules, they
+	// will just be ignored until the firewall is re-enabled.
 	FirewallState *FirewallState `json:"firewallState,omitempty"`
 
 	// The maximum supported degree of parallelism for this account.
@@ -1366,7 +1507,8 @@ type UpdateDataLakeStoreProperties struct {
 	Suffix *string `json:"suffix,omitempty"`
 }
 
-// UpdateDataLakeStoreWithAccountParameters - The parameters used to update a Data Lake Store account while updating a Data Lake Analytics account.
+// UpdateDataLakeStoreWithAccountParameters - The parameters used to update a Data Lake Store account while updating a Data
+// Lake Analytics account.
 type UpdateDataLakeStoreWithAccountParameters struct {
 	// REQUIRED; The unique name of the Data Lake Store account to update.
 	Name *string `json:"name,omitempty"`
@@ -1397,7 +1539,8 @@ type UpdateFirewallRuleProperties struct {
 	StartIPAddress *string `json:"startIpAddress,omitempty"`
 }
 
-// UpdateFirewallRuleWithAccountParameters - The parameters used to update a firewall rule while updating a Data Lake Analytics account.
+// UpdateFirewallRuleWithAccountParameters - The parameters used to update a firewall rule while updating a Data Lake Analytics
+// account.
 type UpdateFirewallRuleWithAccountParameters struct {
 	// REQUIRED; The unique name of the firewall rule to update.
 	Name *string `json:"name,omitempty"`
@@ -1428,7 +1571,8 @@ type UpdateStorageAccountProperties struct {
 	Suffix *string `json:"suffix,omitempty"`
 }
 
-// UpdateStorageAccountWithAccountParameters - The parameters used to update an Azure Storage account while updating a Data Lake Analytics account.
+// UpdateStorageAccountWithAccountParameters - The parameters used to update an Azure Storage account while updating a Data
+// Lake Analytics account.
 type UpdateStorageAccountWithAccountParameters struct {
 	// REQUIRED; The unique name of the Azure Storage account to update.
 	Name *string `json:"name,omitempty"`
@@ -1439,9 +1583,17 @@ type UpdateStorageAccountWithAccountParameters struct {
 
 // VirtualNetworkRule - Data Lake Analytics VirtualNetwork Rule information.
 type VirtualNetworkRule struct {
-	SubResource
+	// READ-ONLY; The resource identifier.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The VirtualNetwork rule properties.
 	Properties *VirtualNetworkRuleProperties `json:"properties,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // VirtualNetworkRuleListResult - Data Lake Analytics VirtualNetwork rule list information.

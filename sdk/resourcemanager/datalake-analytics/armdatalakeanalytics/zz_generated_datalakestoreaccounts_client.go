@@ -11,7 +11,6 @@ package armdatalakeanalytics
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,56 @@ import (
 // DataLakeStoreAccountsClient contains the methods for the DataLakeStoreAccounts group.
 // Don't use this type directly, use NewDataLakeStoreAccountsClient() instead.
 type DataLakeStoreAccountsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDataLakeStoreAccountsClient creates a new instance of DataLakeStoreAccountsClient with the specified values.
+// subscriptionID - Get subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+// forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDataLakeStoreAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DataLakeStoreAccountsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &DataLakeStoreAccountsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DataLakeStoreAccountsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Add - Updates the specified Data Lake Analytics account to include the additional Data Lake Store account.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DataLakeStoreAccountsClient) Add(ctx context.Context, resourceGroupName string, accountName string, dataLakeStoreAccountName string, options *DataLakeStoreAccountsAddOptions) (DataLakeStoreAccountsAddResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure resource group.
+// accountName - The name of the Data Lake Analytics account.
+// dataLakeStoreAccountName - The name of the Data Lake Store account to add.
+// options - DataLakeStoreAccountsClientAddOptions contains the optional parameters for the DataLakeStoreAccountsClient.Add
+// method.
+func (client *DataLakeStoreAccountsClient) Add(ctx context.Context, resourceGroupName string, accountName string, dataLakeStoreAccountName string, options *DataLakeStoreAccountsClientAddOptions) (DataLakeStoreAccountsClientAddResponse, error) {
 	req, err := client.addCreateRequest(ctx, resourceGroupName, accountName, dataLakeStoreAccountName, options)
 	if err != nil {
-		return DataLakeStoreAccountsAddResponse{}, err
+		return DataLakeStoreAccountsClientAddResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DataLakeStoreAccountsAddResponse{}, err
+		return DataLakeStoreAccountsClientAddResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DataLakeStoreAccountsAddResponse{}, client.addHandleError(resp)
+		return DataLakeStoreAccountsClientAddResponse{}, runtime.NewResponseError(resp)
 	}
-	return DataLakeStoreAccountsAddResponse{RawResponse: resp}, nil
+	return DataLakeStoreAccountsClientAddResponse{RawResponse: resp}, nil
 }
 
 // addCreateRequest creates the Add request.
-func (client *DataLakeStoreAccountsClient) addCreateRequest(ctx context.Context, resourceGroupName string, accountName string, dataLakeStoreAccountName string, options *DataLakeStoreAccountsAddOptions) (*policy.Request, error) {
+func (client *DataLakeStoreAccountsClient) addCreateRequest(ctx context.Context, resourceGroupName string, accountName string, dataLakeStoreAccountName string, options *DataLakeStoreAccountsClientAddOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/dataLakeStoreAccounts/{dataLakeStoreAccountName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -79,7 +92,7 @@ func (client *DataLakeStoreAccountsClient) addCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter dataLakeStoreAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataLakeStoreAccountName}", url.PathEscape(dataLakeStoreAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -93,38 +106,30 @@ func (client *DataLakeStoreAccountsClient) addCreateRequest(ctx context.Context,
 	return req, nil
 }
 
-// addHandleError handles the Add error response.
-func (client *DataLakeStoreAccountsClient) addHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Updates the Data Lake Analytics account specified to remove the specified Data Lake Store account.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DataLakeStoreAccountsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, dataLakeStoreAccountName string, options *DataLakeStoreAccountsDeleteOptions) (DataLakeStoreAccountsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure resource group.
+// accountName - The name of the Data Lake Analytics account.
+// dataLakeStoreAccountName - The name of the Data Lake Store account to remove
+// options - DataLakeStoreAccountsClientDeleteOptions contains the optional parameters for the DataLakeStoreAccountsClient.Delete
+// method.
+func (client *DataLakeStoreAccountsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, dataLakeStoreAccountName string, options *DataLakeStoreAccountsClientDeleteOptions) (DataLakeStoreAccountsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, dataLakeStoreAccountName, options)
 	if err != nil {
-		return DataLakeStoreAccountsDeleteResponse{}, err
+		return DataLakeStoreAccountsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DataLakeStoreAccountsDeleteResponse{}, err
+		return DataLakeStoreAccountsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return DataLakeStoreAccountsDeleteResponse{}, client.deleteHandleError(resp)
+		return DataLakeStoreAccountsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return DataLakeStoreAccountsDeleteResponse{RawResponse: resp}, nil
+	return DataLakeStoreAccountsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DataLakeStoreAccountsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, dataLakeStoreAccountName string, options *DataLakeStoreAccountsDeleteOptions) (*policy.Request, error) {
+func (client *DataLakeStoreAccountsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, dataLakeStoreAccountName string, options *DataLakeStoreAccountsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/dataLakeStoreAccounts/{dataLakeStoreAccountName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -142,7 +147,7 @@ func (client *DataLakeStoreAccountsClient) deleteCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter dataLakeStoreAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataLakeStoreAccountName}", url.PathEscape(dataLakeStoreAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -153,38 +158,30 @@ func (client *DataLakeStoreAccountsClient) deleteCreateRequest(ctx context.Conte
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *DataLakeStoreAccountsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets the specified Data Lake Store account details in the specified Data Lake Analytics account.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DataLakeStoreAccountsClient) Get(ctx context.Context, resourceGroupName string, accountName string, dataLakeStoreAccountName string, options *DataLakeStoreAccountsGetOptions) (DataLakeStoreAccountsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure resource group.
+// accountName - The name of the Data Lake Analytics account.
+// dataLakeStoreAccountName - The name of the Data Lake Store account to retrieve
+// options - DataLakeStoreAccountsClientGetOptions contains the optional parameters for the DataLakeStoreAccountsClient.Get
+// method.
+func (client *DataLakeStoreAccountsClient) Get(ctx context.Context, resourceGroupName string, accountName string, dataLakeStoreAccountName string, options *DataLakeStoreAccountsClientGetOptions) (DataLakeStoreAccountsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, dataLakeStoreAccountName, options)
 	if err != nil {
-		return DataLakeStoreAccountsGetResponse{}, err
+		return DataLakeStoreAccountsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DataLakeStoreAccountsGetResponse{}, err
+		return DataLakeStoreAccountsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DataLakeStoreAccountsGetResponse{}, client.getHandleError(resp)
+		return DataLakeStoreAccountsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DataLakeStoreAccountsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, dataLakeStoreAccountName string, options *DataLakeStoreAccountsGetOptions) (*policy.Request, error) {
+func (client *DataLakeStoreAccountsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, dataLakeStoreAccountName string, options *DataLakeStoreAccountsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/dataLakeStoreAccounts/{dataLakeStoreAccountName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -202,7 +199,7 @@ func (client *DataLakeStoreAccountsClient) getCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter dataLakeStoreAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataLakeStoreAccountName}", url.PathEscape(dataLakeStoreAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -214,44 +211,35 @@ func (client *DataLakeStoreAccountsClient) getCreateRequest(ctx context.Context,
 }
 
 // getHandleResponse handles the Get response.
-func (client *DataLakeStoreAccountsClient) getHandleResponse(resp *http.Response) (DataLakeStoreAccountsGetResponse, error) {
-	result := DataLakeStoreAccountsGetResponse{RawResponse: resp}
+func (client *DataLakeStoreAccountsClient) getHandleResponse(resp *http.Response) (DataLakeStoreAccountsClientGetResponse, error) {
+	result := DataLakeStoreAccountsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataLakeStoreAccountInformation); err != nil {
-		return DataLakeStoreAccountsGetResponse{}, runtime.NewResponseError(err, resp)
+		return DataLakeStoreAccountsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *DataLakeStoreAccountsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListByAccount - Gets the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account. The response includes a link to
-// the next page, if any.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DataLakeStoreAccountsClient) ListByAccount(resourceGroupName string, accountName string, options *DataLakeStoreAccountsListByAccountOptions) *DataLakeStoreAccountsListByAccountPager {
-	return &DataLakeStoreAccountsListByAccountPager{
+// ListByAccount - Gets the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account. The
+// response includes a link to the next page, if any.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure resource group.
+// accountName - The name of the Data Lake Analytics account.
+// options - DataLakeStoreAccountsClientListByAccountOptions contains the optional parameters for the DataLakeStoreAccountsClient.ListByAccount
+// method.
+func (client *DataLakeStoreAccountsClient) ListByAccount(resourceGroupName string, accountName string, options *DataLakeStoreAccountsClientListByAccountOptions) *DataLakeStoreAccountsClientListByAccountPager {
+	return &DataLakeStoreAccountsClientListByAccountPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByAccountCreateRequest(ctx, resourceGroupName, accountName, options)
 		},
-		advancer: func(ctx context.Context, resp DataLakeStoreAccountsListByAccountResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DataLakeStoreAccountsClientListByAccountResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DataLakeStoreAccountInformationListResult.NextLink)
 		},
 	}
 }
 
 // listByAccountCreateRequest creates the ListByAccount request.
-func (client *DataLakeStoreAccountsClient) listByAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *DataLakeStoreAccountsListByAccountOptions) (*policy.Request, error) {
+func (client *DataLakeStoreAccountsClient) listByAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *DataLakeStoreAccountsClientListByAccountOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/dataLakeStoreAccounts"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -265,7 +253,7 @@ func (client *DataLakeStoreAccountsClient) listByAccountCreateRequest(ctx contex
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -295,23 +283,10 @@ func (client *DataLakeStoreAccountsClient) listByAccountCreateRequest(ctx contex
 }
 
 // listByAccountHandleResponse handles the ListByAccount response.
-func (client *DataLakeStoreAccountsClient) listByAccountHandleResponse(resp *http.Response) (DataLakeStoreAccountsListByAccountResponse, error) {
-	result := DataLakeStoreAccountsListByAccountResponse{RawResponse: resp}
+func (client *DataLakeStoreAccountsClient) listByAccountHandleResponse(resp *http.Response) (DataLakeStoreAccountsClientListByAccountResponse, error) {
+	result := DataLakeStoreAccountsClientListByAccountResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataLakeStoreAccountInformationListResult); err != nil {
-		return DataLakeStoreAccountsListByAccountResponse{}, runtime.NewResponseError(err, resp)
+		return DataLakeStoreAccountsClientListByAccountResponse{}, err
 	}
 	return result, nil
-}
-
-// listByAccountHandleError handles the ListByAccount error response.
-func (client *DataLakeStoreAccountsClient) listByAccountHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

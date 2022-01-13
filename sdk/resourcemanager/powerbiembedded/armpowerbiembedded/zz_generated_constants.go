@@ -9,8 +9,8 @@
 package armpowerbiembedded
 
 const (
-	module  = "armpowerbiembedded"
-	version = "v0.1.0"
+	moduleName    = "armpowerbiembedded"
+	moduleVersion = "v0.1.0"
 )
 
 // AccessKeyName - Key name

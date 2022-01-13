@@ -55,7 +55,7 @@ func TestExpiringResourceError(t *testing.T) {
 	require.Equal(t, expectedState, res)
 
 	// When an eager update fails, GetResource should return the prior value and no error.
-	er.lastAcquired = time.Now().Add(-time.Hour)
+	er.lastAttempt = time.Now().Add(-time.Hour)
 	for i := 0; i < 3; i++ {
 		res, err = er.GetResource(res)
 		require.NoError(t, err)

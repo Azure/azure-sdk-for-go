@@ -28,8 +28,8 @@ type ExpiringResource struct {
 	// expiration indicates when the shared resource expires; it is 0 if the resource was never acquired
 	expiration time.Time
 
-	// lastAcquired indicates when a thread/goroutine last attempted to acquire/update the resource
-	lastAcquired time.Time
+	// lastAttempt indicates when a thread/goroutine last attempted to acquire/update the resource
+	lastAttempt time.Time
 
 	// acquireResource is the callback function that actually acquires the resource
 	acquireResource AcquireResource
@@ -64,7 +64,7 @@ func (er *ExpiringResource) GetResource(state interface{}) (interface{}, error) 
 			// Getting here means that this thread/goroutine will wait for the updated resource
 		} else if er.expiration.Add(-window).Before(now) {
 			// The resource is valid but is expiring within the time window
-			if !er.acquiring && er.lastAcquired.Add(backoff).Before(now) {
+			if !er.acquiring && er.lastAttempt.Add(backoff).Before(now) {
 				// If another thread/goroutine is not acquiring/renewing the resource, and none has attempted
 				// to do so within the last 30 seconds, this thread/goroutine will do it
 				er.acquiring, acquire = true, true
@@ -88,7 +88,7 @@ func (er *ExpiringResource) GetResource(state interface{}) (interface{}, error) 
 		// This thread/goroutine has been selected to acquire/update the resource
 		var expiration time.Time
 		var newValue interface{}
-		er.lastAcquired = now
+		er.lastAttempt = now
 		newValue, expiration, err = er.acquireResource(state)
 
 		// Atomically, update the shared resource's new value & expiration.

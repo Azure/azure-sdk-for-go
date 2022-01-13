@@ -26,12 +26,16 @@ func ExampleObjectAnchorsAccountsClient_ListBySubscription() {
 	ctx := context.Background()
 	client := armmixedreality.NewObjectAnchorsAccountsClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ObjectAnchorsAccount.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -46,12 +50,16 @@ func ExampleObjectAnchorsAccountsClient_ListByResourceGroup() {
 	client := armmixedreality.NewObjectAnchorsAccountsClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ObjectAnchorsAccount.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -88,7 +96,7 @@ func ExampleObjectAnchorsAccountsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ObjectAnchorsAccount.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ObjectAnchorsAccountsClientGetResult)
 }
 
 // x-ms-original-file: specification/mixedreality/resource-manager/Microsoft.MixedReality/preview/2021-03-01-preview/examples/object-anchors/Patch.json
@@ -103,24 +111,20 @@ func ExampleObjectAnchorsAccountsClient_Update() {
 		"<resource-group-name>",
 		"<account-name>",
 		armmixedreality.ObjectAnchorsAccount{
-			TrackedResource: armmixedreality.TrackedResource{
-				Location: to.StringPtr("<location>"),
-				Tags: map[string]*string{
-					"hero":    to.StringPtr("romeo"),
-					"heroine": to.StringPtr("juliet"),
-				},
+			Location: to.StringPtr("<location>"),
+			Tags: map[string]*string{
+				"hero":    to.StringPtr("romeo"),
+				"heroine": to.StringPtr("juliet"),
 			},
 			Identity: &armmixedreality.ObjectAnchorsAccountIdentity{
-				Identity: armmixedreality.Identity{
-					Type: to.StringPtr("<type>"),
-				},
+				Type: to.StringPtr("<type>"),
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ObjectAnchorsAccount.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ObjectAnchorsAccountsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/mixedreality/resource-manager/Microsoft.MixedReality/preview/2021-03-01-preview/examples/object-anchors/Put.json
@@ -135,20 +139,16 @@ func ExampleObjectAnchorsAccountsClient_Create() {
 		"<resource-group-name>",
 		"<account-name>",
 		armmixedreality.ObjectAnchorsAccount{
-			TrackedResource: armmixedreality.TrackedResource{
-				Location: to.StringPtr("<location>"),
-			},
+			Location: to.StringPtr("<location>"),
 			Identity: &armmixedreality.ObjectAnchorsAccountIdentity{
-				Identity: armmixedreality.Identity{
-					Type: to.StringPtr("<type>"),
-				},
+				Type: to.StringPtr("<type>"),
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ObjectAnchorsAccount.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ObjectAnchorsAccountsClientCreateResult)
 }
 
 // x-ms-original-file: specification/mixedreality/resource-manager/Microsoft.MixedReality/preview/2021-03-01-preview/examples/object-anchors/ListKeys.json
@@ -159,13 +159,14 @@ func ExampleObjectAnchorsAccountsClient_ListKeys() {
 	}
 	ctx := context.Background()
 	client := armmixedreality.NewObjectAnchorsAccountsClient("<subscription-id>", cred, nil)
-	_, err = client.ListKeys(ctx,
+	res, err := client.ListKeys(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ObjectAnchorsAccountsClientListKeysResult)
 }
 
 // x-ms-original-file: specification/mixedreality/resource-manager/Microsoft.MixedReality/preview/2021-03-01-preview/examples/object-anchors/RegenerateKey.json
@@ -176,7 +177,7 @@ func ExampleObjectAnchorsAccountsClient_RegenerateKeys() {
 	}
 	ctx := context.Background()
 	client := armmixedreality.NewObjectAnchorsAccountsClient("<subscription-id>", cred, nil)
-	_, err = client.RegenerateKeys(ctx,
+	res, err := client.RegenerateKeys(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		armmixedreality.AccountKeyRegenerateRequest{
@@ -186,4 +187,5 @@ func ExampleObjectAnchorsAccountsClient_RegenerateKeys() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ObjectAnchorsAccountsClientRegenerateKeysResult)
 }

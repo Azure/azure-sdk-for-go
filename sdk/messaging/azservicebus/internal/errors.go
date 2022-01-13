@@ -73,18 +73,6 @@ func GetSBErrInfo(err error) *SBErrInfo {
 	return sbe
 }
 
-func isPermanentNetError(err error) bool {
-	var netErr net.Error
-
-	if errors.As(err, &netErr) {
-		temp := netErr.Temporary()
-		timeout := netErr.Timeout()
-		return !temp && !timeout
-	}
-
-	return false
-}
-
 func IsCancelError(err error) bool {
 	if err == nil {
 		return false

@@ -77,20 +77,6 @@ func TestErrNotFound_Error(t *testing.T) {
 	assert.False(t, IsErrNotFound(otherErr))
 }
 
-func Test_isPermanentNetError(t *testing.T) {
-	require.False(t, isPermanentNetError(&fakeNetError{
-		temp: true,
-	}))
-
-	require.False(t, isPermanentNetError(&fakeNetError{
-		timeout: true,
-	}))
-
-	require.False(t, isPermanentNetError(errors.New("not a net error")))
-
-	require.True(t, isPermanentNetError(&fakeNetError{}))
-}
-
 func Test_recoveryKind(t *testing.T) {
 	t.Run("link", func(t *testing.T) {
 		linkErrorCodes := []string{

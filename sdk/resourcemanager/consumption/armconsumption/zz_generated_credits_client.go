@@ -11,7 +11,6 @@ package armconsumption
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,41 +24,50 @@ import (
 // CreditsClient contains the methods for the Credits group.
 // Don't use this type directly, use NewCreditsClient() instead.
 type CreditsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewCreditsClient creates a new instance of CreditsClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewCreditsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *CreditsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &CreditsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &CreditsClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - The credit summary by billingAccountId and billingProfileId.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CreditsClient) Get(ctx context.Context, billingAccountID string, billingProfileID string, options *CreditsGetOptions) (CreditsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// billingAccountID - BillingAccount ID
+// billingProfileID - Azure Billing Profile ID.
+// options - CreditsClientGetOptions contains the optional parameters for the CreditsClient.Get method.
+func (client *CreditsClient) Get(ctx context.Context, billingAccountID string, billingProfileID string, options *CreditsClientGetOptions) (CreditsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, billingAccountID, billingProfileID, options)
 	if err != nil {
-		return CreditsGetResponse{}, err
+		return CreditsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CreditsGetResponse{}, err
+		return CreditsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return CreditsGetResponse{}, client.getHandleError(resp)
+		return CreditsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *CreditsClient) getCreateRequest(ctx context.Context, billingAccountID string, billingProfileID string, options *CreditsGetOptions) (*policy.Request, error) {
+func (client *CreditsClient) getCreateRequest(ctx context.Context, billingAccountID string, billingProfileID string, options *CreditsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/providers/Microsoft.Consumption/credits/balanceSummary"
 	if billingAccountID == "" {
 		return nil, errors.New("parameter billingAccountID cannot be empty")
@@ -69,7 +77,7 @@ func (client *CreditsClient) getCreateRequest(ctx context.Context, billingAccoun
 		return nil, errors.New("parameter billingProfileID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{billingProfileId}", url.PathEscape(billingProfileID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -81,23 +89,10 @@ func (client *CreditsClient) getCreateRequest(ctx context.Context, billingAccoun
 }
 
 // getHandleResponse handles the Get response.
-func (client *CreditsClient) getHandleResponse(resp *http.Response) (CreditsGetResponse, error) {
-	result := CreditsGetResponse{RawResponse: resp}
+func (client *CreditsClient) getHandleResponse(resp *http.Response) (CreditsClientGetResponse, error) {
+	result := CreditsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CreditSummary); err != nil {
-		return CreditsGetResponse{}, runtime.NewResponseError(err, resp)
+		return CreditsClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *CreditsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

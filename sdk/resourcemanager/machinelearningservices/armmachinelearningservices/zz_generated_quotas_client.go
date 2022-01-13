@@ -11,7 +11,6 @@ package armmachinelearningservices
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,39 +24,49 @@ import (
 // QuotasClient contains the methods for the Quotas group.
 // Don't use this type directly, use NewQuotasClient() instead.
 type QuotasClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewQuotasClient creates a new instance of QuotasClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewQuotasClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *QuotasClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &QuotasClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &QuotasClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Gets the currently assigned Workspace Quotas based on VMFamily.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *QuotasClient) List(location string, options *QuotasListOptions) *QuotasListPager {
-	return &QuotasListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// location - The location for which resource usage is queried.
+// options - QuotasClientListOptions contains the optional parameters for the QuotasClient.List method.
+func (client *QuotasClient) List(location string, options *QuotasClientListOptions) *QuotasClientListPager {
+	return &QuotasClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, location, options)
 		},
-		advancer: func(ctx context.Context, resp QuotasListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp QuotasClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListWorkspaceQuotas.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *QuotasClient) listCreateRequest(ctx context.Context, location string, options *QuotasListOptions) (*policy.Request, error) {
+func (client *QuotasClient) listCreateRequest(ctx context.Context, location string, options *QuotasClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.MachineLearningServices/locations/{location}/quotas"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -67,7 +76,7 @@ func (client *QuotasClient) listCreateRequest(ctx context.Context, location stri
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -79,46 +88,36 @@ func (client *QuotasClient) listCreateRequest(ctx context.Context, location stri
 }
 
 // listHandleResponse handles the List response.
-func (client *QuotasClient) listHandleResponse(resp *http.Response) (QuotasListResponse, error) {
-	result := QuotasListResponse{RawResponse: resp}
+func (client *QuotasClient) listHandleResponse(resp *http.Response) (QuotasClientListResponse, error) {
+	result := QuotasClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListWorkspaceQuotas); err != nil {
-		return QuotasListResponse{}, runtime.NewResponseError(err, resp)
+		return QuotasClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *QuotasClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Update quota for each VM family in workspace.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *QuotasClient) Update(ctx context.Context, location string, parameters QuotaUpdateParameters, options *QuotasUpdateOptions) (QuotasUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// location - The location for update quota is queried.
+// parameters - Quota update parameters.
+// options - QuotasClientUpdateOptions contains the optional parameters for the QuotasClient.Update method.
+func (client *QuotasClient) Update(ctx context.Context, location string, parameters QuotaUpdateParameters, options *QuotasClientUpdateOptions) (QuotasClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, location, parameters, options)
 	if err != nil {
-		return QuotasUpdateResponse{}, err
+		return QuotasClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return QuotasUpdateResponse{}, err
+		return QuotasClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return QuotasUpdateResponse{}, client.updateHandleError(resp)
+		return QuotasClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *QuotasClient) updateCreateRequest(ctx context.Context, location string, parameters QuotaUpdateParameters, options *QuotasUpdateOptions) (*policy.Request, error) {
+func (client *QuotasClient) updateCreateRequest(ctx context.Context, location string, parameters QuotaUpdateParameters, options *QuotasClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.MachineLearningServices/locations/{location}/updateQuotas"
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
@@ -128,7 +127,7 @@ func (client *QuotasClient) updateCreateRequest(ctx context.Context, location st
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -140,23 +139,10 @@ func (client *QuotasClient) updateCreateRequest(ctx context.Context, location st
 }
 
 // updateHandleResponse handles the Update response.
-func (client *QuotasClient) updateHandleResponse(resp *http.Response) (QuotasUpdateResponse, error) {
-	result := QuotasUpdateResponse{RawResponse: resp}
+func (client *QuotasClient) updateHandleResponse(resp *http.Response) (QuotasClientUpdateResponse, error) {
+	result := QuotasClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UpdateWorkspaceQuotasResult); err != nil {
-		return QuotasUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return QuotasClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *QuotasClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

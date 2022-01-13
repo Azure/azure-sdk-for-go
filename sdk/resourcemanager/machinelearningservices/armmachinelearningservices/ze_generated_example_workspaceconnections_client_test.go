@@ -25,15 +25,16 @@ func ExampleWorkspaceConnectionsClient_List() {
 	}
 	ctx := context.Background()
 	client := armmachinelearningservices.NewWorkspaceConnectionsClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
-		&armmachinelearningservices.WorkspaceConnectionsListOptions{Target: to.StringPtr("<target>"),
+		&armmachinelearningservices.WorkspaceConnectionsClientListOptions{Target: to.StringPtr("<target>"),
 			Category: to.StringPtr("<category>"),
 		})
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.WorkspaceConnectionsClientListResult)
 }
 
 // x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2021-07-01/examples/WorkspaceConnection/create.json
@@ -60,7 +61,7 @@ func ExampleWorkspaceConnectionsClient_Create() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("WorkspaceConnection.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkspaceConnectionsClientCreateResult)
 }
 
 // x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2021-07-01/examples/WorkspaceConnection/get.json
@@ -79,7 +80,7 @@ func ExampleWorkspaceConnectionsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("WorkspaceConnection.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkspaceConnectionsClientGetResult)
 }
 
 // x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2021-07-01/examples/WorkspaceConnection/delete.json

@@ -25,13 +25,14 @@ func ExamplePrivateEndpointConnectionsClient_List() {
 	}
 	ctx := context.Background()
 	client := armmachinelearningservices.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.PrivateEndpointConnectionsClientListResult)
 }
 
 // x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2021-07-01/examples/PrivateEndpointConnection/get.json
@@ -50,7 +51,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateEndpointConnection.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateEndpointConnectionsClientGetResult)
 }
 
 // x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2021-07-01/examples/PrivateEndpointConnection/createOrUpdate.json
@@ -69,7 +70,7 @@ func ExamplePrivateEndpointConnectionsClient_CreateOrUpdate() {
 			Properties: &armmachinelearningservices.PrivateEndpointConnectionProperties{
 				PrivateLinkServiceConnectionState: &armmachinelearningservices.PrivateLinkServiceConnectionState{
 					Description: to.StringPtr("<description>"),
-					Status:      armmachinelearningservices.PrivateEndpointServiceConnectionStatusApproved.ToPtr(),
+					Status:      armmachinelearningservices.PrivateEndpointServiceConnectionStatus("Approved").ToPtr(),
 				},
 			},
 		},
@@ -77,7 +78,7 @@ func ExamplePrivateEndpointConnectionsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateEndpointConnection.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateEndpointConnectionsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2021-07-01/examples/PrivateEndpointConnection/delete.json

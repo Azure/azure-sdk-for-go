@@ -11,7 +11,6 @@ package armmachinelearningservices
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,39 +24,50 @@ import (
 // WorkspaceFeaturesClient contains the methods for the WorkspaceFeatures group.
 // Don't use this type directly, use NewWorkspaceFeaturesClient() instead.
 type WorkspaceFeaturesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewWorkspaceFeaturesClient creates a new instance of WorkspaceFeaturesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewWorkspaceFeaturesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WorkspaceFeaturesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &WorkspaceFeaturesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &WorkspaceFeaturesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Lists all enabled features for a workspace
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *WorkspaceFeaturesClient) List(resourceGroupName string, workspaceName string, options *WorkspaceFeaturesListOptions) *WorkspaceFeaturesListPager {
-	return &WorkspaceFeaturesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - Name of Azure Machine Learning workspace.
+// options - WorkspaceFeaturesClientListOptions contains the optional parameters for the WorkspaceFeaturesClient.List method.
+func (client *WorkspaceFeaturesClient) List(resourceGroupName string, workspaceName string, options *WorkspaceFeaturesClientListOptions) *WorkspaceFeaturesClientListPager {
+	return &WorkspaceFeaturesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
 		},
-		advancer: func(ctx context.Context, resp WorkspaceFeaturesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp WorkspaceFeaturesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListAmlUserFeatureResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *WorkspaceFeaturesClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspaceFeaturesListOptions) (*policy.Request, error) {
+func (client *WorkspaceFeaturesClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspaceFeaturesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/features"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -71,7 +81,7 @@ func (client *WorkspaceFeaturesClient) listCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -83,23 +93,10 @@ func (client *WorkspaceFeaturesClient) listCreateRequest(ctx context.Context, re
 }
 
 // listHandleResponse handles the List response.
-func (client *WorkspaceFeaturesClient) listHandleResponse(resp *http.Response) (WorkspaceFeaturesListResponse, error) {
-	result := WorkspaceFeaturesListResponse{RawResponse: resp}
+func (client *WorkspaceFeaturesClient) listHandleResponse(resp *http.Response) (WorkspaceFeaturesClientListResponse, error) {
+	result := WorkspaceFeaturesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListAmlUserFeatureResult); err != nil {
-		return WorkspaceFeaturesListResponse{}, runtime.NewResponseError(err, resp)
+		return WorkspaceFeaturesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *WorkspaceFeaturesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

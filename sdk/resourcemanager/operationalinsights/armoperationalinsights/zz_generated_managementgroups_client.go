@@ -24,42 +24,53 @@ import (
 // ManagementGroupsClient contains the methods for the ManagementGroups group.
 // Don't use this type directly, use NewManagementGroupsClient() instead.
 type ManagementGroupsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewManagementGroupsClient creates a new instance of ManagementGroupsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewManagementGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagementGroupsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ManagementGroupsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ManagementGroupsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Gets a list of management groups connected to a workspace.
-// If the operation fails it returns a generic error.
-func (client *ManagementGroupsClient) List(ctx context.Context, resourceGroupName string, workspaceName string, options *ManagementGroupsListOptions) (ManagementGroupsListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// options - ManagementGroupsClientListOptions contains the optional parameters for the ManagementGroupsClient.List method.
+func (client *ManagementGroupsClient) List(ctx context.Context, resourceGroupName string, workspaceName string, options *ManagementGroupsClientListOptions) (ManagementGroupsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
 	if err != nil {
-		return ManagementGroupsListResponse{}, err
+		return ManagementGroupsClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ManagementGroupsListResponse{}, err
+		return ManagementGroupsClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ManagementGroupsListResponse{}, client.listHandleError(resp)
+		return ManagementGroupsClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *ManagementGroupsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *ManagementGroupsListOptions) (*policy.Request, error) {
+func (client *ManagementGroupsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *ManagementGroupsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/managementGroups"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -73,7 +84,7 @@ func (client *ManagementGroupsClient) listCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -85,22 +96,10 @@ func (client *ManagementGroupsClient) listCreateRequest(ctx context.Context, res
 }
 
 // listHandleResponse handles the List response.
-func (client *ManagementGroupsClient) listHandleResponse(resp *http.Response) (ManagementGroupsListResponse, error) {
-	result := ManagementGroupsListResponse{RawResponse: resp}
+func (client *ManagementGroupsClient) listHandleResponse(resp *http.Response) (ManagementGroupsClientListResponse, error) {
+	result := ManagementGroupsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspaceListManagementGroupsResult); err != nil {
-		return ManagementGroupsListResponse{}, runtime.NewResponseError(err, resp)
+		return ManagementGroupsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *ManagementGroupsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

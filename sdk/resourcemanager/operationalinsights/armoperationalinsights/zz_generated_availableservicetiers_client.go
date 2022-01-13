@@ -24,42 +24,54 @@ import (
 // AvailableServiceTiersClient contains the methods for the AvailableServiceTiers group.
 // Don't use this type directly, use NewAvailableServiceTiersClient() instead.
 type AvailableServiceTiersClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewAvailableServiceTiersClient creates a new instance of AvailableServiceTiersClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewAvailableServiceTiersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AvailableServiceTiersClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &AvailableServiceTiersClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &AvailableServiceTiersClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // ListByWorkspace - Gets the available service tiers for the workspace.
-// If the operation fails it returns a generic error.
-func (client *AvailableServiceTiersClient) ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string, options *AvailableServiceTiersListByWorkspaceOptions) (AvailableServiceTiersListByWorkspaceResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// options - AvailableServiceTiersClientListByWorkspaceOptions contains the optional parameters for the AvailableServiceTiersClient.ListByWorkspace
+// method.
+func (client *AvailableServiceTiersClient) ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string, options *AvailableServiceTiersClientListByWorkspaceOptions) (AvailableServiceTiersClientListByWorkspaceResponse, error) {
 	req, err := client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, options)
 	if err != nil {
-		return AvailableServiceTiersListByWorkspaceResponse{}, err
+		return AvailableServiceTiersClientListByWorkspaceResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AvailableServiceTiersListByWorkspaceResponse{}, err
+		return AvailableServiceTiersClientListByWorkspaceResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AvailableServiceTiersListByWorkspaceResponse{}, client.listByWorkspaceHandleError(resp)
+		return AvailableServiceTiersClientListByWorkspaceResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByWorkspaceHandleResponse(resp)
 }
 
 // listByWorkspaceCreateRequest creates the ListByWorkspace request.
-func (client *AvailableServiceTiersClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *AvailableServiceTiersListByWorkspaceOptions) (*policy.Request, error) {
+func (client *AvailableServiceTiersClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *AvailableServiceTiersClientListByWorkspaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/availableServiceTiers"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -73,7 +85,7 @@ func (client *AvailableServiceTiersClient) listByWorkspaceCreateRequest(ctx cont
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -85,22 +97,10 @@ func (client *AvailableServiceTiersClient) listByWorkspaceCreateRequest(ctx cont
 }
 
 // listByWorkspaceHandleResponse handles the ListByWorkspace response.
-func (client *AvailableServiceTiersClient) listByWorkspaceHandleResponse(resp *http.Response) (AvailableServiceTiersListByWorkspaceResponse, error) {
-	result := AvailableServiceTiersListByWorkspaceResponse{RawResponse: resp}
+func (client *AvailableServiceTiersClient) listByWorkspaceHandleResponse(resp *http.Response) (AvailableServiceTiersClientListByWorkspaceResponse, error) {
+	result := AvailableServiceTiersClientListByWorkspaceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailableServiceTierArray); err != nil {
-		return AvailableServiceTiersListByWorkspaceResponse{}, runtime.NewResponseError(err, resp)
+		return AvailableServiceTiersClientListByWorkspaceResponse{}, err
 	}
 	return result, nil
-}
-
-// listByWorkspaceHandleError handles the ListByWorkspace error response.
-func (client *AvailableServiceTiersClient) listByWorkspaceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

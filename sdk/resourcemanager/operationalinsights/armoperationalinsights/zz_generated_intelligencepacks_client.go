@@ -24,42 +24,55 @@ import (
 // IntelligencePacksClient contains the methods for the IntelligencePacks group.
 // Don't use this type directly, use NewIntelligencePacksClient() instead.
 type IntelligencePacksClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewIntelligencePacksClient creates a new instance of IntelligencePacksClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewIntelligencePacksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IntelligencePacksClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &IntelligencePacksClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &IntelligencePacksClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Disable - Disables an intelligence pack for a given workspace.
-// If the operation fails it returns a generic error.
-func (client *IntelligencePacksClient) Disable(ctx context.Context, resourceGroupName string, workspaceName string, intelligencePackName string, options *IntelligencePacksDisableOptions) (IntelligencePacksDisableResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// intelligencePackName - The name of the intelligence pack to be disabled.
+// options - IntelligencePacksClientDisableOptions contains the optional parameters for the IntelligencePacksClient.Disable
+// method.
+func (client *IntelligencePacksClient) Disable(ctx context.Context, resourceGroupName string, workspaceName string, intelligencePackName string, options *IntelligencePacksClientDisableOptions) (IntelligencePacksClientDisableResponse, error) {
 	req, err := client.disableCreateRequest(ctx, resourceGroupName, workspaceName, intelligencePackName, options)
 	if err != nil {
-		return IntelligencePacksDisableResponse{}, err
+		return IntelligencePacksClientDisableResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntelligencePacksDisableResponse{}, err
+		return IntelligencePacksClientDisableResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IntelligencePacksDisableResponse{}, client.disableHandleError(resp)
+		return IntelligencePacksClientDisableResponse{}, runtime.NewResponseError(resp)
 	}
-	return IntelligencePacksDisableResponse{RawResponse: resp}, nil
+	return IntelligencePacksClientDisableResponse{RawResponse: resp}, nil
 }
 
 // disableCreateRequest creates the Disable request.
-func (client *IntelligencePacksClient) disableCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, intelligencePackName string, options *IntelligencePacksDisableOptions) (*policy.Request, error) {
+func (client *IntelligencePacksClient) disableCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, intelligencePackName string, options *IntelligencePacksClientDisableOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/intelligencePacks/{intelligencePackName}/Disable"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -77,7 +90,7 @@ func (client *IntelligencePacksClient) disableCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -87,37 +100,30 @@ func (client *IntelligencePacksClient) disableCreateRequest(ctx context.Context,
 	return req, nil
 }
 
-// disableHandleError handles the Disable error response.
-func (client *IntelligencePacksClient) disableHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Enable - Enables an intelligence pack for a given workspace.
-// If the operation fails it returns a generic error.
-func (client *IntelligencePacksClient) Enable(ctx context.Context, resourceGroupName string, workspaceName string, intelligencePackName string, options *IntelligencePacksEnableOptions) (IntelligencePacksEnableResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// intelligencePackName - The name of the intelligence pack to be enabled.
+// options - IntelligencePacksClientEnableOptions contains the optional parameters for the IntelligencePacksClient.Enable
+// method.
+func (client *IntelligencePacksClient) Enable(ctx context.Context, resourceGroupName string, workspaceName string, intelligencePackName string, options *IntelligencePacksClientEnableOptions) (IntelligencePacksClientEnableResponse, error) {
 	req, err := client.enableCreateRequest(ctx, resourceGroupName, workspaceName, intelligencePackName, options)
 	if err != nil {
-		return IntelligencePacksEnableResponse{}, err
+		return IntelligencePacksClientEnableResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntelligencePacksEnableResponse{}, err
+		return IntelligencePacksClientEnableResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IntelligencePacksEnableResponse{}, client.enableHandleError(resp)
+		return IntelligencePacksClientEnableResponse{}, runtime.NewResponseError(resp)
 	}
-	return IntelligencePacksEnableResponse{RawResponse: resp}, nil
+	return IntelligencePacksClientEnableResponse{RawResponse: resp}, nil
 }
 
 // enableCreateRequest creates the Enable request.
-func (client *IntelligencePacksClient) enableCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, intelligencePackName string, options *IntelligencePacksEnableOptions) (*policy.Request, error) {
+func (client *IntelligencePacksClient) enableCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, intelligencePackName string, options *IntelligencePacksClientEnableOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/intelligencePacks/{intelligencePackName}/Enable"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -135,7 +141,7 @@ func (client *IntelligencePacksClient) enableCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -145,37 +151,28 @@ func (client *IntelligencePacksClient) enableCreateRequest(ctx context.Context, 
 	return req, nil
 }
 
-// enableHandleError handles the Enable error response.
-func (client *IntelligencePacksClient) enableHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // List - Lists all the intelligence packs possible and whether they are enabled or disabled for a given workspace.
-// If the operation fails it returns a generic error.
-func (client *IntelligencePacksClient) List(ctx context.Context, resourceGroupName string, workspaceName string, options *IntelligencePacksListOptions) (IntelligencePacksListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// options - IntelligencePacksClientListOptions contains the optional parameters for the IntelligencePacksClient.List method.
+func (client *IntelligencePacksClient) List(ctx context.Context, resourceGroupName string, workspaceName string, options *IntelligencePacksClientListOptions) (IntelligencePacksClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
 	if err != nil {
-		return IntelligencePacksListResponse{}, err
+		return IntelligencePacksClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntelligencePacksListResponse{}, err
+		return IntelligencePacksClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IntelligencePacksListResponse{}, client.listHandleError(resp)
+		return IntelligencePacksClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *IntelligencePacksClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *IntelligencePacksListOptions) (*policy.Request, error) {
+func (client *IntelligencePacksClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *IntelligencePacksClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/intelligencePacks"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -189,7 +186,7 @@ func (client *IntelligencePacksClient) listCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -201,22 +198,10 @@ func (client *IntelligencePacksClient) listCreateRequest(ctx context.Context, re
 }
 
 // listHandleResponse handles the List response.
-func (client *IntelligencePacksClient) listHandleResponse(resp *http.Response) (IntelligencePacksListResponse, error) {
-	result := IntelligencePacksListResponse{RawResponse: resp}
+func (client *IntelligencePacksClient) listHandleResponse(resp *http.Response) (IntelligencePacksClientListResponse, error) {
+	result := IntelligencePacksClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntelligencePackArray); err != nil {
-		return IntelligencePacksListResponse{}, runtime.NewResponseError(err, resp)
+		return IntelligencePacksClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *IntelligencePacksClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

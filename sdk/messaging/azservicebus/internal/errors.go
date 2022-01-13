@@ -22,16 +22,6 @@ type ErrNonRetriable struct {
 
 func (e ErrNonRetriable) Error() string { return e.Message }
 
-// Error Conditions
-const (
-	// Service Bus Errors
-	errorServerBusy         amqp.ErrorCondition = "com.microsoft:server-busy"
-	errorTimeout            amqp.ErrorCondition = "com.microsoft:timeout"
-	errorOperationCancelled amqp.ErrorCondition = "com.microsoft:operation-cancelled"
-
-	//errorContainerClose     amqp.ErrorCondition = "com.microsoft:container-close"
-)
-
 type recoveryKind string
 
 const RecoveryKindNone recoveryKind = ""

@@ -136,9 +136,9 @@ func Test_recoveryKind(t *testing.T) {
 
 	t.Run("none", func(t *testing.T) {
 		codes := []string{
-			string(errorOperationCancelled),
-			string(errorServerBusy),
-			string(errorTimeout),
+			string("com.microsoft:operation-cancelled"),
+			string("com.microsoft:server-busy"),
+			string("com.microsoft:timeout"),
 		}
 
 		for _, code := range codes {

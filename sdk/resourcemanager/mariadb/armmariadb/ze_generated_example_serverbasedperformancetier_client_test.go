@@ -24,11 +24,12 @@ func ExampleServerBasedPerformanceTierClient_List() {
 	}
 	ctx := context.Background()
 	client := armmariadb.NewServerBasedPerformanceTierClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<server-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ServerBasedPerformanceTierClientListResult)
 }

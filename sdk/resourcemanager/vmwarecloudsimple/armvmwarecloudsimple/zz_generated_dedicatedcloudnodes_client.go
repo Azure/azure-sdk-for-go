@@ -11,7 +11,6 @@ package armvmwarecloudsimple
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,47 +25,62 @@ import (
 // DedicatedCloudNodesClient contains the methods for the DedicatedCloudNodes group.
 // Don't use this type directly, use NewDedicatedCloudNodesClient() instead.
 type DedicatedCloudNodesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
 	referer        string
+	pl             runtime.Pipeline
 }
 
 // NewDedicatedCloudNodesClient creates a new instance of DedicatedCloudNodesClient with the specified values.
+// subscriptionID - The subscription ID.
+// referer - referer url
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDedicatedCloudNodesClient(subscriptionID string, referer string, credential azcore.TokenCredential, options *arm.ClientOptions) *DedicatedCloudNodesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &DedicatedCloudNodesClient{subscriptionID: subscriptionID, referer: referer, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DedicatedCloudNodesClient{
+		subscriptionID: subscriptionID,
+		referer:        referer,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Returns dedicated cloud node by its name
-// If the operation fails it returns the *CSRPError error type.
-func (client *DedicatedCloudNodesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, dedicatedCloudNodeName string, dedicatedCloudNodeRequest DedicatedCloudNode, options *DedicatedCloudNodesBeginCreateOrUpdateOptions) (DedicatedCloudNodesCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group
+// dedicatedCloudNodeName - dedicated cloud node name
+// dedicatedCloudNodeRequest - Create Dedicated Cloud Node request
+// options - DedicatedCloudNodesClientBeginCreateOrUpdateOptions contains the optional parameters for the DedicatedCloudNodesClient.BeginCreateOrUpdate
+// method.
+func (client *DedicatedCloudNodesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, dedicatedCloudNodeName string, dedicatedCloudNodeRequest DedicatedCloudNode, options *DedicatedCloudNodesClientBeginCreateOrUpdateOptions) (DedicatedCloudNodesClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, dedicatedCloudNodeName, dedicatedCloudNodeRequest, options)
 	if err != nil {
-		return DedicatedCloudNodesCreateOrUpdatePollerResponse{}, err
+		return DedicatedCloudNodesClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := DedicatedCloudNodesCreateOrUpdatePollerResponse{
+	result := DedicatedCloudNodesClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DedicatedCloudNodesClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("DedicatedCloudNodesClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return DedicatedCloudNodesCreateOrUpdatePollerResponse{}, err
+		return DedicatedCloudNodesClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &DedicatedCloudNodesCreateOrUpdatePoller{
+	result.Poller = &DedicatedCloudNodesClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Returns dedicated cloud node by its name
-// If the operation fails it returns the *CSRPError error type.
-func (client *DedicatedCloudNodesClient) createOrUpdate(ctx context.Context, resourceGroupName string, dedicatedCloudNodeName string, dedicatedCloudNodeRequest DedicatedCloudNode, options *DedicatedCloudNodesBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DedicatedCloudNodesClient) createOrUpdate(ctx context.Context, resourceGroupName string, dedicatedCloudNodeName string, dedicatedCloudNodeRequest DedicatedCloudNode, options *DedicatedCloudNodesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, dedicatedCloudNodeName, dedicatedCloudNodeRequest, options)
 	if err != nil {
 		return nil, err
@@ -76,13 +90,13 @@ func (client *DedicatedCloudNodesClient) createOrUpdate(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DedicatedCloudNodesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, dedicatedCloudNodeName string, dedicatedCloudNodeRequest DedicatedCloudNode, options *DedicatedCloudNodesBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *DedicatedCloudNodesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, dedicatedCloudNodeName string, dedicatedCloudNodeRequest DedicatedCloudNode, options *DedicatedCloudNodesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VMwareCloudSimple/dedicatedCloudNodes/{dedicatedCloudNodeName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -96,7 +110,7 @@ func (client *DedicatedCloudNodesClient) createOrUpdateCreateRequest(ctx context
 		return nil, errors.New("parameter dedicatedCloudNodeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dedicatedCloudNodeName}", url.PathEscape(dedicatedCloudNodeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -108,38 +122,29 @@ func (client *DedicatedCloudNodesClient) createOrUpdateCreateRequest(ctx context
 	return req, runtime.MarshalAsJSON(req, dedicatedCloudNodeRequest)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *DedicatedCloudNodesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CSRPError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete dedicated cloud node
-// If the operation fails it returns the *CSRPError error type.
-func (client *DedicatedCloudNodesClient) Delete(ctx context.Context, resourceGroupName string, dedicatedCloudNodeName string, options *DedicatedCloudNodesDeleteOptions) (DedicatedCloudNodesDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group
+// dedicatedCloudNodeName - dedicated cloud node name
+// options - DedicatedCloudNodesClientDeleteOptions contains the optional parameters for the DedicatedCloudNodesClient.Delete
+// method.
+func (client *DedicatedCloudNodesClient) Delete(ctx context.Context, resourceGroupName string, dedicatedCloudNodeName string, options *DedicatedCloudNodesClientDeleteOptions) (DedicatedCloudNodesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, dedicatedCloudNodeName, options)
 	if err != nil {
-		return DedicatedCloudNodesDeleteResponse{}, err
+		return DedicatedCloudNodesClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DedicatedCloudNodesDeleteResponse{}, err
+		return DedicatedCloudNodesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
-		return DedicatedCloudNodesDeleteResponse{}, client.deleteHandleError(resp)
+		return DedicatedCloudNodesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return DedicatedCloudNodesDeleteResponse{RawResponse: resp}, nil
+	return DedicatedCloudNodesClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DedicatedCloudNodesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, dedicatedCloudNodeName string, options *DedicatedCloudNodesDeleteOptions) (*policy.Request, error) {
+func (client *DedicatedCloudNodesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, dedicatedCloudNodeName string, options *DedicatedCloudNodesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VMwareCloudSimple/dedicatedCloudNodes/{dedicatedCloudNodeName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -153,7 +158,7 @@ func (client *DedicatedCloudNodesClient) deleteCreateRequest(ctx context.Context
 		return nil, errors.New("parameter dedicatedCloudNodeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dedicatedCloudNodeName}", url.PathEscape(dedicatedCloudNodeName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -164,38 +169,28 @@ func (client *DedicatedCloudNodesClient) deleteCreateRequest(ctx context.Context
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *DedicatedCloudNodesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CSRPError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Returns dedicated cloud node
-// If the operation fails it returns the *CSRPError error type.
-func (client *DedicatedCloudNodesClient) Get(ctx context.Context, resourceGroupName string, dedicatedCloudNodeName string, options *DedicatedCloudNodesGetOptions) (DedicatedCloudNodesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group
+// dedicatedCloudNodeName - dedicated cloud node name
+// options - DedicatedCloudNodesClientGetOptions contains the optional parameters for the DedicatedCloudNodesClient.Get method.
+func (client *DedicatedCloudNodesClient) Get(ctx context.Context, resourceGroupName string, dedicatedCloudNodeName string, options *DedicatedCloudNodesClientGetOptions) (DedicatedCloudNodesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, dedicatedCloudNodeName, options)
 	if err != nil {
-		return DedicatedCloudNodesGetResponse{}, err
+		return DedicatedCloudNodesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DedicatedCloudNodesGetResponse{}, err
+		return DedicatedCloudNodesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DedicatedCloudNodesGetResponse{}, client.getHandleError(resp)
+		return DedicatedCloudNodesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DedicatedCloudNodesClient) getCreateRequest(ctx context.Context, resourceGroupName string, dedicatedCloudNodeName string, options *DedicatedCloudNodesGetOptions) (*policy.Request, error) {
+func (client *DedicatedCloudNodesClient) getCreateRequest(ctx context.Context, resourceGroupName string, dedicatedCloudNodeName string, options *DedicatedCloudNodesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VMwareCloudSimple/dedicatedCloudNodes/{dedicatedCloudNodeName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -209,7 +204,7 @@ func (client *DedicatedCloudNodesClient) getCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter dedicatedCloudNodeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dedicatedCloudNodeName}", url.PathEscape(dedicatedCloudNodeName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -221,43 +216,33 @@ func (client *DedicatedCloudNodesClient) getCreateRequest(ctx context.Context, r
 }
 
 // getHandleResponse handles the Get response.
-func (client *DedicatedCloudNodesClient) getHandleResponse(resp *http.Response) (DedicatedCloudNodesGetResponse, error) {
-	result := DedicatedCloudNodesGetResponse{RawResponse: resp}
+func (client *DedicatedCloudNodesClient) getHandleResponse(resp *http.Response) (DedicatedCloudNodesClientGetResponse, error) {
+	result := DedicatedCloudNodesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DedicatedCloudNode); err != nil {
-		return DedicatedCloudNodesGetResponse{}, runtime.NewResponseError(err, resp)
+		return DedicatedCloudNodesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *DedicatedCloudNodesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CSRPError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - Returns list of dedicate cloud nodes within resource group
-// If the operation fails it returns the *CSRPError error type.
-func (client *DedicatedCloudNodesClient) ListByResourceGroup(resourceGroupName string, options *DedicatedCloudNodesListByResourceGroupOptions) *DedicatedCloudNodesListByResourceGroupPager {
-	return &DedicatedCloudNodesListByResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group
+// options - DedicatedCloudNodesClientListByResourceGroupOptions contains the optional parameters for the DedicatedCloudNodesClient.ListByResourceGroup
+// method.
+func (client *DedicatedCloudNodesClient) ListByResourceGroup(resourceGroupName string, options *DedicatedCloudNodesClientListByResourceGroupOptions) *DedicatedCloudNodesClientListByResourceGroupPager {
+	return &DedicatedCloudNodesClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp DedicatedCloudNodesListByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DedicatedCloudNodesClientListByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DedicatedCloudNodeListResponse.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *DedicatedCloudNodesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *DedicatedCloudNodesListByResourceGroupOptions) (*policy.Request, error) {
+func (client *DedicatedCloudNodesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *DedicatedCloudNodesClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VMwareCloudSimple/dedicatedCloudNodes"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -267,7 +252,7 @@ func (client *DedicatedCloudNodesClient) listByResourceGroupCreateRequest(ctx co
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -288,49 +273,38 @@ func (client *DedicatedCloudNodesClient) listByResourceGroupCreateRequest(ctx co
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *DedicatedCloudNodesClient) listByResourceGroupHandleResponse(resp *http.Response) (DedicatedCloudNodesListByResourceGroupResponse, error) {
-	result := DedicatedCloudNodesListByResourceGroupResponse{RawResponse: resp}
+func (client *DedicatedCloudNodesClient) listByResourceGroupHandleResponse(resp *http.Response) (DedicatedCloudNodesClientListByResourceGroupResponse, error) {
+	result := DedicatedCloudNodesClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DedicatedCloudNodeListResponse); err != nil {
-		return DedicatedCloudNodesListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return DedicatedCloudNodesClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *DedicatedCloudNodesClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CSRPError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListBySubscription - Returns list of dedicate cloud nodes within subscription
-// If the operation fails it returns the *CSRPError error type.
-func (client *DedicatedCloudNodesClient) ListBySubscription(options *DedicatedCloudNodesListBySubscriptionOptions) *DedicatedCloudNodesListBySubscriptionPager {
-	return &DedicatedCloudNodesListBySubscriptionPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - DedicatedCloudNodesClientListBySubscriptionOptions contains the optional parameters for the DedicatedCloudNodesClient.ListBySubscription
+// method.
+func (client *DedicatedCloudNodesClient) ListBySubscription(options *DedicatedCloudNodesClientListBySubscriptionOptions) *DedicatedCloudNodesClientListBySubscriptionPager {
+	return &DedicatedCloudNodesClientListBySubscriptionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp DedicatedCloudNodesListBySubscriptionResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DedicatedCloudNodesClientListBySubscriptionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DedicatedCloudNodeListResponse.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *DedicatedCloudNodesClient) listBySubscriptionCreateRequest(ctx context.Context, options *DedicatedCloudNodesListBySubscriptionOptions) (*policy.Request, error) {
+func (client *DedicatedCloudNodesClient) listBySubscriptionCreateRequest(ctx context.Context, options *DedicatedCloudNodesClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.VMwareCloudSimple/dedicatedCloudNodes"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -351,46 +325,38 @@ func (client *DedicatedCloudNodesClient) listBySubscriptionCreateRequest(ctx con
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *DedicatedCloudNodesClient) listBySubscriptionHandleResponse(resp *http.Response) (DedicatedCloudNodesListBySubscriptionResponse, error) {
-	result := DedicatedCloudNodesListBySubscriptionResponse{RawResponse: resp}
+func (client *DedicatedCloudNodesClient) listBySubscriptionHandleResponse(resp *http.Response) (DedicatedCloudNodesClientListBySubscriptionResponse, error) {
+	result := DedicatedCloudNodesClientListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DedicatedCloudNodeListResponse); err != nil {
-		return DedicatedCloudNodesListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return DedicatedCloudNodesClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *DedicatedCloudNodesClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CSRPError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Patches dedicated node properties
-// If the operation fails it returns the *CSRPError error type.
-func (client *DedicatedCloudNodesClient) Update(ctx context.Context, resourceGroupName string, dedicatedCloudNodeName string, dedicatedCloudNodeRequest PatchPayload, options *DedicatedCloudNodesUpdateOptions) (DedicatedCloudNodesUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group
+// dedicatedCloudNodeName - dedicated cloud node name
+// dedicatedCloudNodeRequest - Patch Dedicated Cloud Node request
+// options - DedicatedCloudNodesClientUpdateOptions contains the optional parameters for the DedicatedCloudNodesClient.Update
+// method.
+func (client *DedicatedCloudNodesClient) Update(ctx context.Context, resourceGroupName string, dedicatedCloudNodeName string, dedicatedCloudNodeRequest PatchPayload, options *DedicatedCloudNodesClientUpdateOptions) (DedicatedCloudNodesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, dedicatedCloudNodeName, dedicatedCloudNodeRequest, options)
 	if err != nil {
-		return DedicatedCloudNodesUpdateResponse{}, err
+		return DedicatedCloudNodesClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DedicatedCloudNodesUpdateResponse{}, err
+		return DedicatedCloudNodesClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DedicatedCloudNodesUpdateResponse{}, client.updateHandleError(resp)
+		return DedicatedCloudNodesClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *DedicatedCloudNodesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, dedicatedCloudNodeName string, dedicatedCloudNodeRequest PatchPayload, options *DedicatedCloudNodesUpdateOptions) (*policy.Request, error) {
+func (client *DedicatedCloudNodesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, dedicatedCloudNodeName string, dedicatedCloudNodeRequest PatchPayload, options *DedicatedCloudNodesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VMwareCloudSimple/dedicatedCloudNodes/{dedicatedCloudNodeName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -404,7 +370,7 @@ func (client *DedicatedCloudNodesClient) updateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter dedicatedCloudNodeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dedicatedCloudNodeName}", url.PathEscape(dedicatedCloudNodeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -416,23 +382,10 @@ func (client *DedicatedCloudNodesClient) updateCreateRequest(ctx context.Context
 }
 
 // updateHandleResponse handles the Update response.
-func (client *DedicatedCloudNodesClient) updateHandleResponse(resp *http.Response) (DedicatedCloudNodesUpdateResponse, error) {
-	result := DedicatedCloudNodesUpdateResponse{RawResponse: resp}
+func (client *DedicatedCloudNodesClient) updateHandleResponse(resp *http.Response) (DedicatedCloudNodesClientUpdateResponse, error) {
+	result := DedicatedCloudNodesClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DedicatedCloudNode); err != nil {
-		return DedicatedCloudNodesUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return DedicatedCloudNodesClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *DedicatedCloudNodesClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CSRPError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -21,19 +21,19 @@ import (
 	"strings"
 )
 
-// LegacyPeeringsClient contains the methods for the LegacyPeerings group.
-// Don't use this type directly, use NewLegacyPeeringsClient() instead.
-type LegacyPeeringsClient struct {
+// ServiceProvidersClient contains the methods for the PeeringServiceProviders group.
+// Don't use this type directly, use NewServiceProvidersClient() instead.
+type ServiceProvidersClient struct {
 	host           string
 	subscriptionID string
 	pl             runtime.Pipeline
 }
 
-// NewLegacyPeeringsClient creates a new instance of LegacyPeeringsClient with the specified values.
+// NewServiceProvidersClient creates a new instance of ServiceProvidersClient with the specified values.
 // subscriptionID - The Azure subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewLegacyPeeringsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LegacyPeeringsClient {
+func NewServiceProvidersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServiceProvidersClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
@@ -41,7 +41,7 @@ func NewLegacyPeeringsClient(subscriptionID string, credential azcore.TokenCrede
 	if len(cp.Endpoint) == 0 {
 		cp.Endpoint = arm.AzurePublicCloud
 	}
-	client := &LegacyPeeringsClient{
+	client := &ServiceProvidersClient{
 		subscriptionID: subscriptionID,
 		host:           string(cp.Endpoint),
 		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
@@ -49,26 +49,24 @@ func NewLegacyPeeringsClient(subscriptionID string, credential azcore.TokenCrede
 	return client
 }
 
-// List - Lists all of the legacy peerings under the given subscription matching the specified kind and location.
+// List - Lists all of the available peering service locations for the specified kind of peering.
 // If the operation fails it returns an *azcore.ResponseError type.
-// peeringLocation - The location of the peering.
-// kind - The kind of the peering.
-// options - LegacyPeeringsClientListOptions contains the optional parameters for the LegacyPeeringsClient.List method.
-func (client *LegacyPeeringsClient) List(peeringLocation string, kind Enum1, options *LegacyPeeringsClientListOptions) *LegacyPeeringsClientListPager {
-	return &LegacyPeeringsClientListPager{
+// options - ServiceProvidersClientListOptions contains the optional parameters for the ServiceProvidersClient.List method.
+func (client *ServiceProvidersClient) List(options *ServiceProvidersClientListOptions) *ServiceProvidersClientListPager {
+	return &ServiceProvidersClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, peeringLocation, kind, options)
+			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp LegacyPeeringsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListResult.NextLink)
+		advancer: func(ctx context.Context, resp ServiceProvidersClientListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ServiceProviderListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *LegacyPeeringsClient) listCreateRequest(ctx context.Context, peeringLocation string, kind Enum1, options *LegacyPeeringsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/legacyPeerings"
+func (client *ServiceProvidersClient) listCreateRequest(ctx context.Context, options *ServiceProvidersClientListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringServiceProviders"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -78,8 +76,6 @@ func (client *LegacyPeeringsClient) listCreateRequest(ctx context.Context, peeri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("peeringLocation", peeringLocation)
-	reqQP.Set("kind", string(kind))
 	reqQP.Set("api-version", "2019-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
@@ -87,10 +83,10 @@ func (client *LegacyPeeringsClient) listCreateRequest(ctx context.Context, peeri
 }
 
 // listHandleResponse handles the List response.
-func (client *LegacyPeeringsClient) listHandleResponse(resp *http.Response) (LegacyPeeringsClientListResponse, error) {
-	result := LegacyPeeringsClientListResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ListResult); err != nil {
-		return LegacyPeeringsClientListResponse{}, err
+func (client *ServiceProvidersClient) listHandleResponse(resp *http.Response) (ServiceProvidersClientListResponse, error) {
+	result := ServiceProvidersClientListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceProviderListResult); err != nil {
+		return ServiceProvidersClientListResponse{}, err
 	}
 	return result, nil
 }

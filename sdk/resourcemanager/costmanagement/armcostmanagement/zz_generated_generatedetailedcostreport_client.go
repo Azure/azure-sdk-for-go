@@ -10,7 +10,6 @@ package armcostmanagement
 
 import (
 	"context"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -23,53 +22,73 @@ import (
 // GenerateDetailedCostReportClient contains the methods for the GenerateDetailedCostReport group.
 // Don't use this type directly, use NewGenerateDetailedCostReportClient() instead.
 type GenerateDetailedCostReportClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewGenerateDetailedCostReportClient creates a new instance of GenerateDetailedCostReportClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewGenerateDetailedCostReportClient(credential azcore.TokenCredential, options *arm.ClientOptions) *GenerateDetailedCostReportClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &GenerateDetailedCostReportClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &GenerateDetailedCostReportClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// BeginCreateOperation - Generates the detailed cost report for provided date range, billing period(Only enterprise customers) or Invoice Id asynchronously
-// at a certain scope. Call returns a 202 with header
-// Azure-Consumption-AsyncOperation providing a link to the operation created. A call on the operation will provide the status and if the operation is completed
-// the blob file where generated detailed
+// BeginCreateOperation - Generates the detailed cost report for provided date range, billing period(Only enterprise customers)
+// or Invoice Id asynchronously at a certain scope. Call returns a 202 with header
+// Azure-Consumption-AsyncOperation providing a link to the operation created. A call on the operation will provide the status
+// and if the operation is completed the blob file where generated detailed
 // cost report is being stored.
-// If the operation fails it returns the *GenerateDetailedCostReportErrorResponse error type.
-func (client *GenerateDetailedCostReportClient) BeginCreateOperation(ctx context.Context, scope string, parameters GenerateDetailedCostReportDefinition, options *GenerateDetailedCostReportBeginCreateOperationOptions) (GenerateDetailedCostReportCreateOperationPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope associated with usage details operations. This includes '/subscriptions/{subscriptionId}/' for subscription
+// scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for
+// Billing Account scope, '/providers/Microsoft.Billing/departments/{departmentId}' for Department scope, '/providers/Microsoft.Billing/enrollmentAccounts/{enrollmentAccountId}'
+// for EnrollmentAccount
+// scope. Also, Modern Commerce Account scopes are '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for billingAccount
+// scope,
+// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for billingProfile
+// scope,
+// 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoiceSections/{invoiceSectionId}'
+// for invoiceSection scope, and
+// 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for partners.
+// parameters - Parameters supplied to the Create detailed cost report operation.
+// options - GenerateDetailedCostReportClientBeginCreateOperationOptions contains the optional parameters for the GenerateDetailedCostReportClient.BeginCreateOperation
+// method.
+func (client *GenerateDetailedCostReportClient) BeginCreateOperation(ctx context.Context, scope string, parameters GenerateDetailedCostReportDefinition, options *GenerateDetailedCostReportClientBeginCreateOperationOptions) (GenerateDetailedCostReportClientCreateOperationPollerResponse, error) {
 	resp, err := client.createOperation(ctx, scope, parameters, options)
 	if err != nil {
-		return GenerateDetailedCostReportCreateOperationPollerResponse{}, err
+		return GenerateDetailedCostReportClientCreateOperationPollerResponse{}, err
 	}
-	result := GenerateDetailedCostReportCreateOperationPollerResponse{
+	result := GenerateDetailedCostReportClientCreateOperationPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("GenerateDetailedCostReportClient.CreateOperation", "location", resp, client.pl, client.createOperationHandleError)
+	pt, err := armruntime.NewPoller("GenerateDetailedCostReportClient.CreateOperation", "location", resp, client.pl)
 	if err != nil {
-		return GenerateDetailedCostReportCreateOperationPollerResponse{}, err
+		return GenerateDetailedCostReportClientCreateOperationPollerResponse{}, err
 	}
-	result.Poller = &GenerateDetailedCostReportCreateOperationPoller{
+	result.Poller = &GenerateDetailedCostReportClientCreateOperationPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// CreateOperation - Generates the detailed cost report for provided date range, billing period(Only enterprise customers) or Invoice Id asynchronously
-// at a certain scope. Call returns a 202 with header
-// Azure-Consumption-AsyncOperation providing a link to the operation created. A call on the operation will provide the status and if the operation is completed
-// the blob file where generated detailed
+// CreateOperation - Generates the detailed cost report for provided date range, billing period(Only enterprise customers)
+// or Invoice Id asynchronously at a certain scope. Call returns a 202 with header
+// Azure-Consumption-AsyncOperation providing a link to the operation created. A call on the operation will provide the status
+// and if the operation is completed the blob file where generated detailed
 // cost report is being stored.
-// If the operation fails it returns the *GenerateDetailedCostReportErrorResponse error type.
-func (client *GenerateDetailedCostReportClient) createOperation(ctx context.Context, scope string, parameters GenerateDetailedCostReportDefinition, options *GenerateDetailedCostReportBeginCreateOperationOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *GenerateDetailedCostReportClient) createOperation(ctx context.Context, scope string, parameters GenerateDetailedCostReportDefinition, options *GenerateDetailedCostReportClientBeginCreateOperationOptions) (*http.Response, error) {
 	req, err := client.createOperationCreateRequest(ctx, scope, parameters, options)
 	if err != nil {
 		return nil, err
@@ -79,16 +98,16 @@ func (client *GenerateDetailedCostReportClient) createOperation(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.createOperationHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOperationCreateRequest creates the CreateOperation request.
-func (client *GenerateDetailedCostReportClient) createOperationCreateRequest(ctx context.Context, scope string, parameters GenerateDetailedCostReportDefinition, options *GenerateDetailedCostReportBeginCreateOperationOptions) (*policy.Request, error) {
+func (client *GenerateDetailedCostReportClient) createOperationCreateRequest(ctx context.Context, scope string, parameters GenerateDetailedCostReportDefinition, options *GenerateDetailedCostReportClientBeginCreateOperationOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.CostManagement/generateDetailedCostReport"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -97,17 +116,4 @@ func (client *GenerateDetailedCostReportClient) createOperationCreateRequest(ctx
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
-}
-
-// createOperationHandleError handles the CreateOperation error response.
-func (client *GenerateDetailedCostReportClient) createOperationHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := GenerateDetailedCostReportErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

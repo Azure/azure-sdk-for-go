@@ -17,33 +17,47 @@ import (
 )
 
 // x-ms-original-file: specification/maps/resource-manager/Microsoft.Maps/preview/2021-12-01-preview/examples/GetOperations.json
-func ExampleMapsClient_ListOperations() {
+func ExampleClient_ListOperations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmaps.NewMapsClient("<subscription-id>", cred, nil)
+	client := armmaps.NewClient("<subscription-id>", cred, nil)
 	pager := client.ListOperations(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/maps/resource-manager/Microsoft.Maps/preview/2021-12-01-preview/examples/GetOperationsSubscription.json
-func ExampleMapsClient_ListSubscriptionOperations() {
+func ExampleClient_ListSubscriptionOperations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmaps.NewMapsClient("<subscription-id>", cred, nil)
+	client := armmaps.NewClient("<subscription-id>", cred, nil)
 	pager := client.ListSubscriptionOperations(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

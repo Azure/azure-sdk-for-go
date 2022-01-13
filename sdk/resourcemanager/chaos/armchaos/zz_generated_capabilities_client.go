@@ -11,7 +11,6 @@ package armchaos
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,59 @@ import (
 // CapabilitiesClient contains the methods for the Capabilities group.
 // Don't use this type directly, use NewCapabilitiesClient() instead.
 type CapabilitiesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewCapabilitiesClient creates a new instance of CapabilitiesClient with the specified values.
+// subscriptionID - GUID that represents an Azure subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewCapabilitiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CapabilitiesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &CapabilitiesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &CapabilitiesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Create or update a Capability resource that extends a Target resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CapabilitiesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, targetName string, capabilityName string, capability Capability, options *CapabilitiesCreateOrUpdateOptions) (CapabilitiesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - String that represents an Azure resource group.
+// parentProviderNamespace - String that represents a resource provider namespace.
+// parentResourceType - String that represents a resource type.
+// parentResourceName - String that represents a resource name.
+// targetName - String that represents a Target resource name.
+// capabilityName - String that represents a Capability resource name.
+// capability - Capability resource to be created or updated.
+// options - CapabilitiesClientCreateOrUpdateOptions contains the optional parameters for the CapabilitiesClient.CreateOrUpdate
+// method.
+func (client *CapabilitiesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, targetName string, capabilityName string, capability Capability, options *CapabilitiesClientCreateOrUpdateOptions) (CapabilitiesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName, targetName, capabilityName, capability, options)
 	if err != nil {
-		return CapabilitiesCreateOrUpdateResponse{}, err
+		return CapabilitiesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CapabilitiesCreateOrUpdateResponse{}, err
+		return CapabilitiesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CapabilitiesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return CapabilitiesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *CapabilitiesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, targetName string, capabilityName string, capability Capability, options *CapabilitiesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *CapabilitiesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, targetName string, capabilityName string, capability Capability, options *CapabilitiesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{parentProviderNamespace}/{parentResourceType}/{parentResourceName}/providers/Microsoft.Chaos/targets/{targetName}/capabilities/{capabilityName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -90,7 +106,7 @@ func (client *CapabilitiesClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter capabilityName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{capabilityName}", url.PathEscape(capabilityName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -102,46 +118,40 @@ func (client *CapabilitiesClient) createOrUpdateCreateRequest(ctx context.Contex
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *CapabilitiesClient) createOrUpdateHandleResponse(resp *http.Response) (CapabilitiesCreateOrUpdateResponse, error) {
-	result := CapabilitiesCreateOrUpdateResponse{RawResponse: resp}
+func (client *CapabilitiesClient) createOrUpdateHandleResponse(resp *http.Response) (CapabilitiesClientCreateOrUpdateResponse, error) {
+	result := CapabilitiesClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Capability); err != nil {
-		return CapabilitiesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return CapabilitiesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *CapabilitiesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete a Capability that extends a Target resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CapabilitiesClient) Delete(ctx context.Context, resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, targetName string, capabilityName string, options *CapabilitiesDeleteOptions) (CapabilitiesDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - String that represents an Azure resource group.
+// parentProviderNamespace - String that represents a resource provider namespace.
+// parentResourceType - String that represents a resource type.
+// parentResourceName - String that represents a resource name.
+// targetName - String that represents a Target resource name.
+// capabilityName - String that represents a Capability resource name.
+// options - CapabilitiesClientDeleteOptions contains the optional parameters for the CapabilitiesClient.Delete method.
+func (client *CapabilitiesClient) Delete(ctx context.Context, resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, targetName string, capabilityName string, options *CapabilitiesClientDeleteOptions) (CapabilitiesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName, targetName, capabilityName, options)
 	if err != nil {
-		return CapabilitiesDeleteResponse{}, err
+		return CapabilitiesClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CapabilitiesDeleteResponse{}, err
+		return CapabilitiesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return CapabilitiesDeleteResponse{}, client.deleteHandleError(resp)
+		return CapabilitiesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return CapabilitiesDeleteResponse{RawResponse: resp}, nil
+	return CapabilitiesClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *CapabilitiesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, targetName string, capabilityName string, options *CapabilitiesDeleteOptions) (*policy.Request, error) {
+func (client *CapabilitiesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, targetName string, capabilityName string, options *CapabilitiesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{parentProviderNamespace}/{parentResourceType}/{parentResourceName}/providers/Microsoft.Chaos/targets/{targetName}/capabilities/{capabilityName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -171,7 +181,7 @@ func (client *CapabilitiesClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter capabilityName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{capabilityName}", url.PathEscape(capabilityName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -182,38 +192,32 @@ func (client *CapabilitiesClient) deleteCreateRequest(ctx context.Context, resou
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *CapabilitiesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get a Capability resource that extends a Target resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CapabilitiesClient) Get(ctx context.Context, resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, targetName string, capabilityName string, options *CapabilitiesGetOptions) (CapabilitiesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - String that represents an Azure resource group.
+// parentProviderNamespace - String that represents a resource provider namespace.
+// parentResourceType - String that represents a resource type.
+// parentResourceName - String that represents a resource name.
+// targetName - String that represents a Target resource name.
+// capabilityName - String that represents a Capability resource name.
+// options - CapabilitiesClientGetOptions contains the optional parameters for the CapabilitiesClient.Get method.
+func (client *CapabilitiesClient) Get(ctx context.Context, resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, targetName string, capabilityName string, options *CapabilitiesClientGetOptions) (CapabilitiesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName, targetName, capabilityName, options)
 	if err != nil {
-		return CapabilitiesGetResponse{}, err
+		return CapabilitiesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CapabilitiesGetResponse{}, err
+		return CapabilitiesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CapabilitiesGetResponse{}, client.getHandleError(resp)
+		return CapabilitiesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *CapabilitiesClient) getCreateRequest(ctx context.Context, resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, targetName string, capabilityName string, options *CapabilitiesGetOptions) (*policy.Request, error) {
+func (client *CapabilitiesClient) getCreateRequest(ctx context.Context, resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, targetName string, capabilityName string, options *CapabilitiesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{parentProviderNamespace}/{parentResourceType}/{parentResourceName}/providers/Microsoft.Chaos/targets/{targetName}/capabilities/{capabilityName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -243,7 +247,7 @@ func (client *CapabilitiesClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter capabilityName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{capabilityName}", url.PathEscape(capabilityName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -255,43 +259,36 @@ func (client *CapabilitiesClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client *CapabilitiesClient) getHandleResponse(resp *http.Response) (CapabilitiesGetResponse, error) {
-	result := CapabilitiesGetResponse{RawResponse: resp}
+func (client *CapabilitiesClient) getHandleResponse(resp *http.Response) (CapabilitiesClientGetResponse, error) {
+	result := CapabilitiesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Capability); err != nil {
-		return CapabilitiesGetResponse{}, runtime.NewResponseError(err, resp)
+		return CapabilitiesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *CapabilitiesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Get a list of Capability resources that extend a Target resource..
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CapabilitiesClient) List(resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, targetName string, options *CapabilitiesListOptions) *CapabilitiesListPager {
-	return &CapabilitiesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - String that represents an Azure resource group.
+// parentProviderNamespace - String that represents a resource provider namespace.
+// parentResourceType - String that represents a resource type.
+// parentResourceName - String that represents a resource name.
+// targetName - String that represents a Target resource name.
+// options - CapabilitiesClientListOptions contains the optional parameters for the CapabilitiesClient.List method.
+func (client *CapabilitiesClient) List(resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, targetName string, options *CapabilitiesClientListOptions) *CapabilitiesClientListPager {
+	return &CapabilitiesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName, targetName, options)
 		},
-		advancer: func(ctx context.Context, resp CapabilitiesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp CapabilitiesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.CapabilityListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *CapabilitiesClient) listCreateRequest(ctx context.Context, resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, targetName string, options *CapabilitiesListOptions) (*policy.Request, error) {
+func (client *CapabilitiesClient) listCreateRequest(ctx context.Context, resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, targetName string, options *CapabilitiesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{parentProviderNamespace}/{parentResourceType}/{parentResourceName}/providers/Microsoft.Chaos/targets/{targetName}/capabilities"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -317,7 +314,7 @@ func (client *CapabilitiesClient) listCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter targetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{targetName}", url.PathEscape(targetName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -332,23 +329,10 @@ func (client *CapabilitiesClient) listCreateRequest(ctx context.Context, resourc
 }
 
 // listHandleResponse handles the List response.
-func (client *CapabilitiesClient) listHandleResponse(resp *http.Response) (CapabilitiesListResponse, error) {
-	result := CapabilitiesListResponse{RawResponse: resp}
+func (client *CapabilitiesClient) listHandleResponse(resp *http.Response) (CapabilitiesClientListResponse, error) {
+	result := CapabilitiesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CapabilityListResult); err != nil {
-		return CapabilitiesListResponse{}, runtime.NewResponseError(err, resp)
+		return CapabilitiesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *CapabilitiesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

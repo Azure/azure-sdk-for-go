@@ -26,13 +26,17 @@ func ExampleCapabilityTypesClient_List() {
 	client := armchaos.NewCapabilityTypesClient("<subscription-id>", cred, nil)
 	pager := client.List("<location-name>",
 		"<target-type-name>",
-		&armchaos.CapabilityTypesListOptions{ContinuationToken: nil})
-	for pager.NextPage(ctx) {
+		&armchaos.CapabilityTypesClientListOptions{ContinuationToken: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("CapabilityType.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -53,5 +57,5 @@ func ExampleCapabilityTypesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("CapabilityType.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.CapabilityTypesClientGetResult)
 }

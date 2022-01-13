@@ -11,7 +11,6 @@ package armprivatedns
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,46 +25,61 @@ import (
 // VirtualNetworkLinksClient contains the methods for the VirtualNetworkLinks group.
 // Don't use this type directly, use NewVirtualNetworkLinksClient() instead.
 type VirtualNetworkLinksClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewVirtualNetworkLinksClient creates a new instance of VirtualNetworkLinksClient with the specified values.
+// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+// forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewVirtualNetworkLinksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VirtualNetworkLinksClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &VirtualNetworkLinksClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &VirtualNetworkLinksClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Creates or updates a virtual network link to the specified Private DNS zone.
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualNetworkLinksClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateZoneName string, virtualNetworkLinkName string, parameters VirtualNetworkLink, options *VirtualNetworkLinksBeginCreateOrUpdateOptions) (VirtualNetworkLinksCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// privateZoneName - The name of the Private DNS zone (without a terminating dot).
+// virtualNetworkLinkName - The name of the virtual network link.
+// parameters - Parameters supplied to the CreateOrUpdate operation.
+// options - VirtualNetworkLinksClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualNetworkLinksClient.BeginCreateOrUpdate
+// method.
+func (client *VirtualNetworkLinksClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateZoneName string, virtualNetworkLinkName string, parameters VirtualNetworkLink, options *VirtualNetworkLinksClientBeginCreateOrUpdateOptions) (VirtualNetworkLinksClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, privateZoneName, virtualNetworkLinkName, parameters, options)
 	if err != nil {
-		return VirtualNetworkLinksCreateOrUpdatePollerResponse{}, err
+		return VirtualNetworkLinksClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := VirtualNetworkLinksCreateOrUpdatePollerResponse{
+	result := VirtualNetworkLinksClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("VirtualNetworkLinksClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("VirtualNetworkLinksClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return VirtualNetworkLinksCreateOrUpdatePollerResponse{}, err
+		return VirtualNetworkLinksClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &VirtualNetworkLinksCreateOrUpdatePoller{
+	result.Poller = &VirtualNetworkLinksClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a virtual network link to the specified Private DNS zone.
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualNetworkLinksClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateZoneName string, virtualNetworkLinkName string, parameters VirtualNetworkLink, options *VirtualNetworkLinksBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VirtualNetworkLinksClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateZoneName string, virtualNetworkLinkName string, parameters VirtualNetworkLink, options *VirtualNetworkLinksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, privateZoneName, virtualNetworkLinkName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -75,13 +89,13 @@ func (client *VirtualNetworkLinksClient) createOrUpdate(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *VirtualNetworkLinksClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, privateZoneName string, virtualNetworkLinkName string, parameters VirtualNetworkLink, options *VirtualNetworkLinksBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *VirtualNetworkLinksClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, privateZoneName string, virtualNetworkLinkName string, parameters VirtualNetworkLink, options *VirtualNetworkLinksClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/virtualNetworkLinks/{virtualNetworkLinkName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -99,7 +113,7 @@ func (client *VirtualNetworkLinksClient) createOrUpdateCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -116,46 +130,38 @@ func (client *VirtualNetworkLinksClient) createOrUpdateCreateRequest(ctx context
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *VirtualNetworkLinksClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginDelete - Deletes a virtual network link to the specified Private DNS zone. WARNING: In case of a registration virtual network, all auto-registered
-// DNS records in the zone for the virtual network will also be
+// BeginDelete - Deletes a virtual network link to the specified Private DNS zone. WARNING: In case of a registration virtual
+// network, all auto-registered DNS records in the zone for the virtual network will also be
 // deleted. This operation cannot be undone.
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualNetworkLinksClient) BeginDelete(ctx context.Context, resourceGroupName string, privateZoneName string, virtualNetworkLinkName string, options *VirtualNetworkLinksBeginDeleteOptions) (VirtualNetworkLinksDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// privateZoneName - The name of the Private DNS zone (without a terminating dot).
+// virtualNetworkLinkName - The name of the virtual network link.
+// options - VirtualNetworkLinksClientBeginDeleteOptions contains the optional parameters for the VirtualNetworkLinksClient.BeginDelete
+// method.
+func (client *VirtualNetworkLinksClient) BeginDelete(ctx context.Context, resourceGroupName string, privateZoneName string, virtualNetworkLinkName string, options *VirtualNetworkLinksClientBeginDeleteOptions) (VirtualNetworkLinksClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, privateZoneName, virtualNetworkLinkName, options)
 	if err != nil {
-		return VirtualNetworkLinksDeletePollerResponse{}, err
+		return VirtualNetworkLinksClientDeletePollerResponse{}, err
 	}
-	result := VirtualNetworkLinksDeletePollerResponse{
+	result := VirtualNetworkLinksClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("VirtualNetworkLinksClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("VirtualNetworkLinksClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return VirtualNetworkLinksDeletePollerResponse{}, err
+		return VirtualNetworkLinksClientDeletePollerResponse{}, err
 	}
-	result.Poller = &VirtualNetworkLinksDeletePoller{
+	result.Poller = &VirtualNetworkLinksClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// Delete - Deletes a virtual network link to the specified Private DNS zone. WARNING: In case of a registration virtual network, all auto-registered DNS
-// records in the zone for the virtual network will also be
+// Delete - Deletes a virtual network link to the specified Private DNS zone. WARNING: In case of a registration virtual network,
+// all auto-registered DNS records in the zone for the virtual network will also be
 // deleted. This operation cannot be undone.
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualNetworkLinksClient) deleteOperation(ctx context.Context, resourceGroupName string, privateZoneName string, virtualNetworkLinkName string, options *VirtualNetworkLinksBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VirtualNetworkLinksClient) deleteOperation(ctx context.Context, resourceGroupName string, privateZoneName string, virtualNetworkLinkName string, options *VirtualNetworkLinksClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, privateZoneName, virtualNetworkLinkName, options)
 	if err != nil {
 		return nil, err
@@ -165,13 +171,13 @@ func (client *VirtualNetworkLinksClient) deleteOperation(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *VirtualNetworkLinksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, privateZoneName string, virtualNetworkLinkName string, options *VirtualNetworkLinksBeginDeleteOptions) (*policy.Request, error) {
+func (client *VirtualNetworkLinksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, privateZoneName string, virtualNetworkLinkName string, options *VirtualNetworkLinksClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/virtualNetworkLinks/{virtualNetworkLinkName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -189,7 +195,7 @@ func (client *VirtualNetworkLinksClient) deleteCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -203,38 +209,29 @@ func (client *VirtualNetworkLinksClient) deleteCreateRequest(ctx context.Context
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *VirtualNetworkLinksClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets a virtual network link to the specified Private DNS zone.
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualNetworkLinksClient) Get(ctx context.Context, resourceGroupName string, privateZoneName string, virtualNetworkLinkName string, options *VirtualNetworkLinksGetOptions) (VirtualNetworkLinksGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// privateZoneName - The name of the Private DNS zone (without a terminating dot).
+// virtualNetworkLinkName - The name of the virtual network link.
+// options - VirtualNetworkLinksClientGetOptions contains the optional parameters for the VirtualNetworkLinksClient.Get method.
+func (client *VirtualNetworkLinksClient) Get(ctx context.Context, resourceGroupName string, privateZoneName string, virtualNetworkLinkName string, options *VirtualNetworkLinksClientGetOptions) (VirtualNetworkLinksClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, privateZoneName, virtualNetworkLinkName, options)
 	if err != nil {
-		return VirtualNetworkLinksGetResponse{}, err
+		return VirtualNetworkLinksClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VirtualNetworkLinksGetResponse{}, err
+		return VirtualNetworkLinksClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return VirtualNetworkLinksGetResponse{}, client.getHandleError(resp)
+		return VirtualNetworkLinksClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *VirtualNetworkLinksClient) getCreateRequest(ctx context.Context, resourceGroupName string, privateZoneName string, virtualNetworkLinkName string, options *VirtualNetworkLinksGetOptions) (*policy.Request, error) {
+func (client *VirtualNetworkLinksClient) getCreateRequest(ctx context.Context, resourceGroupName string, privateZoneName string, virtualNetworkLinkName string, options *VirtualNetworkLinksClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/virtualNetworkLinks/{virtualNetworkLinkName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -252,7 +249,7 @@ func (client *VirtualNetworkLinksClient) getCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -264,43 +261,34 @@ func (client *VirtualNetworkLinksClient) getCreateRequest(ctx context.Context, r
 }
 
 // getHandleResponse handles the Get response.
-func (client *VirtualNetworkLinksClient) getHandleResponse(resp *http.Response) (VirtualNetworkLinksGetResponse, error) {
-	result := VirtualNetworkLinksGetResponse{RawResponse: resp}
+func (client *VirtualNetworkLinksClient) getHandleResponse(resp *http.Response) (VirtualNetworkLinksClientGetResponse, error) {
+	result := VirtualNetworkLinksClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkLink); err != nil {
-		return VirtualNetworkLinksGetResponse{}, runtime.NewResponseError(err, resp)
+		return VirtualNetworkLinksClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *VirtualNetworkLinksClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Lists the virtual network links to the specified Private DNS zone.
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualNetworkLinksClient) List(resourceGroupName string, privateZoneName string, options *VirtualNetworkLinksListOptions) *VirtualNetworkLinksListPager {
-	return &VirtualNetworkLinksListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// privateZoneName - The name of the Private DNS zone (without a terminating dot).
+// options - VirtualNetworkLinksClientListOptions contains the optional parameters for the VirtualNetworkLinksClient.List
+// method.
+func (client *VirtualNetworkLinksClient) List(resourceGroupName string, privateZoneName string, options *VirtualNetworkLinksClientListOptions) *VirtualNetworkLinksClientListPager {
+	return &VirtualNetworkLinksClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, privateZoneName, options)
 		},
-		advancer: func(ctx context.Context, resp VirtualNetworkLinksListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp VirtualNetworkLinksClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.VirtualNetworkLinkListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *VirtualNetworkLinksClient) listCreateRequest(ctx context.Context, resourceGroupName string, privateZoneName string, options *VirtualNetworkLinksListOptions) (*policy.Request, error) {
+func (client *VirtualNetworkLinksClient) listCreateRequest(ctx context.Context, resourceGroupName string, privateZoneName string, options *VirtualNetworkLinksClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/virtualNetworkLinks"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -314,7 +302,7 @@ func (client *VirtualNetworkLinksClient) listCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -329,50 +317,43 @@ func (client *VirtualNetworkLinksClient) listCreateRequest(ctx context.Context, 
 }
 
 // listHandleResponse handles the List response.
-func (client *VirtualNetworkLinksClient) listHandleResponse(resp *http.Response) (VirtualNetworkLinksListResponse, error) {
-	result := VirtualNetworkLinksListResponse{RawResponse: resp}
+func (client *VirtualNetworkLinksClient) listHandleResponse(resp *http.Response) (VirtualNetworkLinksClientListResponse, error) {
+	result := VirtualNetworkLinksClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkLinkListResult); err != nil {
-		return VirtualNetworkLinksListResponse{}, runtime.NewResponseError(err, resp)
+		return VirtualNetworkLinksClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *VirtualNetworkLinksClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginUpdate - Updates a virtual network link to the specified Private DNS zone.
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualNetworkLinksClient) BeginUpdate(ctx context.Context, resourceGroupName string, privateZoneName string, virtualNetworkLinkName string, parameters VirtualNetworkLink, options *VirtualNetworkLinksBeginUpdateOptions) (VirtualNetworkLinksUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// privateZoneName - The name of the Private DNS zone (without a terminating dot).
+// virtualNetworkLinkName - The name of the virtual network link.
+// parameters - Parameters supplied to the Update operation.
+// options - VirtualNetworkLinksClientBeginUpdateOptions contains the optional parameters for the VirtualNetworkLinksClient.BeginUpdate
+// method.
+func (client *VirtualNetworkLinksClient) BeginUpdate(ctx context.Context, resourceGroupName string, privateZoneName string, virtualNetworkLinkName string, parameters VirtualNetworkLink, options *VirtualNetworkLinksClientBeginUpdateOptions) (VirtualNetworkLinksClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, privateZoneName, virtualNetworkLinkName, parameters, options)
 	if err != nil {
-		return VirtualNetworkLinksUpdatePollerResponse{}, err
+		return VirtualNetworkLinksClientUpdatePollerResponse{}, err
 	}
-	result := VirtualNetworkLinksUpdatePollerResponse{
+	result := VirtualNetworkLinksClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("VirtualNetworkLinksClient.Update", "", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("VirtualNetworkLinksClient.Update", "", resp, client.pl)
 	if err != nil {
-		return VirtualNetworkLinksUpdatePollerResponse{}, err
+		return VirtualNetworkLinksClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &VirtualNetworkLinksUpdatePoller{
+	result.Poller = &VirtualNetworkLinksClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Updates a virtual network link to the specified Private DNS zone.
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualNetworkLinksClient) update(ctx context.Context, resourceGroupName string, privateZoneName string, virtualNetworkLinkName string, parameters VirtualNetworkLink, options *VirtualNetworkLinksBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VirtualNetworkLinksClient) update(ctx context.Context, resourceGroupName string, privateZoneName string, virtualNetworkLinkName string, parameters VirtualNetworkLink, options *VirtualNetworkLinksClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, privateZoneName, virtualNetworkLinkName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -382,13 +363,13 @@ func (client *VirtualNetworkLinksClient) update(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *VirtualNetworkLinksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, privateZoneName string, virtualNetworkLinkName string, parameters VirtualNetworkLink, options *VirtualNetworkLinksBeginUpdateOptions) (*policy.Request, error) {
+func (client *VirtualNetworkLinksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, privateZoneName string, virtualNetworkLinkName string, parameters VirtualNetworkLink, options *VirtualNetworkLinksClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/virtualNetworkLinks/{virtualNetworkLinkName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -406,7 +387,7 @@ func (client *VirtualNetworkLinksClient) updateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -418,17 +399,4 @@ func (client *VirtualNetworkLinksClient) updateCreateRequest(ctx context.Context
 	}
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
-}
-
-// updateHandleError handles the Update error response.
-func (client *VirtualNetworkLinksClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

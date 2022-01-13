@@ -1,14 +1,306 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 0.3.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*VirtualNetworkLinksClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *VirtualNetworkLinksGetOptions)` to `(context.Context, string, string, string, *VirtualNetworkLinksClientGetOptions)`
+- Function `*VirtualNetworkLinksClient.Get` return value(s) have been changed from `(VirtualNetworkLinksGetResponse, error)` to `(VirtualNetworkLinksClientGetResponse, error)`
+- Function `*PrivateZonesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, PrivateZone, *PrivateZonesBeginCreateOrUpdateOptions)` to `(context.Context, string, string, PrivateZone, *PrivateZonesClientBeginCreateOrUpdateOptions)`
+- Function `*PrivateZonesClient.BeginCreateOrUpdate` return value(s) have been changed from `(PrivateZonesCreateOrUpdatePollerResponse, error)` to `(PrivateZonesClientCreateOrUpdatePollerResponse, error)`
+- Function `*PrivateZonesClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, PrivateZone, *PrivateZonesBeginUpdateOptions)` to `(context.Context, string, string, PrivateZone, *PrivateZonesClientBeginUpdateOptions)`
+- Function `*PrivateZonesClient.BeginUpdate` return value(s) have been changed from `(PrivateZonesUpdatePollerResponse, error)` to `(PrivateZonesClientUpdatePollerResponse, error)`
+- Function `*VirtualNetworkLinksClient.List` parameter(s) have been changed from `(string, string, *VirtualNetworkLinksListOptions)` to `(string, string, *VirtualNetworkLinksClientListOptions)`
+- Function `*VirtualNetworkLinksClient.List` return value(s) have been changed from `(*VirtualNetworkLinksListPager)` to `(*VirtualNetworkLinksClientListPager)`
+- Function `*RecordSetsClient.Get` parameter(s) have been changed from `(context.Context, string, string, RecordType, string, *RecordSetsGetOptions)` to `(context.Context, string, string, RecordType, string, *RecordSetsClientGetOptions)`
+- Function `*RecordSetsClient.Get` return value(s) have been changed from `(RecordSetsGetResponse, error)` to `(RecordSetsClientGetResponse, error)`
+- Function `*PrivateZonesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *PrivateZonesBeginDeleteOptions)` to `(context.Context, string, string, *PrivateZonesClientBeginDeleteOptions)`
+- Function `*PrivateZonesClient.BeginDelete` return value(s) have been changed from `(PrivateZonesDeletePollerResponse, error)` to `(PrivateZonesClientDeletePollerResponse, error)`
+- Function `*PrivateZonesClient.ListByResourceGroup` parameter(s) have been changed from `(string, *PrivateZonesListByResourceGroupOptions)` to `(string, *PrivateZonesClientListByResourceGroupOptions)`
+- Function `*PrivateZonesClient.ListByResourceGroup` return value(s) have been changed from `(*PrivateZonesListByResourceGroupPager)` to `(*PrivateZonesClientListByResourceGroupPager)`
+- Function `*RecordSetsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, RecordType, string, *RecordSetsDeleteOptions)` to `(context.Context, string, string, RecordType, string, *RecordSetsClientDeleteOptions)`
+- Function `*RecordSetsClient.Delete` return value(s) have been changed from `(RecordSetsDeleteResponse, error)` to `(RecordSetsClientDeleteResponse, error)`
+- Function `*VirtualNetworkLinksClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, VirtualNetworkLink, *VirtualNetworkLinksBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, VirtualNetworkLink, *VirtualNetworkLinksClientBeginCreateOrUpdateOptions)`
+- Function `*VirtualNetworkLinksClient.BeginCreateOrUpdate` return value(s) have been changed from `(VirtualNetworkLinksCreateOrUpdatePollerResponse, error)` to `(VirtualNetworkLinksClientCreateOrUpdatePollerResponse, error)`
+- Function `*RecordSetsClient.Update` parameter(s) have been changed from `(context.Context, string, string, RecordType, string, RecordSet, *RecordSetsUpdateOptions)` to `(context.Context, string, string, RecordType, string, RecordSet, *RecordSetsClientUpdateOptions)`
+- Function `*RecordSetsClient.Update` return value(s) have been changed from `(RecordSetsUpdateResponse, error)` to `(RecordSetsClientUpdateResponse, error)`
+- Function `*RecordSetsClient.ListByType` parameter(s) have been changed from `(string, string, RecordType, *RecordSetsListByTypeOptions)` to `(string, string, RecordType, *RecordSetsClientListByTypeOptions)`
+- Function `*RecordSetsClient.ListByType` return value(s) have been changed from `(*RecordSetsListByTypePager)` to `(*RecordSetsClientListByTypePager)`
+- Function `*VirtualNetworkLinksClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, VirtualNetworkLink, *VirtualNetworkLinksBeginUpdateOptions)` to `(context.Context, string, string, string, VirtualNetworkLink, *VirtualNetworkLinksClientBeginUpdateOptions)`
+- Function `*VirtualNetworkLinksClient.BeginUpdate` return value(s) have been changed from `(VirtualNetworkLinksUpdatePollerResponse, error)` to `(VirtualNetworkLinksClientUpdatePollerResponse, error)`
+- Function `*RecordSetsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, RecordType, string, RecordSet, *RecordSetsCreateOrUpdateOptions)` to `(context.Context, string, string, RecordType, string, RecordSet, *RecordSetsClientCreateOrUpdateOptions)`
+- Function `*RecordSetsClient.CreateOrUpdate` return value(s) have been changed from `(RecordSetsCreateOrUpdateResponse, error)` to `(RecordSetsClientCreateOrUpdateResponse, error)`
+- Function `*VirtualNetworkLinksClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *VirtualNetworkLinksBeginDeleteOptions)` to `(context.Context, string, string, string, *VirtualNetworkLinksClientBeginDeleteOptions)`
+- Function `*VirtualNetworkLinksClient.BeginDelete` return value(s) have been changed from `(VirtualNetworkLinksDeletePollerResponse, error)` to `(VirtualNetworkLinksClientDeletePollerResponse, error)`
+- Function `*RecordSetsClient.List` parameter(s) have been changed from `(string, string, *RecordSetsListOptions)` to `(string, string, *RecordSetsClientListOptions)`
+- Function `*RecordSetsClient.List` return value(s) have been changed from `(*RecordSetsListPager)` to `(*RecordSetsClientListPager)`
+- Function `*PrivateZonesClient.List` parameter(s) have been changed from `(*PrivateZonesListOptions)` to `(*PrivateZonesClientListOptions)`
+- Function `*PrivateZonesClient.List` return value(s) have been changed from `(*PrivateZonesListPager)` to `(*PrivateZonesClientListPager)`
+- Function `*PrivateZonesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *PrivateZonesGetOptions)` to `(context.Context, string, string, *PrivateZonesClientGetOptions)`
+- Function `*PrivateZonesClient.Get` return value(s) have been changed from `(PrivateZonesGetResponse, error)` to `(PrivateZonesClientGetResponse, error)`
+- Function `*VirtualNetworkLinksUpdatePoller.ResumeToken` has been removed
+- Function `*PrivateZonesListPager.PageResponse` has been removed
+- Function `*VirtualNetworkLinksCreateOrUpdatePoller.Done` has been removed
+- Function `*VirtualNetworkLinksDeletePoller.ResumeToken` has been removed
+- Function `*PrivateZonesDeletePoller.FinalResponse` has been removed
+- Function `*PrivateZonesUpdatePoller.FinalResponse` has been removed
+- Function `*PrivateZonesListByResourceGroupPager.NextPage` has been removed
+- Function `*PrivateZonesListPager.Err` has been removed
+- Function `VirtualNetworkLinksCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `PrivateZonesDeletePollerResponse.PollUntilDone` has been removed
+- Function `VirtualNetworkLinksDeletePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateZonesCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*VirtualNetworkLinksUpdatePollerResponse.Resume` has been removed
+- Function `*PrivateZonesCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualNetworkLinksDeletePoller.FinalResponse` has been removed
+- Function `*VirtualNetworkLinksCreateOrUpdatePoller.Poll` has been removed
+- Function `*PrivateZonesCreateOrUpdatePoller.Poll` has been removed
+- Function `*PrivateZonesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualNetworkLinksCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*VirtualNetworkLinksListPager.PageResponse` has been removed
+- Function `*VirtualNetworkLinksUpdatePoller.Poll` has been removed
+- Function `*VirtualNetworkLinksCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*PrivateZonesUpdatePoller.Poll` has been removed
+- Function `PrivateZonesUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateZonesUpdatePoller.Done` has been removed
+- Function `*VirtualNetworkLinksDeletePoller.Poll` has been removed
+- Function `*RecordSetsListByTypePager.Err` has been removed
+- Function `*VirtualNetworkLinksDeletePollerResponse.Resume` has been removed
+- Function `*VirtualNetworkLinksDeletePoller.Done` has been removed
+- Function `*RecordSetsListPager.PageResponse` has been removed
+- Function `*PrivateZonesDeletePoller.Done` has been removed
+- Function `*PrivateZonesDeletePoller.Poll` has been removed
+- Function `CloudError.Error` has been removed
+- Function `VirtualNetworkLinksUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*VirtualNetworkLinksListPager.NextPage` has been removed
+- Function `*PrivateZonesDeletePollerResponse.Resume` has been removed
+- Function `*PrivateZonesListPager.NextPage` has been removed
+- Function `*RecordSetsListPager.Err` has been removed
+- Function `*PrivateZonesUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualNetworkLinksCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualNetworkLinksUpdatePoller.Done` has been removed
+- Function `*PrivateZonesUpdatePollerResponse.Resume` has been removed
+- Function `*RecordSetsListByTypePager.NextPage` has been removed
+- Function `*RecordSetsListByTypePager.PageResponse` has been removed
+- Function `*PrivateZonesListByResourceGroupPager.Err` has been removed
+- Function `*PrivateZonesCreateOrUpdatePoller.Done` has been removed
+- Function `*VirtualNetworkLinksListPager.Err` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `*PrivateZonesDeletePoller.ResumeToken` has been removed
+- Function `*VirtualNetworkLinksUpdatePoller.FinalResponse` has been removed
+- Function `*PrivateZonesListByResourceGroupPager.PageResponse` has been removed
+- Function `*RecordSetsListPager.NextPage` has been removed
+- Function `PrivateZonesCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Struct `PrivateZonesBeginCreateOrUpdateOptions` has been removed
+- Struct `PrivateZonesBeginDeleteOptions` has been removed
+- Struct `PrivateZonesBeginUpdateOptions` has been removed
+- Struct `PrivateZonesCreateOrUpdatePoller` has been removed
+- Struct `PrivateZonesCreateOrUpdatePollerResponse` has been removed
+- Struct `PrivateZonesCreateOrUpdateResponse` has been removed
+- Struct `PrivateZonesCreateOrUpdateResult` has been removed
+- Struct `PrivateZonesDeletePoller` has been removed
+- Struct `PrivateZonesDeletePollerResponse` has been removed
+- Struct `PrivateZonesDeleteResponse` has been removed
+- Struct `PrivateZonesGetOptions` has been removed
+- Struct `PrivateZonesGetResponse` has been removed
+- Struct `PrivateZonesGetResult` has been removed
+- Struct `PrivateZonesListByResourceGroupOptions` has been removed
+- Struct `PrivateZonesListByResourceGroupPager` has been removed
+- Struct `PrivateZonesListByResourceGroupResponse` has been removed
+- Struct `PrivateZonesListByResourceGroupResult` has been removed
+- Struct `PrivateZonesListOptions` has been removed
+- Struct `PrivateZonesListPager` has been removed
+- Struct `PrivateZonesListResponse` has been removed
+- Struct `PrivateZonesListResult` has been removed
+- Struct `PrivateZonesUpdatePoller` has been removed
+- Struct `PrivateZonesUpdatePollerResponse` has been removed
+- Struct `PrivateZonesUpdateResponse` has been removed
+- Struct `PrivateZonesUpdateResult` has been removed
+- Struct `RecordSetsCreateOrUpdateOptions` has been removed
+- Struct `RecordSetsCreateOrUpdateResponse` has been removed
+- Struct `RecordSetsCreateOrUpdateResult` has been removed
+- Struct `RecordSetsDeleteOptions` has been removed
+- Struct `RecordSetsDeleteResponse` has been removed
+- Struct `RecordSetsGetOptions` has been removed
+- Struct `RecordSetsGetResponse` has been removed
+- Struct `RecordSetsGetResult` has been removed
+- Struct `RecordSetsListByTypeOptions` has been removed
+- Struct `RecordSetsListByTypePager` has been removed
+- Struct `RecordSetsListByTypeResponse` has been removed
+- Struct `RecordSetsListByTypeResult` has been removed
+- Struct `RecordSetsListOptions` has been removed
+- Struct `RecordSetsListPager` has been removed
+- Struct `RecordSetsListResponse` has been removed
+- Struct `RecordSetsListResult` has been removed
+- Struct `RecordSetsUpdateOptions` has been removed
+- Struct `RecordSetsUpdateResponse` has been removed
+- Struct `RecordSetsUpdateResult` has been removed
+- Struct `VirtualNetworkLinksBeginCreateOrUpdateOptions` has been removed
+- Struct `VirtualNetworkLinksBeginDeleteOptions` has been removed
+- Struct `VirtualNetworkLinksBeginUpdateOptions` has been removed
+- Struct `VirtualNetworkLinksCreateOrUpdatePoller` has been removed
+- Struct `VirtualNetworkLinksCreateOrUpdatePollerResponse` has been removed
+- Struct `VirtualNetworkLinksCreateOrUpdateResponse` has been removed
+- Struct `VirtualNetworkLinksCreateOrUpdateResult` has been removed
+- Struct `VirtualNetworkLinksDeletePoller` has been removed
+- Struct `VirtualNetworkLinksDeletePollerResponse` has been removed
+- Struct `VirtualNetworkLinksDeleteResponse` has been removed
+- Struct `VirtualNetworkLinksGetOptions` has been removed
+- Struct `VirtualNetworkLinksGetResponse` has been removed
+- Struct `VirtualNetworkLinksGetResult` has been removed
+- Struct `VirtualNetworkLinksListOptions` has been removed
+- Struct `VirtualNetworkLinksListPager` has been removed
+- Struct `VirtualNetworkLinksListResponse` has been removed
+- Struct `VirtualNetworkLinksListResult` has been removed
+- Struct `VirtualNetworkLinksUpdatePoller` has been removed
+- Struct `VirtualNetworkLinksUpdatePollerResponse` has been removed
+- Struct `VirtualNetworkLinksUpdateResponse` has been removed
+- Struct `VirtualNetworkLinksUpdateResult` has been removed
+- Field `TrackedResource` of struct `PrivateZone` has been removed
+- Field `Resource` of struct `TrackedResource` has been removed
+- Field `InnerError` of struct `CloudError` has been removed
+- Field `TrackedResource` of struct `VirtualNetworkLink` has been removed
+- Field `ProxyResource` of struct `RecordSet` has been removed
+- Field `Resource` of struct `ProxyResource` has been removed
 
 ### Features Added
 
-### Breaking Changes
+- New function `*VirtualNetworkLinksClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PrivateZonesClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `PrivateZonesClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateZonesClientUpdateResponse, error)`
+- New function `*RecordSetsClientListByTypePager.NextPage(context.Context) bool`
+- New function `*VirtualNetworkLinksClientDeletePoller.FinalResponse(context.Context) (VirtualNetworkLinksClientDeleteResponse, error)`
+- New function `*VirtualNetworkLinksClientDeletePoller.Done() bool`
+- New function `*PrivateZonesClientDeletePollerResponse.Resume(context.Context, *PrivateZonesClient, string) error`
+- New function `*VirtualNetworkLinksClientDeletePollerResponse.Resume(context.Context, *VirtualNetworkLinksClient, string) error`
+- New function `*PrivateZonesClientUpdatePoller.FinalResponse(context.Context) (PrivateZonesClientUpdateResponse, error)`
+- New function `VirtualNetworkLinksClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualNetworkLinksClientCreateOrUpdateResponse, error)`
+- New function `*VirtualNetworkLinksClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PrivateZonesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*PrivateZonesClientListByResourceGroupPager.Err() error`
+- New function `*VirtualNetworkLinksClientCreateOrUpdatePoller.Done() bool`
+- New function `*RecordSetsClientListByTypePager.PageResponse() RecordSetsClientListByTypeResponse`
+- New function `*RecordSetsClientListPager.PageResponse() RecordSetsClientListResponse`
+- New function `*PrivateZonesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PrivateZonesClientDeletePoller.Done() bool`
+- New function `*PrivateZonesClientListPager.PageResponse() PrivateZonesClientListResponse`
+- New function `*PrivateZonesClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `VirtualNetworkLinksClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualNetworkLinksClientUpdateResponse, error)`
+- New function `*PrivateZonesClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualNetworkLinksClientCreateOrUpdatePollerResponse.Resume(context.Context, *VirtualNetworkLinksClient, string) error`
+- New function `*VirtualNetworkLinksClientUpdatePollerResponse.Resume(context.Context, *VirtualNetworkLinksClient, string) error`
+- New function `*PrivateZonesClientCreateOrUpdatePoller.FinalResponse(context.Context) (PrivateZonesClientCreateOrUpdateResponse, error)`
+- New function `*VirtualNetworkLinksClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*VirtualNetworkLinksClientListPager.NextPage(context.Context) bool`
+- New function `*RecordSetsClientListPager.NextPage(context.Context) bool`
+- New function `*RecordSetsClientListByTypePager.Err() error`
+- New function `*VirtualNetworkLinksClientUpdatePoller.Done() bool`
+- New function `*VirtualNetworkLinksClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*VirtualNetworkLinksClientUpdatePoller.FinalResponse(context.Context) (VirtualNetworkLinksClientUpdateResponse, error)`
+- New function `*PrivateZonesClientUpdatePollerResponse.Resume(context.Context, *PrivateZonesClient, string) error`
+- New function `*VirtualNetworkLinksClientListPager.Err() error`
+- New function `PrivateZonesClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateZonesClientCreateOrUpdateResponse, error)`
+- New function `*PrivateZonesClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PrivateZonesClientListPager.Err() error`
+- New function `*VirtualNetworkLinksClientListPager.PageResponse() VirtualNetworkLinksClientListResponse`
+- New function `*PrivateZonesClientListPager.NextPage(context.Context) bool`
+- New function `*VirtualNetworkLinksClientCreateOrUpdatePoller.FinalResponse(context.Context) (VirtualNetworkLinksClientCreateOrUpdateResponse, error)`
+- New function `PrivateZonesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateZonesClientDeleteResponse, error)`
+- New function `*PrivateZonesClientCreateOrUpdatePoller.Done() bool`
+- New function `*VirtualNetworkLinksClientDeletePoller.ResumeToken() (string, error)`
+- New function `*PrivateZonesClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*PrivateZonesClientListByResourceGroupPager.PageResponse() PrivateZonesClientListByResourceGroupResponse`
+- New function `*RecordSetsClientListPager.Err() error`
+- New function `*PrivateZonesClientDeletePoller.FinalResponse(context.Context) (PrivateZonesClientDeleteResponse, error)`
+- New function `VirtualNetworkLinksClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (VirtualNetworkLinksClientDeleteResponse, error)`
+- New function `*PrivateZonesClientUpdatePoller.Done() bool`
+- New function `*PrivateZonesClientCreateOrUpdatePollerResponse.Resume(context.Context, *PrivateZonesClient, string) error`
+- New function `*VirtualNetworkLinksClientUpdatePoller.ResumeToken() (string, error)`
+- New struct `PrivateZonesClientBeginCreateOrUpdateOptions`
+- New struct `PrivateZonesClientBeginDeleteOptions`
+- New struct `PrivateZonesClientBeginUpdateOptions`
+- New struct `PrivateZonesClientCreateOrUpdatePoller`
+- New struct `PrivateZonesClientCreateOrUpdatePollerResponse`
+- New struct `PrivateZonesClientCreateOrUpdateResponse`
+- New struct `PrivateZonesClientCreateOrUpdateResult`
+- New struct `PrivateZonesClientDeletePoller`
+- New struct `PrivateZonesClientDeletePollerResponse`
+- New struct `PrivateZonesClientDeleteResponse`
+- New struct `PrivateZonesClientGetOptions`
+- New struct `PrivateZonesClientGetResponse`
+- New struct `PrivateZonesClientGetResult`
+- New struct `PrivateZonesClientListByResourceGroupOptions`
+- New struct `PrivateZonesClientListByResourceGroupPager`
+- New struct `PrivateZonesClientListByResourceGroupResponse`
+- New struct `PrivateZonesClientListByResourceGroupResult`
+- New struct `PrivateZonesClientListOptions`
+- New struct `PrivateZonesClientListPager`
+- New struct `PrivateZonesClientListResponse`
+- New struct `PrivateZonesClientListResult`
+- New struct `PrivateZonesClientUpdatePoller`
+- New struct `PrivateZonesClientUpdatePollerResponse`
+- New struct `PrivateZonesClientUpdateResponse`
+- New struct `PrivateZonesClientUpdateResult`
+- New struct `RecordSetsClientCreateOrUpdateOptions`
+- New struct `RecordSetsClientCreateOrUpdateResponse`
+- New struct `RecordSetsClientCreateOrUpdateResult`
+- New struct `RecordSetsClientDeleteOptions`
+- New struct `RecordSetsClientDeleteResponse`
+- New struct `RecordSetsClientGetOptions`
+- New struct `RecordSetsClientGetResponse`
+- New struct `RecordSetsClientGetResult`
+- New struct `RecordSetsClientListByTypeOptions`
+- New struct `RecordSetsClientListByTypePager`
+- New struct `RecordSetsClientListByTypeResponse`
+- New struct `RecordSetsClientListByTypeResult`
+- New struct `RecordSetsClientListOptions`
+- New struct `RecordSetsClientListPager`
+- New struct `RecordSetsClientListResponse`
+- New struct `RecordSetsClientListResult`
+- New struct `RecordSetsClientUpdateOptions`
+- New struct `RecordSetsClientUpdateResponse`
+- New struct `RecordSetsClientUpdateResult`
+- New struct `VirtualNetworkLinksClientBeginCreateOrUpdateOptions`
+- New struct `VirtualNetworkLinksClientBeginDeleteOptions`
+- New struct `VirtualNetworkLinksClientBeginUpdateOptions`
+- New struct `VirtualNetworkLinksClientCreateOrUpdatePoller`
+- New struct `VirtualNetworkLinksClientCreateOrUpdatePollerResponse`
+- New struct `VirtualNetworkLinksClientCreateOrUpdateResponse`
+- New struct `VirtualNetworkLinksClientCreateOrUpdateResult`
+- New struct `VirtualNetworkLinksClientDeletePoller`
+- New struct `VirtualNetworkLinksClientDeletePollerResponse`
+- New struct `VirtualNetworkLinksClientDeleteResponse`
+- New struct `VirtualNetworkLinksClientGetOptions`
+- New struct `VirtualNetworkLinksClientGetResponse`
+- New struct `VirtualNetworkLinksClientGetResult`
+- New struct `VirtualNetworkLinksClientListOptions`
+- New struct `VirtualNetworkLinksClientListPager`
+- New struct `VirtualNetworkLinksClientListResponse`
+- New struct `VirtualNetworkLinksClientListResult`
+- New struct `VirtualNetworkLinksClientUpdatePoller`
+- New struct `VirtualNetworkLinksClientUpdatePollerResponse`
+- New struct `VirtualNetworkLinksClientUpdateResponse`
+- New struct `VirtualNetworkLinksClientUpdateResult`
+- New field `ID` in struct `ProxyResource`
+- New field `Name` in struct `ProxyResource`
+- New field `Type` in struct `ProxyResource`
+- New field `ID` in struct `PrivateZone`
+- New field `Name` in struct `PrivateZone`
+- New field `Type` in struct `PrivateZone`
+- New field `Location` in struct `PrivateZone`
+- New field `Tags` in struct `PrivateZone`
+- New field `ID` in struct `TrackedResource`
+- New field `Name` in struct `TrackedResource`
+- New field `Type` in struct `TrackedResource`
+- New field `Type` in struct `VirtualNetworkLink`
+- New field `Location` in struct `VirtualNetworkLink`
+- New field `Tags` in struct `VirtualNetworkLink`
+- New field `ID` in struct `VirtualNetworkLink`
+- New field `Name` in struct `VirtualNetworkLink`
+- New field `Error` in struct `CloudError`
+- New field `ID` in struct `RecordSet`
+- New field `Name` in struct `RecordSet`
+- New field `Type` in struct `RecordSet`
 
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.2.0 (2021-10-29)
 

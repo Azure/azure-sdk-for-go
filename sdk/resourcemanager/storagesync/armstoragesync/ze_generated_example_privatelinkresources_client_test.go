@@ -24,11 +24,12 @@ func ExamplePrivateLinkResourcesClient_ListByStorageSyncService() {
 	}
 	ctx := context.Background()
 	client := armstoragesync.NewPrivateLinkResourcesClient("<subscription-id>", cred, nil)
-	_, err = client.ListByStorageSyncService(ctx,
+	res, err := client.ListByStorageSyncService(ctx,
 		"<resource-group-name>",
 		"<storage-sync-service-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.PrivateLinkResourcesClientListByStorageSyncServiceResult)
 }

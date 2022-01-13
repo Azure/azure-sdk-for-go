@@ -15,6 +15,24 @@ import (
 	"time"
 )
 
+// APIError - Error type
+type APIError struct {
+	// Error code of the given entry.
+	Code *string `json:"code,omitempty"`
+
+	// Error details of the given entry.
+	Details *ErrorDetails `json:"details,omitempty"`
+
+	// Inner error details of the given entry.
+	InnerError *InnerErrorDetails `json:"innerError,omitempty"`
+
+	// Error message of the given entry.
+	Message *string `json:"message,omitempty"`
+
+	// Target of the given error entry.
+	Target *string `json:"target,omitempty"`
+}
+
 // BackupRequest - Backup request
 type BackupRequest struct {
 	// Azure File Share.
@@ -35,27 +53,28 @@ type CheckNameAvailabilityResult struct {
 	// READ-ONLY; Gets an error message explaining the Reason value in more detail.
 	Message *string `json:"message,omitempty" azure:"ro"`
 
-	// READ-ONLY; Gets a boolean value that indicates whether the name is available for you to use. If true, the name is available. If false, the name has already
-	// been taken or invalid and cannot be used.
+	// READ-ONLY; Gets a boolean value that indicates whether the name is available for you to use. If true, the name is available.
+	// If false, the name has already been taken or invalid and cannot be used.
 	NameAvailable *bool `json:"nameAvailable,omitempty" azure:"ro"`
 
-	// READ-ONLY; Gets the reason that a Storage Sync Service name could not be used. The Reason element is only returned if NameAvailable is false.
+	// READ-ONLY; Gets the reason that a Storage Sync Service name could not be used. The Reason element is only returned if NameAvailable
+	// is false.
 	Reason *NameAvailabilityReason `json:"reason,omitempty" azure:"ro"`
 }
 
 // CloudEndpoint - Cloud Endpoint object.
 type CloudEndpoint struct {
-	ProxyResource
 	// Cloud Endpoint properties.
 	Properties *CloudEndpointProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type CloudEndpoint.
-func (c CloudEndpoint) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	c.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", c.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // CloudEndpointArray - Array of CloudEndpoint
@@ -237,17 +256,17 @@ func (c *CloudEndpointChangeEnumerationStatus) UnmarshalJSON(data []byte) error 
 
 // CloudEndpointCreateParameters - The parameters used when creating a cloud endpoint.
 type CloudEndpointCreateParameters struct {
-	ProxyResource
 	// The parameters used to create the cloud endpoint.
 	Properties *CloudEndpointCreateParametersProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type CloudEndpointCreateParameters.
-func (c CloudEndpointCreateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	c.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", c.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // CloudEndpointCreateParametersProperties - CloudEndpoint Properties object.
@@ -366,53 +385,60 @@ type CloudEndpointProperties struct {
 	ChangeEnumerationStatus *CloudEndpointChangeEnumerationStatus `json:"changeEnumerationStatus,omitempty" azure:"ro"`
 }
 
-// CloudEndpointsBeginCreateOptions contains the optional parameters for the CloudEndpoints.BeginCreate method.
-type CloudEndpointsBeginCreateOptions struct {
+// CloudEndpointsClientBeginCreateOptions contains the optional parameters for the CloudEndpointsClient.BeginCreate method.
+type CloudEndpointsClientBeginCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CloudEndpointsBeginDeleteOptions contains the optional parameters for the CloudEndpoints.BeginDelete method.
-type CloudEndpointsBeginDeleteOptions struct {
+// CloudEndpointsClientBeginDeleteOptions contains the optional parameters for the CloudEndpointsClient.BeginDelete method.
+type CloudEndpointsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CloudEndpointsBeginPostBackupOptions contains the optional parameters for the CloudEndpoints.BeginPostBackup method.
-type CloudEndpointsBeginPostBackupOptions struct {
+// CloudEndpointsClientBeginPostBackupOptions contains the optional parameters for the CloudEndpointsClient.BeginPostBackup
+// method.
+type CloudEndpointsClientBeginPostBackupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CloudEndpointsBeginPostRestoreOptions contains the optional parameters for the CloudEndpoints.BeginPostRestore method.
-type CloudEndpointsBeginPostRestoreOptions struct {
+// CloudEndpointsClientBeginPostRestoreOptions contains the optional parameters for the CloudEndpointsClient.BeginPostRestore
+// method.
+type CloudEndpointsClientBeginPostRestoreOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CloudEndpointsBeginPreBackupOptions contains the optional parameters for the CloudEndpoints.BeginPreBackup method.
-type CloudEndpointsBeginPreBackupOptions struct {
+// CloudEndpointsClientBeginPreBackupOptions contains the optional parameters for the CloudEndpointsClient.BeginPreBackup
+// method.
+type CloudEndpointsClientBeginPreBackupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CloudEndpointsBeginPreRestoreOptions contains the optional parameters for the CloudEndpoints.BeginPreRestore method.
-type CloudEndpointsBeginPreRestoreOptions struct {
+// CloudEndpointsClientBeginPreRestoreOptions contains the optional parameters for the CloudEndpointsClient.BeginPreRestore
+// method.
+type CloudEndpointsClientBeginPreRestoreOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CloudEndpointsBeginTriggerChangeDetectionOptions contains the optional parameters for the CloudEndpoints.BeginTriggerChangeDetection method.
-type CloudEndpointsBeginTriggerChangeDetectionOptions struct {
+// CloudEndpointsClientBeginTriggerChangeDetectionOptions contains the optional parameters for the CloudEndpointsClient.BeginTriggerChangeDetection
+// method.
+type CloudEndpointsClientBeginTriggerChangeDetectionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CloudEndpointsGetOptions contains the optional parameters for the CloudEndpoints.Get method.
-type CloudEndpointsGetOptions struct {
+// CloudEndpointsClientGetOptions contains the optional parameters for the CloudEndpointsClient.Get method.
+type CloudEndpointsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CloudEndpointsListBySyncGroupOptions contains the optional parameters for the CloudEndpoints.ListBySyncGroup method.
-type CloudEndpointsListBySyncGroupOptions struct {
+// CloudEndpointsClientListBySyncGroupOptions contains the optional parameters for the CloudEndpointsClient.ListBySyncGroup
+// method.
+type CloudEndpointsClientListBySyncGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CloudEndpointsRestoreheartbeatOptions contains the optional parameters for the CloudEndpoints.Restoreheartbeat method.
-type CloudEndpointsRestoreheartbeatOptions struct {
+// CloudEndpointsClientRestoreheartbeatOptions contains the optional parameters for the CloudEndpointsClient.Restoreheartbeat
+// method.
+type CloudEndpointsClientRestoreheartbeatOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -672,6 +698,42 @@ func (c *CloudTieringVolumeFreeSpacePolicyStatus) UnmarshalJSON(data []byte) err
 	return nil
 }
 
+// Error type
+type Error struct {
+	// Error details of the given entry.
+	Error *APIError `json:"error,omitempty"`
+
+	// Error details of the given entry.
+	Innererror *APIError `json:"innererror,omitempty"`
+}
+
+// ErrorDetails - Error Details object.
+type ErrorDetails struct {
+	// Error code of the given entry.
+	Code *string `json:"code,omitempty"`
+
+	// Exception type of the given entry.
+	ExceptionType *string `json:"exceptionType,omitempty"`
+
+	// HTTP error code of the given entry.
+	HTTPErrorCode *string `json:"httpErrorCode,omitempty"`
+
+	// HTTP method of the given entry.
+	HTTPMethod *string `json:"httpMethod,omitempty"`
+
+	// Hashed message of the given entry.
+	HashedMessage *string `json:"hashedMessage,omitempty"`
+
+	// Error message of the given entry.
+	Message *string `json:"message,omitempty"`
+
+	// Request URI of the given entry.
+	RequestURI *string `json:"requestUri,omitempty"`
+
+	// Target of the given entry.
+	Target *string `json:"target,omitempty"`
+}
+
 // FilesNotTieringError - Files not tiering error object
 type FilesNotTieringError struct {
 	// READ-ONLY; Error code (HResult)
@@ -681,13 +743,28 @@ type FilesNotTieringError struct {
 	FileCount *int64 `json:"fileCount,omitempty" azure:"ro"`
 }
 
+// InnerErrorDetails - Error Details object.
+type InnerErrorDetails struct {
+	// Call stack of the error.
+	CallStack *string `json:"callStack,omitempty"`
+
+	// Exception of the inner error.
+	InnerException *string `json:"innerException,omitempty"`
+
+	// Call stack of the inner error.
+	InnerExceptionCallStack *string `json:"innerExceptionCallStack,omitempty"`
+
+	// Error message of the error.
+	Message *string `json:"message,omitempty"`
+}
+
 // LocationOperationStatus - Operation status object
 type LocationOperationStatus struct {
 	// READ-ONLY; End time of the operation
 	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
 
 	// READ-ONLY; Error details.
-	Error *StorageSyncAPIError `json:"error,omitempty" azure:"ro"`
+	Error *APIError `json:"error,omitempty" azure:"ro"`
 
 	// READ-ONLY; Operation resource Id
 	ID *string `json:"id,omitempty" azure:"ro"`
@@ -756,8 +833,9 @@ func (l *LocationOperationStatus) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MicrosoftStorageSyncLocationOperationStatusOptions contains the optional parameters for the MicrosoftStorageSync.LocationOperationStatus method.
-type MicrosoftStorageSyncLocationOperationStatusOptions struct {
+// MicrosoftStorageSyncClientLocationOperationStatusOptions contains the optional parameters for the MicrosoftStorageSyncClient.LocationOperationStatus
+// method.
+type MicrosoftStorageSyncClientLocationOperationStatusOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -897,7 +975,7 @@ type OperationStatus struct {
 	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
 
 	// READ-ONLY; Error details.
-	Error *StorageSyncAPIError `json:"error,omitempty" azure:"ro"`
+	Error *APIError `json:"error,omitempty" azure:"ro"`
 
 	// READ-ONLY; Operation Id
 	Name *string `json:"name,omitempty" azure:"ro"`
@@ -952,13 +1030,13 @@ func (o *OperationStatus) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// OperationStatusGetOptions contains the optional parameters for the OperationStatus.Get method.
-type OperationStatusGetOptions struct {
+// OperationStatusClientGetOptions contains the optional parameters for the OperationStatusClient.Get method.
+type OperationStatusClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1068,17 +1146,17 @@ type PrivateEndpoint struct {
 
 // PrivateEndpointConnection - The Private Endpoint Connection resource.
 type PrivateEndpointConnection struct {
-	Resource
 	// Resource properties.
 	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnection.
-func (p PrivateEndpointConnection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PrivateEndpointConnectionListResult - List of private endpoint connection associated with the specified storage account
@@ -1106,40 +1184,43 @@ type PrivateEndpointConnectionProperties struct {
 	ProvisioningState *PrivateEndpointConnectionProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// PrivateEndpointConnectionsBeginCreateOptions contains the optional parameters for the PrivateEndpointConnections.BeginCreate method.
-type PrivateEndpointConnectionsBeginCreateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateEndpointConnectionsBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnections.BeginDelete method.
-type PrivateEndpointConnectionsBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateEndpointConnectionsGetOptions contains the optional parameters for the PrivateEndpointConnections.Get method.
-type PrivateEndpointConnectionsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateEndpointConnectionsListByStorageSyncServiceOptions contains the optional parameters for the PrivateEndpointConnections.ListByStorageSyncService
+// PrivateEndpointConnectionsClientBeginCreateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginCreate
 // method.
-type PrivateEndpointConnectionsListByStorageSyncServiceOptions struct {
+type PrivateEndpointConnectionsClientBeginCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
+// method.
+type PrivateEndpointConnectionsClientBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get
+// method.
+type PrivateEndpointConnectionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsClientListByStorageSyncServiceOptions contains the optional parameters for the PrivateEndpointConnectionsClient.ListByStorageSyncService
+// method.
+type PrivateEndpointConnectionsClientListByStorageSyncServiceOptions struct {
 	// placeholder for future optional parameters
 }
 
 // PrivateLinkResource - A private link resource
 type PrivateLinkResource struct {
-	Resource
 	// Resource properties.
 	Properties *PrivateLinkResourceProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResource.
-func (p PrivateLinkResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PrivateLinkResourceListResult - A list of private link resources
@@ -1176,12 +1257,14 @@ func (p PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// PrivateLinkResourcesListByStorageSyncServiceOptions contains the optional parameters for the PrivateLinkResources.ListByStorageSyncService method.
-type PrivateLinkResourcesListByStorageSyncServiceOptions struct {
+// PrivateLinkResourcesClientListByStorageSyncServiceOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByStorageSyncService
+// method.
+type PrivateLinkResourcesClientListByStorageSyncServiceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer and provider.
+// PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer
+// and provider.
 type PrivateLinkServiceConnectionState struct {
 	// A message indicating if changes on the service provider require any updates on the consumer.
 	ActionsRequired *string `json:"actionsRequired,omitempty"`
@@ -1193,13 +1276,17 @@ type PrivateLinkServiceConnectionState struct {
 	Status *PrivateEndpointServiceConnectionStatus `json:"status,omitempty"`
 }
 
-// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a location
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
 type ProxyResource struct {
-	Resource
-}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-func (p ProxyResource) marshalInternal(objectMap map[string]interface{}) {
-	p.Resource.marshalInternal(objectMap)
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // RecallActionParameters - The parameters used when calling recall action on server endpoint.
@@ -1213,17 +1300,17 @@ type RecallActionParameters struct {
 
 // RegisteredServer - Registered Server resource.
 type RegisteredServer struct {
-	ProxyResource
 	// RegisteredServer properties.
 	Properties *RegisteredServerProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type RegisteredServer.
-func (r RegisteredServer) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", r.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // RegisteredServerArray - Array of RegisteredServer
@@ -1241,17 +1328,17 @@ func (r RegisteredServerArray) MarshalJSON() ([]byte, error) {
 
 // RegisteredServerCreateParameters - The parameters used when creating a registered server.
 type RegisteredServerCreateParameters struct {
-	ProxyResource
 	// The parameters used to create the registered server.
 	Properties *RegisteredServerCreateParametersProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type RegisteredServerCreateParameters.
-func (r RegisteredServerCreateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", r.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // RegisteredServerCreateParametersProperties - RegisteredServer Create Properties object.
@@ -1471,28 +1558,32 @@ func (r *RegisteredServerProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// RegisteredServersBeginCreateOptions contains the optional parameters for the RegisteredServers.BeginCreate method.
-type RegisteredServersBeginCreateOptions struct {
+// RegisteredServersClientBeginCreateOptions contains the optional parameters for the RegisteredServersClient.BeginCreate
+// method.
+type RegisteredServersClientBeginCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RegisteredServersBeginDeleteOptions contains the optional parameters for the RegisteredServers.BeginDelete method.
-type RegisteredServersBeginDeleteOptions struct {
+// RegisteredServersClientBeginDeleteOptions contains the optional parameters for the RegisteredServersClient.BeginDelete
+// method.
+type RegisteredServersClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RegisteredServersBeginTriggerRolloverOptions contains the optional parameters for the RegisteredServers.BeginTriggerRollover method.
-type RegisteredServersBeginTriggerRolloverOptions struct {
+// RegisteredServersClientBeginTriggerRolloverOptions contains the optional parameters for the RegisteredServersClient.BeginTriggerRollover
+// method.
+type RegisteredServersClientBeginTriggerRolloverOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RegisteredServersGetOptions contains the optional parameters for the RegisteredServers.Get method.
-type RegisteredServersGetOptions struct {
+// RegisteredServersClientGetOptions contains the optional parameters for the RegisteredServersClient.Get method.
+type RegisteredServersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RegisteredServersListByStorageSyncServiceOptions contains the optional parameters for the RegisteredServers.ListByStorageSyncService method.
-type RegisteredServersListByStorageSyncServiceOptions struct {
+// RegisteredServersClientListByStorageSyncServiceOptions contains the optional parameters for the RegisteredServersClient.ListByStorageSyncService
+// method.
+type RegisteredServersClientListByStorageSyncServiceOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1506,19 +1597,6 @@ type Resource struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
 }
 
 // ResourcesMoveInfo - Resource Move Info.
@@ -1549,17 +1627,17 @@ type RestoreFileSpec struct {
 
 // ServerEndpoint - Server Endpoint object.
 type ServerEndpoint struct {
-	ProxyResource
 	// Server Endpoint properties.
 	Properties *ServerEndpointProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type ServerEndpoint.
-func (s ServerEndpoint) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ServerEndpointArray - Array of ServerEndpoint
@@ -1727,17 +1805,17 @@ func (s *ServerEndpointCloudTieringStatus) UnmarshalJSON(data []byte) error {
 
 // ServerEndpointCreateParameters - The parameters used when creating a server endpoint.
 type ServerEndpointCreateParameters struct {
-	ProxyResource
 	// The parameters used to create the server endpoint.
 	Properties *ServerEndpointCreateParametersProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type ServerEndpointCreateParameters.
-func (s ServerEndpointCreateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ServerEndpointCreateParametersProperties - ServerEndpoint Properties object.
@@ -2215,160 +2293,104 @@ type ServerEndpointUpdateProperties struct {
 	VolumeFreeSpacePercent *int32 `json:"volumeFreeSpacePercent,omitempty"`
 }
 
-// ServerEndpointsBeginCreateOptions contains the optional parameters for the ServerEndpoints.BeginCreate method.
-type ServerEndpointsBeginCreateOptions struct {
+// ServerEndpointsClientBeginCreateOptions contains the optional parameters for the ServerEndpointsClient.BeginCreate method.
+type ServerEndpointsClientBeginCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServerEndpointsBeginDeleteOptions contains the optional parameters for the ServerEndpoints.BeginDelete method.
-type ServerEndpointsBeginDeleteOptions struct {
+// ServerEndpointsClientBeginDeleteOptions contains the optional parameters for the ServerEndpointsClient.BeginDelete method.
+type ServerEndpointsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServerEndpointsBeginRecallActionOptions contains the optional parameters for the ServerEndpoints.BeginRecallAction method.
-type ServerEndpointsBeginRecallActionOptions struct {
+// ServerEndpointsClientBeginRecallActionOptions contains the optional parameters for the ServerEndpointsClient.BeginRecallAction
+// method.
+type ServerEndpointsClientBeginRecallActionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServerEndpointsBeginUpdateOptions contains the optional parameters for the ServerEndpoints.BeginUpdate method.
-type ServerEndpointsBeginUpdateOptions struct {
+// ServerEndpointsClientBeginUpdateOptions contains the optional parameters for the ServerEndpointsClient.BeginUpdate method.
+type ServerEndpointsClientBeginUpdateOptions struct {
 	// Any of the properties applicable in PUT request.
 	Parameters *ServerEndpointUpdateParameters
 }
 
-// ServerEndpointsGetOptions contains the optional parameters for the ServerEndpoints.Get method.
-type ServerEndpointsGetOptions struct {
+// ServerEndpointsClientGetOptions contains the optional parameters for the ServerEndpointsClient.Get method.
+type ServerEndpointsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServerEndpointsListBySyncGroupOptions contains the optional parameters for the ServerEndpoints.ListBySyncGroup method.
-type ServerEndpointsListBySyncGroupOptions struct {
+// ServerEndpointsClientListBySyncGroupOptions contains the optional parameters for the ServerEndpointsClient.ListBySyncGroup
+// method.
+type ServerEndpointsClientListBySyncGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StorageSyncAPIError - Error type
-type StorageSyncAPIError struct {
-	// Error code of the given entry.
-	Code *string `json:"code,omitempty"`
+// Service - Storage Sync Service object.
+type Service struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
 
-	// Error details of the given entry.
-	Details *StorageSyncErrorDetails `json:"details,omitempty"`
-
-	// Inner error details of the given entry.
-	InnerError *StorageSyncInnerErrorDetails `json:"innerError,omitempty"`
-
-	// Error message of the given entry.
-	Message *string `json:"message,omitempty"`
-
-	// Target of the given error entry.
-	Target *string `json:"target,omitempty"`
-}
-
-// StorageSyncError - Error type
-// Implements the error and azcore.HTTPResponse interfaces.
-type StorageSyncError struct {
-	raw string
-	// Error details of the given entry.
-	InnerError *StorageSyncAPIError `json:"error,omitempty"`
-
-	// Error details of the given entry.
-	Innererror *StorageSyncAPIError `json:"innererror,omitempty"`
-}
-
-// Error implements the error interface for type StorageSyncError.
-// The contents of the error text are not contractual and subject to change.
-func (e StorageSyncError) Error() string {
-	return e.raw
-}
-
-// StorageSyncErrorDetails - Error Details object.
-type StorageSyncErrorDetails struct {
-	// Error code of the given entry.
-	Code *string `json:"code,omitempty"`
-
-	// Exception type of the given entry.
-	ExceptionType *string `json:"exceptionType,omitempty"`
-
-	// HTTP error code of the given entry.
-	HTTPErrorCode *string `json:"httpErrorCode,omitempty"`
-
-	// HTTP method of the given entry.
-	HTTPMethod *string `json:"httpMethod,omitempty"`
-
-	// Hashed message of the given entry.
-	HashedMessage *string `json:"hashedMessage,omitempty"`
-
-	// Error message of the given entry.
-	Message *string `json:"message,omitempty"`
-
-	// Request URI of the given entry.
-	RequestURI *string `json:"requestUri,omitempty"`
-
-	// Target of the given entry.
-	Target *string `json:"target,omitempty"`
-}
-
-// StorageSyncInnerErrorDetails - Error Details object.
-type StorageSyncInnerErrorDetails struct {
-	// Call stack of the error.
-	CallStack *string `json:"callStack,omitempty"`
-
-	// Exception of the inner error.
-	InnerException *string `json:"innerException,omitempty"`
-
-	// Call stack of the inner error.
-	InnerExceptionCallStack *string `json:"innerExceptionCallStack,omitempty"`
-
-	// Error message of the error.
-	Message *string `json:"message,omitempty"`
-}
-
-// StorageSyncService - Storage Sync Service object.
-type StorageSyncService struct {
-	TrackedResource
 	// Storage Sync Service properties.
-	Properties *StorageSyncServiceProperties `json:"properties,omitempty"`
+	Properties *ServiceProperties `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type StorageSyncService.
-func (s StorageSyncService) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type Service.
+func (s Service) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.TrackedResource.marshalInternal(objectMap)
+	populate(objectMap, "id", s.ID)
+	populate(objectMap, "location", s.Location)
+	populate(objectMap, "name", s.Name)
 	populate(objectMap, "properties", s.Properties)
+	populate(objectMap, "tags", s.Tags)
+	populate(objectMap, "type", s.Type)
 	return json.Marshal(objectMap)
 }
 
-// StorageSyncServiceArray - Array of StorageSyncServices
-type StorageSyncServiceArray struct {
+// ServiceArray - Array of StorageSyncServices
+type ServiceArray struct {
 	// Collection of StorageSyncServices.
-	Value []*StorageSyncService `json:"value,omitempty"`
+	Value []*Service `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type StorageSyncServiceArray.
-func (s StorageSyncServiceArray) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ServiceArray.
+func (s ServiceArray) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "value", s.Value)
 	return json.Marshal(objectMap)
 }
 
-// StorageSyncServiceCreateParameters - The parameters used when creating a storage sync service.
-type StorageSyncServiceCreateParameters struct {
-	// REQUIRED; Required. Gets or sets the location of the resource. This will be one of the supported and registered Azure Geo Regions (e.g. West US, East
-	// US, Southeast Asia, etc.). The geo region of a resource
+// ServiceCreateParameters - The parameters used when creating a storage sync service.
+type ServiceCreateParameters struct {
+	// REQUIRED; Required. Gets or sets the location of the resource. This will be one of the supported and registered Azure Geo
+	// Regions (e.g. West US, East US, Southeast Asia, etc.). The geo region of a resource
 	// cannot be changed once it is created, but if an identical geo region is specified on update, the request will succeed.
 	Location *string `json:"location,omitempty"`
 
 	// The parameters used to create the storage sync service.
-	Properties *StorageSyncServiceCreateParametersProperties `json:"properties,omitempty"`
+	Properties *ServiceCreateParametersProperties `json:"properties,omitempty"`
 
-	// Gets or sets a list of key value pairs that describe the resource. These tags can be used for viewing and grouping this resource (across resource groups).
-	// A maximum of 15 tags can be provided for a
-	// resource. Each tag must have a key with a length no greater than 128 characters and a value with a length no greater than 256 characters.
+	// Gets or sets a list of key value pairs that describe the resource. These tags can be used for viewing and grouping this
+	// resource (across resource groups). A maximum of 15 tags can be provided for a
+	// resource. Each tag must have a key with a length no greater than 128 characters and a value with a length no greater than
+	// 256 characters.
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type StorageSyncServiceCreateParameters.
-func (s StorageSyncServiceCreateParameters) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ServiceCreateParameters.
+func (s ServiceCreateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "location", s.Location)
 	populate(objectMap, "properties", s.Properties)
@@ -2376,14 +2398,14 @@ func (s StorageSyncServiceCreateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// StorageSyncServiceCreateParametersProperties - StorageSyncService Properties object.
-type StorageSyncServiceCreateParametersProperties struct {
+// ServiceCreateParametersProperties - StorageSyncService Properties object.
+type ServiceCreateParametersProperties struct {
 	// Incoming Traffic Policy
 	IncomingTrafficPolicy *IncomingTrafficPolicy `json:"incomingTrafficPolicy,omitempty"`
 }
 
-// StorageSyncServiceProperties - Storage Sync Service Properties object.
-type StorageSyncServiceProperties struct {
+// ServiceProperties - Storage Sync Service Properties object.
+type ServiceProperties struct {
 	// Incoming Traffic Policy
 	IncomingTrafficPolicy *IncomingTrafficPolicy `json:"incomingTrafficPolicy,omitempty"`
 
@@ -2406,8 +2428,8 @@ type StorageSyncServiceProperties struct {
 	StorageSyncServiceUID *string `json:"storageSyncServiceUid,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type StorageSyncServiceProperties.
-func (s StorageSyncServiceProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ServiceProperties.
+func (s ServiceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "incomingTrafficPolicy", s.IncomingTrafficPolicy)
 	populate(objectMap, "lastOperationName", s.LastOperationName)
@@ -2419,62 +2441,63 @@ func (s StorageSyncServiceProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// StorageSyncServiceUpdateParameters - Parameters for updating an Storage sync service.
-type StorageSyncServiceUpdateParameters struct {
+// ServiceUpdateParameters - Parameters for updating an Storage sync service.
+type ServiceUpdateParameters struct {
 	// The properties of the server endpoint.
-	Properties *StorageSyncServiceUpdateProperties `json:"properties,omitempty"`
+	Properties *ServiceUpdateProperties `json:"properties,omitempty"`
 
 	// The user-specified tags associated with the storage sync service.
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type StorageSyncServiceUpdateParameters.
-func (s StorageSyncServiceUpdateParameters) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ServiceUpdateParameters.
+func (s ServiceUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "properties", s.Properties)
 	populate(objectMap, "tags", s.Tags)
 	return json.Marshal(objectMap)
 }
 
-// StorageSyncServiceUpdateProperties - StorageSyncService Properties object.
-type StorageSyncServiceUpdateProperties struct {
+// ServiceUpdateProperties - StorageSyncService Properties object.
+type ServiceUpdateProperties struct {
 	// Incoming Traffic Policy
 	IncomingTrafficPolicy *IncomingTrafficPolicy `json:"incomingTrafficPolicy,omitempty"`
 }
 
-// StorageSyncServicesBeginCreateOptions contains the optional parameters for the StorageSyncServices.BeginCreate method.
-type StorageSyncServicesBeginCreateOptions struct {
+// ServicesClientBeginCreateOptions contains the optional parameters for the ServicesClient.BeginCreate method.
+type ServicesClientBeginCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StorageSyncServicesBeginDeleteOptions contains the optional parameters for the StorageSyncServices.BeginDelete method.
-type StorageSyncServicesBeginDeleteOptions struct {
+// ServicesClientBeginDeleteOptions contains the optional parameters for the ServicesClient.BeginDelete method.
+type ServicesClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StorageSyncServicesBeginUpdateOptions contains the optional parameters for the StorageSyncServices.BeginUpdate method.
-type StorageSyncServicesBeginUpdateOptions struct {
+// ServicesClientBeginUpdateOptions contains the optional parameters for the ServicesClient.BeginUpdate method.
+type ServicesClientBeginUpdateOptions struct {
 	// Storage Sync Service resource.
-	Parameters *StorageSyncServiceUpdateParameters
+	Parameters *ServiceUpdateParameters
 }
 
-// StorageSyncServicesCheckNameAvailabilityOptions contains the optional parameters for the StorageSyncServices.CheckNameAvailability method.
-type StorageSyncServicesCheckNameAvailabilityOptions struct {
+// ServicesClientCheckNameAvailabilityOptions contains the optional parameters for the ServicesClient.CheckNameAvailability
+// method.
+type ServicesClientCheckNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StorageSyncServicesGetOptions contains the optional parameters for the StorageSyncServices.Get method.
-type StorageSyncServicesGetOptions struct {
+// ServicesClientGetOptions contains the optional parameters for the ServicesClient.Get method.
+type ServicesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StorageSyncServicesListByResourceGroupOptions contains the optional parameters for the StorageSyncServices.ListByResourceGroup method.
-type StorageSyncServicesListByResourceGroupOptions struct {
+// ServicesClientListByResourceGroupOptions contains the optional parameters for the ServicesClient.ListByResourceGroup method.
+type ServicesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StorageSyncServicesListBySubscriptionOptions contains the optional parameters for the StorageSyncServices.ListBySubscription method.
-type StorageSyncServicesListBySubscriptionOptions struct {
+// ServicesClientListBySubscriptionOptions contains the optional parameters for the ServicesClient.ListBySubscription method.
+type ServicesClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -2492,17 +2515,17 @@ type SubscriptionState struct {
 
 // SyncGroup - Sync Group object.
 type SyncGroup struct {
-	ProxyResource
 	// SyncGroup properties.
 	Properties *SyncGroupProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type SyncGroup.
-func (s SyncGroup) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // SyncGroupArray - Array of SyncGroup
@@ -2520,17 +2543,17 @@ func (s SyncGroupArray) MarshalJSON() ([]byte, error) {
 
 // SyncGroupCreateParameters - The parameters used when creating a sync group.
 type SyncGroupCreateParameters struct {
-	ProxyResource
 	// The parameters used to create the sync group
 	Properties map[string]interface{} `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type SyncGroupCreateParameters.
-func (s SyncGroupCreateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // SyncGroupProperties - SyncGroup Properties object.
@@ -2542,47 +2565,55 @@ type SyncGroupProperties struct {
 	UniqueID *string `json:"uniqueId,omitempty" azure:"ro"`
 }
 
-// SyncGroupsCreateOptions contains the optional parameters for the SyncGroups.Create method.
-type SyncGroupsCreateOptions struct {
+// SyncGroupsClientCreateOptions contains the optional parameters for the SyncGroupsClient.Create method.
+type SyncGroupsClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SyncGroupsDeleteOptions contains the optional parameters for the SyncGroups.Delete method.
-type SyncGroupsDeleteOptions struct {
+// SyncGroupsClientDeleteOptions contains the optional parameters for the SyncGroupsClient.Delete method.
+type SyncGroupsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SyncGroupsGetOptions contains the optional parameters for the SyncGroups.Get method.
-type SyncGroupsGetOptions struct {
+// SyncGroupsClientGetOptions contains the optional parameters for the SyncGroupsClient.Get method.
+type SyncGroupsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SyncGroupsListByStorageSyncServiceOptions contains the optional parameters for the SyncGroups.ListByStorageSyncService method.
-type SyncGroupsListByStorageSyncServiceOptions struct {
+// SyncGroupsClientListByStorageSyncServiceOptions contains the optional parameters for the SyncGroupsClient.ListByStorageSyncService
+// method.
+type SyncGroupsClientListByStorageSyncServiceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a 'location'
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
 type TrackedResource struct {
-	Resource
 	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.
 func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", t.ID)
 	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
 	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
+	return json.Marshal(objectMap)
 }
 
 // TriggerChangeDetectionParameters - The parameters used when calling trigger change detection action on cloud endpoint.
@@ -2614,17 +2645,17 @@ type TriggerRolloverRequest struct {
 
 // Workflow resource.
 type Workflow struct {
-	ProxyResource
 	// Workflow properties.
 	Properties *WorkflowProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type Workflow.
-func (w Workflow) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	w.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", w.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // WorkflowArray - Array of Workflow
@@ -2722,18 +2753,19 @@ func (w *WorkflowProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// WorkflowsAbortOptions contains the optional parameters for the Workflows.Abort method.
-type WorkflowsAbortOptions struct {
+// WorkflowsClientAbortOptions contains the optional parameters for the WorkflowsClient.Abort method.
+type WorkflowsClientAbortOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowsGetOptions contains the optional parameters for the Workflows.Get method.
-type WorkflowsGetOptions struct {
+// WorkflowsClientGetOptions contains the optional parameters for the WorkflowsClient.Get method.
+type WorkflowsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowsListByStorageSyncServiceOptions contains the optional parameters for the Workflows.ListByStorageSyncService method.
-type WorkflowsListByStorageSyncServiceOptions struct {
+// WorkflowsClientListByStorageSyncServiceOptions contains the optional parameters for the WorkflowsClient.ListByStorageSyncService
+// method.
+type WorkflowsClientListByStorageSyncServiceOptions struct {
 	// placeholder for future optional parameters
 }
 

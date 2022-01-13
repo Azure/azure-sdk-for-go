@@ -25,7 +25,7 @@ func ExampleWorkspaceClient_CheckNameAvailability() {
 	}
 	ctx := context.Background()
 	client := armquantum.NewWorkspaceClient("<subscription-id>", cred, nil)
-	_, err = client.CheckNameAvailability(ctx,
+	res, err := client.CheckNameAvailability(ctx,
 		"<location-name>",
 		armquantum.CheckNameAvailabilityParameters{
 			Name: to.StringPtr("<name>"),
@@ -35,4 +35,5 @@ func ExampleWorkspaceClient_CheckNameAvailability() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.WorkspaceClientCheckNameAvailabilityResult)
 }

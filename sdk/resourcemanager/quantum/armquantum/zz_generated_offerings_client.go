@@ -11,7 +11,6 @@ package armquantum
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,39 +24,49 @@ import (
 // OfferingsClient contains the methods for the Offerings group.
 // Don't use this type directly, use NewOfferingsClient() instead.
 type OfferingsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewOfferingsClient creates a new instance of OfferingsClient with the specified values.
+// subscriptionID - The Azure subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewOfferingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *OfferingsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &OfferingsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &OfferingsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Returns the list of all provider offerings available for the given location.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *OfferingsClient) List(locationName string, options *OfferingsListOptions) *OfferingsListPager {
-	return &OfferingsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// locationName - Location.
+// options - OfferingsClientListOptions contains the optional parameters for the OfferingsClient.List method.
+func (client *OfferingsClient) List(locationName string, options *OfferingsClientListOptions) *OfferingsClientListPager {
+	return &OfferingsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, locationName, options)
 		},
-		advancer: func(ctx context.Context, resp OfferingsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp OfferingsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.OfferingsListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *OfferingsClient) listCreateRequest(ctx context.Context, locationName string, options *OfferingsListOptions) (*policy.Request, error) {
+func (client *OfferingsClient) listCreateRequest(ctx context.Context, locationName string, options *OfferingsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Quantum/locations/{locationName}/offerings"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -67,7 +76,7 @@ func (client *OfferingsClient) listCreateRequest(ctx context.Context, locationNa
 		return nil, errors.New("parameter locationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -79,23 +88,10 @@ func (client *OfferingsClient) listCreateRequest(ctx context.Context, locationNa
 }
 
 // listHandleResponse handles the List response.
-func (client *OfferingsClient) listHandleResponse(resp *http.Response) (OfferingsListResponse, error) {
-	result := OfferingsListResponse{RawResponse: resp}
+func (client *OfferingsClient) listHandleResponse(resp *http.Response) (OfferingsClientListResponse, error) {
+	result := OfferingsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OfferingsListResult); err != nil {
-		return OfferingsListResponse{}, runtime.NewResponseError(err, resp)
+		return OfferingsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *OfferingsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

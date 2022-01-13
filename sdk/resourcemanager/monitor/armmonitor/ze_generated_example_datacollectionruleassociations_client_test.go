@@ -27,12 +27,16 @@ func ExampleDataCollectionRuleAssociationsClient_ListByResource() {
 	client := armmonitor.NewDataCollectionRuleAssociationsClient("<subscription-id>", cred, nil)
 	pager := client.ListByResource("<resource-uri>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DataCollectionRuleAssociationProxyOnlyResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -48,12 +52,16 @@ func ExampleDataCollectionRuleAssociationsClient_ListByRule() {
 	pager := client.ListByRule("<resource-group-name>",
 		"<data-collection-rule-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DataCollectionRuleAssociationProxyOnlyResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -73,7 +81,7 @@ func ExampleDataCollectionRuleAssociationsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DataCollectionRuleAssociationProxyOnlyResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DataCollectionRuleAssociationsClientGetResult)
 }
 
 // x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2021-04-01/examples/DataCollectionRuleAssociationsCreate.json
@@ -87,18 +95,16 @@ func ExampleDataCollectionRuleAssociationsClient_Create() {
 	res, err := client.Create(ctx,
 		"<resource-uri>",
 		"<association-name>",
-		&armmonitor.DataCollectionRuleAssociationsCreateOptions{Body: &armmonitor.DataCollectionRuleAssociationProxyOnlyResource{
+		&armmonitor.DataCollectionRuleAssociationsClientCreateOptions{Body: &armmonitor.DataCollectionRuleAssociationProxyOnlyResource{
 			Properties: &armmonitor.DataCollectionRuleAssociationProxyOnlyResourceProperties{
-				DataCollectionRuleAssociation: armmonitor.DataCollectionRuleAssociation{
-					DataCollectionRuleID: to.StringPtr("<data-collection-rule-id>"),
-				},
+				DataCollectionRuleID: to.StringPtr("<data-collection-rule-id>"),
 			},
 		},
 		})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DataCollectionRuleAssociationProxyOnlyResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DataCollectionRuleAssociationsClientCreateResult)
 }
 
 // x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2021-04-01/examples/DataCollectionRuleAssociationsDelete.json

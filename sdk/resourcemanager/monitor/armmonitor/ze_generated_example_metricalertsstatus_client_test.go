@@ -24,13 +24,14 @@ func ExampleMetricAlertsStatusClient_List() {
 	}
 	ctx := context.Background()
 	client := armmonitor.NewMetricAlertsStatusClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<rule-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.MetricAlertsStatusClientListResult)
 }
 
 // x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/getMetricAlertStatusByName.json
@@ -41,7 +42,7 @@ func ExampleMetricAlertsStatusClient_ListByName() {
 	}
 	ctx := context.Background()
 	client := armmonitor.NewMetricAlertsStatusClient("<subscription-id>", cred, nil)
-	_, err = client.ListByName(ctx,
+	res, err := client.ListByName(ctx,
 		"<resource-group-name>",
 		"<rule-name>",
 		"<status-name>",
@@ -49,4 +50,5 @@ func ExampleMetricAlertsStatusClient_ListByName() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.MetricAlertsStatusClientListByNameResult)
 }

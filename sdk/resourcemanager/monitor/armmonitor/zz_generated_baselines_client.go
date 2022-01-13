@@ -10,7 +10,6 @@ package armmonitor
 
 import (
 	"context"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -23,44 +22,52 @@ import (
 // BaselinesClient contains the methods for the Baselines group.
 // Don't use this type directly, use NewBaselinesClient() instead.
 type BaselinesClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewBaselinesClient creates a new instance of BaselinesClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewBaselinesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *BaselinesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &BaselinesClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &BaselinesClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Lists the metric baseline values for a resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *BaselinesClient) List(ctx context.Context, resourceURI string, options *BaselinesListOptions) (BaselinesListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceURI - The identifier of the resource.
+// options - BaselinesClientListOptions contains the optional parameters for the BaselinesClient.List method.
+func (client *BaselinesClient) List(ctx context.Context, resourceURI string, options *BaselinesClientListOptions) (BaselinesClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceURI, options)
 	if err != nil {
-		return BaselinesListResponse{}, err
+		return BaselinesClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return BaselinesListResponse{}, err
+		return BaselinesClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return BaselinesListResponse{}, client.listHandleError(resp)
+		return BaselinesClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *BaselinesClient) listCreateRequest(ctx context.Context, resourceURI string, options *BaselinesListOptions) (*policy.Request, error) {
+func (client *BaselinesClient) listCreateRequest(ctx context.Context, resourceURI string, options *BaselinesClientListOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Insights/metricBaselines"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -96,23 +103,10 @@ func (client *BaselinesClient) listCreateRequest(ctx context.Context, resourceUR
 }
 
 // listHandleResponse handles the List response.
-func (client *BaselinesClient) listHandleResponse(resp *http.Response) (BaselinesListResponse, error) {
-	result := BaselinesListResponse{RawResponse: resp}
+func (client *BaselinesClient) listHandleResponse(resp *http.Response) (BaselinesClientListResponse, error) {
+	result := BaselinesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricBaselinesResponse); err != nil {
-		return BaselinesListResponse{}, runtime.NewResponseError(err, resp)
+		return BaselinesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *BaselinesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -31,7 +31,7 @@ func ExampleDiagnosticSettingsCategoryClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DiagnosticSettingsCategoryResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DiagnosticSettingsCategoryClientGetResult)
 }
 
 // x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/preview/2017-05-01-preview/examples/listDiagnosticSettingsCategories.json
@@ -42,10 +42,11 @@ func ExampleDiagnosticSettingsCategoryClient_List() {
 	}
 	ctx := context.Background()
 	client := armmonitor.NewDiagnosticSettingsCategoryClient(cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-uri>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.DiagnosticSettingsCategoryClientListResult)
 }

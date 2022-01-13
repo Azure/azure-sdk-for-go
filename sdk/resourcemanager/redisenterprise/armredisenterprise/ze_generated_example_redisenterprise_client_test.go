@@ -20,28 +20,26 @@ import (
 )
 
 // x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2021-08-01/examples/RedisEnterpriseCreate.json
-func ExampleRedisEnterpriseClient_BeginCreate() {
+func ExampleClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armredisenterprise.NewRedisEnterpriseClient("<subscription-id>", cred, nil)
+	client := armredisenterprise.NewClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginCreate(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		armredisenterprise.Cluster{
-			TrackedResource: armredisenterprise.TrackedResource{
-				Location: to.StringPtr("<location>"),
-				Tags: map[string]*string{
-					"tag1": to.StringPtr("value1"),
-				},
+			Location: to.StringPtr("<location>"),
+			Tags: map[string]*string{
+				"tag1": to.StringPtr("value1"),
 			},
 			Properties: &armredisenterprise.ClusterProperties{
-				MinimumTLSVersion: armredisenterprise.TLSVersionOne2.ToPtr(),
+				MinimumTLSVersion: armredisenterprise.TLSVersion("1.2").ToPtr(),
 			},
 			SKU: &armredisenterprise.SKU{
-				Name:     armredisenterprise.SKUNameEnterpriseFlashF300.ToPtr(),
+				Name:     armredisenterprise.SKUName("EnterpriseFlash_F300").ToPtr(),
 				Capacity: to.Int32Ptr(3),
 			},
 			Zones: []*string{
@@ -57,26 +55,26 @@ func ExampleRedisEnterpriseClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Cluster.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ClientCreateResult)
 }
 
 // x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2021-08-01/examples/RedisEnterpriseUpdate.json
-func ExampleRedisEnterpriseClient_BeginUpdate() {
+func ExampleClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armredisenterprise.NewRedisEnterpriseClient("<subscription-id>", cred, nil)
+	client := armredisenterprise.NewClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		armredisenterprise.ClusterUpdate{
 			Properties: &armredisenterprise.ClusterProperties{
-				MinimumTLSVersion: armredisenterprise.TLSVersionOne2.ToPtr(),
+				MinimumTLSVersion: armredisenterprise.TLSVersion("1.2").ToPtr(),
 			},
 			SKU: &armredisenterprise.SKU{
-				Name:     armredisenterprise.SKUNameEnterpriseFlashF300.ToPtr(),
+				Name:     armredisenterprise.SKUName("EnterpriseFlash_F300").ToPtr(),
 				Capacity: to.Int32Ptr(9),
 			},
 			Tags: map[string]*string{
@@ -91,17 +89,17 @@ func ExampleRedisEnterpriseClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Cluster.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ClientUpdateResult)
 }
 
 // x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2021-08-01/examples/RedisEnterpriseDelete.json
-func ExampleRedisEnterpriseClient_BeginDelete() {
+func ExampleClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armredisenterprise.NewRedisEnterpriseClient("<subscription-id>", cred, nil)
+	client := armredisenterprise.NewClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
@@ -116,13 +114,13 @@ func ExampleRedisEnterpriseClient_BeginDelete() {
 }
 
 // x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2021-08-01/examples/RedisEnterpriseGet.json
-func ExampleRedisEnterpriseClient_Get() {
+func ExampleClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armredisenterprise.NewRedisEnterpriseClient("<subscription-id>", cred, nil)
+	client := armredisenterprise.NewClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
@@ -130,44 +128,52 @@ func ExampleRedisEnterpriseClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Cluster.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ClientGetResult)
 }
 
 // x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2021-08-01/examples/RedisEnterpriseListByResourceGroup.json
-func ExampleRedisEnterpriseClient_ListByResourceGroup() {
+func ExampleClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armredisenterprise.NewRedisEnterpriseClient("<subscription-id>", cred, nil)
+	client := armredisenterprise.NewClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Cluster.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2021-08-01/examples/RedisEnterpriseList.json
-func ExampleRedisEnterpriseClient_List() {
+func ExampleClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armredisenterprise.NewRedisEnterpriseClient("<subscription-id>", cred, nil)
+	client := armredisenterprise.NewClient("<subscription-id>", cred, nil)
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Cluster.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

@@ -17,29 +17,30 @@ import (
 )
 
 // x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-08-01/examples/QuotaLimits_List.json
-func ExampleNetAppResourceQuotaLimitsClient_List() {
+func ExampleResourceQuotaLimitsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armnetapp.NewNetAppResourceQuotaLimitsClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	client := armnetapp.NewResourceQuotaLimitsClient("<subscription-id>", cred, nil)
+	res, err := client.List(ctx,
 		"<location>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ResourceQuotaLimitsClientListResult)
 }
 
 // x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-08-01/examples/QuotaLimits_Get.json
-func ExampleNetAppResourceQuotaLimitsClient_Get() {
+func ExampleResourceQuotaLimitsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armnetapp.NewNetAppResourceQuotaLimitsClient("<subscription-id>", cred, nil)
+	client := armnetapp.NewResourceQuotaLimitsClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<location>",
 		"<quota-limit-name>",
@@ -47,5 +48,5 @@ func ExampleNetAppResourceQuotaLimitsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SubscriptionQuotaItem.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ResourceQuotaLimitsClientGetResult)
 }

@@ -24,46 +24,60 @@ import (
 // AccountBackupsClient contains the methods for the AccountBackups group.
 // Don't use this type directly, use NewAccountBackupsClient() instead.
 type AccountBackupsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewAccountBackupsClient creates a new instance of AccountBackupsClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewAccountBackupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AccountBackupsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &AccountBackupsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &AccountBackupsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginDelete - Delete the specified Backup for a Netapp Account
-// If the operation fails it returns a generic error.
-func (client *AccountBackupsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, backupName string, options *AccountBackupsBeginDeleteOptions) (AccountBackupsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// accountName - The name of the NetApp account
+// backupName - The name of the backup
+// options - AccountBackupsClientBeginDeleteOptions contains the optional parameters for the AccountBackupsClient.BeginDelete
+// method.
+func (client *AccountBackupsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, backupName string, options *AccountBackupsClientBeginDeleteOptions) (AccountBackupsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, backupName, options)
 	if err != nil {
-		return AccountBackupsDeletePollerResponse{}, err
+		return AccountBackupsClientDeletePollerResponse{}, err
 	}
-	result := AccountBackupsDeletePollerResponse{
+	result := AccountBackupsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("AccountBackupsClient.Delete", "location", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("AccountBackupsClient.Delete", "location", resp, client.pl)
 	if err != nil {
-		return AccountBackupsDeletePollerResponse{}, err
+		return AccountBackupsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &AccountBackupsDeletePoller{
+	result.Poller = &AccountBackupsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Delete the specified Backup for a Netapp Account
-// If the operation fails it returns a generic error.
-func (client *AccountBackupsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, backupName string, options *AccountBackupsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AccountBackupsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, backupName string, options *AccountBackupsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, backupName, options)
 	if err != nil {
 		return nil, err
@@ -73,13 +87,13 @@ func (client *AccountBackupsClient) deleteOperation(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AccountBackupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, backupName string, options *AccountBackupsBeginDeleteOptions) (*policy.Request, error) {
+func (client *AccountBackupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, backupName string, options *AccountBackupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/accountBackups/{backupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -97,7 +111,7 @@ func (client *AccountBackupsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter backupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{backupName}", url.PathEscape(backupName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -107,37 +121,29 @@ func (client *AccountBackupsClient) deleteCreateRequest(ctx context.Context, res
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *AccountBackupsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets the specified backup for a Netapp Account
-// If the operation fails it returns a generic error.
-func (client *AccountBackupsClient) Get(ctx context.Context, resourceGroupName string, accountName string, backupName string, options *AccountBackupsGetOptions) (AccountBackupsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// accountName - The name of the NetApp account
+// backupName - The name of the backup
+// options - AccountBackupsClientGetOptions contains the optional parameters for the AccountBackupsClient.Get method.
+func (client *AccountBackupsClient) Get(ctx context.Context, resourceGroupName string, accountName string, backupName string, options *AccountBackupsClientGetOptions) (AccountBackupsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, backupName, options)
 	if err != nil {
-		return AccountBackupsGetResponse{}, err
+		return AccountBackupsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AccountBackupsGetResponse{}, err
+		return AccountBackupsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AccountBackupsGetResponse{}, client.getHandleError(resp)
+		return AccountBackupsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AccountBackupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, backupName string, options *AccountBackupsGetOptions) (*policy.Request, error) {
+func (client *AccountBackupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, backupName string, options *AccountBackupsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/accountBackups/{backupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -155,7 +161,7 @@ func (client *AccountBackupsClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter backupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{backupName}", url.PathEscape(backupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -167,45 +173,36 @@ func (client *AccountBackupsClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client *AccountBackupsClient) getHandleResponse(resp *http.Response) (AccountBackupsGetResponse, error) {
-	result := AccountBackupsGetResponse{RawResponse: resp}
+func (client *AccountBackupsClient) getHandleResponse(resp *http.Response) (AccountBackupsClientGetResponse, error) {
+	result := AccountBackupsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Backup); err != nil {
-		return AccountBackupsGetResponse{}, runtime.NewResponseError(err, resp)
+		return AccountBackupsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *AccountBackupsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // List - List all Backups for a Netapp Account
-// If the operation fails it returns a generic error.
-func (client *AccountBackupsClient) List(ctx context.Context, resourceGroupName string, accountName string, options *AccountBackupsListOptions) (AccountBackupsListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// accountName - The name of the NetApp account
+// options - AccountBackupsClientListOptions contains the optional parameters for the AccountBackupsClient.List method.
+func (client *AccountBackupsClient) List(ctx context.Context, resourceGroupName string, accountName string, options *AccountBackupsClientListOptions) (AccountBackupsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
-		return AccountBackupsListResponse{}, err
+		return AccountBackupsClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AccountBackupsListResponse{}, err
+		return AccountBackupsClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AccountBackupsListResponse{}, client.listHandleError(resp)
+		return AccountBackupsClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *AccountBackupsClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *AccountBackupsListOptions) (*policy.Request, error) {
+func (client *AccountBackupsClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *AccountBackupsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/accountBackups"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -219,7 +216,7 @@ func (client *AccountBackupsClient) listCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -231,22 +228,10 @@ func (client *AccountBackupsClient) listCreateRequest(ctx context.Context, resou
 }
 
 // listHandleResponse handles the List response.
-func (client *AccountBackupsClient) listHandleResponse(resp *http.Response) (AccountBackupsListResponse, error) {
-	result := AccountBackupsListResponse{RawResponse: resp}
+func (client *AccountBackupsClient) listHandleResponse(resp *http.Response) (AccountBackupsClientListResponse, error) {
+	result := AccountBackupsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupsList); err != nil {
-		return AccountBackupsListResponse{}, runtime.NewResponseError(err, resp)
+		return AccountBackupsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *AccountBackupsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

@@ -18,35 +18,36 @@ import (
 )
 
 // x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-08-01/examples/CheckNameAvailability.json
-func ExampleNetAppResourceClient_CheckNameAvailability() {
+func ExampleResourceClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armnetapp.NewNetAppResourceClient("<subscription-id>", cred, nil)
-	_, err = client.CheckNameAvailability(ctx,
+	client := armnetapp.NewResourceClient("<subscription-id>", cred, nil)
+	res, err := client.CheckNameAvailability(ctx,
 		"<location>",
 		armnetapp.ResourceNameAvailabilityRequest{
 			Name:          to.StringPtr("<name>"),
-			Type:          armnetapp.CheckNameResourceTypesMicrosoftNetAppNetAppAccounts.ToPtr(),
+			Type:          armnetapp.CheckNameResourceTypes("netAppAccount").ToPtr(),
 			ResourceGroup: to.StringPtr("<resource-group>"),
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ResourceClientCheckNameAvailabilityResult)
 }
 
 // x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-08-01/examples/CheckFilePathAvailability.json
-func ExampleNetAppResourceClient_CheckFilePathAvailability() {
+func ExampleResourceClient_CheckFilePathAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armnetapp.NewNetAppResourceClient("<subscription-id>", cred, nil)
-	_, err = client.CheckFilePathAvailability(ctx,
+	client := armnetapp.NewResourceClient("<subscription-id>", cred, nil)
+	res, err := client.CheckFilePathAvailability(ctx,
 		"<location>",
 		armnetapp.FilePathAvailabilityRequest{
 			Name:     to.StringPtr("<name>"),
@@ -56,25 +57,27 @@ func ExampleNetAppResourceClient_CheckFilePathAvailability() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ResourceClientCheckFilePathAvailabilityResult)
 }
 
 // x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-08-01/examples/CheckQuotaAvailability.json
-func ExampleNetAppResourceClient_CheckQuotaAvailability() {
+func ExampleResourceClient_CheckQuotaAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armnetapp.NewNetAppResourceClient("<subscription-id>", cred, nil)
-	_, err = client.CheckQuotaAvailability(ctx,
+	client := armnetapp.NewResourceClient("<subscription-id>", cred, nil)
+	res, err := client.CheckQuotaAvailability(ctx,
 		"<location>",
 		armnetapp.QuotaAvailabilityRequest{
 			Name:          to.StringPtr("<name>"),
-			Type:          armnetapp.CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccounts.ToPtr(),
+			Type:          armnetapp.CheckQuotaNameResourceTypes("Microsoft.NetApp/netAppAccounts").ToPtr(),
 			ResourceGroup: to.StringPtr("<resource-group>"),
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ResourceClientCheckQuotaAvailabilityResult)
 }

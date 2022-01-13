@@ -3393,8 +3393,7 @@ func (client AppsClient) CreateOrUpdateRelayServiceConnectionSlotResponder(resp 
 // name - unique name of the app to create or update. To create or update a deployment slot, use the {slot}
 // parameter.
 // siteEnvelope - a JSON representation of the app properties. See example.
-// slot - name of the deployment slot to create or update. By default, this API attempts to create or modify
-// the production slot.
+// slot - name of the deployment slot to create or update. The name 'production' is reserved.
 func (client AppsClient) CreateOrUpdateSlot(ctx context.Context, resourceGroupName string, name string, siteEnvelope Site, slot string) (result AppsCreateOrUpdateSlotFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.CreateOrUpdateSlot")
@@ -34566,8 +34565,7 @@ func (client AppsClient) UpdateSitePushSettingsSlotResponder(resp *http.Response
 // name - unique name of the app to create or update. To create or update a deployment slot, use the {slot}
 // parameter.
 // siteEnvelope - a JSON representation of the app properties. See example.
-// slot - name of the deployment slot to create or update. By default, this API attempts to create or modify
-// the production slot.
+// slot - name of the deployment slot to create or update. The name 'production' is reserved.
 func (client AppsClient) UpdateSlot(ctx context.Context, resourceGroupName string, name string, siteEnvelope SitePatchResource, slot string) (result Site, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.UpdateSlot")

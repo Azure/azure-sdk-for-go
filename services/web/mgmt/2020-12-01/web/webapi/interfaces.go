@@ -16,7 +16,6 @@ import (
 // BaseClientAPI contains the set of methods on the BaseClient type.
 type BaseClientAPI interface {
 	CheckNameAvailability(ctx context.Context, request web.ResourceNameAvailabilityRequest) (result web.ResourceNameAvailability, err error)
-	GenerateGithubAccessTokenForAppserviceCLIAsync(ctx context.Context, request web.AppserviceGithubTokenRequest) (result web.AppserviceGithubToken, err error)
 	GetPublishingUser(ctx context.Context) (result web.User, err error)
 	GetSourceControl(ctx context.Context, sourceControlType string) (result web.SourceControl, err error)
 	GetSubscriptionDeploymentLocations(ctx context.Context) (result web.DeploymentLocations, err error)

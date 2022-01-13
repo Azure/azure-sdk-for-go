@@ -1,14 +1,4066 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 0.3.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*PortalRevisionClient.GetEntityTag` parameter(s) have been changed from `(context.Context, string, string, string, *PortalRevisionGetEntityTagOptions)` to `(context.Context, string, string, string, *PortalRevisionClientGetEntityTagOptions)`
+- Function `*PortalRevisionClient.GetEntityTag` return value(s) have been changed from `(PortalRevisionGetEntityTagResponse, error)` to `(PortalRevisionClientGetEntityTagResponse, error)`
+- Function `*PolicyClient.Get` parameter(s) have been changed from `(context.Context, string, string, PolicyIDName, *PolicyGetOptions)` to `(context.Context, string, string, PolicyIDName, *PolicyClientGetOptions)`
+- Function `*PolicyClient.Get` return value(s) have been changed from `(PolicyGetResponse, error)` to `(PolicyClientGetResponse, error)`
+- Function `*TagClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, *TagDeleteOptions)` to `(context.Context, string, string, string, string, *TagClientDeleteOptions)`
+- Function `*TagClient.Delete` return value(s) have been changed from `(TagDeleteResponse, error)` to `(TagClientDeleteResponse, error)`
+- Function `*APISchemaClient.ListByAPI` parameter(s) have been changed from `(string, string, string, *APISchemaListByAPIOptions)` to `(string, string, string, *APISchemaClientListByAPIOptions)`
+- Function `*APISchemaClient.ListByAPI` return value(s) have been changed from `(*APISchemaListByAPIPager)` to `(*APISchemaClientListByAPIPager)`
+- Function `*GatewayAPIClient.ListByService` parameter(s) have been changed from `(string, string, string, *GatewayAPIListByServiceOptions)` to `(string, string, string, *GatewayAPIClientListByServiceOptions)`
+- Function `*GatewayAPIClient.ListByService` return value(s) have been changed from `(*GatewayAPIListByServicePager)` to `(*GatewayAPIClientListByServicePager)`
+- Function `*SubscriptionClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, string, SubscriptionUpdateParameters, *SubscriptionUpdateOptions)` to `(context.Context, string, string, string, string, SubscriptionUpdateParameters, *SubscriptionClientUpdateOptions)`
+- Function `*SubscriptionClient.Update` return value(s) have been changed from `(SubscriptionUpdateResponse, error)` to `(SubscriptionClientUpdateResponse, error)`
+- Function `*APITagDescriptionClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *APITagDescriptionDeleteOptions)` to `(context.Context, string, string, string, string, string, *APITagDescriptionClientDeleteOptions)`
+- Function `*APITagDescriptionClient.Delete` return value(s) have been changed from `(APITagDescriptionDeleteResponse, error)` to `(APITagDescriptionClientDeleteResponse, error)`
+- Function `*LoggerClient.GetEntityTag` parameter(s) have been changed from `(context.Context, string, string, string, *LoggerGetEntityTagOptions)` to `(context.Context, string, string, string, *LoggerClientGetEntityTagOptions)`
+- Function `*LoggerClient.GetEntityTag` return value(s) have been changed from `(LoggerGetEntityTagResponse, error)` to `(LoggerClientGetEntityTagResponse, error)`
+- Function `*EmailTemplateClient.ListByService` parameter(s) have been changed from `(string, string, *EmailTemplateListByServiceOptions)` to `(string, string, *EmailTemplateClientListByServiceOptions)`
+- Function `*EmailTemplateClient.ListByService` return value(s) have been changed from `(*EmailTemplateListByServicePager)` to `(*EmailTemplateClientListByServicePager)`
+- Function `*GroupClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, GroupCreateParameters, *GroupCreateOrUpdateOptions)` to `(context.Context, string, string, string, GroupCreateParameters, *GroupClientCreateOrUpdateOptions)`
+- Function `*GroupClient.CreateOrUpdate` return value(s) have been changed from `(GroupCreateOrUpdateResponse, error)` to `(GroupClientCreateOrUpdateResponse, error)`
+- Function `*DelegationSettingsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *DelegationSettingsGetOptions)` to `(context.Context, string, string, *DelegationSettingsClientGetOptions)`
+- Function `*DelegationSettingsClient.Get` return value(s) have been changed from `(DelegationSettingsGetResponse, error)` to `(DelegationSettingsClientGetResponse, error)`
+- Function `*APIVersionSetClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *APIVersionSetGetOptions)` to `(context.Context, string, string, string, *APIVersionSetClientGetOptions)`
+- Function `*APIVersionSetClient.Get` return value(s) have been changed from `(APIVersionSetGetResponse, error)` to `(APIVersionSetClientGetResponse, error)`
+- Function `*IssueClient.ListByService` parameter(s) have been changed from `(string, string, *IssueListByServiceOptions)` to `(string, string, *IssueClientListByServiceOptions)`
+- Function `*IssueClient.ListByService` return value(s) have been changed from `(*IssueListByServicePager)` to `(*IssueClientListByServicePager)`
+- Function `*ContentItemClient.GetEntityTag` parameter(s) have been changed from `(context.Context, string, string, string, string, *ContentItemGetEntityTagOptions)` to `(context.Context, string, string, string, string, *ContentItemClientGetEntityTagOptions)`
+- Function `*ContentItemClient.GetEntityTag` return value(s) have been changed from `(ContentItemGetEntityTagResponse, error)` to `(ContentItemClientGetEntityTagResponse, error)`
+- Function `*ReportsClient.ListByProduct` parameter(s) have been changed from `(string, string, string, *ReportsListByProductOptions)` to `(string, string, string, *ReportsClientListByProductOptions)`
+- Function `*ReportsClient.ListByProduct` return value(s) have been changed from `(*ReportsListByProductPager)` to `(*ReportsClientListByProductPager)`
+- Function `*APIReleaseClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *APIReleaseGetOptions)` to `(context.Context, string, string, string, string, *APIReleaseClientGetOptions)`
+- Function `*APIReleaseClient.Get` return value(s) have been changed from `(APIReleaseGetResponse, error)` to `(APIReleaseClientGetResponse, error)`
+- Function `*TagClient.AssignToOperation` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *TagAssignToOperationOptions)` to `(context.Context, string, string, string, string, string, *TagClientAssignToOperationOptions)`
+- Function `*TagClient.AssignToOperation` return value(s) have been changed from `(TagAssignToOperationResponse, error)` to `(TagClientAssignToOperationResponse, error)`
+- Function `*APIVersionSetClient.ListByService` parameter(s) have been changed from `(string, string, *APIVersionSetListByServiceOptions)` to `(string, string, *APIVersionSetClientListByServiceOptions)`
+- Function `*APIVersionSetClient.ListByService` return value(s) have been changed from `(*APIVersionSetListByServicePager)` to `(*APIVersionSetClientListByServicePager)`
+- Function `*ContentTypeClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, *ContentTypeDeleteOptions)` to `(context.Context, string, string, string, string, *ContentTypeClientDeleteOptions)`
+- Function `*ContentTypeClient.Delete` return value(s) have been changed from `(ContentTypeDeleteResponse, error)` to `(ContentTypeClientDeleteResponse, error)`
+- Function `*NotificationRecipientUserClient.CheckEntityExists` parameter(s) have been changed from `(context.Context, string, string, NotificationName, string, *NotificationRecipientUserCheckEntityExistsOptions)` to `(context.Context, string, string, NotificationName, string, *NotificationRecipientUserClientCheckEntityExistsOptions)`
+- Function `*NotificationRecipientUserClient.CheckEntityExists` return value(s) have been changed from `(NotificationRecipientUserCheckEntityExistsResponse, error)` to `(NotificationRecipientUserClientCheckEntityExistsResponse, error)`
+- Function `*CacheClient.ListByService` parameter(s) have been changed from `(string, string, *CacheListByServiceOptions)` to `(string, string, *CacheClientListByServiceOptions)`
+- Function `*CacheClient.ListByService` return value(s) have been changed from `(*CacheListByServicePager)` to `(*CacheClientListByServicePager)`
+- Function `*QuotaByCounterKeysClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, QuotaCounterValueUpdateContract, *QuotaByCounterKeysUpdateOptions)` to `(context.Context, string, string, string, QuotaCounterValueUpdateContract, *QuotaByCounterKeysClientUpdateOptions)`
+- Function `*QuotaByCounterKeysClient.Update` return value(s) have been changed from `(QuotaByCounterKeysUpdateResponse, error)` to `(QuotaByCounterKeysClientUpdateResponse, error)`
+- Function `*AuthorizationServerClient.GetEntityTag` parameter(s) have been changed from `(context.Context, string, string, string, *AuthorizationServerGetEntityTagOptions)` to `(context.Context, string, string, string, *AuthorizationServerClientGetEntityTagOptions)`
+- Function `*AuthorizationServerClient.GetEntityTag` return value(s) have been changed from `(AuthorizationServerGetEntityTagResponse, error)` to `(AuthorizationServerClientGetEntityTagResponse, error)`
+- Function `*SignUpSettingsClient.GetEntityTag` parameter(s) have been changed from `(context.Context, string, string, *SignUpSettingsGetEntityTagOptions)` to `(context.Context, string, string, *SignUpSettingsClientGetEntityTagOptions)`
+- Function `*SignUpSettingsClient.GetEntityTag` return value(s) have been changed from `(SignUpSettingsGetEntityTagResponse, error)` to `(SignUpSettingsClientGetEntityTagResponse, error)`
+- Function `*APIIssueClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *APIIssueGetOptions)` to `(context.Context, string, string, string, string, *APIIssueClientGetOptions)`
+- Function `*APIIssueClient.Get` return value(s) have been changed from `(APIIssueGetResponse, error)` to `(APIIssueClientGetResponse, error)`
+- Function `*AuthorizationServerClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *AuthorizationServerGetOptions)` to `(context.Context, string, string, string, *AuthorizationServerClientGetOptions)`
+- Function `*AuthorizationServerClient.Get` return value(s) have been changed from `(AuthorizationServerGetResponse, error)` to `(AuthorizationServerClientGetResponse, error)`
+- Function `*GatewayHostnameConfigurationClient.GetEntityTag` parameter(s) have been changed from `(context.Context, string, string, string, string, *GatewayHostnameConfigurationGetEntityTagOptions)` to `(context.Context, string, string, string, string, *GatewayHostnameConfigurationClientGetEntityTagOptions)`
+- Function `*GatewayHostnameConfigurationClient.GetEntityTag` return value(s) have been changed from `(GatewayHostnameConfigurationGetEntityTagResponse, error)` to `(GatewayHostnameConfigurationClientGetEntityTagResponse, error)`
+- Function `*ProductClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, *ProductDeleteOptions)` to `(context.Context, string, string, string, string, *ProductClientDeleteOptions)`
+- Function `*ProductClient.Delete` return value(s) have been changed from `(ProductDeleteResponse, error)` to `(ProductClientDeleteResponse, error)`
+- Function `*TagClient.GetEntityStateByOperation` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *TagGetEntityStateByOperationOptions)` to `(context.Context, string, string, string, string, string, *TagClientGetEntityStateByOperationOptions)`
+- Function `*TagClient.GetEntityStateByOperation` return value(s) have been changed from `(TagGetEntityStateByOperationResponse, error)` to `(TagClientGetEntityStateByOperationResponse, error)`
+- Function `*APIOperationClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, string, string, OperationUpdateContract, *APIOperationUpdateOptions)` to `(context.Context, string, string, string, string, string, OperationUpdateContract, *APIOperationClientUpdateOptions)`
+- Function `*APIOperationClient.Update` return value(s) have been changed from `(APIOperationUpdateResponse, error)` to `(APIOperationClientUpdateResponse, error)`
+- Function `*GatewayClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, *GatewayDeleteOptions)` to `(context.Context, string, string, string, string, *GatewayClientDeleteOptions)`
+- Function `*GatewayClient.Delete` return value(s) have been changed from `(GatewayDeleteResponse, error)` to `(GatewayClientDeleteResponse, error)`
+- Function `*TenantConfigurationClient.BeginDeploy` parameter(s) have been changed from `(context.Context, string, string, ConfigurationIDName, DeployConfigurationParameters, *TenantConfigurationBeginDeployOptions)` to `(context.Context, string, string, ConfigurationIDName, DeployConfigurationParameters, *TenantConfigurationClientBeginDeployOptions)`
+- Function `*TenantConfigurationClient.BeginDeploy` return value(s) have been changed from `(TenantConfigurationDeployPollerResponse, error)` to `(TenantConfigurationClientDeployPollerResponse, error)`
+- Function `*ContentTypeClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, *ContentTypeCreateOrUpdateOptions)` to `(context.Context, string, string, string, *ContentTypeClientCreateOrUpdateOptions)`
+- Function `*ContentTypeClient.CreateOrUpdate` return value(s) have been changed from `(ContentTypeCreateOrUpdateResponse, error)` to `(ContentTypeClientCreateOrUpdateResponse, error)`
+- Function `*OpenIDConnectProviderClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *OpenIDConnectProviderGetOptions)` to `(context.Context, string, string, string, *OpenIDConnectProviderClientGetOptions)`
+- Function `*OpenIDConnectProviderClient.Get` return value(s) have been changed from `(OpenIDConnectProviderGetResponse, error)` to `(OpenIDConnectProviderClientGetResponse, error)`
+- Function `*APIPolicyClient.GetEntityTag` parameter(s) have been changed from `(context.Context, string, string, string, PolicyIDName, *APIPolicyGetEntityTagOptions)` to `(context.Context, string, string, string, PolicyIDName, *APIPolicyClientGetEntityTagOptions)`
+- Function `*APIPolicyClient.GetEntityTag` return value(s) have been changed from `(APIPolicyGetEntityTagResponse, error)` to `(APIPolicyClientGetEntityTagResponse, error)`
+- Function `*PolicyClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, PolicyIDName, PolicyContract, *PolicyCreateOrUpdateOptions)` to `(context.Context, string, string, PolicyIDName, PolicyContract, *PolicyClientCreateOrUpdateOptions)`
+- Function `*PolicyClient.CreateOrUpdate` return value(s) have been changed from `(PolicyCreateOrUpdateResponse, error)` to `(PolicyClientCreateOrUpdateResponse, error)`
+- Function `*CacheClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *CacheGetOptions)` to `(context.Context, string, string, string, *CacheClientGetOptions)`
+- Function `*CacheClient.Get` return value(s) have been changed from `(CacheGetResponse, error)` to `(CacheClientGetResponse, error)`
+- Function `*AuthorizationServerClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, string, AuthorizationServerUpdateContract, *AuthorizationServerUpdateOptions)` to `(context.Context, string, string, string, string, AuthorizationServerUpdateContract, *AuthorizationServerClientUpdateOptions)`
+- Function `*AuthorizationServerClient.Update` return value(s) have been changed from `(AuthorizationServerUpdateResponse, error)` to `(AuthorizationServerClientUpdateResponse, error)`
+- Function `*APIOperationClient.ListByAPI` parameter(s) have been changed from `(string, string, string, *APIOperationListByAPIOptions)` to `(string, string, string, *APIOperationClientListByAPIOptions)`
+- Function `*APIOperationClient.ListByAPI` return value(s) have been changed from `(*APIOperationListByAPIPager)` to `(*APIOperationClientListByAPIPager)`
+- Function `*ReportsClient.ListByGeo` parameter(s) have been changed from `(string, string, string, *ReportsListByGeoOptions)` to `(string, string, string, *ReportsClientListByGeoOptions)`
+- Function `*ReportsClient.ListByGeo` return value(s) have been changed from `(*ReportsListByGeoPager)` to `(*ReportsClientListByGeoPager)`
+- Function `*DeletedServicesClient.ListBySubscription` parameter(s) have been changed from `(*DeletedServicesListBySubscriptionOptions)` to `(*DeletedServicesClientListBySubscriptionOptions)`
+- Function `*DeletedServicesClient.ListBySubscription` return value(s) have been changed from `(*DeletedServicesListBySubscriptionPager)` to `(*DeletedServicesClientListBySubscriptionPager)`
+- Function `*ProductPolicyClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, PolicyIDName, string, *ProductPolicyDeleteOptions)` to `(context.Context, string, string, string, PolicyIDName, string, *ProductPolicyClientDeleteOptions)`
+- Function `*ProductPolicyClient.Delete` return value(s) have been changed from `(ProductPolicyDeleteResponse, error)` to `(ProductPolicyClientDeleteResponse, error)`
+- Function `*LoggerClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *LoggerGetOptions)` to `(context.Context, string, string, string, *LoggerClientGetOptions)`
+- Function `*LoggerClient.Get` return value(s) have been changed from `(LoggerGetResponse, error)` to `(LoggerClientGetResponse, error)`
+- Function `*APIDiagnosticClient.ListByService` parameter(s) have been changed from `(string, string, string, *APIDiagnosticListByServiceOptions)` to `(string, string, string, *APIDiagnosticClientListByServiceOptions)`
+- Function `*APIDiagnosticClient.ListByService` return value(s) have been changed from `(*APIDiagnosticListByServicePager)` to `(*APIDiagnosticClientListByServicePager)`
+- Function `*OpenIDConnectProviderClient.ListSecrets` parameter(s) have been changed from `(context.Context, string, string, string, *OpenIDConnectProviderListSecretsOptions)` to `(context.Context, string, string, string, *OpenIDConnectProviderClientListSecretsOptions)`
+- Function `*OpenIDConnectProviderClient.ListSecrets` return value(s) have been changed from `(OpenIDConnectProviderListSecretsResponse, error)` to `(OpenIDConnectProviderClientListSecretsResponse, error)`
+- Function `*SubscriptionClient.RegenerateSecondaryKey` parameter(s) have been changed from `(context.Context, string, string, string, *SubscriptionRegenerateSecondaryKeyOptions)` to `(context.Context, string, string, string, *SubscriptionClientRegenerateSecondaryKeyOptions)`
+- Function `*SubscriptionClient.RegenerateSecondaryKey` return value(s) have been changed from `(SubscriptionRegenerateSecondaryKeyResponse, error)` to `(SubscriptionClientRegenerateSecondaryKeyResponse, error)`
+- Function `*TenantAccessClient.RegeneratePrimaryKey` parameter(s) have been changed from `(context.Context, string, string, AccessIDName, *TenantAccessRegeneratePrimaryKeyOptions)` to `(context.Context, string, string, AccessIDName, *TenantAccessClientRegeneratePrimaryKeyOptions)`
+- Function `*TenantAccessClient.RegeneratePrimaryKey` return value(s) have been changed from `(TenantAccessRegeneratePrimaryKeyResponse, error)` to `(TenantAccessClientRegeneratePrimaryKeyResponse, error)`
+- Function `*APIPolicyClient.ListByAPI` parameter(s) have been changed from `(context.Context, string, string, string, *APIPolicyListByAPIOptions)` to `(context.Context, string, string, string, *APIPolicyClientListByAPIOptions)`
+- Function `*APIPolicyClient.ListByAPI` return value(s) have been changed from `(APIPolicyListByAPIResponse, error)` to `(APIPolicyClientListByAPIResponse, error)`
+- Function `*NotificationRecipientUserClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, NotificationName, string, *NotificationRecipientUserCreateOrUpdateOptions)` to `(context.Context, string, string, NotificationName, string, *NotificationRecipientUserClientCreateOrUpdateOptions)`
+- Function `*NotificationRecipientUserClient.CreateOrUpdate` return value(s) have been changed from `(NotificationRecipientUserCreateOrUpdateResponse, error)` to `(NotificationRecipientUserClientCreateOrUpdateResponse, error)`
+- Function `*TagClient.GetEntityStateByProduct` parameter(s) have been changed from `(context.Context, string, string, string, string, *TagGetEntityStateByProductOptions)` to `(context.Context, string, string, string, string, *TagClientGetEntityStateByProductOptions)`
+- Function `*TagClient.GetEntityStateByProduct` return value(s) have been changed from `(TagGetEntityStateByProductResponse, error)` to `(TagClientGetEntityStateByProductResponse, error)`
+- Function `*BackendClient.GetEntityTag` parameter(s) have been changed from `(context.Context, string, string, string, *BackendGetEntityTagOptions)` to `(context.Context, string, string, string, *BackendClientGetEntityTagOptions)`
+- Function `*BackendClient.GetEntityTag` return value(s) have been changed from `(BackendGetEntityTagResponse, error)` to `(BackendClientGetEntityTagResponse, error)`
+- Function `*IdentityProviderClient.GetEntityTag` parameter(s) have been changed from `(context.Context, string, string, IdentityProviderType, *IdentityProviderGetEntityTagOptions)` to `(context.Context, string, string, IdentityProviderType, *IdentityProviderClientGetEntityTagOptions)`
+- Function `*IdentityProviderClient.GetEntityTag` return value(s) have been changed from `(IdentityProviderGetEntityTagResponse, error)` to `(IdentityProviderClientGetEntityTagResponse, error)`
+- Function `*CertificateClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *CertificateGetOptions)` to `(context.Context, string, string, string, *CertificateClientGetOptions)`
+- Function `*CertificateClient.Get` return value(s) have been changed from `(CertificateGetResponse, error)` to `(CertificateClientGetResponse, error)`
+- Function `*SignInSettingsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, PortalSigninSettings, *SignInSettingsCreateOrUpdateOptions)` to `(context.Context, string, string, PortalSigninSettings, *SignInSettingsClientCreateOrUpdateOptions)`
+- Function `*SignInSettingsClient.CreateOrUpdate` return value(s) have been changed from `(SignInSettingsCreateOrUpdateResponse, error)` to `(SignInSettingsClientCreateOrUpdateResponse, error)`
+- Function `*ContentTypeClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *ContentTypeGetOptions)` to `(context.Context, string, string, string, *ContentTypeClientGetOptions)`
+- Function `*ContentTypeClient.Get` return value(s) have been changed from `(ContentTypeGetResponse, error)` to `(ContentTypeClientGetResponse, error)`
+- Function `*GatewayClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *GatewayGetOptions)` to `(context.Context, string, string, string, *GatewayClientGetOptions)`
+- Function `*GatewayClient.Get` return value(s) have been changed from `(GatewayGetResponse, error)` to `(GatewayClientGetResponse, error)`
+- Function `*APIOperationClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, OperationContract, *APIOperationCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, OperationContract, *APIOperationClientCreateOrUpdateOptions)`
+- Function `*APIOperationClient.CreateOrUpdate` return value(s) have been changed from `(APIOperationCreateOrUpdateResponse, error)` to `(APIOperationClientCreateOrUpdateResponse, error)`
+- Function `*GatewayClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, string, GatewayContract, *GatewayUpdateOptions)` to `(context.Context, string, string, string, string, GatewayContract, *GatewayClientUpdateOptions)`
+- Function `*GatewayClient.Update` return value(s) have been changed from `(GatewayUpdateResponse, error)` to `(GatewayClientUpdateResponse, error)`
+- Function `*BackendClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, BackendContract, *BackendCreateOrUpdateOptions)` to `(context.Context, string, string, string, BackendContract, *BackendClientCreateOrUpdateOptions)`
+- Function `*BackendClient.CreateOrUpdate` return value(s) have been changed from `(BackendCreateOrUpdateResponse, error)` to `(BackendClientCreateOrUpdateResponse, error)`
+- Function `*DelegationSettingsClient.GetEntityTag` parameter(s) have been changed from `(context.Context, string, string, *DelegationSettingsGetEntityTagOptions)` to `(context.Context, string, string, *DelegationSettingsClientGetEntityTagOptions)`
+- Function `*DelegationSettingsClient.GetEntityTag` return value(s) have been changed from `(DelegationSettingsGetEntityTagResponse, error)` to `(DelegationSettingsClientGetEntityTagResponse, error)`
+- Function `*IdentityProviderClient.Update` parameter(s) have been changed from `(context.Context, string, string, IdentityProviderType, string, IdentityProviderUpdateParameters, *IdentityProviderUpdateOptions)` to `(context.Context, string, string, IdentityProviderType, string, IdentityProviderUpdateParameters, *IdentityProviderClientUpdateOptions)`
+- Function `*IdentityProviderClient.Update` return value(s) have been changed from `(IdentityProviderUpdateResponse, error)` to `(IdentityProviderClientUpdateResponse, error)`
+- Function `*ProductGroupClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, *ProductGroupDeleteOptions)` to `(context.Context, string, string, string, string, *ProductGroupClientDeleteOptions)`
+- Function `*ProductGroupClient.Delete` return value(s) have been changed from `(ProductGroupDeleteResponse, error)` to `(ProductGroupClientDeleteResponse, error)`
+- Function `*ProductGroupClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, *ProductGroupCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, *ProductGroupClientCreateOrUpdateOptions)`
+- Function `*ProductGroupClient.CreateOrUpdate` return value(s) have been changed from `(ProductGroupCreateOrUpdateResponse, error)` to `(ProductGroupClientCreateOrUpdateResponse, error)`
+- Function `*LoggerClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, LoggerContract, *LoggerCreateOrUpdateOptions)` to `(context.Context, string, string, string, LoggerContract, *LoggerClientCreateOrUpdateOptions)`
+- Function `*LoggerClient.CreateOrUpdate` return value(s) have been changed from `(LoggerCreateOrUpdateResponse, error)` to `(LoggerClientCreateOrUpdateResponse, error)`
+- Function `*UserSubscriptionClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *UserSubscriptionGetOptions)` to `(context.Context, string, string, string, string, *UserSubscriptionClientGetOptions)`
+- Function `*UserSubscriptionClient.Get` return value(s) have been changed from `(UserSubscriptionGetResponse, error)` to `(UserSubscriptionClientGetResponse, error)`
+- Function `*APIExportClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, ExportFormat, ExportAPI, *APIExportGetOptions)` to `(context.Context, string, string, string, ExportFormat, ExportAPI, *APIExportClientGetOptions)`
+- Function `*APIExportClient.Get` return value(s) have been changed from `(APIExportGetResponse, error)` to `(APIExportClientGetResponse, error)`
+- Function `*APIIssueCommentClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, string, string, *APIIssueCommentDeleteOptions)` to `(context.Context, string, string, string, string, string, string, *APIIssueCommentClientDeleteOptions)`
+- Function `*APIIssueCommentClient.Delete` return value(s) have been changed from `(APIIssueCommentDeleteResponse, error)` to `(APIIssueCommentClientDeleteResponse, error)`
+- Function `*APIIssueClient.ListByService` parameter(s) have been changed from `(string, string, string, *APIIssueListByServiceOptions)` to `(string, string, string, *APIIssueClientListByServiceOptions)`
+- Function `*APIIssueClient.ListByService` return value(s) have been changed from `(*APIIssueListByServicePager)` to `(*APIIssueClientListByServicePager)`
+- Function `*EmailTemplateClient.Delete` parameter(s) have been changed from `(context.Context, string, string, TemplateName, string, *EmailTemplateDeleteOptions)` to `(context.Context, string, string, TemplateName, string, *EmailTemplateClientDeleteOptions)`
+- Function `*EmailTemplateClient.Delete` return value(s) have been changed from `(EmailTemplateDeleteResponse, error)` to `(EmailTemplateClientDeleteResponse, error)`
+- Function `*NotificationRecipientUserClient.Delete` parameter(s) have been changed from `(context.Context, string, string, NotificationName, string, *NotificationRecipientUserDeleteOptions)` to `(context.Context, string, string, NotificationName, string, *NotificationRecipientUserClientDeleteOptions)`
+- Function `*NotificationRecipientUserClient.Delete` return value(s) have been changed from `(NotificationRecipientUserDeleteResponse, error)` to `(NotificationRecipientUserClientDeleteResponse, error)`
+- Function `*APIVersionSetClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, APIVersionSetContract, *APIVersionSetCreateOrUpdateOptions)` to `(context.Context, string, string, string, APIVersionSetContract, *APIVersionSetClientCreateOrUpdateOptions)`
+- Function `*APIVersionSetClient.CreateOrUpdate` return value(s) have been changed from `(APIVersionSetCreateOrUpdateResponse, error)` to `(APIVersionSetClientCreateOrUpdateResponse, error)`
+- Function `*APIOperationClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *APIOperationDeleteOptions)` to `(context.Context, string, string, string, string, string, *APIOperationClientDeleteOptions)`
+- Function `*APIOperationClient.Delete` return value(s) have been changed from `(APIOperationDeleteResponse, error)` to `(APIOperationClientDeleteResponse, error)`
+- Function `*GatewayAPIClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, *GatewayAPIDeleteOptions)` to `(context.Context, string, string, string, string, *GatewayAPIClientDeleteOptions)`
+- Function `*GatewayAPIClient.Delete` return value(s) have been changed from `(GatewayAPIDeleteResponse, error)` to `(GatewayAPIClientDeleteResponse, error)`
+- Function `*OutboundNetworkDependenciesEndpointsClient.ListByService` parameter(s) have been changed from `(context.Context, string, string, *OutboundNetworkDependenciesEndpointsListByServiceOptions)` to `(context.Context, string, string, *OutboundNetworkDependenciesEndpointsClientListByServiceOptions)`
+- Function `*OutboundNetworkDependenciesEndpointsClient.ListByService` return value(s) have been changed from `(OutboundNetworkDependenciesEndpointsListByServiceResponse, error)` to `(OutboundNetworkDependenciesEndpointsClientListByServiceResponse, error)`
+- Function `*APIOperationPolicyClient.GetEntityTag` parameter(s) have been changed from `(context.Context, string, string, string, string, PolicyIDName, *APIOperationPolicyGetEntityTagOptions)` to `(context.Context, string, string, string, string, PolicyIDName, *APIOperationPolicyClientGetEntityTagOptions)`
+- Function `*APIOperationPolicyClient.GetEntityTag` return value(s) have been changed from `(APIOperationPolicyGetEntityTagResponse, error)` to `(APIOperationPolicyClientGetEntityTagResponse, error)`
+- Function `*GatewayHostnameConfigurationClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *GatewayHostnameConfigurationDeleteOptions)` to `(context.Context, string, string, string, string, string, *GatewayHostnameConfigurationClientDeleteOptions)`
+- Function `*GatewayHostnameConfigurationClient.Delete` return value(s) have been changed from `(GatewayHostnameConfigurationDeleteResponse, error)` to `(GatewayHostnameConfigurationClientDeleteResponse, error)`
+- Function `*GroupClient.GetEntityTag` parameter(s) have been changed from `(context.Context, string, string, string, *GroupGetEntityTagOptions)` to `(context.Context, string, string, string, *GroupClientGetEntityTagOptions)`
+- Function `*GroupClient.GetEntityTag` return value(s) have been changed from `(GroupGetEntityTagResponse, error)` to `(GroupClientGetEntityTagResponse, error)`
+- Function `*APIReleaseClient.ListByService` parameter(s) have been changed from `(string, string, string, *APIReleaseListByServiceOptions)` to `(string, string, string, *APIReleaseClientListByServiceOptions)`
+- Function `*APIReleaseClient.ListByService` return value(s) have been changed from `(*APIReleaseListByServicePager)` to `(*APIReleaseClientListByServicePager)`
+- Function `*NamedValueClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, *NamedValueDeleteOptions)` to `(context.Context, string, string, string, string, *NamedValueClientDeleteOptions)`
+- Function `*NamedValueClient.Delete` return value(s) have been changed from `(NamedValueDeleteResponse, error)` to `(NamedValueClientDeleteResponse, error)`
+- Function `*APIDiagnosticClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *APIDiagnosticGetOptions)` to `(context.Context, string, string, string, string, *APIDiagnosticClientGetOptions)`
+- Function `*APIDiagnosticClient.Get` return value(s) have been changed from `(APIDiagnosticGetResponse, error)` to `(APIDiagnosticClientGetResponse, error)`
+- Function `*IdentityProviderClient.ListSecrets` parameter(s) have been changed from `(context.Context, string, string, IdentityProviderType, *IdentityProviderListSecretsOptions)` to `(context.Context, string, string, IdentityProviderType, *IdentityProviderClientListSecretsOptions)`
+- Function `*IdentityProviderClient.ListSecrets` return value(s) have been changed from `(IdentityProviderListSecretsResponse, error)` to `(IdentityProviderClientListSecretsResponse, error)`
+- Function `*GroupClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, *GroupDeleteOptions)` to `(context.Context, string, string, string, string, *GroupClientDeleteOptions)`
+- Function `*GroupClient.Delete` return value(s) have been changed from `(GroupDeleteResponse, error)` to `(GroupClientDeleteResponse, error)`
+- Function `*UserClient.GenerateSsoURL` parameter(s) have been changed from `(context.Context, string, string, string, *UserGenerateSsoURLOptions)` to `(context.Context, string, string, string, *UserClientGenerateSsoURLOptions)`
+- Function `*UserClient.GenerateSsoURL` return value(s) have been changed from `(UserGenerateSsoURLResponse, error)` to `(UserClientGenerateSsoURLResponse, error)`
+- Function `*TagClient.GetEntityState` parameter(s) have been changed from `(context.Context, string, string, string, *TagGetEntityStateOptions)` to `(context.Context, string, string, string, *TagClientGetEntityStateOptions)`
+- Function `*TagClient.GetEntityState` return value(s) have been changed from `(TagGetEntityStateResponse, error)` to `(TagClientGetEntityStateResponse, error)`
+- Function `*LoggerClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, *LoggerDeleteOptions)` to `(context.Context, string, string, string, string, *LoggerClientDeleteOptions)`
+- Function `*LoggerClient.Delete` return value(s) have been changed from `(LoggerDeleteResponse, error)` to `(LoggerClientDeleteResponse, error)`
+- Function `*SignInSettingsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *SignInSettingsGetOptions)` to `(context.Context, string, string, *SignInSettingsClientGetOptions)`
+- Function `*SignInSettingsClient.Get` return value(s) have been changed from `(SignInSettingsGetResponse, error)` to `(SignInSettingsClientGetResponse, error)`
+- Function `*OpenIDConnectProviderClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, OpenidConnectProviderContract, *OpenIDConnectProviderCreateOrUpdateOptions)` to `(context.Context, string, string, string, OpenidConnectProviderContract, *OpenIDConnectProviderClientCreateOrUpdateOptions)`
+- Function `*OpenIDConnectProviderClient.CreateOrUpdate` return value(s) have been changed from `(OpenIDConnectProviderCreateOrUpdateResponse, error)` to `(OpenIDConnectProviderClientCreateOrUpdateResponse, error)`
+- Function `*SubscriptionClient.List` parameter(s) have been changed from `(string, string, *SubscriptionListOptions)` to `(string, string, *SubscriptionClientListOptions)`
+- Function `*SubscriptionClient.List` return value(s) have been changed from `(*SubscriptionListPager)` to `(*SubscriptionClientListPager)`
+- Function `*APITagDescriptionClient.ListByService` parameter(s) have been changed from `(string, string, string, *APITagDescriptionListByServiceOptions)` to `(string, string, string, *APITagDescriptionClientListByServiceOptions)`
+- Function `*APITagDescriptionClient.ListByService` return value(s) have been changed from `(*APITagDescriptionListByServicePager)` to `(*APITagDescriptionClientListByServicePager)`
+- Function `*ProductAPIClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, *ProductAPICreateOrUpdateOptions)` to `(context.Context, string, string, string, string, *ProductAPIClientCreateOrUpdateOptions)`
+- Function `*ProductAPIClient.CreateOrUpdate` return value(s) have been changed from `(ProductAPICreateOrUpdateResponse, error)` to `(ProductAPIClientCreateOrUpdateResponse, error)`
+- Function `*APIIssueCommentClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *APIIssueCommentGetOptions)` to `(context.Context, string, string, string, string, string, *APIIssueCommentClientGetOptions)`
+- Function `*APIIssueCommentClient.Get` return value(s) have been changed from `(APIIssueCommentGetResponse, error)` to `(APIIssueCommentClientGetResponse, error)`
+- Function `*NamedValueClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *NamedValueGetOptions)` to `(context.Context, string, string, string, *NamedValueClientGetOptions)`
+- Function `*NamedValueClient.Get` return value(s) have been changed from `(NamedValueGetResponse, error)` to `(NamedValueClientGetResponse, error)`
+- Function `*DiagnosticClient.ListByService` parameter(s) have been changed from `(string, string, *DiagnosticListByServiceOptions)` to `(string, string, *DiagnosticClientListByServiceOptions)`
+- Function `*DiagnosticClient.ListByService` return value(s) have been changed from `(*DiagnosticListByServicePager)` to `(*DiagnosticClientListByServicePager)`
+- Function `*SubscriptionClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, *SubscriptionDeleteOptions)` to `(context.Context, string, string, string, string, *SubscriptionClientDeleteOptions)`
+- Function `*SubscriptionClient.Delete` return value(s) have been changed from `(SubscriptionDeleteResponse, error)` to `(SubscriptionClientDeleteResponse, error)`
+- Function `*IdentityProviderClient.Get` parameter(s) have been changed from `(context.Context, string, string, IdentityProviderType, *IdentityProviderGetOptions)` to `(context.Context, string, string, IdentityProviderType, *IdentityProviderClientGetOptions)`
+- Function `*IdentityProviderClient.Get` return value(s) have been changed from `(IdentityProviderGetResponse, error)` to `(IdentityProviderClientGetResponse, error)`
+- Function `*NotificationRecipientUserClient.ListByNotification` parameter(s) have been changed from `(context.Context, string, string, NotificationName, *NotificationRecipientUserListByNotificationOptions)` to `(context.Context, string, string, NotificationName, *NotificationRecipientUserClientListByNotificationOptions)`
+- Function `*NotificationRecipientUserClient.ListByNotification` return value(s) have been changed from `(NotificationRecipientUserListByNotificationResponse, error)` to `(NotificationRecipientUserClientListByNotificationResponse, error)`
+- Function `*TagResourceClient.ListByService` parameter(s) have been changed from `(string, string, *TagResourceListByServiceOptions)` to `(string, string, *TagResourceClientListByServiceOptions)`
+- Function `*TagResourceClient.ListByService` return value(s) have been changed from `(*TagResourceListByServicePager)` to `(*TagResourceClientListByServicePager)`
+- Function `*APIClient.ListByService` parameter(s) have been changed from `(string, string, *APIListByServiceOptions)` to `(string, string, *APIClientListByServiceOptions)`
+- Function `*APIClient.ListByService` return value(s) have been changed from `(*APIListByServicePager)` to `(*APIClientListByServicePager)`
+- Function `*ProductPolicyClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, PolicyIDName, *ProductPolicyGetOptions)` to `(context.Context, string, string, string, PolicyIDName, *ProductPolicyClientGetOptions)`
+- Function `*ProductPolicyClient.Get` return value(s) have been changed from `(ProductPolicyGetResponse, error)` to `(ProductPolicyClientGetResponse, error)`
+- Function `*AuthorizationServerClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, *AuthorizationServerDeleteOptions)` to `(context.Context, string, string, string, string, *AuthorizationServerClientDeleteOptions)`
+- Function `*AuthorizationServerClient.Delete` return value(s) have been changed from `(AuthorizationServerDeleteResponse, error)` to `(AuthorizationServerClientDeleteResponse, error)`
+- Function `*ProductClient.GetEntityTag` parameter(s) have been changed from `(context.Context, string, string, string, *ProductGetEntityTagOptions)` to `(context.Context, string, string, string, *ProductClientGetEntityTagOptions)`
+- Function `*ProductClient.GetEntityTag` return value(s) have been changed from `(ProductGetEntityTagResponse, error)` to `(ProductClientGetEntityTagResponse, error)`
+- Function `*ProductClient.ListByService` parameter(s) have been changed from `(string, string, *ProductListByServiceOptions)` to `(string, string, *ProductClientListByServiceOptions)`
+- Function `*ProductClient.ListByService` return value(s) have been changed from `(*ProductListByServicePager)` to `(*ProductClientListByServicePager)`
+- Function `*GroupClient.ListByService` parameter(s) have been changed from `(string, string, *GroupListByServiceOptions)` to `(string, string, *GroupClientListByServiceOptions)`
+- Function `*GroupClient.ListByService` return value(s) have been changed from `(*GroupListByServicePager)` to `(*GroupClientListByServicePager)`
+- Function `*NotificationClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, NotificationName, *NotificationCreateOrUpdateOptions)` to `(context.Context, string, string, NotificationName, *NotificationClientCreateOrUpdateOptions)`
+- Function `*NotificationClient.CreateOrUpdate` return value(s) have been changed from `(NotificationCreateOrUpdateResponse, error)` to `(NotificationClientCreateOrUpdateResponse, error)`
+- Function `*CertificateClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, *CertificateDeleteOptions)` to `(context.Context, string, string, string, string, *CertificateClientDeleteOptions)`
+- Function `*CertificateClient.Delete` return value(s) have been changed from `(CertificateDeleteResponse, error)` to `(CertificateClientDeleteResponse, error)`
+- Function `*TagClient.GetEntityStateByAPI` parameter(s) have been changed from `(context.Context, string, string, string, string, *TagGetEntityStateByAPIOptions)` to `(context.Context, string, string, string, string, *TagClientGetEntityStateByAPIOptions)`
+- Function `*TagClient.GetEntityStateByAPI` return value(s) have been changed from `(TagGetEntityStateByAPIResponse, error)` to `(TagClientGetEntityStateByAPIResponse, error)`
+- Function `*APIPolicyClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, PolicyIDName, PolicyContract, *APIPolicyCreateOrUpdateOptions)` to `(context.Context, string, string, string, PolicyIDName, PolicyContract, *APIPolicyClientCreateOrUpdateOptions)`
+- Function `*APIPolicyClient.CreateOrUpdate` return value(s) have been changed from `(APIPolicyCreateOrUpdateResponse, error)` to `(APIPolicyClientCreateOrUpdateResponse, error)`
+- Function `*DiagnosticClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, DiagnosticContract, *DiagnosticCreateOrUpdateOptions)` to `(context.Context, string, string, string, DiagnosticContract, *DiagnosticClientCreateOrUpdateOptions)`
+- Function `*DiagnosticClient.CreateOrUpdate` return value(s) have been changed from `(DiagnosticCreateOrUpdateResponse, error)` to `(DiagnosticClientCreateOrUpdateResponse, error)`
+- Function `*IssueClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *IssueGetOptions)` to `(context.Context, string, string, string, *IssueClientGetOptions)`
+- Function `*IssueClient.Get` return value(s) have been changed from `(IssueGetResponse, error)` to `(IssueClientGetResponse, error)`
+- Function `*UserClient.GetSharedAccessToken` parameter(s) have been changed from `(context.Context, string, string, string, UserTokenParameters, *UserGetSharedAccessTokenOptions)` to `(context.Context, string, string, string, UserTokenParameters, *UserClientGetSharedAccessTokenOptions)`
+- Function `*UserClient.GetSharedAccessToken` return value(s) have been changed from `(UserGetSharedAccessTokenResponse, error)` to `(UserClientGetSharedAccessTokenResponse, error)`
+- Function `*GatewayClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, GatewayContract, *GatewayCreateOrUpdateOptions)` to `(context.Context, string, string, string, GatewayContract, *GatewayClientCreateOrUpdateOptions)`
+- Function `*GatewayClient.CreateOrUpdate` return value(s) have been changed from `(GatewayCreateOrUpdateResponse, error)` to `(GatewayClientCreateOrUpdateResponse, error)`
+- Function `*ProductPolicyClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, PolicyIDName, PolicyContract, *ProductPolicyCreateOrUpdateOptions)` to `(context.Context, string, string, string, PolicyIDName, PolicyContract, *ProductPolicyClientCreateOrUpdateOptions)`
+- Function `*ProductPolicyClient.CreateOrUpdate` return value(s) have been changed from `(ProductPolicyCreateOrUpdateResponse, error)` to `(ProductPolicyClientCreateOrUpdateResponse, error)`
+- Function `*RegionClient.ListByService` parameter(s) have been changed from `(string, string, *RegionListByServiceOptions)` to `(string, string, *RegionClientListByServiceOptions)`
+- Function `*RegionClient.ListByService` return value(s) have been changed from `(*RegionListByServicePager)` to `(*RegionClientListByServicePager)`
+- Function `*ContentItemClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *ContentItemDeleteOptions)` to `(context.Context, string, string, string, string, string, *ContentItemClientDeleteOptions)`
+- Function `*ContentItemClient.Delete` return value(s) have been changed from `(ContentItemDeleteResponse, error)` to `(ContentItemClientDeleteResponse, error)`
+- Function `*AuthorizationServerClient.ListByService` parameter(s) have been changed from `(string, string, *AuthorizationServerListByServiceOptions)` to `(string, string, *AuthorizationServerClientListByServiceOptions)`
+- Function `*AuthorizationServerClient.ListByService` return value(s) have been changed from `(*AuthorizationServerListByServicePager)` to `(*AuthorizationServerClientListByServicePager)`
+- Function `*DiagnosticClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, *DiagnosticDeleteOptions)` to `(context.Context, string, string, string, string, *DiagnosticClientDeleteOptions)`
+- Function `*DiagnosticClient.Delete` return value(s) have been changed from `(DiagnosticDeleteResponse, error)` to `(DiagnosticClientDeleteResponse, error)`
+- Function `*ProductSubscriptionsClient.List` parameter(s) have been changed from `(string, string, string, *ProductSubscriptionsListOptions)` to `(string, string, string, *ProductSubscriptionsClientListOptions)`
+- Function `*ProductSubscriptionsClient.List` return value(s) have been changed from `(*ProductSubscriptionsListPager)` to `(*ProductSubscriptionsClientListPager)`
+- Function `*ReportsClient.ListByAPI` parameter(s) have been changed from `(string, string, string, *ReportsListByAPIOptions)` to `(string, string, string, *ReportsClientListByAPIOptions)`
+- Function `*ReportsClient.ListByAPI` return value(s) have been changed from `(*ReportsListByAPIPager)` to `(*ReportsClientListByAPIPager)`
+- Function `*TagClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, string, TagCreateUpdateParameters, *TagUpdateOptions)` to `(context.Context, string, string, string, string, TagCreateUpdateParameters, *TagClientUpdateOptions)`
+- Function `*TagClient.Update` return value(s) have been changed from `(TagUpdateResponse, error)` to `(TagClientUpdateResponse, error)`
+- Function `*NotificationRecipientEmailClient.CheckEntityExists` parameter(s) have been changed from `(context.Context, string, string, NotificationName, string, *NotificationRecipientEmailCheckEntityExistsOptions)` to `(context.Context, string, string, NotificationName, string, *NotificationRecipientEmailClientCheckEntityExistsOptions)`
+- Function `*NotificationRecipientEmailClient.CheckEntityExists` return value(s) have been changed from `(NotificationRecipientEmailCheckEntityExistsResponse, error)` to `(NotificationRecipientEmailClientCheckEntityExistsResponse, error)`
+- Function `*APISchemaClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *APISchemaDeleteOptions)` to `(context.Context, string, string, string, string, string, *APISchemaClientDeleteOptions)`
+- Function `*APISchemaClient.Delete` return value(s) have been changed from `(APISchemaDeleteResponse, error)` to `(APISchemaClientDeleteResponse, error)`
+- Function `*APITagDescriptionClient.GetEntityTag` parameter(s) have been changed from `(context.Context, string, string, string, string, *APITagDescriptionGetEntityTagOptions)` to `(context.Context, string, string, string, string, *APITagDescriptionClientGetEntityTagOptions)`
+- Function `*APITagDescriptionClient.GetEntityTag` return value(s) have been changed from `(APITagDescriptionGetEntityTagResponse, error)` to `(APITagDescriptionClientGetEntityTagResponse, error)`
+- Function `*BackendClient.ListByService` parameter(s) have been changed from `(string, string, *BackendListByServiceOptions)` to `(string, string, *BackendClientListByServiceOptions)`
+- Function `*BackendClient.ListByService` return value(s) have been changed from `(*BackendListByServicePager)` to `(*BackendClientListByServicePager)`
+- Function `*APIIssueAttachmentClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, string, string, *APIIssueAttachmentDeleteOptions)` to `(context.Context, string, string, string, string, string, string, *APIIssueAttachmentClientDeleteOptions)`
+- Function `*APIIssueAttachmentClient.Delete` return value(s) have been changed from `(APIIssueAttachmentDeleteResponse, error)` to `(APIIssueAttachmentClientDeleteResponse, error)`
+- Function `*CertificateClient.GetEntityTag` parameter(s) have been changed from `(context.Context, string, string, string, *CertificateGetEntityTagOptions)` to `(context.Context, string, string, string, *CertificateClientGetEntityTagOptions)`
+- Function `*CertificateClient.GetEntityTag` return value(s) have been changed from `(CertificateGetEntityTagResponse, error)` to `(CertificateClientGetEntityTagResponse, error)`
+- Function `*ProductPolicyClient.ListByProduct` parameter(s) have been changed from `(context.Context, string, string, string, *ProductPolicyListByProductOptions)` to `(context.Context, string, string, string, *ProductPolicyClientListByProductOptions)`
+- Function `*ProductPolicyClient.ListByProduct` return value(s) have been changed from `(ProductPolicyListByProductResponse, error)` to `(ProductPolicyClientListByProductResponse, error)`
+- Function `*ProductGroupClient.CheckEntityExists` parameter(s) have been changed from `(context.Context, string, string, string, string, *ProductGroupCheckEntityExistsOptions)` to `(context.Context, string, string, string, string, *ProductGroupClientCheckEntityExistsOptions)`
+- Function `*ProductGroupClient.CheckEntityExists` return value(s) have been changed from `(ProductGroupCheckEntityExistsResponse, error)` to `(ProductGroupClientCheckEntityExistsResponse, error)`
+- Function `*GroupUserClient.Create` parameter(s) have been changed from `(context.Context, string, string, string, string, *GroupUserCreateOptions)` to `(context.Context, string, string, string, string, *GroupUserClientCreateOptions)`
+- Function `*GroupUserClient.Create` return value(s) have been changed from `(GroupUserCreateResponse, error)` to `(GroupUserClientCreateResponse, error)`
+- Function `*GatewayClient.GenerateToken` parameter(s) have been changed from `(context.Context, string, string, string, GatewayTokenRequestContract, *GatewayGenerateTokenOptions)` to `(context.Context, string, string, string, GatewayTokenRequestContract, *GatewayClientGenerateTokenOptions)`
+- Function `*GatewayClient.GenerateToken` return value(s) have been changed from `(GatewayGenerateTokenResponse, error)` to `(GatewayClientGenerateTokenResponse, error)`
+- Function `*APIIssueAttachmentClient.GetEntityTag` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *APIIssueAttachmentGetEntityTagOptions)` to `(context.Context, string, string, string, string, string, *APIIssueAttachmentClientGetEntityTagOptions)`
+- Function `*APIIssueAttachmentClient.GetEntityTag` return value(s) have been changed from `(APIIssueAttachmentGetEntityTagResponse, error)` to `(APIIssueAttachmentClientGetEntityTagResponse, error)`
+- Function `*ProductAPIClient.CheckEntityExists` parameter(s) have been changed from `(context.Context, string, string, string, string, *ProductAPICheckEntityExistsOptions)` to `(context.Context, string, string, string, string, *ProductAPIClientCheckEntityExistsOptions)`
+- Function `*ProductAPIClient.CheckEntityExists` return value(s) have been changed from `(ProductAPICheckEntityExistsResponse, error)` to `(ProductAPIClientCheckEntityExistsResponse, error)`
+- Function `*TagClient.DetachFromAPI` parameter(s) have been changed from `(context.Context, string, string, string, string, *TagDetachFromAPIOptions)` to `(context.Context, string, string, string, string, *TagClientDetachFromAPIOptions)`
+- Function `*TagClient.DetachFromAPI` return value(s) have been changed from `(TagDetachFromAPIResponse, error)` to `(TagClientDetachFromAPIResponse, error)`
+- Function `*UserClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, UserCreateParameters, *UserCreateOrUpdateOptions)` to `(context.Context, string, string, string, UserCreateParameters, *UserClientCreateOrUpdateOptions)`
+- Function `*UserClient.CreateOrUpdate` return value(s) have been changed from `(UserCreateOrUpdateResponse, error)` to `(UserClientCreateOrUpdateResponse, error)`
+- Function `*APIClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, *APIDeleteOptions)` to `(context.Context, string, string, string, string, *APIClientDeleteOptions)`
+- Function `*APIClient.Delete` return value(s) have been changed from `(APIDeleteResponse, error)` to `(APIClientDeleteResponse, error)`
+- Function `*TagClient.ListByOperation` parameter(s) have been changed from `(string, string, string, string, *TagListByOperationOptions)` to `(string, string, string, string, *TagClientListByOperationOptions)`
+- Function `*TagClient.ListByOperation` return value(s) have been changed from `(*TagListByOperationPager)` to `(*TagClientListByOperationPager)`
+- Function `*TenantAccessGitClient.RegenerateSecondaryKey` parameter(s) have been changed from `(context.Context, string, string, AccessIDName, *TenantAccessGitRegenerateSecondaryKeyOptions)` to `(context.Context, string, string, AccessIDName, *TenantAccessGitClientRegenerateSecondaryKeyOptions)`
+- Function `*TenantAccessGitClient.RegenerateSecondaryKey` return value(s) have been changed from `(TenantAccessGitRegenerateSecondaryKeyResponse, error)` to `(TenantAccessGitClientRegenerateSecondaryKeyResponse, error)`
+- Function `*APIOperationPolicyClient.ListByOperation` parameter(s) have been changed from `(context.Context, string, string, string, string, *APIOperationPolicyListByOperationOptions)` to `(context.Context, string, string, string, string, *APIOperationPolicyClientListByOperationOptions)`
+- Function `*APIOperationPolicyClient.ListByOperation` return value(s) have been changed from `(APIOperationPolicyListByOperationResponse, error)` to `(APIOperationPolicyClientListByOperationResponse, error)`
+- Function `*APIVersionSetClient.GetEntityTag` parameter(s) have been changed from `(context.Context, string, string, string, *APIVersionSetGetEntityTagOptions)` to `(context.Context, string, string, string, *APIVersionSetClientGetEntityTagOptions)`
+- Function `*APIVersionSetClient.GetEntityTag` return value(s) have been changed from `(APIVersionSetGetEntityTagResponse, error)` to `(APIVersionSetClientGetEntityTagResponse, error)`
+- Function `*GatewayClient.RegenerateKey` parameter(s) have been changed from `(context.Context, string, string, string, GatewayKeyRegenerationRequestContract, *GatewayRegenerateKeyOptions)` to `(context.Context, string, string, string, GatewayKeyRegenerationRequestContract, *GatewayClientRegenerateKeyOptions)`
+- Function `*GatewayClient.RegenerateKey` return value(s) have been changed from `(GatewayRegenerateKeyResponse, error)` to `(GatewayClientRegenerateKeyResponse, error)`
+- Function `*GroupClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *GroupGetOptions)` to `(context.Context, string, string, string, *GroupClientGetOptions)`
+- Function `*GroupClient.Get` return value(s) have been changed from `(GroupGetResponse, error)` to `(GroupClientGetResponse, error)`
+- Function `*APIClient.ListByTags` parameter(s) have been changed from `(string, string, *APIListByTagsOptions)` to `(string, string, *APIClientListByTagsOptions)`
+- Function `*APIClient.ListByTags` return value(s) have been changed from `(*APIListByTagsPager)` to `(*APIClientListByTagsPager)`
+- Function `*CertificateClient.RefreshSecret` parameter(s) have been changed from `(context.Context, string, string, string, *CertificateRefreshSecretOptions)` to `(context.Context, string, string, string, *CertificateClientRefreshSecretOptions)`
+- Function `*CertificateClient.RefreshSecret` return value(s) have been changed from `(CertificateRefreshSecretResponse, error)` to `(CertificateClientRefreshSecretResponse, error)`
+- Function `*UserClient.ListByService` parameter(s) have been changed from `(string, string, *UserListByServiceOptions)` to `(string, string, *UserClientListByServiceOptions)`
+- Function `*UserClient.ListByService` return value(s) have been changed from `(*UserListByServicePager)` to `(*UserClientListByServicePager)`
+- Function `*NotificationRecipientEmailClient.Delete` parameter(s) have been changed from `(context.Context, string, string, NotificationName, string, *NotificationRecipientEmailDeleteOptions)` to `(context.Context, string, string, NotificationName, string, *NotificationRecipientEmailClientDeleteOptions)`
+- Function `*NotificationRecipientEmailClient.Delete` return value(s) have been changed from `(NotificationRecipientEmailDeleteResponse, error)` to `(NotificationRecipientEmailClientDeleteResponse, error)`
+- Function `*TagClient.ListByAPI` parameter(s) have been changed from `(string, string, string, *TagListByAPIOptions)` to `(string, string, string, *TagClientListByAPIOptions)`
+- Function `*TagClient.ListByAPI` return value(s) have been changed from `(*TagListByAPIPager)` to `(*TagClientListByAPIPager)`
+- Function `*TagClient.GetByOperation` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *TagGetByOperationOptions)` to `(context.Context, string, string, string, string, string, *TagClientGetByOperationOptions)`
+- Function `*TagClient.GetByOperation` return value(s) have been changed from `(TagGetByOperationResponse, error)` to `(TagClientGetByOperationResponse, error)`
+- Function `*EmailTemplateClient.GetEntityTag` parameter(s) have been changed from `(context.Context, string, string, TemplateName, *EmailTemplateGetEntityTagOptions)` to `(context.Context, string, string, TemplateName, *EmailTemplateClientGetEntityTagOptions)`
+- Function `*EmailTemplateClient.GetEntityTag` return value(s) have been changed from `(EmailTemplateGetEntityTagResponse, error)` to `(EmailTemplateClientGetEntityTagResponse, error)`
+- Function `*NetworkStatusClient.ListByLocation` parameter(s) have been changed from `(context.Context, string, string, string, *NetworkStatusListByLocationOptions)` to `(context.Context, string, string, string, *NetworkStatusClientListByLocationOptions)`
+- Function `*NetworkStatusClient.ListByLocation` return value(s) have been changed from `(NetworkStatusListByLocationResponse, error)` to `(NetworkStatusClientListByLocationResponse, error)`
+- Function `*TenantConfigurationClient.BeginValidate` parameter(s) have been changed from `(context.Context, string, string, ConfigurationIDName, DeployConfigurationParameters, *TenantConfigurationBeginValidateOptions)` to `(context.Context, string, string, ConfigurationIDName, DeployConfigurationParameters, *TenantConfigurationClientBeginValidateOptions)`
+- Function `*TenantConfigurationClient.BeginValidate` return value(s) have been changed from `(TenantConfigurationValidatePollerResponse, error)` to `(TenantConfigurationClientValidatePollerResponse, error)`
+- Function `*PrivateEndpointConnectionClient.GetPrivateLinkResource` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionGetPrivateLinkResourceOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionClientGetPrivateLinkResourceOptions)`
+- Function `*PrivateEndpointConnectionClient.GetPrivateLinkResource` return value(s) have been changed from `(PrivateEndpointConnectionGetPrivateLinkResourceResponse, error)` to `(PrivateEndpointConnectionClientGetPrivateLinkResourceResponse, error)`
+- Function `*ReportsClient.ListByUser` parameter(s) have been changed from `(string, string, string, *ReportsListByUserOptions)` to `(string, string, string, *ReportsClientListByUserOptions)`
+- Function `*ReportsClient.ListByUser` return value(s) have been changed from `(*ReportsListByUserPager)` to `(*ReportsClientListByUserPager)`
+- Function `*TenantAccessClient.GetEntityTag` parameter(s) have been changed from `(context.Context, string, string, AccessIDName, *TenantAccessGetEntityTagOptions)` to `(context.Context, string, string, AccessIDName, *TenantAccessClientGetEntityTagOptions)`
+- Function `*TenantAccessClient.GetEntityTag` return value(s) have been changed from `(TenantAccessGetEntityTagResponse, error)` to `(TenantAccessClientGetEntityTagResponse, error)`
+- Function `*TenantConfigurationClient.BeginSave` parameter(s) have been changed from `(context.Context, string, string, ConfigurationIDName, SaveConfigurationParameter, *TenantConfigurationBeginSaveOptions)` to `(context.Context, string, string, ConfigurationIDName, SaveConfigurationParameter, *TenantConfigurationClientBeginSaveOptions)`
+- Function `*TenantConfigurationClient.BeginSave` return value(s) have been changed from `(TenantConfigurationSavePollerResponse, error)` to `(TenantConfigurationClientSavePollerResponse, error)`
+- Function `*TenantAccessClient.Update` parameter(s) have been changed from `(context.Context, string, string, AccessIDName, string, AccessInformationUpdateParameters, *TenantAccessUpdateOptions)` to `(context.Context, string, string, AccessIDName, string, AccessInformationUpdateParameters, *TenantAccessClientUpdateOptions)`
+- Function `*TenantAccessClient.Update` return value(s) have been changed from `(TenantAccessUpdateResponse, error)` to `(TenantAccessClientUpdateResponse, error)`
+- Function `*GatewayCertificateAuthorityClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *GatewayCertificateAuthorityGetOptions)` to `(context.Context, string, string, string, string, *GatewayCertificateAuthorityClientGetOptions)`
+- Function `*GatewayCertificateAuthorityClient.Get` return value(s) have been changed from `(GatewayCertificateAuthorityGetResponse, error)` to `(GatewayCertificateAuthorityClientGetResponse, error)`
+- Function `*ReportsClient.ListByTime` parameter(s) have been changed from `(string, string, string, string, *ReportsListByTimeOptions)` to `(string, string, string, string, *ReportsClientListByTimeOptions)`
+- Function `*ReportsClient.ListByTime` return value(s) have been changed from `(*ReportsListByTimePager)` to `(*ReportsClientListByTimePager)`
+- Function `*TagClient.ListByProduct` parameter(s) have been changed from `(string, string, string, *TagListByProductOptions)` to `(string, string, string, *TagClientListByProductOptions)`
+- Function `*TagClient.ListByProduct` return value(s) have been changed from `(*TagListByProductPager)` to `(*TagClientListByProductPager)`
+- Function `*BackendClient.Reconnect` parameter(s) have been changed from `(context.Context, string, string, string, *BackendReconnectOptions)` to `(context.Context, string, string, string, *BackendClientReconnectOptions)`
+- Function `*BackendClient.Reconnect` return value(s) have been changed from `(BackendReconnectResponse, error)` to `(BackendClientReconnectResponse, error)`
+- Function `*APITagDescriptionClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, TagDescriptionCreateParameters, *APITagDescriptionCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, TagDescriptionCreateParameters, *APITagDescriptionClientCreateOrUpdateOptions)`
+- Function `*APITagDescriptionClient.CreateOrUpdate` return value(s) have been changed from `(APITagDescriptionCreateOrUpdateResponse, error)` to `(APITagDescriptionClientCreateOrUpdateResponse, error)`
+- Function `*CacheClient.GetEntityTag` parameter(s) have been changed from `(context.Context, string, string, string, *CacheGetEntityTagOptions)` to `(context.Context, string, string, string, *CacheClientGetEntityTagOptions)`
+- Function `*CacheClient.GetEntityTag` return value(s) have been changed from `(CacheGetEntityTagResponse, error)` to `(CacheClientGetEntityTagResponse, error)`
+- Function `*GatewayClient.GetEntityTag` parameter(s) have been changed from `(context.Context, string, string, string, *GatewayGetEntityTagOptions)` to `(context.Context, string, string, string, *GatewayClientGetEntityTagOptions)`
+- Function `*GatewayClient.GetEntityTag` return value(s) have been changed from `(GatewayGetEntityTagResponse, error)` to `(GatewayClientGetEntityTagResponse, error)`
+- Function `*NamedValueClient.ListValue` parameter(s) have been changed from `(context.Context, string, string, string, *NamedValueListValueOptions)` to `(context.Context, string, string, string, *NamedValueClientListValueOptions)`
+- Function `*NamedValueClient.ListValue` return value(s) have been changed from `(NamedValueListValueResponse, error)` to `(NamedValueClientListValueResponse, error)`
+- Function `*APIVersionSetClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, *APIVersionSetDeleteOptions)` to `(context.Context, string, string, string, string, *APIVersionSetClientDeleteOptions)`
+- Function `*APIVersionSetClient.Delete` return value(s) have been changed from `(APIVersionSetDeleteResponse, error)` to `(APIVersionSetClientDeleteResponse, error)`
+- Function `*UserSubscriptionClient.List` parameter(s) have been changed from `(string, string, string, *UserSubscriptionListOptions)` to `(string, string, string, *UserSubscriptionClientListOptions)`
+- Function `*UserSubscriptionClient.List` return value(s) have been changed from `(*UserSubscriptionListPager)` to `(*UserSubscriptionClientListPager)`
+- Function `*APIOperationPolicyClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, PolicyIDName, string, *APIOperationPolicyDeleteOptions)` to `(context.Context, string, string, string, string, PolicyIDName, string, *APIOperationPolicyClientDeleteOptions)`
+- Function `*APIOperationPolicyClient.Delete` return value(s) have been changed from `(APIOperationPolicyDeleteResponse, error)` to `(APIOperationPolicyClientDeleteResponse, error)`
+- Function `*DeletedServicesClient.GetByName` parameter(s) have been changed from `(context.Context, string, string, *DeletedServicesGetByNameOptions)` to `(context.Context, string, string, *DeletedServicesClientGetByNameOptions)`
+- Function `*DeletedServicesClient.GetByName` return value(s) have been changed from `(DeletedServicesGetByNameResponse, error)` to `(DeletedServicesClientGetByNameResponse, error)`
+- Function `*ProductClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *ProductGetOptions)` to `(context.Context, string, string, string, *ProductClientGetOptions)`
+- Function `*ProductClient.Get` return value(s) have been changed from `(ProductGetResponse, error)` to `(ProductClientGetResponse, error)`
+- Function `*SignUpSettingsClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, PortalSignupSettings, *SignUpSettingsUpdateOptions)` to `(context.Context, string, string, string, PortalSignupSettings, *SignUpSettingsClientUpdateOptions)`
+- Function `*SignUpSettingsClient.Update` return value(s) have been changed from `(SignUpSettingsUpdateResponse, error)` to `(SignUpSettingsClientUpdateResponse, error)`
+- Function `*TagClient.GetByProduct` parameter(s) have been changed from `(context.Context, string, string, string, string, *TagGetByProductOptions)` to `(context.Context, string, string, string, string, *TagClientGetByProductOptions)`
+- Function `*TagClient.GetByProduct` return value(s) have been changed from `(TagGetByProductResponse, error)` to `(TagClientGetByProductResponse, error)`
+- Function `*APIOperationClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *APIOperationGetOptions)` to `(context.Context, string, string, string, string, *APIOperationClientGetOptions)`
+- Function `*APIOperationClient.Get` return value(s) have been changed from `(APIOperationGetResponse, error)` to `(APIOperationClientGetResponse, error)`
+- Function `*ProductGroupClient.ListByProduct` parameter(s) have been changed from `(string, string, string, *ProductGroupListByProductOptions)` to `(string, string, string, *ProductGroupClientListByProductOptions)`
+- Function `*ProductGroupClient.ListByProduct` return value(s) have been changed from `(*ProductGroupListByProductPager)` to `(*ProductGroupClientListByProductPager)`
+- Function `*EmailTemplateClient.Get` parameter(s) have been changed from `(context.Context, string, string, TemplateName, *EmailTemplateGetOptions)` to `(context.Context, string, string, TemplateName, *EmailTemplateClientGetOptions)`
+- Function `*EmailTemplateClient.Get` return value(s) have been changed from `(EmailTemplateGetResponse, error)` to `(EmailTemplateClientGetResponse, error)`
+- Function `*TagClient.AssignToProduct` parameter(s) have been changed from `(context.Context, string, string, string, string, *TagAssignToProductOptions)` to `(context.Context, string, string, string, string, *TagClientAssignToProductOptions)`
+- Function `*TagClient.AssignToProduct` return value(s) have been changed from `(TagAssignToProductResponse, error)` to `(TagClientAssignToProductResponse, error)`
+- Function `*UserIdentitiesClient.List` parameter(s) have been changed from `(string, string, string, *UserIdentitiesListOptions)` to `(string, string, string, *UserIdentitiesClientListOptions)`
+- Function `*UserIdentitiesClient.List` return value(s) have been changed from `(*UserIdentitiesListPager)` to `(*UserIdentitiesClientListPager)`
+- Function `*APIVersionSetClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, string, APIVersionSetUpdateParameters, *APIVersionSetUpdateOptions)` to `(context.Context, string, string, string, string, APIVersionSetUpdateParameters, *APIVersionSetClientUpdateOptions)`
+- Function `*APIVersionSetClient.Update` return value(s) have been changed from `(APIVersionSetUpdateResponse, error)` to `(APIVersionSetClientUpdateResponse, error)`
+- Function `*PortalRevisionClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, PortalRevisionContract, *PortalRevisionBeginUpdateOptions)` to `(context.Context, string, string, string, string, PortalRevisionContract, *PortalRevisionClientBeginUpdateOptions)`
+- Function `*PortalRevisionClient.BeginUpdate` return value(s) have been changed from `(PortalRevisionUpdatePollerResponse, error)` to `(PortalRevisionClientUpdatePollerResponse, error)`
+- Function `*SubscriptionClient.GetEntityTag` parameter(s) have been changed from `(context.Context, string, string, string, *SubscriptionGetEntityTagOptions)` to `(context.Context, string, string, string, *SubscriptionClientGetEntityTagOptions)`
+- Function `*SubscriptionClient.GetEntityTag` return value(s) have been changed from `(SubscriptionGetEntityTagResponse, error)` to `(SubscriptionClientGetEntityTagResponse, error)`
+- Function `*UserConfirmationPasswordClient.Send` parameter(s) have been changed from `(context.Context, string, string, string, *UserConfirmationPasswordSendOptions)` to `(context.Context, string, string, string, *UserConfirmationPasswordClientSendOptions)`
+- Function `*UserConfirmationPasswordClient.Send` return value(s) have been changed from `(UserConfirmationPasswordSendResponse, error)` to `(UserConfirmationPasswordClientSendResponse, error)`
+- Function `*APITagDescriptionClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *APITagDescriptionGetOptions)` to `(context.Context, string, string, string, string, *APITagDescriptionClientGetOptions)`
+- Function `*APITagDescriptionClient.Get` return value(s) have been changed from `(APITagDescriptionGetResponse, error)` to `(APITagDescriptionClientGetResponse, error)`
+- Function `*GatewayAPIClient.GetEntityTag` parameter(s) have been changed from `(context.Context, string, string, string, string, *GatewayAPIGetEntityTagOptions)` to `(context.Context, string, string, string, string, *GatewayAPIClientGetEntityTagOptions)`
+- Function `*GatewayAPIClient.GetEntityTag` return value(s) have been changed from `(GatewayAPIGetEntityTagResponse, error)` to `(GatewayAPIClientGetEntityTagResponse, error)`
+- Function `*NamedValueClient.ListByService` parameter(s) have been changed from `(string, string, *NamedValueListByServiceOptions)` to `(string, string, *NamedValueClientListByServiceOptions)`
+- Function `*NamedValueClient.ListByService` return value(s) have been changed from `(*NamedValueListByServicePager)` to `(*NamedValueClientListByServicePager)`
+- Function `*OperationClient.ListByTags` parameter(s) have been changed from `(string, string, string, *OperationListByTagsOptions)` to `(string, string, string, *OperationClientListByTagsOptions)`
+- Function `*OperationClient.ListByTags` return value(s) have been changed from `(*OperationListByTagsPager)` to `(*OperationClientListByTagsPager)`
+- Function `*BackendClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *BackendGetOptions)` to `(context.Context, string, string, string, *BackendClientGetOptions)`
+- Function `*BackendClient.Get` return value(s) have been changed from `(BackendGetResponse, error)` to `(BackendClientGetResponse, error)`
+- Function `*UserClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *UserGetOptions)` to `(context.Context, string, string, string, *UserClientGetOptions)`
+- Function `*UserClient.Get` return value(s) have been changed from `(UserGetResponse, error)` to `(UserClientGetResponse, error)`
+- Function `*GatewayClient.ListByService` parameter(s) have been changed from `(string, string, *GatewayListByServiceOptions)` to `(string, string, *GatewayClientListByServiceOptions)`
+- Function `*GatewayClient.ListByService` return value(s) have been changed from `(*GatewayListByServicePager)` to `(*GatewayClientListByServicePager)`
+- Function `*NotificationRecipientEmailClient.ListByNotification` parameter(s) have been changed from `(context.Context, string, string, NotificationName, *NotificationRecipientEmailListByNotificationOptions)` to `(context.Context, string, string, NotificationName, *NotificationRecipientEmailClientListByNotificationOptions)`
+- Function `*NotificationRecipientEmailClient.ListByNotification` return value(s) have been changed from `(NotificationRecipientEmailListByNotificationResponse, error)` to `(NotificationRecipientEmailClientListByNotificationResponse, error)`
+- Function `*SignUpSettingsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *SignUpSettingsGetOptions)` to `(context.Context, string, string, *SignUpSettingsClientGetOptions)`
+- Function `*SignUpSettingsClient.Get` return value(s) have been changed from `(SignUpSettingsGetResponse, error)` to `(SignUpSettingsClientGetResponse, error)`
+- Function `*DelegationSettingsClient.ListSecrets` parameter(s) have been changed from `(context.Context, string, string, *DelegationSettingsListSecretsOptions)` to `(context.Context, string, string, *DelegationSettingsClientListSecretsOptions)`
+- Function `*DelegationSettingsClient.ListSecrets` return value(s) have been changed from `(DelegationSettingsListSecretsResponse, error)` to `(DelegationSettingsClientListSecretsResponse, error)`
+- Function `*SubscriptionClient.RegeneratePrimaryKey` parameter(s) have been changed from `(context.Context, string, string, string, *SubscriptionRegeneratePrimaryKeyOptions)` to `(context.Context, string, string, string, *SubscriptionClientRegeneratePrimaryKeyOptions)`
+- Function `*SubscriptionClient.RegeneratePrimaryKey` return value(s) have been changed from `(SubscriptionRegeneratePrimaryKeyResponse, error)` to `(SubscriptionClientRegeneratePrimaryKeyResponse, error)`
+- Function `*ContentItemClient.ListByService` parameter(s) have been changed from `(string, string, string, *ContentItemListByServiceOptions)` to `(string, string, string, *ContentItemClientListByServiceOptions)`
+- Function `*ContentItemClient.ListByService` return value(s) have been changed from `(*ContentItemListByServicePager)` to `(*ContentItemClientListByServicePager)`
+- Function `*PolicyClient.ListByService` parameter(s) have been changed from `(context.Context, string, string, *PolicyListByServiceOptions)` to `(context.Context, string, string, *PolicyClientListByServiceOptions)`
+- Function `*PolicyClient.ListByService` return value(s) have been changed from `(PolicyListByServiceResponse, error)` to `(PolicyClientListByServiceResponse, error)`
+- Function `*PolicyClient.GetEntityTag` parameter(s) have been changed from `(context.Context, string, string, PolicyIDName, *PolicyGetEntityTagOptions)` to `(context.Context, string, string, PolicyIDName, *PolicyClientGetEntityTagOptions)`
+- Function `*PolicyClient.GetEntityTag` return value(s) have been changed from `(PolicyGetEntityTagResponse, error)` to `(PolicyClientGetEntityTagResponse, error)`
+- Function `*APIIssueClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, IssueContract, *APIIssueCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, IssueContract, *APIIssueClientCreateOrUpdateOptions)`
+- Function `*APIIssueClient.CreateOrUpdate` return value(s) have been changed from `(APIIssueCreateOrUpdateResponse, error)` to `(APIIssueClientCreateOrUpdateResponse, error)`
+- Function `*APIReleaseClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, APIReleaseContract, *APIReleaseCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, APIReleaseContract, *APIReleaseClientCreateOrUpdateOptions)`
+- Function `*APIReleaseClient.CreateOrUpdate` return value(s) have been changed from `(APIReleaseCreateOrUpdateResponse, error)` to `(APIReleaseClientCreateOrUpdateResponse, error)`
+- Function `*APIClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, APICreateOrUpdateParameter, *APIBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, APICreateOrUpdateParameter, *APIClientBeginCreateOrUpdateOptions)`
+- Function `*APIClient.BeginCreateOrUpdate` return value(s) have been changed from `(APICreateOrUpdatePollerResponse, error)` to `(APIClientCreateOrUpdatePollerResponse, error)`
+- Function `*GatewayClient.ListKeys` parameter(s) have been changed from `(context.Context, string, string, string, *GatewayListKeysOptions)` to `(context.Context, string, string, string, *GatewayClientListKeysOptions)`
+- Function `*GatewayClient.ListKeys` return value(s) have been changed from `(GatewayListKeysResponse, error)` to `(GatewayClientListKeysResponse, error)`
+- Function `*APIClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *APIGetOptions)` to `(context.Context, string, string, string, *APIClientGetOptions)`
+- Function `*APIClient.Get` return value(s) have been changed from `(APIGetResponse, error)` to `(APIClientGetResponse, error)`
+- Function `*TagClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *TagGetOptions)` to `(context.Context, string, string, string, *TagClientGetOptions)`
+- Function `*TagClient.Get` return value(s) have been changed from `(TagGetResponse, error)` to `(TagClientGetResponse, error)`
+- Function `*UserClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, *UserDeleteOptions)` to `(context.Context, string, string, string, string, *UserClientDeleteOptions)`
+- Function `*UserClient.Delete` return value(s) have been changed from `(UserDeleteResponse, error)` to `(UserClientDeleteResponse, error)`
+- Function `*DiagnosticClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *DiagnosticGetOptions)` to `(context.Context, string, string, string, *DiagnosticClientGetOptions)`
+- Function `*DiagnosticClient.Get` return value(s) have been changed from `(DiagnosticGetResponse, error)` to `(DiagnosticClientGetResponse, error)`
+- Function `*APIOperationPolicyClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, PolicyIDName, PolicyContract, *APIOperationPolicyCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, PolicyIDName, PolicyContract, *APIOperationPolicyClientCreateOrUpdateOptions)`
+- Function `*APIOperationPolicyClient.CreateOrUpdate` return value(s) have been changed from `(APIOperationPolicyCreateOrUpdateResponse, error)` to `(APIOperationPolicyClientCreateOrUpdateResponse, error)`
+- Function `*PrivateEndpointConnectionClient.GetByName` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionGetByNameOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionClientGetByNameOptions)`
+- Function `*PrivateEndpointConnectionClient.GetByName` return value(s) have been changed from `(PrivateEndpointConnectionGetByNameResponse, error)` to `(PrivateEndpointConnectionClientGetByNameResponse, error)`
+- Function `*NotificationClient.ListByService` parameter(s) have been changed from `(string, string, *NotificationListByServiceOptions)` to `(string, string, *NotificationClientListByServiceOptions)`
+- Function `*NotificationClient.ListByService` return value(s) have been changed from `(*NotificationListByServicePager)` to `(*NotificationClientListByServicePager)`
+- Function `*PolicyDescriptionClient.ListByService` parameter(s) have been changed from `(context.Context, string, string, *PolicyDescriptionListByServiceOptions)` to `(context.Context, string, string, *PolicyDescriptionClientListByServiceOptions)`
+- Function `*PolicyDescriptionClient.ListByService` return value(s) have been changed from `(PolicyDescriptionListByServiceResponse, error)` to `(PolicyDescriptionClientListByServiceResponse, error)`
+- Function `*TenantAccessClient.RegenerateSecondaryKey` parameter(s) have been changed from `(context.Context, string, string, AccessIDName, *TenantAccessRegenerateSecondaryKeyOptions)` to `(context.Context, string, string, AccessIDName, *TenantAccessClientRegenerateSecondaryKeyOptions)`
+- Function `*TenantAccessClient.RegenerateSecondaryKey` return value(s) have been changed from `(TenantAccessRegenerateSecondaryKeyResponse, error)` to `(TenantAccessClientRegenerateSecondaryKeyResponse, error)`
+- Function `*PrivateEndpointConnectionClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, PrivateEndpointConnectionRequest, *PrivateEndpointConnectionBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, PrivateEndpointConnectionRequest, *PrivateEndpointConnectionClientBeginCreateOrUpdateOptions)`
+- Function `*PrivateEndpointConnectionClient.BeginCreateOrUpdate` return value(s) have been changed from `(PrivateEndpointConnectionCreateOrUpdatePollerResponse, error)` to `(PrivateEndpointConnectionClientCreateOrUpdatePollerResponse, error)`
+- Function `*DiagnosticClient.GetEntityTag` parameter(s) have been changed from `(context.Context, string, string, string, *DiagnosticGetEntityTagOptions)` to `(context.Context, string, string, string, *DiagnosticClientGetEntityTagOptions)`
+- Function `*DiagnosticClient.GetEntityTag` return value(s) have been changed from `(DiagnosticGetEntityTagResponse, error)` to `(DiagnosticClientGetEntityTagResponse, error)`
+- Function `*SubscriptionClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, SubscriptionCreateParameters, *SubscriptionCreateOrUpdateOptions)` to `(context.Context, string, string, string, SubscriptionCreateParameters, *SubscriptionClientCreateOrUpdateOptions)`
+- Function `*SubscriptionClient.CreateOrUpdate` return value(s) have been changed from `(SubscriptionCreateOrUpdateResponse, error)` to `(SubscriptionClientCreateOrUpdateResponse, error)`
+- Function `*TenantAccessClient.Create` parameter(s) have been changed from `(context.Context, string, string, AccessIDName, string, AccessInformationCreateParameters, *TenantAccessCreateOptions)` to `(context.Context, string, string, AccessIDName, string, AccessInformationCreateParameters, *TenantAccessClientCreateOptions)`
+- Function `*TenantAccessClient.Create` return value(s) have been changed from `(TenantAccessCreateResponse, error)` to `(TenantAccessClientCreateResponse, error)`
+- Function `*TenantSettingsClient.ListByService` parameter(s) have been changed from `(string, string, *TenantSettingsListByServiceOptions)` to `(string, string, *TenantSettingsClientListByServiceOptions)`
+- Function `*TenantSettingsClient.ListByService` return value(s) have been changed from `(*TenantSettingsListByServicePager)` to `(*TenantSettingsClientListByServicePager)`
+- Function `*ReportsClient.ListByRequest` parameter(s) have been changed from `(context.Context, string, string, string, *ReportsListByRequestOptions)` to `(context.Context, string, string, string, *ReportsClientListByRequestOptions)`
+- Function `*ReportsClient.ListByRequest` return value(s) have been changed from `(ReportsListByRequestResponse, error)` to `(ReportsClientListByRequestResponse, error)`
+- Function `*GroupUserClient.CheckEntityExists` parameter(s) have been changed from `(context.Context, string, string, string, string, *GroupUserCheckEntityExistsOptions)` to `(context.Context, string, string, string, string, *GroupUserClientCheckEntityExistsOptions)`
+- Function `*GroupUserClient.CheckEntityExists` return value(s) have been changed from `(GroupUserCheckEntityExistsResponse, error)` to `(GroupUserClientCheckEntityExistsResponse, error)`
+- Function `*AuthorizationServerClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, AuthorizationServerContract, *AuthorizationServerCreateOrUpdateOptions)` to `(context.Context, string, string, string, AuthorizationServerContract, *AuthorizationServerClientCreateOrUpdateOptions)`
+- Function `*AuthorizationServerClient.CreateOrUpdate` return value(s) have been changed from `(AuthorizationServerCreateOrUpdateResponse, error)` to `(AuthorizationServerClientCreateOrUpdateResponse, error)`
+- Function `*CertificateClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, CertificateCreateOrUpdateParameters, *CertificateCreateOrUpdateOptions)` to `(context.Context, string, string, string, CertificateCreateOrUpdateParameters, *CertificateClientCreateOrUpdateOptions)`
+- Function `*CertificateClient.CreateOrUpdate` return value(s) have been changed from `(CertificateCreateOrUpdateResponse, error)` to `(CertificateClientCreateOrUpdateResponse, error)`
+- Function `*APIIssueCommentClient.GetEntityTag` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *APIIssueCommentGetEntityTagOptions)` to `(context.Context, string, string, string, string, string, *APIIssueCommentClientGetEntityTagOptions)`
+- Function `*APIIssueCommentClient.GetEntityTag` return value(s) have been changed from `(APIIssueCommentGetEntityTagResponse, error)` to `(APIIssueCommentClientGetEntityTagResponse, error)`
+- Function `*GroupUserClient.List` parameter(s) have been changed from `(string, string, string, *GroupUserListOptions)` to `(string, string, string, *GroupUserClientListOptions)`
+- Function `*GroupUserClient.List` return value(s) have been changed from `(*GroupUserListPager)` to `(*GroupUserClientListPager)`
+- Function `*TagClient.AssignToAPI` parameter(s) have been changed from `(context.Context, string, string, string, string, *TagAssignToAPIOptions)` to `(context.Context, string, string, string, string, *TagClientAssignToAPIOptions)`
+- Function `*TagClient.AssignToAPI` return value(s) have been changed from `(TagAssignToAPIResponse, error)` to `(TagClientAssignToAPIResponse, error)`
+- Function `*APIDiagnosticClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, string, string, DiagnosticContract, *APIDiagnosticUpdateOptions)` to `(context.Context, string, string, string, string, string, DiagnosticContract, *APIDiagnosticClientUpdateOptions)`
+- Function `*APIDiagnosticClient.Update` return value(s) have been changed from `(APIDiagnosticUpdateResponse, error)` to `(APIDiagnosticClientUpdateResponse, error)`
+- Function `*ContentItemClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, *ContentItemCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, *ContentItemClientCreateOrUpdateOptions)`
+- Function `*ContentItemClient.CreateOrUpdate` return value(s) have been changed from `(ContentItemCreateOrUpdateResponse, error)` to `(ContentItemClientCreateOrUpdateResponse, error)`
+- Function `*GatewayHostnameConfigurationClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *GatewayHostnameConfigurationGetOptions)` to `(context.Context, string, string, string, string, *GatewayHostnameConfigurationClientGetOptions)`
+- Function `*GatewayHostnameConfigurationClient.Get` return value(s) have been changed from `(GatewayHostnameConfigurationGetResponse, error)` to `(GatewayHostnameConfigurationClientGetResponse, error)`
+- Function `*APIRevisionClient.ListByService` parameter(s) have been changed from `(string, string, string, *APIRevisionListByServiceOptions)` to `(string, string, string, *APIRevisionClientListByServiceOptions)`
+- Function `*APIRevisionClient.ListByService` return value(s) have been changed from `(*APIRevisionListByServicePager)` to `(*APIRevisionClientListByServicePager)`
+- Function `*APIIssueClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *APIIssueDeleteOptions)` to `(context.Context, string, string, string, string, string, *APIIssueClientDeleteOptions)`
+- Function `*APIIssueClient.Delete` return value(s) have been changed from `(APIIssueDeleteResponse, error)` to `(APIIssueClientDeleteResponse, error)`
+- Function `*APIDiagnosticClient.GetEntityTag` parameter(s) have been changed from `(context.Context, string, string, string, string, *APIDiagnosticGetEntityTagOptions)` to `(context.Context, string, string, string, string, *APIDiagnosticClientGetEntityTagOptions)`
+- Function `*APIDiagnosticClient.GetEntityTag` return value(s) have been changed from `(APIDiagnosticGetEntityTagResponse, error)` to `(APIDiagnosticClientGetEntityTagResponse, error)`
+- Function `*UserClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, string, UserUpdateParameters, *UserUpdateOptions)` to `(context.Context, string, string, string, string, UserUpdateParameters, *UserClientUpdateOptions)`
+- Function `*UserClient.Update` return value(s) have been changed from `(UserUpdateResponse, error)` to `(UserClientUpdateResponse, error)`
+- Function `*TagClient.GetByAPI` parameter(s) have been changed from `(context.Context, string, string, string, string, *TagGetByAPIOptions)` to `(context.Context, string, string, string, string, *TagClientGetByAPIOptions)`
+- Function `*TagClient.GetByAPI` return value(s) have been changed from `(TagGetByAPIResponse, error)` to `(TagClientGetByAPIResponse, error)`
+- Function `*TenantAccessClient.ListSecrets` parameter(s) have been changed from `(context.Context, string, string, AccessIDName, *TenantAccessListSecretsOptions)` to `(context.Context, string, string, AccessIDName, *TenantAccessClientListSecretsOptions)`
+- Function `*TenantAccessClient.ListSecrets` return value(s) have been changed from `(TenantAccessListSecretsResponse, error)` to `(TenantAccessClientListSecretsResponse, error)`
+- Function `*EmailTemplateClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, TemplateName, EmailTemplateUpdateParameters, *EmailTemplateCreateOrUpdateOptions)` to `(context.Context, string, string, TemplateName, EmailTemplateUpdateParameters, *EmailTemplateClientCreateOrUpdateOptions)`
+- Function `*EmailTemplateClient.CreateOrUpdate` return value(s) have been changed from `(EmailTemplateCreateOrUpdateResponse, error)` to `(EmailTemplateClientCreateOrUpdateResponse, error)`
+- Function `*DelegationSettingsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, PortalDelegationSettings, *DelegationSettingsCreateOrUpdateOptions)` to `(context.Context, string, string, PortalDelegationSettings, *DelegationSettingsClientCreateOrUpdateOptions)`
+- Function `*DelegationSettingsClient.CreateOrUpdate` return value(s) have been changed from `(DelegationSettingsCreateOrUpdateResponse, error)` to `(DelegationSettingsClientCreateOrUpdateResponse, error)`
+- Function `*GatewayHostnameConfigurationClient.ListByService` parameter(s) have been changed from `(string, string, string, *GatewayHostnameConfigurationListByServiceOptions)` to `(string, string, string, *GatewayHostnameConfigurationClientListByServiceOptions)`
+- Function `*GatewayHostnameConfigurationClient.ListByService` return value(s) have been changed from `(*GatewayHostnameConfigurationListByServicePager)` to `(*GatewayHostnameConfigurationClientListByServicePager)`
+- Function `*APIDiagnosticClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, DiagnosticContract, *APIDiagnosticCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, DiagnosticContract, *APIDiagnosticClientCreateOrUpdateOptions)`
+- Function `*APIDiagnosticClient.CreateOrUpdate` return value(s) have been changed from `(APIDiagnosticCreateOrUpdateResponse, error)` to `(APIDiagnosticClientCreateOrUpdateResponse, error)`
+- Function `*APIReleaseClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *APIReleaseDeleteOptions)` to `(context.Context, string, string, string, string, string, *APIReleaseClientDeleteOptions)`
+- Function `*APIReleaseClient.Delete` return value(s) have been changed from `(APIReleaseDeleteResponse, error)` to `(APIReleaseClientDeleteResponse, error)`
+- Function `*PortalRevisionClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PortalRevisionGetOptions)` to `(context.Context, string, string, string, *PortalRevisionClientGetOptions)`
+- Function `*PortalRevisionClient.Get` return value(s) have been changed from `(PortalRevisionGetResponse, error)` to `(PortalRevisionClientGetResponse, error)`
+- Function `*ProductClient.ListByTags` parameter(s) have been changed from `(string, string, *ProductListByTagsOptions)` to `(string, string, *ProductClientListByTagsOptions)`
+- Function `*ProductClient.ListByTags` return value(s) have been changed from `(*ProductListByTagsPager)` to `(*ProductClientListByTagsPager)`
+- Function `*PortalRevisionClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, PortalRevisionContract, *PortalRevisionBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, PortalRevisionContract, *PortalRevisionClientBeginCreateOrUpdateOptions)`
+- Function `*PortalRevisionClient.BeginCreateOrUpdate` return value(s) have been changed from `(PortalRevisionCreateOrUpdatePollerResponse, error)` to `(PortalRevisionClientCreateOrUpdatePollerResponse, error)`
+- Function `*ContentTypeClient.ListByService` parameter(s) have been changed from `(string, string, *ContentTypeListByServiceOptions)` to `(string, string, *ContentTypeClientListByServiceOptions)`
+- Function `*ContentTypeClient.ListByService` return value(s) have been changed from `(*ContentTypeListByServicePager)` to `(*ContentTypeClientListByServicePager)`
+- Function `*APIPolicyClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, PolicyIDName, string, *APIPolicyDeleteOptions)` to `(context.Context, string, string, string, PolicyIDName, string, *APIPolicyClientDeleteOptions)`
+- Function `*APIPolicyClient.Delete` return value(s) have been changed from `(APIPolicyDeleteResponse, error)` to `(APIPolicyClientDeleteResponse, error)`
+- Function `*TagClient.DetachFromProduct` parameter(s) have been changed from `(context.Context, string, string, string, string, *TagDetachFromProductOptions)` to `(context.Context, string, string, string, string, *TagClientDetachFromProductOptions)`
+- Function `*TagClient.DetachFromProduct` return value(s) have been changed from `(TagDetachFromProductResponse, error)` to `(TagClientDetachFromProductResponse, error)`
+- Function `*APIClient.GetEntityTag` parameter(s) have been changed from `(context.Context, string, string, string, *APIGetEntityTagOptions)` to `(context.Context, string, string, string, *APIClientGetEntityTagOptions)`
+- Function `*APIClient.GetEntityTag` return value(s) have been changed from `(APIGetEntityTagResponse, error)` to `(APIClientGetEntityTagResponse, error)`
+- Function `*ProductAPIClient.ListByProduct` parameter(s) have been changed from `(string, string, string, *ProductAPIListByProductOptions)` to `(string, string, string, *ProductAPIClientListByProductOptions)`
+- Function `*ProductAPIClient.ListByProduct` return value(s) have been changed from `(*ProductAPIListByProductPager)` to `(*ProductAPIClientListByProductPager)`
+- Function `*SignInSettingsClient.GetEntityTag` parameter(s) have been changed from `(context.Context, string, string, *SignInSettingsGetEntityTagOptions)` to `(context.Context, string, string, *SignInSettingsClientGetEntityTagOptions)`
+- Function `*SignInSettingsClient.GetEntityTag` return value(s) have been changed from `(SignInSettingsGetEntityTagResponse, error)` to `(SignInSettingsClientGetEntityTagResponse, error)`
+- Function `*QuotaByPeriodKeysClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *QuotaByPeriodKeysGetOptions)` to `(context.Context, string, string, string, string, *QuotaByPeriodKeysClientGetOptions)`
+- Function `*QuotaByPeriodKeysClient.Get` return value(s) have been changed from `(QuotaByPeriodKeysGetResponse, error)` to `(QuotaByPeriodKeysClientGetResponse, error)`
+- Function `*LoggerClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, string, LoggerUpdateContract, *LoggerUpdateOptions)` to `(context.Context, string, string, string, string, LoggerUpdateContract, *LoggerClientUpdateOptions)`
+- Function `*LoggerClient.Update` return value(s) have been changed from `(LoggerUpdateResponse, error)` to `(LoggerClientUpdateResponse, error)`
+- Function `*PrivateEndpointConnectionClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionBeginDeleteOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionClientBeginDeleteOptions)`
+- Function `*PrivateEndpointConnectionClient.BeginDelete` return value(s) have been changed from `(PrivateEndpointConnectionDeletePollerResponse, error)` to `(PrivateEndpointConnectionClientDeletePollerResponse, error)`
+- Function `*IdentityProviderClient.ListByService` parameter(s) have been changed from `(string, string, *IdentityProviderListByServiceOptions)` to `(string, string, *IdentityProviderClientListByServiceOptions)`
+- Function `*IdentityProviderClient.ListByService` return value(s) have been changed from `(*IdentityProviderListByServicePager)` to `(*IdentityProviderClientListByServicePager)`
+- Function `*ProductPolicyClient.GetEntityTag` parameter(s) have been changed from `(context.Context, string, string, string, PolicyIDName, *ProductPolicyGetEntityTagOptions)` to `(context.Context, string, string, string, PolicyIDName, *ProductPolicyClientGetEntityTagOptions)`
+- Function `*ProductPolicyClient.GetEntityTag` return value(s) have been changed from `(ProductPolicyGetEntityTagResponse, error)` to `(ProductPolicyClientGetEntityTagResponse, error)`
+- Function `*ContentItemClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *ContentItemGetOptions)` to `(context.Context, string, string, string, string, *ContentItemClientGetOptions)`
+- Function `*ContentItemClient.Get` return value(s) have been changed from `(ContentItemGetResponse, error)` to `(ContentItemClientGetResponse, error)`
+- Function `*SubscriptionClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *SubscriptionGetOptions)` to `(context.Context, string, string, string, *SubscriptionClientGetOptions)`
+- Function `*SubscriptionClient.Get` return value(s) have been changed from `(SubscriptionGetResponse, error)` to `(SubscriptionClientGetResponse, error)`
+- Function `*GroupClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, string, GroupUpdateParameters, *GroupUpdateOptions)` to `(context.Context, string, string, string, string, GroupUpdateParameters, *GroupClientUpdateOptions)`
+- Function `*GroupClient.Update` return value(s) have been changed from `(GroupUpdateResponse, error)` to `(GroupClientUpdateResponse, error)`
+- Function `*CacheClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, CacheContract, *CacheCreateOrUpdateOptions)` to `(context.Context, string, string, string, CacheContract, *CacheClientCreateOrUpdateOptions)`
+- Function `*CacheClient.CreateOrUpdate` return value(s) have been changed from `(CacheCreateOrUpdateResponse, error)` to `(CacheClientCreateOrUpdateResponse, error)`
+- Function `*APIProductClient.ListByApis` parameter(s) have been changed from `(string, string, string, *APIProductListByApisOptions)` to `(string, string, string, *APIProductClientListByApisOptions)`
+- Function `*APIProductClient.ListByApis` return value(s) have been changed from `(*APIProductListByApisPager)` to `(*APIProductClientListByApisPager)`
+- Function `*QuotaByPeriodKeysClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, string, QuotaCounterValueUpdateContract, *QuotaByPeriodKeysUpdateOptions)` to `(context.Context, string, string, string, string, QuotaCounterValueUpdateContract, *QuotaByPeriodKeysClientUpdateOptions)`
+- Function `*QuotaByPeriodKeysClient.Update` return value(s) have been changed from `(QuotaByPeriodKeysUpdateResponse, error)` to `(QuotaByPeriodKeysClientUpdateResponse, error)`
+- Function `*APIPolicyClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, PolicyIDName, *APIPolicyGetOptions)` to `(context.Context, string, string, string, PolicyIDName, *APIPolicyClientGetOptions)`
+- Function `*APIPolicyClient.Get` return value(s) have been changed from `(APIPolicyGetResponse, error)` to `(APIPolicyClientGetResponse, error)`
+- Function `*SignUpSettingsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, PortalSignupSettings, *SignUpSettingsCreateOrUpdateOptions)` to `(context.Context, string, string, PortalSignupSettings, *SignUpSettingsClientCreateOrUpdateOptions)`
+- Function `*SignUpSettingsClient.CreateOrUpdate` return value(s) have been changed from `(SignUpSettingsCreateOrUpdateResponse, error)` to `(SignUpSettingsClientCreateOrUpdateResponse, error)`
+- Function `*EmailTemplateClient.Update` parameter(s) have been changed from `(context.Context, string, string, TemplateName, string, EmailTemplateUpdateParameters, *EmailTemplateUpdateOptions)` to `(context.Context, string, string, TemplateName, string, EmailTemplateUpdateParameters, *EmailTemplateClientUpdateOptions)`
+- Function `*EmailTemplateClient.Update` return value(s) have been changed from `(EmailTemplateUpdateResponse, error)` to `(EmailTemplateClientUpdateResponse, error)`
+- Function `*OpenIDConnectProviderClient.GetEntityTag` parameter(s) have been changed from `(context.Context, string, string, string, *OpenIDConnectProviderGetEntityTagOptions)` to `(context.Context, string, string, string, *OpenIDConnectProviderClientGetEntityTagOptions)`
+- Function `*OpenIDConnectProviderClient.GetEntityTag` return value(s) have been changed from `(OpenIDConnectProviderGetEntityTagResponse, error)` to `(OpenIDConnectProviderClientGetEntityTagResponse, error)`
+- Function `*GatewayAPIClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, *GatewayAPICreateOrUpdateOptions)` to `(context.Context, string, string, string, string, *GatewayAPIClientCreateOrUpdateOptions)`
+- Function `*GatewayAPIClient.CreateOrUpdate` return value(s) have been changed from `(GatewayAPICreateOrUpdateResponse, error)` to `(GatewayAPIClientCreateOrUpdateResponse, error)`
+- Function `*GatewayCertificateAuthorityClient.GetEntityTag` parameter(s) have been changed from `(context.Context, string, string, string, string, *GatewayCertificateAuthorityGetEntityTagOptions)` to `(context.Context, string, string, string, string, *GatewayCertificateAuthorityClientGetEntityTagOptions)`
+- Function `*GatewayCertificateAuthorityClient.GetEntityTag` return value(s) have been changed from `(GatewayCertificateAuthorityGetEntityTagResponse, error)` to `(GatewayCertificateAuthorityClientGetEntityTagResponse, error)`
+- Function `*TagClient.DetachFromOperation` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *TagDetachFromOperationOptions)` to `(context.Context, string, string, string, string, string, *TagClientDetachFromOperationOptions)`
+- Function `*TagClient.DetachFromOperation` return value(s) have been changed from `(TagDetachFromOperationResponse, error)` to `(TagClientDetachFromOperationResponse, error)`
+- Function `*UserClient.GetEntityTag` parameter(s) have been changed from `(context.Context, string, string, string, *UserGetEntityTagOptions)` to `(context.Context, string, string, string, *UserClientGetEntityTagOptions)`
+- Function `*UserClient.GetEntityTag` return value(s) have been changed from `(UserGetEntityTagResponse, error)` to `(UserClientGetEntityTagResponse, error)`
+- Function `*IdentityProviderClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, IdentityProviderType, IdentityProviderCreateContract, *IdentityProviderCreateOrUpdateOptions)` to `(context.Context, string, string, IdentityProviderType, IdentityProviderCreateContract, *IdentityProviderClientCreateOrUpdateOptions)`
+- Function `*IdentityProviderClient.CreateOrUpdate` return value(s) have been changed from `(IdentityProviderCreateOrUpdateResponse, error)` to `(IdentityProviderClientCreateOrUpdateResponse, error)`
+- Function `*APIIssueAttachmentClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, string, IssueAttachmentContract, *APIIssueAttachmentCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, string, IssueAttachmentContract, *APIIssueAttachmentClientCreateOrUpdateOptions)`
+- Function `*APIIssueAttachmentClient.CreateOrUpdate` return value(s) have been changed from `(APIIssueAttachmentCreateOrUpdateResponse, error)` to `(APIIssueAttachmentClientCreateOrUpdateResponse, error)`
+- Function `*TenantAccessClient.ListByService` parameter(s) have been changed from `(string, string, *TenantAccessListByServiceOptions)` to `(string, string, *TenantAccessClientListByServiceOptions)`
+- Function `*TenantAccessClient.ListByService` return value(s) have been changed from `(*TenantAccessListByServicePager)` to `(*TenantAccessClientListByServicePager)`
+- Function `*PrivateEndpointConnectionClient.ListByService` parameter(s) have been changed from `(context.Context, string, string, *PrivateEndpointConnectionListByServiceOptions)` to `(context.Context, string, string, *PrivateEndpointConnectionClientListByServiceOptions)`
+- Function `*PrivateEndpointConnectionClient.ListByService` return value(s) have been changed from `(PrivateEndpointConnectionListByServiceResponse, error)` to `(PrivateEndpointConnectionClientListByServiceResponse, error)`
+- Function `*APIOperationClient.GetEntityTag` parameter(s) have been changed from `(context.Context, string, string, string, string, *APIOperationGetEntityTagOptions)` to `(context.Context, string, string, string, string, *APIOperationClientGetEntityTagOptions)`
+- Function `*APIOperationClient.GetEntityTag` return value(s) have been changed from `(APIOperationGetEntityTagResponse, error)` to `(APIOperationClientGetEntityTagResponse, error)`
+- Function `*SubscriptionClient.ListSecrets` parameter(s) have been changed from `(context.Context, string, string, string, *SubscriptionListSecretsOptions)` to `(context.Context, string, string, string, *SubscriptionClientListSecretsOptions)`
+- Function `*SubscriptionClient.ListSecrets` return value(s) have been changed from `(SubscriptionListSecretsResponse, error)` to `(SubscriptionClientListSecretsResponse, error)`
+- Function `*GroupUserClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, *GroupUserDeleteOptions)` to `(context.Context, string, string, string, string, *GroupUserClientDeleteOptions)`
+- Function `*GroupUserClient.Delete` return value(s) have been changed from `(GroupUserDeleteResponse, error)` to `(GroupUserClientDeleteResponse, error)`
+- Function `*ReportsClient.ListBySubscription` parameter(s) have been changed from `(string, string, string, *ReportsListBySubscriptionOptions)` to `(string, string, string, *ReportsClientListBySubscriptionOptions)`
+- Function `*ReportsClient.ListBySubscription` return value(s) have been changed from `(*ReportsListBySubscriptionPager)` to `(*ReportsClientListBySubscriptionPager)`
+- Function `*APIClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, string, APIUpdateContract, *APIUpdateOptions)` to `(context.Context, string, string, string, string, APIUpdateContract, *APIClientUpdateOptions)`
+- Function `*APIClient.Update` return value(s) have been changed from `(APIUpdateResponse, error)` to `(APIClientUpdateResponse, error)`
+- Function `*NamedValueClient.BeginRefreshSecret` parameter(s) have been changed from `(context.Context, string, string, string, *NamedValueBeginRefreshSecretOptions)` to `(context.Context, string, string, string, *NamedValueClientBeginRefreshSecretOptions)`
+- Function `*NamedValueClient.BeginRefreshSecret` return value(s) have been changed from `(NamedValueRefreshSecretPollerResponse, error)` to `(NamedValueClientRefreshSecretPollerResponse, error)`
+- Function `*GatewayCertificateAuthorityClient.ListByService` parameter(s) have been changed from `(string, string, string, *GatewayCertificateAuthorityListByServiceOptions)` to `(string, string, string, *GatewayCertificateAuthorityClientListByServiceOptions)`
+- Function `*GatewayCertificateAuthorityClient.ListByService` return value(s) have been changed from `(*GatewayCertificateAuthorityListByServicePager)` to `(*GatewayCertificateAuthorityClientListByServicePager)`
+- Function `*ProductClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, ProductContract, *ProductCreateOrUpdateOptions)` to `(context.Context, string, string, string, ProductContract, *ProductClientCreateOrUpdateOptions)`
+- Function `*ProductClient.CreateOrUpdate` return value(s) have been changed from `(ProductCreateOrUpdateResponse, error)` to `(ProductClientCreateOrUpdateResponse, error)`
+- Function `*ProductClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, string, ProductUpdateParameters, *ProductUpdateOptions)` to `(context.Context, string, string, string, string, ProductUpdateParameters, *ProductClientUpdateOptions)`
+- Function `*ProductClient.Update` return value(s) have been changed from `(ProductUpdateResponse, error)` to `(ProductClientUpdateResponse, error)`
+- Function `*NotificationRecipientEmailClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, NotificationName, string, *NotificationRecipientEmailCreateOrUpdateOptions)` to `(context.Context, string, string, NotificationName, string, *NotificationRecipientEmailClientCreateOrUpdateOptions)`
+- Function `*NotificationRecipientEmailClient.CreateOrUpdate` return value(s) have been changed from `(NotificationRecipientEmailCreateOrUpdateResponse, error)` to `(NotificationRecipientEmailClientCreateOrUpdateResponse, error)`
+- Function `*OpenIDConnectProviderClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, string, OpenidConnectProviderUpdateContract, *OpenIDConnectProviderUpdateOptions)` to `(context.Context, string, string, string, string, OpenidConnectProviderUpdateContract, *OpenIDConnectProviderClientUpdateOptions)`
+- Function `*OpenIDConnectProviderClient.Update` return value(s) have been changed from `(OpenIDConnectProviderUpdateResponse, error)` to `(OpenIDConnectProviderClientUpdateResponse, error)`
+- Function `*APIIssueAttachmentClient.ListByService` parameter(s) have been changed from `(string, string, string, string, *APIIssueAttachmentListByServiceOptions)` to `(string, string, string, string, *APIIssueAttachmentClientListByServiceOptions)`
+- Function `*APIIssueAttachmentClient.ListByService` return value(s) have been changed from `(*APIIssueAttachmentListByServicePager)` to `(*APIIssueAttachmentClientListByServicePager)`
+- Function `*TenantConfigurationClient.GetSyncState` parameter(s) have been changed from `(context.Context, string, string, ConfigurationIDName, *TenantConfigurationGetSyncStateOptions)` to `(context.Context, string, string, ConfigurationIDName, *TenantConfigurationClientGetSyncStateOptions)`
+- Function `*TenantConfigurationClient.GetSyncState` return value(s) have been changed from `(TenantConfigurationGetSyncStateResponse, error)` to `(TenantConfigurationClientGetSyncStateResponse, error)`
+- Function `*DeletedServicesClient.BeginPurge` parameter(s) have been changed from `(context.Context, string, string, *DeletedServicesBeginPurgeOptions)` to `(context.Context, string, string, *DeletedServicesClientBeginPurgeOptions)`
+- Function `*DeletedServicesClient.BeginPurge` return value(s) have been changed from `(DeletedServicesPurgePollerResponse, error)` to `(DeletedServicesClientPurgePollerResponse, error)`
+- Function `*APIReleaseClient.GetEntityTag` parameter(s) have been changed from `(context.Context, string, string, string, string, *APIReleaseGetEntityTagOptions)` to `(context.Context, string, string, string, string, *APIReleaseClientGetEntityTagOptions)`
+- Function `*APIReleaseClient.GetEntityTag` return value(s) have been changed from `(APIReleaseGetEntityTagResponse, error)` to `(APIReleaseClientGetEntityTagResponse, error)`
+- Function `*NamedValueClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, NamedValueCreateContract, *NamedValueBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, NamedValueCreateContract, *NamedValueClientBeginCreateOrUpdateOptions)`
+- Function `*NamedValueClient.BeginCreateOrUpdate` return value(s) have been changed from `(NamedValueCreateOrUpdatePollerResponse, error)` to `(NamedValueClientCreateOrUpdatePollerResponse, error)`
+- Function `*TenantSettingsClient.Get` parameter(s) have been changed from `(context.Context, string, string, SettingsTypeName, *TenantSettingsGetOptions)` to `(context.Context, string, string, SettingsTypeName, *TenantSettingsClientGetOptions)`
+- Function `*TenantSettingsClient.Get` return value(s) have been changed from `(TenantSettingsGetResponse, error)` to `(TenantSettingsClientGetResponse, error)`
+- Function `*GatewayHostnameConfigurationClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, GatewayHostnameConfigurationContract, *GatewayHostnameConfigurationCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, GatewayHostnameConfigurationContract, *GatewayHostnameConfigurationClientCreateOrUpdateOptions)`
+- Function `*GatewayHostnameConfigurationClient.CreateOrUpdate` return value(s) have been changed from `(GatewayHostnameConfigurationCreateOrUpdateResponse, error)` to `(GatewayHostnameConfigurationClientCreateOrUpdateResponse, error)`
+- Function `*SignInSettingsClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, PortalSigninSettings, *SignInSettingsUpdateOptions)` to `(context.Context, string, string, string, PortalSigninSettings, *SignInSettingsClientUpdateOptions)`
+- Function `*SignInSettingsClient.Update` return value(s) have been changed from `(SignInSettingsUpdateResponse, error)` to `(SignInSettingsClientUpdateResponse, error)`
+- Function `*ProductAPIClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, *ProductAPIDeleteOptions)` to `(context.Context, string, string, string, string, *ProductAPIClientDeleteOptions)`
+- Function `*ProductAPIClient.Delete` return value(s) have been changed from `(ProductAPIDeleteResponse, error)` to `(ProductAPIClientDeleteResponse, error)`
+- Function `*OpenIDConnectProviderClient.ListByService` parameter(s) have been changed from `(string, string, *OpenIDConnectProviderListByServiceOptions)` to `(string, string, *OpenIDConnectProviderClientListByServiceOptions)`
+- Function `*OpenIDConnectProviderClient.ListByService` return value(s) have been changed from `(*OpenIDConnectProviderListByServicePager)` to `(*OpenIDConnectProviderClientListByServicePager)`
+- Function `*UserGroupClient.List` parameter(s) have been changed from `(string, string, string, *UserGroupListOptions)` to `(string, string, string, *UserGroupClientListOptions)`
+- Function `*UserGroupClient.List` return value(s) have been changed from `(*UserGroupListPager)` to `(*UserGroupClientListPager)`
+- Function `*PolicyClient.Delete` parameter(s) have been changed from `(context.Context, string, string, PolicyIDName, string, *PolicyDeleteOptions)` to `(context.Context, string, string, PolicyIDName, string, *PolicyClientDeleteOptions)`
+- Function `*PolicyClient.Delete` return value(s) have been changed from `(PolicyDeleteResponse, error)` to `(PolicyClientDeleteResponse, error)`
+- Function `*APIOperationPolicyClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, PolicyIDName, *APIOperationPolicyGetOptions)` to `(context.Context, string, string, string, string, PolicyIDName, *APIOperationPolicyClientGetOptions)`
+- Function `*APIOperationPolicyClient.Get` return value(s) have been changed from `(APIOperationPolicyGetResponse, error)` to `(APIOperationPolicyClientGetResponse, error)`
+- Function `*APISchemaClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *APISchemaGetOptions)` to `(context.Context, string, string, string, string, *APISchemaClientGetOptions)`
+- Function `*APISchemaClient.Get` return value(s) have been changed from `(APISchemaGetResponse, error)` to `(APISchemaClientGetResponse, error)`
+- Function `*PrivateEndpointConnectionClient.ListPrivateLinkResources` parameter(s) have been changed from `(context.Context, string, string, *PrivateEndpointConnectionListPrivateLinkResourcesOptions)` to `(context.Context, string, string, *PrivateEndpointConnectionClientListPrivateLinkResourcesOptions)`
+- Function `*PrivateEndpointConnectionClient.ListPrivateLinkResources` return value(s) have been changed from `(PrivateEndpointConnectionListPrivateLinkResourcesResponse, error)` to `(PrivateEndpointConnectionClientListPrivateLinkResourcesResponse, error)`
+- Function `*APIIssueClient.GetEntityTag` parameter(s) have been changed from `(context.Context, string, string, string, string, *APIIssueGetEntityTagOptions)` to `(context.Context, string, string, string, string, *APIIssueClientGetEntityTagOptions)`
+- Function `*APIIssueClient.GetEntityTag` return value(s) have been changed from `(APIIssueGetEntityTagResponse, error)` to `(APIIssueClientGetEntityTagResponse, error)`
+- Function `*TagClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, TagCreateUpdateParameters, *TagCreateOrUpdateOptions)` to `(context.Context, string, string, string, TagCreateUpdateParameters, *TagClientCreateOrUpdateOptions)`
+- Function `*TagClient.CreateOrUpdate` return value(s) have been changed from `(TagCreateOrUpdateResponse, error)` to `(TagClientCreateOrUpdateResponse, error)`
+- Function `*APIIssueCommentClient.ListByService` parameter(s) have been changed from `(string, string, string, string, *APIIssueCommentListByServiceOptions)` to `(string, string, string, string, *APIIssueCommentClientListByServiceOptions)`
+- Function `*APIIssueCommentClient.ListByService` return value(s) have been changed from `(*APIIssueCommentListByServicePager)` to `(*APIIssueCommentClientListByServicePager)`
+- Function `*QuotaByCounterKeysClient.ListByService` parameter(s) have been changed from `(context.Context, string, string, string, *QuotaByCounterKeysListByServiceOptions)` to `(context.Context, string, string, string, *QuotaByCounterKeysClientListByServiceOptions)`
+- Function `*QuotaByCounterKeysClient.ListByService` return value(s) have been changed from `(QuotaByCounterKeysListByServiceResponse, error)` to `(QuotaByCounterKeysClientListByServiceResponse, error)`
+- Function `*NetworkStatusClient.ListByService` parameter(s) have been changed from `(context.Context, string, string, *NetworkStatusListByServiceOptions)` to `(context.Context, string, string, *NetworkStatusClientListByServiceOptions)`
+- Function `*NetworkStatusClient.ListByService` return value(s) have been changed from `(NetworkStatusListByServiceResponse, error)` to `(NetworkStatusClientListByServiceResponse, error)`
+- Function `*GatewayCertificateAuthorityClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, GatewayCertificateAuthorityContract, *GatewayCertificateAuthorityCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, GatewayCertificateAuthorityContract, *GatewayCertificateAuthorityClientCreateOrUpdateOptions)`
+- Function `*GatewayCertificateAuthorityClient.CreateOrUpdate` return value(s) have been changed from `(GatewayCertificateAuthorityCreateOrUpdateResponse, error)` to `(GatewayCertificateAuthorityClientCreateOrUpdateResponse, error)`
+- Function `*APISchemaClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, SchemaContract, *APISchemaBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, SchemaContract, *APISchemaClientBeginCreateOrUpdateOptions)`
+- Function `*APISchemaClient.BeginCreateOrUpdate` return value(s) have been changed from `(APISchemaCreateOrUpdatePollerResponse, error)` to `(APISchemaClientCreateOrUpdatePollerResponse, error)`
+- Function `*OpenIDConnectProviderClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, *OpenIDConnectProviderDeleteOptions)` to `(context.Context, string, string, string, string, *OpenIDConnectProviderClientDeleteOptions)`
+- Function `*OpenIDConnectProviderClient.Delete` return value(s) have been changed from `(OpenIDConnectProviderDeleteResponse, error)` to `(OpenIDConnectProviderClientDeleteResponse, error)`
+- Function `*APISchemaClient.GetEntityTag` parameter(s) have been changed from `(context.Context, string, string, string, string, *APISchemaGetEntityTagOptions)` to `(context.Context, string, string, string, string, *APISchemaClientGetEntityTagOptions)`
+- Function `*APISchemaClient.GetEntityTag` return value(s) have been changed from `(APISchemaGetEntityTagResponse, error)` to `(APISchemaClientGetEntityTagResponse, error)`
+- Function `*BackendClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, string, BackendUpdateParameters, *BackendUpdateOptions)` to `(context.Context, string, string, string, string, BackendUpdateParameters, *BackendClientUpdateOptions)`
+- Function `*BackendClient.Update` return value(s) have been changed from `(BackendUpdateResponse, error)` to `(BackendClientUpdateResponse, error)`
+- Function `*APIIssueAttachmentClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *APIIssueAttachmentGetOptions)` to `(context.Context, string, string, string, string, string, *APIIssueAttachmentClientGetOptions)`
+- Function `*APIIssueAttachmentClient.Get` return value(s) have been changed from `(APIIssueAttachmentGetResponse, error)` to `(APIIssueAttachmentClientGetResponse, error)`
+- Function `*CacheClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, *CacheDeleteOptions)` to `(context.Context, string, string, string, string, *CacheClientDeleteOptions)`
+- Function `*CacheClient.Delete` return value(s) have been changed from `(CacheDeleteResponse, error)` to `(CacheClientDeleteResponse, error)`
+- Function `*NotificationClient.Get` parameter(s) have been changed from `(context.Context, string, string, NotificationName, *NotificationGetOptions)` to `(context.Context, string, string, NotificationName, *NotificationClientGetOptions)`
+- Function `*NotificationClient.Get` return value(s) have been changed from `(NotificationGetResponse, error)` to `(NotificationClientGetResponse, error)`
+- Function `*AuthorizationServerClient.ListSecrets` parameter(s) have been changed from `(context.Context, string, string, string, *AuthorizationServerListSecretsOptions)` to `(context.Context, string, string, string, *AuthorizationServerClientListSecretsOptions)`
+- Function `*AuthorizationServerClient.ListSecrets` return value(s) have been changed from `(AuthorizationServerListSecretsResponse, error)` to `(AuthorizationServerClientListSecretsResponse, error)`
+- Function `*APIDiagnosticClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *APIDiagnosticDeleteOptions)` to `(context.Context, string, string, string, string, string, *APIDiagnosticClientDeleteOptions)`
+- Function `*APIDiagnosticClient.Delete` return value(s) have been changed from `(APIDiagnosticDeleteResponse, error)` to `(APIDiagnosticClientDeleteResponse, error)`
+- Function `*APIReleaseClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, string, string, APIReleaseContract, *APIReleaseUpdateOptions)` to `(context.Context, string, string, string, string, string, APIReleaseContract, *APIReleaseClientUpdateOptions)`
+- Function `*APIReleaseClient.Update` return value(s) have been changed from `(APIReleaseUpdateResponse, error)` to `(APIReleaseClientUpdateResponse, error)`
+- Function `*PortalSettingsClient.ListByService` parameter(s) have been changed from `(context.Context, string, string, *PortalSettingsListByServiceOptions)` to `(context.Context, string, string, *PortalSettingsClientListByServiceOptions)`
+- Function `*PortalSettingsClient.ListByService` return value(s) have been changed from `(PortalSettingsListByServiceResponse, error)` to `(PortalSettingsClientListByServiceResponse, error)`
+- Function `*CertificateClient.ListByService` parameter(s) have been changed from `(string, string, *CertificateListByServiceOptions)` to `(string, string, *CertificateClientListByServiceOptions)`
+- Function `*CertificateClient.ListByService` return value(s) have been changed from `(*CertificateListByServicePager)` to `(*CertificateClientListByServicePager)`
+- Function `*CacheClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, string, CacheUpdateParameters, *CacheUpdateOptions)` to `(context.Context, string, string, string, string, CacheUpdateParameters, *CacheClientUpdateOptions)`
+- Function `*CacheClient.Update` return value(s) have been changed from `(CacheUpdateResponse, error)` to `(CacheClientUpdateResponse, error)`
+- Function `*TenantAccessClient.Get` parameter(s) have been changed from `(context.Context, string, string, AccessIDName, *TenantAccessGetOptions)` to `(context.Context, string, string, AccessIDName, *TenantAccessClientGetOptions)`
+- Function `*TenantAccessClient.Get` return value(s) have been changed from `(TenantAccessGetResponse, error)` to `(TenantAccessClientGetResponse, error)`
+- Function `*DelegationSettingsClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, PortalDelegationSettings, *DelegationSettingsUpdateOptions)` to `(context.Context, string, string, string, PortalDelegationSettings, *DelegationSettingsClientUpdateOptions)`
+- Function `*DelegationSettingsClient.Update` return value(s) have been changed from `(DelegationSettingsUpdateResponse, error)` to `(DelegationSettingsClientUpdateResponse, error)`
+- Function `*GatewayCertificateAuthorityClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, string, *GatewayCertificateAuthorityDeleteOptions)` to `(context.Context, string, string, string, string, string, *GatewayCertificateAuthorityClientDeleteOptions)`
+- Function `*GatewayCertificateAuthorityClient.Delete` return value(s) have been changed from `(GatewayCertificateAuthorityDeleteResponse, error)` to `(GatewayCertificateAuthorityClientDeleteResponse, error)`
+- Function `*TenantAccessGitClient.RegeneratePrimaryKey` parameter(s) have been changed from `(context.Context, string, string, AccessIDName, *TenantAccessGitRegeneratePrimaryKeyOptions)` to `(context.Context, string, string, AccessIDName, *TenantAccessGitClientRegeneratePrimaryKeyOptions)`
+- Function `*TenantAccessGitClient.RegeneratePrimaryKey` return value(s) have been changed from `(TenantAccessGitRegeneratePrimaryKeyResponse, error)` to `(TenantAccessGitClientRegeneratePrimaryKeyResponse, error)`
+- Function `*NamedValueClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, NamedValueUpdateParameters, *NamedValueBeginUpdateOptions)` to `(context.Context, string, string, string, string, NamedValueUpdateParameters, *NamedValueClientBeginUpdateOptions)`
+- Function `*NamedValueClient.BeginUpdate` return value(s) have been changed from `(NamedValueUpdatePollerResponse, error)` to `(NamedValueClientUpdatePollerResponse, error)`
+- Function `*BackendClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, string, *BackendDeleteOptions)` to `(context.Context, string, string, string, string, *BackendClientDeleteOptions)`
+- Function `*BackendClient.Delete` return value(s) have been changed from `(BackendDeleteResponse, error)` to `(BackendClientDeleteResponse, error)`
+- Function `*PortalRevisionClient.ListByService` parameter(s) have been changed from `(string, string, *PortalRevisionListByServiceOptions)` to `(string, string, *PortalRevisionClientListByServiceOptions)`
+- Function `*PortalRevisionClient.ListByService` return value(s) have been changed from `(*PortalRevisionListByServicePager)` to `(*PortalRevisionClientListByServicePager)`
+- Function `*APIIssueClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, string, string, IssueUpdateContract, *APIIssueUpdateOptions)` to `(context.Context, string, string, string, string, string, IssueUpdateContract, *APIIssueClientUpdateOptions)`
+- Function `*APIIssueClient.Update` return value(s) have been changed from `(APIIssueUpdateResponse, error)` to `(APIIssueClientUpdateResponse, error)`
+- Function `*DiagnosticClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, string, DiagnosticContract, *DiagnosticUpdateOptions)` to `(context.Context, string, string, string, string, DiagnosticContract, *DiagnosticClientUpdateOptions)`
+- Function `*DiagnosticClient.Update` return value(s) have been changed from `(DiagnosticUpdateResponse, error)` to `(DiagnosticClientUpdateResponse, error)`
+- Function `*APIIssueCommentClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, string, IssueCommentContract, *APIIssueCommentCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, string, IssueCommentContract, *APIIssueCommentClientCreateOrUpdateOptions)`
+- Function `*APIIssueCommentClient.CreateOrUpdate` return value(s) have been changed from `(APIIssueCommentCreateOrUpdateResponse, error)` to `(APIIssueCommentClientCreateOrUpdateResponse, error)`
+- Function `*LoggerClient.ListByService` parameter(s) have been changed from `(string, string, *LoggerListByServiceOptions)` to `(string, string, *LoggerClientListByServiceOptions)`
+- Function `*LoggerClient.ListByService` return value(s) have been changed from `(*LoggerListByServicePager)` to `(*LoggerClientListByServicePager)`
+- Function `*NamedValueClient.GetEntityTag` parameter(s) have been changed from `(context.Context, string, string, string, *NamedValueGetEntityTagOptions)` to `(context.Context, string, string, string, *NamedValueClientGetEntityTagOptions)`
+- Function `*NamedValueClient.GetEntityTag` return value(s) have been changed from `(NamedValueGetEntityTagResponse, error)` to `(NamedValueClientGetEntityTagResponse, error)`
+- Function `*IdentityProviderClient.Delete` parameter(s) have been changed from `(context.Context, string, string, IdentityProviderType, string, *IdentityProviderDeleteOptions)` to `(context.Context, string, string, IdentityProviderType, string, *IdentityProviderClientDeleteOptions)`
+- Function `*IdentityProviderClient.Delete` return value(s) have been changed from `(IdentityProviderDeleteResponse, error)` to `(IdentityProviderClientDeleteResponse, error)`
+- Function `*TagClient.ListByService` parameter(s) have been changed from `(string, string, *TagListByServiceOptions)` to `(string, string, *TagClientListByServiceOptions)`
+- Function `*TagClient.ListByService` return value(s) have been changed from `(*TagListByServicePager)` to `(*TagClientListByServicePager)`
+- Function `*ReportsClient.ListByOperation` parameter(s) have been changed from `(string, string, string, *ReportsListByOperationOptions)` to `(string, string, string, *ReportsClientListByOperationOptions)`
+- Function `*ReportsClient.ListByOperation` return value(s) have been changed from `(*ReportsListByOperationPager)` to `(*ReportsClientListByOperationPager)`
+- Type of `AdditionalLocation.SKU` has been changed from `*APIManagementServiceSKUProperties` to `*ServiceSKUProperties`
+- Function `*CacheListByServicePager.Err` has been removed
+- Function `*ReportsListByOperationPager.NextPage` has been removed
+- Function `*GatewayHostnameConfigurationListByServicePager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*IdentityProviderListByServicePager.Err` has been removed
+- Function `*TenantAccessListByServicePager.PageResponse` has been removed
+- Function `*TenantConfigurationSavePoller.ResumeToken` has been removed
+- Function `APIManagementClientPerformConnectivityCheckAsyncPollerResponse.PollUntilDone` has been removed
+- Function `*APISchemaListByAPIPager.PageResponse` has been removed
+- Function `CacheContract.MarshalJSON` has been removed
+- Function `TenantConfigurationValidatePollerResponse.PollUntilDone` has been removed
+- Function `*ProductListByServicePager.NextPage` has been removed
+- Function `*NamedValueUpdatePoller.Done` has been removed
+- Function `APIManagementServiceUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*APIManagementServiceUpdatePollerResponse.Resume` has been removed
+- Function `*APIManagementServiceApplyNetworkConfigurationUpdatesPoller.ResumeToken` has been removed
+- Function `IdentityProviderCreateContract.MarshalJSON` has been removed
+- Function `*ContentTypeListByServicePager.Err` has been removed
+- Function `*ReportsListByGeoPager.PageResponse` has been removed
+- Function `*TenantAccessListByServicePager.NextPage` has been removed
+- Function `*APIManagementServiceApplyNetworkConfigurationUpdatesPoller.Poll` has been removed
+- Function `*APIManagementOperationsClient.List` has been removed
+- Function `ContentTypeContract.MarshalJSON` has been removed
+- Function `*APIListByTagsPager.PageResponse` has been removed
+- Function `*ReportsListByUserPager.Err` has been removed
+- Function `*TenantConfigurationDeployPoller.Poll` has been removed
+- Function `*ReportsListByUserPager.NextPage` has been removed
+- Function `BackendReconnectContract.MarshalJSON` has been removed
+- Function `NotificationContract.MarshalJSON` has been removed
+- Function `IssueAttachmentContract.MarshalJSON` has been removed
+- Function `GatewayCertificateAuthorityContract.MarshalJSON` has been removed
+- Function `TagDescriptionContract.MarshalJSON` has been removed
+- Function `*APIManagementServiceClient.GetSsoToken` has been removed
+- Function `*BackendListByServicePager.NextPage` has been removed
+- Function `*ReportsListByProductPager.PageResponse` has been removed
+- Function `*TenantConfigurationSavePoller.Done` has been removed
+- Function `*APIManagementServiceDeletePoller.Done` has been removed
+- Function `*TenantSettingsListByServicePager.NextPage` has been removed
+- Function `*PortalRevisionCreateOrUpdatePoller.Done` has been removed
+- Function `*UserIdentitiesListPager.NextPage` has been removed
+- Function `*APIManagementServiceClient.BeginUpdate` has been removed
+- Function `*ProductGroupListByProductPager.Err` has been removed
+- Function `NewAPIManagementServiceClient` has been removed
+- Function `PortalRevisionCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `GroupContract.MarshalJSON` has been removed
+- Function `*APIIssueAttachmentListByServicePager.Err` has been removed
+- Function `*APIManagementServiceListPager.PageResponse` has been removed
+- Function `PolicyContract.MarshalJSON` has been removed
+- Function `*DeletedServicesListBySubscriptionPager.PageResponse` has been removed
+- Function `*TagResourceListByServicePager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionDeletePoller.Poll` has been removed
+- Function `*GroupListByServicePager.PageResponse` has been removed
+- Function `*APIManagementServiceListPager.NextPage` has been removed
+- Function `*TenantAccessListByServicePager.Err` has been removed
+- Function `*APIManagementServiceBackupPoller.FinalResponse` has been removed
+- Function `*APITagDescriptionListByServicePager.NextPage` has been removed
+- Function `*APIManagementServiceRestorePoller.ResumeToken` has been removed
+- Function `*GatewayCertificateAuthorityListByServicePager.NextPage` has been removed
+- Function `*UserListByServicePager.NextPage` has been removed
+- Function `*APIManagementSKUsListPager.NextPage` has been removed
+- Function `*ReportsListByOperationPager.Err` has been removed
+- Function `*TagListByAPIPager.Err` has been removed
+- Function `*ProductGroupListByProductPager.PageResponse` has been removed
+- Function `*TenantConfigurationValidatePoller.FinalResponse` has been removed
+- Function `*PortalRevisionCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*APIManagementOperationsListPager.NextPage` has been removed
+- Function `*APIManagementServiceCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*APIRevisionListByServicePager.PageResponse` has been removed
+- Function `*APIManagementServiceUpdatePoller.ResumeToken` has been removed
+- Function `*NamedValueUpdatePollerResponse.Resume` has been removed
+- Function `*PortalRevisionCreateOrUpdatePoller.Poll` has been removed
+- Function `*PrivateEndpointConnectionDeletePollerResponse.Resume` has been removed
+- Function `*PortalRevisionCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*APICreateOrUpdatePoller.Done` has been removed
+- Function `*APIManagementClientPerformConnectivityCheckAsyncPoller.ResumeToken` has been removed
+- Function `*PortalRevisionUpdatePoller.Poll` has been removed
+- Function `*TenantConfigurationDeployPoller.ResumeToken` has been removed
+- Function `UserContract.MarshalJSON` has been removed
+- Function `*DiagnosticListByServicePager.Err` has been removed
+- Function `*DeletedServicesPurgePoller.FinalResponse` has been removed
+- Function `*TenantConfigurationDeployPoller.Done` has been removed
+- Function `*ProductGroupListByProductPager.NextPage` has been removed
+- Function `SchemaContract.MarshalJSON` has been removed
+- Function `*DeletedServicesPurgePoller.Done` has been removed
+- Function `*NamedValueUpdatePoller.FinalResponse` has been removed
+- Function `*TagListByAPIPager.PageResponse` has been removed
+- Function `*GatewayHostnameConfigurationListByServicePager.Err` has been removed
+- Function `*APIManagementServiceRestorePollerResponse.Resume` has been removed
+- Function `*APIVersionSetListByServicePager.Err` has been removed
+- Function `*APIListByServicePager.NextPage` has been removed
+- Function `*ProductListByServicePager.PageResponse` has been removed
+- Function `*ProductSubscriptionsListPager.NextPage` has been removed
+- Function `*TenantSettingsListByServicePager.PageResponse` has been removed
+- Function `*APIManagementServiceSKUsListAvailableServiceSKUsPager.PageResponse` has been removed
+- Function `*APIManagementServiceUpdatePoller.Done` has been removed
+- Function `*APIIssueListByServicePager.NextPage` has been removed
+- Function `*APIManagementServiceBackupPoller.Poll` has been removed
+- Function `NamedValueContract.MarshalJSON` has been removed
+- Function `*APIIssueCommentListByServicePager.PageResponse` has been removed
+- Function `APIVersionSetContract.MarshalJSON` has been removed
+- Function `*UserSubscriptionListPager.Err` has been removed
+- Function `*GatewayListByServicePager.PageResponse` has been removed
+- Function `NamedValueRefreshSecretPollerResponse.PollUntilDone` has been removed
+- Function `APICreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*APISchemaListByAPIPager.Err` has been removed
+- Function `*UserGroupListPager.PageResponse` has been removed
+- Function `*APITagDescriptionListByServicePager.Err` has been removed
+- Function `*GatewayListByServicePager.Err` has been removed
+- Function `*APIIssueListByServicePager.PageResponse` has been removed
+- Function `OpenidConnectProviderContract.MarshalJSON` has been removed
+- Function `PortalRevisionUpdatePollerResponse.PollUntilDone` has been removed
+- Function `PrivateEndpointConnection.MarshalJSON` has been removed
+- Function `APIManagementServiceUpdateProperties.MarshalJSON` has been removed
+- Function `*UserUpdateParametersProperties.UnmarshalJSON` has been removed
+- Function `PrivateLinkResource.MarshalJSON` has been removed
+- Function `NamedValueCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DiagnosticListByServicePager.PageResponse` has been removed
+- Function `*PrivateEndpointConnectionCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*APIManagementServiceClient.GetDomainOwnershipIdentifier` has been removed
+- Function `TenantConfigurationDeployPollerResponse.PollUntilDone` has been removed
+- Function `*NamedValueUpdatePoller.ResumeToken` has been removed
+- Function `*NamedValueRefreshSecretPoller.ResumeToken` has been removed
+- Function `*TenantConfigurationDeployPoller.FinalResponse` has been removed
+- Function `*GatewayHostnameConfigurationListByServicePager.PageResponse` has been removed
+- Function `*LoggerListByServicePager.Err` has been removed
+- Function `APIManagementSKURestrictionInfo.MarshalJSON` has been removed
+- Function `APIManagementServiceListResult.MarshalJSON` has been removed
+- Function `*TagListByServicePager.PageResponse` has been removed
+- Function `*APIManagementServiceClient.BeginBackup` has been removed
+- Function `*ReportsListBySubscriptionPager.Err` has been removed
+- Function `APIContract.MarshalJSON` has been removed
+- Function `*TagListByAPIPager.NextPage` has been removed
+- Function `APISchemaCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*GatewayAPIListByServicePager.Err` has been removed
+- Function `*CacheListByServicePager.PageResponse` has been removed
+- Function `NewAPIManagementSKUsClient` has been removed
+- Function `*APIManagementServiceCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `TenantSettingsContract.MarshalJSON` has been removed
+- Function `*ReportsListByGeoPager.NextPage` has been removed
+- Function `*UserGroupListPager.NextPage` has been removed
+- Function `*PortalRevisionUpdatePoller.Done` has been removed
+- Function `*ReportsListByAPIPager.NextPage` has been removed
+- Function `*APIManagementServiceDeletePoller.Poll` has been removed
+- Function `*APIManagementServiceDeletePollerResponse.Resume` has been removed
+- Function `APIManagementSKU.MarshalJSON` has been removed
+- Function `*APIManagementServiceListByResourceGroupPager.Err` has been removed
+- Function `*ReportsListByProductPager.NextPage` has been removed
+- Function `*APIManagementServiceUpdatePoller.Poll` has been removed
+- Function `*APISchemaCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*APIManagementServiceClient.BeginCreateOrUpdate` has been removed
+- Function `*TagListByProductPager.PageResponse` has been removed
+- Function `*UserGroupListPager.Err` has been removed
+- Function `*OperationListByTagsPager.PageResponse` has been removed
+- Function `*APIProductListByApisPager.PageResponse` has been removed
+- Function `*GatewayAPIListByServicePager.PageResponse` has been removed
+- Function `AssociationContract.MarshalJSON` has been removed
+- Function `*UserCreateParameterProperties.UnmarshalJSON` has been removed
+- Function `*APICreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*APIManagementClientPerformConnectivityCheckAsyncPoller.Poll` has been removed
+- Function `*LoggerListByServicePager.PageResponse` has been removed
+- Function `*SubscriptionListPager.PageResponse` has been removed
+- Function `*APISchemaListByAPIPager.NextPage` has been removed
+- Function `IssueCommentContract.MarshalJSON` has been removed
+- Function `*NamedValueListByServicePager.Err` has been removed
+- Function `*APIManagementServiceSKUsClient.ListAvailableServiceSKUs` has been removed
+- Function `*APIManagementClient.BeginPerformConnectivityCheckAsync` has been removed
+- Function `*TagResourceListByServicePager.PageResponse` has been removed
+- Function `*APIOperationListByAPIPager.PageResponse` has been removed
+- Function `*APICreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*APIManagementServiceListByResourceGroupPager.PageResponse` has been removed
+- Function `*TagListByProductPager.Err` has been removed
+- Function `*PortalRevisionUpdatePoller.FinalResponse` has been removed
+- Function `*OpenIDConnectProviderListByServicePager.NextPage` has been removed
+- Function `*ProductAPIListByProductPager.Err` has been removed
+- Function `*ReportsListByUserPager.PageResponse` has been removed
+- Function `*UserIdentitiesListPager.PageResponse` has been removed
+- Function `*APIOperationListByAPIPager.Err` has been removed
+- Function `*GroupUserListPager.Err` has been removed
+- Function `*PrivateEndpointConnectionDeletePoller.FinalResponse` has been removed
+- Function `PrivateEndpointConnectionCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*NamedValueListByServicePager.NextPage` has been removed
+- Function `*TagListByProductPager.NextPage` has been removed
+- Function `*NamedValueCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `IdentityProviderContract.MarshalJSON` has been removed
+- Function `*APIIssueListByServicePager.Err` has been removed
+- Function `*APIManagementServiceRestorePoller.FinalResponse` has been removed
+- Function `*AuthorizationServerListByServicePager.PageResponse` has been removed
+- Function `APIManagementSKULocationInfo.MarshalJSON` has been removed
+- Function `*GroupUserListPager.PageResponse` has been removed
+- Function `*TenantSettingsListByServicePager.Err` has been removed
+- Function `*APIOperationListByAPIPager.NextPage` has been removed
+- Function `DeletedServicesPurgePollerResponse.PollUntilDone` has been removed
+- Function `APIManagementServiceProperties.MarshalJSON` has been removed
+- Function `NewAPIManagementClient` has been removed
+- Function `*AuthorizationServerListByServicePager.NextPage` has been removed
+- Function `*NotificationListByServicePager.Err` has been removed
+- Function `*APIManagementServiceClient.List` has been removed
+- Function `*EmailTemplateListByServicePager.NextPage` has been removed
+- Function `*ReportsListByTimePager.PageResponse` has been removed
+- Function `*TagListByOperationPager.PageResponse` has been removed
+- Function `*IssueListByServicePager.PageResponse` has been removed
+- Function `*APIDiagnosticListByServicePager.PageResponse` has been removed
+- Function `*ReportsListByProductPager.Err` has been removed
+- Function `PortalSettingsContract.MarshalJSON` has been removed
+- Function `*ReportsListByGeoPager.Err` has been removed
+- Function `*TagListByServicePager.NextPage` has been removed
+- Function `OperationContract.MarshalJSON` has been removed
+- Function `*IssueListByServicePager.Err` has been removed
+- Function `AuthorizationServerContract.MarshalJSON` has been removed
+- Function `*SubscriptionListPager.Err` has been removed
+- Function `TagContract.MarshalJSON` has been removed
+- Function `*ProductSubscriptionsListPager.PageResponse` has been removed
+- Function `SubscriptionContract.MarshalJSON` has been removed
+- Function `*CertificateListByServicePager.Err` has been removed
+- Function `*APIManagementServiceApplyNetworkConfigurationUpdatesPoller.FinalResponse` has been removed
+- Function `*APIIssueAttachmentListByServicePager.NextPage` has been removed
+- Function `*TagListByServicePager.Err` has been removed
+- Function `*APIIssueAttachmentListByServicePager.PageResponse` has been removed
+- Function `RecipientEmailContract.MarshalJSON` has been removed
+- Function `*PortalRevisionUpdatePollerResponse.Resume` has been removed
+- Function `*TagResourceListByServicePager.Err` has been removed
+- Function `*EmailTemplateListByServicePager.PageResponse` has been removed
+- Function `NewAPIManagementServiceSKUsClient` has been removed
+- Function `*APIListByServicePager.Err` has been removed
+- Function `*APIManagementServiceRestorePoller.Poll` has been removed
+- Function `*APIProductListByApisPager.Err` has been removed
+- Function `*OpenIDConnectProviderListByServicePager.PageResponse` has been removed
+- Function `*OperationListByTagsPager.Err` has been removed
+- Function `*NamedValueRefreshSecretPoller.Done` has been removed
+- Function `*APIManagementServiceClient.BeginApplyNetworkConfigurationUpdates` has been removed
+- Function `*APIListByTagsPager.Err` has been removed
+- Function `*APIManagementOperationsListPager.Err` has been removed
+- Function `APIManagementServiceResource.MarshalJSON` has been removed
+- Function `*DeletedServicesPurgePoller.Poll` has been removed
+- Function `*ReportsListBySubscriptionPager.PageResponse` has been removed
+- Function `*BackendListByServicePager.Err` has been removed
+- Function `*APIRevisionListByServicePager.Err` has been removed
+- Function `*UserSubscriptionListPager.PageResponse` has been removed
+- Function `AccessInformationContract.MarshalJSON` has been removed
+- Function `IssueContract.MarshalJSON` has been removed
+- Function `*ContentItemListByServicePager.PageResponse` has been removed
+- Function `APIEntityBaseContract.MarshalJSON` has been removed
+- Function `*CertificateListByServicePager.NextPage` has been removed
+- Function `*APIVersionSetListByServicePager.NextPage` has been removed
+- Function `*TenantConfigurationValidatePollerResponse.Resume` has been removed
+- Function `*CacheListByServicePager.NextPage` has been removed
+- Function `*GatewayAPIListByServicePager.NextPage` has been removed
+- Function `NewAPIManagementOperationsClient` has been removed
+- Function `*ContentItemListByServicePager.Err` has been removed
+- Function `CertificateContract.MarshalJSON` has been removed
+- Function `*TenantConfigurationSavePollerResponse.Resume` has been removed
+- Function `*NamedValueRefreshSecretPollerResponse.Resume` has been removed
+- Function `*PortalRevisionCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*IdentityProviderListByServicePager.PageResponse` has been removed
+- Function `*SubscriptionListPager.NextPage` has been removed
+- Function `*APIManagementServiceListByResourceGroupPager.NextPage` has been removed
+- Function `*APIManagementServiceDeletePoller.ResumeToken` has been removed
+- Function `*RegionListByServicePager.PageResponse` has been removed
+- Function `*UserListByServicePager.PageResponse` has been removed
+- Function `LoggerContract.MarshalJSON` has been removed
+- Function `*APIListByTagsPager.NextPage` has been removed
+- Function `APIManagementServiceApplyNetworkConfigurationUpdatesPollerResponse.PollUntilDone` has been removed
+- Function `*PortalRevisionListByServicePager.Err` has been removed
+- Function `*APIManagementServiceUpdatePoller.FinalResponse` has been removed
+- Function `*ReportsListByAPIPager.Err` has been removed
+- Function `*APICreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*NamedValueCreateOrUpdatePoller.Poll` has been removed
+- Function `*GatewayCertificateAuthorityListByServicePager.PageResponse` has been removed
+- Function `*ContentItemListByServicePager.NextPage` has been removed
+- Function `*APIManagementServiceCreateOrUpdatePoller.Done` has been removed
+- Function `*PortalRevisionUpdatePoller.ResumeToken` has been removed
+- Function `*APISchemaCreateOrUpdatePoller.Poll` has been removed
+- Function `*APIDiagnosticListByServicePager.Err` has been removed
+- Function `*UserSubscriptionListPager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionDeletePoller.Done` has been removed
+- Function `*TenantConfigurationSavePoller.Poll` has been removed
+- Function `*APIManagementSKUsListPager.Err` has been removed
+- Function `*NamedValueCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*APIManagementServiceApplyNetworkConfigurationUpdatesPoller.Done` has been removed
+- Function `*AuthorizationServerListByServicePager.Err` has been removed
+- Function `*APIRevisionListByServicePager.NextPage` has been removed
+- Function `*APIManagementServiceCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*GroupListByServicePager.Err` has been removed
+- Function `APIManagementServiceBaseProperties.MarshalJSON` has been removed
+- Function `*CertificateListByServicePager.PageResponse` has been removed
+- Function `APIManagementServiceIdentity.MarshalJSON` has been removed
+- Function `*OpenIDConnectProviderListByServicePager.Err` has been removed
+- Function `*APIManagementServiceProperties.UnmarshalJSON` has been removed
+- Function `*APIVersionSetListByServicePager.PageResponse` has been removed
+- Function `*ReportsListByAPIPager.PageResponse` has been removed
+- Function `ProductContract.MarshalJSON` has been removed
+- Function `OperationResultContract.MarshalJSON` has been removed
+- Function `PolicyDescriptionContract.MarshalJSON` has been removed
+- Function `*DiagnosticListByServicePager.NextPage` has been removed
+- Function `NamedValueUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ReportsListByTimePager.NextPage` has been removed
+- Function `*APISchemaCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `RecipientUserContract.MarshalJSON` has been removed
+- Function `*NamedValueListByServicePager.PageResponse` has been removed
+- Function `*ContentTypeListByServicePager.PageResponse` has been removed
+- Function `*NamedValueCreateOrUpdatePoller.Done` has been removed
+- Function `*DeletedServicesPurgePollerResponse.Resume` has been removed
+- Function `TenantConfigurationSyncStateContract.MarshalJSON` has been removed
+- Function `APIManagementServiceUpdateParameters.MarshalJSON` has been removed
+- Function `APIManagementSKURestrictions.MarshalJSON` has been removed
+- Function `*GatewayListByServicePager.NextPage` has been removed
+- Function `*APIManagementClientPerformConnectivityCheckAsyncPoller.Done` has been removed
+- Function `*ProductListByServicePager.Err` has been removed
+- Function `*GroupListByServicePager.NextPage` has been removed
+- Function `*APISchemaCreateOrUpdatePoller.Done` has been removed
+- Function `*PrivateEndpointConnectionCreateOrUpdatePoller.Poll` has been removed
+- Function `*APIManagementOperationsListPager.PageResponse` has been removed
+- Function `*APIIssueCommentListByServicePager.NextPage` has been removed
+- Function `*APIManagementServiceClient.BeginRestore` has been removed
+- Function `*APIManagementSKUsClient.List` has been removed
+- Function `*APIManagementServiceClient.BeginDelete` has been removed
+- Function `*EmailTemplateListByServicePager.Err` has been removed
+- Function `*APIManagementServiceBackupPollerResponse.Resume` has been removed
+- Function `*APIManagementServiceClient.CheckNameAvailability` has been removed
+- Function `*PortalRevisionListByServicePager.PageResponse` has been removed
+- Function `*APICreateOrUpdatePoller.Poll` has been removed
+- Function `*GatewayCertificateAuthorityListByServicePager.Err` has been removed
+- Function `*NamedValueRefreshSecretPoller.Poll` has been removed
+- Function `*APIManagementServiceBaseProperties.UnmarshalJSON` has been removed
+- Function `APIManagementSKUsResult.MarshalJSON` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `*APIReleaseListByServicePager.PageResponse` has been removed
+- Function `*NotificationListByServicePager.PageResponse` has been removed
+- Function `*PortalRevisionListByServicePager.NextPage` has been removed
+- Function `*APIManagementServiceClient.ListByResourceGroup` has been removed
+- Function `*APIManagementServiceClient.Get` has been removed
+- Function `*UserListByServicePager.Err` has been removed
+- Function `*APIReleaseListByServicePager.Err` has been removed
+- Function `*APIManagementServiceBackupPoller.ResumeToken` has been removed
+- Function `*NamedValueCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ProductListByTagsPager.PageResponse` has been removed
+- Function `*APIManagementServiceSKUsListAvailableServiceSKUsPager.Err` has been removed
+- Function `APIManagementSKUZoneDetails.MarshalJSON` has been removed
+- Function `*APIListByServicePager.PageResponse` has been removed
+- Function `*PrivateEndpointConnectionDeletePoller.ResumeToken` has been removed
+- Function `*TenantConfigurationValidatePoller.ResumeToken` has been removed
+- Function `*UserEntityBaseParameters.UnmarshalJSON` has been removed
+- Function `EmailTemplateContract.MarshalJSON` has been removed
+- Function `*GroupUserListPager.NextPage` has been removed
+- Function `NamedValueCreateContract.MarshalJSON` has been removed
+- Function `*APISchemaCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*APIProductListByApisPager.NextPage` has been removed
+- Function `*APIReleaseListByServicePager.NextPage` has been removed
+- Function `*APIManagementClientPerformConnectivityCheckAsyncPollerResponse.Resume` has been removed
+- Function `*RegionListByServicePager.Err` has been removed
+- Function `*ReportsListBySubscriptionPager.NextPage` has been removed
+- Function `*APITagDescriptionListByServicePager.PageResponse` has been removed
+- Function `*APIManagementClientPerformConnectivityCheckAsyncPoller.FinalResponse` has been removed
+- Function `*DeletedServicesPurgePoller.ResumeToken` has been removed
+- Function `APIManagementServiceCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*RegionListByServicePager.NextPage` has been removed
+- Function `*ProductAPIListByProductPager.PageResponse` has been removed
+- Function `*ReportsListByOperationPager.PageResponse` has been removed
+- Function `DeletedServiceContract.MarshalJSON` has been removed
+- Function `*IssueListByServicePager.NextPage` has been removed
+- Function `*ProductAPIListByProductPager.NextPage` has been removed
+- Function `*APIManagementServiceCreateOrUpdatePoller.Poll` has been removed
+- Function `*PrivateEndpointConnectionCreateOrUpdatePoller.Done` has been removed
+- Function `*TenantConfigurationSavePoller.FinalResponse` has been removed
+- Function `APIManagementServiceBackupPollerResponse.PollUntilDone` has been removed
+- Function `*NamedValueRefreshSecretPoller.FinalResponse` has been removed
+- Function `*TagListByOperationPager.NextPage` has been removed
+- Function `*LoggerListByServicePager.NextPage` has been removed
+- Function `*APIManagementServiceBackupPoller.Done` has been removed
+- Function `*ContentTypeListByServicePager.NextPage` has been removed
+- Function `*UserIdentitiesListPager.Err` has been removed
+- Function `*APIManagementSKUsListPager.PageResponse` has been removed
+- Function `TenantConfigurationSavePollerResponse.PollUntilDone` has been removed
+- Function `*APIManagementServiceRestorePoller.Done` has been removed
+- Function `BackendContract.MarshalJSON` has been removed
+- Function `*IdentityProviderListByServicePager.NextPage` has been removed
+- Function `*NotificationListByServicePager.NextPage` has been removed
+- Function `*APIIssueCommentListByServicePager.Err` has been removed
+- Function `*DeletedServicesListBySubscriptionPager.NextPage` has been removed
+- Function `*APIManagementServiceListPager.Err` has been removed
+- Function `ErrorResponse.Error` has been removed
+- Function `APIManagementServiceDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ProductListByTagsPager.NextPage` has been removed
+- Function `*TenantConfigurationValidatePoller.Poll` has been removed
+- Function `*APIManagementServiceDeletePoller.FinalResponse` has been removed
+- Function `PrivateEndpointConnectionDeletePollerResponse.PollUntilDone` has been removed
+- Function `APIManagementServiceRestorePollerResponse.PollUntilDone` has been removed
+- Function `*TenantConfigurationValidatePoller.Done` has been removed
+- Function `*APIDiagnosticListByServicePager.NextPage` has been removed
+- Function `*ProductListByTagsPager.Err` has been removed
+- Function `*APIManagementServiceApplyNetworkConfigurationUpdatesPollerResponse.Resume` has been removed
+- Function `*ProductSubscriptionsListPager.Err` has been removed
+- Function `*TenantConfigurationDeployPollerResponse.Resume` has been removed
+- Function `*NamedValueUpdatePoller.Poll` has been removed
+- Function `*APIManagementServiceUpdateProperties.UnmarshalJSON` has been removed
+- Function `*APIManagementServiceSKUsListAvailableServiceSKUsPager.NextPage` has been removed
+- Function `*BackendListByServicePager.PageResponse` has been removed
+- Function `*TagListByOperationPager.Err` has been removed
+- Function `*PrivateEndpointConnectionCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `GatewayHostnameConfigurationContract.MarshalJSON` has been removed
+- Function `*DeletedServicesListBySubscriptionPager.Err` has been removed
+- Function `*ReportsListByTimePager.Err` has been removed
+- Function `*OperationListByTagsPager.NextPage` has been removed
+- Struct `APIBeginCreateOrUpdateOptions` has been removed
+- Struct `APICreateOrUpdatePoller` has been removed
+- Struct `APICreateOrUpdatePollerResponse` has been removed
+- Struct `APICreateOrUpdateResponse` has been removed
+- Struct `APICreateOrUpdateResult` has been removed
+- Struct `APIDeleteOptions` has been removed
+- Struct `APIDeleteResponse` has been removed
+- Struct `APIDiagnosticCreateOrUpdateOptions` has been removed
+- Struct `APIDiagnosticCreateOrUpdateResponse` has been removed
+- Struct `APIDiagnosticCreateOrUpdateResult` has been removed
+- Struct `APIDiagnosticDeleteOptions` has been removed
+- Struct `APIDiagnosticDeleteResponse` has been removed
+- Struct `APIDiagnosticGetEntityTagOptions` has been removed
+- Struct `APIDiagnosticGetEntityTagResponse` has been removed
+- Struct `APIDiagnosticGetEntityTagResult` has been removed
+- Struct `APIDiagnosticGetOptions` has been removed
+- Struct `APIDiagnosticGetResponse` has been removed
+- Struct `APIDiagnosticGetResult` has been removed
+- Struct `APIDiagnosticListByServiceOptions` has been removed
+- Struct `APIDiagnosticListByServicePager` has been removed
+- Struct `APIDiagnosticListByServiceResponse` has been removed
+- Struct `APIDiagnosticListByServiceResult` has been removed
+- Struct `APIDiagnosticUpdateOptions` has been removed
+- Struct `APIDiagnosticUpdateResponse` has been removed
+- Struct `APIDiagnosticUpdateResult` has been removed
+- Struct `APIExportGetOptions` has been removed
+- Struct `APIExportGetResponse` has been removed
+- Struct `APIExportGetResult` has been removed
+- Struct `APIGetEntityTagOptions` has been removed
+- Struct `APIGetEntityTagResponse` has been removed
+- Struct `APIGetEntityTagResult` has been removed
+- Struct `APIGetOptions` has been removed
+- Struct `APIGetResponse` has been removed
+- Struct `APIGetResult` has been removed
+- Struct `APIIssueAttachmentCreateOrUpdateOptions` has been removed
+- Struct `APIIssueAttachmentCreateOrUpdateResponse` has been removed
+- Struct `APIIssueAttachmentCreateOrUpdateResult` has been removed
+- Struct `APIIssueAttachmentDeleteOptions` has been removed
+- Struct `APIIssueAttachmentDeleteResponse` has been removed
+- Struct `APIIssueAttachmentGetEntityTagOptions` has been removed
+- Struct `APIIssueAttachmentGetEntityTagResponse` has been removed
+- Struct `APIIssueAttachmentGetEntityTagResult` has been removed
+- Struct `APIIssueAttachmentGetOptions` has been removed
+- Struct `APIIssueAttachmentGetResponse` has been removed
+- Struct `APIIssueAttachmentGetResult` has been removed
+- Struct `APIIssueAttachmentListByServiceOptions` has been removed
+- Struct `APIIssueAttachmentListByServicePager` has been removed
+- Struct `APIIssueAttachmentListByServiceResponse` has been removed
+- Struct `APIIssueAttachmentListByServiceResult` has been removed
+- Struct `APIIssueCommentCreateOrUpdateOptions` has been removed
+- Struct `APIIssueCommentCreateOrUpdateResponse` has been removed
+- Struct `APIIssueCommentCreateOrUpdateResult` has been removed
+- Struct `APIIssueCommentDeleteOptions` has been removed
+- Struct `APIIssueCommentDeleteResponse` has been removed
+- Struct `APIIssueCommentGetEntityTagOptions` has been removed
+- Struct `APIIssueCommentGetEntityTagResponse` has been removed
+- Struct `APIIssueCommentGetEntityTagResult` has been removed
+- Struct `APIIssueCommentGetOptions` has been removed
+- Struct `APIIssueCommentGetResponse` has been removed
+- Struct `APIIssueCommentGetResult` has been removed
+- Struct `APIIssueCommentListByServiceOptions` has been removed
+- Struct `APIIssueCommentListByServicePager` has been removed
+- Struct `APIIssueCommentListByServiceResponse` has been removed
+- Struct `APIIssueCommentListByServiceResult` has been removed
+- Struct `APIIssueCreateOrUpdateOptions` has been removed
+- Struct `APIIssueCreateOrUpdateResponse` has been removed
+- Struct `APIIssueCreateOrUpdateResult` has been removed
+- Struct `APIIssueDeleteOptions` has been removed
+- Struct `APIIssueDeleteResponse` has been removed
+- Struct `APIIssueGetEntityTagOptions` has been removed
+- Struct `APIIssueGetEntityTagResponse` has been removed
+- Struct `APIIssueGetEntityTagResult` has been removed
+- Struct `APIIssueGetOptions` has been removed
+- Struct `APIIssueGetResponse` has been removed
+- Struct `APIIssueGetResult` has been removed
+- Struct `APIIssueListByServiceOptions` has been removed
+- Struct `APIIssueListByServicePager` has been removed
+- Struct `APIIssueListByServiceResponse` has been removed
+- Struct `APIIssueListByServiceResult` has been removed
+- Struct `APIIssueUpdateOptions` has been removed
+- Struct `APIIssueUpdateResponse` has been removed
+- Struct `APIIssueUpdateResult` has been removed
+- Struct `APIListByServiceOptions` has been removed
+- Struct `APIListByServicePager` has been removed
+- Struct `APIListByServiceResponse` has been removed
+- Struct `APIListByServiceResult` has been removed
+- Struct `APIListByTagsOptions` has been removed
+- Struct `APIListByTagsPager` has been removed
+- Struct `APIListByTagsResponse` has been removed
+- Struct `APIListByTagsResult` has been removed
+- Struct `APIManagementClient` has been removed
+- Struct `APIManagementClientBeginPerformConnectivityCheckAsyncOptions` has been removed
+- Struct `APIManagementClientPerformConnectivityCheckAsyncPoller` has been removed
+- Struct `APIManagementClientPerformConnectivityCheckAsyncPollerResponse` has been removed
+- Struct `APIManagementClientPerformConnectivityCheckAsyncResponse` has been removed
+- Struct `APIManagementClientPerformConnectivityCheckAsyncResult` has been removed
+- Struct `APIManagementOperationsClient` has been removed
+- Struct `APIManagementOperationsListOptions` has been removed
+- Struct `APIManagementOperationsListPager` has been removed
+- Struct `APIManagementOperationsListResponse` has been removed
+- Struct `APIManagementOperationsListResult` has been removed
+- Struct `APIManagementSKU` has been removed
+- Struct `APIManagementSKUCapabilities` has been removed
+- Struct `APIManagementSKUCapacity` has been removed
+- Struct `APIManagementSKUCosts` has been removed
+- Struct `APIManagementSKULocationInfo` has been removed
+- Struct `APIManagementSKURestrictionInfo` has been removed
+- Struct `APIManagementSKURestrictions` has been removed
+- Struct `APIManagementSKUZoneDetails` has been removed
+- Struct `APIManagementSKUsClient` has been removed
+- Struct `APIManagementSKUsListOptions` has been removed
+- Struct `APIManagementSKUsListPager` has been removed
+- Struct `APIManagementSKUsListResponse` has been removed
+- Struct `APIManagementSKUsListResult` has been removed
+- Struct `APIManagementSKUsResult` has been removed
+- Struct `APIManagementServiceApplyNetworkConfigurationParameters` has been removed
+- Struct `APIManagementServiceApplyNetworkConfigurationUpdatesPoller` has been removed
+- Struct `APIManagementServiceApplyNetworkConfigurationUpdatesPollerResponse` has been removed
+- Struct `APIManagementServiceApplyNetworkConfigurationUpdatesResponse` has been removed
+- Struct `APIManagementServiceApplyNetworkConfigurationUpdatesResult` has been removed
+- Struct `APIManagementServiceBackupPoller` has been removed
+- Struct `APIManagementServiceBackupPollerResponse` has been removed
+- Struct `APIManagementServiceBackupResponse` has been removed
+- Struct `APIManagementServiceBackupRestoreParameters` has been removed
+- Struct `APIManagementServiceBackupResult` has been removed
+- Struct `APIManagementServiceBaseProperties` has been removed
+- Struct `APIManagementServiceBeginApplyNetworkConfigurationUpdatesOptions` has been removed
+- Struct `APIManagementServiceBeginBackupOptions` has been removed
+- Struct `APIManagementServiceBeginCreateOrUpdateOptions` has been removed
+- Struct `APIManagementServiceBeginDeleteOptions` has been removed
+- Struct `APIManagementServiceBeginRestoreOptions` has been removed
+- Struct `APIManagementServiceBeginUpdateOptions` has been removed
+- Struct `APIManagementServiceCheckNameAvailabilityOptions` has been removed
+- Struct `APIManagementServiceCheckNameAvailabilityParameters` has been removed
+- Struct `APIManagementServiceCheckNameAvailabilityResponse` has been removed
+- Struct `APIManagementServiceCheckNameAvailabilityResult` has been removed
+- Struct `APIManagementServiceClient` has been removed
+- Struct `APIManagementServiceCreateOrUpdatePoller` has been removed
+- Struct `APIManagementServiceCreateOrUpdatePollerResponse` has been removed
+- Struct `APIManagementServiceCreateOrUpdateResponse` has been removed
+- Struct `APIManagementServiceCreateOrUpdateResult` has been removed
+- Struct `APIManagementServiceDeletePoller` has been removed
+- Struct `APIManagementServiceDeletePollerResponse` has been removed
+- Struct `APIManagementServiceDeleteResponse` has been removed
+- Struct `APIManagementServiceDeleteResult` has been removed
+- Struct `APIManagementServiceGetDomainOwnershipIdentifierOptions` has been removed
+- Struct `APIManagementServiceGetDomainOwnershipIdentifierResponse` has been removed
+- Struct `APIManagementServiceGetDomainOwnershipIdentifierResult` has been removed
+- Struct `APIManagementServiceGetDomainOwnershipIdentifierResultEnvelope` has been removed
+- Struct `APIManagementServiceGetOptions` has been removed
+- Struct `APIManagementServiceGetResponse` has been removed
+- Struct `APIManagementServiceGetResult` has been removed
+- Struct `APIManagementServiceGetSsoTokenOptions` has been removed
+- Struct `APIManagementServiceGetSsoTokenResponse` has been removed
+- Struct `APIManagementServiceGetSsoTokenResult` has been removed
+- Struct `APIManagementServiceGetSsoTokenResultEnvelope` has been removed
+- Struct `APIManagementServiceIdentity` has been removed
+- Struct `APIManagementServiceListByResourceGroupOptions` has been removed
+- Struct `APIManagementServiceListByResourceGroupPager` has been removed
+- Struct `APIManagementServiceListByResourceGroupResponse` has been removed
+- Struct `APIManagementServiceListByResourceGroupResult` has been removed
+- Struct `APIManagementServiceListOptions` has been removed
+- Struct `APIManagementServiceListPager` has been removed
+- Struct `APIManagementServiceListResponse` has been removed
+- Struct `APIManagementServiceListResult` has been removed
+- Struct `APIManagementServiceListResultEnvelope` has been removed
+- Struct `APIManagementServiceNameAvailabilityResult` has been removed
+- Struct `APIManagementServiceProperties` has been removed
+- Struct `APIManagementServiceResource` has been removed
+- Struct `APIManagementServiceRestorePoller` has been removed
+- Struct `APIManagementServiceRestorePollerResponse` has been removed
+- Struct `APIManagementServiceRestoreResponse` has been removed
+- Struct `APIManagementServiceRestoreResult` has been removed
+- Struct `APIManagementServiceSKUProperties` has been removed
+- Struct `APIManagementServiceSKUsClient` has been removed
+- Struct `APIManagementServiceSKUsListAvailableServiceSKUsOptions` has been removed
+- Struct `APIManagementServiceSKUsListAvailableServiceSKUsPager` has been removed
+- Struct `APIManagementServiceSKUsListAvailableServiceSKUsResponse` has been removed
+- Struct `APIManagementServiceSKUsListAvailableServiceSKUsResult` has been removed
+- Struct `APIManagementServiceUpdateParameters` has been removed
+- Struct `APIManagementServiceUpdatePoller` has been removed
+- Struct `APIManagementServiceUpdatePollerResponse` has been removed
+- Struct `APIManagementServiceUpdateProperties` has been removed
+- Struct `APIManagementServiceUpdateResponse` has been removed
+- Struct `APIManagementServiceUpdateResult` has been removed
+- Struct `APIOperationCreateOrUpdateOptions` has been removed
+- Struct `APIOperationCreateOrUpdateResponse` has been removed
+- Struct `APIOperationCreateOrUpdateResult` has been removed
+- Struct `APIOperationDeleteOptions` has been removed
+- Struct `APIOperationDeleteResponse` has been removed
+- Struct `APIOperationGetEntityTagOptions` has been removed
+- Struct `APIOperationGetEntityTagResponse` has been removed
+- Struct `APIOperationGetEntityTagResult` has been removed
+- Struct `APIOperationGetOptions` has been removed
+- Struct `APIOperationGetResponse` has been removed
+- Struct `APIOperationGetResult` has been removed
+- Struct `APIOperationListByAPIOptions` has been removed
+- Struct `APIOperationListByAPIPager` has been removed
+- Struct `APIOperationListByAPIResponse` has been removed
+- Struct `APIOperationListByAPIResult` has been removed
+- Struct `APIOperationPolicyCreateOrUpdateOptions` has been removed
+- Struct `APIOperationPolicyCreateOrUpdateResponse` has been removed
+- Struct `APIOperationPolicyCreateOrUpdateResult` has been removed
+- Struct `APIOperationPolicyDeleteOptions` has been removed
+- Struct `APIOperationPolicyDeleteResponse` has been removed
+- Struct `APIOperationPolicyGetEntityTagOptions` has been removed
+- Struct `APIOperationPolicyGetEntityTagResponse` has been removed
+- Struct `APIOperationPolicyGetEntityTagResult` has been removed
+- Struct `APIOperationPolicyGetOptions` has been removed
+- Struct `APIOperationPolicyGetResponse` has been removed
+- Struct `APIOperationPolicyGetResult` has been removed
+- Struct `APIOperationPolicyListByOperationOptions` has been removed
+- Struct `APIOperationPolicyListByOperationResponse` has been removed
+- Struct `APIOperationPolicyListByOperationResult` has been removed
+- Struct `APIOperationUpdateOptions` has been removed
+- Struct `APIOperationUpdateResponse` has been removed
+- Struct `APIOperationUpdateResult` has been removed
+- Struct `APIPolicyCreateOrUpdateOptions` has been removed
+- Struct `APIPolicyCreateOrUpdateResponse` has been removed
+- Struct `APIPolicyCreateOrUpdateResult` has been removed
+- Struct `APIPolicyDeleteOptions` has been removed
+- Struct `APIPolicyDeleteResponse` has been removed
+- Struct `APIPolicyGetEntityTagOptions` has been removed
+- Struct `APIPolicyGetEntityTagResponse` has been removed
+- Struct `APIPolicyGetEntityTagResult` has been removed
+- Struct `APIPolicyGetOptions` has been removed
+- Struct `APIPolicyGetResponse` has been removed
+- Struct `APIPolicyGetResult` has been removed
+- Struct `APIPolicyListByAPIOptions` has been removed
+- Struct `APIPolicyListByAPIResponse` has been removed
+- Struct `APIPolicyListByAPIResult` has been removed
+- Struct `APIProductListByApisOptions` has been removed
+- Struct `APIProductListByApisPager` has been removed
+- Struct `APIProductListByApisResponse` has been removed
+- Struct `APIProductListByApisResult` has been removed
+- Struct `APIReleaseCreateOrUpdateOptions` has been removed
+- Struct `APIReleaseCreateOrUpdateResponse` has been removed
+- Struct `APIReleaseCreateOrUpdateResult` has been removed
+- Struct `APIReleaseDeleteOptions` has been removed
+- Struct `APIReleaseDeleteResponse` has been removed
+- Struct `APIReleaseGetEntityTagOptions` has been removed
+- Struct `APIReleaseGetEntityTagResponse` has been removed
+- Struct `APIReleaseGetEntityTagResult` has been removed
+- Struct `APIReleaseGetOptions` has been removed
+- Struct `APIReleaseGetResponse` has been removed
+- Struct `APIReleaseGetResult` has been removed
+- Struct `APIReleaseListByServiceOptions` has been removed
+- Struct `APIReleaseListByServicePager` has been removed
+- Struct `APIReleaseListByServiceResponse` has been removed
+- Struct `APIReleaseListByServiceResult` has been removed
+- Struct `APIReleaseUpdateOptions` has been removed
+- Struct `APIReleaseUpdateResponse` has been removed
+- Struct `APIReleaseUpdateResult` has been removed
+- Struct `APIRevisionListByServiceOptions` has been removed
+- Struct `APIRevisionListByServicePager` has been removed
+- Struct `APIRevisionListByServiceResponse` has been removed
+- Struct `APIRevisionListByServiceResult` has been removed
+- Struct `APISchemaBeginCreateOrUpdateOptions` has been removed
+- Struct `APISchemaCreateOrUpdatePoller` has been removed
+- Struct `APISchemaCreateOrUpdatePollerResponse` has been removed
+- Struct `APISchemaCreateOrUpdateResponse` has been removed
+- Struct `APISchemaCreateOrUpdateResult` has been removed
+- Struct `APISchemaDeleteOptions` has been removed
+- Struct `APISchemaDeleteResponse` has been removed
+- Struct `APISchemaGetEntityTagOptions` has been removed
+- Struct `APISchemaGetEntityTagResponse` has been removed
+- Struct `APISchemaGetEntityTagResult` has been removed
+- Struct `APISchemaGetOptions` has been removed
+- Struct `APISchemaGetResponse` has been removed
+- Struct `APISchemaGetResult` has been removed
+- Struct `APISchemaListByAPIOptions` has been removed
+- Struct `APISchemaListByAPIPager` has been removed
+- Struct `APISchemaListByAPIResponse` has been removed
+- Struct `APISchemaListByAPIResult` has been removed
+- Struct `APITagDescriptionCreateOrUpdateOptions` has been removed
+- Struct `APITagDescriptionCreateOrUpdateResponse` has been removed
+- Struct `APITagDescriptionCreateOrUpdateResult` has been removed
+- Struct `APITagDescriptionDeleteOptions` has been removed
+- Struct `APITagDescriptionDeleteResponse` has been removed
+- Struct `APITagDescriptionGetEntityTagOptions` has been removed
+- Struct `APITagDescriptionGetEntityTagResponse` has been removed
+- Struct `APITagDescriptionGetEntityTagResult` has been removed
+- Struct `APITagDescriptionGetOptions` has been removed
+- Struct `APITagDescriptionGetResponse` has been removed
+- Struct `APITagDescriptionGetResult` has been removed
+- Struct `APITagDescriptionListByServiceOptions` has been removed
+- Struct `APITagDescriptionListByServicePager` has been removed
+- Struct `APITagDescriptionListByServiceResponse` has been removed
+- Struct `APITagDescriptionListByServiceResult` has been removed
+- Struct `APIUpdateOptions` has been removed
+- Struct `APIUpdateResponse` has been removed
+- Struct `APIUpdateResult` has been removed
+- Struct `APIVersionSetCreateOrUpdateOptions` has been removed
+- Struct `APIVersionSetCreateOrUpdateResponse` has been removed
+- Struct `APIVersionSetCreateOrUpdateResult` has been removed
+- Struct `APIVersionSetDeleteOptions` has been removed
+- Struct `APIVersionSetDeleteResponse` has been removed
+- Struct `APIVersionSetGetEntityTagOptions` has been removed
+- Struct `APIVersionSetGetEntityTagResponse` has been removed
+- Struct `APIVersionSetGetEntityTagResult` has been removed
+- Struct `APIVersionSetGetOptions` has been removed
+- Struct `APIVersionSetGetResponse` has been removed
+- Struct `APIVersionSetGetResult` has been removed
+- Struct `APIVersionSetListByServiceOptions` has been removed
+- Struct `APIVersionSetListByServicePager` has been removed
+- Struct `APIVersionSetListByServiceResponse` has been removed
+- Struct `APIVersionSetListByServiceResult` has been removed
+- Struct `APIVersionSetUpdateOptions` has been removed
+- Struct `APIVersionSetUpdateResponse` has been removed
+- Struct `APIVersionSetUpdateResult` has been removed
+- Struct `AuthorizationServerCreateOrUpdateOptions` has been removed
+- Struct `AuthorizationServerCreateOrUpdateResponse` has been removed
+- Struct `AuthorizationServerCreateOrUpdateResult` has been removed
+- Struct `AuthorizationServerDeleteOptions` has been removed
+- Struct `AuthorizationServerDeleteResponse` has been removed
+- Struct `AuthorizationServerGetEntityTagOptions` has been removed
+- Struct `AuthorizationServerGetEntityTagResponse` has been removed
+- Struct `AuthorizationServerGetEntityTagResult` has been removed
+- Struct `AuthorizationServerGetOptions` has been removed
+- Struct `AuthorizationServerGetResponse` has been removed
+- Struct `AuthorizationServerGetResult` has been removed
+- Struct `AuthorizationServerListByServiceOptions` has been removed
+- Struct `AuthorizationServerListByServicePager` has been removed
+- Struct `AuthorizationServerListByServiceResponse` has been removed
+- Struct `AuthorizationServerListByServiceResult` has been removed
+- Struct `AuthorizationServerListSecretsOptions` has been removed
+- Struct `AuthorizationServerListSecretsResponse` has been removed
+- Struct `AuthorizationServerListSecretsResult` has been removed
+- Struct `AuthorizationServerUpdateOptions` has been removed
+- Struct `AuthorizationServerUpdateResponse` has been removed
+- Struct `AuthorizationServerUpdateResult` has been removed
+- Struct `BackendCreateOrUpdateOptions` has been removed
+- Struct `BackendCreateOrUpdateResponse` has been removed
+- Struct `BackendCreateOrUpdateResult` has been removed
+- Struct `BackendDeleteOptions` has been removed
+- Struct `BackendDeleteResponse` has been removed
+- Struct `BackendGetEntityTagOptions` has been removed
+- Struct `BackendGetEntityTagResponse` has been removed
+- Struct `BackendGetEntityTagResult` has been removed
+- Struct `BackendGetOptions` has been removed
+- Struct `BackendGetResponse` has been removed
+- Struct `BackendGetResult` has been removed
+- Struct `BackendListByServiceOptions` has been removed
+- Struct `BackendListByServicePager` has been removed
+- Struct `BackendListByServiceResponse` has been removed
+- Struct `BackendListByServiceResult` has been removed
+- Struct `BackendReconnectOptions` has been removed
+- Struct `BackendReconnectResponse` has been removed
+- Struct `BackendUpdateOptions` has been removed
+- Struct `BackendUpdateResponse` has been removed
+- Struct `BackendUpdateResult` has been removed
+- Struct `CacheCreateOrUpdateOptions` has been removed
+- Struct `CacheCreateOrUpdateResponse` has been removed
+- Struct `CacheCreateOrUpdateResult` has been removed
+- Struct `CacheDeleteOptions` has been removed
+- Struct `CacheDeleteResponse` has been removed
+- Struct `CacheGetEntityTagOptions` has been removed
+- Struct `CacheGetEntityTagResponse` has been removed
+- Struct `CacheGetEntityTagResult` has been removed
+- Struct `CacheGetOptions` has been removed
+- Struct `CacheGetResponse` has been removed
+- Struct `CacheGetResult` has been removed
+- Struct `CacheListByServiceOptions` has been removed
+- Struct `CacheListByServicePager` has been removed
+- Struct `CacheListByServiceResponse` has been removed
+- Struct `CacheListByServiceResult` has been removed
+- Struct `CacheUpdateOptions` has been removed
+- Struct `CacheUpdateResponse` has been removed
+- Struct `CacheUpdateResult` has been removed
+- Struct `CertificateCreateOrUpdateOptions` has been removed
+- Struct `CertificateCreateOrUpdateResponse` has been removed
+- Struct `CertificateCreateOrUpdateResult` has been removed
+- Struct `CertificateDeleteOptions` has been removed
+- Struct `CertificateDeleteResponse` has been removed
+- Struct `CertificateGetEntityTagOptions` has been removed
+- Struct `CertificateGetEntityTagResponse` has been removed
+- Struct `CertificateGetEntityTagResult` has been removed
+- Struct `CertificateGetOptions` has been removed
+- Struct `CertificateGetResponse` has been removed
+- Struct `CertificateGetResult` has been removed
+- Struct `CertificateListByServiceOptions` has been removed
+- Struct `CertificateListByServicePager` has been removed
+- Struct `CertificateListByServiceResponse` has been removed
+- Struct `CertificateListByServiceResult` has been removed
+- Struct `CertificateRefreshSecretOptions` has been removed
+- Struct `CertificateRefreshSecretResponse` has been removed
+- Struct `CertificateRefreshSecretResult` has been removed
+- Struct `ContentItemCreateOrUpdateOptions` has been removed
+- Struct `ContentItemCreateOrUpdateResponse` has been removed
+- Struct `ContentItemCreateOrUpdateResult` has been removed
+- Struct `ContentItemDeleteOptions` has been removed
+- Struct `ContentItemDeleteResponse` has been removed
+- Struct `ContentItemGetEntityTagOptions` has been removed
+- Struct `ContentItemGetEntityTagResponse` has been removed
+- Struct `ContentItemGetEntityTagResult` has been removed
+- Struct `ContentItemGetOptions` has been removed
+- Struct `ContentItemGetResponse` has been removed
+- Struct `ContentItemGetResult` has been removed
+- Struct `ContentItemListByServiceOptions` has been removed
+- Struct `ContentItemListByServicePager` has been removed
+- Struct `ContentItemListByServiceResponse` has been removed
+- Struct `ContentItemListByServiceResult` has been removed
+- Struct `ContentTypeCreateOrUpdateOptions` has been removed
+- Struct `ContentTypeCreateOrUpdateResponse` has been removed
+- Struct `ContentTypeCreateOrUpdateResult` has been removed
+- Struct `ContentTypeDeleteOptions` has been removed
+- Struct `ContentTypeDeleteResponse` has been removed
+- Struct `ContentTypeGetOptions` has been removed
+- Struct `ContentTypeGetResponse` has been removed
+- Struct `ContentTypeGetResult` has been removed
+- Struct `ContentTypeListByServiceOptions` has been removed
+- Struct `ContentTypeListByServicePager` has been removed
+- Struct `ContentTypeListByServiceResponse` has been removed
+- Struct `ContentTypeListByServiceResult` has been removed
+- Struct `DelegationSettingsCreateOrUpdateOptions` has been removed
+- Struct `DelegationSettingsCreateOrUpdateResponse` has been removed
+- Struct `DelegationSettingsCreateOrUpdateResult` has been removed
+- Struct `DelegationSettingsGetEntityTagOptions` has been removed
+- Struct `DelegationSettingsGetEntityTagResponse` has been removed
+- Struct `DelegationSettingsGetEntityTagResult` has been removed
+- Struct `DelegationSettingsGetOptions` has been removed
+- Struct `DelegationSettingsGetResponse` has been removed
+- Struct `DelegationSettingsGetResult` has been removed
+- Struct `DelegationSettingsListSecretsOptions` has been removed
+- Struct `DelegationSettingsListSecretsResponse` has been removed
+- Struct `DelegationSettingsListSecretsResult` has been removed
+- Struct `DelegationSettingsUpdateOptions` has been removed
+- Struct `DelegationSettingsUpdateResponse` has been removed
+- Struct `DeletedServicesBeginPurgeOptions` has been removed
+- Struct `DeletedServicesGetByNameOptions` has been removed
+- Struct `DeletedServicesGetByNameResponse` has been removed
+- Struct `DeletedServicesGetByNameResult` has been removed
+- Struct `DeletedServicesListBySubscriptionOptions` has been removed
+- Struct `DeletedServicesListBySubscriptionPager` has been removed
+- Struct `DeletedServicesListBySubscriptionResponse` has been removed
+- Struct `DeletedServicesListBySubscriptionResult` has been removed
+- Struct `DeletedServicesPurgePoller` has been removed
+- Struct `DeletedServicesPurgePollerResponse` has been removed
+- Struct `DeletedServicesPurgeResponse` has been removed
+- Struct `DeletedServicesPurgeResult` has been removed
+- Struct `DiagnosticCreateOrUpdateOptions` has been removed
+- Struct `DiagnosticCreateOrUpdateResponse` has been removed
+- Struct `DiagnosticCreateOrUpdateResult` has been removed
+- Struct `DiagnosticDeleteOptions` has been removed
+- Struct `DiagnosticDeleteResponse` has been removed
+- Struct `DiagnosticGetEntityTagOptions` has been removed
+- Struct `DiagnosticGetEntityTagResponse` has been removed
+- Struct `DiagnosticGetEntityTagResult` has been removed
+- Struct `DiagnosticGetOptions` has been removed
+- Struct `DiagnosticGetResponse` has been removed
+- Struct `DiagnosticGetResult` has been removed
+- Struct `DiagnosticListByServiceOptions` has been removed
+- Struct `DiagnosticListByServicePager` has been removed
+- Struct `DiagnosticListByServiceResponse` has been removed
+- Struct `DiagnosticListByServiceResult` has been removed
+- Struct `DiagnosticUpdateOptions` has been removed
+- Struct `DiagnosticUpdateResponse` has been removed
+- Struct `DiagnosticUpdateResult` has been removed
+- Struct `EmailTemplateCreateOrUpdateOptions` has been removed
+- Struct `EmailTemplateCreateOrUpdateResponse` has been removed
+- Struct `EmailTemplateCreateOrUpdateResult` has been removed
+- Struct `EmailTemplateDeleteOptions` has been removed
+- Struct `EmailTemplateDeleteResponse` has been removed
+- Struct `EmailTemplateGetEntityTagOptions` has been removed
+- Struct `EmailTemplateGetEntityTagResponse` has been removed
+- Struct `EmailTemplateGetEntityTagResult` has been removed
+- Struct `EmailTemplateGetOptions` has been removed
+- Struct `EmailTemplateGetResponse` has been removed
+- Struct `EmailTemplateGetResult` has been removed
+- Struct `EmailTemplateListByServiceOptions` has been removed
+- Struct `EmailTemplateListByServicePager` has been removed
+- Struct `EmailTemplateListByServiceResponse` has been removed
+- Struct `EmailTemplateListByServiceResult` has been removed
+- Struct `EmailTemplateUpdateOptions` has been removed
+- Struct `EmailTemplateUpdateResponse` has been removed
+- Struct `EmailTemplateUpdateResult` has been removed
+- Struct `GatewayAPICreateOrUpdateOptions` has been removed
+- Struct `GatewayAPICreateOrUpdateResponse` has been removed
+- Struct `GatewayAPICreateOrUpdateResult` has been removed
+- Struct `GatewayAPIDeleteOptions` has been removed
+- Struct `GatewayAPIDeleteResponse` has been removed
+- Struct `GatewayAPIGetEntityTagOptions` has been removed
+- Struct `GatewayAPIGetEntityTagResponse` has been removed
+- Struct `GatewayAPIGetEntityTagResult` has been removed
+- Struct `GatewayAPIListByServiceOptions` has been removed
+- Struct `GatewayAPIListByServicePager` has been removed
+- Struct `GatewayAPIListByServiceResponse` has been removed
+- Struct `GatewayAPIListByServiceResult` has been removed
+- Struct `GatewayCertificateAuthorityCreateOrUpdateOptions` has been removed
+- Struct `GatewayCertificateAuthorityCreateOrUpdateResponse` has been removed
+- Struct `GatewayCertificateAuthorityCreateOrUpdateResult` has been removed
+- Struct `GatewayCertificateAuthorityDeleteOptions` has been removed
+- Struct `GatewayCertificateAuthorityDeleteResponse` has been removed
+- Struct `GatewayCertificateAuthorityGetEntityTagOptions` has been removed
+- Struct `GatewayCertificateAuthorityGetEntityTagResponse` has been removed
+- Struct `GatewayCertificateAuthorityGetEntityTagResult` has been removed
+- Struct `GatewayCertificateAuthorityGetOptions` has been removed
+- Struct `GatewayCertificateAuthorityGetResponse` has been removed
+- Struct `GatewayCertificateAuthorityGetResult` has been removed
+- Struct `GatewayCertificateAuthorityListByServiceOptions` has been removed
+- Struct `GatewayCertificateAuthorityListByServicePager` has been removed
+- Struct `GatewayCertificateAuthorityListByServiceResponse` has been removed
+- Struct `GatewayCertificateAuthorityListByServiceResult` has been removed
+- Struct `GatewayCreateOrUpdateOptions` has been removed
+- Struct `GatewayCreateOrUpdateResponse` has been removed
+- Struct `GatewayCreateOrUpdateResult` has been removed
+- Struct `GatewayDeleteOptions` has been removed
+- Struct `GatewayDeleteResponse` has been removed
+- Struct `GatewayGenerateTokenOptions` has been removed
+- Struct `GatewayGenerateTokenResponse` has been removed
+- Struct `GatewayGenerateTokenResult` has been removed
+- Struct `GatewayGetEntityTagOptions` has been removed
+- Struct `GatewayGetEntityTagResponse` has been removed
+- Struct `GatewayGetEntityTagResult` has been removed
+- Struct `GatewayGetOptions` has been removed
+- Struct `GatewayGetResponse` has been removed
+- Struct `GatewayGetResult` has been removed
+- Struct `GatewayHostnameConfigurationCreateOrUpdateOptions` has been removed
+- Struct `GatewayHostnameConfigurationCreateOrUpdateResponse` has been removed
+- Struct `GatewayHostnameConfigurationCreateOrUpdateResult` has been removed
+- Struct `GatewayHostnameConfigurationDeleteOptions` has been removed
+- Struct `GatewayHostnameConfigurationDeleteResponse` has been removed
+- Struct `GatewayHostnameConfigurationGetEntityTagOptions` has been removed
+- Struct `GatewayHostnameConfigurationGetEntityTagResponse` has been removed
+- Struct `GatewayHostnameConfigurationGetEntityTagResult` has been removed
+- Struct `GatewayHostnameConfigurationGetOptions` has been removed
+- Struct `GatewayHostnameConfigurationGetResponse` has been removed
+- Struct `GatewayHostnameConfigurationGetResult` has been removed
+- Struct `GatewayHostnameConfigurationListByServiceOptions` has been removed
+- Struct `GatewayHostnameConfigurationListByServicePager` has been removed
+- Struct `GatewayHostnameConfigurationListByServiceResponse` has been removed
+- Struct `GatewayHostnameConfigurationListByServiceResult` has been removed
+- Struct `GatewayListByServiceOptions` has been removed
+- Struct `GatewayListByServicePager` has been removed
+- Struct `GatewayListByServiceResponse` has been removed
+- Struct `GatewayListByServiceResult` has been removed
+- Struct `GatewayListKeysOptions` has been removed
+- Struct `GatewayListKeysResponse` has been removed
+- Struct `GatewayListKeysResult` has been removed
+- Struct `GatewayRegenerateKeyOptions` has been removed
+- Struct `GatewayRegenerateKeyResponse` has been removed
+- Struct `GatewayUpdateOptions` has been removed
+- Struct `GatewayUpdateResponse` has been removed
+- Struct `GatewayUpdateResult` has been removed
+- Struct `GroupCreateOrUpdateOptions` has been removed
+- Struct `GroupCreateOrUpdateResponse` has been removed
+- Struct `GroupCreateOrUpdateResult` has been removed
+- Struct `GroupDeleteOptions` has been removed
+- Struct `GroupDeleteResponse` has been removed
+- Struct `GroupGetEntityTagOptions` has been removed
+- Struct `GroupGetEntityTagResponse` has been removed
+- Struct `GroupGetEntityTagResult` has been removed
+- Struct `GroupGetOptions` has been removed
+- Struct `GroupGetResponse` has been removed
+- Struct `GroupGetResult` has been removed
+- Struct `GroupListByServiceOptions` has been removed
+- Struct `GroupListByServicePager` has been removed
+- Struct `GroupListByServiceResponse` has been removed
+- Struct `GroupListByServiceResult` has been removed
+- Struct `GroupUpdateOptions` has been removed
+- Struct `GroupUpdateResponse` has been removed
+- Struct `GroupUpdateResult` has been removed
+- Struct `GroupUserCheckEntityExistsOptions` has been removed
+- Struct `GroupUserCheckEntityExistsResponse` has been removed
+- Struct `GroupUserCheckEntityExistsResult` has been removed
+- Struct `GroupUserCreateOptions` has been removed
+- Struct `GroupUserCreateResponse` has been removed
+- Struct `GroupUserCreateResult` has been removed
+- Struct `GroupUserDeleteOptions` has been removed
+- Struct `GroupUserDeleteResponse` has been removed
+- Struct `GroupUserListOptions` has been removed
+- Struct `GroupUserListPager` has been removed
+- Struct `GroupUserListResponse` has been removed
+- Struct `GroupUserListResult` has been removed
+- Struct `IdentityProviderCreateOrUpdateOptions` has been removed
+- Struct `IdentityProviderCreateOrUpdateResponse` has been removed
+- Struct `IdentityProviderCreateOrUpdateResult` has been removed
+- Struct `IdentityProviderDeleteOptions` has been removed
+- Struct `IdentityProviderDeleteResponse` has been removed
+- Struct `IdentityProviderGetEntityTagOptions` has been removed
+- Struct `IdentityProviderGetEntityTagResponse` has been removed
+- Struct `IdentityProviderGetEntityTagResult` has been removed
+- Struct `IdentityProviderGetOptions` has been removed
+- Struct `IdentityProviderGetResponse` has been removed
+- Struct `IdentityProviderGetResult` has been removed
+- Struct `IdentityProviderListByServiceOptions` has been removed
+- Struct `IdentityProviderListByServicePager` has been removed
+- Struct `IdentityProviderListByServiceResponse` has been removed
+- Struct `IdentityProviderListByServiceResult` has been removed
+- Struct `IdentityProviderListSecretsOptions` has been removed
+- Struct `IdentityProviderListSecretsResponse` has been removed
+- Struct `IdentityProviderListSecretsResult` has been removed
+- Struct `IdentityProviderUpdateOptions` has been removed
+- Struct `IdentityProviderUpdateResponse` has been removed
+- Struct `IdentityProviderUpdateResult` has been removed
+- Struct `IssueGetOptions` has been removed
+- Struct `IssueGetResponse` has been removed
+- Struct `IssueGetResult` has been removed
+- Struct `IssueListByServiceOptions` has been removed
+- Struct `IssueListByServicePager` has been removed
+- Struct `IssueListByServiceResponse` has been removed
+- Struct `IssueListByServiceResult` has been removed
+- Struct `LoggerCreateOrUpdateOptions` has been removed
+- Struct `LoggerCreateOrUpdateResponse` has been removed
+- Struct `LoggerCreateOrUpdateResult` has been removed
+- Struct `LoggerDeleteOptions` has been removed
+- Struct `LoggerDeleteResponse` has been removed
+- Struct `LoggerGetEntityTagOptions` has been removed
+- Struct `LoggerGetEntityTagResponse` has been removed
+- Struct `LoggerGetEntityTagResult` has been removed
+- Struct `LoggerGetOptions` has been removed
+- Struct `LoggerGetResponse` has been removed
+- Struct `LoggerGetResult` has been removed
+- Struct `LoggerListByServiceOptions` has been removed
+- Struct `LoggerListByServicePager` has been removed
+- Struct `LoggerListByServiceResponse` has been removed
+- Struct `LoggerListByServiceResult` has been removed
+- Struct `LoggerUpdateOptions` has been removed
+- Struct `LoggerUpdateResponse` has been removed
+- Struct `LoggerUpdateResult` has been removed
+- Struct `NamedValueBeginCreateOrUpdateOptions` has been removed
+- Struct `NamedValueBeginRefreshSecretOptions` has been removed
+- Struct `NamedValueBeginUpdateOptions` has been removed
+- Struct `NamedValueCreateOrUpdatePoller` has been removed
+- Struct `NamedValueCreateOrUpdatePollerResponse` has been removed
+- Struct `NamedValueCreateOrUpdateResponse` has been removed
+- Struct `NamedValueCreateOrUpdateResult` has been removed
+- Struct `NamedValueDeleteOptions` has been removed
+- Struct `NamedValueDeleteResponse` has been removed
+- Struct `NamedValueGetEntityTagOptions` has been removed
+- Struct `NamedValueGetEntityTagResponse` has been removed
+- Struct `NamedValueGetEntityTagResult` has been removed
+- Struct `NamedValueGetOptions` has been removed
+- Struct `NamedValueGetResponse` has been removed
+- Struct `NamedValueGetResult` has been removed
+- Struct `NamedValueListByServiceOptions` has been removed
+- Struct `NamedValueListByServicePager` has been removed
+- Struct `NamedValueListByServiceResponse` has been removed
+- Struct `NamedValueListByServiceResult` has been removed
+- Struct `NamedValueListValueOptions` has been removed
+- Struct `NamedValueListValueResponse` has been removed
+- Struct `NamedValueListValueResult` has been removed
+- Struct `NamedValueRefreshSecretPoller` has been removed
+- Struct `NamedValueRefreshSecretPollerResponse` has been removed
+- Struct `NamedValueRefreshSecretResponse` has been removed
+- Struct `NamedValueRefreshSecretResult` has been removed
+- Struct `NamedValueUpdatePoller` has been removed
+- Struct `NamedValueUpdatePollerResponse` has been removed
+- Struct `NamedValueUpdateResponse` has been removed
+- Struct `NamedValueUpdateResult` has been removed
+- Struct `NetworkStatusListByLocationOptions` has been removed
+- Struct `NetworkStatusListByLocationResponse` has been removed
+- Struct `NetworkStatusListByLocationResult` has been removed
+- Struct `NetworkStatusListByServiceOptions` has been removed
+- Struct `NetworkStatusListByServiceResponse` has been removed
+- Struct `NetworkStatusListByServiceResult` has been removed
+- Struct `NotificationCreateOrUpdateOptions` has been removed
+- Struct `NotificationCreateOrUpdateResponse` has been removed
+- Struct `NotificationCreateOrUpdateResult` has been removed
+- Struct `NotificationGetOptions` has been removed
+- Struct `NotificationGetResponse` has been removed
+- Struct `NotificationGetResult` has been removed
+- Struct `NotificationListByServiceOptions` has been removed
+- Struct `NotificationListByServicePager` has been removed
+- Struct `NotificationListByServiceResponse` has been removed
+- Struct `NotificationListByServiceResult` has been removed
+- Struct `NotificationRecipientEmailCheckEntityExistsOptions` has been removed
+- Struct `NotificationRecipientEmailCheckEntityExistsResponse` has been removed
+- Struct `NotificationRecipientEmailCheckEntityExistsResult` has been removed
+- Struct `NotificationRecipientEmailCreateOrUpdateOptions` has been removed
+- Struct `NotificationRecipientEmailCreateOrUpdateResponse` has been removed
+- Struct `NotificationRecipientEmailCreateOrUpdateResult` has been removed
+- Struct `NotificationRecipientEmailDeleteOptions` has been removed
+- Struct `NotificationRecipientEmailDeleteResponse` has been removed
+- Struct `NotificationRecipientEmailListByNotificationOptions` has been removed
+- Struct `NotificationRecipientEmailListByNotificationResponse` has been removed
+- Struct `NotificationRecipientEmailListByNotificationResult` has been removed
+- Struct `NotificationRecipientUserCheckEntityExistsOptions` has been removed
+- Struct `NotificationRecipientUserCheckEntityExistsResponse` has been removed
+- Struct `NotificationRecipientUserCheckEntityExistsResult` has been removed
+- Struct `NotificationRecipientUserCreateOrUpdateOptions` has been removed
+- Struct `NotificationRecipientUserCreateOrUpdateResponse` has been removed
+- Struct `NotificationRecipientUserCreateOrUpdateResult` has been removed
+- Struct `NotificationRecipientUserDeleteOptions` has been removed
+- Struct `NotificationRecipientUserDeleteResponse` has been removed
+- Struct `NotificationRecipientUserListByNotificationOptions` has been removed
+- Struct `NotificationRecipientUserListByNotificationResponse` has been removed
+- Struct `NotificationRecipientUserListByNotificationResult` has been removed
+- Struct `OpenIDConnectProviderCreateOrUpdateOptions` has been removed
+- Struct `OpenIDConnectProviderCreateOrUpdateResponse` has been removed
+- Struct `OpenIDConnectProviderCreateOrUpdateResult` has been removed
+- Struct `OpenIDConnectProviderDeleteOptions` has been removed
+- Struct `OpenIDConnectProviderDeleteResponse` has been removed
+- Struct `OpenIDConnectProviderGetEntityTagOptions` has been removed
+- Struct `OpenIDConnectProviderGetEntityTagResponse` has been removed
+- Struct `OpenIDConnectProviderGetEntityTagResult` has been removed
+- Struct `OpenIDConnectProviderGetOptions` has been removed
+- Struct `OpenIDConnectProviderGetResponse` has been removed
+- Struct `OpenIDConnectProviderGetResult` has been removed
+- Struct `OpenIDConnectProviderListByServiceOptions` has been removed
+- Struct `OpenIDConnectProviderListByServicePager` has been removed
+- Struct `OpenIDConnectProviderListByServiceResponse` has been removed
+- Struct `OpenIDConnectProviderListByServiceResult` has been removed
+- Struct `OpenIDConnectProviderListSecretsOptions` has been removed
+- Struct `OpenIDConnectProviderListSecretsResponse` has been removed
+- Struct `OpenIDConnectProviderListSecretsResult` has been removed
+- Struct `OpenIDConnectProviderUpdateOptions` has been removed
+- Struct `OpenIDConnectProviderUpdateResponse` has been removed
+- Struct `OpenIDConnectProviderUpdateResult` has been removed
+- Struct `OperationListByTagsOptions` has been removed
+- Struct `OperationListByTagsPager` has been removed
+- Struct `OperationListByTagsResponse` has been removed
+- Struct `OperationListByTagsResult` has been removed
+- Struct `OutboundNetworkDependenciesEndpointsListByServiceOptions` has been removed
+- Struct `OutboundNetworkDependenciesEndpointsListByServiceResponse` has been removed
+- Struct `OutboundNetworkDependenciesEndpointsListByServiceResult` has been removed
+- Struct `PolicyCreateOrUpdateOptions` has been removed
+- Struct `PolicyCreateOrUpdateResponse` has been removed
+- Struct `PolicyCreateOrUpdateResult` has been removed
+- Struct `PolicyDeleteOptions` has been removed
+- Struct `PolicyDeleteResponse` has been removed
+- Struct `PolicyDescriptionListByServiceOptions` has been removed
+- Struct `PolicyDescriptionListByServiceResponse` has been removed
+- Struct `PolicyDescriptionListByServiceResult` has been removed
+- Struct `PolicyGetEntityTagOptions` has been removed
+- Struct `PolicyGetEntityTagResponse` has been removed
+- Struct `PolicyGetEntityTagResult` has been removed
+- Struct `PolicyGetOptions` has been removed
+- Struct `PolicyGetResponse` has been removed
+- Struct `PolicyGetResult` has been removed
+- Struct `PolicyListByServiceOptions` has been removed
+- Struct `PolicyListByServiceResponse` has been removed
+- Struct `PolicyListByServiceResult` has been removed
+- Struct `PortalRevisionBeginCreateOrUpdateOptions` has been removed
+- Struct `PortalRevisionBeginUpdateOptions` has been removed
+- Struct `PortalRevisionCreateOrUpdatePoller` has been removed
+- Struct `PortalRevisionCreateOrUpdatePollerResponse` has been removed
+- Struct `PortalRevisionCreateOrUpdateResponse` has been removed
+- Struct `PortalRevisionCreateOrUpdateResult` has been removed
+- Struct `PortalRevisionGetEntityTagOptions` has been removed
+- Struct `PortalRevisionGetEntityTagResponse` has been removed
+- Struct `PortalRevisionGetEntityTagResult` has been removed
+- Struct `PortalRevisionGetOptions` has been removed
+- Struct `PortalRevisionGetResponse` has been removed
+- Struct `PortalRevisionGetResult` has been removed
+- Struct `PortalRevisionListByServiceOptions` has been removed
+- Struct `PortalRevisionListByServicePager` has been removed
+- Struct `PortalRevisionListByServiceResponse` has been removed
+- Struct `PortalRevisionListByServiceResult` has been removed
+- Struct `PortalRevisionUpdatePoller` has been removed
+- Struct `PortalRevisionUpdatePollerResponse` has been removed
+- Struct `PortalRevisionUpdateResponse` has been removed
+- Struct `PortalRevisionUpdateResult` has been removed
+- Struct `PortalSettingsListByServiceOptions` has been removed
+- Struct `PortalSettingsListByServiceResponse` has been removed
+- Struct `PortalSettingsListByServiceResult` has been removed
+- Struct `PrivateEndpointConnectionBeginCreateOrUpdateOptions` has been removed
+- Struct `PrivateEndpointConnectionBeginDeleteOptions` has been removed
+- Struct `PrivateEndpointConnectionCreateOrUpdatePoller` has been removed
+- Struct `PrivateEndpointConnectionCreateOrUpdatePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionCreateOrUpdateResponse` has been removed
+- Struct `PrivateEndpointConnectionCreateOrUpdateResult` has been removed
+- Struct `PrivateEndpointConnectionDeletePoller` has been removed
+- Struct `PrivateEndpointConnectionDeletePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionDeleteResponse` has been removed
+- Struct `PrivateEndpointConnectionGetByNameOptions` has been removed
+- Struct `PrivateEndpointConnectionGetByNameResponse` has been removed
+- Struct `PrivateEndpointConnectionGetByNameResult` has been removed
+- Struct `PrivateEndpointConnectionGetPrivateLinkResourceOptions` has been removed
+- Struct `PrivateEndpointConnectionGetPrivateLinkResourceResponse` has been removed
+- Struct `PrivateEndpointConnectionGetPrivateLinkResourceResult` has been removed
+- Struct `PrivateEndpointConnectionListByServiceOptions` has been removed
+- Struct `PrivateEndpointConnectionListByServiceResponse` has been removed
+- Struct `PrivateEndpointConnectionListByServiceResult` has been removed
+- Struct `PrivateEndpointConnectionListPrivateLinkResourcesOptions` has been removed
+- Struct `PrivateEndpointConnectionListPrivateLinkResourcesResponse` has been removed
+- Struct `PrivateEndpointConnectionListPrivateLinkResourcesResult` has been removed
+- Struct `ProductAPICheckEntityExistsOptions` has been removed
+- Struct `ProductAPICheckEntityExistsResponse` has been removed
+- Struct `ProductAPICheckEntityExistsResult` has been removed
+- Struct `ProductAPICreateOrUpdateOptions` has been removed
+- Struct `ProductAPICreateOrUpdateResponse` has been removed
+- Struct `ProductAPICreateOrUpdateResult` has been removed
+- Struct `ProductAPIDeleteOptions` has been removed
+- Struct `ProductAPIDeleteResponse` has been removed
+- Struct `ProductAPIListByProductOptions` has been removed
+- Struct `ProductAPIListByProductPager` has been removed
+- Struct `ProductAPIListByProductResponse` has been removed
+- Struct `ProductAPIListByProductResult` has been removed
+- Struct `ProductCreateOrUpdateOptions` has been removed
+- Struct `ProductCreateOrUpdateResponse` has been removed
+- Struct `ProductCreateOrUpdateResult` has been removed
+- Struct `ProductDeleteOptions` has been removed
+- Struct `ProductDeleteResponse` has been removed
+- Struct `ProductGetEntityTagOptions` has been removed
+- Struct `ProductGetEntityTagResponse` has been removed
+- Struct `ProductGetEntityTagResult` has been removed
+- Struct `ProductGetOptions` has been removed
+- Struct `ProductGetResponse` has been removed
+- Struct `ProductGetResult` has been removed
+- Struct `ProductGroupCheckEntityExistsOptions` has been removed
+- Struct `ProductGroupCheckEntityExistsResponse` has been removed
+- Struct `ProductGroupCheckEntityExistsResult` has been removed
+- Struct `ProductGroupCreateOrUpdateOptions` has been removed
+- Struct `ProductGroupCreateOrUpdateResponse` has been removed
+- Struct `ProductGroupCreateOrUpdateResult` has been removed
+- Struct `ProductGroupDeleteOptions` has been removed
+- Struct `ProductGroupDeleteResponse` has been removed
+- Struct `ProductGroupListByProductOptions` has been removed
+- Struct `ProductGroupListByProductPager` has been removed
+- Struct `ProductGroupListByProductResponse` has been removed
+- Struct `ProductGroupListByProductResult` has been removed
+- Struct `ProductListByServiceOptions` has been removed
+- Struct `ProductListByServicePager` has been removed
+- Struct `ProductListByServiceResponse` has been removed
+- Struct `ProductListByServiceResult` has been removed
+- Struct `ProductListByTagsOptions` has been removed
+- Struct `ProductListByTagsPager` has been removed
+- Struct `ProductListByTagsResponse` has been removed
+- Struct `ProductListByTagsResult` has been removed
+- Struct `ProductPolicyCreateOrUpdateOptions` has been removed
+- Struct `ProductPolicyCreateOrUpdateResponse` has been removed
+- Struct `ProductPolicyCreateOrUpdateResult` has been removed
+- Struct `ProductPolicyDeleteOptions` has been removed
+- Struct `ProductPolicyDeleteResponse` has been removed
+- Struct `ProductPolicyGetEntityTagOptions` has been removed
+- Struct `ProductPolicyGetEntityTagResponse` has been removed
+- Struct `ProductPolicyGetEntityTagResult` has been removed
+- Struct `ProductPolicyGetOptions` has been removed
+- Struct `ProductPolicyGetResponse` has been removed
+- Struct `ProductPolicyGetResult` has been removed
+- Struct `ProductPolicyListByProductOptions` has been removed
+- Struct `ProductPolicyListByProductResponse` has been removed
+- Struct `ProductPolicyListByProductResult` has been removed
+- Struct `ProductSubscriptionsListOptions` has been removed
+- Struct `ProductSubscriptionsListPager` has been removed
+- Struct `ProductSubscriptionsListResponse` has been removed
+- Struct `ProductSubscriptionsListResult` has been removed
+- Struct `ProductUpdateOptions` has been removed
+- Struct `ProductUpdateResponse` has been removed
+- Struct `ProductUpdateResult` has been removed
+- Struct `QuotaByCounterKeysListByServiceOptions` has been removed
+- Struct `QuotaByCounterKeysListByServiceResponse` has been removed
+- Struct `QuotaByCounterKeysListByServiceResult` has been removed
+- Struct `QuotaByCounterKeysUpdateOptions` has been removed
+- Struct `QuotaByCounterKeysUpdateResponse` has been removed
+- Struct `QuotaByCounterKeysUpdateResult` has been removed
+- Struct `QuotaByPeriodKeysGetOptions` has been removed
+- Struct `QuotaByPeriodKeysGetResponse` has been removed
+- Struct `QuotaByPeriodKeysGetResult` has been removed
+- Struct `QuotaByPeriodKeysUpdateOptions` has been removed
+- Struct `QuotaByPeriodKeysUpdateResponse` has been removed
+- Struct `QuotaByPeriodKeysUpdateResult` has been removed
+- Struct `RegionListByServiceOptions` has been removed
+- Struct `RegionListByServicePager` has been removed
+- Struct `RegionListByServiceResponse` has been removed
+- Struct `RegionListByServiceResult` has been removed
+- Struct `ReportsListByAPIOptions` has been removed
+- Struct `ReportsListByAPIPager` has been removed
+- Struct `ReportsListByAPIResponse` has been removed
+- Struct `ReportsListByAPIResult` has been removed
+- Struct `ReportsListByGeoOptions` has been removed
+- Struct `ReportsListByGeoPager` has been removed
+- Struct `ReportsListByGeoResponse` has been removed
+- Struct `ReportsListByGeoResult` has been removed
+- Struct `ReportsListByOperationOptions` has been removed
+- Struct `ReportsListByOperationPager` has been removed
+- Struct `ReportsListByOperationResponse` has been removed
+- Struct `ReportsListByOperationResult` has been removed
+- Struct `ReportsListByProductOptions` has been removed
+- Struct `ReportsListByProductPager` has been removed
+- Struct `ReportsListByProductResponse` has been removed
+- Struct `ReportsListByProductResult` has been removed
+- Struct `ReportsListByRequestOptions` has been removed
+- Struct `ReportsListByRequestResponse` has been removed
+- Struct `ReportsListByRequestResult` has been removed
+- Struct `ReportsListBySubscriptionOptions` has been removed
+- Struct `ReportsListBySubscriptionPager` has been removed
+- Struct `ReportsListBySubscriptionResponse` has been removed
+- Struct `ReportsListBySubscriptionResult` has been removed
+- Struct `ReportsListByTimeOptions` has been removed
+- Struct `ReportsListByTimePager` has been removed
+- Struct `ReportsListByTimeResponse` has been removed
+- Struct `ReportsListByTimeResult` has been removed
+- Struct `ReportsListByUserOptions` has been removed
+- Struct `ReportsListByUserPager` has been removed
+- Struct `ReportsListByUserResponse` has been removed
+- Struct `ReportsListByUserResult` has been removed
+- Struct `SignInSettingsCreateOrUpdateOptions` has been removed
+- Struct `SignInSettingsCreateOrUpdateResponse` has been removed
+- Struct `SignInSettingsCreateOrUpdateResult` has been removed
+- Struct `SignInSettingsGetEntityTagOptions` has been removed
+- Struct `SignInSettingsGetEntityTagResponse` has been removed
+- Struct `SignInSettingsGetEntityTagResult` has been removed
+- Struct `SignInSettingsGetOptions` has been removed
+- Struct `SignInSettingsGetResponse` has been removed
+- Struct `SignInSettingsGetResult` has been removed
+- Struct `SignInSettingsUpdateOptions` has been removed
+- Struct `SignInSettingsUpdateResponse` has been removed
+- Struct `SignUpSettingsCreateOrUpdateOptions` has been removed
+- Struct `SignUpSettingsCreateOrUpdateResponse` has been removed
+- Struct `SignUpSettingsCreateOrUpdateResult` has been removed
+- Struct `SignUpSettingsGetEntityTagOptions` has been removed
+- Struct `SignUpSettingsGetEntityTagResponse` has been removed
+- Struct `SignUpSettingsGetEntityTagResult` has been removed
+- Struct `SignUpSettingsGetOptions` has been removed
+- Struct `SignUpSettingsGetResponse` has been removed
+- Struct `SignUpSettingsGetResult` has been removed
+- Struct `SignUpSettingsUpdateOptions` has been removed
+- Struct `SignUpSettingsUpdateResponse` has been removed
+- Struct `SubscriptionCreateOrUpdateOptions` has been removed
+- Struct `SubscriptionCreateOrUpdateResponse` has been removed
+- Struct `SubscriptionCreateOrUpdateResult` has been removed
+- Struct `SubscriptionDeleteOptions` has been removed
+- Struct `SubscriptionDeleteResponse` has been removed
+- Struct `SubscriptionGetEntityTagOptions` has been removed
+- Struct `SubscriptionGetEntityTagResponse` has been removed
+- Struct `SubscriptionGetEntityTagResult` has been removed
+- Struct `SubscriptionGetOptions` has been removed
+- Struct `SubscriptionGetResponse` has been removed
+- Struct `SubscriptionGetResult` has been removed
+- Struct `SubscriptionListOptions` has been removed
+- Struct `SubscriptionListPager` has been removed
+- Struct `SubscriptionListResponse` has been removed
+- Struct `SubscriptionListResult` has been removed
+- Struct `SubscriptionListSecretsOptions` has been removed
+- Struct `SubscriptionListSecretsResponse` has been removed
+- Struct `SubscriptionListSecretsResult` has been removed
+- Struct `SubscriptionRegeneratePrimaryKeyOptions` has been removed
+- Struct `SubscriptionRegeneratePrimaryKeyResponse` has been removed
+- Struct `SubscriptionRegenerateSecondaryKeyOptions` has been removed
+- Struct `SubscriptionRegenerateSecondaryKeyResponse` has been removed
+- Struct `SubscriptionUpdateOptions` has been removed
+- Struct `SubscriptionUpdateResponse` has been removed
+- Struct `SubscriptionUpdateResult` has been removed
+- Struct `TagAssignToAPIOptions` has been removed
+- Struct `TagAssignToAPIResponse` has been removed
+- Struct `TagAssignToAPIResult` has been removed
+- Struct `TagAssignToOperationOptions` has been removed
+- Struct `TagAssignToOperationResponse` has been removed
+- Struct `TagAssignToOperationResult` has been removed
+- Struct `TagAssignToProductOptions` has been removed
+- Struct `TagAssignToProductResponse` has been removed
+- Struct `TagAssignToProductResult` has been removed
+- Struct `TagCreateOrUpdateOptions` has been removed
+- Struct `TagCreateOrUpdateResponse` has been removed
+- Struct `TagCreateOrUpdateResult` has been removed
+- Struct `TagDeleteOptions` has been removed
+- Struct `TagDeleteResponse` has been removed
+- Struct `TagDetachFromAPIOptions` has been removed
+- Struct `TagDetachFromAPIResponse` has been removed
+- Struct `TagDetachFromOperationOptions` has been removed
+- Struct `TagDetachFromOperationResponse` has been removed
+- Struct `TagDetachFromProductOptions` has been removed
+- Struct `TagDetachFromProductResponse` has been removed
+- Struct `TagGetByAPIOptions` has been removed
+- Struct `TagGetByAPIResponse` has been removed
+- Struct `TagGetByAPIResult` has been removed
+- Struct `TagGetByOperationOptions` has been removed
+- Struct `TagGetByOperationResponse` has been removed
+- Struct `TagGetByOperationResult` has been removed
+- Struct `TagGetByProductOptions` has been removed
+- Struct `TagGetByProductResponse` has been removed
+- Struct `TagGetByProductResult` has been removed
+- Struct `TagGetEntityStateByAPIOptions` has been removed
+- Struct `TagGetEntityStateByAPIResponse` has been removed
+- Struct `TagGetEntityStateByAPIResult` has been removed
+- Struct `TagGetEntityStateByOperationOptions` has been removed
+- Struct `TagGetEntityStateByOperationResponse` has been removed
+- Struct `TagGetEntityStateByOperationResult` has been removed
+- Struct `TagGetEntityStateByProductOptions` has been removed
+- Struct `TagGetEntityStateByProductResponse` has been removed
+- Struct `TagGetEntityStateByProductResult` has been removed
+- Struct `TagGetEntityStateOptions` has been removed
+- Struct `TagGetEntityStateResponse` has been removed
+- Struct `TagGetEntityStateResult` has been removed
+- Struct `TagGetOptions` has been removed
+- Struct `TagGetResponse` has been removed
+- Struct `TagGetResult` has been removed
+- Struct `TagListByAPIOptions` has been removed
+- Struct `TagListByAPIPager` has been removed
+- Struct `TagListByAPIResponse` has been removed
+- Struct `TagListByAPIResult` has been removed
+- Struct `TagListByOperationOptions` has been removed
+- Struct `TagListByOperationPager` has been removed
+- Struct `TagListByOperationResponse` has been removed
+- Struct `TagListByOperationResult` has been removed
+- Struct `TagListByProductOptions` has been removed
+- Struct `TagListByProductPager` has been removed
+- Struct `TagListByProductResponse` has been removed
+- Struct `TagListByProductResult` has been removed
+- Struct `TagListByServiceOptions` has been removed
+- Struct `TagListByServicePager` has been removed
+- Struct `TagListByServiceResponse` has been removed
+- Struct `TagListByServiceResult` has been removed
+- Struct `TagResourceListByServiceOptions` has been removed
+- Struct `TagResourceListByServicePager` has been removed
+- Struct `TagResourceListByServiceResponse` has been removed
+- Struct `TagResourceListByServiceResult` has been removed
+- Struct `TagUpdateOptions` has been removed
+- Struct `TagUpdateResponse` has been removed
+- Struct `TagUpdateResult` has been removed
+- Struct `TenantAccessCreateOptions` has been removed
+- Struct `TenantAccessCreateResponse` has been removed
+- Struct `TenantAccessCreateResult` has been removed
+- Struct `TenantAccessGetEntityTagOptions` has been removed
+- Struct `TenantAccessGetEntityTagResponse` has been removed
+- Struct `TenantAccessGetEntityTagResult` has been removed
+- Struct `TenantAccessGetOptions` has been removed
+- Struct `TenantAccessGetResponse` has been removed
+- Struct `TenantAccessGetResult` has been removed
+- Struct `TenantAccessGitRegeneratePrimaryKeyOptions` has been removed
+- Struct `TenantAccessGitRegeneratePrimaryKeyResponse` has been removed
+- Struct `TenantAccessGitRegenerateSecondaryKeyOptions` has been removed
+- Struct `TenantAccessGitRegenerateSecondaryKeyResponse` has been removed
+- Struct `TenantAccessListByServiceOptions` has been removed
+- Struct `TenantAccessListByServicePager` has been removed
+- Struct `TenantAccessListByServiceResponse` has been removed
+- Struct `TenantAccessListByServiceResult` has been removed
+- Struct `TenantAccessListSecretsOptions` has been removed
+- Struct `TenantAccessListSecretsResponse` has been removed
+- Struct `TenantAccessListSecretsResult` has been removed
+- Struct `TenantAccessRegeneratePrimaryKeyOptions` has been removed
+- Struct `TenantAccessRegeneratePrimaryKeyResponse` has been removed
+- Struct `TenantAccessRegenerateSecondaryKeyOptions` has been removed
+- Struct `TenantAccessRegenerateSecondaryKeyResponse` has been removed
+- Struct `TenantAccessUpdateOptions` has been removed
+- Struct `TenantAccessUpdateResponse` has been removed
+- Struct `TenantAccessUpdateResult` has been removed
+- Struct `TenantConfigurationBeginDeployOptions` has been removed
+- Struct `TenantConfigurationBeginSaveOptions` has been removed
+- Struct `TenantConfigurationBeginValidateOptions` has been removed
+- Struct `TenantConfigurationDeployPoller` has been removed
+- Struct `TenantConfigurationDeployPollerResponse` has been removed
+- Struct `TenantConfigurationDeployResponse` has been removed
+- Struct `TenantConfigurationDeployResult` has been removed
+- Struct `TenantConfigurationGetSyncStateOptions` has been removed
+- Struct `TenantConfigurationGetSyncStateResponse` has been removed
+- Struct `TenantConfigurationGetSyncStateResult` has been removed
+- Struct `TenantConfigurationSavePoller` has been removed
+- Struct `TenantConfigurationSavePollerResponse` has been removed
+- Struct `TenantConfigurationSaveResponse` has been removed
+- Struct `TenantConfigurationSaveResult` has been removed
+- Struct `TenantConfigurationValidatePoller` has been removed
+- Struct `TenantConfigurationValidatePollerResponse` has been removed
+- Struct `TenantConfigurationValidateResponse` has been removed
+- Struct `TenantConfigurationValidateResult` has been removed
+- Struct `TenantSettingsGetOptions` has been removed
+- Struct `TenantSettingsGetResponse` has been removed
+- Struct `TenantSettingsGetResult` has been removed
+- Struct `TenantSettingsListByServiceOptions` has been removed
+- Struct `TenantSettingsListByServicePager` has been removed
+- Struct `TenantSettingsListByServiceResponse` has been removed
+- Struct `TenantSettingsListByServiceResult` has been removed
+- Struct `UserConfirmationPasswordSendOptions` has been removed
+- Struct `UserConfirmationPasswordSendResponse` has been removed
+- Struct `UserCreateOrUpdateOptions` has been removed
+- Struct `UserCreateOrUpdateResponse` has been removed
+- Struct `UserCreateOrUpdateResult` has been removed
+- Struct `UserDeleteOptions` has been removed
+- Struct `UserDeleteResponse` has been removed
+- Struct `UserGenerateSsoURLOptions` has been removed
+- Struct `UserGenerateSsoURLResponse` has been removed
+- Struct `UserGenerateSsoURLResult` has been removed
+- Struct `UserGetEntityTagOptions` has been removed
+- Struct `UserGetEntityTagResponse` has been removed
+- Struct `UserGetEntityTagResult` has been removed
+- Struct `UserGetOptions` has been removed
+- Struct `UserGetResponse` has been removed
+- Struct `UserGetResult` has been removed
+- Struct `UserGetSharedAccessTokenOptions` has been removed
+- Struct `UserGetSharedAccessTokenResponse` has been removed
+- Struct `UserGetSharedAccessTokenResult` has been removed
+- Struct `UserGroupListOptions` has been removed
+- Struct `UserGroupListPager` has been removed
+- Struct `UserGroupListResponse` has been removed
+- Struct `UserGroupListResult` has been removed
+- Struct `UserIdentitiesListOptions` has been removed
+- Struct `UserIdentitiesListPager` has been removed
+- Struct `UserIdentitiesListResponse` has been removed
+- Struct `UserIdentitiesListResult` has been removed
+- Struct `UserListByServiceOptions` has been removed
+- Struct `UserListByServicePager` has been removed
+- Struct `UserListByServiceResponse` has been removed
+- Struct `UserListByServiceResult` has been removed
+- Struct `UserSubscriptionGetOptions` has been removed
+- Struct `UserSubscriptionGetResponse` has been removed
+- Struct `UserSubscriptionGetResult` has been removed
+- Struct `UserSubscriptionListOptions` has been removed
+- Struct `UserSubscriptionListPager` has been removed
+- Struct `UserSubscriptionListResponse` has been removed
+- Struct `UserSubscriptionListResult` has been removed
+- Struct `UserUpdateOptions` has been removed
+- Struct `UserUpdateResponse` has been removed
+- Struct `UserUpdateResult` has been removed
+- Field `OperationEntityBaseContract` of struct `OperationUpdateContractProperties` has been removed
+- Field `IssueContractBaseProperties` of struct `IssueUpdateContractProperties` has been removed
+- Field `IdentityProviderBaseParameters` of struct `IdentityProviderContractProperties` has been removed
+- Field `Resource` of struct `BackendContract` has been removed
+- Field `Resource` of struct `UserContract` has been removed
+- Field `Resource` of struct `PortalSettingsContract` has been removed
+- Field `UserEntityBaseParameters` of struct `UserUpdateParametersProperties` has been removed
+- Field `Resource` of struct `SchemaContract` has been removed
+- Field `Resource` of struct `ContentTypeContract` has been removed
+- Field `Resource` of struct `APIContract` has been removed
+- Field `Resource` of struct `IssueAttachmentContract` has been removed
+- Field `Resource` of struct `NamedValueContract` has been removed
+- Field `Resource` of struct `AuthorizationServerContract` has been removed
+- Field `Resource` of struct `PolicyDescriptionContract` has been removed
+- Field `Resource` of struct `RecipientEmailContract` has been removed
+- Field `Resource` of struct `BackendReconnectContract` has been removed
+- Field `Resource` of struct `CacheContract` has been removed
+- Field `UserEntityBaseParameters` of struct `UserCreateParameterProperties` has been removed
+- Field `ProductEntityBaseParameters` of struct `ProductTagResourceContractProperties` has been removed
+- Field `Resource` of struct `PortalDelegationSettings` has been removed
+- Field `NamedValueEntityBaseParameters` of struct `NamedValueContractProperties` has been removed
+- Field `Resource` of struct `PortalSigninSettings` has been removed
+- Field `Resource` of struct `NotificationContract` has been removed
+- Field `Resource` of struct `GatewayHostnameConfigurationContract` has been removed
+- Field `Resource` of struct `IdentityProviderCreateContract` has been removed
+- Field `Resource` of struct `SubscriptionContract` has been removed
+- Field `Resource` of struct `TenantConfigurationSyncStateContract` has been removed
+- Field `Resource` of struct `DiagnosticContract` has been removed
+- Field `Resource` of struct `PortalSignupSettings` has been removed
+- Field `APIEntityBaseContract` of struct `APIContractUpdateProperties` has been removed
+- Field `Resource` of struct `ContentItemContract` has been removed
+- Field `ProductEntityBaseParameters` of struct `ProductUpdateProperties` has been removed
+- Field `Resource` of struct `IssueContract` has been removed
+- Field `Resource` of struct `TenantSettingsContract` has been removed
+- Field `ProductEntityBaseParameters` of struct `ProductContractProperties` has been removed
+- Field `BackendBaseParameters` of struct `BackendUpdateParameterProperties` has been removed
+- Field `Resource` of struct `GroupContract` has been removed
+- Field `Resource` of struct `EmailTemplateContract` has been removed
+- Field `APIContractProperties` of struct `APICreateOrUpdateProperties` has been removed
+- Field `Resource` of struct `LoggerContract` has been removed
+- Field `Resource` of struct `APIReleaseContract` has been removed
+- Field `AuthorizationServerContractBaseProperties` of struct `AuthorizationServerContractProperties` has been removed
+- Field `Resource` of struct `PolicyContract` has been removed
+- Field `Resource` of struct `APIVersionSetContract` has been removed
+- Field `Resource` of struct `OpenidConnectProviderContract` has been removed
+- Field `UserEntityBaseParameters` of struct `UserContractProperties` has been removed
+- Field `Resource` of struct `AssociationContract` has been removed
+- Field `Resource` of struct `OperationResultContract` has been removed
+- Field `Resource` of struct `ProductContract` has been removed
+- Field `APIVersionSetEntityBase` of struct `APIVersionSetContractProperties` has been removed
+- Field `TagDescriptionBaseProperties` of struct `TagDescriptionContractProperties` has been removed
+- Field `APIEntityBaseContract` of struct `APIContractProperties` has been removed
+- Field `Resource` of struct `GatewayContract` has been removed
+- Field `IdentityProviderBaseParameters` of struct `IdentityProviderUpdateProperties` has been removed
+- Field `IdentityProviderBaseParameters` of struct `IdentityProviderCreateContractProperties` has been removed
+- Field `OperationEntityBaseContract` of struct `OperationContractProperties` has been removed
+- Field `Resource` of struct `IdentityProviderContract` has been removed
+- Field `Resource` of struct `AccessInformationContract` has been removed
+- Field `Resource` of struct `GatewayCertificateAuthorityContract` has been removed
+- Field `InnerError` of struct `ErrorResponse` has been removed
+- Field `Resource` of struct `PortalRevisionContract` has been removed
+- Field `Resource` of struct `DeletedServiceContract` has been removed
+- Field `Resource` of struct `IssueCommentContract` has been removed
+- Field `NamedValueEntityBaseParameters` of struct `NamedValueUpdateParameterProperties` has been removed
+- Field `Resource` of struct `TagContract` has been removed
+- Field `Resource` of struct `PrivateLinkResource` has been removed
+- Field `IssueContractBaseProperties` of struct `IssueContractProperties` has been removed
+- Field `APIEntityBaseContract` of struct `APITagResourceContractProperties` has been removed
+- Field `Resource` of struct `TagDescriptionContract` has been removed
+- Field `APIVersionSetEntityBase` of struct `APIVersionSetUpdateParametersProperties` has been removed
+- Field `Resource` of struct `CertificateContract` has been removed
+- Field `BackendBaseParameters` of struct `BackendContractProperties` has been removed
+- Field `NamedValueEntityBaseParameters` of struct `NamedValueCreateContractProperties` has been removed
+- Field `Resource` of struct `RecipientUserContract` has been removed
+- Field `Resource` of struct `AuthorizationServerUpdateContract` has been removed
+- Field `Resource` of struct `OperationContract` has been removed
+- Field `KeyVaultContractCreateProperties` of struct `KeyVaultContractProperties` has been removed
+- Field `AuthorizationServerContractBaseProperties` of struct `AuthorizationServerUpdateContractProperties` has been removed
+- Field `Resource` of struct `PrivateEndpointConnection` has been removed
+- Field `Resource` of struct `NamedValueCreateContract` has been removed
 
 ### Features Added
 
-### Breaking Changes
+- New const `SchemaTypeJSON`
+- New const `SchemaTypeXML`
+- New function `*APISchemaClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ServiceClientBackupPollerResponse.Resume(context.Context, *ServiceClient, string) error`
+- New function `*ReportsClientListByGeoPager.NextPage(context.Context) bool`
+- New function `*ServiceClientBackupPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ServiceClientUpdatePollerResponse.Resume(context.Context, *ServiceClient, string) error`
+- New function `*TenantConfigurationClientSavePoller.ResumeToken() (string, error)`
+- New function `*UserSubscriptionClientListPager.PageResponse() UserSubscriptionClientListResponse`
+- New function `*OperationClientListByTagsPager.Err() error`
+- New function `*APISchemaClientListByAPIPager.PageResponse() APISchemaClientListByAPIResponse`
+- New function `*NamedValueClientUpdatePoller.Done() bool`
+- New function `*NamedValueClientRefreshSecretPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*GlobalSchemaClientListByServicePager.NextPage(context.Context) bool`
+- New function `*DeletedServicesClientListBySubscriptionPager.Err() error`
+- New function `*ServiceClientApplyNetworkConfigurationUpdatesPoller.FinalResponse(context.Context) (ServiceClientApplyNetworkConfigurationUpdatesResponse, error)`
+- New function `NewClient(string, azcore.TokenCredential, *arm.ClientOptions) *Client`
+- New function `*APIClientListByServicePager.Err() error`
+- New function `*GatewayClientListByServicePager.NextPage(context.Context) bool`
+- New function `*PortalRevisionClientListByServicePager.Err() error`
+- New function `ServiceClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ServiceClientUpdateResponse, error)`
+- New function `*UserGroupClientListPager.NextPage(context.Context) bool`
+- New function `*APIProductClientListByApisPager.PageResponse() APIProductClientListByApisResponse`
+- New function `*APIClientListByServicePager.PageResponse() APIClientListByServiceResponse`
+- New function `*ServiceClientBackupPoller.ResumeToken() (string, error)`
+- New function `*TagClientListByAPIPager.Err() error`
+- New function `*APIIssueClientListByServicePager.PageResponse() APIIssueClientListByServiceResponse`
+- New function `*GlobalSchemaClientCreateOrUpdatePollerResponse.Resume(context.Context, *GlobalSchemaClient, string) error`
+- New function `*NamedValueClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*ServiceClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*APISchemaClientCreateOrUpdatePollerResponse.Resume(context.Context, *APISchemaClient, string) error`
+- New function `*ServiceClient.List(*ServiceClientListOptions) *ServiceClientListPager`
+- New function `*TagClientListByOperationPager.Err() error`
+- New function `APISchemaClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (APISchemaClientCreateOrUpdateResponse, error)`
+- New function `*APIClientListByTagsPager.NextPage(context.Context) bool`
+- New function `*NotificationClientListByServicePager.PageResponse() NotificationClientListByServiceResponse`
+- New function `*PrivateEndpointConnectionClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `ServiceClientRestorePollerResponse.PollUntilDone(context.Context, time.Duration) (ServiceClientRestoreResponse, error)`
+- New function `*ServiceClientListByResourceGroupPager.Err() error`
+- New function `*AuthorizationServerClientListByServicePager.PageResponse() AuthorizationServerClientListByServiceResponse`
+- New function `*PrivateEndpointConnectionClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*NamedValueClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*GlobalSchemaClient.BeginCreateOrUpdate(context.Context, string, string, string, GlobalSchemaContract, *GlobalSchemaClientBeginCreateOrUpdateOptions) (GlobalSchemaClientCreateOrUpdatePollerResponse, error)`
+- New function `*GatewayAPIClientListByServicePager.Err() error`
+- New function `*TagClientListByServicePager.NextPage(context.Context) bool`
+- New function `*NamedValueClientRefreshSecretPollerResponse.Resume(context.Context, *NamedValueClient, string) error`
+- New function `*UserIdentitiesClientListPager.Err() error`
+- New function `*TagClientListByServicePager.PageResponse() TagClientListByServiceResponse`
+- New function `*ProductAPIClientListByProductPager.Err() error`
+- New function `*ServiceSKUsClientListAvailableServiceSKUsPager.Err() error`
+- New function `*ServiceClientRestorePoller.Poll(context.Context) (*http.Response, error)`
+- New function `NewServiceSKUsClient(string, azcore.TokenCredential, *arm.ClientOptions) *ServiceSKUsClient`
+- New function `*ServiceClient.CheckNameAvailability(context.Context, ServiceCheckNameAvailabilityParameters, *ServiceClientCheckNameAvailabilityOptions) (ServiceClientCheckNameAvailabilityResponse, error)`
+- New function `ServiceProperties.MarshalJSON() ([]byte, error)`
+- New function `*TagClientListByProductPager.PageResponse() TagClientListByProductResponse`
+- New function `*APIOperationClientListByAPIPager.Err() error`
+- New function `ServiceBaseProperties.MarshalJSON() ([]byte, error)`
+- New function `*ServiceClientDeletePoller.ResumeToken() (string, error)`
+- New function `*ReportsClientListByAPIPager.Err() error`
+- New function `*ReportsClientListByGeoPager.PageResponse() ReportsClientListByGeoResponse`
+- New function `*ServiceClientListPager.Err() error`
+- New function `*GroupClientListByServicePager.Err() error`
+- New function `*PortalRevisionClientCreateOrUpdatePollerResponse.Resume(context.Context, *PortalRevisionClient, string) error`
+- New function `*GatewayClientListByServicePager.Err() error`
+- New function `*APIIssueCommentClientListByServicePager.NextPage(context.Context) bool`
+- New function `*ProductAPIClientListByProductPager.PageResponse() ProductAPIClientListByProductResponse`
+- New function `*GlobalSchemaClientListByServicePager.PageResponse() GlobalSchemaClientListByServiceResponse`
+- New function `*GatewayHostnameConfigurationClientListByServicePager.Err() error`
+- New function `*ReportsClientListByProductPager.Err() error`
+- New function `PrivateEndpointConnectionClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateEndpointConnectionClientCreateOrUpdateResponse, error)`
+- New function `*NamedValueClientCreateOrUpdatePollerResponse.Resume(context.Context, *NamedValueClient, string) error`
+- New function `*RegionClientListByServicePager.Err() error`
+- New function `*IdentityProviderClientListByServicePager.Err() error`
+- New function `*ServiceClient.Get(context.Context, string, string, *ServiceClientGetOptions) (ServiceClientGetResponse, error)`
+- New function `*ServiceClientCreateOrUpdatePollerResponse.Resume(context.Context, *ServiceClient, string) error`
+- New function `*TenantConfigurationClientSavePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*TenantConfigurationClientValidatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ReportsClientListByOperationPager.Err() error`
+- New function `*GlobalSchemaClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*EmailTemplateClientListByServicePager.Err() error`
+- New function `*TenantConfigurationClientDeployPollerResponse.Resume(context.Context, *TenantConfigurationClient, string) error`
+- New function `DeletedServicesClientPurgePollerResponse.PollUntilDone(context.Context, time.Duration) (DeletedServicesClientPurgeResponse, error)`
+- New function `*ReportsClientListByUserPager.NextPage(context.Context) bool`
+- New function `*SubscriptionClientListPager.NextPage(context.Context) bool`
+- New function `*ServiceClientRestorePoller.ResumeToken() (string, error)`
+- New function `*ServiceClientListByResourceGroupPager.PageResponse() ServiceClientListByResourceGroupResponse`
+- New function `*APISchemaClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `GlobalSchemaCollection.MarshalJSON() ([]byte, error)`
+- New function `*OpenIDConnectProviderClientListByServicePager.NextPage(context.Context) bool`
+- New function `*TenantConfigurationClientDeployPoller.ResumeToken() (string, error)`
+- New function `PortalRevisionClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (PortalRevisionClientCreateOrUpdateResponse, error)`
+- New function `*APISchemaClientListByAPIPager.NextPage(context.Context) bool`
+- New function `*NamedValueClientListByServicePager.Err() error`
+- New function `NamedValueClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (NamedValueClientCreateOrUpdateResponse, error)`
+- New function `ServiceIdentity.MarshalJSON() ([]byte, error)`
+- New function `*SKUsClient.List(*SKUsClientListOptions) *SKUsClientListPager`
+- New function `*UserGroupClientListPager.PageResponse() UserGroupClientListResponse`
+- New function `*ReportsClientListByOperationPager.NextPage(context.Context) bool`
+- New function `*APIClientListByTagsPager.Err() error`
+- New function `*APIDiagnosticClientListByServicePager.NextPage(context.Context) bool`
+- New function `*OperationsClientListPager.Err() error`
+- New function `*PortalRevisionClientListByServicePager.NextPage(context.Context) bool`
+- New function `*ServiceProperties.UnmarshalJSON([]byte) error`
+- New function `TenantConfigurationClientValidatePollerResponse.PollUntilDone(context.Context, time.Duration) (TenantConfigurationClientValidateResponse, error)`
+- New function `*APISchemaClientCreateOrUpdatePoller.FinalResponse(context.Context) (APISchemaClientCreateOrUpdateResponse, error)`
+- New function `*AuthorizationServerClientListByServicePager.NextPage(context.Context) bool`
+- New function `*APIIssueAttachmentClientListByServicePager.NextPage(context.Context) bool`
+- New function `*BackendClientListByServicePager.Err() error`
+- New function `*APIClientListByTagsPager.PageResponse() APIClientListByTagsResponse`
+- New function `*TagClientListByProductPager.NextPage(context.Context) bool`
+- New function `GlobalSchemaClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (GlobalSchemaClientCreateOrUpdateResponse, error)`
+- New function `PossibleSchemaTypeValues() []SchemaType`
+- New function `*ServiceClient.BeginCreateOrUpdate(context.Context, string, string, ServiceResource, *ServiceClientBeginCreateOrUpdateOptions) (ServiceClientCreateOrUpdatePollerResponse, error)`
+- New function `*LoggerClientListByServicePager.PageResponse() LoggerClientListByServiceResponse`
+- New function `*ServiceClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*APIDiagnosticClientListByServicePager.PageResponse() APIDiagnosticClientListByServiceResponse`
+- New function `*ReportsClientListByTimePager.Err() error`
+- New function `*ClientPerformConnectivityCheckAsyncPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*UserGroupClientListPager.Err() error`
+- New function `*ServiceBaseProperties.UnmarshalJSON([]byte) error`
+- New function `*GlobalSchemaClientListByServicePager.Err() error`
+- New function `NamedValueClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (NamedValueClientUpdateResponse, error)`
+- New function `*ClientPerformConnectivityCheckAsyncPollerResponse.Resume(context.Context, *Client, string) error`
+- New function `*ReportsClientListBySubscriptionPager.PageResponse() ReportsClientListBySubscriptionResponse`
+- New function `*TagClientListByAPIPager.NextPage(context.Context) bool`
+- New function `*LoggerClientListByServicePager.Err() error`
+- New function `*ServiceClient.BeginUpdate(context.Context, string, string, ServiceUpdateParameters, *ServiceClientBeginUpdateOptions) (ServiceClientUpdatePollerResponse, error)`
+- New function `*UserIdentitiesClientListPager.NextPage(context.Context) bool`
+- New function `*APIClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `SKURestrictions.MarshalJSON() ([]byte, error)`
+- New function `*APITagDescriptionClientListByServicePager.NextPage(context.Context) bool`
+- New function `*APIRevisionClientListByServicePager.PageResponse() APIRevisionClientListByServiceResponse`
+- New function `*APIClientCreateOrUpdatePoller.Done() bool`
+- New function `*APIIssueClientListByServicePager.Err() error`
+- New function `*IdentityProviderClientListByServicePager.NextPage(context.Context) bool`
+- New function `*UserClientListByServicePager.PageResponse() UserClientListByServiceResponse`
+- New function `*UserClientListByServicePager.NextPage(context.Context) bool`
+- New function `*TagResourceClientListByServicePager.Err() error`
+- New function `*ClientPerformConnectivityCheckAsyncPoller.Done() bool`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*TenantConfigurationClientDeployPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DeletedServicesClientPurgePoller.Done() bool`
+- New function `*PortalRevisionClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*NamedValueClientUpdatePollerResponse.Resume(context.Context, *NamedValueClient, string) error`
+- New function `*APIIssueCommentClientListByServicePager.Err() error`
+- New function `*APISchemaClientCreateOrUpdatePoller.Done() bool`
+- New function `*DiagnosticClientListByServicePager.Err() error`
+- New function `*TenantSettingsClientListByServicePager.PageResponse() TenantSettingsClientListByServiceResponse`
+- New function `ServiceClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ServiceClientDeleteResponse, error)`
+- New function `*TagClientListByAPIPager.PageResponse() TagClientListByAPIResponse`
+- New function `TenantConfigurationClientSavePollerResponse.PollUntilDone(context.Context, time.Duration) (TenantConfigurationClientSaveResponse, error)`
+- New function `*ReportsClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*GlobalSchemaClient.GetEntityTag(context.Context, string, string, string, *GlobalSchemaClientGetEntityTagOptions) (GlobalSchemaClientGetEntityTagResponse, error)`
+- New function `*PortalRevisionClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PortalRevisionClientListByServicePager.PageResponse() PortalRevisionClientListByServiceResponse`
+- New function `*NotificationClientListByServicePager.NextPage(context.Context) bool`
+- New function `*DiagnosticClientListByServicePager.NextPage(context.Context) bool`
+- New function `PortalRevisionClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (PortalRevisionClientUpdateResponse, error)`
+- New function `*DeletedServicesClientPurgePoller.FinalResponse(context.Context) (DeletedServicesClientPurgeResponse, error)`
+- New function `*RegionClientListByServicePager.PageResponse() RegionClientListByServiceResponse`
+- New function `*ServiceClientApplyNetworkConfigurationUpdatesPoller.ResumeToken() (string, error)`
+- New function `*APIReleaseClientListByServicePager.NextPage(context.Context) bool`
+- New function `*PrivateEndpointConnectionClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ServiceUpdateProperties.UnmarshalJSON([]byte) error`
+- New function `*PrivateEndpointConnectionClientDeletePoller.Done() bool`
+- New function `*ServiceClient.GetDomainOwnershipIdentifier(context.Context, *ServiceClientGetDomainOwnershipIdentifierOptions) (ServiceClientGetDomainOwnershipIdentifierResponse, error)`
+- New function `*GroupClientListByServicePager.PageResponse() GroupClientListByServiceResponse`
+- New function `NamedValueClientRefreshSecretPollerResponse.PollUntilDone(context.Context, time.Duration) (NamedValueClientRefreshSecretResponse, error)`
+- New function `APIClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (APIClientCreateOrUpdateResponse, error)`
+- New function `*ServiceClient.BeginRestore(context.Context, string, string, ServiceBackupRestoreParameters, *ServiceClientBeginRestoreOptions) (ServiceClientRestorePollerResponse, error)`
+- New function `*TenantSettingsClientListByServicePager.NextPage(context.Context) bool`
+- New function `*TenantConfigurationClientDeployPoller.Done() bool`
+- New function `*ContentTypeClientListByServicePager.Err() error`
+- New function `*ServiceClientRestorePoller.Done() bool`
+- New function `*GatewayCertificateAuthorityClientListByServicePager.Err() error`
+- New function `*PortalRevisionClientUpdatePoller.Done() bool`
+- New function `*TenantConfigurationClientValidatePoller.FinalResponse(context.Context) (TenantConfigurationClientValidateResponse, error)`
+- New function `*APIClientCreateOrUpdatePoller.FinalResponse(context.Context) (APIClientCreateOrUpdateResponse, error)`
+- New function `*ContentItemClientListByServicePager.Err() error`
+- New function `*APITagDescriptionClientListByServicePager.PageResponse() APITagDescriptionClientListByServiceResponse`
+- New function `*LoggerClientListByServicePager.NextPage(context.Context) bool`
+- New function `*ServiceClientUpdatePoller.Done() bool`
+- New function `*ProductClientListByTagsPager.Err() error`
+- New function `*CertificateClientListByServicePager.NextPage(context.Context) bool`
+- New function `*PortalRevisionClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*TenantConfigurationClientSavePoller.Done() bool`
+- New function `*OperationsClient.List(*OperationsClientListOptions) *OperationsClientListPager`
+- New function `*PortalRevisionClientUpdatePollerResponse.Resume(context.Context, *PortalRevisionClient, string) error`
+- New function `*CacheClientListByServicePager.PageResponse() CacheClientListByServiceResponse`
+- New function `*ServiceClientBackupPoller.FinalResponse(context.Context) (ServiceClientBackupResponse, error)`
+- New function `*TagClientListByServicePager.Err() error`
+- New function `*ReportsClientListByAPIPager.PageResponse() ReportsClientListByAPIResponse`
+- New function `*APIIssueAttachmentClientListByServicePager.Err() error`
+- New function `*ProductGroupClientListByProductPager.NextPage(context.Context) bool`
+- New function `*TenantAccessClientListByServicePager.PageResponse() TenantAccessClientListByServiceResponse`
+- New function `*TenantAccessClientListByServicePager.NextPage(context.Context) bool`
+- New function `*RegionClientListByServicePager.NextPage(context.Context) bool`
+- New function `*ServiceClientDeletePollerResponse.Resume(context.Context, *ServiceClient, string) error`
+- New function `*IssueClientListByServicePager.Err() error`
+- New function `*APIClientCreateOrUpdatePollerResponse.Resume(context.Context, *APIClient, string) error`
+- New function `*ProductSubscriptionsClientListPager.PageResponse() ProductSubscriptionsClientListResponse`
+- New function `*SKUsClientListPager.Err() error`
+- New function `*ContentTypeClientListByServicePager.PageResponse() ContentTypeClientListByServiceResponse`
+- New function `*TenantConfigurationClientDeployPoller.FinalResponse(context.Context) (TenantConfigurationClientDeployResponse, error)`
+- New function `*ServiceClientUpdatePoller.FinalResponse(context.Context) (ServiceClientUpdateResponse, error)`
+- New function `SchemaType.ToPtr() *SchemaType`
+- New function `ClientPerformConnectivityCheckAsyncPollerResponse.PollUntilDone(context.Context, time.Duration) (ClientPerformConnectivityCheckAsyncResponse, error)`
+- New function `SKUsResult.MarshalJSON() ([]byte, error)`
+- New function `*OperationClientListByTagsPager.NextPage(context.Context) bool`
+- New function `*ProductAPIClientListByProductPager.NextPage(context.Context) bool`
+- New function `*APIOperationClientListByAPIPager.PageResponse() APIOperationClientListByAPIResponse`
+- New function `*DeletedServicesClientPurgePollerResponse.Resume(context.Context, *DeletedServicesClient, string) error`
+- New function `*GatewayHostnameConfigurationClientListByServicePager.NextPage(context.Context) bool`
+- New function `*Client.BeginPerformConnectivityCheckAsync(context.Context, string, string, ConnectivityCheckRequest, *ClientBeginPerformConnectivityCheckAsyncOptions) (ClientPerformConnectivityCheckAsyncPollerResponse, error)`
+- New function `*GlobalSchemaClientCreateOrUpdatePoller.Done() bool`
+- New function `*GatewayClientListByServicePager.PageResponse() GatewayClientListByServiceResponse`
+- New function `*APIDiagnosticClientListByServicePager.Err() error`
+- New function `TenantConfigurationClientDeployPollerResponse.PollUntilDone(context.Context, time.Duration) (TenantConfigurationClientDeployResponse, error)`
+- New function `*NamedValueClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ServiceClientListPager.NextPage(context.Context) bool`
+- New function `*DeletedServicesClientPurgePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*APIIssueClientListByServicePager.NextPage(context.Context) bool`
+- New function `NewSKUsClient(string, azcore.TokenCredential, *arm.ClientOptions) *SKUsClient`
+- New function `*ReportsClientListByAPIPager.NextPage(context.Context) bool`
+- New function `*GatewayHostnameConfigurationClientListByServicePager.PageResponse() GatewayHostnameConfigurationClientListByServiceResponse`
+- New function `NewServiceClient(string, azcore.TokenCredential, *arm.ClientOptions) *ServiceClient`
+- New function `ServiceUpdateParameters.MarshalJSON() ([]byte, error)`
+- New function `*NamedValueClientUpdatePoller.FinalResponse(context.Context) (NamedValueClientUpdateResponse, error)`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*ReportsClientListByGeoPager.Err() error`
+- New function `*TenantSettingsClientListByServicePager.Err() error`
+- New function `*TenantConfigurationClientValidatePoller.ResumeToken() (string, error)`
+- New function `*NotificationClientListByServicePager.Err() error`
+- New function `*ProductClientListByTagsPager.PageResponse() ProductClientListByTagsResponse`
+- New function `*ReportsClientListBySubscriptionPager.Err() error`
+- New function `*CertificateClientListByServicePager.Err() error`
+- New function `*TagClientListByOperationPager.NextPage(context.Context) bool`
+- New function `NewOperationsClient(azcore.TokenCredential, *arm.ClientOptions) *OperationsClient`
+- New function `*ClientPerformConnectivityCheckAsyncPoller.FinalResponse(context.Context) (ClientPerformConnectivityCheckAsyncResponse, error)`
+- New function `*SKUsClientListPager.PageResponse() SKUsClientListResponse`
+- New function `*TenantConfigurationClientValidatePollerResponse.Resume(context.Context, *TenantConfigurationClient, string) error`
+- New function `*PrivateEndpointConnectionClientCreateOrUpdatePoller.FinalResponse(context.Context) (PrivateEndpointConnectionClientCreateOrUpdateResponse, error)`
+- New function `*ServiceClientListPager.PageResponse() ServiceClientListResponse`
+- New function `*GlobalSchemaClient.Delete(context.Context, string, string, string, string, *GlobalSchemaClientDeleteOptions) (GlobalSchemaClientDeleteResponse, error)`
+- New function `*GroupUserClientListPager.PageResponse() GroupUserClientListResponse`
+- New function `*SubscriptionClientListPager.Err() error`
+- New function `*TenantAccessClientListByServicePager.Err() error`
+- New function `SKURestrictionInfo.MarshalJSON() ([]byte, error)`
+- New function `*GroupUserClientListPager.Err() error`
+- New function `*AuthorizationServerClientListByServicePager.Err() error`
+- New function `*GroupClientListByServicePager.NextPage(context.Context) bool`
+- New function `*ServiceSKUsClient.ListAvailableServiceSKUs(string, string, *ServiceSKUsClientListAvailableServiceSKUsOptions) *ServiceSKUsClientListAvailableServiceSKUsPager`
+- New function `*ReportsClientListByProductPager.NextPage(context.Context) bool`
+- New function `*NamedValueClientRefreshSecretPoller.Done() bool`
+- New function `*ServiceClient.BeginDelete(context.Context, string, string, *ServiceClientBeginDeleteOptions) (ServiceClientDeletePollerResponse, error)`
+- New function `*ReportsClientListByUserPager.PageResponse() ReportsClientListByUserResponse`
+- New function `*UserSubscriptionClientListPager.NextPage(context.Context) bool`
+- New function `*ReportsClientListByTimePager.NextPage(context.Context) bool`
+- New function `*GatewayCertificateAuthorityClientListByServicePager.PageResponse() GatewayCertificateAuthorityClientListByServiceResponse`
+- New function `*ServiceClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*TenantConfigurationClientSavePoller.FinalResponse(context.Context) (TenantConfigurationClientSaveResponse, error)`
+- New function `*PrivateEndpointConnectionClientCreateOrUpdatePoller.Done() bool`
+- New function `*NamedValueClientCreateOrUpdatePoller.Done() bool`
+- New function `*ServiceClientRestorePollerResponse.Resume(context.Context, *ServiceClient, string) error`
+- New function `*ContentItemClientListByServicePager.PageResponse() ContentItemClientListByServiceResponse`
+- New function `*GlobalSchemaClient.ListByService(string, string, *GlobalSchemaClientListByServiceOptions) *GlobalSchemaClientListByServicePager`
+- New function `*APIProductClientListByApisPager.Err() error`
+- New function `*PrivateEndpointConnectionClientCreateOrUpdatePollerResponse.Resume(context.Context, *PrivateEndpointConnectionClient, string) error`
+- New function `*PrivateEndpointConnectionClientDeletePoller.FinalResponse(context.Context) (PrivateEndpointConnectionClientDeleteResponse, error)`
+- New function `*TenantConfigurationClientSavePollerResponse.Resume(context.Context, *TenantConfigurationClient, string) error`
+- New function `*IdentityProviderClientListByServicePager.PageResponse() IdentityProviderClientListByServiceResponse`
+- New function `SKUZoneDetails.MarshalJSON() ([]byte, error)`
+- New function `*ReportsClientListByProductPager.PageResponse() ReportsClientListByProductResponse`
+- New function `*ServiceClientApplyNetworkConfigurationUpdatesPoller.Done() bool`
+- New function `*BackendClientListByServicePager.PageResponse() BackendClientListByServiceResponse`
+- New function `*SubscriptionClientListPager.PageResponse() SubscriptionClientListResponse`
+- New function `*ProductClientListByServicePager.PageResponse() ProductClientListByServiceResponse`
+- New function `*UserClientListByServicePager.Err() error`
+- New function `*ServiceClientCreateOrUpdatePoller.FinalResponse(context.Context) (ServiceClientCreateOrUpdateResponse, error)`
+- New function `*CacheClientListByServicePager.NextPage(context.Context) bool`
+- New function `*ProductClientListByServicePager.NextPage(context.Context) bool`
+- New function `*APIProductClientListByApisPager.NextPage(context.Context) bool`
+- New function `*UserSubscriptionClientListPager.Err() error`
+- New function `*ServiceClient.BeginApplyNetworkConfigurationUpdates(context.Context, string, string, *ServiceClientBeginApplyNetworkConfigurationUpdatesOptions) (ServiceClientApplyNetworkConfigurationUpdatesPollerResponse, error)`
+- New function `*ReportsClientListByUserPager.Err() error`
+- New function `*PortalRevisionClientUpdatePoller.FinalResponse(context.Context) (PortalRevisionClientUpdateResponse, error)`
+- New function `*ProductGroupClientListByProductPager.Err() error`
+- New function `ServiceClientApplyNetworkConfigurationUpdatesPollerResponse.PollUntilDone(context.Context, time.Duration) (ServiceClientApplyNetworkConfigurationUpdatesResponse, error)`
+- New function `SKULocationInfo.MarshalJSON() ([]byte, error)`
+- New function `*DiagnosticClientListByServicePager.PageResponse() DiagnosticClientListByServiceResponse`
+- New function `SKU.MarshalJSON() ([]byte, error)`
+- New function `*APISchemaClientListByAPIPager.Err() error`
+- New function `*DeletedServicesClientPurgePoller.ResumeToken() (string, error)`
+- New function `*APIReleaseClientListByServicePager.Err() error`
+- New function `*ProductClientListByTagsPager.NextPage(context.Context) bool`
+- New function `*OpenIDConnectProviderClientListByServicePager.PageResponse() OpenIDConnectProviderClientListByServiceResponse`
+- New function `*PortalRevisionClientCreateOrUpdatePoller.FinalResponse(context.Context) (PortalRevisionClientCreateOrUpdateResponse, error)`
+- New function `*TagResourceClientListByServicePager.PageResponse() TagResourceClientListByServiceResponse`
+- New function `*UserIdentitiesClientListPager.PageResponse() UserIdentitiesClientListResponse`
+- New function `ServiceUpdateProperties.MarshalJSON() ([]byte, error)`
+- New function `*DeletedServicesClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*NamedValueClientListByServicePager.NextPage(context.Context) bool`
+- New function `*GlobalSchemaClientCreateOrUpdatePoller.FinalResponse(context.Context) (GlobalSchemaClientCreateOrUpdateResponse, error)`
+- New function `NewGlobalSchemaClient(string, azcore.TokenCredential, *arm.ClientOptions) *GlobalSchemaClient`
+- New function `*APIOperationClientListByAPIPager.NextPage(context.Context) bool`
+- New function `*GlobalSchemaClient.Get(context.Context, string, string, string, *GlobalSchemaClientGetOptions) (GlobalSchemaClientGetResponse, error)`
+- New function `*PortalRevisionClientCreateOrUpdatePoller.Done() bool`
+- New function `*GroupUserClientListPager.NextPage(context.Context) bool`
+- New function `*APIRevisionClientListByServicePager.NextPage(context.Context) bool`
+- New function `*ContentTypeClientListByServicePager.NextPage(context.Context) bool`
+- New function `*PrivateEndpointConnectionClientDeletePollerResponse.Resume(context.Context, *PrivateEndpointConnectionClient, string) error`
+- New function `*GatewayAPIClientListByServicePager.PageResponse() GatewayAPIClientListByServiceResponse`
+- New function `*PortalRevisionClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*CacheClientListByServicePager.Err() error`
+- New function `*CertificateClientListByServicePager.PageResponse() CertificateClientListByServiceResponse`
+- New function `*ServiceClient.ListByResourceGroup(string, *ServiceClientListByResourceGroupOptions) *ServiceClientListByResourceGroupPager`
+- New function `*GatewayAPIClientListByServicePager.NextPage(context.Context) bool`
+- New function `*NamedValueClientCreateOrUpdatePoller.FinalResponse(context.Context) (NamedValueClientCreateOrUpdateResponse, error)`
+- New function `*APIVersionSetClientListByServicePager.NextPage(context.Context) bool`
+- New function `*NamedValueClientRefreshSecretPoller.ResumeToken() (string, error)`
+- New function `ServiceClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ServiceClientCreateOrUpdateResponse, error)`
+- New function `*APIClientListByServicePager.NextPage(context.Context) bool`
+- New function `*ServiceClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*EmailTemplateClientListByServicePager.NextPage(context.Context) bool`
+- New function `*TagClientListByProductPager.Err() error`
+- New function `ServiceListResult.MarshalJSON() ([]byte, error)`
+- New function `*ServiceClientApplyNetworkConfigurationUpdatesPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*BackendClientListByServicePager.NextPage(context.Context) bool`
+- New function `*ServiceClientRestorePoller.FinalResponse(context.Context) (ServiceClientRestoreResponse, error)`
+- New function `*GlobalSchemaClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*APIVersionSetClientListByServicePager.PageResponse() APIVersionSetClientListByServiceResponse`
+- New function `*ReportsClientListByTimePager.PageResponse() ReportsClientListByTimeResponse`
+- New function `*APITagDescriptionClientListByServicePager.Err() error`
+- New function `*NamedValueClientListByServicePager.PageResponse() NamedValueClientListByServiceResponse`
+- New function `*ProductSubscriptionsClientListPager.Err() error`
+- New function `*IssueClientListByServicePager.PageResponse() IssueClientListByServiceResponse`
+- New function `*ServiceClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*NamedValueClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*ProductSubscriptionsClientListPager.NextPage(context.Context) bool`
+- New function `*ProductClientListByServicePager.Err() error`
+- New function `*ProductGroupClientListByProductPager.PageResponse() ProductGroupClientListByProductResponse`
+- New function `*TagResourceClientListByServicePager.NextPage(context.Context) bool`
+- New function `*TenantConfigurationClientValidatePoller.Done() bool`
+- New function `*NamedValueClientRefreshSecretPoller.FinalResponse(context.Context) (NamedValueClientRefreshSecretResponse, error)`
+- New function `*OperationClientListByTagsPager.PageResponse() OperationClientListByTagsResponse`
+- New function `*OpenIDConnectProviderClientListByServicePager.Err() error`
+- New function `*ServiceClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ContentItemClientListByServicePager.NextPage(context.Context) bool`
+- New function `*ServiceClient.BeginBackup(context.Context, string, string, ServiceBackupRestoreParameters, *ServiceClientBeginBackupOptions) (ServiceClientBackupPollerResponse, error)`
+- New function `PrivateEndpointConnectionClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateEndpointConnectionClientDeleteResponse, error)`
+- New function `*ServiceSKUsClientListAvailableServiceSKUsPager.PageResponse() ServiceSKUsClientListAvailableServiceSKUsResponse`
+- New function `*GatewayCertificateAuthorityClientListByServicePager.NextPage(context.Context) bool`
+- New function `*ServiceClientApplyNetworkConfigurationUpdatesPollerResponse.Resume(context.Context, *ServiceClient, string) error`
+- New function `*APIClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ServiceClientDeletePoller.FinalResponse(context.Context) (ServiceClientDeleteResponse, error)`
+- New function `*SKUsClientListPager.NextPage(context.Context) bool`
+- New function `*APIIssueAttachmentClientListByServicePager.PageResponse() APIIssueAttachmentClientListByServiceResponse`
+- New function `*ServiceClientBackupPoller.Done() bool`
+- New function `*APIIssueCommentClientListByServicePager.PageResponse() APIIssueCommentClientListByServiceResponse`
+- New function `*PrivateEndpointConnectionClientDeletePoller.ResumeToken() (string, error)`
+- New function `*DeletedServicesClientListBySubscriptionPager.PageResponse() DeletedServicesClientListBySubscriptionResponse`
+- New function `*IssueClientListByServicePager.NextPage(context.Context) bool`
+- New function `*ServiceClientCreateOrUpdatePoller.Done() bool`
+- New function `ServiceClientBackupPollerResponse.PollUntilDone(context.Context, time.Duration) (ServiceClientBackupResponse, error)`
+- New function `ServiceResource.MarshalJSON() ([]byte, error)`
+- New function `*ServiceSKUsClientListAvailableServiceSKUsPager.NextPage(context.Context) bool`
+- New function `*EmailTemplateClientListByServicePager.PageResponse() EmailTemplateClientListByServiceResponse`
+- New function `*APIReleaseClientListByServicePager.PageResponse() APIReleaseClientListByServiceResponse`
+- New function `*ServiceClient.GetSsoToken(context.Context, string, string, *ServiceClientGetSsoTokenOptions) (ServiceClientGetSsoTokenResponse, error)`
+- New function `*ReportsClientListByOperationPager.PageResponse() ReportsClientListByOperationResponse`
+- New function `*APIRevisionClientListByServicePager.Err() error`
+- New function `*ClientPerformConnectivityCheckAsyncPoller.ResumeToken() (string, error)`
+- New function `*ServiceClientDeletePoller.Done() bool`
+- New function `*TagClientListByOperationPager.PageResponse() TagClientListByOperationResponse`
+- New function `*APIVersionSetClientListByServicePager.Err() error`
+- New struct `APIClientBeginCreateOrUpdateOptions`
+- New struct `APIClientCreateOrUpdatePoller`
+- New struct `APIClientCreateOrUpdatePollerResponse`
+- New struct `APIClientCreateOrUpdateResponse`
+- New struct `APIClientCreateOrUpdateResult`
+- New struct `APIClientDeleteOptions`
+- New struct `APIClientDeleteResponse`
+- New struct `APIClientGetEntityTagOptions`
+- New struct `APIClientGetEntityTagResponse`
+- New struct `APIClientGetEntityTagResult`
+- New struct `APIClientGetOptions`
+- New struct `APIClientGetResponse`
+- New struct `APIClientGetResult`
+- New struct `APIClientListByServiceOptions`
+- New struct `APIClientListByServicePager`
+- New struct `APIClientListByServiceResponse`
+- New struct `APIClientListByServiceResult`
+- New struct `APIClientListByTagsOptions`
+- New struct `APIClientListByTagsPager`
+- New struct `APIClientListByTagsResponse`
+- New struct `APIClientListByTagsResult`
+- New struct `APIClientUpdateOptions`
+- New struct `APIClientUpdateResponse`
+- New struct `APIClientUpdateResult`
+- New struct `APIDiagnosticClientCreateOrUpdateOptions`
+- New struct `APIDiagnosticClientCreateOrUpdateResponse`
+- New struct `APIDiagnosticClientCreateOrUpdateResult`
+- New struct `APIDiagnosticClientDeleteOptions`
+- New struct `APIDiagnosticClientDeleteResponse`
+- New struct `APIDiagnosticClientGetEntityTagOptions`
+- New struct `APIDiagnosticClientGetEntityTagResponse`
+- New struct `APIDiagnosticClientGetEntityTagResult`
+- New struct `APIDiagnosticClientGetOptions`
+- New struct `APIDiagnosticClientGetResponse`
+- New struct `APIDiagnosticClientGetResult`
+- New struct `APIDiagnosticClientListByServiceOptions`
+- New struct `APIDiagnosticClientListByServicePager`
+- New struct `APIDiagnosticClientListByServiceResponse`
+- New struct `APIDiagnosticClientListByServiceResult`
+- New struct `APIDiagnosticClientUpdateOptions`
+- New struct `APIDiagnosticClientUpdateResponse`
+- New struct `APIDiagnosticClientUpdateResult`
+- New struct `APIExportClientGetOptions`
+- New struct `APIExportClientGetResponse`
+- New struct `APIExportClientGetResult`
+- New struct `APIIssueAttachmentClientCreateOrUpdateOptions`
+- New struct `APIIssueAttachmentClientCreateOrUpdateResponse`
+- New struct `APIIssueAttachmentClientCreateOrUpdateResult`
+- New struct `APIIssueAttachmentClientDeleteOptions`
+- New struct `APIIssueAttachmentClientDeleteResponse`
+- New struct `APIIssueAttachmentClientGetEntityTagOptions`
+- New struct `APIIssueAttachmentClientGetEntityTagResponse`
+- New struct `APIIssueAttachmentClientGetEntityTagResult`
+- New struct `APIIssueAttachmentClientGetOptions`
+- New struct `APIIssueAttachmentClientGetResponse`
+- New struct `APIIssueAttachmentClientGetResult`
+- New struct `APIIssueAttachmentClientListByServiceOptions`
+- New struct `APIIssueAttachmentClientListByServicePager`
+- New struct `APIIssueAttachmentClientListByServiceResponse`
+- New struct `APIIssueAttachmentClientListByServiceResult`
+- New struct `APIIssueClientCreateOrUpdateOptions`
+- New struct `APIIssueClientCreateOrUpdateResponse`
+- New struct `APIIssueClientCreateOrUpdateResult`
+- New struct `APIIssueClientDeleteOptions`
+- New struct `APIIssueClientDeleteResponse`
+- New struct `APIIssueClientGetEntityTagOptions`
+- New struct `APIIssueClientGetEntityTagResponse`
+- New struct `APIIssueClientGetEntityTagResult`
+- New struct `APIIssueClientGetOptions`
+- New struct `APIIssueClientGetResponse`
+- New struct `APIIssueClientGetResult`
+- New struct `APIIssueClientListByServiceOptions`
+- New struct `APIIssueClientListByServicePager`
+- New struct `APIIssueClientListByServiceResponse`
+- New struct `APIIssueClientListByServiceResult`
+- New struct `APIIssueClientUpdateOptions`
+- New struct `APIIssueClientUpdateResponse`
+- New struct `APIIssueClientUpdateResult`
+- New struct `APIIssueCommentClientCreateOrUpdateOptions`
+- New struct `APIIssueCommentClientCreateOrUpdateResponse`
+- New struct `APIIssueCommentClientCreateOrUpdateResult`
+- New struct `APIIssueCommentClientDeleteOptions`
+- New struct `APIIssueCommentClientDeleteResponse`
+- New struct `APIIssueCommentClientGetEntityTagOptions`
+- New struct `APIIssueCommentClientGetEntityTagResponse`
+- New struct `APIIssueCommentClientGetEntityTagResult`
+- New struct `APIIssueCommentClientGetOptions`
+- New struct `APIIssueCommentClientGetResponse`
+- New struct `APIIssueCommentClientGetResult`
+- New struct `APIIssueCommentClientListByServiceOptions`
+- New struct `APIIssueCommentClientListByServicePager`
+- New struct `APIIssueCommentClientListByServiceResponse`
+- New struct `APIIssueCommentClientListByServiceResult`
+- New struct `APIOperationClientCreateOrUpdateOptions`
+- New struct `APIOperationClientCreateOrUpdateResponse`
+- New struct `APIOperationClientCreateOrUpdateResult`
+- New struct `APIOperationClientDeleteOptions`
+- New struct `APIOperationClientDeleteResponse`
+- New struct `APIOperationClientGetEntityTagOptions`
+- New struct `APIOperationClientGetEntityTagResponse`
+- New struct `APIOperationClientGetEntityTagResult`
+- New struct `APIOperationClientGetOptions`
+- New struct `APIOperationClientGetResponse`
+- New struct `APIOperationClientGetResult`
+- New struct `APIOperationClientListByAPIOptions`
+- New struct `APIOperationClientListByAPIPager`
+- New struct `APIOperationClientListByAPIResponse`
+- New struct `APIOperationClientListByAPIResult`
+- New struct `APIOperationClientUpdateOptions`
+- New struct `APIOperationClientUpdateResponse`
+- New struct `APIOperationClientUpdateResult`
+- New struct `APIOperationPolicyClientCreateOrUpdateOptions`
+- New struct `APIOperationPolicyClientCreateOrUpdateResponse`
+- New struct `APIOperationPolicyClientCreateOrUpdateResult`
+- New struct `APIOperationPolicyClientDeleteOptions`
+- New struct `APIOperationPolicyClientDeleteResponse`
+- New struct `APIOperationPolicyClientGetEntityTagOptions`
+- New struct `APIOperationPolicyClientGetEntityTagResponse`
+- New struct `APIOperationPolicyClientGetEntityTagResult`
+- New struct `APIOperationPolicyClientGetOptions`
+- New struct `APIOperationPolicyClientGetResponse`
+- New struct `APIOperationPolicyClientGetResult`
+- New struct `APIOperationPolicyClientListByOperationOptions`
+- New struct `APIOperationPolicyClientListByOperationResponse`
+- New struct `APIOperationPolicyClientListByOperationResult`
+- New struct `APIPolicyClientCreateOrUpdateOptions`
+- New struct `APIPolicyClientCreateOrUpdateResponse`
+- New struct `APIPolicyClientCreateOrUpdateResult`
+- New struct `APIPolicyClientDeleteOptions`
+- New struct `APIPolicyClientDeleteResponse`
+- New struct `APIPolicyClientGetEntityTagOptions`
+- New struct `APIPolicyClientGetEntityTagResponse`
+- New struct `APIPolicyClientGetEntityTagResult`
+- New struct `APIPolicyClientGetOptions`
+- New struct `APIPolicyClientGetResponse`
+- New struct `APIPolicyClientGetResult`
+- New struct `APIPolicyClientListByAPIOptions`
+- New struct `APIPolicyClientListByAPIResponse`
+- New struct `APIPolicyClientListByAPIResult`
+- New struct `APIProductClientListByApisOptions`
+- New struct `APIProductClientListByApisPager`
+- New struct `APIProductClientListByApisResponse`
+- New struct `APIProductClientListByApisResult`
+- New struct `APIReleaseClientCreateOrUpdateOptions`
+- New struct `APIReleaseClientCreateOrUpdateResponse`
+- New struct `APIReleaseClientCreateOrUpdateResult`
+- New struct `APIReleaseClientDeleteOptions`
+- New struct `APIReleaseClientDeleteResponse`
+- New struct `APIReleaseClientGetEntityTagOptions`
+- New struct `APIReleaseClientGetEntityTagResponse`
+- New struct `APIReleaseClientGetEntityTagResult`
+- New struct `APIReleaseClientGetOptions`
+- New struct `APIReleaseClientGetResponse`
+- New struct `APIReleaseClientGetResult`
+- New struct `APIReleaseClientListByServiceOptions`
+- New struct `APIReleaseClientListByServicePager`
+- New struct `APIReleaseClientListByServiceResponse`
+- New struct `APIReleaseClientListByServiceResult`
+- New struct `APIReleaseClientUpdateOptions`
+- New struct `APIReleaseClientUpdateResponse`
+- New struct `APIReleaseClientUpdateResult`
+- New struct `APIRevisionClientListByServiceOptions`
+- New struct `APIRevisionClientListByServicePager`
+- New struct `APIRevisionClientListByServiceResponse`
+- New struct `APIRevisionClientListByServiceResult`
+- New struct `APISchemaClientBeginCreateOrUpdateOptions`
+- New struct `APISchemaClientCreateOrUpdatePoller`
+- New struct `APISchemaClientCreateOrUpdatePollerResponse`
+- New struct `APISchemaClientCreateOrUpdateResponse`
+- New struct `APISchemaClientCreateOrUpdateResult`
+- New struct `APISchemaClientDeleteOptions`
+- New struct `APISchemaClientDeleteResponse`
+- New struct `APISchemaClientGetEntityTagOptions`
+- New struct `APISchemaClientGetEntityTagResponse`
+- New struct `APISchemaClientGetEntityTagResult`
+- New struct `APISchemaClientGetOptions`
+- New struct `APISchemaClientGetResponse`
+- New struct `APISchemaClientGetResult`
+- New struct `APISchemaClientListByAPIOptions`
+- New struct `APISchemaClientListByAPIPager`
+- New struct `APISchemaClientListByAPIResponse`
+- New struct `APISchemaClientListByAPIResult`
+- New struct `APITagDescriptionClientCreateOrUpdateOptions`
+- New struct `APITagDescriptionClientCreateOrUpdateResponse`
+- New struct `APITagDescriptionClientCreateOrUpdateResult`
+- New struct `APITagDescriptionClientDeleteOptions`
+- New struct `APITagDescriptionClientDeleteResponse`
+- New struct `APITagDescriptionClientGetEntityTagOptions`
+- New struct `APITagDescriptionClientGetEntityTagResponse`
+- New struct `APITagDescriptionClientGetEntityTagResult`
+- New struct `APITagDescriptionClientGetOptions`
+- New struct `APITagDescriptionClientGetResponse`
+- New struct `APITagDescriptionClientGetResult`
+- New struct `APITagDescriptionClientListByServiceOptions`
+- New struct `APITagDescriptionClientListByServicePager`
+- New struct `APITagDescriptionClientListByServiceResponse`
+- New struct `APITagDescriptionClientListByServiceResult`
+- New struct `APIVersionSetClientCreateOrUpdateOptions`
+- New struct `APIVersionSetClientCreateOrUpdateResponse`
+- New struct `APIVersionSetClientCreateOrUpdateResult`
+- New struct `APIVersionSetClientDeleteOptions`
+- New struct `APIVersionSetClientDeleteResponse`
+- New struct `APIVersionSetClientGetEntityTagOptions`
+- New struct `APIVersionSetClientGetEntityTagResponse`
+- New struct `APIVersionSetClientGetEntityTagResult`
+- New struct `APIVersionSetClientGetOptions`
+- New struct `APIVersionSetClientGetResponse`
+- New struct `APIVersionSetClientGetResult`
+- New struct `APIVersionSetClientListByServiceOptions`
+- New struct `APIVersionSetClientListByServicePager`
+- New struct `APIVersionSetClientListByServiceResponse`
+- New struct `APIVersionSetClientListByServiceResult`
+- New struct `APIVersionSetClientUpdateOptions`
+- New struct `APIVersionSetClientUpdateResponse`
+- New struct `APIVersionSetClientUpdateResult`
+- New struct `AuthorizationServerClientCreateOrUpdateOptions`
+- New struct `AuthorizationServerClientCreateOrUpdateResponse`
+- New struct `AuthorizationServerClientCreateOrUpdateResult`
+- New struct `AuthorizationServerClientDeleteOptions`
+- New struct `AuthorizationServerClientDeleteResponse`
+- New struct `AuthorizationServerClientGetEntityTagOptions`
+- New struct `AuthorizationServerClientGetEntityTagResponse`
+- New struct `AuthorizationServerClientGetEntityTagResult`
+- New struct `AuthorizationServerClientGetOptions`
+- New struct `AuthorizationServerClientGetResponse`
+- New struct `AuthorizationServerClientGetResult`
+- New struct `AuthorizationServerClientListByServiceOptions`
+- New struct `AuthorizationServerClientListByServicePager`
+- New struct `AuthorizationServerClientListByServiceResponse`
+- New struct `AuthorizationServerClientListByServiceResult`
+- New struct `AuthorizationServerClientListSecretsOptions`
+- New struct `AuthorizationServerClientListSecretsResponse`
+- New struct `AuthorizationServerClientListSecretsResult`
+- New struct `AuthorizationServerClientUpdateOptions`
+- New struct `AuthorizationServerClientUpdateResponse`
+- New struct `AuthorizationServerClientUpdateResult`
+- New struct `BackendClientCreateOrUpdateOptions`
+- New struct `BackendClientCreateOrUpdateResponse`
+- New struct `BackendClientCreateOrUpdateResult`
+- New struct `BackendClientDeleteOptions`
+- New struct `BackendClientDeleteResponse`
+- New struct `BackendClientGetEntityTagOptions`
+- New struct `BackendClientGetEntityTagResponse`
+- New struct `BackendClientGetEntityTagResult`
+- New struct `BackendClientGetOptions`
+- New struct `BackendClientGetResponse`
+- New struct `BackendClientGetResult`
+- New struct `BackendClientListByServiceOptions`
+- New struct `BackendClientListByServicePager`
+- New struct `BackendClientListByServiceResponse`
+- New struct `BackendClientListByServiceResult`
+- New struct `BackendClientReconnectOptions`
+- New struct `BackendClientReconnectResponse`
+- New struct `BackendClientUpdateOptions`
+- New struct `BackendClientUpdateResponse`
+- New struct `BackendClientUpdateResult`
+- New struct `CacheClientCreateOrUpdateOptions`
+- New struct `CacheClientCreateOrUpdateResponse`
+- New struct `CacheClientCreateOrUpdateResult`
+- New struct `CacheClientDeleteOptions`
+- New struct `CacheClientDeleteResponse`
+- New struct `CacheClientGetEntityTagOptions`
+- New struct `CacheClientGetEntityTagResponse`
+- New struct `CacheClientGetEntityTagResult`
+- New struct `CacheClientGetOptions`
+- New struct `CacheClientGetResponse`
+- New struct `CacheClientGetResult`
+- New struct `CacheClientListByServiceOptions`
+- New struct `CacheClientListByServicePager`
+- New struct `CacheClientListByServiceResponse`
+- New struct `CacheClientListByServiceResult`
+- New struct `CacheClientUpdateOptions`
+- New struct `CacheClientUpdateResponse`
+- New struct `CacheClientUpdateResult`
+- New struct `CertificateClientCreateOrUpdateOptions`
+- New struct `CertificateClientCreateOrUpdateResponse`
+- New struct `CertificateClientCreateOrUpdateResult`
+- New struct `CertificateClientDeleteOptions`
+- New struct `CertificateClientDeleteResponse`
+- New struct `CertificateClientGetEntityTagOptions`
+- New struct `CertificateClientGetEntityTagResponse`
+- New struct `CertificateClientGetEntityTagResult`
+- New struct `CertificateClientGetOptions`
+- New struct `CertificateClientGetResponse`
+- New struct `CertificateClientGetResult`
+- New struct `CertificateClientListByServiceOptions`
+- New struct `CertificateClientListByServicePager`
+- New struct `CertificateClientListByServiceResponse`
+- New struct `CertificateClientListByServiceResult`
+- New struct `CertificateClientRefreshSecretOptions`
+- New struct `CertificateClientRefreshSecretResponse`
+- New struct `CertificateClientRefreshSecretResult`
+- New struct `Client`
+- New struct `ClientBeginPerformConnectivityCheckAsyncOptions`
+- New struct `ClientPerformConnectivityCheckAsyncPoller`
+- New struct `ClientPerformConnectivityCheckAsyncPollerResponse`
+- New struct `ClientPerformConnectivityCheckAsyncResponse`
+- New struct `ClientPerformConnectivityCheckAsyncResult`
+- New struct `ContentItemClientCreateOrUpdateOptions`
+- New struct `ContentItemClientCreateOrUpdateResponse`
+- New struct `ContentItemClientCreateOrUpdateResult`
+- New struct `ContentItemClientDeleteOptions`
+- New struct `ContentItemClientDeleteResponse`
+- New struct `ContentItemClientGetEntityTagOptions`
+- New struct `ContentItemClientGetEntityTagResponse`
+- New struct `ContentItemClientGetEntityTagResult`
+- New struct `ContentItemClientGetOptions`
+- New struct `ContentItemClientGetResponse`
+- New struct `ContentItemClientGetResult`
+- New struct `ContentItemClientListByServiceOptions`
+- New struct `ContentItemClientListByServicePager`
+- New struct `ContentItemClientListByServiceResponse`
+- New struct `ContentItemClientListByServiceResult`
+- New struct `ContentTypeClientCreateOrUpdateOptions`
+- New struct `ContentTypeClientCreateOrUpdateResponse`
+- New struct `ContentTypeClientCreateOrUpdateResult`
+- New struct `ContentTypeClientDeleteOptions`
+- New struct `ContentTypeClientDeleteResponse`
+- New struct `ContentTypeClientGetOptions`
+- New struct `ContentTypeClientGetResponse`
+- New struct `ContentTypeClientGetResult`
+- New struct `ContentTypeClientListByServiceOptions`
+- New struct `ContentTypeClientListByServicePager`
+- New struct `ContentTypeClientListByServiceResponse`
+- New struct `ContentTypeClientListByServiceResult`
+- New struct `DelegationSettingsClientCreateOrUpdateOptions`
+- New struct `DelegationSettingsClientCreateOrUpdateResponse`
+- New struct `DelegationSettingsClientCreateOrUpdateResult`
+- New struct `DelegationSettingsClientGetEntityTagOptions`
+- New struct `DelegationSettingsClientGetEntityTagResponse`
+- New struct `DelegationSettingsClientGetEntityTagResult`
+- New struct `DelegationSettingsClientGetOptions`
+- New struct `DelegationSettingsClientGetResponse`
+- New struct `DelegationSettingsClientGetResult`
+- New struct `DelegationSettingsClientListSecretsOptions`
+- New struct `DelegationSettingsClientListSecretsResponse`
+- New struct `DelegationSettingsClientListSecretsResult`
+- New struct `DelegationSettingsClientUpdateOptions`
+- New struct `DelegationSettingsClientUpdateResponse`
+- New struct `DeletedServicesClientBeginPurgeOptions`
+- New struct `DeletedServicesClientGetByNameOptions`
+- New struct `DeletedServicesClientGetByNameResponse`
+- New struct `DeletedServicesClientGetByNameResult`
+- New struct `DeletedServicesClientListBySubscriptionOptions`
+- New struct `DeletedServicesClientListBySubscriptionPager`
+- New struct `DeletedServicesClientListBySubscriptionResponse`
+- New struct `DeletedServicesClientListBySubscriptionResult`
+- New struct `DeletedServicesClientPurgePoller`
+- New struct `DeletedServicesClientPurgePollerResponse`
+- New struct `DeletedServicesClientPurgeResponse`
+- New struct `DeletedServicesClientPurgeResult`
+- New struct `DiagnosticClientCreateOrUpdateOptions`
+- New struct `DiagnosticClientCreateOrUpdateResponse`
+- New struct `DiagnosticClientCreateOrUpdateResult`
+- New struct `DiagnosticClientDeleteOptions`
+- New struct `DiagnosticClientDeleteResponse`
+- New struct `DiagnosticClientGetEntityTagOptions`
+- New struct `DiagnosticClientGetEntityTagResponse`
+- New struct `DiagnosticClientGetEntityTagResult`
+- New struct `DiagnosticClientGetOptions`
+- New struct `DiagnosticClientGetResponse`
+- New struct `DiagnosticClientGetResult`
+- New struct `DiagnosticClientListByServiceOptions`
+- New struct `DiagnosticClientListByServicePager`
+- New struct `DiagnosticClientListByServiceResponse`
+- New struct `DiagnosticClientListByServiceResult`
+- New struct `DiagnosticClientUpdateOptions`
+- New struct `DiagnosticClientUpdateResponse`
+- New struct `DiagnosticClientUpdateResult`
+- New struct `EmailTemplateClientCreateOrUpdateOptions`
+- New struct `EmailTemplateClientCreateOrUpdateResponse`
+- New struct `EmailTemplateClientCreateOrUpdateResult`
+- New struct `EmailTemplateClientDeleteOptions`
+- New struct `EmailTemplateClientDeleteResponse`
+- New struct `EmailTemplateClientGetEntityTagOptions`
+- New struct `EmailTemplateClientGetEntityTagResponse`
+- New struct `EmailTemplateClientGetEntityTagResult`
+- New struct `EmailTemplateClientGetOptions`
+- New struct `EmailTemplateClientGetResponse`
+- New struct `EmailTemplateClientGetResult`
+- New struct `EmailTemplateClientListByServiceOptions`
+- New struct `EmailTemplateClientListByServicePager`
+- New struct `EmailTemplateClientListByServiceResponse`
+- New struct `EmailTemplateClientListByServiceResult`
+- New struct `EmailTemplateClientUpdateOptions`
+- New struct `EmailTemplateClientUpdateResponse`
+- New struct `EmailTemplateClientUpdateResult`
+- New struct `GatewayAPIClientCreateOrUpdateOptions`
+- New struct `GatewayAPIClientCreateOrUpdateResponse`
+- New struct `GatewayAPIClientCreateOrUpdateResult`
+- New struct `GatewayAPIClientDeleteOptions`
+- New struct `GatewayAPIClientDeleteResponse`
+- New struct `GatewayAPIClientGetEntityTagOptions`
+- New struct `GatewayAPIClientGetEntityTagResponse`
+- New struct `GatewayAPIClientGetEntityTagResult`
+- New struct `GatewayAPIClientListByServiceOptions`
+- New struct `GatewayAPIClientListByServicePager`
+- New struct `GatewayAPIClientListByServiceResponse`
+- New struct `GatewayAPIClientListByServiceResult`
+- New struct `GatewayCertificateAuthorityClientCreateOrUpdateOptions`
+- New struct `GatewayCertificateAuthorityClientCreateOrUpdateResponse`
+- New struct `GatewayCertificateAuthorityClientCreateOrUpdateResult`
+- New struct `GatewayCertificateAuthorityClientDeleteOptions`
+- New struct `GatewayCertificateAuthorityClientDeleteResponse`
+- New struct `GatewayCertificateAuthorityClientGetEntityTagOptions`
+- New struct `GatewayCertificateAuthorityClientGetEntityTagResponse`
+- New struct `GatewayCertificateAuthorityClientGetEntityTagResult`
+- New struct `GatewayCertificateAuthorityClientGetOptions`
+- New struct `GatewayCertificateAuthorityClientGetResponse`
+- New struct `GatewayCertificateAuthorityClientGetResult`
+- New struct `GatewayCertificateAuthorityClientListByServiceOptions`
+- New struct `GatewayCertificateAuthorityClientListByServicePager`
+- New struct `GatewayCertificateAuthorityClientListByServiceResponse`
+- New struct `GatewayCertificateAuthorityClientListByServiceResult`
+- New struct `GatewayClientCreateOrUpdateOptions`
+- New struct `GatewayClientCreateOrUpdateResponse`
+- New struct `GatewayClientCreateOrUpdateResult`
+- New struct `GatewayClientDeleteOptions`
+- New struct `GatewayClientDeleteResponse`
+- New struct `GatewayClientGenerateTokenOptions`
+- New struct `GatewayClientGenerateTokenResponse`
+- New struct `GatewayClientGenerateTokenResult`
+- New struct `GatewayClientGetEntityTagOptions`
+- New struct `GatewayClientGetEntityTagResponse`
+- New struct `GatewayClientGetEntityTagResult`
+- New struct `GatewayClientGetOptions`
+- New struct `GatewayClientGetResponse`
+- New struct `GatewayClientGetResult`
+- New struct `GatewayClientListByServiceOptions`
+- New struct `GatewayClientListByServicePager`
+- New struct `GatewayClientListByServiceResponse`
+- New struct `GatewayClientListByServiceResult`
+- New struct `GatewayClientListKeysOptions`
+- New struct `GatewayClientListKeysResponse`
+- New struct `GatewayClientListKeysResult`
+- New struct `GatewayClientRegenerateKeyOptions`
+- New struct `GatewayClientRegenerateKeyResponse`
+- New struct `GatewayClientUpdateOptions`
+- New struct `GatewayClientUpdateResponse`
+- New struct `GatewayClientUpdateResult`
+- New struct `GatewayHostnameConfigurationClientCreateOrUpdateOptions`
+- New struct `GatewayHostnameConfigurationClientCreateOrUpdateResponse`
+- New struct `GatewayHostnameConfigurationClientCreateOrUpdateResult`
+- New struct `GatewayHostnameConfigurationClientDeleteOptions`
+- New struct `GatewayHostnameConfigurationClientDeleteResponse`
+- New struct `GatewayHostnameConfigurationClientGetEntityTagOptions`
+- New struct `GatewayHostnameConfigurationClientGetEntityTagResponse`
+- New struct `GatewayHostnameConfigurationClientGetEntityTagResult`
+- New struct `GatewayHostnameConfigurationClientGetOptions`
+- New struct `GatewayHostnameConfigurationClientGetResponse`
+- New struct `GatewayHostnameConfigurationClientGetResult`
+- New struct `GatewayHostnameConfigurationClientListByServiceOptions`
+- New struct `GatewayHostnameConfigurationClientListByServicePager`
+- New struct `GatewayHostnameConfigurationClientListByServiceResponse`
+- New struct `GatewayHostnameConfigurationClientListByServiceResult`
+- New struct `GlobalSchemaClient`
+- New struct `GlobalSchemaClientBeginCreateOrUpdateOptions`
+- New struct `GlobalSchemaClientCreateOrUpdatePoller`
+- New struct `GlobalSchemaClientCreateOrUpdatePollerResponse`
+- New struct `GlobalSchemaClientCreateOrUpdateResponse`
+- New struct `GlobalSchemaClientCreateOrUpdateResult`
+- New struct `GlobalSchemaClientDeleteOptions`
+- New struct `GlobalSchemaClientDeleteResponse`
+- New struct `GlobalSchemaClientGetEntityTagOptions`
+- New struct `GlobalSchemaClientGetEntityTagResponse`
+- New struct `GlobalSchemaClientGetEntityTagResult`
+- New struct `GlobalSchemaClientGetOptions`
+- New struct `GlobalSchemaClientGetResponse`
+- New struct `GlobalSchemaClientGetResult`
+- New struct `GlobalSchemaClientListByServiceOptions`
+- New struct `GlobalSchemaClientListByServicePager`
+- New struct `GlobalSchemaClientListByServiceResponse`
+- New struct `GlobalSchemaClientListByServiceResult`
+- New struct `GlobalSchemaCollection`
+- New struct `GlobalSchemaContract`
+- New struct `GlobalSchemaContractProperties`
+- New struct `GroupClientCreateOrUpdateOptions`
+- New struct `GroupClientCreateOrUpdateResponse`
+- New struct `GroupClientCreateOrUpdateResult`
+- New struct `GroupClientDeleteOptions`
+- New struct `GroupClientDeleteResponse`
+- New struct `GroupClientGetEntityTagOptions`
+- New struct `GroupClientGetEntityTagResponse`
+- New struct `GroupClientGetEntityTagResult`
+- New struct `GroupClientGetOptions`
+- New struct `GroupClientGetResponse`
+- New struct `GroupClientGetResult`
+- New struct `GroupClientListByServiceOptions`
+- New struct `GroupClientListByServicePager`
+- New struct `GroupClientListByServiceResponse`
+- New struct `GroupClientListByServiceResult`
+- New struct `GroupClientUpdateOptions`
+- New struct `GroupClientUpdateResponse`
+- New struct `GroupClientUpdateResult`
+- New struct `GroupUserClientCheckEntityExistsOptions`
+- New struct `GroupUserClientCheckEntityExistsResponse`
+- New struct `GroupUserClientCheckEntityExistsResult`
+- New struct `GroupUserClientCreateOptions`
+- New struct `GroupUserClientCreateResponse`
+- New struct `GroupUserClientCreateResult`
+- New struct `GroupUserClientDeleteOptions`
+- New struct `GroupUserClientDeleteResponse`
+- New struct `GroupUserClientListOptions`
+- New struct `GroupUserClientListPager`
+- New struct `GroupUserClientListResponse`
+- New struct `GroupUserClientListResult`
+- New struct `IdentityProviderClientCreateOrUpdateOptions`
+- New struct `IdentityProviderClientCreateOrUpdateResponse`
+- New struct `IdentityProviderClientCreateOrUpdateResult`
+- New struct `IdentityProviderClientDeleteOptions`
+- New struct `IdentityProviderClientDeleteResponse`
+- New struct `IdentityProviderClientGetEntityTagOptions`
+- New struct `IdentityProviderClientGetEntityTagResponse`
+- New struct `IdentityProviderClientGetEntityTagResult`
+- New struct `IdentityProviderClientGetOptions`
+- New struct `IdentityProviderClientGetResponse`
+- New struct `IdentityProviderClientGetResult`
+- New struct `IdentityProviderClientListByServiceOptions`
+- New struct `IdentityProviderClientListByServicePager`
+- New struct `IdentityProviderClientListByServiceResponse`
+- New struct `IdentityProviderClientListByServiceResult`
+- New struct `IdentityProviderClientListSecretsOptions`
+- New struct `IdentityProviderClientListSecretsResponse`
+- New struct `IdentityProviderClientListSecretsResult`
+- New struct `IdentityProviderClientUpdateOptions`
+- New struct `IdentityProviderClientUpdateResponse`
+- New struct `IdentityProviderClientUpdateResult`
+- New struct `IssueClientGetOptions`
+- New struct `IssueClientGetResponse`
+- New struct `IssueClientGetResult`
+- New struct `IssueClientListByServiceOptions`
+- New struct `IssueClientListByServicePager`
+- New struct `IssueClientListByServiceResponse`
+- New struct `IssueClientListByServiceResult`
+- New struct `LoggerClientCreateOrUpdateOptions`
+- New struct `LoggerClientCreateOrUpdateResponse`
+- New struct `LoggerClientCreateOrUpdateResult`
+- New struct `LoggerClientDeleteOptions`
+- New struct `LoggerClientDeleteResponse`
+- New struct `LoggerClientGetEntityTagOptions`
+- New struct `LoggerClientGetEntityTagResponse`
+- New struct `LoggerClientGetEntityTagResult`
+- New struct `LoggerClientGetOptions`
+- New struct `LoggerClientGetResponse`
+- New struct `LoggerClientGetResult`
+- New struct `LoggerClientListByServiceOptions`
+- New struct `LoggerClientListByServicePager`
+- New struct `LoggerClientListByServiceResponse`
+- New struct `LoggerClientListByServiceResult`
+- New struct `LoggerClientUpdateOptions`
+- New struct `LoggerClientUpdateResponse`
+- New struct `LoggerClientUpdateResult`
+- New struct `NamedValueClientBeginCreateOrUpdateOptions`
+- New struct `NamedValueClientBeginRefreshSecretOptions`
+- New struct `NamedValueClientBeginUpdateOptions`
+- New struct `NamedValueClientCreateOrUpdatePoller`
+- New struct `NamedValueClientCreateOrUpdatePollerResponse`
+- New struct `NamedValueClientCreateOrUpdateResponse`
+- New struct `NamedValueClientCreateOrUpdateResult`
+- New struct `NamedValueClientDeleteOptions`
+- New struct `NamedValueClientDeleteResponse`
+- New struct `NamedValueClientGetEntityTagOptions`
+- New struct `NamedValueClientGetEntityTagResponse`
+- New struct `NamedValueClientGetEntityTagResult`
+- New struct `NamedValueClientGetOptions`
+- New struct `NamedValueClientGetResponse`
+- New struct `NamedValueClientGetResult`
+- New struct `NamedValueClientListByServiceOptions`
+- New struct `NamedValueClientListByServicePager`
+- New struct `NamedValueClientListByServiceResponse`
+- New struct `NamedValueClientListByServiceResult`
+- New struct `NamedValueClientListValueOptions`
+- New struct `NamedValueClientListValueResponse`
+- New struct `NamedValueClientListValueResult`
+- New struct `NamedValueClientRefreshSecretPoller`
+- New struct `NamedValueClientRefreshSecretPollerResponse`
+- New struct `NamedValueClientRefreshSecretResponse`
+- New struct `NamedValueClientRefreshSecretResult`
+- New struct `NamedValueClientUpdatePoller`
+- New struct `NamedValueClientUpdatePollerResponse`
+- New struct `NamedValueClientUpdateResponse`
+- New struct `NamedValueClientUpdateResult`
+- New struct `NetworkStatusClientListByLocationOptions`
+- New struct `NetworkStatusClientListByLocationResponse`
+- New struct `NetworkStatusClientListByLocationResult`
+- New struct `NetworkStatusClientListByServiceOptions`
+- New struct `NetworkStatusClientListByServiceResponse`
+- New struct `NetworkStatusClientListByServiceResult`
+- New struct `NotificationClientCreateOrUpdateOptions`
+- New struct `NotificationClientCreateOrUpdateResponse`
+- New struct `NotificationClientCreateOrUpdateResult`
+- New struct `NotificationClientGetOptions`
+- New struct `NotificationClientGetResponse`
+- New struct `NotificationClientGetResult`
+- New struct `NotificationClientListByServiceOptions`
+- New struct `NotificationClientListByServicePager`
+- New struct `NotificationClientListByServiceResponse`
+- New struct `NotificationClientListByServiceResult`
+- New struct `NotificationRecipientEmailClientCheckEntityExistsOptions`
+- New struct `NotificationRecipientEmailClientCheckEntityExistsResponse`
+- New struct `NotificationRecipientEmailClientCheckEntityExistsResult`
+- New struct `NotificationRecipientEmailClientCreateOrUpdateOptions`
+- New struct `NotificationRecipientEmailClientCreateOrUpdateResponse`
+- New struct `NotificationRecipientEmailClientCreateOrUpdateResult`
+- New struct `NotificationRecipientEmailClientDeleteOptions`
+- New struct `NotificationRecipientEmailClientDeleteResponse`
+- New struct `NotificationRecipientEmailClientListByNotificationOptions`
+- New struct `NotificationRecipientEmailClientListByNotificationResponse`
+- New struct `NotificationRecipientEmailClientListByNotificationResult`
+- New struct `NotificationRecipientUserClientCheckEntityExistsOptions`
+- New struct `NotificationRecipientUserClientCheckEntityExistsResponse`
+- New struct `NotificationRecipientUserClientCheckEntityExistsResult`
+- New struct `NotificationRecipientUserClientCreateOrUpdateOptions`
+- New struct `NotificationRecipientUserClientCreateOrUpdateResponse`
+- New struct `NotificationRecipientUserClientCreateOrUpdateResult`
+- New struct `NotificationRecipientUserClientDeleteOptions`
+- New struct `NotificationRecipientUserClientDeleteResponse`
+- New struct `NotificationRecipientUserClientListByNotificationOptions`
+- New struct `NotificationRecipientUserClientListByNotificationResponse`
+- New struct `NotificationRecipientUserClientListByNotificationResult`
+- New struct `OpenIDConnectProviderClientCreateOrUpdateOptions`
+- New struct `OpenIDConnectProviderClientCreateOrUpdateResponse`
+- New struct `OpenIDConnectProviderClientCreateOrUpdateResult`
+- New struct `OpenIDConnectProviderClientDeleteOptions`
+- New struct `OpenIDConnectProviderClientDeleteResponse`
+- New struct `OpenIDConnectProviderClientGetEntityTagOptions`
+- New struct `OpenIDConnectProviderClientGetEntityTagResponse`
+- New struct `OpenIDConnectProviderClientGetEntityTagResult`
+- New struct `OpenIDConnectProviderClientGetOptions`
+- New struct `OpenIDConnectProviderClientGetResponse`
+- New struct `OpenIDConnectProviderClientGetResult`
+- New struct `OpenIDConnectProviderClientListByServiceOptions`
+- New struct `OpenIDConnectProviderClientListByServicePager`
+- New struct `OpenIDConnectProviderClientListByServiceResponse`
+- New struct `OpenIDConnectProviderClientListByServiceResult`
+- New struct `OpenIDConnectProviderClientListSecretsOptions`
+- New struct `OpenIDConnectProviderClientListSecretsResponse`
+- New struct `OpenIDConnectProviderClientListSecretsResult`
+- New struct `OpenIDConnectProviderClientUpdateOptions`
+- New struct `OpenIDConnectProviderClientUpdateResponse`
+- New struct `OpenIDConnectProviderClientUpdateResult`
+- New struct `OperationClientListByTagsOptions`
+- New struct `OperationClientListByTagsPager`
+- New struct `OperationClientListByTagsResponse`
+- New struct `OperationClientListByTagsResult`
+- New struct `OperationsClient`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `OutboundNetworkDependenciesEndpointsClientListByServiceOptions`
+- New struct `OutboundNetworkDependenciesEndpointsClientListByServiceResponse`
+- New struct `OutboundNetworkDependenciesEndpointsClientListByServiceResult`
+- New struct `PolicyClientCreateOrUpdateOptions`
+- New struct `PolicyClientCreateOrUpdateResponse`
+- New struct `PolicyClientCreateOrUpdateResult`
+- New struct `PolicyClientDeleteOptions`
+- New struct `PolicyClientDeleteResponse`
+- New struct `PolicyClientGetEntityTagOptions`
+- New struct `PolicyClientGetEntityTagResponse`
+- New struct `PolicyClientGetEntityTagResult`
+- New struct `PolicyClientGetOptions`
+- New struct `PolicyClientGetResponse`
+- New struct `PolicyClientGetResult`
+- New struct `PolicyClientListByServiceOptions`
+- New struct `PolicyClientListByServiceResponse`
+- New struct `PolicyClientListByServiceResult`
+- New struct `PolicyDescriptionClientListByServiceOptions`
+- New struct `PolicyDescriptionClientListByServiceResponse`
+- New struct `PolicyDescriptionClientListByServiceResult`
+- New struct `PortalRevisionClientBeginCreateOrUpdateOptions`
+- New struct `PortalRevisionClientBeginUpdateOptions`
+- New struct `PortalRevisionClientCreateOrUpdatePoller`
+- New struct `PortalRevisionClientCreateOrUpdatePollerResponse`
+- New struct `PortalRevisionClientCreateOrUpdateResponse`
+- New struct `PortalRevisionClientCreateOrUpdateResult`
+- New struct `PortalRevisionClientGetEntityTagOptions`
+- New struct `PortalRevisionClientGetEntityTagResponse`
+- New struct `PortalRevisionClientGetEntityTagResult`
+- New struct `PortalRevisionClientGetOptions`
+- New struct `PortalRevisionClientGetResponse`
+- New struct `PortalRevisionClientGetResult`
+- New struct `PortalRevisionClientListByServiceOptions`
+- New struct `PortalRevisionClientListByServicePager`
+- New struct `PortalRevisionClientListByServiceResponse`
+- New struct `PortalRevisionClientListByServiceResult`
+- New struct `PortalRevisionClientUpdatePoller`
+- New struct `PortalRevisionClientUpdatePollerResponse`
+- New struct `PortalRevisionClientUpdateResponse`
+- New struct `PortalRevisionClientUpdateResult`
+- New struct `PortalSettingsClientListByServiceOptions`
+- New struct `PortalSettingsClientListByServiceResponse`
+- New struct `PortalSettingsClientListByServiceResult`
+- New struct `PrivateEndpointConnectionClientBeginCreateOrUpdateOptions`
+- New struct `PrivateEndpointConnectionClientBeginDeleteOptions`
+- New struct `PrivateEndpointConnectionClientCreateOrUpdatePoller`
+- New struct `PrivateEndpointConnectionClientCreateOrUpdatePollerResponse`
+- New struct `PrivateEndpointConnectionClientCreateOrUpdateResponse`
+- New struct `PrivateEndpointConnectionClientCreateOrUpdateResult`
+- New struct `PrivateEndpointConnectionClientDeletePoller`
+- New struct `PrivateEndpointConnectionClientDeletePollerResponse`
+- New struct `PrivateEndpointConnectionClientDeleteResponse`
+- New struct `PrivateEndpointConnectionClientGetByNameOptions`
+- New struct `PrivateEndpointConnectionClientGetByNameResponse`
+- New struct `PrivateEndpointConnectionClientGetByNameResult`
+- New struct `PrivateEndpointConnectionClientGetPrivateLinkResourceOptions`
+- New struct `PrivateEndpointConnectionClientGetPrivateLinkResourceResponse`
+- New struct `PrivateEndpointConnectionClientGetPrivateLinkResourceResult`
+- New struct `PrivateEndpointConnectionClientListByServiceOptions`
+- New struct `PrivateEndpointConnectionClientListByServiceResponse`
+- New struct `PrivateEndpointConnectionClientListByServiceResult`
+- New struct `PrivateEndpointConnectionClientListPrivateLinkResourcesOptions`
+- New struct `PrivateEndpointConnectionClientListPrivateLinkResourcesResponse`
+- New struct `PrivateEndpointConnectionClientListPrivateLinkResourcesResult`
+- New struct `ProductAPIClientCheckEntityExistsOptions`
+- New struct `ProductAPIClientCheckEntityExistsResponse`
+- New struct `ProductAPIClientCheckEntityExistsResult`
+- New struct `ProductAPIClientCreateOrUpdateOptions`
+- New struct `ProductAPIClientCreateOrUpdateResponse`
+- New struct `ProductAPIClientCreateOrUpdateResult`
+- New struct `ProductAPIClientDeleteOptions`
+- New struct `ProductAPIClientDeleteResponse`
+- New struct `ProductAPIClientListByProductOptions`
+- New struct `ProductAPIClientListByProductPager`
+- New struct `ProductAPIClientListByProductResponse`
+- New struct `ProductAPIClientListByProductResult`
+- New struct `ProductClientCreateOrUpdateOptions`
+- New struct `ProductClientCreateOrUpdateResponse`
+- New struct `ProductClientCreateOrUpdateResult`
+- New struct `ProductClientDeleteOptions`
+- New struct `ProductClientDeleteResponse`
+- New struct `ProductClientGetEntityTagOptions`
+- New struct `ProductClientGetEntityTagResponse`
+- New struct `ProductClientGetEntityTagResult`
+- New struct `ProductClientGetOptions`
+- New struct `ProductClientGetResponse`
+- New struct `ProductClientGetResult`
+- New struct `ProductClientListByServiceOptions`
+- New struct `ProductClientListByServicePager`
+- New struct `ProductClientListByServiceResponse`
+- New struct `ProductClientListByServiceResult`
+- New struct `ProductClientListByTagsOptions`
+- New struct `ProductClientListByTagsPager`
+- New struct `ProductClientListByTagsResponse`
+- New struct `ProductClientListByTagsResult`
+- New struct `ProductClientUpdateOptions`
+- New struct `ProductClientUpdateResponse`
+- New struct `ProductClientUpdateResult`
+- New struct `ProductGroupClientCheckEntityExistsOptions`
+- New struct `ProductGroupClientCheckEntityExistsResponse`
+- New struct `ProductGroupClientCheckEntityExistsResult`
+- New struct `ProductGroupClientCreateOrUpdateOptions`
+- New struct `ProductGroupClientCreateOrUpdateResponse`
+- New struct `ProductGroupClientCreateOrUpdateResult`
+- New struct `ProductGroupClientDeleteOptions`
+- New struct `ProductGroupClientDeleteResponse`
+- New struct `ProductGroupClientListByProductOptions`
+- New struct `ProductGroupClientListByProductPager`
+- New struct `ProductGroupClientListByProductResponse`
+- New struct `ProductGroupClientListByProductResult`
+- New struct `ProductPolicyClientCreateOrUpdateOptions`
+- New struct `ProductPolicyClientCreateOrUpdateResponse`
+- New struct `ProductPolicyClientCreateOrUpdateResult`
+- New struct `ProductPolicyClientDeleteOptions`
+- New struct `ProductPolicyClientDeleteResponse`
+- New struct `ProductPolicyClientGetEntityTagOptions`
+- New struct `ProductPolicyClientGetEntityTagResponse`
+- New struct `ProductPolicyClientGetEntityTagResult`
+- New struct `ProductPolicyClientGetOptions`
+- New struct `ProductPolicyClientGetResponse`
+- New struct `ProductPolicyClientGetResult`
+- New struct `ProductPolicyClientListByProductOptions`
+- New struct `ProductPolicyClientListByProductResponse`
+- New struct `ProductPolicyClientListByProductResult`
+- New struct `ProductSubscriptionsClientListOptions`
+- New struct `ProductSubscriptionsClientListPager`
+- New struct `ProductSubscriptionsClientListResponse`
+- New struct `ProductSubscriptionsClientListResult`
+- New struct `QuotaByCounterKeysClientListByServiceOptions`
+- New struct `QuotaByCounterKeysClientListByServiceResponse`
+- New struct `QuotaByCounterKeysClientListByServiceResult`
+- New struct `QuotaByCounterKeysClientUpdateOptions`
+- New struct `QuotaByCounterKeysClientUpdateResponse`
+- New struct `QuotaByCounterKeysClientUpdateResult`
+- New struct `QuotaByPeriodKeysClientGetOptions`
+- New struct `QuotaByPeriodKeysClientGetResponse`
+- New struct `QuotaByPeriodKeysClientGetResult`
+- New struct `QuotaByPeriodKeysClientUpdateOptions`
+- New struct `QuotaByPeriodKeysClientUpdateResponse`
+- New struct `QuotaByPeriodKeysClientUpdateResult`
+- New struct `RegionClientListByServiceOptions`
+- New struct `RegionClientListByServicePager`
+- New struct `RegionClientListByServiceResponse`
+- New struct `RegionClientListByServiceResult`
+- New struct `ReportsClientListByAPIOptions`
+- New struct `ReportsClientListByAPIPager`
+- New struct `ReportsClientListByAPIResponse`
+- New struct `ReportsClientListByAPIResult`
+- New struct `ReportsClientListByGeoOptions`
+- New struct `ReportsClientListByGeoPager`
+- New struct `ReportsClientListByGeoResponse`
+- New struct `ReportsClientListByGeoResult`
+- New struct `ReportsClientListByOperationOptions`
+- New struct `ReportsClientListByOperationPager`
+- New struct `ReportsClientListByOperationResponse`
+- New struct `ReportsClientListByOperationResult`
+- New struct `ReportsClientListByProductOptions`
+- New struct `ReportsClientListByProductPager`
+- New struct `ReportsClientListByProductResponse`
+- New struct `ReportsClientListByProductResult`
+- New struct `ReportsClientListByRequestOptions`
+- New struct `ReportsClientListByRequestResponse`
+- New struct `ReportsClientListByRequestResult`
+- New struct `ReportsClientListBySubscriptionOptions`
+- New struct `ReportsClientListBySubscriptionPager`
+- New struct `ReportsClientListBySubscriptionResponse`
+- New struct `ReportsClientListBySubscriptionResult`
+- New struct `ReportsClientListByTimeOptions`
+- New struct `ReportsClientListByTimePager`
+- New struct `ReportsClientListByTimeResponse`
+- New struct `ReportsClientListByTimeResult`
+- New struct `ReportsClientListByUserOptions`
+- New struct `ReportsClientListByUserPager`
+- New struct `ReportsClientListByUserResponse`
+- New struct `ReportsClientListByUserResult`
+- New struct `SKU`
+- New struct `SKUCapabilities`
+- New struct `SKUCapacity`
+- New struct `SKUCosts`
+- New struct `SKULocationInfo`
+- New struct `SKURestrictionInfo`
+- New struct `SKURestrictions`
+- New struct `SKUZoneDetails`
+- New struct `SKUsClient`
+- New struct `SKUsClientListOptions`
+- New struct `SKUsClientListPager`
+- New struct `SKUsClientListResponse`
+- New struct `SKUsClientListResult`
+- New struct `SKUsResult`
+- New struct `ServiceApplyNetworkConfigurationParameters`
+- New struct `ServiceBackupRestoreParameters`
+- New struct `ServiceBaseProperties`
+- New struct `ServiceCheckNameAvailabilityParameters`
+- New struct `ServiceClient`
+- New struct `ServiceClientApplyNetworkConfigurationUpdatesPoller`
+- New struct `ServiceClientApplyNetworkConfigurationUpdatesPollerResponse`
+- New struct `ServiceClientApplyNetworkConfigurationUpdatesResponse`
+- New struct `ServiceClientApplyNetworkConfigurationUpdatesResult`
+- New struct `ServiceClientBackupPoller`
+- New struct `ServiceClientBackupPollerResponse`
+- New struct `ServiceClientBackupResponse`
+- New struct `ServiceClientBackupResult`
+- New struct `ServiceClientBeginApplyNetworkConfigurationUpdatesOptions`
+- New struct `ServiceClientBeginBackupOptions`
+- New struct `ServiceClientBeginCreateOrUpdateOptions`
+- New struct `ServiceClientBeginDeleteOptions`
+- New struct `ServiceClientBeginRestoreOptions`
+- New struct `ServiceClientBeginUpdateOptions`
+- New struct `ServiceClientCheckNameAvailabilityOptions`
+- New struct `ServiceClientCheckNameAvailabilityResponse`
+- New struct `ServiceClientCheckNameAvailabilityResult`
+- New struct `ServiceClientCreateOrUpdatePoller`
+- New struct `ServiceClientCreateOrUpdatePollerResponse`
+- New struct `ServiceClientCreateOrUpdateResponse`
+- New struct `ServiceClientCreateOrUpdateResult`
+- New struct `ServiceClientDeletePoller`
+- New struct `ServiceClientDeletePollerResponse`
+- New struct `ServiceClientDeleteResponse`
+- New struct `ServiceClientDeleteResult`
+- New struct `ServiceClientGetDomainOwnershipIdentifierOptions`
+- New struct `ServiceClientGetDomainOwnershipIdentifierResponse`
+- New struct `ServiceClientGetDomainOwnershipIdentifierResult`
+- New struct `ServiceClientGetOptions`
+- New struct `ServiceClientGetResponse`
+- New struct `ServiceClientGetResult`
+- New struct `ServiceClientGetSsoTokenOptions`
+- New struct `ServiceClientGetSsoTokenResponse`
+- New struct `ServiceClientGetSsoTokenResult`
+- New struct `ServiceClientListByResourceGroupOptions`
+- New struct `ServiceClientListByResourceGroupPager`
+- New struct `ServiceClientListByResourceGroupResponse`
+- New struct `ServiceClientListByResourceGroupResult`
+- New struct `ServiceClientListOptions`
+- New struct `ServiceClientListPager`
+- New struct `ServiceClientListResponse`
+- New struct `ServiceClientListResult`
+- New struct `ServiceClientRestorePoller`
+- New struct `ServiceClientRestorePollerResponse`
+- New struct `ServiceClientRestoreResponse`
+- New struct `ServiceClientRestoreResult`
+- New struct `ServiceClientUpdatePoller`
+- New struct `ServiceClientUpdatePollerResponse`
+- New struct `ServiceClientUpdateResponse`
+- New struct `ServiceClientUpdateResult`
+- New struct `ServiceGetDomainOwnershipIdentifierResult`
+- New struct `ServiceGetSsoTokenResult`
+- New struct `ServiceIdentity`
+- New struct `ServiceListResult`
+- New struct `ServiceNameAvailabilityResult`
+- New struct `ServiceProperties`
+- New struct `ServiceResource`
+- New struct `ServiceSKUProperties`
+- New struct `ServiceSKUsClient`
+- New struct `ServiceSKUsClientListAvailableServiceSKUsOptions`
+- New struct `ServiceSKUsClientListAvailableServiceSKUsPager`
+- New struct `ServiceSKUsClientListAvailableServiceSKUsResponse`
+- New struct `ServiceSKUsClientListAvailableServiceSKUsResult`
+- New struct `ServiceUpdateParameters`
+- New struct `ServiceUpdateProperties`
+- New struct `SignInSettingsClientCreateOrUpdateOptions`
+- New struct `SignInSettingsClientCreateOrUpdateResponse`
+- New struct `SignInSettingsClientCreateOrUpdateResult`
+- New struct `SignInSettingsClientGetEntityTagOptions`
+- New struct `SignInSettingsClientGetEntityTagResponse`
+- New struct `SignInSettingsClientGetEntityTagResult`
+- New struct `SignInSettingsClientGetOptions`
+- New struct `SignInSettingsClientGetResponse`
+- New struct `SignInSettingsClientGetResult`
+- New struct `SignInSettingsClientUpdateOptions`
+- New struct `SignInSettingsClientUpdateResponse`
+- New struct `SignUpSettingsClientCreateOrUpdateOptions`
+- New struct `SignUpSettingsClientCreateOrUpdateResponse`
+- New struct `SignUpSettingsClientCreateOrUpdateResult`
+- New struct `SignUpSettingsClientGetEntityTagOptions`
+- New struct `SignUpSettingsClientGetEntityTagResponse`
+- New struct `SignUpSettingsClientGetEntityTagResult`
+- New struct `SignUpSettingsClientGetOptions`
+- New struct `SignUpSettingsClientGetResponse`
+- New struct `SignUpSettingsClientGetResult`
+- New struct `SignUpSettingsClientUpdateOptions`
+- New struct `SignUpSettingsClientUpdateResponse`
+- New struct `SubscriptionClientCreateOrUpdateOptions`
+- New struct `SubscriptionClientCreateOrUpdateResponse`
+- New struct `SubscriptionClientCreateOrUpdateResult`
+- New struct `SubscriptionClientDeleteOptions`
+- New struct `SubscriptionClientDeleteResponse`
+- New struct `SubscriptionClientGetEntityTagOptions`
+- New struct `SubscriptionClientGetEntityTagResponse`
+- New struct `SubscriptionClientGetEntityTagResult`
+- New struct `SubscriptionClientGetOptions`
+- New struct `SubscriptionClientGetResponse`
+- New struct `SubscriptionClientGetResult`
+- New struct `SubscriptionClientListOptions`
+- New struct `SubscriptionClientListPager`
+- New struct `SubscriptionClientListResponse`
+- New struct `SubscriptionClientListResult`
+- New struct `SubscriptionClientListSecretsOptions`
+- New struct `SubscriptionClientListSecretsResponse`
+- New struct `SubscriptionClientListSecretsResult`
+- New struct `SubscriptionClientRegeneratePrimaryKeyOptions`
+- New struct `SubscriptionClientRegeneratePrimaryKeyResponse`
+- New struct `SubscriptionClientRegenerateSecondaryKeyOptions`
+- New struct `SubscriptionClientRegenerateSecondaryKeyResponse`
+- New struct `SubscriptionClientUpdateOptions`
+- New struct `SubscriptionClientUpdateResponse`
+- New struct `SubscriptionClientUpdateResult`
+- New struct `TagClientAssignToAPIOptions`
+- New struct `TagClientAssignToAPIResponse`
+- New struct `TagClientAssignToAPIResult`
+- New struct `TagClientAssignToOperationOptions`
+- New struct `TagClientAssignToOperationResponse`
+- New struct `TagClientAssignToOperationResult`
+- New struct `TagClientAssignToProductOptions`
+- New struct `TagClientAssignToProductResponse`
+- New struct `TagClientAssignToProductResult`
+- New struct `TagClientCreateOrUpdateOptions`
+- New struct `TagClientCreateOrUpdateResponse`
+- New struct `TagClientCreateOrUpdateResult`
+- New struct `TagClientDeleteOptions`
+- New struct `TagClientDeleteResponse`
+- New struct `TagClientDetachFromAPIOptions`
+- New struct `TagClientDetachFromAPIResponse`
+- New struct `TagClientDetachFromOperationOptions`
+- New struct `TagClientDetachFromOperationResponse`
+- New struct `TagClientDetachFromProductOptions`
+- New struct `TagClientDetachFromProductResponse`
+- New struct `TagClientGetByAPIOptions`
+- New struct `TagClientGetByAPIResponse`
+- New struct `TagClientGetByAPIResult`
+- New struct `TagClientGetByOperationOptions`
+- New struct `TagClientGetByOperationResponse`
+- New struct `TagClientGetByOperationResult`
+- New struct `TagClientGetByProductOptions`
+- New struct `TagClientGetByProductResponse`
+- New struct `TagClientGetByProductResult`
+- New struct `TagClientGetEntityStateByAPIOptions`
+- New struct `TagClientGetEntityStateByAPIResponse`
+- New struct `TagClientGetEntityStateByAPIResult`
+- New struct `TagClientGetEntityStateByOperationOptions`
+- New struct `TagClientGetEntityStateByOperationResponse`
+- New struct `TagClientGetEntityStateByOperationResult`
+- New struct `TagClientGetEntityStateByProductOptions`
+- New struct `TagClientGetEntityStateByProductResponse`
+- New struct `TagClientGetEntityStateByProductResult`
+- New struct `TagClientGetEntityStateOptions`
+- New struct `TagClientGetEntityStateResponse`
+- New struct `TagClientGetEntityStateResult`
+- New struct `TagClientGetOptions`
+- New struct `TagClientGetResponse`
+- New struct `TagClientGetResult`
+- New struct `TagClientListByAPIOptions`
+- New struct `TagClientListByAPIPager`
+- New struct `TagClientListByAPIResponse`
+- New struct `TagClientListByAPIResult`
+- New struct `TagClientListByOperationOptions`
+- New struct `TagClientListByOperationPager`
+- New struct `TagClientListByOperationResponse`
+- New struct `TagClientListByOperationResult`
+- New struct `TagClientListByProductOptions`
+- New struct `TagClientListByProductPager`
+- New struct `TagClientListByProductResponse`
+- New struct `TagClientListByProductResult`
+- New struct `TagClientListByServiceOptions`
+- New struct `TagClientListByServicePager`
+- New struct `TagClientListByServiceResponse`
+- New struct `TagClientListByServiceResult`
+- New struct `TagClientUpdateOptions`
+- New struct `TagClientUpdateResponse`
+- New struct `TagClientUpdateResult`
+- New struct `TagResourceClientListByServiceOptions`
+- New struct `TagResourceClientListByServicePager`
+- New struct `TagResourceClientListByServiceResponse`
+- New struct `TagResourceClientListByServiceResult`
+- New struct `TenantAccessClientCreateOptions`
+- New struct `TenantAccessClientCreateResponse`
+- New struct `TenantAccessClientCreateResult`
+- New struct `TenantAccessClientGetEntityTagOptions`
+- New struct `TenantAccessClientGetEntityTagResponse`
+- New struct `TenantAccessClientGetEntityTagResult`
+- New struct `TenantAccessClientGetOptions`
+- New struct `TenantAccessClientGetResponse`
+- New struct `TenantAccessClientGetResult`
+- New struct `TenantAccessClientListByServiceOptions`
+- New struct `TenantAccessClientListByServicePager`
+- New struct `TenantAccessClientListByServiceResponse`
+- New struct `TenantAccessClientListByServiceResult`
+- New struct `TenantAccessClientListSecretsOptions`
+- New struct `TenantAccessClientListSecretsResponse`
+- New struct `TenantAccessClientListSecretsResult`
+- New struct `TenantAccessClientRegeneratePrimaryKeyOptions`
+- New struct `TenantAccessClientRegeneratePrimaryKeyResponse`
+- New struct `TenantAccessClientRegenerateSecondaryKeyOptions`
+- New struct `TenantAccessClientRegenerateSecondaryKeyResponse`
+- New struct `TenantAccessClientUpdateOptions`
+- New struct `TenantAccessClientUpdateResponse`
+- New struct `TenantAccessClientUpdateResult`
+- New struct `TenantAccessGitClientRegeneratePrimaryKeyOptions`
+- New struct `TenantAccessGitClientRegeneratePrimaryKeyResponse`
+- New struct `TenantAccessGitClientRegenerateSecondaryKeyOptions`
+- New struct `TenantAccessGitClientRegenerateSecondaryKeyResponse`
+- New struct `TenantConfigurationClientBeginDeployOptions`
+- New struct `TenantConfigurationClientBeginSaveOptions`
+- New struct `TenantConfigurationClientBeginValidateOptions`
+- New struct `TenantConfigurationClientDeployPoller`
+- New struct `TenantConfigurationClientDeployPollerResponse`
+- New struct `TenantConfigurationClientDeployResponse`
+- New struct `TenantConfigurationClientDeployResult`
+- New struct `TenantConfigurationClientGetSyncStateOptions`
+- New struct `TenantConfigurationClientGetSyncStateResponse`
+- New struct `TenantConfigurationClientGetSyncStateResult`
+- New struct `TenantConfigurationClientSavePoller`
+- New struct `TenantConfigurationClientSavePollerResponse`
+- New struct `TenantConfigurationClientSaveResponse`
+- New struct `TenantConfigurationClientSaveResult`
+- New struct `TenantConfigurationClientValidatePoller`
+- New struct `TenantConfigurationClientValidatePollerResponse`
+- New struct `TenantConfigurationClientValidateResponse`
+- New struct `TenantConfigurationClientValidateResult`
+- New struct `TenantSettingsClientGetOptions`
+- New struct `TenantSettingsClientGetResponse`
+- New struct `TenantSettingsClientGetResult`
+- New struct `TenantSettingsClientListByServiceOptions`
+- New struct `TenantSettingsClientListByServicePager`
+- New struct `TenantSettingsClientListByServiceResponse`
+- New struct `TenantSettingsClientListByServiceResult`
+- New struct `UserClientCreateOrUpdateOptions`
+- New struct `UserClientCreateOrUpdateResponse`
+- New struct `UserClientCreateOrUpdateResult`
+- New struct `UserClientDeleteOptions`
+- New struct `UserClientDeleteResponse`
+- New struct `UserClientGenerateSsoURLOptions`
+- New struct `UserClientGenerateSsoURLResponse`
+- New struct `UserClientGenerateSsoURLResult`
+- New struct `UserClientGetEntityTagOptions`
+- New struct `UserClientGetEntityTagResponse`
+- New struct `UserClientGetEntityTagResult`
+- New struct `UserClientGetOptions`
+- New struct `UserClientGetResponse`
+- New struct `UserClientGetResult`
+- New struct `UserClientGetSharedAccessTokenOptions`
+- New struct `UserClientGetSharedAccessTokenResponse`
+- New struct `UserClientGetSharedAccessTokenResult`
+- New struct `UserClientListByServiceOptions`
+- New struct `UserClientListByServicePager`
+- New struct `UserClientListByServiceResponse`
+- New struct `UserClientListByServiceResult`
+- New struct `UserClientUpdateOptions`
+- New struct `UserClientUpdateResponse`
+- New struct `UserClientUpdateResult`
+- New struct `UserConfirmationPasswordClientSendOptions`
+- New struct `UserConfirmationPasswordClientSendResponse`
+- New struct `UserGroupClientListOptions`
+- New struct `UserGroupClientListPager`
+- New struct `UserGroupClientListResponse`
+- New struct `UserGroupClientListResult`
+- New struct `UserIdentitiesClientListOptions`
+- New struct `UserIdentitiesClientListPager`
+- New struct `UserIdentitiesClientListResponse`
+- New struct `UserIdentitiesClientListResult`
+- New struct `UserSubscriptionClientGetOptions`
+- New struct `UserSubscriptionClientGetResponse`
+- New struct `UserSubscriptionClientGetResult`
+- New struct `UserSubscriptionClientListOptions`
+- New struct `UserSubscriptionClientListPager`
+- New struct `UserSubscriptionClientListResponse`
+- New struct `UserSubscriptionClientListResult`
+- New field `ID` in struct `GatewayContract`
+- New field `Name` in struct `GatewayContract`
+- New field `Type` in struct `GatewayContract`
+- New field `Secret` in struct `NamedValueContractProperties`
+- New field `Tags` in struct `NamedValueContractProperties`
+- New field `TemplateParameters` in struct `OperationUpdateContractProperties`
+- New field `Description` in struct `OperationUpdateContractProperties`
+- New field `Policies` in struct `OperationUpdateContractProperties`
+- New field `Request` in struct `OperationUpdateContractProperties`
+- New field `Responses` in struct `OperationUpdateContractProperties`
+- New field `ID` in struct `PortalSignupSettings`
+- New field `Name` in struct `PortalSignupSettings`
+- New field `Type` in struct `PortalSignupSettings`
+- New field `ID` in struct `UserContract`
+- New field `Name` in struct `UserContract`
+- New field `Type` in struct `UserContract`
+- New field `ID` in struct `PrivateEndpointConnection`
+- New field `Name` in struct `PrivateEndpointConnection`
+- New field `Type` in struct `PrivateEndpointConnection`
+- New field `ExternalDocsDescription` in struct `TagDescriptionContractProperties`
+- New field `ExternalDocsURL` in struct `TagDescriptionContractProperties`
+- New field `Description` in struct `TagDescriptionContractProperties`
+- New field `License` in struct `APICreateOrUpdateProperties`
+- New field `APIVersion` in struct `APICreateOrUpdateProperties`
+- New field `Path` in struct `APICreateOrUpdateProperties`
+- New field `APIVersionDescription` in struct `APICreateOrUpdateProperties`
+- New field `APIVersionSet` in struct `APICreateOrUpdateProperties`
+- New field `IsCurrent` in struct `APICreateOrUpdateProperties`
+- New field `Description` in struct `APICreateOrUpdateProperties`
+- New field `IsOnline` in struct `APICreateOrUpdateProperties`
+- New field `AuthenticationSettings` in struct `APICreateOrUpdateProperties`
+- New field `Contact` in struct `APICreateOrUpdateProperties`
+- New field `DisplayName` in struct `APICreateOrUpdateProperties`
+- New field `ServiceURL` in struct `APICreateOrUpdateProperties`
+- New field `SubscriptionRequired` in struct `APICreateOrUpdateProperties`
+- New field `Protocols` in struct `APICreateOrUpdateProperties`
+- New field `APIVersionSetID` in struct `APICreateOrUpdateProperties`
+- New field `SubscriptionKeyParameterNames` in struct `APICreateOrUpdateProperties`
+- New field `TermsOfServiceURL` in struct `APICreateOrUpdateProperties`
+- New field `APIRevisionDescription` in struct `APICreateOrUpdateProperties`
+- New field `APIRevision` in struct `APICreateOrUpdateProperties`
+- New field `SourceAPIID` in struct `APICreateOrUpdateProperties`
+- New field `APIType` in struct `APICreateOrUpdateProperties`
+- New field `ID` in struct `APIContract`
+- New field `Name` in struct `APIContract`
+- New field `Type` in struct `APIContract`
+- New field `ID` in struct `PolicyContract`
+- New field `Name` in struct `PolicyContract`
+- New field `Type` in struct `PolicyContract`
+- New field `Type` in struct `CacheContract`
+- New field `ID` in struct `CacheContract`
+- New field `Name` in struct `CacheContract`
+- New field `Error` in struct `ErrorResponse`
+- New field `ID` in struct `APIVersionSetContract`
+- New field `Name` in struct `APIVersionSetContract`
+- New field `Type` in struct `APIVersionSetContract`
+- New field `ID` in struct `PortalRevisionContract`
+- New field `Name` in struct `PortalRevisionContract`
+- New field `Type` in struct `PortalRevisionContract`
+- New field `ID` in struct `AccessInformationContract`
+- New field `Name` in struct `AccessInformationContract`
+- New field `Type` in struct `AccessInformationContract`
+- New field `ID` in struct `IssueContract`
+- New field `Name` in struct `IssueContract`
+- New field `Type` in struct `IssueContract`
+- New field `Authority` in struct `IdentityProviderCreateContractProperties`
+- New field `PasswordResetPolicyName` in struct `IdentityProviderCreateContractProperties`
+- New field `ProfileEditingPolicyName` in struct `IdentityProviderCreateContractProperties`
+- New field `SigninPolicyName` in struct `IdentityProviderCreateContractProperties`
+- New field `Type` in struct `IdentityProviderCreateContractProperties`
+- New field `SigninTenant` in struct `IdentityProviderCreateContractProperties`
+- New field `SignupPolicyName` in struct `IdentityProviderCreateContractProperties`
+- New field `AllowedTenants` in struct `IdentityProviderCreateContractProperties`
+- New field `Type` in struct `LoggerContract`
+- New field `ID` in struct `LoggerContract`
+- New field `Name` in struct `LoggerContract`
+- New field `Type` in struct `TagContract`
+- New field `ID` in struct `TagContract`
+- New field `Name` in struct `TagContract`
+- New field `SubscriptionRequired` in struct `ProductContractProperties`
+- New field `SubscriptionsLimit` in struct `ProductContractProperties`
+- New field `Terms` in struct `ProductContractProperties`
+- New field `ApprovalRequired` in struct `ProductContractProperties`
+- New field `Description` in struct `ProductContractProperties`
+- New field `State` in struct `ProductContractProperties`
+- New field `ID` in struct `OperationResultContract`
+- New field `Name` in struct `OperationResultContract`
+- New field `Type` in struct `OperationResultContract`
+- New field `ID` in struct `GatewayHostnameConfigurationContract`
+- New field `Name` in struct `GatewayHostnameConfigurationContract`
+- New field `Type` in struct `GatewayHostnameConfigurationContract`
+- New field `APIVersionDescription` in struct `APIContractUpdateProperties`
+- New field `IsCurrent` in struct `APIContractUpdateProperties`
+- New field `Description` in struct `APIContractUpdateProperties`
+- New field `Contact` in struct `APIContractUpdateProperties`
+- New field `License` in struct `APIContractUpdateProperties`
+- New field `SubscriptionKeyParameterNames` in struct `APIContractUpdateProperties`
+- New field `TermsOfServiceURL` in struct `APIContractUpdateProperties`
+- New field `APIType` in struct `APIContractUpdateProperties`
+- New field `SubscriptionRequired` in struct `APIContractUpdateProperties`
+- New field `AuthenticationSettings` in struct `APIContractUpdateProperties`
+- New field `APIRevisionDescription` in struct `APIContractUpdateProperties`
+- New field `APIRevision` in struct `APIContractUpdateProperties`
+- New field `APIVersion` in struct `APIContractUpdateProperties`
+- New field `APIVersionSetID` in struct `APIContractUpdateProperties`
+- New field `IsOnline` in struct `APIContractUpdateProperties`
+- New field `ID` in struct `PolicyDescriptionContract`
+- New field `Name` in struct `PolicyDescriptionContract`
+- New field `Type` in struct `PolicyDescriptionContract`
+- New field `ID` in struct `PortalSigninSettings`
+- New field `Name` in struct `PortalSigninSettings`
+- New field `Type` in struct `PortalSigninSettings`
+- New field `ID` in struct `IdentityProviderCreateContract`
+- New field `Name` in struct `IdentityProviderCreateContract`
+- New field `Type` in struct `IdentityProviderCreateContract`
+- New field `Secret` in struct `NamedValueUpdateParameterProperties`
+- New field `Tags` in struct `NamedValueUpdateParameterProperties`
+- New field `ID` in struct `ProductContract`
+- New field `Name` in struct `ProductContract`
+- New field `Type` in struct `ProductContract`
+- New field `DefaultScope` in struct `AuthorizationServerUpdateContractProperties`
+- New field `SupportState` in struct `AuthorizationServerUpdateContractProperties`
+- New field `AuthorizationMethods` in struct `AuthorizationServerUpdateContractProperties`
+- New field `ResourceOwnerPassword` in struct `AuthorizationServerUpdateContractProperties`
+- New field `ClientAuthenticationMethod` in struct `AuthorizationServerUpdateContractProperties`
+- New field `Description` in struct `AuthorizationServerUpdateContractProperties`
+- New field `TokenEndpoint` in struct `AuthorizationServerUpdateContractProperties`
+- New field `BearerTokenSendingMethods` in struct `AuthorizationServerUpdateContractProperties`
+- New field `TokenBodyParameters` in struct `AuthorizationServerUpdateContractProperties`
+- New field `ResourceOwnerUsername` in struct `AuthorizationServerUpdateContractProperties`
+- New field `IdentityClientID` in struct `KeyVaultContractProperties`
+- New field `SecretIdentifier` in struct `KeyVaultContractProperties`
+- New field `Type` in struct `AssociationContract`
+- New field `ID` in struct `AssociationContract`
+- New field `Name` in struct `AssociationContract`
+- New field `Type` in struct `RecipientEmailContract`
+- New field `ID` in struct `RecipientEmailContract`
+- New field `Name` in struct `RecipientEmailContract`
+- New field `State` in struct `IssueUpdateContractProperties`
+- New field `APIID` in struct `IssueUpdateContractProperties`
+- New field `CreatedDate` in struct `IssueUpdateContractProperties`
+- New field `ID` in struct `CertificateContract`
+- New field `Name` in struct `CertificateContract`
+- New field `Type` in struct `CertificateContract`
+- New field `VersionQueryName` in struct `APIVersionSetUpdateParametersProperties`
+- New field `Description` in struct `APIVersionSetUpdateParametersProperties`
+- New field `VersionHeaderName` in struct `APIVersionSetUpdateParametersProperties`
+- New field `DefaultScope` in struct `AuthorizationServerContractProperties`
+- New field `ResourceOwnerUsername` in struct `AuthorizationServerContractProperties`
+- New field `AuthorizationMethods` in struct `AuthorizationServerContractProperties`
+- New field `Description` in struct `AuthorizationServerContractProperties`
+- New field `ResourceOwnerPassword` in struct `AuthorizationServerContractProperties`
+- New field `ClientAuthenticationMethod` in struct `AuthorizationServerContractProperties`
+- New field `SupportState` in struct `AuthorizationServerContractProperties`
+- New field `TokenEndpoint` in struct `AuthorizationServerContractProperties`
+- New field `BearerTokenSendingMethods` in struct `AuthorizationServerContractProperties`
+- New field `TokenBodyParameters` in struct `AuthorizationServerContractProperties`
+- New field `Identities` in struct `UserContractProperties`
+- New field `Note` in struct `UserContractProperties`
+- New field `State` in struct `UserContractProperties`
+- New field `Name` in struct `SchemaContract`
+- New field `Type` in struct `SchemaContract`
+- New field `ID` in struct `SchemaContract`
+- New field `ID` in struct `PortalDelegationSettings`
+- New field `Name` in struct `PortalDelegationSettings`
+- New field `Type` in struct `PortalDelegationSettings`
+- New field `ID` in struct `EmailTemplateContract`
+- New field `Name` in struct `EmailTemplateContract`
+- New field `Type` in struct `EmailTemplateContract`
+- New field `Note` in struct `UserCreateParameterProperties`
+- New field `Identities` in struct `UserCreateParameterProperties`
+- New field `State` in struct `UserCreateParameterProperties`
+- New field `ID` in struct `IssueCommentContract`
+- New field `Name` in struct `IssueCommentContract`
+- New field `Type` in struct `IssueCommentContract`
+- New field `ID` in struct `TagDescriptionContract`
+- New field `Name` in struct `TagDescriptionContract`
+- New field `Type` in struct `TagDescriptionContract`
+- New field `ID` in struct `BackendReconnectContract`
+- New field `Name` in struct `BackendReconnectContract`
+- New field `Type` in struct `BackendReconnectContract`
+- New field `SigninTenant` in struct `IdentityProviderUpdateProperties`
+- New field `AllowedTenants` in struct `IdentityProviderUpdateProperties`
+- New field `Authority` in struct `IdentityProviderUpdateProperties`
+- New field `ProfileEditingPolicyName` in struct `IdentityProviderUpdateProperties`
+- New field `SigninPolicyName` in struct `IdentityProviderUpdateProperties`
+- New field `SignupPolicyName` in struct `IdentityProviderUpdateProperties`
+- New field `Type` in struct `IdentityProviderUpdateProperties`
+- New field `PasswordResetPolicyName` in struct `IdentityProviderUpdateProperties`
+- New field `ID` in struct `NamedValueContract`
+- New field `Name` in struct `NamedValueContract`
+- New field `Type` in struct `NamedValueContract`
+- New field `AllowedTenants` in struct `IdentityProviderContractProperties`
+- New field `Authority` in struct `IdentityProviderContractProperties`
+- New field `SigninPolicyName` in struct `IdentityProviderContractProperties`
+- New field `SigninTenant` in struct `IdentityProviderContractProperties`
+- New field `SignupPolicyName` in struct `IdentityProviderContractProperties`
+- New field `Type` in struct `IdentityProviderContractProperties`
+- New field `PasswordResetPolicyName` in struct `IdentityProviderContractProperties`
+- New field `ProfileEditingPolicyName` in struct `IdentityProviderContractProperties`
+- New field `Type` in struct `TenantSettingsContract`
+- New field `ID` in struct `TenantSettingsContract`
+- New field `Name` in struct `TenantSettingsContract`
+- New field `ID` in struct `AuthorizationServerUpdateContract`
+- New field `Name` in struct `AuthorizationServerUpdateContract`
+- New field `Type` in struct `AuthorizationServerUpdateContract`
+- New field `TLS` in struct `BackendUpdateParameterProperties`
+- New field `Description` in struct `BackendUpdateParameterProperties`
+- New field `Properties` in struct `BackendUpdateParameterProperties`
+- New field `Title` in struct `BackendUpdateParameterProperties`
+- New field `Credentials` in struct `BackendUpdateParameterProperties`
+- New field `Proxy` in struct `BackendUpdateParameterProperties`
+- New field `ResourceID` in struct `BackendUpdateParameterProperties`
+- New field `ID` in struct `GatewayCertificateAuthorityContract`
+- New field `Name` in struct `GatewayCertificateAuthorityContract`
+- New field `Type` in struct `GatewayCertificateAuthorityContract`
+- New field `Secret` in struct `NamedValueCreateContractProperties`
+- New field `Tags` in struct `NamedValueCreateContractProperties`
+- New field `ID` in struct `BackendContract`
+- New field `Name` in struct `BackendContract`
+- New field `Type` in struct `BackendContract`
+- New field `Name` in struct `SubscriptionContract`
+- New field `Type` in struct `SubscriptionContract`
+- New field `ID` in struct `SubscriptionContract`
+- New field `State` in struct `UserUpdateParametersProperties`
+- New field `Identities` in struct `UserUpdateParametersProperties`
+- New field `Note` in struct `UserUpdateParametersProperties`
+- New field `ID` in struct `IdentityProviderContract`
+- New field `Name` in struct `IdentityProviderContract`
+- New field `Type` in struct `IdentityProviderContract`
+- New field `SubscriptionsLimit` in struct `ProductTagResourceContractProperties`
+- New field `Terms` in struct `ProductTagResourceContractProperties`
+- New field `ApprovalRequired` in struct `ProductTagResourceContractProperties`
+- New field `Description` in struct `ProductTagResourceContractProperties`
+- New field `State` in struct `ProductTagResourceContractProperties`
+- New field `SubscriptionRequired` in struct `ProductTagResourceContractProperties`
+- New field `Type` in struct `PrivateLinkResource`
+- New field `ID` in struct `PrivateLinkResource`
+- New field `Name` in struct `PrivateLinkResource`
+- New field `ID` in struct `OperationContract`
+- New field `Name` in struct `OperationContract`
+- New field `Type` in struct `OperationContract`
+- New field `ID` in struct `NamedValueCreateContract`
+- New field `Name` in struct `NamedValueCreateContract`
+- New field `Type` in struct `NamedValueCreateContract`
+- New field `Type` in struct `DiagnosticContract`
+- New field `ID` in struct `DiagnosticContract`
+- New field `Name` in struct `DiagnosticContract`
+- New field `ID` in struct `TenantConfigurationSyncStateContract`
+- New field `Name` in struct `TenantConfigurationSyncStateContract`
+- New field `Type` in struct `TenantConfigurationSyncStateContract`
+- New field `Description` in struct `ProductUpdateProperties`
+- New field `State` in struct `ProductUpdateProperties`
+- New field `SubscriptionRequired` in struct `ProductUpdateProperties`
+- New field `SubscriptionsLimit` in struct `ProductUpdateProperties`
+- New field `Terms` in struct `ProductUpdateProperties`
+- New field `ApprovalRequired` in struct `ProductUpdateProperties`
+- New field `APIID` in struct `IssueContractProperties`
+- New field `CreatedDate` in struct `IssueContractProperties`
+- New field `State` in struct `IssueContractProperties`
+- New field `ID` in struct `APIReleaseContract`
+- New field `Name` in struct `APIReleaseContract`
+- New field `Type` in struct `APIReleaseContract`
+- New field `ID` in struct `ContentTypeContract`
+- New field `Name` in struct `ContentTypeContract`
+- New field `Type` in struct `ContentTypeContract`
+- New field `SubscriptionKeyParameterNames` in struct `APIContractProperties`
+- New field `IsOnline` in struct `APIContractProperties`
+- New field `IsCurrent` in struct `APIContractProperties`
+- New field `Contact` in struct `APIContractProperties`
+- New field `APIVersion` in struct `APIContractProperties`
+- New field `APIVersionSetID` in struct `APIContractProperties`
+- New field `Description` in struct `APIContractProperties`
+- New field `SubscriptionRequired` in struct `APIContractProperties`
+- New field `APIRevision` in struct `APIContractProperties`
+- New field `APIVersionDescription` in struct `APIContractProperties`
+- New field `License` in struct `APIContractProperties`
+- New field `APIRevisionDescription` in struct `APIContractProperties`
+- New field `APIType` in struct `APIContractProperties`
+- New field `AuthenticationSettings` in struct `APIContractProperties`
+- New field `TermsOfServiceURL` in struct `APIContractProperties`
+- New field `Description` in struct `APITagResourceContractProperties`
+- New field `Contact` in struct `APITagResourceContractProperties`
+- New field `License` in struct `APITagResourceContractProperties`
+- New field `APIVersionDescription` in struct `APITagResourceContractProperties`
+- New field `APIRevisionDescription` in struct `APITagResourceContractProperties`
+- New field `AuthenticationSettings` in struct `APITagResourceContractProperties`
+- New field `SubscriptionRequired` in struct `APITagResourceContractProperties`
+- New field `APIRevision` in struct `APITagResourceContractProperties`
+- New field `SubscriptionKeyParameterNames` in struct `APITagResourceContractProperties`
+- New field `TermsOfServiceURL` in struct `APITagResourceContractProperties`
+- New field `APIVersionSetID` in struct `APITagResourceContractProperties`
+- New field `APIType` in struct `APITagResourceContractProperties`
+- New field `APIVersion` in struct `APITagResourceContractProperties`
+- New field `IsCurrent` in struct `APITagResourceContractProperties`
+- New field `IsOnline` in struct `APITagResourceContractProperties`
+- New field `Type` in struct `AuthorizationServerContract`
+- New field `ID` in struct `AuthorizationServerContract`
+- New field `Name` in struct `AuthorizationServerContract`
+- New field `Description` in struct `APIVersionSetContractProperties`
+- New field `VersionHeaderName` in struct `APIVersionSetContractProperties`
+- New field `VersionQueryName` in struct `APIVersionSetContractProperties`
+- New field `Name` in struct `RecipientUserContract`
+- New field `Type` in struct `RecipientUserContract`
+- New field `ID` in struct `RecipientUserContract`
+- New field `Type` in struct `IssueAttachmentContract`
+- New field `ID` in struct `IssueAttachmentContract`
+- New field `Name` in struct `IssueAttachmentContract`
+- New field `Name` in struct `DeletedServiceContract`
+- New field `Type` in struct `DeletedServiceContract`
+- New field `ID` in struct `DeletedServiceContract`
+- New field `ID` in struct `ContentItemContract`
+- New field `Name` in struct `ContentItemContract`
+- New field `Type` in struct `ContentItemContract`
+- New field `ID` in struct `OpenidConnectProviderContract`
+- New field `Name` in struct `OpenidConnectProviderContract`
+- New field `Type` in struct `OpenidConnectProviderContract`
+- New field `Policies` in struct `OperationContractProperties`
+- New field `Request` in struct `OperationContractProperties`
+- New field `Responses` in struct `OperationContractProperties`
+- New field `TemplateParameters` in struct `OperationContractProperties`
+- New field `Description` in struct `OperationContractProperties`
+- New field `Name` in struct `PortalSettingsContract`
+- New field `Type` in struct `PortalSettingsContract`
+- New field `ID` in struct `PortalSettingsContract`
+- New field `Proxy` in struct `BackendContractProperties`
+- New field `ResourceID` in struct `BackendContractProperties`
+- New field `TLS` in struct `BackendContractProperties`
+- New field `Title` in struct `BackendContractProperties`
+- New field `Credentials` in struct `BackendContractProperties`
+- New field `Description` in struct `BackendContractProperties`
+- New field `Properties` in struct `BackendContractProperties`
+- New field `Type` in struct `GroupContract`
+- New field `ID` in struct `GroupContract`
+- New field `Name` in struct `GroupContract`
+- New field `Type` in struct `NotificationContract`
+- New field `ID` in struct `NotificationContract`
+- New field `Name` in struct `NotificationContract`
 
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.2.0 (2021-10-29)
 

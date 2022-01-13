@@ -25,25 +25,37 @@ import (
 // MicrosoftSerialConsoleClient contains the methods for the MicrosoftSerialConsoleClient group.
 // Don't use this type directly, use NewMicrosoftSerialConsoleClient() instead.
 type MicrosoftSerialConsoleClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewMicrosoftSerialConsoleClient creates a new instance of MicrosoftSerialConsoleClient with the specified values.
+// subscriptionID - Subscription ID which uniquely identifies the Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call requiring it.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewMicrosoftSerialConsoleClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *MicrosoftSerialConsoleClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &MicrosoftSerialConsoleClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &MicrosoftSerialConsoleClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // DisableConsole - Disables the Serial Console service for all VMs and VM scale sets in the provided subscription
-// If the operation fails it returns a generic error.
+// If the operation fails it returns an *azcore.ResponseError type.
+// defaultParam - Default parameter. Leave the value as "default".
+// options - MicrosoftSerialConsoleClientDisableConsoleOptions contains the optional parameters for the MicrosoftSerialConsoleClient.DisableConsole
+// method.
 func (client *MicrosoftSerialConsoleClient) DisableConsole(ctx context.Context, defaultParam string, options *MicrosoftSerialConsoleClientDisableConsoleOptions) (MicrosoftSerialConsoleClientDisableConsoleResponse, error) {
 	req, err := client.disableConsoleCreateRequest(ctx, defaultParam, options)
 	if err != nil {
@@ -54,7 +66,7 @@ func (client *MicrosoftSerialConsoleClient) DisableConsole(ctx context.Context, 
 		return MicrosoftSerialConsoleClientDisableConsoleResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNotFound) {
-		return MicrosoftSerialConsoleClientDisableConsoleResponse{}, client.disableConsoleHandleError(resp)
+		return MicrosoftSerialConsoleClientDisableConsoleResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.disableConsoleHandleResponse(resp)
 }
@@ -70,7 +82,7 @@ func (client *MicrosoftSerialConsoleClient) disableConsoleCreateRequest(ctx cont
 		return nil, errors.New("parameter defaultParam cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{default}", url.PathEscape(defaultParam))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -88,13 +100,13 @@ func (client *MicrosoftSerialConsoleClient) disableConsoleHandleResponse(resp *h
 	case http.StatusOK:
 		var val DisableSerialConsoleResult
 		if err := runtime.UnmarshalAsJSON(resp, &val); err != nil {
-			return MicrosoftSerialConsoleClientDisableConsoleResponse{}, runtime.NewResponseError(err, resp)
+			return MicrosoftSerialConsoleClientDisableConsoleResponse{}, err
 		}
 		result.Value = val
 	case http.StatusNotFound:
 		var val GetSerialConsoleSubscriptionNotFound
 		if err := runtime.UnmarshalAsJSON(resp, &val); err != nil {
-			return MicrosoftSerialConsoleClientDisableConsoleResponse{}, runtime.NewResponseError(err, resp)
+			return MicrosoftSerialConsoleClientDisableConsoleResponse{}, err
 		}
 		result.Value = val
 	default:
@@ -103,20 +115,11 @@ func (client *MicrosoftSerialConsoleClient) disableConsoleHandleResponse(resp *h
 	return result, nil
 }
 
-// disableConsoleHandleError handles the DisableConsole error response.
-func (client *MicrosoftSerialConsoleClient) disableConsoleHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // EnableConsole - Enables the Serial Console service for all VMs and VM scale sets in the provided subscription
-// If the operation fails it returns a generic error.
+// If the operation fails it returns an *azcore.ResponseError type.
+// defaultParam - Default parameter. Leave the value as "default".
+// options - MicrosoftSerialConsoleClientEnableConsoleOptions contains the optional parameters for the MicrosoftSerialConsoleClient.EnableConsole
+// method.
 func (client *MicrosoftSerialConsoleClient) EnableConsole(ctx context.Context, defaultParam string, options *MicrosoftSerialConsoleClientEnableConsoleOptions) (MicrosoftSerialConsoleClientEnableConsoleResponse, error) {
 	req, err := client.enableConsoleCreateRequest(ctx, defaultParam, options)
 	if err != nil {
@@ -127,7 +130,7 @@ func (client *MicrosoftSerialConsoleClient) EnableConsole(ctx context.Context, d
 		return MicrosoftSerialConsoleClientEnableConsoleResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNotFound) {
-		return MicrosoftSerialConsoleClientEnableConsoleResponse{}, client.enableConsoleHandleError(resp)
+		return MicrosoftSerialConsoleClientEnableConsoleResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.enableConsoleHandleResponse(resp)
 }
@@ -143,7 +146,7 @@ func (client *MicrosoftSerialConsoleClient) enableConsoleCreateRequest(ctx conte
 		return nil, errors.New("parameter defaultParam cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{default}", url.PathEscape(defaultParam))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -161,13 +164,13 @@ func (client *MicrosoftSerialConsoleClient) enableConsoleHandleResponse(resp *ht
 	case http.StatusOK:
 		var val EnableSerialConsoleResult
 		if err := runtime.UnmarshalAsJSON(resp, &val); err != nil {
-			return MicrosoftSerialConsoleClientEnableConsoleResponse{}, runtime.NewResponseError(err, resp)
+			return MicrosoftSerialConsoleClientEnableConsoleResponse{}, err
 		}
 		result.Value = val
 	case http.StatusNotFound:
 		var val GetSerialConsoleSubscriptionNotFound
 		if err := runtime.UnmarshalAsJSON(resp, &val); err != nil {
-			return MicrosoftSerialConsoleClientEnableConsoleResponse{}, runtime.NewResponseError(err, resp)
+			return MicrosoftSerialConsoleClientEnableConsoleResponse{}, err
 		}
 		result.Value = val
 	default:
@@ -176,20 +179,11 @@ func (client *MicrosoftSerialConsoleClient) enableConsoleHandleResponse(resp *ht
 	return result, nil
 }
 
-// enableConsoleHandleError handles the EnableConsole error response.
-func (client *MicrosoftSerialConsoleClient) enableConsoleHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // GetConsoleStatus - Gets whether or not Serial Console is disabled for a given subscription
-// If the operation fails it returns a generic error.
+// If the operation fails it returns an *azcore.ResponseError type.
+// defaultParam - Default parameter. Leave the value as "default".
+// options - MicrosoftSerialConsoleClientGetConsoleStatusOptions contains the optional parameters for the MicrosoftSerialConsoleClient.GetConsoleStatus
+// method.
 func (client *MicrosoftSerialConsoleClient) GetConsoleStatus(ctx context.Context, defaultParam string, options *MicrosoftSerialConsoleClientGetConsoleStatusOptions) (MicrosoftSerialConsoleClientGetConsoleStatusResponse, error) {
 	req, err := client.getConsoleStatusCreateRequest(ctx, defaultParam, options)
 	if err != nil {
@@ -200,7 +194,7 @@ func (client *MicrosoftSerialConsoleClient) GetConsoleStatus(ctx context.Context
 		return MicrosoftSerialConsoleClientGetConsoleStatusResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNotFound) {
-		return MicrosoftSerialConsoleClientGetConsoleStatusResponse{}, client.getConsoleStatusHandleError(resp)
+		return MicrosoftSerialConsoleClientGetConsoleStatusResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getConsoleStatusHandleResponse(resp)
 }
@@ -216,7 +210,7 @@ func (client *MicrosoftSerialConsoleClient) getConsoleStatusCreateRequest(ctx co
 		return nil, errors.New("parameter defaultParam cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{default}", url.PathEscape(defaultParam))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -232,15 +226,15 @@ func (client *MicrosoftSerialConsoleClient) getConsoleStatusHandleResponse(resp 
 	result := MicrosoftSerialConsoleClientGetConsoleStatusResponse{RawResponse: resp}
 	switch resp.StatusCode {
 	case http.StatusOK:
-		var val SerialConsoleStatus
+		var val Status
 		if err := runtime.UnmarshalAsJSON(resp, &val); err != nil {
-			return MicrosoftSerialConsoleClientGetConsoleStatusResponse{}, runtime.NewResponseError(err, resp)
+			return MicrosoftSerialConsoleClientGetConsoleStatusResponse{}, err
 		}
 		result.Value = val
 	case http.StatusNotFound:
 		var val GetSerialConsoleSubscriptionNotFound
 		if err := runtime.UnmarshalAsJSON(resp, &val); err != nil {
-			return MicrosoftSerialConsoleClientGetConsoleStatusResponse{}, runtime.NewResponseError(err, resp)
+			return MicrosoftSerialConsoleClientGetConsoleStatusResponse{}, err
 		}
 		result.Value = val
 	default:
@@ -249,20 +243,10 @@ func (client *MicrosoftSerialConsoleClient) getConsoleStatusHandleResponse(resp 
 	return result, nil
 }
 
-// getConsoleStatusHandleError handles the GetConsoleStatus error response.
-func (client *MicrosoftSerialConsoleClient) getConsoleStatusHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListOperations - Gets a list of Serial Console API operations.
-// If the operation fails it returns a generic error.
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - MicrosoftSerialConsoleClientListOperationsOptions contains the optional parameters for the MicrosoftSerialConsoleClient.ListOperations
+// method.
 func (client *MicrosoftSerialConsoleClient) ListOperations(ctx context.Context, options *MicrosoftSerialConsoleClientListOperationsOptions) (MicrosoftSerialConsoleClientListOperationsResponse, error) {
 	req, err := client.listOperationsCreateRequest(ctx, options)
 	if err != nil {
@@ -273,7 +257,7 @@ func (client *MicrosoftSerialConsoleClient) ListOperations(ctx context.Context, 
 		return MicrosoftSerialConsoleClientListOperationsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return MicrosoftSerialConsoleClientListOperationsResponse{}, client.listOperationsHandleError(resp)
+		return MicrosoftSerialConsoleClientListOperationsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listOperationsHandleResponse(resp)
 }
@@ -281,7 +265,7 @@ func (client *MicrosoftSerialConsoleClient) ListOperations(ctx context.Context, 
 // listOperationsCreateRequest creates the ListOperations request.
 func (client *MicrosoftSerialConsoleClient) listOperationsCreateRequest(ctx context.Context, options *MicrosoftSerialConsoleClientListOperationsOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.SerialConsole/operations"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -295,20 +279,8 @@ func (client *MicrosoftSerialConsoleClient) listOperationsCreateRequest(ctx cont
 // listOperationsHandleResponse handles the ListOperations response.
 func (client *MicrosoftSerialConsoleClient) listOperationsHandleResponse(resp *http.Response) (MicrosoftSerialConsoleClientListOperationsResponse, error) {
 	result := MicrosoftSerialConsoleClientListOperationsResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SerialConsoleOperations); err != nil {
-		return MicrosoftSerialConsoleClientListOperationsResponse{}, runtime.NewResponseError(err, resp)
+	if err := runtime.UnmarshalAsJSON(resp, &result.Operations); err != nil {
+		return MicrosoftSerialConsoleClientListOperationsResponse{}, err
 	}
 	return result, nil
-}
-
-// listOperationsHandleError handles the ListOperations error response.
-func (client *MicrosoftSerialConsoleClient) listOperationsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

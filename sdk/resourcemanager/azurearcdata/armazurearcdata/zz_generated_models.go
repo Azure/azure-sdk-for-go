@@ -26,7 +26,8 @@ type BasicLoginInformation struct {
 
 // DataControllerProperties - The data controller properties.
 type DataControllerProperties struct {
-	// Deprecated. Azure Arc Data Services data controller no longer expose any endpoint. All traffic are exposed through Kubernetes native API.
+	// Deprecated. Azure Arc Data Services data controller no longer expose any endpoint. All traffic are exposed through Kubernetes
+	// native API.
 	BasicLoginInformation *BasicLoginInformation `json:"basicLoginInformation,omitempty"`
 
 	// If a CustomLocation is provided, this contains the ARM id of the connected cluster the custom location belongs to.
@@ -143,20 +144,42 @@ func (d *DataControllerProperties) UnmarshalJSON(data []byte) error {
 
 // DataControllerResource - Data controller resource
 type DataControllerResource struct {
-	TrackedResource
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
 	// REQUIRED; The data controller's properties
 	Properties *DataControllerProperties `json:"properties,omitempty"`
 
 	// The extendedLocation of the resource.
 	ExtendedLocation *ExtendedLocation `json:"extendedLocation,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type DataControllerResource.
 func (d DataControllerResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	d.TrackedResource.marshalInternal(objectMap)
 	populate(objectMap, "extendedLocation", d.ExtendedLocation)
+	populate(objectMap, "id", d.ID)
+	populate(objectMap, "location", d.Location)
+	populate(objectMap, "name", d.Name)
 	populate(objectMap, "properties", d.Properties)
+	populate(objectMap, "systemData", d.SystemData)
+	populate(objectMap, "tags", d.Tags)
+	populate(objectMap, "type", d.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -173,48 +196,45 @@ func (d DataControllerUpdate) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// DataControllersBeginDeleteDataControllerOptions contains the optional parameters for the DataControllers.BeginDeleteDataController method.
-type DataControllersBeginDeleteDataControllerOptions struct {
+// DataControllersClientBeginDeleteDataControllerOptions contains the optional parameters for the DataControllersClient.BeginDeleteDataController
+// method.
+type DataControllersClientBeginDeleteDataControllerOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DataControllersBeginPutDataControllerOptions contains the optional parameters for the DataControllers.BeginPutDataController method.
-type DataControllersBeginPutDataControllerOptions struct {
+// DataControllersClientBeginPutDataControllerOptions contains the optional parameters for the DataControllersClient.BeginPutDataController
+// method.
+type DataControllersClientBeginPutDataControllerOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DataControllersGetDataControllerOptions contains the optional parameters for the DataControllers.GetDataController method.
-type DataControllersGetDataControllerOptions struct {
+// DataControllersClientGetDataControllerOptions contains the optional parameters for the DataControllersClient.GetDataController
+// method.
+type DataControllersClientGetDataControllerOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DataControllersListInGroupOptions contains the optional parameters for the DataControllers.ListInGroup method.
-type DataControllersListInGroupOptions struct {
+// DataControllersClientListInGroupOptions contains the optional parameters for the DataControllersClient.ListInGroup method.
+type DataControllersClientListInGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DataControllersListInSubscriptionOptions contains the optional parameters for the DataControllers.ListInSubscription method.
-type DataControllersListInSubscriptionOptions struct {
+// DataControllersClientListInSubscriptionOptions contains the optional parameters for the DataControllersClient.ListInSubscription
+// method.
+type DataControllersClientListInSubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DataControllersPatchDataControllerOptions contains the optional parameters for the DataControllers.PatchDataController method.
-type DataControllersPatchDataControllerOptions struct {
+// DataControllersClientPatchDataControllerOptions contains the optional parameters for the DataControllersClient.PatchDataController
+// method.
+type DataControllersClientPatchDataControllerOptions struct {
 	// placeholder for future optional parameters
 }
 
 // ErrorResponse - An error response from the Azure Data on Azure Arc service.
-// Implements the error and azcore.HTTPResponse interfaces.
 type ErrorResponse struct {
-	raw string
 	// null
-	InnerError *ErrorResponseBody `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorResponseBody `json:"error,omitempty"`
 }
 
 // ErrorResponseBody - An error response from the Batch service.
@@ -256,13 +276,13 @@ type K8SResourceRequirements struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
 	AdditionalProperties map[string]map[string]interface{}
 
-	// Limits for a kubernetes resource type (e.g 'cpu', 'memory'). The 'cpu' request must be less than or equal to 'cpu' limit. Default 'cpu' is 2, minimum
-	// is 1. Default 'memory' is '4Gi', minimum is '2Gi.
+	// Limits for a kubernetes resource type (e.g 'cpu', 'memory'). The 'cpu' request must be less than or equal to 'cpu' limit.
+	// Default 'cpu' is 2, minimum is 1. Default 'memory' is '4Gi', minimum is '2Gi.
 	// If sku.tier is GeneralPurpose, maximum 'cpu' is 24 and maximum 'memory' is '128Gi'.
 	Limits map[string]*string `json:"limits,omitempty"`
 
-	// Requests for a kubernetes resource type (e.g 'cpu', 'memory'). The 'cpu' request must be less than or equal to 'cpu' limit. Default 'cpu' is 2, minimum
-	// is 1. Default 'memory' is '4Gi', minimum is
+	// Requests for a kubernetes resource type (e.g 'cpu', 'memory'). The 'cpu' request must be less than or equal to 'cpu' limit.
+	// Default 'cpu' is 2, minimum is 1. Default 'memory' is '4Gi', minimum is
 	// '2Gi. If sku.tier is GeneralPurpose, maximum 'cpu' is 24 and maximum 'memory' is '128Gi'.
 	Requests map[string]*string `json:"requests,omitempty"`
 }
@@ -318,7 +338,8 @@ type K8SScheduling struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
 	AdditionalProperties map[string]map[string]interface{}
 
-	// The kubernetes scheduling options. It describes restrictions used to help Kubernetes select appropriate nodes to host the database service
+	// The kubernetes scheduling options. It describes restrictions used to help Kubernetes select appropriate nodes to host the
+	// database service
 	Default *K8SSchedulingOptions `json:"default,omitempty"`
 }
 
@@ -364,8 +385,8 @@ func (k *K8SScheduling) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// K8SSchedulingOptions - The kubernetes scheduling options. It describes restrictions used to help Kubernetes select appropriate nodes to host the database
-// service
+// K8SSchedulingOptions - The kubernetes scheduling options. It describes restrictions used to help Kubernetes select appropriate
+// nodes to host the database service
 type K8SSchedulingOptions struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
 	AdditionalProperties map[string]map[string]interface{}
@@ -498,8 +519,8 @@ func (o OperationListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -532,23 +553,11 @@ type Resource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "systemData", r.SystemData)
-	populate(objectMap, "type", r.Type)
-}
-
 // SQLManagedInstance - A SqlManagedInstance.
 type SQLManagedInstance struct {
-	TrackedResource
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
 	// REQUIRED; null
 	Properties *SQLManagedInstanceProperties `json:"properties,omitempty"`
 
@@ -557,15 +566,35 @@ type SQLManagedInstance struct {
 
 	// Resource sku.
 	SKU *SQLManagedInstanceSKU `json:"sku,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type SQLManagedInstance.
 func (s SQLManagedInstance) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.TrackedResource.marshalInternal(objectMap)
 	populate(objectMap, "extendedLocation", s.ExtendedLocation)
+	populate(objectMap, "id", s.ID)
+	populate(objectMap, "location", s.Location)
+	populate(objectMap, "name", s.Name)
 	populate(objectMap, "properties", s.Properties)
 	populate(objectMap, "sku", s.SKU)
+	populate(objectMap, "systemData", s.SystemData)
+	populate(objectMap, "tags", s.Tags)
+	populate(objectMap, "type", s.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -625,8 +654,8 @@ type SQLManagedInstanceK8SSpec struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
 	AdditionalProperties map[string]map[string]interface{}
 
-	// This option specifies the number of SQL Managed Instance replicas that will be deployed in your Kubernetes cluster for high availability purposes. If
-	// sku.tier is BusinessCritical, allowed values are
+	// This option specifies the number of SQL Managed Instance replicas that will be deployed in your Kubernetes cluster for
+	// high availability purposes. If sku.tier is BusinessCritical, allowed values are
 	// '2' or '3' with default of '3'. If sku.tier is GeneralPurpose, replicas must be '1'.
 	Replicas *int32 `json:"replicas,omitempty"`
 
@@ -830,48 +859,73 @@ func (s SQLManagedInstanceUpdate) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// SQLManagedInstancesBeginCreateOptions contains the optional parameters for the SQLManagedInstances.BeginCreate method.
-type SQLManagedInstancesBeginCreateOptions struct {
+// SQLManagedInstancesClientBeginCreateOptions contains the optional parameters for the SQLManagedInstancesClient.BeginCreate
+// method.
+type SQLManagedInstancesClientBeginCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SQLManagedInstancesBeginDeleteOptions contains the optional parameters for the SQLManagedInstances.BeginDelete method.
-type SQLManagedInstancesBeginDeleteOptions struct {
+// SQLManagedInstancesClientBeginDeleteOptions contains the optional parameters for the SQLManagedInstancesClient.BeginDelete
+// method.
+type SQLManagedInstancesClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SQLManagedInstancesGetOptions contains the optional parameters for the SQLManagedInstances.Get method.
-type SQLManagedInstancesGetOptions struct {
+// SQLManagedInstancesClientGetOptions contains the optional parameters for the SQLManagedInstancesClient.Get method.
+type SQLManagedInstancesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SQLManagedInstancesListByResourceGroupOptions contains the optional parameters for the SQLManagedInstances.ListByResourceGroup method.
-type SQLManagedInstancesListByResourceGroupOptions struct {
+// SQLManagedInstancesClientListByResourceGroupOptions contains the optional parameters for the SQLManagedInstancesClient.ListByResourceGroup
+// method.
+type SQLManagedInstancesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SQLManagedInstancesListOptions contains the optional parameters for the SQLManagedInstances.List method.
-type SQLManagedInstancesListOptions struct {
+// SQLManagedInstancesClientListOptions contains the optional parameters for the SQLManagedInstancesClient.List method.
+type SQLManagedInstancesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SQLManagedInstancesUpdateOptions contains the optional parameters for the SQLManagedInstances.Update method.
-type SQLManagedInstancesUpdateOptions struct {
+// SQLManagedInstancesClientUpdateOptions contains the optional parameters for the SQLManagedInstancesClient.Update method.
+type SQLManagedInstancesClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
 // SQLServerInstance - A SqlServerInstance.
 type SQLServerInstance struct {
-	TrackedResource
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
 	// null
 	Properties *SQLServerInstanceProperties `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type SQLServerInstance.
 func (s SQLServerInstance) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.TrackedResource.marshalInternal(objectMap)
+	populate(objectMap, "id", s.ID)
+	populate(objectMap, "location", s.Location)
+	populate(objectMap, "name", s.Name)
 	populate(objectMap, "properties", s.Properties)
+	populate(objectMap, "systemData", s.SystemData)
+	populate(objectMap, "tags", s.Tags)
+	populate(objectMap, "type", s.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -1050,33 +1104,36 @@ func (s SQLServerInstanceUpdate) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// SQLServerInstancesBeginCreateOptions contains the optional parameters for the SQLServerInstances.BeginCreate method.
-type SQLServerInstancesBeginCreateOptions struct {
+// SQLServerInstancesClientBeginCreateOptions contains the optional parameters for the SQLServerInstancesClient.BeginCreate
+// method.
+type SQLServerInstancesClientBeginCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SQLServerInstancesBeginDeleteOptions contains the optional parameters for the SQLServerInstances.BeginDelete method.
-type SQLServerInstancesBeginDeleteOptions struct {
+// SQLServerInstancesClientBeginDeleteOptions contains the optional parameters for the SQLServerInstancesClient.BeginDelete
+// method.
+type SQLServerInstancesClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SQLServerInstancesGetOptions contains the optional parameters for the SQLServerInstances.Get method.
-type SQLServerInstancesGetOptions struct {
+// SQLServerInstancesClientGetOptions contains the optional parameters for the SQLServerInstancesClient.Get method.
+type SQLServerInstancesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SQLServerInstancesListByResourceGroupOptions contains the optional parameters for the SQLServerInstances.ListByResourceGroup method.
-type SQLServerInstancesListByResourceGroupOptions struct {
+// SQLServerInstancesClientListByResourceGroupOptions contains the optional parameters for the SQLServerInstancesClient.ListByResourceGroup
+// method.
+type SQLServerInstancesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SQLServerInstancesListOptions contains the optional parameters for the SQLServerInstances.List method.
-type SQLServerInstancesListOptions struct {
+// SQLServerInstancesClientListOptions contains the optional parameters for the SQLServerInstancesClient.List method.
+type SQLServerInstancesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SQLServerInstancesUpdateOptions contains the optional parameters for the SQLServerInstances.Update method.
-type SQLServerInstancesUpdateOptions struct {
+// SQLServerInstancesClientUpdateOptions contains the optional parameters for the SQLServerInstancesClient.Update method.
+type SQLServerInstancesClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1148,27 +1205,38 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a 'location'
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
 type TrackedResource struct {
-	Resource
 	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.
 func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", t.ID)
 	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
+	populate(objectMap, "systemData", t.SystemData)
 	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
+	return json.Marshal(objectMap)
 }
 
 // UploadServicePrincipal - Service principal for uploading billing, metrics and logs.

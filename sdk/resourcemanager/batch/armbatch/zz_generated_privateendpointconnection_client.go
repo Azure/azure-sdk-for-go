@@ -11,7 +11,6 @@ package armbatch
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,55 @@ import (
 // PrivateEndpointConnectionClient contains the methods for the PrivateEndpointConnection group.
 // Don't use this type directly, use NewPrivateEndpointConnectionClient() instead.
 type PrivateEndpointConnectionClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewPrivateEndpointConnectionClient creates a new instance of PrivateEndpointConnectionClient with the specified values.
+// subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewPrivateEndpointConnectionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateEndpointConnectionClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &PrivateEndpointConnectionClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &PrivateEndpointConnectionClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets information about the specified private endpoint connection.
-// If the operation fails it returns the *CloudError error type.
-func (client *PrivateEndpointConnectionClient) Get(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionGetOptions) (PrivateEndpointConnectionGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the Batch account.
+// accountName - The name of the Batch account.
+// privateEndpointConnectionName - The private endpoint connection name. This must be unique within the account.
+// options - PrivateEndpointConnectionClientGetOptions contains the optional parameters for the PrivateEndpointConnectionClient.Get
+// method.
+func (client *PrivateEndpointConnectionClient) Get(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionClientGetOptions) (PrivateEndpointConnectionClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, privateEndpointConnectionName, options)
 	if err != nil {
-		return PrivateEndpointConnectionGetResponse{}, err
+		return PrivateEndpointConnectionClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateEndpointConnectionGetResponse{}, err
+		return PrivateEndpointConnectionClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateEndpointConnectionGetResponse{}, client.getHandleError(resp)
+		return PrivateEndpointConnectionClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *PrivateEndpointConnectionClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionGetOptions) (*policy.Request, error) {
+func (client *PrivateEndpointConnectionClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -79,7 +91,7 @@ func (client *PrivateEndpointConnectionClient) getCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -91,43 +103,34 @@ func (client *PrivateEndpointConnectionClient) getCreateRequest(ctx context.Cont
 }
 
 // getHandleResponse handles the Get response.
-func (client *PrivateEndpointConnectionClient) getHandleResponse(resp *http.Response) (PrivateEndpointConnectionGetResponse, error) {
-	result := PrivateEndpointConnectionGetResponse{RawResponse: resp}
+func (client *PrivateEndpointConnectionClient) getHandleResponse(resp *http.Response) (PrivateEndpointConnectionClientGetResponse, error) {
+	result := PrivateEndpointConnectionClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnection); err != nil {
-		return PrivateEndpointConnectionGetResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateEndpointConnectionClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *PrivateEndpointConnectionClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByBatchAccount - Lists all of the private endpoint connections in the specified account.
-// If the operation fails it returns the *CloudError error type.
-func (client *PrivateEndpointConnectionClient) ListByBatchAccount(resourceGroupName string, accountName string, options *PrivateEndpointConnectionListByBatchAccountOptions) *PrivateEndpointConnectionListByBatchAccountPager {
-	return &PrivateEndpointConnectionListByBatchAccountPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the Batch account.
+// accountName - The name of the Batch account.
+// options - PrivateEndpointConnectionClientListByBatchAccountOptions contains the optional parameters for the PrivateEndpointConnectionClient.ListByBatchAccount
+// method.
+func (client *PrivateEndpointConnectionClient) ListByBatchAccount(resourceGroupName string, accountName string, options *PrivateEndpointConnectionClientListByBatchAccountOptions) *PrivateEndpointConnectionClientListByBatchAccountPager {
+	return &PrivateEndpointConnectionClientListByBatchAccountPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByBatchAccountCreateRequest(ctx, resourceGroupName, accountName, options)
 		},
-		advancer: func(ctx context.Context, resp PrivateEndpointConnectionListByBatchAccountResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp PrivateEndpointConnectionClientListByBatchAccountResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListPrivateEndpointConnectionsResult.NextLink)
 		},
 	}
 }
 
 // listByBatchAccountCreateRequest creates the ListByBatchAccount request.
-func (client *PrivateEndpointConnectionClient) listByBatchAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *PrivateEndpointConnectionListByBatchAccountOptions) (*policy.Request, error) {
+func (client *PrivateEndpointConnectionClient) listByBatchAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *PrivateEndpointConnectionClientListByBatchAccountOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/privateEndpointConnections"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -141,7 +144,7 @@ func (client *PrivateEndpointConnectionClient) listByBatchAccountCreateRequest(c
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -156,50 +159,44 @@ func (client *PrivateEndpointConnectionClient) listByBatchAccountCreateRequest(c
 }
 
 // listByBatchAccountHandleResponse handles the ListByBatchAccount response.
-func (client *PrivateEndpointConnectionClient) listByBatchAccountHandleResponse(resp *http.Response) (PrivateEndpointConnectionListByBatchAccountResponse, error) {
-	result := PrivateEndpointConnectionListByBatchAccountResponse{RawResponse: resp}
+func (client *PrivateEndpointConnectionClient) listByBatchAccountHandleResponse(resp *http.Response) (PrivateEndpointConnectionClientListByBatchAccountResponse, error) {
+	result := PrivateEndpointConnectionClientListByBatchAccountResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListPrivateEndpointConnectionsResult); err != nil {
-		return PrivateEndpointConnectionListByBatchAccountResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateEndpointConnectionClientListByBatchAccountResponse{}, err
 	}
 	return result, nil
 }
 
-// listByBatchAccountHandleError handles the ListByBatchAccount error response.
-func (client *PrivateEndpointConnectionClient) listByBatchAccountHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginUpdate - Updates the properties of an existing private endpoint connection.
-// If the operation fails it returns the *CloudError error type.
-func (client *PrivateEndpointConnectionClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, parameters PrivateEndpointConnection, options *PrivateEndpointConnectionBeginUpdateOptions) (PrivateEndpointConnectionUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the Batch account.
+// accountName - The name of the Batch account.
+// privateEndpointConnectionName - The private endpoint connection name. This must be unique within the account.
+// parameters - PrivateEndpointConnection properties that should be updated. Properties that are supplied will be updated,
+// any property not supplied will be unchanged.
+// options - PrivateEndpointConnectionClientBeginUpdateOptions contains the optional parameters for the PrivateEndpointConnectionClient.BeginUpdate
+// method.
+func (client *PrivateEndpointConnectionClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, parameters PrivateEndpointConnection, options *PrivateEndpointConnectionClientBeginUpdateOptions) (PrivateEndpointConnectionClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, accountName, privateEndpointConnectionName, parameters, options)
 	if err != nil {
-		return PrivateEndpointConnectionUpdatePollerResponse{}, err
+		return PrivateEndpointConnectionClientUpdatePollerResponse{}, err
 	}
-	result := PrivateEndpointConnectionUpdatePollerResponse{
+	result := PrivateEndpointConnectionClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("PrivateEndpointConnectionClient.Update", "azure-async-operation", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("PrivateEndpointConnectionClient.Update", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return PrivateEndpointConnectionUpdatePollerResponse{}, err
+		return PrivateEndpointConnectionClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &PrivateEndpointConnectionUpdatePoller{
+	result.Poller = &PrivateEndpointConnectionClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Updates the properties of an existing private endpoint connection.
-// If the operation fails it returns the *CloudError error type.
-func (client *PrivateEndpointConnectionClient) update(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, parameters PrivateEndpointConnection, options *PrivateEndpointConnectionBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *PrivateEndpointConnectionClient) update(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, parameters PrivateEndpointConnection, options *PrivateEndpointConnectionClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, privateEndpointConnectionName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -209,13 +206,13 @@ func (client *PrivateEndpointConnectionClient) update(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *PrivateEndpointConnectionClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, parameters PrivateEndpointConnection, options *PrivateEndpointConnectionBeginUpdateOptions) (*policy.Request, error) {
+func (client *PrivateEndpointConnectionClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, parameters PrivateEndpointConnection, options *PrivateEndpointConnectionClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -233,7 +230,7 @@ func (client *PrivateEndpointConnectionClient) updateCreateRequest(ctx context.C
 		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -245,17 +242,4 @@ func (client *PrivateEndpointConnectionClient) updateCreateRequest(ctx context.C
 	}
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
-}
-
-// updateHandleError handles the Update error response.
-func (client *PrivateEndpointConnectionClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

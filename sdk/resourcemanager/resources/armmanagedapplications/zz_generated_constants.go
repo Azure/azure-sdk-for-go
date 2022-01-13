@@ -9,8 +9,8 @@
 package armmanagedapplications
 
 const (
-	module  = "armmanagedapplications"
-	version = "v0.1.1"
+	moduleName    = "armmanagedapplications"
+	moduleVersion = "v0.1.1"
 )
 
 // ApplicationArtifactType - The managed application artifact type.

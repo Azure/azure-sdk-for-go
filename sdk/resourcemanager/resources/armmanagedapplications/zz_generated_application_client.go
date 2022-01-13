@@ -10,7 +10,6 @@ package armmanagedapplications
 
 import (
 	"context"
-	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -22,24 +21,32 @@ import (
 // ApplicationClient contains the methods for the ApplicationClient group.
 // Don't use this type directly, use NewApplicationClient() instead.
 type ApplicationClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewApplicationClient creates a new instance of ApplicationClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewApplicationClient(credential azcore.TokenCredential, options *arm.ClientOptions) *ApplicationClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ApplicationClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ApplicationClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // ListOperations - Lists all of the available Microsoft.Solutions REST API operations.
-// If the operation fails it returns a generic error.
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - ApplicationClientListOperationsOptions contains the optional parameters for the ApplicationClient.ListOperations
+// method.
 func (client *ApplicationClient) ListOperations(options *ApplicationClientListOperationsOptions) *ApplicationClientListOperationsPager {
 	return &ApplicationClientListOperationsPager{
 		client: client,
@@ -55,7 +62,7 @@ func (client *ApplicationClient) ListOperations(options *ApplicationClientListOp
 // listOperationsCreateRequest creates the ListOperations request.
 func (client *ApplicationClient) listOperationsCreateRequest(ctx context.Context, options *ApplicationClientListOperationsOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Solutions/operations"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -70,19 +77,7 @@ func (client *ApplicationClient) listOperationsCreateRequest(ctx context.Context
 func (client *ApplicationClient) listOperationsHandleResponse(resp *http.Response) (ApplicationClientListOperationsResponse, error) {
 	result := ApplicationClientListOperationsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationListResult); err != nil {
-		return ApplicationClientListOperationsResponse{}, runtime.NewResponseError(err, resp)
+		return ApplicationClientListOperationsResponse{}, err
 	}
 	return result, nil
-}
-
-// listOperationsHandleError handles the ListOperations error response.
-func (client *ApplicationClient) listOperationsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

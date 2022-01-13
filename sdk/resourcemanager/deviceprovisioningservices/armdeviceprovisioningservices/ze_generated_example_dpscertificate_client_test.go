@@ -29,11 +29,11 @@ func ExampleDpsCertificateClient_Get() {
 		"<certificate-name>",
 		"<resource-group-name>",
 		"<provisioning-service-name>",
-		&armdeviceprovisioningservices.DpsCertificateGetOptions{IfMatch: nil})
+		&armdeviceprovisioningservices.DpsCertificateClientGetOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("CertificateResponse.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DpsCertificateClientGetResult)
 }
 
 // x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2020-03-01/examples/DPSCertificateCreateOrUpdate.json
@@ -51,11 +51,11 @@ func ExampleDpsCertificateClient_CreateOrUpdate() {
 		armdeviceprovisioningservices.CertificateBodyDescription{
 			Certificate: to.StringPtr("<certificate>"),
 		},
-		&armdeviceprovisioningservices.DpsCertificateCreateOrUpdateOptions{IfMatch: nil})
+		&armdeviceprovisioningservices.DpsCertificateClientCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("CertificateResponse.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DpsCertificateClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2020-03-01/examples/DPSDeleteCertificate.json
@@ -71,7 +71,7 @@ func ExampleDpsCertificateClient_Delete() {
 		"<if-match>",
 		"<provisioning-service-name>",
 		"<certificate-name>",
-		&armdeviceprovisioningservices.DpsCertificateDeleteOptions{CertificateName1: nil,
+		&armdeviceprovisioningservices.DpsCertificateClientDeleteOptions{CertificateName1: nil,
 			CertificateIsVerified:    nil,
 			CertificatePurpose:       nil,
 			CertificateCreated:       nil,
@@ -92,13 +92,14 @@ func ExampleDpsCertificateClient_List() {
 	}
 	ctx := context.Background()
 	client := armdeviceprovisioningservices.NewDpsCertificateClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<provisioning-service-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.DpsCertificateClientListResult)
 }
 
 // x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2020-03-01/examples/DPSGenerateVerificationCode.json
@@ -114,7 +115,7 @@ func ExampleDpsCertificateClient_GenerateVerificationCode() {
 		"<if-match>",
 		"<resource-group-name>",
 		"<provisioning-service-name>",
-		&armdeviceprovisioningservices.DpsCertificateGenerateVerificationCodeOptions{CertificateName1: nil,
+		&armdeviceprovisioningservices.DpsCertificateClientGenerateVerificationCodeOptions{CertificateName1: nil,
 			CertificateIsVerified:    nil,
 			CertificatePurpose:       nil,
 			CertificateCreated:       nil,
@@ -125,7 +126,7 @@ func ExampleDpsCertificateClient_GenerateVerificationCode() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("VerificationCodeResponse.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DpsCertificateClientGenerateVerificationCodeResult)
 }
 
 // x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2020-03-01/examples/DPSVerifyCertificate.json
@@ -144,7 +145,7 @@ func ExampleDpsCertificateClient_VerifyCertificate() {
 		armdeviceprovisioningservices.VerificationCodeRequest{
 			Certificate: to.StringPtr("<certificate>"),
 		},
-		&armdeviceprovisioningservices.DpsCertificateVerifyCertificateOptions{CertificateName1: nil,
+		&armdeviceprovisioningservices.DpsCertificateClientVerifyCertificateOptions{CertificateName1: nil,
 			CertificateIsVerified:    nil,
 			CertificatePurpose:       nil,
 			CertificateCreated:       nil,
@@ -155,5 +156,5 @@ func ExampleDpsCertificateClient_VerifyCertificate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("CertificateResponse.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DpsCertificateClientVerifyCertificateResult)
 }

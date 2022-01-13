@@ -10,7 +10,6 @@ package armfeatures
 
 import (
 	"context"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -22,24 +21,31 @@ import (
 // FeatureClient contains the methods for the FeatureClient group.
 // Don't use this type directly, use NewFeatureClient() instead.
 type FeatureClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewFeatureClient creates a new instance of FeatureClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewFeatureClient(credential azcore.TokenCredential, options *arm.ClientOptions) *FeatureClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &FeatureClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &FeatureClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // ListOperations - Lists all of the available Microsoft.Features REST API operations.
-// If the operation fails it returns the *ErrorResponse error type.
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - FeatureClientListOperationsOptions contains the optional parameters for the FeatureClient.ListOperations method.
 func (client *FeatureClient) ListOperations(options *FeatureClientListOperationsOptions) *FeatureClientListOperationsPager {
 	return &FeatureClientListOperationsPager{
 		client: client,
@@ -55,7 +61,7 @@ func (client *FeatureClient) ListOperations(options *FeatureClientListOperations
 // listOperationsCreateRequest creates the ListOperations request.
 func (client *FeatureClient) listOperationsCreateRequest(ctx context.Context, options *FeatureClientListOperationsOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Features/operations"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -70,20 +76,7 @@ func (client *FeatureClient) listOperationsCreateRequest(ctx context.Context, op
 func (client *FeatureClient) listOperationsHandleResponse(resp *http.Response) (FeatureClientListOperationsResponse, error) {
 	result := FeatureClientListOperationsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationListResult); err != nil {
-		return FeatureClientListOperationsResponse{}, runtime.NewResponseError(err, resp)
+		return FeatureClientListOperationsResponse{}, err
 	}
 	return result, nil
-}
-
-// listOperationsHandleError handles the ListOperations error response.
-func (client *FeatureClient) listOperationsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

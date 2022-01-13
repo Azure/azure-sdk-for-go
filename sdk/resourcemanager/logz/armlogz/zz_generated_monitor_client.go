@@ -11,7 +11,6 @@ package armlogz
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,39 +24,51 @@ import (
 // MonitorClient contains the methods for the Monitor group.
 // Don't use this type directly, use NewMonitorClient() instead.
 type MonitorClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewMonitorClient creates a new instance of MonitorClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewMonitorClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *MonitorClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &MonitorClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &MonitorClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // ListVMHostUpdate - Sending request to update the collection when Logz.io agent has been installed on a VM for a given monitor.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MonitorClient) ListVMHostUpdate(resourceGroupName string, monitorName string, options *MonitorListVMHostUpdateOptions) *MonitorListVMHostUpdatePager {
-	return &MonitorListVMHostUpdatePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// monitorName - Monitor resource name
+// options - MonitorClientListVMHostUpdateOptions contains the optional parameters for the MonitorClient.ListVMHostUpdate
+// method.
+func (client *MonitorClient) ListVMHostUpdate(resourceGroupName string, monitorName string, options *MonitorClientListVMHostUpdateOptions) *MonitorClientListVMHostUpdatePager {
+	return &MonitorClientListVMHostUpdatePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listVMHostUpdateCreateRequest(ctx, resourceGroupName, monitorName, options)
 		},
-		advancer: func(ctx context.Context, resp MonitorListVMHostUpdateResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp MonitorClientListVMHostUpdateResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.VMResourcesListResponse.NextLink)
 		},
 	}
 }
 
 // listVMHostUpdateCreateRequest creates the ListVMHostUpdate request.
-func (client *MonitorClient) listVMHostUpdateCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorListVMHostUpdateOptions) (*policy.Request, error) {
+func (client *MonitorClient) listVMHostUpdateCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorClientListVMHostUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors/{monitorName}/vmHostUpdate"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -71,7 +82,7 @@ func (client *MonitorClient) listVMHostUpdateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter monitorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -86,43 +97,33 @@ func (client *MonitorClient) listVMHostUpdateCreateRequest(ctx context.Context, 
 }
 
 // listVMHostUpdateHandleResponse handles the ListVMHostUpdate response.
-func (client *MonitorClient) listVMHostUpdateHandleResponse(resp *http.Response) (MonitorListVMHostUpdateResponse, error) {
-	result := MonitorListVMHostUpdateResponse{RawResponse: resp}
+func (client *MonitorClient) listVMHostUpdateHandleResponse(resp *http.Response) (MonitorClientListVMHostUpdateResponse, error) {
+	result := MonitorClientListVMHostUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VMResourcesListResponse); err != nil {
-		return MonitorListVMHostUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return MonitorClientListVMHostUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// listVMHostUpdateHandleError handles the ListVMHostUpdate error response.
-func (client *MonitorClient) listVMHostUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListVMHosts - List the compute resources currently being monitored by the Logz main account resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MonitorClient) ListVMHosts(resourceGroupName string, monitorName string, options *MonitorListVMHostsOptions) *MonitorListVMHostsPager {
-	return &MonitorListVMHostsPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// monitorName - Monitor resource name
+// options - MonitorClientListVMHostsOptions contains the optional parameters for the MonitorClient.ListVMHosts method.
+func (client *MonitorClient) ListVMHosts(resourceGroupName string, monitorName string, options *MonitorClientListVMHostsOptions) *MonitorClientListVMHostsPager {
+	return &MonitorClientListVMHostsPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listVMHostsCreateRequest(ctx, resourceGroupName, monitorName, options)
 		},
-		advancer: func(ctx context.Context, resp MonitorListVMHostsResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp MonitorClientListVMHostsResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.VMResourcesListResponse.NextLink)
 		},
 	}
 }
 
 // listVMHostsCreateRequest creates the ListVMHosts request.
-func (client *MonitorClient) listVMHostsCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorListVMHostsOptions) (*policy.Request, error) {
+func (client *MonitorClient) listVMHostsCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorClientListVMHostsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors/{monitorName}/listVMHosts"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -136,7 +137,7 @@ func (client *MonitorClient) listVMHostsCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter monitorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -148,46 +149,36 @@ func (client *MonitorClient) listVMHostsCreateRequest(ctx context.Context, resou
 }
 
 // listVMHostsHandleResponse handles the ListVMHosts response.
-func (client *MonitorClient) listVMHostsHandleResponse(resp *http.Response) (MonitorListVMHostsResponse, error) {
-	result := MonitorListVMHostsResponse{RawResponse: resp}
+func (client *MonitorClient) listVMHostsHandleResponse(resp *http.Response) (MonitorClientListVMHostsResponse, error) {
+	result := MonitorClientListVMHostsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VMResourcesListResponse); err != nil {
-		return MonitorListVMHostsResponse{}, runtime.NewResponseError(err, resp)
+		return MonitorClientListVMHostsResponse{}, err
 	}
 	return result, nil
 }
 
-// listVMHostsHandleError handles the ListVMHosts error response.
-func (client *MonitorClient) listVMHostsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // VMHostPayload - Returns the payload that needs to be passed in the request body for installing Logz.io agent on a VM.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MonitorClient) VMHostPayload(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorVMHostPayloadOptions) (MonitorVMHostPayloadResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// monitorName - Monitor resource name
+// options - MonitorClientVMHostPayloadOptions contains the optional parameters for the MonitorClient.VMHostPayload method.
+func (client *MonitorClient) VMHostPayload(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorClientVMHostPayloadOptions) (MonitorClientVMHostPayloadResponse, error) {
 	req, err := client.vmHostPayloadCreateRequest(ctx, resourceGroupName, monitorName, options)
 	if err != nil {
-		return MonitorVMHostPayloadResponse{}, err
+		return MonitorClientVMHostPayloadResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MonitorVMHostPayloadResponse{}, err
+		return MonitorClientVMHostPayloadResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return MonitorVMHostPayloadResponse{}, client.vmHostPayloadHandleError(resp)
+		return MonitorClientVMHostPayloadResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.vmHostPayloadHandleResponse(resp)
 }
 
 // vmHostPayloadCreateRequest creates the VMHostPayload request.
-func (client *MonitorClient) vmHostPayloadCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorVMHostPayloadOptions) (*policy.Request, error) {
+func (client *MonitorClient) vmHostPayloadCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorClientVMHostPayloadOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors/{monitorName}/vmHostPayload"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -201,7 +192,7 @@ func (client *MonitorClient) vmHostPayloadCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter monitorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -213,23 +204,10 @@ func (client *MonitorClient) vmHostPayloadCreateRequest(ctx context.Context, res
 }
 
 // vmHostPayloadHandleResponse handles the VMHostPayload response.
-func (client *MonitorClient) vmHostPayloadHandleResponse(resp *http.Response) (MonitorVMHostPayloadResponse, error) {
-	result := MonitorVMHostPayloadResponse{RawResponse: resp}
+func (client *MonitorClient) vmHostPayloadHandleResponse(resp *http.Response) (MonitorClientVMHostPayloadResponse, error) {
+	result := MonitorClientVMHostPayloadResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VMExtensionPayload); err != nil {
-		return MonitorVMHostPayloadResponse{}, runtime.NewResponseError(err, resp)
+		return MonitorClientVMHostPayloadResponse{}, err
 	}
 	return result, nil
-}
-
-// vmHostPayloadHandleError handles the VMHostPayload error response.
-func (client *MonitorClient) vmHostPayloadHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

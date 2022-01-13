@@ -55,25 +55,6 @@ func unmarshalImageTemplateCustomizerClassificationArray(rawMsg json.RawMessage)
 	return fArray, nil
 }
 
-func unmarshalImageTemplateCustomizerClassificationMap(rawMsg json.RawMessage) (map[string]ImageTemplateCustomizerClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]ImageTemplateCustomizerClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalImageTemplateCustomizerClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
-}
-
 func unmarshalImageTemplateDistributorClassification(rawMsg json.RawMessage) (ImageTemplateDistributorClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -115,25 +96,6 @@ func unmarshalImageTemplateDistributorClassificationArray(rawMsg json.RawMessage
 	return fArray, nil
 }
 
-func unmarshalImageTemplateDistributorClassificationMap(rawMsg json.RawMessage) (map[string]ImageTemplateDistributorClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]ImageTemplateDistributorClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalImageTemplateDistributorClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
-}
-
 func unmarshalImageTemplateSourceClassification(rawMsg json.RawMessage) (ImageTemplateSourceClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -154,42 +116,4 @@ func unmarshalImageTemplateSourceClassification(rawMsg json.RawMessage) (ImageTe
 		b = &ImageTemplateSource{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
-}
-
-func unmarshalImageTemplateSourceClassificationArray(rawMsg json.RawMessage) ([]ImageTemplateSourceClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]ImageTemplateSourceClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalImageTemplateSourceClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalImageTemplateSourceClassificationMap(rawMsg json.RawMessage) (map[string]ImageTemplateSourceClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]ImageTemplateSourceClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalImageTemplateSourceClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
 }

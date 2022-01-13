@@ -71,25 +71,6 @@ func unmarshalDataSetClassificationArray(rawMsg json.RawMessage) ([]DataSetClass
 	return fArray, nil
 }
 
-func unmarshalDataSetClassificationMap(rawMsg json.RawMessage) (map[string]DataSetClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]DataSetClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalDataSetClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
-}
-
 func unmarshalDataSetMappingClassification(rawMsg json.RawMessage) (DataSetMappingClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -147,25 +128,6 @@ func unmarshalDataSetMappingClassificationArray(rawMsg json.RawMessage) ([]DataS
 	return fArray, nil
 }
 
-func unmarshalDataSetMappingClassificationMap(rawMsg json.RawMessage) (map[string]DataSetMappingClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]DataSetMappingClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalDataSetMappingClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
-}
-
 func unmarshalSourceShareSynchronizationSettingClassification(rawMsg json.RawMessage) (SourceShareSynchronizationSettingClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -201,25 +163,6 @@ func unmarshalSourceShareSynchronizationSettingClassificationArray(rawMsg json.R
 		fArray[index] = f
 	}
 	return fArray, nil
-}
-
-func unmarshalSourceShareSynchronizationSettingClassificationMap(rawMsg json.RawMessage) (map[string]SourceShareSynchronizationSettingClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]SourceShareSynchronizationSettingClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalSourceShareSynchronizationSettingClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
 }
 
 func unmarshalSynchronizationSettingClassification(rawMsg json.RawMessage) (SynchronizationSettingClassification, error) {
@@ -259,25 +202,6 @@ func unmarshalSynchronizationSettingClassificationArray(rawMsg json.RawMessage) 
 	return fArray, nil
 }
 
-func unmarshalSynchronizationSettingClassificationMap(rawMsg json.RawMessage) (map[string]SynchronizationSettingClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]SynchronizationSettingClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalSynchronizationSettingClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
-}
-
 func unmarshalTriggerClassification(rawMsg json.RawMessage) (TriggerClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -313,23 +237,4 @@ func unmarshalTriggerClassificationArray(rawMsg json.RawMessage) ([]TriggerClass
 		fArray[index] = f
 	}
 	return fArray, nil
-}
-
-func unmarshalTriggerClassificationMap(rawMsg json.RawMessage) (map[string]TriggerClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]TriggerClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalTriggerClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
 }

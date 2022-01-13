@@ -24,7 +24,6 @@ var rootCmd = &cobra.Command{
 
 func init() {
 	rootCmd.PersistentFlags().IntVarP(&perf.Duration, "duration", "d", 10, "The duration to run a single performance test for")
-	rootCmd.PersistentFlags().IntVarP(&perf.Iterations, "iterations", "i", 3, "The number of iterations to run a single performance test for")
 	rootCmd.PersistentFlags().StringVarP(&perf.TestProxy, "testproxy", "x", "", "whether to target http or https proxy (default is neither)")
 	rootCmd.PersistentFlags().IntVarP(&perf.TimeoutSeconds, "timeout", "t", 10, "How long to allow an operation to block before cancelling.")
 	rootCmd.PersistentFlags().IntVarP(&perf.WarmUp, "warmup", "w", 3, "How long to allow a connection to warm up.")

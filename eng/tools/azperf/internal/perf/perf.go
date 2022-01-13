@@ -12,7 +12,6 @@ import (
 var (
 	Duration       int
 	TimeoutSeconds int
-	Iterations     int
 	TestProxy      string
 	WarmUp         int
 )
@@ -38,9 +37,9 @@ func getLimitedContext(t time.Duration) (context.Context, context.CancelFunc) {
 }
 
 func runGlobalSetup(p PerfTest) error {
-	fmt.Println("Running Global Setup")
+	fmt.Println("Running `GlobalSetup`")
 
-	fmt.Println("Deadline of ", TimeoutSeconds)
+	fmt.Printf("Deadline of %d\n", TimeoutSeconds)
 	_, cancel := getLimitedContext(time.Duration(TimeoutSeconds) * time.Second)
 	defer cancel()
 
@@ -51,8 +50,8 @@ func runGlobalSetup(p PerfTest) error {
 	return nil
 }
 
-func runSetup(p PerfTest, i int) error {
-	fmt.Println("\nRunning setup for iteration #", i)
+func runSetup(p PerfTest) error {
+	fmt.Println("Running `Setup`")
 
 	_, cancel := getLimitedContext(time.Duration(TimeoutSeconds) * time.Second)
 	defer cancel()
@@ -66,8 +65,8 @@ func runSetup(p PerfTest, i int) error {
 
 // runTest takes care of the semantics of running a single iteration. It returns the number of times the test ran as an int, the exact number
 // of seconds the test ran as a float64, and any errors.
-func runTest(p PerfTest, iter int) (int, float64, error) {
-	fmt.Printf("\nBeginning iteration #%d\n", iter)
+func runTest(p PerfTest) (int, float64, error) {
+	fmt.Println("Beginning `Run`")
 	_, cancel := getLimitedContext(time.Duration(TimeoutSeconds) * time.Second)
 	defer cancel()
 
@@ -86,7 +85,7 @@ func runTest(p PerfTest, iter int) (int, float64, error) {
 
 // runTearDown takes care of the semantics for tearing down a single iteration of a performance test.
 func runTearDown(p PerfTest) error {
-	fmt.Println("\nRunning teardown")
+	fmt.Println("Running `Teardown`")
 
 	_, cancel := getLimitedContext(time.Duration(TimeoutSeconds) * time.Second)
 	defer cancel()
@@ -99,7 +98,7 @@ func runTearDown(p PerfTest) error {
 }
 
 func runGlobalTearDown(p PerfTest) error {
-	fmt.Println("Running global teardown")
+	fmt.Println("Running `GlobalTeardown`")
 	_, cancel := getLimitedContext(time.Duration(TimeoutSeconds) * time.Second)
 	defer cancel()
 
@@ -118,37 +117,37 @@ func RunPerfTest(p PerfTest) error {
 
 	totalCount := 0
 	totalTime := 0.0
-	for i := 0; i < Iterations; i++ {
-		runSetup(p, i)
 
-		count, end, err := runTest(p, i+1)
-		if err != nil {
-			return err
-		}
+	runSetup(p)
 
-		printIteration(end, count, i+1)
+	count, end, err := runTest(p)
+	if err != nil {
+		return err
+	}
 
-		totalCount += count
-		totalTime += end
+	printIteration(end, count)
 
-		err = runTearDown(p)
-		if err != nil {
-			return err
-		}
+	totalCount += count
+	totalTime += end
+
+	err = runTearDown(p)
+	if err != nil {
+		return err
+
 	}
 
 	err = runGlobalTearDown(p)
-	printFinal(totalCount, totalTime, Iterations)
+	printFinal(totalCount, totalTime)
 
 	return err
 }
 
-func printIteration(t float64, count int, itNum int) {
+func printIteration(t float64, count int) {
 	perSecond := float64(count) / t
-	fmt.Printf("Iteration #%d: Completed %d operations in %.4f seconds. Averaged %.4f operations per second.\n", itNum, count, t, perSecond)
+	fmt.Printf("Completed %d operations in %.4f seconds. Averaged %.4f operations per second.\n", count, t, perSecond)
 }
 
-func printFinal(totalCount int, totalElapsed float64, i int) {
+func printFinal(totalCount int, totalElapsed float64) {
 	perSecond := float64(totalCount) / totalElapsed
-	fmt.Printf("\nSummary: Completed %d operations in %.4f seconds. Averaged %.4f ops/sec.\n", totalCount, totalElapsed, perSecond)
+	fmt.Printf("Summary: Completed %d operations in %.4f seconds. Averaged %.4f ops/sec.\n", totalCount, totalElapsed, perSecond)
 }

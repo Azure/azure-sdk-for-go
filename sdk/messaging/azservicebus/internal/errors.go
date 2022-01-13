@@ -39,33 +39,33 @@ const RecoveryKindFatal recoveryKind = "fatal"
 const RecoveryKindLink recoveryKind = "link"
 const RecoveryKindConn recoveryKind = "connection"
 
-type ServiceBusError struct {
+type SBErrInfo struct {
 	inner        error
 	RecoveryKind recoveryKind
 }
 
-func (sbe *ServiceBusError) String() string {
+func (sbe *SBErrInfo) String() string {
 	return sbe.inner.Error()
 }
 
-func (sbe *ServiceBusError) AsError() error {
+func (sbe *SBErrInfo) AsError() error {
 	return sbe.inner
 }
 
-func IsFatalSBE(err error) bool {
-	return ToSBE(err).RecoveryKind == RecoveryKindFatal
+func IsFatalSBError(err error) bool {
+	return GetSBErrInfo(err).RecoveryKind == RecoveryKindFatal
 }
 
-// ToSBE wraps the passed in 'err' with a proper error with one of either:
+// GetSBErrInfo wraps the passed in 'err' with a proper error with one of either:
 // - `fatalServiceBusError` if no recovery is possible.
 // - `serviceBusError` if the error is recoverable. The `recoveryKind` field contains the
 //   type of recovery needed.
-func ToSBE(err error) *ServiceBusError {
+func GetSBErrInfo(err error) *SBErrInfo {
 	if err == nil {
 		return nil
 	}
 
-	sbe := &ServiceBusError{
+	sbe := &SBErrInfo{
 		inner:        err,
 		RecoveryKind: GetRecoveryKind(err),
 	}

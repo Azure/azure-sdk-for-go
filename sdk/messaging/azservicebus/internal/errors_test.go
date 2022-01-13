@@ -99,16 +99,16 @@ func Test_recoveryKind(t *testing.T) {
 
 		for _, code := range linkErrorCodes {
 			t.Run(code, func(t *testing.T) {
-				sbe := ToSBE(&amqp.Error{Condition: amqp.ErrorCondition(code)})
+				sbe := GetSBErrInfo(&amqp.Error{Condition: amqp.ErrorCondition(code)})
 				require.EqualValues(t, RecoveryKindLink, sbe.RecoveryKind, fmt.Sprintf("requires link recovery: %s", code))
 			})
 		}
 
 		t.Run("sentintel errors", func(t *testing.T) {
-			sbe := ToSBE(amqp.ErrLinkClosed)
+			sbe := GetSBErrInfo(amqp.ErrLinkClosed)
 			require.EqualValues(t, RecoveryKindLink, sbe.RecoveryKind)
 
-			sbe = ToSBE(amqp.ErrSessionClosed)
+			sbe = GetSBErrInfo(amqp.ErrSessionClosed)
 			require.EqualValues(t, RecoveryKindLink, sbe.RecoveryKind)
 		})
 	})
@@ -120,13 +120,13 @@ func Test_recoveryKind(t *testing.T) {
 
 		for _, code := range codes {
 			t.Run(code, func(t *testing.T) {
-				sbe := ToSBE(&amqp.Error{Condition: amqp.ErrorCondition(code)})
+				sbe := GetSBErrInfo(&amqp.Error{Condition: amqp.ErrorCondition(code)})
 				require.EqualValues(t, RecoveryKindConn, sbe.RecoveryKind, fmt.Sprintf("requires connection recovery: %s", code))
 			})
 		}
 
 		t.Run("sentinel errors", func(t *testing.T) {
-			sbe := ToSBE(amqp.ErrConnClosed)
+			sbe := GetSBErrInfo(amqp.ErrConnClosed)
 			require.EqualValues(t, RecoveryKindConn, sbe.RecoveryKind)
 		})
 	})
@@ -142,7 +142,7 @@ func Test_recoveryKind(t *testing.T) {
 
 		for _, code := range codes {
 			t.Run(code, func(t *testing.T) {
-				sbe := ToSBE(&amqp.Error{Condition: amqp.ErrorCondition(code)})
+				sbe := GetSBErrInfo(&amqp.Error{Condition: amqp.ErrorCondition(code)})
 				require.EqualValues(t, RecoveryKindFatal, sbe.RecoveryKind, fmt.Sprintf("cannot be recovered: %s", code))
 			})
 		}
@@ -157,7 +157,7 @@ func Test_recoveryKind(t *testing.T) {
 
 		for _, code := range codes {
 			t.Run(code, func(t *testing.T) {
-				sbe := ToSBE(&amqp.Error{Condition: amqp.ErrorCondition(code)})
+				sbe := GetSBErrInfo(&amqp.Error{Condition: amqp.ErrorCondition(code)})
 				require.EqualValues(t, RecoveryKindNone, sbe.RecoveryKind, fmt.Sprintf("no recovery needed: %s", code))
 			})
 		}
@@ -175,7 +175,7 @@ func Test_IsNonRetriable(t *testing.T) {
 	}
 
 	for _, err := range errs {
-		require.EqualValues(t, RecoveryKindFatal, ToSBE(err).RecoveryKind)
+		require.EqualValues(t, RecoveryKindFatal, GetSBErrInfo(err).RecoveryKind)
 	}
 }
 
@@ -191,7 +191,7 @@ func Test_ServiceBusError_NoRecoveryNeeded(t *testing.T) {
 	}
 
 	for i, err := range tempErrors {
-		rk := ToSBE(err).RecoveryKind
+		rk := GetSBErrInfo(err).RecoveryKind
 		require.EqualValues(t, RecoveryKindNone, rk, fmt.Sprintf("[%d] %v", i, err))
 	}
 }
@@ -204,7 +204,7 @@ func Test_ServiceBusError_ConnectionRecoveryNeeded(t *testing.T) {
 	}
 
 	for i, err := range connErrors {
-		rk := ToSBE(err).RecoveryKind
+		rk := GetSBErrInfo(err).RecoveryKind
 		require.EqualValues(t, RecoveryKindConn, rk, fmt.Sprintf("[%d] %v", i, err))
 	}
 }
@@ -218,7 +218,7 @@ func Test_ServiceBusError_LinkRecoveryNeeded(t *testing.T) {
 	}
 
 	for i, err := range linkErrors {
-		rk := ToSBE(err).RecoveryKind
+		rk := GetSBErrInfo(err).RecoveryKind
 		require.EqualValues(t, RecoveryKindLink, rk, fmt.Sprintf("[%d] %v", i, err))
 	}
 }
@@ -236,11 +236,11 @@ func Test_ServiceBusError_Fatal(t *testing.T) {
 	}
 
 	for i, cond := range fatalConditions {
-		rk := ToSBE(&amqp.Error{Condition: cond}).RecoveryKind
+		rk := GetSBErrInfo(&amqp.Error{Condition: cond}).RecoveryKind
 		require.EqualValues(t, RecoveryKindFatal, rk, fmt.Sprintf("[%d] %s", i, cond))
 	}
 
 	// unknown errors are also considered fatal
-	rk := ToSBE(errors.New("Some unknown error")).RecoveryKind
+	rk := GetSBErrInfo(errors.New("Some unknown error")).RecoveryKind
 	require.EqualValues(t, RecoveryKindFatal, rk, "some unknown error")
 }

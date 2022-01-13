@@ -9,8 +9,8 @@
 package armportal
 
 const (
-	module  = "armportal"
-	version = "v0.1.0"
+	moduleName    = "armportal"
+	moduleVersion = "v0.1.0"
 )
 
 type ConfigurationName string

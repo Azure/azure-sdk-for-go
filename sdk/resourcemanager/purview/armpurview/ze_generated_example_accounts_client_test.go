@@ -28,13 +28,17 @@ func ExampleAccountsClient_ListByResourceGroup() {
 	ctx := context.Background()
 	client := armpurview.NewAccountsClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
-		&armpurview.AccountsListByResourceGroupOptions{SkipToken: nil})
-	for pager.NextPage(ctx) {
+		&armpurview.AccountsClientListByResourceGroupOptions{SkipToken: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Account.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -47,13 +51,17 @@ func ExampleAccountsClient_ListBySubscription() {
 	}
 	ctx := context.Background()
 	client := armpurview.NewAccountsClient("<subscription-id>", cred, nil)
-	pager := client.ListBySubscription(&armpurview.AccountsListBySubscriptionOptions{SkipToken: nil})
-	for pager.NextPage(ctx) {
+	pager := client.ListBySubscription(&armpurview.AccountsClientListBySubscriptionOptions{SkipToken: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Account.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -73,7 +81,7 @@ func ExampleAccountsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Account.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AccountsClientGetResult)
 }
 
 // x-ms-original-file: specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/Accounts_CreateOrUpdate.json
@@ -88,9 +96,7 @@ func ExampleAccountsClient_BeginCreateOrUpdate() {
 		"<resource-group-name>",
 		"<account-name>",
 		armpurview.Account{
-			TrackedResource: armpurview.TrackedResource{
-				Location: to.StringPtr("<location>"),
-			},
+			Location: to.StringPtr("<location>"),
 			Properties: &armpurview.AccountProperties{
 				ManagedResourceGroupName: to.StringPtr("<managed-resource-group-name>"),
 			},
@@ -103,7 +109,7 @@ func ExampleAccountsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Account.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AccountsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/Accounts_Delete.json
@@ -151,7 +157,7 @@ func ExampleAccountsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Account.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AccountsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/Accounts_ListKeys.json
@@ -162,13 +168,14 @@ func ExampleAccountsClient_ListKeys() {
 	}
 	ctx := context.Background()
 	client := armpurview.NewAccountsClient("<subscription-id>", cred, nil)
-	_, err = client.ListKeys(ctx,
+	res, err := client.ListKeys(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.AccountsClientListKeysResult)
 }
 
 // x-ms-original-file: specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/Accounts_AddRootCollectionAdmin.json
@@ -199,7 +206,7 @@ func ExampleAccountsClient_CheckNameAvailability() {
 	}
 	ctx := context.Background()
 	client := armpurview.NewAccountsClient("<subscription-id>", cred, nil)
-	_, err = client.CheckNameAvailability(ctx,
+	res, err := client.CheckNameAvailability(ctx,
 		armpurview.CheckNameAvailabilityRequest{
 			Name: to.StringPtr("<name>"),
 			Type: to.StringPtr("<type>"),
@@ -208,4 +215,5 @@ func ExampleAccountsClient_CheckNameAvailability() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.AccountsClientCheckNameAvailabilityResult)
 }

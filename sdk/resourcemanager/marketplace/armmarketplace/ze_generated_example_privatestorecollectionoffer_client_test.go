@@ -28,12 +28,16 @@ func ExamplePrivateStoreCollectionOfferClient_List() {
 	pager := client.List("<private-store-id>",
 		"<collection-id>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Offer.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -54,7 +58,7 @@ func ExamplePrivateStoreCollectionOfferClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Offer.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateStoreCollectionOfferClientGetResult)
 }
 
 // x-ms-original-file: specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-06-01/examples/PrivateStoreOffer_update.json
@@ -69,7 +73,7 @@ func ExamplePrivateStoreCollectionOfferClient_CreateOrUpdate() {
 		"<private-store-id>",
 		"<offer-id>",
 		"<collection-id>",
-		&armmarketplace.PrivateStoreCollectionOfferCreateOrUpdateOptions{Payload: &armmarketplace.Offer{
+		&armmarketplace.PrivateStoreCollectionOfferClientCreateOrUpdateOptions{Payload: &armmarketplace.Offer{
 			Properties: &armmarketplace.OfferProperties{
 				ETag: to.StringPtr("<etag>"),
 				SpecificPlanIDsLimitation: []*string{
@@ -81,7 +85,7 @@ func ExamplePrivateStoreCollectionOfferClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Offer.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateStoreCollectionOfferClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-06-01/examples/DeletePrivateStoreOffer.json
@@ -114,7 +118,7 @@ func ExamplePrivateStoreCollectionOfferClient_Post() {
 		"<private-store-id>",
 		"<offer-id>",
 		"<collection-id>",
-		&armmarketplace.PrivateStoreCollectionOfferPostOptions{Payload: nil})
+		&armmarketplace.PrivateStoreCollectionOfferClientPostOptions{Payload: nil})
 	if err != nil {
 		log.Fatal(err)
 	}

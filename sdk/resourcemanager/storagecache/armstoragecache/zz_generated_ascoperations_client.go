@@ -11,7 +11,6 @@ package armstoragecache
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,54 @@ import (
 // AscOperationsClient contains the methods for the AscOperations group.
 // Don't use this type directly, use NewAscOperationsClient() instead.
 type AscOperationsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewAscOperationsClient creates a new instance of AscOperationsClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewAscOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AscOperationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &AscOperationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &AscOperationsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets the status of an asynchronous operation for the Azure HPC Cache
-// If the operation fails it returns the *CloudError error type.
-func (client *AscOperationsClient) Get(ctx context.Context, location string, operationID string, options *AscOperationsGetOptions) (AscOperationsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// location - The name of the region used to look up the operation.
+// operationID - The operation id which uniquely identifies the asynchronous operation.
+// options - AscOperationsClientGetOptions contains the optional parameters for the AscOperationsClient.Get method.
+func (client *AscOperationsClient) Get(ctx context.Context, location string, operationID string, options *AscOperationsClientGetOptions) (AscOperationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, location, operationID, options)
 	if err != nil {
-		return AscOperationsGetResponse{}, err
+		return AscOperationsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AscOperationsGetResponse{}, err
+		return AscOperationsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AscOperationsGetResponse{}, client.getHandleError(resp)
+		return AscOperationsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AscOperationsClient) getCreateRequest(ctx context.Context, location string, operationID string, options *AscOperationsGetOptions) (*policy.Request, error) {
+func (client *AscOperationsClient) getCreateRequest(ctx context.Context, location string, operationID string, options *AscOperationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.StorageCache/locations/{location}/ascOperations/{operationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -74,7 +85,7 @@ func (client *AscOperationsClient) getCreateRequest(ctx context.Context, locatio
 		return nil, errors.New("parameter operationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -86,23 +97,10 @@ func (client *AscOperationsClient) getCreateRequest(ctx context.Context, locatio
 }
 
 // getHandleResponse handles the Get response.
-func (client *AscOperationsClient) getHandleResponse(resp *http.Response) (AscOperationsGetResponse, error) {
-	result := AscOperationsGetResponse{RawResponse: resp}
+func (client *AscOperationsClient) getHandleResponse(resp *http.Response) (AscOperationsClientGetResponse, error) {
+	result := AscOperationsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AscOperation); err != nil {
-		return AscOperationsGetResponse{}, runtime.NewResponseError(err, resp)
+		return AscOperationsClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *AscOperationsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

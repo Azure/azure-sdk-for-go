@@ -26,8 +26,8 @@ func ExampleOperationStatusClient_Get() {
 	client := armkubernetesconfiguration.NewOperationStatusClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
-		armkubernetesconfiguration.Enum0MicrosoftKubernetes,
-		armkubernetesconfiguration.Enum1ConnectedClusters,
+		armkubernetesconfiguration.Enum0("Microsoft.Kubernetes"),
+		armkubernetesconfiguration.Enum1("connectedClusters"),
 		"<cluster-name>",
 		"<extension-name>",
 		"<operation-id>",
@@ -35,7 +35,7 @@ func ExampleOperationStatusClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("OperationStatusResult.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.OperationStatusClientGetResult)
 }
 
 // x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/preview/2022-01-01-preview/examples/ListAsyncOperationStatus.json
@@ -47,16 +47,20 @@ func ExampleOperationStatusClient_List() {
 	ctx := context.Background()
 	client := armkubernetesconfiguration.NewOperationStatusClient("<subscription-id>", cred, nil)
 	pager := client.List("<resource-group-name>",
-		armkubernetesconfiguration.Enum0MicrosoftKubernetes,
-		armkubernetesconfiguration.Enum1ConnectedClusters,
+		armkubernetesconfiguration.Enum0("Microsoft.Kubernetes"),
+		armkubernetesconfiguration.Enum1("connectedClusters"),
 		"<cluster-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("OperationStatusResult.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

@@ -24,13 +24,14 @@ func ExamplePrivateLinkResourcesClient_ListByService() {
 	}
 	ctx := context.Background()
 	client := armhealthcareapis.NewPrivateLinkResourcesClient("<subscription-id>", cred, nil)
-	_, err = client.ListByService(ctx,
+	res, err := client.ListByService(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.PrivateLinkResourcesClientListByServiceResult)
 }
 
 // x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2021-06-01-preview/examples/legacy/PrivateLinkResourceGet.json
@@ -49,5 +50,5 @@ func ExamplePrivateLinkResourcesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateLinkResourceDescription.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateLinkResourcesClientGetResult)
 }

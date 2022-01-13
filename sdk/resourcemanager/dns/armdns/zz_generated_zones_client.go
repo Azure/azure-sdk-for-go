@@ -11,7 +11,6 @@ package armdns
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,54 @@ import (
 // ZonesClient contains the methods for the Zones group.
 // Don't use this type directly, use NewZonesClient() instead.
 type ZonesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewZonesClient creates a new instance of ZonesClient with the specified values.
+// subscriptionID - Specifies the Azure subscription ID, which uniquely identifies the Microsoft Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewZonesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ZonesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ZonesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ZonesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates or updates a DNS zone. Does not modify DNS records within the zone.
-// If the operation fails it returns the *CloudError error type.
-func (client *ZonesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, zoneName string, parameters Zone, options *ZonesCreateOrUpdateOptions) (ZonesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// zoneName - The name of the DNS zone (without a terminating dot).
+// parameters - Parameters supplied to the CreateOrUpdate operation.
+// options - ZonesClientCreateOrUpdateOptions contains the optional parameters for the ZonesClient.CreateOrUpdate method.
+func (client *ZonesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, zoneName string, parameters Zone, options *ZonesClientCreateOrUpdateOptions) (ZonesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, zoneName, parameters, options)
 	if err != nil {
-		return ZonesCreateOrUpdateResponse{}, err
+		return ZonesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ZonesCreateOrUpdateResponse{}, err
+		return ZonesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return ZonesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return ZonesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ZonesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, zoneName string, parameters Zone, options *ZonesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ZonesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, zoneName string, parameters Zone, options *ZonesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -75,7 +86,7 @@ func (client *ZonesClient) createOrUpdateCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -93,50 +104,40 @@ func (client *ZonesClient) createOrUpdateCreateRequest(ctx context.Context, reso
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ZonesClient) createOrUpdateHandleResponse(resp *http.Response) (ZonesCreateOrUpdateResponse, error) {
-	result := ZonesCreateOrUpdateResponse{RawResponse: resp}
+func (client *ZonesClient) createOrUpdateHandleResponse(resp *http.Response) (ZonesClientCreateOrUpdateResponse, error) {
+	result := ZonesClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Zone); err != nil {
-		return ZonesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ZonesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ZonesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
-// If the operation fails it returns the *CloudError error type.
-func (client *ZonesClient) BeginDelete(ctx context.Context, resourceGroupName string, zoneName string, options *ZonesBeginDeleteOptions) (ZonesDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// zoneName - The name of the DNS zone (without a terminating dot).
+// options - ZonesClientBeginDeleteOptions contains the optional parameters for the ZonesClient.BeginDelete method.
+func (client *ZonesClient) BeginDelete(ctx context.Context, resourceGroupName string, zoneName string, options *ZonesClientBeginDeleteOptions) (ZonesClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, zoneName, options)
 	if err != nil {
-		return ZonesDeletePollerResponse{}, err
+		return ZonesClientDeletePollerResponse{}, err
 	}
-	result := ZonesDeletePollerResponse{
+	result := ZonesClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ZonesClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("ZonesClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return ZonesDeletePollerResponse{}, err
+		return ZonesClientDeletePollerResponse{}, err
 	}
-	result.Poller = &ZonesDeletePoller{
+	result.Poller = &ZonesClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
-// If the operation fails it returns the *CloudError error type.
-func (client *ZonesClient) deleteOperation(ctx context.Context, resourceGroupName string, zoneName string, options *ZonesBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ZonesClient) deleteOperation(ctx context.Context, resourceGroupName string, zoneName string, options *ZonesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, zoneName, options)
 	if err != nil {
 		return nil, err
@@ -146,13 +147,13 @@ func (client *ZonesClient) deleteOperation(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ZonesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, zoneName string, options *ZonesBeginDeleteOptions) (*policy.Request, error) {
+func (client *ZonesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, zoneName string, options *ZonesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -166,7 +167,7 @@ func (client *ZonesClient) deleteCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -180,38 +181,28 @@ func (client *ZonesClient) deleteCreateRequest(ctx context.Context, resourceGrou
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ZonesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets a DNS zone. Retrieves the zone properties, but not the record sets within the zone.
-// If the operation fails it returns the *CloudError error type.
-func (client *ZonesClient) Get(ctx context.Context, resourceGroupName string, zoneName string, options *ZonesGetOptions) (ZonesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// zoneName - The name of the DNS zone (without a terminating dot).
+// options - ZonesClientGetOptions contains the optional parameters for the ZonesClient.Get method.
+func (client *ZonesClient) Get(ctx context.Context, resourceGroupName string, zoneName string, options *ZonesClientGetOptions) (ZonesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, zoneName, options)
 	if err != nil {
-		return ZonesGetResponse{}, err
+		return ZonesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ZonesGetResponse{}, err
+		return ZonesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ZonesGetResponse{}, client.getHandleError(resp)
+		return ZonesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ZonesClient) getCreateRequest(ctx context.Context, resourceGroupName string, zoneName string, options *ZonesGetOptions) (*policy.Request, error) {
+func (client *ZonesClient) getCreateRequest(ctx context.Context, resourceGroupName string, zoneName string, options *ZonesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -225,7 +216,7 @@ func (client *ZonesClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -237,49 +228,37 @@ func (client *ZonesClient) getCreateRequest(ctx context.Context, resourceGroupNa
 }
 
 // getHandleResponse handles the Get response.
-func (client *ZonesClient) getHandleResponse(resp *http.Response) (ZonesGetResponse, error) {
-	result := ZonesGetResponse{RawResponse: resp}
+func (client *ZonesClient) getHandleResponse(resp *http.Response) (ZonesClientGetResponse, error) {
+	result := ZonesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Zone); err != nil {
-		return ZonesGetResponse{}, runtime.NewResponseError(err, resp)
+		return ZonesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ZonesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Lists the DNS zones in all resource groups in a subscription.
-// If the operation fails it returns the *CloudError error type.
-func (client *ZonesClient) List(options *ZonesListOptions) *ZonesListPager {
-	return &ZonesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - ZonesClientListOptions contains the optional parameters for the ZonesClient.List method.
+func (client *ZonesClient) List(options *ZonesClientListOptions) *ZonesClientListPager {
+	return &ZonesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp ZonesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ZonesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ZoneListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ZonesClient) listCreateRequest(ctx context.Context, options *ZonesListOptions) (*policy.Request, error) {
+func (client *ZonesClient) listCreateRequest(ctx context.Context, options *ZonesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/dnszones"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -294,43 +273,33 @@ func (client *ZonesClient) listCreateRequest(ctx context.Context, options *Zones
 }
 
 // listHandleResponse handles the List response.
-func (client *ZonesClient) listHandleResponse(resp *http.Response) (ZonesListResponse, error) {
-	result := ZonesListResponse{RawResponse: resp}
+func (client *ZonesClient) listHandleResponse(resp *http.Response) (ZonesClientListResponse, error) {
+	result := ZonesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ZoneListResult); err != nil {
-		return ZonesListResponse{}, runtime.NewResponseError(err, resp)
+		return ZonesClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *ZonesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - Lists the DNS zones within a resource group.
-// If the operation fails it returns the *CloudError error type.
-func (client *ZonesClient) ListByResourceGroup(resourceGroupName string, options *ZonesListByResourceGroupOptions) *ZonesListByResourceGroupPager {
-	return &ZonesListByResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// options - ZonesClientListByResourceGroupOptions contains the optional parameters for the ZonesClient.ListByResourceGroup
+// method.
+func (client *ZonesClient) ListByResourceGroup(resourceGroupName string, options *ZonesClientListByResourceGroupOptions) *ZonesClientListByResourceGroupPager {
+	return &ZonesClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp ZonesListByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ZonesClientListByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ZoneListResult.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ZonesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ZonesListByResourceGroupOptions) (*policy.Request, error) {
+func (client *ZonesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ZonesClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -340,7 +309,7 @@ func (client *ZonesClient) listByResourceGroupCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -355,46 +324,37 @@ func (client *ZonesClient) listByResourceGroupCreateRequest(ctx context.Context,
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *ZonesClient) listByResourceGroupHandleResponse(resp *http.Response) (ZonesListByResourceGroupResponse, error) {
-	result := ZonesListByResourceGroupResponse{RawResponse: resp}
+func (client *ZonesClient) listByResourceGroupHandleResponse(resp *http.Response) (ZonesClientListByResourceGroupResponse, error) {
+	result := ZonesClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ZoneListResult); err != nil {
-		return ZonesListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return ZonesClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *ZonesClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Updates a DNS zone. Does not modify DNS records within the zone.
-// If the operation fails it returns the *CloudError error type.
-func (client *ZonesClient) Update(ctx context.Context, resourceGroupName string, zoneName string, parameters ZoneUpdate, options *ZonesUpdateOptions) (ZonesUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// zoneName - The name of the DNS zone (without a terminating dot).
+// parameters - Parameters supplied to the Update operation.
+// options - ZonesClientUpdateOptions contains the optional parameters for the ZonesClient.Update method.
+func (client *ZonesClient) Update(ctx context.Context, resourceGroupName string, zoneName string, parameters ZoneUpdate, options *ZonesClientUpdateOptions) (ZonesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, zoneName, parameters, options)
 	if err != nil {
-		return ZonesUpdateResponse{}, err
+		return ZonesClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ZonesUpdateResponse{}, err
+		return ZonesClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ZonesUpdateResponse{}, client.updateHandleError(resp)
+		return ZonesClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ZonesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, zoneName string, parameters ZoneUpdate, options *ZonesUpdateOptions) (*policy.Request, error) {
+func (client *ZonesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, zoneName string, parameters ZoneUpdate, options *ZonesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -408,7 +368,7 @@ func (client *ZonesClient) updateCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -423,23 +383,10 @@ func (client *ZonesClient) updateCreateRequest(ctx context.Context, resourceGrou
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ZonesClient) updateHandleResponse(resp *http.Response) (ZonesUpdateResponse, error) {
-	result := ZonesUpdateResponse{RawResponse: resp}
+func (client *ZonesClient) updateHandleResponse(resp *http.Response) (ZonesClientUpdateResponse, error) {
+	result := ZonesClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Zone); err != nil {
-		return ZonesUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ZonesClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *ZonesClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

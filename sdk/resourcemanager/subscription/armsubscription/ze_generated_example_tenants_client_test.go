@@ -16,14 +16,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription"
 )
 
-// x-ms-original-file: specification/subscription/resource-manager/Microsoft.Subscription/stable/2021-10-01/examples/getOperations.json
-func ExampleOperationsClient_List() {
+// x-ms-original-file: specification/subscription/resource-manager/Microsoft.Subscription/stable/2016-06-01/examples/listTenants.json
+func ExampleTenantsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsubscription.NewOperationsClient(cred, nil)
+	client := armsubscription.NewTenantsClient(cred, nil)
 	pager := client.List(nil)
 	for {
 		nextResult := pager.NextPage(ctx)

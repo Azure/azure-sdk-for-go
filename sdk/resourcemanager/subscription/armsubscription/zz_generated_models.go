@@ -75,28 +75,122 @@ func (a AcceptOwnershipStatusResponse) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AliasBeginCreateOptions contains the optional parameters for the Alias.BeginCreate method.
-type AliasBeginCreateOptions struct {
+// AliasClientBeginCreateOptions contains the optional parameters for the AliasClient.BeginCreate method.
+type AliasClientBeginCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AliasDeleteOptions contains the optional parameters for the Alias.Delete method.
-type AliasDeleteOptions struct {
+// AliasClientDeleteOptions contains the optional parameters for the AliasClient.Delete method.
+type AliasClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AliasGetOptions contains the optional parameters for the Alias.Get method.
-type AliasGetOptions struct {
+// AliasClientGetOptions contains the optional parameters for the AliasClient.Get method.
+type AliasClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AliasListOptions contains the optional parameters for the Alias.List method.
-type AliasListOptions struct {
+// AliasClientListOptions contains the optional parameters for the AliasClient.List method.
+type AliasClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BillingAccountGetPolicyOptions contains the optional parameters for the BillingAccount.GetPolicy method.
-type BillingAccountGetPolicyOptions struct {
+// AliasListResult - The list of aliases.
+type AliasListResult struct {
+	// READ-ONLY; The link (url) to the next page of results.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; The list of alias.
+	Value []*AliasResponse `json:"value,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AliasListResult.
+func (a AliasListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", a.NextLink)
+	populate(objectMap, "value", a.Value)
+	return json.Marshal(objectMap)
+}
+
+// AliasResponse - Subscription Information with the alias.
+type AliasResponse struct {
+	// Subscription Alias response properties.
+	Properties *AliasResponseProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified ID for the alias resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Alias ID.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type, Microsoft.Subscription/aliases.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// AliasResponseProperties - Put subscription creation result properties.
+type AliasResponseProperties struct {
+	// Billing scope of the subscription. For CustomerLed and FieldLed - /billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}
+	// For PartnerLed -
+	// /billingAccounts/{billingAccountName}/customers/{customerName} For Legacy EA - /billingAccounts/{billingAccountName}/enrollmentAccounts/{enrollmentAccountName}
+	BillingScope *string `json:"billingScope,omitempty"`
+
+	// Created Time
+	CreatedTime *string `json:"createdTime,omitempty"`
+
+	// The display name of the subscription.
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// The Management Group Id.
+	ManagementGroupID *string `json:"managementGroupId,omitempty"`
+
+	// The provisioning state of the resource.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty"`
+
+	// Reseller Id
+	ResellerID *string `json:"resellerId,omitempty"`
+
+	// Owner Id of the subscription
+	SubscriptionOwnerID *string `json:"subscriptionOwnerId,omitempty"`
+
+	// Tags for the subscription
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// The workload type of the subscription. It can be either Production or DevTest.
+	Workload *Workload `json:"workload,omitempty"`
+
+	// READ-ONLY; The accept ownership state of the resource.
+	AcceptOwnershipState *AcceptOwnership `json:"acceptOwnershipState,omitempty" azure:"ro"`
+
+	// READ-ONLY; Url to accept ownership of the subscription.
+	AcceptOwnershipURL *string `json:"acceptOwnershipUrl,omitempty" azure:"ro"`
+
+	// READ-ONLY; Newly created subscription Id.
+	SubscriptionID *string `json:"subscriptionId,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AliasResponseProperties.
+func (a AliasResponseProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "acceptOwnershipState", a.AcceptOwnershipState)
+	populate(objectMap, "acceptOwnershipUrl", a.AcceptOwnershipURL)
+	populate(objectMap, "billingScope", a.BillingScope)
+	populate(objectMap, "createdTime", a.CreatedTime)
+	populate(objectMap, "displayName", a.DisplayName)
+	populate(objectMap, "managementGroupId", a.ManagementGroupID)
+	populate(objectMap, "provisioningState", a.ProvisioningState)
+	populate(objectMap, "resellerId", a.ResellerID)
+	populate(objectMap, "subscriptionId", a.SubscriptionID)
+	populate(objectMap, "subscriptionOwnerId", a.SubscriptionOwnerID)
+	populate(objectMap, "tags", a.Tags)
+	populate(objectMap, "workload", a.Workload)
+	return json.Marshal(objectMap)
+}
+
+// BillingAccountClientGetPolicyOptions contains the optional parameters for the BillingAccountClient.GetPolicy method.
+type BillingAccountClientGetPolicyOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -138,13 +232,38 @@ func (b BillingAccountPoliciesResponseProperties) MarshalJSON() ([]byte, error) 
 // CanceledSubscriptionID - The ID of the canceled subscription
 type CanceledSubscriptionID struct {
 	// READ-ONLY; The ID of the canceled subscription
-	Value *string `json:"value,omitempty" azure:"ro"`
+	SubscriptionID *string `json:"subscriptionId,omitempty" azure:"ro"`
+}
+
+// ClientAcceptOwnershipStatusOptions contains the optional parameters for the Client.AcceptOwnershipStatus method.
+type ClientAcceptOwnershipStatusOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientBeginAcceptOwnershipOptions contains the optional parameters for the Client.BeginAcceptOwnership method.
+type ClientBeginAcceptOwnershipOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientCancelOptions contains the optional parameters for the Client.Cancel method.
+type ClientCancelOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientEnableOptions contains the optional parameters for the Client.Enable method.
+type ClientEnableOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientRenameOptions contains the optional parameters for the Client.Rename method.
+type ClientRenameOptions struct {
+	// placeholder for future optional parameters
 }
 
 // EnabledSubscriptionID - The ID of the subscriptions that is being enabled
 type EnabledSubscriptionID struct {
 	// READ-ONLY; The ID of the subscriptions that is being enabled
-	Value *string `json:"value,omitempty" azure:"ro"`
+	SubscriptionID *string `json:"subscriptionId,omitempty" azure:"ro"`
 }
 
 // ErrorResponse - Describes the format of Error response.
@@ -156,24 +275,17 @@ type ErrorResponse struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// ErrorResponseBody - Error response indicates that the service is not able to process the incoming request. The reason is provided in the error message.
-// Implements the error and azcore.HTTPResponse interfaces.
+// ErrorResponseBody - Error response indicates that the service is not able to process the incoming request. The reason is
+// provided in the error message.
 type ErrorResponseBody struct {
-	raw string
 	// Error code
 	Code *string `json:"code,omitempty"`
 
 	// The details of the error.
-	InnerError *ErrorResponse `json:"error,omitempty"`
+	Error *ErrorResponse `json:"error,omitempty"`
 
 	// Error message indicating why the operation failed.
 	Message *string `json:"message,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponseBody.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponseBody) Error() string {
-	return e.raw
 }
 
 // GetTenantPolicyListResponse - Tenant policy information list.
@@ -211,6 +323,63 @@ type GetTenantPolicyResponse struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// ListResult - Subscription list operation response.
+type ListResult struct {
+	// REQUIRED; The URL to get the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// An array of subscriptions.
+	Value []*Subscription `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ListResult.
+func (l ListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", l.NextLink)
+	populate(objectMap, "value", l.Value)
+	return json.Marshal(objectMap)
+}
+
+// Location information.
+type Location struct {
+	// READ-ONLY; The display name of the location.
+	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+
+	// READ-ONLY; The fully qualified ID of the location. For example, /subscriptions/00000000-0000-0000-0000-000000000000/locations/westus.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The latitude of the location.
+	Latitude *string `json:"latitude,omitempty" azure:"ro"`
+
+	// READ-ONLY; The longitude of the location.
+	Longitude *string `json:"longitude,omitempty" azure:"ro"`
+
+	// READ-ONLY; The location name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The subscription ID.
+	SubscriptionID *string `json:"subscriptionId,omitempty" azure:"ro"`
+}
+
+// LocationListResult - Location list operation response.
+type LocationListResult struct {
+	// An array of locations.
+	Value []*Location `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type LocationListResult.
+func (l LocationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "value", l.Value)
+	return json.Marshal(objectMap)
+}
+
+// Name - The new name of the subscription.
+type Name struct {
+	// New subscription name
+	SubscriptionName *string `json:"subscriptionName,omitempty"`
+}
+
 // Operation - REST API operation
 type Operation struct {
 	// The object that represents the operation.
@@ -238,7 +407,8 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
-// OperationListResult - Result of the request to list operations. It contains a list of operations and a URL link to get the next set of results.
+// OperationListResult - Result of the request to list operations. It contains a list of operations and a URL link to get
+// the next set of results.
 type OperationListResult struct {
 	// URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -255,8 +425,38 @@ func (o OperationListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// Policies - Subscription policies.
+type Policies struct {
+	// READ-ONLY; The subscription location placement ID. The ID indicates which regions are visible for a subscription. For example,
+	// a subscription with a location placement Id of Public_2014-09-01 has access to Azure
+	// public regions.
+	LocationPlacementID *string `json:"locationPlacementId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The subscription quota ID.
+	QuotaID *string `json:"quotaId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The subscription spending limit.
+	SpendingLimit *SpendingLimit `json:"spendingLimit,omitempty" azure:"ro"`
+}
+
+// PolicyClientAddUpdatePolicyForTenantOptions contains the optional parameters for the PolicyClient.AddUpdatePolicyForTenant
+// method.
+type PolicyClientAddUpdatePolicyForTenantOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PolicyClientGetPolicyForTenantOptions contains the optional parameters for the PolicyClient.GetPolicyForTenant method.
+type PolicyClientGetPolicyForTenantOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PolicyClientListPolicyForTenantOptions contains the optional parameters for the PolicyClient.ListPolicyForTenant method.
+type PolicyClientListPolicyForTenantOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -338,7 +538,7 @@ func (p PutTenantPolicyRequestProperties) MarshalJSON() ([]byte, error) {
 // RenamedSubscriptionID - The ID of the subscriptions that is being renamed
 type RenamedSubscriptionID struct {
 	// READ-ONLY; The ID of the subscriptions that is being renamed
-	Value *string `json:"value,omitempty" azure:"ro"`
+	SubscriptionID *string `json:"subscriptionId,omitempty" azure:"ro"`
 }
 
 // ServiceTenantResponse - Billing account service tenant.
@@ -350,139 +550,40 @@ type ServiceTenantResponse struct {
 	TenantName *string `json:"tenantName,omitempty"`
 }
 
-// SubscriptionAcceptOwnershipStatusOptions contains the optional parameters for the Subscription.AcceptOwnershipStatus method.
-type SubscriptionAcceptOwnershipStatusOptions struct {
-	// placeholder for future optional parameters
-}
+// Subscription information.
+type Subscription struct {
+	// The authorization source of the request. Valid values are one or more combinations of Legacy, RoleBased, Bypassed, Direct
+	// and Management. For example, 'Legacy, RoleBased'.
+	AuthorizationSource *string `json:"authorizationSource,omitempty"`
 
-// SubscriptionAliasListResult - The list of aliases.
-type SubscriptionAliasListResult struct {
-	// READ-ONLY; The link (url) to the next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	// The subscription policies.
+	SubscriptionPolicies *Policies `json:"subscriptionPolicies,omitempty"`
 
-	// READ-ONLY; The list of alias.
-	Value []*SubscriptionAliasResponse `json:"value,omitempty" azure:"ro"`
-}
+	// READ-ONLY; The subscription display name.
+	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
 
-// MarshalJSON implements the json.Marshaller interface for type SubscriptionAliasListResult.
-func (s SubscriptionAliasListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
-// SubscriptionAliasResponse - Subscription Information with the alias.
-type SubscriptionAliasResponse struct {
-	// Subscription Alias response properties.
-	Properties *SubscriptionAliasResponseProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; Fully qualified ID for the alias resource.
+	// READ-ONLY; The fully qualified ID for the subscription. For example, /subscriptions/00000000-0000-0000-0000-000000000000.
 	ID *string `json:"id,omitempty" azure:"ro"`
 
-	// READ-ONLY; Alias ID.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	// READ-ONLY; The subscription state. Possible values are Enabled, Warned, PastDue, Disabled, and Deleted.
+	State *SubscriptionState `json:"state,omitempty" azure:"ro"`
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; Resource type, Microsoft.Subscription/aliases.
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// SubscriptionAliasResponseProperties - Put subscription creation result properties.
-type SubscriptionAliasResponseProperties struct {
-	// Billing scope of the subscription. For CustomerLed and FieldLed - /billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}
-	// For PartnerLed -
-	// /billingAccounts/{billingAccountName}/customers/{customerName} For Legacy EA - /billingAccounts/{billingAccountName}/enrollmentAccounts/{enrollmentAccountName}
-	BillingScope *string `json:"billingScope,omitempty"`
-
-	// The display name of the subscription.
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// The Management Group Id.
-	ManagementGroupID *string `json:"managementGroupId,omitempty"`
-
-	// The provisioning state of the resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty"`
-
-	// Reseller Id
-	ResellerID *string `json:"resellerId,omitempty"`
-
-	// Owner Id of the subscription
-	SubscriptionOwnerID *string `json:"subscriptionOwnerId,omitempty"`
-
-	// Tags for the subscription
-	Tags map[string]*string `json:"tags,omitempty"`
-
-	// The workload type of the subscription. It can be either Production or DevTest.
-	Workload *Workload `json:"workload,omitempty"`
-
-	// READ-ONLY; The accept ownership state of the resource.
-	AcceptOwnershipState *AcceptOwnership `json:"acceptOwnershipState,omitempty" azure:"ro"`
-
-	// READ-ONLY; Url to accept ownership of the subscription.
-	AcceptOwnershipURL *string `json:"acceptOwnershipUrl,omitempty" azure:"ro"`
-
-	// READ-ONLY; Newly created subscription Id.
+	// READ-ONLY; The subscription ID.
 	SubscriptionID *string `json:"subscriptionId,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SubscriptionAliasResponseProperties.
-func (s SubscriptionAliasResponseProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "acceptOwnershipState", s.AcceptOwnershipState)
-	populate(objectMap, "acceptOwnershipUrl", s.AcceptOwnershipURL)
-	populate(objectMap, "billingScope", s.BillingScope)
-	populate(objectMap, "displayName", s.DisplayName)
-	populate(objectMap, "managementGroupId", s.ManagementGroupID)
-	populate(objectMap, "provisioningState", s.ProvisioningState)
-	populate(objectMap, "resellerId", s.ResellerID)
-	populate(objectMap, "subscriptionId", s.SubscriptionID)
-	populate(objectMap, "subscriptionOwnerId", s.SubscriptionOwnerID)
-	populate(objectMap, "tags", s.Tags)
-	populate(objectMap, "workload", s.Workload)
-	return json.Marshal(objectMap)
-}
-
-// SubscriptionBeginAcceptOwnershipOptions contains the optional parameters for the Subscription.BeginAcceptOwnership method.
-type SubscriptionBeginAcceptOwnershipOptions struct {
+// SubscriptionsClientGetOptions contains the optional parameters for the SubscriptionsClient.Get method.
+type SubscriptionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SubscriptionCancelOptions contains the optional parameters for the Subscription.Cancel method.
-type SubscriptionCancelOptions struct {
+// SubscriptionsClientListLocationsOptions contains the optional parameters for the SubscriptionsClient.ListLocations method.
+type SubscriptionsClientListLocationsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SubscriptionEnableOptions contains the optional parameters for the Subscription.Enable method.
-type SubscriptionEnableOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SubscriptionName - The new name of the subscription.
-type SubscriptionName struct {
-	// New subscription name
-	SubscriptionName *string `json:"subscriptionName,omitempty"`
-}
-
-// SubscriptionPolicyAddUpdatePolicyForTenantOptions contains the optional parameters for the SubscriptionPolicy.AddUpdatePolicyForTenant method.
-type SubscriptionPolicyAddUpdatePolicyForTenantOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SubscriptionPolicyGetPolicyForTenantOptions contains the optional parameters for the SubscriptionPolicy.GetPolicyForTenant method.
-type SubscriptionPolicyGetPolicyForTenantOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SubscriptionPolicyListPolicyForTenantOptions contains the optional parameters for the SubscriptionPolicy.ListPolicyForTenant method.
-type SubscriptionPolicyListPolicyForTenantOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SubscriptionRenameOptions contains the optional parameters for the Subscription.Rename method.
-type SubscriptionRenameOptions struct {
+// SubscriptionsClientListOptions contains the optional parameters for the SubscriptionsClient.List method.
+type SubscriptionsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -554,6 +655,32 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// TenantIDDescription - Tenant Id information.
+type TenantIDDescription struct {
+	// READ-ONLY; The fully qualified ID of the tenant. For example, /tenants/00000000-0000-0000-0000-000000000000.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The tenant ID. For example, 00000000-0000-0000-0000-000000000000.
+	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+}
+
+// TenantListResult - Tenant Ids information.
+type TenantListResult struct {
+	// REQUIRED; The URL to use for getting the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// An array of tenants.
+	Value []*TenantIDDescription `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type TenantListResult.
+func (t TenantListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", t.NextLink)
+	populate(objectMap, "value", t.Value)
+	return json.Marshal(objectMap)
+}
+
 // TenantPolicy - Tenant policy.
 type TenantPolicy struct {
 	// Blocks the entering of subscriptions into user's tenant.
@@ -577,6 +704,11 @@ func (t TenantPolicy) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "exemptedPrincipals", t.ExemptedPrincipals)
 	populate(objectMap, "policyId", t.PolicyID)
 	return json.Marshal(objectMap)
+}
+
+// TenantsClientListOptions contains the optional parameters for the TenantsClient.List method.
+type TenantsClientListOptions struct {
+	// placeholder for future optional parameters
 }
 
 func populate(m map[string]interface{}, k string, v interface{}) {

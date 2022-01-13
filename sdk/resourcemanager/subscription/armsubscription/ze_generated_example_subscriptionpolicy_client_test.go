@@ -18,13 +18,13 @@ import (
 )
 
 // x-ms-original-file: specification/subscription/resource-manager/Microsoft.Subscription/stable/2021-10-01/examples/changeTenantPolicy.json
-func ExampleSubscriptionPolicyClient_AddUpdatePolicyForTenant() {
+func ExamplePolicyClient_AddUpdatePolicyForTenant() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsubscription.NewSubscriptionPolicyClient(cred, nil)
+	client := armsubscription.NewPolicyClient(cred, nil)
 	res, err := client.AddUpdatePolicyForTenant(ctx,
 		armsubscription.PutTenantPolicyRequestProperties{
 			BlockSubscriptionsIntoTenant:    to.BoolPtr(true),
@@ -37,40 +37,44 @@ func ExampleSubscriptionPolicyClient_AddUpdatePolicyForTenant() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("GetTenantPolicyResponse.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PolicyClientAddUpdatePolicyForTenantResult)
 }
 
 // x-ms-original-file: specification/subscription/resource-manager/Microsoft.Subscription/stable/2021-10-01/examples/getTenantPolicy.json
-func ExampleSubscriptionPolicyClient_GetPolicyForTenant() {
+func ExamplePolicyClient_GetPolicyForTenant() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsubscription.NewSubscriptionPolicyClient(cred, nil)
+	client := armsubscription.NewPolicyClient(cred, nil)
 	res, err := client.GetPolicyForTenant(ctx,
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("GetTenantPolicyResponse.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PolicyClientGetPolicyForTenantResult)
 }
 
 // x-ms-original-file: specification/subscription/resource-manager/Microsoft.Subscription/stable/2021-10-01/examples/getTenantPolicyList.json
-func ExampleSubscriptionPolicyClient_ListPolicyForTenant() {
+func ExamplePolicyClient_ListPolicyForTenant() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsubscription.NewSubscriptionPolicyClient(cred, nil)
+	client := armsubscription.NewPolicyClient(cred, nil)
 	pager := client.ListPolicyForTenant(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("GetTenantPolicyResponse.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

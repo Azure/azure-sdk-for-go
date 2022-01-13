@@ -18,17 +18,17 @@ import (
 	"net/http"
 )
 
-// OperationsClient contains the methods for the Operations group.
-// Don't use this type directly, use NewOperationsClient() instead.
-type OperationsClient struct {
+// TenantsClient contains the methods for the Tenants group.
+// Don't use this type directly, use NewTenantsClient() instead.
+type TenantsClient struct {
 	host string
 	pl   runtime.Pipeline
 }
 
-// NewOperationsClient creates a new instance of OperationsClient with the specified values.
+// NewTenantsClient creates a new instance of TenantsClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewOperationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *OperationsClient {
+func NewTenantsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *TenantsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
@@ -36,47 +36,47 @@ func NewOperationsClient(credential azcore.TokenCredential, options *arm.ClientO
 	if len(cp.Endpoint) == 0 {
 		cp.Endpoint = arm.AzurePublicCloud
 	}
-	client := &OperationsClient{
+	client := &TenantsClient{
 		host: string(cp.Endpoint),
 		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
 	}
 	return client
 }
 
-// List - Lists all of the available Microsoft.Subscription API operations.
+// List - Gets the tenants for your account.
 // If the operation fails it returns an *azcore.ResponseError type.
-// options - OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
-func (client *OperationsClient) List(options *OperationsClientListOptions) *OperationsClientListPager {
-	return &OperationsClientListPager{
+// options - TenantsClientListOptions contains the optional parameters for the TenantsClient.List method.
+func (client *TenantsClient) List(options *TenantsClientListOptions) *TenantsClientListPager {
+	return &TenantsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp OperationsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.OperationListResult.NextLink)
+		advancer: func(ctx context.Context, resp TenantsClientListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.TenantListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *OperationsClient) listCreateRequest(ctx context.Context, options *OperationsClientListOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Subscription/operations"
+func (client *TenantsClient) listCreateRequest(ctx context.Context, options *TenantsClientListOptions) (*policy.Request, error) {
+	urlPath := "/tenants"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2016-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *OperationsClient) listHandleResponse(resp *http.Response) (OperationsClientListResponse, error) {
-	result := OperationsClientListResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.OperationListResult); err != nil {
-		return OperationsClientListResponse{}, err
+func (client *TenantsClient) listHandleResponse(resp *http.Response) (TenantsClientListResponse, error) {
+	result := TenantsClientListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.TenantListResult); err != nil {
+		return TenantsClientListResponse{}, err
 	}
 	return result, nil
 }

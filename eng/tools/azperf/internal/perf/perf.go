@@ -7,6 +7,8 @@ import (
 	"context"
 	"fmt"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/eng/tools/azperf/internal/recording"
 )
 
 var (
@@ -43,6 +45,7 @@ func runGlobalSetup(p PerfTest) error {
 	_, cancel := getLimitedContext(time.Duration(TimeoutSeconds) * time.Second)
 	defer cancel()
 
+	recording.SetRecordingMode("live")
 	err := p.GlobalSetup(context.Background())
 	if err != nil {
 		return err
@@ -70,6 +73,33 @@ func runTest(p PerfTest) (int, float64, error) {
 	_, cancel := getLimitedContext(time.Duration(TimeoutSeconds) * time.Second)
 	defer cancel()
 
+	// If we are using the test proxy need to set up the in-memory recording.
+	usingProxy := TestProxy == "http" || TestProxy == "https"
+	if usingProxy {
+		// First request goes through in Live mode
+		fmt.Println("Running in live")
+		recording.SetRecordingMode("live")
+		err := p.Run(context.TODO())
+		if err != nil {
+			return 0, 0.0, err
+		}
+
+		// 2nd request goes through in Record mode
+		fmt.Println("Running in record")
+		recording.SetRecordingMode("record")
+		recording.Start(p.GetMetadata(), nil)
+		err = p.Run(context.TODO())
+		if err != nil {
+			return 0, 0.0, err
+		}
+		recording.Stop(p.GetMetadata(), nil)
+
+		fmt.Println("Running the rest in playback")
+		// All ensuing requests go through in Playback mode
+		recording.SetRecordingMode("playback")
+		recording.Start(p.GetMetadata(), nil)
+	}
+
 	start := time.Now()
 	count := 0
 	for time.Since(start).Seconds() < float64(Duration) {
@@ -80,7 +110,11 @@ func runTest(p PerfTest) (int, float64, error) {
 		count += 1
 	}
 
-	return count, time.Since(start).Seconds(), nil
+	elapsed := time.Since(start).Seconds()
+	// Stop the proxy now
+	recording.Stop(p.GetMetadata(), nil)
+	recording.SetRecordingMode("live")
+	return count, elapsed, nil
 }
 
 // runTearDown takes care of the semantics for tearing down a single iteration of a performance test.

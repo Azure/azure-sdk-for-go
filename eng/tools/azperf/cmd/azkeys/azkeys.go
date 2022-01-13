@@ -39,10 +39,6 @@ func (a *azkeysPerf) GetMetadata() string {
 }
 
 func (a *azkeysPerf) GlobalSetup(ctx context.Context) error {
-	err := recording.Start(a.GetMetadata(), nil)
-	if err != nil {
-		return err
-	}
 	vaultURL, ok := os.LookupEnv("AZURE_KEYVAULT_URL")
 	if !ok {
 		return errors.New("could not find 'AZURE_KEYVAULT_URL' environment variable")
@@ -107,11 +103,14 @@ func (a *azkeysPerf) TearDown(ctx context.Context) error {
 }
 
 func (a *azkeysPerf) GlobalTearDown(ctx context.Context) error {
-	defer recording.Stop(a.GetMetadata(), nil)
 	resp, err := a.client.BeginDeleteKey(ctx, a.keyName, nil)
-	if err != nil {return err}
+	if err != nil {
+		return err
+	}
 	_, err = resp.PollUntilDone(ctx, time.Second)
-	if err != nil {return err}
+	if err != nil {
+		return err
+	}
 	_, err = a.client.PurgeDeletedKey(ctx, a.keyName, nil)
 	return err
 }

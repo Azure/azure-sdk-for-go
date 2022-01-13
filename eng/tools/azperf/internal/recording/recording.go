@@ -140,7 +140,9 @@ func GetHTTPClient() (*http.Client, error) {
 }
 
 func (c RecordingHTTPClient) Do(req *http.Request) (*http.Response, error) {
-	c.options.ReplaceAuthority(req)
+	if recordMode != LiveMode {
+		c.options.ReplaceAuthority(req)
+	}
 	return c.defaultClient.Do(req)
 }
 func (r TransportOptions) ReplaceAuthority(rawReq *http.Request) {
@@ -183,7 +185,6 @@ func Start(t string, options *RecordingOptions) error {
 	// testId := getTestId(pathToRecordings, t)
 
 	url := fmt.Sprintf("https://localhost:5001/%s/start", recordMode)
-	fmt.Println(url)
 
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
@@ -191,7 +192,8 @@ func Start(t string, options *RecordingOptions) error {
 	}
 
 	if recordMode == PlaybackMode {
-		req.Header.Set(IDHeader, "X")
+		fmt.Println("PlaybackMode IDHeader: ", perfTestSuite[t])
+		req.Header.Set(IDHeader, perfTestSuite[t])
 	}
 
 	resp, err := client.Do(req)
@@ -199,9 +201,8 @@ func Start(t string, options *RecordingOptions) error {
 		return err
 	}
 
-	// In live mode the "x-recording-id" header should be "X"
 	recID := resp.Header.Get(IDHeader)
-	fmt.Println("x-recording-id: ", recID)
+	fmt.Println("RecordingMode x-recording-id value: ", recID)
 	if recID == "" {
 		b, err := ioutil.ReadAll(resp.Body)
 		defer resp.Body.Close()
@@ -210,7 +211,6 @@ func Start(t string, options *RecordingOptions) error {
 		}
 		return fmt.Errorf("recording ID was not returned by the response. Response body: %s", b)
 	}
-
 	perfTestSuite[t] = recID
 
 	return nil
@@ -231,9 +231,9 @@ func Stop(t string, options *RecordingOptions) error {
 	var recTest string
 	var ok bool
 	if recTest, ok = perfTestSuite[t]; !ok {
-		return errors.New("recording ID was never set. Did you call StartRecording?")
+		return errors.New("recording ID was never set. Did you call Start?")
 	}
-	fmt.Println("STOPPED RECORDING. recTest=", recTest)
+
 	req.Header.Set("x-recording-id", recTest)
 	resp, err := client.Do(req)
 	if resp.StatusCode != 200 {
@@ -245,4 +245,13 @@ func Stop(t string, options *RecordingOptions) error {
 		return fmt.Errorf("proxy did not stop the recording properly: %s", err.Error())
 	}
 	return err
+}
+
+// This method flips recordMode from "record" to "playback" or vice versa
+func SetRecordingMode(m string) {
+	if !(m == LiveMode || m == RecordingMode || m == PlaybackMode) {
+		fmt.Printf("Record mode '%s' was not understood.\n", m)
+	} else {
+		recordMode = m
+	}
 }

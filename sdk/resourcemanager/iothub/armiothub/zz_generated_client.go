@@ -11,7 +11,6 @@ package armiothub
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -22,49 +21,62 @@ import (
 	"strings"
 )
 
-// IotHubClient contains the methods for the IotHub group.
-// Don't use this type directly, use NewIotHubClient() instead.
-type IotHubClient struct {
-	ep             string
-	pl             runtime.Pipeline
+// Client contains the methods for the IotHub group.
+// Don't use this type directly, use NewClient() instead.
+type Client struct {
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
-// NewIotHubClient creates a new instance of IotHubClient with the specified values.
-func NewIotHubClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IotHubClient {
+// NewClient creates a new instance of Client with the specified values.
+// subscriptionID - The subscription identifier.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *Client {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &IotHubClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &Client{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginManualFailover - Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see https://aka.ms/manualfailover
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *IotHubClient) BeginManualFailover(ctx context.Context, iotHubName string, resourceGroupName string, failoverInput FailoverInput, options *IotHubBeginManualFailoverOptions) (IotHubManualFailoverPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// iotHubName - Name of the IoT hub to failover
+// resourceGroupName - Name of the resource group containing the IoT hub resource
+// failoverInput - Region to failover to. Must be the Azure paired region. Get the value from the secondary location in the
+// locations property. To learn more, see https://aka.ms/manualfailover/region
+// options - ClientBeginManualFailoverOptions contains the optional parameters for the Client.BeginManualFailover method.
+func (client *Client) BeginManualFailover(ctx context.Context, iotHubName string, resourceGroupName string, failoverInput FailoverInput, options *ClientBeginManualFailoverOptions) (ClientManualFailoverPollerResponse, error) {
 	resp, err := client.manualFailover(ctx, iotHubName, resourceGroupName, failoverInput, options)
 	if err != nil {
-		return IotHubManualFailoverPollerResponse{}, err
+		return ClientManualFailoverPollerResponse{}, err
 	}
-	result := IotHubManualFailoverPollerResponse{
+	result := ClientManualFailoverPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("IotHubClient.ManualFailover", "", resp, client.pl, client.manualFailoverHandleError)
+	pt, err := armruntime.NewPoller("Client.ManualFailover", "", resp, client.pl)
 	if err != nil {
-		return IotHubManualFailoverPollerResponse{}, err
+		return ClientManualFailoverPollerResponse{}, err
 	}
-	result.Poller = &IotHubManualFailoverPoller{
+	result.Poller = &ClientManualFailoverPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // ManualFailover - Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see https://aka.ms/manualfailover
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *IotHubClient) manualFailover(ctx context.Context, iotHubName string, resourceGroupName string, failoverInput FailoverInput, options *IotHubBeginManualFailoverOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *Client) manualFailover(ctx context.Context, iotHubName string, resourceGroupName string, failoverInput FailoverInput, options *ClientBeginManualFailoverOptions) (*http.Response, error) {
 	req, err := client.manualFailoverCreateRequest(ctx, iotHubName, resourceGroupName, failoverInput, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +86,13 @@ func (client *IotHubClient) manualFailover(ctx context.Context, iotHubName strin
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.manualFailoverHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // manualFailoverCreateRequest creates the ManualFailover request.
-func (client *IotHubClient) manualFailoverCreateRequest(ctx context.Context, iotHubName string, resourceGroupName string, failoverInput FailoverInput, options *IotHubBeginManualFailoverOptions) (*policy.Request, error) {
+func (client *Client) manualFailoverCreateRequest(ctx context.Context, iotHubName string, resourceGroupName string, failoverInput FailoverInput, options *ClientBeginManualFailoverOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{iotHubName}/failover"
 	if iotHubName == "" {
 		return nil, errors.New("parameter iotHubName cannot be empty")
@@ -94,26 +106,13 @@ func (client *IotHubClient) manualFailoverCreateRequest(ctx context.Context, iot
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2021-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, failoverInput)
-}
-
-// manualFailoverHandleError handles the ManualFailover error response.
-func (client *IotHubClient) manualFailoverHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

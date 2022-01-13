@@ -16,23 +16,23 @@ import (
 	"reflect"
 )
 
-// DeploymentScriptsListByResourceGroupPager provides operations for iterating over paged responses.
-type DeploymentScriptsListByResourceGroupPager struct {
-	client    *DeploymentScriptsClient
-	current   DeploymentScriptsListByResourceGroupResponse
+// ClientListByResourceGroupPager provides operations for iterating over paged responses.
+type ClientListByResourceGroupPager struct {
+	client    *Client
+	current   ClientListByResourceGroupResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, DeploymentScriptsListByResourceGroupResponse) (*policy.Request, error)
+	advancer  func(context.Context, ClientListByResourceGroupResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *DeploymentScriptsListByResourceGroupPager) Err() error {
+func (p *ClientListByResourceGroupPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *DeploymentScriptsListByResourceGroupPager) NextPage(ctx context.Context) bool {
+func (p *ClientListByResourceGroupPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -53,7 +53,7 @@ func (p *DeploymentScriptsListByResourceGroupPager) NextPage(ctx context.Context
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByResourceGroupHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByResourceGroupHandleResponse(resp)
@@ -65,28 +65,28 @@ func (p *DeploymentScriptsListByResourceGroupPager) NextPage(ctx context.Context
 	return true
 }
 
-// PageResponse returns the current DeploymentScriptsListByResourceGroupResponse page.
-func (p *DeploymentScriptsListByResourceGroupPager) PageResponse() DeploymentScriptsListByResourceGroupResponse {
+// PageResponse returns the current ClientListByResourceGroupResponse page.
+func (p *ClientListByResourceGroupPager) PageResponse() ClientListByResourceGroupResponse {
 	return p.current
 }
 
-// DeploymentScriptsListBySubscriptionPager provides operations for iterating over paged responses.
-type DeploymentScriptsListBySubscriptionPager struct {
-	client    *DeploymentScriptsClient
-	current   DeploymentScriptsListBySubscriptionResponse
+// ClientListBySubscriptionPager provides operations for iterating over paged responses.
+type ClientListBySubscriptionPager struct {
+	client    *Client
+	current   ClientListBySubscriptionResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, DeploymentScriptsListBySubscriptionResponse) (*policy.Request, error)
+	advancer  func(context.Context, ClientListBySubscriptionResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *DeploymentScriptsListBySubscriptionPager) Err() error {
+func (p *ClientListBySubscriptionPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *DeploymentScriptsListBySubscriptionPager) NextPage(ctx context.Context) bool {
+func (p *ClientListBySubscriptionPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -107,7 +107,7 @@ func (p *DeploymentScriptsListBySubscriptionPager) NextPage(ctx context.Context)
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listBySubscriptionHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listBySubscriptionHandleResponse(resp)
@@ -119,7 +119,7 @@ func (p *DeploymentScriptsListBySubscriptionPager) NextPage(ctx context.Context)
 	return true
 }
 
-// PageResponse returns the current DeploymentScriptsListBySubscriptionResponse page.
-func (p *DeploymentScriptsListBySubscriptionPager) PageResponse() DeploymentScriptsListBySubscriptionResponse {
+// PageResponse returns the current ClientListBySubscriptionResponse page.
+func (p *ClientListBySubscriptionPager) PageResponse() ClientListBySubscriptionResponse {
 	return p.current
 }

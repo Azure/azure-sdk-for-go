@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
@@ -42,7 +43,7 @@ func TestEnsureErrorIsGeneratedOnResponse(t *testing.T) {
 		t.Fatal("Expected error")
 	}
 
-	asError := err.(*CosmosError)
+	asError := err.(*azcore.ResponseError)
 	if asError.ErrorCode != someError.Code {
 		t.Errorf("Expected %v, but got %v", someError.Code, asError.ErrorCode)
 	}

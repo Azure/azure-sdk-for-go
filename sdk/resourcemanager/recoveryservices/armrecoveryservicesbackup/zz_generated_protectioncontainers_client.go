@@ -11,7 +11,6 @@ package armrecoveryservicesbackup
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // ProtectionContainersClient contains the methods for the ProtectionContainers group.
 // Don't use this type directly, use NewProtectionContainersClient() instead.
 type ProtectionContainersClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewProtectionContainersClient creates a new instance of ProtectionContainersClient with the specified values.
+// subscriptionID - The subscription Id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewProtectionContainersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ProtectionContainersClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ProtectionContainersClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ProtectionContainersClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets details of the specific container registered to your Recovery Services Vault.
-// If the operation fails it returns the *CloudError error type.
-func (client *ProtectionContainersClient) Get(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, options *ProtectionContainersGetOptions) (ProtectionContainersGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultName - The name of the recovery services vault.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// fabricName - Name of the fabric where the container belongs.
+// containerName - Name of the container whose details need to be fetched.
+// options - ProtectionContainersClientGetOptions contains the optional parameters for the ProtectionContainersClient.Get
+// method.
+func (client *ProtectionContainersClient) Get(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, options *ProtectionContainersClientGetOptions) (ProtectionContainersClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, vaultName, resourceGroupName, fabricName, containerName, options)
 	if err != nil {
-		return ProtectionContainersGetResponse{}, err
+		return ProtectionContainersClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProtectionContainersGetResponse{}, err
+		return ProtectionContainersClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ProtectionContainersGetResponse{}, client.getHandleError(resp)
+		return ProtectionContainersClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ProtectionContainersClient) getCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, options *ProtectionContainersGetOptions) (*policy.Request, error) {
+func (client *ProtectionContainersClient) getCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, options *ProtectionContainersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}"
 	if vaultName == "" {
 		return nil, errors.New("parameter vaultName cannot be empty")
@@ -82,58 +95,51 @@ func (client *ProtectionContainersClient) getCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter containerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{containerName}", url.PathEscape(containerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ProtectionContainersClient) getHandleResponse(resp *http.Response) (ProtectionContainersGetResponse, error) {
-	result := ProtectionContainersGetResponse{RawResponse: resp}
+func (client *ProtectionContainersClient) getHandleResponse(resp *http.Response) (ProtectionContainersClientGetResponse, error) {
+	result := ProtectionContainersClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProtectionContainerResource); err != nil {
-		return ProtectionContainersGetResponse{}, runtime.NewResponseError(err, resp)
+		return ProtectionContainersClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ProtectionContainersClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Inquire - This is an async operation and the results should be tracked using location header or Azure-async-url.
-// If the operation fails it returns the *CloudError error type.
-func (client *ProtectionContainersClient) Inquire(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, options *ProtectionContainersInquireOptions) (ProtectionContainersInquireResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultName - The name of the recovery services vault.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// fabricName - Fabric Name associated with the container.
+// containerName - Name of the container in which inquiry needs to be triggered.
+// options - ProtectionContainersClientInquireOptions contains the optional parameters for the ProtectionContainersClient.Inquire
+// method.
+func (client *ProtectionContainersClient) Inquire(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, options *ProtectionContainersClientInquireOptions) (ProtectionContainersClientInquireResponse, error) {
 	req, err := client.inquireCreateRequest(ctx, vaultName, resourceGroupName, fabricName, containerName, options)
 	if err != nil {
-		return ProtectionContainersInquireResponse{}, err
+		return ProtectionContainersClientInquireResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProtectionContainersInquireResponse{}, err
+		return ProtectionContainersClientInquireResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return ProtectionContainersInquireResponse{}, client.inquireHandleError(resp)
+		return ProtectionContainersClientInquireResponse{}, runtime.NewResponseError(resp)
 	}
-	return ProtectionContainersInquireResponse{RawResponse: resp}, nil
+	return ProtectionContainersClientInquireResponse{RawResponse: resp}, nil
 }
 
 // inquireCreateRequest creates the Inquire request.
-func (client *ProtectionContainersClient) inquireCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, options *ProtectionContainersInquireOptions) (*policy.Request, error) {
+func (client *ProtectionContainersClient) inquireCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, options *ProtectionContainersClientInquireOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/inquire"
 	if vaultName == "" {
 		return nil, errors.New("parameter vaultName cannot be empty")
@@ -155,12 +161,12 @@ func (client *ProtectionContainersClient) inquireCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter containerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{containerName}", url.PathEscape(containerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -169,40 +175,32 @@ func (client *ProtectionContainersClient) inquireCreateRequest(ctx context.Conte
 	return req, nil
 }
 
-// inquireHandleError handles the Inquire error response.
-func (client *ProtectionContainersClient) inquireHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Refresh - Discovers all the containers in the subscription that can be backed up to Recovery Services Vault. This is an asynchronous operation. To know
-// the status of the operation, call
+// Refresh - Discovers all the containers in the subscription that can be backed up to Recovery Services Vault. This is an
+// asynchronous operation. To know the status of the operation, call
 // GetRefreshOperationResult API.
-// If the operation fails it returns the *CloudError error type.
-func (client *ProtectionContainersClient) Refresh(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, options *ProtectionContainersRefreshOptions) (ProtectionContainersRefreshResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultName - The name of the recovery services vault.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// fabricName - Fabric name associated the container.
+// options - ProtectionContainersClientRefreshOptions contains the optional parameters for the ProtectionContainersClient.Refresh
+// method.
+func (client *ProtectionContainersClient) Refresh(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, options *ProtectionContainersClientRefreshOptions) (ProtectionContainersClientRefreshResponse, error) {
 	req, err := client.refreshCreateRequest(ctx, vaultName, resourceGroupName, fabricName, options)
 	if err != nil {
-		return ProtectionContainersRefreshResponse{}, err
+		return ProtectionContainersClientRefreshResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProtectionContainersRefreshResponse{}, err
+		return ProtectionContainersClientRefreshResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return ProtectionContainersRefreshResponse{}, client.refreshHandleError(resp)
+		return ProtectionContainersClientRefreshResponse{}, runtime.NewResponseError(resp)
 	}
-	return ProtectionContainersRefreshResponse{RawResponse: resp}, nil
+	return ProtectionContainersClientRefreshResponse{RawResponse: resp}, nil
 }
 
 // refreshCreateRequest creates the Refresh request.
-func (client *ProtectionContainersClient) refreshCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, options *ProtectionContainersRefreshOptions) (*policy.Request, error) {
+func (client *ProtectionContainersClient) refreshCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, options *ProtectionContainersClientRefreshOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/refreshContainers"
 	if vaultName == "" {
 		return nil, errors.New("parameter vaultName cannot be empty")
@@ -220,12 +218,12 @@ func (client *ProtectionContainersClient) refreshCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter fabricName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{fabricName}", url.PathEscape(fabricName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -234,39 +232,33 @@ func (client *ProtectionContainersClient) refreshCreateRequest(ctx context.Conte
 	return req, nil
 }
 
-// refreshHandleError handles the Refresh error response.
-func (client *ProtectionContainersClient) refreshHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Register - Registers the container with Recovery Services vault. This is an asynchronous operation. To track the operation status, use location header
-// to call get latest status of the operation.
-// If the operation fails it returns the *CloudError error type.
-func (client *ProtectionContainersClient) Register(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, parameters ProtectionContainerResource, options *ProtectionContainersRegisterOptions) (ProtectionContainersRegisterResponse, error) {
+// Register - Registers the container with Recovery Services vault. This is an asynchronous operation. To track the operation
+// status, use location header to call get latest status of the operation.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultName - The name of the recovery services vault.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// fabricName - Fabric name associated with the container.
+// containerName - Name of the container to be registered.
+// parameters - Request body for operation
+// options - ProtectionContainersClientRegisterOptions contains the optional parameters for the ProtectionContainersClient.Register
+// method.
+func (client *ProtectionContainersClient) Register(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, parameters ProtectionContainerResource, options *ProtectionContainersClientRegisterOptions) (ProtectionContainersClientRegisterResponse, error) {
 	req, err := client.registerCreateRequest(ctx, vaultName, resourceGroupName, fabricName, containerName, parameters, options)
 	if err != nil {
-		return ProtectionContainersRegisterResponse{}, err
+		return ProtectionContainersClientRegisterResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProtectionContainersRegisterResponse{}, err
+		return ProtectionContainersClientRegisterResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return ProtectionContainersRegisterResponse{}, client.registerHandleError(resp)
+		return ProtectionContainersClientRegisterResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.registerHandleResponse(resp)
 }
 
 // registerCreateRequest creates the Register request.
-func (client *ProtectionContainersClient) registerCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, parameters ProtectionContainerResource, options *ProtectionContainersRegisterOptions) (*policy.Request, error) {
+func (client *ProtectionContainersClient) registerCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, parameters ProtectionContainerResource, options *ProtectionContainersClientRegisterOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}"
 	if vaultName == "" {
 		return nil, errors.New("parameter vaultName cannot be empty")
@@ -288,60 +280,53 @@ func (client *ProtectionContainersClient) registerCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter containerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{containerName}", url.PathEscape(containerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // registerHandleResponse handles the Register response.
-func (client *ProtectionContainersClient) registerHandleResponse(resp *http.Response) (ProtectionContainersRegisterResponse, error) {
-	result := ProtectionContainersRegisterResponse{RawResponse: resp}
+func (client *ProtectionContainersClient) registerHandleResponse(resp *http.Response) (ProtectionContainersClientRegisterResponse, error) {
+	result := ProtectionContainersClientRegisterResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProtectionContainerResource); err != nil {
-		return ProtectionContainersRegisterResponse{}, runtime.NewResponseError(err, resp)
+		return ProtectionContainersClientRegisterResponse{}, err
 	}
 	return result, nil
 }
 
-// registerHandleError handles the Register error response.
-func (client *ProtectionContainersClient) registerHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Unregister - Unregisters the given container from your Recovery Services Vault. This is an asynchronous operation. To determine whether the backend service
-// has finished processing the request, call Get Container
+// Unregister - Unregisters the given container from your Recovery Services Vault. This is an asynchronous operation. To determine
+// whether the backend service has finished processing the request, call Get Container
 // Operation Result API.
-// If the operation fails it returns the *CloudError error type.
-func (client *ProtectionContainersClient) Unregister(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, options *ProtectionContainersUnregisterOptions) (ProtectionContainersUnregisterResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultName - The name of the recovery services vault.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// fabricName - Name of the fabric where the container belongs.
+// containerName - Name of the container which needs to be unregistered from the Recovery Services Vault.
+// options - ProtectionContainersClientUnregisterOptions contains the optional parameters for the ProtectionContainersClient.Unregister
+// method.
+func (client *ProtectionContainersClient) Unregister(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, options *ProtectionContainersClientUnregisterOptions) (ProtectionContainersClientUnregisterResponse, error) {
 	req, err := client.unregisterCreateRequest(ctx, vaultName, resourceGroupName, fabricName, containerName, options)
 	if err != nil {
-		return ProtectionContainersUnregisterResponse{}, err
+		return ProtectionContainersClientUnregisterResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProtectionContainersUnregisterResponse{}, err
+		return ProtectionContainersClientUnregisterResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return ProtectionContainersUnregisterResponse{}, client.unregisterHandleError(resp)
+		return ProtectionContainersClientUnregisterResponse{}, runtime.NewResponseError(resp)
 	}
-	return ProtectionContainersUnregisterResponse{RawResponse: resp}, nil
+	return ProtectionContainersClientUnregisterResponse{RawResponse: resp}, nil
 }
 
 // unregisterCreateRequest creates the Unregister request.
-func (client *ProtectionContainersClient) unregisterCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, options *ProtectionContainersUnregisterOptions) (*policy.Request, error) {
+func (client *ProtectionContainersClient) unregisterCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, options *ProtectionContainersClientUnregisterOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}"
 	if vaultName == "" {
 		return nil, errors.New("parameter vaultName cannot be empty")
@@ -363,26 +348,13 @@ func (client *ProtectionContainersClient) unregisterCreateRequest(ctx context.Co
 		return nil, errors.New("parameter containerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{containerName}", url.PathEscape(containerName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
-}
-
-// unregisterHandleError handles the Unregister error response.
-func (client *ProtectionContainersClient) unregisterHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

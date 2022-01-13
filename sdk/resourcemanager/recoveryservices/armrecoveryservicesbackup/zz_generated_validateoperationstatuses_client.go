@@ -21,19 +21,19 @@ import (
 	"strings"
 )
 
-// BMSPrepareDataMoveOperationResultClient contains the methods for the BMSPrepareDataMoveOperationResult group.
-// Don't use this type directly, use NewBMSPrepareDataMoveOperationResultClient() instead.
-type BMSPrepareDataMoveOperationResultClient struct {
+// ValidateOperationStatusesClient contains the methods for the ValidateOperationStatuses group.
+// Don't use this type directly, use NewValidateOperationStatusesClient() instead.
+type ValidateOperationStatusesClient struct {
 	host           string
 	subscriptionID string
 	pl             runtime.Pipeline
 }
 
-// NewBMSPrepareDataMoveOperationResultClient creates a new instance of BMSPrepareDataMoveOperationResultClient with the specified values.
+// NewValidateOperationStatusesClient creates a new instance of ValidateOperationStatusesClient with the specified values.
 // subscriptionID - The subscription Id.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewBMSPrepareDataMoveOperationResultClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *BMSPrepareDataMoveOperationResultClient {
+func NewValidateOperationStatusesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ValidateOperationStatusesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
@@ -41,7 +41,7 @@ func NewBMSPrepareDataMoveOperationResultClient(subscriptionID string, credentia
 	if len(cp.Endpoint) == 0 {
 		cp.Endpoint = arm.AzurePublicCloud
 	}
-	client := &BMSPrepareDataMoveOperationResultClient{
+	client := &ValidateOperationStatusesClient{
 		subscriptionID: subscriptionID,
 		host:           string(cp.Endpoint),
 		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
@@ -49,30 +49,33 @@ func NewBMSPrepareDataMoveOperationResultClient(subscriptionID string, credentia
 	return client
 }
 
-// Get - Fetches Operation Result for Prepare Data Move
+// Get - Fetches the status of a triggered validate operation. The status can be in progress, completed or failed. You can
+// refer to the OperationStatus enum for all the possible states of the operation. If
+// operation has completed, this method returns the list of errors obtained while validating the operation.
 // If the operation fails it returns an *azcore.ResponseError type.
 // vaultName - The name of the recovery services vault.
 // resourceGroupName - The name of the resource group where the recovery services vault is present.
-// options - BMSPrepareDataMoveOperationResultClientGetOptions contains the optional parameters for the BMSPrepareDataMoveOperationResultClient.Get
+// operationID - OperationID represents the operation whose status needs to be fetched.
+// options - ValidateOperationStatusesClientGetOptions contains the optional parameters for the ValidateOperationStatusesClient.Get
 // method.
-func (client *BMSPrepareDataMoveOperationResultClient) Get(ctx context.Context, vaultName string, resourceGroupName string, operationID string, options *BMSPrepareDataMoveOperationResultClientGetOptions) (BMSPrepareDataMoveOperationResultClientGetResponse, error) {
+func (client *ValidateOperationStatusesClient) Get(ctx context.Context, vaultName string, resourceGroupName string, operationID string, options *ValidateOperationStatusesClientGetOptions) (ValidateOperationStatusesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, vaultName, resourceGroupName, operationID, options)
 	if err != nil {
-		return BMSPrepareDataMoveOperationResultClientGetResponse{}, err
+		return ValidateOperationStatusesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return BMSPrepareDataMoveOperationResultClientGetResponse{}, err
+		return ValidateOperationStatusesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return BMSPrepareDataMoveOperationResultClientGetResponse{}, runtime.NewResponseError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return ValidateOperationStatusesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *BMSPrepareDataMoveOperationResultClient) getCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, operationID string, options *BMSPrepareDataMoveOperationResultClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupstorageconfig/vaultstorageconfig/operationResults/{operationId}"
+func (client *ValidateOperationStatusesClient) getCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, operationID string, options *ValidateOperationStatusesClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupValidateOperationsStatuses/{operationId}"
 	if vaultName == "" {
 		return nil, errors.New("parameter vaultName cannot be empty")
 	}
@@ -101,10 +104,10 @@ func (client *BMSPrepareDataMoveOperationResultClient) getCreateRequest(ctx cont
 }
 
 // getHandleResponse handles the Get response.
-func (client *BMSPrepareDataMoveOperationResultClient) getHandleResponse(resp *http.Response) (BMSPrepareDataMoveOperationResultClientGetResponse, error) {
-	result := BMSPrepareDataMoveOperationResultClientGetResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
-		return BMSPrepareDataMoveOperationResultClientGetResponse{}, err
+func (client *ValidateOperationStatusesClient) getHandleResponse(resp *http.Response) (ValidateOperationStatusesClientGetResponse, error) {
+	result := ValidateOperationStatusesClientGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.OperationStatus); err != nil {
+		return ValidateOperationStatusesClientGetResponse{}, err
 	}
 	return result, nil
 }

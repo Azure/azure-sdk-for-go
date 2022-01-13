@@ -16,14 +16,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup"
 )
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/Common/ProtectedItem_Delete_OperationStatus.json
-func ExampleBackupOperationStatusesClient_Get() {
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/AzureIaasVm/ValidateOperationStatus.json
+func ExampleValidateOperationStatusesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armrecoveryservicesbackup.NewBackupOperationStatusesClient("<subscription-id>", cred, nil)
+	client := armrecoveryservicesbackup.NewValidateOperationStatusesClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<vault-name>",
 		"<resource-group-name>",
@@ -32,5 +32,5 @@ func ExampleBackupOperationStatusesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Response result: %#v\n", res.BackupOperationStatusesClientGetResult)
+	log.Printf("Response result: %#v\n", res.ValidateOperationStatusesClientGetResult)
 }

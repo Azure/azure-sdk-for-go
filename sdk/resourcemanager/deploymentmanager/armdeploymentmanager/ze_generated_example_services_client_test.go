@@ -25,27 +25,22 @@ func ExampleServicesClient_CreateOrUpdate() {
 	}
 	ctx := context.Background()
 	client := armdeploymentmanager.NewServicesClient("<subscription-id>", cred, nil)
-	res, err := client.CreateOrUpdate(ctx,
+	_, err = client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<service-topology-name>",
 		"<service-name>",
 		armdeploymentmanager.ServiceResource{
-			TrackedResource: armdeploymentmanager.TrackedResource{
-				Location: to.StringPtr("<location>"),
-				Tags:     map[string]*string{},
-			},
+			Location: to.StringPtr("<location>"),
+			Tags:     map[string]*string{},
 			Properties: &armdeploymentmanager.ServiceResourceProperties{
-				ServiceProperties: armdeploymentmanager.ServiceProperties{
-					TargetLocation:       to.StringPtr("<target-location>"),
-					TargetSubscriptionID: to.StringPtr("<target-subscription-id>"),
-				},
+				TargetLocation:       to.StringPtr("<target-location>"),
+				TargetSubscriptionID: to.StringPtr("<target-subscription-id>"),
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ServiceResource.ID: %s\n", *res.ID)
 }
 
 // x-ms-original-file: specification/deploymentmanager/resource-manager/Microsoft.DeploymentManager/preview/2019-11-01-preview/examples/service_get.json
@@ -64,7 +59,7 @@ func ExampleServicesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ServiceResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ServicesClientGetResult)
 }
 
 // x-ms-original-file: specification/deploymentmanager/resource-manager/Microsoft.DeploymentManager/preview/2019-11-01-preview/examples/service_delete.json
@@ -93,11 +88,12 @@ func ExampleServicesClient_List() {
 	}
 	ctx := context.Background()
 	client := armdeploymentmanager.NewServicesClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<service-topology-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ServicesClientListResult)
 }

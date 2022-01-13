@@ -30,11 +30,9 @@ func ExampleRolloutsClient_BeginCreateOrUpdate() {
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<rollout-name>",
-		&armdeploymentmanager.RolloutsBeginCreateOrUpdateOptions{RolloutRequest: &armdeploymentmanager.RolloutRequest{
-			TrackedResource: armdeploymentmanager.TrackedResource{
-				Location: to.StringPtr("<location>"),
-				Tags:     map[string]*string{},
-			},
+		&armdeploymentmanager.RolloutsClientBeginCreateOrUpdateOptions{RolloutRequest: &armdeploymentmanager.RolloutRequest{
+			Location: to.StringPtr("<location>"),
+			Tags:     map[string]*string{},
 			Identity: &armdeploymentmanager.Identity{
 				Type: to.StringPtr("<type>"),
 				IdentityIDs: []*string{
@@ -83,11 +81,10 @@ func ExampleRolloutsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RolloutRequest.ID: %s\n", *res.ID)
 }
 
 // x-ms-original-file: specification/deploymentmanager/resource-manager/Microsoft.DeploymentManager/preview/2019-11-01-preview/examples/rollout_get.json
@@ -101,11 +98,11 @@ func ExampleRolloutsClient_Get() {
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<rollout-name>",
-		&armdeploymentmanager.RolloutsGetOptions{RetryAttempt: nil})
+		&armdeploymentmanager.RolloutsClientGetOptions{RetryAttempt: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Rollout.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.RolloutsClientGetResult)
 }
 
 // x-ms-original-file: specification/deploymentmanager/resource-manager/Microsoft.DeploymentManager/preview/2019-11-01-preview/examples/rollout_delete.json
@@ -140,7 +137,7 @@ func ExampleRolloutsClient_Cancel() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Rollout.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.RolloutsClientCancelResult)
 }
 
 // x-ms-original-file: specification/deploymentmanager/resource-manager/Microsoft.DeploymentManager/preview/2019-11-01-preview/examples/rollout_post_restart.json
@@ -154,11 +151,11 @@ func ExampleRolloutsClient_Restart() {
 	res, err := client.Restart(ctx,
 		"<resource-group-name>",
 		"<rollout-name>",
-		&armdeploymentmanager.RolloutsRestartOptions{SkipSucceeded: to.BoolPtr(true)})
+		&armdeploymentmanager.RolloutsClientRestartOptions{SkipSucceeded: to.BoolPtr(true)})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Rollout.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.RolloutsClientRestartResult)
 }
 
 // x-ms-original-file: specification/deploymentmanager/resource-manager/Microsoft.DeploymentManager/preview/2019-11-01-preview/examples/rollouts_list.json
@@ -169,10 +166,11 @@ func ExampleRolloutsClient_List() {
 	}
 	ctx := context.Background()
 	client := armdeploymentmanager.NewRolloutsClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.RolloutsClientListResult)
 }

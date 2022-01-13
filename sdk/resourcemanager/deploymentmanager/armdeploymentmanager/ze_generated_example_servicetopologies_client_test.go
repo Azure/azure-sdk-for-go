@@ -25,25 +25,20 @@ func ExampleServiceTopologiesClient_CreateOrUpdate() {
 	}
 	ctx := context.Background()
 	client := armdeploymentmanager.NewServiceTopologiesClient("<subscription-id>", cred, nil)
-	res, err := client.CreateOrUpdate(ctx,
+	_, err = client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<service-topology-name>",
 		armdeploymentmanager.ServiceTopologyResource{
-			TrackedResource: armdeploymentmanager.TrackedResource{
-				Location: to.StringPtr("<location>"),
-				Tags:     map[string]*string{},
-			},
+			Location: to.StringPtr("<location>"),
+			Tags:     map[string]*string{},
 			Properties: &armdeploymentmanager.ServiceTopologyResourceProperties{
-				ServiceTopologyProperties: armdeploymentmanager.ServiceTopologyProperties{
-					ArtifactSourceID: to.StringPtr("<artifact-source-id>"),
-				},
+				ArtifactSourceID: to.StringPtr("<artifact-source-id>"),
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ServiceTopologyResource.ID: %s\n", *res.ID)
 }
 
 // x-ms-original-file: specification/deploymentmanager/resource-manager/Microsoft.DeploymentManager/preview/2019-11-01-preview/examples/servicetopology_get.json
@@ -61,7 +56,7 @@ func ExampleServiceTopologiesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ServiceTopologyResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ServiceTopologiesClientGetResult)
 }
 
 // x-ms-original-file: specification/deploymentmanager/resource-manager/Microsoft.DeploymentManager/preview/2019-11-01-preview/examples/servicetopology_delete.json
@@ -89,10 +84,11 @@ func ExampleServiceTopologiesClient_List() {
 	}
 	ctx := context.Background()
 	client := armdeploymentmanager.NewServiceTopologiesClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ServiceTopologiesClientListResult)
 }

@@ -30,12 +30,16 @@ func ExampleVirtualMachinesClient_List() {
 		"<private-cloud-name>",
 		"<cluster-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("VirtualMachine.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -57,7 +61,7 @@ func ExampleVirtualMachinesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("VirtualMachine.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.VirtualMachinesClientGetResult)
 }
 
 // x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/VirtualMachines_RestrictMovement.json
@@ -74,7 +78,7 @@ func ExampleVirtualMachinesClient_BeginRestrictMovement() {
 		"<cluster-name>",
 		"<virtual-machine-id>",
 		armavs.VirtualMachineRestrictMovement{
-			RestrictMovement: armavs.VirtualMachineRestrictMovementStateEnabled.ToPtr(),
+			RestrictMovement: armavs.VirtualMachineRestrictMovementState("Enabled").ToPtr(),
 		},
 		nil)
 	if err != nil {

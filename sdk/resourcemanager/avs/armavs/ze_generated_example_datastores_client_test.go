@@ -31,12 +31,16 @@ func ExampleDatastoresClient_List() {
 		"<private-cloud-name>",
 		"<cluster-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Datastore.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -58,7 +62,7 @@ func ExampleDatastoresClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Datastore.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DatastoresClientGetResult)
 }
 
 // x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/Datastores_CreateOrUpdate.json
@@ -89,7 +93,7 @@ func ExampleDatastoresClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Datastore.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DatastoresClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/Datastores_Delete.json

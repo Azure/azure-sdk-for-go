@@ -11,7 +11,6 @@ package armavs
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,60 @@ import (
 // GlobalReachConnectionsClient contains the methods for the GlobalReachConnections group.
 // Don't use this type directly, use NewGlobalReachConnectionsClient() instead.
 type GlobalReachConnectionsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewGlobalReachConnectionsClient creates a new instance of GlobalReachConnectionsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewGlobalReachConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *GlobalReachConnectionsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &GlobalReachConnectionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &GlobalReachConnectionsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Create or update a global reach connection in a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *GlobalReachConnectionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, globalReachConnectionName string, globalReachConnection GlobalReachConnection, options *GlobalReachConnectionsBeginCreateOrUpdateOptions) (GlobalReachConnectionsCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateCloudName - The name of the private cloud.
+// globalReachConnectionName - Name of the global reach connection in the private cloud
+// globalReachConnection - A global reach connection in the private cloud
+// options - GlobalReachConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the GlobalReachConnectionsClient.BeginCreateOrUpdate
+// method.
+func (client *GlobalReachConnectionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, globalReachConnectionName string, globalReachConnection GlobalReachConnection, options *GlobalReachConnectionsClientBeginCreateOrUpdateOptions) (GlobalReachConnectionsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, privateCloudName, globalReachConnectionName, globalReachConnection, options)
 	if err != nil {
-		return GlobalReachConnectionsCreateOrUpdatePollerResponse{}, err
+		return GlobalReachConnectionsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := GlobalReachConnectionsCreateOrUpdatePollerResponse{
+	result := GlobalReachConnectionsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("GlobalReachConnectionsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("GlobalReachConnectionsClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return GlobalReachConnectionsCreateOrUpdatePollerResponse{}, err
+		return GlobalReachConnectionsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &GlobalReachConnectionsCreateOrUpdatePoller{
+	result.Poller = &GlobalReachConnectionsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Create or update a global reach connection in a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *GlobalReachConnectionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, globalReachConnectionName string, globalReachConnection GlobalReachConnection, options *GlobalReachConnectionsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *GlobalReachConnectionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, globalReachConnectionName string, globalReachConnection GlobalReachConnection, options *GlobalReachConnectionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, privateCloudName, globalReachConnectionName, globalReachConnection, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +87,13 @@ func (client *GlobalReachConnectionsClient) createOrUpdate(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *GlobalReachConnectionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, globalReachConnectionName string, globalReachConnection GlobalReachConnection, options *GlobalReachConnectionsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *GlobalReachConnectionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, globalReachConnectionName string, globalReachConnection GlobalReachConnection, options *GlobalReachConnectionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/globalReachConnections/{globalReachConnectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -98,7 +111,7 @@ func (client *GlobalReachConnectionsClient) createOrUpdateCreateRequest(ctx cont
 		return nil, errors.New("parameter globalReachConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{globalReachConnectionName}", url.PathEscape(globalReachConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -109,42 +122,34 @@ func (client *GlobalReachConnectionsClient) createOrUpdateCreateRequest(ctx cont
 	return req, runtime.MarshalAsJSON(req, globalReachConnection)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *GlobalReachConnectionsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Delete a global reach connection in a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *GlobalReachConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, privateCloudName string, globalReachConnectionName string, options *GlobalReachConnectionsBeginDeleteOptions) (GlobalReachConnectionsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateCloudName - Name of the private cloud
+// globalReachConnectionName - Name of the global reach connection in the private cloud
+// options - GlobalReachConnectionsClientBeginDeleteOptions contains the optional parameters for the GlobalReachConnectionsClient.BeginDelete
+// method.
+func (client *GlobalReachConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, privateCloudName string, globalReachConnectionName string, options *GlobalReachConnectionsClientBeginDeleteOptions) (GlobalReachConnectionsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, privateCloudName, globalReachConnectionName, options)
 	if err != nil {
-		return GlobalReachConnectionsDeletePollerResponse{}, err
+		return GlobalReachConnectionsClientDeletePollerResponse{}, err
 	}
-	result := GlobalReachConnectionsDeletePollerResponse{
+	result := GlobalReachConnectionsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("GlobalReachConnectionsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("GlobalReachConnectionsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return GlobalReachConnectionsDeletePollerResponse{}, err
+		return GlobalReachConnectionsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &GlobalReachConnectionsDeletePoller{
+	result.Poller = &GlobalReachConnectionsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Delete a global reach connection in a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *GlobalReachConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, privateCloudName string, globalReachConnectionName string, options *GlobalReachConnectionsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *GlobalReachConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, privateCloudName string, globalReachConnectionName string, options *GlobalReachConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, privateCloudName, globalReachConnectionName, options)
 	if err != nil {
 		return nil, err
@@ -154,13 +159,13 @@ func (client *GlobalReachConnectionsClient) deleteOperation(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *GlobalReachConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, globalReachConnectionName string, options *GlobalReachConnectionsBeginDeleteOptions) (*policy.Request, error) {
+func (client *GlobalReachConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, globalReachConnectionName string, options *GlobalReachConnectionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/globalReachConnections/{globalReachConnectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -178,7 +183,7 @@ func (client *GlobalReachConnectionsClient) deleteCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter globalReachConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{globalReachConnectionName}", url.PathEscape(globalReachConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -189,38 +194,30 @@ func (client *GlobalReachConnectionsClient) deleteCreateRequest(ctx context.Cont
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *GlobalReachConnectionsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get a global reach connection by name in a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *GlobalReachConnectionsClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, globalReachConnectionName string, options *GlobalReachConnectionsGetOptions) (GlobalReachConnectionsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateCloudName - Name of the private cloud
+// globalReachConnectionName - Name of the global reach connection in the private cloud
+// options - GlobalReachConnectionsClientGetOptions contains the optional parameters for the GlobalReachConnectionsClient.Get
+// method.
+func (client *GlobalReachConnectionsClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, globalReachConnectionName string, options *GlobalReachConnectionsClientGetOptions) (GlobalReachConnectionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, privateCloudName, globalReachConnectionName, options)
 	if err != nil {
-		return GlobalReachConnectionsGetResponse{}, err
+		return GlobalReachConnectionsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return GlobalReachConnectionsGetResponse{}, err
+		return GlobalReachConnectionsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return GlobalReachConnectionsGetResponse{}, client.getHandleError(resp)
+		return GlobalReachConnectionsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *GlobalReachConnectionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, globalReachConnectionName string, options *GlobalReachConnectionsGetOptions) (*policy.Request, error) {
+func (client *GlobalReachConnectionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, globalReachConnectionName string, options *GlobalReachConnectionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/globalReachConnections/{globalReachConnectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -238,7 +235,7 @@ func (client *GlobalReachConnectionsClient) getCreateRequest(ctx context.Context
 		return nil, errors.New("parameter globalReachConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{globalReachConnectionName}", url.PathEscape(globalReachConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -250,43 +247,34 @@ func (client *GlobalReachConnectionsClient) getCreateRequest(ctx context.Context
 }
 
 // getHandleResponse handles the Get response.
-func (client *GlobalReachConnectionsClient) getHandleResponse(resp *http.Response) (GlobalReachConnectionsGetResponse, error) {
-	result := GlobalReachConnectionsGetResponse{RawResponse: resp}
+func (client *GlobalReachConnectionsClient) getHandleResponse(resp *http.Response) (GlobalReachConnectionsClientGetResponse, error) {
+	result := GlobalReachConnectionsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GlobalReachConnection); err != nil {
-		return GlobalReachConnectionsGetResponse{}, runtime.NewResponseError(err, resp)
+		return GlobalReachConnectionsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *GlobalReachConnectionsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List global reach connections in a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *GlobalReachConnectionsClient) List(resourceGroupName string, privateCloudName string, options *GlobalReachConnectionsListOptions) *GlobalReachConnectionsListPager {
-	return &GlobalReachConnectionsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateCloudName - Name of the private cloud
+// options - GlobalReachConnectionsClientListOptions contains the optional parameters for the GlobalReachConnectionsClient.List
+// method.
+func (client *GlobalReachConnectionsClient) List(resourceGroupName string, privateCloudName string, options *GlobalReachConnectionsClientListOptions) *GlobalReachConnectionsClientListPager {
+	return &GlobalReachConnectionsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, privateCloudName, options)
 		},
-		advancer: func(ctx context.Context, resp GlobalReachConnectionsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp GlobalReachConnectionsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.GlobalReachConnectionList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *GlobalReachConnectionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, options *GlobalReachConnectionsListOptions) (*policy.Request, error) {
+func (client *GlobalReachConnectionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, options *GlobalReachConnectionsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/globalReachConnections"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -300,7 +288,7 @@ func (client *GlobalReachConnectionsClient) listCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter privateCloudName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -312,23 +300,10 @@ func (client *GlobalReachConnectionsClient) listCreateRequest(ctx context.Contex
 }
 
 // listHandleResponse handles the List response.
-func (client *GlobalReachConnectionsClient) listHandleResponse(resp *http.Response) (GlobalReachConnectionsListResponse, error) {
-	result := GlobalReachConnectionsListResponse{RawResponse: resp}
+func (client *GlobalReachConnectionsClient) listHandleResponse(resp *http.Response) (GlobalReachConnectionsClientListResponse, error) {
+	result := GlobalReachConnectionsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GlobalReachConnectionList); err != nil {
-		return GlobalReachConnectionsListResponse{}, runtime.NewResponseError(err, resp)
+		return GlobalReachConnectionsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *GlobalReachConnectionsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -30,12 +30,16 @@ func ExampleScriptExecutionsClient_List() {
 	pager := client.List("<resource-group-name>",
 		"<private-cloud-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ScriptExecution.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -56,7 +60,7 @@ func ExampleScriptExecutionsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ScriptExecution.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ScriptExecutionsClientGetResult)
 }
 
 // x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/ScriptExecutions_CreateOrUpdate.json
@@ -75,25 +79,19 @@ func ExampleScriptExecutionsClient_BeginCreateOrUpdate() {
 			Properties: &armavs.ScriptExecutionProperties{
 				HiddenParameters: []armavs.ScriptExecutionParameterClassification{
 					&armavs.ScriptSecureStringExecutionParameter{
-						ScriptExecutionParameter: armavs.ScriptExecutionParameter{
-							Name: to.StringPtr("<name>"),
-							Type: armavs.ScriptExecutionParameterTypeSecureValue.ToPtr(),
-						},
+						Name:        to.StringPtr("<name>"),
+						Type:        armavs.ScriptExecutionParameterType("SecureValue").ToPtr(),
 						SecureValue: to.StringPtr("<secure-value>"),
 					}},
 				Parameters: []armavs.ScriptExecutionParameterClassification{
 					&armavs.ScriptStringExecutionParameter{
-						ScriptExecutionParameter: armavs.ScriptExecutionParameter{
-							Name: to.StringPtr("<name>"),
-							Type: armavs.ScriptExecutionParameterTypeValue.ToPtr(),
-						},
+						Name:  to.StringPtr("<name>"),
+						Type:  armavs.ScriptExecutionParameterType("Value").ToPtr(),
 						Value: to.StringPtr("<value>"),
 					},
 					&armavs.ScriptStringExecutionParameter{
-						ScriptExecutionParameter: armavs.ScriptExecutionParameter{
-							Name: to.StringPtr("<name>"),
-							Type: armavs.ScriptExecutionParameterTypeValue.ToPtr(),
-						},
+						Name:  to.StringPtr("<name>"),
+						Type:  armavs.ScriptExecutionParameterType("Value").ToPtr(),
 						Value: to.StringPtr("<value>"),
 					}},
 				Retention:      to.StringPtr("<retention>"),
@@ -109,7 +107,7 @@ func ExampleScriptExecutionsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ScriptExecution.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ScriptExecutionsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/ScriptExecutions_Delete.json
@@ -146,14 +144,14 @@ func ExampleScriptExecutionsClient_GetExecutionLogs() {
 		"<resource-group-name>",
 		"<private-cloud-name>",
 		"<script-execution-name>",
-		&armavs.ScriptExecutionsGetExecutionLogsOptions{ScriptOutputStreamType: []*armavs.ScriptOutputStreamType{
-			armavs.ScriptOutputStreamTypeInformation.ToPtr(),
-			armavs.ScriptOutputStreamTypeInformation.ToPtr(),
-			armavs.ScriptOutputStreamTypeInformation.ToPtr(),
-			armavs.ScriptOutputStreamTypeOutput.ToPtr()},
+		&armavs.ScriptExecutionsClientGetExecutionLogsOptions{ScriptOutputStreamType: []*armavs.ScriptOutputStreamType{
+			armavs.ScriptOutputStreamType("Information").ToPtr(),
+			armavs.ScriptOutputStreamType("Warnings").ToPtr(),
+			armavs.ScriptOutputStreamType("Errors").ToPtr(),
+			armavs.ScriptOutputStreamType("Output").ToPtr()},
 		})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ScriptExecution.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ScriptExecutionsClientGetExecutionLogsResult)
 }

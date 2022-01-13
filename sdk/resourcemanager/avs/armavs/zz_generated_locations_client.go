@@ -11,7 +11,6 @@ package armavs
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,53 @@ import (
 // LocationsClient contains the methods for the Locations group.
 // Don't use this type directly, use NewLocationsClient() instead.
 type LocationsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewLocationsClient creates a new instance of LocationsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LocationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &LocationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &LocationsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CheckQuotaAvailability - Return quota for subscription by region
-// If the operation fails it returns the *CloudError error type.
-func (client *LocationsClient) CheckQuotaAvailability(ctx context.Context, location string, options *LocationsCheckQuotaAvailabilityOptions) (LocationsCheckQuotaAvailabilityResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// location - Azure region
+// options - LocationsClientCheckQuotaAvailabilityOptions contains the optional parameters for the LocationsClient.CheckQuotaAvailability
+// method.
+func (client *LocationsClient) CheckQuotaAvailability(ctx context.Context, location string, options *LocationsClientCheckQuotaAvailabilityOptions) (LocationsClientCheckQuotaAvailabilityResponse, error) {
 	req, err := client.checkQuotaAvailabilityCreateRequest(ctx, location, options)
 	if err != nil {
-		return LocationsCheckQuotaAvailabilityResponse{}, err
+		return LocationsClientCheckQuotaAvailabilityResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LocationsCheckQuotaAvailabilityResponse{}, err
+		return LocationsClientCheckQuotaAvailabilityResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return LocationsCheckQuotaAvailabilityResponse{}, client.checkQuotaAvailabilityHandleError(resp)
+		return LocationsClientCheckQuotaAvailabilityResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.checkQuotaAvailabilityHandleResponse(resp)
 }
 
 // checkQuotaAvailabilityCreateRequest creates the CheckQuotaAvailability request.
-func (client *LocationsClient) checkQuotaAvailabilityCreateRequest(ctx context.Context, location string, options *LocationsCheckQuotaAvailabilityOptions) (*policy.Request, error) {
+func (client *LocationsClient) checkQuotaAvailabilityCreateRequest(ctx context.Context, location string, options *LocationsClientCheckQuotaAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AVS/locations/{location}/checkQuotaAvailability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -70,7 +80,7 @@ func (client *LocationsClient) checkQuotaAvailabilityCreateRequest(ctx context.C
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -82,46 +92,36 @@ func (client *LocationsClient) checkQuotaAvailabilityCreateRequest(ctx context.C
 }
 
 // checkQuotaAvailabilityHandleResponse handles the CheckQuotaAvailability response.
-func (client *LocationsClient) checkQuotaAvailabilityHandleResponse(resp *http.Response) (LocationsCheckQuotaAvailabilityResponse, error) {
-	result := LocationsCheckQuotaAvailabilityResponse{RawResponse: resp}
+func (client *LocationsClient) checkQuotaAvailabilityHandleResponse(resp *http.Response) (LocationsClientCheckQuotaAvailabilityResponse, error) {
+	result := LocationsClientCheckQuotaAvailabilityResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Quota); err != nil {
-		return LocationsCheckQuotaAvailabilityResponse{}, runtime.NewResponseError(err, resp)
+		return LocationsClientCheckQuotaAvailabilityResponse{}, err
 	}
 	return result, nil
 }
 
-// checkQuotaAvailabilityHandleError handles the CheckQuotaAvailability error response.
-func (client *LocationsClient) checkQuotaAvailabilityHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // CheckTrialAvailability - Return trial status for subscription by region
-// If the operation fails it returns the *CloudError error type.
-func (client *LocationsClient) CheckTrialAvailability(ctx context.Context, location string, options *LocationsCheckTrialAvailabilityOptions) (LocationsCheckTrialAvailabilityResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// location - Azure region
+// options - LocationsClientCheckTrialAvailabilityOptions contains the optional parameters for the LocationsClient.CheckTrialAvailability
+// method.
+func (client *LocationsClient) CheckTrialAvailability(ctx context.Context, location string, options *LocationsClientCheckTrialAvailabilityOptions) (LocationsClientCheckTrialAvailabilityResponse, error) {
 	req, err := client.checkTrialAvailabilityCreateRequest(ctx, location, options)
 	if err != nil {
-		return LocationsCheckTrialAvailabilityResponse{}, err
+		return LocationsClientCheckTrialAvailabilityResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LocationsCheckTrialAvailabilityResponse{}, err
+		return LocationsClientCheckTrialAvailabilityResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return LocationsCheckTrialAvailabilityResponse{}, client.checkTrialAvailabilityHandleError(resp)
+		return LocationsClientCheckTrialAvailabilityResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.checkTrialAvailabilityHandleResponse(resp)
 }
 
 // checkTrialAvailabilityCreateRequest creates the CheckTrialAvailability request.
-func (client *LocationsClient) checkTrialAvailabilityCreateRequest(ctx context.Context, location string, options *LocationsCheckTrialAvailabilityOptions) (*policy.Request, error) {
+func (client *LocationsClient) checkTrialAvailabilityCreateRequest(ctx context.Context, location string, options *LocationsClientCheckTrialAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AVS/locations/{location}/checkTrialAvailability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -131,7 +131,7 @@ func (client *LocationsClient) checkTrialAvailabilityCreateRequest(ctx context.C
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -143,23 +143,10 @@ func (client *LocationsClient) checkTrialAvailabilityCreateRequest(ctx context.C
 }
 
 // checkTrialAvailabilityHandleResponse handles the CheckTrialAvailability response.
-func (client *LocationsClient) checkTrialAvailabilityHandleResponse(resp *http.Response) (LocationsCheckTrialAvailabilityResponse, error) {
-	result := LocationsCheckTrialAvailabilityResponse{RawResponse: resp}
+func (client *LocationsClient) checkTrialAvailabilityHandleResponse(resp *http.Response) (LocationsClientCheckTrialAvailabilityResponse, error) {
+	result := LocationsClientCheckTrialAvailabilityResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Trial); err != nil {
-		return LocationsCheckTrialAvailabilityResponse{}, runtime.NewResponseError(err, resp)
+		return LocationsClientCheckTrialAvailabilityResponse{}, err
 	}
 	return result, nil
-}
-
-// checkTrialAvailabilityHandleError handles the CheckTrialAvailability error response.
-func (client *LocationsClient) checkTrialAvailabilityHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

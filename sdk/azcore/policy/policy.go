@@ -98,7 +98,7 @@ type RetryOptions struct {
 
 // TelemetryOptions configures the telemetry policy's behavior.
 type TelemetryOptions struct {
-	// ApplicationID is an application-specific identification string used in telemetry.
+	// ApplicationID is an application-specific identification string to add to the User-Agent.
 	// It has a maximum length of 24 characters and must not contain any spaces.
 	ApplicationID string
 

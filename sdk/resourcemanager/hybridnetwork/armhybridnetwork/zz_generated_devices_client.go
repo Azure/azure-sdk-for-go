@@ -11,7 +11,6 @@ package armhybridnetwork
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,59 @@ import (
 // DevicesClient contains the methods for the Devices group.
 // Don't use this type directly, use NewDevicesClient() instead.
 type DevicesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDevicesClient creates a new instance of DevicesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDevicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DevicesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &DevicesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DevicesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Creates or updates a device.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DevicesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, deviceName string, parameters Device, options *DevicesBeginCreateOrUpdateOptions) (DevicesCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// deviceName - Resource name for the device resource.
+// parameters - Parameters supplied to the create or update device operation.
+// options - DevicesClientBeginCreateOrUpdateOptions contains the optional parameters for the DevicesClient.BeginCreateOrUpdate
+// method.
+func (client *DevicesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, deviceName string, parameters Device, options *DevicesClientBeginCreateOrUpdateOptions) (DevicesClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, deviceName, parameters, options)
 	if err != nil {
-		return DevicesCreateOrUpdatePollerResponse{}, err
+		return DevicesClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := DevicesCreateOrUpdatePollerResponse{
+	result := DevicesClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DevicesClient.CreateOrUpdate", "azure-async-operation", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("DevicesClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return DevicesCreateOrUpdatePollerResponse{}, err
+		return DevicesClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &DevicesCreateOrUpdatePoller{
+	result.Poller = &DevicesClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a device.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DevicesClient) createOrUpdate(ctx context.Context, resourceGroupName string, deviceName string, parameters Device, options *DevicesBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DevicesClient) createOrUpdate(ctx context.Context, resourceGroupName string, deviceName string, parameters Device, options *DevicesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, deviceName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +86,13 @@ func (client *DevicesClient) createOrUpdate(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DevicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, deviceName string, parameters Device, options *DevicesBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *DevicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, deviceName string, parameters Device, options *DevicesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridNetwork/devices/{deviceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -94,7 +106,7 @@ func (client *DevicesClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -105,42 +117,32 @@ func (client *DevicesClient) createOrUpdateCreateRequest(ctx context.Context, re
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *DevicesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes the specified device.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DevicesClient) BeginDelete(ctx context.Context, resourceGroupName string, deviceName string, options *DevicesBeginDeleteOptions) (DevicesDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// deviceName - The name of the device resource.
+// options - DevicesClientBeginDeleteOptions contains the optional parameters for the DevicesClient.BeginDelete method.
+func (client *DevicesClient) BeginDelete(ctx context.Context, resourceGroupName string, deviceName string, options *DevicesClientBeginDeleteOptions) (DevicesClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, deviceName, options)
 	if err != nil {
-		return DevicesDeletePollerResponse{}, err
+		return DevicesClientDeletePollerResponse{}, err
 	}
-	result := DevicesDeletePollerResponse{
+	result := DevicesClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DevicesClient.Delete", "location", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("DevicesClient.Delete", "location", resp, client.pl)
 	if err != nil {
-		return DevicesDeletePollerResponse{}, err
+		return DevicesClientDeletePollerResponse{}, err
 	}
-	result.Poller = &DevicesDeletePoller{
+	result.Poller = &DevicesClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes the specified device.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DevicesClient) deleteOperation(ctx context.Context, resourceGroupName string, deviceName string, options *DevicesBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DevicesClient) deleteOperation(ctx context.Context, resourceGroupName string, deviceName string, options *DevicesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, deviceName, options)
 	if err != nil {
 		return nil, err
@@ -150,13 +152,13 @@ func (client *DevicesClient) deleteOperation(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DevicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, deviceName string, options *DevicesBeginDeleteOptions) (*policy.Request, error) {
+func (client *DevicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, deviceName string, options *DevicesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridNetwork/devices/{deviceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -170,7 +172,7 @@ func (client *DevicesClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -181,38 +183,28 @@ func (client *DevicesClient) deleteCreateRequest(ctx context.Context, resourceGr
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *DevicesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets information about the specified device.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DevicesClient) Get(ctx context.Context, resourceGroupName string, deviceName string, options *DevicesGetOptions) (DevicesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// deviceName - The name of the device resource.
+// options - DevicesClientGetOptions contains the optional parameters for the DevicesClient.Get method.
+func (client *DevicesClient) Get(ctx context.Context, resourceGroupName string, deviceName string, options *DevicesClientGetOptions) (DevicesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, deviceName, options)
 	if err != nil {
-		return DevicesGetResponse{}, err
+		return DevicesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DevicesGetResponse{}, err
+		return DevicesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DevicesGetResponse{}, client.getHandleError(resp)
+		return DevicesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DevicesClient) getCreateRequest(ctx context.Context, resourceGroupName string, deviceName string, options *DevicesGetOptions) (*policy.Request, error) {
+func (client *DevicesClient) getCreateRequest(ctx context.Context, resourceGroupName string, deviceName string, options *DevicesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridNetwork/devices/{deviceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -226,7 +218,7 @@ func (client *DevicesClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -238,43 +230,33 @@ func (client *DevicesClient) getCreateRequest(ctx context.Context, resourceGroup
 }
 
 // getHandleResponse handles the Get response.
-func (client *DevicesClient) getHandleResponse(resp *http.Response) (DevicesGetResponse, error) {
-	result := DevicesGetResponse{RawResponse: resp}
+func (client *DevicesClient) getHandleResponse(resp *http.Response) (DevicesClientGetResponse, error) {
+	result := DevicesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Device); err != nil {
-		return DevicesGetResponse{}, runtime.NewResponseError(err, resp)
+		return DevicesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *DevicesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - Lists all the device resource in a resource group.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DevicesClient) ListByResourceGroup(resourceGroupName string, options *DevicesListByResourceGroupOptions) *DevicesListByResourceGroupPager {
-	return &DevicesListByResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// options - DevicesClientListByResourceGroupOptions contains the optional parameters for the DevicesClient.ListByResourceGroup
+// method.
+func (client *DevicesClient) ListByResourceGroup(resourceGroupName string, options *DevicesClientListByResourceGroupOptions) *DevicesClientListByResourceGroupPager {
+	return &DevicesClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp DevicesListByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DevicesClientListByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DeviceListResult.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *DevicesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *DevicesListByResourceGroupOptions) (*policy.Request, error) {
+func (client *DevicesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *DevicesClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridNetwork/devices"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -284,7 +266,7 @@ func (client *DevicesClient) listByResourceGroupCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -296,49 +278,38 @@ func (client *DevicesClient) listByResourceGroupCreateRequest(ctx context.Contex
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *DevicesClient) listByResourceGroupHandleResponse(resp *http.Response) (DevicesListByResourceGroupResponse, error) {
-	result := DevicesListByResourceGroupResponse{RawResponse: resp}
+func (client *DevicesClient) listByResourceGroupHandleResponse(resp *http.Response) (DevicesClientListByResourceGroupResponse, error) {
+	result := DevicesClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeviceListResult); err != nil {
-		return DevicesListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return DevicesClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *DevicesClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListBySubscription - Lists all the devices in a subscription.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DevicesClient) ListBySubscription(options *DevicesListBySubscriptionOptions) *DevicesListBySubscriptionPager {
-	return &DevicesListBySubscriptionPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - DevicesClientListBySubscriptionOptions contains the optional parameters for the DevicesClient.ListBySubscription
+// method.
+func (client *DevicesClient) ListBySubscription(options *DevicesClientListBySubscriptionOptions) *DevicesClientListBySubscriptionPager {
+	return &DevicesClientListBySubscriptionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp DevicesListBySubscriptionResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DevicesClientListBySubscriptionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DeviceListResult.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *DevicesClient) listBySubscriptionCreateRequest(ctx context.Context, options *DevicesListBySubscriptionOptions) (*policy.Request, error) {
+func (client *DevicesClient) listBySubscriptionCreateRequest(ctx context.Context, options *DevicesClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HybridNetwork/devices"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -350,46 +321,37 @@ func (client *DevicesClient) listBySubscriptionCreateRequest(ctx context.Context
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *DevicesClient) listBySubscriptionHandleResponse(resp *http.Response) (DevicesListBySubscriptionResponse, error) {
-	result := DevicesListBySubscriptionResponse{RawResponse: resp}
+func (client *DevicesClient) listBySubscriptionHandleResponse(resp *http.Response) (DevicesClientListBySubscriptionResponse, error) {
+	result := DevicesClientListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeviceListResult); err != nil {
-		return DevicesListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return DevicesClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *DevicesClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListRegistrationKey - List the registration key for the device.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DevicesClient) ListRegistrationKey(ctx context.Context, resourceGroupName string, deviceName string, options *DevicesListRegistrationKeyOptions) (DevicesListRegistrationKeyResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// deviceName - The name of the device resource.
+// options - DevicesClientListRegistrationKeyOptions contains the optional parameters for the DevicesClient.ListRegistrationKey
+// method.
+func (client *DevicesClient) ListRegistrationKey(ctx context.Context, resourceGroupName string, deviceName string, options *DevicesClientListRegistrationKeyOptions) (DevicesClientListRegistrationKeyResponse, error) {
 	req, err := client.listRegistrationKeyCreateRequest(ctx, resourceGroupName, deviceName, options)
 	if err != nil {
-		return DevicesListRegistrationKeyResponse{}, err
+		return DevicesClientListRegistrationKeyResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DevicesListRegistrationKeyResponse{}, err
+		return DevicesClientListRegistrationKeyResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DevicesListRegistrationKeyResponse{}, client.listRegistrationKeyHandleError(resp)
+		return DevicesClientListRegistrationKeyResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listRegistrationKeyHandleResponse(resp)
 }
 
 // listRegistrationKeyCreateRequest creates the ListRegistrationKey request.
-func (client *DevicesClient) listRegistrationKeyCreateRequest(ctx context.Context, resourceGroupName string, deviceName string, options *DevicesListRegistrationKeyOptions) (*policy.Request, error) {
+func (client *DevicesClient) listRegistrationKeyCreateRequest(ctx context.Context, resourceGroupName string, deviceName string, options *DevicesClientListRegistrationKeyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridNetwork/devices/{deviceName}/listRegistrationKey"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -403,7 +365,7 @@ func (client *DevicesClient) listRegistrationKeyCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -415,46 +377,37 @@ func (client *DevicesClient) listRegistrationKeyCreateRequest(ctx context.Contex
 }
 
 // listRegistrationKeyHandleResponse handles the ListRegistrationKey response.
-func (client *DevicesClient) listRegistrationKeyHandleResponse(resp *http.Response) (DevicesListRegistrationKeyResponse, error) {
-	result := DevicesListRegistrationKeyResponse{RawResponse: resp}
+func (client *DevicesClient) listRegistrationKeyHandleResponse(resp *http.Response) (DevicesClientListRegistrationKeyResponse, error) {
+	result := DevicesClientListRegistrationKeyResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeviceRegistrationKey); err != nil {
-		return DevicesListRegistrationKeyResponse{}, runtime.NewResponseError(err, resp)
+		return DevicesClientListRegistrationKeyResponse{}, err
 	}
 	return result, nil
 }
 
-// listRegistrationKeyHandleError handles the ListRegistrationKey error response.
-func (client *DevicesClient) listRegistrationKeyHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // UpdateTags - Updates device tags.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DevicesClient) UpdateTags(ctx context.Context, resourceGroupName string, deviceName string, parameters TagsObject, options *DevicesUpdateTagsOptions) (DevicesUpdateTagsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// deviceName - The name of the device resource.
+// parameters - Parameters supplied to the update device tags operation.
+// options - DevicesClientUpdateTagsOptions contains the optional parameters for the DevicesClient.UpdateTags method.
+func (client *DevicesClient) UpdateTags(ctx context.Context, resourceGroupName string, deviceName string, parameters TagsObject, options *DevicesClientUpdateTagsOptions) (DevicesClientUpdateTagsResponse, error) {
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, deviceName, parameters, options)
 	if err != nil {
-		return DevicesUpdateTagsResponse{}, err
+		return DevicesClientUpdateTagsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DevicesUpdateTagsResponse{}, err
+		return DevicesClientUpdateTagsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DevicesUpdateTagsResponse{}, client.updateTagsHandleError(resp)
+		return DevicesClientUpdateTagsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateTagsHandleResponse(resp)
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.
-func (client *DevicesClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, deviceName string, parameters TagsObject, options *DevicesUpdateTagsOptions) (*policy.Request, error) {
+func (client *DevicesClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, deviceName string, parameters TagsObject, options *DevicesClientUpdateTagsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridNetwork/devices/{deviceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -468,7 +421,7 @@ func (client *DevicesClient) updateTagsCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -480,23 +433,10 @@ func (client *DevicesClient) updateTagsCreateRequest(ctx context.Context, resour
 }
 
 // updateTagsHandleResponse handles the UpdateTags response.
-func (client *DevicesClient) updateTagsHandleResponse(resp *http.Response) (DevicesUpdateTagsResponse, error) {
-	result := DevicesUpdateTagsResponse{RawResponse: resp}
+func (client *DevicesClient) updateTagsHandleResponse(resp *http.Response) (DevicesClientUpdateTagsResponse, error) {
+	result := DevicesClientUpdateTagsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Device); err != nil {
-		return DevicesUpdateTagsResponse{}, runtime.NewResponseError(err, resp)
+		return DevicesClientUpdateTagsResponse{}, err
 	}
 	return result, nil
-}
-
-// updateTagsHandleError handles the UpdateTags error response.
-func (client *DevicesClient) updateTagsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

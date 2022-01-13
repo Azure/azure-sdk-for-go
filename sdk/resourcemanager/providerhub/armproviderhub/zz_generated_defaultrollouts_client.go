@@ -11,7 +11,6 @@ package armproviderhub
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,59 @@ import (
 // DefaultRolloutsClient contains the methods for the DefaultRollouts group.
 // Don't use this type directly, use NewDefaultRolloutsClient() instead.
 type DefaultRolloutsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDefaultRolloutsClient creates a new instance of DefaultRolloutsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDefaultRolloutsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DefaultRolloutsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &DefaultRolloutsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DefaultRolloutsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Creates or updates the rollout details.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DefaultRolloutsClient) BeginCreateOrUpdate(ctx context.Context, providerNamespace string, rolloutName string, properties DefaultRollout, options *DefaultRolloutsBeginCreateOrUpdateOptions) (DefaultRolloutsCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// providerNamespace - The name of the resource provider hosted within ProviderHub.
+// rolloutName - The rollout name.
+// properties - The Default rollout properties supplied to the CreateOrUpdate operation.
+// options - DefaultRolloutsClientBeginCreateOrUpdateOptions contains the optional parameters for the DefaultRolloutsClient.BeginCreateOrUpdate
+// method.
+func (client *DefaultRolloutsClient) BeginCreateOrUpdate(ctx context.Context, providerNamespace string, rolloutName string, properties DefaultRollout, options *DefaultRolloutsClientBeginCreateOrUpdateOptions) (DefaultRolloutsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, providerNamespace, rolloutName, properties, options)
 	if err != nil {
-		return DefaultRolloutsCreateOrUpdatePollerResponse{}, err
+		return DefaultRolloutsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := DefaultRolloutsCreateOrUpdatePollerResponse{
+	result := DefaultRolloutsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DefaultRolloutsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("DefaultRolloutsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return DefaultRolloutsCreateOrUpdatePollerResponse{}, err
+		return DefaultRolloutsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &DefaultRolloutsCreateOrUpdatePoller{
+	result.Poller = &DefaultRolloutsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates the rollout details.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DefaultRolloutsClient) createOrUpdate(ctx context.Context, providerNamespace string, rolloutName string, properties DefaultRollout, options *DefaultRolloutsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DefaultRolloutsClient) createOrUpdate(ctx context.Context, providerNamespace string, rolloutName string, properties DefaultRollout, options *DefaultRolloutsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, providerNamespace, rolloutName, properties, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +86,13 @@ func (client *DefaultRolloutsClient) createOrUpdate(ctx context.Context, provide
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DefaultRolloutsClient) createOrUpdateCreateRequest(ctx context.Context, providerNamespace string, rolloutName string, properties DefaultRollout, options *DefaultRolloutsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *DefaultRolloutsClient) createOrUpdateCreateRequest(ctx context.Context, providerNamespace string, rolloutName string, properties DefaultRollout, options *DefaultRolloutsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/defaultRollouts/{rolloutName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -94,7 +106,7 @@ func (client *DefaultRolloutsClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, errors.New("parameter rolloutName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{rolloutName}", url.PathEscape(rolloutName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -105,38 +117,28 @@ func (client *DefaultRolloutsClient) createOrUpdateCreateRequest(ctx context.Con
 	return req, runtime.MarshalAsJSON(req, properties)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *DefaultRolloutsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes the rollout resource. Rollout must be in terminal state.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DefaultRolloutsClient) Delete(ctx context.Context, providerNamespace string, rolloutName string, options *DefaultRolloutsDeleteOptions) (DefaultRolloutsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// providerNamespace - The name of the resource provider hosted within ProviderHub.
+// rolloutName - The rollout name.
+// options - DefaultRolloutsClientDeleteOptions contains the optional parameters for the DefaultRolloutsClient.Delete method.
+func (client *DefaultRolloutsClient) Delete(ctx context.Context, providerNamespace string, rolloutName string, options *DefaultRolloutsClientDeleteOptions) (DefaultRolloutsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, providerNamespace, rolloutName, options)
 	if err != nil {
-		return DefaultRolloutsDeleteResponse{}, err
+		return DefaultRolloutsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DefaultRolloutsDeleteResponse{}, err
+		return DefaultRolloutsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return DefaultRolloutsDeleteResponse{}, client.deleteHandleError(resp)
+		return DefaultRolloutsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return DefaultRolloutsDeleteResponse{RawResponse: resp}, nil
+	return DefaultRolloutsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DefaultRolloutsClient) deleteCreateRequest(ctx context.Context, providerNamespace string, rolloutName string, options *DefaultRolloutsDeleteOptions) (*policy.Request, error) {
+func (client *DefaultRolloutsClient) deleteCreateRequest(ctx context.Context, providerNamespace string, rolloutName string, options *DefaultRolloutsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/defaultRollouts/{rolloutName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -150,7 +152,7 @@ func (client *DefaultRolloutsClient) deleteCreateRequest(ctx context.Context, pr
 		return nil, errors.New("parameter rolloutName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{rolloutName}", url.PathEscape(rolloutName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -161,38 +163,28 @@ func (client *DefaultRolloutsClient) deleteCreateRequest(ctx context.Context, pr
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *DefaultRolloutsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets the default rollout details.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DefaultRolloutsClient) Get(ctx context.Context, providerNamespace string, rolloutName string, options *DefaultRolloutsGetOptions) (DefaultRolloutsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// providerNamespace - The name of the resource provider hosted within ProviderHub.
+// rolloutName - The rollout name.
+// options - DefaultRolloutsClientGetOptions contains the optional parameters for the DefaultRolloutsClient.Get method.
+func (client *DefaultRolloutsClient) Get(ctx context.Context, providerNamespace string, rolloutName string, options *DefaultRolloutsClientGetOptions) (DefaultRolloutsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, providerNamespace, rolloutName, options)
 	if err != nil {
-		return DefaultRolloutsGetResponse{}, err
+		return DefaultRolloutsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DefaultRolloutsGetResponse{}, err
+		return DefaultRolloutsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DefaultRolloutsGetResponse{}, client.getHandleError(resp)
+		return DefaultRolloutsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DefaultRolloutsClient) getCreateRequest(ctx context.Context, providerNamespace string, rolloutName string, options *DefaultRolloutsGetOptions) (*policy.Request, error) {
+func (client *DefaultRolloutsClient) getCreateRequest(ctx context.Context, providerNamespace string, rolloutName string, options *DefaultRolloutsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/defaultRollouts/{rolloutName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -206,7 +198,7 @@ func (client *DefaultRolloutsClient) getCreateRequest(ctx context.Context, provi
 		return nil, errors.New("parameter rolloutName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{rolloutName}", url.PathEscape(rolloutName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -218,43 +210,33 @@ func (client *DefaultRolloutsClient) getCreateRequest(ctx context.Context, provi
 }
 
 // getHandleResponse handles the Get response.
-func (client *DefaultRolloutsClient) getHandleResponse(resp *http.Response) (DefaultRolloutsGetResponse, error) {
-	result := DefaultRolloutsGetResponse{RawResponse: resp}
+func (client *DefaultRolloutsClient) getHandleResponse(resp *http.Response) (DefaultRolloutsClientGetResponse, error) {
+	result := DefaultRolloutsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DefaultRollout); err != nil {
-		return DefaultRolloutsGetResponse{}, runtime.NewResponseError(err, resp)
+		return DefaultRolloutsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *DefaultRolloutsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByProviderRegistration - Gets the list of the rollouts for the given provider.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DefaultRolloutsClient) ListByProviderRegistration(providerNamespace string, options *DefaultRolloutsListByProviderRegistrationOptions) *DefaultRolloutsListByProviderRegistrationPager {
-	return &DefaultRolloutsListByProviderRegistrationPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// providerNamespace - The name of the resource provider hosted within ProviderHub.
+// options - DefaultRolloutsClientListByProviderRegistrationOptions contains the optional parameters for the DefaultRolloutsClient.ListByProviderRegistration
+// method.
+func (client *DefaultRolloutsClient) ListByProviderRegistration(providerNamespace string, options *DefaultRolloutsClientListByProviderRegistrationOptions) *DefaultRolloutsClientListByProviderRegistrationPager {
+	return &DefaultRolloutsClientListByProviderRegistrationPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByProviderRegistrationCreateRequest(ctx, providerNamespace, options)
 		},
-		advancer: func(ctx context.Context, resp DefaultRolloutsListByProviderRegistrationResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DefaultRolloutsClientListByProviderRegistrationResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DefaultRolloutArrayResponseWithContinuation.NextLink)
 		},
 	}
 }
 
 // listByProviderRegistrationCreateRequest creates the ListByProviderRegistration request.
-func (client *DefaultRolloutsClient) listByProviderRegistrationCreateRequest(ctx context.Context, providerNamespace string, options *DefaultRolloutsListByProviderRegistrationOptions) (*policy.Request, error) {
+func (client *DefaultRolloutsClient) listByProviderRegistrationCreateRequest(ctx context.Context, providerNamespace string, options *DefaultRolloutsClientListByProviderRegistrationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/defaultRollouts"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -264,7 +246,7 @@ func (client *DefaultRolloutsClient) listByProviderRegistrationCreateRequest(ctx
 		return nil, errors.New("parameter providerNamespace cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{providerNamespace}", url.PathEscape(providerNamespace))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -276,46 +258,36 @@ func (client *DefaultRolloutsClient) listByProviderRegistrationCreateRequest(ctx
 }
 
 // listByProviderRegistrationHandleResponse handles the ListByProviderRegistration response.
-func (client *DefaultRolloutsClient) listByProviderRegistrationHandleResponse(resp *http.Response) (DefaultRolloutsListByProviderRegistrationResponse, error) {
-	result := DefaultRolloutsListByProviderRegistrationResponse{RawResponse: resp}
+func (client *DefaultRolloutsClient) listByProviderRegistrationHandleResponse(resp *http.Response) (DefaultRolloutsClientListByProviderRegistrationResponse, error) {
+	result := DefaultRolloutsClientListByProviderRegistrationResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DefaultRolloutArrayResponseWithContinuation); err != nil {
-		return DefaultRolloutsListByProviderRegistrationResponse{}, runtime.NewResponseError(err, resp)
+		return DefaultRolloutsClientListByProviderRegistrationResponse{}, err
 	}
 	return result, nil
 }
 
-// listByProviderRegistrationHandleError handles the ListByProviderRegistration error response.
-func (client *DefaultRolloutsClient) listByProviderRegistrationHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Stop - Stops or cancels the rollout, if in progress.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DefaultRolloutsClient) Stop(ctx context.Context, providerNamespace string, rolloutName string, options *DefaultRolloutsStopOptions) (DefaultRolloutsStopResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// providerNamespace - The name of the resource provider hosted within ProviderHub.
+// rolloutName - The rollout name.
+// options - DefaultRolloutsClientStopOptions contains the optional parameters for the DefaultRolloutsClient.Stop method.
+func (client *DefaultRolloutsClient) Stop(ctx context.Context, providerNamespace string, rolloutName string, options *DefaultRolloutsClientStopOptions) (DefaultRolloutsClientStopResponse, error) {
 	req, err := client.stopCreateRequest(ctx, providerNamespace, rolloutName, options)
 	if err != nil {
-		return DefaultRolloutsStopResponse{}, err
+		return DefaultRolloutsClientStopResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DefaultRolloutsStopResponse{}, err
+		return DefaultRolloutsClientStopResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DefaultRolloutsStopResponse{}, client.stopHandleError(resp)
+		return DefaultRolloutsClientStopResponse{}, runtime.NewResponseError(resp)
 	}
-	return DefaultRolloutsStopResponse{RawResponse: resp}, nil
+	return DefaultRolloutsClientStopResponse{RawResponse: resp}, nil
 }
 
 // stopCreateRequest creates the Stop request.
-func (client *DefaultRolloutsClient) stopCreateRequest(ctx context.Context, providerNamespace string, rolloutName string, options *DefaultRolloutsStopOptions) (*policy.Request, error) {
+func (client *DefaultRolloutsClient) stopCreateRequest(ctx context.Context, providerNamespace string, rolloutName string, options *DefaultRolloutsClientStopOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/defaultRollouts/{rolloutName}/stop"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -329,7 +301,7 @@ func (client *DefaultRolloutsClient) stopCreateRequest(ctx context.Context, prov
 		return nil, errors.New("parameter rolloutName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{rolloutName}", url.PathEscape(rolloutName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -338,17 +310,4 @@ func (client *DefaultRolloutsClient) stopCreateRequest(ctx context.Context, prov
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
-}
-
-// stopHandleError handles the Stop error response.
-func (client *DefaultRolloutsClient) stopHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

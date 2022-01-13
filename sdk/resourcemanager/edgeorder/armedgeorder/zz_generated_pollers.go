@@ -14,13 +14,13 @@ import (
 	"net/http"
 )
 
-// EdgeOrderManagementClientCreateAddressPoller provides polling facilities until the operation reaches a terminal state.
-type EdgeOrderManagementClientCreateAddressPoller struct {
+// ManagementClientCreateAddressPoller provides polling facilities until the operation reaches a terminal state.
+type ManagementClientCreateAddressPoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *EdgeOrderManagementClientCreateAddressPoller) Done() bool {
+func (p *ManagementClientCreateAddressPoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -34,18 +34,18 @@ func (p *EdgeOrderManagementClientCreateAddressPoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *EdgeOrderManagementClientCreateAddressPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *ManagementClientCreateAddressPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final EdgeOrderManagementClientCreateAddressResponse will be returned.
-func (p *EdgeOrderManagementClientCreateAddressPoller) FinalResponse(ctx context.Context) (EdgeOrderManagementClientCreateAddressResponse, error) {
-	respType := EdgeOrderManagementClientCreateAddressResponse{}
+// If the final GET succeeded then the final ManagementClientCreateAddressResponse will be returned.
+func (p *ManagementClientCreateAddressPoller) FinalResponse(ctx context.Context) (ManagementClientCreateAddressResponse, error) {
+	respType := ManagementClientCreateAddressResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.AddressResource)
 	if err != nil {
-		return EdgeOrderManagementClientCreateAddressResponse{}, err
+		return ManagementClientCreateAddressResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -53,17 +53,17 @@ func (p *EdgeOrderManagementClientCreateAddressPoller) FinalResponse(ctx context
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *EdgeOrderManagementClientCreateAddressPoller) ResumeToken() (string, error) {
+func (p *ManagementClientCreateAddressPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-// EdgeOrderManagementClientCreateOrderItemPoller provides polling facilities until the operation reaches a terminal state.
-type EdgeOrderManagementClientCreateOrderItemPoller struct {
+// ManagementClientCreateOrderItemPoller provides polling facilities until the operation reaches a terminal state.
+type ManagementClientCreateOrderItemPoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *EdgeOrderManagementClientCreateOrderItemPoller) Done() bool {
+func (p *ManagementClientCreateOrderItemPoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -77,18 +77,18 @@ func (p *EdgeOrderManagementClientCreateOrderItemPoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *EdgeOrderManagementClientCreateOrderItemPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *ManagementClientCreateOrderItemPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final EdgeOrderManagementClientCreateOrderItemResponse will be returned.
-func (p *EdgeOrderManagementClientCreateOrderItemPoller) FinalResponse(ctx context.Context) (EdgeOrderManagementClientCreateOrderItemResponse, error) {
-	respType := EdgeOrderManagementClientCreateOrderItemResponse{}
+// If the final GET succeeded then the final ManagementClientCreateOrderItemResponse will be returned.
+func (p *ManagementClientCreateOrderItemPoller) FinalResponse(ctx context.Context) (ManagementClientCreateOrderItemResponse, error) {
+	respType := ManagementClientCreateOrderItemResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.OrderItemResource)
 	if err != nil {
-		return EdgeOrderManagementClientCreateOrderItemResponse{}, err
+		return ManagementClientCreateOrderItemResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -96,17 +96,17 @@ func (p *EdgeOrderManagementClientCreateOrderItemPoller) FinalResponse(ctx conte
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *EdgeOrderManagementClientCreateOrderItemPoller) ResumeToken() (string, error) {
+func (p *ManagementClientCreateOrderItemPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-// EdgeOrderManagementClientDeleteAddressByNamePoller provides polling facilities until the operation reaches a terminal state.
-type EdgeOrderManagementClientDeleteAddressByNamePoller struct {
+// ManagementClientDeleteAddressByNamePoller provides polling facilities until the operation reaches a terminal state.
+type ManagementClientDeleteAddressByNamePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *EdgeOrderManagementClientDeleteAddressByNamePoller) Done() bool {
+func (p *ManagementClientDeleteAddressByNamePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -120,18 +120,18 @@ func (p *EdgeOrderManagementClientDeleteAddressByNamePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *EdgeOrderManagementClientDeleteAddressByNamePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *ManagementClientDeleteAddressByNamePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final EdgeOrderManagementClientDeleteAddressByNameResponse will be returned.
-func (p *EdgeOrderManagementClientDeleteAddressByNamePoller) FinalResponse(ctx context.Context) (EdgeOrderManagementClientDeleteAddressByNameResponse, error) {
-	respType := EdgeOrderManagementClientDeleteAddressByNameResponse{}
+// If the final GET succeeded then the final ManagementClientDeleteAddressByNameResponse will be returned.
+func (p *ManagementClientDeleteAddressByNamePoller) FinalResponse(ctx context.Context) (ManagementClientDeleteAddressByNameResponse, error) {
+	respType := ManagementClientDeleteAddressByNameResponse{}
 	resp, err := p.pt.FinalResponse(ctx, nil)
 	if err != nil {
-		return EdgeOrderManagementClientDeleteAddressByNameResponse{}, err
+		return ManagementClientDeleteAddressByNameResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -139,17 +139,17 @@ func (p *EdgeOrderManagementClientDeleteAddressByNamePoller) FinalResponse(ctx c
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *EdgeOrderManagementClientDeleteAddressByNamePoller) ResumeToken() (string, error) {
+func (p *ManagementClientDeleteAddressByNamePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-// EdgeOrderManagementClientDeleteOrderItemByNamePoller provides polling facilities until the operation reaches a terminal state.
-type EdgeOrderManagementClientDeleteOrderItemByNamePoller struct {
+// ManagementClientDeleteOrderItemByNamePoller provides polling facilities until the operation reaches a terminal state.
+type ManagementClientDeleteOrderItemByNamePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *EdgeOrderManagementClientDeleteOrderItemByNamePoller) Done() bool {
+func (p *ManagementClientDeleteOrderItemByNamePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -163,18 +163,18 @@ func (p *EdgeOrderManagementClientDeleteOrderItemByNamePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *EdgeOrderManagementClientDeleteOrderItemByNamePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *ManagementClientDeleteOrderItemByNamePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final EdgeOrderManagementClientDeleteOrderItemByNameResponse will be returned.
-func (p *EdgeOrderManagementClientDeleteOrderItemByNamePoller) FinalResponse(ctx context.Context) (EdgeOrderManagementClientDeleteOrderItemByNameResponse, error) {
-	respType := EdgeOrderManagementClientDeleteOrderItemByNameResponse{}
+// If the final GET succeeded then the final ManagementClientDeleteOrderItemByNameResponse will be returned.
+func (p *ManagementClientDeleteOrderItemByNamePoller) FinalResponse(ctx context.Context) (ManagementClientDeleteOrderItemByNameResponse, error) {
+	respType := ManagementClientDeleteOrderItemByNameResponse{}
 	resp, err := p.pt.FinalResponse(ctx, nil)
 	if err != nil {
-		return EdgeOrderManagementClientDeleteOrderItemByNameResponse{}, err
+		return ManagementClientDeleteOrderItemByNameResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -182,17 +182,17 @@ func (p *EdgeOrderManagementClientDeleteOrderItemByNamePoller) FinalResponse(ctx
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *EdgeOrderManagementClientDeleteOrderItemByNamePoller) ResumeToken() (string, error) {
+func (p *ManagementClientDeleteOrderItemByNamePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-// EdgeOrderManagementClientReturnOrderItemPoller provides polling facilities until the operation reaches a terminal state.
-type EdgeOrderManagementClientReturnOrderItemPoller struct {
+// ManagementClientReturnOrderItemPoller provides polling facilities until the operation reaches a terminal state.
+type ManagementClientReturnOrderItemPoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *EdgeOrderManagementClientReturnOrderItemPoller) Done() bool {
+func (p *ManagementClientReturnOrderItemPoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -206,18 +206,18 @@ func (p *EdgeOrderManagementClientReturnOrderItemPoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *EdgeOrderManagementClientReturnOrderItemPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *ManagementClientReturnOrderItemPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final EdgeOrderManagementClientReturnOrderItemResponse will be returned.
-func (p *EdgeOrderManagementClientReturnOrderItemPoller) FinalResponse(ctx context.Context) (EdgeOrderManagementClientReturnOrderItemResponse, error) {
-	respType := EdgeOrderManagementClientReturnOrderItemResponse{}
+// If the final GET succeeded then the final ManagementClientReturnOrderItemResponse will be returned.
+func (p *ManagementClientReturnOrderItemPoller) FinalResponse(ctx context.Context) (ManagementClientReturnOrderItemResponse, error) {
+	respType := ManagementClientReturnOrderItemResponse{}
 	resp, err := p.pt.FinalResponse(ctx, nil)
 	if err != nil {
-		return EdgeOrderManagementClientReturnOrderItemResponse{}, err
+		return ManagementClientReturnOrderItemResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -225,17 +225,17 @@ func (p *EdgeOrderManagementClientReturnOrderItemPoller) FinalResponse(ctx conte
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *EdgeOrderManagementClientReturnOrderItemPoller) ResumeToken() (string, error) {
+func (p *ManagementClientReturnOrderItemPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-// EdgeOrderManagementClientUpdateAddressPoller provides polling facilities until the operation reaches a terminal state.
-type EdgeOrderManagementClientUpdateAddressPoller struct {
+// ManagementClientUpdateAddressPoller provides polling facilities until the operation reaches a terminal state.
+type ManagementClientUpdateAddressPoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *EdgeOrderManagementClientUpdateAddressPoller) Done() bool {
+func (p *ManagementClientUpdateAddressPoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -249,18 +249,18 @@ func (p *EdgeOrderManagementClientUpdateAddressPoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *EdgeOrderManagementClientUpdateAddressPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *ManagementClientUpdateAddressPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final EdgeOrderManagementClientUpdateAddressResponse will be returned.
-func (p *EdgeOrderManagementClientUpdateAddressPoller) FinalResponse(ctx context.Context) (EdgeOrderManagementClientUpdateAddressResponse, error) {
-	respType := EdgeOrderManagementClientUpdateAddressResponse{}
+// If the final GET succeeded then the final ManagementClientUpdateAddressResponse will be returned.
+func (p *ManagementClientUpdateAddressPoller) FinalResponse(ctx context.Context) (ManagementClientUpdateAddressResponse, error) {
+	respType := ManagementClientUpdateAddressResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.AddressResource)
 	if err != nil {
-		return EdgeOrderManagementClientUpdateAddressResponse{}, err
+		return ManagementClientUpdateAddressResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -268,17 +268,17 @@ func (p *EdgeOrderManagementClientUpdateAddressPoller) FinalResponse(ctx context
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *EdgeOrderManagementClientUpdateAddressPoller) ResumeToken() (string, error) {
+func (p *ManagementClientUpdateAddressPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-// EdgeOrderManagementClientUpdateOrderItemPoller provides polling facilities until the operation reaches a terminal state.
-type EdgeOrderManagementClientUpdateOrderItemPoller struct {
+// ManagementClientUpdateOrderItemPoller provides polling facilities until the operation reaches a terminal state.
+type ManagementClientUpdateOrderItemPoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *EdgeOrderManagementClientUpdateOrderItemPoller) Done() bool {
+func (p *ManagementClientUpdateOrderItemPoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -292,18 +292,18 @@ func (p *EdgeOrderManagementClientUpdateOrderItemPoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *EdgeOrderManagementClientUpdateOrderItemPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *ManagementClientUpdateOrderItemPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final EdgeOrderManagementClientUpdateOrderItemResponse will be returned.
-func (p *EdgeOrderManagementClientUpdateOrderItemPoller) FinalResponse(ctx context.Context) (EdgeOrderManagementClientUpdateOrderItemResponse, error) {
-	respType := EdgeOrderManagementClientUpdateOrderItemResponse{}
+// If the final GET succeeded then the final ManagementClientUpdateOrderItemResponse will be returned.
+func (p *ManagementClientUpdateOrderItemPoller) FinalResponse(ctx context.Context) (ManagementClientUpdateOrderItemResponse, error) {
+	respType := ManagementClientUpdateOrderItemResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.OrderItemResource)
 	if err != nil {
-		return EdgeOrderManagementClientUpdateOrderItemResponse{}, err
+		return ManagementClientUpdateOrderItemResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -311,6 +311,6 @@ func (p *EdgeOrderManagementClientUpdateOrderItemPoller) FinalResponse(ctx conte
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *EdgeOrderManagementClientUpdateOrderItemPoller) ResumeToken() (string, error) {
+func (p *ManagementClientUpdateOrderItemPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }

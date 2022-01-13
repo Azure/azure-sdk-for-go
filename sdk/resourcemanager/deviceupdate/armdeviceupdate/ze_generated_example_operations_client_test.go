@@ -12,27 +12,29 @@ import (
 	"context"
 	"log"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceupdate/armdeviceupdate"
 )
 
-// x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2020-03-01-preview/examples/CheckNameAvailability_AlreadyExists.json
-func ExampleClient_CheckNameAvailability() {
+// x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2020-03-01-preview/examples/Operations_List.json
+func ExampleOperationsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdeviceupdate.NewClient("<subscription-id>", cred, nil)
-	res, err := client.CheckNameAvailability(ctx,
-		armdeviceupdate.CheckNameAvailabilityRequest{
-			Name: to.StringPtr("<name>"),
-			Type: to.StringPtr("<type>"),
-		},
-		nil)
-	if err != nil {
-		log.Fatal(err)
+	client := armdeviceupdate.NewOperationsClient(cred, nil)
+	pager := client.List(nil)
+	for {
+		nextResult := pager.NextPage(ctx)
+		if err := pager.Err(); err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
+		}
 	}
-	log.Printf("Response result: %#v\n", res.ClientCheckNameAvailabilityResult)
 }

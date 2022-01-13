@@ -16,9 +16,7 @@ import (
 )
 
 // ARMErrorResponseBody - ARM error response body.
-// Implements the error and azcore.HTTPResponse interfaces.
 type ARMErrorResponseBody struct {
-	raw string
 	// Gets or sets the string that can be used to programmatically identify the error.
 	Code *string `json:"code,omitempty"`
 
@@ -26,30 +24,24 @@ type ARMErrorResponseBody struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// Error implements the error interface for type ARMErrorResponseBody.
-// The contents of the error text are not contractual and subject to change.
-func (e ARMErrorResponseBody) Error() string {
-	return e.raw
-}
-
-// Implements the error and azcore.HTTPResponse interfaces.
 type ArmErrorResponse struct {
-	raw string
 	// ARM error response body.
-	InnerError *ARMErrorResponseBody `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ArmErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ArmErrorResponse) Error() string {
-	return e.raw
+	Error *ARMErrorResponseBody `json:"error,omitempty"`
 }
 
 // ConfigData - The Advisor configuration data structure.
 type ConfigData struct {
-	Resource
 	// The Advisor configuration data structure.
 	Properties *ConfigDataProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ConfigDataProperties - Configuration data properties
@@ -60,7 +52,8 @@ type ConfigDataProperties struct {
 	// Exclude the resource from Advisor evaluations. Valid values: False (default) or True.
 	Exclude *bool `json:"exclude,omitempty"`
 
-	// Minimum percentage threshold for Advisor low CPU utilization evaluation. Valid only for subscriptions. Valid values: 5 (default), 10, 15 or 20.
+	// Minimum percentage threshold for Advisor low CPU utilization evaluation. Valid only for subscriptions. Valid values: 5
+	// (default), 10, 15 or 20.
 	LowCPUThreshold *CPUThreshold `json:"lowCpuThreshold,omitempty"`
 }
 
@@ -90,23 +83,27 @@ func (c ConfigurationListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ConfigurationsCreateInResourceGroupOptions contains the optional parameters for the Configurations.CreateInResourceGroup method.
-type ConfigurationsCreateInResourceGroupOptions struct {
+// ConfigurationsClientCreateInResourceGroupOptions contains the optional parameters for the ConfigurationsClient.CreateInResourceGroup
+// method.
+type ConfigurationsClientCreateInResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationsCreateInSubscriptionOptions contains the optional parameters for the Configurations.CreateInSubscription method.
-type ConfigurationsCreateInSubscriptionOptions struct {
+// ConfigurationsClientCreateInSubscriptionOptions contains the optional parameters for the ConfigurationsClient.CreateInSubscription
+// method.
+type ConfigurationsClientCreateInSubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationsListByResourceGroupOptions contains the optional parameters for the Configurations.ListByResourceGroup method.
-type ConfigurationsListByResourceGroupOptions struct {
+// ConfigurationsClientListByResourceGroupOptions contains the optional parameters for the ConfigurationsClient.ListByResourceGroup
+// method.
+type ConfigurationsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationsListBySubscriptionOptions contains the optional parameters for the Configurations.ListBySubscription method.
-type ConfigurationsListBySubscriptionOptions struct {
+// ConfigurationsClientListBySubscriptionOptions contains the optional parameters for the ConfigurationsClient.ListBySubscription
+// method.
+type ConfigurationsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -121,8 +118,8 @@ type DigestConfig struct {
 	// Frequency that digest will be triggered, in days. Value must be between 7 and 30 days inclusive.
 	Frequency *int32 `json:"frequency,omitempty"`
 
-	// Language for digest content body. Value must be ISO 639-1 code for one of Azure portal supported languages. Otherwise, it will be converted into one.
-	// Default value is English (en).
+	// Language for digest content body. Value must be ISO 639-1 code for one of Azure portal supported languages. Otherwise,
+	// it will be converted into one. Default value is English (en).
 	Language *string `json:"language,omitempty"`
 
 	// Name of digest configuration. Value is case-insensitive and must be unique within a subscription.
@@ -251,18 +248,18 @@ func (o OperationEntityListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RecommendationMetadataGetOptions contains the optional parameters for the RecommendationMetadata.Get method.
-type RecommendationMetadataGetOptions struct {
+// RecommendationMetadataClientGetOptions contains the optional parameters for the RecommendationMetadataClient.Get method.
+type RecommendationMetadataClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RecommendationMetadataListOptions contains the optional parameters for the RecommendationMetadata.List method.
-type RecommendationMetadataListOptions struct {
+// RecommendationMetadataClientListOptions contains the optional parameters for the RecommendationMetadataClient.List method.
+type RecommendationMetadataClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -425,25 +422,29 @@ func (r *RecommendationProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// RecommendationsGenerateOptions contains the optional parameters for the Recommendations.Generate method.
-type RecommendationsGenerateOptions struct {
+// RecommendationsClientGenerateOptions contains the optional parameters for the RecommendationsClient.Generate method.
+type RecommendationsClientGenerateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RecommendationsGetGenerateStatusOptions contains the optional parameters for the Recommendations.GetGenerateStatus method.
-type RecommendationsGetGenerateStatusOptions struct {
+// RecommendationsClientGetGenerateStatusOptions contains the optional parameters for the RecommendationsClient.GetGenerateStatus
+// method.
+type RecommendationsClientGetGenerateStatusOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RecommendationsGetOptions contains the optional parameters for the Recommendations.Get method.
-type RecommendationsGetOptions struct {
+// RecommendationsClientGetOptions contains the optional parameters for the RecommendationsClient.Get method.
+type RecommendationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RecommendationsListOptions contains the optional parameters for the Recommendations.List method.
-type RecommendationsListOptions struct {
-	// The filter to apply to the recommendations.<br>Filter can be applied to properties ['ResourceId', 'ResourceGroup', 'RecommendationTypeGuid', '[Category](#category)']
-	// with operators ['eq', 'and', 'or'].<br>Example:<br>- $filter=Category eq 'Cost' and ResourceGroup eq 'MyResourceGroup'
+// RecommendationsClientListOptions contains the optional parameters for the RecommendationsClient.List method.
+type RecommendationsClientListOptions struct {
+	// The filter to apply to the recommendations.
+	// Filter can be applied to properties ['ResourceId', 'ResourceGroup', 'RecommendationTypeGuid', 'Category'] with operators
+	// ['eq', 'and', 'or'].
+	// Example:
+	// - $filter=Category eq 'Cost' and ResourceGroup eq 'MyResourceGroup'
 	Filter *string
 	// The page-continuation token to use with a paged version of this API.
 	SkipToken *string
@@ -494,9 +495,17 @@ func (r ResourceMetadata) MarshalJSON() ([]byte, error) {
 
 // ResourceRecommendationBase - Advisor Recommendation.
 type ResourceRecommendationBase struct {
-	Resource
 	// The properties of the recommendation.
 	Properties *RecommendationProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ResourceRecommendationBaseListResult - The list of Advisor recommendations.
@@ -525,11 +534,20 @@ type ShortDescription struct {
 	Solution *string `json:"solution,omitempty"`
 }
 
-// SuppressionContract - The details of the snoozed or dismissed rule; for example, the duration, name, and GUID associated with the rule.
+// SuppressionContract - The details of the snoozed or dismissed rule; for example, the duration, name, and GUID associated
+// with the rule.
 type SuppressionContract struct {
-	Resource
 	// The properties of the suppression.
 	Properties *SuppressionProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // SuppressionContractListResult - The list of Advisor suppressions.
@@ -596,23 +614,23 @@ func (s *SuppressionProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// SuppressionsCreateOptions contains the optional parameters for the Suppressions.Create method.
-type SuppressionsCreateOptions struct {
+// SuppressionsClientCreateOptions contains the optional parameters for the SuppressionsClient.Create method.
+type SuppressionsClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SuppressionsDeleteOptions contains the optional parameters for the Suppressions.Delete method.
-type SuppressionsDeleteOptions struct {
+// SuppressionsClientDeleteOptions contains the optional parameters for the SuppressionsClient.Delete method.
+type SuppressionsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SuppressionsGetOptions contains the optional parameters for the Suppressions.Get method.
-type SuppressionsGetOptions struct {
+// SuppressionsClientGetOptions contains the optional parameters for the SuppressionsClient.Get method.
+type SuppressionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SuppressionsListOptions contains the optional parameters for the Suppressions.List method.
-type SuppressionsListOptions struct {
+// SuppressionsClientListOptions contains the optional parameters for the SuppressionsClient.List method.
+type SuppressionsClientListOptions struct {
 	// The page-continuation token to use with a paged version of this API.
 	SkipToken *string
 	// The number of suppressions per page if a paged version of this API is being used.

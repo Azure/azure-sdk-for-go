@@ -11,7 +11,6 @@ package armadvisor
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,48 +24,56 @@ import (
 // RecommendationMetadataClient contains the methods for the RecommendationMetadata group.
 // Don't use this type directly, use NewRecommendationMetadataClient() instead.
 type RecommendationMetadataClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewRecommendationMetadataClient creates a new instance of RecommendationMetadataClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewRecommendationMetadataClient(credential azcore.TokenCredential, options *arm.ClientOptions) *RecommendationMetadataClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &RecommendationMetadataClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &RecommendationMetadataClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets the metadata entity.
-// If the operation fails it returns one of the following error types.
-// - *ARMErrorResponseBody, *ArmErrorResponse
-func (client *RecommendationMetadataClient) Get(ctx context.Context, name string, options *RecommendationMetadataGetOptions) (RecommendationMetadataGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// name - Name of metadata entity.
+// options - RecommendationMetadataClientGetOptions contains the optional parameters for the RecommendationMetadataClient.Get
+// method.
+func (client *RecommendationMetadataClient) Get(ctx context.Context, name string, options *RecommendationMetadataClientGetOptions) (RecommendationMetadataClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, name, options)
 	if err != nil {
-		return RecommendationMetadataGetResponse{}, err
+		return RecommendationMetadataClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RecommendationMetadataGetResponse{}, err
+		return RecommendationMetadataClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return RecommendationMetadataGetResponse{}, client.getHandleError(resp)
+		return RecommendationMetadataClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *RecommendationMetadataClient) getCreateRequest(ctx context.Context, name string, options *RecommendationMetadataGetOptions) (*policy.Request, error) {
+func (client *RecommendationMetadataClient) getCreateRequest(ctx context.Context, name string, options *RecommendationMetadataClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Advisor/metadata/{name}"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -78,54 +85,34 @@ func (client *RecommendationMetadataClient) getCreateRequest(ctx context.Context
 }
 
 // getHandleResponse handles the Get response.
-func (client *RecommendationMetadataClient) getHandleResponse(resp *http.Response) (RecommendationMetadataGetResponse, error) {
-	result := RecommendationMetadataGetResponse{RawResponse: resp}
+func (client *RecommendationMetadataClient) getHandleResponse(resp *http.Response) (RecommendationMetadataClientGetResponse, error) {
+	result := RecommendationMetadataClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetadataEntity); err != nil {
-		return RecommendationMetadataGetResponse{}, runtime.NewResponseError(err, resp)
+		return RecommendationMetadataClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *RecommendationMetadataClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	switch resp.StatusCode {
-	case http.StatusNotFound:
-		errType := ARMErrorResponseBody{raw: string(body)}
-		if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-			return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-		}
-		return runtime.NewResponseError(&errType, resp)
-	default:
-		errType := ArmErrorResponse{raw: string(body)}
-		if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-			return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-		}
-		return runtime.NewResponseError(&errType, resp)
-	}
-}
-
 // List - Gets the list of metadata entities.
-// If the operation fails it returns the *ArmErrorResponse error type.
-func (client *RecommendationMetadataClient) List(options *RecommendationMetadataListOptions) *RecommendationMetadataListPager {
-	return &RecommendationMetadataListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - RecommendationMetadataClientListOptions contains the optional parameters for the RecommendationMetadataClient.List
+// method.
+func (client *RecommendationMetadataClient) List(options *RecommendationMetadataClientListOptions) *RecommendationMetadataClientListPager {
+	return &RecommendationMetadataClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp RecommendationMetadataListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp RecommendationMetadataClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.MetadataEntityListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *RecommendationMetadataClient) listCreateRequest(ctx context.Context, options *RecommendationMetadataListOptions) (*policy.Request, error) {
+func (client *RecommendationMetadataClient) listCreateRequest(ctx context.Context, options *RecommendationMetadataClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Advisor/metadata"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -137,23 +124,10 @@ func (client *RecommendationMetadataClient) listCreateRequest(ctx context.Contex
 }
 
 // listHandleResponse handles the List response.
-func (client *RecommendationMetadataClient) listHandleResponse(resp *http.Response) (RecommendationMetadataListResponse, error) {
-	result := RecommendationMetadataListResponse{RawResponse: resp}
+func (client *RecommendationMetadataClient) listHandleResponse(resp *http.Response) (RecommendationMetadataClientListResponse, error) {
+	result := RecommendationMetadataClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetadataEntityListResult); err != nil {
-		return RecommendationMetadataListResponse{}, runtime.NewResponseError(err, resp)
+		return RecommendationMetadataClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *RecommendationMetadataClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ArmErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }
